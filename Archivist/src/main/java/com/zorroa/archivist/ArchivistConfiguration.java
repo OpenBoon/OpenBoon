@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import javax.annotation.PreDestroy;
 
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.io.ByteStreams;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -20,17 +22,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 public class ArchivistConfiguration {
 
-     private static final Logger logger = LoggerFactory.getLogger(ArchivistConfiguration.class);
+    private static final Logger logger = LoggerFactory.getLogger(ArchivistConfiguration.class);
 
     @Value("${archivist.index.alias}")
     private String alias;
 
     @Bean
-    public Client elasticSearchClient() throws IOException {
+    public Client elastic() throws IOException {
 
         Settings settings = ImmutableSettings.settingsBuilder()
                 .put("cluster.name", "zorroa")
@@ -51,7 +55,7 @@ public class ArchivistConfiguration {
 
     @PreDestroy
     void shutdown() throws ElasticsearchException, IOException {
-        elasticSearchClient().close();
+        elastic().close();
     }
 
     /**
@@ -70,26 +74,28 @@ public class ArchivistConfiguration {
          * re-mapping purposes, but for now we're hard coding to 1
          */
         String indexName = String.format("%s_%02d", alias, 1);
+        logger.info("Setting up ElasticSearch index: {} with alias: {}", indexName, alias);
 
-        try {
-            logger.info("Setting up ElasticSearch index: {} with alias: {}", indexName, alias);
 
-            client.admin()
-                .indices()
-                .prepareCreate(indexName)
-                .setSource(mappingSource)
-                .execute()
-                .actionGet();
+        client.admin()
+            .indices()
+            .prepareCreate(indexName)
+            .setSource(mappingSource)
+            .execute(new ActionListener<CreateIndexResponse>() {
+                @Override
+                public void onResponse(CreateIndexResponse response) {
+                    client.admin()
+                    .indices()
+                    .prepareAliases()
+                    .addAlias(alias, indexName)
+                    .execute()
+                    .actionGet();
+                }
 
-            client.admin()
-                .indices()
-                .prepareAliases()
-                .addAlias(alias, indexName)
-                .execute()
-                .actionGet();
-        }
-        catch (IndexAlreadyExistsException e) {
-            logger.info("Index: {} with alias: {} alrady exists", indexName, alias);
-        }
+                @Override
+                public void onFailure(Throwable e) {
+                    logger.info("ElasticSearch index: {} already exists", indexName);
+                }
+            });
     }
 }
