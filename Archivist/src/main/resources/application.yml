@@ -1,0 +1,6 @@
+
+#
+# HTTP Port
+#
+server:
+    port: 8066
