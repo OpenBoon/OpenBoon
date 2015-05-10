@@ -7,3 +7,5 @@
 # Build directory
 target
 
+# Elastic DB files
+data
