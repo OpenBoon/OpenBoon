@@ -10,6 +10,25 @@
     }
   },
   "mappings" : {
+    "ingest": {
+      "dynamic" : false,
+      "properties": {
+        "timeCreated" : {
+          "type" : "date"
+        },
+        "timeModified" : {
+          "type" : "date"
+        },
+        "paths" : {
+          "type" : "string",
+          "index" : "not_analyzed"
+        },
+        "fileTypes" : {
+          "type" : "string",
+          "index" : "not_analyzed"
+        }
+      }
+    },
     "asset" : {
       "dynamic" : true,
       "properties" : {
