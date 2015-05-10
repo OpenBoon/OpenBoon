@@ -4,3 +4,11 @@
 #
 server:
     port: 8066
+
+#
+# Archivist Settings
+#
+archivist:
+  index:
+    # The name of the elastic search index
+    alias: "archivist"

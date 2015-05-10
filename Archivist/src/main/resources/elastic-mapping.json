@@ -1,0 +1,44 @@
+{
+  "settings" : {
+    "analysis" : {
+      "analyzer" : {
+        "stem" : {
+          "tokenizer" : "standard",
+          "filter" : ["standard", "lowercase", "stop", "porter_stem"]
+          }
+        }
+    }
+  },
+  "mappings" : {
+    "asset" : {
+      "dynamic" : true,
+      "properties" : {
+        "time_created" : {
+           "type" : "date"
+         },
+         "time_modified" : {
+           "type" : "date"
+         },
+         "user_created" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "user_modified" : {
+          "type" : "string",
+          "index" : "not_analyzed"
+        },
+        "source" : {
+          "type" : "object",
+          "properties" : {
+            "path": {
+              "type": "string"
+            },
+            "size" : {
+              "type": "long"
+            }
+          }
+        }
+      }
+    }
+  }
+}
