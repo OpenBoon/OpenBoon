@@ -13,17 +13,17 @@
     "asset" : {
       "dynamic" : true,
       "properties" : {
-        "time_created" : {
+        "timeCreated" : {
            "type" : "date"
-         },
-         "time_modified" : {
-           "type" : "date"
-         },
-         "user_created" : {
-          "type" : "string",
-          "index": "not_analyzed"
         },
-        "user_modified" : {
+        "timeModified" : {
+          "type" : "date"
+        },
+        "userCreated" : {
+         "type" : "string",
+         "index": "not_analyzed"
+        },
+        "userModified" : {
           "type" : "string",
           "index" : "not_analyzed"
         },
