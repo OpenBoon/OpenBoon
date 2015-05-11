@@ -11,6 +11,7 @@ public class Ingest {
     private String id;
     private List<String> paths;
     private Set<String> fileTypes;
+    private IngestState state;
 
     public String getId() {
         return id;
@@ -29,5 +30,11 @@ public class Ingest {
     }
     public void setFileTypes(Set<String> fileTypes) {
         this.fileTypes = fileTypes;
+    }
+    public IngestState getState() {
+        return state;
+    }
+    public void setState(IngestState state) {
+        this.state = state;
     }
 }

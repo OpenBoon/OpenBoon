@@ -20,8 +20,15 @@
         "timeCreated" : {
           "type" : "date"
         },
-        "timeModified" : {
+        "timeStarted" : {
           "type" : "date"
+        },
+        "timeStopped" : {
+          "type" : "date"
+        },
+        "state": {
+          "type": "integer",
+          "null_value": 0
         },
         "paths" : {
           "type" : "string",

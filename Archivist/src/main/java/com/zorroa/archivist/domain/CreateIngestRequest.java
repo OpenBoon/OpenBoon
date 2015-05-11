@@ -21,6 +21,11 @@ public class CreateIngestRequest {
      */
     private long timeCreated = System.currentTimeMillis();
 
+    /**
+     * The default state of the ingest
+     */
+    private final IngestState state = IngestState.WAITING;
+
     public List<String> getPaths() {
         return paths;
     }
@@ -43,5 +48,9 @@ public class CreateIngestRequest {
 
     public void setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
+    }
+
+    public IngestState getState() {
+        return state;
     }
 }
