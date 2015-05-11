@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * Some basic JSON utilities.
@@ -14,6 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Json {
 
     public final static ObjectMapper Mapper = new ObjectMapper();
+    static {
+        Mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
+    }
 
     public static byte[] serialize(Object object) {
         try {
