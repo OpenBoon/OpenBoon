@@ -12,6 +12,6 @@ package com.zorroa.archivist.repository;
  */
 public interface JsonRowMapper<T> {
 
-     public T mapRow(byte[] row);
+     public T mapRow(String id, byte[] row);
 
 }

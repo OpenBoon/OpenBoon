@@ -13,6 +13,6 @@ import java.util.Map;
  */
 public interface RowMapper<T> {
 
-    public T mapRow(Map<String, Object> row);
+    public T mapRow(String id, Map<String, Object> row);
 
 }

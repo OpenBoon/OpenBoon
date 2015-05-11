@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.CreateIngestRequest;
@@ -23,12 +24,15 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     public void setup() {
         request = new CreateIngestRequest();
         request.setPaths(Lists.newArrayList(getStaticImagePath()));
+        request.setFileTypes(Sets.newHashSet());
     }
 
     @Test
     public void create() {
         Ingest ingest01 = ingestDao.create(request);
         Ingest ingest02 = ingestDao.get(ingest01.getId());
-        assertEquals(ingest02.getId(), ingest02.getId());
+        assertEquals(ingest02.getId(), ingest01.getId());
+        assertEquals(ingest02.getPaths(), ingest01.getPaths());
+        assertEquals(ingest02.getFileTypes(), ingest01.getFileTypes());
     }
 }

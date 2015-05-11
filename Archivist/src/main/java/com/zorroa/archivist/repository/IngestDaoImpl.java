@@ -1,29 +1,30 @@
 package com.zorroa.archivist.repository;
 
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.client.Client;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.CreateIngestRequest;
+import com.zorroa.archivist.domain.Ingest;
 
 @Repository
-public class IngestDaoImpl implements IngestDao {
+public class IngestDaoImpl extends AbstractElasticDao implements IngestDao {
 
-    @Autowired
-    Client elastic;
-
-    @Value("${archivist.index.alias}")
-    private String alias;
-
-    private static final String TYPE = "ingest";
+    private static final JsonRowMapper<Ingest> MAPPER = new JsonRowMapper<Ingest>() {
+        @Override
+        public Ingest mapRow(String id, byte[] bytes) {
+            Ingest ingest = Json.deserialize(bytes, Ingest.class);
+            ingest.setId(id);
+            return ingest;
+        }
+    };
 
     @Override
     public Ingest create(CreateIngestRequest req) {
-        IndexResponse response = elastic.prepareIndex(alias, TYPE).setSource(Json.serialize(req)).get();
+
+        IndexResponse response = client.prepareIndex(alias, getType())
+                .setSource(Json.serialize(req))
+                .get();
 
         Ingest ingest = new Ingest();
         ingest.setId(response.getId());
@@ -34,6 +35,11 @@ public class IngestDaoImpl implements IngestDao {
 
     @Override
     public Ingest get(String id) {
-        return Json.deserialize(elastic.prepareGet(alias, TYPE, id).get().getSourceAsBytes(), Ingest.class);
+        return elastic.queryForObject(id, MAPPER);
+    }
+
+    @Override
+    public String getType() {
+        return "ingest";
     }
 }

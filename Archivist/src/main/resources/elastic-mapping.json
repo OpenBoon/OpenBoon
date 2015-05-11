@@ -13,6 +13,10 @@
     "ingest": {
       "dynamic" : false,
       "properties": {
+        "_id": {
+          "store": true,
+          "index": "not_analyzed"
+        },
         "timeCreated" : {
           "type" : "date"
         },
@@ -32,6 +36,13 @@
     "asset" : {
       "dynamic" : true,
       "properties" : {
+        "_id": {
+          "path": "id"
+        },
+        "_id": {
+          "store": true,
+          "index": "not_analyzed"
+        },
         "timeCreated" : {
            "type" : "date"
         },
