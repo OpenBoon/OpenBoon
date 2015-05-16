@@ -3,13 +3,13 @@
 # HTTP Port
 #
 server:
-	port: 8066
+    port: 8066
 
 #
 # Archivist Settings
 #
 archivist:
-	index:
-		alias: "archivist"
+    index:
+        alias: "archivist"
 
 
