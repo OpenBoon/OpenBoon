@@ -27,6 +27,11 @@ public abstract class ArchivistApplicationTests {
     @Value("${archivist.index.alias}")
     protected String alias;
 
+    public ArchivistApplicationTests() {
+        logger.info("Setting unit test");
+        ArchivistConfiguration.unittest = true;
+    }
+
     public String getStaticImagePath() {
         FileSystemResource resource = new FileSystemResource("src/test/resources/static/images");
         String path = resource.getFile().getAbsolutePath();

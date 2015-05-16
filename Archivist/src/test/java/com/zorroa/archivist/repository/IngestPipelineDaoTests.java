@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import static org.junit.Assert.assertEquals;
 
+import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,7 +41,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
             builder.setName("default_" + i);
             builder.addToProcessors(
                     new IngestProcessorFactory("foo.bar.Bing",
-                            Lists.<Object>newArrayList( 1, "a", "b")));
+                            Maps.newHashMap()));
             ingestPipelineDao.create(builder);
         }
 

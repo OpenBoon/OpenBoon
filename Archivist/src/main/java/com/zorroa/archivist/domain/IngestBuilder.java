@@ -1,0 +1,43 @@
+package com.zorroa.archivist.domain;
+
+import java.util.Set;
+
+import com.zorroa.archivist.FileUtils;
+
+public class IngestBuilder {
+
+    private String path;
+    private Set<String> fileTypes;
+
+    public IngestBuilder() {
+
+    }
+
+    public IngestBuilder(String path) {
+        this.path = path;
+        this.fileTypes = FileUtils.getSupportedImageFormats();
+    }
+
+    public IngestBuilder(String path, Set<String> fileTypes) {
+        this.path = path;
+        this.fileTypes = fileTypes;
+    }
+
+    public Set<String> getFileTypes() {
+        return fileTypes;
+    }
+
+    public IngestBuilder setFileTypes(Set<String> fileTypes) {
+        this.fileTypes = fileTypes;
+        return this;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public IngestBuilder setPath(String path) {
+        this.path = path;
+        return this;
+    }
+}

@@ -26,6 +26,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
@@ -39,6 +41,8 @@ public class ArchivistConfiguration {
     private String nodeName;
 
     private String hostName;
+
+    public static boolean unittest = false;
 
     @PostConstruct
     public void init() throws UnknownHostException {
@@ -82,15 +86,38 @@ public class ArchivistConfiguration {
         return hostName;
     }
 
-    @Bean
+    @Bean(name="ingestTaskExecutor")
     public AsyncTaskExecutor ingestTaskExecutor() {
-        ThreadPoolTaskExecutor executor =  new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(4);
-        executor.setDaemon(true);
-        executor.setMaxPoolSize(4);
-        executor.setThreadNamePrefix("ingest");
-        executor.setQueueCapacity(4);
-        return executor;
+
+        if (unittest) {
+            SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
+            return executor;
+        }
+        else {
+            ThreadPoolTaskExecutor executor =  new ThreadPoolTaskExecutor();
+            executor.setCorePoolSize(4);
+            executor.setDaemon(true);
+            executor.setMaxPoolSize(4);
+            executor.setThreadNamePrefix("ingest");
+            return executor;
+        }
+    }
+
+    @Bean(name="processorTaskExecutor")
+    public AsyncTaskExecutor processorTaskExecutor() {
+
+        if (unittest) {
+            SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
+            return executor;
+        }
+        else {
+            ThreadPoolTaskExecutor executor =  new ThreadPoolTaskExecutor();
+            executor.setCorePoolSize(4);
+            executor.setDaemon(true);
+            executor.setMaxPoolSize(8);
+            executor.setThreadNamePrefix("processor");
+            return executor;
+        }
     }
 
     /**
