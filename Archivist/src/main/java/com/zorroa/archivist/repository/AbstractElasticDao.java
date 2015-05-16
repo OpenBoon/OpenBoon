@@ -24,4 +24,8 @@ public abstract class AbstractElasticDao {
     }
 
     public abstract String getType();
+
+    public void refreshIndex() {
+        client.admin().indices().prepareRefresh(alias).get();
+    }
 }
