@@ -10,31 +10,22 @@
     }
   },
   "mappings" : {
-    "ingest": {
+    "pipeline": {
       "dynamic" : false,
       "properties": {
         "_id": {
           "store": true,
-          "index": "not_analyzed"
+          "index": "not_analyzed",
+          "type": "string"
         },
         "timeCreated" : {
           "type" : "date"
         },
-        "timeStarted" : {
-          "type" : "date"
-        },
-        "timeStopped" : {
-          "type" : "date"
-        },
-        "state": {
-          "type": "integer",
-          "null_value": 0
-        },
-        "paths" : {
+        "userCreated" : {
           "type" : "string",
           "index" : "not_analyzed"
         },
-        "fileTypes" : {
+        "name" : {
           "type" : "string",
           "index" : "not_analyzed"
         }
@@ -44,11 +35,9 @@
       "dynamic" : true,
       "properties" : {
         "_id": {
-          "path": "id"
-        },
-        "_id": {
           "store": true,
-          "index": "not_analyzed"
+          "index": "not_analyzed",
+          "type": "string"
         },
         "timeCreated" : {
            "type" : "date"

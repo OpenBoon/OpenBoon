@@ -2,6 +2,7 @@ package com.zorroa.archivist;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.indices.IndexMissingException;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -39,7 +40,11 @@ public abstract class ArchivistApplicationTests {
 
     @Before
     public void clearIndex() {
-        client.prepareDeleteByQuery(alias).setQuery(QueryBuilders.matchAllQuery()).get();
-        refreshIndex();
+        try {
+            client.prepareDeleteByQuery(alias).setQuery(QueryBuilders.matchAllQuery()).get();
+            refreshIndex();
+        } catch (IndexMissingException ignore) {
+            // will fail on the first try
+        }
     }
 }

@@ -3,12 +3,13 @@
 # HTTP Port
 #
 server:
-    port: 8066
+	port: 8066
 
 #
 # Archivist Settings
 #
 archivist:
-  index:
-    # The name of the elastic search index
-    alias: "archivist"
+	index:
+		alias: "archivist"
+
+
