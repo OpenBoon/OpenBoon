@@ -8,7 +8,7 @@ public class IngestPipeline {
     private long version;
 
     private String name;
-    private List<IngestProcessorWrapper> processors;
+    private List<IngestProcessorFactory> processors;
 
     public IngestPipeline() { }
 
@@ -36,11 +36,11 @@ public class IngestPipeline {
         this.name = name;
     }
 
-    public List<IngestProcessorWrapper> getProcessors() {
+    public List<IngestProcessorFactory> getProcessors() {
         return processors;
     }
 
-    public void setProcessors(List<IngestProcessorWrapper> processors) {
+    public void setProcessors(List<IngestProcessorFactory> processors) {
         this.processors = processors;
     }
 }

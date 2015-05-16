@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestProcessorWrapper;
+import com.zorroa.archivist.domain.IngestProcessorFactory;
 
 public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 
@@ -22,7 +22,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         IngestPipelineBuilder request = new IngestPipelineBuilder();
         request.setName("default");
 
-        IngestProcessorWrapper processor = new IngestProcessorWrapper();
+        IngestProcessorFactory processor = new IngestProcessorFactory();
         processor.setKlass("com.zorroa.archivist.ingest.ExifProcessor");
         request.setProcessors(Lists.newArrayList(processor));
 
@@ -30,6 +30,21 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         IngestPipeline pipeline = ingestPipelineDao.get(id);
 
         assertEquals(request.getName(), pipeline.getName());
+    }
+
+    @Test
+    public void getAll() {
+
+        for (int i=0; i<=10; i++) {
+            IngestPipelineBuilder builder = new IngestPipelineBuilder();
+            builder.setName("default_" + i);
+            builder.addToProcessors(
+                    new IngestProcessorFactory("foo.bar.Bing",
+                            Lists.<Object>newArrayList( 1, "a", "b")));
+            ingestPipelineDao.create(builder);
+        }
+
+        assertEquals(10, ingestPipelineDao.getAll().size());
     }
 
 }
