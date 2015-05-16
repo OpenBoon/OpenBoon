@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository;
 
-import java.util.Map;
 
 /**
  * An interface used by ElasticTemplate for mapping documents from an Elastic search result
@@ -13,6 +12,6 @@ import java.util.Map;
  */
 public interface RowMapper<T> {
 
-    public T mapRow(String id, Map<String, Object> row);
+    public T mapRow(String id, long version, byte[] source);
 
 }
