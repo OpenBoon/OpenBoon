@@ -8,8 +8,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Repository;
 
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
+import com.zorroa.archivist.domain.IngestPipelineBuilder;
 
 @Repository
 public class IngestPipelineDaoImpl extends AbstractElasticDao implements IngestPipelineDao {

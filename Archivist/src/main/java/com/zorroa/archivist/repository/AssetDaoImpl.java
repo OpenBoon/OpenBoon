@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -17,7 +16,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Asset;
 import com.zorroa.archivist.domain.AssetBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
 
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
