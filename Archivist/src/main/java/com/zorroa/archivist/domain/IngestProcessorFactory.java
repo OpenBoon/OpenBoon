@@ -3,10 +3,15 @@ package com.zorroa.archivist.domain;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.ingest.IngestProcessor;
 
 public class IngestProcessorFactory {
+
+    private static final Logger logger = LoggerFactory.getLogger(InvocationTargetException.class);
 
     private final ClassLoader classLoader = IngestProcessorFactory.class.getClassLoader();
 
@@ -23,7 +28,7 @@ public class IngestProcessorFactory {
                 processor = (IngestProcessor) pclass.getConstructor().newInstance();
                 processor.setArgs(args);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-
+                logger.warn("Failed to initialize ingest processor {} with args {}", klass, args);
             }
         }
     }

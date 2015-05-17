@@ -7,6 +7,7 @@ import org.elasticsearch.common.collect.Maps;
 public class AssetBuilder {
 
     public Map<String, Object> document = Maps.newHashMap();
+    private boolean async = false;
 
     public AssetBuilder() {
         // TODO Auto-generated constructor stub
@@ -28,6 +29,14 @@ public class AssetBuilder {
             document.put(namespace, map);
         }
         map.put(key,  value);
+    }
+
+    public boolean isAsync() {
+        return async;
+    }
+
+    public void setAsync(boolean async) {
+        this.async = async;
     }
 
 }

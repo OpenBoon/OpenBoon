@@ -22,6 +22,7 @@ import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.repository.AssetDaoImpl;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 
 /**
@@ -39,6 +40,9 @@ public class IngestServiceImpl implements IngestService {
 
     @Autowired
     IngestPipelineDao ingestPipelineDao;
+
+    @Autowired
+    AssetDaoImpl assetDao;
 
     @Autowired
     @Qualifier("ingestTaskExecutor")
@@ -125,10 +129,21 @@ public class IngestServiceImpl implements IngestService {
             logger.info("Ingesting: {}", path);
 
             File file = path.toFile();
-            final AssetBuilder assetBuilder = new AssetBuilder();
+            final AssetBuilder asset = new AssetBuilder();
+            asset.setAsync(true);
+
+            asset.put("ingest", "pipeline-id", pipeline.getId());
+            asset.put("ingest", "pipeline-name", pipeline.getName());
+            asset.put("ingest", "time", System.currentTimeMillis());
+
+            asset.put("source", "filename", path.getFileName().toString());
+            asset.put("source", "directory", path.getParent().toString());
+
             for (IngestProcessorFactory factory: pipeline.getProcessors()) {
-                factory.get().process(assetBuilder, file);
+                factory.get().process(asset, file);
             }
+
+            assetDao.create(asset);
         }
     }
 }

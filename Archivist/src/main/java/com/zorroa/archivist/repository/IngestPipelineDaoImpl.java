@@ -46,6 +46,7 @@ public class IngestPipelineDaoImpl extends AbstractElasticDao implements IngestP
     @Override
     public List<IngestPipeline> getAll() {
         return elastic.query(client.prepareSearch(alias)
+                .setTypes(getType())
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), MAPPER);
