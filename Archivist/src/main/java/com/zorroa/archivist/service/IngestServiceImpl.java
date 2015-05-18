@@ -92,7 +92,7 @@ public class IngestServiceImpl implements IngestService {
         public void run() {
 
             logger.info("Starting ingest worker pipeline={},  {} -> {}",
-                    new Object[] { pipeline.getName(), builder.getPath(), builder.getFileTypes() });
+                    new Object[] { pipeline.getId(), builder.getPath(), builder.getFileTypes() });
 
             try {
                 Files.list(new File(builder.getPath()).toPath())
@@ -134,8 +134,7 @@ public class IngestServiceImpl implements IngestService {
             final AssetBuilder asset = new AssetBuilder();
             asset.setAsync(true);
 
-            asset.put("ingest", "pipeline-id", pipeline.getId());
-            asset.put("ingest", "pipeline-name", pipeline.getName());
+            asset.put("ingest", "pipeline", pipeline.getId());
             asset.put("ingest", "time", System.currentTimeMillis());
 
             asset.put("source", "filename", path.getFileName().toString());

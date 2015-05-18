@@ -7,7 +7,6 @@ public class IngestPipeline {
     private String id;
     private long version;
 
-    private String name;
     private List<IngestProcessorFactory> processors;
 
     public IngestPipeline() { }
@@ -26,14 +25,6 @@ public class IngestPipeline {
 
     public void setVersion(long version) {
         this.version = version;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<IngestProcessorFactory> getProcessors() {
