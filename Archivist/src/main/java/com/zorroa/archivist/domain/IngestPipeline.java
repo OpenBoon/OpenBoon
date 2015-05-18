@@ -5,8 +5,8 @@ import java.util.List;
 public class IngestPipeline {
 
     private String id;
+    private String name;
     private long version;
-
     private List<IngestProcessorFactory> processors;
 
     public IngestPipeline() { }
@@ -33,5 +33,13 @@ public class IngestPipeline {
 
     public void setProcessors(List<IngestProcessorFactory> processors) {
         this.processors = processors;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

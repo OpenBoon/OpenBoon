@@ -1,5 +1,7 @@
 package com.zorroa.archivist.service;
 
+import java.util.List;
+
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
@@ -11,4 +13,6 @@ public interface IngestService {
     IngestPipeline getIngestPipeline(String id);
 
     void ingest(IngestPipeline pipeline, IngestBuilder builder);
+
+    List<IngestPipeline> getIngestPipelines();
 }

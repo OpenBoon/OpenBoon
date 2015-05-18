@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -58,6 +59,11 @@ public class IngestServiceImpl implements IngestService {
     @Override
     public IngestPipeline getIngestPipeline(String id) {
         return ingestPipelineDao.get(id);
+    }
+
+    @Override
+    public List<IngestPipeline> getIngestPipelines() {
+        return ingestPipelineDao.getAll();
     }
 
     @Override

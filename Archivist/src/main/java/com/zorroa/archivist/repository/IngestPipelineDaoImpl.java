@@ -31,11 +31,12 @@ public class IngestPipelineDaoImpl extends AbstractElasticDao implements IngestP
 
     @Override
     public String create(IngestPipelineBuilder builder) {
-          IndexResponse response = client.prepareIndex(alias, getType(), builder.getName())
-                  .setSource(Json.serialize(builder))
-                  .get();
-          refreshIndex();
-          return response.getId();
+        String json = new String(Json.serialize(builder));
+        IndexResponse response = client.prepareIndex(alias, getType())
+                .setSource(json)
+                .get();
+        refreshIndex();
+        return response.getId();
     }
 
     @Override
