@@ -12,12 +12,15 @@ import javax.annotation.PreDestroy;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
+import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.io.ByteStreams;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.indices.IndexAlreadyExistsException;
+import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +67,7 @@ public class ArchivistConfiguration {
 
         Node node = nodeBuilder()
                 .data(true)
+                .local(true)
                 .settings(settings)
                 .node();
 
@@ -143,15 +147,11 @@ public class ArchivistConfiguration {
             .indices()
             .prepareCreate(indexName)
             .setSource(mappingSource)
+            .addAlias(new Alias(alias))
             .execute(new ActionListener<CreateIndexResponse>() {
                 @Override
                 public void onResponse(CreateIndexResponse response) {
-                    client.admin()
-                    .indices()
-                    .prepareAliases()
-                    .addAlias(alias, indexName)
-                    .execute()
-                    .actionGet();
+                    //
                 }
 
                 @Override
@@ -160,6 +160,7 @@ public class ArchivistConfiguration {
                         return;
                     }
                     logger.warn("ElasticSearch init warning on {}", indexName, e);
+                    throw new RuntimeException("Faled to setup elastic search: "+ e, e);
                 }
             });
     }
