@@ -56,6 +56,11 @@ public class IngestServiceImpl implements IngestService {
     }
 
     @Override
+    public IngestPipeline getIngestPipeline(String id) {
+        return ingestPipelineDao.get(id);
+    }
+
+    @Override
     public void ingest(IngestPipeline pipeline, IngestBuilder builder) {
         /**
          * Initialize all the processors

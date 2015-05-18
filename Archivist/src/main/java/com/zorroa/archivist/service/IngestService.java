@@ -8,8 +8,7 @@ public interface IngestService {
 
     IngestPipeline createIngestPipeline(IngestPipelineBuilder builder);
 
+    IngestPipeline getIngestPipeline(String id);
+
     void ingest(IngestPipeline pipeline, IngestBuilder builder);
-
-
-
 }

@@ -31,7 +31,7 @@ public class IngestPipelineDaoImpl extends AbstractElasticDao implements IngestP
 
     @Override
     public String create(IngestPipelineBuilder builder) {
-          IndexResponse response = client.prepareIndex(alias, getType())
+          IndexResponse response = client.prepareIndex(alias, getType(), builder.getName())
                   .setSource(Json.serialize(builder))
                   .get();
           refreshIndex();
