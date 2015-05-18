@@ -5,6 +5,10 @@
 server:
     port: 8066
 
+security:
+    basic:
+        enabled: false
+
 #
 # Archivist Settings
 #
