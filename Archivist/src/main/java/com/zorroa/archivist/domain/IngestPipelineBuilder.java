@@ -7,9 +7,7 @@ public class IngestPipelineBuilder {
     private List<IngestProcessorFactory> processors;
     private String name;
 
-    public IngestPipelineBuilder() {
-
-    }
+    public IngestPipelineBuilder() { }
 
     public String getName() {
         return name;
@@ -20,7 +18,6 @@ public class IngestPipelineBuilder {
     }
 
     public void addToProcessors(IngestProcessorFactory processor) {
-
         processors.add(processor);
     }
 
