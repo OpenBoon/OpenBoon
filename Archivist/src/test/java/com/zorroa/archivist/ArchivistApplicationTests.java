@@ -1,5 +1,8 @@
 package com.zorroa.archivist;
 
+import java.io.File;
+import java.util.Set;
+
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.indices.IndexMissingException;
@@ -27,16 +30,24 @@ public abstract class ArchivistApplicationTests {
     @Value("${archivist.index.alias}")
     protected String alias;
 
+    protected Set<String> testImages;
+
+    private static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
+
     public ArchivistApplicationTests() {
         logger.info("Setting unit test");
         ArchivistConfiguration.unittest = true;
     }
 
     public String getStaticImagePath() {
-        FileSystemResource resource = new FileSystemResource("src/test/resources/static/images");
+        FileSystemResource resource = new FileSystemResource(TEST_IMAGE_PATH);
         String path = resource.getFile().getAbsolutePath();
         logger.info("test image path: {}", path);
         return path;
+    }
+
+    public File getTestImage(String name) {
+        return new File(getStaticImagePath() + "/" + name);
     }
 
     public void refreshIndex() {

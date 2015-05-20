@@ -30,7 +30,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         String id = ingestPipelineDao.create(request);
         IngestPipeline pipeline = ingestPipelineDao.get(id);
 
-        assertEquals(request.getName(), pipeline.getId());
+        assertEquals(request.getName(), pipeline.getName());
     }
 
     @Test

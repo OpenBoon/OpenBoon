@@ -15,5 +15,8 @@ security:
 archivist:
     index:
         alias: "archivist"
-
+    proxies:
+        path: "proxies"
+        format: "png"
+        scales: [ 0.25 ]
 
