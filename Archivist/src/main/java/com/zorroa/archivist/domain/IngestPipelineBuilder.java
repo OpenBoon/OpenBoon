@@ -2,6 +2,8 @@ package com.zorroa.archivist.domain;
 
 import java.util.List;
 
+import org.elasticsearch.common.collect.Lists;
+
 public class IngestPipelineBuilder {
 
     private List<IngestProcessorFactory> processors;
@@ -18,6 +20,9 @@ public class IngestPipelineBuilder {
     }
 
     public void addToProcessors(IngestProcessorFactory processor) {
+        if (processors == null) {
+            processors = Lists.newArrayList();
+        }
         processors.add(processor);
     }
 

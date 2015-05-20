@@ -21,16 +21,20 @@ public class IngestProcessorFactory {
 
     public IngestProcessorFactory() { }
 
-    public void init() {
+    public IngestProcessor init() {
         if (processor == null) {
             try {
                 Class<?> pclass = classLoader.loadClass(klass);
                 processor = (IngestProcessor) pclass.getConstructor().newInstance();
                 processor.setArgs(args);
+                return processor;
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 logger.warn("Failed to initialize ingest processor {} with args {}", klass, args);
+                return null;
             }
         }
+
+        return processor;
     }
 
     public IngestProcessorFactory(String klass) {
@@ -59,7 +63,11 @@ public class IngestProcessorFactory {
         this.args = args;
     }
 
-    public IngestProcessor get() {
+    public IngestProcessor getProcessor() {
         return processor;
+    }
+
+    public void setProcessor(IngestProcessor processor) {
+        this.processor = processor;
     }
 }
