@@ -9,8 +9,12 @@ import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +24,7 @@ import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.ingest.IngestProcessor;
 import com.zorroa.archivist.repository.AssetDaoImpl;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 
@@ -32,9 +37,11 @@ import com.zorroa.archivist.repository.IngestPipelineDao;
  *
  */
 @Component
-public class IngestServiceImpl implements IngestService {
+public class IngestServiceImpl implements IngestService, ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
+
+    ApplicationContext applicationContext;
 
     @Autowired
     IngestPipelineDao ingestPipelineDao;
@@ -72,7 +79,9 @@ public class IngestServiceImpl implements IngestService {
          * Initialize all the processors
          */
         for (IngestProcessorFactory factory: pipeline.getProcessors()) {
-            factory.init();
+            IngestProcessor processor = factory.init();
+            AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+            autowire.autowireBean(processor);
         }
 
         ingestExecutor.execute(new IngestWorker(pipeline, builder));
@@ -147,11 +156,17 @@ public class IngestServiceImpl implements IngestService {
             asset.put("source", "directory", path.getParent().toString());
 
             for (IngestProcessorFactory factory: pipeline.getProcessors()) {
-                factory.get().process(asset, file);
+                factory.getProcessor().process(asset, file);
             }
 
             assetDao.create(asset);
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext)
+            throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
 
