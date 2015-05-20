@@ -9,3 +9,6 @@ target
 
 # Elastic DB files
 data
+
+# Proxy folder for unit tests
+proxies
