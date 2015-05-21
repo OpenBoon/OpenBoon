@@ -47,17 +47,18 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public String create(AssetBuilder builder) {
-          IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
-                  .setSource(Json.serialize(builder.getDocument()));
-          if (builder.isAsync()) {
-              idxBuilder.execute();
-              return null;
-          }
-          else {
-              String id = idxBuilder.get().getId();
-              refreshIndex();
-              return id;
-          }
+        logger.info("building asset");
+        IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
+                .setSource(Json.serialize(builder.getDocument()));
+        if (builder.isAsync()) {
+            idxBuilder.execute();
+            return null;
+        }
+        else {
+            String id = idxBuilder.get().getId();
+            refreshIndex();
+            return id;
+        }
     }
 
     @Override
