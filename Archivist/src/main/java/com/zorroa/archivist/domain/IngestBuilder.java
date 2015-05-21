@@ -9,9 +9,7 @@ public class IngestBuilder {
     private String path;
     private Set<String> fileTypes;
 
-    public IngestBuilder() {
-
-    }
+    public IngestBuilder() { }
 
     public IngestBuilder(String path) {
         this.path = path;
@@ -24,6 +22,9 @@ public class IngestBuilder {
     }
 
     public Set<String> getFileTypes() {
+        if (fileTypes == null) {
+            return FileUtils.getSupportedImageFormats();
+        }
         return fileTypes;
     }
 
