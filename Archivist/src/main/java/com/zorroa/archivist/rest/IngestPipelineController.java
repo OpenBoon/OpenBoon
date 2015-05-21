@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.zorroa.archivist.Json;
+import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.service.IngestService;
@@ -41,5 +42,11 @@ public class IngestPipelineController {
     @RequestMapping(value="/pipeline", method=RequestMethod.GET)
     public List<IngestPipeline> getAll() {
         return ingestService.getIngestPipelines();
+    }
+
+    @RequestMapping(value="/pipeline/{id}/_ingest", method=RequestMethod.POST)
+    public void ingest(@RequestBody IngestBuilder builder, @PathVariable String id) {
+        IngestPipeline pipeline = ingestService.getIngestPipeline(id);
+        ingestService.ingest(pipeline, builder);
     }
 }
