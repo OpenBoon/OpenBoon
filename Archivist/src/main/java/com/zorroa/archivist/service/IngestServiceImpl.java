@@ -2,6 +2,7 @@ package com.zorroa.archivist.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -110,7 +111,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
                     new Object[] { pipeline.getId(), builder.getPath(), builder.getFileTypes() });
 
             try {
-                Files.list(new File(builder.getPath()).toPath())
+                Files.walk(new File(builder.getPath()).toPath(), FileVisitOption.FOLLOW_LINKS)
                     .filter(p -> builder.getFileTypes().contains(FileUtils.extension(p.getFileName())))
                     .forEach(new Consumer<Path>() {
                         @Override
@@ -118,12 +119,13 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
                             logger.info("found: {}", t);
                             processorExecutor.execute(new AssetWorker(pipeline, builder, t));
                         }
-
                     });
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.warn("Ingest worker failed:", e);
             }
+
+            logger.info("Stopping ingest worker pipeline={},  {} -> {}",
+                    new Object[] { pipeline.getId(), builder.getPath(), builder.getFileTypes() });
         }
 
     }
