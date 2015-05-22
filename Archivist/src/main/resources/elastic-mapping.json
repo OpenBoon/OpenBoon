@@ -9,7 +9,20 @@
         }
     }
   },
+
   "mappings" : {
+    "proxy-config": {
+      "dynamic" : true,
+      "properties": {
+        "outputs": {
+          "properties": {
+            "size": { "type": "integer", "index": "not_analyzed"},
+            "bpp": { "type": "integer", "index": "not_analyzed"},
+            "format": { "type": "string", "index": "not_analyzed"}
+          }
+        }
+      }
+    },
     "pipeline": {
       "dynamic" : false,
       "properties": {
