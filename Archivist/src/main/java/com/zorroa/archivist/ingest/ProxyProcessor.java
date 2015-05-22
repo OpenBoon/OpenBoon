@@ -9,19 +9,14 @@ import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.IngestProxyException;
 import com.zorroa.archivist.domain.AssetBuilder;
 import com.zorroa.archivist.domain.Proxy;
-import com.zorroa.archivist.service.ProxyService;
 
 public class ProxyProcessor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
-
-    @Autowired
-    ProxyService proxyService;
 
     public ProxyProcessor() { }
 

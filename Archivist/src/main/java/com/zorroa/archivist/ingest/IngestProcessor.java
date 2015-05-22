@@ -3,9 +3,15 @@ package com.zorroa.archivist.ingest;
 import java.io.File;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.zorroa.archivist.domain.AssetBuilder;
+import com.zorroa.archivist.service.ProxyService;
 
 public abstract class IngestProcessor {
+
+    @Autowired
+    protected ProxyService proxyService;
 
     public abstract void process(AssetBuilder builder, File stream);
 
