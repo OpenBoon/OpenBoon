@@ -19,6 +19,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
+import com.zorroa.archivist.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.ingest.ImageMetadataProcessor;
+import com.zorroa.archivist.ingest.ProxyProcessor;
+import com.zorroa.archivist.service.IngestService;
 
 @Component
 public class ArchivistRepositorySetup {
@@ -26,10 +31,13 @@ public class ArchivistRepositorySetup {
     private static final Logger logger = LoggerFactory.getLogger(ArchivistRepositorySetup.class);
 
     @Autowired
-    private ArchivistConfiguration config;
+    ArchivistConfiguration config;
 
     @Autowired
-    private Client client;
+    IngestService ingestService;
+
+    @Autowired
+    Client client;
 
     @Value("${archivist.index.alias}")
     private String alias;
@@ -85,7 +93,8 @@ public class ArchivistRepositorySetup {
             /*
              * Add the default configuration docs.
              */
-            createDefaultProxyConfiguration(client);
+            createDefaultProxyConfiguration();
+            createDefaultIngestPipeline();
 
         } catch (IndexAlreadyExistsException ignore) {
             logger.info("Index {}/{} was already setup", indexName, alias);
@@ -95,7 +104,7 @@ public class ArchivistRepositorySetup {
         }
     }
 
-    private void createDefaultProxyConfiguration(Client client) throws ElasticsearchException, Exception {
+    private void createDefaultProxyConfiguration() throws ElasticsearchException, Exception {
         ClassPathResource resource = new ClassPathResource("proxy-config.json");
         Preconditions.checkNotNull(resource, "Unable to find proxy-config.json");
         byte[] source = ByteStreams.toByteArray(resource.getInputStream());
@@ -104,5 +113,14 @@ public class ArchivistRepositorySetup {
             .setRefresh(true)
             .setSource(source)
             .get();
+    }
+
+    private void createDefaultIngestPipeline() throws ElasticsearchException, Exception {
+        IngestPipelineBuilder builder = new IngestPipelineBuilder();
+        builder.setId("standard");
+        builder.addToProcessors(new IngestProcessorFactory(ImageMetadataProcessor.class));
+        builder.addToProcessors(new IngestProcessorFactory(ProxyProcessor.class));
+
+        ingestService.createIngestPipeline(builder);
     }
 }
