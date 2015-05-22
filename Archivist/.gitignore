@@ -12,3 +12,9 @@ data
 
 # Proxy folder for unit tests
 proxies
+
+.DS_store
+
+# Sublime project
+archivist.sublime-project
+archivist.sublime-workspace
