@@ -7,17 +7,9 @@ import org.elasticsearch.common.collect.Lists;
 public class IngestPipelineBuilder {
 
     private List<IngestProcessorFactory> processors;
-    private String name;
+    private String id;
 
     public IngestPipelineBuilder() { }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void addToProcessors(IngestProcessorFactory processor) {
         if (processors == null) {
@@ -32,5 +24,13 @@ public class IngestPipelineBuilder {
 
     public void setProcessors(List<IngestProcessorFactory> processors) {
         this.processors = processors;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

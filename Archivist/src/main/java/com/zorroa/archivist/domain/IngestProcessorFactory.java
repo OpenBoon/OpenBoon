@@ -21,6 +21,11 @@ public class IngestProcessorFactory {
 
     public IngestProcessorFactory() { }
 
+    public IngestProcessorFactory(Class<?> klass) {
+        this.klass = klass.getCanonicalName();
+        this.args = Maps.newHashMap();
+    }
+
     public IngestProcessor init() {
         if (processor == null) {
             try {

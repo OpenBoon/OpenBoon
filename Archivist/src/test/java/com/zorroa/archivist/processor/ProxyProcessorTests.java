@@ -32,7 +32,7 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
         args.put("proxy-scales", Lists.newArrayList(0.25));
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
-        builder.setName("default");
+        builder.setId("default");
         builder.addToProcessors(
                 new IngestProcessorFactory("com.zorroa.archivist.ingest.ProxyProcessor", args));
         ingestPipelineDao.create(builder);

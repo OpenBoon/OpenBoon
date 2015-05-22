@@ -21,7 +21,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
     public void getAndCreate() {
 
         IngestPipelineBuilder request = new IngestPipelineBuilder();
-        request.setName("default");
+        request.setId("default");
 
         IngestProcessorFactory processor = new IngestProcessorFactory();
         processor.setKlass("com.zorroa.archivist.ingest.ExifProcessor");
@@ -30,7 +30,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         String id = ingestPipelineDao.create(request);
         IngestPipeline pipeline = ingestPipelineDao.get(id);
 
-        assertEquals(request.getName(), pipeline.getName());
+        assertEquals(request.getId(), pipeline.getId());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 
         for (int i=0; i<=10; i++) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
-            builder.setName("default_" + i);
+            builder.setId("default_" + i);
             builder.addToProcessors(
                     new IngestProcessorFactory("foo.bar.Bing",
                             Maps.newHashMap()));

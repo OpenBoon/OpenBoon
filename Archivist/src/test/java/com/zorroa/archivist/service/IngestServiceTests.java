@@ -22,10 +22,19 @@ public class IngestServiceTests extends ArchivistApplicationTests {
     AssetDao assetDao;
 
     @Test
+    public void testStandardIngest() throws InterruptedException {
+
+         IngestPipeline pipeline = ingestService.getIngestPipeline("standard");
+         ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
+
+
+    }
+
+    @Test
     public void testIngest() throws InterruptedException {
 
          IngestPipelineBuilder builder = new IngestPipelineBuilder();
-         builder.setName("default");
+         builder.setId("default");
          builder.addToProcessors(new IngestProcessorFactory("com.zorroa.archivist.ingest.ImageMetadataProcessor"));
 
          IngestPipeline pipeline = ingestService.createIngestPipeline(builder);

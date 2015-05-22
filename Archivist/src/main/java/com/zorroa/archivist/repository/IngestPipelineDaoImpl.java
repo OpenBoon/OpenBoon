@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.common.Preconditions;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Repository;
 
@@ -31,8 +32,9 @@ public class IngestPipelineDaoImpl extends AbstractElasticDao implements IngestP
 
     @Override
     public String create(IngestPipelineBuilder builder) {
+        Preconditions.checkNotNull(builder.getId(), "The IngestPipeline ID cannot be null");
         String json = new String(Json.serialize(builder));
-        IndexResponse response = client.prepareIndex(alias, getType())
+        IndexResponse response = client.prepareIndex(alias, getType(), builder.getId())
                 .setSource(json)
                 .get();
         refreshIndex();
