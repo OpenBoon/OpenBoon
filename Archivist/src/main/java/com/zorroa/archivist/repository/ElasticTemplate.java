@@ -2,10 +2,12 @@ package com.zorroa.archivist.repository;
 
 import java.util.List;
 
+import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -29,7 +31,12 @@ public class ElasticTemplate {
     }
 
     public <T> T queryForObject(String id, JsonRowMapper<T> mapper) {
-        final GetResponse r = client.prepareGet(index, type, id).get();
+        final GetRequestBuilder builder = client.prepareGet(index, type, id).setFetchSource(true);
+        final GetResponse r = builder.get();
+        if (!r.isExists()) {
+            throw new EmptyResultDataAccessException(
+                    "Expected 1 '" + type + "' of id '" + id + "'", 0);
+        }
         return mapper.mapRow(r.getId(), r.getVersion(), r.getSourceAsBytes());
     }
 
@@ -40,6 +47,20 @@ public class ElasticTemplate {
         }
         SearchHit hit = r.getHits().getAt(0);
         return mapper.mapRow(hit.getId(), hit.getVersion(), hit.source());
+    }
+
+    public <T> List<T> query(JsonRowMapper<T> mapper) {
+        final SearchResponse r = new SearchRequestBuilder(client)
+            .setQuery(QueryBuilders.matchAllQuery())
+            .setTypes(type)
+            .setIndices(index)
+            .get();
+
+        List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
+        for (SearchHit hit: r.getHits()) {
+            result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+        }
+        return result;
     }
 
     public <T> List<T> query(SearchRequestBuilder builder, JsonRowMapper<T> mapper) {
