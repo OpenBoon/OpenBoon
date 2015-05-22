@@ -4,9 +4,6 @@ import java.io.File;
 import java.util.Set;
 
 import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.indices.IndexMissingException;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,15 +49,5 @@ public abstract class ArchivistApplicationTests {
 
     public void refreshIndex() {
         client.admin().indices().prepareRefresh(alias).get();
-    }
-
-    @Before
-    public void clearIndex() {
-        try {
-            client.prepareDeleteByQuery(alias).setQuery(QueryBuilders.matchAllQuery()).get();
-            refreshIndex();
-        } catch (IndexMissingException ignore) {
-            // will fail on the first try
-        }
     }
 }
