@@ -11,9 +11,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.alias.Alias;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.io.ByteStreams;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -30,16 +30,14 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import com.google.common.base.Preconditions;
+
 @Configuration
 public class ArchivistConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ArchivistConfiguration.class);
 
-    @Value("${archivist.index.alias}")
-    private String alias;
-
     private String nodeName;
-
     private String hostName;
 
     public static boolean unittest = false;
@@ -69,15 +67,7 @@ public class ArchivistConfiguration {
                 .settings(settings)
                 .node();
 
-        Client client = node.client();
-        setupElasticSearchMapping(client);
-
-        return client;
-    }
-
-    @PreDestroy
-    void shutdown() throws ElasticsearchException, IOException {
-        elastic().close();
+        return node.client();
     }
 
     public String getName() {
@@ -120,46 +110,5 @@ public class ArchivistConfiguration {
             executor.setThreadNamePrefix("processor");
             return executor;
         }
-    }
-
-    /**
-     * Automatically sets up elastic search if its not setup already.
-     *
-     * @param client
-     * @throws IOException
-     */
-    private void setupElasticSearchMapping(Client client) throws IOException {
-
-        ClassPathResource resource = new ClassPathResource("elastic-mapping.json");
-        byte[] mappingSource = ByteStreams.toByteArray(resource.getInputStream());
-
-        /*
-         * Eventually we'll have to keep track of this number somewhere for
-         * re-mapping purposes, but for now we're hard coding to 1
-         */
-        String indexName = String.format("%s_%02d", alias, 1);
-        logger.info("Setting up ElasticSearch index: {} with alias: {}", indexName, alias);
-
-
-        client.admin()
-            .indices()
-            .prepareCreate(indexName)
-            .setSource(mappingSource)
-            .addAlias(new Alias(alias))
-            .execute(new ActionListener<CreateIndexResponse>() {
-                @Override
-                public void onResponse(CreateIndexResponse response) {
-                    //
-                }
-
-                @Override
-                public void onFailure(Throwable e) {
-                    if (e instanceof IndexAlreadyExistsException) {
-                        return;
-                    }
-                    logger.warn("ElasticSearch init warning on {}", indexName, e);
-                    throw new RuntimeException("Faled to setup elastic search: "+ e, e);
-                }
-            });
     }
 }
