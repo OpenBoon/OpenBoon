@@ -1,26 +1,19 @@
 package com.zorroa.archivist.service;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.domain.ProxyOutput;
 
 public interface ProxyService {
 
     /**
-     * Create a proxy with the appropriate scale and return a Proxy object.
+     * Make a proxy image for the supplied original file using the given proxy output.
      *
      * @param original
-     * @param scale
+     * @param output
      * @return
      */
-    Proxy makeProxy(File original, double scale);
-
-    /**
-     * Create a proxy with the appropriate size and return a Proxy object.
-     *
-     * @param original
-     * @param scale
-     * @return
-     */
-    Proxy makeProxy(File original, int width, int height);
+    Proxy makeProxy(File original, ProxyOutput output) throws IOException;
 }

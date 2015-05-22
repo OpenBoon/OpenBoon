@@ -1,6 +1,7 @@
 package com.zorroa.archivist.ingest;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -10,9 +11,9 @@ import org.elasticsearch.common.primitives.Ints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zorroa.archivist.IngestProxyException;
 import com.zorroa.archivist.domain.AssetBuilder;
 import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.domain.ProxyOutput;
 
 public class ProxyProcessor extends IngestProcessor {
 
@@ -22,38 +23,12 @@ public class ProxyProcessor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder builder, File file) {
-
         List<Proxy> result = Lists.newArrayList();
-        Object scaleArgs = getArgs().get("proxy-scales");
-
-        if (scaleArgs != null) {
+        for (ProxyOutput output: proxyConfig.getOutputs()) {
             try {
-                List<Double> scales = (List<Double>) scaleArgs;
-                for (double scale: scales) {
-                    try {
-                        result.add(proxyService.makeProxy(file, scale));
-                    } catch (IngestProxyException e) {
-                        logger.error("Proxy creation failed: " + e, e);
-                    }
-                }
-            } catch (ClassCastException e) {
-                logger.error("Invalid argument format for 'scale', must be List<Double>");
-            }
-        }
-
-        Object sizeArgs = getArgs().get("proxy-sizes");
-        if (sizeArgs != null) {
-            try {
-                List<List<Integer>> sizes = (List<List<Integer>>) sizeArgs;
-                for (List<Integer> size: sizes) {
-                    try {
-                        result.add(proxyService.makeProxy(file, size.get(0), size.get(1)));
-                    } catch (IngestProxyException e) {
-                        logger.error("Proxy creation failed: " + e, e);
-                    }
-                }
-            } catch (ClassCastException e) {
-                logger.error("Invalid argument format for 'size', must be List<List<Integer>>");
+                result.add(proxyService.makeProxy(file, output));
+            } catch (IOException e) {
+                logger.warn("Failed to create proxy {}, ", output, e);
             }
         }
 

@@ -8,6 +8,7 @@ public class IngestBuilder {
 
     private String path;
     private Set<String> fileTypes;
+    private String proxyConfig = "standard";
 
     public IngestBuilder() { }
 
@@ -40,5 +41,13 @@ public class IngestBuilder {
     public IngestBuilder setPath(String path) {
         this.path = path;
         return this;
+    }
+
+    public String getProxyConfig() {
+        return proxyConfig;
+    }
+
+    public void setProxyConfig(String proxyConfig) {
+        this.proxyConfig = proxyConfig;
     }
 }

@@ -5,6 +5,7 @@ public class Proxy {
     private String path;
     private int width;
     private int height;
+    private String format;
 
     public Proxy() { }
 
@@ -30,5 +31,13 @@ public class Proxy {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 }

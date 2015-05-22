@@ -16,7 +16,7 @@ archivist:
     index:
         alias: "archivist"
     proxies:
-        path: "proxies"
+        basePath: "proxies"
         format: "png"
-        scales: [ 0.25 ]
+
 

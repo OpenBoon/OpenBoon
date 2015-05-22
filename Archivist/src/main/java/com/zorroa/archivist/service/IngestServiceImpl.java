@@ -25,9 +25,11 @@ import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.ingest.IngestProcessor;
-import com.zorroa.archivist.repository.AssetDaoImpl;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
+import com.zorroa.archivist.repository.ProxyConfigDao;
 
 /**
  *
@@ -48,7 +50,10 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     IngestPipelineDao ingestPipelineDao;
 
     @Autowired
-    AssetDaoImpl assetDao;
+    AssetDao assetDao;
+
+    @Autowired
+    ProxyConfigDao proxyConfigDao;
 
     @Autowired
     @Qualifier("ingestTaskExecutor")
@@ -76,6 +81,9 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public void ingest(IngestPipeline pipeline, IngestBuilder builder) {
+
+        ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());
+
         /**
          * Initialize all the processors
          */
@@ -83,6 +91,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
             IngestProcessor processor = factory.init();
             AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
             autowire.autowireBean(processor);
+            processor.setProxyConfig(proxyConfig);
         }
 
         ingestExecutor.execute(new IngestWorker(pipeline, builder));

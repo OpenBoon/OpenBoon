@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -14,27 +13,23 @@ import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.filters.Canvas;
-import net.coobird.thumbnailator.geometry.Positions;
+import net.coobird.thumbnailator.resizers.configurations.Rendering;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.zorroa.archivist.IngestProxyException;
 import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.domain.ProxyOutput;
 
 @Service
 public class ProxyServiceImpl implements ProxyService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyServiceImpl.class);
 
-    @Value("${archivist.proxies.path}")
+    @Value("${archivist.proxies.basePath}")
     private String basePath;
-
-    @Value("${archivist.proxies.format}")
-    private String format;
 
     private File proxyPath;
 
@@ -44,7 +39,7 @@ public class ProxyServiceImpl implements ProxyService {
         proxyPath.mkdirs();
     }
 
-    public File makeProxyPath() {
+    public File makeProxyPath(String format) {
         String id = UUID.randomUUID().toString();
 
         StringBuilder sb = new StringBuilder(512);
@@ -64,41 +59,23 @@ public class ProxyServiceImpl implements ProxyService {
     }
 
     @Override
-    public Proxy makeProxy(File original, double scale) {
-        File outFile = makeProxyPath();
-        try {
-            Thumbnails.of(original).scale(scale).toFile(outFile);
-            Dimension dim = getImageDimension(outFile);
+    public Proxy makeProxy(File original, ProxyOutput output) throws IOException {
+        File outFile = makeProxyPath(output.getFormat());
 
-            Proxy result = new Proxy();
-            result.setPath(outFile.getAbsolutePath());
-            result.setWidth(dim.width);
-            result.setHeight(dim.height);
-            return result;
+        Thumbnails.of(original)
+            .width(output.getSize())
+            .outputFormat(output.getFormat())
+            .keepAspectRatio(true)
+            .rendering(Rendering.QUALITY)
+            .toFile(outFile);
+        Dimension dim = getImageDimension(outFile);
 
-        } catch (IOException e) {
-            throw new IngestProxyException("Failed to write proxy image: " + e, e);
-        }
-    }
-
-    @Override
-    public Proxy makeProxy(File original, int width, int height) {
-        File outFile = makeProxyPath();
-        try {
-            Thumbnails.of(original)
-                .size(width, height)
-                .addFilter(new Canvas(width, height, Positions.CENTER, Color.BLACK))
-                .toFile(outFile);
-
-            Proxy result = new Proxy();
-            result.setPath(outFile.getAbsolutePath());
-            result.setWidth(width);
-            result.setHeight(height);
-            return result;
-
-        } catch (IOException e) {
-            throw new IngestProxyException("Failed to write proxy image: " + e, e);
-        }
+        Proxy result = new Proxy();
+        result.setPath(outFile.getAbsolutePath());
+        result.setWidth(dim.width);
+        result.setHeight(dim.height);
+        result.setFormat(output.getFormat());
+        return result;
     }
 
     public static Dimension getImageDimension(File imgFile) throws IOException {
