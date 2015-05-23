@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Preconditions;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
-import com.zorroa.archivist.ingest.ImageMetadataProcessor;
-import com.zorroa.archivist.ingest.ProxyProcessor;
+import com.zorroa.archivist.processors.AssetMetadataProcessor;
+import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.service.IngestService;
 
 @Component
@@ -118,7 +118,7 @@ public class ArchivistRepositorySetup {
     private void createDefaultIngestPipeline() throws ElasticsearchException, Exception {
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setId("standard");
-        builder.addToProcessors(new IngestProcessorFactory(ImageMetadataProcessor.class));
+        builder.addToProcessors(new IngestProcessorFactory(AssetMetadataProcessor.class));
         builder.addToProcessors(new IngestProcessorFactory(ProxyProcessor.class));
 
         ingestService.createIngestPipeline(builder);

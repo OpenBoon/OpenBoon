@@ -1,4 +1,4 @@
-package com.zorroa.archivist.ingest;
+package com.zorroa.archivist.processors;
 
 import java.io.File;
 import java.io.IOException;

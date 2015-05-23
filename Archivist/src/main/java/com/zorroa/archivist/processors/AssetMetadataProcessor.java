@@ -1,4 +1,4 @@
-package com.zorroa.archivist.ingest;
+package com.zorroa.archivist.processors;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +16,11 @@ import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.zorroa.archivist.domain.AssetBuilder;
 
 
-public class ImageMetadataProcessor extends IngestProcessor {
-    private static final Logger logger = LoggerFactory.getLogger(ImageMetadataProcessor.class);
+public class AssetMetadataProcessor extends IngestProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(AssetMetadataProcessor.class);
 
 
-    public ImageMetadataProcessor() {
+    public AssetMetadataProcessor() {
         // TODO Auto-generated constructor stub
     }
 

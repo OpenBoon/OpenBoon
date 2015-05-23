@@ -27,6 +27,14 @@ public class IngestServiceTests extends ArchivistApplicationTests {
          IngestPipeline pipeline = ingestService.getIngestPipeline("standard");
          ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
 
+         Thread.sleep(1000);
+         refreshIndex();
+
+
+         assertEquals(2, assetDao.getAll().size());
+         for (Asset asset: assetDao.getAll()) {
+             logger.info("{}", asset.getData());
+         }
 
     }
 

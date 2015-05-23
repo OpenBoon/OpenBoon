@@ -26,7 +26,7 @@ import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
 import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.ingest.IngestProcessor;
+import com.zorroa.archivist.processors.IngestProcessor;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.repository.ProxyConfigDao;

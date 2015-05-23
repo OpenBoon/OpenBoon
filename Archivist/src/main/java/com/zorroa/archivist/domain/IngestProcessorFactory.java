@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.ingest.IngestProcessor;
+import com.zorroa.archivist.processors.IngestProcessor;
 
 public class IngestProcessorFactory {
 
