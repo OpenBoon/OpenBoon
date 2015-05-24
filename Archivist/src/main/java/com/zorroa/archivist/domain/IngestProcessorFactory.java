@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.processors.IngestProcessor;
 
@@ -17,6 +18,8 @@ public class IngestProcessorFactory {
 
     private String klass;
     private Map<String, Object> args;
+
+    @JsonIgnore
     private IngestProcessor processor = null;
 
     public IngestProcessorFactory() { }
