@@ -26,7 +26,7 @@ public class ProxyProcessor extends IngestProcessor {
         List<Proxy> result = Lists.newArrayList();
         for (ProxyOutput output: proxyConfig.getOutputs()) {
             try {
-                result.add(proxyService.makeProxy(file, output));
+                result.add(imageService.makeProxy(file, output));
             } catch (IOException e) {
                 logger.warn("Failed to create proxy {}, ", output, e);
             }

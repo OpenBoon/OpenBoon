@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.domain.AssetBuilder;
 import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.service.ProxyService;
+import com.zorroa.archivist.service.ImageService;
 
 public abstract class IngestProcessor {
 
     @Autowired
-    protected ProxyService proxyService;
+    protected ImageService imageService;
 
     protected ProxyConfig proxyConfig;
 

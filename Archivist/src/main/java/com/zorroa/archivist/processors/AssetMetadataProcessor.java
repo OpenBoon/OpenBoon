@@ -20,7 +20,6 @@ public class AssetMetadataProcessor extends IngestProcessor {
     @Override
     public void process(AssetBuilder builder, File file) {
         try {
-
             Metadata metadata = ImageMetadataReader.readMetadata(file);
             ExifSubIFDDirectory d = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 

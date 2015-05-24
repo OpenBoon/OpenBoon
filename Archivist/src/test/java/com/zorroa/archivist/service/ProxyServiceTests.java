@@ -16,7 +16,7 @@ import com.zorroa.archivist.domain.ProxyOutput;
 public class ProxyServiceTests extends ArchivistApplicationTests {
 
     @Autowired
-    ProxyService proxyService;
+    ImageService proxyService;
 
     @Test
     public void testMakeProxy() throws IOException {

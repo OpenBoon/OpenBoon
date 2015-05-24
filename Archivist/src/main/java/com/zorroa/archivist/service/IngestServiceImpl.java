@@ -186,7 +186,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
                     processor.process(asset, file);
                 } catch (Exception e) {
                     logger.warn("Processor {} failed to run on asset {}",
-                            factory.getProcessor().getClass().getCanonicalName(), file);
+                            factory.getProcessor().getClass().getCanonicalName(), file, e);
                 }
             }
 

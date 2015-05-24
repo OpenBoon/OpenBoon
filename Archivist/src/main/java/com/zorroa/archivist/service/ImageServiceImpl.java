@@ -24,9 +24,9 @@ import com.zorroa.archivist.domain.Proxy;
 import com.zorroa.archivist.domain.ProxyOutput;
 
 @Service
-public class ProxyServiceImpl implements ProxyService {
+public class ImageServiceImpl implements ImageService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProxyServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     @Value("${archivist.proxies.basePath}")
     private String basePath;
@@ -68,7 +68,7 @@ public class ProxyServiceImpl implements ProxyService {
             .keepAspectRatio(true)
             .rendering(Rendering.QUALITY)
             .toFile(outFile);
-        Dimension dim = getImageDimension(outFile);
+        Dimension dim = getImageDimensions(outFile);
 
         Proxy result = new Proxy();
         result.setPath(outFile.getAbsolutePath());
@@ -78,7 +78,8 @@ public class ProxyServiceImpl implements ProxyService {
         return result;
     }
 
-    public static Dimension getImageDimension(File imgFile) throws IOException {
+    @Override
+    public Dimension getImageDimensions(File imgFile) throws IOException {
         int pos = imgFile.getName().lastIndexOf(".");
         if (pos == -1)
             throw new IOException("No extension for file: " + imgFile.getAbsolutePath());
