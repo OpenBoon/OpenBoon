@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.index.IndexRequest.OpType;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -11,6 +12,8 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Asset;
 import com.zorroa.archivist.domain.AssetBuilder;
@@ -18,8 +21,11 @@ import com.zorroa.archivist.domain.AssetBuilder;
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
+    private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
+
     @Override
     public String getType() {
+
         return "asset";
     }
 
@@ -42,8 +48,9 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public String create(AssetBuilder builder) {
-        logger.info("building asset");
         IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
+                .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
+                .setOpType(OpType.INDEX)
                 .setSource(Json.serialize(builder.getDocument()));
         if (builder.isAsync()) {
             idxBuilder.execute();
