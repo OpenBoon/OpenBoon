@@ -31,7 +31,7 @@ public abstract class ArchivistApplicationTests {
 
     protected Set<String> testImages;
 
-    private static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
+    public static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
 
     public ArchivistApplicationTests() {
         logger.info("Setting unit test");
