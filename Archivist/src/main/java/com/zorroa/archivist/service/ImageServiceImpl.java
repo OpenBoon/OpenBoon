@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.Proxy;
 import com.zorroa.archivist.domain.ProxyOutput;
 
@@ -33,10 +35,18 @@ public class ImageServiceImpl implements ImageService {
 
     private File proxyPath;
 
+    private ImmutableSet<String> supportedFormats;
+
     @PostConstruct
     public void init() {
         proxyPath = new File(basePath);
         proxyPath.mkdirs();
+
+        ImmutableSet.Builder<String> builder = ImmutableSet.<String>builder();
+        for (String name: ImageIO.getReaderFormatNames()) {
+            builder.add(name);
+        }
+        supportedFormats = builder.build();
     }
 
     public File makeProxyPath(String format) {
@@ -76,6 +86,11 @@ public class ImageServiceImpl implements ImageService {
         result.setHeight(dim.height);
         result.setFormat(output.getFormat());
         return result;
+    }
+
+    @Override
+    public Set<String> getSupportedFormats() {
+        return supportedFormats;
     }
 
     @Override

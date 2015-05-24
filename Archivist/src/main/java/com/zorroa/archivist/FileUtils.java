@@ -1,18 +1,12 @@
 package com.zorroa.archivist;
 
 import java.nio.file.Path;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
-import com.google.common.collect.ImmutableSet;
 
 public class FileUtils {
 
-    public static String extension(Path path) {
+    public static String extension(String path) {
         try {
-            String strPath = path.toString();
-                return strPath.substring(strPath.lastIndexOf('.')+1);
+            return path.substring(path.lastIndexOf('.')+1).toLowerCase();
         }
         catch (IndexOutOfBoundsException ignore) {
             //
@@ -20,12 +14,7 @@ public class FileUtils {
         return "";
     }
 
-    public static Set<String> getSupportedImageFormats() {
-        ImmutableSet.Builder<String> builder = ImmutableSet.<String>builder();
-        for (String name: ImageIO.getReaderFormatNames()) {
-            builder.add(name);
-        }
-        return builder.build();
+    public static String extension(Path path) {
+        return FileUtils.extension(path.toString());
     }
-
 }

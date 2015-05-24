@@ -134,7 +134,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
             try {
                 Files.walk(new File(builder.getPath()).toPath(), FileVisitOption.FOLLOW_LINKS)
-                    .filter(p -> builder.getFileTypes().contains(FileUtils.extension(p.getFileName())))
+                    .filter(p -> p.toFile().isFile())
+                    .filter(p -> builder.isSupportedFileType(FileUtils.extension(p)))
                     .forEach(new Consumer<Path>() {
                         @Override
                         public void accept(Path t) {
@@ -149,49 +150,54 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
             logger.info("Stopping ingest worker pipeline={},  {} -> {}",
                     new Object[] { pipeline.getId(), builder.getPath(), builder.getFileTypes() });
         }
-
     }
 
     private class AssetWorker implements Runnable {
 
         private final IngestPipeline pipeline;
         private final IngestBuilder builder;
-        private final Path path;
+        private final AssetBuilder asset;
 
         public AssetWorker(IngestPipeline pipeline, IngestBuilder builder, Path path) {
             this.pipeline = pipeline;
             this.builder = builder;
-            this.path = path;
+            this.asset = new AssetBuilder(path.toFile());
+            this.asset.setAsync(true);
         }
 
         @Override
         public void run() {
-
-            logger.info("Ingesting: {}", path);
-
-            File file = path.toFile();
-            final AssetBuilder asset = new AssetBuilder();
-            asset.setAsync(true);
-
+            logger.debug("Ingesting: {}", asset);
+            /*
+             * Add some standard keys to the document
+             */
             asset.put("ingest", "pipeline", pipeline.getId());
+            asset.put("ingest", "builder", builder.getPath());
             asset.put("ingest", "time", System.currentTimeMillis());
 
-            asset.put("source", "filename", path.getFileName().toString());
-            asset.put("source", "directory", path.getParent().toString());
+            /*
+             * Execute all the processor which are part of the pipeline.
+             */
+            executeProcessors();
 
+            /*
+             * Finally, create the asset.
+             */
+            logger.debug("Creating asset: {}", asset);
+            assetDao.create(asset);
+        }
+
+        public void executeProcessors() {
             for (IngestProcessorFactory factory: pipeline.getProcessors()) {
                 try {
                     IngestProcessor processor = factory.getProcessor();
-                    logger.info("running processor: {}", processor.getClass());
-                    processor.process(asset, file);
+                    logger.debug("running processor: {}", processor.getClass());
+                    processor.process(asset);
                 } catch (Exception e) {
                     logger.warn("Processor {} failed to run on asset {}",
-                            factory.getProcessor().getClass().getCanonicalName(), file, e);
+                            factory.getProcessor().getClass().getCanonicalName(), asset.getFile(), e);
                 }
             }
-
-            logger.info("Creating asset: {}", asset);
-            assetDao.create(asset);
         }
     }
 

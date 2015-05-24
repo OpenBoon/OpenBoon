@@ -2,19 +2,20 @@ package com.zorroa.archivist.domain;
 
 import java.util.Set;
 
-import com.zorroa.archivist.FileUtils;
+import org.elasticsearch.common.collect.ImmutableSet;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class IngestBuilder {
 
     private String path;
-    private Set<String> fileTypes;
+    private Set<String> fileTypes = ImmutableSet.<String>of();
     private String proxyConfig = "standard";
 
     public IngestBuilder() { }
 
     public IngestBuilder(String path) {
         this.path = path;
-        this.fileTypes = FileUtils.getSupportedImageFormats();
     }
 
     public IngestBuilder(String path, Set<String> fileTypes) {
@@ -23,10 +24,16 @@ public class IngestBuilder {
     }
 
     public Set<String> getFileTypes() {
-        if (fileTypes == null) {
-            return FileUtils.getSupportedImageFormats();
-        }
         return fileTypes;
+    }
+
+    @JsonIgnore
+    public boolean isSupportedFileType(String type) {
+        if (fileTypes.isEmpty()) {
+            return true;
+        }
+
+        return fileTypes.contains(type);
     }
 
     public IngestBuilder setFileTypes(Set<String> fileTypes) {

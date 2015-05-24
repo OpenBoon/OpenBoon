@@ -1,6 +1,5 @@
 package com.zorroa.archivist.processors;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,11 +21,11 @@ public class ProxyProcessor extends IngestProcessor {
     public ProxyProcessor() { }
 
     @Override
-    public void process(AssetBuilder builder, File file) {
+    public void process(AssetBuilder asset) {
         List<Proxy> result = Lists.newArrayList();
         for (ProxyOutput output: proxyConfig.getOutputs()) {
             try {
-                result.add(imageService.makeProxy(file, output));
+                result.add(imageService.makeProxy(asset.getFile(), output));
             } catch (IOException e) {
                 logger.warn("Failed to create proxy {}, ", output, e);
             }
@@ -42,6 +41,6 @@ public class ProxyProcessor extends IngestProcessor {
             }
         });
 
-        builder.document.put("proxies", result);
+        asset.document.put("proxies", result);
     }
 }

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.processors;
 
-import java.io.File;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public abstract class IngestProcessor {
 
     protected ProxyConfig proxyConfig;
 
-    public abstract void process(AssetBuilder builder, File stream);
+    public abstract void process(AssetBuilder asset);
 
     private Map<String, Object> args;
 

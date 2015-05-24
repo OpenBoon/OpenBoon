@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import com.zorroa.archivist.domain.Proxy;
 import com.zorroa.archivist.domain.ProxyOutput;
@@ -25,4 +26,11 @@ public interface ImageService {
      * @throws IOException
      */
     Dimension getImageDimensions(File imgFile) throws IOException;
+
+    /**
+     * Return the set of supported formats the service can operate on.
+     *
+     * @return
+     */
+    Set<String> getSupportedFormats();
 }
