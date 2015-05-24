@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.elasticsearch.common.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -17,9 +18,11 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 
 import com.zorroa.archivist.FileUtils;
+import com.zorroa.archivist.IngestException;
 import com.zorroa.archivist.domain.AssetBuilder;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
@@ -57,11 +60,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Autowired
     @Qualifier("ingestTaskExecutor")
-    AsyncTaskExecutor ingestExecutor;
+    TaskExecutor ingestExecutor;
 
     @Autowired
     @Qualifier("processorTaskExecutor")
-    AsyncTaskExecutor processorExecutor;
+    TaskExecutor processorExecutor;
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
@@ -83,12 +86,22 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public void ingest(IngestPipeline pipeline, IngestBuilder builder) {
 
         ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());
+        Preconditions.checkNotNull(proxyConfig, "Could not find ProxyConfig: " + builder.getProxyConfig());
 
         /**
          * Initialize all the processors
          */
         for (IngestProcessorFactory factory: pipeline.getProcessors()) {
             IngestProcessor processor = factory.init();
+            if (processor == null ) {
+                String msg = "Aborting ingest, processor not found:" + factory.getKlass();
+                logger.warn(msg);
+                // TODO: set the ingest state to failed.
+                throw new IngestException(msg);
+            }
+            Preconditions.checkNotNull(processor, "The IngestProcessor class: " + factory.getKlass() +
+                    " was not found, aborting ingest");
+
             AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
             autowire.autowireBean(processor);
             processor.setProxyConfig(proxyConfig);
@@ -167,9 +180,17 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
             asset.put("source", "directory", path.getParent().toString());
 
             for (IngestProcessorFactory factory: pipeline.getProcessors()) {
-                factory.getProcessor().process(asset, file);
+                try {
+                    IngestProcessor processor = factory.getProcessor();
+                    logger.info("running processor: {}", processor.getClass());
+                    processor.process(asset, file);
+                } catch (Exception e) {
+                    logger.warn("Processor {} failed to run on asset {}",
+                            factory.getProcessor().getClass().getCanonicalName(), file);
+                }
             }
 
+            logger.info("Creating asset: {}", asset);
             assetDao.create(asset);
         }
     }

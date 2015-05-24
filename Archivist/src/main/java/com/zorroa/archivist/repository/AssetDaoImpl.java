@@ -6,9 +6,7 @@ import java.util.Map;
 
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
@@ -19,9 +17,6 @@ import com.zorroa.archivist.domain.AssetBuilder;
 
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
-
-    @Autowired
-    Client elasticSearchClient;
 
     @Override
     public String getType() {

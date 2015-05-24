@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Asset;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
@@ -22,40 +21,27 @@ public class IngestServiceTests extends ArchivistApplicationTests {
     AssetDao assetDao;
 
     @Test
-    public void testStandardIngest() throws InterruptedException {
+    public void testIngest_Standard() throws InterruptedException {
 
          IngestPipeline pipeline = ingestService.getIngestPipeline("standard");
          ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
 
-         Thread.sleep(1000);
-         refreshIndex();
-
-
+         refreshIndex(1000);
          assertEquals(2, assetDao.getAll().size());
-         for (Asset asset: assetDao.getAll()) {
-             logger.info("{}", asset.getData());
-         }
-
     }
 
     @Test
-    public void testIngest() throws InterruptedException {
+    public void testIngest_Custom() throws InterruptedException {
 
          IngestPipelineBuilder builder = new IngestPipelineBuilder();
          builder.setId("default");
-         builder.addToProcessors(new IngestProcessorFactory("com.zorroa.archivist.ingest.ImageMetadataProcessor"));
+         builder.addToProcessors(new IngestProcessorFactory(
+                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
 
          IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
          ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
 
-         Thread.sleep(1000);
-         refreshIndex();
-
+         refreshIndex(1000);
          assertEquals(2, assetDao.getAll().size());
-
-         for (Asset asset: assetDao.getAll()) {
-             logger.info("{}", asset.getData());
-         }
-
     }
 }
