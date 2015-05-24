@@ -8,29 +8,17 @@ import java.net.UnknownHostException;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
-import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.admin.indices.alias.Alias;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.io.ByteStreams;
 import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.task.AsyncTaskExecutor;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.SyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import com.google.common.base.Preconditions;
 
 @Configuration
 public class ArchivistConfiguration {
@@ -54,17 +42,21 @@ public class ArchivistConfiguration {
     @Bean
     public Client elastic() throws IOException {
 
-        Settings settings = ImmutableSettings.settingsBuilder()
+        org.elasticsearch.common.settings.ImmutableSettings.Builder builder =
+                ImmutableSettings.settingsBuilder()
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
                 .put("discovery.zen.ping.multicast.enabled", false)
-                .put("cluster.routing.allocation.disk.threshold_enabled", false)
-                .build();
+                .put("cluster.routing.allocation.disk.threshold_enabled", false);
+
+        if (unittest) {
+            builder.put("path.data", "unittest/data");
+        }
 
         Node node = nodeBuilder()
                 .data(true)
                 .local(true)
-                .settings(settings)
+                .settings(builder.build())
                 .node();
 
         return node.client();
@@ -79,10 +71,10 @@ public class ArchivistConfiguration {
     }
 
     @Bean(name="ingestTaskExecutor")
-    public AsyncTaskExecutor ingestTaskExecutor() {
+    public TaskExecutor ingestTaskExecutor() {
 
         if (unittest) {
-            SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
+            SyncTaskExecutor executor = new SyncTaskExecutor();
             return executor;
         }
         else {
@@ -96,10 +88,10 @@ public class ArchivistConfiguration {
     }
 
     @Bean(name="processorTaskExecutor")
-    public AsyncTaskExecutor processorTaskExecutor() {
+    public TaskExecutor processorTaskExecutor() {
 
         if (unittest) {
-            SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
+            SyncTaskExecutor executor = new SyncTaskExecutor();
             return executor;
         }
         else {
