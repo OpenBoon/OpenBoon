@@ -37,6 +37,15 @@ At minimum, to perform an ingest you must provide a path to search.  This will u
 is setup to use the Standard proxy config.
 
 ```
-curl -XPOST -i 'http://localhost:8066/pipeline/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
+curl  -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8066/pipeline/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
+```
+
+### Searching
+
+Once you have ingested, you can search using the full power of the ElasticSearch query language.  However, most people will
+do what are called query string searches.
+
+```
+curl  -H 'Content-Type: application/json' -XGET -i 'http://localhost:866/assets/_search' -d '{"query": { "query_string" : {"query" : "word1 AND word2"}}}'
 ```
 
