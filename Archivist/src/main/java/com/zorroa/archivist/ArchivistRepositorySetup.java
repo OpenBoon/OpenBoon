@@ -96,6 +96,11 @@ public class ArchivistRepositorySetup {
             createDefaultProxyConfiguration();
             createDefaultIngestPipeline();
 
+            /*
+             * Once all default docs are made we refresh the index.
+             */
+            refreshIndex();
+
         } catch (IndexAlreadyExistsException ignore) {
             logger.info("Index {}/{} was already setup", indexName, alias);
 
@@ -104,13 +109,18 @@ public class ArchivistRepositorySetup {
         }
     }
 
+    public void refreshIndex() {
+        logger.info("refreshing index: '{}'", alias);
+        client.admin().indices().prepareRefresh(alias).get();
+    }
+
     private void createDefaultProxyConfiguration() throws ElasticsearchException, Exception {
         ClassPathResource resource = new ClassPathResource("proxy-config.json");
         Preconditions.checkNotNull(resource, "Unable to find proxy-config.json");
         byte[] source = ByteStreams.toByteArray(resource.getInputStream());
 
+        logger.info("Creating 'standard' proxy configuration");
         client.prepareIndex(alias, "proxy-config", "standard")
-            .setRefresh(true)
             .setSource(source)
             .get();
     }
@@ -121,6 +131,7 @@ public class ArchivistRepositorySetup {
         builder.addToProcessors(new IngestProcessorFactory(AssetMetadataProcessor.class));
         builder.addToProcessors(new IngestProcessorFactory(ProxyProcessor.class));
 
+        logger.info("Creating 'standard' ingest pipeline");
         ingestService.createIngestPipeline(builder);
     }
 }
