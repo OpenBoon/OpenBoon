@@ -25,7 +25,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public String getType() {
-
         return "asset";
     }
 
@@ -38,7 +37,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 Asset result = new Asset();
                 result.setId(id);
                 result.setVersion(version);
-                result.setData(data);
+                result.setDocument(data);
                 return result;
             } catch (IOException e) {
                 throw new DataRetrievalFailureException("Failed to parse asset record, " + e, e);
