@@ -1,7 +1,6 @@
 package com.zorroa.archivist.processors;
 
 import java.awt.Dimension;
-import java.awt.geom.Dimension2D;
 import java.io.IOException;
 
 import org.slf4j.Logger;
