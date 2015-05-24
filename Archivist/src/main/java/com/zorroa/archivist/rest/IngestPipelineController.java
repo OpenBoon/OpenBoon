@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
@@ -29,9 +25,8 @@ public class IngestPipelineController {
     IngestService ingestService;
 
     @RequestMapping(value="/pipeline", method=RequestMethod.POST)
-    public IngestPipeline create(@RequestBody String builder) throws JsonParseException, JsonMappingException, IOException {
-        logger.info("posted: {}", builder);
-        return ingestService.createIngestPipeline(Json.Mapper.readValue(builder, IngestPipelineBuilder.class));
+    public IngestPipeline create(@RequestBody IngestPipelineBuilder builder) {
+        return ingestService.createIngestPipeline(builder);
     }
 
     @RequestMapping(value="/pipeline/{id}", method=RequestMethod.GET)
