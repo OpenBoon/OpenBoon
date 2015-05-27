@@ -13,7 +13,7 @@ Install Java 8 and Maven:
 
 ```
 $ mvn package
-$ java -jar target/mymodule-0.0.1-SNAPSHOT.jar
+$ java -jar target/archivist-1.0.0.jar
 ```
 
 ## Talking to the Archivst using Curl
@@ -85,6 +85,6 @@ curl -XGET 'http://localhost:9200/_all/_mapping/pretty'
 Most people will do what are called query string searches.
 
 ```
-curl  -H 'Content-Type: application/json' -XGET -i 'http://localhost:9200/assets/_search' -d '{"query": { "query_string" : {"query" : "word1 AND word2"}}}'
+curl  -H 'Content-Type: application/json' -XGET -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{"query": { "query_string" : {"query" : "dog AND food"}}}'
 ```
 
