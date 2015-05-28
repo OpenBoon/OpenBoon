@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
+import com.drew.metadata.iptc.IptcDirectory;
 import com.zorroa.archivist.domain.AssetBuilder;
 
 /**
@@ -56,6 +57,14 @@ public class AssetMetadataProcessor extends IngestProcessor {
              }
              else {
                  logger.warn("Exif metdata not found: {}", asset.getAbsolutePath());
+             }
+             
+             IptcDirectory i = metadata.getFirstDirectoryOfType(IptcDirectory.class);
+             if (i != null) {
+                 asset.put("iptc", "keywords", i.getString(IptcDirectory.TAG_KEYWORDS));
+             }
+             else {
+                 logger.warn("Iptc metdata not found: {}", asset.getAbsolutePath());
              }
 
              /*
