@@ -47,7 +47,7 @@ public class AssetBuilder {
         }
         map.put(key,  value);
     }
-    
+
     public void put(String namespace, String key, List<String> value) {
     	Map<String,Object> map = (Map<String,Object>) document.get(namespace);
     	if (map == null) {

@@ -103,25 +103,24 @@ public class AssetMetadataProcessor extends IngestProcessor {
     private void extractIptcData(AssetBuilder asset, Metadata metadata) {
         IptcDirectory i = metadata.getFirstDirectoryOfType(IptcDirectory.class);
         if (i != null) {
-       	 // Convert the space-separated keywords into a string array
-       	 String keywords = i.getString(IptcDirectory.TAG_KEYWORDS);
-       	 List<String> keywordList = Arrays.asList(keywords.split(" "));
-       	 // Remove any suffix, which typically contains a confidence term,
-       	 // e.g. "vase:0.0375"
-       	 for (int j = 0; j < keywordList.size(); j++) {
-       		 String word = keywordList.get(j);
-       		 int lastIndex = word.lastIndexOf(':');
-       		 if (lastIndex > 0) {
-       			 String prefix = word.substring(0, word.lastIndexOf(':'));
-       			 keywordList.set(j, prefix);
-       		 }
-       	 }
-   		 asset.put("iptc", "keywords", keywordList);
+            // Convert the space-separated keywords into a string array
+            String keywords = i.getString(IptcDirectory.TAG_KEYWORDS);
+            List<String> keywordList = Arrays.asList(keywords.split(" "));
+            // Remove any suffix, which typically contains a confidence term,
+            // e.g. "vase:0.0375". This is specific to our prototype portfolios.
+            for (int j = 0; j < keywordList.size(); j++) {
+                String word = keywordList.get(j);
+                int lastIndex = word.lastIndexOf(':');
+                if (lastIndex > 0) {
+                    String prefix = word.substring(0, word.lastIndexOf(':'));
+                    keywordList.set(j, prefix);
+                }
+            }
+            asset.put("iptc", "keywords", keywordList);
         }
         else {
             logger.warn("Iptc metdata not found: {}", asset.getAbsolutePath());
         }
-
     }
 
     public boolean isImageType(AssetBuilder asset) {
