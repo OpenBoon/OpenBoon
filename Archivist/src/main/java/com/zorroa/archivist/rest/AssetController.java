@@ -21,7 +21,6 @@ public class AssetController {
     @Autowired
     Client client;
 
-
     @RequestMapping(value="/assets/_search", method=RequestMethod.GET)
     public DeferredResult<String> search(@RequestBody String query) {
         SearchRequestBuilder builder = client.prepareSearch(alias)

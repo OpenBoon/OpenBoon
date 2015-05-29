@@ -49,8 +49,20 @@ public class ImageServiceImpl implements ImageService {
         supportedFormats = builder.build();
     }
 
-    public File makeProxyPath(String format) {
-        String id = UUID.randomUUID().toString();
+    /**
+     * In case we ever move to an different ID generation scheme, make
+     * sure we have enough characters to build the directory structure
+     * and avoid collisions.
+     */
+    private static final int PROXY_ID_MIN_LENGTH = 16;
+
+    @Override
+    public File generateProxyPath(String id, String format) {
+
+        if (id.length() < PROXY_ID_MIN_LENGTH) {
+            throw new RuntimeException("Proxy IDs need to be at leaset "
+                    + PROXY_ID_MIN_LENGTH + " characters.");
+        }
 
         StringBuilder sb = new StringBuilder(512);
         sb.append(proxyPath.getAbsolutePath());
@@ -62,15 +74,19 @@ public class ImageServiceImpl implements ImageService {
         }
         sb.append(id);
         sb.append("." + format);
+        return new File(sb.toString());
+    }
 
-        File newPath = new File(sb.toString());
+    public File makeProxyPath(String id, String format) {
+        File newPath = generateProxyPath(id, format);
         newPath.getParentFile().mkdirs();
         return newPath;
     }
 
     @Override
     public Proxy makeProxy(File original, ProxyOutput output) throws IOException {
-        File outFile = makeProxyPath(output.getFormat());
+        String proxyId = UUID.randomUUID().toString();
+        File outFile = makeProxyPath(proxyId, output.getFormat());
 
         Thumbnails.of(original)
             .width(output.getSize())
@@ -81,7 +97,7 @@ public class ImageServiceImpl implements ImageService {
         Dimension dim = getImageDimensions(outFile);
 
         Proxy result = new Proxy();
-        result.setPath(outFile.getAbsolutePath());
+        result.setFile(outFile.getName());
         result.setWidth(dim.width);
         result.setHeight(dim.height);
         result.setFormat(output.getFormat());

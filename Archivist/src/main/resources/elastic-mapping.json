@@ -5,13 +5,25 @@
         "stem" : {
           "tokenizer" : "standard",
           "filter" : ["standard", "lowercase", "stop", "porter_stem"]
-          }
+        },
+        "path-analyzer": {
+          "type": "custom",
+          "tokenizer": "path-tokenizer",
+          "filter" : ["standard", "lowercase"]
         }
+      },
+       "tokenizer": {
+        "path-tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "/"
+        }
+      }
     }
   },
 
   "mappings" : {
     "proxy-config": {
+      "_all" : {"enabled" : false},
       "dynamic" : true,
       "properties": {
         "outputs": {
@@ -24,6 +36,7 @@
       }
     },
     "pipeline": {
+      "_all" : {"enabled" : false},
       "dynamic" : false,
       "properties": {
         "_id": {
@@ -45,6 +58,7 @@
       }
     },
     "asset" : {
+      "_all" : {"enabled" : false},
       "dynamic" : true,
       "properties" : {
         "_id": {
@@ -66,14 +80,27 @@
           "type" : "string",
           "index" : "not_analyzed"
         },
+        "keywords": {
+          "type": "string",
+          "store": true
+        },
         "source" : {
           "type" : "object",
           "properties" : {
             "path": {
-              "type": "string"
-            },
-            "size" : {
-              "type": "long"
+              "type": "multi_field",
+              "fields" : {
+                "path" : {
+                  "type" : "string",
+                  "index_analyzer": "path-analyzer",
+                  "index" : "analyzed",
+                  "copy_to": "keywords"
+                },
+                "untouched" : {
+                  "type" : "string",
+                  "index" : "not_analyzed"
+                }
+              }
             }
           }
         }

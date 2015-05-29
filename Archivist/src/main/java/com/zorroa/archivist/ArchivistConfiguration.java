@@ -50,7 +50,8 @@ public class ArchivistConfiguration {
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
                 .put("discovery.zen.ping.multicast.enabled", false)
-                .put("cluster.routing.allocation.disk.threshold_enabled", false);
+                .put("cluster.routing.allocation.disk.threshold_enabled", false)
+                .put("index.query.default_field", "keywords");
 
         if (unittest) {
             builder.put("path.data", "unittest/data");

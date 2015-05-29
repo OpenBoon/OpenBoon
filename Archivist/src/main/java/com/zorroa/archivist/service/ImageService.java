@@ -33,4 +33,14 @@ public interface ImageService {
      * @return
      */
     Set<String> getSupportedFormats();
+
+    /**
+     * Generates a file path for the given proxy ID.  This does
+     * not create the actual directories.
+     *
+     * @param id
+     * @param format
+     * @return
+     */
+    File generateProxyPath(String id, String format);
 }

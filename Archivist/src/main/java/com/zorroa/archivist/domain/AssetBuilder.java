@@ -15,6 +15,11 @@ public class AssetBuilder {
     private final File file;
 
     public AssetBuilder(File file) {
+        if (!file.isFile()) {
+            throw new IllegalArgumentException(
+                "AssetBuilder must point to a regular file.");
+        }
+
         this.file = file;
         this.put("source", "filename", this.getFilename());
         this.put("source", "directory", this.getDirectory());
