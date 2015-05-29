@@ -33,7 +33,6 @@ public class AssetMetadataProcessor extends IngestProcessor {
             extractDimensions(asset);
             extractExifData(asset);
         }
-
     }
 
     public void extractDimensions(AssetBuilder asset) {
@@ -58,7 +57,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
              else {
                  logger.warn("Exif metdata not found: {}", asset.getAbsolutePath());
              }
-             
+
              IptcDirectory i = metadata.getFirstDirectoryOfType(IptcDirectory.class);
              if (i != null) {
                  asset.put("iptc", "keywords", i.getString(IptcDirectory.TAG_KEYWORDS));

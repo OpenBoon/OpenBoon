@@ -33,7 +33,6 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
         assetDao.create(builder);
         refreshIndex(100);
-
         assertEquals(1, assetDao.getAll().size());
     }
 
