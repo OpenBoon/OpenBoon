@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain;
 
 import java.io.File;
 import java.util.Map;
+import java.util.List;
 
 import org.elasticsearch.common.collect.Maps;
 
@@ -40,6 +41,15 @@ public class AssetBuilder {
             document.put(namespace, map);
         }
         map.put(key,  value);
+    }
+    
+    public void put(String namespace, String key, List<String> value) {
+    	Map<String,Object> map = (Map<String,Object>) document.get(namespace);
+    	if (map == null) {
+    		map = Maps.newHashMapWithExpectedSize(16);
+    		document.put(namespace, map);
+    	}
+    	map.put(key, value);
     }
 
     public void put(String namespace, Map<String, Object> value) {

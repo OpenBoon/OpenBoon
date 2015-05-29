@@ -2,6 +2,8 @@ package com.zorroa.archivist.processors;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import java.util.List;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +33,8 @@ public class AssetMetadataProcessor extends IngestProcessor {
     public void process(AssetBuilder asset) {
         if (isImageType(asset)) {
             extractDimensions(asset);
-            extractExifData(asset);
+            extractMetadata(asset);
         }
-
     }
 
     public void extractDimensions(AssetBuilder asset) {
@@ -46,8 +47,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
         }
     }
 
-    public void extractExifData(AssetBuilder asset) {
-
+    public void extractMetadata(AssetBuilder asset) {
          try {
              Metadata metadata = ImageMetadataReader.readMetadata(asset.getFile());
              ExifSubIFDDirectory d = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
@@ -61,7 +61,20 @@ public class AssetMetadataProcessor extends IngestProcessor {
              
              IptcDirectory i = metadata.getFirstDirectoryOfType(IptcDirectory.class);
              if (i != null) {
-                 asset.put("iptc", "keywords", i.getString(IptcDirectory.TAG_KEYWORDS));
+            	 // Convert the space-separated keywords into a string array
+            	 String keywords = i.getString(IptcDirectory.TAG_KEYWORDS);
+            	 List<String> keywordList = Arrays.asList(keywords.split(" "));
+            	 // Remove any suffix, which typically contains a confidence term,
+            	 // e.g. "vase:0.0375"
+            	 for (int j = 0; j < keywordList.size(); j++) {
+            		 String word = keywordList.get(j);
+            		 int lastIndex = word.lastIndexOf(':');
+            		 if (lastIndex > 0) {
+            			 String prefix = word.substring(0, word.lastIndexOf(':'));
+            			 keywordList.set(j, prefix);
+            		 }
+            	 }
+        		 asset.put("iptc", "keywords", keywordList);
              }
              else {
                  logger.warn("Iptc metdata not found: {}", asset.getAbsolutePath());
