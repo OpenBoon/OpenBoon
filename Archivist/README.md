@@ -4,9 +4,13 @@ Media ingestion, storage, and retrieval service.
 ## Requirements
 
 Install Java 8 and Maven:
+
 1. [Download 8u45](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
 2. Doubleclick on the .dmg and follow instructions.
+
 3. Verify with "java -version": 1.8.0_45
+
 4. Install Maven via homebrew ("brew update" if you get a 404): brew install maven
 
 ## Starting the Server
