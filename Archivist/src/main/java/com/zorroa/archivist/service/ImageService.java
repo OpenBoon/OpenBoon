@@ -3,9 +3,11 @@ package com.zorroa.archivist.service;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.domain.ProxyOutput;
 
 public interface ImageService {
@@ -43,4 +45,19 @@ public interface ImageService {
      * @return
      */
     File generateProxyPath(String id, String format);
+
+    /**
+     * Return the list of all proxy configurations.
+     *
+     * @return List<ProxyConfig>
+     */
+    List<ProxyConfig> getProxyConfigs();
+
+    /**
+     * Get a given proxy configuration.
+     *
+     * @param id
+     * @return
+     */
+    ProxyConfig getProxyConfig(String id);
 }
