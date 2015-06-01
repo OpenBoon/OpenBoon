@@ -4,10 +4,14 @@ Media ingestion, storage, and retrieval service.
 ## Requirements
 
 Install Java 8 and Maven:
-# [Download 8u45](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-# Doubleclick on the .dmg and follow instructions.
-# Verify with "java -version": 1.8.0_45
-# Install Maven via homebrew ("brew update" if you get a 404): brew install maven
+
+1. [Download 8u45](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+2. Doubleclick on the .dmg and follow instructions.
+
+3. Verify with "java -version": 1.8.0_45
+
+4. Install Maven via homebrew ("brew update" if you get a 404): brew install maven
 
 ## Starting the Server
 
@@ -45,7 +49,9 @@ At minimum, to perform an ingest you must provide a path to search.  This will u
 is setup to use the Standard proxy config.
 
 ```
-curl  -H 'Content-Type: application/json' -XPOST -i 'http://localhost:9200/pipeline/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
+curl -XPOST -i 'http://localhost:9200/pipeline/standard/_ingest' -d '{
+  "path": "/Users/chambers/Pictures/iphoto/Masters/2015"
+}'
 ```
 
 ### Searching
@@ -85,6 +91,27 @@ curl -XGET 'http://localhost:9200/_all/_mapping/pretty'
 Most people will do what are called query string searches.
 
 ```
-curl  -H 'Content-Type: application/json' -XGET -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{"query": { "query_string" : {"query" : "dog AND food"}}}'
+curl -XGET -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{
+  "query": { 
+    "query_string" : {
+      "query" : "dog AND food"
+    }
+  }
+}'
 ```
 
+You can search for all items in the collection Wex using:
+
+```
+curl -XPOST -i 'http://localhost:9200/archivist_01/_search?pretty' -d '{
+  "query" : {
+    "filtered" : {
+      "filter" : {
+        "terms" : {
+          "collections" : ["Wex"]
+        }
+      }
+    } 
+  } 
+}'
+```
