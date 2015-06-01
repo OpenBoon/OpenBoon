@@ -1,4 +1,4 @@
-package com.zorroa.archivist.rest;
+package com.zorroa.archivist.web;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.search.SearchRequestBuilder;

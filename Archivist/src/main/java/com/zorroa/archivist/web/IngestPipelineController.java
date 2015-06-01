@@ -1,4 +1,4 @@
-package com.zorroa.archivist.rest;
+package com.zorroa.archivist.web;
 
 import java.util.List;
 
