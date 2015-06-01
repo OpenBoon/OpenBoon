@@ -24,22 +24,22 @@ public class IngestPipelineController {
     @Autowired
     IngestService ingestService;
 
-    @RequestMapping(value="/pipeline", method=RequestMethod.POST)
+    @RequestMapping(value="/pipelines", method=RequestMethod.POST)
     public IngestPipeline create(@RequestBody IngestPipelineBuilder builder) {
         return ingestService.createIngestPipeline(builder);
     }
 
-    @RequestMapping(value="/pipeline/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/pipelines/{id}", method=RequestMethod.GET)
     public IngestPipeline get(@PathVariable String id) {
         return ingestService.getIngestPipeline(id);
     }
 
-    @RequestMapping(value="/pipeline", method=RequestMethod.GET)
+    @RequestMapping(value="/pipelines", method=RequestMethod.GET)
     public List<IngestPipeline> getAll() {
         return ingestService.getIngestPipelines();
     }
 
-    @RequestMapping(value="/pipeline/{id}/_ingest", method=RequestMethod.POST)
+    @RequestMapping(value="/pipelines/{id}/_ingest", method=RequestMethod.POST)
     public void ingest(@RequestBody IngestBuilder builder, @PathVariable String id) {
         IngestPipeline pipeline = ingestService.getIngestPipeline(id);
         ingestService.ingest(pipeline, builder);

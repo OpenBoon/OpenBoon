@@ -49,9 +49,7 @@ At minimum, to perform an ingest you must provide a path to search.  This will u
 is setup to use the Standard proxy config.
 
 ```
-curl -XPOST -i 'http://localhost:9200/pipeline/standard/_ingest' -d '{
-  "path": "/Users/chambers/Pictures/iphoto/Masters/2015"
-}'
+curl  -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8086/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
 ```
 
 ### Searching
