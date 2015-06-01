@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,11 +22,13 @@ public class ProxyConfigController {
         // TODO Auto-generated constructor stub
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/proxy-configs", method=RequestMethod.GET)
     public List<ProxyConfig> getAll() {
         return imageService.getProxyConfigs();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/proxy-configs/{id}", method=RequestMethod.GET)
     public ProxyConfig get(@PathVariable String id) {
         return imageService.getProxyConfig(id);
