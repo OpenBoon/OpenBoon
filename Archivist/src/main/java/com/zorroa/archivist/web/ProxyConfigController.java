@@ -22,13 +22,13 @@ public class ProxyConfigController {
         // TODO Auto-generated constructor stub
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/proxy-configs", method=RequestMethod.GET)
     public List<ProxyConfig> getAll() {
         return imageService.getProxyConfigs();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/proxy-configs/{id}", method=RequestMethod.GET)
     public ProxyConfig get(@PathVariable String id) {
         return imageService.getProxyConfig(id);
