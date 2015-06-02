@@ -30,8 +30,14 @@ in a production setup for security purposes and we'll have official SDK endpoint
 A Proxy Configuration determines what proxy sizes and bit depth are made.  The Archivst ships with
 a 'standard' proxy configuration, and users may add their own.
 
+Elastic:
 ```
 curl -XGET -i 'http://localhost:9200/archivist/proxy-config/standard'
+```
+
+Archivist:
+```
+curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8089/proxy-configs/standard'
 ```
 
 ### Standard Ingest Pipeline
@@ -39,8 +45,14 @@ curl -XGET -i 'http://localhost:9200/archivist/proxy-config/standard'
 An Ingest Pipeline determines all the steps that occur during an ingest.  The Archivst ships with
 a 'standard' ingest pipeline which is currently suitable for photos.
 
+Elastic:
 ```
 curl -XGET -i 'http://localhost:9200/archivist/pipeline/standard'
+```
+
+Archivist:
+```
+curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8089/pipelines/standard'
 ```
 
 ### Performing an Ingest
@@ -49,7 +61,7 @@ At minimum, to perform an ingest you must provide a path to search.  This will u
 is setup to use the Standard proxy config.
 
 ```
-curl  -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8086/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
+curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8086/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
 ```
 
 ### Searching
