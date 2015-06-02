@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,8 +21,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
             .and()
-                .httpBasic();
-
+                .httpBasic()
+            .and()
+                .sessionManagement()
+                    .maximumSessions(10)
+                    .sessionRegistry(sessionRegistry());
     }
 
     @Autowired
@@ -34,5 +38,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .withUser("user")
                 .password("user")
                 .roles("USER");
+    }
+
+    @Bean
+    public HazelcastSessionRegistry sessionRegistry() {
+        return new HazelcastSessionRegistry();
     }
 }
