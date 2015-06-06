@@ -19,10 +19,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.StandardRoles;
+import com.zorroa.archivist.domain.UserBuilder;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
+import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.service.IngestService;
 
 @Component
@@ -38,6 +42,9 @@ public class ArchivistRepositorySetup {
 
     @Autowired
     Client client;
+
+    @Autowired
+    UserDao userDao;
 
     @Value("${archivist.index.alias}")
     private String alias;
@@ -95,6 +102,7 @@ public class ArchivistRepositorySetup {
              */
             createDefaultProxyConfiguration();
             createDefaultIngestPipeline();
+            createDefaultUsers();
 
             /*
              * Once all default docs are made we refresh the index.
@@ -112,6 +120,26 @@ public class ArchivistRepositorySetup {
     public void refreshIndex() {
         logger.info("refreshing index: '{}'", alias);
         client.admin().indices().prepareRefresh(alias).get();
+    }
+
+    private void createDefaultUsers() throws ElasticsearchException, Exception {
+        UserBuilder adminBuilder = new UserBuilder();
+        adminBuilder.setEmail("admin@zorrao.com");
+        adminBuilder.setFirstName("Admin");
+        adminBuilder.setLastName("Admin");
+        adminBuilder.setUserId("admin");
+        adminBuilder.setPassword("admin");
+        adminBuilder.setRoles(Sets.newHashSet(StandardRoles.ADMIN));
+        userDao.create(adminBuilder);
+
+        UserBuilder userBuilder = new UserBuilder();
+        userBuilder.setEmail("user@zorrao.com");
+        userBuilder.setFirstName("User");
+        userBuilder.setLastName("User");
+        userBuilder.setUserId("user");
+        userBuilder.setPassword("user");
+        userBuilder.setRoles(Sets.newHashSet(StandardRoles.USER));
+        userDao.create(userBuilder);
     }
 
     private void createDefaultProxyConfiguration() throws ElasticsearchException, Exception {

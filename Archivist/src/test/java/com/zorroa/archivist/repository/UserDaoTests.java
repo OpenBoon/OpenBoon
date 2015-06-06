@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import com.google.common.collect.Sets;
@@ -25,7 +26,7 @@ public class UserDaoTests extends ArchivistApplicationTests {
         UserBuilder builder = new UserBuilder();
         builder.setUserId("test");
         builder.setPassword("test");
-        builder.setRoles(Sets.newHashSet(StandardRoles.USER_ROLE));
+        builder.setRoles(Sets.newHashSet(StandardRoles.USER));
         user = userDao.create(builder);
     }
 
@@ -33,6 +34,11 @@ public class UserDaoTests extends ArchivistApplicationTests {
     public void testGet() {
         User user2 = userDao.get(user.getId());
         assertEquals(user.getId(), user2.getId());
+    }
+
+    @Test(expected=EmptyResultDataAccessException.class)
+    public void testGetFailed() {
+        userDao.get("blah");
     }
 
     @Test
