@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository;
 
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.common.Preconditions;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +38,7 @@ public class UserDaoImpl extends AbstractElasticDao implements UserDao {
 
         builder.setPassword(SecurityUtils.createPasswordHash(builder.getPassword()));
         String json = new String(Json.serialize(builder));
-        IndexResponse response = client.prepareIndex(alias, getType(), builder.getUserId())
+        client.prepareIndex(alias, getType(), builder.getUserId())
                    .setSource(json)
                    .setRefresh(true)
                    .get();
