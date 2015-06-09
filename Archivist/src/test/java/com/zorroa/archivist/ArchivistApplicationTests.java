@@ -14,11 +14,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ArchivistApplication.class)
 @WebAppConfiguration
+@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
+@Transactional
 public abstract class ArchivistApplicationTests {
 
     public static final Logger logger = LoggerFactory.getLogger(ArchivistConfiguration.class);

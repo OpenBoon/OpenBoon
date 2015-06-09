@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
@@ -15,11 +16,15 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
@@ -42,6 +47,11 @@ public class ArchivistConfiguration {
         nodeName = String.format("%s_%05d", hostName, number);
     }
 
+    @Bean
+    @Autowired
+    public DataSourceTransactionManager transactionManager(DataSource datasource) {
+        return new DataSourceTransactionManager(datasource);
+    }
     @Bean
     public Client elastic() throws IOException {
 
