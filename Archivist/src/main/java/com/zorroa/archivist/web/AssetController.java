@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.zorroa.archivist.domain.Message;
+import com.zorroa.archivist.domain.MessageType;
+import com.zorroa.archivist.service.RoomService;
+
 @RestController
 public class AssetController {
 
@@ -25,8 +29,14 @@ public class AssetController {
     @Autowired
     Client client;
 
+    @Autowired
+    RoomService roomService;
+
     @RequestMapping(value="/assets/_search", method=RequestMethod.GET)
     public DeferredResult<String> search(@RequestBody String query, Principal principle) {
+
+        roomService.sendToActiveRoom(new Message(MessageType.SEARCH, query));
+
         SearchRequestBuilder builder = client.prepareSearch(alias)
                 .setTypes("asset")
                 .setSource(query);
@@ -36,6 +46,7 @@ public class AssetController {
             @Override
             public void onResponse(SearchResponse response) {
                 result.setResult(response.toString());
+
             }
             @Override
             public void onFailure(Throwable e) {
