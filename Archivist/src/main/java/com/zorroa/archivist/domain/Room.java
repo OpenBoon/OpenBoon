@@ -7,19 +7,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Room {
 
-    private String id;
-    private long version;
+    private long id;
+    private String session;
     private String name;
     private Set<String> inviteList;
     private boolean visible;
 
     public Room() { }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -29,14 +29,6 @@ public class Room {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
     }
 
     public Set<String> getInviteList() {

@@ -5,10 +5,9 @@ import com.zorroa.archivist.domain.RoomBuilder;
 
 public interface RoomDao {
 
-    Room get(String id);
-
     Room create(RoomBuilder builder);
 
-    String getPassword(String id);
+    Room get(long id);
 
+    String getPassword(long id);
 }
