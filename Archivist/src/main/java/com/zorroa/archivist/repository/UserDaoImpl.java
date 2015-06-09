@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.elasticsearch.common.Preconditions;
 import org.elasticsearch.common.collect.ImmutableSet;
@@ -41,6 +42,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public User get(String username) {
         return jdbc.queryForObject("SELECT * FROM person WHERE str_username=?", MAPPER, username);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return jdbc.query("SELECT * FROM person ORDER BY str_username", MAPPER);
     }
 
     private static final String INSERT =

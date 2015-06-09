@@ -37,6 +37,20 @@ public class UserDaoTests extends ArchivistApplicationTests {
         assertEquals(user.getId(), user2.getId());
     }
 
+    @Test
+    public void testAll() {
+        assertEquals(3, userDao.getAll().size());
+
+        UserBuilder builder = new UserBuilder();
+        builder.setUsername("foo");
+        builder.setPassword("test");
+        builder.setEmail("test@test.com");
+        builder.setRoles(Sets.newHashSet(StandardRoles.USER));
+        userDao.create(builder);
+
+        assertEquals(4, userDao.getAll().size());
+    }
+
     @Test(expected=EmptyResultDataAccessException.class)
     public void testGetFailed() {
         userDao.get("blah");
