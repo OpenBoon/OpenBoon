@@ -127,7 +127,7 @@ public class ArchivistRepositorySetup {
         adminBuilder.setEmail("admin@zorrao.com");
         adminBuilder.setFirstName("Admin");
         adminBuilder.setLastName("Admin");
-        adminBuilder.setUserId("admin");
+        adminBuilder.setUsername("admin");
         adminBuilder.setPassword("admin");
         adminBuilder.setRoles(Sets.newHashSet(StandardRoles.ADMIN));
         userDao.create(adminBuilder);
@@ -136,7 +136,7 @@ public class ArchivistRepositorySetup {
         userBuilder.setEmail("user@zorrao.com");
         userBuilder.setFirstName("User");
         userBuilder.setLastName("User");
-        userBuilder.setUserId("user");
+        userBuilder.setUsername("user");
         userBuilder.setPassword("user");
         userBuilder.setRoles(Sets.newHashSet(StandardRoles.USER));
         userDao.create(userBuilder);

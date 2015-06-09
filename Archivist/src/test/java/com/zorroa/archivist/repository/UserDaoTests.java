@@ -24,8 +24,9 @@ public class UserDaoTests extends ArchivistApplicationTests {
     @Before
     public void init() {
         UserBuilder builder = new UserBuilder();
-        builder.setUserId("test");
+        builder.setUsername("test");
         builder.setPassword("test");
+        builder.setEmail("test@test.com");
         builder.setRoles(Sets.newHashSet(StandardRoles.USER));
         user = userDao.create(builder);
     }
@@ -44,7 +45,7 @@ public class UserDaoTests extends ArchivistApplicationTests {
     @Test
     public void testGetPassword() {
         // The crypted password
-        String hashed = userDao.getPassword(user.getId());
+        String hashed = userDao.getPassword(user.getUsername());
         assertTrue(hashed.startsWith("$"));
 
         // try to authenticate it.

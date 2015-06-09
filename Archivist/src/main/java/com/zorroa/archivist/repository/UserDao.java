@@ -5,10 +5,9 @@ import com.zorroa.archivist.domain.UserBuilder;
 
 public interface UserDao {
 
-    User get(String id);
+    User get(int id);
+    User get(String username);
+    String getPassword(String username);
 
     User create(UserBuilder builder);
-
-    String getPassword(String id);
-
 }
