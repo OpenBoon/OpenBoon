@@ -37,7 +37,7 @@ curl -XGET -i 'http://localhost:9200/archivist/proxy-config/standard'
 
 Archivist:
 ```
-curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8089/proxy-configs/standard'
+curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/proxy-configs/standard'
 ```
 
 ### Standard Ingest Pipeline
@@ -52,7 +52,7 @@ curl -XGET -i 'http://localhost:9200/archivist/pipeline/standard'
 
 Archivist:
 ```
-curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8089/pipelines/standard'
+curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/pipelines/standard'
 ```
 
 ### Performing an Ingest
@@ -61,7 +61,7 @@ At minimum, to perform an ingest you must provide a path to search.  This will u
 is setup to use the Standard proxy config.
 
 ```
-curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8086/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
+curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8066/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
 ```
 
 ### Searching
