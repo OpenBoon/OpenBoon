@@ -1,9 +1,7 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist;
 
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,14 +15,12 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.UserDao;
 
-public class ElasticAuthenticationProvider implements AuthenticationProvider {
+public class ZorroaAuthenticationProvider implements AuthenticationProvider {
 
-	private static final Logger logger = LoggerFactory.getLogger(ElasticAuthenticationProvider.class);
-			 
     @Autowired
     UserDao userDao;
 
-    public ElasticAuthenticationProvider() {
+    public ZorroaAuthenticationProvider() {
         // TODO Auto-generated constructor stub
     }
 
@@ -51,8 +47,6 @@ public class ElasticAuthenticationProvider implements AuthenticationProvider {
                 Sets.newHashSetWithExpectedSize(user.getRoles().size());
         user.getRoles().forEach(a->authorities.add(new SimpleGrantedAuthority(a)));
 
-        logger.info("{}", authorities);
-        
         return new UsernamePasswordAuthenticationToken(username, storedPassword, authorities);
     }
 
