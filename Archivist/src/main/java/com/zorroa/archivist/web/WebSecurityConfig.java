@@ -14,8 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import com.zorroa.archivist.ZorroaAuthenticationProvider;
+import com.zorroa.archivist.domain.Room;
+import com.zorroa.archivist.domain.RoomBuilder;
 import com.zorroa.archivist.service.RoomService;
 
 @Configuration
@@ -42,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionRegistry(sessionRegistry())
                 .and()
             .and()
-            	.csrf().disable();
-            
+               .csrf().disable();
+
     }
 
     @Autowired
@@ -60,8 +64,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
-                logger.info("Auth Session: {}",
-                        RequestContextHolder.currentRequestAttributes().getSessionId());
+
+                /*
+                 * Add a room and join it.
+                 */
+                RoomBuilder bld = new RoomBuilder();
+                bld.setName("personal-" + authentication.getName());
+                bld.setVisible(false);
+                bld.setSession(RequestContextHolder.currentRequestAttributes().getSessionId());
+
+                Room room = roomService.create(bld);
+                roomService.setActiveRoom(room);
             }
 
             @Override
@@ -74,11 +87,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        return new ElasticAuthenticationProvider();
+        return new ZorroaAuthenticationProvider();
     }
 
     @Bean
-    public HazelcastSessionRegistry sessionRegistry() {
-        return new HazelcastSessionRegistry();
+    public SessionRegistryImpl sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 }
