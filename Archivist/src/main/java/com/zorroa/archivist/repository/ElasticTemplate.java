@@ -25,11 +25,6 @@ public class ElasticTemplate {
         this.type = type;
     }
 
-    public <T> T queryForObject(String id, RowMapper<T> mapper) {
-        final GetResponse r = client.prepareGet(index, type, id).get();
-        return mapper.mapRow(r.getId(), r.getVersion(), r.getSourceAsBytes());
-    }
-
     public <T> T queryForObject(String id, JsonRowMapper<T> mapper) {
         final GetRequestBuilder builder = client.prepareGet(index, type, id).setFetchSource(true);
         final GetResponse r = builder.get();
