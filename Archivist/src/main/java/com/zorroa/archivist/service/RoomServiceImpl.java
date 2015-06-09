@@ -31,6 +31,11 @@ public class RoomServiceImpl implements RoomService {
     private Map<String, Long> mapSessionToRoom = Maps.newHashMap();
 
     @Override
+    public Room get(long id) {
+        return roomDao.get(id);
+    }
+
+    @Override
     public Room create(RoomBuilder bld) {
         Room room = roomDao.create(bld);
         return room;
