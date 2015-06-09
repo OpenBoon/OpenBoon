@@ -54,6 +54,7 @@ public class ArchivistRepositorySetup {
     @PostConstruct
     public void init() throws IOException {
         setupElasticSearchMapping();
+        createDefaultUsers();
     }
      /**
      * Automatically sets up elastic search if its not setup already.
@@ -102,8 +103,6 @@ public class ArchivistRepositorySetup {
              */
             createDefaultProxyConfiguration();
             createDefaultIngestPipeline();
-            createDefaultUsers();
-
             /*
              * Once all default docs are made we refresh the index.
              */
@@ -122,7 +121,7 @@ public class ArchivistRepositorySetup {
         client.admin().indices().prepareRefresh(alias).get();
     }
 
-    private void createDefaultUsers() throws ElasticsearchException, Exception {
+    private void createDefaultUsers()  {
         logger.info("Creating standard users");
 
         UserBuilder adminBuilder = new UserBuilder();
