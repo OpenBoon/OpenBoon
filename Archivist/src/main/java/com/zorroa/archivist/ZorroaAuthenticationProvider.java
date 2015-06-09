@@ -2,6 +2,8 @@ package com.zorroa.archivist;
 
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +19,8 @@ import com.zorroa.archivist.repository.UserDao;
 
 public class ZorroaAuthenticationProvider implements AuthenticationProvider {
 
+    protected static final Logger logger = LoggerFactory.getLogger(ZorroaAuthenticationProvider.class);
+
     @Autowired
     UserDao userDao;
 
@@ -31,15 +35,16 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String storedPassword;
         User user;
-
         try {
             storedPassword = userDao.getPassword(username);
             user = userDao.get(username);
-        } catch (Exception e ){
+        } catch (Exception e ) {
+            logger.warn("failed to find user: {}", username, e);
             throw new BadCredentialsException("Invalid username or password");
         }
 
         if (!BCrypt.checkpw(authentication.getCredentials().toString(), storedPassword)) {
+            logger.warn("password authentication failed for user: {}", username);
             throw new BadCredentialsException("Invalid username or password");
         }
 

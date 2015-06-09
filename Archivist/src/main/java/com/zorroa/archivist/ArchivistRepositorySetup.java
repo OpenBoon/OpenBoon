@@ -123,6 +123,8 @@ public class ArchivistRepositorySetup {
     }
 
     private void createDefaultUsers() throws ElasticsearchException, Exception {
+        logger.info("Creating standard users");
+
         UserBuilder adminBuilder = new UserBuilder();
         adminBuilder.setEmail("admin@zorrao.com");
         adminBuilder.setFirstName("Admin");
