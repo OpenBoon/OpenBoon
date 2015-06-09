@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS room;
 CREATE TABLE room(
   pk_room BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   str_name VARCHAR(255) NOT NULL,
-  str_session VARCHAR(255),
+  str_session VARCHAR(32),
   str_password VARCHAR(255),
   bool_visible BOOLEAN NOT NULL DEFAULT 't',
   list_invites ARRAY
