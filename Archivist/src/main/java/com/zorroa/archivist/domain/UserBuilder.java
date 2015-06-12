@@ -2,8 +2,6 @@ package com.zorroa.archivist.domain;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class UserBuilder {
 
     private String username;

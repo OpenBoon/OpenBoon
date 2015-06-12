@@ -2,8 +2,8 @@ package com.zorroa.archivist.processors;
 
 import java.awt.Dimension;
 import java.io.IOException;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

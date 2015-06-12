@@ -1,6 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,12 +37,24 @@ public class RoomDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetPassword() {
-        // The crypted password
+        // The encrypted password
         String hashed = roomDao.getPassword(room.getId());
         assertTrue(hashed.startsWith("$"));
 
         // try to authenticate it.
         assertTrue(BCrypt.checkpw("open seasame", hashed));
         assertFalse(BCrypt.checkpw("gtfo", hashed));
+    }
+
+    @Test
+    public void testGetAll() {
+        for (int i=0; i<10; i++) {
+            RoomBuilder bld = new RoomBuilder();
+            bld.setName("room" + i);
+            bld.setVisible(true);
+            roomDao.create(bld);
+        }
+
+        assertEquals(11, roomDao.getAll().size());
     }
 }

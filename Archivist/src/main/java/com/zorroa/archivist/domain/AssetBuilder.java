@@ -1,8 +1,8 @@
 package com.zorroa.archivist.domain;
 
 import java.io.File;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import org.elasticsearch.common.collect.Maps;
 
