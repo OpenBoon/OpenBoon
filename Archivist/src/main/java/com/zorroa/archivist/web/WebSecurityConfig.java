@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
 
+                String session = RequestContextHolder.currentRequestAttributes().getSessionId();
                 /*
                  * Add a room and join it.
                  */
@@ -74,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 bld.setSession(RequestContextHolder.currentRequestAttributes().getSessionId());
 
                 Room room = roomService.create(bld);
-                roomService.setActiveRoom(room);
+                roomService.setActiveRoom(session, room);
             }
 
             @Override

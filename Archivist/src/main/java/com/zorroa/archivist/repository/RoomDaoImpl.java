@@ -1,13 +1,12 @@
 package com.zorroa.archivist.repository;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.elasticsearch.common.Preconditions;
 import org.elasticsearch.common.collect.ImmutableSet;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -59,23 +58,20 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbc.update(new PreparedStatementCreator() {
-            public PreparedStatement createPreparedStatement(Connection connection)
-                    throws SQLException {
-                PreparedStatement ps =
-                    connection.prepareStatement(INSERT,  new String[]{"pk_person"});
-                ps.setString(1, builder.getName());
-                ps.setString(2, builder.getSession());
-                ps.setString(3, builder.getPassword());
-                ps.setBoolean(4, builder.isVisible());
-                if (builder.getInviteList() ==null) {
-                     ps.setObject(5, new String[] {});
-                }
-                else {
-                     ps.setObject(5, builder.getInviteList().toArray(new String[]{}));
-                }
-                return ps;
+        jdbc.update(connection -> {
+            PreparedStatement ps =
+                connection.prepareStatement(INSERT, new String[]{"pk_person"});
+            ps.setString(1, builder.getName());
+            ps.setString(2, builder.getSession());
+            ps.setString(3, builder.getPassword());
+            ps.setBoolean(4, builder.isVisible());
+            if (builder.getInviteList() ==null) {
+                 ps.setObject(5, new String[] {});
             }
+            else {
+                 ps.setObject(5, builder.getInviteList().toArray(new String[]{}));
+            }
+            return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
         return get(id);
@@ -87,5 +83,12 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         return jdbc.queryForObject("SELECT str_password FROM room WHERE pk_room=?", String.class, id);
     }
 
-
+    @Override
+    public List<Room> getAll() {
+        /*
+         * Should return all rooms and our own session room.
+         */
+        return jdbc.query("SELECT * FROM room WHERE (bool_visible='t' OR str_session=?)", MAPPER,
+            SecurityUtils.getSessionId());
+    }
 }

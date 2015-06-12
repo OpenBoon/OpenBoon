@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.Message;
@@ -42,21 +42,19 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void setActiveRoom(Room room) {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+    public void setActiveRoom(String sessionId, Room room) {
+        logger.info("Setting active room {} for session {}", room, sessionId);
         mapSessionToRoom.put(sessionId, room.getId());
     }
 
     @Override
-    public Room getActiveRoom() {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+    public Room getActiveRoom(String sessionId) {
         return roomDao.get(mapSessionToRoom.get(sessionId));
     }
 
     @Override
-    public void sendToActiveRoom(Message message) {
+    public void sendToRoom(Room room, Message message) {
         logger.info("Sending: {} to active room", message.toString());
-        Room room = getActiveRoom();
 
         Set<String> sessions = Sets.newHashSet();
         for (Map.Entry<String, Long> entry: mapSessionToRoom.entrySet()) {
@@ -65,5 +63,10 @@ public class RoomServiceImpl implements RoomService {
             }
         }
         eventServerHandler.send(sessions, message.toString());
+    }
+
+    @Override
+    public List<Room> getAll() {
+        return roomDao.getAll();
     }
 }

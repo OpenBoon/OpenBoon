@@ -2,6 +2,8 @@ package com.zorroa.archivist.web;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpSession;
+
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import com.zorroa.archivist.domain.Message;
 import com.zorroa.archivist.domain.MessageType;
+import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.service.RoomService;
 
 @RestController
@@ -33,9 +36,10 @@ public class AssetController {
     RoomService roomService;
 
     @RequestMapping(value="/assets/_search", method=RequestMethod.GET)
-    public DeferredResult<String> search(@RequestBody String query, Principal principle) {
+    public DeferredResult<String> search(@RequestBody String query, HttpSession session) {
 
-        roomService.sendToActiveRoom(new Message(MessageType.SEARCH, query));
+        Room room = roomService.getActiveRoom(session.getId());
+        roomService.sendToRoom(room, new Message(MessageType.SEARCH, query));
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
                 .setTypes("asset")

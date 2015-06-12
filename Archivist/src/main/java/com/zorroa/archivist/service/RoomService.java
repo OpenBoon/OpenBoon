@@ -1,5 +1,7 @@
 package com.zorroa.archivist.service;
 
+import java.util.List;
+
 import com.zorroa.archivist.domain.Message;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
@@ -10,10 +12,11 @@ public interface RoomService {
 
     Room create(RoomBuilder bld);
 
-    void setActiveRoom(Room room);
+    void setActiveRoom(String sessionId, Room room);
 
-    Room getActiveRoom();
+    void sendToRoom(Room room, Message message);
 
-    void sendToActiveRoom(Message message);
+    List<Room> getAll();
 
+    Room getActiveRoom(String sessionId);
 }
