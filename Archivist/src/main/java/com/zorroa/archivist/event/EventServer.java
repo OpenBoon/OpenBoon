@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 public class EventServer {
 
@@ -23,6 +24,9 @@ public class EventServer {
 
     @Autowired
     EventServerInitializer eventServerInitializer;
+
+    @Value("${archivist.events.port}")
+    private int port;
 
     public EventServer() {
         bootstrap.group(bossGroup, workerGroup)
@@ -41,7 +45,7 @@ public class EventServer {
             @Override
             public void run() {
                 try {
-                    bootstrap.bind(8068).sync().channel().closeFuture().sync();
+                    bootstrap.bind(port).sync().channel().closeFuture().sync();
                 } catch (InterruptedException ignore) {
                     //
                 }

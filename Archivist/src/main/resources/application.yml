@@ -1,10 +1,9 @@
 
 #
-# HTTP Port
+# Spring and Spring Boot Settings
 #
 server:
     port: 8066
-
 
 spring:
     datasource:
@@ -19,6 +18,9 @@ spring:
 # Archivist Settings
 #
 archivist:
+    events:
+        port: 8087
+
     index:
         alias: "archivist"
     proxies:
