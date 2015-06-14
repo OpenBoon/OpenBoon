@@ -36,7 +36,7 @@ public class RoomControllerTests extends MockMvcTest {
         bld.setVisible(true);
         bld.setInviteList(Sets.newHashSet("mvchambers@me.com"));
 
-        MvcResult result = mvc.perform(post("/rooms")
+        MvcResult result = mvc.perform(post("/api/v1/rooms")
                  .session(admin())
                  .contentType(MediaType.APPLICATION_JSON_VALUE)
                  .content(Json.serialize(bld)))
@@ -58,7 +58,7 @@ public class RoomControllerTests extends MockMvcTest {
             roomService.create(bld);
         }
 
-        MvcResult result = mvc.perform(get("/rooms")
+        MvcResult result = mvc.perform(get("/api/v1/rooms")
                  .session(admin())
                  .contentType(MediaType.APPLICATION_JSON_VALUE))
                  .andExpect(status().isOk())
@@ -80,7 +80,7 @@ public class RoomControllerTests extends MockMvcTest {
             bld.setVisible(true);
             Room room = roomService.create(bld);
 
-            mvc.perform(put("/rooms/" + room.getId() + "/_join")
+            mvc.perform(put("/api/v1/rooms/" + room.getId() + "/_join")
                     .session(session)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
                     .andExpect(status().isOk())
@@ -100,7 +100,7 @@ public class RoomControllerTests extends MockMvcTest {
         bld.setInviteList(Sets.newHashSet("mvchambers@me.com"));
         Room room1 = roomService.create(bld);
 
-        MvcResult result = mvc.perform(get("/rooms/" + room1.getId())
+        MvcResult result = mvc.perform(get("/api/v1/rooms/" + room1.getId())
                 .session(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

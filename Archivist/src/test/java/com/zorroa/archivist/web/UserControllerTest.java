@@ -15,6 +15,6 @@ public class UserControllerTest extends MockMvcTest {
 
     @Test
     public void testLogin() throws Exception {
-        mvc.perform(post("/login").session(admin())).andExpect(status().isOk());
+        mvc.perform(post("/api/v1/login").session(admin())).andExpect(status().isOk());
     }
 }
