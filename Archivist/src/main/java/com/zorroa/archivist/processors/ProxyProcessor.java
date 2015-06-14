@@ -9,21 +9,28 @@ import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.domain.AssetBuilder;
 import com.zorroa.archivist.domain.Proxy;
 import com.zorroa.archivist.domain.ProxyOutput;
+import com.zorroa.archivist.service.ImageService;
 
 public class ProxyProcessor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
 
+    @Autowired
+    protected ImageService imageService;
+
     public ProxyProcessor() { }
 
     @Override
     public void process(AssetBuilder asset) {
+
+
         List<Proxy> result = Lists.newArrayList();
-        for (ProxyOutput output: proxyConfig.getOutputs()) {
+        for (ProxyOutput output: getProxyOutputs()) {
             try {
                 result.add(imageService.makeProxy(asset.getFile(), output));
             } catch (IOException e) {
@@ -31,9 +38,7 @@ public class ProxyProcessor extends IngestProcessor {
             }
         }
 
-        /*
-         * Sort by # of pixels?
-         */
+
         Collections.sort(result, new Comparator<Proxy>() {
             @Override
             public int compare(Proxy o1, Proxy o2) {
@@ -42,5 +47,6 @@ public class ProxyProcessor extends IngestProcessor {
         });
 
         asset.document.put("proxies", result);
+
     }
 }

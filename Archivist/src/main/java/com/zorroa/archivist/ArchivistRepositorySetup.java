@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.io.ByteStreams;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
@@ -18,15 +19,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
+import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.domain.StandardRoles;
 import com.zorroa.archivist.domain.UserBuilder;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.IngestService;
 
 @Component
@@ -39,6 +42,9 @@ public class ArchivistRepositorySetup {
 
     @Autowired
     IngestService ingestService;
+
+    @Autowired
+    ImageService imageService;
 
     @Autowired
     Client client;
@@ -55,6 +61,7 @@ public class ArchivistRepositorySetup {
     public void init() throws IOException {
         setupElasticSearchMapping();
         createDefaultUsers();
+        createDefaultProxyConfiguration();
     }
      /**
      * Automatically sets up elastic search if its not setup already.
@@ -101,7 +108,6 @@ public class ArchivistRepositorySetup {
             /*
              * Add the default configuration docs.
              */
-            createDefaultProxyConfiguration();
             createDefaultIngestPipeline();
             /*
              * Once all default docs are made we refresh the index.
@@ -143,15 +149,17 @@ public class ArchivistRepositorySetup {
         userDao.create(userBuilder);
     }
 
-    private void createDefaultProxyConfiguration() throws ElasticsearchException, Exception {
-        ClassPathResource resource = new ClassPathResource("proxy-config.json");
-        Preconditions.checkNotNull(resource, "Unable to find proxy-config.json");
-        byte[] source = ByteStreams.toByteArray(resource.getInputStream());
-
-        logger.info("Creating 'standard' proxy configuration");
-        client.prepareIndex(alias, "proxy-config", "standard")
-            .setSource(source)
-            .get();
+    private void createDefaultProxyConfiguration() {
+        logger.info("Creating standard proxy configuration");
+        ProxyConfigBuilder builder = new ProxyConfigBuilder();
+        builder.setName("standard");
+        builder.setDescription("Default set of proxy images to make for every asset.");
+        builder.setOutputs(Lists.newArrayList(
+                new ProxyOutput("png", 128, 8),
+                new ProxyOutput("png", 256, 8),
+                new ProxyOutput("png", 1024, 8)
+        ));
+        imageService.createProxyConfig(builder);
     }
 
     private void createDefaultIngestPipeline() throws ElasticsearchException, Exception {

@@ -28,6 +28,7 @@ import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
 import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.processors.IngestProcessor;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
@@ -85,6 +86,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public void ingest(IngestPipeline pipeline, IngestBuilder builder) {
 
         ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());
+        List<ProxyOutput> proxyOutputs = proxyConfigDao.getAllOutputs(proxyConfig);
+
         Preconditions.checkNotNull(proxyConfig, "Could not find ProxyConfig: " + builder.getProxyConfig());
 
         /**
@@ -103,7 +106,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
             AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
             autowire.autowireBean(processor);
-            processor.setProxyConfig(proxyConfig);
+            processor.setProxyOutputs(proxyOutputs);
         }
 
         ingestExecutor.execute(new IngestWorker(pipeline, builder));

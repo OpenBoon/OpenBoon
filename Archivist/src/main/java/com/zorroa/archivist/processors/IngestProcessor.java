@@ -1,11 +1,12 @@
 package com.zorroa.archivist.processors;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.domain.AssetBuilder;
-import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.service.ImageService;
 
 public abstract class IngestProcessor {
@@ -13,7 +14,7 @@ public abstract class IngestProcessor {
     @Autowired
     protected ImageService imageService;
 
-    protected ProxyConfig proxyConfig;
+    protected List<ProxyOutput> proxyOutputs;
 
     public abstract void process(AssetBuilder asset);
 
@@ -27,7 +28,11 @@ public abstract class IngestProcessor {
         this.args = args;
     }
 
-    public void setProxyConfig(ProxyConfig proxyConfig) {
-        this.proxyConfig = proxyConfig;
+    public List<ProxyOutput> getProxyOutputs() {
+        return proxyOutputs;
+    }
+
+    public void setProxyOutputs(List<ProxyOutput> proxyOutputs) {
+        this.proxyOutputs = proxyOutputs;
     }
 }

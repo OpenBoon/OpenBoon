@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.Proxy;
 import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.repository.ProxyConfigDao;
 
@@ -149,5 +150,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ProxyConfig getProxyConfig(String id) {
         return proxyConfigDao.get(id);
+    }
+
+    @Override
+    public ProxyConfig createProxyConfig(ProxyConfigBuilder builder) {
+        return proxyConfigDao.create(builder);
     }
 }

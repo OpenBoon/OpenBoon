@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.zorroa.archivist.domain.Proxy;
 import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyOutput;
 
 public interface ImageService {
@@ -60,4 +61,12 @@ public interface ImageService {
      * @return
      */
     ProxyConfig getProxyConfig(String id);
+
+    /**
+     * Create and return a new proxy config.
+     *
+     * @param builder
+     * @return
+     */
+    ProxyConfig createProxyConfig(ProxyConfigBuilder builder);
 }
