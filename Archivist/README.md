@@ -20,6 +20,31 @@ $ mvn package
 $ java -jar target/archivist-1.0.0.jar
 ```
 
+## TCP Ports of Note
+
+   * 8066 - REST interface
+   * 8087 - Event interface
+   * 9200 - ElasticSearch direct HTTP
+
+## REST Endpoint Quick Reference
+
+| Endpoint                   | Method | Description                                                    |
+|----------------------------|--------|----------------------------------------------------------------|
+| /api/v1/assets/_search     | GET    | Perform an asset search                                        |
+| /api/v1/assets/_count      | GET    | Perform an asset search but return only the total result count |
+| /api/v1/pipelines          | POST   | Create a new ingest pipeline                                   |
+| /api/v1/pipelines/{id}        | GET    | Get a particular ingest pipeline                               |
+| /api/v1/pipelines          | GET    | Get a list of all ingest pipelines                             |
+| /api/v1/proxy-configs      | GET    | Get a list of all proxy generation configurations              |
+| /api/v1/proxy-configs/{id} | GET    | Get a specific proxy generation configuration                  |
+| /api/v1/proxy/image/{id}   | GET    | Get a specific proxy image                                     |
+| /api/v1/rooms/{id}/_join   | PUT    | Assigns the authenticated session to the given room            |
+| /api/v1/rooms/{id}         | GET    | Get information for particular room                            |
+| /api/v1/rooms              | GET    | Get a list of all rooms                                        |
+| /api/v1/rooms              | POST   | Add a new room                                                 |
+| /api/v1/login              | POST   | Login via simple HTTP authentication                           |
+| /api/v1/users              | GET    | Get a list of all users                                        |
+
 ## Talking to the Archivst using Curl
 
 Any URL on TCP port 9200 is a raw ElasticSearch endpoint and used for debugging.  This will be disabled
@@ -37,7 +62,7 @@ curl -XGET -i 'http://localhost:9200/archivist/proxy-config/standard'
 
 Archivist:
 ```
-curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/proxy-configs/standard'
+curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/api/v1/proxy-configs/standard'
 ```
 
 ### Standard Ingest Pipeline
@@ -52,7 +77,7 @@ curl -XGET -i 'http://localhost:9200/archivist/pipeline/standard'
 
 Archivist:
 ```
-curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/pipelines/standard'
+curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/api/v1/pipelines/standard'
 ```
 
 ### Performing an Ingest
@@ -61,7 +86,7 @@ At minimum, to perform an ingest you must provide a path to search.  This will u
 is setup to use the Standard proxy config.
 
 ```
-curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8066/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
+curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8066/api/v1/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
 ```
 
 ### Searching
@@ -102,7 +127,7 @@ Most people will do what are called query string searches.
 
 ```
 curl -XGET -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{
-  "query": { 
+  "query": {
     "query_string" : {
       "query" : "dog AND food"
     }
@@ -121,7 +146,7 @@ curl -XPOST -i 'http://localhost:9200/archivist_01/_search?pretty' -d '{
           "collections" : ["Wex"]
         }
       }
-    } 
-  } 
+    }
+  }
 }'
 ```

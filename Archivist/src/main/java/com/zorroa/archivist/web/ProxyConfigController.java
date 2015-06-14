@@ -23,13 +23,13 @@ public class ProxyConfigController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value="/proxy-configs", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/proxy-configs", method=RequestMethod.GET)
     public List<ProxyConfig> getAll() {
         return imageService.getProxyConfigs();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value="/proxy-configs/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/proxy-configs/{id}", method=RequestMethod.GET)
     public ProxyConfig get(@PathVariable String id) {
         return imageService.getProxyConfig(id);
     }

@@ -28,16 +28,16 @@ public class RoomController {
     /**
      * User joins a particular room
      */
-    @RequestMapping(value="/rooms/{id}/_join", method=RequestMethod.PUT)
+    @RequestMapping(value="/api/v1/rooms/{id}/_join", method=RequestMethod.PUT)
     public void join(@PathVariable long id, HttpSession session) {
         Room room = roomService.get(id);
         roomService.setActiveRoom(session.getId(), room);
     }
 
     /**
-     * User joins a particular room
+     * Get information for particular room.
      */
-    @RequestMapping(value="/rooms/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/rooms/{id}", method=RequestMethod.GET)
     public Room get(@PathVariable long id) {
         Room room = roomService.get(id);
         return room;
@@ -47,7 +47,7 @@ public class RoomController {
      * rooms except for the user's personal room.
      * @return
      */
-    @RequestMapping(value="/rooms", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/rooms", method=RequestMethod.GET)
     public List<Room> getAll() {
         return roomService.getAll();
     }
@@ -58,7 +58,7 @@ public class RoomController {
      * @param builder
      * @return
      */
-    @RequestMapping(value="/rooms", method=RequestMethod.POST)
+    @RequestMapping(value="/api/v1/rooms", method=RequestMethod.POST)
     public Room create(@RequestBody RoomBuilder builder, HttpSession session) {
         // Don't allow session rooms
         logger.info("Creating room {}", builder);

@@ -35,7 +35,7 @@ public class AssetController {
     @Autowired
     RoomService roomService;
 
-    @RequestMapping(value="/assets/_search", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET)
     public DeferredResult<String> search(@RequestBody String query, HttpSession session) {
 
         Room room = roomService.getActiveRoom(session.getId());
@@ -61,7 +61,7 @@ public class AssetController {
         return result;
     }
 
-    @RequestMapping(value="/assets/_count", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.GET)
     public DeferredResult<String> count(@RequestBody String query, Principal principle) {
         CountRequestBuilder builder = client.prepareCount(alias)
                 .setTypes("asset")

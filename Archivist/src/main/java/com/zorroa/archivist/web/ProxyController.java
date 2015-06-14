@@ -46,7 +46,7 @@ public class ProxyController {
          }
     });
 
-    @RequestMapping(value = "proxy/image/{id:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/proxy/image/{id:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<byte[]> getProxy(@PathVariable String id) throws ExecutionException {
         ProxyImage image = proxyCache.get(id);
