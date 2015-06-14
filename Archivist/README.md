@@ -43,6 +43,7 @@ $ java -jar target/archivist-1.0.0.jar
 | /api/v1/rooms              | GET    | Get a list of all rooms                                        |
 | /api/v1/rooms              | POST   | Add a new room                                                 |
 | /api/v1/login              | POST   | Login via simple HTTP authentication                           |
+| /api/v1/logout             | POST   | Log the authenticated user out                                 |
 | /api/v1/users              | GET    | Get a list of all users                                        |
 
 ## Talking to the Archivst using Curl

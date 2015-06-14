@@ -2,6 +2,9 @@ package com.zorroa.archivist.web;
 
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +24,11 @@ public class UserController  {
     @RequestMapping(value="/api/v1/login", method=RequestMethod.POST)
     public User login() {
         return userDao.get(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    @RequestMapping(value="/api/v1/logout", method=RequestMethod.POST)
+    public void logout(HttpServletRequest req) throws ServletException {
+        req.logout();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
