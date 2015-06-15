@@ -60,7 +60,7 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
-                connection.prepareStatement(INSERT, new String[]{"pk_person"});
+                connection.prepareStatement(INSERT, new String[]{"pk_room"});
             ps.setString(1, builder.getName());
             ps.setString(2, builder.getSession());
             ps.setString(3, builder.getPassword());

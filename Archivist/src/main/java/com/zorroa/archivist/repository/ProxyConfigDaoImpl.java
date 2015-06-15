@@ -91,7 +91,7 @@ public class ProxyConfigDaoImpl extends AbstractDao implements ProxyConfigDao {
          KeyHolder keyHolder = new GeneratedKeyHolder();
          jdbc.update(connection -> {
              PreparedStatement ps =
-                 connection.prepareStatement(INSERT, new String[]{"pk_person"});
+                 connection.prepareStatement(INSERT, new String[]{"pk_proxy_config"});
              ps.setString(1, builder.getName());
              ps.setString(2, builder.getDescription());
              ps.setString(3, SecurityUtils.getUsername());
