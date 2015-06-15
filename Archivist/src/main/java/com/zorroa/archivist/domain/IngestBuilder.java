@@ -11,6 +11,7 @@ public class IngestBuilder {
     private String path;
     private Set<String> fileTypes = ImmutableSet.<String>of();
     private String proxyConfig = "standard";
+    private String pipeline = "standard";
 
     public IngestBuilder() { }
 
@@ -56,5 +57,13 @@ public class IngestBuilder {
 
     public void setProxyConfig(String proxyConfig) {
         this.proxyConfig = proxyConfig;
+    }
+
+    public String getPipeline() {
+        return pipeline;
+    }
+
+    public void setPipeline(String pipeline) {
+        this.pipeline = pipeline;
     }
 }

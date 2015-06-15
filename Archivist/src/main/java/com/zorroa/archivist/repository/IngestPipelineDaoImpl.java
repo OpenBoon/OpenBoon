@@ -1,59 +1,85 @@
 package com.zorroa.archivist.repository;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.common.Preconditions;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.zorroa.archivist.Json;
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.domain.IngestProcessorFactory;
 
 @Repository
-public class IngestPipelineDaoImpl extends AbstractElasticDao implements IngestPipelineDao {
+public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipelineDao {
 
-    @Override
-    public String getType() {
-        return "pipeline";
-    }
-
-    private static final JsonRowMapper<IngestPipeline> MAPPER = new JsonRowMapper<IngestPipeline>() {
+    private static final RowMapper<IngestPipeline> MAPPER = new RowMapper<IngestPipeline>() {
         @Override
-        public IngestPipeline mapRow(String id, long version, byte[] source) {
-            IngestPipeline result = Json.deserialize(source, IngestPipeline.class);
-            result.setId(id);
-            result.setVersion(version);
+        public IngestPipeline mapRow(ResultSet rs, int row) throws SQLException {
+            IngestPipeline result = new IngestPipeline();
+            result.setId(rs.getInt("pk_pipeline"));
+            result.setName(rs.getString("str_name"));
+            result.setDescription(rs.getString("str_description"));
+            result.setTimeCreated(rs.getLong("time_created"));
+            result.setUserCreated(rs.getString("str_user_created"));
+            result.setTimeModified(rs.getLong("time_modified"));
+            result.setUserModified(rs.getString("str_user_modified"));
+            result.setProcessors((List<IngestProcessorFactory>) rs.getObject("list_processors"));
             return result;
         }
     };
 
+    private static final String INSERT =
+            "INSERT INTO " +
+                    "pipeline " +
+            "(" +
+                    "str_name,"+
+                    "str_description,"+
+                    "str_user_created,"+
+                    "time_created,"+
+                    "str_user_modified, "+
+                    "time_modified, "+
+                    "list_processors " +
+            ") "+
+            "VALUES (?,?,?,?,?,?,?)";
+
     @Override
-    public String create(IngestPipelineBuilder builder) {
-        Preconditions.checkNotNull(builder.getId(), "The IngestPipeline ID cannot be null");
-        String json = new String(Json.serialize(builder));
-        IndexResponse response = client.prepareIndex(alias, getType(), builder.getId())
-                .setSource(json)
-                .get();
-        refreshIndex();
-        return response.getId();
+    public IngestPipeline create(IngestPipelineBuilder builder) {
+        long time = System.currentTimeMillis();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbc.update(connection -> {
+            PreparedStatement ps =
+                connection.prepareStatement(INSERT, new String[]{"pk_pipeline"});
+            ps.setString(1, builder.getName());
+            ps.setString(2, builder.getDescription());
+            ps.setString(3, SecurityUtils.getUsername());
+            ps.setLong(4, time);
+            ps.setString(5, SecurityUtils.getUsername());
+            ps.setLong(6, time);
+            ps.setObject(7, builder.getProcessors());
+            return ps;
+        }, keyHolder);
+        int id = keyHolder.getKey().intValue();
+        return get(id);
     }
 
     @Override
-    public IngestPipeline get(String id) {
-        return elastic.queryForObject(id, MAPPER);
+    public IngestPipeline get(int id) {
+        return jdbc.queryForObject("SELECT * FROM pipeline WHERE pk_pipeline=?", MAPPER, id);
+    }
+
+    @Override
+    public IngestPipeline get(String name) {
+        return jdbc.queryForObject("SELECT * FROM pipeline WHERE str_name=?", MAPPER, name);
     }
 
     @Override
     public List<IngestPipeline> getAll() {
-        return elastic.query(client.prepareSearch(alias)
-                .setTypes(getType())
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.matchAllQuery())
-                .setVersion(true), MAPPER);
-
+        return jdbc.query("SELECT * FROM pipeline", MAPPER);
     }
-
 }

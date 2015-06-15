@@ -1,26 +1,27 @@
 package com.zorroa.archivist.domain;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.processors.IngestProcessor;
 
-public class IngestProcessorFactory {
+public class IngestProcessorFactory implements Serializable {
+
+    private static final long serialVersionUID = 945863554465836155L;
 
     private static final Logger logger = LoggerFactory.getLogger(InvocationTargetException.class);
 
-    private final ClassLoader classLoader = IngestProcessorFactory.class.getClassLoader();
+    private static final ClassLoader classLoader = IngestProcessorFactory.class.getClassLoader();
 
     private String klass;
     private Map<String, Object> args;
 
-    @JsonIgnore
-    private IngestProcessor processor = null;
+    private transient IngestProcessor processor = null;
 
     public IngestProcessorFactory() { }
 

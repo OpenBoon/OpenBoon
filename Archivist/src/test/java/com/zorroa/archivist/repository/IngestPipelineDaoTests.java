@@ -21,16 +21,15 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
     public void getAndCreate() {
 
         IngestPipelineBuilder request = new IngestPipelineBuilder();
-        request.setId("default");
+        request.setName("default");
 
         IngestProcessorFactory processor = new IngestProcessorFactory();
         processor.setKlass("com.zorroa.archivist.ingest.ExifProcessor");
         request.setProcessors(Lists.newArrayList(processor));
 
-        String id = ingestPipelineDao.create(request);
-        IngestPipeline pipeline = ingestPipelineDao.get(id);
+        IngestPipeline pipeline = ingestPipelineDao.create(request);
 
-        assertEquals(request.getId(), pipeline.getId());
+        assertEquals(request.getName(), pipeline.getName());
     }
 
     @Test
@@ -38,14 +37,12 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 
         for (int i=0; i<=10; i++) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
-            builder.setId("default_" + i);
+            builder.setName("default_" + i);
             builder.addToProcessors(
                     new IngestProcessorFactory("foo.bar.Bing",
                             Maps.newHashMap()));
             ingestPipelineDao.create(builder);
         }
-
-        assertEquals(10, ingestPipelineDao.getAll().size());
+        assertEquals(12, ingestPipelineDao.getAll().size());
     }
-
 }

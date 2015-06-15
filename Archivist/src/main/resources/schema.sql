@@ -40,3 +40,15 @@ CREATE TABLE proxy_config_entry (
   int_bpp INT NOT NULL,
   FOREIGN KEY (pk_proxy_config) REFERENCES proxy_config (pk_proxy_config) ON DELETE CASCADE
 );
+
+CREATE TABLE pipeline (
+  pk_pipeline INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  str_name VARCHAR(64) NOT NULL,
+  str_description VARCHAR(255) NOT NULL,
+  str_user_created VARCHAR(128) NOT NULL,
+  time_created BIGINT NOT NULL,
+  str_user_modified VARCHAR(128) NOT NULL,
+  time_modified BIGINT NOT NULL,
+  list_processors OTHER NOT NULL
+);
+

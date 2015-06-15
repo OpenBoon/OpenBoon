@@ -34,7 +34,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
     public void testIngest_Custom() throws InterruptedException {
 
          IngestPipelineBuilder builder = new IngestPipelineBuilder();
-         builder.setId("default");
+         builder.setName("default");
          builder.addToProcessors(new IngestProcessorFactory(
                  "com.zorroa.archivist.processors.AssetMetadataProcessor"));
 

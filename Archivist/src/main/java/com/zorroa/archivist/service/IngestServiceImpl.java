@@ -68,8 +68,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
-        String id = ingestPipelineDao.create(builder);
-        return ingestPipelineDao.get(id);
+        return ingestPipelineDao.create(builder);
     }
 
     @Override
@@ -86,14 +85,15 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public void ingest(IngestPipeline pipeline, IngestBuilder builder) {
 
         ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());
+        Preconditions.checkNotNull(proxyConfig, "Could not find ProxyConfig: " + builder.getProxyConfig());
         List<ProxyOutput> proxyOutputs = proxyConfigDao.getAllOutputs(proxyConfig);
 
-        Preconditions.checkNotNull(proxyConfig, "Could not find ProxyConfig: " + builder.getProxyConfig());
+        List<IngestProcessorFactory> processors = pipeline.getProcessors();
 
         /**
          * Initialize all the processors
          */
-        for (IngestProcessorFactory factory: pipeline.getProcessors()) {
+        for (IngestProcessorFactory factory: processors) {
             IngestProcessor processor = factory.init();
             if (processor == null ) {
                 String msg = "Aborting ingest, processor not found:" + factory.getKlass();

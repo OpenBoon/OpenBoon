@@ -7,9 +7,11 @@ import com.zorroa.archivist.domain.IngestPipelineBuilder;
 
 public interface IngestPipelineDao {
 
-    String create(IngestPipelineBuilder pipeline);
+    IngestPipeline create(IngestPipelineBuilder pipeline);
 
-    IngestPipeline get(String id);
+    IngestPipeline get(String name);
 
     List<IngestPipeline> getAll();
+
+    IngestPipeline get(int id);
 }

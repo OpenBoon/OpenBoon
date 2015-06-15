@@ -62,6 +62,7 @@ public class ArchivistRepositorySetup {
         setupElasticSearchMapping();
         createDefaultUsers();
         createDefaultProxyConfiguration();
+        createDefaultIngestPipeline();
     }
      /**
      * Automatically sets up elastic search if its not setup already.
@@ -105,10 +106,6 @@ public class ArchivistRepositorySetup {
                 .addAlias(new Alias(alias))
                 .get();
 
-            /*
-             * Add the default configuration docs.
-             */
-            createDefaultIngestPipeline();
             /*
              * Once all default docs are made we refresh the index.
              */
@@ -162,9 +159,9 @@ public class ArchivistRepositorySetup {
         imageService.createProxyConfig(builder);
     }
 
-    private void createDefaultIngestPipeline() throws ElasticsearchException, Exception {
+    private void createDefaultIngestPipeline() {
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
-        builder.setId("standard");
+        builder.setName("standard");
         builder.addToProcessors(new IngestProcessorFactory(AssetMetadataProcessor.class));
         builder.addToProcessors(new IngestProcessorFactory(ProxyProcessor.class));
 
