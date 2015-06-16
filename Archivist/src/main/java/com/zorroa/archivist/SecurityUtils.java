@@ -15,7 +15,7 @@ public class SecurityUtils {
     }
 
     public static String getUsername() {
-        if (ArchivistConfiguration.unittest && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
             return "admin";
         }
         else {
