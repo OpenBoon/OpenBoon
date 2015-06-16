@@ -25,7 +25,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         @Override
         public User mapRow(ResultSet rs, int row) throws SQLException {
             User user = new User();
-            user.setId(rs.getInt("pk_person"));
+            user.setId(rs.getInt("pk_user"));
             user.setUsername(rs.getString("str_username"));
 
             String[] roles = (String[]) rs.getObject("list_roles");
@@ -36,22 +36,22 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User get(int id) {
-        return jdbc.queryForObject("SELECT * FROM person WHERE pk_person=?", MAPPER, id);
+        return jdbc.queryForObject("SELECT * FROM user WHERE pk_user=?", MAPPER, id);
     }
 
     @Override
     public User get(String username) {
-        return jdbc.queryForObject("SELECT * FROM person WHERE str_username=?", MAPPER, username);
+        return jdbc.queryForObject("SELECT * FROM user WHERE str_username=?", MAPPER, username);
     }
 
     @Override
     public List<User> getAll() {
-        return jdbc.query("SELECT * FROM person ORDER BY str_username", MAPPER);
+        return jdbc.query("SELECT * FROM user ORDER BY str_username", MAPPER);
     }
 
     private static final String INSERT =
             "INSERT INTO " +
-                "person " +
+                "user " +
             "(" +
                 "str_username,"+
                 "str_password, " +
@@ -70,7 +70,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             public PreparedStatement createPreparedStatement(Connection connection)
                     throws SQLException {
                 PreparedStatement ps =
-                    connection.prepareStatement(INSERT,  new String[]{"pk_person"});
+                    connection.prepareStatement(INSERT,  new String[]{"pk_user"});
                 ps.setString(1, builder.getUsername());
                 ps.setString(2, builder.getPassword());
                 ps.setString(3, builder.getEmail());
@@ -84,7 +84,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public String getPassword(String username) {
-        return jdbc.queryForObject("SELECT str_password FROM person WHERE str_username=?", String.class, username);
+        return jdbc.queryForObject("SELECT str_password FROM user WHERE str_username=?", String.class, username);
     }
 
 

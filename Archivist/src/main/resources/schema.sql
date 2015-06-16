@@ -1,14 +1,14 @@
 
-DROP TABLE IF EXISTS person;
-CREATE TABLE person(
-  pk_person INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+DROP TABLE IF EXISTS user;
+CREATE TABLE user(
+  pk_user INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   str_username VARCHAR(255) NOT NULL,
   str_password VARCHAR(100) NOT NULL,
   str_email VARCHAR(255) NOT NULL,
   list_roles ARRAY NOT NULL
 );
 
-CREATE UNIQUE INDEX person_str_username_idx ON person(str_username);
+CREATE UNIQUE INDEX user_str_username_idx ON user(str_username);
 
 DROP TABLE IF EXISTS room;
 CREATE TABLE room(
