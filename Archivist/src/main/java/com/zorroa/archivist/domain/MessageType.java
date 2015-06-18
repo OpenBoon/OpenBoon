@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain;
 public enum MessageType {
 
     SESSION,
-    SEARCH
-
+    ASSET_SEARCH,
+    ASSET_COUNT,
+    ASSET_GET
 }

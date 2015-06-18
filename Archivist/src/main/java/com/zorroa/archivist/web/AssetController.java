@@ -1,22 +1,26 @@
 package com.zorroa.archivist.web;
 
-import java.security.Principal;
+import java.io.IOException;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 
-import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.xcontent.ToXContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import com.zorroa.archivist.domain.Message;
 import com.zorroa.archivist.domain.MessageType;
@@ -36,49 +40,48 @@ public class AssetController {
     RoomService roomService;
 
     @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET)
-    public DeferredResult<String> search(@RequestBody String query, HttpSession session) {
+    public void search(@RequestBody String query, HttpSession session, ServletOutputStream out) throws IOException {
 
         Room room = roomService.getActiveRoom(session.getId());
-        roomService.sendToRoom(room, new Message(MessageType.SEARCH, query));
+        roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
                 .setTypes("asset")
                 .setSource(query);
 
-        DeferredResult<String> result = new DeferredResult<String>();
-        builder.execute(new ActionListener<SearchResponse>() {
-            @Override
-            public void onResponse(SearchResponse response) {
-                result.setResult(response.toString());
-
-            }
-            @Override
-            public void onFailure(Throwable e) {
-                result.setErrorResult(e);
-            }
-        });
-
-        return result;
+        SearchResponse response = builder.get();
+        XContentBuilder content = XContentFactory.jsonBuilder(out);
+        content.startObject();
+        response.toXContent(content, ToXContent.EMPTY_PARAMS);
+        content.endObject();
+        content.close();
+        out.close();
     }
 
     @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.GET)
-    public DeferredResult<String> count(@RequestBody String query, Principal principle) {
+    public Long count(@RequestBody String query, HttpSession session) {
+        Room room = roomService.getActiveRoom(session.getId());
+        roomService.sendToRoom(room, new Message(MessageType.ASSET_COUNT, query));
+
         CountRequestBuilder builder = client.prepareCount(alias)
                 .setTypes("asset")
                 .setSource(query.getBytes());
 
-        DeferredResult<String> result = new DeferredResult<String>();
-        builder.execute(new ActionListener<CountResponse>() {
-            @Override
-            public void onResponse(CountResponse response) {
-                result.setResult(response.toString());
-            }
-            @Override
-            public void onFailure(Throwable e) {
-                result.setErrorResult(e);
-            }
-        });
+        CountResponse response = builder.get();
+        return response.getCount();
+    }
 
-        return result;
+    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)
+    public void get(@PathVariable String id, HttpSession session, ServletOutputStream out) throws IOException {
+        Room room = roomService.getActiveRoom(session.getId());
+        roomService.sendToRoom(room, new Message(MessageType.ASSET_GET, id));
+
+        GetResponse response = client.prepareGet(alias, "asset", id).get();
+        XContentBuilder content = XContentFactory.jsonBuilder(out);
+        content.startObject();
+        response.toXContent(content, ToXContent.EMPTY_PARAMS);
+        content.endObject();
+        content.close();
+        out.close();
     }
 }
