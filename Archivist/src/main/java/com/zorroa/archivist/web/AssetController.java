@@ -14,6 +14,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zorroa.archivist.domain.Message;
@@ -41,14 +43,20 @@ public class AssetController {
     RoomService roomService;
 
     @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public void search(@RequestBody String query, HttpSession session, ServletOutputStream out) throws IOException {
+    public void search(@RequestBody(required=false) String query, @RequestParam(value="q", required = false) String qstring, HttpSession session, ServletOutputStream out) throws IOException {
 
         Room room = roomService.getActiveRoom(session.getId());
         roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
-                .setTypes("asset")
-                .setSource(query);
+                .setTypes("asset");
+
+        if (qstring != null) {
+            builder.setQuery(QueryBuilders.queryStringQuery(qstring));
+        }
+        else {
+            builder.setSource(query.getBytes());
+        }
 
         SearchResponse response = builder.get();
         XContentBuilder content = XContentFactory.jsonBuilder(out);
@@ -60,14 +68,19 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String count(@RequestBody String query, HttpSession session) {
+    public String count(@RequestBody(required=false) String query, @RequestParam(value="q", required = false) String qstring, HttpSession session) {
         Room room = roomService.getActiveRoom(session.getId());
         roomService.sendToRoom(room, new Message(MessageType.ASSET_COUNT, query));
 
         CountRequestBuilder builder = client.prepareCount(alias)
-                .setTypes("asset")
-                .setSource(query.getBytes());
+                .setTypes("asset");
 
+        if (qstring != null) {
+            builder.setQuery(QueryBuilders.queryStringQuery(qstring));
+        }
+        else {
+            builder.setSource(query.getBytes());
+        }
         CountResponse response = builder.get();
         return new StringBuilder(128)
             .append("{\"count\":")

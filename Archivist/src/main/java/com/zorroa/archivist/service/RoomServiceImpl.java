@@ -69,6 +69,12 @@ public class RoomServiceImpl implements RoomService {
             logger.warn("The current session {} is not in a room.", SecurityUtils.getSessionId());
             return;
         }
+
+        if (message.getPayload() == null) {
+            logger.warn("The current session {} has a null message payload", SecurityUtils.getSessionId());
+            return;
+        }
+
         logger.info("Sending: {} to active room", message.toString());
 
         Set<String> sessions = Sets.newHashSet();
