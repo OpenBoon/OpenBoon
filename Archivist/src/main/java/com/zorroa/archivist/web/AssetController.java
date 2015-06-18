@@ -60,7 +60,7 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public Long count(@RequestBody String query, HttpSession session) {
+    public String count(@RequestBody String query, HttpSession session) {
         Room room = roomService.getActiveRoom(session.getId());
         roomService.sendToRoom(room, new Message(MessageType.ASSET_COUNT, query));
 
@@ -69,7 +69,17 @@ public class AssetController {
                 .setSource(query.getBytes());
 
         CountResponse response = builder.get();
-        return response.getCount();
+        return new StringBuilder(128)
+            .append("{\"count\":")
+            .append(response.getCount())
+            .append(",\"_shards\":{\"total\":")
+            .append(response.getTotalShards())
+            .append(",\"successful\":")
+            .append(response.getSuccessfulShards())
+            .append(",\"failed\":")
+            .append(response.getFailedShards())
+            .append("}}")
+            .toString();
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
