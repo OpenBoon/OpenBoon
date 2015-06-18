@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.Message;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
@@ -49,11 +50,25 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room getActiveRoom(String sessionId) {
-        return roomDao.get(mapSessionToRoom.get(sessionId));
+        /*
+         * Handle the case where the session is not in a room.
+         */
+        Long roomId = mapSessionToRoom.get(sessionId);
+        if (roomId == null) {
+            return null;
+        }
+        return roomDao.get(roomId);
     }
 
     @Override
     public void sendToRoom(Room room, Message message) {
+        /*
+         * If the room is null just log it and move on.
+         */
+        if (room == null) {
+            logger.warn("The current session {} is not in a room.", SecurityUtils.getSessionId());
+            return;
+        }
         logger.info("Sending: {} to active room", message.toString());
 
         Set<String> sessions = Sets.newHashSet();
