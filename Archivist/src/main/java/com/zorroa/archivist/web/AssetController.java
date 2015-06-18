@@ -16,6 +16,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class AssetController {
     @Autowired
     RoomService roomService;
 
-    @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public void search(@RequestBody String query, HttpSession session, ServletOutputStream out) throws IOException {
 
         Room room = roomService.getActiveRoom(session.getId());
@@ -58,7 +59,7 @@ public class AssetController {
         out.close();
     }
 
-    @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public Long count(@RequestBody String query, HttpSession session) {
         Room room = roomService.getActiveRoom(session.getId());
         roomService.sendToRoom(room, new Message(MessageType.ASSET_COUNT, query));
@@ -71,7 +72,7 @@ public class AssetController {
         return response.getCount();
     }
 
-    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public void get(@PathVariable String id, HttpSession session, ServletOutputStream out) throws IOException {
         Room room = roomService.getActiveRoom(session.getId());
         roomService.sendToRoom(room, new Message(MessageType.ASSET_GET, id));
