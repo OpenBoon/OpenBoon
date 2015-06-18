@@ -44,7 +44,7 @@ public class IngestPipelineController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value="/api/v1/pipelines/{id}_ingest", method=RequestMethod.POST)
+    @RequestMapping(value="/api/v1/pipelines/{id}/_ingest", method=RequestMethod.POST)
     public void ingest(@RequestBody IngestBuilder builder, @PathVariable String id) {
         IngestPipeline pipeline = ingestService.getIngestPipeline(id);
         ingestService.ingest(pipeline, builder);
