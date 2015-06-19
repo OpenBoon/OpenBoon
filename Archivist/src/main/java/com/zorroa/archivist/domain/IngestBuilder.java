@@ -55,15 +55,17 @@ public class IngestBuilder {
         return proxyConfig;
     }
 
-    public void setProxyConfig(String proxyConfig) {
+    public IngestBuilder setProxyConfig(String proxyConfig) {
         this.proxyConfig = proxyConfig;
+        return this;
     }
 
     public String getPipeline() {
         return pipeline;
     }
 
-    public void setPipeline(String pipeline) {
+    public IngestBuilder setPipeline(String pipeline) {
         this.pipeline = pipeline;
+        return this;
     }
 }
