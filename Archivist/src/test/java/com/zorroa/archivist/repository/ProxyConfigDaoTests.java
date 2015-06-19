@@ -52,10 +52,4 @@ public class ProxyConfigDaoTests extends ArchivistApplicationTests {
         ProxyConfig config2 = proxyConfigDao.get(proxyConfig.getName());
         assertEquals(config2.getName(), proxyConfig.getName());
     }
-
-    @Test
-    public void getAllOutputs() {
-        List<ProxyOutput> outputs = proxyConfigDao.getAllOutputs(proxyConfig);
-        assertEquals(3, outputs.size());
-    }
 }

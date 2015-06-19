@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
@@ -45,8 +46,7 @@ public class IngestPipelineController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/pipelines/{id}/_ingest", method=RequestMethod.POST)
-    public void ingest(@RequestBody IngestBuilder builder, @PathVariable String id) {
-        IngestPipeline pipeline = ingestService.getIngestPipeline(id);
-        ingestService.ingest(pipeline, builder);
+    public Ingest ingest(@RequestBody IngestBuilder builder, @PathVariable String id) {
+        return ingestService.createIngest(builder);
     }
 }

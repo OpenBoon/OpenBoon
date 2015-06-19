@@ -1,12 +1,13 @@
 package com.zorroa.archivist.processors;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.domain.AssetBuilder;
-import com.zorroa.archivist.domain.ProxyOutput;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestPipeline;
+import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.service.ImageService;
 
 public abstract class IngestProcessor {
@@ -14,7 +15,11 @@ public abstract class IngestProcessor {
     @Autowired
     protected ImageService imageService;
 
-    protected List<ProxyOutput> proxyOutputs;
+    protected ProxyConfig proxyConfig;
+
+    protected IngestPipeline ingestPipeline;
+
+    protected Ingest ingest;
 
     public abstract void process(AssetBuilder asset);
 
@@ -28,11 +33,27 @@ public abstract class IngestProcessor {
         this.args = args;
     }
 
-    public List<ProxyOutput> getProxyOutputs() {
-        return proxyOutputs;
+    public ProxyConfig getProxyConfig() {
+        return proxyConfig;
     }
 
-    public void setProxyOutputs(List<ProxyOutput> proxyOutputs) {
-        this.proxyOutputs = proxyOutputs;
+    public void setProxyConfig(ProxyConfig proxyConfig) {
+        this.proxyConfig = proxyConfig;
+    }
+
+    public IngestPipeline getIngestPipeline() {
+        return ingestPipeline;
+    }
+
+    public void setIngestPipeline(IngestPipeline ingestPipeline) {
+        this.ingestPipeline = ingestPipeline;
+    }
+
+    public Ingest getIngest() {
+        return ingest;
+    }
+
+    public void setIngest(Ingest ingest) {
+        this.ingest = ingest;
     }
 }

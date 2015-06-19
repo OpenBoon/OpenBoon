@@ -30,7 +30,7 @@ public class ProxyProcessor extends IngestProcessor {
 
 
         List<Proxy> result = Lists.newArrayList();
-        for (ProxyOutput output: getProxyOutputs()) {
+        for (ProxyOutput output: getProxyConfig().getOutputs()) {
             try {
                 result.add(imageService.makeProxy(asset.getFile(), output));
             } catch (IOException e) {

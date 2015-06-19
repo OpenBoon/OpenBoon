@@ -38,7 +38,7 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
         ingestPipelineDao.create(builder);
 
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
-        ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
 
         Thread.sleep(1000);
         refreshIndex();

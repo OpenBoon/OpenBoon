@@ -17,8 +17,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Asset;
 import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.service.IngestSchedulerService;
 import com.zorroa.archivist.service.IngestService;
 
 public class AssetControllerTests extends MockMvcTest {
@@ -32,13 +32,16 @@ public class AssetControllerTests extends MockMvcTest {
     @Autowired
     AssetDao assetDao;
 
+    @Autowired
+    IngestSchedulerService ingestSchedulerService;
+
     @Test
     public void testSearch() throws Exception {
 
         MockHttpSession session = admin();
 
-        IngestPipeline pipeline = ingestService.getIngestPipeline("standard");
-        ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(get("/api/v1/assets/_search")
@@ -59,8 +62,8 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        IngestPipeline pipeline = ingestService.getIngestPipeline("standard");
-        ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(get("/api/v1/assets/_count")
@@ -81,8 +84,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        IngestPipeline pipeline = ingestService.getIngestPipeline("standard");
-        ingestService.ingest(pipeline, new IngestBuilder(getStaticImagePath()));
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();
