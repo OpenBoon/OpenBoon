@@ -167,7 +167,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
         @Override
         public void run() {
-            logger.info("Ingesting: {}", asset);
+            logger.debug("Ingesting: {}", asset);
             /*
              * Add some standard keys to the document
              */
@@ -183,7 +183,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
             /*
              * Finally, create the asset.
              */
-            logger.info("Creating asset: {}", asset);
+            logger.debug("Creating asset: {}", asset);
             if (assetService.fastCreateAsset(asset)) {
                 ingestService.incrementCreatedCount(ingest, 1);
             }
