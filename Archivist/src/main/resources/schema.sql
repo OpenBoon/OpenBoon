@@ -52,3 +52,18 @@ CREATE TABLE pipeline (
   list_processors OTHER NOT NULL
 );
 
+CREATE TABLE ingest (
+  pk_ingest BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  pk_pipeline INT NOT NULL,
+  int_state TINYINT NOT NULL DEFAULT 0,
+  str_path VARCHAR(1024) NOT NULL,
+  list_types ARRAY NOT NULL,
+  str_user_created VARCHAR(128) NOT NULL,
+  time_created BIGINT NOT NULL,
+  str_user_modified VARCHAR(128) NOT NULL,
+  time_modified BIGINT NOT NULL,
+  time_started BIGINT NOT NULL DEFAULT -1,
+  time_stopped BIGINT NOT NULL DEFAULT -1,
+  int_new_assets INT NOT NULL DEFAULT 0,
+  int_updated_assets INT NOT NULL DEFAULT 0
+);
