@@ -1,7 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
+import org.elasticsearch.index.engine.DocumentAlreadyExistsException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,14 +18,14 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     @Test
     public void testCreateAndGet() {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        String id = assetDao.create(builder);
+        Asset asset1 = assetDao.create(builder);
         refreshIndex(100);
 
-        Asset asset = assetDao.get(id);
-        assertEquals("jpg", asset.getString("source.extension"));
-        assertEquals(getStaticImagePath(), asset.getString("source.directory"));
-        assertEquals(getStaticImagePath() + "/beer_kettle_01.jpg", asset.getString("source.path"));
-        assertEquals("beer_kettle_01.jpg", asset.getString("source.filename"));
+        Asset asset2 = assetDao.get(asset1.getId());
+        assertEquals("jpg", asset2.getString("source.extension"));
+        assertEquals(getStaticImagePath(), asset2.getString("source.directory"));
+        assertEquals(getStaticImagePath() + "/beer_kettle_01.jpg", asset2.getString("source.path"));
+        assertEquals("beer_kettle_01.jpg", asset2.getString("source.filename"));
 
     }
 
@@ -36,4 +37,19 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         assertEquals(1, assetDao.getAll().size());
     }
 
+    @Test(expected=DocumentAlreadyExistsException.class)
+    public void testFastCreate() {
+        AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        assetDao.fastCreate(builder);
+        assetDao.fastCreate(builder);
+    }
+
+    @Test
+    public void testExistsByPath() {
+        assertFalse(assetDao.existsByPath(getTestImage("beer_kettle_01.jpg").toString()));
+        AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        assetDao.fastCreate(builder);
+        refreshIndex(100);
+        assertTrue(assetDao.existsByPath(getTestImage("beer_kettle_01.jpg").toString()));
+    }
 }

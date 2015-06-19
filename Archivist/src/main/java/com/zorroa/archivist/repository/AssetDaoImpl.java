@@ -46,25 +46,43 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     @Override
-    public String create(AssetBuilder builder) {
+    public Asset create(AssetBuilder builder) {
         IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
                 .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
-                .setOpType(OpType.INDEX)
+                .setOpType(OpType.CREATE)
                 .setSource(Json.serialize(builder.getDocument()));
         if (builder.isAsync()) {
             idxBuilder.execute();
             return null;
         }
         else {
+            idxBuilder.setRefresh(true);
             String id = idxBuilder.get().getId();
-            refreshIndex();
-            return id;
+            return get(id);
         }
+    }
+
+    @Override
+    public void fastCreate(AssetBuilder builder) {
+        IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
+                .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
+                .setOpType(OpType.CREATE)
+                .setSource(Json.serialize(builder.getDocument()));
+        idxBuilder.get();
     }
 
     @Override
     public Asset get(String id) {
         return elastic.queryForObject(id, MAPPER);
+    }
+
+    @Override
+    public boolean existsByPath(String path) {
+        long count = client.prepareCount(alias)
+                .setQuery(QueryBuilders.termQuery("source.path.untouched", path))
+                .get()
+                .getCount();
+        return count > 0;
     }
 
     @Override

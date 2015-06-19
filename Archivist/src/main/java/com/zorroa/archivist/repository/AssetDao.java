@@ -7,10 +7,14 @@ import com.zorroa.archivist.domain.AssetBuilder;
 
 public interface AssetDao {
 
-    String create(AssetBuilder builder);
+    Asset create(AssetBuilder builder);
 
     Asset get(String id);
 
     List<Asset> getAll();
+
+    boolean existsByPath(String path);
+
+    void fastCreate(AssetBuilder builder);
 
 }
