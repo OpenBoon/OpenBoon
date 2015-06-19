@@ -130,7 +130,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
             .forEach(new Consumer<Path>() {
                 @Override
                 public void accept(Path t) {
-                    logger.info("found: {}", t);
+                    logger.debug("found: {}", t);
                     AssetWorker assetWorker = new AssetWorker(pipeline, ingest, t);
                     if (ArchivistConfiguration.unittest) {
                         assetWorker.run();
@@ -146,9 +146,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
         }
         catch (Exception e) {
             logger.warn("Failed to execute ingest," + e, e);
-        }
-        finally {
-
         }
     }
 
@@ -194,7 +191,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
         }
 
         public void executeProcessors() {
-            logger.info("Executing processors");
             for (IngestProcessorFactory factory: pipeline.getProcessors()) {
                 try {
                     IngestProcessor processor = factory.getProcessor();
@@ -205,7 +201,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                             factory.getProcessor().getClass().getCanonicalName(), asset.getFile(), e);
                 }
             }
-            logger.info("done Executing processors");
         }
     }
 
