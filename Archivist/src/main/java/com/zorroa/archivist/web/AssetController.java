@@ -44,7 +44,7 @@ public class AssetController {
     RoomService roomService;
 
     @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET)
-    public void search(@RequestBody(required=false) String query, @RequestParam(value="q", required = false) String qstring, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+    public void search(@RequestBody(required=false) String query, @RequestParam(value="q", required=false) String qstring, HttpSession session, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Room room = roomService.getActiveRoom(session.getId());
@@ -56,7 +56,8 @@ public class AssetController {
         if (qstring != null) {
             builder.setQuery(QueryBuilders.queryStringQuery(qstring));
         }
-        else {
+
+        if (query != null) {
             builder.setSource(query.getBytes());
         }
 
