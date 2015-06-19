@@ -153,6 +153,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public ProxyConfig getProxyConfig(int id) {
+        return proxyConfigDao.get(id);
+    }
+
+    @Override
     public ProxyConfig createProxyConfig(ProxyConfigBuilder builder) {
         return proxyConfigDao.create(builder);
     }

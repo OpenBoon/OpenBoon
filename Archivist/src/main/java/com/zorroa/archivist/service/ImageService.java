@@ -55,12 +55,20 @@ public interface ImageService {
     List<ProxyConfig> getProxyConfigs();
 
     /**
-     * Get a given proxy configuration.
+     * Get a given proxy configuration by name.
      *
      * @param id
      * @return
      */
-    ProxyConfig getProxyConfig(String id);
+    ProxyConfig getProxyConfig(String name);
+
+    /**
+     * Get a given proxy configuration by id;
+     *
+     * @param id
+     * @return
+     */
+    ProxyConfig getProxyConfig(int id);
 
     /**
      * Create and return a new proxy config.
