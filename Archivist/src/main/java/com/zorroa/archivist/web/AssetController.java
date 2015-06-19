@@ -1,8 +1,10 @@
 package com.zorroa.archivist.web;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.elasticsearch.action.count.CountRequestBuilder;
@@ -42,8 +44,9 @@ public class AssetController {
     @Autowired
     RoomService roomService;
 
-    @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public void search(@RequestBody(required=false) String query, @RequestParam(value="q", required = false) String qstring, HttpSession session, ServletOutputStream out) throws IOException {
+    @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET)
+    public void search(@RequestBody(required=false) String query, @RequestParam(value="q", required = false) String qstring, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Room room = roomService.getActiveRoom(session.getId());
         roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
@@ -59,6 +62,7 @@ public class AssetController {
         }
 
         SearchResponse response = builder.get();
+        OutputStream out = httpResponse.getOutputStream();
         XContentBuilder content = XContentFactory.jsonBuilder(out);
         content.startObject();
         response.toXContent(content, ToXContent.EMPTY_PARAMS);
@@ -95,12 +99,16 @@ public class AssetController {
             .toString();
     }
 
-    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public void get(@PathVariable String id, HttpSession session, ServletOutputStream out) throws IOException {
+    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)
+    public void get(@PathVariable String id, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
         Room room = roomService.getActiveRoom(session.getId());
         roomService.sendToRoom(room, new Message(MessageType.ASSET_GET, id));
 
         GetResponse response = client.prepareGet(alias, "asset", id).get();
+        OutputStream out = httpResponse.getOutputStream();
+
         XContentBuilder content = XContentFactory.jsonBuilder(out);
         content.startObject();
         response.toXContent(content, ToXContent.EMPTY_PARAMS);
