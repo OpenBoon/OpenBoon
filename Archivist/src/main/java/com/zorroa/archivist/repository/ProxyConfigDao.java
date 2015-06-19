@@ -15,9 +15,4 @@ public interface ProxyConfigDao {
     ProxyConfig get(int id);
 
     ProxyConfig create(ProxyConfigBuilder builder);
-
-    List<ProxyOutput> getAllOutputs(int id);
-
-    List<ProxyOutput> getAllOutputs(ProxyConfig config);
-
 }

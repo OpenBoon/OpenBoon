@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import java.util.List;
+
 
 public class ProxyConfig {
 
@@ -10,6 +12,7 @@ public class ProxyConfig {
     private String userCreated;
     private long timeModified;
     private String userModified;
+    private List<ProxyOutput> outputs;
 
     public int getId() {
         return id;
@@ -52,5 +55,11 @@ public class ProxyConfig {
     }
     public void setUserModified(String userModified) {
         this.userModified = userModified;
+    }
+    public List<ProxyOutput> getOutputs() {
+        return outputs;
+    }
+    public void setOutputs(List<ProxyOutput> outputs) {
+        this.outputs = outputs;
     }
 }

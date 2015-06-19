@@ -30,6 +30,7 @@ public class ProxyConfigDaoImpl extends AbstractDao implements ProxyConfigDao {
             result.setUserCreated(rs.getString("str_user_created"));
             result.setTimeModified(rs.getLong("time_modified"));
             result.setUserModified(rs.getString("str_user_modified"));
+            result.setOutputs((List<ProxyOutput>)rs.getObject("list_outputs"));
             return result;
         }
     };
@@ -69,20 +70,10 @@ public class ProxyConfigDaoImpl extends AbstractDao implements ProxyConfigDao {
                     "str_user_created,"+
                     "time_created,"+
                     "str_user_modified, "+
-                    "time_modified "+
+                    "time_modified, "+
+                    "list_outputs " +
             ") "+
-            "VALUES (?,?,?,?,?,?)";
-
-    private static final String INSERT_OUTPUT =
-            "INSERT INTO " +
-                    "proxy_config_entry " +
-            "(" +
-                    "pk_proxy_config,"+
-                    "str_format,"+
-                    "int_bpp,"+
-                    "int_size " +
-            ") "+
-            "VALUES (?,?,?,?)";
+            "VALUES (?,?,?,?,?,?,?)";
 
     @Override
     public ProxyConfig create(ProxyConfigBuilder builder) {
@@ -98,25 +89,11 @@ public class ProxyConfigDaoImpl extends AbstractDao implements ProxyConfigDao {
              ps.setLong(4, time);
              ps.setString(5, SecurityUtils.getUsername());
              ps.setLong(6, time);
+             ps.setObject(7, builder.getOutputs());
              return ps;
          }, keyHolder);
          int id = keyHolder.getKey().intValue();
          ProxyConfig config =  get(id);
-
-         for (ProxyOutput output: builder.getOutputs()) {
-             Preconditions.checkNotNull(output.getFormat(), "Format must not be null");
-             jdbc.update(INSERT_OUTPUT, id, output.getFormat(), output.getBpp(), output.getSize());
-         }
          return config;
-    }
-
-    @Override
-    public List<ProxyOutput> getAllOutputs(int id) {
-        return jdbc.query("SELECT * FROM proxy_config_entry WHERE pk_proxy_config=?", MAPPER_OUTPUT, id);
-    }
-
-    @Override
-    public List<ProxyOutput> getAllOutputs(ProxyConfig config) {
-        return getAllOutputs(config.getId());
     }
 }

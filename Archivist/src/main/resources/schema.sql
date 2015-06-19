@@ -28,17 +28,8 @@ CREATE TABLE proxy_config (
   str_user_created VARCHAR(128) NOT NULL,
   time_created BIGINT NOT NULL,
   str_user_modified VARCHAR(128) NOT NULL,
-  time_modified BIGINT NOT NULL
-
-);
-
-CREATE TABLE proxy_config_entry (
-  pk_proxy_config_entry INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  pk_proxy_config INT NOT NULL,
-  str_format VARCHAR(255) NOT NULL,
-  int_size INT NOT NULL,
-  int_bpp INT NOT NULL,
-  FOREIGN KEY (pk_proxy_config) REFERENCES proxy_config (pk_proxy_config) ON DELETE CASCADE
+  time_modified BIGINT NOT NULL,
+  list_outputs OTHER NOT NULL
 );
 
 CREATE TABLE pipeline (
@@ -55,6 +46,7 @@ CREATE TABLE pipeline (
 CREATE TABLE ingest (
   pk_ingest BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_pipeline INT NOT NULL,
+  pk_proxy_config INT NOT NULL,
   int_state TINYINT NOT NULL DEFAULT 0,
   str_path VARCHAR(1024) NOT NULL,
   list_types ARRAY NOT NULL,
@@ -64,6 +56,6 @@ CREATE TABLE ingest (
   time_modified BIGINT NOT NULL,
   time_started BIGINT NOT NULL DEFAULT -1,
   time_stopped BIGINT NOT NULL DEFAULT -1,
-  int_new_assets INT NOT NULL DEFAULT 0,
-  int_updated_assets INT NOT NULL DEFAULT 0
+  int_new_asset_count INT NOT NULL DEFAULT 0,
+  int_updated_asset_count INT NOT NULL DEFAULT 0
 );

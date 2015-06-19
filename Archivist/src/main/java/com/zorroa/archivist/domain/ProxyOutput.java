@@ -1,6 +1,10 @@
 package com.zorroa.archivist.domain;
 
-public class ProxyOutput {
+import java.io.Serializable;
+
+public class ProxyOutput implements Serializable {
+
+    private static final long serialVersionUID = 7766478828301345429L;
 
     private int size;
     private int bpp;
