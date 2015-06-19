@@ -16,6 +16,7 @@ import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestState;
+import com.zorroa.archivist.domain.ProxyConfig;
 
 @Repository
 public class IngestDaoImpl extends AbstractDao implements IngestDao {
@@ -32,7 +33,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             result.setUserCreated(rs.getString("str_user_created"));
             result.setTimeModified(rs.getLong("time_modified"));
             result.setUserCreated(rs.getString("str_user_created"));
-            result.setTypes(ImmutableSet.copyOf((String[]) rs.getArray("list_types").getArray()));
+            result.setFileTypes(ImmutableSet.copyOf((String[]) rs.getArray("list_types").getArray()));
             result.setTimeStarted(rs.getLong("time_started"));
             result.setTimeStopped(rs.getLong("time_stopped"));
             return result;
@@ -49,6 +50,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "ingest " +
             "(" +
                 "pk_pipeline,"+
+                "pk_proxy_config,"+
                 "int_state,"+
                 "str_path,"+
                 "list_types,"+
@@ -61,25 +63,24 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             "VALUES (" + StringUtils.repeat("?", ",", 8) + ")";
 
     @Override
-    public Ingest create(IngestPipeline pipeline, IngestBuilder builder) {
+    public Ingest create(IngestPipeline pipeline, ProxyConfig proxyConfig, IngestBuilder builder) {
         long time = System.currentTimeMillis();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
                 connection.prepareStatement(INSERT, new String[]{"pk_pipeline"});
             ps.setInt(1, pipeline.getId());
-            ps.setInt(2, IngestState.Waiting.ordinal());
-            ps.setObject(3, builder.getPath());
-            ps.setObject(4, builder.getFileTypes().toArray(new String[] {}));
-            ps.setLong(5, time);
-            ps.setString(6, SecurityUtils.getUsername());
-            ps.setLong(7, time);
-            ps.setString(8, SecurityUtils.getUsername());
+            ps.setInt(2, proxyConfig.getId());
+            ps.setInt(3, IngestState.Waiting.ordinal());
+            ps.setObject(4, builder.getPath());
+            ps.setObject(5, builder.getFileTypes().toArray(new String[] {}));
+            ps.setLong(6, time);
+            ps.setString(7, SecurityUtils.getUsername());
+            ps.setLong(8, time);
+            ps.setString(9, SecurityUtils.getUsername());
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
         return get(id);
-
     }
-
 }

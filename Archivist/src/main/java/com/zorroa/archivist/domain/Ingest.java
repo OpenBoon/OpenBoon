@@ -2,13 +2,16 @@ package com.zorroa.archivist.domain;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Ingest {
 
     private long id;
     private int pipelineId;
+    private int proxyConfigId;
     private IngestState state;
     private String path;
-    private Set<String> types;
+    private Set<String> fileTypes;
     private long timeCreated;
     private String userCreated;
     private long timeModified;
@@ -43,11 +46,11 @@ public class Ingest {
     public void setPath(String path) {
         this.path = path;
     }
-    public Set<String> getTypes() {
-        return types;
+    public Set<String> getFileTypes() {
+        return fileTypes;
     }
-    public void setTypes(Set<String> types) {
-        this.types = types;
+    public void setFileTypes(Set<String> fileTypes) {
+        this.fileTypes = fileTypes;
     }
     public long getTimeCreated() {
         return timeCreated;
@@ -103,5 +106,19 @@ public class Ingest {
     public void setSkippedAssetcount(int skippedAssetcount) {
         this.skippedAssetcount = skippedAssetcount;
     }
+    public int getProxyConfigId() {
+        return proxyConfigId;
+    }
+    public void setProxyConfigId(int proxyConfigId) {
+        this.proxyConfigId = proxyConfigId;
+    }
 
+    @JsonIgnore
+    public boolean isSupportedFileType(String type) {
+        if (fileTypes.isEmpty()) {
+            return true;
+        }
+
+        return fileTypes.contains(type);
+    }
 }
