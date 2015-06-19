@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyOutput;
 
 public interface ProxyConfigDao {
 

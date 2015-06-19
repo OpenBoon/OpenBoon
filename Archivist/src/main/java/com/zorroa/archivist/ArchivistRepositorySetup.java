@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 
-import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
