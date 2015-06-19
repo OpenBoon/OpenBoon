@@ -18,9 +18,9 @@ public class Ingest {
     private String userModified;
     private long timeStopped;
     private long timeStarted;
-    private int newAssetCount;
-    private int updatedAssetCount;
-    private int skippedAssetcount;
+    private int createdCount;
+    private int errorCount;
+
 
     public long getId() {
         return id;
@@ -88,24 +88,6 @@ public class Ingest {
     public void setTimeStarted(long timeStarted) {
         this.timeStarted = timeStarted;
     }
-    public int getNewAssetCount() {
-        return newAssetCount;
-    }
-    public void setNewAssetCount(int newAssetCount) {
-        this.newAssetCount = newAssetCount;
-    }
-    public int getUpdatedAssetCount() {
-        return updatedAssetCount;
-    }
-    public void setUpdatedAssetCount(int updatedAssetCount) {
-        this.updatedAssetCount = updatedAssetCount;
-    }
-    public int getSkippedAssetcount() {
-        return skippedAssetcount;
-    }
-    public void setSkippedAssetcount(int skippedAssetcount) {
-        this.skippedAssetcount = skippedAssetcount;
-    }
     public int getProxyConfigId() {
         return proxyConfigId;
     }
@@ -120,5 +102,17 @@ public class Ingest {
         }
 
         return fileTypes.contains(type);
+    }
+    public int getCreatedCount() {
+        return createdCount;
+    }
+    public void setCreatedCount(int createdCount) {
+        this.createdCount = createdCount;
+    }
+    public int getErrorCount() {
+        return errorCount;
+    }
+    public void setErrorCount(int errorCount) {
+        this.errorCount = errorCount;
     }
 }

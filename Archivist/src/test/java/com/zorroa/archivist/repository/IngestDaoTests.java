@@ -1,6 +1,8 @@
 package com.zorroa.archivist.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.elasticsearch.client.Client;
 import org.junit.Before;
@@ -55,7 +57,6 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     public void testGet() {
         Ingest ingest01 = ingestDao.get(ingest.getId());
         assertEquals(ingest01.getId(), ingest.getId());
-        assertEquals(ingest01.getNewAssetCount(), ingest.getNewAssetCount());
         assertEquals(ingest01.getPath(), ingest.getPath());
         assertEquals(ingest01.getPipelineId(), ingest.getPipelineId());
         assertEquals(ingest01.getState(), ingest.getState());
@@ -64,8 +65,35 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals(ingest01.getTimeStarted(), ingest.getTimeStarted());
         assertEquals(ingest01.getTimeStopped(), ingest.getTimeStopped());
         assertEquals(ingest01.getFileTypes(), ingest.getFileTypes());
-        assertEquals(ingest01.getUpdatedAssetCount(), ingest.getUpdatedAssetCount());
         assertEquals(ingest01.getUserCreated(), ingest.getUserCreated());
         assertEquals(ingest01.getUserModified(), ingest.getUserModified());
     }
+
+    @Test
+    public void testSetRunning() {
+        assertTrue(ingestDao.setRunning(ingest));
+        assertFalse(ingestDao.setRunning(ingest));
+    }
+
+    @Test
+    public void testSetFinished() {
+        assertFalse(ingestDao.setFinished(ingest));
+        assertTrue(ingestDao.setRunning(ingest));
+        assertTrue(ingestDao.setFinished(ingest));
+    }
+
+    @Test
+    public void testIncrementCreatedCount() {
+        ingestDao.incrementCreatedCount(ingest, 10);
+        Ingest ingest01 = ingestDao.get(ingest.getId());
+        assertEquals(10, ingest01.getCreatedCount());
+    }
+
+    @Test
+    public void testIncrementErrorCount() {
+        ingestDao.incrementErrorCount(ingest, 10);
+        Ingest ingest01 = ingestDao.get(ingest.getId());
+        assertEquals(10, ingest01.getErrorCount());
+    }
+
 }

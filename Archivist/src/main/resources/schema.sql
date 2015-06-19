@@ -56,6 +56,6 @@ CREATE TABLE ingest (
   time_modified BIGINT NOT NULL,
   time_started BIGINT NOT NULL DEFAULT -1,
   time_stopped BIGINT NOT NULL DEFAULT -1,
-  int_new_asset_count INT NOT NULL DEFAULT 0,
-  int_updated_asset_count INT NOT NULL DEFAULT 0
+  int_created_count INT NOT NULL DEFAULT 0,
+  int_error_count INT NOT NULL DEFAULT 0
 );

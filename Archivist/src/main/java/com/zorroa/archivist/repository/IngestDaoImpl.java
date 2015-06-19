@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.elasticsearch.common.lang3.StringUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -27,6 +28,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             Ingest result = new Ingest();
             result.setId(rs.getLong("pk_ingest"));
             result.setPipelineId(rs.getInt("pk_pipeline"));
+            result.setProxyConfigId(rs.getInt("pk_proxy_config"));
             result.setState(IngestState.values()[rs.getInt("int_state")]);
             result.setPath(rs.getString("str_path"));
             result.setTimeCreated(rs.getLong("time_created"));
@@ -36,6 +38,8 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             result.setFileTypes(ImmutableSet.copyOf((String[]) rs.getArray("list_types").getArray()));
             result.setTimeStarted(rs.getLong("time_started"));
             result.setTimeStopped(rs.getLong("time_stopped"));
+            result.setCreatedCount(rs.getInt("int_created_count"));
+            result.setErrorCount(rs.getInt("int_error_count"));
             return result;
         }
     };
@@ -60,7 +64,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "str_user_modified "+
 
             ") " +
-            "VALUES (" + StringUtils.repeat("?", ",", 8) + ")";
+            "VALUES (" + StringUtils.repeat("?", ",", 9) + ")";
 
     @Override
     public Ingest create(IngestPipeline pipeline, ProxyConfig proxyConfig, IngestBuilder builder) {
@@ -83,4 +87,41 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         long id = keyHolder.getKey().longValue();
         return get(id);
     }
+
+    @Override
+    public Ingest getNextWaitingIngest() {
+        try {
+            return jdbc.queryForObject("SELECT * FROM ingest WHERE int_state=? ORDER BY time_created ASC LIMIT 1",
+                    MAPPER, IngestState.Waiting.ordinal());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean setRunning(Ingest ingest) {
+        return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
+                IngestState.Running.ordinal(), ingest.getId(), IngestState.Waiting.ordinal()) > 0;
+    }
+
+
+    @Override
+    public boolean setFinished(Ingest ingest) {
+        return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
+                IngestState.Finished.ordinal(), ingest.getId(), IngestState.Running.ordinal()) > 0;
+    }
+
+    @Override
+    public void incrementCreatedCount(Ingest ingest, int increment) {
+        logger.info("incrementing created count");
+        jdbc.update("UPDATE ingest SET int_created_count=int_created_count+? WHERE pk_ingest=?",
+                increment, ingest.getId());
+    }
+
+    @Override
+    public void incrementErrorCount(Ingest ingest, int increment) {
+        jdbc.update("UPDATE ingest SET int_error_count=int_error_count+? WHERE pk_ingest=?",
+                increment, ingest.getId());
+    }
+
 }

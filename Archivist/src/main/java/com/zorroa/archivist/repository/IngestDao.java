@@ -11,4 +11,14 @@ public interface IngestDao {
 
     Ingest create(IngestPipeline pipeline, ProxyConfig config, IngestBuilder builder);
 
+    Ingest getNextWaitingIngest();
+
+    void incrementCreatedCount(Ingest ingest, int increment);
+
+    void incrementErrorCount(Ingest ingest, int increment);
+
+    boolean setRunning(Ingest ingest);
+
+    boolean setFinished(Ingest ingest);
+
 }
