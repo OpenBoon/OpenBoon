@@ -125,7 +125,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
 
     @Override
     public void incrementCreatedCount(Ingest ingest, int increment) {
-        logger.info("incrementing created count");
         jdbc.update("UPDATE ingest SET int_created_count=int_created_count+? WHERE pk_ingest=?",
                 increment, ingest.getId());
     }
