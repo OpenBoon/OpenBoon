@@ -32,6 +32,7 @@ $ java -jar target/archivist-1.0.0.jar
 |----------------------------|--------|----------------------------------------------------------------|
 | /api/v1/assets/_search     | GET    | Perform an asset search                                        |
 | /api/v1/assets/_count      | GET    | Perform an asset search but return only the total result count |
+| /api/v1/assets/_suggest    | POST   | Perform a suggest search, ES params in body                    |
 | /api/v1/pipelines          | POST   | Create a new ingest pipeline                                   |
 | /api/v1/pipelines/{id}        | GET    | Get a particular ingest pipeline                               |
 | /api/v1/pipelines          | GET    | Get a list of all ingest pipelines                             |
