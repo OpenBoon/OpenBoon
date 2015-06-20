@@ -1,9 +1,12 @@
 package com.zorroa.archivist.web;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +80,32 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
 
         assertEquals(2, (int) counts.get("count"));
+    }
+
+    @Test
+    public void testSuggest() throws Exception {
+
+        MockHttpSession session = admin();
+
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeNextIngest();
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v1/assets/_suggest")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"keyword-suggestions\": { \"text\": \"re\", \"completion\": { \"field\":\"keywords_suggest\"}}}".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+
+        Map<String, Object> suggestions = (Map<String, Object>) ((ArrayList<Object>)json.get("keyword-suggestions")).get(0);
+        ArrayList<Object> options = (ArrayList<Object>) suggestions.get("options");
+        Map<String, Object> suggestion = (Map<String, Object>) options.get(0);
+        String text = (String)suggestion.get("text");
+        assertTrue(text.equals("reflection"));
     }
 
     @Test
