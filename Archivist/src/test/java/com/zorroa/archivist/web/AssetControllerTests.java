@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class AssetControllerTests extends MockMvcTest {
         ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 
-        MvcResult result = mvc.perform(get("/api/v1/assets/_search")
+        MvcResult result = mvc.perform(post("/api/v1/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"query\": { \"match_all\": {}}}".getBytes()))
@@ -66,7 +67,7 @@ public class AssetControllerTests extends MockMvcTest {
         ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 
-        MvcResult result = mvc.perform(get("/api/v1/assets/_count")
+        MvcResult result = mvc.perform(post("/api/v1/assets/_count")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"query\": { \"match_all\": {}}}".getBytes()))
