@@ -65,6 +65,12 @@ public class ImageServiceImpl implements ImageService {
     private static final int PROXY_ID_MIN_LENGTH = 16;
 
     @Override
+    public File generateProxyPath(String name) {
+        String[] e = name.split("\\.");
+        return generateProxyPath(e[0], e[1]);
+    }
+
+    @Override
     public File generateProxyPath(String id, String format) {
 
         if (id.length() < PROXY_ID_MIN_LENGTH) {

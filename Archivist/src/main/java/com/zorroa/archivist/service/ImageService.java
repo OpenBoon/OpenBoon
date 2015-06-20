@@ -48,6 +48,15 @@ public interface ImageService {
     File generateProxyPath(String id, String format);
 
     /**
+     * Convenience method which takes a proxy file name and returns
+     * the absolute path of the proxy.
+     *
+     * @param name
+     * @return
+     */
+
+    File generateProxyPath(String name);
+    /**
      * Return the list of all proxy configurations.
      *
      * @return List<ProxyConfig>
