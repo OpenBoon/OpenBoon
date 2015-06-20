@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.elasticsearch.common.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -89,6 +90,11 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     }
 
     @Override
+    public List<Ingest> getPending() {
+        return jdbc.query("SELECT * FROM ingest WHERE int_state <= 1 ORDER BY int_state DESC", MAPPER);
+    }
+
+    @Override
     public Ingest getNextWaitingIngest() {
         try {
             return jdbc.queryForObject("SELECT * FROM ingest WHERE int_state=? ORDER BY time_created ASC LIMIT 1",
@@ -110,6 +116,12 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
                 IngestState.Finished.ordinal(), ingest.getId(), IngestState.Running.ordinal()) > 0;
     }
+
+    @Override
+    public void setState(Ingest ingest, IngestState state) {
+        jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=?", state.ordinal(), ingest.getId());
+    }
+
 
     @Override
     public void incrementCreatedCount(Ingest ingest, int increment) {

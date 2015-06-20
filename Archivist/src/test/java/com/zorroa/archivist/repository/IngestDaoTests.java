@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestPipeline;
+import com.zorroa.archivist.domain.IngestState;
 import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.IngestService;
@@ -68,6 +71,31 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals(ingest01.getUserCreated(), ingest.getUserCreated());
         assertEquals(ingest01.getUserModified(), ingest.getUserModified());
     }
+
+    @Test
+    public void testGetPending() {
+        List<Ingest> pending = ingestDao.getPending();
+        assertEquals(1, pending.size());
+
+        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
+        ingestDao.create(pipeline, proxyConfig, builder);
+
+        pending = ingestDao.getPending();
+        assertEquals(2, pending.size());
+
+        ingestDao.setState(ingest, IngestState.Finished);
+        pending = ingestDao.getPending();
+        assertEquals(1, pending.size());
+
+    }
+
+    @Test
+    public void testSetState() {
+        ingestDao.setState(ingest, IngestState.Finished);
+        Ingest ingest01 = ingestDao.get(ingest.getId());
+        assertEquals(ingest01.getState(), IngestState.Finished);
+    }
+
 
     @Test
     public void testSetRunning() {
