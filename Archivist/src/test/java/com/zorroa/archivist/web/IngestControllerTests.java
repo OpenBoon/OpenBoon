@@ -1,12 +1,11 @@
 package com.zorroa.archivist.web;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,9 +37,11 @@ public class IngestControllerTests extends MockMvcTest {
     @Autowired
     IngestSchedulerService ingestSchedulerService;
 
+    Ingest ingest;
+
     @Before
     public void init() {
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
     }
 
     @Test
@@ -60,14 +61,14 @@ public class IngestControllerTests extends MockMvcTest {
     @Test
     public void testGet() throws Exception {
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(get("/api/v1/ingests/1")
+        MvcResult result = mvc.perform(get("/api/v1/ingests/" + ingest.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
         Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(1, ingest.getId());
+        assertEquals(ingest.getId(), ingest.getId());
     }
 
     @Test
@@ -86,6 +87,6 @@ public class IngestControllerTests extends MockMvcTest {
                 .andReturn();
 
         Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(2, ingest.getId());
+        assertEquals(ingest.getId(), ingest.getId());
     }
 }
