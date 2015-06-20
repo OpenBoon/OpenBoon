@@ -20,6 +20,25 @@ $ mvn package
 $ java -jar target/archivist-1.0.0.jar
 ```
 
+To run the CaffeProcessor JNI tests without linking errors:
+
+1. [Download the Caffe test models](http://zorroa.com/caffe/caffe-models.tgz)
+2. cd <project dir> (e.g. ~/Zorroa/src/Archivist)
+3. tar xvzf caffe-models.tgz (Places models in src/main/resources/caffe)
+4. Edit the test configuration to add the environment variable DYLD_FALLBACK_LIBRARY_PATH set to
+ ${DYLD_FALLBACK_LIBRARY_PATH}:target/classes/caffe (a relative path should work)
+5. Edit the test configuration to add the following VM option: -Djava.library.path=target/jni/com/zorroa/archivist/processors/CaffeProcessor (a relative path should work)
+
+After running a test or doing a build, you should have the following files in target/classes/caf
+fe (needed for runtime linking and data model loading):
+
+    bvlc_reference_caffenet.caffemodel  libhdf5_hl.7.dylib
+    deploy.prototxt                     libopencv_core.dylib
+    imagenet_mean.binaryproto           libopencv_highgui.dylib
+    libcaffe.so                         libopencv_imgproc.dylib
+    libglog.dylib                       synset_words.txt
+    libhdf5.7.dylib
+
 ## TCP Ports of Note
 
    * 8066 - REST interface
