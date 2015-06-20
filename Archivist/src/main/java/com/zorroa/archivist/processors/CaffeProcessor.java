@@ -34,7 +34,7 @@ public class CaffeProcessor extends IngestProcessor {
 
     public CaffeProcessor() {
         // FIXME: Move network files into JAR bundle and use local references?
-        String resourcePath = "/Users/wex/Zorroa/src/Archivist/src/main/resources/caffe/";
+        String resourcePath = "target/classes/caffe/";
         nativeCaffeClassifier = createCaffeClassifier(
                 resourcePath + "deploy.prototxt",
                 resourcePath + "bvlc_reference_caffenet.caffemodel",
