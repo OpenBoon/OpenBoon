@@ -30,10 +30,10 @@ $ java -jar target/archivist-1.0.0.jar
 
 | Endpoint                   | Method | Description                                                    |
 |----------------------------|--------|----------------------------------------------------------------|
-| /api/v1/assets/_search     | GET    | Perform an asset search                                        |
-| /api/v1/assets/_count      | GET    | Perform an asset search but return only the total result count |
+| /api/v1/assets/_search     | POST   | Perform an asset search, ES params in body                     |
+| /api/v1/assets/_count      | POST   | Perform an asset search but return only the total result count |
 | /api/v1/pipelines          | POST   | Create a new ingest pipeline                                   |
-| /api/v1/pipelines/{id}        | GET    | Get a particular ingest pipeline                               |
+| /api/v1/pipelines/{id}     | GET    | Get a particular ingest pipeline                               |
 | /api/v1/pipelines          | GET    | Get a list of all ingest pipelines                             |
 | /api/v1/proxy-configs      | GET    | Get a list of all proxy generation configurations              |
 | /api/v1/proxy-configs/{id} | GET    | Get a specific proxy generation configuration                  |
@@ -95,7 +95,7 @@ curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -H 'Content-Type: applicati
 Once you have ingested, you can search using the full power of the ElasticSearch query language. To count the number of assets use:
 
 ```
-curl -XGET 'http://localhost:9200/_count?pretty' -d '{"query":{"match_all":{}}}'
+curl -XPOST 'http://localhost:9200/_count?pretty' -d '{"query":{"match_all":{}}}'
 ```
 
 Should return something similar to:
@@ -127,7 +127,7 @@ curl -XGET 'http://localhost:9200/_all/_mapping/pretty'
 Most people will do what are called query string searches.
 
 ```
-curl -XGET -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{
+curl -XPOST -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{
   "query": {
     "query_string" : {
       "query" : "dog AND food"
