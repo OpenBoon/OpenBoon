@@ -45,9 +45,33 @@ public class IngestControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testGetAll() throws Exception {
+        MockHttpSession session = admin();
+
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeNextIngest();
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(get("/api/v1/ingests")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<Ingest> ingests = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Ingest>>() {});
+        assertEquals(2, ingests.size());
+    }
+
+    @Test
     public void testGetPending() throws Exception {
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(get("/api/v1/ingests")
+
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeNextIngest();
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(get("/api/v1/ingests?state=pending")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
