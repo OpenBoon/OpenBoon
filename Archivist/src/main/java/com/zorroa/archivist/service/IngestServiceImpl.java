@@ -95,6 +95,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public List<Ingest> getPendingIngests() {
+        return ingestDao.getPending();
+    }
+
+    @Override
     public void incrementCreatedCount(Ingest ingest, int increment) {
         ingestDao.incrementCreatedCount(ingest, increment);
     }

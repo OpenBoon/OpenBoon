@@ -25,6 +25,8 @@ public interface IngestService {
 
     Ingest getIngest(long id);
 
+    List<Ingest> getPendingIngests();
+
     void incrementErrorCount(Ingest ingest, int increment);
 
     boolean setIngestRunning(Ingest ingest);
