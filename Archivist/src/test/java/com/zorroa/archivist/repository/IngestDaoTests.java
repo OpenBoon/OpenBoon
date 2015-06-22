@@ -73,6 +73,23 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testGetAll() {
+        List<Ingest> pending = ingestDao.getAll();
+        assertEquals(1, pending.size());
+
+        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
+        ingestDao.create(pipeline, proxyConfig, builder);
+
+        pending = ingestDao.getAll();
+        assertEquals(2, pending.size());
+
+        ingestDao.setState(ingest, IngestState.Finished);
+        pending = ingestDao.getAll();
+        assertEquals(2, pending.size());
+
+    }
+
+    @Test
     public void testGetPending() {
         List<Ingest> pending = ingestDao.getPending();
         assertEquals(1, pending.size());
