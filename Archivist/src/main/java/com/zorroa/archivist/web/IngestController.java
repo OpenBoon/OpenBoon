@@ -7,11 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestBuilder;
@@ -41,8 +37,11 @@ public class IngestController {
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/ingests", method=RequestMethod.GET)
-    public List<Ingest> getPending() {
-        return ingestService.getPendingIngests();
+    public List<Ingest> getAll(@RequestParam(value="state", required=false) String state) {
+        if (state != null && state.equals("pending")) {
+            return ingestService.getPendingIngests();
+        }
+        return ingestService.getAllIngests();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
