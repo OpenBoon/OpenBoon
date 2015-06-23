@@ -15,6 +15,8 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.elasticsearch.common.xcontent.ToXContent;
@@ -127,5 +129,22 @@ public class AssetController {
         content.endObject();
         content.close();
         out.close();
+    }
+
+    @RequestMapping(value = "/api/v1/assets/{id}/_collections", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String update(@RequestBody String body, @PathVariable String id) throws Exception {
+        // Add the request body array of collection names to the collections field
+        String doc = "{\"collections\":" + body + "}";  // Hand-coded JSON doc update
+        UpdateRequestBuilder builder = client.prepareUpdate(alias, "asset", id)
+                .setDoc(doc)
+                .setRefresh(true);  // Make sure we block until update is finished
+        UpdateResponse response = builder.get();
+        return new StringBuilder(128)
+                .append("{\"created\":")
+                .append(response.isCreated())
+                .append(",\"version\":")
+                .append(response.getVersion())
+                .append("}")
+                .toString();
     }
 }

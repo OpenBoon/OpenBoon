@@ -131,4 +131,30 @@ public class AssetControllerTests extends MockMvcTest {
         }
 
     }
+
+    @Test
+    public void testCollections() throws Exception {
+
+        MockHttpSession session = admin();
+
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        refreshIndex(1000);
+
+        List<Asset> assets = assetDao.getAll();
+
+        for (Asset asset : assets) {
+
+            MvcResult result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_collections")
+                    .session(session)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content("[\"foo\", \"bar\"]"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                    new TypeReference<Map<String, Object>>() {
+                    });
+            assertEquals(false, (boolean) json.get("created"));
+            assertEquals(Integer.valueOf(2), (Integer) json.get("version"));
+        }
+    }
 }
