@@ -49,11 +49,11 @@ fe (needed for runtime linking and data model loading):
 
 | Endpoint                   | Method | Description                                                    |
 |----------------------------|--------|----------------------------------------------------------------|
-| /api/v1/assets/_search     | GET    | Perform an asset search                                        |
-| /api/v1/assets/_count      | GET    | Perform an asset search but return only the total result count |
+| /api/v1/assets/_search     | POST   | Perform an asset search, ES params in body                     |
+| /api/v1/assets/_count      | POST   | Perform an asset search but return only the total result count |
 | /api/v1/assets/_suggest    | POST   | Perform a suggest search, ES params in body                    |
 | /api/v1/pipelines          | POST   | Create a new ingest pipeline                                   |
-| /api/v1/pipelines/{id}        | GET    | Get a particular ingest pipeline                               |
+| /api/v1/pipelines/{id}     | GET    | Get a particular ingest pipeline                               |
 | /api/v1/pipelines          | GET    | Get a list of all ingest pipelines                             |
 | /api/v1/ingests            | GET    | Get a list of all ingests. Optional state=pending parameter    |
 | /api/v1/ingests            | POST   | Create a new ingests, pass parameters in body                  |
@@ -127,7 +127,7 @@ curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -XPOST -i 'http://localhost
 Once you have ingested, you can search using the full power of the ElasticSearch query language. To count the number of assets use:
 
 ```
-curl -XGET 'http://localhost:9200/_count?pretty' -d '{"query":{"match_all":{}}}'
+curl -XPOST 'http://localhost:9200/_count?pretty' -d '{"query":{"match_all":{}}}'
 ```
 
 Should return something similar to:
@@ -159,7 +159,7 @@ curl -XGET 'http://localhost:9200/_all/_mapping/pretty'
 Most people will do what are called query string searches.
 
 ```
-curl -XGET -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{
+curl -XPOST -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{
   "query": {
     "query_string" : {
       "query" : "dog AND food"

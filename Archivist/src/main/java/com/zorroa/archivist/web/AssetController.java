@@ -49,8 +49,8 @@ public class AssetController {
     @Autowired
     RoomService roomService;
 
-    @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.GET)
-    public void search(@RequestBody(required=false) String query, @RequestParam(value="q", required=false) String qstring, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+    @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.POST)
+    public void search(@RequestBody String query, HttpSession session, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Room room = roomService.getActiveRoom(session.getId());
@@ -58,14 +58,7 @@ public class AssetController {
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
                 .setTypes("asset");
-
-        if (qstring != null) {
-            builder.setQuery(QueryBuilders.queryStringQuery(qstring));
-        }
-
-        if (query != null) {
-            builder.setSource(query.getBytes());
-        }
+        builder.setSource(query.getBytes());
 
         SearchResponse response = builder.get();
         OutputStream out = httpResponse.getOutputStream();
@@ -77,20 +70,12 @@ public class AssetController {
         out.close();
     }
 
-    @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String count(@RequestBody(required=false) String query, @RequestParam(value="q", required = false) String qstring, HttpSession session) {
-        Room room = roomService.getActiveRoom(session.getId());
-        roomService.sendToRoom(room, new Message(MessageType.ASSET_COUNT, query));
-
+    @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+    public String count(@RequestBody String query) {
         CountRequestBuilder builder = client.prepareCount(alias)
                 .setTypes("asset");
+        builder.setSource(query.getBytes());
 
-        if (qstring != null) {
-            builder.setQuery(QueryBuilders.queryStringQuery(qstring));
-        }
-        else {
-            builder.setSource(query.getBytes());
-        }
         CountResponse response = builder.get();
         return new StringBuilder(128)
             .append("{\"count\":")

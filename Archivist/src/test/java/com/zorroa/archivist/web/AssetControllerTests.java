@@ -47,7 +47,7 @@ public class AssetControllerTests extends MockMvcTest {
         ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 
-        MvcResult result = mvc.perform(get("/api/v1/assets/_search")
+        MvcResult result = mvc.perform(post("/api/v1/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"query\": { \"match_all\": {}}}".getBytes()))
@@ -69,7 +69,7 @@ public class AssetControllerTests extends MockMvcTest {
         ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 
-        MvcResult result = mvc.perform(get("/api/v1/assets/_count")
+        MvcResult result = mvc.perform(post("/api/v1/assets/_count")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content("{ \"query\": { \"match_all\": {}}}".getBytes()))
