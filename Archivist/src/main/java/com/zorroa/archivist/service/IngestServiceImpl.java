@@ -95,6 +95,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public List<Ingest> getAllIngests() {
+        return ingestDao.getAll();
+    }
+
+    @Override
     public List<Ingest> getPendingIngests() {
         return ingestDao.getPending();
     }

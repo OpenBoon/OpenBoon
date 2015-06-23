@@ -90,6 +90,11 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     }
 
     @Override
+    public List<Ingest> getAll() {
+        return jdbc.query("SELECT * FROM ingest ORDER BY pk_ingest", MAPPER);
+    }
+
+    @Override
     public List<Ingest> getPending() {
         return jdbc.query("SELECT * FROM ingest WHERE int_state <= 1 ORDER BY int_state DESC", MAPPER);
     }

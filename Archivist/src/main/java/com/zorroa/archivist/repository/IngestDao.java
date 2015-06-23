@@ -24,6 +24,8 @@ public interface IngestDao {
 
     boolean setFinished(Ingest ingest);
 
+    List<Ingest> getAll();
+
     List<Ingest> getPending();
 
     void setState(Ingest ingest, IngestState state);
