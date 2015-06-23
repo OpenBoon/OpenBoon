@@ -33,13 +33,14 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         assertEquals(2, assetDao.getAll().size());
 
         // Ingest again!
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         Ingest ingest02 = ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 
         assertEquals(2, ingestService.getIngest(ingest01.getId()).getCreatedCount());
         assertEquals(0, ingestService.getIngest(ingest01.getId()).getErrorCount());
         assertEquals(0, ingestService.getIngest(ingest02.getId()).getCreatedCount());
-        assertEquals(2, ingestService.getIngest(ingest02.getId()).getErrorCount());
+        assertEquals(0, ingestService.getIngest(ingest02.getId()).getErrorCount());
     }
 
     @Test

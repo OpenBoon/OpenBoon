@@ -35,6 +35,10 @@ $ java -jar target/archivist-1.0.0.jar
 | /api/v1/pipelines          | POST   | Create a new ingest pipeline                                   |
 | /api/v1/pipelines/{id}        | GET    | Get a particular ingest pipeline                               |
 | /api/v1/pipelines          | GET    | Get a list of all ingest pipelines                             |
+| /api/v1/ingests            | GET    | Get a list of all ingests. Optional state=pending parameter    |
+| /api/v1/ingests            | POST   | Create a new ingests, pass parameters in body                  |
+| /api/v1/ingests/{id}       | GET    | Get a particular ingest                                        |
+| /api/v1/ingests/{id}/_ingest  | POST   | Execute the particular ingest                                  |
 | /api/v1/proxy-configs      | GET    | Get a list of all proxy generation configurations              |
 | /api/v1/proxy-configs/{id} | GET    | Get a specific proxy generation configuration                  |
 | /api/v1/proxy/image/{id}   | GET    | Get a specific proxy image                                     |
@@ -56,11 +60,6 @@ in a production setup for security purposes and we'll have official SDK endpoint
 A Proxy Configuration determines what proxy sizes and bit depth are made.  The Archivst ships with
 a 'standard' proxy configuration, and users may add their own.
 
-Elastic:
-```
-curl -XGET -i 'http://localhost:9200/archivist/proxy-config/standard'
-```
-
 Archivist:
 ```
 curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/api/v1/proxy-configs/standard'
@@ -71,23 +70,25 @@ curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8
 An Ingest Pipeline determines all the steps that occur during an ingest.  The Archivst ships with
 a 'standard' ingest pipeline which is currently suitable for photos.
 
-Elastic:
-```
-curl -XGET -i 'http://localhost:9200/archivist/pipeline/standard'
-```
-
-Archivist:
 ```
 curl -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/api/v1/pipelines/standard'
 ```
 
 ### Performing an Ingest
 
-At minimum, to perform an ingest you must provide a path to search.  This will use the standard IngestPipeline which
-is setup to use the Standard proxy config.
-
+Create a new ingest with:
 ```
-curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -H 'Content-Type: application/json' -XPOST -i 'http://localhost:8066/api/v1/pipelines/standard/_ingest' -d '{"path":"/Users/chambers/Pictures/iphoto/Masters/2015"}'
+curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -XPOST -i 'http://localhost:8066/api/v1/ingests' -d '{"path":"/Users/foo"}'
+```
+
+Get a list of all ingests with:
+```
+curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -XGET -i 'http://localhost:8066/api/v1/ingests'
+```
+
+Perform the ingestion for a previously created ingest:
+```
+curl  -b /tmp/cookies -c /tmp/cookies -u admin:admin -XPOST -i 'http://localhost:8066/api/v1/ingests/1/_ingest'
 ```
 
 ### Searching
