@@ -95,6 +95,12 @@
       <version>4.0.28.Final</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -102,6 +108,52 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <executions>
+          <execution>
+            <id>Javah CaffeProcessor</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${basedir}/jni.sh</executable>
+              <commandlineArgs>javah CaffeProcessor</commandlineArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Javalib CaffeProcessor</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${basedir}/jni.sh</executable>
+              <commandlineArgs>jnilib CaffeProcessor
+                -Isrc/main/C++/com/zorroa/archivist/processors/include
+                -Isrc/main/C++/com/zorroa/archivist/processors/include/CUDA-7.0
+                -I/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers
+                -Lsrc/main/resources/caffe
+                -lcaffe -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
+              </commandlineArgs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+        <!-- Temporarily remove caffe models, which slow down JAR packaging -->
+        <!-- C++ code must open a file, but JAR requires getResourceAsStream() -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/caffe/**</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

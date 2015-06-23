@@ -64,6 +64,15 @@
             }
           }
         },
+        "caffe": {
+          "type": "object",
+          "properties" : {
+            "keywords": {
+              "type": "string",
+              "copy_to": ["keywords", "keywords_suggest"]
+            }
+          }
+        },
         "collections": {
           "type" : "string",
           "index": "not_analyzed"

@@ -94,8 +94,8 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     @Override
     public void executeIngest(Ingest ingest) {
 
+        ingestService.setIngestRunning(ingest);
         try {
-
             /*
              * Initalize everything we need to run this ingest
              */
@@ -146,6 +146,9 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
         }
         catch (Exception e) {
             logger.warn("Failed to execute ingest," + e, e);
+        }
+        finally {
+            ingestService.setIngestFinished(ingest);
         }
     }
 

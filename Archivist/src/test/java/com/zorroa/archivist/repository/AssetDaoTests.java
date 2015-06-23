@@ -1,6 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.elasticsearch.index.engine.DocumentAlreadyExistsException;
 import org.junit.Test;

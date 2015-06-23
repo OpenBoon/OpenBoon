@@ -2,20 +2,26 @@ package com.zorroa.archivist.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.zorroa.archivist.Json;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.suggest.SuggestRequestBuilder;
+import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -82,6 +88,27 @@ public class AssetController {
             .append(response.getFailedShards())
             .append("}}")
             .toString();
+    }
+
+    @RequestMapping(value="/api/v1/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+    public String suggest(@RequestBody String query) throws IOException {
+        SuggestRequestBuilder builder = client.prepareSuggest(alias);
+        Map<String, Object> json = Json.Mapper.readValue(query,
+                new TypeReference<Map<String, Object>>() {});
+        // Create a top-level suggestion for each top-level dictionary in the request body
+        // TODO: Only handles "completion" suggestions currently
+        for (Map.Entry<String, Object> entry : json.entrySet()) {
+            Map<String, Object> suggestMap = (Map<String, Object>)entry.getValue();
+            String text = (String)suggestMap.get("text");
+            Map<String, String> completionMap = (Map<String, String>)suggestMap.get("completion");
+            String field = completionMap.get("field");
+            CompletionSuggestionBuilder cbuilder = new CompletionSuggestionBuilder(entry.getKey())
+                    .text(text)
+                    .field(field);
+            builder.addSuggestion(cbuilder);
+        }
+        SuggestResponse response = builder.get();
+        return response.toString();
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)

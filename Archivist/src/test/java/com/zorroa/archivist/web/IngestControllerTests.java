@@ -1,12 +1,11 @@
 package com.zorroa.archivist.web;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,15 +37,41 @@ public class IngestControllerTests extends MockMvcTest {
     @Autowired
     IngestSchedulerService ingestSchedulerService;
 
+    Ingest ingest;
+
     @Before
     public void init() {
+        ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+    }
+
+    @Test
+    public void testGetAll() throws Exception {
+        MockHttpSession session = admin();
+
         ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeNextIngest();
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(get("/api/v1/ingests")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<Ingest> ingests = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Ingest>>() {});
+        assertEquals(2, ingests.size());
     }
 
     @Test
     public void testGetPending() throws Exception {
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(get("/api/v1/ingests")
+
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeNextIngest();
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(get("/api/v1/ingests?state=pending")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -60,14 +85,14 @@ public class IngestControllerTests extends MockMvcTest {
     @Test
     public void testGet() throws Exception {
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(get("/api/v1/ingests/1")
+        MvcResult result = mvc.perform(get("/api/v1/ingests/" + ingest.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
         Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(1, ingest.getId());
+        assertEquals(this.ingest.getId(), ingest.getId());
     }
 
     @Test
@@ -86,6 +111,36 @@ public class IngestControllerTests extends MockMvcTest {
                 .andReturn();
 
         Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(2, ingest.getId());
+        assertEquals(ingest.getId(), ingest.getId());
+    }
+
+    @Test
+    public void testIngest() throws Exception {
+
+        IngestBuilder builder = new IngestBuilder();
+        builder.setPath(getStaticImagePath());
+        builder.setFileTypes(Sets.newHashSet("jpg"));
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(post("/api/v1/ingests/")
+                .session(session)
+                .content(Json.serialize(builder))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
+        assertEquals(ingest.getId(), ingest.getId());
+
+        refreshIndex();
+
+        result = mvc.perform(post("/api/v1/ingests/" + ingest.getId() + "/_ingest")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Ingest finishedIngest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
+        assertEquals(ingest.getId(), finishedIngest.getId());
     }
 }
