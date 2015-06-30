@@ -7,6 +7,8 @@ import java.util.Map;
 import org.elasticsearch.action.index.IndexRequest.OpType;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
@@ -45,12 +47,33 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
     };
 
-    @Override
-    public Asset create(AssetBuilder builder) {
-        IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
+    private IndexRequestBuilder buildRequest(AssetBuilder builder) {
+        if (builder.getMapping().size() > 0) {
+            try {
+                XContentBuilder mapper = XContentFactory.jsonBuilder().startObject()
+                        .startObject(getType()).startObject("properties");
+                for (Map.Entry<String, Object> entry : builder.getMapping().entrySet()) {
+                    mapper = mapper.startObject(entry.getKey());
+                    Map<String, Object> namespaceMap = (Map<String, Object>) entry.getValue();
+                    mapper = mapper.field("properties", namespaceMap).endObject();
+                }
+                mapper = mapper.endObject().endObject().endObject();
+                client.admin().indices().preparePutMapping(alias).setType(getType())
+                        .setSource(mapper).execute().actionGet();
+                builder.updateMapped();
+            } catch (Exception e) {
+                throw new DataRetrievalFailureException("Failed to map asset record, " + e, e);
+            }
+        }
+        return client.prepareIndex(alias, getType())
                 .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
                 .setOpType(OpType.CREATE)
                 .setSource(Json.serialize(builder.getDocument()));
+
+    }
+    @Override
+    public Asset create(AssetBuilder builder) {
+        IndexRequestBuilder idxBuilder = buildRequest(builder);
         if (builder.isAsync()) {
             idxBuilder.execute();
             return null;
@@ -64,10 +87,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public void fastCreate(AssetBuilder builder) {
-        IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
-                .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
-                .setOpType(OpType.CREATE)
-                .setSource(Json.serialize(builder.getDocument()));
+        IndexRequestBuilder idxBuilder = buildRequest(builder);
         idxBuilder.get();
     }
 

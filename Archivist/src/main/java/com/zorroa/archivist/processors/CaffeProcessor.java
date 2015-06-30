@@ -62,8 +62,9 @@ public class CaffeProcessor extends IngestProcessor {
                 }
             }
             String keywords = classify(nativeCaffeClassifier, classifyPath);
-            logger.info("CaffeProcessor " + keywords);
             List<String> keywordList = Arrays.asList(keywords.split(","));
+            asset.map("caffe", "keywords", "type", "string");
+            asset.map("caffe", "keywords", "copy_to", null);
             asset.put("caffe", "keywords", keywordList);
         }
     }

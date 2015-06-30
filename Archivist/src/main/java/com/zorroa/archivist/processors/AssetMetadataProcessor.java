@@ -2,21 +2,27 @@ package com.zorroa.archivist.processors;
 
 import java.awt.Dimension;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.drew.lang.Rational;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.GpsDirectory;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
-import com.drew.metadata.iptc.IptcDirectory;
 import com.zorroa.archivist.domain.AssetBuilder;
 
 /**
  *
- * Attempts to extra metadata from all types of supported files.
+ * Extracts metadata from all types of supported files.
+ * Base data that we create is added to the "source" namespace.
  *
  * @author chambers
  *
@@ -27,19 +33,32 @@ public class AssetMetadataProcessor extends IngestProcessor {
 
     public AssetMetadataProcessor() { }
 
+    /**
+     * Extract asset metadata. Copy some fields to the default search
+     * and suggestion field, and create a "source" namespace with dimensions,
+     * location, and date information if available.
+     *
+     * Information extracted from the file headers are added to namespaces
+     * such as "Exif", "IPTC" and others. Field and namespaces consist of
+     * [A-Za-z0-9] characters, with no spaces, dashes or other characters.
+     *
+     * Arguments to this processor allow you to specify an ordered list
+     * of fields to search for a master date field (dateTags=[String]) and
+     * a list of fields to copy to the default search and suggestion field
+     * (keywordTags=[String]). The components of these fields are specified
+     * as, e.g., ["Exif.UserComment", "IPTC.Keywords"].
+     *
+     * @param asset
+     */
     @Override
     public void process(AssetBuilder asset) {
         if (isImageType(asset)) {
-            /*
-             * Depending on how configurable we want this to be, we might end up having
-             * to split these into separate classes.
-             */
             extractDimensions(asset);
             extractImageData(asset);
         }
     }
 
-    public void extractDimensions(AssetBuilder asset) {
+    private void extractDimensions(AssetBuilder asset) {
         try {
             Dimension size = imageService.getImageDimensions(asset.getFile());
             asset.put("source", "width", size.width);
@@ -49,81 +68,193 @@ public class AssetMetadataProcessor extends IngestProcessor {
         }
     }
 
-    /**
-     * Handles pulling metadata out of the image itself, either by
-     * EXIF, EXR header, DPX header, etc.  Currently only supports
-     * EXIF.
-     *
-     * @param asset
-     */
-    public void extractImageData(AssetBuilder asset) {
+    private void extractImageData(AssetBuilder asset) {
 
         /*
-         * Attempt to process EXIF data.
+         * Extract all metadata fields into the format <directory>:<tag>=<value>,
+         * and store two versions of the value, the original value, and an optional
+         * .description variant which is more human-readable. Tag names are stored
+         * using a string containing only [A-Za-a0-9] characters, with spaces, dashes
+         * and other characters removed. This results in the EXIF-standard names,
+         * though some formats (e.g. IPTC) contain tags with '/' or '-', (ugh).
+         * Some tags have multiple names, which we'll handle later.
          */
         try {
-            /*
-             * Reuse the metadata object.
-             */
             Metadata metadata = ImageMetadataReader.readMetadata(asset.getFile());
-            extractExifData(asset, metadata);
-            extractIptcData(asset, metadata);
-        }
-        catch (Exception e) {
-            logger.error("Failed to load EXIF data, unexpected " + e, e);
+            extractMetadata(asset, metadata);   // Extract all useful metadata fields in raw & descriptive format
+            extractDate(asset, metadata);       // Find the best date value and promote to top-level
+            extractLocation(asset, metadata);   // Find the best location value and promote to top-level
+        } catch (Exception e) {
+            logger.error("Failed to load metadata, unexpected " + e, e);
         }
     }
 
-    /*
-     * Eventually refactor these metadata processors to be configuration based.
-     */
+    private void extractMetadata(AssetBuilder asset, Metadata metadata) {
+        List<String> keywordArgs = (List<String>) getArgs().get("keywordTags");
+        if (keywordArgs == null) {
+            keywordArgs = new ArrayList<String>();
+            keywordArgs.add("Exif.UserComment");
+            keywordArgs.add("Exif.ColorSpace");
+            keywordArgs.add("Exif.Make");
+            keywordArgs.add("Exif.Model");
+            keywordArgs.add("IPTC.Keywords");
+            keywordArgs.add("IPTC.CopyrightNotice");
+            keywordArgs.add("IPTC.Source");
+            keywordArgs.add("File.Filename");
+            keywordArgs.add("Xmp.Lens");
+        }
+        Set<String> idSet = new HashSet<String>(keywordArgs);
 
-    private void extractExifData(AssetBuilder asset, Metadata metadata) {
+        for (Directory directory : metadata.getDirectories()) {
+            String dirName = directory.getName().split(" ", 2)[0];
+            for (Tag tag : directory.getTags()) {
+                String tagName = tag.getTagName().replaceAll("[^A-Za-z0-9]", "");
+                Object obj = directory.getObject(tag.getTagType());
+                if (obj == null) {
+                    continue;
+                }
 
-         ExifSubIFDDirectory d = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-         if (d != null) {
-             asset.put("exif", "compression", d.getString(ExifSubIFDDirectory.TAG_COMPRESSION));
-             asset.put("exif", "aperture", d.getString(ExifSubIFDDirectory.TAG_APERTURE));
-         }
-         else {
-             logger.warn("Exif metdata not found: {}", asset.getAbsolutePath());
-         }
+                Date date = directory.getDate(tag.getTagType());
+                String id = dirName + "." + tagName;
+                if (idSet.contains(id) && ((obj instanceof String && date == null) ||
+                        (obj.getClass().isArray() &&
+                        obj.getClass().getComponentType().getName().equals("java.lang.String")))) {
+                    asset.map(dirName, tagName, "type", "string");
+                    asset.map(dirName, tagName, "copy_to", null);
+                }
 
-         /*
-          * Example of how to just dump all data.
-          *
-         for (Directory dir: metadata.getDirectories()) {
-             for (Tag tag: dir.getTags()) {
-                 logger.info("{}", tag);
-             }
-         }
-         */
-    }
+                if (obj.getClass().isArray()) {
+                    String componentName = obj.getClass().getComponentType().getName();
+                    if (componentName.equals("com.drew.lang.Rational")) {
+                        Rational[] rationals = (Rational[]) obj;
+                        Double[] doubles = new Double[rationals.length];
+                        for (int i = 0; i < rationals.length; i++) {
+                            doubles[i] = rationals[i].doubleValue();
+                        }
+                        obj = doubles;
+                    } else if (componentName.equals("byte") && Array.getLength(obj) > 16) {
+                        continue;       // Skip bigger byte arrays with binary data
+                    }
+                } else {
+                    // Convert any object types that do not translate to JSON
+                    if (date != null) {
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS");
+                        obj = dateFormat.format(date);
+                        asset.map(dirName, tagName, "type", "date");
+                    } else if (obj instanceof Rational) {
+                        Rational rational = (Rational)obj;
+                        obj = rational.doubleValue();
+                    }
+                }
 
-    private void extractIptcData(AssetBuilder asset, Metadata metadata) {
-        IptcDirectory i = metadata.getFirstDirectoryOfType(IptcDirectory.class);
-        if (i != null) {
-            // Convert the space-separated keywords into a string array
-            String keywords = i.getString(IptcDirectory.TAG_KEYWORDS);
-            List<String> keywordList = Arrays.asList(keywords.split(" "));
-            // Remove any suffix, which typically contains a confidence term,
-            // e.g. "vase:0.0375". This is specific to our prototype portfolios.
-            for (int j = 0; j < keywordList.size(); j++) {
-                String word = keywordList.get(j);
-                int lastIndex = word.lastIndexOf(':');
-                if (lastIndex > 0) {
-                    String prefix = word.substring(0, word.lastIndexOf(':'));
-                    keywordList.set(j, prefix);
+                // Always save the raw format, and also save a description if it
+                // has some useful additional information for searching & display
+                String description = tag.getDescription();
+                if (description != null &&
+                        !description.equals(directory.getString(tag.getTagType())) &&
+                        (!obj.getClass().isArray() || (!obj.getClass().getComponentType().getName().equals("java.lang.String") && Array.getLength(obj) <= 16))) {
+                    asset.put(dirName, tagName, obj);
+                    asset.put(dirName, tagName + ".description", description);
+                    if (idSet.contains(id)) {
+                        asset.map(dirName, tagName + ".description", "type", "string");
+                        asset.map(dirName, tagName + ".description", "copy_to", null);
+                    }
+                } else {
+                    asset.put(dirName, tagName, obj);
                 }
             }
-            asset.put("iptc", "keywords", keywordList);
-        }
-        else {
-            logger.warn("Iptc metdata not found: {}", asset.getAbsolutePath());
         }
     }
 
-    public boolean isImageType(AssetBuilder asset) {
+    private class MetaField {
+        public Directory directory;
+        public Tag tag;
+
+        public MetaField(Directory directory, Tag tag) {
+            this.directory = directory;
+            this.tag = tag;
+        }
+    }
+
+    // Search metadata for <directory-name>.<tag-name>
+    private MetaField tagForIdentifier(String id, Metadata metadata) {
+        String names[] = id.toLowerCase().split("\\.");
+        if (names.length != 2 || names[0] == null || names[1] == null) {
+            return null;
+        }
+        for (Directory directory : metadata.getDirectories()) {
+            String dirName = directory.getName().split(" ", 2)[0].toLowerCase();
+            if (dirName.equals(names[0])) {
+                Collection<Tag> tags = directory.getTags();
+                for (Tag tag : tags) {
+                    String tagName = tag.getTagName().replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+                    if (tagName.equals(names[1])) {
+                        return new MetaField(directory, tag);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private void extractDate(AssetBuilder asset, Metadata metadata) {
+        // Get an ordered list of fields from the processor args, or use reasonable defaults
+        List<String> dateArgs = (List<String>) getArgs().get("dateTags");
+        if (dateArgs == null) {
+            dateArgs = new ArrayList();
+            dateArgs.add("Exif.DateTime");
+            dateArgs.add("Exif.DateTimeOriginal");
+            dateArgs.add("Exif.DateTimeDigitized");
+            dateArgs.add("IPTC.DateCreated");       // TODO: Combine IPTC date+time fields
+            dateArgs.add("IPTC.TimeCreated");
+            dateArgs.add("File.FileModifiedDate");
+        }
+
+        // Run through the array of fields, optionally specified as an argument,
+        // to determine which date field to promote to the global date
+        Date date = null;
+        for (String id : dateArgs) {
+            MetaField field = tagForIdentifier(id, metadata);
+            if (field == null)
+                continue;
+
+            // Convert from string, if necessary, to date
+            // TODO: Combile IPTC date+time fields
+            date = field.directory.getDate(field.tag.getTagType());
+            if (date != null) {
+                break;
+            }
+        }
+
+        if (date != null) {
+            asset.put("source", "date", date);
+        }
+    }
+
+    private double dmsToDegrees(int d, int m, int s) {
+        return Math.signum(d) * (Math.abs(d) + (m / 60.0) + (s / 3600.0));
+    }
+
+    private void extractLocation(AssetBuilder asset, Metadata metadata) {
+        Directory exifDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+        if (exifDirectory != null) {
+            int[] latitude = exifDirectory.getIntArray(GpsDirectory.TAG_LATITUDE);
+            int[] longitude = exifDirectory.getIntArray(GpsDirectory.TAG_LONGITUDE);
+            if (latitude != null && longitude != null) {
+                String latitudeRef = exifDirectory.getString(GpsDirectory.TAG_LATITUDE_REF);
+                String longitudeRef = exifDirectory.getString(GpsDirectory.TAG_LONGITUDE_REF);
+                double lat = dmsToDegrees(latitude[0], latitude[1], latitude[2]);
+                double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2]);
+                Map<String, Object> geoPoint = Maps.newHashMapWithExpectedSize(2);
+                geoPoint.put("lat", lat);
+                geoPoint.put("lon", lon);
+                asset.map("source", "location", "type", "geo_point");
+                asset.put("source", "location", geoPoint);
+            }
+        }
+    }
+
+    private boolean isImageType(AssetBuilder asset) {
         return imageService.getSupportedFormats().contains(asset.getExtension());
     }
 }
