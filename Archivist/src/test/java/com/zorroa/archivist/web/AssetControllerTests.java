@@ -87,7 +87,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
         ingestSchedulerService.executeNextIngest();
         refreshIndex(1000);
 

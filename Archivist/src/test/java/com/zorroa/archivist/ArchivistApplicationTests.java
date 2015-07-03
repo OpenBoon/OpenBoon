@@ -51,11 +51,15 @@ public abstract class ArchivistApplicationTests {
             .get();
     }
 
-    public String getStaticImagePath() {
+    public String getStaticImagePath(String subdir) {
         FileSystemResource resource = new FileSystemResource(TEST_IMAGE_PATH);
-        String path = resource.getFile().getAbsolutePath();
+        String path = resource.getFile().getAbsolutePath() + "/" + subdir;
         logger.info("test image path: {}", path);
         return path;
+    }
+
+    public String getStaticImagePath() {
+        return getStaticImagePath("standard");
     }
 
     public File getTestImage(String name) {
