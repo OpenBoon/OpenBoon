@@ -68,7 +68,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
                 .setOpType(OpType.CREATE)
                 .setSource(Json.serialize(builder.getDocument()));
-        idxBuilder.get();
+        idxBuilder.execute();
     }
 
     @Override
