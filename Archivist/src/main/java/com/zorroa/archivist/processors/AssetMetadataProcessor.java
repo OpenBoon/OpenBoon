@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.zorroa.archivist.sdk.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,7 @@ import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.iptc.IptcDirectory;
-import com.zorroa.archivist.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.AssetBuilder;
 
 /**
  *
@@ -29,23 +30,12 @@ public class AssetMetadataProcessor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
-        if (isImageType(asset)) {
+        if (asset.isImageType(asset)) {
             /*
              * Depending on how configurable we want this to be, we might end up having
              * to split these into separate classes.
              */
-            extractDimensions(asset);
             extractImageData(asset);
-        }
-    }
-
-    public void extractDimensions(AssetBuilder asset) {
-        try {
-            Dimension size = imageService.getImageDimensions(asset.getFile());
-            asset.put("source", "width", size.width);
-            asset.put("source", "height", size.height);
-        } catch (IOException e) {
-            logger.warn("Unable to determine image dimensions: {}", asset, e);
         }
     }
 
@@ -121,9 +111,5 @@ public class AssetMetadataProcessor extends IngestProcessor {
         else {
             logger.warn("Iptc metdata not found: {}", asset.getAbsolutePath());
         }
-    }
-
-    public boolean isImageType(AssetBuilder asset) {
-        return imageService.getSupportedFormats().contains(asset.getExtension());
     }
 }

@@ -24,12 +24,12 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.IngestException;
-import com.zorroa.archivist.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
 import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.processors.IngestProcessor;
+import com.zorroa.archivist.sdk.IngestProcessor;
 
 @Component
 public class IngestSchedulerServiceImpl extends AbstractScheduledService implements IngestSchedulerService {
@@ -116,9 +116,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
                 AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                 autowire.autowireBean(processor);
-                processor.setProxyConfig(proxyConfig);
-                processor.setIngestPipeline(pipeline);
-                processor.setIngest(ingest);
             }
 
             ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -136,7 +133,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                         assetWorker.run();
                     }
                     else {
-                        executor.execute(new AssetWorker(pipeline, ingest, t));
+                        executor.execute(assetWorker);
                     }
                 }
             });

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.repository.AssetDao;
 
 /**

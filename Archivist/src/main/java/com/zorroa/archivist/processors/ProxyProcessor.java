@@ -1,8 +1,6 @@
 package com.zorroa.archivist.processors;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collections;
@@ -11,6 +9,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.zorroa.archivist.sdk.IngestProcessor;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
@@ -18,8 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.zorroa.archivist.domain.AssetBuilder;
-import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.sdk.AssetBuilder;
+import com.zorroa.archivist.sdk.Proxy;
 import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.service.ImageService;
 
@@ -35,8 +34,13 @@ public class ProxyProcessor extends IngestProcessor {
     @Override
     public void process(AssetBuilder asset) {
 
+        List<ProxyOutput> outputs = Lists.newArrayList(
+                new ProxyOutput("png", 128, 8),
+                new ProxyOutput("png", 256, 8),
+                new ProxyOutput("png", 1024, 8)
+        );
         List<Proxy> result = Lists.newArrayList();
-        for (ProxyOutput output: getProxyConfig().getOutputs()) {
+        for (ProxyOutput output: outputs) {
             try {
                 result.add(imageService.makeProxy(asset.getFile(), output));
             } catch (IOException e) {
@@ -54,6 +58,18 @@ public class ProxyProcessor extends IngestProcessor {
         if (!result.isEmpty()) {
             asset.document.put("tinyProxy", makeTinyProxy(result.get(0)));
             asset.document.put("proxies", result);
+        }
+
+        extractDimensions(asset);
+    }
+
+    public void extractDimensions(AssetBuilder asset) {
+        try {
+            Dimension size = imageService.getImageDimensions(asset.getFile());
+            asset.put("source", "width", size.width);
+            asset.put("source", "height", size.height);
+        } catch (IOException e) {
+            logger.warn("Unable to determine image dimensions: {}", asset, e);
         }
     }
 
