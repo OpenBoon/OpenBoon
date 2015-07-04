@@ -14,20 +14,10 @@ public interface IngestDao {
 
     Ingest create(IngestPipeline pipeline, ProxyConfig config, IngestBuilder builder);
 
-    Ingest getNextWaitingIngest();
-
-    void incrementCreatedCount(Ingest ingest, int increment);
-
-    void incrementErrorCount(Ingest ingest, int increment);
-
-    boolean setRunning(Ingest ingest);
-
-    boolean setFinished(Ingest ingest);
-
     List<Ingest> getAll();
 
-    List<Ingest> getPending();
+    List<Ingest> getAll(IngestState state, int limit);
 
-    void setState(Ingest ingest, IngestState state);
+    boolean setState(Ingest ingest, IngestState newState, IngestState oldState);
 
 }

@@ -76,69 +76,22 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     public void testGetAll() {
         List<Ingest> pending = ingestDao.getAll();
         assertEquals(1, pending.size());
-
-        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        ingestDao.create(pipeline, proxyConfig, builder);
-
-        pending = ingestDao.getAll();
-        assertEquals(2, pending.size());
-
-        ingestDao.setState(ingest, IngestState.Finished);
-        pending = ingestDao.getAll();
-        assertEquals(2, pending.size());
-
     }
 
     @Test
-    public void testGetPending() {
-        List<Ingest> pending = ingestDao.getPending();
-        assertEquals(1, pending.size());
-
-        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        ingestDao.create(pipeline, proxyConfig, builder);
-
-        pending = ingestDao.getPending();
-        assertEquals(2, pending.size());
-
-        ingestDao.setState(ingest, IngestState.Finished);
-        pending = ingestDao.getPending();
-        assertEquals(1, pending.size());
-
+    public void testGetAllByState() {
+        List<Ingest> idle = ingestDao.getAll(IngestState.Idle, 1000);
+        assertEquals(1, idle.size());
+        assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
+        idle = ingestDao.getAll(IngestState.Idle, 1000);
+        assertEquals(1, idle.size());
     }
 
     @Test
     public void testSetState() {
-        ingestDao.setState(ingest, IngestState.Finished);
+        assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
+        assertFalse(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
         Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(ingest01.getState(), IngestState.Finished);
+        assertEquals(ingest01.getState(), IngestState.Running);
     }
-
-
-    @Test
-    public void testSetRunning() {
-        assertTrue(ingestDao.setRunning(ingest));
-        assertFalse(ingestDao.setRunning(ingest));
-    }
-
-    @Test
-    public void testSetFinished() {
-        assertFalse(ingestDao.setFinished(ingest));
-        assertTrue(ingestDao.setRunning(ingest));
-        assertTrue(ingestDao.setFinished(ingest));
-    }
-
-    @Test
-    public void testIncrementCreatedCount() {
-        ingestDao.incrementCreatedCount(ingest, 10);
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(10, ingest01.getCreatedCount());
-    }
-
-    @Test
-    public void testIncrementErrorCount() {
-        ingestDao.incrementErrorCount(ingest, 10);
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(10, ingest01.getErrorCount());
-    }
-
 }

@@ -76,7 +76,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 connection.prepareStatement(INSERT, new String[]{"pk_pipeline"});
             ps.setInt(1, pipeline.getId());
             ps.setInt(2, proxyConfig.getId());
-            ps.setInt(3, IngestState.Waiting.ordinal());
+            ps.setInt(3, IngestState.Idle.ordinal());
             ps.setObject(4, builder.getPath());
             ps.setObject(5, builder.getFileTypes().toArray(new String[] {}));
             ps.setLong(6, time);
@@ -91,53 +91,18 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
 
     @Override
     public List<Ingest> getAll() {
-        return jdbc.query("SELECT * FROM ingest ORDER BY pk_ingest", MAPPER);
+        return jdbc.query("SELECT * FROM ingest ORDER BY time_created ASC", MAPPER);
     }
 
     @Override
-    public List<Ingest> getPending() {
-        return jdbc.query("SELECT * FROM ingest WHERE int_state <= 1 ORDER BY int_state DESC", MAPPER);
+    public List<Ingest> getAll(IngestState state, int limit) {
+        return jdbc.query("SELECT * FROM ingest WHERE int_state =? ORDER BY time_created ASC LIMIT ?",
+                MAPPER, state.ordinal(), limit);
     }
 
     @Override
-    public Ingest getNextWaitingIngest() {
-        try {
-            return jdbc.queryForObject("SELECT * FROM ingest WHERE int_state=? ORDER BY time_created ASC LIMIT 1",
-                    MAPPER, IngestState.Waiting.ordinal());
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public boolean setRunning(Ingest ingest) {
+    public boolean setState(Ingest ingest, IngestState newState, IngestState oldState) {
         return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
-                IngestState.Running.ordinal(), ingest.getId(), IngestState.Waiting.ordinal()) > 0;
+                newState.ordinal(), ingest.getId(), oldState.ordinal()) == 1;
     }
-
-
-    @Override
-    public boolean setFinished(Ingest ingest) {
-        return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
-                IngestState.Finished.ordinal(), ingest.getId(), IngestState.Running.ordinal()) > 0;
-    }
-
-    @Override
-    public void setState(Ingest ingest, IngestState state) {
-        jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=?", state.ordinal(), ingest.getId());
-    }
-
-
-    @Override
-    public void incrementCreatedCount(Ingest ingest, int increment) {
-        jdbc.update("UPDATE ingest SET int_created_count=int_created_count+? WHERE pk_ingest=?",
-                increment, ingest.getId());
-    }
-
-    @Override
-    public void incrementErrorCount(Ingest ingest, int increment) {
-        jdbc.update("UPDATE ingest SET int_error_count=int_error_count+? WHERE pk_ingest=?",
-                increment, ingest.getId());
-    }
-
 }
