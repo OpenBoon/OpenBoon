@@ -24,10 +24,10 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         refreshIndex(100);
 
         Asset asset2 = assetDao.get(asset1.getId());
-        assertEquals("jpg", asset2.getString("source.extension"));
-        assertEquals(getStaticImagePath(), asset2.getString("source.directory"));
-        assertEquals(getStaticImagePath() + "/beer_kettle_01.jpg", asset2.getString("source.path"));
-        assertEquals("beer_kettle_01.jpg", asset2.getString("source.filename"));
+        assertEquals("jpg", asset2.getValue("source.extension"));
+        assertEquals(getStaticImagePath(), asset2.getValue("source.directory"));
+        assertEquals(getStaticImagePath() + "/beer_kettle_01.jpg", asset2.getValue("source.path"));
+        assertEquals("beer_kettle_01.jpg", asset2.getValue("source.filename"));
 
     }
 

@@ -97,7 +97,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
         ingestService.setIngestRunning(ingest);
         try {
             /*
-             * Initalize everything we need to run this ingest
+             * Initialize everything we need to run this ingest
              */
             ProxyConfig proxyConfig = imageService.getProxyConfig(ingest.getProxyConfigId());
             IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());

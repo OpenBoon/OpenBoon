@@ -36,9 +36,9 @@ public class Asset {
         this.document = data;
     }
 
-    public String getString(String key) {
+    public <T> T getValue(String key) {
         Map<String, Object> map = getMap(key.substring(0, key.lastIndexOf('.')));
-        return (String) map.get(key.substring(key.lastIndexOf('.')+1));
+        return (T) map.get(key.substring(key.lastIndexOf('.')+1));
     }
 
     private Map<String,Object> getMap(String key) {
