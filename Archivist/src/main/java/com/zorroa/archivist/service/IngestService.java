@@ -2,36 +2,37 @@ package com.zorroa.archivist.service;
 
 import java.util.List;
 
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.domain.*;
 
 public interface IngestService {
 
+    /*
+    * INGEST PIPELINE
+    */
     IngestPipeline createIngestPipeline(IngestPipelineBuilder builder);
 
     IngestPipeline getIngestPipeline(String id);
 
-    Ingest createIngest(IngestBuilder builder);
-
     List<IngestPipeline> getIngestPipelines();
-
-    Ingest getNextWaitingIngest();
 
     IngestPipeline getIngestPipeline(int id);
 
-    void incrementCreatedCount(Ingest ingest, int increment);
+
+    /*
+    * INGEST
+    */
+    Ingest createIngest(IngestBuilder builder);
 
     Ingest getIngest(long id);
 
     List<Ingest> getAllIngests();
 
-    List<Ingest> getPendingIngests();
-
-    void incrementErrorCount(Ingest ingest, int increment);
+    List<Ingest> getAllIngests(IngestState state, int limit);
 
     boolean setIngestRunning(Ingest ingest);
 
-    boolean setIngestFinished(Ingest ingest);
+    boolean setIngestIdle(Ingest ingest);
+
+    boolean setIngestQueued(Ingest ingest);
+
 }

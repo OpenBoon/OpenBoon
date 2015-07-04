@@ -5,17 +5,21 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
 
+import com.zorroa.archivist.domain.*;
 import org.elasticsearch.common.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -24,11 +28,6 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.IngestException;
-import com.zorroa.archivist.domain.AssetBuilder;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
-import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.processors.IngestProcessor;
 
 @Component
@@ -48,10 +47,16 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     @Autowired
     ApplicationContext applicationContext;
 
-    Ingest runningIngest = null;
+    @Value("${archivist.ingest.parallel}")
+    private int maxRunningIngestCount;
+
+    private final AtomicInteger runningIngestCount = new AtomicInteger();
+
+    private Executor ingestExecutor;
 
     @PostConstruct
     public void init() {
+        ingestExecutor = Executors.newFixedThreadPool(maxRunningIngestCount);
         startAsync();
     }
 
@@ -72,84 +77,73 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     @Override
     public Ingest executeNextIngest() {
-        if (runningIngest != null) {
+        if (runningIngestCount.get() >= maxRunningIngestCount) {
             return null;
         }
 
-        Ingest ingest = ingestService.getNextWaitingIngest();
-        if (ingest == null) {
+        List<Ingest> ingests = ingestService.getAllIngests(IngestState.Queued, 1);
+        if (ingests.isEmpty()) {
             return null;
         }
 
-        runningIngest = ingest;
-        try {
-            executeIngest(ingest);
-        }
-        finally {
-            runningIngest = null;
-        }
-        return ingest;
+        executeIngest(ingests.get(0));
+        return ingests.get(0);
     }
 
     @Override
     public void executeIngest(Ingest ingest) {
 
-        ingestService.setIngestRunning(ingest);
-        try {
-            /*
-             * Initialize everything we need to run this ingest
-             */
-            ProxyConfig proxyConfig = imageService.getProxyConfig(ingest.getProxyConfigId());
-            IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
-            List<IngestProcessorFactory> processors = pipeline.getProcessors();
+        ingestExecutor.execute(() -> {
+            ingestService.setIngestRunning(ingest);
+            try {
+                /*
+                 * Initialize everything we need to run this ingest
+                 */
+                ProxyConfig proxyConfig = imageService.getProxyConfig(ingest.getProxyConfigId());
+                IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
+                List<IngestProcessorFactory> processors = pipeline.getProcessors();
 
-            for (IngestProcessorFactory factory: processors) {
-                IngestProcessor processor = factory.init();
-                if (processor == null ) {
-                    String msg = "Aborting ingest, processor not found:" + factory.getKlass();
-                    logger.warn(msg);
-                    // TODO: set the ingest state to failed.
-                    throw new IngestException(msg);
+                for (IngestProcessorFactory factory : processors) {
+                    IngestProcessor processor = factory.init();
+                    if (processor == null) {
+                        String msg = "Aborting ingest, processor not found:" + factory.getKlass();
+                        logger.warn(msg);
+                        throw new IngestException(msg);
+                    }
+                    Preconditions.checkNotNull(processor, "The IngestProcessor class: " + factory.getKlass() +
+                            " was not found, aborting ingest");
+
+                    AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+                    autowire.autowireBean(processor);
+                    processor.setProxyConfig(proxyConfig);
+                    processor.setIngestPipeline(pipeline);
+                    processor.setIngest(ingest);
                 }
-                Preconditions.checkNotNull(processor, "The IngestProcessor class: " + factory.getKlass() +
-                        " was not found, aborting ingest");
 
-                AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
-                autowire.autowireBean(processor);
-                processor.setProxyConfig(proxyConfig);
-                processor.setIngestPipeline(pipeline);
-                processor.setIngest(ingest);
+                ExecutorService executor = Executors.newFixedThreadPool(4);
+
+                Files.walk(new File(ingest.getPath()).toPath(), FileVisitOption.FOLLOW_LINKS)
+                        .filter(p -> p.toFile().isFile())
+                        .filter(p -> ingest.isSupportedFileType(FileUtils.extension(p)))
+                        .filter(p -> !assetService.assetExistsByPath(p.toFile().toString()))
+                        .forEach(t -> {
+                            logger.debug("found: {}", t);
+                            AssetWorker assetWorker = new AssetWorker(pipeline, ingest, t);
+                            if (ArchivistConfiguration.unittest) {
+                                assetWorker.run();
+                            } else {
+                                executor.execute(new AssetWorker(pipeline, ingest, t));
+                            }
+                        });
+
+                executor.shutdown();
+                executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            } catch (Exception e) {
+                logger.warn("Failed to execute ingest," + e, e);
+            } finally {
+                ingestService.setIngestIdle(ingest);
             }
-
-            ExecutorService executor = Executors.newFixedThreadPool(4);
-
-            Files.walk(new File(ingest.getPath()).toPath(), FileVisitOption.FOLLOW_LINKS)
-            .filter(p -> p.toFile().isFile())
-            .filter(p -> ingest.isSupportedFileType(FileUtils.extension(p)))
-            .filter(p -> !assetService.assetExistsByPath(p.toFile().toString()))
-            .forEach(new Consumer<Path>() {
-                @Override
-                public void accept(Path t) {
-                    logger.debug("found: {}", t);
-                    AssetWorker assetWorker = new AssetWorker(pipeline, ingest, t);
-                    if (ArchivistConfiguration.unittest) {
-                        assetWorker.run();
-                    }
-                    else {
-                        executor.execute(new AssetWorker(pipeline, ingest, t));
-                    }
-                }
-            });
-
-            executor.shutdown();
-            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-        }
-        catch (Exception e) {
-            logger.warn("Failed to execute ingest," + e, e);
-        }
-        finally {
-            ingestService.setIngestFinished(ingest);
-        }
+        });
     }
 
     private class AssetWorker implements Runnable {
@@ -184,13 +178,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
              * Finally, create the asset.
              */
             logger.debug("Creating asset: {}", asset);
-            if (assetService.fastCreateAsset(asset)) {
-                ingestService.incrementCreatedCount(ingest, 1);
-            }
-            else {
-                ingestService.incrementErrorCount(ingest, 1);
-            }
-
+            assetService.fastCreateAsset(asset);
         }
 
         public void executeProcessors() {
