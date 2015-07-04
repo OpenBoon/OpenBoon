@@ -16,8 +16,6 @@ public class IngestProcessorFactory implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(InvocationTargetException.class);
 
-    private static final ClassLoader classLoader = IngestProcessorFactory.class.getClassLoader();
-
     private String klass;
     private Map<String, Object> args;
 
@@ -31,6 +29,8 @@ public class IngestProcessorFactory implements Serializable {
     }
 
     public IngestProcessor init() {
+        IngestProcessor.ingestService = new IngestServiceImpl();
+        ClassLoader classLoader = IngestProcessor.ingestService.getSiteClassLoader();
         if (processor == null) {
             try {
                 Class<?> pclass = classLoader.loadClass(klass);
