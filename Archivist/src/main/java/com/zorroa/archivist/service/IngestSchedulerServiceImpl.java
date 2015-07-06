@@ -131,9 +131,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
                     AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                     autowire.autowireBean(processor);
-                    processor.setProxyConfig(proxyConfig);
-                    processor.setIngestPipeline(pipeline);
-                    processor.setIngest(ingest);
                 }
 
                 ExecutorService executor = Executors.newFixedThreadPool(4);

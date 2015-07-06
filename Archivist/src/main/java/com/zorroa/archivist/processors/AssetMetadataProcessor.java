@@ -30,7 +30,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
-        if (asset.isImageType(asset)) {
+        if (asset.isImageType()) {
             /*
              * Depending on how configurable we want this to be, we might end up having
              * to split these into separate classes.
