@@ -6,17 +6,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.*;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestState;
-import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.IngestService;
 
@@ -32,13 +29,9 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     @Autowired
     ImageService imageService;
 
-
     Ingest ingest;
-
     IngestPipeline pipeline;
     ProxyConfig proxyConfig;
-
-    Client elasticClient;
 
     @Before
     public void init() {
@@ -79,12 +72,27 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testGetByFilter() {
+        // non existent pipelines
+        IngestFilter filter = new IngestFilter();
+        filter.setPipelines(Lists.newArrayList("foo", "bar"));
+        List<Ingest> ingests = ingestDao.getAll(filter);
+        assertEquals(0, ingests.size());
+
+        // existing pipeline
+        filter = new IngestFilter();
+        filter.setPipelines(Lists.newArrayList(pipeline.getName()));
+        ingests = ingestDao.getAll(filter);
+        assertEquals(1, ingests.size());
+    }
+
+    @Test
     public void testGetAllByState() {
         List<Ingest> idle = ingestDao.getAll(IngestState.Idle, 1000);
         assertEquals(1, idle.size());
         assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
         idle = ingestDao.getAll(IngestState.Idle, 1000);
-        assertEquals(1, idle.size());
+        assertEquals(0, idle.size());
     }
 
     @Test

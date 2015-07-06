@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.*;
 import org.elasticsearch.common.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,11 +17,6 @@ import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestState;
-import com.zorroa.archivist.domain.ProxyConfig;
 
 @Repository
 public class IngestDaoImpl extends AbstractDao implements IngestDao {
@@ -98,6 +96,37 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     public List<Ingest> getAll(IngestState state, int limit) {
         return jdbc.query("SELECT * FROM ingest WHERE int_state =? ORDER BY time_created ASC LIMIT ?",
                 MAPPER, state.ordinal(), limit);
+    }
+
+    @Override
+    public List<Ingest> getAll(IngestFilter filter) {
+        StringBuilder sb = new StringBuilder(512);
+        sb.append("SELECT * FROM ingest INNER JOIN pipeline ON ingest.pk_pipeline = pipeline.pk_pipeline");
+
+        List<String> wheres = Lists.newArrayList();
+        List<Object> values = Lists.newArrayList();
+
+        if (filter.getStates() != null) {
+            wheres.add(JdbcUtils.in("int_state", filter.getStates().size()));
+            filter.getStates().forEach(value -> values.add(value.ordinal()));
+        }
+
+        if (filter.getPipelines() != null) {
+            wheres.add(JdbcUtils.in("pipeline.str_name", filter.getPipelines().size()));
+            values.addAll(filter.getPipelines());
+        }
+
+        if (!wheres.isEmpty()) {
+            sb.append(" WHERE ");
+        }
+
+        sb.append(StringUtils.join(wheres, " AND "));
+        if (filter.getLimit() > 0) {
+            sb.append(" LIMIT ?");
+            values.add(filter.getLimit());
+        }
+
+        return jdbc.query(sb.toString(), MAPPER, values.toArray());
     }
 
     @Override
