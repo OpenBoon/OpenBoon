@@ -62,7 +62,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean setIngestRunning(Ingest ingest) {
-        return ingestDao.setState(ingest, IngestState.Running, IngestState.Queued);
+        return ingestDao.setState(ingest, IngestState.Running);
     }
 
     @Override

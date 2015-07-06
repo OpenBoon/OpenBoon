@@ -101,7 +101,11 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     public void executeIngest(Ingest ingest) {
 
         ingestExecutor.execute(() -> {
-            ingestService.setIngestRunning(ingest);
+
+            if (!ingestService.setIngestRunning(ingest)) {
+                logger.warn("Unable to set ingest {} to the running state.", ingest);
+                return;
+            }
             try {
                 /*
                  * Initialize everything we need to run this ingest

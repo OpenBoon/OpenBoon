@@ -96,10 +96,16 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testSetState() {
+    public void testSetStateWithOldState() {
         assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
         assertFalse(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
         Ingest ingest01 = ingestDao.get(ingest.getId());
         assertEquals(ingest01.getState(), IngestState.Running);
+    }
+
+    @Test
+    public void testSetState() {
+        assertTrue(ingestDao.setState(ingest, IngestState.Running));
+        assertFalse(ingestDao.setState(ingest, IngestState.Running));
     }
 }

@@ -132,6 +132,14 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     @Override
     public boolean setState(Ingest ingest, IngestState newState, IngestState oldState) {
         return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
-                newState.ordinal(), ingest.getId(), oldState.ordinal()) == 1;
+                    newState.ordinal(), ingest.getId(), oldState.ordinal()) == 1;
     }
+
+    @Override
+    public boolean setState(Ingest ingest, IngestState newState) {
+        return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state != ?",
+                newState.ordinal(), ingest.getId(), newState.ordinal()) == 1;
+    }
+
+
 }
