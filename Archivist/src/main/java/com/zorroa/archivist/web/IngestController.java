@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import java.util.List;
 
+import com.zorroa.archivist.domain.IngestFilter;
 import com.zorroa.archivist.service.IngestSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,22 +27,8 @@ public class IngestController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/ingests", method=RequestMethod.POST)
-    public Ingest ingest(@RequestBody IngestBuilder builder) {
+    public Ingest create(@RequestBody IngestBuilder builder) {
         return ingestService.createIngest(builder);
-    }
-
-    /**
-     * Returns just waiting and active ingests.
-     *
-     * @return
-     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value="/api/v1/ingests", method=RequestMethod.GET)
-    public List<Ingest> getAll(@RequestParam(value="state", required=false) String state) {
-        if (state != null && state.equals("pending")) {
-            return ingestService.getPendingIngests();
-        }
-        return ingestService.getAllIngests();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -51,11 +38,22 @@ public class IngestController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value="/api/v1/ingests/{id}/_ingest", method=RequestMethod.POST)
+    @RequestMapping(value="/api/v1/ingests", method=RequestMethod.GET)
+    public List<Ingest> getAll() {
+        return ingestService.getAllIngests();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/ingests/_search", method=RequestMethod.POST)
+    public List<Ingest> search(@RequestBody IngestFilter filter) {
+        return ingestService.getIngests(filter);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/ingests/{id}/_execute", method=RequestMethod.POST)
     public Ingest ingest(@PathVariable String id) {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));
         ingestSchedulerService.executeIngest(ingest);
         return ingest;
     }
-
 }

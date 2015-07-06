@@ -55,10 +55,11 @@ fe (needed for runtime linking and data model loading):
 | /api/v1/pipelines          | POST   | Create a new ingest pipeline                                   |
 | /api/v1/pipelines/{id}     | GET    | Get a particular ingest pipeline                               |
 | /api/v1/pipelines          | GET    | Get a list of all ingest pipelines                             |
-| /api/v1/ingests            | GET    | Get a list of all ingests. Optional state=pending parameter    |
+| /api/v1/ingests            | GET    | Get a list of all ingests.                                     |
 | /api/v1/ingests            | POST   | Create a new ingests, pass parameters in body                  |
 | /api/v1/ingests/{id}       | GET    | Get a particular ingest                                        |
-| /api/v1/ingests/{id}/_ingest  | POST   | Execute the particular ingest                                  |
+| /api/v1/ingests/{id}/_execute  | POST   | Execute the particular ingest                              |
+| /api/v1/ingests/_search    | POST   | Search for ingests by state or pipeline                        |
 | /api/v1/proxy-configs      | GET    | Get a list of all proxy generation configurations              |
 | /api/v1/proxy-configs/{id} | GET    | Get a specific proxy generation configuration                  |
 | /api/v1/proxy/image/{id}   | GET    | Get a specific proxy image                                     |
