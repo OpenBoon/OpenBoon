@@ -66,7 +66,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     public void fastCreate(AssetBuilder builder) {
         IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
                 .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
-                .setOpType(OpType.CREATE)
+                .setOpType(OpType.INDEX)
                 .setSource(Json.serialize(builder.getDocument()));
         idxBuilder.execute();
     }
