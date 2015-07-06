@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
@@ -56,7 +57,13 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     @PostConstruct
     public void init() {
-        ingestExecutor = Executors.newFixedThreadPool(maxRunningIngestCount);
+
+        if (ArchivistConfiguration.unittest) {
+            ingestExecutor = new SyncTaskExecutor();
+        }
+        else {
+            ingestExecutor = Executors.newFixedThreadPool(maxRunningIngestCount);
+        }
         startAsync();
     }
 
