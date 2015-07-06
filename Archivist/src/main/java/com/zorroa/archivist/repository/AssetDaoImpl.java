@@ -47,7 +47,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
     };
 
-    private IndexRequestBuilder buildRequest(AssetBuilder builder) {
+    private IndexRequestBuilder buildRequest(AssetBuilder builder, OpType opType) {
         if (builder.getMapping().size() > 0) {
             try {
                 XContentBuilder mapper = XContentFactory.jsonBuilder().startObject()
@@ -67,13 +67,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
         return client.prepareIndex(alias, getType())
                 .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
-                .setOpType(OpType.CREATE)
+                .setOpType(opType)
                 .setSource(Json.serialize(builder.getDocument()));
 
     }
     @Override
     public Asset create(AssetBuilder builder) {
-        IndexRequestBuilder idxBuilder = buildRequest(builder);
+        IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.CREATE);
         if (builder.isAsync()) {
             idxBuilder.execute();
             return null;
@@ -87,8 +87,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public void fastCreate(AssetBuilder builder) {
-        IndexRequestBuilder idxBuilder = buildRequest(builder);
-        idxBuilder.get();
+        IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.INDEX);
+        idxBuilder.execute();
     }
 
     @Override

@@ -5,8 +5,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.EnumSet;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.IngestFilter;
+import com.zorroa.archivist.domain.IngestState;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,15 +68,34 @@ public class IngestControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testGetPending() throws Exception {
+    public void testSearchByState() throws Exception {
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeNextIngest();
-        refreshIndex(1000);
+        IngestFilter filter = new IngestFilter();
+        filter.setStates(EnumSet.of(IngestState.Idle));
 
-        MvcResult result = mvc.perform(get("/api/v1/ingests?state=pending")
+        MvcResult result = mvc.perform(post("/api/v1/ingests/_search")
                 .session(session)
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<Ingest> ingests = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Ingest>>() {});
+        assertEquals(1, ingests.size());
+    }
+
+    @Test
+    public void testSearchByPipeline() throws Exception {
+        MockHttpSession session = admin();
+
+        IngestFilter filter = new IngestFilter();
+        filter.setPipelines(Lists.newArrayList("standard"));
+
+        MvcResult result = mvc.perform(post("/api/v1/ingests/_search")
+                .session(session)
+                .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -115,7 +138,7 @@ public class IngestControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testIngest() throws Exception {
+    public void testExecute() throws Exception {
 
         IngestBuilder builder = new IngestBuilder();
         builder.setPath(getStaticImagePath());
@@ -134,7 +157,7 @@ public class IngestControllerTests extends MockMvcTest {
 
         refreshIndex();
 
-        result = mvc.perform(post("/api/v1/ingests/" + ingest.getId() + "/_ingest")
+        result = mvc.perform(post("/api/v1/ingests/" + ingest.getId() + "/_execute")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

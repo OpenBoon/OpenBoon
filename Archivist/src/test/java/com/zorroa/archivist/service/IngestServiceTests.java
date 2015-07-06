@@ -26,21 +26,11 @@ public class IngestServiceTests extends ArchivistApplicationTests {
     @Test
     public void testIngest_Standard() throws InterruptedException {
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        Ingest ingest01 = ingestSchedulerService.executeNextIngest();
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeIngest(ingest);
 
         refreshIndex(1000);
         assertEquals(2, assetDao.getAll().size());
-
-        // Ingest again!
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        Ingest ingest02 = ingestSchedulerService.executeNextIngest();
-        refreshIndex(1000);
-
-        assertEquals(2, ingestService.getIngest(ingest01.getId()).getCreatedCount());
-        assertEquals(0, ingestService.getIngest(ingest01.getId()).getErrorCount());
-        assertEquals(0, ingestService.getIngest(ingest02.getId()).getCreatedCount());
-        assertEquals(0, ingestService.getIngest(ingest02.getId()).getErrorCount());
     }
 
     @Test
@@ -51,9 +41,9 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         builder.addToProcessors(new IngestProcessorFactory(
                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
         ingestService.createIngestPipeline(builder);
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("default"));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("default"));
 
-        ingestSchedulerService.executeNextIngest();
+        ingestSchedulerService.executeIngest(ingest);
         refreshIndex(1000);
         assertEquals(2, assetDao.getAll().size());
     }

@@ -2,6 +2,7 @@ package com.zorroa.archivist.service;
 
 import java.util.List;
 
+import com.zorroa.archivist.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -10,11 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
@@ -37,9 +33,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Autowired
     IngestPipelineDao ingestPipelineDao;
-
-    @Autowired
-    AssetDao assetDao;
 
     @Autowired
     IngestDao ingestDao;
@@ -69,12 +62,17 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean setIngestRunning(Ingest ingest) {
-        return ingestDao.setRunning(ingest);
+        return ingestDao.setState(ingest, IngestState.Running);
     }
 
     @Override
-    public boolean setIngestFinished(Ingest ingest) {
-        return ingestDao.setFinished(ingest);
+    public boolean setIngestIdle(Ingest ingest) {
+        return ingestDao.setState(ingest, IngestState.Idle, IngestState.Running);
+    }
+
+    @Override
+    public boolean setIngestQueued(Ingest ingest) {
+        return ingestDao.setState(ingest, IngestState.Queued, IngestState.Idle);
     }
 
     @Override
@@ -82,11 +80,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         IngestPipeline pipeline = ingestPipelineDao.get(builder.getPipeline());
         ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());
         return ingestDao.create(pipeline, proxyConfig, builder);
-    }
-
-    @Override
-    public Ingest getNextWaitingIngest() {
-        return ingestDao.getNextWaitingIngest();
     }
 
     @Override
@@ -100,18 +93,13 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public List<Ingest> getPendingIngests() {
-        return ingestDao.getPending();
+    public List<Ingest> getIngests(IngestFilter filter) {
+        return ingestDao.getAll(filter);
     }
 
     @Override
-    public void incrementCreatedCount(Ingest ingest, int increment) {
-        ingestDao.incrementCreatedCount(ingest, increment);
-    }
-
-    @Override
-    public void incrementErrorCount(Ingest ingest, int increment) {
-        ingestDao.incrementErrorCount(ingest, increment);
+    public List<Ingest> getAllIngests(IngestState state, int limit) {
+        return ingestDao.getAll(state, limit);
     }
 
     @Override

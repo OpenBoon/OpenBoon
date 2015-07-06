@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -70,7 +71,11 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
 
     @Override
     public IngestPipeline get(int id) {
-        return jdbc.queryForObject("SELECT * FROM pipeline WHERE pk_pipeline=?", MAPPER, id);
+        try {
+            return jdbc.queryForObject("SELECT * FROM pipeline WHERE pk_pipeline=?", MAPPER, id);
+        } catch(EmptyResultDataAccessException e) {
+            throw new EmptyResultDataAccessException("Failed to get pipeline: id=" + id, 1);
+        }
     }
 
     @Override

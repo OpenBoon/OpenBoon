@@ -39,7 +39,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         assertEquals(1, assetDao.getAll().size());
     }
 
-    @Test(expected=DocumentAlreadyExistsException.class)
+    @Test
     public void testFastCreate() {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
         assetDao.fastCreate(builder);

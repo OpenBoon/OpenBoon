@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.zorroa.archivist.domain.Ingest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -87,8 +88,8 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestSchedulerService.executeNextIngest();
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
+        ingestSchedulerService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_suggest")

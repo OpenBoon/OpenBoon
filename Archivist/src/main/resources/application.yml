@@ -26,5 +26,7 @@ archivist:
     proxies:
         basePath: "proxies"
         format: "png"
+    ingest:
+        parallel: 1
 
 

@@ -2,11 +2,7 @@ package com.zorroa.archivist.repository;
 
 import java.util.List;
 
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestState;
-import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.*;
 
 public interface IngestDao {
 
@@ -14,20 +10,13 @@ public interface IngestDao {
 
     Ingest create(IngestPipeline pipeline, ProxyConfig config, IngestBuilder builder);
 
-    Ingest getNextWaitingIngest();
-
-    void incrementCreatedCount(Ingest ingest, int increment);
-
-    void incrementErrorCount(Ingest ingest, int increment);
-
-    boolean setRunning(Ingest ingest);
-
-    boolean setFinished(Ingest ingest);
-
     List<Ingest> getAll();
 
-    List<Ingest> getPending();
+    List<Ingest> getAll(IngestState state, int limit);
 
-    void setState(Ingest ingest, IngestState state);
+    List<Ingest> getAll(IngestFilter filter);
 
+    boolean setState(Ingest ingest, IngestState newState, IngestState oldState);
+
+    boolean setState(Ingest ingest, IngestState newState);
 }

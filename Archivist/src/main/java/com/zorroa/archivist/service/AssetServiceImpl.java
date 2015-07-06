@@ -28,17 +28,8 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public boolean fastCreateAsset(AssetBuilder builder) {
-        try {
-            assetDao.fastCreate(builder);
-            return true;
-        } catch (org.elasticsearch.index.engine.DocumentAlreadyExistsException ignore) {
-            // thrown if the doc exists.
-        }
-        catch (Exception e) {
-            logger.warn("failed to ingest asset: {}", builder, e);
-        }
-        return false;
+    public void fastCreateAsset(AssetBuilder builder) {
+        assetDao.fastCreate(builder);
     }
 
     @Override
