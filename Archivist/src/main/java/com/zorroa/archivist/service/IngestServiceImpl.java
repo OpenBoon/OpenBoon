@@ -93,6 +93,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public List<Ingest> getIngests(IngestFilter filter) {
+        return ingestDao.getAll(filter);
+    }
+
+    @Override
     public List<Ingest> getAllIngests(IngestState state, int limit) {
         return ingestDao.getAll(state, limit);
     }

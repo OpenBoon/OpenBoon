@@ -27,6 +27,8 @@ public interface IngestService {
 
     List<Ingest> getAllIngests();
 
+    List<Ingest> getIngests(IngestFilter filter);
+
     List<Ingest> getAllIngests(IngestState state, int limit);
 
     boolean setIngestRunning(Ingest ingest);
