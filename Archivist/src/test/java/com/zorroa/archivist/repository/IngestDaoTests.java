@@ -6,17 +6,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.*;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestState;
-import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.IngestService;
 
@@ -32,13 +29,9 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     @Autowired
     ImageService imageService;
 
-
     Ingest ingest;
-
     IngestPipeline pipeline;
     ProxyConfig proxyConfig;
-
-    Client elasticClient;
 
     @Before
     public void init() {
@@ -76,69 +69,43 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     public void testGetAll() {
         List<Ingest> pending = ingestDao.getAll();
         assertEquals(1, pending.size());
-
-        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        ingestDao.create(pipeline, proxyConfig, builder);
-
-        pending = ingestDao.getAll();
-        assertEquals(2, pending.size());
-
-        ingestDao.setState(ingest, IngestState.Finished);
-        pending = ingestDao.getAll();
-        assertEquals(2, pending.size());
-
     }
 
     @Test
-    public void testGetPending() {
-        List<Ingest> pending = ingestDao.getPending();
-        assertEquals(1, pending.size());
+    public void testGetByFilter() {
+        // non existent pipelines
+        IngestFilter filter = new IngestFilter();
+        filter.setPipelines(Lists.newArrayList("foo", "bar"));
+        List<Ingest> ingests = ingestDao.getAll(filter);
+        assertEquals(0, ingests.size());
 
-        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        ingestDao.create(pipeline, proxyConfig, builder);
+        // existing pipeline
+        filter = new IngestFilter();
+        filter.setPipelines(Lists.newArrayList(pipeline.getName()));
+        ingests = ingestDao.getAll(filter);
+        assertEquals(1, ingests.size());
+    }
 
-        pending = ingestDao.getPending();
-        assertEquals(2, pending.size());
+    @Test
+    public void testGetAllByState() {
+        List<Ingest> idle = ingestDao.getAll(IngestState.Idle, 1000);
+        assertEquals(1, idle.size());
+        assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
+        idle = ingestDao.getAll(IngestState.Idle, 1000);
+        assertEquals(0, idle.size());
+    }
 
-        ingestDao.setState(ingest, IngestState.Finished);
-        pending = ingestDao.getPending();
-        assertEquals(1, pending.size());
-
+    @Test
+    public void testSetStateWithOldState() {
+        assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
+        assertFalse(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
+        Ingest ingest01 = ingestDao.get(ingest.getId());
+        assertEquals(ingest01.getState(), IngestState.Running);
     }
 
     @Test
     public void testSetState() {
-        ingestDao.setState(ingest, IngestState.Finished);
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(ingest01.getState(), IngestState.Finished);
+        assertTrue(ingestDao.setState(ingest, IngestState.Running));
+        assertFalse(ingestDao.setState(ingest, IngestState.Running));
     }
-
-
-    @Test
-    public void testSetRunning() {
-        assertTrue(ingestDao.setRunning(ingest));
-        assertFalse(ingestDao.setRunning(ingest));
-    }
-
-    @Test
-    public void testSetFinished() {
-        assertFalse(ingestDao.setFinished(ingest));
-        assertTrue(ingestDao.setRunning(ingest));
-        assertTrue(ingestDao.setFinished(ingest));
-    }
-
-    @Test
-    public void testIncrementCreatedCount() {
-        ingestDao.incrementCreatedCount(ingest, 10);
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(10, ingest01.getCreatedCount());
-    }
-
-    @Test
-    public void testIncrementErrorCount() {
-        ingestDao.incrementErrorCount(ingest, 10);
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(10, ingest01.getErrorCount());
-    }
-
 }

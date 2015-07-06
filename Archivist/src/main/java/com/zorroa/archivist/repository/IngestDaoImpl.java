@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.*;
 import org.elasticsearch.common.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,11 +17,6 @@ import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestState;
-import com.zorroa.archivist.domain.ProxyConfig;
 
 @Repository
 public class IngestDaoImpl extends AbstractDao implements IngestDao {
@@ -76,7 +74,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 connection.prepareStatement(INSERT, new String[]{"pk_pipeline"});
             ps.setInt(1, pipeline.getId());
             ps.setInt(2, proxyConfig.getId());
-            ps.setInt(3, IngestState.Waiting.ordinal());
+            ps.setInt(3, IngestState.Idle.ordinal());
             ps.setObject(4, builder.getPath());
             ps.setObject(5, builder.getFileTypes().toArray(new String[] {}));
             ps.setLong(6, time);
@@ -91,53 +89,57 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
 
     @Override
     public List<Ingest> getAll() {
-        return jdbc.query("SELECT * FROM ingest ORDER BY pk_ingest", MAPPER);
+        return jdbc.query("SELECT * FROM ingest ORDER BY time_created ASC", MAPPER);
     }
 
     @Override
-    public List<Ingest> getPending() {
-        return jdbc.query("SELECT * FROM ingest WHERE int_state <= 1 ORDER BY int_state DESC", MAPPER);
+    public List<Ingest> getAll(IngestState state, int limit) {
+        return jdbc.query("SELECT * FROM ingest WHERE int_state =? ORDER BY time_created ASC LIMIT ?",
+                MAPPER, state.ordinal(), limit);
     }
 
     @Override
-    public Ingest getNextWaitingIngest() {
-        try {
-            return jdbc.queryForObject("SELECT * FROM ingest WHERE int_state=? ORDER BY time_created ASC LIMIT 1",
-                    MAPPER, IngestState.Waiting.ordinal());
-        } catch (EmptyResultDataAccessException e) {
-            return null;
+    public List<Ingest> getAll(IngestFilter filter) {
+        StringBuilder sb = new StringBuilder(512);
+        sb.append("SELECT * FROM ingest INNER JOIN pipeline ON ingest.pk_pipeline = pipeline.pk_pipeline");
+
+        List<String> wheres = Lists.newArrayList();
+        List<Object> values = Lists.newArrayList();
+
+        if (filter.getStates() != null) {
+            wheres.add(JdbcUtils.in("int_state", filter.getStates().size()));
+            filter.getStates().forEach(value -> values.add(value.ordinal()));
         }
+
+        if (filter.getPipelines() != null) {
+            wheres.add(JdbcUtils.in("pipeline.str_name", filter.getPipelines().size()));
+            values.addAll(filter.getPipelines());
+        }
+
+        if (!wheres.isEmpty()) {
+            sb.append(" WHERE ");
+        }
+
+        sb.append(StringUtils.join(wheres, " AND "));
+        if (filter.getLimit() > 0) {
+            sb.append(" LIMIT ?");
+            values.add(filter.getLimit());
+        }
+
+        return jdbc.query(sb.toString(), MAPPER, values.toArray());
     }
 
     @Override
-    public boolean setRunning(Ingest ingest) {
+    public boolean setState(Ingest ingest, IngestState newState, IngestState oldState) {
         return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
-                IngestState.Running.ordinal(), ingest.getId(), IngestState.Waiting.ordinal()) > 0;
-    }
-
-
-    @Override
-    public boolean setFinished(Ingest ingest) {
-        return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
-                IngestState.Finished.ordinal(), ingest.getId(), IngestState.Running.ordinal()) > 0;
+                    newState.ordinal(), ingest.getId(), oldState.ordinal()) == 1;
     }
 
     @Override
-    public void setState(Ingest ingest, IngestState state) {
-        jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=?", state.ordinal(), ingest.getId());
+    public boolean setState(Ingest ingest, IngestState newState) {
+        return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state != ?",
+                newState.ordinal(), ingest.getId(), newState.ordinal()) == 1;
     }
 
-
-    @Override
-    public void incrementCreatedCount(Ingest ingest, int increment) {
-        jdbc.update("UPDATE ingest SET int_created_count=int_created_count+? WHERE pk_ingest=?",
-                increment, ingest.getId());
-    }
-
-    @Override
-    public void incrementErrorCount(Ingest ingest, int increment) {
-        jdbc.update("UPDATE ingest SET int_error_count=int_error_count+? WHERE pk_ingest=?",
-                increment, ingest.getId());
-    }
 
 }
