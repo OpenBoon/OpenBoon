@@ -1,13 +1,17 @@
 package com.zorroa.archivist.sdk;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AssetBuilder {
 
     public final Map<String, Object> document = new HashMap<String, Object>();
+    public final Map<String, Object> mapping = new HashMap<String, Object>();
+    private static final Map<String, Object> _mapped = new ConcurrentHashMap<String, Object>();
     private boolean async = false;
     private final File file;
 
@@ -62,6 +66,64 @@ public class AssetBuilder {
         else {
             map.putAll(value);
         }
+    }
+
+    public Map<String, Object> getMapping() {
+        return mapping;
+    }
+
+    // Update the static mapped field, after ES mapping has been updated
+    public void updateMapped() {
+        for (Map.Entry<String, Object> entry : mapping.entrySet()) {
+            String namespaceKey = entry.getKey();
+            Map<String, Object> namespaceMap = (Map<String, Object>) entry.getValue();
+            Map<String, Object> mnamespace = (Map<String, Object>) _mapped.get(namespaceKey);
+            if (mnamespace == null) {
+                mnamespace = new ConcurrentHashMap<String, Object>();
+                _mapped.put(namespaceKey, mnamespace);
+            }
+            mnamespace.putAll(namespaceMap);
+        }
+    }
+
+    // Return true if the field has already been mapped in any way
+    private static boolean mapped(String namespace, String key) {
+        Map<String, Object> map = (Map<String, Object>) _mapped.get(namespace);
+        if (map == null) {
+            return false;
+        }
+        return map.get(key) != null;
+    }
+
+    // Create a mapping for the document, e.g. map(namespace, key, "type", "date"),
+    // or map(namespace, key, "copy_to", ["keywords", "keywords_suggest"]).
+    // Passing value=null for option="copy_to" copies to default search field.
+    // Note that a "copy_to" mapping must also have a "type" mapping!
+    public void map(String namespace, String key, String option, Object value) {
+        if (mapped(namespace, key)) {       // Previously mapped?
+            return;
+        }
+
+        // Create a new entry in the local mapping
+        Map<String,Object> directory = (Map<String,Object>) mapping.get(namespace);
+        if (directory == null) {
+            directory = new HashMap<String, Object>(16);
+            mapping.put(namespace, directory);
+        }
+        Map<String, Object> field = (Map<String, Object>) directory.get(key);
+        if (field == null) {
+            field = new HashMap<String, Object>(2);
+            directory.put(key, field);
+        }
+
+        // Provide a default copy_to value -> ["keywords", "keywords_suggest"]
+        if (value == null && option.equals("copy_to")) {
+            List<String> copyToKeywords = new ArrayList<String>();
+            copyToKeywords.add("keywords");
+            copyToKeywords.add("keywords_suggest");
+            value = copyToKeywords;
+        }
+        field.put(option, value);
     }
 
     public boolean isAsync() {

@@ -28,32 +28,37 @@ public class IngestServiceBaseImpl extends IngestService {
             Map<String, String> env = System.getenv();
             String sitePath = env.get("ZORROA_SITE_PATH");
             if (sitePath == null) {
-                System.out.println("ZORROA_SITE_PATH is not set.");
+//                System.out.println("ZORROA_SITE_PATH is not set.");
                 classLoader = AssetBuilder.class.getClassLoader();
             } else {
                 File folder = new File(sitePath);
-                File[] listOfFiles = folder.listFiles();
-
-                ArrayList<URL> urls = new ArrayList<URL>();
-                for (int i = 0; i < listOfFiles.length; i++) {
-                    if (listOfFiles[i].isFile()) {
-                        String path = listOfFiles[i].getAbsolutePath();
-                        try {
-                            String ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase();
-                            if (ext.equals("jar")) {
-                                try {
-                                    URL url = new File(path).toURI().toURL();
-                                    urls.add(url);
-                                } catch (IOException e) {
-                                    System.out.println("Cannot create URL to Zorroa jar file " + path);
-                                    e.printStackTrace();
+                if (!folder.exists()) {
+//                    System.out.println("Invalid ZORROA_SITE_PATH: " + sitePath);
+                    classLoader = AssetBuilder.class.getClassLoader();
+                } else {
+                    File[] listOfFiles = folder.listFiles();
+                    ArrayList<URL> urls = new ArrayList<URL>();
+                    for (int i = 0; i < listOfFiles.length; i++) {
+                        if (listOfFiles[i].isFile()) {
+                            String path = listOfFiles[i].getAbsolutePath();
+                            try {
+                                String ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase();
+                                if (ext.equals("jar")) {
+                                    try {
+                                        URL url = new File(path).toURI().toURL();
+                                        urls.add(url);
+                                    } catch (IOException e) {
+                                        System.out.println("Cannot create URL to Zorroa jar file " + path);
+                                        e.printStackTrace();
+                                    }
                                 }
+                            } catch (java.lang.StringIndexOutOfBoundsException e) {
                             }
-                        } catch (java.lang.StringIndexOutOfBoundsException e) { }
+                        }
                     }
+                    zorroaJarURLs = urls.toArray(new URL[urls.size()]);
+                    classLoader = new URLClassLoader(zorroaJarURLs, AssetBuilder.class.getClassLoader());
                 }
-                zorroaJarURLs = urls.toArray(new URL[urls.size()]);
-                classLoader = new URLClassLoader(zorroaJarURLs, AssetBuilder.class.getClassLoader());
             }
         }
         return classLoader;
