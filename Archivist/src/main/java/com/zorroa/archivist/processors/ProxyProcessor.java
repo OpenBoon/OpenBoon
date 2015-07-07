@@ -80,17 +80,20 @@ public class ProxyProcessor extends IngestProcessor {
 
     public List<String> makeTinyProxy(Proxy smallest) {
         try {
+            // Create a 3x3 proxy, avoid borders and blurring by downsampling
+            // to an 11x11 image, ignoring the outer frame, and taking the
+            // center pixel of each 3x3 block.
             BufferedImage source = ImageIO.read(imageService.generateProxyPath(smallest.getFile()));
-            BufferedImage tinyImage = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage tinyImage = new BufferedImage(11, 11, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = tinyImage.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-            g2.drawImage(source, 0, 0, 3, 3, null);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.drawImage(source, 0, 0, 11, 11, null);
             g2.dispose();
 
             List<String> colors = Lists.newArrayListWithCapacity(9);
-            for (int y = 0; y < tinyImage.getHeight(); y++) {
-                for (int x = 0; x < tinyImage.getWidth(); x++) {
-                    Color c = new Color(tinyImage.getRGB(x, y));
+            for (int y = 0; y < 3; y++) {
+                for (int x = 0; x < 3; x++) {
+                    Color c = new Color(tinyImage.getRGB(x * 3 + 2, y * 3 + 2));
                     colors.add(String.format("#%02x%02x%02x", c.getRed(),c.getGreen(),c.getBlue()));
                 }
             }
