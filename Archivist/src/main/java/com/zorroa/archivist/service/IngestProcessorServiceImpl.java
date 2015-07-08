@@ -1,15 +1,14 @@
-package com.zorroa.archivist.domain;
+package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.sdk.IngestServiceBaseImpl;
+import com.zorroa.archivist.sdk.IngestProcessorServiceBaseImpl;
 import com.zorroa.archivist.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 
-/**
- * Created by wex on 7/4/15.
- */
-public class IngestServiceImpl extends IngestServiceBaseImpl {
+@Service
+public class IngestProcessorServiceImpl extends IngestProcessorServiceBaseImpl {
 
     @Autowired
     protected ImageService imageService;

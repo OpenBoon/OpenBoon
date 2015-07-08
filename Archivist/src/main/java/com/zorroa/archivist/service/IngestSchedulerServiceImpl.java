@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 import javax.annotation.PostConstruct;
 
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.IngestProcessorService;
 import org.elasticsearch.common.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,9 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     IngestService ingestService;
 
     @Autowired
+    IngestProcessorService ingestProcessorService;
+
+    @Autowired
     ImageService imageService;
 
     @Autowired
@@ -62,6 +66,10 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     @PostConstruct
     public void init() {
+
+        // FIXME: Initialize public static members. Consider manual @Autowire?
+        IngestProcessor.ingestProcessorService = ingestProcessorService;
+        IngestProcessorFactory.classLoader = ingestProcessorService.getSiteClassLoader();
 
         if (ArchivistConfiguration.unittest) {
             ingestExecutor = new SyncTaskExecutor();

@@ -27,17 +27,10 @@ To use external ingest processors, set the `ZORROA_SITE_PATH` to the absolute pa
 containing JAR files. Properly loading processors that use dynamic shared libraries also requires
 configuring the `DYLD_FALLBACK_LIBRARY_PATH` to include paths for any shared libraries (.dyld) and
 setting the `java.library.path` to point at the directories containing the JNI bindings for each
-native Java class (.jnilib).
+native Java class (.jnilib) and the `java.class.path` to point at directories containing and third
+party JAR files, such as the opencv jar.
 
-For example, to run the CaffeProcessor in the OpenCVProcessors project:
-
-1. Build the project with `mvn install`
-2. Set `ZORROA_SITE_PATH` to `<path-to-OpenCVProcessors>/target`, which should contain OpenCVProcessors-1.0.0.jar
-3. Set `DYLD_FALLBACK_LIBRARY_PATH` to `<path-to-OpenCVProcessors>/lib`, which contains the caffe and other dynamic libraries
-4. [Download the Caffe test models](http://zorroa.com/caffe/caffe-models.tgz)
-5. Un-tar the models to a directory, e.g. `<path-to-OpenCVProcessors>/models`
-6. Set `ZORROA_OPENCV_MODELS_PATH` to `<path-to-OpenCVProcessors>/models`
-7. Run the server with the following VM option: `-Djava.library.path=<path-to-OpenCVProcessors>target/jni/caffe`, which should contain CaffeProcessor.jnilib
+See the Ingester README for an example of how to run an ingest with external processors.
 
 
 ## TCP Ports of Note
