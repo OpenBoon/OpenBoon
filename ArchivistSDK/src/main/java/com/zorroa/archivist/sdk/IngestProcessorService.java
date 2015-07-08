@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by wex on 7/4/15.
  */
-public abstract class IngestService {
+public interface IngestProcessorService {
     public abstract ClassLoader getSiteClassLoader();
 
     public abstract File getResourceFile(String path);
