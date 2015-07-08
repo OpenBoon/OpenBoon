@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
+import com.zorroa.archivist.service.IngestProcessorServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,8 @@ public class IngestProcessorFactory implements Serializable {
 
     private transient IngestProcessor processor = null;
 
+    public static ClassLoader classLoader;
+
     public IngestProcessorFactory() { }
 
     public IngestProcessorFactory(Class<?> klass) {
@@ -29,8 +32,6 @@ public class IngestProcessorFactory implements Serializable {
     }
 
     public IngestProcessor init() {
-        IngestProcessor.ingestService = new IngestServiceImpl();
-        ClassLoader classLoader = IngestProcessor.ingestService.getSiteClassLoader();
         if (processor == null) {
             try {
                 Class<?> pclass = classLoader.loadClass(klass);
