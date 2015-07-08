@@ -8,15 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.processors.IngestProcessor;
+import com.zorroa.archivist.sdk.IngestProcessor;
 
 public class IngestProcessorFactory implements Serializable {
 
     private static final long serialVersionUID = 945863554465836155L;
 
     private static final Logger logger = LoggerFactory.getLogger(InvocationTargetException.class);
-
-    private static final ClassLoader classLoader = IngestProcessorFactory.class.getClassLoader();
 
     private String klass;
     private Map<String, Object> args;
@@ -31,6 +29,8 @@ public class IngestProcessorFactory implements Serializable {
     }
 
     public IngestProcessor init() {
+        IngestProcessor.ingestService = new IngestServiceImpl();
+        ClassLoader classLoader = IngestProcessor.ingestService.getSiteClassLoader();
         if (processor == null) {
             try {
                 Class<?> pclass = classLoader.loadClass(klass);

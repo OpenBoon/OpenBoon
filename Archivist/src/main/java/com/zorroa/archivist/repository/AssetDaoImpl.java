@@ -18,7 +18,7 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.AssetBuilder;
 
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {

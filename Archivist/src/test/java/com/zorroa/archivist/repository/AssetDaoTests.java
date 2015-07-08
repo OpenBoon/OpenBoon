@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.AssetBuilder;
 
 public class AssetDaoTests extends ArchivistApplicationTests {
 

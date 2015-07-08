@@ -101,6 +101,13 @@
       <version>3.4</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.zorroa</groupId>
+      <artifactId>archivist-sdk</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -108,17 +115,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-        <!-- Temporarily remove caffe models, which slow down JAR packaging -->
-        <!-- C++ code must open a file, but JAR requires getResourceAsStream() -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/caffe/**</exclude>
-          </excludes>
-        </configuration>
       </plugin>
     </plugins>
   </build>

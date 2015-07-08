@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Splitter;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.sdk.Proxy;
 import com.zorroa.archivist.domain.ProxyOutput;
 
 public class ImageServiceTests extends ArchivistApplicationTests {

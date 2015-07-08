@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ImmutableSet;
-import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.sdk.Proxy;
 import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyOutput;

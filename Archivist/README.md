@@ -13,6 +13,9 @@ Install Java 8 and Maven:
 
 4. Install Maven via homebrew ("brew update" if you get a 404): brew install maven
 
+Requires that the ArchivistSDK project in the local maven repository. Download the source for ArchivistSDK
+from GitHub, build and install to the local maven repository.
+
 ## Starting the Server
 
 ```
@@ -20,24 +23,22 @@ $ mvn package
 $ java -jar target/archivist-1.0.0.jar
 ```
 
-To run the CaffeProcessor JNI tests without linking errors:
+To use external ingest processors, set the `ZORROA_SITE_PATH` to the absolute path to the directory
+containing JAR files. Properly loading processors that use dynamic shared libraries also requires
+configuring the `DYLD_FALLBACK_LIBRARY_PATH` to include paths for any shared libraries (.dyld) and
+setting the `java.library.path` to point at the directories containing the JNI bindings for each
+native Java class (.jnilib).
 
-1. [Download the Caffe test models](http://zorroa.com/caffe/caffe-models.tgz)
-2. cd <project dir> (e.g. ~/Zorroa/src/Archivist)
-3. tar xvzf caffe-models.tgz (Places models in src/main/resources/caffe)
-4. Edit the test configuration to add the environment variable DYLD_FALLBACK_LIBRARY_PATH set to
- ${DYLD_FALLBACK_LIBRARY_PATH}:target/classes/caffe (a relative path should work)
-5. Edit the test configuration to add the following VM option: -Djava.library.path=target/jni/com/zorroa/archivist/processors/CaffeProcessor (a relative path should work)
+For example, to run the CaffeProcessor in the OpenCVProcessors project:
 
-After running a test or doing a build, you should have the following files in target/classes/caf
-fe (needed for runtime linking and data model loading):
+1. Build the project with `mvn install`
+2. Set `ZORROA_SITE_PATH` to `<path-to-OpenCVProcessors>/target`, which should contain OpenCVProcessors-1.0.0.jar
+3. Set `DYLD_FALLBACK_LIBRARY_PATH` to `<path-to-OpenCVProcessors>/lib`, which contains the caffe and other dynamic libraries
+4. [Download the Caffe test models](http://zorroa.com/caffe/caffe-models.tgz)
+5. Un-tar the models to a directory, e.g. `<path-to-OpenCVProcessors>/models`
+6. Set `ZORROA_OPENCV_MODELS_PATH` to `<path-to-OpenCVProcessors>/models`
+7. Run the server with the following VM option: `-Djava.library.path=<path-to-OpenCVProcessors>target/jni/caffe`, which should contain CaffeProcessor.jnilib
 
-    bvlc_reference_caffenet.caffemodel  libhdf5_hl.7.dylib
-    deploy.prototxt                     libopencv_core.dylib
-    imagenet_mean.binaryproto           libopencv_highgui.dylib
-    libcaffe.so                         libopencv_imgproc.dylib
-    libglog.dylib                       synset_words.txt
-    libhdf5.7.dylib
 
 ## TCP Ports of Note
 
@@ -185,32 +186,3 @@ curl -XPOST -i 'http://localhost:9200/archivist_01/_search?pretty' -d '{
 }'
 ```
 
-### Using C++ in Processors via JNI
-
-You can use the jni.sh script to compile and link C++ code into an ingest processor.
-The script can generate JNI headers using the "javah" command or create the libraries
-using the jnilibs command. Additional arguments are parsed to compile or linker phases.
-
-Here's an example of how to call it for the CaffeProcessor which uses libcaffe,
-OpenCV and a bunch of other third party libs. Note that this doesn't currently
-package the third party libraries into the server JAR file.
-
-```
-jni.sh jnilib CaffeProcessor \
-    -I../caffe/include/ -I/Developer/NVIDIA/CUDA-7.0/include \
-    -I../caffe/.build_release/src/ \
-    -I/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers/ \
-    -lcaffe \
-    -L/Users/wex/anaconda/lib -L/usr/local/lib -L/usr/lib \
-    -L../caffe/.build_release/lib \
-    -lglog -lm -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
-```
-
-The Java code should use loadLibrary("CaffeProcessor") to load the compiled library
-and you need to specify the path to the libFoo.jnilib file using the -Djava.library.path
- command line option when starting the server:
-
-```
-java -Djava.library.path=/Users/wex/Zorroa/src/Archivist/target/jni/com/zorroa/archivist/processors/CaffeProcessor \
-    -jar target/archivist-1.0.0.jar
-```

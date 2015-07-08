@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import com.zorroa.archivist.domain.Proxy;
+import com.zorroa.archivist.sdk.Proxy;
 import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyOutput;

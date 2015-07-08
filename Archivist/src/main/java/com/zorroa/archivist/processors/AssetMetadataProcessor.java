@@ -1,12 +1,11 @@
 package com.zorroa.archivist.processors;
 
-import java.awt.Dimension;
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.zorroa.archivist.sdk.IngestProcessor;
 import com.drew.lang.Rational;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Tag;
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
-import com.zorroa.archivist.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.AssetBuilder;
 
 /**
  *
@@ -52,23 +51,19 @@ public class AssetMetadataProcessor extends IngestProcessor {
      */
     @Override
     public void process(AssetBuilder asset) {
-        if (isImageType(asset)) {
-            extractDimensions(asset);
+        if (asset.isImageType()) {
             extractImageData(asset);
         }
     }
 
-    private void extractDimensions(AssetBuilder asset) {
-        try {
-            Dimension size = imageService.getImageDimensions(asset.getFile());
-            asset.put("source", "width", size.width);
-            asset.put("source", "height", size.height);
-        } catch (IOException e) {
-            logger.warn("Unable to determine image dimensions: {}", asset, e);
-        }
-    }
-
-    private void extractImageData(AssetBuilder asset) {
+    /**
+     * Handles pulling metadata out of the image itself, either by
+     * EXIF, EXR header, DPX header, etc.  Currently only supports
+     * EXIF.
+     *
+     * @param asset
+     */
+    public void extractImageData(AssetBuilder asset) {
 
         /*
          * Extract all metadata fields into the format <directory>:<tag>=<value>,
@@ -252,9 +247,5 @@ public class AssetMetadataProcessor extends IngestProcessor {
                 asset.put("source", "location", geoPoint);
             }
         }
-    }
-
-    private boolean isImageType(AssetBuilder asset) {
-        return imageService.getSupportedFormats().contains(asset.getExtension());
     }
 }
