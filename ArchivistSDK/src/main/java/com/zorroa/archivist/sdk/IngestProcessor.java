@@ -4,7 +4,7 @@ import java.util.Map;
 
 public abstract class IngestProcessor {
 
-    static public IngestService ingestService = null;
+    static public IngestProcessorService ingestProcessorService = null;
 
     public abstract void process(AssetBuilder asset);
 
