@@ -69,7 +69,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
         // FIXME: Initialize public static members. Consider manual @Autowire?
         IngestProcessor.ingestProcessorService = ingestProcessorService;
-        IngestProcessorFactory.classLoader = ingestProcessorService.getSiteClassLoader();
 
         if (ArchivistConfiguration.unittest) {
             ingestExecutor = new SyncTaskExecutor();
