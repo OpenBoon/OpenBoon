@@ -21,4 +21,7 @@ public interface IngestProcessorService {
 
     // Translates filename and extension into loadable image file
     public abstract File getProxyFile(String filename, String extension);
+
+    // Returns true if the asset is a valid image file
+    public abstract boolean isImage(AssetBuilder asset);
 }
