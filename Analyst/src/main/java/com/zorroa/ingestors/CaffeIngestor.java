@@ -58,7 +58,7 @@ public class CaffeIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
-        if (asset.isImageType()) {
+        if (ingestProcessorService.isImage(asset)) {
             // Start with the original image, but try to find a proxy to use for classification
             String classifyPath = asset.getFile().getPath();
             List<Proxy> proxyList = (List<Proxy>) asset.document.get("proxies");
@@ -75,8 +75,10 @@ public class CaffeIngestor extends IngestProcessor {
                 }
             }
             String keywords = classify(nativeCaffeClassifier, classifyPath);
-            logger.info("CaffeIngestor " + keywords);
+            logger.info("CaffeIngestor: " + keywords);
             List<String> keywordList = Arrays.asList(keywords.split(","));
+            asset.map("caffe", "keywords", "type", "string");
+            asset.map("caffe", "keywords", "copy_to", null);
             asset.put("caffe", "keywords", keywordList);
         }
     }
