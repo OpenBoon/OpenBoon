@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2015 by Zorroa
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.zorroa</groupId>
+    <artifactId>ingestors</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <slf4jVersion>1.7.11</slf4jVersion>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.zorroa</groupId>
+            <artifactId>archivist-sdk</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.opencv</groupId>
+            <artifactId>opencv</artifactId>
+            <version>2.4.11</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4jVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4jVersion}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>install-opencv</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>lib/face/opencv-2411.jar</file>
+                            <groupId>org.opencv</groupId>
+                            <artifactId>opencv</artifactId>
+                            <version>2.4.11</version>
+                            <packaging>jar</packaging>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+
+                <executions>
+
+                    <execution>
+                        <id>Javah CaffeIngestor</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${basedir}/jni.sh</executable>
+                            <commandlineArgs>javah CaffeIngestor</commandlineArgs>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>Javalib CaffeIngestor</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${basedir}/jni.sh</executable>
+                            <commandlineArgs>jnilib CaffeIngestor
+                                -Isrc/main/C++/com/zorroa/ingestors/caffe/include
+                                -Isrc/main/C++/com/zorroa/ingestors/caffe/include/hdf5
+                                -Isrc/main/C++/com/zorroa/ingestors/caffe/include/CUDA-7.0
+                                -I/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers
+                                -Llib/caffe
+                                -lcaffe -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
+                            </commandlineArgs>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Djava.library.path=${project.basedir}/target/jni:${project.basedir}/lib/face</argLine>
+                    <environmentVariables>
+                        <DYLD_FALLBACK_LIBRARY_PATH>${project.basedir}/lib/caffe:${project.basedir}/lib/face</DYLD_FALLBACK_LIBRARY_PATH>
+                        <ZORROA_OPENCV_MODEL_PATH>${project.basedir}/models</ZORROA_OPENCV_MODEL_PATH>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
