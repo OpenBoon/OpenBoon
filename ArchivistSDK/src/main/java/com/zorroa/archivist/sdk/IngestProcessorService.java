@@ -15,9 +15,10 @@ import java.util.Map;
  * Created by wex on 7/4/15.
  */
 public interface IngestProcessorService {
-    public abstract ClassLoader getSiteClassLoader();
 
+    // Works for distribution, test and development resources
     public abstract File getResourceFile(String path);
 
+    // Translates filename and extension into loadable image file
     public abstract File getProxyFile(String filename, String extension);
 }
