@@ -154,10 +154,6 @@ public class AssetBuilder {
         return file.getName();
     }
 
-    public boolean isImageType() {
-        return true;    // TODO: Check the list of supported image formats?
-    }
-
     @Override
     public String toString() {
         return String.format("<Asset(\"%s\")>", file.getAbsolutePath());

@@ -37,4 +37,8 @@ public class IngestProcessorServiceBaseImpl implements IngestProcessorService {
         return new File(proxyFile.getAbsoluteFile() + "/" + filename + "." + extension);
     }
 
+    @Override
+    public boolean isImage(AssetBuilder asset) {
+        return true;    // FIXME: Works in com.zorroa.archivist.service.IngestProcessorServiceImpl
+    }
 }
