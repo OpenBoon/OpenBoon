@@ -34,33 +34,35 @@ public class ProxyProcessor extends IngestProcessor {
     @Override
     public void process(AssetBuilder asset) {
 
-        List<ProxyOutput> outputs = Lists.newArrayList(
-                new ProxyOutput("png", 128, 8),
-                new ProxyOutput("png", 256, 8),
-                new ProxyOutput("png", 1024, 8)
-        );
-        List<Proxy> result = Lists.newArrayList();
-        for (ProxyOutput output: outputs) {
-            try {
-                result.add(imageService.makeProxy(asset.getFile(), output));
-            } catch (IOException e) {
-                logger.warn("Failed to create proxy {}, ", output, e);
+        if (ingestProcessorService.isImage(asset)) {
+            List<ProxyOutput> outputs = Lists.newArrayList(
+                    new ProxyOutput("png", 128, 8),
+                    new ProxyOutput("png", 256, 8),
+                    new ProxyOutput("png", 1024, 8)
+            );
+            List<Proxy> result = Lists.newArrayList();
+            for (ProxyOutput output : outputs) {
+                try {
+                    result.add(imageService.makeProxy(asset.getFile(), output));
+                } catch (IOException e) {
+                    logger.warn("Failed to create proxy {}, ", output, e);
+                }
             }
-        }
 
-        Collections.sort(result, new Comparator<Proxy>() {
-            @Override
-            public int compare(Proxy o1, Proxy o2) {
-                return Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight());
+            Collections.sort(result, new Comparator<Proxy>() {
+                @Override
+                public int compare(Proxy o1, Proxy o2) {
+                    return Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight());
+                }
+            });
+
+            if (!result.isEmpty()) {
+                asset.document.put("tinyProxy", makeTinyProxy(result.get(0)));
+                asset.document.put("proxies", result);
             }
-        });
 
-        if (!result.isEmpty()) {
-            asset.document.put("tinyProxy", makeTinyProxy(result.get(0)));
-            asset.document.put("proxies", result);
+            extractDimensions(asset);
         }
-
-        extractDimensions(asset);
     }
 
     public void extractDimensions(AssetBuilder asset) {
