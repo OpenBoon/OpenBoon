@@ -51,7 +51,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
      */
     @Override
     public void process(AssetBuilder asset) {
-        if (asset.isImageType()) {
+        if (ingestProcessorService.isImage(asset)) {
             extractImageData(asset);
         }
     }
