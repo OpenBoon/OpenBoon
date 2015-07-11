@@ -49,7 +49,7 @@ CREATE TABLE ingest (
   pk_proxy_config INT NOT NULL,
   int_state TINYINT NOT NULL DEFAULT 0,
   str_path VARCHAR(1024) NOT NULL,
-  list_types ARRAY NOT NULL,
+  list_types OTHER NOT NULL,
   str_user_created VARCHAR(128) NOT NULL,
   time_created BIGINT NOT NULL,
   str_user_modified VARCHAR(128) NOT NULL,

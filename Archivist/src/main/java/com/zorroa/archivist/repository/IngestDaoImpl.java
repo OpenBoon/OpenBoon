@@ -3,7 +3,9 @@ package com.zorroa.archivist.repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
@@ -34,7 +36,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             result.setUserCreated(rs.getString("str_user_created"));
             result.setTimeModified(rs.getLong("time_modified"));
             result.setUserCreated(rs.getString("str_user_created"));
-            result.setFileTypes(ImmutableSet.copyOf((String[]) rs.getArray("list_types").getArray()));
+            result.setFileTypes((Set<String>) rs.getObject("list_types"));
             result.setTimeStarted(rs.getLong("time_started"));
             result.setTimeStopped(rs.getLong("time_stopped"));
             result.setCreatedCount(rs.getInt("int_created_count"));
@@ -71,12 +73,12 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
-                connection.prepareStatement(INSERT, new String[]{"pk_pipeline"});
+                connection.prepareStatement(INSERT, new String[]{"pk_ingest"});
             ps.setInt(1, pipeline.getId());
             ps.setInt(2, proxyConfig.getId());
             ps.setInt(3, IngestState.Idle.ordinal());
             ps.setObject(4, builder.getPath());
-            ps.setObject(5, builder.getFileTypes().toArray(new String[] {}));
+            ps.setObject(5, builder.getFileTypes());
             ps.setLong(6, time);
             ps.setString(7, SecurityUtils.getUsername());
             ps.setLong(8, time);
