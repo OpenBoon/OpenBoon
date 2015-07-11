@@ -1,20 +1,12 @@
 package com.zorroa.archivist.service;
 
-import java.io.File;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-
-import javax.annotation.PostConstruct;
-
+import com.google.common.util.concurrent.AbstractScheduledService;
+import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.FileUtils;
+import com.zorroa.archivist.IngestException;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.AssetBuilder;
+import com.zorroa.archivist.sdk.IngestProcessor;
 import com.zorroa.archivist.sdk.IngestProcessorService;
 import org.elasticsearch.common.Preconditions;
 import org.slf4j.Logger;
@@ -26,16 +18,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
-import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.archivist.ArchivistConfiguration;
-import com.zorroa.archivist.FileUtils;
-import com.zorroa.archivist.IngestException;
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.sdk.IngestProcessor;
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class IngestSchedulerServiceImpl extends AbstractScheduledService implements IngestSchedulerService {
