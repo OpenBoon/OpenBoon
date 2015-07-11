@@ -27,6 +27,7 @@ archivist:
         basePath: "proxies"
         format: "png"
     ingest:
-        parallel: 1
+        ingestWorkers: 1
+        assetWorkersPerIngest: 4
 
 

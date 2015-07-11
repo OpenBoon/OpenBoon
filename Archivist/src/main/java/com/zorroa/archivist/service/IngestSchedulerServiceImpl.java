@@ -50,9 +50,12 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     @Autowired
     ApplicationContext applicationContext;
 
-    @Value("${archivist.ingest.parallel}")
-    private int maxRunningIngestCount;
+    @Value("${archivist.ingest.ingestWorkers}")
+    private int ingestWorkerCount;
 
+    @Value("${archivist.ingest.assetWorkersPerIngest}")
+    private int assetWorkerCount;
+    
     private final AtomicInteger runningIngestCount = new AtomicInteger();
 
     private Executor ingestExecutor;
@@ -67,7 +70,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
             ingestExecutor = new SyncTaskExecutor();
         }
         else {
-            ingestExecutor = Executors.newFixedThreadPool(maxRunningIngestCount);
+            ingestExecutor = Executors.newFixedThreadPool(ingestWorkerCount);
         }
         startAsync();
     }
@@ -89,7 +92,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     @Override
     public Ingest executeNextIngest() {
-        if (runningIngestCount.get() >= maxRunningIngestCount) {
+        if (runningIngestCount.get() >= ingestWorkerCount) {
             return null;
         }
 
@@ -133,7 +136,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                     autowire.autowireBean(processor);
                 }
 
-                ExecutorService executor = Executors.newFixedThreadPool(4);
+                ExecutorService executor = Executors.newFixedThreadPool(assetWorkerCount);
 
                 Files.walk(new File(ingest.getPath()).toPath(), FileVisitOption.FOLLOW_LINKS)
                         .filter(p -> p.toFile().isFile())
