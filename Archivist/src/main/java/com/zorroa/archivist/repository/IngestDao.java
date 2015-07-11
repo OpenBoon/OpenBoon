@@ -16,6 +16,8 @@ public interface IngestDao {
 
     List<Ingest> getAll(IngestFilter filter);
 
+    boolean update(Ingest ingest, IngestUpdateBuilder builder);
+
     boolean setState(Ingest ingest, IngestState newState, IngestState oldState);
 
     boolean setState(Ingest ingest, IngestState newState);

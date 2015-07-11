@@ -83,6 +83,22 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
+        /*
+         * Validate names if they are used and turn into IDs.
+         */
+        if (builder.getProxyConfig() != null) {
+            builder.setProxyConfigId(proxyConfigDao.get(builder.getProxyConfig()).getId());
+        }
+
+        if (builder.getPipeline() != null) {
+            builder.setPipelineId(ingestPipelineDao.get(builder.getPipeline()).getId());
+        }
+
+        return ingestDao.update(ingest, builder);
+    }
+
+    @Override
     public Ingest getIngest(long id) {
         return ingestDao.get(id);
     }

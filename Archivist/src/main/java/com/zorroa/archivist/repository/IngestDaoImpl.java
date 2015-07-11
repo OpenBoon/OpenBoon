@@ -132,6 +132,48 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     }
 
     @Override
+    public boolean update(Ingest ingest, IngestUpdateBuilder builder) {
+
+        StringBuilder sb = new StringBuilder(512);
+        sb.append("UPDATE ingest SET ");
+
+        List<String> updates = Lists.newArrayList();
+        List<Object> values = Lists.newArrayList();
+
+        if (builder.getPath() != null) {
+            updates.add("str_path=?");
+            values.add(builder.getPath());
+        }
+
+        if (builder.getFileTypes() != null) {
+            updates.add("list_types=?");
+            values.add(builder.getFileTypes());
+        }
+
+        if (builder.getPipelineId() > 0) {
+            updates.add("pk_pipeline=?");
+            values.add(builder.getPipelineId());
+        }
+
+        if (builder.getProxyConfigId() > 0) {
+            updates.add("pk_proxy_config=?");
+            values.add(builder.getProxyConfigId());
+        }
+
+        if (updates.isEmpty()) {
+            return false;
+        }
+
+        sb.append(StringUtils.join(updates, ", "));
+        sb.append(" WHERE pk_ingest=?");
+        values.add(ingest.getId());
+
+        logger.debug("{} {}", sb.toString(), values);
+        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    }
+
+
+    @Override
     public boolean setState(Ingest ingest, IngestState newState, IngestState oldState) {
         return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state=?",
                     newState.ordinal(), ingest.getId(), oldState.ordinal()) == 1;

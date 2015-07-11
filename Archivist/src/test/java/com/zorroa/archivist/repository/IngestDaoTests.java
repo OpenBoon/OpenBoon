@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.processors.ChecksumProcessor;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,4 +110,38 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertTrue(ingestDao.setState(ingest, IngestState.Running));
         assertFalse(ingestDao.setState(ingest, IngestState.Running));
     }
+
+    @Test
+    public void testUpdate() {
+
+        IngestPipelineBuilder ipb = new IngestPipelineBuilder();
+        ipb.setName("test");
+        ipb.setDescription("A test pipeline");
+        ipb.addToProcessors(new IngestProcessorFactory("com.zorroa.archivist.processors.ChecksumProcessor"));
+        IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
+
+        ProxyConfigBuilder pcb = new ProxyConfigBuilder();
+        pcb.setName("test");
+        pcb.setDescription("test proxy config.");
+        pcb.setOutputs(org.elasticsearch.common.collect.Lists.newArrayList(
+                new ProxyOutput("png", 128, 8)
+        ));
+        ProxyConfig testProxyConfig  = imageService.createProxyConfig(pcb);
+
+        IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
+        updateBuilder.setFileTypes(Sets.newHashSet("jpg"));
+        updateBuilder.setPath("/foo");
+        updateBuilder.setPipelineId(testPipeline.getId());
+        updateBuilder.setProxyConfigId(testProxyConfig.getId());
+
+        assertTrue(ingestDao.update(ingest, updateBuilder));
+
+        Ingest updatedIngest = ingestDao.get(ingest.getId());
+        assertEquals("/foo", updatedIngest.getPath());
+        assertTrue(updatedIngest.getFileTypes().contains("jpg"));
+        assertEquals(1, updatedIngest.getFileTypes().size());
+        assertEquals(testPipeline.getId(), updatedIngest.getPipelineId());
+        assertEquals(testProxyConfig.getId(), updatedIngest.getProxyConfigId());
+    }
+
 }

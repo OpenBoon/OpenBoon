@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import java.util.List;
 
 import com.zorroa.archivist.domain.IngestFilter;
+import com.zorroa.archivist.domain.IngestUpdateBuilder;
 import com.zorroa.archivist.service.IngestSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,5 +56,13 @@ public class IngestController {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));
         ingestSchedulerService.executeIngest(ingest);
         return ingest;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.PUT)
+    public Ingest update(@RequestBody IngestUpdateBuilder builder, @PathVariable String id) {
+        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+        ingestService.updateIngest(ingest, builder);
+        return ingestService.getIngest(ingest.getId());
     }
 }
