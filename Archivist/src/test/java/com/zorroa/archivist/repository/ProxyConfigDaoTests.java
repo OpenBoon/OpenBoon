@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
 import org.elasticsearch.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,4 +53,16 @@ public class ProxyConfigDaoTests extends ArchivistApplicationTests {
         ProxyConfig config2 = proxyConfigDao.get(proxyConfig.getName());
         assertEquals(config2.getName(), proxyConfig.getName());
     }
+
+    @Test
+    public void update() {
+        ProxyConfigUpdateBuilder builder = new ProxyConfigUpdateBuilder();
+        builder.setDescription("this is not a test");
+        builder.setName("not_test");
+        builder.setOutputs(Lists.newArrayList(
+                new ProxyOutput("png", 128, 8)
+        ));
+        proxyConfigDao.update(proxyConfig, builder);
+    }
+
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
 import com.zorroa.archivist.sdk.Proxy;
 import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.domain.ProxyConfigBuilder;
@@ -86,4 +87,6 @@ public interface ImageService {
      * @return
      */
     ProxyConfig createProxyConfig(ProxyConfigBuilder builder);
+
+    boolean updateProxyConfig(ProxyConfig config, ProxyConfigUpdateBuilder builder);
 }

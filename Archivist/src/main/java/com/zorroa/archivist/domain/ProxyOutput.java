@@ -45,4 +45,12 @@ public class ProxyOutput implements Serializable {
     public String toString() {
         return String.format("<ProxyOutput(\"%s\",%d,%d)>", format, size, bpp);
     }
+
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ProxyOutput)) {
+            return false;
+        }
+
+        return obj.toString().equals(this.toString());
+    }
 }

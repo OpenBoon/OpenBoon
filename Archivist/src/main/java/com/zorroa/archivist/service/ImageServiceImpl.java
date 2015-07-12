@@ -14,6 +14,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.resizers.configurations.Rendering;
 
@@ -166,5 +167,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ProxyConfig createProxyConfig(ProxyConfigBuilder builder) {
         return proxyConfigDao.create(builder);
+    }
+
+    @Override
+    public boolean updateProxyConfig(ProxyConfig config, ProxyConfigUpdateBuilder builder) {
+        return proxyConfigDao.update(config, builder);
     }
 }
