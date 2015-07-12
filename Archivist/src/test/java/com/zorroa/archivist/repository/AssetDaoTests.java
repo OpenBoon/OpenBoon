@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.google.common.io.Files;
 import org.elasticsearch.index.engine.DocumentAlreadyExistsException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +13,31 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.Asset;
 import com.zorroa.archivist.sdk.AssetBuilder;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 public class AssetDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     AssetDao assetDao;
 
     @Test
-    public void testCreateAndGet() {
-        AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+    public void testCreateAndGet() throws IOException {
+
+        String filename = UUID.randomUUID().toString() + ".jpg";
+        String filepath = "/tmp/" + filename;
+        Files.touch(new File(filepath));
+
+        AssetBuilder builder = new AssetBuilder(filepath);
         Asset asset1 = assetDao.create(builder);
         refreshIndex(100);
 
         Asset asset2 = assetDao.get(asset1.getId());
         assertEquals("jpg", asset2.getValue("source.extension"));
-        assertEquals(getStaticImagePath(), asset2.getValue("source.directory"));
-        assertEquals(getStaticImagePath() + "/beer_kettle_01.jpg", asset2.getValue("source.path"));
-        assertEquals("beer_kettle_01.jpg", asset2.getValue("source.filename"));
+        assertEquals("/tmp", asset2.getValue("source.directory"));
+        assertEquals(filepath, asset2.getValue("source.path"));
+        assertEquals(filename, asset2.getValue("source.filename"));
 
     }
 
