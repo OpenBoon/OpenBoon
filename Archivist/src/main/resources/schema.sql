@@ -32,6 +32,9 @@ CREATE TABLE proxy_config (
   list_outputs OTHER NOT NULL
 );
 
+CREATE UNIQUE INDEX proxy_config_str_name_uniq_idx ON proxy_config(str_name);
+
+
 CREATE TABLE pipeline (
   pk_pipeline INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   str_name VARCHAR(64) NOT NULL,
@@ -42,6 +45,8 @@ CREATE TABLE pipeline (
   time_modified BIGINT NOT NULL,
   list_processors OTHER NOT NULL
 );
+
+CREATE UNIQUE INDEX pipeline_str_name_uniq_idx ON pipeline(str_name);
 
 CREATE TABLE ingest (
   pk_ingest BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
