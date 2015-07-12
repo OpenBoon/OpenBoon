@@ -23,6 +23,8 @@ public interface IngestService {
     */
     Ingest createIngest(IngestBuilder builder);
 
+    boolean deleteIngest(Ingest ingest);
+
     boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder);
 
     Ingest getIngest(long id);

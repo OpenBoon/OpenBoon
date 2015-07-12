@@ -19,6 +19,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -153,6 +154,22 @@ public class IngestControllerTests extends MockMvcTest {
         assertEquals(builder.getPath(), updatedIngest.getPath());
         assertEquals(builder.getFileTypes(), updatedIngest.getFileTypes());
     }
+
+    @Test
+    public void testDelete() throws Exception {
+
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(delete("/api/v1/ingests/" + ingest.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        boolean deleted = Json.Mapper.readValue(result.getResponse().getContentAsString(), Boolean.class);
+        assertTrue(deleted);
+    }
+
 
     @Test
     public void testExecute() throws Exception {

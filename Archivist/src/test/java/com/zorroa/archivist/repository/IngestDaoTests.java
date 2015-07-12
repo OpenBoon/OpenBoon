@@ -47,6 +47,12 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testDelete() {
+        assertTrue(ingestDao.delete(ingest));
+        assertFalse(ingestDao.delete(ingest));
+    }
+
+    @Test
     public void testGet() {
         Ingest ingest01 = ingestDao.get(ingest.getId());
         assertEquals(ingest01.getId(), ingest.getId());

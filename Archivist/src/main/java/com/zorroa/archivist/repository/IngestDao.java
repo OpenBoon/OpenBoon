@@ -18,6 +18,8 @@ public interface IngestDao {
 
     boolean update(Ingest ingest, IngestUpdateBuilder builder);
 
+    boolean delete(Ingest ingest);
+
     boolean setState(Ingest ingest, IngestState newState, IngestState oldState);
 
     boolean setState(Ingest ingest, IngestState newState);

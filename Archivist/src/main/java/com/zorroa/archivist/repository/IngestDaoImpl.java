@@ -174,6 +174,11 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
 
+    @Override
+    public boolean delete(Ingest ingest) {
+        return jdbc.update("DELETE FROM ingest WHERE pk_ingest=? AND int_state=?",
+                ingest.getId(), IngestState.Idle.ordinal()) == 1;
+    }
 
     @Override
     public boolean setState(Ingest ingest, IngestState newState, IngestState oldState) {

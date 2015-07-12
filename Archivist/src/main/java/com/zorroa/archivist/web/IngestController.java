@@ -1,9 +1,6 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestFilter;
-import com.zorroa.archivist.domain.IngestUpdateBuilder;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.IngestSchedulerService;
 import com.zorroa.archivist.service.IngestService;
 import org.slf4j.Logger;
@@ -63,5 +60,16 @@ public class IngestController {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));
         ingestService.updateIngest(ingest, builder);
         return ingestService.getIngest(ingest.getId());
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.DELETE)
+    public boolean delete(@PathVariable String id) {
+        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+        if (!ingest.getState().equals(IngestState.Idle)) {
+            throw new IllegalStateException("Ingest must be idle to be deleted.");
+        }
+
+        return ingestService.deleteIngest(ingest);
     }
 }

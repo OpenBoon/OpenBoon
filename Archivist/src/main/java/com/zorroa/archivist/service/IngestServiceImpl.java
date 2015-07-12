@@ -86,6 +86,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public boolean deleteIngest(Ingest ingest) {
+        return ingestDao.delete(ingest);
+    }
+
+    @Override
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
         /*
          * Validate names if they are used and turn into IDs.
