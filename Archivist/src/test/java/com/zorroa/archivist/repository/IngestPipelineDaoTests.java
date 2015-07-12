@@ -1,8 +1,14 @@
 package com.zorroa.archivist.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
+import com.zorroa.archivist.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.archivist.processors.ChecksumProcessor;
+import com.zorroa.archivist.processors.ProxyProcessor;
 import org.elasticsearch.common.collect.Maps;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,19 +23,22 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
     @Autowired
     IngestPipelineDao ingestPipelineDao;
 
+    IngestPipeline pipeline;
+
+    @Before
+    public void init() {
+        IngestPipelineBuilder request = new IngestPipelineBuilder();
+        request.setName("test");
+        request.setDescription("a test pipeline");
+        request.setProcessors(Lists.newArrayList(new IngestProcessorFactory(ChecksumProcessor.class)));
+        pipeline = ingestPipelineDao.create(request);
+    }
+
     @Test
     public void getAndCreate() {
-
-        IngestPipelineBuilder request = new IngestPipelineBuilder();
-        request.setName("default");
-
-        IngestProcessorFactory processor = new IngestProcessorFactory();
-        processor.setKlass("com.zorroa.archivist.ingest.ExifProcessor");
-        request.setProcessors(Lists.newArrayList(processor));
-
-        IngestPipeline pipeline = ingestPipelineDao.create(request);
-
-        assertEquals(request.getName(), pipeline.getName());
+        IngestPipeline _pipeline = ingestPipelineDao.get(pipeline.getId());
+        assertEquals(_pipeline.getName(), pipeline.getName());
+        assertEquals(_pipeline.getDescription(), pipeline.getDescription());
     }
 
     @Test
@@ -43,6 +52,22 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
                             Maps.newHashMap()));
             ingestPipelineDao.create(builder);
         }
-        assertEquals(12, ingestPipelineDao.getAll().size());
+        assertEquals(13, ingestPipelineDao.getAll().size());
+    }
+
+    @Test
+    public void update() {
+
+        IngestPipelineUpdateBuilder builder = new IngestPipelineUpdateBuilder();
+        builder.setName("foo");
+        builder.setDescription("foo");
+        builder.setProcessors(Lists.newArrayList(new IngestProcessorFactory(ProxyProcessor.class)));
+
+        assertTrue(ingestPipelineDao.update(pipeline, builder));
+        IngestPipeline updated = ingestPipelineDao.get(pipeline.getId());
+        assertEquals(builder.getDescription(), updated.getDescription());
+        assertEquals(builder.getName(), updated.getName());
+        assertEquals(builder.getProcessors(), updated.getProcessors());
+        assertNotEquals(pipeline.getTimeModified(), updated.getTimeModified());
     }
 }

@@ -33,6 +33,8 @@ public interface IngestService {
 
     List<Ingest> getAllIngests(IngestState state, int limit);
 
+    boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder);
+
     boolean setIngestRunning(Ingest ingest);
 
     boolean setIngestIdle(Ingest ingest);

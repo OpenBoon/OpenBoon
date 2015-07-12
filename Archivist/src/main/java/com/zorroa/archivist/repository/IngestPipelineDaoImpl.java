@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.IngestPipelineUpdateBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -86,5 +89,46 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
     @Override
     public List<IngestPipeline> getAll() {
         return jdbc.query("SELECT * FROM pipeline", MAPPER);
+    }
+
+    @Override
+    public boolean update(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder) {
+        StringBuilder sb = new StringBuilder(512);
+        sb.append("UPDATE pipeline SET ");
+
+        List<String> updates = Lists.newArrayList();
+        List<Object> values = Lists.newArrayList();
+
+        if (builder.getDescription() != null) {
+            updates.add("str_description=?");
+            values.add(builder.getDescription());
+        }
+
+        if (builder.getName() != null) {
+            updates.add("str_name=?");
+            values.add(builder.getName());
+        }
+
+        if (builder.getProcessors() != null) {
+            updates.add("list_processors=?");
+            values.add(builder.getProcessors());
+        }
+
+        if (updates.isEmpty()) {
+            return false;
+        }
+
+        updates.add("str_user_modified=?");
+        values.add(SecurityUtils.getUsername());
+
+        updates.add("time_modified=?");
+        values.add(System.currentTimeMillis());
+
+        sb.append(StringUtils.join(updates, ", "));
+        sb.append(" WHERE pk_pipeline=?");
+        values.add(pipeline.getId());
+
+        logger.debug("{} {}", sb.toString(), values);
+        return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
 }

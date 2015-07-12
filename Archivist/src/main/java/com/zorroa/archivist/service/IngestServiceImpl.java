@@ -61,6 +61,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder) {
+        return ingestPipelineDao.update(pipeline, builder);
+    }
+
+    @Override
     public boolean setIngestRunning(Ingest ingest) {
         return ingestDao.setState(ingest, IngestState.Running);
     }
