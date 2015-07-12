@@ -9,6 +9,9 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,7 @@ public class IngestProcessorFactory implements Serializable {
 
     private static ClassLoader classLoader = null;
 
+    @JsonIgnore
     public ClassLoader getSiteClassLoader() {
         if (classLoader == null) {
             classLoader = AssetBuilder.class.getClassLoader();
@@ -125,11 +129,23 @@ public class IngestProcessorFactory implements Serializable {
         this.args = args;
     }
 
+    @JsonIgnore
     public IngestProcessor getProcessor() {
         return processor;
     }
 
     public void setProcessor(IngestProcessor processor) {
         this.processor = processor;
+    }
+
+    public boolean equals(Object obj) {
+        if (!(obj instanceof IngestProcessorFactory)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        // TODO: also check args
+        return this.klass.equals(this.klass);
     }
 }
