@@ -4,7 +4,15 @@ import java.util.Map;
 
 public abstract class IngestProcessor {
 
-    static public IngestProcessorService ingestProcessorService = null;
+    protected IngestProcessorService ingestProcessorService;
+
+    public IngestProcessorService getIngestProcessorService() {
+        return ingestProcessorService;
+    }
+
+    public void setIngestProcessorService(IngestProcessorService ingestProcessorService) {
+        this.ingestProcessorService = ingestProcessorService;
+    }
 
     public abstract void process(AssetBuilder asset);
 
