@@ -44,8 +44,8 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeNextIngest();
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_search")
@@ -66,8 +66,8 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeNextIngest();
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_count")
