@@ -63,6 +63,7 @@ public class ArchivistConfiguration {
 
         if (unittest) {
             builder.put("path.data", "unittest/data");
+            builder.put("index.refresh_interval", "1s");
         }
 
         Node node = nodeBuilder()
