@@ -63,9 +63,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     @PostConstruct
     public void init() {
 
-        // FIXME: Initialize public static members. Consider manual @Autowire?
-        IngestProcessor.ingestProcessorService = ingestProcessorService;
-
         if (ArchivistConfiguration.unittest) {
             ingestExecutor = new SyncTaskExecutor();
         }
@@ -118,7 +115,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                 /*
                  * Initialize everything we need to run this ingest
                  */
-                ProxyConfig proxyConfig = imageService.getProxyConfig(ingest.getProxyConfigId());
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
                 List<IngestProcessorFactory> processors = pipeline.getProcessors();
 
@@ -134,6 +130,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
                     AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                     autowire.autowireBean(processor);
+                    processor.setIngestProcessorService(ingestProcessorService);
                 }
 
                 ExecutorService executor = Executors.newFixedThreadPool(assetWorkerCount);
