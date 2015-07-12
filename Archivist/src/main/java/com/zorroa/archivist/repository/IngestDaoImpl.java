@@ -164,7 +164,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         updates.add("str_user_modified=?");
         values.add(SecurityUtils.getUsername());
 
-        updates.add("time_modified");
+        updates.add("time_modified=?");
         values.add(System.currentTimeMillis());
 
         sb.append(StringUtils.join(updates, ", "));

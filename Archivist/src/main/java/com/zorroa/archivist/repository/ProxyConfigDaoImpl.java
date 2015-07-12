@@ -138,6 +138,7 @@ public class ProxyConfigDaoImpl extends AbstractDao implements ProxyConfigDao {
         sb.append(" WHERE pk_proxy_config=?");
         values.add(config.getId());
 
+        logger.debug("{} {}", sb.toString(), values);
         return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
 }
