@@ -1,21 +1,17 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import com.google.common.io.Files;
-import org.elasticsearch.index.engine.DocumentAlreadyExistsException;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.Asset;
 import com.zorroa.archivist.sdk.AssetBuilder;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+
+import static org.junit.Assert.*;
 
 public class AssetDaoTests extends ArchivistApplicationTests {
 

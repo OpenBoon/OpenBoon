@@ -1,8 +1,8 @@
 package com.zorroa.archivist.domain;
 
-import java.util.Map;
-
 import com.google.common.base.Splitter;
+
+import java.util.Map;
 
 public class Asset {
 

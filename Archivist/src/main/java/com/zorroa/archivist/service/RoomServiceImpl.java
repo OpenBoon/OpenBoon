@@ -1,15 +1,5 @@
 package com.zorroa.archivist.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.elasticsearch.common.collect.Maps;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.Message;
@@ -17,6 +7,15 @@ import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.RoomDao;
+import org.elasticsearch.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class RoomServiceImpl implements RoomService {

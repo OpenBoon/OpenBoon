@@ -1,8 +1,8 @@
 package com.zorroa.archivist.domain;
 
-import java.util.List;
-
 import org.elasticsearch.common.collect.Lists;
+
+import java.util.List;
 
 public class IngestPipelineBuilder {
 

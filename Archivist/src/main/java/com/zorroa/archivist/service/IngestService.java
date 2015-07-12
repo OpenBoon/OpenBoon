@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service;
 
-import java.util.List;
-
 import com.zorroa.archivist.domain.*;
+
+import java.util.List;
 
 public interface IngestService {
 

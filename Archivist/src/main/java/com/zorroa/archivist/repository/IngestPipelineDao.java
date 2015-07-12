@@ -1,10 +1,10 @@
 package com.zorroa.archivist.repository;
 
-import java.util.List;
-
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestPipelineUpdateBuilder;
+
+import java.util.List;
 
 public interface IngestPipelineDao {
 

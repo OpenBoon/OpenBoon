@@ -2,7 +2,10 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.IngestPipeline;
+import com.zorroa.archivist.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.archivist.domain.IngestProcessorFactory;
 import com.zorroa.archivist.processors.ChecksumProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.service.IngestService;

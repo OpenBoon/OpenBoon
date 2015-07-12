@@ -1,35 +1,32 @@
 package com.zorroa.archivist.service;
 
-import java.awt.Dimension;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
-
+import com.google.common.collect.ImmutableSet;
+import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
+import com.zorroa.archivist.domain.ProxyOutput;
+import com.zorroa.archivist.repository.ProxyConfigDao;
+import com.zorroa.archivist.sdk.Proxy;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.resizers.configurations.Rendering;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.ImmutableSet;
-import com.zorroa.archivist.sdk.Proxy;
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyOutput;
-import com.zorroa.archivist.repository.ProxyConfigDao;
+import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class ImageServiceImpl implements ImageService {

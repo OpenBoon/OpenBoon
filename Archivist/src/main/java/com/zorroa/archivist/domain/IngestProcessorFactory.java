@@ -1,5 +1,12 @@
 package com.zorroa.archivist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Maps;
+import com.zorroa.archivist.sdk.AssetBuilder;
+import com.zorroa.archivist.sdk.IngestProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -8,16 +15,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-import com.zorroa.archivist.sdk.AssetBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.IngestProcessor;
 
 public class IngestProcessorFactory implements Serializable {
 

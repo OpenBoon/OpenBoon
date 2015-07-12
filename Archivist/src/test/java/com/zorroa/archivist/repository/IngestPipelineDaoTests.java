@@ -1,10 +1,11 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.domain.IngestPipeline;
+import com.zorroa.archivist.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.archivist.domain.IngestProcessorFactory;
 import com.zorroa.archivist.processors.ChecksumProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
 import org.elasticsearch.common.collect.Maps;
@@ -12,11 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
+import static org.junit.Assert.*;
 
 public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 

@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -11,7 +10,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class ElasticTemplate {
 

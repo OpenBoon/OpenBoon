@@ -1,15 +1,5 @@
 package com.zorroa.archivist;
 
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Random;
-
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -25,6 +15,15 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Random;
+
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 @Configuration
 public class ArchivistConfiguration {

@@ -1,12 +1,11 @@
 package com.zorroa.archivist.repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
+import com.zorroa.archivist.domain.ProxyOutput;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Preconditions;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,10 +13,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyOutput;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class ProxyConfigDaoImpl extends AbstractDao implements ProxyConfigDao {

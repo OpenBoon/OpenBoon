@@ -2,7 +2,6 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessorServiceBaseImpl;
-import com.zorroa.archivist.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

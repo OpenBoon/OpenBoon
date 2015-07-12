@@ -1,20 +1,17 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.domain.StandardRoles;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import com.google.common.collect.Sets;
-import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.StandardRoles;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserBuilder;
+import static org.junit.Assert.*;
 
 public class UserDaoTests extends ArchivistApplicationTests {
 

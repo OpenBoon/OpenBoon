@@ -1,7 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import org.elasticsearch.common.collect.ImmutableSet;
-
 import java.util.Set;
 
 /**

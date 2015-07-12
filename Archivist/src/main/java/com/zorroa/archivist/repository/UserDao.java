@@ -1,9 +1,9 @@
 package com.zorroa.archivist.repository;
 
-import java.util.List;
-
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserBuilder;
+
+import java.util.List;
 
 public interface UserDao {
 

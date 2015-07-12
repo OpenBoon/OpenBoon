@@ -1,14 +1,13 @@
 package com.zorroa.archivist.web;
 
-import java.util.List;
-
+import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
+import com.zorroa.archivist.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.service.ImageService;
+import java.util.List;
 
 @RestController
 public class ProxyConfigController {

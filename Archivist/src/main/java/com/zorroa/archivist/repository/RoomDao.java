@@ -1,9 +1,9 @@
 package com.zorroa.archivist.repository;
 
-import java.util.List;
-
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+
+import java.util.List;
 
 public interface RoomDao {
 

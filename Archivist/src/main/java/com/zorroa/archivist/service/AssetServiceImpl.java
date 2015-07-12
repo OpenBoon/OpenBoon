@@ -1,13 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.sdk.AssetBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.repository.AssetDao;
 
 /**
  *

@@ -1,19 +1,18 @@
 package com.zorroa.archivist.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.google.common.base.Splitter;
+import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.Proxy;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Splitter;
-import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.sdk.Proxy;
-import com.zorroa.archivist.domain.ProxyOutput;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ImageServiceTests extends ArchivistApplicationTests {
 

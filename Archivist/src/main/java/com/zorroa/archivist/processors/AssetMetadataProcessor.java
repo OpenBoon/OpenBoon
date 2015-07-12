@@ -1,22 +1,21 @@
 package com.zorroa.archivist.processors;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.lang.Rational;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.GpsDirectory;
+import com.google.common.collect.Maps;
+import com.zorroa.archivist.sdk.AssetBuilder;
+import com.zorroa.archivist.sdk.IngestProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import com.zorroa.archivist.sdk.IngestProcessor;
-import com.drew.lang.Rational;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Tag;
-import com.drew.metadata.exif.GpsDirectory;
-import com.google.common.collect.Maps;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.metadata.Metadata;
-import com.zorroa.archivist.sdk.AssetBuilder;
 
 /**
  *

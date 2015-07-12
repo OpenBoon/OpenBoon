@@ -1,13 +1,11 @@
 package com.zorroa.archivist.web;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
+import com.zorroa.archivist.domain.Message;
+import com.zorroa.archivist.domain.MessageType;
+import com.zorroa.archivist.domain.Room;
+import com.zorroa.archivist.service.RoomService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.get.GetResponse;
@@ -18,26 +16,20 @@ import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.zorroa.archivist.domain.Message;
-import com.zorroa.archivist.domain.MessageType;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.service.RoomService;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Map;
 
 @RestController
 public class AssetController {

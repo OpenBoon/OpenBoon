@@ -1,11 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
+import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserBuilder;
 import org.elasticsearch.common.Preconditions;
 import org.elasticsearch.common.collect.ImmutableSet;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -14,9 +11,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserBuilder;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class UserDaoImpl extends AbstractDao implements UserDao {

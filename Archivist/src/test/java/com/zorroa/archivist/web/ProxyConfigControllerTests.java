@@ -1,8 +1,10 @@
 package com.zorroa.archivist.web;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
+import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
+import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.service.ImageService;
 import org.elasticsearch.common.collect.Lists;
 import org.junit.Before;
@@ -12,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

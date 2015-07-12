@@ -1,19 +1,18 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
+import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
+import com.zorroa.archivist.domain.ProxyOutput;
 import org.elasticsearch.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyOutput;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class ProxyConfigDaoTests extends ArchivistApplicationTests {
 

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.zorroa.archivist.ArchivistApplicationTests;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
@@ -9,8 +10,6 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.zorroa.archivist.ArchivistApplicationTests;
 
 public abstract class MockMvcTest extends ArchivistApplicationTests {
 

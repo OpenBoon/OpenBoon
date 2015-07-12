@@ -1,25 +1,20 @@
 package com.zorroa.archivist.processors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.Map;
-
-import org.elasticsearch.common.collect.Maps;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.service.IngestSchedulerService;
 import com.zorroa.archivist.service.IngestService;
+import org.elasticsearch.common.collect.Maps;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ProxyProcessorTests extends ArchivistApplicationTests {
 

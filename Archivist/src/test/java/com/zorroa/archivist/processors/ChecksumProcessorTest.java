@@ -6,7 +6,6 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.service.IngestSchedulerService;
 import com.zorroa.archivist.service.IngestService;
-import junit.framework.TestCase;
 import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 7/3/15.

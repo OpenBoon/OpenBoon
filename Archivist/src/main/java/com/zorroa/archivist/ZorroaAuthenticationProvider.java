@@ -1,7 +1,8 @@
 package com.zorroa.archivist;
 
-import java.util.Set;
-
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.repository.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.repository.UserDao;
+import java.util.Set;
 
 public class ZorroaAuthenticationProvider implements AuthenticationProvider {
 

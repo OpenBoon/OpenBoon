@@ -1,10 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
+import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.domain.Room;
+import com.zorroa.archivist.domain.RoomBuilder;
 import org.elasticsearch.common.Preconditions;
 import org.elasticsearch.common.collect.ImmutableSet;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,9 +10,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class RoomDaoImpl extends AbstractDao implements RoomDao {

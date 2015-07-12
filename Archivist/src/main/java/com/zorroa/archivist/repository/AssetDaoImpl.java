@@ -1,9 +1,11 @@
 package com.zorroa.archivist.repository;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.zorroa.archivist.Json;
+import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.sdk.AssetBuilder;
 import org.elasticsearch.action.index.IndexRequest.OpType;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
@@ -13,12 +15,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.NameBasedGenerator;
-import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.sdk.AssetBuilder;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {

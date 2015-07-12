@@ -1,16 +1,16 @@
 package com.zorroa.archivist.service;
 
-import java.awt.Dimension;
+import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
+import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
+import com.zorroa.archivist.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.Proxy;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-
-import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
-import com.zorroa.archivist.sdk.Proxy;
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyOutput;
 
 public interface ImageService {
 

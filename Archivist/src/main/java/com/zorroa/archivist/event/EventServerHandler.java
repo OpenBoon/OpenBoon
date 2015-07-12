@@ -1,5 +1,6 @@
 package com.zorroa.archivist.event;
 
+import com.zorroa.archivist.domain.MessageType;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -7,13 +8,10 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GlobalEventExecutor;
-
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zorroa.archivist.domain.MessageType;
+import java.util.Set;
 
 public class EventServerHandler extends SimpleChannelInboundHandler<String> {
 

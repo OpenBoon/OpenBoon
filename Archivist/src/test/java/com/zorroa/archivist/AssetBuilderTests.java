@@ -1,10 +1,9 @@
 package com.zorroa.archivist;
 
-import static org.junit.Assert.assertEquals;
-
+import com.zorroa.archivist.sdk.AssetBuilder;
 import org.junit.Test;
 
-import com.zorroa.archivist.sdk.AssetBuilder;
+import static org.junit.Assert.assertEquals;
 
 public class AssetBuilderTests extends ArchivistApplicationTests {
 

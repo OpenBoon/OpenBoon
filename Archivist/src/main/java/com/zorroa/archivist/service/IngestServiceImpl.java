@@ -1,8 +1,9 @@
 package com.zorroa.archivist.service;
 
-import java.util.List;
-
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.IngestDao;
+import com.zorroa.archivist.repository.IngestPipelineDao;
+import com.zorroa.archivist.repository.ProxyConfigDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -11,10 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.repository.IngestDao;
-import com.zorroa.archivist.repository.IngestPipelineDao;
-import com.zorroa.archivist.repository.ProxyConfigDao;
+import java.util.List;
 
 /**
  *

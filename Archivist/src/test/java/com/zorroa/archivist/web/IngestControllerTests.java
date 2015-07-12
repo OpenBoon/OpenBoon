@@ -1,16 +1,13 @@
 package com.zorroa.archivist.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.EnumSet;
-import java.util.List;
-
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.service.IngestSchedulerService;
+import com.zorroa.archivist.service.IngestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.Sets;
-import com.zorroa.archivist.Json;
-import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.service.IngestSchedulerService;
-import com.zorroa.archivist.service.IngestService;
+import java.util.EnumSet;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class IngestControllerTests extends MockMvcTest {
 

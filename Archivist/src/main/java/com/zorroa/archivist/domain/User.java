@@ -1,8 +1,8 @@
 package com.zorroa.archivist.domain;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {

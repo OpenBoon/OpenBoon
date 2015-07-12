@@ -1,23 +1,18 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.processors.ChecksumProcessor;
-import org.elasticsearch.client.Client;
+import com.zorroa.archivist.service.ImageService;
+import com.zorroa.archivist.service.IngestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.service.ImageService;
-import com.zorroa.archivist.service.IngestService;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class IngestDaoTests extends ArchivistApplicationTests {
 

@@ -1,17 +1,14 @@
 package com.zorroa.archivist.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.domain.Room;
+import com.zorroa.archivist.domain.RoomBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
+import static org.junit.Assert.*;
 
 public class RoomDaoTests extends ArchivistApplicationTests {
 

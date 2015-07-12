@@ -1,9 +1,12 @@
 package com.zorroa.archivist;
 
-import java.io.IOException;
-
-import javax.annotation.PostConstruct;
-
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.processors.AssetMetadataProcessor;
+import com.zorroa.archivist.processors.ProxyProcessor;
+import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.archivist.service.ImageService;
+import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
@@ -18,18 +21,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
-import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyOutput;
-import com.zorroa.archivist.domain.StandardRoles;
-import com.zorroa.archivist.domain.UserBuilder;
-import com.zorroa.archivist.processors.AssetMetadataProcessor;
-import com.zorroa.archivist.processors.ProxyProcessor;
-import com.zorroa.archivist.repository.UserDao;
-import com.zorroa.archivist.service.ImageService;
-import com.zorroa.archivist.service.IngestService;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 
 @Component
 public class ArchivistRepositorySetup {

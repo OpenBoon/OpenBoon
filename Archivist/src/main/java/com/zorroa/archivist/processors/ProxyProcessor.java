@@ -1,15 +1,10 @@
 package com.zorroa.archivist.processors;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
+import com.zorroa.archivist.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
+import com.zorroa.archivist.sdk.Proxy;
+import com.zorroa.archivist.service.ImageService;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
@@ -17,10 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.Proxy;
-import com.zorroa.archivist.domain.ProxyOutput;
-import com.zorroa.archivist.service.ImageService;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ProxyProcessor extends IngestProcessor {
 

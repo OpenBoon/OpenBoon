@@ -1,8 +1,8 @@
 package com.zorroa.archivist.domain;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Set;
 
 public class Ingest {
 

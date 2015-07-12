@@ -1,10 +1,9 @@
 package com.zorroa.archivist.domain;
 
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.elasticsearch.common.base.MoreObjects;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Room {

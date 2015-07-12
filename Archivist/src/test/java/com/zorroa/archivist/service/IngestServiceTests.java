@@ -1,15 +1,13 @@
 package com.zorroa.archivist.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import com.google.common.collect.Sets;
+import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.AssetDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.repository.AssetDao;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class IngestServiceTests extends ArchivistApplicationTests {
 
