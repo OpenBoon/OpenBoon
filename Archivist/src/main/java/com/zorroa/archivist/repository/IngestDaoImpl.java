@@ -3,21 +3,18 @@ package com.zorroa.archivist.repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
-import org.elasticsearch.common.lang3.StringUtils;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.SecurityUtils;
 
 @Repository
@@ -164,6 +161,12 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             return false;
         }
 
+        updates.add("str_user_modified=?");
+        values.add(SecurityUtils.getUsername());
+
+        updates.add("time_modified");
+        values.add(System.currentTimeMillis());
+
         sb.append(StringUtils.join(updates, ", "));
         sb.append(" WHERE pk_ingest=?");
         values.add(ingest.getId());
@@ -184,6 +187,4 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state != ?",
                 newState.ordinal(), ingest.getId(), newState.ordinal()) == 1;
     }
-
-
 }
