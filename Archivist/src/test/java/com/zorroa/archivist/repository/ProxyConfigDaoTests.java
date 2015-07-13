@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ProxyConfigDaoTests extends ArchivistApplicationTests {
 
@@ -64,4 +66,9 @@ public class ProxyConfigDaoTests extends ArchivistApplicationTests {
         proxyConfigDao.update(proxyConfig, builder);
     }
 
+    @Test
+    public void delete() {
+        assertTrue(proxyConfigDao.delete(proxyConfig));
+        assertFalse(proxyConfigDao.delete(proxyConfig));
+    }
 }

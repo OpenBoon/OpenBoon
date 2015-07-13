@@ -89,4 +89,6 @@ public interface ImageService {
     ProxyConfig createProxyConfig(ProxyConfigBuilder builder);
 
     boolean updateProxyConfig(ProxyConfig config, ProxyConfigUpdateBuilder builder);
+
+    boolean deleteProxyConfig(ProxyConfig config);
 }

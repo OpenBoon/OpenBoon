@@ -170,4 +170,9 @@ public class ImageServiceImpl implements ImageService {
     public boolean updateProxyConfig(ProxyConfig config, ProxyConfigUpdateBuilder builder) {
         return proxyConfigDao.update(config, builder);
     }
+
+    @Override
+    public boolean deleteProxyConfig(ProxyConfig config) {
+        return proxyConfigDao.delete(config);
+    }
 }

@@ -17,4 +17,6 @@ public interface ProxyConfigDao {
     ProxyConfig create(ProxyConfigBuilder builder);
 
     boolean update(ProxyConfig config, ProxyConfigUpdateBuilder builder);
+
+    boolean delete(ProxyConfig config);
 }

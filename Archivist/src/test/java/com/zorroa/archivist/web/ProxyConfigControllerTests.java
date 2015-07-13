@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.ProxyConfig;
 import com.zorroa.archivist.domain.ProxyConfigBuilder;
@@ -14,7 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,6 +45,22 @@ public class ProxyConfigControllerTests extends MockMvcTest {
                 new ProxyOutput("png", 1024, 8)
         ));
         proxyConfig  = imageService.createProxyConfig(builder);
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(delete("/api/v1/proxy-configs/" + proxyConfig.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> status = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {
+                });
+        assertTrue((Boolean) status.get("status"));
     }
 
     @Test
