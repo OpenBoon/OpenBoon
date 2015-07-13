@@ -1,0 +1,41 @@
+package com.zorroa.archivist.service;
+
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.repository.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * Created by chambers on 7/13/15.
+ */
+@Service
+@Transactional
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    UserDao userDao;
+
+    @Override
+    public User login() {
+        return userDao.get(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    @Override
+    public User get(String username) {
+        return userDao.get(username);
+    }
+
+    @Override
+    public User get(int id) {
+        return userDao.get(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userDao.getAll();
+    }
+}
