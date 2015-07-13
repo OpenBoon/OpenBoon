@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserUpdateBuilder;
 import com.zorroa.archivist.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,5 +38,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userDao.getAll();
+    }
+
+    @Override
+    public String getPassword(String username) {
+        return userDao.getPassword(username);
+    }
+
+    @Override
+    public boolean update(User user, UserUpdateBuilder builder) {
+        return userDao.update(user, builder);
     }
 }

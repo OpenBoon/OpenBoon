@@ -1,15 +1,14 @@
 package com.zorroa.archivist.web;
 
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserUpdateBuilder;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +39,19 @@ public class UserController  {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/users/{id}")
     public User get(@PathVariable int id) {
+        return userService.get(id);
+    }
+
+    @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.PUT)
+    public User update(@RequestBody UserUpdateBuilder builder, @PathVariable int id) {
+
+        /*
+        * TODO: check if user is the current user or has role admin to allow
+        * users to change their own information.
+        *
+        */
+        User user = userService.get(id);
+        userService.update(user, builder);
         return userService.get(id);
     }
 }

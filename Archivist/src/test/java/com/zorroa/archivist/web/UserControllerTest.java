@@ -1,10 +1,22 @@
 package com.zorroa.archivist.web;
 
+import com.zorroa.archivist.Json;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserUpdateBuilder;
+import com.zorroa.archivist.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebAppConfiguration
@@ -13,8 +25,36 @@ public class UserControllerTest extends MockMvcTest {
     @Autowired
     UserController userController;
 
+    @Autowired
+    UserService userService;
+
     @Test
     public void testLogin() throws Exception {
         mvc.perform(post("/api/v1/login").session(admin())).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+
+        User user = userService.get("user");
+
+        UserUpdateBuilder builder = new UserUpdateBuilder();
+        builder.setUsername("foo");
+        builder.setPassword("bar");
+        builder.setEmail("test@test.com");
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId())
+                .session(session)
+                .content(Json.serialize(builder))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        User updated = Json.Mapper.readValue(result.getResponse().getContentAsString(), User.class);
+        assertEquals(user.getId(), updated.getId());
+        assertEquals(builder.getEmail(), updated.getEmail());
+        assertEquals(builder.getUsername(), updated.getUsername());
+        assertTrue(BCrypt.checkpw("bar", userService.getPassword("foo")));
     }
 }
