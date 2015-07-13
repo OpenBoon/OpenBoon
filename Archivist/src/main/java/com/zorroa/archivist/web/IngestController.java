@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.IngestSchedulerService;
 import com.zorroa.archivist.service.IngestService;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class IngestController {
@@ -64,12 +66,23 @@ public class IngestController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.DELETE)
-    public boolean delete(@PathVariable String id) {
-        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
-        if (!ingest.getState().equals(IngestState.Idle)) {
-            throw new IllegalStateException("Ingest must be idle to be deleted.");
-        }
+    public Map<String, Object> delete(@PathVariable Long id) {
+        Ingest ingest = ingestService.getIngest(id);
 
-        return ingestService.deleteIngest(ingest);
+        try {
+
+            if (!ingest.getState().equals(IngestState.Idle)) {
+                throw new IllegalStateException("Ingest must be idle to be deleted.");
+            }
+            return ImmutableMap.<String, Object>builder()
+                    .put("status", ingestService.deleteIngest(ingest))
+                    .build();
+
+        } catch (Exception e) {
+            return ImmutableMap.<String, Object>builder()
+                    .put("false", ingestService.deleteIngest(ingest))
+                    .put("message", e.getMessage())
+                    .build();
+        }
     }
 }

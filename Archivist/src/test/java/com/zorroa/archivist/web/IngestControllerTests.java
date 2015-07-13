@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -158,7 +159,6 @@ public class IngestControllerTests extends MockMvcTest {
     @Test
     public void testDelete() throws Exception {
 
-
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(delete("/api/v1/ingests/" + ingest.getId())
                 .session(session)
@@ -166,8 +166,9 @@ public class IngestControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        boolean deleted = Json.Mapper.readValue(result.getResponse().getContentAsString(), Boolean.class);
-        assertTrue(deleted);
+        Map<String, Object> status = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertTrue((Boolean)status.get("status"));
     }
 
 
