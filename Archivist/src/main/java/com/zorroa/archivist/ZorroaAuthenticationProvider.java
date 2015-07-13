@@ -3,6 +3,7 @@ package com.zorroa.archivist;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
     protected static final Logger logger = LoggerFactory.getLogger(ZorroaAuthenticationProvider.class);
 
     @Autowired
-    UserDao userDao;
+    UserService userService;
 
     public ZorroaAuthenticationProvider() {
         // TODO Auto-generated constructor stub
@@ -35,8 +36,8 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
         String storedPassword;
         User user;
         try {
-            storedPassword = userDao.getPassword(username);
-            user = userDao.get(username);
+            storedPassword = userService.getPassword(username);
+            user = userService.get(username);
         } catch (Exception e ) {
             logger.warn("failed to find user: {}", username, e);
             throw new BadCredentialsException("Invalid username or password");

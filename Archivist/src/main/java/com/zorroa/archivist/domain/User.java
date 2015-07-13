@@ -13,6 +13,7 @@ public class User {
     private String lastName;
     private String email;
     private Set<String> roles;
+    private Boolean enabled;
 
     public User() { }
 
@@ -62,5 +63,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

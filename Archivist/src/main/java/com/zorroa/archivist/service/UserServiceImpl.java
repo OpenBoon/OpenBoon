@@ -4,6 +4,8 @@ import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserUpdateBuilder;
 import com.zorroa.archivist.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +44,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getPassword(String username) {
-        return userDao.getPassword(username);
+        try {
+            return userDao.getPassword(username);
+        } catch (DataAccessException e) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
     }
 
     @Override

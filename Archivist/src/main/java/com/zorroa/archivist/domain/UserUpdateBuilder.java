@@ -14,6 +14,8 @@ public class UserUpdateBuilder {
     private String email;
     private Set<String> roles;
 
+    private Boolean enabled;
+
     public String getUsername() {
         return username;
     }
@@ -60,5 +62,13 @@ public class UserUpdateBuilder {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

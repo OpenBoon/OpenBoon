@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
@@ -55,6 +56,27 @@ public class UserControllerTest extends MockMvcTest {
         assertEquals(user.getId(), updated.getId());
         assertEquals(builder.getEmail(), updated.getEmail());
         assertEquals(builder.getUsername(), updated.getUsername());
+        assertTrue(BCrypt.checkpw("bar", userService.getPassword("foo")));
+
+    }
+
+    @Test(expected=BadCredentialsException.class)
+    public void testUpdateDisableUser() throws Exception {
+
+        User user = userService.get("user");
+
+        UserUpdateBuilder builder = new UserUpdateBuilder();
+        builder.setEnabled(false);
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId())
+                .session(session)
+                .content(Json.serialize(builder))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Json.Mapper.readValue(result.getResponse().getContentAsString(), User.class);
         assertTrue(BCrypt.checkpw("bar", userService.getPassword("foo")));
     }
 }

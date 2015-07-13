@@ -5,7 +5,8 @@ CREATE TABLE user(
   str_username VARCHAR(255) NOT NULL,
   str_password VARCHAR(100) NOT NULL,
   str_email VARCHAR(255) NOT NULL,
-  list_roles ARRAY NOT NULL
+  list_roles ARRAY NOT NULL,
+  bool_enabled BOOLEAN NOT NULL
 );
 
 CREATE UNIQUE INDEX user_str_username_idx ON user(str_username);
