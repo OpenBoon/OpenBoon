@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.IngestService;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class IngestPipelineController {
@@ -48,5 +50,21 @@ public class IngestPipelineController {
         IngestPipeline pipeline = ingestService.getIngestPipeline(id);
         ingestService.updateIngestPipeline(pipeline, builder);
         return ingestService.getIngestPipeline(id);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.DELETE)
+    public Map<String, Object> delete(@PathVariable Integer id) {
+        IngestPipeline pipeline = ingestService.getIngestPipeline(id);
+        try {
+            return ImmutableMap.<String, Object>builder()
+                    .put("status", ingestService.deleteIngestPipeline(pipeline))
+                    .build();
+        } catch (Exception e) {
+            return ImmutableMap.<String, Object>builder()
+                    .put("status", false)
+                    .put("message", e.getMessage())
+                    .build();
+        }
     }
 }

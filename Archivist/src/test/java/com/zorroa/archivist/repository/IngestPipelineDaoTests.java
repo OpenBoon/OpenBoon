@@ -41,7 +41,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
     @Test
     public void getAll() {
 
-        for (int i=0; i<=10; i++) {
+        for (int i = 0; i <= 10; i++) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("default_" + i);
             builder.addToProcessors(
@@ -66,5 +66,11 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         assertEquals(builder.getName(), updated.getName());
         assertEquals(builder.getProcessors(), updated.getProcessors());
         assertNotEquals(pipeline.getTimeModified(), updated.getTimeModified());
+    }
+
+    @Test
+    public void delete() {
+        assertTrue(ingestPipelineDao.delete(pipeline));
+        assertFalse(ingestPipelineDao.delete(pipeline));
     }
 }

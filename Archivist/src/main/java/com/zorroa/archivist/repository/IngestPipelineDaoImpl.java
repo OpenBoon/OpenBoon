@@ -130,4 +130,9 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
         logger.debug("{} {}", sb.toString(), values);
         return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
+
+    @Override
+    public boolean delete(IngestPipeline pipeline) {
+        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=?", pipeline.getId()) == 1;
+    }
 }

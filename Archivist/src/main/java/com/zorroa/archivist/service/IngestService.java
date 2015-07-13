@@ -37,6 +37,8 @@ public interface IngestService {
 
     boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder);
 
+    boolean deleteIngestPipeline(IngestPipeline pipeline);
+
     boolean setIngestRunning(Ingest ingest);
 
     boolean setIngestIdle(Ingest ingest);

@@ -64,6 +64,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public boolean deleteIngestPipeline(IngestPipeline pipeline) {
+        return ingestPipelineDao.delete(pipeline);
+    }
+
+    @Override
     public boolean setIngestRunning(Ingest ingest) {
         return ingestDao.setState(ingest, IngestState.Running);
     }

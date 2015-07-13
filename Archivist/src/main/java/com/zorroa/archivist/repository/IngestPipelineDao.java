@@ -17,4 +17,6 @@ public interface IngestPipelineDao {
     IngestPipeline get(int id);
 
     boolean update(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder);
+
+    boolean delete(IngestPipeline pipeline);
 }
