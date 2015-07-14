@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.ProxyConfig;
+import com.zorroa.archivist.domain.ProxyConfigBuilder;
 import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
 import com.zorroa.archivist.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,12 @@ public class ProxyConfigController {
     @RequestMapping(value="/api/v1/proxy-configs/{id}", method=RequestMethod.GET)
     public ProxyConfig get(@PathVariable String id) {
         return imageService.getProxyConfig(id);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/proxy-configs", method=RequestMethod.POST)
+    public ProxyConfig create(@RequestBody ProxyConfigBuilder builder) {
+        return imageService.createProxyConfig(builder);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

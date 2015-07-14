@@ -20,6 +20,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,7 +65,7 @@ public class ProxyConfigControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void update() throws Exception {
+    public void testUpdate() throws Exception {
 
         ProxyConfigUpdateBuilder builder = new ProxyConfigUpdateBuilder();
         builder.setName("foo");
@@ -82,6 +83,33 @@ public class ProxyConfigControllerTests extends MockMvcTest {
 
         ProxyConfig updated = Json.Mapper.readValue(result.getResponse().getContentAsString(), ProxyConfig.class);
         assertEquals(proxyConfig.getId(), updated.getId());
+        assertEquals(builder.getDescription(), updated.getDescription());
+        assertEquals(builder.getName(), updated.getName());
+        assertEquals(builder.getOutputs(), updated.getOutputs());
+    }
+
+
+    @Test
+    public void testCreate() throws Exception {
+
+        ProxyConfigBuilder builder = new ProxyConfigBuilder();
+        builder.setName("photos");
+        builder.setDescription("test photo config");
+        builder.setOutputs(Lists.newArrayList(
+                new ProxyOutput("png", 128, 8),
+                new ProxyOutput("png", 256, 8),
+                new ProxyOutput("png", 1024, 8)
+        ));
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(post("/api/v1/proxy-configs")
+                .session(session)
+                .content(Json.serialize(builder))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ProxyConfig updated = Json.Mapper.readValue(result.getResponse().getContentAsString(), ProxyConfig.class);
         assertEquals(builder.getDescription(), updated.getDescription());
         assertEquals(builder.getName(), updated.getName());
         assertEquals(builder.getOutputs(), updated.getOutputs());
