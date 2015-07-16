@@ -1,4 +1,5 @@
 
+
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
   pk_user INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -10,6 +11,18 @@ CREATE TABLE user(
 );
 
 CREATE UNIQUE INDEX user_str_username_idx ON user(str_username);
+
+DROP TABLE IF EXISTS session;
+CREATE TABLE session (
+  pk_session BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  pk_user INT NOT NULL REFERENCES user (pk_user),
+  session_id VARCHAR(128) NOT NULL,
+  bool_expired BOOLEAN NOT NULL DEFAULT 'f',
+  time_last_request BIGINT NOT NULL
+);
+
+CREATE UNIQUE INDEX session_session_id_uniq_idx ON session (session_id);
+
 
 DROP TABLE IF EXISTS room;
 CREATE TABLE room(

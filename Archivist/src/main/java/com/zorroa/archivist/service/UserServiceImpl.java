@@ -1,12 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserUpdateBuilder;
 import com.zorroa.archivist.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login() {
-        return userDao.get(SecurityContextHolder.getContext().getAuthentication().getName());
+        return userDao.get(SecurityUtils.getUsername());
     }
 
     @Override
