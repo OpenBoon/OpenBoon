@@ -1,7 +1,10 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.domain.User;
+
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,8 +38,25 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
                 System.currentTimeMillis(), sessionId) == 1;
     }
 
+    static final RowMapper<Session> MAPPER = (rs, row) -> {
+        Session session = new Session();
+        session.setId(rs.getLong("pk_session"));
+        session.setSessionId(rs.getString("session_id"));
+        session.setRefreshTime(rs.getLong("time_last_request"));
+        session.setUsername(rs.getString("str_username"));
+        session.setUserId(rs.getInt("pk_user"));
+        return session;
+    };
+
+    static final String GET =
+        "SELECT " +
+            "session.*," +
+            "user.str_username " +
+        "FROM " +
+            "session INNER JOIN user ON (session.pk_user = user.pk_user) ";
+
     @Override
-    public List<String> getAll(User user) {
-        return jdbc.queryForList("SELECT session_id FROM session WHERE pk_user=?", String.class, user.getId());
+    public List<Session> getAll(User user) {
+        return jdbc.query(GET + " WHERE user.pk_user=?", MAPPER, user.getId());
     }
 }

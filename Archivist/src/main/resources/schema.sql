@@ -22,6 +22,7 @@ CREATE TABLE session (
 );
 
 CREATE UNIQUE INDEX session_session_id_uniq_idx ON session (session_id);
+CREATE INDEX session_pk_user_idx ON session(pk_user);
 
 
 DROP TABLE IF EXISTS room;

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.domain.User;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface SessionDao {
 
     boolean refreshLastRequestTime(String sessionId);
 
-    List<String> getAll(User user);
+    List<Session> getAll(User user);
 }
