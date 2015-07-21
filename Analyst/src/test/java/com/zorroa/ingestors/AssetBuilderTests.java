@@ -4,7 +4,6 @@ import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
 import com.zorroa.archivist.sdk.IngestProcessorServiceBaseImpl;
 import com.zorroa.archivist.sdk.Proxy;
-import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +26,12 @@ public abstract class AssetBuilderTests {
         logger.info("Setting unit test");
     }
 
-    @Before
-    public void setup() {
-        IngestProcessor.ingestProcessorService = new IngestProcessorServiceBaseImpl();
+    public void setup(IngestProcessor processor) {
+        processor.setIngestProcessorService(new IngestProcessorServiceBaseImpl());
 
         testAssets = new HashSet<AssetBuilder>(2);
-        File imageFolder = IngestProcessor.ingestProcessorService.getResourceFile("/images");
-        File proxyFolder = IngestProcessor.ingestProcessorService.getResourceFile("/proxies");
+        File imageFolder = processor.getIngestProcessorService().getResourceFile("/images");
+        File proxyFolder = processor.getIngestProcessorService().getResourceFile("/proxies");
         File[] images = imageFolder.listFiles();
         for (File file : images) {
             if (!file.isFile())
@@ -63,9 +61,4 @@ public abstract class AssetBuilderTests {
             testAssets.add(asset);
         }
     }
-
-    public File getTestImage(String name) {
-        return IngestProcessor.ingestProcessorService.getResourceFile("/images" + "/" + name);
-    }
-
 }

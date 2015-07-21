@@ -29,14 +29,10 @@ public class FaceIngestor extends IngestProcessor {
 
     static{ System.loadLibrary("opencv_java2411"); }
 
-    CascadeClassifier faceDetector;
+    private static CascadeClassifier faceDetector;
 
 
     public FaceIngestor() {
-    }
-
-    @Override
-    public void process(AssetBuilder asset) {
         if (faceDetector == null) {
             Map<String, String> env = System.getenv();
             String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
@@ -49,7 +45,11 @@ public class FaceIngestor extends IngestProcessor {
             faceDetector = new CascadeClassifier(haarPath);
             logger.info("FaceIngestor initialized");
         }
-        if (asset.isImageType()) {
+    }
+
+    @Override
+    public void process(AssetBuilder asset) {
+        if (ingestProcessorService.isImage(asset)) {
             // Start with the original image, but try to find a proxy to use for classification
             String classifyPath = asset.getFile().getPath();
             List<Proxy> proxyList = (List<Proxy>) asset.document.get("proxies");
@@ -68,15 +68,16 @@ public class FaceIngestor extends IngestProcessor {
             Mat image = Highgui.imread(classifyPath);
             MatOfRect faceDetections = new MatOfRect();
             faceDetector.detectMultiScale(image, faceDetections);
-            System.out.println(String.format("Detected %s faces", faceDetections.toArray().length));
-            for (Rect rect : faceDetections.toArray()) {
-                Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
+            int faceCount = faceDetections.toArray().length;
+            logger.info("Detected " + faceCount + " faces in " + asset.getFilename());
+            if (faceCount > 0) {
+                String keywords = "face";
+                logger.info("FaceIngestor: " + keywords);
+                List<String> keywordList = Arrays.asList(keywords.split(","));
+                asset.map("face", "keywords", "type", "string");
+                asset.map("face", "keywords", "copy_to", null);
+                asset.put("face", "keywords", keywordList);
             }
-            //Highgui.imwrite(classifyPath, image);
-            String keywords = "face";
-            logger.info("FaceIngestor " + keywords);
-            List<String> keywordList = Arrays.asList(keywords.split(","));
-            asset.put("caffe", "keywords", keywordList);
         }
     }
 }
