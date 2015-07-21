@@ -80,6 +80,18 @@
           }
         }
       }
+    },
+    "folders" : {
+      "properties" : {
+        "parentGuid" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "owner" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        }
+      }
     }
   }
 }
