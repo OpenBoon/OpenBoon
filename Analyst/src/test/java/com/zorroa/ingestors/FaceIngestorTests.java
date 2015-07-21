@@ -8,6 +8,7 @@ public class FaceIngestorTests extends AssetBuilderTests {
     @Test
     public void testProcess() throws InterruptedException {
         FaceIngestor face = new FaceIngestor();
+        setup(face);
         for (AssetBuilder asset : testAssets) {
             face.process(asset);
         }
