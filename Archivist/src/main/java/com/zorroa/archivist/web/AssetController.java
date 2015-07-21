@@ -11,6 +11,7 @@ import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
@@ -52,6 +53,28 @@ public class AssetController {
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
                 .setTypes("asset");
+        builder.setSource(query.getBytes());
+
+        SearchResponse response = builder.get();
+        OutputStream out = httpResponse.getOutputStream();
+        XContentBuilder content = XContentFactory.jsonBuilder(out);
+        content.startObject();
+        response.toXContent(content, ToXContent.EMPTY_PARAMS);
+        content.endObject();
+        content.close();
+        out.close();
+    }
+
+    @RequestMapping(value="/api/v1/assets/_aggregations", method=RequestMethod.POST)
+    public void aggregate(@RequestBody String query, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        Room room = roomService.getActiveRoom(session.getId());
+        roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
+
+        SearchRequestBuilder builder = client.prepareSearch(alias)
+                .setTypes("asset")
+                .setSearchType(SearchType.COUNT);   // Don't return result body
         builder.setSource(query.getBytes());
 
         SearchResponse response = builder.get();
