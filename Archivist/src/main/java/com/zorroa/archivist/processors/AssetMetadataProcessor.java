@@ -94,6 +94,9 @@ public class AssetMetadataProcessor extends IngestProcessor {
             keywordArgs.add("IPTC.Keywords");
             keywordArgs.add("IPTC.CopyrightNotice");
             keywordArgs.add("IPTC.Source");
+            keywordArgs.add("IPTC.City");
+            keywordArgs.add("IPTC.ProvinceState");
+            keywordArgs.add("IPTC.CountryPrimaryLocationName");
             keywordArgs.add("File.Filename");
             keywordArgs.add("Xmp.Lens");
         }
@@ -110,11 +113,18 @@ public class AssetMetadataProcessor extends IngestProcessor {
 
                 Date date = directory.getDate(tag.getTagType());
                 String id = dirName + "." + tagName;
-                if (idSet.contains(id) && ((obj instanceof String && date == null) ||
-                        (obj.getClass().isArray() &&
-                        obj.getClass().getComponentType().getName().equals("java.lang.String")))) {
+                if ((obj instanceof String && date == null) ||
+                        (obj.getClass().isArray() && obj.getClass().getComponentType().getName().equals("java.lang.String"))) {
+                    if (idSet.contains(id)) {
+                        asset.map(dirName, tagName, "copy_to", null);
+                    }
                     asset.map(dirName, tagName, "type", "string");
-                    asset.map(dirName, tagName, "copy_to", null);
+                    HashMap<String, String> raw = new HashMap<>(2);
+                    raw.put("type", "string");
+                    raw.put("index", "not_analyzed");
+                    HashMap<String, Object> fields = new HashMap<>(2);
+                    fields.put("raw", raw);
+                    asset.map(dirName, tagName, "fields", fields);
                 }
 
                 if (obj.getClass().isArray()) {
@@ -141,20 +151,27 @@ public class AssetMetadataProcessor extends IngestProcessor {
                     }
                 }
 
+                // Always save the raw format
+                asset.put(dirName, tagName, obj);
+
                 // Always save the raw format, and also save a description if it
                 // has some useful additional information for searching & display
                 String description = tag.getDescription();
                 if (description != null &&
                         !description.equals(directory.getString(tag.getTagType())) &&
                         (!obj.getClass().isArray() || (!obj.getClass().getComponentType().getName().equals("java.lang.String") && Array.getLength(obj) <= 16))) {
-                    asset.put(dirName, tagName, obj);
-                    asset.put(dirName, tagName + ".description", description);
+                    String descTagName = tagName + ".description";
+                    HashMap<String, String> raw = new HashMap<>(2);
+                    raw.put("type", "string");
+                    raw.put("index", "not_analyzed");
+                    HashMap<String, Object> fields = new HashMap<>(2);
+                    fields.put("raw", raw);
+                    asset.map(dirName, descTagName, "fields", fields);
+                    asset.map(dirName, descTagName, "type", "string");
+                    asset.put(dirName, descTagName, description);
                     if (idSet.contains(id)) {
-                        asset.map(dirName, tagName + ".description", "type", "string");
-                        asset.map(dirName, tagName + ".description", "copy_to", null);
+                        asset.map(dirName, descTagName, "copy_to", null);
                     }
-                } else {
-                    asset.put(dirName, tagName, obj);
                 }
             }
         }
