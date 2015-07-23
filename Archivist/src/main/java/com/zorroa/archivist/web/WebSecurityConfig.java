@@ -3,7 +3,9 @@ package com.zorroa.archivist.web;
 import com.zorroa.archivist.ZorroaAuthenticationProvider;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.service.RoomService;
+import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     RoomService roomService;
 
+    @Autowired
+    UserService userService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -54,28 +59,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .authenticationProvider(authenticationProvider())
-            .authenticationEventPublisher(athenticationEventPublisher());
+            .authenticationEventPublisher(authenticationEventPublisher());
     }
 
     @Bean
-    public AuthenticationEventPublisher athenticationEventPublisher() {
+    public AuthenticationEventPublisher authenticationEventPublisher() {
         return new AuthenticationEventPublisher() {
 
             @Override
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
 
-                String session = RequestContextHolder.currentRequestAttributes().getSessionId();
+                Session session = userService.getActiveSession();
+
                 /*
                  * Add a room and join it.
                  */
                 RoomBuilder bld = new RoomBuilder();
                 bld.setName("personal-" + authentication.getName());
                 bld.setVisible(false);
-                bld.setSession(RequestContextHolder.currentRequestAttributes().getSessionId());
+                bld.setSessionId(session.getId());
 
                 Room room = roomService.create(bld);
-                roomService.setActiveRoom(session, room);
+                roomService.join(room, session);
             }
 
             @Override

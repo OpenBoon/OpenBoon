@@ -5,7 +5,9 @@ import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Message;
 import com.zorroa.archivist.domain.MessageType;
 import com.zorroa.archivist.domain.Room;
+import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.service.RoomService;
+import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.get.GetResponse;
@@ -43,11 +45,15 @@ public class AssetController {
     @Autowired
     RoomService roomService;
 
+    @Autowired
+    UserService userService;
+
     @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.POST)
-    public void search(@RequestBody String query, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+    public void search(@RequestBody String query, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        Room room = roomService.getActiveRoom(session.getId());
+        Session session = userService.getSession(httpSession);
+        Room room = roomService.getActiveRoom(session);
         roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
@@ -106,10 +112,11 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)
-    public void get(@PathVariable String id, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+    public void get(@PathVariable String id, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        Room room = roomService.getActiveRoom(session.getId());
+        Session session = userService.getSession(httpSession);
+        Room room = roomService.getActiveRoom(session);
         roomService.sendToRoom(room, new Message(MessageType.ASSET_GET, id));
 
         GetResponse response = client.prepareGet(alias, "asset", id).get();

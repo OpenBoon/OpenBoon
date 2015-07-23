@@ -74,6 +74,7 @@ public class User {
         this.enabled = enabled;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof User)) {
             return false;
@@ -82,6 +83,7 @@ public class User {
         return other.getId() == getId();
     }
 
+    @Override
     public int hashCode() {
         return HashCode.fromInt(getId()).hashCode();
     }

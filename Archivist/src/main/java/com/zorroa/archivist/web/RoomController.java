@@ -2,7 +2,10 @@ package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.Session;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.service.RoomService;
+import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +22,18 @@ public class RoomController {
     @Autowired
     RoomService roomService;
 
+    @Autowired
+    UserService userService;
+
     /**
      * User joins a particular room
      */
     @RequestMapping(value="/api/v1/rooms/{id}/_join", method=RequestMethod.PUT)
-    public void join(@PathVariable long id, HttpSession session) {
+    public void join(@PathVariable long id, HttpSession httpSession) {
         Room room = roomService.get(id);
-        roomService.setActiveRoom(session.getId(), room);
+        Session session = userService.getSession(httpSession);
+        logger.info("Session {} is joining room:{}", session.getId(), room.getId());
+        roomService.join(room, session);
     }
 
     /**
@@ -42,8 +50,9 @@ public class RoomController {
      * @return
      */
     @RequestMapping(value="/api/v1/rooms", method=RequestMethod.GET)
-    public List<Room> getAll() {
-        return roomService.getAll();
+    public List<Room> getAll(HttpSession httpSession) {
+        Session session = userService.getSession(httpSession);
+        return roomService.getAll(session);
     }
 
     /**
@@ -53,12 +62,25 @@ public class RoomController {
      * @return
      */
     @RequestMapping(value="/api/v1/rooms", method=RequestMethod.POST)
-    public Room create(@RequestBody RoomBuilder builder, HttpSession session) {
+    public Room create(@RequestBody RoomBuilder builder, HttpSession httpSession) {
         // Don't allow session rooms
         logger.info("Creating room {}", builder);
-        builder.setSession(null);
         Room room = roomService.create(builder);
-        roomService.setActiveRoom(session.getId(), room);
+
+        Session session = userService.getSession(httpSession);
+        roomService.join(room, session);
         return room;
+    }
+
+    /**
+     * Get all the users for a given room.
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value="/api/v1/rooms/{id}/users", method=RequestMethod.GET)
+    public List<User> users(@PathVariable long id) {
+        Room room = roomService.get(id);
+        return userService.getAll(room);
     }
 }
