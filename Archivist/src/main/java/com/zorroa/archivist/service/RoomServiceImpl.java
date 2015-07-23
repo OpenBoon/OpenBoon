@@ -5,8 +5,10 @@ import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.Message;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.RoomDao;
+import com.zorroa.archivist.repository.SessionDao;
 import org.elasticsearch.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +28,10 @@ public class RoomServiceImpl implements RoomService {
     RoomDao roomDao;
 
     @Autowired
-    EventServerHandler eventServerHandler;
+    SessionDao sessionDao;
 
-    private Map<String, Long> mapSessionToRoom = Maps.newHashMap();
+    @Autowired
+    EventServerHandler eventServerHandler;
 
     @Override
     public Room get(long id) {
@@ -42,21 +45,21 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void setActiveRoom(String sessionId, Room room) {
-        logger.info("Setting active room {} for session {}", room, sessionId);
-        mapSessionToRoom.put(sessionId, room.getId());
+    public Room getActiveRoom(Session session) {
+        return roomDao.get(session);
     }
 
     @Override
-    public Room getActiveRoom(String sessionId) {
+    public boolean join(Room room, Session session) {
+        return roomDao.join(room, session);
+    }
+
+    @Override
+    public Room get(Session session) {
         /*
          * Handle the case where the session is not in a room.
          */
-        Long roomId = mapSessionToRoom.get(sessionId);
-        if (roomId == null) {
-            return null;
-        }
-        return roomDao.get(roomId);
+        return roomDao.get(session);
     }
 
     @Override
@@ -76,17 +79,13 @@ public class RoomServiceImpl implements RoomService {
 
         logger.info("Sending: {} to active room", message.toString());
 
-        Set<String> sessions = Sets.newHashSet();
-        for (Map.Entry<String, Long> entry: mapSessionToRoom.entrySet()) {
-            if (entry.getValue().equals(room.getId())) {
-                sessions.add(entry.getKey());
-            }
-        }
-        eventServerHandler.send(sessions, message.toString());
+        Set<String> cookies = Sets.newHashSet();
+        sessionDao.getAll(room).forEach(s->cookies.add(s.getCookieId()));
+        eventServerHandler.send(cookies, message.toString());
     }
 
     @Override
-    public List<Room> getAll() {
-        return roomDao.getAll();
+    public List<Room> getAll(Session session) {
+        return roomDao.getAll(session);
     }
 }

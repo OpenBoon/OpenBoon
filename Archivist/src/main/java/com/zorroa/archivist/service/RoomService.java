@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.Message;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.Session;
 
 import java.util.List;
 
@@ -12,11 +13,13 @@ public interface RoomService {
 
     Room create(RoomBuilder bld);
 
-    void setActiveRoom(String sessionId, Room room);
+    Room getActiveRoom(Session session);
+
+    Room get(Session session);
 
     void sendToRoom(Room room, Message message);
 
-    List<Room> getAll();
+    boolean join(Room room, Session session);
 
-    Room getActiveRoom(String sessionId);
+    List<Room> getAll(Session session);
 }
