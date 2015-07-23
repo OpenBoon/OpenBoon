@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserBuilder;
 import com.zorroa.archivist.domain.UserUpdateBuilder;
@@ -11,10 +12,11 @@ public interface UserDao {
     User get(int id);
     User get(String username);
 
-    boolean update(User user, UserUpdateBuilder builder);
+    List<User> getAll();
+    List<User> getAll(Room room);
 
     String getPassword(String username);
-    List<User> getAll();
 
+    boolean update(User user, UserUpdateBuilder builder);
     User create(UserBuilder builder);
 }

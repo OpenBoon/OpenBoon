@@ -1,19 +1,29 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.domain.User;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
  * Created by chambers on 7/14/15.
  */
 public interface SessionDao {
-    void create(User user, String sessionId);
+    Session create(User user, String cookie);
 
-    boolean delete(String sessionId);
+    List<Session> getAll(Room room);
 
-    boolean refreshLastRequestTime(String sessionId);
+    Session get(HttpSession session);
+
+    boolean delete(String cookie);
+
+    boolean refreshLastRequestTime(String cookie);
 
     List<Session> getAll(User user);
+
+    Session get(String cookie);
+
+    Session get(long id);
 }

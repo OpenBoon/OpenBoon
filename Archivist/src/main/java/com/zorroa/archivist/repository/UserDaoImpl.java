@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserBuilder;
 import com.zorroa.archivist.domain.UserUpdateBuilder;
@@ -127,6 +128,25 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     public String getPassword(String username) {
         return jdbc.queryForObject("SELECT str_password FROM user WHERE str_username=? AND bool_enabled=?",
             String.class, username, true);
-
     }
+
+    private static final String GET_ALL_BY_ROOM =
+            "SELECT " +
+            "user.* " +
+            "FROM " +
+            "user,session,map_session_to_room m " +
+            "WHERE " +
+            "session.pk_session = m.pk_session " +
+            "AND " +
+            "m.pk_room = ? " +
+            "AND " +
+            "session.pk_user = user.pk_user " +
+            "ORDER BY "+
+            "user.str_username ASC";
+
+    @Override
+    public List<User> getAll(Room room) {
+        return jdbc.query(GET_ALL_BY_ROOM, MAPPER, room.getId());
+    }
+
 }

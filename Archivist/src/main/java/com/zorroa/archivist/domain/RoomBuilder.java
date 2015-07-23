@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class RoomBuilder {
 
-    private String session;
+    private Long sessionId = null;
     private String name;
     private Set<String> inviteList;
     private String password;
@@ -34,10 +34,10 @@ public class RoomBuilder {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
-    public String getSession() {
-        return session;
+    public Long getSessionId() {
+        return sessionId;
     }
-    public void setSession(String session) {
-        this.session = session;
+    public void setSessionId(Long session) {
+        this.sessionId = session;
     }
 }

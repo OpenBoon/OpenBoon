@@ -3,6 +3,8 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.Session;
+import com.zorroa.archivist.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,13 @@ import static org.junit.Assert.*;
 public class RoomDaoTests extends ArchivistApplicationTests {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     RoomDao roomDao;
+
+    @Autowired
+    SessionDao sessionDao;
 
     Room room;
 
@@ -44,7 +52,10 @@ public class RoomDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testGetAll() {
+    public void testGetAllBySession() {
+
+        sessionDao.create(userService.get(1), "1");
+
         for (int i=0; i<10; i++) {
             RoomBuilder bld = new RoomBuilder();
             bld.setName("room" + i);
@@ -52,6 +63,38 @@ public class RoomDaoTests extends ArchivistApplicationTests {
             roomDao.create(bld);
         }
 
-        assertEquals(11, roomDao.getAll().size());
+        assertEquals(11, roomDao.getAll(userService.getActiveSession()).size());
+    }
+
+    @Test
+    public void testJoin() {
+
+        RoomBuilder bld = new RoomBuilder();
+        bld.setName("the room");
+        bld.setVisible(true);
+        Room room = roomDao.create(bld);
+
+        Session session = sessionDao.create(userService.get(1), "1");
+        roomDao.join(room, session);
+        Room joined = roomDao.get(session);
+        assertNotNull(joined);
+    }
+
+    @Test
+    public void testGetBySession() {
+
+        RoomBuilder bld = new RoomBuilder();
+        bld.setName("the room");
+        bld.setVisible(true);
+        Room room = roomDao.create(bld);
+
+        Session session = sessionDao.create(userService.get(1), "1");
+        Room joined = roomDao.get(session);
+        assertNull(joined);
+
+        assertTrue(roomDao.join(room, session));
+
+        joined = roomDao.get(session);
+        assertEquals(joined.getId(), room.getId());
     }
 }

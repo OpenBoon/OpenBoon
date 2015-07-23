@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.hash.HashCode;
+
 /**
  * Created by chambers on 7/16/15.
  */
@@ -8,7 +10,7 @@ public class Session {
     private long id;
     private int userId;
     private String username;
-    private String sessionId;
+    private String cookieId;
     private long refreshTime;
 
 
@@ -36,12 +38,12 @@ public class Session {
         this.refreshTime = refreshTime;
     }
 
-    public String getSessionId() {
-        return sessionId;
+    public String getCookieId() {
+        return cookieId;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setCookieId(String cookieId) {
+        this.cookieId = cookieId;
     }
 
     public int getUserId() {
@@ -50,5 +52,19 @@ public class Session {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Session)) {
+            return false;
+        }
+        Session other = (Session) obj;
+        return other.getId() == getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCode.fromLong(getId()).hashCode();
     }
 }

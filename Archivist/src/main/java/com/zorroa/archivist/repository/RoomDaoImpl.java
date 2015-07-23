@@ -1,10 +1,13 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.Session;
 import org.elasticsearch.common.Preconditions;
 import org.elasticsearch.common.collect.ImmutableSet;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 
 @Repository
@@ -38,16 +42,23 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         return jdbc.queryForObject("SELECT * FROM room WHERE pk_room=?", MAPPER, id);
     }
 
+    @Override
+    public Room get(Session session) {
+        try {
+            return jdbc.queryForObject("SELECT room.* FROM room, map_session_to_room m " +
+                    "WHERE room.pk_room=m.pk_room AND m.pk_session=?", MAPPER, session.getId());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     private static final String INSERT =
-            "INSERT INTO " +
-                "room " +
-            "(" +
-                "str_name,"+
-                "str_session, " +
-                "str_password,"+
-                "bool_visible, "+
-                "list_invites " +
-            ") VALUES (?,?,?,?,?)";
+            JdbcUtils.insert("room",
+                    "str_name",
+                    "str_password",
+                    "bool_visible",
+                    "list_invites",
+                    "pk_session");
 
     @Override
     public Room create(RoomBuilder builder) {
@@ -59,16 +70,22 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
-                connection.prepareStatement(INSERT, new String[]{"pk_room"});
+                    connection.prepareStatement(INSERT, new String[]{"pk_room"});
             ps.setString(1, builder.getName());
-            ps.setString(2, builder.getSession());
-            ps.setString(3, builder.getPassword());
-            ps.setBoolean(4, builder.isVisible());
+            ps.setString(2, builder.getPassword());
+            ps.setBoolean(3, builder.isVisible());
             if (builder.getInviteList() ==null) {
-                 ps.setObject(5, new String[] {});
+                ps.setObject(4, new String[] {});
             }
             else {
-                 ps.setObject(5, builder.getInviteList().toArray(new String[]{}));
+                ps.setObject(4, builder.getInviteList().toArray(new String[]{}));
+            }
+
+            if (builder.getSessionId() == null) {
+                ps.setNull(5, Types.BIGINT);
+            }
+            else {
+                ps.setLong(5, builder.getSessionId());
             }
             return ps;
         }, keyHolder);
@@ -83,11 +100,18 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
     }
 
     @Override
-    public List<Room> getAll() {
+    public List<Room> getAll(Session session) {
         /*
          * Should return all rooms and our own session room.
          */
-        return jdbc.query("SELECT * FROM room WHERE (bool_visible='t' OR str_session=?)", MAPPER,
-            SecurityUtils.getSessionId());
+        return jdbc.query("SELECT * FROM room WHERE (bool_visible='t' OR pk_session=?)", MAPPER, session.getId());
+    }
+
+    @Override
+    public boolean join(Room room, Session session) {
+        // TODO: query is not letting me add AND pk_room!=new room.
+        int result = jdbc.update("UPDATE map_session_to_room SET pk_room=? WHERE pk_session=?",
+                room.getId(), session.getId());
+        return result == 1;
     }
 }
