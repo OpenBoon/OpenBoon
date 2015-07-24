@@ -25,6 +25,7 @@
     "asset" : {
       "_all" : {"enabled" : false},
       "dynamic" : true,
+      "_timestamp" : { "enabled" : true },
       "properties" : {
         "_id": {
           "store": true,
