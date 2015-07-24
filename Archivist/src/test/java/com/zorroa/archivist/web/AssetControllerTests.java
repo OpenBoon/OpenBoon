@@ -83,6 +83,30 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testAggregation() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v1/assets/_aggregations")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"query\": { \"match_all\": {}}, \"aggregations\" : { \"Keywords\" : { \"terms\" : { \"field\" : \"keywords\" }}}}".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {
+                });
+        Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
+        Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
+        assertEquals(10, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
+    }
+
+    @Test
     public void testSuggest() throws Exception {
 
         MockHttpSession session = admin();
