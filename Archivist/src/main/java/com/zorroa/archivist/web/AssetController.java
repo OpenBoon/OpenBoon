@@ -75,7 +75,7 @@ public class AssetController {
     public void aggregate(@RequestBody String query, HttpSession session, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        Room room = roomService.getActiveRoom(session.getId());
+        Room room = roomService.getActiveRoom(userService.getSession(session));
         roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
