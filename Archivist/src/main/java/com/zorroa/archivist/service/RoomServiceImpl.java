@@ -13,6 +13,8 @@ import org.elasticsearch.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.security.core.session.SessionCreationEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +53,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public boolean join(Room room, Session session) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Session {} is joining room {}", session, room);
+        }
         return roomDao.join(room, session);
     }
 
@@ -80,7 +85,7 @@ public class RoomServiceImpl implements RoomService {
         logger.info("Sending: {} to active room", message.toString());
 
         Set<String> cookies = Sets.newHashSet();
-        sessionDao.getAll(room).forEach(s->cookies.add(s.getCookieId()));
+        sessionDao.getAll(room).forEach(s -> cookies.add(s.getCookieId()));
         eventServerHandler.send(cookies, message.toString());
     }
 

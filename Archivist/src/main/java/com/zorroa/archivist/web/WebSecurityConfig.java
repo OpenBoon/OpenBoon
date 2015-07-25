@@ -1,9 +1,6 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.ZorroaAuthenticationProvider;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
@@ -21,8 +18,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.web.context.request.RequestContextHolder;
+
 
 @Configuration
 @EnableWebMvcSecurity
@@ -69,19 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
-
-                Session session = userService.getActiveSession();
-
-                /*
-                 * Add a room and join it.
-                 */
-                RoomBuilder bld = new RoomBuilder();
-                bld.setName("personal-" + authentication.getName());
-                bld.setVisible(false);
-                bld.setSessionId(session.getId());
-
-                Room room = roomService.create(bld);
-                roomService.join(room, session);
             }
 
             @Override

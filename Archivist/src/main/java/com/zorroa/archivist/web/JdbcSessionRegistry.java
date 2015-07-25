@@ -9,8 +9,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import javax.annotation.PostConstruct;
 
 import com.google.common.collect.Maps;
+import com.zorroa.archivist.domain.Room;
+import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.Session;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.SessionDao;
+import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
@@ -41,6 +45,9 @@ public class JdbcSessionRegistry implements SessionRegistry {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RoomService roomService;
 
     private Map<Object, Set<String>> principals = Maps.newHashMap();
     private Map<String, SessionInformation> sessionIds = Maps.newHashMap();
@@ -110,11 +117,18 @@ public class JdbcSessionRegistry implements SessionRegistry {
             removeSessionInformation(sessionId);
         }
 
+        Session session = sessionDao.create((User)principal, sessionId);
+
+        RoomBuilder bld = new RoomBuilder();
+        bld.setName("personal-" + session.getUsername());
+        bld.setVisible(false);
+        bld.setSessionId(session.getId());
+
+        Room room = roomService.create(bld);
+        roomService.join(room, session);
+
         sessionIds.put(sessionId,
                 new SessionInformation(principal, sessionId, new Date()));
-
-        sessionDao.create((User)principal, sessionId);
-
 
         Set<String> sessionsUsedByPrincipal = principals.get(principal);
         if (sessionsUsedByPrincipal == null) {
@@ -128,8 +142,8 @@ public class JdbcSessionRegistry implements SessionRegistry {
 
         sessionsUsedByPrincipal.add(sessionId);
 
-        if (logger.isTraceEnabled()) {
-            logger.trace("Sessions used by '" + principal + "' : "
+        if (logger.isDebugEnabled()) {
+            logger.debug("Sessions used by '" + principal + "' : "
                     + sessionsUsedByPrincipal);
         }
     }
