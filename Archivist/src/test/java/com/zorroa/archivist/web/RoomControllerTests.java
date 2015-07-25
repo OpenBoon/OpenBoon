@@ -71,7 +71,8 @@ public class RoomControllerTests extends MockMvcTest {
         List<Room> rooms = Json.Mapper.readValue(
                 result.getResponse().getContentAsByteArray(), new TypeReference<List<Room>>() {
         });
-        assertEquals(10, rooms.size());
+        // Take into account room created by session
+        assertEquals(11, rooms.size());
     }
 
     @Test
