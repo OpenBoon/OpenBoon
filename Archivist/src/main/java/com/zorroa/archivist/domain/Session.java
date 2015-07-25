@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.hash.HashCode;
 
 /**
@@ -52,6 +53,15 @@ public class Session {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(Session.class)
+                .add("id", id)
+                .add("user", username)
+                .add("cookie", cookieId)
+                .toString();
     }
 
     @Override
