@@ -72,10 +72,12 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/_aggregations", method=RequestMethod.POST)
-    public void aggregate(@RequestBody String query, HttpSession session, HttpServletResponse httpResponse) throws IOException {
+    public void aggregate(@RequestBody String query, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        Room room = roomService.getActiveRoom(userService.getSession(session));
+        Session session = userService.getSession(httpSession);
+        Room room = roomService.getActiveRoom(session);
+        
         roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
 
         SearchRequestBuilder builder = client.prepareSearch(alias)
