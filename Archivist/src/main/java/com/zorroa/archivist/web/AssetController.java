@@ -77,7 +77,7 @@ public class AssetController {
 
         Session session = userService.getSession(httpSession);
         Room room = roomService.getActiveRoom(session);
-        
+
         roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
 
         SearchRequestBuilder builder = client.prepareSearch(alias)

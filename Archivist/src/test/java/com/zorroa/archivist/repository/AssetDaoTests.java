@@ -48,15 +48,15 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     @Test
     public void testFastCreate() {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        assetDao.fastCreate(builder);
-        assetDao.fastCreate(builder);
+        assetDao.replace(builder);
+        assetDao.replace(builder);
     }
 
     @Test
     public void testExistsByPath() {
         assertFalse(assetDao.existsByPath(getTestImage("beer_kettle_01.jpg").toString()));
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        assetDao.fastCreate(builder);
+        assetDao.replace(builder);
         refreshIndex(100);
         assertTrue(assetDao.existsByPath(getTestImage("beer_kettle_01.jpg").toString()));
     }

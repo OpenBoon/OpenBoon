@@ -27,8 +27,8 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public void fastCreateAsset(AssetBuilder builder) {
-        assetDao.fastCreate(builder);
+    public void replaceAsset(AssetBuilder builder) {
+        assetDao.replace(builder);
     }
 
     @Override

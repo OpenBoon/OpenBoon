@@ -9,6 +9,6 @@ public interface AssetService {
 
     boolean assetExistsByPath(String path);
 
-    void fastCreateAsset(AssetBuilder builder);
+    void replaceAsset(AssetBuilder builder);
 
 }

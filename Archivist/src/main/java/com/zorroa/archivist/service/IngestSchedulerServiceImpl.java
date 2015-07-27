@@ -141,7 +141,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                 Files.walk(new File(ingest.getPath()).toPath(), FileVisitOption.FOLLOW_LINKS)
                         .filter(p -> p.toFile().isFile())
                         .filter(p -> ingest.isSupportedFileType(FileUtils.extension(p)))
-                        .filter(p -> !assetService.assetExistsByPath(p.toFile().toString()))
                         .forEach(t -> {
                             logger.debug("found: {}", t);
                             AssetWorker assetWorker = new AssetWorker(pipeline, ingest, t);
@@ -177,6 +176,13 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
         @Override
         public void run() {
+
+            if (!ingest.isUpdateOnExist()) {
+                if (assetService.assetExistsByPath(asset.getAbsolutePath().toString())) {
+                    return;
+                }
+            }
+
             logger.debug("Ingesting: {}", asset);
             /*
              * Add some standard keys to the document
@@ -194,7 +200,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
              * Finally, create the asset.
              */
             logger.debug("Creating asset: {}", asset);
-            assetService.fastCreateAsset(asset);
+            assetService.replaceAsset(asset);
         }
 
         public void executeProcessors() {
