@@ -11,6 +11,7 @@ public class IngestBuilder {
     private Set<String> fileTypes = ImmutableSet.<String>of();
     private String proxyConfig = "standard";
     private String pipeline = "standard";
+    private boolean updateOnExist = true;
 
     public IngestBuilder() { }
 
@@ -66,5 +67,14 @@ public class IngestBuilder {
     public IngestBuilder setPipeline(String pipeline) {
         this.pipeline = pipeline;
         return this;
+    }
+
+
+    public boolean isUpdateOnExist() {
+        return updateOnExist;
+    }
+
+    public void setUpdateOnExist(boolean updateOnExist) {
+        this.updateOnExist = updateOnExist;
     }
 }

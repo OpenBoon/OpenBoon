@@ -20,7 +20,7 @@ public class Ingest {
     private long timeStarted;
     private int createdCount;
     private int errorCount;
-
+    private boolean updateOnExist;
 
     public long getId() {
         return id;
@@ -115,4 +115,13 @@ public class Ingest {
     public void setErrorCount(int errorCount) {
         this.errorCount = errorCount;
     }
+
+    public boolean isUpdateOnExist() {
+        return updateOnExist;
+    }
+
+    public void setUpdateOnExist(boolean updateOnExist) {
+        this.updateOnExist = updateOnExist;
+    }
+
 }

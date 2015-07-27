@@ -37,6 +37,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             result.setTimeStopped(rs.getLong("time_stopped"));
             result.setCreatedCount(rs.getInt("int_created_count"));
             result.setErrorCount(rs.getInt("int_error_count"));
+            result.setUpdateOnExist(rs.getBoolean("bool_update_on_exist"));
             return result;
         }
     };
@@ -58,10 +59,11 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "time_created,"+
                 "str_user_created,"+
                 "time_modified, "+
-                "str_user_modified "+
+                "str_user_modified, "+
+                "bool_update_on_exist " +
 
             ") " +
-            "VALUES (" + StringUtils.repeat("?", ",", 9) + ")";
+            "VALUES (" + StringUtils.repeat("?", ",", 10) + ")";
 
     @Override
     public Ingest create(IngestPipeline pipeline, ProxyConfig proxyConfig, IngestBuilder builder) {
@@ -79,6 +81,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             ps.setString(7, SecurityUtils.getUsername());
             ps.setLong(8, time);
             ps.setString(9, SecurityUtils.getUsername());
+            ps.setBoolean(10, builder.isUpdateOnExist());
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
