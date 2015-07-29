@@ -137,7 +137,8 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
+        ingestSchedulerService.executeIngest(ingest);
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();
@@ -159,9 +160,11 @@ public class AssetControllerTests extends MockMvcTest {
     @Test
     public void testCollections() throws Exception {
 
+
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
+        ingestSchedulerService.executeIngest(ingest);
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();
