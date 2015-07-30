@@ -2,7 +2,6 @@ package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.service.UserService;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ public abstract class MockMvcTest extends ArchivistApplicationTests {
 
     @Before
     public void setup() {
+        super.setup();
         this.mvc = MockMvcBuilders
                 .webAppContextSetup(this.wac)
                 .addFilters(springSecurityFilterChain)
