@@ -58,7 +58,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
-        assertTrue(count == 2 /*single-test*/ || count == 3 /*full-test-suite*/);
+        assertTrue(count == 2);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> counts = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
         int count = (int)counts.get("count");
-        assertTrue(count == 2 /*single-test*/ || count == 3 /*full-test-suite*/);
+        assertTrue(count == 2);
     }
 
     @Test
