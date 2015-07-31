@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.MoreObjects;
 
 import java.util.Set;
 
@@ -21,6 +22,15 @@ public class Ingest {
     private int createdCount;
     private int errorCount;
     private boolean updateOnExist;
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(getClass())
+                .add("id", getId())
+                .add("state", getState())
+                .add("path", getPath())
+                .toString();
+    }
 
     public long getId() {
         return id;
