@@ -57,6 +57,24 @@ public class IngestController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/ingests/{id}/_pause", method=RequestMethod.PUT)
+    public Map<String, Object> pause(@PathVariable String id) {
+        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+        return ImmutableMap.<String, Object>builder()
+                .put("status", ingestSchedulerService.pause(ingest))
+                .build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/ingests/{id}/_resume", method=RequestMethod.PUT)
+    public Map<String, Object> resume(@PathVariable String id) {
+        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+        return ImmutableMap.<String, Object>builder()
+                .put("status", ingestSchedulerService.resume(ingest))
+                .build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.PUT)
     public Ingest update(@RequestBody IngestUpdateBuilder builder, @PathVariable String id) {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));

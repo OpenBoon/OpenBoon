@@ -84,6 +84,16 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public boolean setIngestPaused(Ingest ingest, boolean value) {
+        if (value) {
+            return ingestDao.setState(ingest, IngestState.Paused, IngestState.Running);
+        }
+        else {
+            return ingestDao.setState(ingest, IngestState.Running, IngestState.Paused);
+        }
+    }
+
+    @Override
     public Ingest createIngest(IngestBuilder builder) {
         IngestPipeline pipeline = ingestPipelineDao.get(builder.getPipeline());
         ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());

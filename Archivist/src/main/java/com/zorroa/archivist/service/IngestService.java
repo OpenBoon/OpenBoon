@@ -17,10 +17,9 @@ public interface IngestService {
 
     IngestPipeline getIngestPipeline(int id);
 
-
     /*
-    * INGEST
-    */
+     * INGEST
+     */
     Ingest createIngest(IngestBuilder builder);
 
     boolean deleteIngest(Ingest ingest);
@@ -44,5 +43,7 @@ public interface IngestService {
     boolean setIngestIdle(Ingest ingest);
 
     boolean setIngestQueued(Ingest ingest);
+
+    boolean setIngestPaused(Ingest ingest, boolean value);
 
 }
