@@ -7,6 +7,7 @@ import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.IngestService;
+import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
@@ -47,6 +48,12 @@ public class ArchivistRepositorySetup {
     @Value("${archivist.index.alias}")
     private String alias;
 
+    @Value("${archivist.snapshot.basePath}")
+    private String snapshotPath;
+
+    @Value("${archivist.snapshot.repoName}")
+    private String snapshotRepoName;
+
     private String indexName;
 
     @PostConstruct
@@ -55,6 +62,7 @@ public class ArchivistRepositorySetup {
         createDefaultUsers();
         createDefaultProxyConfiguration();
         createDefaultIngestPipeline();
+        createSnapshotRepository();
     }
      /**
      * Automatically sets up elastic search if its not setup already.
@@ -159,5 +167,22 @@ public class ArchivistRepositorySetup {
 
         logger.info("Creating 'standard' ingest pipeline");
         ingestService.createIngestPipeline(builder);
+    }
+
+    private void createSnapshotRepository() {
+        logger.info("Creating snapshot repository \"" + snapshotRepoName + "\" in \"" + snapshotPath + "\"");
+        // Later we can add support for S3 buckets or HDFS backups
+        Settings settings = ImmutableSettings.builder()
+                .put("location", snapshotPath)
+                .put("compress", true)
+                .put("max_snapshot_bytes_per_sec", "50mb")
+                .put("max_restore_bytes_per_sec", "50mb")
+                .build();
+        PutRepositoryRequestBuilder builder =
+                new PutRepositoryRequestBuilder(client.admin().cluster());
+        builder.setName(snapshotRepoName)
+                .setType("fs")
+                .setSettings(settings)
+                .execute().actionGet();
     }
 }

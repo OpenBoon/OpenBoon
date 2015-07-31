@@ -1,7 +1,16 @@
 package com.zorroa.archivist;
 
+import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotRequestBuilder;
+import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
+import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.indices.IndexMissingException;
+import org.elasticsearch.snapshots.SnapshotInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -33,6 +42,9 @@ public abstract class ArchivistApplicationTests {
     @Value("${archivist.index.alias}")
     protected String alias;
 
+    @Value("${archivist.snapshot.repoName}")
+    private String snapshotRepoName;
+
     protected Set<String> testImages;
 
     public static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
@@ -42,6 +54,14 @@ public abstract class ArchivistApplicationTests {
         ArchivistConfiguration.unittest = true;
     }
 
+    private ImmutableList<SnapshotInfo> getSnapshotInfos() {
+        GetSnapshotsRequestBuilder builder =
+                new GetSnapshotsRequestBuilder(client.admin().cluster());
+        builder.setRepository(snapshotRepoName);
+        GetSnapshotsResponse getSnapshotsResponse = builder.execute().actionGet();
+        return getSnapshotsResponse.getSnapshots();
+    }
+
     @Before
     public void setup() {
         // delete all the assets
@@ -49,6 +69,21 @@ public abstract class ArchivistApplicationTests {
             .setTypes("asset")
             .setQuery(QueryBuilders.matchAllQuery())
             .get();
+
+        // Delete all snapshots
+        for (SnapshotInfo info : getSnapshotInfos()) {
+            DeleteSnapshotRequestBuilder builder = new DeleteSnapshotRequestBuilder(client.admin().cluster());
+            builder.setRepository(snapshotRepoName).setSnapshot(info.name());
+            builder.execute().actionGet();
+        }
+
+        // Delete any previously restored index
+        try {
+            DeleteIndexRequestBuilder deleteBuilder = new DeleteIndexRequestBuilder(client.admin().indices(), "restored_archivist_01");
+            deleteBuilder.execute().actionGet();
+        } catch (IndexMissingException e) {
+            logger.info("No existing snapshot to delete")
+;        }
     }
 
     public String getStaticImagePath(String subdir) {

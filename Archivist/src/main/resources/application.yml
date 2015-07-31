@@ -29,5 +29,7 @@ archivist:
     ingest:
         ingestWorkers: 1
         assetWorkersPerIngest: 4
-
+    snapshot:
+        basePath: "snapshots"
+        repoName: "backups"
 
