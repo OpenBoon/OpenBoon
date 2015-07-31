@@ -15,6 +15,6 @@ public interface AssetDao {
 
     boolean existsByPath(String path);
 
-    void replace(AssetBuilder builder);
+    boolean replace(AssetBuilder builder);
 
 }

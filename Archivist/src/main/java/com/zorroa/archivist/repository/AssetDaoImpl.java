@@ -85,9 +85,9 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public void replace(AssetBuilder builder) {
+    public boolean replace(AssetBuilder builder) {
         IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.INDEX);
-        idxBuilder.execute();
+        return !idxBuilder.get().isCreated();
     }
 
     @Override
