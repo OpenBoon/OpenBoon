@@ -23,4 +23,8 @@ public interface IngestDao {
     boolean setState(Ingest ingest, IngestState newState, IngestState oldState);
 
     boolean setState(Ingest ingest, IngestState newState);
+
+    void resetCounters(Ingest ingest);
+
+    void updateCounters(Ingest ingest, int created, int updated, int errors);
 }

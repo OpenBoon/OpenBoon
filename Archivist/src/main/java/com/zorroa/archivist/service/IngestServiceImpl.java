@@ -70,7 +70,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean setIngestRunning(Ingest ingest) {
-        return ingestDao.setState(ingest, IngestState.Running);
+        if (ingestDao.setState(ingest, IngestState.Running)) {
+            ingestDao.resetCounters(ingest);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -91,6 +95,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         else {
             return ingestDao.setState(ingest, IngestState.Running, IngestState.Paused);
         }
+    }
+
+    @Override
+    public void updateIngestCounters(Ingest ingest, int created, int updated, int errors) {
+        ingestDao.updateCounters(ingest, created, updated, errors);
     }
 
     @Override

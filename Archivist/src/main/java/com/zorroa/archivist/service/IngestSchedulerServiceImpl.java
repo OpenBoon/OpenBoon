@@ -24,10 +24,13 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.LongAdder;
 
 @Component
 public class IngestSchedulerServiceImpl extends AbstractScheduledService implements IngestSchedulerService {
@@ -173,6 +176,18 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
          */
         private AtomicLong latch = new AtomicLong(0);
 
+        /**
+         * Counters for creates, updates, and errors.
+         */
+        private LongAdder createdCount = new LongAdder();
+        private LongAdder updatedCount = new LongAdder();
+        private LongAdder errorCount = new LongAdder();
+
+        /**
+         * A timer thread for updating counts.
+         */
+        private Timer updateCountsTimer;
+
         private final Ingest ingest;
 
         public IngestWorker(Ingest ingest) {
@@ -192,6 +207,8 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
         @Override
         public void run() {
+
+            Timer updateCountsTimer = null;
 
             if (!ingestService.setIngestRunning(ingest)) {
                 logger.warn("Unable to set ingest {} to the running state.", ingest);
@@ -220,6 +237,19 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                     processor.setIngestProcessorService(ingestProcessorService);
                 }
 
+                updateCountsTimer = new Timer();
+                updateCountsTimer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        ingestService.updateIngestCounters(ingest,
+                                createdCount.intValue(),
+                                updatedCount.intValue(),
+                                errorCount.intValue());
+                    }
+                }, 1000, 1000);
+
+
+
                 Path start = new File(ingest.getPath()).toPath();
                 Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
                     @Override
@@ -240,7 +270,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                         if (paused.get() == true) {
                             logger.info("Ingest thread paused {} {}", this, ingest);
                             try {
-                                synchronized(pausedMutex) {
+                                synchronized (pausedMutex) {
                                     pausedMutex.wait();
                                 }
                                 logger.info("Ingest thread resumed {}", ingest);
@@ -276,12 +306,17 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                 while (latch.get() != 0) {
                     Thread.sleep(1000);
                 }
-
                 logger.info("Ingest {} finished", ingest);
 
             } catch (Exception e) {
                 logger.warn("Failed to execute ingest," + e, e);
             } finally {
+                updateCountsTimer.cancel();
+                ingestService.updateIngestCounters(ingest,
+                        createdCount.intValue(),
+                        updatedCount.intValue(),
+                        errorCount.intValue());
+
                 runningIngests.remove(ingest.getId());
                 ingestService.setIngestIdle(ingest);
             }
@@ -329,7 +364,13 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                      * Finally, create the asset.
                      */
                     logger.debug("Creating asset: {}", asset);
-                    assetService.replaceAsset(asset);
+                    if (assetService.replaceAsset(asset)) {
+                        updatedCount.increment();
+                    }
+                    else {
+                        createdCount.increment();
+                    }
+
                 } finally {
                     latch.decrementAndGet();
                 }
@@ -342,6 +383,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                         logger.debug("running processor: {}", processor.getClass());
                         processor.process(asset);
                     } catch (Exception e) {
+                        errorCount.increment();
                         logger.warn("Processor {} failed to run on asset {}",
                                 factory.getProcessor().getClass().getCanonicalName(), asset.getFile(), e);
                     }
