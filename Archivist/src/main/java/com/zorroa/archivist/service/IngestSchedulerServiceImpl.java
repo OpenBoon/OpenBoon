@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.*;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.IngestException;
+import com.zorroa.archivist.PausableExecutor;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
@@ -64,12 +65,9 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     private Executor ingestExecutor;
 
-    private Executor assetExecutor;
-
     @PostConstruct
     public void init() {
         ingestExecutor = Executors.newFixedThreadPool(ingestWorkerCount);
-        assetExecutor = Executors.newFixedThreadPool(assetWorkerCount);
         startAsync();
     }
 
@@ -110,13 +108,10 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     @Override
     public void executeIngest(Ingest ingest, boolean paused) {
-        IngestWorker worker = new IngestWorker(ingest);
+        IngestWorker worker = new IngestWorker(ingest, assetWorkerCount);
         worker.setPaused(paused);
 
         if (runningIngests.putIfAbsent(ingest.getId(), worker) == null) {
-
-            logger.info("adding ingest working to map: {}", worker);
-
             if (ArchivistConfiguration.unittest) {
                 worker.run();
             }
@@ -149,10 +144,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
         }
 
         if (worker.setPaused(false)) {
-            logger.info("ingest unpaused");
             ingestService.setIngestPaused(ingest, false);
-            logger.info("notifying ingest worker {}", worker);
-            logger.info("done");
             return true;
         }
 
@@ -188,10 +180,13 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
          */
         private Timer updateCountsTimer;
 
+        private PausableExecutor assetExecutor;
+
         private final Ingest ingest;
 
-        public IngestWorker(Ingest ingest) {
+        public IngestWorker(Ingest ingest, int threads) {
             this.ingest = ingest;
+            this.assetExecutor = new PausableExecutor(threads);
         }
 
         public boolean setPaused(boolean value) {
@@ -199,6 +194,10 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
             synchronized (pausedMutex) {
                 if (!value) {
                     pausedMutex.notify();
+                    assetExecutor.resume();
+                }
+                else {
+                    assetExecutor.pause();
                 }
             }
 
@@ -207,8 +206,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
         @Override
         public void run() {
-
-            Timer updateCountsTimer = null;
 
             if (!ingestService.setIngestRunning(ingest)) {
                 logger.warn("Unable to set ingest {} to the running state.", ingest);
@@ -247,7 +244,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                                 errorCount.intValue());
                     }
                 }, 1000, 1000);
-
 
 
                 Path start = new File(ingest.getPath()).toPath();
