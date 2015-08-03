@@ -129,7 +129,7 @@ public class ArchivistRepositorySetup {
 
         UserBuilder adminBuilder = new UserBuilder();
         adminBuilder.setEmail("admin@zorroa.com");
-        adminBuilder.setFirstName("Admin");
+        adminBuilder.setFirstName("Joe");
         adminBuilder.setLastName("Admin");
         adminBuilder.setUsername("admin");
         adminBuilder.setPassword("admin");
@@ -138,7 +138,7 @@ public class ArchivistRepositorySetup {
 
         UserBuilder userBuilder = new UserBuilder();
         userBuilder.setEmail("user@zorroa.com");
-        userBuilder.setFirstName("User");
+        userBuilder.setFirstName("Bob");
         userBuilder.setLastName("User");
         userBuilder.setUsername("user");
         userBuilder.setPassword("user");

@@ -9,17 +9,12 @@ import com.zorroa.archivist.domain.UserUpdateBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Preconditions;
 import org.elasticsearch.common.collect.ImmutableSet;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -30,6 +25,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         user.setId(rs.getInt("pk_user"));
         user.setUsername(rs.getString("str_username"));
         user.setEmail(rs.getString("str_email"));
+        user.setFirstName(rs.getString("str_firstname"));
+        user.setLastName(rs.getString("str_lastname"));
         String[] roles = (String[]) rs.getObject("list_roles");
         user.setRoles(ImmutableSet.<String>copyOf(roles));
         user.setEnabled(rs.getBoolean("bool_enabled"));
@@ -55,12 +52,14 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             "INSERT INTO " +
                 "user " +
             "(" +
-                "str_username,"+
+                "str_username, "+
                 "str_password, " +
-                "str_email,"+
+                "str_email, "+
+                "str_firstname, " +
+                "str_lastname, " +
                 "list_roles, " +
                 "bool_enabled " +
-            ") VALUES (?,?,?,?,?)";
+            ") VALUES (?,?,?,?,?,?,?)";
 
     @Override
     public User create(UserBuilder builder) {
@@ -75,8 +74,10 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setString(1, builder.getUsername());
             ps.setString(2, builder.getPassword());
             ps.setString(3, builder.getEmail());
-            ps.setObject(4, builder.getRoles().toArray(new String[]{}));
-            ps.setBoolean(5, true);
+            ps.setString(4, builder.getFirstName());
+            ps.setString(5, builder.getLastName());
+            ps.setObject(6, builder.getRoles().toArray(new String[]{}));
+            ps.setBoolean(7, true);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -105,6 +106,16 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         if (builder.getEmail() != null) {
             updates.add("str_email=?");
             values.add(builder.getEmail());
+        }
+
+        if (builder.getFirstName() != null) {
+            updates.add("str_firstname=?");
+            values.add(builder.getFirstName());
+        }
+
+        if (builder.getLastName() != null) {
+            updates.add("str_lastname=?");
+            values.add(builder.getLastName());
         }
 
         if (builder.getEnabled() != null) {

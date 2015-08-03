@@ -6,6 +6,8 @@ CREATE TABLE user(
   str_username VARCHAR(255) NOT NULL,
   str_password VARCHAR(100) NOT NULL,
   str_email VARCHAR(255) NOT NULL,
+  str_firstname VARCHAR(255),
+  str_lastname VARCHAR(255),
   list_roles ARRAY NOT NULL,
   bool_enabled BOOLEAN NOT NULL
 );
