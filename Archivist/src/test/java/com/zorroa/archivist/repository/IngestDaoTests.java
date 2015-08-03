@@ -145,4 +145,18 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals(testProxyConfig.getId(), updatedIngest.getProxyConfigId());
     }
 
+    @Test
+    public void testCounters() {
+        ingestDao.updateCounters(ingest, 1, 2, 3);
+        Ingest ingest01 = ingestDao.get(ingest.getId());
+        assertEquals(1, ingest01.getCreatedCount());
+        assertEquals(2, ingest01.getUpdatedCount());
+        assertEquals(3, ingest01.getErrorCount());
+        ingestDao.resetCounters(ingest);
+        ingest01 = ingestDao.get(ingest.getId());
+        assertEquals(0, ingest01.getCreatedCount());
+        assertEquals(0, ingest01.getUpdatedCount());
+        assertEquals(0, ingest01.getErrorCount());
+    }
+
 }

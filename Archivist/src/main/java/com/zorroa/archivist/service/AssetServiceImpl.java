@@ -27,8 +27,8 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public void replaceAsset(AssetBuilder builder) {
-        assetDao.replace(builder);
+    public boolean replaceAsset(AssetBuilder builder) {
+        return assetDao.replace(builder);
     }
 
     @Override

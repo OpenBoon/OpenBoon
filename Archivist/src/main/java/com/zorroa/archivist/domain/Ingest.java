@@ -20,6 +20,7 @@ public class Ingest {
     private long timeStopped;
     private long timeStarted;
     private int createdCount;
+    private int updatedCount;
     private int errorCount;
     private boolean updateOnExist;
 
@@ -103,6 +104,14 @@ public class Ingest {
     }
     public void setProxyConfigId(int proxyConfigId) {
         this.proxyConfigId = proxyConfigId;
+    }
+
+    public int getUpdatedCount() {
+        return updatedCount;
+    }
+
+    public void setUpdatedCount(int updatedCount) {
+        this.updatedCount = updatedCount;
     }
 
     @JsonIgnore

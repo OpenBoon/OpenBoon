@@ -37,6 +37,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             result.setTimeStopped(rs.getLong("time_stopped"));
             result.setCreatedCount(rs.getInt("int_created_count"));
             result.setErrorCount(rs.getInt("int_error_count"));
+            result.setUpdatedCount(rs.getInt("int_updated_count"));
             result.setUpdateOnExist(rs.getBoolean("bool_update_on_exist"));
             return result;
         }
@@ -193,5 +194,18 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     public boolean setState(Ingest ingest, IngestState newState) {
         return jdbc.update("UPDATE ingest SET int_state=? WHERE pk_ingest=? AND int_state != ?",
                 newState.ordinal(), ingest.getId(), newState.ordinal()) == 1;
+    }
+
+    @Override
+    public void resetCounters(Ingest ingest) {
+        jdbc.update("UPDATE ingest SET time_started=0, time_stopped=-1, " +
+                        "int_created_count=0, int_updated_count=0, int_error_count=0 WHERE pk_ingest=?",
+                ingest.getId());
+    }
+
+    @Override
+    public void updateCounters(Ingest ingest, int created, int updated, int errors) {
+        jdbc.update("UPDATE ingest SET int_created_count=?,int_updated_count=?,int_error_count=? WHERE pk_ingest=?",
+                created, updated, errors, ingest.getId());
     }
 }

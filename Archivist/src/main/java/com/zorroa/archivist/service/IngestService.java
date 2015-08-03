@@ -17,6 +17,8 @@ public interface IngestService {
 
     IngestPipeline getIngestPipeline(int id);
 
+    void updateIngestCounters(Ingest ingest, int created, int updated, int errors);
+
     /*
      * INGEST
      */
