@@ -19,6 +19,10 @@ public interface IngestService {
 
     void updateIngestCounters(Ingest ingest, int created, int updated, int errors);
 
+    void updateIngestStartTime(Ingest ingest, long time);
+
+    void updateIngestStopTime(Ingest ingest, long time);
+
     /*
      * INGEST
      */

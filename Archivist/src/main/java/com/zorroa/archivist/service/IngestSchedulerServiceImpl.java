@@ -1,12 +1,15 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.*;
+import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.IngestException;
 import com.zorroa.archivist.PausableExecutor;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestPipeline;
+import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.IngestState;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
 import com.zorroa.archivist.sdk.IngestProcessorService;
@@ -22,12 +25,18 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -245,6 +254,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                     }
                 }, 1000, 1000);
 
+                ingestService.updateIngestStartTime(ingest, System.currentTimeMillis());
 
                 Path start = new File(ingest.getPath()).toPath();
                 Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
@@ -308,6 +318,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                 logger.warn("Failed to execute ingest," + e, e);
             } finally {
                 updateCountsTimer.cancel();
+                ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
                 ingestService.updateIngestCounters(ingest,
                         createdCount.intValue(),
                         updatedCount.intValue(),
