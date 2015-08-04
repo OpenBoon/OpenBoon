@@ -103,6 +103,18 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public void updateIngestStartTime(Ingest ingest, long time) {
+        ingest.setTimeStarted(time);
+        ingestDao.updateStartTime(ingest, time);
+    }
+
+    @Override
+    public void updateIngestStopTime(Ingest ingest, long time) {
+        ingest.setTimeStopped(time);
+        ingestDao.updateStoppedTime(ingest, time);
+    }
+
+    @Override
     public Ingest createIngest(IngestBuilder builder) {
         IngestPipeline pipeline = ingestPipelineDao.get(builder.getPipeline());
         ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());
