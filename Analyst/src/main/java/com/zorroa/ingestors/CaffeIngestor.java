@@ -27,33 +27,39 @@ public class CaffeIngestor extends IngestProcessor {
         System.loadLibrary("CaffeIngestor");
     }
 
-    public final native long createCaffeClassifier(String deployFile, String modelFile, String meanFile, String wordFile);
-    public final native String classify(long caffeClassifier, String imageFile);
+    public static final native long createCaffeClassifier(String deployFile, String modelFile, String meanFile, String wordFile);
+    public static final native String classify(long caffeClassifier, String imageFile);
 
-    long nativeCaffeClassifier;
-
-    public CaffeIngestor() {
-        Map<String, String> env = System.getenv();
-        String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
-        if (modelPath == null) {
-            logger.error("CaffeIngestor requires ZORROA_OPENCV_MODEL_PATH");
-            return;
-        }
-        String resourcePath = modelPath + "/caffe/imagenet/";
-        String[] name = { "deploy.prototxt", "bvlc_reference_caffenet.caffemodel",
-                "imagenet_mean.binaryproto", "synset_words.txt" };
-        File[] file = new File[4];
-        for (int i = 0; i < 4; ++i) {
-            file[i] = new File(resourcePath + name[i]);
-            if (!file[i].exists()) {
-                logger.error("CaffeIngestor model file " + file[i].getAbsolutePath() + " does not exist");
-                return;
+    // CaffeClassifier is not thread-safe, so give one to each thread
+    private static final ThreadLocal<Long> caffeClassifier = new ThreadLocal<Long>(){
+        @Override
+        protected Long initialValue() {
+            Map<String, String> env = System.getenv();
+            String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
+            if (modelPath == null) {
+                logger.error("CaffeIngestor requires ZORROA_OPENCV_MODEL_PATH");
+                return Long.valueOf(0);
             }
+            String resourcePath = modelPath + "/caffe/imagenet/";
+            String[] name = { "deploy.prototxt", "bvlc_reference_caffenet.caffemodel",
+                    "imagenet_mean.binaryproto", "synset_words.txt" };
+            File[] file = new File[4];
+            for (int i = 0; i < 4; ++i) {
+                file[i] = new File(resourcePath + name[i]);
+                if (!file[i].exists()) {
+                    logger.error("CaffeIngestor model file " + file[i].getAbsolutePath() + " does not exist");
+                    return Long.valueOf(0);
+                }
+            }
+            long nativeCaffeClassifier = createCaffeClassifier(file[0].getAbsolutePath(),
+                    file[1].getAbsolutePath(), file[2].getAbsolutePath(), file[3].getAbsolutePath());
+            logger.info("CaffeIngestor created");
+            return Long.valueOf(nativeCaffeClassifier);
         }
-        nativeCaffeClassifier = createCaffeClassifier(file[0].getAbsolutePath(),
-                file[1].getAbsolutePath(), file[2].getAbsolutePath(), file[3].getAbsolutePath());
-        logger.info("CaffeIngestor created");
-    }
+    };
+
+
+    public CaffeIngestor() { }
 
     @Override
     public void process(AssetBuilder asset) {
@@ -76,6 +82,9 @@ public class CaffeIngestor extends IngestProcessor {
                 break;
             }
         }
+
+        // Perform Caffe analysis
+        long nativeCaffeClassifier = caffeClassifier.get().longValue();
         String keywords = classify(nativeCaffeClassifier, classifyPath);
         logger.info("CaffeIngestor: " + keywords);
         List<String> keywordList = Arrays.asList(keywords.split(","));

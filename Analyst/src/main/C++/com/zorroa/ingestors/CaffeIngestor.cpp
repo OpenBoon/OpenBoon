@@ -68,7 +68,7 @@ static string replaceAll(string str, const string &from, const string &to) {
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)J
  */
 JNIEXPORT jlong JNICALL
-Java_com_zorroa_ingestors_CaffeIngestor_createCaffeClassifier(JNIEnv *env, jobject jself, jstring deployObj, jstring modelObj, jstring meanObj, jstring wordObj) {
+Java_com_zorroa_ingestors_CaffeIngestor_createCaffeClassifier(JNIEnv *env, jclass nclass, jstring deployObj, jstring modelObj, jstring meanObj, jstring wordObj) {
     static bool initialized = false;
     if (!initialized) {
         initialized = true;
@@ -84,7 +84,7 @@ Java_com_zorroa_ingestors_CaffeIngestor_createCaffeClassifier(JNIEnv *env, jobje
  * Signature: (JLjava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL
-Java_com_zorroa_ingestors_CaffeIngestor_classify(JNIEnv *env, jobject jself, jlong jclassifier, jstring imageObj) {
+Java_com_zorroa_ingestors_CaffeIngestor_classify(JNIEnv *env, jclass nclass, jlong jclassifier, jstring imageObj) {
     Classifier *classifier = (Classifier *)jclassifier;
     string imageFile = stringFromJString(env, imageObj);
     cv::Mat img = cv::imread(imageFile, -1);
