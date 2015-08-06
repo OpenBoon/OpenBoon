@@ -25,4 +25,6 @@ public abstract class IngestProcessor {
     public void setArgs(Map<String, Object> args) {
         this.args = args;
     }
+
+    public void teardown() { /* Cleanup ThreadLocal or other per-thread values */ }
 }
