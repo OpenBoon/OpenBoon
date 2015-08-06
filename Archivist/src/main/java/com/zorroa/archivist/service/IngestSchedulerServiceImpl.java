@@ -227,6 +227,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                  */
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
                 List<IngestProcessorFactory> processors = pipeline.getProcessors();
+                assetExecutor.setProcessors(processors);
 
                 for (IngestProcessorFactory factory : processors) {
                     IngestProcessor processor = factory.init();
@@ -326,6 +327,11 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
                 runningIngests.remove(ingest.getId());
                 ingestService.setIngestIdle(ingest);
+                for (IngestProcessorFactory factory : assetExecutor.getProcessors()) {
+                    if (factory.getProcessor() != null) {
+                        factory.getProcessor().teardown();
+                    }
+                }
             }
         }
 

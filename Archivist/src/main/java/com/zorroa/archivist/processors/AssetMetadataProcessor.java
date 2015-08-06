@@ -9,6 +9,9 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
+import org.elasticsearch.common.joda.time.DateTime;
+import org.elasticsearch.common.joda.time.format.DateTimeFormat;
+import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,6 +104,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
             keywordArgs.add("Xmp.Lens");
         }
         Set<String> idSet = new HashSet<String>(keywordArgs);
+        DateTimeFormatter extraDateFormatter = DateTimeFormat.forPattern("yyyy:MM:dd:HH:mm:ss");
 
         for (Directory directory : metadata.getDirectories()) {
             String dirName = directory.getName().split(" ", 2)[0];
@@ -112,6 +116,18 @@ public class AssetMetadataProcessor extends IngestProcessor {
                 }
 
                 Date date = directory.getDate(tag.getTagType());
+                if (date == null && tagName.toLowerCase().contains("datetime") && obj instanceof String) {
+                    try {
+                        DateTime dt = extraDateFormatter.parseDateTime((String)obj);
+                        date = dt.toDate();
+                    } catch (IllegalArgumentException e) {
+                        // Parsing error
+                    }
+                    if (date == null) {
+                        // Skip the poorly formatted date field rather than generating parsing exception
+                        continue;
+                    }
+                }
                 String id = dirName + "." + tagName;
                 if ((obj instanceof String && date == null) ||
                         (obj.getClass().isArray() && obj.getClass().getComponentType().getName().equals("java.lang.String"))) {

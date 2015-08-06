@@ -11,6 +11,8 @@ import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.mapper.MapperParsingException;
+import org.elasticsearch.index.mapper.MergeMappingException;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
@@ -60,8 +62,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 client.admin().indices().preparePutMapping(alias).setType(getType())
                         .setSource(mapper).execute().actionGet();
                 builder.updateMapped();
+            } catch (MapperParsingException e) {
+                logger.error("Mapping parsing exception, " + e);
+            } catch (MergeMappingException e) {
+                // This field was mapped differently in two cases
+                logger.error("Merge mapping failure, " + e);
             } catch (Exception e) {
-                throw new DataRetrievalFailureException("Failed to map asset record, " + e, e);
+                logger.error("Mapping exception, " + e);
             }
         }
         return client.prepareIndex(alias, getType())
