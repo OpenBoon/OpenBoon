@@ -38,6 +38,7 @@ CREATE TABLE room (
   list_invites ARRAY
 );
 
+DROP TABLE IF EXISTS map_session_to_room;
 CREATE TABLE map_session_to_room (
   id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_session BIGINT NOT NULL REFERENCES session (pk_session) ON DELETE CASCADE,
@@ -46,6 +47,7 @@ CREATE TABLE map_session_to_room (
 );
 
 --- The session can only be in this table once, the room however may change.
+DROP TABLE IF EXISTS map_session_to_room_uniq_idx;
 CREATE UNIQUE INDEX map_session_to_room_uniq_idx ON map_session_to_room (pk_session);
 
 
@@ -64,7 +66,7 @@ CREATE TABLE proxy_config (
 CREATE UNIQUE INDEX proxy_config_str_name_uniq_idx ON proxy_config(str_name);
 
 
-CREATE TABLE pipeline (
+CREATE TABLE IF NOT EXISTS pipeline (
   pk_pipeline INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   str_name VARCHAR(64) NOT NULL,
   str_description VARCHAR(255) NOT NULL,
@@ -75,9 +77,9 @@ CREATE TABLE pipeline (
   list_processors OTHER NOT NULL
 );
 
-CREATE UNIQUE INDEX pipeline_str_name_uniq_idx ON pipeline(str_name);
+CREATE UNIQUE INDEX IF NOT EXISTS pipeline_str_name_uniq_idx ON pipeline(str_name);
 
-CREATE TABLE ingest (
+CREATE TABLE IF NOT EXISTS ingest (
   pk_ingest BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_pipeline INT NOT NULL,
   pk_proxy_config INT NOT NULL,

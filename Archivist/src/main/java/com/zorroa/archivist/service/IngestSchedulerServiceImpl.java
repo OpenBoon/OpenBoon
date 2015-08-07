@@ -213,7 +213,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
         @Override
         public void run() {
 
-            if (!ingestService.setIngestRunning(ingest)) {
+            if (ingest.getState() != IngestState.Running && !ingestService.setIngestRunning(ingest)) {
                 logger.warn("Unable to set ingest {} to the running state.", ingest);
                 return;
             }
