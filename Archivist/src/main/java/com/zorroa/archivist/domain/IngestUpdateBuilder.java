@@ -13,6 +13,7 @@ public class IngestUpdateBuilder {
     private String pipeline;
     private int pipelineId = -1;
     private int proxyConfigId = -1;
+    private boolean updateOnExist;
 
     public String getPath() {
         return path;
@@ -60,5 +61,13 @@ public class IngestUpdateBuilder {
 
     public void setProxyConfigId(int proxyConfigId) {
         this.proxyConfigId = proxyConfigId;
+    }
+
+    public boolean isUpdateOnExist() {
+        return updateOnExist;
+    }
+
+    public void setUpdateOnExist(boolean updateOnExist) {
+        this.updateOnExist = updateOnExist;
     }
 }
