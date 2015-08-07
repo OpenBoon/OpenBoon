@@ -164,6 +164,9 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             return false;
         }
 
+        updates.add("bool_update_on_exist=?");
+        values.add(builder.isUpdateOnExist());
+
         updates.add("str_user_modified=?");
         values.add(SecurityUtils.getUsername());
 
