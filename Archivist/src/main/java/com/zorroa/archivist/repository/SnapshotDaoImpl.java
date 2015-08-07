@@ -21,9 +21,6 @@ import java.util.List;
 @Repository
 public class SnapshotDaoImpl extends AbstractElasticDao implements SnapshotDao {
 
-    @Value("${archivist.snapshot.basePath}")
-    private String snapshotPath;
-
     @Value("${archivist.snapshot.repoName}")
     private String snapshotRepoName;
 
