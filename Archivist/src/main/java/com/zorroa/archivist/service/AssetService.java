@@ -9,6 +9,8 @@ public interface AssetService {
 
     boolean assetExistsByPath(String path);
 
+    boolean assetExistsByPathAfter(String path, long afterTime);
+
     boolean replaceAsset(AssetBuilder builder);
 
 }

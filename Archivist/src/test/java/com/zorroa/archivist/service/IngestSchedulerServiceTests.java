@@ -57,7 +57,7 @@ public class IngestSchedulerServiceTests extends ArchivistApplicationTests {
         }, 2000);
 
 
-        ingestSchedulerService.executeIngest(ingest, true);
+        ingestSchedulerService.restart(ingest, true);
     }
 
     @Test

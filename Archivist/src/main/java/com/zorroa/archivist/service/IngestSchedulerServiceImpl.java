@@ -6,10 +6,7 @@ import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.IngestException;
 import com.zorroa.archivist.PausableExecutor;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
-import com.zorroa.archivist.domain.IngestState;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
 import com.zorroa.archivist.sdk.IngestProcessorService;
@@ -109,15 +106,26 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     @Override
     public void executeIngest(Ingest ingest) {
-        executeIngest(ingest, false);
+        execute(ingest, false, true);
     }
 
     @Override
-    public void executeIngest(Ingest ingest, boolean paused) {
-        IngestWorker worker = new IngestWorker(ingest, ingest.getAssetWorkerThreads());
+    public void restart(Ingest ingest, boolean paused) {
+        execute(ingest, paused, false /*don't reset counters*/);
+    }
+
+    protected void execute(Ingest ingest, boolean paused, boolean firstStart) {
+        IngestWorker worker = new IngestWorker(ingest, ingest.assetWorkerThreads());
         worker.setPaused(paused);
 
         if (runningIngests.putIfAbsent(ingest.getId(), worker) == null) {
+
+            if (firstStart) {
+                // Reset counters and start time only on first execute, not restart
+                ingestService.resetIngestCounters(ingest);
+                ingestService.updateIngestStartTime(ingest, System.currentTimeMillis());
+            }
+
             if (ArchivistConfiguration.unittest) {
                 worker.run();
             }
@@ -252,8 +260,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                     }
                 }, 1000, 1000);
 
-                ingestService.updateIngestStartTime(ingest, System.currentTimeMillis());
-
                 Path start = new File(ingest.getPath()).toPath();
                 Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
                     @Override
@@ -351,6 +357,13 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
             public void run() {
 
                 try {
+                    // Skip assets that were index after the start of the current ingest.
+                    // FIXME: This fails when two ingests overlap in time and share files.
+                    if (assetService.assetExistsByPathAfter(asset.getAbsolutePath().toString(),
+                            ingest.getTimeStarted())) {
+                        return;
+                    }
+
                     if (!ingest.isUpdateOnExist()) {
                         if (assetService.assetExistsByPath(asset.getAbsolutePath().toString())) {
                             return;

@@ -71,10 +71,14 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public boolean setIngestRunning(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Running)) {
-            ingestDao.resetCounters(ingest);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void resetIngestCounters(Ingest ingest) {
+        ingestDao.resetCounters(ingest);
     }
 
     @Override

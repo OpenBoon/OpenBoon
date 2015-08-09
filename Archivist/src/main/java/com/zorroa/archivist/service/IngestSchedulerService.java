@@ -8,7 +8,7 @@ public interface IngestSchedulerService {
 
     void executeIngest(Ingest ingest);
 
-    void executeIngest(Ingest ingest, boolean paused);
+    void restart(Ingest ingest, boolean paused);
 
     boolean pause(Ingest ingest);
 

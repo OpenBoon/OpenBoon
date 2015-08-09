@@ -35,4 +35,10 @@ public class AssetServiceImpl implements AssetService {
     public boolean assetExistsByPath(String path) {
         return assetDao.existsByPath(path);
     }
+
+    @Override
+    public boolean assetExistsByPathAfter(String path, long afterTime) {
+        return assetDao.existsByPathAfter(path, afterTime);
+    }
+
 }

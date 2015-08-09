@@ -196,9 +196,11 @@ public class ArchivistRepositorySetup {
 
     private void restartRunningIngests() {
         for (Ingest ingest : ingestService.getAllIngests()) {
-            if (ingest.getState() == IngestState.Running) {
-                logger.info("Restarting ingest " + ingest.getId());
-                ingestSchedulerService.executeIngest(ingest);
+            if (ingest.getState() != IngestState.Idle) {
+                // Queued, Paused or Running
+                boolean paused = ingest.getState() == IngestState.Paused;
+                ingestSchedulerService.restart(ingest, paused);
+                logger.info("Restarting ingest " + ingest.getId() + (paused ? " paused" : ""));
             }
         }
     }
