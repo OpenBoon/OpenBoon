@@ -6,13 +6,14 @@ import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Asset;
 import com.zorroa.archivist.sdk.AssetBuilder;
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.index.IndexRequest.OpType;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.common.util.concurrent.UncategorizedExecutionException;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.mapper.MapperParsingException;
-import org.elasticsearch.index.mapper.MergeMappingException;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
@@ -62,13 +65,12 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 client.admin().indices().preparePutMapping(alias).setType(getType())
                         .setSource(mapper).execute().actionGet();
                 builder.updateMapped();
-            } catch (MapperParsingException e) {
-                logger.error("Mapping parsing exception, " + e);
-            } catch (MergeMappingException e) {
-                // This field was mapped differently in two cases
-                logger.error("Merge mapping failure, " + e);
-            } catch (Exception e) {
-                logger.error("Mapping exception, " + e);
+            } catch (ElasticsearchException e) {
+                logger.error("Elasticsearch mapping exception for " + builder.getFilename() + ": " + e.getDetailedMessage());
+                e.printStackTrace();
+            } catch (IOException e) {
+                logger.error("IOException while updating mapping for " + builder.getFilename() + ": " + e.getMessage());
+                e.printStackTrace();
             }
         }
         return client.prepareIndex(alias, getType())
@@ -77,6 +79,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setSource(Json.serialize(builder.getDocument()));
 
     }
+
     @Override
     public Asset create(AssetBuilder builder) {
         IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.CREATE);
@@ -91,10 +94,50 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
     }
 
+    private String fieldFromError(String error, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(error);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    private boolean removeFieldAndRetryReplace(AssetBuilder builder, String error, String regex) {
+        String field = fieldFromError(error, regex);                // E.g Exif.makerTag
+        if (field != null) {
+            int idx = field.indexOf('.');                           // Use indexOf to handle 3+ fields
+            if (idx > 0 && idx < field.length() - 1) {
+                String namespace = field.substring(0, idx);         // E.g. Exif
+                String key = field.substring(idx + 1);              // E.g. makerTag
+                Object oldValue = builder.remove(namespace, key);
+                if (oldValue != null) {
+                    builder.put("source", "warning", field);
+                    return replace(builder);
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean replace(AssetBuilder builder) {
-        IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.INDEX);
-        return !idxBuilder.get().isCreated();
+        try {
+            IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.INDEX);
+            return !idxBuilder.get().isCreated();
+        } catch (MapperParsingException e) {
+            logger.error("Elasticsearch mapper parser error indexing " + builder.getFilename() + ": " + e.getDetailedMessage());
+            return removeFieldAndRetryReplace(builder, e.getDetailedMessage(), "failed to parse \\[(.*?)\\]");
+        } catch (UncategorizedExecutionException e) {
+            logger.error("Uncategorized execution error indexing " + builder.getFilename() + ": " + e.getDetailedMessage());
+            return removeFieldAndRetryReplace(builder, e.getDetailedMessage(), "term in field=\"(.*?)\"");
+        } catch (ElasticsearchException e) {
+            logger.error("Elasticsearch error indexing " + builder.getFilename() + ": " + e.getDetailedMessage());
+            return false;
+        } catch (IllegalArgumentException e) {
+            logger.error("Illegal argument error indexing " + builder.getFilename() + ": " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
