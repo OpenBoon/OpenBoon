@@ -39,6 +39,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             result.setErrorCount(rs.getInt("int_error_count"));
             result.setUpdatedCount(rs.getInt("int_updated_count"));
             result.setUpdateOnExist(rs.getBoolean("bool_update_on_exist"));
+            result.setAssetWorkerThreads(rs.getInt("int_asset_worker_threads"));
             return result;
         }
     };
@@ -61,10 +62,10 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "str_user_created,"+
                 "time_modified, "+
                 "str_user_modified, "+
-                "bool_update_on_exist " +
-
+                "bool_update_on_exist, " +
+                "int_asset_worker_threads" +
             ") " +
-            "VALUES (" + StringUtils.repeat("?", ",", 10) + ")";
+            "VALUES (" + StringUtils.repeat("?", ",", 11) + ")";
 
     @Override
     public Ingest create(IngestPipeline pipeline, ProxyConfig proxyConfig, IngestBuilder builder) {
@@ -83,6 +84,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             ps.setLong(8, time);
             ps.setString(9, SecurityUtils.getUsername());
             ps.setBoolean(10, builder.isUpdateOnExist());
+            ps.setInt(11, builder.getAssetWorkerThreads());
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
@@ -158,6 +160,11 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         if (builder.getProxyConfigId() > 0) {
             updates.add("pk_proxy_config=?");
             values.add(builder.getProxyConfigId());
+        }
+
+        if (builder.getAssetWorkerThreads() > 0) {
+            updates.add("int_asset_worker_threads=?");
+            values.add(builder.getAssetWorkerThreads());
         }
 
         if (updates.isEmpty()) {

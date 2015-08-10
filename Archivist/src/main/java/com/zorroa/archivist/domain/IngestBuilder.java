@@ -12,6 +12,7 @@ public class IngestBuilder {
     private String proxyConfig = "standard";
     private String pipeline = "standard";
     private boolean updateOnExist = true;
+    private int assetWorkerThreads = 4;
 
     public IngestBuilder() { }
 
@@ -76,5 +77,13 @@ public class IngestBuilder {
 
     public void setUpdateOnExist(boolean updateOnExist) {
         this.updateOnExist = updateOnExist;
+    }
+
+    public int getAssetWorkerThreads() {
+        return assetWorkerThreads;
+    }
+
+    public void setAssetWorkerThreads(int assetWorkerThreads) {
+        this.assetWorkerThreads = assetWorkerThreads;
     }
 }

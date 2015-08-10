@@ -59,6 +59,7 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals(ingest01.getPath(), ingest.getPath());
         assertEquals(ingest01.getPipelineId(), ingest.getPipelineId());
         assertEquals(ingest01.getState(), ingest.getState());
+        assertEquals(ingest01.getAssetWorkerThreads(), ingest.getAssetWorkerThreads());
         assertEquals(ingest01.getTimeCreated(), ingest.getTimeCreated());
         assertEquals(ingest01.getTimeModified(), ingest.getTimeModified());
         assertEquals(ingest01.getTimeStarted(), ingest.getTimeStarted());
@@ -134,6 +135,7 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         updateBuilder.setPath("/foo");
         updateBuilder.setPipelineId(testPipeline.getId());
         updateBuilder.setProxyConfigId(testProxyConfig.getId());
+        updateBuilder.setAssetWorkerThreads(6);
 
         assertTrue(ingestDao.update(ingest, updateBuilder));
 
@@ -141,6 +143,7 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals("/foo", updatedIngest.getPath());
         assertTrue(updatedIngest.getFileTypes().contains("jpg"));
         assertEquals(1, updatedIngest.getFileTypes().size());
+        assertEquals(updatedIngest.getAssetWorkerThreads(), 6);
         assertEquals(testPipeline.getId(), updatedIngest.getPipelineId());
         assertEquals(testProxyConfig.getId(), updatedIngest.getProxyConfigId());
     }

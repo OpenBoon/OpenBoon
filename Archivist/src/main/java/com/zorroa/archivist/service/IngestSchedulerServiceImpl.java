@@ -65,9 +65,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
 
-    @Value("${archivist.ingest.assetWorkersPerIngest}")
-    private int assetWorkerCount;
-
     private final AtomicInteger runningIngestCount = new AtomicInteger();
 
     private final ConcurrentMap<Long, IngestWorker> runningIngests = Maps.newConcurrentMap();
@@ -117,7 +114,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
 
     @Override
     public void executeIngest(Ingest ingest, boolean paused) {
-        IngestWorker worker = new IngestWorker(ingest, assetWorkerCount);
+        IngestWorker worker = new IngestWorker(ingest, ingest.getAssetWorkerThreads());
         worker.setPaused(paused);
 
         if (runningIngests.putIfAbsent(ingest.getId(), worker) == null) {

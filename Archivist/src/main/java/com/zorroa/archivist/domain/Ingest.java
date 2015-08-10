@@ -23,6 +23,7 @@ public class Ingest {
     private int updatedCount;
     private int errorCount;
     private boolean updateOnExist;
+    private int assetWorkerThreads;
 
     @Override
     public String toString() {
@@ -143,4 +144,11 @@ public class Ingest {
         this.updateOnExist = updateOnExist;
     }
 
+    public int getAssetWorkerThreads() {
+        return assetWorkerThreads;
+    }
+
+    public void setAssetWorkerThreads(int assetWorkerThreads) {
+        this.assetWorkerThreads = assetWorkerThreads;
+    }
 }
