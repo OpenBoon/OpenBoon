@@ -14,6 +14,7 @@ public class IngestUpdateBuilder {
     private int pipelineId = -1;
     private int proxyConfigId = -1;
     private boolean updateOnExist;
+    private int assetWorkerThreads = -1;
 
     public String getPath() {
         return path;
@@ -69,5 +70,13 @@ public class IngestUpdateBuilder {
 
     public void setUpdateOnExist(boolean updateOnExist) {
         this.updateOnExist = updateOnExist;
+    }
+
+    public int getAssetWorkerThreads() {
+        return assetWorkerThreads;
+    }
+
+    public void setAssetWorkerThreads(int assetWorkerThreads) {
+        this.assetWorkerThreads = assetWorkerThreads;
     }
 }

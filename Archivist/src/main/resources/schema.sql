@@ -93,5 +93,6 @@ CREATE TABLE ingest (
   int_created_count INT NOT NULL DEFAULT 0,
   int_updated_count INT NOT NULL DEFAULT 0,
   int_error_count INT NOT NULL DEFAULT 0,
-  bool_update_on_exist BOOLEAN NOT NULL
+  bool_update_on_exist BOOLEAN NOT NULL DEFAULT 'f',
+  int_asset_worker_threads INT NOT NULL DEFAULT 4
 );
