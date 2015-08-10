@@ -82,7 +82,8 @@ public class AssetMetadataProcessor extends IngestProcessor {
             extractDate(asset, metadata);       // Find the best date value and promote to top-level
             extractLocation(asset, metadata);   // Find the best location value and promote to top-level
         } catch (Exception e) {
-            logger.error("Failed to load metadata, unexpected " + e, e);
+            logger.error("Failed to load metadata: " + e.getMessage());
+            asset.put("source", "error", "Invalid metadata");
         }
     }
 

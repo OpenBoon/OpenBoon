@@ -43,7 +43,8 @@ public class ProxyProcessor extends IngestProcessor {
                 try {
                     result.add(imageService.makeProxy(asset.getFile(), output));
                 } catch (IOException e) {
-                    logger.warn("Failed to create proxy {}, ", output, e);
+                    logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
+                    asset.put("source", "error", "Proxy");
                 }
             }
 
@@ -69,7 +70,8 @@ public class ProxyProcessor extends IngestProcessor {
             asset.put("source", "width", size.width);
             asset.put("source", "height", size.height);
         } catch (IOException e) {
-            logger.warn("Unable to determine image dimensions: {}", asset, e);
+            logger.warn("Unable to determine image dimensions: {}: " + e.getMessage(), asset);
+            asset.put("source", "error", "ProxyDimensions");
         }
     }
 
