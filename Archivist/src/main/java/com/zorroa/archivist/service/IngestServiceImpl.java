@@ -36,6 +36,9 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     IngestDao ingestDao;
 
     @Autowired
+    IngestSchedulerService ingestSchedulerService;
+
+    @Autowired
     ProxyConfigDao proxyConfigDao;
 
     @Override
@@ -92,13 +95,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public boolean setIngestPaused(Ingest ingest, boolean value) {
-        if (value) {
-            return ingestDao.setState(ingest, IngestState.Paused, IngestState.Running);
-        }
-        else {
-            return ingestDao.setState(ingest, IngestState.Running, IngestState.Paused);
-        }
+    public boolean setIngestPaused(Ingest ingest) {
+        return ingestDao.setState(ingest, IngestState.Paused, IngestState.Running);
     }
 
     @Override
@@ -132,9 +130,15 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
-        /*
-         * Validate names if they are used and turn into IDs.
-         */
+        // Update active ingest thread counts
+        if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
+                ingest.getAssetWorkerThreads() != builder.getAssetWorkerThreads()) {
+            ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());  // set new worker count
+            ingestSchedulerService.pause(ingest);
+            ingestSchedulerService.resume(ingest);
+        }
+
+         // Validate names if they are used and turn into IDs.
         if (builder.getProxyConfig() != null) {
             builder.setProxyConfigId(proxyConfigDao.get(builder.getProxyConfig()).getId());
         }

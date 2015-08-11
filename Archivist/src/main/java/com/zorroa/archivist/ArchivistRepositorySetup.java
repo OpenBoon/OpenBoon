@@ -195,12 +195,20 @@ public class ArchivistRepositorySetup {
     }
 
     private void restartRunningIngests() {
+        // Start running ingests first so they get the active threads
         for (Ingest ingest : ingestService.getAllIngests()) {
-            if (ingest.getState() != IngestState.Idle) {
-                // Queued, Paused or Running
-                boolean paused = ingest.getState() == IngestState.Paused;
-                ingestSchedulerService.restart(ingest, paused);
-                logger.info("Restarting ingest " + ingest.getId() + (paused ? " paused" : ""));
+            if (ingest.getState() == IngestState.Running) {
+                ingestService.setIngestPaused(ingest);      // Set paused to avoid resume error checks
+                ingestSchedulerService.resume(ingest);
+                logger.info("Restarting ingest " + ingest.getId());
+            }
+        }
+
+        // Start queued ingests after all running ingests
+        for (Ingest ingest : ingestService.getAllIngests()) {
+            if (ingest.getState() == IngestState.Queued) {
+                ingestSchedulerService.executeIngest(ingest);
+                logger.info("Re-executing queued ingest " + ingest.getId());
             }
         }
     }

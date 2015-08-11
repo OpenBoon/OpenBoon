@@ -4,13 +4,11 @@ import com.zorroa.archivist.domain.Ingest;
 
 public interface IngestSchedulerService {
 
-    Ingest executeNextIngest();
+    boolean executeIngest(Ingest ingest);
 
-    void executeIngest(Ingest ingest);
-
-    void restart(Ingest ingest, boolean paused);
+    boolean resume(Ingest ingest);
 
     boolean pause(Ingest ingest);
 
-    boolean resume(Ingest ingest);
+    boolean stop(Ingest ingest);
 }

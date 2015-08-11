@@ -52,6 +52,6 @@ public interface IngestService {
 
     boolean setIngestQueued(Ingest ingest);
 
-    boolean setIngestPaused(Ingest ingest, boolean value);
+    boolean setIngestPaused(Ingest ingest);
 
 }
