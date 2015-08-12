@@ -92,8 +92,9 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
 
             if (ArchivistConfiguration.unittest) {
                 worker.run();
-            }
-            else {
+            } else {
+                if (!ingestService.setIngestQueued(ingest))
+                    return false;
                 ingestExecutor.execute(worker);
             }
         } else {
@@ -156,7 +157,7 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
         }
 
         public void shutdown() {
-            earlyShutdown = true;
+            earlyShutdown = true;           // Force cleanup at end of ingest
             assetExecutor.shutdownNow();
             try {
                 while (!assetExecutor.awaitTermination(10, TimeUnit.SECONDS)) {
@@ -164,8 +165,6 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
                 }
             } catch (InterruptedException e) {
                 logger.warn("Asset processing termination interrupted: " + e.getMessage());
-            } finally {
-                earlyShutdown = false;
             }
         }
 
@@ -257,7 +256,7 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
                 updateCountsTimer.cancel();
                 runningIngests.remove(ingest.getId());
                 assetExecutor.teardownProcessors();
-                if (!earlyShutdown) {
+                if (!earlyShutdown) {       // Avoid if paused or interrupted
                     ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
                     ingestService.updateIngestCounters(ingest,
                             createdCount.intValue(),
@@ -286,6 +285,7 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
 
                 // Skip assets that were index after the start of the current ingest.
                 // FIXME: This fails when two ingests overlap in time and share files.
+                //        Fixable with per-ingest start times using ingest list below.
                 if (assetService.assetExistsByPathAfter(asset.getAbsolutePath().toString(),
                         ingest.getTimeStarted())) {
                     return;
@@ -298,21 +298,17 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
                 }
 
                 logger.debug("Ingesting: {}", asset);
-                    /*
-                     * Add some standard keys to the document
-                     */
+
+                // Store per-ingest id and time info.
+                // Store last time for each ingest to properly handle overlap.
                 asset.put("ingest", "pipeline", pipeline.getId());
                 asset.put("ingest", "builder", ingest.getPath());
                 asset.put("ingest", "time", System.currentTimeMillis());
 
-                    /*
-                     * Execute all the processor which are part of the pipeline.
-                     */
+                // Run the ingest processors to augment the AssetBuilder
                 executeProcessors();
 
-                    /*
-                     * Finally, create the asset.
-                     */
+                // Store the asset using the final builder
                 logger.debug("Creating asset: {}", asset);
                 if (assetService.replaceAsset(asset)) {
                     updatedCount.increment();
