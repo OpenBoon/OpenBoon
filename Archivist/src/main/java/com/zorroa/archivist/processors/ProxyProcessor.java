@@ -1,5 +1,8 @@
 package com.zorroa.archivist.processors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
@@ -16,8 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
 
 public class ProxyProcessor extends IngestProcessor {
@@ -29,15 +31,30 @@ public class ProxyProcessor extends IngestProcessor {
 
     public ProxyProcessor() { }
 
+    protected  List<ProxyOutput> parseProxyOutput(String key) {
+        try {   // Re-parse from generic args Map to List<ProxyOutput>
+            ObjectMapper mapper = new ObjectMapper();
+            Object proxyList = getArgs().get("proxies");
+            return mapper.readValue(mapper.writeValueAsString(proxyList), new TypeReference<List<ProxyOutput>>(){});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void process(AssetBuilder asset) {
-
-        if (ingestProcessorService.isImage(asset)) {
-            List<ProxyOutput> outputs = Lists.newArrayList(
+        List<ProxyOutput> outputs = parseProxyOutput("proxies");
+        if (outputs == null) {
+            outputs = Lists.newArrayList(
                     new ProxyOutput("png", 128, 8),
                     new ProxyOutput("png", 256, 8),
                     new ProxyOutput("png", 1024, 8)
             );
+        }
+        if (ingestProcessorService.isImage(asset)) {
             List<Proxy> result = Lists.newArrayList();
             for (ProxyOutput output : outputs) {
                 try {
