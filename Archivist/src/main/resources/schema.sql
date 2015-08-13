@@ -48,22 +48,6 @@ CREATE TABLE map_session_to_room (
 --- The session can only be in this table once, the room however may change.
 CREATE UNIQUE INDEX map_session_to_room_uniq_idx ON map_session_to_room (pk_session);
 
-
-DROP TABLE IF EXISTS proxy_config;
-CREATE TABLE proxy_config (
-  pk_proxy_config INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  str_name VARCHAR(64) NOT NULL,
-  str_description VARCHAR(255) NOT NULL,
-  str_user_created VARCHAR(128) NOT NULL,
-  time_created BIGINT NOT NULL,
-  str_user_modified VARCHAR(128) NOT NULL,
-  time_modified BIGINT NOT NULL,
-  list_outputs OTHER NOT NULL
-);
-
-CREATE UNIQUE INDEX proxy_config_str_name_uniq_idx ON proxy_config(str_name);
-
-
 CREATE TABLE pipeline (
   pk_pipeline INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   str_name VARCHAR(64) NOT NULL,
@@ -80,7 +64,6 @@ CREATE UNIQUE INDEX pipeline_str_name_uniq_idx ON pipeline(str_name);
 CREATE TABLE ingest (
   pk_ingest BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_pipeline INT NOT NULL,
-  pk_proxy_config INT NOT NULL,
   int_state TINYINT NOT NULL DEFAULT 0,
   str_path VARCHAR(1024) NOT NULL,
   list_types OTHER NOT NULL,

@@ -1,17 +1,12 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableSet;
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
 import com.zorroa.archivist.domain.ProxyOutput;
-import com.zorroa.archivist.repository.ProxyConfigDao;
 import com.zorroa.archivist.sdk.Proxy;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.resizers.configurations.Rendering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +19,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,9 +33,6 @@ public class ImageServiceImpl implements ImageService {
     private File proxyPath;
 
     private ImmutableSet<String> supportedFormats;
-
-    @Autowired
-    ProxyConfigDao proxyConfigDao;
 
     @PostConstruct
     public void init() {
@@ -144,35 +135,5 @@ public class ImageServiceImpl implements ImageService {
         }
 
         throw new IOException("Not a known image file: " + imgFile.getAbsolutePath());
-    }
-
-    @Override
-    public List<ProxyConfig> getProxyConfigs() {
-        return proxyConfigDao.getAll();
-    }
-
-    @Override
-    public ProxyConfig getProxyConfig(String id) {
-        return proxyConfigDao.get(id);
-    }
-
-    @Override
-    public ProxyConfig getProxyConfig(int id) {
-        return proxyConfigDao.get(id);
-    }
-
-    @Override
-    public ProxyConfig createProxyConfig(ProxyConfigBuilder builder) {
-        return proxyConfigDao.create(builder);
-    }
-
-    @Override
-    public boolean updateProxyConfig(ProxyConfig config, ProxyConfigUpdateBuilder builder) {
-        return proxyConfigDao.update(config, builder);
-    }
-
-    @Override
-    public boolean deleteProxyConfig(ProxyConfig config) {
-        return proxyConfigDao.delete(config);
     }
 }

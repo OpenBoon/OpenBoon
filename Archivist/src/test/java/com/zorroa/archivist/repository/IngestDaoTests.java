@@ -28,20 +28,18 @@ public class IngestDaoTests extends ArchivistApplicationTests {
 
     Ingest ingest;
     IngestPipeline pipeline;
-    ProxyConfig proxyConfig;
 
     @Before
     public void init() {
         pipeline = ingestService.getIngestPipeline("standard");
-        proxyConfig = imageService.getProxyConfig("standard");
         IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        ingest = ingestDao.create(pipeline, proxyConfig, builder);
+        ingest = ingestDao.create(pipeline, builder);
     }
 
     @Test
     public void testCreate() {
         IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        Ingest ingest01 = ingestDao.create(pipeline, proxyConfig, builder);
+        Ingest ingest01 = ingestDao.create(pipeline, builder);
         Ingest ingest02 = ingestDao.get(ingest01.getId());
         assertEquals(ingest01.getId(), ingest02.getId());
     }
@@ -122,19 +120,10 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         ipb.addToProcessors(new IngestProcessorFactory("com.zorroa.archivist.processors.ChecksumProcessor"));
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
-        ProxyConfigBuilder pcb = new ProxyConfigBuilder();
-        pcb.setName("test");
-        pcb.setDescription("test proxy config.");
-        pcb.setOutputs(org.elasticsearch.common.collect.Lists.newArrayList(
-                new ProxyOutput("png", 128, 8)
-        ));
-        ProxyConfig testProxyConfig  = imageService.createProxyConfig(pcb);
-
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
         updateBuilder.setFileTypes(Sets.newHashSet("jpg"));
         updateBuilder.setPath("/foo");
         updateBuilder.setPipelineId(testPipeline.getId());
-        updateBuilder.setProxyConfigId(testProxyConfig.getId());
         updateBuilder.setAssetWorkerThreads(6);
 
         assertTrue(ingestDao.update(ingest, updateBuilder));
@@ -145,7 +134,6 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals(1, updatedIngest.getFileTypes().size());
         assertEquals(updatedIngest.getAssetWorkerThreads(), 6);
         assertEquals(testPipeline.getId(), updatedIngest.getPipelineId());
-        assertEquals(testProxyConfig.getId(), updatedIngest.getProxyConfigId());
     }
 
     @Test

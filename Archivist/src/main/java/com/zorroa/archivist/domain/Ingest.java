@@ -9,7 +9,6 @@ public class Ingest {
 
     private long id;
     private int pipelineId;
-    private int proxyConfigId;
     private IngestState state;
     private String path;
     private Set<String> fileTypes;
@@ -99,12 +98,6 @@ public class Ingest {
     }
     public void setTimeStarted(long timeStarted) {
         this.timeStarted = timeStarted;
-    }
-    public int getProxyConfigId() {
-        return proxyConfigId;
-    }
-    public void setProxyConfigId(int proxyConfigId) {
-        this.proxyConfigId = proxyConfigId;
     }
 
     public int getUpdatedCount() {

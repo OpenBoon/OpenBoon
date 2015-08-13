@@ -8,7 +8,7 @@ public interface IngestDao {
 
     Ingest get(long id);
 
-    Ingest create(IngestPipeline pipeline, ProxyConfig config, IngestBuilder builder);
+    Ingest create(IngestPipeline pipeline, IngestBuilder builder);
 
     List<Ingest> getAll();
 

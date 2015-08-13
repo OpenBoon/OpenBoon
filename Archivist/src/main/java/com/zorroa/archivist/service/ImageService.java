@@ -1,15 +1,11 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.ProxyConfig;
-import com.zorroa.archivist.domain.ProxyConfigBuilder;
-import com.zorroa.archivist.domain.ProxyConfigUpdateBuilder;
 import com.zorroa.archivist.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.Proxy;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 public interface ImageService {
@@ -55,40 +51,5 @@ public interface ImageService {
      * @param name
      * @return
      */
-
     File generateProxyPath(String name);
-    /**
-     * Return the list of all proxy configurations.
-     *
-     * @return List<ProxyConfig>
-     */
-    List<ProxyConfig> getProxyConfigs();
-
-    /**
-     * Get a given proxy configuration by name.
-     *
-     * @param id
-     * @return
-     */
-    ProxyConfig getProxyConfig(String name);
-
-    /**
-     * Get a given proxy configuration by id;
-     *
-     * @param id
-     * @return
-     */
-    ProxyConfig getProxyConfig(int id);
-
-    /**
-     * Create and return a new proxy config.
-     *
-     * @param builder
-     * @return
-     */
-    ProxyConfig createProxyConfig(ProxyConfigBuilder builder);
-
-    boolean updateProxyConfig(ProxyConfig config, ProxyConfigUpdateBuilder builder);
-
-    boolean deleteProxyConfig(ProxyConfig config);
 }
