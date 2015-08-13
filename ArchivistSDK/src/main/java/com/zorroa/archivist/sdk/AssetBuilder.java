@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,19 @@ public class AssetBuilder {
         return file;
     }
 
+    private boolean isValidValue(Object value) {
+        if (value instanceof String && ((String)value).length() > 32765) {
+            return false;
+        } else if (value.getClass().isArray() && Array.getLength(value) > 32765) {
+            return false;
+        }
+        return true;
+    }
+
     public void put(String namespace, String key, Object value) {
+        if (!isValidValue(value)) {
+            return;
+        }
         Map<String,Object> map = (Map<String,Object>) document.get(namespace);
         if (map == null) {
             map = new HashMap<String, Object>(16);
@@ -50,6 +63,9 @@ public class AssetBuilder {
     }
 
     public void put(String namespace, String key, List<String> value) {
+        if (!isValidValue(value)) {
+            return;
+        }
     	Map<String,Object> map = (Map<String,Object>) document.get(namespace);
     	if (map == null) {
     		map = new HashMap<String, Object>(16);
@@ -59,6 +75,9 @@ public class AssetBuilder {
     }
 
     public void put(String namespace, Map<String, Object> value) {
+        if (!isValidValue(value)) {
+            return;
+        }
         Map<String,Object> map = (Map<String,Object>) document.get(namespace);
         if (map == null) {
             document.put(namespace, value);
@@ -66,6 +85,14 @@ public class AssetBuilder {
         else {
             map.putAll(value);
         }
+    }
+
+    public Object remove(String namespace, String key) {
+        Map<String, Object> map = (Map<String, Object>) document.get(namespace);
+        if (map != null) {
+            return map.remove(key);
+        }
+        return null;
     }
 
     public Map<String, Object> getMapping() {
