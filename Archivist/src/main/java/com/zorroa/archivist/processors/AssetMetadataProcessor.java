@@ -230,9 +230,9 @@ public class AssetMetadataProcessor extends IngestProcessor {
         List<String> dateArgs = (List<String>) getArgs().get("dateTags");
         if (dateArgs == null) {
             dateArgs = new ArrayList();
-            dateArgs.add("Exif.DateTime");
             dateArgs.add("Exif.DateTimeOriginal");
             dateArgs.add("Exif.DateTimeDigitized");
+            dateArgs.add("Exif.DateTime");
             dateArgs.add("IPTC.DateCreated");       // TODO: Combine IPTC date+time fields
             dateArgs.add("IPTC.TimeCreated");
             dateArgs.add("File.FileModifiedDate");
