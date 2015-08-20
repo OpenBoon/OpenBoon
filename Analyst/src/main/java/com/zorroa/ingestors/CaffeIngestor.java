@@ -29,9 +29,10 @@ public class CaffeIngestor extends IngestProcessor {
 
     public static final native long createCaffeClassifier(String deployFile, String modelFile, String meanFile, String wordFile);
     public static final native String classify(long caffeClassifier, String imageFile);
+    public static final native void destroyCaffeClassifier(long classifier);
 
     // CaffeClassifier is not thread-safe, so give one to each thread
-    private static final ThreadLocal<Long> caffeClassifier = new ThreadLocal<Long>(){
+    private static final ThreadLocal<Long> caffeClassifier = new ThreadLocal<Long>() {
         @Override
         protected Long initialValue() {
             Map<String, String> env = System.getenv();
@@ -91,5 +92,20 @@ public class CaffeIngestor extends IngestProcessor {
         asset.map("caffe", "keywords", "type", "string");
         asset.map("caffe", "keywords", "copy_to", null);
         asset.put("caffe", "keywords", keywordList);
+    }
+
+    @Override
+    public void teardown() {
+        long nativeCaffeClassifier = caffeClassifier.get().longValue();
+        if (nativeCaffeClassifier != 0) {
+            destroyCaffeClassifier(nativeCaffeClassifier);
+        }
+        caffeClassifier.set(null);
+        caffeClassifier.remove();
+    }
+
+    protected void finalize() throws Throwable {
+        super.finalize();
+        logger.info("Caffe finalizer invoked.");
     }
 }
