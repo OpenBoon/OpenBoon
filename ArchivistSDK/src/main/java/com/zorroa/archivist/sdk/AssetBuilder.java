@@ -50,6 +50,14 @@ public class AssetBuilder {
         return true;
     }
 
+    public Object get(String namespace, String key) {
+        Map<String, Object> map = (Map<String, Object>) document.get(namespace);
+        if (map == null) {
+            return null;
+        }
+        return map.get(key);
+    }
+
     public void put(String namespace, String key, Object value) {
         if (!isValidValue(value)) {
             return;
