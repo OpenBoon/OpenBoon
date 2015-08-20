@@ -85,6 +85,13 @@ Java_com_zorroa_ingestors_CaffeIngestor_createCaffeClassifier(JNIEnv *env, jclas
  */
 JNIEXPORT jstring JNICALL
 Java_com_zorroa_ingestors_CaffeIngestor_classify(JNIEnv *env, jclass nclass, jlong jclassifier, jstring imageObj) {
+#if 0
+    static int i = 0;
+    if (++i == 5) {
+        int *p = 0;
+        *p = 10;
+    }
+#endif
     Classifier *classifier = (Classifier *)jclassifier;
     string imageFile = stringFromJString(env, imageObj);
     cv::Mat img = cv::imread(imageFile, -1);
@@ -106,6 +113,17 @@ Java_com_zorroa_ingestors_CaffeIngestor_classify(JNIEnv *env, jclass nclass, jlo
         keywords += words;
     }
     return env->NewStringUTF(keywords.c_str());
+}
+
+/*
+ * Class:     com_zorroa_ingestors_CaffeIngestor
+ * Method:    destroyCaffeClassifier
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL
+Java_com_zorroa_ingestors_CaffeIngestor_destroyCaffeClassifier(JNIEnv *env, jclass nclass, jlong jclassifier) {
+    Classifier *classifier = (Classifier *)jclassifier;
+    delete classifier;
 }
 
 Classifier::Classifier(const string &model_file,
