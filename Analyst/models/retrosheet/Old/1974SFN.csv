@@ -1,0 +1,2674 @@
+id,SFN197404050
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/05
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,wendh901
+info,ump2b,colon901
+info,ump3b,willa901
+info,scorer,"Giants,Elias"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/04/02 11:36AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,123
+info,attendance,17527
+info,wp,bradt102
+info,lp,robed101
+info,save,
+info,gwrbi,
+badj,fuent101,L
+id,SFN197404060
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/06
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,wendh901
+info,ump1b,colon901
+info,ump2b,willa901
+info,ump3b,harvd901
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/04/04 10:34AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,134
+info,attendance,16727
+info,wp,caldm001
+info,lp,grift101
+info,save,moffr101
+info,gwrbi,
+id,SFN197404070
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/07
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,colon901
+info,ump1b,willa901
+info,ump2b,harvd901
+info,ump3b,wendh901
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/04/05 10:52AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,127
+info,attendance,10341
+info,wp,willj102
+info,lp,ostec103
+info,save,barrj101
+info,gwrbi,
+id,SFN197404080
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/08
+info,number,0
+info,starttime,0:00
+info,daynight,day
+info,usedh,false
+info,umphome,dalej901
+info,ump1b,pelec901
+info,ump2b,pryop901
+info,ump3b,engeb901
+info,scorer,"Reds/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill disney"
+info,inputtime,1997/02/19 9:27PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,157
+info,attendance,4729
+info,wp,dacqj101
+info,lp,nelsr101
+info,save,moffr101
+info,gwrbi,
+id,SFN197404090
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/09
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,pryop901
+info,ump2b,engeb901
+info,ump3b,dalej901
+info,scorer,"Reds/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1997/02/21 3:24AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,160
+info,attendance,8426
+info,wp,billj101
+info,lp,bradt102
+info,save,borbp101
+info,gwrbi,
+id,SFN197404100
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/10
+info,number,0
+info,starttime,0:00
+info,daynight,day
+info,usedh,false
+info,umphome,pryop901
+info,ump1b,engeb901
+info,ump2b,dalej901
+info,ump3b,pelec901
+info,scorer,"Reds/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1997/02/21 4:09AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,134
+info,attendance,8456
+info,wp,caldm001
+info,lp,gulld101
+info,save,
+info,gwrbi,
+id,SFN197404230
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,MON
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/23
+info,number,0
+info,starttime,0:00
+info,daynight,night
+info,usedh,false
+info,umphome,pullf901
+info,ump1b,sudoe901
+info,ump2b,weyel901
+info,ump3b,davis901
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/04/21 7:16AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,153
+info,attendance,2627
+info,wp,torrm001
+info,lp,bradt102
+info,save,walkt103
+info,gwrbi,
+id,SFN197404250
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,MON
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/25
+info,number,0
+info,starttime,0:00
+info,daynight,day
+info,usedh,false
+info,umphome,sudoe901
+info,ump1b,weyel901
+info,ump2b,davis901
+info,ump3b,pullf901
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/04/22 11:27PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,146
+info,attendance,1789
+info,wp,caldm001
+info,lp,mcane101
+info,save,
+info,gwrbi,
+id,SFN197404260
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/26
+info,number,0
+info,starttime,8:05PM
+info,daynight,night
+info,usedh,false
+info,umphome,kiblj901
+info,ump1b,olsea901
+info,ump2b,rennd901
+info,ump3b,craws901
+info,scorer,"Mets,Giants"
+info,translator,"Fischthal"
+info,inputter,"Fischthal"
+info,inputtime,1997/11/25 11:33PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,132
+info,attendance,8210
+info,wp,seavt001
+info,lp,bryar101
+info,save,
+info,gwrbi,
+id,SFN197404270
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/27
+info,number,0
+info,starttime,1:05PM
+info,daynight,day
+info,usedh,false
+info,umphome,olsea901
+info,ump1b,rennd901
+info,ump2b,craws901
+info,ump3b,kiblj901
+info,scorer,"Mets,Giants"
+info,translator,"Fischthal"
+info,inputter,"Fischthal"
+info,inputtime,1997/11/27 7:37AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,169
+info,attendance,9727
+info,wp,sosae101
+info,lp,swanc001
+info,save,
+info,gwrbi,
+id,SFN197404281
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/28
+info,number,1
+info,starttime,12:05PM
+info,daynight,day
+info,usedh,false
+info,umphome,rennd901
+info,ump1b,craws901
+info,ump2b,kiblj901
+info,ump3b,olsea901
+info,scorer,"Mets,Giants"
+info,translator,"Fischthal"
+info,inputter,"Fischthal"
+info,inputtime,1997/11/27 7:44AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,114
+info,attendance,0
+info,wp,matlj101
+info,lp,bradt102
+info,save,
+info,gwrbi,
+id,SFN197404282
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/28
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,craws901
+info,ump1b,kiblj901
+info,ump2b,olsea901
+info,ump3b,rennd901
+info,scorer,"Mets,Giants"
+info,translator,"Fischthal"
+info,inputter,"Fischthal"
+info,inputtime,1997/11/27 11:25AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,161
+info,attendance,18970
+info,wp,parkh101
+info,lp,moffr101
+info,save,millb106
+info,gwrbi,
+id,SFN197404300
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/04/30
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,froeb901
+info,ump1b,mcshj901
+info,ump2b,rungp901
+info,ump3b,varge901
+info,scorer,"PHI-SF"
+info,translator,"Chris Long"
+info,inputter,"Chris Long"
+info,inputtime,1995/08/23 4:09PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,175
+info,attendance,2188
+info,wp,linzf101
+info,lp,moffr101
+info,save,watte101
+info,gwrbi,
+id,SFN197405010
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/01
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,mcshj901
+info,ump1b,rungp901
+info,ump2b,varge901
+info,ump3b,froeb901
+info,scorer,"PHI-SF"
+info,translator,"Chris Long"
+info,inputter,"Chris Long"
+info,inputtime,1995/08/23 4:42PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,165
+info,attendance,2179
+info,wp,willc101
+info,lp,carls001
+info,save,
+info,gwrbi,
+id,SFN197405170
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/17
+info,number,0
+info,starttime,7:30PM
+info,daynight,night
+info,usedh,false
+info,umphome,dalej901
+info,ump1b,pelec901
+info,ump2b,pryop901
+info,ump3b,engeb901
+info,scorer,"Padres/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/06/01 9:49AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,160
+info,attendance,3099
+info,wp,joner101
+info,lp,bryar101
+info,save,romov101
+info,gwrbi,
+id,SFN197405180
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/18
+info,number,0
+info,starttime,1:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,pryop901
+info,ump2b,engeb901
+info,ump3b,dalej901
+info,scorer,"Padres"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/06/02 8:25PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,121
+info,attendance,15517
+info,wp,sosae101
+info,lp,arlis101
+info,save,moffr101
+info,gwrbi,
+id,SFN197405191
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/19
+info,number,1
+info,starttime,12:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pryop901
+info,ump1b,engeb901
+info,ump2b,dalej901
+info,ump3b,pelec901
+info,scorer,"Padres/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/06/03 8:11AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,153
+info,attendance,0
+info,wp,caldm001
+info,lp,greib101
+info,save,
+info,gwrbi,
+id,SFN197405192
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/19
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,engeb901
+info,ump1b,dalej901
+info,ump2b,pelec901
+info,ump3b,pryop901
+info,scorer,"Padres/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/06/06 12:33AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,259
+info,attendance,10876
+info,wp,hardl101
+info,lp,willj102
+info,save,
+info,gwrbi,
+id,SFN197405211
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/21
+info,number,1
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,willb901
+info,ump2b,steld901
+info,ump3b,tatat901
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/06/08 7:02PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,138
+info,attendance,0
+info,wp,mortc102
+info,lp,dacqj101
+info,save,
+info,gwrbi,
+id,SFN197405212
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/21
+info,number,2
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,willb901
+info,ump1b,steld901
+info,ump2b,tatat901
+info,ump3b,gormt101
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/06/08 9:34PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,138
+info,attendance,8809
+info,wp,bryar101
+info,lp,harrr102
+info,save,moffr101
+info,gwrbi,
+id,SFN197405220
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/22
+info,number,0
+info,starttime,0:00
+info,daynight,day
+info,usedh,false
+info,umphome,steld901
+info,ump1b,tatat901
+info,ump2b,gormt101
+info,ump3b,willb901
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/06/09 10:06AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,112
+info,attendance,5019
+info,wp,niekp001
+info,lp,barrj101
+info,save,
+info,gwrbi,
+id,SFN197405230
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/23
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,tatat901
+info,ump1b,gormt101
+info,ump2b,willb901
+info,ump3b,steld901
+info,scorer,"Patterson/Dodge"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1993/12/10 4:42PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,150
+info,attendance,8338
+info,wp,sosae101
+info,lp,marsm101
+info,save,moffr101
+info,gwrbi,
+id,SFN197405240
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/24
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,willb901
+info,ump2b,steld901
+info,ump3b,tatat901
+info,scorer,"Patterson/Dodge"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1993/12/10 5:06PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,156
+info,attendance,16860
+info,wp,bradt102
+info,lp,suttd001
+info,save,moffr101
+info,gwrbi,
+id,SFN197405250
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/25
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,willb901
+info,ump1b,steld901
+info,ump2b,tatat901
+info,ump3b,gormt101
+info,scorer,"Patterson/Dodge"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1993/12/11 2:37PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,139
+info,attendance,16392
+info,wp,johnt001
+info,lp,bryar101
+info,save,
+info,gwrbi,
+id,SFN197405260
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/05/26
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,steld901
+info,ump1b,tatat901
+info,ump2b,gormt101
+info,ump3b,willb901
+info,scorer,"Patterson/Dodge"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1993/12/11 2:58PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,181
+info,attendance,22526
+info,wp,rau-d101
+info,lp,barrj101
+info,save,marsm101
+info,gwrbi,
+id,SFN197406040
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/04
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,craws901
+info,ump1b,kiblj901
+info,ump2b,olsea901
+info,ump3b,rennd901
+info,scorer,"SFN/SLN"
+info,translator,"M. Dehler"
+info,inputter,"M. Dehler"
+info,inputtime,1998/06/15 9:29PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,116
+info,attendance,3884
+info,wp,bradt102
+info,lp,gibsb101
+info,save,sosae101
+info,gwrbi,
+id,SFN197406050
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/05
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,kiblj901
+info,ump1b,olsea901
+info,ump2b,rennd901
+info,ump3b,craws901
+info,scorer,"SLN/SFN"
+info,translator,"M. Dehler"
+info,inputter,"M. Dehler"
+info,inputtime,1998/06/15 11:21PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,145
+info,attendance,3165
+info,wp,siebs101
+info,lp,bryar101
+info,save,penao101
+info,gwrbi,
+id,SFN197406060
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/06
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,olsea901
+info,ump1b,rennd901
+info,ump2b,craws901
+info,ump3b,kiblj901
+info,scorer,"SLN/SFN"
+info,translator,"M. Dehler"
+info,inputter,"M. Dehler"
+info,inputtime,1998/06/16 6:36PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,156
+info,attendance,2866
+info,wp,barrj101
+info,lp,mcgll101
+info,save,sosae101
+info,gwrbi,
+id,SFN197406070
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/07
+info,number,0
+info,starttime,7:30PM
+info,daynight,night
+info,usedh,false
+info,umphome,weyel901
+info,ump1b,pullf901
+info,ump2b,sudoe901
+info,ump3b,davis901
+info,scorer,"Pirates/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/09/03 8:32AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,147
+info,attendance,3845
+info,wp,dacqj101
+info,lp,demel101
+info,save,
+info,gwrbi,
+id,SFN197406080
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/08
+info,number,0
+info,starttime,1:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pullf901
+info,ump1b,sudoe901
+info,ump2b,davis901
+info,ump3b,weyel901
+info,scorer,"Pirates"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/09/04 5:32AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,143
+info,attendance,9138
+info,wp,ellid101
+info,lp,bradt102
+info,save,kisob001
+info,gwrbi,
+id,SFN197406090
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/09
+info,number,0
+info,starttime,1:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,sudoe901
+info,ump1b,davis901
+info,ump2b,weyel901
+info,ump3b,pullf901
+info,scorer,"Pirates/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/09/04 10:32PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,148
+info,attendance,8786
+info,wp,reusj001
+info,lp,bryar101
+info,save,
+info,gwrbi,
+id,SFN197406110
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/11
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,froeb901
+info,ump1b,mcshj901
+info,ump2b,rungp901
+info,ump3b,varge901
+info,scorer,"Cubs/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/09/12 12:09AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,torf
+info,windspeed,8
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,170
+info,attendance,3331
+info,wp,fraik101
+info,lp,dacqj101
+info,save,pinah101
+info,gwrbi,
+id,SFN197406120
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/12
+info,number,0
+info,starttime,12:15PM
+info,daynight,day
+info,usedh,false
+info,umphome,mcshj901
+info,ump1b,rungp901
+info,ump2b,varge901
+info,ump3b,froeb901
+info,scorer,"Cubs/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/09/13 3:12AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,torf
+info,windspeed,12
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,cloudy
+info,timeofgame,149
+info,attendance,2541
+info,wp,reusr001
+info,lp,bradt102
+info,save,
+info,gwrbi,
+id,SFN197406130
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/13
+info,number,0
+info,starttime,0:00
+info,daynight,day
+info,usedh,false
+info,umphome,rungp901
+info,ump1b,varge901
+info,ump2b,froeb901
+info,ump3b,mcshj901
+info,scorer,"Cubs/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/09/13 6:17AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,cloudy
+info,timeofgame,126
+info,attendance,2342
+info,wp,barrj101
+info,lp,bonhb101
+info,save,
+info,gwrbi,
+id,SFN197406280
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/28
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,kiblj901
+info,ump1b,olsea901
+info,ump2b,rennd901
+info,ump3b,craws901
+info,scorer,"Hunter, Stevens"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1999/03/13 8:35PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,162
+info,attendance,11210
+info,wp,johnt001
+info,lp,bryar101
+info,save,marsm101
+info,gwrbi,
+id,SFN197406290
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/29
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,olsea901
+info,ump1b,rennd901
+info,ump2b,craws901
+info,ump3b,kiblj901
+info,scorer,"Hunter"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1998/12/21 3:33PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,186
+info,attendance,20737
+info,wp,rau-d101
+info,lp,willc101
+info,save,hougc001
+info,gwrbi,
+id,SFN197406300
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/06/30
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,rennd901
+info,ump1b,craws901
+info,ump2b,kiblj901
+info,ump3b,olsea901
+info,scorer,"Hunter, Stevens"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1999/03/13 10:05PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,142
+info,attendance,18360
+info,wp,messa101
+info,lp,bradt102
+info,save,
+info,gwrbi,
+id,SFN197407020
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/02
+info,number,0
+info,starttime,7:30PM
+info,daynight,night
+info,usedh,false
+info,umphome,kiblj901
+info,ump1b,olsea901
+info,ump2b,(none)
+info,ump3b,rennd901
+info,scorer,"Padres/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/10/06 9:42AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,137
+info,attendance,2297
+info,wp,joner101
+info,lp,dacqj101
+info,save,
+info,gwrbi,
+id,SFN197407030
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/03
+info,number,0
+info,starttime,12:15PM
+info,daynight,day
+info,usedh,false
+info,umphome,olsea901
+info,ump1b,rennd901
+info,ump2b,(none)
+info,ump3b,kiblj901
+info,scorer,"Padres/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/10/18 6:07PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,167
+info,attendance,3489
+info,wp,moffr101
+info,lp,romov101
+info,save,
+info,gwrbi,
+id,SFN197407040
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/04
+info,number,0
+info,starttime,12:15PM
+info,daynight,day
+info,usedh,false
+info,umphome,rennd901
+info,ump1b,kiblj901
+info,ump2b,(none)
+info,ump3b,olsea901
+info,scorer,"Padres/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1998/10/20 10:18PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,126
+info,attendance,5718
+info,wp,bradt102
+info,lp,spild001
+info,save,
+info,gwrbi,
+id,SFN197407120
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/12
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,wendh901
+info,ump2b,colon901
+info,ump3b,willa901
+info,scorer,"PHI-SF"
+info,translator,"Chris Long"
+info,inputter,"Chris Long"
+info,inputtime,1996/02/23 4:38PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,165
+info,attendance,3329
+info,wp,ruthd001
+info,lp,sosae101
+info,save,
+info,gwrbi,
+id,SFN197407130
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/13
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,wendh901
+info,ump1b,colon901
+info,ump2b,willa901
+info,ump3b,harvd901
+info,scorer,"PHI-SF"
+info,translator,"Chris Long"
+info,inputter,"Chris Long"
+info,inputtime,1996/03/11 7:32PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,151
+info,attendance,4720
+info,wp,caldm001
+info,lp,lonbj101
+info,save,
+info,gwrbi,
+id,SFN197407141
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/14
+info,number,1
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,colon901
+info,ump1b,willa901
+info,ump2b,harvd901
+info,ump3b,wendh901
+info,scorer,"PHI-SF"
+info,translator,"Chris Long"
+info,inputter,"Chris Long"
+info,inputtime,1996/03/11 7:45PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,148
+info,attendance,0
+info,wp,carls001
+info,lp,halie101
+info,save,
+info,gwrbi,
+id,SFN197407142
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/14
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,willa901
+info,ump1b,harvd901
+info,ump2b,wendh901
+info,ump3b,colon901
+info,scorer,"PHI-SF"
+info,translator,"Chris Long"
+info,inputter,"Chris Long"
+info,inputtime,1996/03/11 8:06PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,179
+info,attendance,9239
+info,wp,twitw101
+info,lp,bradt102
+info,save,
+info,gwrbi,
+id,SFN197407160
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/16
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,varge901
+info,ump1b,froeb901
+info,ump2b,mcshj901
+info,ump3b,rungp901
+info,scorer,"Mets/Giants"
+info,translator,"Dobrow"
+info,inputter,"Dobrow"
+info,inputtime,1998/06/21 9:39PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,147
+info,attendance,3976
+info,wp,barrj101
+info,lp,koosj001
+info,save,
+info,gwrbi,
+id,SFN197407170
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/17
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,froeb901
+info,ump1b,mcshj901
+info,ump2b,rungp901
+info,ump3b,varge901
+info,scorer,"Giants/Mets"
+info,translator,"Dobrow"
+info,inputter,"Dobrow"
+info,inputtime,1998/06/21 10:26PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,158
+info,attendance,10016
+info,wp,dacqj101
+info,lp,apodb101
+info,save,
+info,gwrbi,
+id,SFN197407190
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,MON
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/19
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,pryop901
+info,ump2b,engeb901
+info,ump3b,dalej901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/29 10:28PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,132
+info,attendance,3121
+info,wp,caldm001
+info,lp,torrm001
+info,save,moffr101
+info,gwrbi,
+id,SFN197407200
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,MON
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/20
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pryop901
+info,ump1b,engeb901
+info,ump2b,dalej901
+info,ump3b,pelec901
+info,scorer,"Roth/Carlet./SF"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/06 11:05PM
+info,howscored,unknown
+info,pitches,pitches
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,113
+info,attendance,5141
+info,wp,blaid101
+info,lp,halie101
+info,save,
+info,gwrbi,
+id,SFN197407211
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,MON
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/21
+info,number,1
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,engeb901
+info,ump1b,dalej901
+info,ump2b,pelec901
+info,ump3b,pryop901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/30 1:36PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,101
+info,attendance,0
+info,wp,barrj101
+info,lp,renks101
+info,save,
+info,gwrbi,
+id,SFN197407212
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,MON
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/07/21
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,dalej901
+info,ump1b,pelec901
+info,ump2b,pryop901
+info,ump3b,engeb901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/30 2:27PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,134
+info,attendance,8007
+info,wp,dacqj101
+info,lp,roges001
+info,save,sosae101
+info,gwrbi,
+id,SFN197408010
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/01
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,colon901
+info,ump1b,willb901
+info,ump2b,davis901
+info,ump3b,gormt101
+info,scorer,"Reds/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1997/09/15 3:00AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,155
+info,attendance,3818
+info,wp,carrc103
+info,lp,bryar101
+info,save,
+info,gwrbi,
+id,SFN197408020
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/02
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,willb901
+info,ump1b,davis901
+info,ump2b,gormt101
+info,ump3b,colon901
+info,scorer,"Giants/Reds,Elias"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1997/09/16 1:24AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,161
+info,attendance,6737
+info,wp,billj101
+info,lp,halie101
+info,save,
+info,gwrbi,
+id,SFN197408030
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/03
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,davis901
+info,ump1b,gormt101
+info,ump2b,colon901
+info,ump3b,willb901
+info,scorer,"Roth"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/07 12:18AM
+info,howscored,unknown
+info,pitches,pitches
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,111
+info,attendance,13061
+info,wp,barrj101
+info,lp,caprb101
+info,save,
+info,gwrbi,
+id,SFN197408041
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/04
+info,number,1
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,colon901
+info,ump2b,willb901
+info,ump3b,davis901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/30 5:25PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,120
+info,attendance,0
+info,wp,houst101
+info,lp,dacqj101
+info,save,
+info,gwrbi,
+id,SFN197408042
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/04
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,colon901
+info,ump1b,willb901
+info,ump2b,davis901
+info,ump3b,gormt101
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/30 5:58PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,131
+info,attendance,11003
+info,wp,caldm001
+info,lp,leonm101
+info,save,
+info,gwrbi,
+id,SFN197408050
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/05
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pullf901
+info,ump1b,sudoe901
+info,ump2b,weyel901
+info,ump3b,engeb901
+info,scorer,"Heiling,Stevens"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1999/03/28 7:09AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,151
+info,attendance,4896
+info,wp,wilsd102
+info,lp,willc101
+info,save,
+info,gwrbi,
+id,SFN197408060
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/06
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,sudoe901
+info,ump1b,weyel901
+info,ump2b,engeb901
+info,ump3b,pullf901
+info,scorer,"Heiling,Stevens"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1999/03/28 11:34AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,150
+info,attendance,2746
+info,wp,cosgm101
+info,lp,halie101
+info,save,
+info,gwrbi,
+id,SFN197408230
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/23
+info,number,0
+info,starttime,7:34PM
+info,daynight,night
+info,usedh,false
+info,umphome,quicj901
+info,ump1b,dalej901
+info,ump2b,willa901
+info,ump3b,wendh901
+info,scorer,"Cubs/Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/17 12:25AM
+info,howscored,unknown
+info,pitches,none
+info,temp,60
+info,winddir,rtol
+info,windspeed,14
+info,fieldcond,unknown
+info,precip,none
+info,sky,night
+info,timeofgame,121
+info,attendance,3099
+info,wp,reusr001
+info,lp,barrj101
+info,save,
+info,gwrbi,
+id,SFN197408240
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/24
+info,number,0
+info,starttime,1:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,dalej901
+info,ump1b,willa901
+info,ump2b,wendh901
+info,ump3b,harvd901
+info,scorer,"Cubs"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/17 3:18PM
+info,howscored,unknown
+info,pitches,none
+info,temp,70
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,none
+info,sky,sunny
+info,timeofgame,173
+info,attendance,7155
+info,wp,stons101
+info,lp,bryar101
+info,save,hootb001
+info,gwrbi,
+id,SFN197408250
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/25
+info,number,0
+info,starttime,1:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,willa901
+info,ump1b,wendh901
+info,ump2b,harvd901
+info,ump3b,dalej901
+info,scorer,"Cubs/Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/17 4:09PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,none
+info,sky,sunny
+info,timeofgame,169
+info,attendance,5257
+info,wp,sosae101
+info,lp,zamoo101
+info,save,
+info,gwrbi,
+id,SFN197408270
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/27
+info,number,0
+info,starttime,7:30PM
+info,daynight,night
+info,usedh,false
+info,umphome,rungp901
+info,ump1b,varge901
+info,ump2b,olsea901
+info,ump3b,froeb901
+info,scorer,"Pirates/Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/11 4:42PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,147
+info,attendance,3273
+info,wp,ellid101
+info,lp,dacqj101
+info,save,
+info,gwrbi,
+id,SFN197408280
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/28
+info,number,0
+info,starttime,12:15PM
+info,daynight,day
+info,usedh,false
+info,umphome,varge901
+info,ump1b,olsea901
+info,ump2b,froeb901
+info,ump3b,rungp901
+info,scorer,"Pirates/Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/12 10:41AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,170
+info,attendance,3679
+info,wp,giusd101
+info,lp,barrj101
+info,save,
+info,gwrbi,
+id,SFN197408290
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/29
+info,number,0
+info,starttime,12:15PM
+info,daynight,day
+info,usedh,false
+info,umphome,olsea901
+info,ump1b,froeb901
+info,ump2b,rungp901
+info,ump3b,varge901
+info,scorer,"Pirates/Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/12 5:15PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,176
+info,attendance,3172
+info,wp,moffr101
+info,lp,giusd101
+info,save,
+info,gwrbi,
+id,SFN197408300
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/30
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,tatat901
+info,ump1b,rennd901
+info,ump2b,craws901
+info,ump3b,kiblj901
+info,scorer,"SLN/SFN"
+info,translator,"M. Dehler"
+info,inputter,"M. Dehler"
+info,inputtime,1998/08/22 10:35PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,139
+info,attendance,3111
+info,wp,caldm001
+info,lp,siebs101
+info,save,
+info,gwrbi,
+id,SFN197408310
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/08/31
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,rennd901
+info,ump1b,craws901
+info,ump2b,kiblj901
+info,ump3b,tatat901
+info,scorer,"SLN"
+info,translator,"M. Dehler"
+info,inputter,"M. Dehler"
+info,inputtime,1998/08/23 9:37AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,146
+info,attendance,14356
+info,wp,dacqj101
+info,lp,forsb001
+info,save,morrj106
+info,gwrbi,
+id,SFN197409010
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/01
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,craws901
+info,ump1b,kiblj901
+info,ump2b,tatat901
+info,ump3b,rennd901
+info,scorer,"SLN/SFN"
+info,translator,"M. Dehler"
+info,inputter,"M. Dehler"
+info,inputtime,1998/08/23 12:51PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,118
+info,attendance,6842
+info,wp,gibsb101
+info,lp,halie101
+info,save,
+info,gwrbi,
+id,SFN197409110
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/11
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,davis901
+info,ump1b,gormt101
+info,ump2b,colon901
+info,ump3b,willb901
+info,scorer,"Hunter,Stevens"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1999/03/18 4:55PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,165
+info,attendance,7842
+info,wp,messa101
+info,lp,laveg001
+info,save,
+info,gwrbi,
+id,SFN197409120
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/12
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,colon901
+info,ump2b,willb901
+info,ump3b,davis901
+info,scorer,"Hunter,Stevens"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1999/03/18 8:49PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,145
+info,attendance,7349
+info,wp,downa101
+info,lp,barrj101
+info,save,
+info,gwrbi,
+id,SFN197409130
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/13
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,colon901
+info,ump1b,willb901
+info,ump2b,davis901
+info,ump3b,gormt101
+info,scorer,"Giants/Heiling"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/30 7:36PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,143
+info,attendance,1732
+info,wp,cosgm101
+info,lp,bryar101
+info,save,forsk001
+info,gwrbi,
+id,SFN197409140
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/14
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,willb901
+info,ump1b,davis901
+info,ump2b,gormt101
+info,ump3b,colon901
+info,scorer,"Heiling"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/02 11:48PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,135
+info,attendance,3144
+info,wp,dierl101
+info,lp,montj001
+info,save,
+info,gwrbi,
+id,SFN197409151
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/15
+info,number,1
+info,starttime,12:06PM
+info,daynight,day
+info,usedh,false
+info,umphome,davis901
+info,ump1b,gormt101
+info,ump2b,colon901
+info,ump3b,willb901
+info,scorer,"Giants/Heiling"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/09/30 8:43PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,114
+info,attendance,0
+info,wp,siebp101
+info,lp,caldm001
+info,save,
+info,gwrbi,
+id,SFN197409152
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/15
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,colon901
+info,ump2b,willb901
+info,ump3b,davis901
+info,scorer,"Giants/Heiling"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/01 2:59PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,154
+info,attendance,4736
+info,wp,dacqj101
+info,lp,robed101
+info,save,
+info,gwrbi,
+id,SFN197409160
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/16
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,weyel901
+info,ump1b,engeb901
+info,ump2b,pullf901
+info,ump3b,sudoe901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/01 4:11PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,98
+info,attendance,748
+info,wp,barrj101
+info,lp,reedr001
+info,save,
+info,gwrbi,
+id,SFN197409170
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/17
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,engeb901
+info,ump1b,pullf901
+info,ump2b,sudoe901
+info,ump3b,weyel901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/01 4:38PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,131
+info,attendance,1347
+info,wp,caprb101
+info,lp,morrj106
+info,save,
+info,gwrbi,
+id,SFN197409180
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/18
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pullf901
+info,ump1b,sudoe901
+info,ump2b,weyel901
+info,ump3b,engeb901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/01 5:37PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,133
+info,attendance,1503
+info,wp,mortc102
+info,lp,montj001
+info,save,houst101
+info,gwrbi,
+id,SFN197409190
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/19
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,steld901
+info,ump1b,mcshj901
+info,ump2b,pelec901
+info,ump3b,pryop901
+info,scorer,"Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1997/10/08 10:56PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,161
+info,attendance,2074
+info,wp,normf101
+info,lp,dacqj101
+info,save,
+info,gwrbi,
+id,SFN197409200
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/20
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,mcshj901
+info,ump1b,pelec901
+info,ump2b,pryop901
+info,ump3b,steld901
+info,scorer,"Reds/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1997/10/09 8:56AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,125
+info,attendance,3924
+info,wp,caldm001
+info,lp,kirbc101
+info,save,
+info,gwrbi,
+id,SFN197409210
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/21
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,pryop901
+info,ump2b,steld901
+info,ump3b,mcshj901
+info,scorer,"Roth"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/08 12:00AM
+info,howscored,unknown
+info,pitches,pitches
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,139
+info,attendance,5455
+info,wp,metzb101
+info,lp,borbp101
+info,save,
+info,gwrbi,
+id,SFN197409220
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/09/22
+info,number,0
+info,starttime,0:00
+info,daynight,day
+info,usedh,false
+info,umphome,pryop901
+info,ump1b,steld901
+info,ump2b,mcshj901
+info,ump3b,pelec901
+info,scorer,"Reds/Giants"
+info,translator,"Bill Disney"
+info,inputter,"Bill Disney"
+info,inputtime,1997/10/09 9:18AM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,135
+info,attendance,16801
+info,wp,montj001
+info,lp,gulld101
+info,save,
+info,gwrbi,
+id,SFN197410010
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/10/01
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,monte901
+info,ump1b,willa901
+info,ump2b,pelec901
+info,ump3b,dalej901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/01 8:15PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,night
+info,timeofgame,125
+info,attendance,1192
+info,wp,bradt102
+info,lp,freid101
+info,save,barrj101
+info,gwrbi,
+id,SFN197410020
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SDN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1974/10/02
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,willa901
+info,ump1b,pelec901
+info,ump2b,dalej901
+info,ump3b,monte901
+info,scorer,"Giants"
+info,translator,"Greg Beston"
+info,inputter,"Greg Beston"
+info,inputtime,1998/10/01 9:09PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,160
+info,attendance,1349
+info,wp,hardl101
+info,lp,sosae101
+info,save,
+info,gwrbi,

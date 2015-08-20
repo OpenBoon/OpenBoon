@@ -1,7 +1,20 @@
+/*
+ * Copyright (c) 2015 by Zorroa
+ */
+
 package com.zorroa.ingestors;
 
-/**
- * Created by wex on 8/18/15.
- */
-public class RetrosheetIngestorTests {
+import com.zorroa.archivist.sdk.AssetBuilder;
+import org.junit.Test;
+
+public class RetrosheetIngestorTests extends AssetBuilderTests {
+
+    @Test
+    public void testProcess() throws InterruptedException {
+        RetrosheetIngestor retro = new RetrosheetIngestor();
+        setup(retro);
+        for (AssetBuilder asset : testAssets) {
+            retro.process(asset);
+        }
+    }
 }

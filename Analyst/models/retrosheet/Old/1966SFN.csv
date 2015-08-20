@@ -1,0 +1,2595 @@
+id,SFN196604120
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/12
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,venzt901
+info,ump2b,weyel901
+info,ump3b,willb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/02 4:35PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,125
+info,attendance,40960
+info,wp,marij101
+info,lp,jackl102
+info,save,
+info,gwrbi,
+id,SFN196604130
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/13
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,venzt901
+info,ump1b,weyel901
+info,ump2b,willb901
+info,ump3b,gormt101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/02 4:44PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,128
+info,attendance,12631
+info,wp,bolib101
+info,lp,broge101
+info,save,
+info,gwrbi,
+id,SFN196604140
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/14
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,weyel901
+info,ump1b,willb901
+info,ump2b,gormt101
+info,ump3b,venzt901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/03 9:12AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,170
+info,attendance,9579
+info,wp,handb101
+info,lp,mcdal101
+info,save,abert101
+info,gwrbi,
+id,SFN196604150
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/15
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,steim901
+info,ump1b,barla901
+info,ump2b,donaa901
+info,ump3b,lands901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/03 8:01PM
+info,howscored,unknown
+info,pitches,none
+info,temp,73
+info,winddir,ltor
+info,windspeed,15
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,141
+info,attendance,20274
+info,wp,shawb103
+info,lp,farrt101
+info,save,linzf101
+info,gwrbi,
+id,SFN196604160
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/16
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,barla901
+info,ump1b,donaa901
+info,ump2b,lands901
+info,ump3b,steim901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/03 8:07PM
+info,howscored,unknown
+info,pitches,none
+info,temp,73
+info,winddir,ltor
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,cloudy
+info,timeofgame,142
+info,attendance,18472
+info,wp,marij101
+info,lp,giusd101
+info,save,
+info,gwrbi,
+id,SFN196604170
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/17
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,donaa901
+info,ump1b,lands901
+info,ump2b,steim901
+info,ump3b,barla901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/03 8:15PM
+info,howscored,unknown
+info,pitches,none
+info,temp,54
+info,winddir,torf
+info,windspeed,19
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,cloudy
+info,timeofgame,128
+info,attendance,23403
+info,wp,bolib101
+info,lp,latmb101
+info,save,linzf101
+info,gwrbi,
+id,SFN196604250
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/25
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,burkk101
+info,ump1b,pelec901
+info,ump2b,engeb901
+info,ump3b,secof101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/04 11:06AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,140
+info,attendance,8259
+info,wp,johnk102
+info,lp,shawb103
+info,save,
+info,gwrbi,
+id,SFN196604260
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/26
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,engeb901
+info,ump2b,secof101
+info,ump3b,burkk101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/04 11:20AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,154
+info,attendance,14069
+info,wp,clont101
+info,lp,bolib101
+info,save,carrc103
+info,gwrbi,
+id,SFN196604270
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/27
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,engeb901
+info,ump1b,secof101
+info,ump2b,burkk101
+info,ump3b,pelec901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/04 1:59PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,160
+info,attendance,7847
+info,wp,baldj101
+info,lp,linzf101
+info,save,davit102
+info,gwrbi,
+id,SFN196604280
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/28
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,secof101
+info,ump1b,burkk101
+info,ump2b,pelec901
+info,ump3b,engeb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/04 2:05PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,114
+info,attendance,7073
+info,wp,marij101
+info,lp,ellis101
+info,save,
+info,gwrbi,
+id,SFN196604290
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/29
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,varge901
+info,ump1b,harvd901
+info,ump2b,wendh901
+info,ump3b,craws901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/04 4:05PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,145
+info,attendance,18675
+info,wp,sader101
+info,lp,shawb103
+info,save,
+info,gwrbi,
+id,SFN196604300
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/04/30
+info,number,0
+info,starttime,11:16AM
+info,daynight,day
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,wendh901
+info,ump2b,craws901
+info,ump3b,varge901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/06 4:45PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,149
+info,attendance,40807
+info,wp,bolib101
+info,lp,jastl101
+info,save,
+info,gwrbi,
+id,SFN196605010
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/01
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,wendh901
+info,ump1b,craws901
+info,ump2b,varge901
+info,ump3b,harvd901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/09 6:15PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,123
+info,attendance,31273
+info,wp,perrg101
+info,lp,gibsb101
+info,save,
+info,gwrbi,
+id,SFN196605030
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/03
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,craws901
+info,ump1b,varge901
+info,ump2b,harvd901
+info,ump3b,wendh901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/10 6:58AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,140
+info,attendance,35193
+info,wp,marij101
+info,lp,drysd101
+info,save,
+info,gwrbi,
+id,SFN196605040
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/04
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,varge901
+info,ump1b,harvd901
+info,ump2b,wendh901
+info,ump3b,craws901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/10 7:08AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,115
+info,attendance,28220
+info,wp,gibbj102
+info,lp,ostec103
+info,save,
+info,gwrbi,
+id,SFN196605050
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/05
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,wendh901
+info,ump2b,craws901
+info,ump3b,varge901
+info,scorer,"Patterson/Seeburg"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1993/07/07 10:25PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,210
+info,attendance,26326
+info,wp,pridb101
+info,lp,perrr101
+info,save,
+info,gwrbi,
+id,SFN196605200
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/20
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,donaa901
+info,ump1b,lands901
+info,ump2b,steim901
+info,ump3b,barla901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/11 5:21PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,163
+info,attendance,15541
+info,wp,selmd101
+info,lp,mcdal101
+info,save,ribad101
+info,gwrbi,
+id,SFN196605210
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/21
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,lands901
+info,ump1b,steim901
+info,ump2b,barla901
+info,ump3b,donaa901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/11 8:45PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,150
+info,attendance,17801
+info,wp,pridb101
+info,lp,gardr101
+info,save,linzf101
+info,gwrbi,
+id,SFN196605221
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/22
+info,number,1
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,steim901
+info,ump1b,barla901
+info,ump2b,donaa901
+info,ump3b,lands901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/11 8:55PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,140
+info,attendance,0
+info,wp,marij101
+info,lp,bearl101
+info,save,
+info,gwrbi,
+id,SFN196605222
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/22
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,barla901
+info,ump1b,donaa901
+info,ump2b,lands901
+info,ump3b,steim901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/12 4:31PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,147
+info,attendance,40496
+info,wp,hamij101
+info,lp,sader101
+info,save,
+info,gwrbi,
+id,SFN196605240
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/24
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,venzt901
+info,ump2b,weyel901
+info,ump3b,willb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/12 7:40PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,134
+info,attendance,14158
+info,wp,perrg101
+info,lp,law-v101
+info,save,linzf101
+info,gwrbi,
+id,SFN196605250
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/25
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,venzt901
+info,ump1b,weyel901
+info,ump2b,willb901
+info,ump3b,gormt101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/13 8:21PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,125
+info,attendance,9663
+info,wp,schwd101
+info,lp,shawb103
+info,save,facer101
+info,gwrbi,
+id,SFN196605260
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/26
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,weyel901
+info,ump1b,willb901
+info,ump2b,gormt101
+info,ump3b,venzt901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/13 8:31PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,205
+info,attendance,7529
+info,wp,marij101
+info,lp,knowd101
+info,save,
+info,gwrbi,
+id,SFN196605270
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/27
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,jackb901
+info,ump1b,sudoe901
+info,ump2b,pryop901
+info,ump3b,kiblj901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/16 5:53PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,153
+info,attendance,16063
+info,wp,jackl102
+info,lp,sader101
+info,save,
+info,gwrbi,
+id,SFN196605280
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/28
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,sudoe901
+info,ump1b,pryop901
+info,ump2b,kiblj901
+info,ump3b,jackb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/16 6:05PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,170
+info,attendance,17331
+info,wp,culpr101
+info,lp,gibbj102
+info,save,knowd101
+info,gwrbi,
+id,SFN196605290
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/05/29
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pryop901
+info,ump1b,kiblj901
+info,ump2b,jackb901
+info,ump3b,sudoe901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/16 8:21PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,170
+info,attendance,25237
+info,wp,mcdal101
+info,lp,belib101
+info,save,
+info,gwrbi,
+id,SFN196606100
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/10
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,engeb901
+info,ump2b,secof101
+info,ump3b,burkk101
+info,scorer,"Patterson/Seebu"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1993/07/08 6:29PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,127
+info,attendance,40048
+info,wp,koufs101
+info,lp,gibbj102
+info,save,
+info,gwrbi,
+id,SFN196606110
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/11
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,engeb901
+info,ump1b,secof101
+info,ump2b,burkk101
+info,ump3b,pelec901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/18 3:19PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,161
+info,attendance,41280
+info,wp,regap101
+info,lp,linzf101
+info,save,brewj102
+info,gwrbi,
+id,SFN196606120
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/12
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,secof101
+info,ump1b,burkk101
+info,ump2b,pelec901
+info,ump3b,engeb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/18 3:29PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,123
+info,attendance,42402
+info,wp,marij101
+info,lp,drysd101
+info,save,
+info,gwrbi,
+id,SFN196606130
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/13
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,burkk101
+info,ump1b,pelec901
+info,ump2b,engeb901
+info,ump3b,secof101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/18 3:38PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,139
+info,attendance,7103
+info,wp,perrg101
+info,lp,broge101
+info,save,mcdal101
+info,gwrbi,
+id,SFN196606140
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/14
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,engeb901
+info,ump2b,secof101
+info,ump3b,burkk101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/18 3:49PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,166
+info,attendance,6724
+info,wp,mcdal101
+info,lp,hoefb101
+info,save,
+info,gwrbi,
+id,SFN196606150
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/15
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,varge901
+info,ump1b,harvd901
+info,ump2b,steim901
+info,ump3b,craws901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/18 6:27PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,119
+info,attendance,9788
+info,wp,gibbj102
+info,lp,farrt101
+info,save,linzf101
+info,gwrbi,
+id,SFN196606160
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/16
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,steim901
+info,ump2b,craws901
+info,ump3b,varge901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/19 7:09PM
+info,howscored,unknown
+info,pitches,none
+info,temp,61
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,105
+info,attendance,12087
+info,wp,marij101
+info,lp,brucb101
+info,save,
+info,gwrbi,
+id,SFN196606300
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/06/30
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,wendh901
+info,ump1b,craws901
+info,ump2b,varge901
+info,ump3b,harvd901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/25 10:41AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,125
+info,attendance,12526
+info,wp,perrg101
+info,lp,johnk102
+info,save,
+info,gwrbi,
+id,SFN196607010
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/01
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,craws901
+info,ump1b,varge901
+info,ump2b,harvd901
+info,ump3b,wendh901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/25 10:53AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,166
+info,attendance,15670
+info,wp,linzf101
+info,lp,abert101
+info,save,pridb101
+info,gwrbi,
+id,SFN196607020
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/02
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,varge901
+info,ump1b,harvd901
+info,ump2b,wendh901
+info,ump3b,craws901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/25 1:36PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,155
+info,attendance,19794
+info,wp,olivc101
+info,lp,linzf101
+info,save,carrc103
+info,gwrbi,
+id,SFN196607030
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/03
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,wendh901
+info,ump2b,craws901
+info,ump3b,varge901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/26 4:12PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,162
+info,attendance,27002
+info,wp,clont101
+info,lp,gibbj102
+info,save,
+info,gwrbi,
+id,SFN196607041
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/04
+info,number,1
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,weyel901
+info,ump1b,willb901
+info,ump2b,venzt901
+info,ump3b,gormt101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/27 4:42PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,136
+info,attendance,0
+info,wp,washr101
+info,lp,marij101
+info,save,hoerj101
+info,gwrbi,
+id,SFN196607042
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/04
+info,number,2
+info,starttime,1:24PM
+info,daynight,day
+info,usedh,false
+info,umphome,willb901
+info,ump1b,venzt901
+info,ump2b,gormt101
+info,ump3b,weyel901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/27 4:49PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,131
+info,attendance,39172
+info,wp,perrg101
+info,lp,briln101
+info,save,
+info,gwrbi,
+id,SFN196607050
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/05
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,venzt901
+info,ump1b,gormt101
+info,ump2b,weyel901
+info,ump3b,willb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/29 4:24PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,117
+info,attendance,7418
+info,wp,jacka101
+info,lp,herbr102
+info,save,
+info,gwrbi,
+id,SFN196607060
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/06
+info,number,0
+info,starttime,1:01PM
+info,daynight,day
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,weyel901
+info,ump2b,willb901
+info,ump3b,venzt901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/06/29 4:32PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,155
+info,attendance,11154
+info,wp,mcdal101
+info,lp,dennd101
+info,save,linzf101
+info,gwrbi,
+id,SFN196607070
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/07
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,wendh901
+info,ump2b,craws901
+info,ump3b,varge901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/03 10:12AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,135
+info,attendance,10831
+info,wp,sader101
+info,lp,ellis101
+info,save,
+info,gwrbi,
+id,SFN196607080
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/08
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,wendh901
+info,ump1b,craws901
+info,ump2b,varge901
+info,ump3b,harvd901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/03 10:20AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,160
+info,attendance,21347
+info,wp,marij101
+info,lp,fisch101
+info,save,
+info,gwrbi,
+id,SFN196607090
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/09
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,craws901
+info,ump1b,varge901
+info,ump2b,harvd901
+info,ump3b,wendh901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/03 1:39PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,215
+info,attendance,22104
+info,wp,linzf101
+info,lp,nuxhj101
+info,save,
+info,gwrbi,
+id,SFN196607100
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/10
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,varge901
+info,ump1b,harvd901
+info,ump2b,wendh901
+info,ump3b,craws901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/03 4:07PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,135
+info,attendance,31903
+info,wp,pappm101
+info,lp,herbr102
+info,save,
+info,gwrbi,
+id,SFN196607200
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/20
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,kiblj901
+info,ump1b,jackb901
+info,ump2b,sudoe901
+info,ump3b,pryop901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/09 5:15PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,166
+info,attendance,13155
+info,wp,fishj101
+info,lp,henrb101
+info,save,
+info,gwrbi,
+id,SFN196607210
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/21
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,jackb901
+info,ump1b,sudoe901
+info,ump2b,pryop901
+info,ump3b,kiblj901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/11 10:18AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,155
+info,attendance,10904
+info,wp,ribad101
+info,lp,sader101
+info,save,
+info,gwrbi,
+id,SFN196607220
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/22
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,steim901
+info,ump1b,barla901
+info,ump2b,donaa901
+info,ump3b,lands901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/11 1:57PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,142
+info,attendance,23420
+info,wp,perrg101
+info,lp,jackl102
+info,save,
+info,gwrbi,
+id,SFN196607230
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/23
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,barla901
+info,ump1b,donaa901
+info,ump2b,lands901
+info,ump3b,steim901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/11 2:04PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,145
+info,attendance,23846
+info,wp,bunnj101
+info,lp,bolib101
+info,save,
+info,gwrbi,
+id,SFN196607240
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/24
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,donaa901
+info,ump1b,lands901
+info,ump2b,steim901
+info,ump3b,barla901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/11 2:11PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,144
+info,attendance,30835
+info,wp,herbr102
+info,lp,buhlb101
+info,save,linzf101
+info,gwrbi,
+id,SFN196607250
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/25
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,lands901
+info,ump1b,steim901
+info,ump2b,barla901
+info,ump3b,donaa901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/11 11:16PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,119
+info,attendance,22191
+info,wp,marij101
+info,lp,frymw101
+info,save,
+info,gwrbi,
+id,SFN196607260
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/26
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,steim901
+info,ump1b,barla901
+info,ump2b,donaa901
+info,ump3b,lands901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/11 11:25PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,150
+info,attendance,21786
+info,wp,perrg101
+info,lp,blass101
+info,save,mcdal101
+info,gwrbi,
+id,SFN196607270
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/07/27
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,barla901
+info,ump1b,donaa901
+info,ump2b,lands901
+info,ump3b,steim901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/12 10:01AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,140
+info,attendance,22154
+info,wp,mikkp101
+info,lp,linzf101
+info,save,facer101
+info,gwrbi,
+id,SFN196608120
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/12
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,burkk101
+info,ump1b,pelec901
+info,ump2b,engeb901
+info,ump3b,secof101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 7:41AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,112
+info,attendance,16934
+info,wp,perrg101
+info,lp,cuelm101
+info,save,
+info,gwrbi,
+id,SFN196608130
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/13
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,engeb901
+info,ump2b,secof101
+info,ump3b,burkk101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 8:55AM
+info,howscored,unknown
+info,pitches,none
+info,temp,64
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,119
+info,attendance,19599
+info,wp,giusd101
+info,lp,marij101
+info,save,
+info,gwrbi,
+id,SFN196608141
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/14
+info,number,1
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,engeb901
+info,ump1b,secof101
+info,ump2b,burkk101
+info,ump3b,pelec901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 9:01AM
+info,howscored,unknown
+info,pitches,none
+info,temp,60
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,129
+info,attendance,0
+info,wp,bolib101
+info,lp,latmb101
+info,save,
+info,gwrbi,
+id,SFN196608142
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,HOU
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/14
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,secof101
+info,ump1b,burkk101
+info,ump2b,pelec901
+info,ump3b,engeb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 9:09AM
+info,howscored,unknown
+info,pitches,none
+info,temp,67
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,147
+info,attendance,35144
+info,wp,mcdal101
+info,lp,raymc101
+info,save,linzf101
+info,gwrbi,
+id,SFN196608160
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/16
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,burkk101
+info,ump1b,pelec901
+info,ump2b,engeb901
+info,ump3b,secof101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 10:50AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,128
+info,attendance,24178
+info,wp,perrg101
+info,lp,jacka101
+info,save,
+info,gwrbi,
+id,SFN196608170
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,SLN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/17
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pelec901
+info,ump1b,engeb901
+info,ump2b,secof101
+info,ump3b,burkk101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 10:58AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,135
+info,attendance,21956
+info,wp,linzf101
+info,lp,briln101
+info,save,
+info,gwrbi,
+id,SFN196608190
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/19
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,kiblj901
+info,ump1b,jackb901
+info,ump2b,sudoe901
+info,ump3b,pryop901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 11:30AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,142
+info,attendance,20625
+info,wp,niekp001
+info,lp,bolib101
+info,save,
+info,gwrbi,
+id,SFN196608200
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/20
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,jackb901
+info,ump1b,sudoe901
+info,ump2b,pryop901
+info,ump3b,kiblj901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 8:40PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,145
+info,attendance,23706
+info,wp,perrg101
+info,lp,clont101
+info,save,
+info,gwrbi,
+id,SFN196608210
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,ATL
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/21
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,sudoe901
+info,ump1b,pryop901
+info,ump2b,kiblj901
+info,ump3b,jackb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/16 9:01PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,156
+info,attendance,30740
+info,wp,pridb101
+info,lp,carrc103
+info,save,linzf101
+info,gwrbi,
+id,SFN196608220
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/22
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,venzt901
+info,ump1b,weyel901
+info,ump2b,willb901
+info,ump3b,gormt101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/17 10:00AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,155
+info,attendance,11446
+info,wp,gibbj102
+info,lp,ellis101
+info,save,mcdal101
+info,gwrbi,
+id,SFN196608230
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/23
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,weyel901
+info,ump1b,willb901
+info,ump2b,gormt101
+info,ump3b,venzt901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/17 10:06AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,138
+info,attendance,18020
+info,wp,marij101
+info,lp,pappm101
+info,save,
+info,gwrbi,
+id,SFN196608240
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CIN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/24
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,willb901
+info,ump1b,gormt101
+info,ump2b,venzt901
+info,ump3b,weyel901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/17 10:20AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,135
+info,attendance,18587
+info,wp,nuxhj101
+info,lp,perrg101
+info,save,
+info,gwrbi,
+id,SFN196608260
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/26
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,steim901
+info,ump1b,barla901
+info,ump2b,donaa901
+info,ump3b,lands901
+info,scorer,"Patterson/Seebe"
+info,translator,"David W. Smith"
+info,inputter,"David W. Smith"
+info,inputtime,1993/07/24 9:30PM
+info,howscored,park
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,160
+info,attendance,42647
+info,wp,koufs101
+info,lp,bolib101
+info,save,
+info,gwrbi,
+id,SFN196608270
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/27
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,barla901
+info,ump1b,donaa901
+info,ump2b,lands901
+info,ump3b,steim901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/17 12:10PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,134
+info,attendance,41876
+info,wp,marij101
+info,lp,drysd101
+info,save,
+info,gwrbi,
+id,SFN196608280
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,LAN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/08/28
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,donaa901
+info,ump1b,lands901
+info,ump2b,steim901
+info,ump3b,barla901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/17 12:17PM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,147
+info,attendance,41952
+info,wp,suttd001
+info,lp,perrg101
+info,save,
+info,gwrbi,
+id,SFN196609090
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/09
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,jackb901
+info,ump1b,sudoe901
+info,ump2b,pryop901
+info,ump3b,kiblj901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/20 10:13AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,ltor
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,152
+info,attendance,19779
+info,wp,holtk101
+info,lp,marij101
+info,save,handb101
+info,gwrbi,
+id,SFN196609100
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/10
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,sudoe901
+info,ump1b,pryop901
+info,ump2b,kiblj901
+info,ump3b,jackb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/20 10:24AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,159
+info,attendance,19436
+info,wp,ellsd101
+info,lp,perrg101
+info,save,koonc101
+info,gwrbi,
+id,SFN196609111
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/11
+info,number,1
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,pryop901
+info,ump1b,kiblj901
+info,ump2b,jackb901
+info,ump3b,sudoe901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/20 10:33AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,ltor
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,167
+info,attendance,0
+info,wp,jenkf101
+info,lp,sader101
+info,save,hendb101
+info,gwrbi,
+id,SFN196609112
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,CHN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/11
+info,number,2
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,kiblj901
+info,ump1b,jackb901
+info,ump2b,sudoe901
+info,ump3b,pryop901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/21 7:51AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,106
+info,attendance,34039
+info,wp,bolib101
+info,lp,simmc101
+info,save,
+info,gwrbi,
+id,SFN196609130
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/13
+info,number,0
+info,starttime,8:08PM
+info,daynight,night
+info,usedh,false
+info,umphome,secof101
+info,ump1b,burkk101
+info,ump2b,pelec901
+info,ump3b,engeb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/21 9:27AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,152
+info,attendance,11930
+info,wp,marij101
+info,lp,jackl102
+info,save,
+info,gwrbi,
+id,SFN196609140
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PHI
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/14
+info,number,0
+info,starttime,8:08PM
+info,daynight,night
+info,usedh,false
+info,umphome,burkk101
+info,ump1b,pelec901
+info,ump2b,engeb901
+info,ump3b,secof101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/21 9:37AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,142
+info,attendance,8328
+info,wp,bunnj101
+info,lp,perrg101
+info,save,
+info,gwrbi,
+id,SFN196609150
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/15
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,varge901
+info,ump1b,harvd901
+info,ump2b,wendh901
+info,ump3b,craws901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/21 11:38AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,148
+info,attendance,6072
+info,wp,bolib101
+info,lp,shawb103
+info,save,
+info,gwrbi,
+id,SFN196609160
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/16
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,harvd901
+info,ump1b,wendh901
+info,ump2b,craws901
+info,ump3b,varge901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/21 11:51AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,164
+info,attendance,17273
+info,wp,suthd102
+info,lp,hoefb101
+info,save,hamij101
+info,gwrbi,
+id,SFN196609170
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,NYN
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/17
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,wendh901
+info,ump1b,craws901
+info,ump2b,varge901
+info,ump3b,harvd901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/22 8:24AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,165
+info,attendance,19024
+info,wp,linzf101
+info,lp,milll101
+info,save,
+info,gwrbi,
+id,SFN196609180
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/18
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,weyel901
+info,ump1b,willb901
+info,ump2b,gormt101
+info,ump3b,venzt901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/22 8:34AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,133
+info,attendance,41981
+info,wp,frymw101
+info,lp,perrg101
+info,save,
+info,gwrbi,
+id,SFN196609190
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/19
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,willb901
+info,ump1b,gormt101
+info,ump2b,venzt901
+info,ump3b,weyel901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/22 8:44AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,163
+info,attendance,12871
+info,wp,mikkp101
+info,lp,linzf101
+info,save,
+info,gwrbi,
+id,SFN196609200
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/20
+info,number,0
+info,starttime,0:00PM
+info,daynight,night
+info,usedh,false
+info,umphome,gormt101
+info,ump1b,venzt901
+info,ump2b,weyel901
+info,ump3b,willb901
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/22 8:52AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,133
+info,attendance,30187
+info,wp,law-v101
+info,lp,herbr102
+info,save,
+info,gwrbi,
+id,SFN196609210
+version,1
+info,inputprogvers,"version 7RS(19) of 07/07/92"
+info,visteam,PIT
+info,hometeam,SFN
+info,site,SFO02
+info,date,1966/09/21
+info,number,0
+info,starttime,0:00PM
+info,daynight,day
+info,usedh,false
+info,umphome,venzt901
+info,ump1b,weyel901
+info,ump2b,willb901
+info,ump3b,gormt101
+info,scorer,"Bob Stevens"
+info,inputter,"Alan Boodman"
+info,inputtime,1995/07/23 10:12AM
+info,howscored,unknown
+info,pitches,none
+info,temp,0
+info,winddir,unknown
+info,windspeed,-1
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,126
+info,attendance,15338
+info,wp,marij101
+info,lp,facer101
+info,save,
+info,gwrbi,
