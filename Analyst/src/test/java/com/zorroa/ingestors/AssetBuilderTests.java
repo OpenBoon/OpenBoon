@@ -11,10 +11,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class AssetBuilderTests {
 
@@ -28,7 +25,9 @@ public abstract class AssetBuilderTests {
 
     public void setup(IngestProcessor processor) {
         processor.setIngestProcessorService(new IngestProcessorServiceBaseImpl());
-
+        if (processor.getArgs() == null) {
+            processor.setArgs(new HashMap<String, Object>());
+        }
         testAssets = new HashSet<AssetBuilder>(2);
         File imageFolder = processor.getIngestProcessorService().getResourceFile("/images");
         File proxyFolder = processor.getIngestProcessorService().getResourceFile("/proxies");
