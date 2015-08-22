@@ -5,6 +5,7 @@ import com.zorroa.archivist.sdk.IngestProcessor;
 import com.zorroa.archivist.sdk.Proxy;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
@@ -27,6 +28,9 @@ public class FaceIngestor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(FaceIngestor.class);
 
+    private static String cascadeName = "haarcascade_frontalface_alt.xml";
+
+
     static {
         System.loadLibrary("opencv_java2411");
     }
@@ -38,10 +42,10 @@ public class FaceIngestor extends IngestProcessor {
             Map<String, String> env = System.getenv();
             String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
             if (modelPath == null) {
-                logger.error("CaffeIngestor requires ZORROA_OPENCV_MODEL_PATH");
+                logger.error("FaceIngestor requires ZORROA_OPENCV_MODEL_PATH");
                 return null;
             }
-            String haarPath = modelPath + "/face/haarcascade_frontalface_alt.xml";
+            String haarPath = modelPath + "/face/" + cascadeName;
             logger.info("Face processor haarPath path: " + haarPath);
             CascadeClassifier classifier = null;
             try {
@@ -61,6 +65,11 @@ public class FaceIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
+        String argCascadeName = (String) getArgs().get("CascadeName");
+        if (argCascadeName != null) {
+            cascadeName = argCascadeName;
+        }
+
         if (!ingestProcessorService.isImage(asset)) {
             return;     // Only process images
         }
@@ -71,11 +80,18 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
         String classifyPath = asset.getFile().getPath();
+        Size minFace = new Size(15, 15);
+        Size maxFace = new Size(200, 200);
         for (Proxy proxy : proxyList) {
-            if (proxy.getWidth() >= 256 || proxy.getHeight() >= 256) {
+            if (proxy.getWidth() >= 500 || proxy.getHeight() >= 500) {
                 String proxyName = proxy.getFile();
                 proxyName = proxyName.substring(0, proxyName.lastIndexOf('.'));
                 classifyPath = ingestProcessorService.getProxyFile(proxyName, "png").getPath();
+                minFace.width = minFace.height = proxy.getHeight() / 25;
+                maxFace.width = maxFace.height = minFace.width * 20;
+                logger.info("Face: minFace = " + minFace.width);
+                logger.info("Face: maxFace = " + maxFace.width);
+
                 break;
             }
         }
@@ -84,11 +100,11 @@ public class FaceIngestor extends IngestProcessor {
         logger.info("Starting facial detection on " + asset.getFilename());
         Mat image = Highgui.imread(classifyPath);
         MatOfRect faceDetections = new MatOfRect();
-        cascadeClassifier.get().detectMultiScale(image, faceDetections);
+        cascadeClassifier.get().detectMultiScale(image, faceDetections, 1.05, 12, 0, minFace, maxFace);
         int faceCount = faceDetections.toArray().length;
         logger.info("Detected " + faceCount + " faces in " + asset.getFilename());
         if (faceCount > 0) {
-            String keywords = "face";
+            String keywords = "face,face" + faceCount;
             logger.info("FaceIngestor: " + keywords);
             List<String> keywordList = Arrays.asList(keywords.split(","));
             asset.map("face", "keywords", "type", "string");
