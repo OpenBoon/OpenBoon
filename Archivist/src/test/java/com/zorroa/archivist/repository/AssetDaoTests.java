@@ -46,7 +46,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testFastCreate() {
+    public void testReplace() {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
         assetDao.replace(builder);
         assetDao.replace(builder);

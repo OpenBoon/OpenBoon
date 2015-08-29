@@ -1,13 +1,11 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserBuilder;
 import com.zorroa.archivist.domain.UserUpdateBuilder;
-import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
@@ -34,6 +32,12 @@ public class UserController  {
     @RequestMapping(value="/api/v1/users")
     public List<User> getAll() {
         return userService.getAll();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/users", method=RequestMethod.POST)
+    public User create(@RequestBody UserBuilder builder) {
+        return userService.create(builder);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

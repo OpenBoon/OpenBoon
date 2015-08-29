@@ -56,7 +56,7 @@ public abstract class MockMvcTest extends ArchivistApplicationTests {
 
     protected MockHttpSession user(Integer id) {
         User user = userService.get(id);
-        return buildSession(new TestingAuthenticationToken(user, "admin", "ROLE_ADMIN"));
+        return buildSession(new TestingAuthenticationToken(user, "user", "ROLE_USER"));
     }
 
     /**

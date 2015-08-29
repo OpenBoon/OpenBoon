@@ -1,9 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserUpdateBuilder;
+import com.zorroa.archivist.domain.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -14,6 +11,8 @@ import java.util.List;
 public interface UserService {
 
     User login();
+
+    User create(UserBuilder builder);
 
     User get(String username);
 
