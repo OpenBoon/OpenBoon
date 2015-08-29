@@ -65,7 +65,6 @@ public class ArchivistRepositorySetup {
     public void init() throws IOException {
         setupElasticSearchMapping();
         createDefaultUsers();
-        createDefaultProxyConfiguration();
         createDefaultIngestPipeline();
         createSnapshotRepository();
         restartRunningIngests();
@@ -150,19 +149,6 @@ public class ArchivistRepositorySetup {
         userBuilder.setPassword("user");
         userBuilder.setRoles(Sets.newHashSet(StandardRoles.USER));
         userDao.create(userBuilder);
-    }
-
-    private void createDefaultProxyConfiguration() {
-        logger.info("Creating standard proxy configuration");
-        ProxyConfigBuilder builder = new ProxyConfigBuilder();
-        builder.setName("standard");
-        builder.setDescription("Default set of proxy images to make for every asset.");
-        builder.setOutputs(Lists.newArrayList(
-                new ProxyOutput("png", 128, 8),
-                new ProxyOutput("png", 256, 8),
-                new ProxyOutput("png", 1024, 8)
-        ));
-        imageService.createProxyConfig(builder);
     }
 
     private void createDefaultIngestPipeline() {

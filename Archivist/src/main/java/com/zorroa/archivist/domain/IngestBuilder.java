@@ -9,7 +9,6 @@ public class IngestBuilder {
 
     private String path;
     private Set<String> fileTypes = ImmutableSet.<String>of();
-    private String proxyConfig = "standard";
     private String pipeline = "standard";
     private boolean updateOnExist = true;
     private int assetWorkerThreads = 4;
@@ -49,15 +48,6 @@ public class IngestBuilder {
 
     public IngestBuilder setPath(String path) {
         this.path = path;
-        return this;
-    }
-
-    public String getProxyConfig() {
-        return proxyConfig;
-    }
-
-    public IngestBuilder setProxyConfig(String proxyConfig) {
-        this.proxyConfig = proxyConfig;
         return this;
     }
 

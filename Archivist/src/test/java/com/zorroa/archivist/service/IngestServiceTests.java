@@ -57,23 +57,13 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         ipb.addToProcessors(new IngestProcessorFactory("com.zorroa.archivist.processors.ChecksumProcessor"));
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
-        ProxyConfigBuilder pcb = new ProxyConfigBuilder();
-        pcb.setName("test");
-        pcb.setDescription("test proxy config.");
-        pcb.setOutputs(org.elasticsearch.common.collect.Lists.newArrayList(
-                new ProxyOutput("png", 128, 8)
-        ));
-        ProxyConfig testProxyConfig  = imageService.createProxyConfig(pcb);
-
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
         updateBuilder.setPipeline(testPipeline.getName());
-        updateBuilder.setProxyConfig(testProxyConfig.getName());
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         assertTrue(ingestService.updateIngest(ingest, updateBuilder));
 
         ingest = ingestService.getIngest(ingest.getId());
         assertEquals(testPipeline.getId(), ingest.getPipelineId());
-        assertEquals(testProxyConfig.getId(), ingest.getProxyConfigId());
     }
 }

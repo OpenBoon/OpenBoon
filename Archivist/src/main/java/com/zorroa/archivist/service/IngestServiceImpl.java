@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
-import com.zorroa.archivist.repository.ProxyConfigDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -37,9 +36,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Autowired
     IngestSchedulerService ingestSchedulerService;
-
-    @Autowired
-    ProxyConfigDao proxyConfigDao;
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
@@ -116,8 +112,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public Ingest createIngest(IngestBuilder builder) {
         IngestPipeline pipeline = ingestPipelineDao.get(builder.getPipeline());
-        ProxyConfig proxyConfig = proxyConfigDao.get(builder.getProxyConfig());
-        return ingestDao.create(pipeline, proxyConfig, builder);
+        return ingestDao.create(pipeline, builder);
     }
 
     @Override
@@ -127,17 +122,13 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
+
         // Update active ingest thread counts
         if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
                 ingest.getAssetWorkerThreads() != builder.getAssetWorkerThreads()) {
             ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());  // set new worker count
             ingestSchedulerService.pause(ingest);
             ingestSchedulerService.resume(ingest);
-        }
-
-         // Validate names if they are used and turn into IDs.
-        if (builder.getProxyConfig() != null) {
-            builder.setProxyConfigId(proxyConfigDao.get(builder.getProxyConfig()).getId());
         }
 
         if (builder.getPipeline() != null) {
