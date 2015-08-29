@@ -7,7 +7,7 @@ server:
 
 spring:
     datasource:
-        url: "jdbc:h2:mem:archivist;DB_CLOSE_DELAY=-1;MODE=Oracle;"
+        url: "jdbc:h2:./archivist;DB_CLOSE_DELAY=-1;MODE=Oracle;"
         driver-class-name: "org.h2.Driver"
 
 #security:

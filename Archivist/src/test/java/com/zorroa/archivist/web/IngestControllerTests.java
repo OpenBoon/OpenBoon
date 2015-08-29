@@ -49,8 +49,8 @@ public class IngestControllerTests extends MockMvcTest {
     public void testGetAll() throws Exception {
         MockHttpSession session = admin();
 
-        ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeNextIngest();
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestSchedulerService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(get("/api/v1/ingests")

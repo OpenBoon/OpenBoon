@@ -1,15 +1,13 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.IngestException;
-import com.zorroa.archivist.PausableExecutor;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestPipeline;
 import com.zorroa.archivist.domain.IngestProcessorFactory;
-import com.zorroa.archivist.domain.IngestState;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
 import com.zorroa.archivist.sdk.IngestProcessorService;
@@ -37,13 +35,10 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
 
 @Component
-public class IngestSchedulerServiceImpl extends AbstractScheduledService implements IngestSchedulerService {
+public class IngestSchedulerServiceImpl implements IngestSchedulerService {
 
     private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
 
@@ -65,8 +60,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
 
-    private final AtomicInteger runningIngestCount = new AtomicInteger();
-
     private final ConcurrentMap<Long, IngestWorker> runningIngests = Maps.newConcurrentMap();
 
     private Executor ingestExecutor;
@@ -74,105 +67,71 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
     @PostConstruct
     public void init() {
         ingestExecutor = Executors.newFixedThreadPool(ingestWorkerCount);
-        startAsync();
     }
 
     @Override
-    protected void runOneIteration() throws Exception {
-        if (!ArchivistConfiguration.unittest) {
-            executeNextIngest();
-        }
+    public boolean executeIngest(Ingest ingest) {
+        return start(ingest, true /* reset counters */);
     }
 
     @Override
-    protected Scheduler scheduler() {
-        /**
-         * Check for new ingests
-         */
-        return Scheduler.newFixedRateSchedule(0, 2, TimeUnit.SECONDS);
+    public boolean resume(Ingest ingest) {
+        return start(ingest, false /*don't reset counters*/);
     }
 
-    @Override
-    public Ingest executeNextIngest() {
-        if (runningIngestCount.get() >= ingestWorkerCount) {
-            return null;
-        }
-
-        List<Ingest> ingests = ingestService.getAllIngests(IngestState.Queued, 1);
-        if (ingests.isEmpty()) {
-            return null;
-        }
-
-        executeIngest(ingests.get(0));
-        return ingests.get(0);
-    }
-
-    @Override
-    public void executeIngest(Ingest ingest) {
-        executeIngest(ingest, false);
-    }
-
-    @Override
-    public void executeIngest(Ingest ingest, boolean paused) {
-        IngestWorker worker = new IngestWorker(ingest, ingest.getAssetWorkerThreads());
-        worker.setPaused(paused);
+    protected boolean start(Ingest ingest, boolean firstStart) {
+        IngestWorker worker = new IngestWorker(ingest);
 
         if (runningIngests.putIfAbsent(ingest.getId(), worker) == null) {
+
+            if (firstStart) {
+                // Reset counters and start time only on first execute, not restart
+                ingestService.resetIngestCounters(ingest);
+                ingestService.updateIngestStartTime(ingest, System.currentTimeMillis());
+            }
+
             if (ArchivistConfiguration.unittest) {
                 worker.run();
-            }
-            else {
+            } else {
+                if (!ingestService.setIngestQueued(ingest))
+                    return false;
                 ingestExecutor.execute(worker);
             }
         } else {
             logger.warn("The ingest is already executing: {}", ingest);
         }
+
+        return true;
     }
 
     @Override
     public boolean pause(Ingest ingest) {
-        IngestWorker worker = runningIngests.get(ingest.getId());
-        if (worker == null) {
+        if (!shutdown(ingest)) {
             return false;
         }
-        if (worker.setPaused(true)) {
-            ingestService.setIngestPaused(ingest, true);
-            return true;
-        }
-        return false;
+        ingestService.setIngestPaused(ingest);
+        return true;
     }
 
     @Override
-    public boolean resume(Ingest ingest) {
+    public boolean stop(Ingest ingest) {
+        if (!shutdown(ingest)) {
+            return false;
+        }
+        ingestService.setIngestIdle(ingest);
+        return true;
+    }
+
+    protected boolean shutdown(Ingest ingest) {
         IngestWorker worker = runningIngests.get(ingest.getId());
         if (worker == null) {
             return false;
         }
-
-        if (worker.setPaused(false)) {
-            ingestService.setIngestPaused(ingest, false);
-            return true;
-        }
-
-        return false;
+        worker.shutdown();
+        return true;
     }
 
     public class IngestWorker implements Runnable {
-
-        /**
-         * An Object to synchronized around for wait/notify.
-         */
-        private Object pausedMutex = new Object();
-
-        /**
-         * An AtomicBoolean for setting the paused state.
-         */
-        private AtomicBoolean paused = new AtomicBoolean(false);
-
-        /**
-         * A count down latch for determining if the ingest is complete.
-         */
-        private AtomicLong latch = new AtomicLong(0);
 
         /**
          * Counters for creates, updates, and errors.
@@ -186,28 +145,27 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
          */
         private Timer updateCountsTimer;
 
-        private PausableExecutor assetExecutor;
+        private AssetExecutor assetExecutor;
 
         private final Ingest ingest;
 
-        public IngestWorker(Ingest ingest, int threads) {
+        private boolean earlyShutdown = false;
+
+        public IngestWorker(Ingest ingest) {
             this.ingest = ingest;
-            this.assetExecutor = new PausableExecutor(threads);
+            assetExecutor = new AssetExecutor(ingest.getAssetWorkerThreads());
         }
 
-        public boolean setPaused(boolean value) {
-            boolean result = paused.compareAndSet(!value, value);
-            synchronized (pausedMutex) {
-                if (!value) {
-                    pausedMutex.notify();
-                    assetExecutor.resume();
+        public void shutdown() {
+            earlyShutdown = true;           // Force cleanup at end of ingest
+            assetExecutor.shutdownNow();
+            try {
+                while (!assetExecutor.awaitTermination(10, TimeUnit.SECONDS)) {
+                    Thread.sleep(250);
                 }
-                else {
-                    assetExecutor.pause();
-                }
+            } catch (InterruptedException e) {
+                logger.warn("Asset processing termination interrupted: " + e.getMessage());
             }
-
-            return result;
         }
 
         @Override
@@ -252,8 +210,6 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                     }
                 }, 1000, 1000);
 
-                ingestService.updateIngestStartTime(ingest, System.currentTimeMillis());
-
                 Path start = new File(ingest.getPath()).toPath();
                 Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
                     @Override
@@ -271,26 +227,7 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                             logger.debug("Found file: {}", file);
                         }
 
-                        if (paused.get() == true) {
-                            logger.info("Ingest thread paused {} {}", this, ingest);
-                            try {
-                                synchronized (pausedMutex) {
-                                    pausedMutex.wait();
-                                }
-                                logger.info("Ingest thread resumed {}", ingest);
-                            } catch (InterruptedException ignore) {
-                                // if the thread is interrupted then just terminate;
-                                return FileVisitResult.TERMINATE;
-                            }
-                        }
-
-                        /*
-                         * Increment a number for every worker we create.
-                         * The worker will decrement it when done.
-                         */
-                        latch.incrementAndGet();
-
-                        AssetWorker assetWorker = new AssetWorker(pipeline, ingest, file, latch);
+                        AssetWorker assetWorker = new AssetWorker(pipeline, ingest, file);
                         if (ArchivistConfiguration.unittest) {
                             assetWorker.run();
                         } else {
@@ -307,7 +244,8 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                     }
                 });
 
-                while (latch.get() != 0) {
+                // Block until all assets are processed or drained via shutdown
+                while (assetExecutor.getQueue().size() > 0) {
                     Thread.sleep(1000);
                 }
                 logger.info("Ingest {} finished", ingest);
@@ -316,18 +254,15 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
                 logger.warn("Failed to execute ingest," + e, e);
             } finally {
                 updateCountsTimer.cancel();
-                ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
-                ingestService.updateIngestCounters(ingest,
-                        createdCount.intValue(),
-                        updatedCount.intValue(),
-                        errorCount.intValue());
-
                 runningIngests.remove(ingest.getId());
-                ingestService.setIngestIdle(ingest);
-                for (IngestProcessorFactory factory : assetExecutor.getProcessors()) {
-                    if (factory.getProcessor() != null) {
-                        factory.getProcessor().teardown();
-                    }
+                assetExecutor.teardownProcessors();
+                if (!earlyShutdown) {       // Avoid if paused or interrupted
+                    ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
+                    ingestService.updateIngestCounters(ingest,
+                            createdCount.intValue(),
+                            updatedCount.intValue(),
+                            errorCount.intValue());
+                    ingestService.setIngestIdle(ingest);
                 }
             }
         }
@@ -337,12 +272,10 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
             private final IngestPipeline pipeline;
             private final Ingest ingest;
             private final AssetBuilder asset;
-            private final AtomicLong latch;
 
-            public AssetWorker(IngestPipeline pipeline, Ingest ingest, Path path, AtomicLong latch) {
+            public AssetWorker(IngestPipeline pipeline, Ingest ingest, Path path) {
                 this.pipeline = pipeline;
                 this.ingest = ingest;
-                this.latch = latch;
                 this.asset = new AssetBuilder(path.toFile());
                 this.asset.setAsync(true);
             }
@@ -350,39 +283,37 @@ public class IngestSchedulerServiceImpl extends AbstractScheduledService impleme
             @Override
             public void run() {
 
-                try {
-                    if (!ingest.isUpdateOnExist()) {
-                        if (assetService.assetExistsByPath(asset.getAbsolutePath().toString())) {
-                            return;
-                        }
+                // Skip assets that were index after the start of the current ingest.
+                // FIXME: This fails when two ingests overlap in time and share files.
+                //        Fixable with per-ingest start times using ingest list below.
+                if (assetService.assetExistsByPathAfter(asset.getAbsolutePath().toString(),
+                        ingest.getTimeStarted())) {
+                    return;
+                }
+
+                if (!ingest.isUpdateOnExist()) {
+                    if (assetService.assetExistsByPath(asset.getAbsolutePath().toString())) {
+                        return;
                     }
+                }
 
-                    logger.debug("Ingesting: {}", asset);
-                    /*
-                     * Add some standard keys to the document
-                     */
-                    asset.put("ingest", "pipeline", pipeline.getId());
-                    asset.put("ingest", "builder", ingest.getPath());
-                    asset.put("ingest", "time", System.currentTimeMillis());
+                logger.debug("Ingesting: {}", asset);
 
-                    /*
-                     * Execute all the processor which are part of the pipeline.
-                     */
-                    executeProcessors();
+                // Store per-ingest id and time info.
+                // Store last time for each ingest to properly handle overlap.
+                asset.put("ingest", "pipeline", pipeline.getId());
+                asset.put("ingest", "builder", ingest.getPath());
+                asset.put("ingest", "time", System.currentTimeMillis());
 
-                    /*
-                     * Finally, create the asset.
-                     */
-                    logger.debug("Creating asset: {}", asset);
-                    if (assetService.replaceAsset(asset)) {
-                        updatedCount.increment();
-                    }
-                    else {
-                        createdCount.increment();
-                    }
+                // Run the ingest processors to augment the AssetBuilder
+                executeProcessors();
 
-                } finally {
-                    latch.decrementAndGet();
+                // Store the asset using the final builder
+                logger.debug("Creating asset: {}", asset);
+                if (assetService.replaceAsset(asset)) {
+                    updatedCount.increment();
+                } else {
+                    createdCount.increment();
                 }
             }
 

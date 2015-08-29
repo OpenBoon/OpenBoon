@@ -57,7 +57,8 @@ public class IngestSchedulerServiceTests extends ArchivistApplicationTests {
         }, 2000);
 
 
-        ingestSchedulerService.executeIngest(ingest, true);
+        ingestSchedulerService.executeIngest(ingest);   // Race condition!
+        ingestSchedulerService.pause(ingest);
     }
 
     @Test
