@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
@@ -171,20 +172,23 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
         @Override
         public void run() {
 
+
             if (!ingestService.setIngestRunning(ingest)) {
                 logger.warn("Unable to set ingest {} to the running state.", ingest);
                 return;
             }
+
+            // Keep a list of the processor instances which we'll use for
+            // running the tear down later on.
+            List<IngestProcessor> processors = Lists.newArrayList();
 
             try {
                 /*
                  * Initialize everything we need to run this ingest
                  */
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
-                List<IngestProcessorFactory> processors = pipeline.getProcessors();
-                assetExecutor.setProcessors(processors);
 
-                for (IngestProcessorFactory factory : processors) {
+                for (IngestProcessorFactory factory : pipeline.getProcessors()) {
                     IngestProcessor processor = factory.init();
                     if (processor == null) {
                         String msg = "Aborting ingest, processor not found:" + factory.getKlass();
@@ -197,6 +201,7 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
                     AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                     autowire.autowireBean(processor);
                     processor.setIngestProcessorService(ingestProcessorService);
+                    processors.add(processor);
                 }
 
                 updateCountsTimer = new Timer();
@@ -244,18 +249,19 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
                     }
                 });
 
-                // Block until all assets are processed or drained via shutdown
-                while (assetExecutor.getQueue().size() > 0) {
-                    Thread.sleep(1000);
-                }
-                logger.info("Ingest {} finished", ingest);
+                /*
+                 * Block forever until the queue is empty and all threads
+                 * have stopped working.
+                 */
+                assetExecutor.waitForCompletion();
+                logger.info("Ingest {} finished successfully.", ingest);
 
             } catch (Exception e) {
                 logger.warn("Failed to execute ingest," + e, e);
             } finally {
                 updateCountsTimer.cancel();
                 runningIngests.remove(ingest.getId());
-                assetExecutor.teardownProcessors();
+                processors.forEach(p->p.teardown());
                 if (!earlyShutdown) {       // Avoid if paused or interrupted
                     ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
                     ingestService.updateIngestCounters(ingest,
@@ -283,37 +289,45 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
             @Override
             public void run() {
 
-                // Skip assets that were index after the start of the current ingest.
-                // FIXME: This fails when two ingests overlap in time and share files.
-                //        Fixable with per-ingest start times using ingest list below.
-                if (assetService.assetExistsByPathAfter(asset.getAbsolutePath().toString(),
-                        ingest.getTimeStarted())) {
-                    return;
-                }
-
-                if (!ingest.isUpdateOnExist()) {
-                    if (assetService.assetExistsByPath(asset.getAbsolutePath().toString())) {
+                //
+                // Put a try block here so the thread doesn't exit after an exception.
+                //
+                try {
+                    // Skip assets that were index after the start of the current ingest.
+                    // FIXME: This fails when two ingests overlap in time and share files.
+                    //        Fixable with per-ingest start times using ingest list below.
+                    if (assetService.assetExistsByPathAfter(asset.getAbsolutePath().toString(),
+                            ingest.getTimeStarted())) {
                         return;
                     }
+
+                    if (!ingest.isUpdateOnExist()) {
+                        if (assetService.assetExistsByPath(asset.getAbsolutePath().toString())) {
+                            return;
+                        }
+                    }
+
+                    logger.debug("Ingesting: {}", asset);
+
+                    // Store per-ingest id and time info.
+                    // Store last time for each ingest to properly handle overlap.
+                    asset.put("ingest", "pipeline", pipeline.getId());
+                    asset.put("ingest", "builder", ingest.getPath());
+                    asset.put("ingest", "time", System.currentTimeMillis());
+
+                    // Run the ingest processors to augment the AssetBuilder
+                    executeProcessors();
+
+                    // Store the asset using the final builder
+                    logger.debug("Creating asset: {}", asset);
+                    if (assetService.replaceAsset(asset)) {
+                        updatedCount.increment();
+                    } else {
+                        createdCount.increment();
+                    }
                 }
-
-                logger.debug("Ingesting: {}", asset);
-
-                // Store per-ingest id and time info.
-                // Store last time for each ingest to properly handle overlap.
-                asset.put("ingest", "pipeline", pipeline.getId());
-                asset.put("ingest", "builder", ingest.getPath());
-                asset.put("ingest", "time", System.currentTimeMillis());
-
-                // Run the ingest processors to augment the AssetBuilder
-                executeProcessors();
-
-                // Store the asset using the final builder
-                logger.debug("Creating asset: {}", asset);
-                if (assetService.replaceAsset(asset)) {
-                    updatedCount.increment();
-                } else {
-                    createdCount.increment();
+                catch (Exception e) {
+                    logger.warn("Failed to execute ingest for asset '{}',", asset.getAbsolutePath(), e);
                 }
             }
 
