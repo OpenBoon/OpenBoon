@@ -14,6 +14,7 @@ import org.elasticsearch.common.util.concurrent.UncategorizedExecutionException;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.mapper.MapperParsingException;
+import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
@@ -62,8 +63,12 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                     mapper = mapper.field("properties", namespaceMap).endObject();
                 }
                 mapper = mapper.endObject().endObject().endObject();
-                client.admin().indices().preparePutMapping(alias).setType(getType())
-                        .setSource(mapper).execute().actionGet();
+                client.admin().indices().preparePutMapping(alias)
+                        .setIgnoreConflicts(true)
+                        .setType(getType())
+                        .setSource(mapper)
+                        .execute()
+                        .actionGet();
                 builder.updateMapped();
             } catch (ElasticsearchException e) {
                 logger.error("Elasticsearch mapping exception for " + builder.getFilename() + ": " + e.getDetailedMessage());
@@ -149,6 +154,17 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     public boolean existsByPath(String path) {
         long count = client.prepareCount(alias)
                 .setQuery(QueryBuilders.termQuery("source.path.untouched", path))
+                .get()
+                .getCount();
+        return count > 0;
+    }
+
+    @Override
+    public boolean existsByPathAfter(String path, long afterTime) {
+        long count = client.prepareCount(alias)
+                .setQuery(QueryBuilders.filteredQuery(
+                        QueryBuilders.termQuery("source.path.untouched", path),
+                        FilterBuilders.rangeFilter("_timestamp").gt(afterTime)))
                 .get()
                 .getCount();
         return count > 0;

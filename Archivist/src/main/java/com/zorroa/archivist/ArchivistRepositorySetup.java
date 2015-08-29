@@ -6,7 +6,9 @@ import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.service.ImageService;
+import com.zorroa.archivist.service.IngestSchedulerService;
 import com.zorroa.archivist.service.IngestService;
+import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;
@@ -37,6 +39,9 @@ public class ArchivistRepositorySetup {
     IngestService ingestService;
 
     @Autowired
+    IngestSchedulerService ingestSchedulerService;
+
+    @Autowired
     ImageService imageService;
 
     @Autowired
@@ -62,6 +67,7 @@ public class ArchivistRepositorySetup {
         createDefaultUsers();
         createDefaultIngestPipeline();
         createSnapshotRepository();
+        restartRunningIngests();
     }
      /**
      * Automatically sets up elastic search if its not setup already.
@@ -146,13 +152,15 @@ public class ArchivistRepositorySetup {
     }
 
     private void createDefaultIngestPipeline() {
-        IngestPipelineBuilder builder = new IngestPipelineBuilder();
-        builder.setName("standard");
-        builder.addToProcessors(new IngestProcessorFactory(AssetMetadataProcessor.class));
-        builder.addToProcessors(new IngestProcessorFactory(ProxyProcessor.class));
+        if (ingestService.getIngestPipelines().size() == 0) {
+            IngestPipelineBuilder builder = new IngestPipelineBuilder();
+            builder.setName("standard");
+            builder.addToProcessors(new IngestProcessorFactory(AssetMetadataProcessor.class));
+            builder.addToProcessors(new IngestProcessorFactory(ProxyProcessor.class));
 
-        logger.info("Creating 'standard' ingest pipeline");
-        ingestService.createIngestPipeline(builder);
+            logger.info("Creating 'standard' ingest pipeline");
+            ingestService.createIngestPipeline(builder);
+        }
     }
 
     private void createSnapshotRepository() {
@@ -170,5 +178,24 @@ public class ArchivistRepositorySetup {
                 .setType("fs")
                 .setSettings(settings)
                 .execute().actionGet();
+    }
+
+    private void restartRunningIngests() {
+        // Start running ingests first so they get the active threads
+        for (Ingest ingest : ingestService.getAllIngests()) {
+            if (ingest.getState() == IngestState.Running) {
+                ingestService.setIngestPaused(ingest);      // Set paused to avoid resume error checks
+                ingestSchedulerService.resume(ingest);
+                logger.info("Restarting ingest " + ingest.getId());
+            }
+        }
+
+        // Start queued ingests after all running ingests
+        for (Ingest ingest : ingestService.getAllIngests()) {
+            if (ingest.getState() == IngestState.Queued) {
+                ingestSchedulerService.executeIngest(ingest);
+                logger.info("Re-executing queued ingest " + ingest.getId());
+            }
+        }
     }
 }

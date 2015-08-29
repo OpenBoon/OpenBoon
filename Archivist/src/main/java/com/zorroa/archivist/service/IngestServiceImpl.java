@@ -34,6 +34,9 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Autowired
     IngestDao ingestDao;
 
+    @Autowired
+    IngestSchedulerService ingestSchedulerService;
+
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
         return ingestPipelineDao.create(builder);
@@ -66,31 +69,27 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean setIngestRunning(Ingest ingest) {
-        if (ingestDao.setState(ingest, IngestState.Running)) {
-            ingestDao.resetCounters(ingest);
-            return true;
-        }
-        return false;
+        return ingestDao.setState(ingest, IngestState.Running);
+    }
+
+    @Override
+    public void resetIngestCounters(Ingest ingest) {
+        ingestDao.resetCounters(ingest);
     }
 
     @Override
     public boolean setIngestIdle(Ingest ingest) {
-        return ingestDao.setState(ingest, IngestState.Idle, IngestState.Running);
+        return ingestDao.setState(ingest, IngestState.Idle);
     }
 
     @Override
     public boolean setIngestQueued(Ingest ingest) {
-        return ingestDao.setState(ingest, IngestState.Queued, IngestState.Idle);
+        return ingestDao.setState(ingest, IngestState.Queued);
     }
 
     @Override
-    public boolean setIngestPaused(Ingest ingest, boolean value) {
-        if (value) {
-            return ingestDao.setState(ingest, IngestState.Paused, IngestState.Running);
-        }
-        else {
-            return ingestDao.setState(ingest, IngestState.Running, IngestState.Paused);
-        }
+    public boolean setIngestPaused(Ingest ingest) {
+        return ingestDao.setState(ingest, IngestState.Paused);
     }
 
     @Override
@@ -123,9 +122,15 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
-        /*
-         * Validate names if they are used and turn into IDs.
-         */
+
+        // Update active ingest thread counts
+        if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
+                ingest.getAssetWorkerThreads() != builder.getAssetWorkerThreads()) {
+            ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());  // set new worker count
+            ingestSchedulerService.pause(ingest);
+            ingestSchedulerService.resume(ingest);
+        }
+
         if (builder.getPipeline() != null) {
             builder.setPipelineId(ingestPipelineDao.get(builder.getPipeline()).getId());
         }

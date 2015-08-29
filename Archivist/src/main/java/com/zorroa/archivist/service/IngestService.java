@@ -46,10 +46,12 @@ public interface IngestService {
 
     boolean setIngestRunning(Ingest ingest);
 
+    void resetIngestCounters(Ingest ingest);
+
     boolean setIngestIdle(Ingest ingest);
 
     boolean setIngestQueued(Ingest ingest);
 
-    boolean setIngestPaused(Ingest ingest, boolean value);
+    boolean setIngestPaused(Ingest ingest);
 
 }
