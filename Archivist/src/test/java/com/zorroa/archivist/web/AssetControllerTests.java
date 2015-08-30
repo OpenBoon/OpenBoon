@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -254,7 +255,8 @@ public class AssetControllerTests extends MockMvcTest {
             assertEquals(false, json.get("created"));
         }
 
-        String query = "{ \"query\": { \"filtered\" : { \"query\" : { \"match_all\": {}}, \"folder\" : \"" + foo.getId() + "\" }}}";
+        String folderJSON = new String(Json.serialize(foo), StandardCharsets.UTF_8);
+        String query = "{ \"query\": { \"filtered\" : { \"query\" : { \"match_all\": {}}, \"folder\" : " + folderJSON + " }}}";
         result = mvc.perform(post("/api/v1/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

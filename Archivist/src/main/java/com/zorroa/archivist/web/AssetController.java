@@ -59,6 +59,8 @@ public class AssetController {
     // Folders are either a "should" search or a filter that restricts the output to
     // items that have at least one of the folder ids in the asset's "folder" list.
     QueryBuilder buildFolderQuery(Map<String, Object> json) {
+        // Determine if we have a "folder" option, returning null if not and
+        // returning a QueryBuilder if we do, modifying the json map as a side effect
         if (json.get("query") == null)
             return null;
         Map<String, Object> query = (Map<String, Object>) json.get("query");
@@ -68,10 +70,13 @@ public class AssetController {
         if (query.get("folder") == null)
             return null;
         json.remove("query");   // Leave aggs, size, from, & sort for extraSource
-        Folder folder = folderService.get((String) query.get("folder"));
+
+        // FIXME: Instead of using the id for folderService.get, read embedded json directly (by value)
+        Folder folder = folderService.get((String) ((Map<String, Object>)query.get("folder")).get("id"));
         byte[] primaryQueryBytes = Json.serialize(query.get("query"));
         QueryBuilder primaryQuery = QueryBuilders.wrapperQuery(primaryQueryBytes, 0, primaryQueryBytes.length);
         QueryBuilder queryBuilder = primaryQuery;       // Final combined filtered query, default to primary alone
+
         // Get all the decendents of the folder and create filter & query lists
         ArrayList<String> folderIds = new ArrayList<>();
         BoolQueryBuilder folderQuery = QueryBuilders.boolQuery().minimumNumberShouldMatch(1);
