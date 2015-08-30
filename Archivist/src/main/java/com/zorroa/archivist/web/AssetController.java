@@ -62,12 +62,12 @@ public class AssetController {
         if (json.get("query") == null)
             return null;
         Map<String, Object> query = (Map<String, Object>) json.get("query");
-        json.remove("query");   // Leave aggs, size, from, & sort for extraSource
         if (query.get("filtered") == null)
             return null;
         query = (Map<String, Object>) query.get("filtered");
         if (query.get("folder") == null)
             return null;
+        json.remove("query");   // Leave aggs, size, from, & sort for extraSource
         Folder folder = folderService.get((String) query.get("folder"));
         byte[] primaryQueryBytes = Json.serialize(query.get("query"));
         QueryBuilder primaryQuery = QueryBuilders.wrapperQuery(primaryQueryBytes, 0, primaryQueryBytes.length);
