@@ -1,0 +1,126 @@
+package com.zorroa.archivist.repository;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.zorroa.archivist.Json;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderBuilder;
+import org.elasticsearch.action.delete.DeleteRequestBuilder;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.index.query.*;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.stereotype.Repository;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
+
+    private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
+
+    @Override
+    public String getType() {
+        return "folders";
+    }
+
+    private static final JsonRowMapper<Folder> MAPPER = new JsonRowMapper<Folder>() {
+        @Override
+        public Folder mapRow(String id, long version, byte[] source) {
+            try {
+                Map<String, Object> data = Json.Mapper.readValue(source, new TypeReference<Map<String, Object>>() {});
+                Folder folder = new Folder();
+                folder.setId(id);
+                folder.setName((String) data.get("name"));
+                folder.setUserId((int) data.get("userId"));
+                if (data.get("parentId") != null)
+                    folder.setParentId((String)data.get("parentId"));
+                if (data.get("query") != null)
+                    folder.setQuery((String) data.get("query"));
+                return folder;
+            } catch (IOException e) {
+                throw new DataRetrievalFailureException("Failed to parse folder record, " + e, e);
+            }
+        }
+    };
+
+    @Override
+    public Folder get(String id) {
+        return elastic.queryForObject(id, MAPPER);
+    }
+
+    private List<Folder> getFolders(QueryBuilder queryBuilder) {
+        List<Folder> folders = new ArrayList<Folder>();
+        for (int i = 0; i < 1000; ++i) {
+            final int scrollSize = 1000;
+            SearchRequestBuilder search = client.prepareSearch(alias)
+                    .setTypes(getType())
+                    .setQuery(queryBuilder)
+                    .setSize(scrollSize)
+                    .setFrom(i * scrollSize);
+            List<Folder> folderPage = elastic.query(search, MAPPER);
+            folders.addAll(folderPage);
+            if (folderPage.size() < scrollSize)
+                break;
+        }
+        return folders;
+    }
+
+    @Override
+    public List<Folder> getAll(int userId) {
+        // Build a filtered query that matches the user and excludes child folders
+        TermFilterBuilder userFilter = FilterBuilders.termFilter("userId", userId);
+        ExistsFilterBuilder parentFilter = FilterBuilders.existsFilter("parentId");
+        BoolFilterBuilder boolFilter = FilterBuilders.boolFilter()
+                .must(userFilter)
+                .mustNot(parentFilter);
+        FilteredQueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(), boolFilter);
+        return getFolders(query);
+    }
+
+    @Override
+    public List<Folder> getChildren(Folder folder) {
+        return getFolders(QueryBuilders.termQuery("parentId", folder.getId()));
+    }
+
+    IndexRequestBuilder buildRequest(FolderBuilder builder, String id, IndexRequest.OpType op) {
+        return client.prepareIndex(alias, getType())
+                .setId(id)
+                .setOpType(op)
+                .setSource(Json.serialize(builder.getDocument()))
+                .setRefresh(true);
+    }
+
+    @Override
+    public Folder create(FolderBuilder builder) {
+        IndexRequestBuilder idxBuilder = buildRequest(builder, uuidGenerator.generate(builder.getName()).toString(), IndexRequest.OpType.CREATE);
+        String id = idxBuilder.get().getId();
+        return get(id);
+    }
+
+    @Override
+    public boolean update(Folder folder, FolderBuilder builder) {
+        // TODO: Use a script to remove the parentId field if none are left!
+        //   Eg: "ctx._source.remove(\"parentGuid\")"
+        IndexRequestBuilder idxBuilder = buildRequest(builder, folder.getId(), IndexRequest.OpType.INDEX);
+        String id = idxBuilder.get().getId();
+        return id.equals(folder.getId());
+    }
+
+    @Override
+    public boolean delete(Folder folder) {
+        DeleteRequestBuilder builder = client.prepareDelete()
+                .setIndex(alias)
+                .setType(getType())
+                .setId(folder.getId())
+                .setType("folders")
+                .setRefresh(true);
+        String id = builder.get().getId();
+        return id.equals(folder.getId());
+    }
+}

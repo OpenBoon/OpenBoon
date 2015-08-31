@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.repository.AssetDao;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -99,8 +101,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
 
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {
-                });
+                new TypeReference<Map<String, Object>>() {});
         Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
         Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
         assertEquals(10, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
@@ -152,13 +153,13 @@ public class AssetControllerTests extends MockMvcTest {
                     .andReturn();
             Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                     new TypeReference<Map<String, Object>>() {});
-            assertEquals(asset.getId(), (String) json.get("_id"));
+            assertEquals(asset.getId(), json.get("_id"));
         }
 
     }
 
     @Test
-    public void testCollections() throws Exception {
+    public void testFolderAssign() throws Exception {
 
 
         MockHttpSession session = admin();
@@ -172,7 +173,7 @@ public class AssetControllerTests extends MockMvcTest {
         // Assign two collection names to each asset
         for (Asset asset : assets) {
 
-            MvcResult result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_collections")
+            MvcResult result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
                     .session(session)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .content("[\"foo\", \"bar\"]"))
@@ -180,10 +181,10 @@ public class AssetControllerTests extends MockMvcTest {
                     .andReturn();
             Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                     new TypeReference<Map<String, Object>>() {});
-            assertEquals(false, (boolean) json.get("created"));
+            assertEquals(false, json.get("created"));
         }
 
-        // Get each asset and verify that it has the assigned collections
+        // Get each asset and verify that it has the assigned folders
         for (Asset asset: assets) {
             MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
                     .session(session)
@@ -192,13 +193,99 @@ public class AssetControllerTests extends MockMvcTest {
                     .andReturn();
             Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                     new TypeReference<Map<String, Object>>() {});
-            assertEquals(asset.getId(), (String) json.get("_id"));
+            assertEquals(asset.getId(), json.get("_id"));
             Map<String, Object> source = (Map<String, Object>) json.get("_source");
-            ArrayList<String> collections = (ArrayList<String>) source.get("collections");
-            assertEquals(collections.size(), 2);
-            assertEquals(collections.get(0), "foo");
-            assertEquals(collections.get(1), "bar");
+            ArrayList<String> folders = (ArrayList<String>) source.get("folders");
+            assertEquals(folders.size(), 2);
+            assertEquals(folders.get(0), "foo");
+            assertEquals(folders.get(1), "bar");
+        }
+    }
+
+//    @Test
+//    public void testFilteredSearch() throw Exception {
+//
+//    }
+
+    @Test
+    public void testFolderSearchBasic() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
+        ingestSchedulerService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        List<Asset> assets = assetDao.getAll();
+
+        // Create two folders
+        MvcResult result = mvc.perform(post("/api/v1/folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"name\": \"foo\", \"userId\": 1 }".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Folder foo = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {
+                });
+
+        result = mvc.perform(post("/api/v1/folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"name\": \"bar\", \"userId\": 1 }".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Folder bar = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+
+        // Assign two collection names to each asset
+        for (int i = 0; i < assets.size(); ++i) {
+            Asset asset = assets.get(i);
+            String folderId = (i % 2) == 0 ? foo.getId() : bar.getId();
+            result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
+                    .session(session)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content("[\"" + folderId + "\"]"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                    new TypeReference<Map<String, Object>>() {});
+            assertEquals(false, json.get("created"));
         }
 
+        String folderJSON = new String(Json.serialize(foo), StandardCharsets.UTF_8);
+        String query = "{ \"query\": { \"filtered\" : { \"query\" : { \"match_all\": {}}, \"folder\" : " + folderJSON + " }}}";
+        result = mvc.perform(post("/api/v1/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(query.getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        assertEquals(1, (int) hits.get("total"));
     }
+
+//    @Test
+//    public void testFolderSearchFilter() throws Exception {
+//    }
+//
+//    @Test
+//    public void testSearchFolders() throws Exception {
+//
+//    }
+//
+//    @Test
+//    public void testFilteredSearchFolders() throws Exception {
+//
+//    }
+//
+//    @Test
+//    public void testFilteredSearchAndFilterFolders() throws Exception {
+//
+//    }
 }
