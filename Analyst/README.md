@@ -40,12 +40,12 @@ For example, to run an ingest with both the CaffeIngestor and FaceIngestor:
 4. `mvn validate`, only need to do this once to install opencv-2411.jar to the local maven repo, unless you clear the maven repository
 5. `mvn package`
 6. `cd <archivist>`
-7. `mvn package`
-8. The remaining steps are encapsulated in the bash script below.
-9. Set `ZORROA_SITE_PATH` to `<path-to-ingestors-project>/target`, which should contain Ingestors-1.0.0.jar
+7. [Download the Caffe test models](http://zorroa.com/caffe/caffe-models.tgz)
+8. `mvn package`
+9. Un-tar the models to a directory, e.g. `<path-to-ingestors-project>/models/caffe/imagenet` (the tar file does this if you unpack it from the top of the ingestors project)
+10. The remaining steps are encapsulated in the bash script below.
+11. Set `ZORROA_SITE_PATH` to `<path-to-ingestors-project>/target`, which should contain Ingestors-1.0.0.jar
 10. Set `DYLD_FALLBACK_LIBRARY_PATH` to `<path-to-ingestors-project>/lib/caffe:<path-to-ingestors-project>/lib/face`
-11. [Download the Caffe test models](http://zorroa.com/caffe/caffe-models.tgz)
-12. Un-tar the models to a directory, e.g. `<path-to-ingestors-project>/models/caffe/imagenet` (the tar file does this if you unpack it from the top of the ingestors project)
 13. Set `ZORROA_OPENCV_MODELS_PATH` to `<path-to-ingestors-project>/models`
 14. Run the server with the following VM options: `-Djava.library.path=<path-to-ingestors-project>target/jni:<path-to-ingestors>/lib/face`
 
