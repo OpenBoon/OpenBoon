@@ -240,7 +240,13 @@ public class AssetController {
     }
 
     @RequestMapping(value = "/api/v1/assets/{id}/_folders", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String update(@RequestBody String body, @PathVariable String id) throws Exception {
+    public String update(@RequestBody String body, @PathVariable String id, HttpSession httpSession) throws Exception {
+
+        Session session = userService.getSession(httpSession);
+        Room room = roomService.getActiveRoom(session);
+        String msg = "{ \"assetId\" : \"" + id + "\", \"folders\": " + body + " }";
+        roomService.sendToRoom(room, new Message(MessageType.ASSET_UPDATE_FOLDERS, msg));
+
         // Add the request body array of collection names to the folders field
         String doc = "{\"folders\":" + body + "}";  // Hand-coded JSON doc update
         UpdateRequestBuilder builder = client.prepareUpdate(alias, "asset", id)
