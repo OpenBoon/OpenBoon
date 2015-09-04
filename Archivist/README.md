@@ -163,7 +163,7 @@ curl -XPOST -i 'http://localhost:9200/archivist_01/asset/_search?pretty' -d '{
 }'
 ```
 
-You can search for all items in the collection Wex using:
+You can search for all items in the folder Wex using:
 
 ```
 curl -XPOST -i 'http://localhost:9200/archivist_01/_search?pretty' -d '{
@@ -171,7 +171,7 @@ curl -XPOST -i 'http://localhost:9200/archivist_01/_search?pretty' -d '{
     "filtered" : {
       "filter" : {
         "terms" : {
-          "collections" : ["Wex"]
+          "folders" : ["<Wex-folder-guid>"]
         }
       }
     }

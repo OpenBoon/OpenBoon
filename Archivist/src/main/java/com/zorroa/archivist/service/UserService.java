@@ -12,6 +12,8 @@ public interface UserService {
 
     User login();
 
+    User create(UserBuilder builder);
+
     User get(String username);
 
     User get(int id);
