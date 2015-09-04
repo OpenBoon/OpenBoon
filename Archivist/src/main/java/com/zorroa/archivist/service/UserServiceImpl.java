@@ -1,10 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserUpdateBuilder;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +40,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User get(int id) {
         return userDao.get(id);
+    }
+
+    @Override
+    public User create(UserBuilder builder) {
+        return userDao.create(builder);
     }
 
     @Override

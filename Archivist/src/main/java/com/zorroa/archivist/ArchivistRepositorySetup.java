@@ -1,18 +1,17 @@
 package com.zorroa.archivist;
 
-import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.IngestState;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
-import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.IngestSchedulerService;
 import com.zorroa.archivist.service.IngestService;
-import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.io.ByteStreams;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
@@ -21,14 +20,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Component
-public class ArchivistRepositorySetup {
+public class ArchivistRepositorySetup implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(ArchivistRepositorySetup.class);
 
@@ -47,9 +47,6 @@ public class ArchivistRepositorySetup {
     @Autowired
     Client client;
 
-    @Autowired
-    UserDao userDao;
-
     @Value("${archivist.index.alias}")
     private String alias;
 
@@ -61,20 +58,18 @@ public class ArchivistRepositorySetup {
 
     private String indexName;
 
-    @PostConstruct
-    public void init() throws IOException {
-        setupElasticSearchMapping();
-        createDefaultUsers();
-        createDefaultIngestPipeline();
-        createSnapshotRepository();
-        restartRunningIngests();
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        try {
+            setupElasticSearchMapping();
+            createDefaultIngestPipeline();
+            createSnapshotRepository();
+            restartRunningIngests();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-     /**
-     * Automatically sets up elastic search if its not setup already.
-     *
-     * @param client
-     * @throws IOException
-     */
+
     private void setupElasticSearchMapping() throws IOException {
 
         ClassPathResource resource = new ClassPathResource("elastic-mapping.json");
@@ -127,28 +122,6 @@ public class ArchivistRepositorySetup {
     public void refreshIndex() {
         logger.info("refreshing index: '{}'", alias);
         client.admin().indices().prepareRefresh(alias).get();
-    }
-
-    private void createDefaultUsers()  {
-        logger.info("Creating standard users");
-
-        UserBuilder adminBuilder = new UserBuilder();
-        adminBuilder.setEmail("admin@zorroa.com");
-        adminBuilder.setFirstName("Joe");
-        adminBuilder.setLastName("Admin");
-        adminBuilder.setUsername("admin");
-        adminBuilder.setPassword("admin");
-        adminBuilder.setRoles(Sets.newHashSet(StandardRoles.ADMIN));
-        userDao.create(adminBuilder);
-
-        UserBuilder userBuilder = new UserBuilder();
-        userBuilder.setEmail("user@zorroa.com");
-        userBuilder.setFirstName("Bob");
-        userBuilder.setLastName("User");
-        userBuilder.setUsername("user");
-        userBuilder.setPassword("user");
-        userBuilder.setRoles(Sets.newHashSet(StandardRoles.USER));
-        userDao.create(userBuilder);
     }
 
     private void createDefaultIngestPipeline() {

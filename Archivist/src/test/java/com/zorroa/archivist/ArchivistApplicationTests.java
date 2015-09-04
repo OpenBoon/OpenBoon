@@ -1,5 +1,9 @@
 package com.zorroa.archivist;
 
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.StandardRoles;
+import com.zorroa.archivist.domain.UserBuilder;
+import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
@@ -38,6 +42,9 @@ public abstract class ArchivistApplicationTests {
 
     @Autowired
     protected Client client;
+
+    @Autowired
+    protected UserService userService;
 
     @Value("${archivist.index.alias}")
     protected String alias;
@@ -82,8 +89,21 @@ public abstract class ArchivistApplicationTests {
             DeleteIndexRequestBuilder deleteBuilder = new DeleteIndexRequestBuilder(client.admin().indices(), "restored_archivist_01");
             deleteBuilder.execute().actionGet();
         } catch (IndexMissingException e) {
-            logger.info("No existing snapshot to delete")
-;        }
+            logger.info("No existing snapshot to delete");
+        }
+
+
+        /**
+         * Adds in a test, non privileged user.
+         */
+        UserBuilder userBuilder = new UserBuilder();
+        userBuilder.setEmail("user@zorroa.com");
+        userBuilder.setFirstName("Bob");
+        userBuilder.setLastName("User");
+        userBuilder.setUsername("user");
+        userBuilder.setPassword("user");
+        userBuilder.setRoles(Sets.newHashSet(StandardRoles.USER));
+        userService.create(userBuilder);
     }
 
     public String getStaticImagePath(String subdir) {

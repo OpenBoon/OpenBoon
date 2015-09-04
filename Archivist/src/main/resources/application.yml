@@ -5,10 +5,15 @@
 server:
     port: 8066
 
-spring:
-    datasource:
-        url: "jdbc:h2:./archivist;DB_CLOSE_DELAY=-1;MODE=Oracle;"
-        driver-class-name: "org.h2.Driver"
+flyway:
+    check-location: true
+    initOnMigrate: true
+
+logging:
+    level:
+        com:
+            googlecode:
+                flyway: "DEBUG"
 
 #security:
 #    basic:
@@ -18,6 +23,12 @@ spring:
 # Archivist Settings
 #
 archivist:
+    datasource:
+        primary:
+            url: "jdbc:h2:./db/archivist;DB_CLOSE_DELAY=-1;MODE=Oracle;"
+            driver-class-name: "org.h2.Driver"
+            username: "sa"
+            password: ""
     events:
         port: 8087
 

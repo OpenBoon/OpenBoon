@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.Room;
@@ -27,8 +28,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         user.setEmail(rs.getString("str_email"));
         user.setFirstName(rs.getString("str_firstname"));
         user.setLastName(rs.getString("str_lastname"));
-        String[] roles = (String[]) rs.getObject("list_roles");
-        user.setRoles(ImmutableSet.<String>copyOf(roles));
+        user.setRoles(ImmutableSet.<String>copyOf(
+                Splitter.on(",")
+                        .omitEmptyStrings()
+                        .trimResults()
+                        .splitToList(rs.getString("list_roles"))));
         user.setEnabled(rs.getBoolean("bool_enabled"));
         return user;
     };
@@ -76,7 +80,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setString(3, builder.getEmail());
             ps.setString(4, builder.getFirstName());
             ps.setString(5, builder.getLastName());
-            ps.setObject(6, builder.getRoles().toArray(new String[]{}));
+            ps.setString(6, String.join(",", builder.getRoles()));
             ps.setBoolean(7, true);
             return ps;
         }, keyHolder);
