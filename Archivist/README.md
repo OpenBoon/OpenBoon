@@ -63,8 +63,9 @@ See the Ingester README for an example of how to run an ingest with external pro
 | /api/v1/login              | POST   | Login via simple HTTP authentication                           |
 | /api/v1/logout             | POST   | Log the authenticated user out                                 |
 | /api/v1/users              | GET    | Get a list of all users                                        |
+| /health                    | GET    | Show the health details for the server
 
-## Talking to the Archivst using Curl
+## Talking to the Archivist using Curl
 
 Any URL on TCP port 9200 is a raw ElasticSearch endpoint and used for debugging.  This will be disabled
 in a production setup for security purposes and we'll have official SDK endpoints for all of this data.
