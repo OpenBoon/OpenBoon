@@ -13,7 +13,7 @@ CREATE TABLE user(
 CREATE UNIQUE INDEX user_str_username_idx ON user(str_username);
 
 INSERT INTO user (str_username, str_password, str_email, str_firstname, str_lastname, list_roles, bool_enabled)
-    VALUES ('admin', 'admin', 'admin@zorroa.com', 'Joe', 'Admin','ADMIN', 1);
+    VALUES ('admin', '$2a$10$26Ekb4MDeUdz75G4V2u6geSuI1Hn4jrHUvZafK5M2iHdz5s9oLGyK', 'admin@zorroa.com', 'Joe', 'Admin','ROLE_ADMIN', 1);
 
 -------------------------------------------------------------------------------------
 

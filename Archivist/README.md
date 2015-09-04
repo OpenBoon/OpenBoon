@@ -19,8 +19,7 @@ from GitHub, build and install to the local maven repository.
 ## Starting the Server
 
 ```
-$ mvn package
-$ java -jar target/archivist-1.0.0.jar
+$ mvn spring-boot:run
 ```
 
 To use external ingest processors, set the `ZORROA_SITE_PATH` to the absolute path to the directory
