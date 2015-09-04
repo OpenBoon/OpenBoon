@@ -46,12 +46,7 @@ public class UserServiceImpl implements UserService {
     public User get(int id) {
         return userDao.get(id);
     }
-
-    @Override
-    public User create(UserBuilder builder) {
-        return userDao.create(builder);
-    }
-
+    
     @Override
     public List<User> getAll() {
         return userDao.getAll();

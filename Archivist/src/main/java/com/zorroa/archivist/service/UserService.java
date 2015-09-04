@@ -18,8 +18,6 @@ public interface UserService {
 
     User get(int id);
 
-    User create(UserBuilder builder);
-
     List<User> getAll();
 
     String getPassword(String username);
