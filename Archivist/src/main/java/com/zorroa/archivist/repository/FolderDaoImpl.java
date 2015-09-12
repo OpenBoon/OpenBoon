@@ -88,26 +88,27 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
         return getFolders(QueryBuilders.termQuery("parentId", folder.getId()));
     }
 
-    IndexRequestBuilder buildRequest(FolderBuilder builder, String id, IndexRequest.OpType op) {
-        return client.prepareIndex(alias, getType())
-                .setId(id)
-                .setOpType(op)
-                .setSource(Json.serialize(builder.getDocument()))
-                .setRefresh(true);
-    }
-
     @Override
     public Folder create(FolderBuilder builder) {
-        IndexRequestBuilder idxBuilder = buildRequest(builder, uuidGenerator.generate(builder.getName()).toString(), IndexRequest.OpType.CREATE);
+        String seed = builder.getName() + builder.getUserId();
+        IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
+                .setId(uuidGenerator.generate(seed).toString())
+                .setOpType(IndexRequest.OpType.CREATE)
+                .setSource(Json.serialize(builder.getDocument()))
+                .setRefresh(true);
         String id = idxBuilder.get().getId();
         return get(id);
     }
 
     @Override
     public boolean update(Folder folder, FolderBuilder builder) {
-        // TODO: Use a script to remove the parentId field if none are left!
-        //   Eg: "ctx._source.remove(\"parentGuid\")"
-        IndexRequestBuilder idxBuilder = buildRequest(builder, folder.getId(), IndexRequest.OpType.INDEX);
+        // Delete and re-index to delete parentId field when not set
+        delete(folder);
+        IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
+                .setId(folder.getId())
+                .setOpType(IndexRequest.OpType.INDEX)
+                .setSource(Json.serialize(builder.getDocument()))
+                .setRefresh(true);
         String id = idxBuilder.get().getId();
         return id.equals(folder.getId());
     }
