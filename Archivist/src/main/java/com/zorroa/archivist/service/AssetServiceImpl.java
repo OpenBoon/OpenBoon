@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import org.slf4j.Logger;
@@ -41,4 +42,8 @@ public class AssetServiceImpl implements AssetService {
         return assetDao.existsByPathAfter(path, afterTime);
     }
 
+    @Override
+    public boolean updateAsset(String assetId, AssetUpdateBuilder builder) {
+        return assetDao.update(assetId, builder);
+    }
 }

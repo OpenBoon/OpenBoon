@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,17 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         assetDao.replace(builder);
         refreshIndex(100);
         assertTrue(assetDao.existsByPath(getTestImage("beer_kettle_01.jpg").toString()));
+    }
+
+    @Test
+    public void testUpdate() {
+        AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Asset asset = assetDao.create(builder);
+        refreshIndex(100);
+        AssetUpdateBuilder updateBuilder = new AssetUpdateBuilder();
+        updateBuilder.put("Xmp", "Rating", new Integer(3));
+        assetDao.update(asset.getId(), updateBuilder);
+        Asset updatedAsset = assetDao.get(asset.getId());
+        assertEquals(new Integer(3), updatedAsset.getValue("Xmp.Rating"));
     }
 }

@@ -159,6 +159,36 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testUpdate() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
+        ingestSchedulerService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        List<Asset> assets = assetDao.getAll();
+        Asset asset = assets.get(0);
+        MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(asset.getId(), json.get("_id"));
+
+        result = mvc.perform(put("/api/v1/assets/" + asset.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"source\" : { \"Xmp\" : { \"Rating\" : 3 } } }"))
+                .andExpect(status().isOk())
+                .andReturn();
+        Asset xmp = assetDao.get(asset.getId());
+        assertEquals(new Integer(3), xmp.getValue("Xmp.Rating"));
+    }
+
+    @Test
     public void testFolderAssign() throws Exception {
 
 

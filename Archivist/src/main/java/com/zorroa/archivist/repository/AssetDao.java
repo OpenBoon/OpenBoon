@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.AssetBuilder;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface AssetDao {
 
     boolean replace(AssetBuilder builder);
 
+    boolean update(String assetId, AssetUpdateBuilder builder);
 }
