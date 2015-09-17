@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
 import com.zorroa.archivist.domain.Session;
 import org.elasticsearch.common.Preconditions;
-import org.elasticsearch.common.collect.ImmutableSet;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -31,8 +30,8 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             room.setName(rs.getString("str_name"));
             room.setVisible(rs.getBoolean("bool_visible"));
             room.setFolderId(rs.getString("str_folderId"));
-            String[] invites = (String[]) rs.getObject("list_invites");
-            room.setInviteList(ImmutableSet.<String>copyOf(invites));
+//            String[] invites = (String[]) rs.getObject("list_invites");
+//            room.setInviteList(ImmutableSet.<String>copyOf(invites));
             return room;
         }
     };
