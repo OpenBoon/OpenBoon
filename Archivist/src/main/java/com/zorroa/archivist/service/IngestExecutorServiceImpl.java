@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 
 @Component
-public class IngestSchedulerServiceImpl implements IngestSchedulerService {
+public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
 
@@ -345,5 +345,6 @@ public class IngestSchedulerServiceImpl implements IngestSchedulerService {
                 }
             }
         }
+
     }
 }

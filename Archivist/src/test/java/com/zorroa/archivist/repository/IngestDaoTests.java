@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -22,9 +23,11 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     @Autowired
     IngestService ingestService;
 
-
     @Autowired
     ImageService imageService;
+
+    @Autowired
+    IngestScheduleDao ingestScheduleDao;
 
     Ingest ingest;
     IngestPipeline pipeline;
@@ -71,6 +74,21 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     public void testGetAll() {
         List<Ingest> pending = ingestDao.getAll();
         assertEquals(1, pending.size());
+    }
+
+    @Test
+    public void testGetAllBySchedule() {
+        IngestScheduleBuilder builder = new IngestScheduleBuilder();
+        builder.setDays(Lists.newArrayList(DayOfWeek.FRIDAY));
+        builder.setRunAtTime("10:00:00");
+        builder.setName("10AM");
+        builder.setIngestIds(Lists.newArrayList(ingest.getId()));
+
+        IngestSchedule schedule = ingestScheduleDao.create(builder);
+        logger.info("{}", schedule.getIngestIds());
+
+        assertTrue(ingestDao.getAll(schedule).contains(ingest));
+        assertEquals(1, ingestDao.getAll(schedule).size());
     }
 
     @Test

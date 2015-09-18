@@ -35,7 +35,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     IngestDao ingestDao;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
@@ -127,8 +127,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
                 ingest.getAssetWorkerThreads() != builder.getAssetWorkerThreads()) {
             ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());  // set new worker count
-            ingestSchedulerService.pause(ingest);
-            ingestSchedulerService.resume(ingest);
+            ingestExecutorService.pause(ingest);
+            ingestExecutorService.resume(ingest);
         }
 
         if (builder.getPipeline() != null) {

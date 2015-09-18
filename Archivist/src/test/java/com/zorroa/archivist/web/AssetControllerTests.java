@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.service.IngestSchedulerService;
+import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class AssetControllerTests extends MockMvcTest {
     AssetDao assetDao;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @Test
     public void testSearch() throws Exception {
@@ -45,7 +45,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_search")
@@ -68,7 +68,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_count")
@@ -90,7 +90,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_aggregations")
@@ -113,7 +113,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_suggest")
@@ -139,7 +139,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();
@@ -165,7 +165,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();
@@ -213,7 +213,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();

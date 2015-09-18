@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Ingest;
 
-public interface IngestSchedulerService {
+public interface IngestExecutorService {
 
     boolean executeIngest(Ingest ingest);
 

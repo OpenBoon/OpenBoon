@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.IngestState;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.service.ImageService;
-import com.zorroa.archivist.service.IngestSchedulerService;
+import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.action.admin.indices.alias.Alias;
@@ -39,7 +39,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     IngestService ingestService;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @Autowired
     ImageService imageService;
@@ -158,7 +158,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         for (Ingest ingest : ingestService.getAllIngests()) {
             if (ingest.getState() == IngestState.Running) {
                 ingestService.setIngestPaused(ingest);      // Set paused to avoid resume error checks
-                ingestSchedulerService.resume(ingest);
+                ingestExecutorService.resume(ingest);
                 logger.info("Restarting ingest " + ingest.getId());
             }
         }
@@ -166,7 +166,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         // Start queued ingests after all running ingests
         for (Ingest ingest : ingestService.getAllIngests()) {
             if (ingest.getState() == IngestState.Queued) {
-                ingestSchedulerService.executeIngest(ingest);
+                ingestExecutorService.executeIngest(ingest);
                 logger.info("Re-executing queued ingest " + ingest.getId());
             }
         }

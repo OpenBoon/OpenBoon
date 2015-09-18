@@ -3,7 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.IngestSchedulerService;
+import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -26,14 +26,14 @@ public class SnapshotControllerTests extends MockMvcTest {
     IngestService ingestService;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @Test
     public void testSnapshotCreateRestoreGetDelete() throws Exception {
 
         // Start by ingesting the standard test assets
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         MockHttpSession session = admin();

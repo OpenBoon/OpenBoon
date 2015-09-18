@@ -6,7 +6,7 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.service.IngestSchedulerService;
+import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class IngestControllerTests extends MockMvcTest {
     AssetDao assetDao;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     Ingest ingest;
 
@@ -50,7 +50,7 @@ public class IngestControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         MvcResult result = mvc.perform(get("/api/v1/ingests")
