@@ -2,10 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestPipelineUpdateBuilder;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,27 +11,22 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
 public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipelineDao {
 
-    private static final RowMapper<IngestPipeline> MAPPER = new RowMapper<IngestPipeline>() {
-        @Override
-        public IngestPipeline mapRow(ResultSet rs, int row) throws SQLException {
-            IngestPipeline result = new IngestPipeline();
-            result.setId(rs.getInt("pk_pipeline"));
-            result.setName(rs.getString("str_name"));
-            result.setDescription(rs.getString("str_description"));
-            result.setTimeCreated(rs.getLong("time_created"));
-            result.setUserCreated(rs.getString("str_user_created"));
-            result.setTimeModified(rs.getLong("time_modified"));
-            result.setUserModified(rs.getString("str_user_modified"));
-            result.setProcessors((List<IngestProcessorFactory>) rs.getObject("list_processors"));
-            return result;
-        }
+    private static final RowMapper<IngestPipeline> MAPPER = (rs, row) -> {
+        IngestPipeline result = new IngestPipeline();
+        result.setId(rs.getInt("pk_pipeline"));
+        result.setName(rs.getString("str_name"));
+        result.setDescription(rs.getString("str_description"));
+        result.setTimeCreated(rs.getLong("time_created"));
+        result.setUserCreated(rs.getString("str_user_created"));
+        result.setTimeModified(rs.getLong("time_modified"));
+        result.setUserModified(rs.getString("str_user_modified"));
+        result.setProcessors((List<IngestProcessorFactory>) rs.getObject("list_processors"));
+        return result;
     };
 
     private static final String INSERT =
