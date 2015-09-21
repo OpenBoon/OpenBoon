@@ -72,7 +72,14 @@ public class ArchivistConfiguration {
                 .put("node.name", nodeName)
                 .put("discovery.zen.ping.multicast.enabled", false)
                 .put("cluster.routing.allocation.disk.threshold_enabled", false)
-                .put("index.query.default_field", "keywords");
+                .put("index.query.default_field", "keywords")
+                        .put("script.disable_dynamic", false)
+                        .put("script.inline", "on")
+                        .put("script.update", "off")
+                        .put("script.mapping", "off")
+                        .put("script.search", "off")
+                        .put("script.aggs", "on")
+                .put("script.engine.groovy.inline.aggs", "on");
 
         if (unittest) {
             builder.put("path.data", "unittest/data");
