@@ -157,5 +157,5 @@ public class IngestSchedulerControllerTests extends MockMvcTest {
         assertEquals(schedule1.getName(), schedule2.getName());
         assertEquals(schedule1.getDays(), schedule2.getDays());
         assertEquals(schedule1.getRunAtTime(), schedule2.getRunAtTime());
-    }ß
+    }
 }
