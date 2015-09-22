@@ -31,4 +31,6 @@ public interface IngestDao {
     boolean updateStartTime(Ingest ingest, long time);
 
     boolean updateStoppedTime(Ingest ingest, long time);
+
+    List<Ingest> getAll(IngestSchedule schedule);
 }
