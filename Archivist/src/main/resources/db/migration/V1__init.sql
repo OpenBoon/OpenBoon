@@ -37,7 +37,8 @@ CREATE TABLE room (
   str_name VARCHAR(255) NOT NULL,
   str_password VARCHAR(100),
   bool_visible BOOLEAN NOT NULL DEFAULT 't',
-  list_invites ARRAY
+  list_invites ARRAY,
+  str_folderId VARCHAR(100)
 );
 
 CREATE INDEX room_pk_session_idx ON room(pk_session);

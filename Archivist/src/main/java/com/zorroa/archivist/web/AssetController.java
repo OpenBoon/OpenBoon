@@ -138,12 +138,14 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.POST)
-    public void search(@RequestBody String query, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
+    public void search(@RequestBody String query, @RequestParam(value="roomId", defaultValue="0", required=false) int roomId, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        Session session = userService.getSession(httpSession);
-        Room room = roomService.getActiveRoom(session);
-        roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
+        if (roomId > 0) {
+            Session session = userService.getSession(httpSession);
+            Room room = roomService.getActiveRoom(session);
+            roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
+        }
 
         SearchRequestBuilder builder = buildSearch(query);
         SearchResponse response = builder.get();
@@ -239,13 +241,8 @@ public class AssetController {
         out.close();
     }
 
-    @RequestMapping(value = "/api/v1/assets/{id}/_folders", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/api/v1/assets/{id}/_folders", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String update(@RequestBody String body, @PathVariable String id, HttpSession httpSession) throws Exception {
-
-        Session session = userService.getSession(httpSession);
-        Room room = roomService.getActiveRoom(session);
-        String msg = "{ \"assetId\" : \"" + id + "\", \"folders\": " + body + " }";
-        roomService.sendToRoom(room, new Message(MessageType.ASSET_UPDATE_FOLDERS, msg));
 
         // Add the request body array of collection names to the folders field
         String doc = "{\"folders\":" + body + "}";  // Hand-coded JSON doc update
@@ -253,6 +250,12 @@ public class AssetController {
                 .setDoc(doc)
                 .setRefresh(true);  // Make sure we block until update is finished
         UpdateResponse response = builder.get();
+
+        Session session = userService.getSession(httpSession);
+        Room room = roomService.getActiveRoom(session);
+        String msg = "{ \"assetId\" : \"" + id + "\", \"folders\": " + body + " }";
+        roomService.sendToRoom(room, new Message(MessageType.ASSET_UPDATE_FOLDERS, msg));
+
         return new StringBuilder(128)
                 .append("{\"created\":")
                 .append(response.isCreated())

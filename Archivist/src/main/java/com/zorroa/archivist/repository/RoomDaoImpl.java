@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
 import com.zorroa.archivist.domain.Session;
 import org.elasticsearch.common.Preconditions;
-import org.elasticsearch.common.collect.ImmutableSet;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -30,9 +29,9 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             room.setId(rs.getLong("pk_room"));
             room.setName(rs.getString("str_name"));
             room.setVisible(rs.getBoolean("bool_visible"));
-
-            String[] invites = (String[]) rs.getObject("list_invites");
-            room.setInviteList(ImmutableSet.<String>copyOf(invites));
+            room.setFolderId(rs.getString("str_folderId"));
+//            String[] invites = (String[]) rs.getObject("list_invites");
+//            room.setInviteList(ImmutableSet.<String>copyOf(invites));
             return room;
         }
     };
@@ -58,12 +57,13 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                     "str_password",
                     "bool_visible",
                     "list_invites",
-                    "pk_session");
+                    "pk_session",
+                    "str_folderId");
 
     @Override
     public Room create(RoomBuilder builder) {
         Preconditions.checkNotNull(builder.getName(), "The room name cannot be null");
-        if (builder.getPassword()!=null) {
+        if (builder.getPassword()!= null) {
             builder.setPassword(SecurityUtils.createPasswordHash(builder.getPassword()));
         }
 
@@ -74,8 +74,8 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             ps.setString(1, builder.getName());
             ps.setString(2, builder.getPassword());
             ps.setBoolean(3, builder.isVisible());
-            if (builder.getInviteList() ==null) {
-                ps.setObject(4, new String[] {});
+            if (builder.getInviteList() == null) {
+                ps.setObject(4, new String[]{});
             }
             else {
                 ps.setObject(4, builder.getInviteList().toArray(new String[]{}));
@@ -86,6 +86,11 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             }
             else {
                 ps.setLong(5, builder.getSessionId());
+            }
+            if (builder.getFolderId() == null) {
+                ps.setNull(6, Types.VARCHAR);
+            } else {
+                ps.setString(6, builder.getFolderId());
             }
             return ps;
         }, keyHolder);
