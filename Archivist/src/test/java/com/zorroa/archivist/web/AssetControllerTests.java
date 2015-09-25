@@ -120,7 +120,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/assets/_aggregations")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": { \"match_all\": {}}, \"aggregations\" : { \"Keywords\" : { \"terms\" : { \"field\" : \"keywords\" }}}}".getBytes()))
+                .content("{ \"query\": { \"match_all\": {}}, \"aggregations\" : { \"Keywords\" : { \"terms\" : { \"field\" : \"keywords.indexed\" }}}}".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -188,7 +188,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();

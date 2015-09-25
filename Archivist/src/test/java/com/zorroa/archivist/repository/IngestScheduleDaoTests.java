@@ -68,16 +68,6 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
         assertEquals(schedule.getIngestIds(), updated.getIngestIds());
     }
 
-    @Test(expected=DataIntegrityViolationException.class)
-    public void createFailure() {
-        IngestScheduleBuilder builder = new IngestScheduleBuilder();
-        builder.setDays(Lists.newArrayList(DayOfWeek.FRIDAY));
-        builder.setRunAtTime("10:00");
-        builder.setName("10AM");
-
-        IngestSchedule schedule = ingestScheduleDao.create(builder);
-    }
-
     @Test
     public void getAllReady() throws InterruptedException {
 

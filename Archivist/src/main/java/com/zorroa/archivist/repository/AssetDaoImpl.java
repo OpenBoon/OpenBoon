@@ -165,7 +165,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public boolean existsByPath(String path) {
         long count = client.prepareCount(alias)
-                .setQuery(QueryBuilders.termQuery("source.path.untouched", path))
+                .setQuery(QueryBuilders.termQuery("source.path", path))
                 .get()
                 .getCount();
         return count > 0;
@@ -175,7 +175,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     public boolean existsByPathAfter(String path, long afterTime) {
         long count = client.prepareCount(alias)
                 .setQuery(QueryBuilders.filteredQuery(
-                        QueryBuilders.termQuery("source.path.untouched", path),
+                        QueryBuilders.termQuery("source.path", path),
                         FilterBuilders.rangeFilter("_timestamp").gt(afterTime)))
                 .get()
                 .getCount();
