@@ -5,11 +5,14 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.index.IndexRequest.OpType;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.common.util.concurrent.UncategorizedExecutionException;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
@@ -143,6 +146,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             logger.error("Illegal argument error indexing " + builder.getFilename() + ": " + e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public boolean update(String assetId, AssetUpdateBuilder builder) {
+        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), assetId)
+                .setDoc(builder.getSource())
+                .setRefresh(true);
+        UpdateResponse response = updateBuilder.get();
+        return response.getVersion() > 1;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Asset;
+import com.zorroa.archivist.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.AssetBuilder;
 
 public interface AssetService {
@@ -13,4 +14,5 @@ public interface AssetService {
 
     boolean replaceAsset(AssetBuilder builder);
 
+    boolean updateAsset(String assetId, AssetUpdateBuilder builder);
 }

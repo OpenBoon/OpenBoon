@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.SearchService;
@@ -45,6 +46,9 @@ public class AssetController {
 
     @Autowired
     Client client;
+
+    @Autowired
+    AssetService assetService;
 
     @Autowired
     RoomService roomService;
@@ -210,7 +214,8 @@ public class AssetController {
 
     @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     public String count(@RequestBody String query) throws IOException {
-        Map<String, Object> json = Json.Mapper.readValue(query, new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> json = Json.Mapper.readValue(query, new TypeReference<Map<String, Object>>() {
+        });
         QueryBuilder queryBuilder = buildFolderQuery(json);
         String search = json.size() > 0 ? new String(Json.serialize(json), StandardCharsets.UTF_8) : null;
         CountRequestBuilder builder = client.prepareCount(alias)
@@ -238,7 +243,8 @@ public class AssetController {
     public String suggest(@RequestBody String query) throws IOException {
         SuggestRequestBuilder builder = client.prepareSuggest(alias);
         Map<String, Object> json = Json.Mapper.readValue(query,
-                new TypeReference<Map<String, Object>>() {});
+                new TypeReference<Map<String, Object>>() {
+                });
         // Create a top-level suggestion for each top-level dictionary in the request body
         // TODO: Only handles "completion" suggestions currently
         for (Map.Entry<String, Object> entry : json.entrySet()) {
@@ -274,8 +280,21 @@ public class AssetController {
         out.close();
     }
 
+    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
+    public String update(@RequestBody AssetUpdateBuilder builder, @PathVariable String id, HttpSession httpSession) throws IOException {
+        boolean ok = assetService.updateAsset(id, builder);
+
+        Session session = userService.getSession(httpSession);
+        Room room = roomService.getActiveRoom(session);
+        String json = new String(Json.serialize(builder.getSource()), StandardCharsets.UTF_8);
+        String msg = "{ \"assetId\" : \"" + id + "\", \"source\": " + json + " }";
+        roomService.sendToRoom(room, new Message(MessageType.ASSET_UPDATE, msg));
+
+        return msg;
+    }
+
     @RequestMapping(value="/api/v1/assets/{id}/_folders", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String update(@RequestBody String body, @PathVariable String id, HttpSession httpSession) throws Exception {
+    public String updateFolders(@RequestBody String body, @PathVariable String id, HttpSession httpSession) throws Exception {
 
         // Add the request body array of collection names to the folders field
         String doc = "{\"folders\":" + body + "}";  // Hand-coded JSON doc update
