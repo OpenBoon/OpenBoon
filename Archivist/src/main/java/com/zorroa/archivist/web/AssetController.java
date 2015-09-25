@@ -5,6 +5,7 @@ import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.RoomService;
+import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -53,6 +54,9 @@ public class AssetController {
 
     @Autowired
     FolderService folderService;
+
+    @Autowired
+    SearchService searchService;
 
     // Parse the query string, converting the optional "folder" argument into a set
     // of filters and queries which are merged with the optional filter and primary query.
@@ -135,6 +139,35 @@ public class AssetController {
         if (queryBuilder != null)
             builder.setQuery(queryBuilder);
         return builder;
+    }
+
+    private void sendResponse(HttpServletResponse httpResponse) {
+
+
+    }
+
+    @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)
+    public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
+        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        /*
+        if (search.getRoom() > 0) {
+            Session session = userService.getSession(httpSession);
+            Room room = roomService.getActiveRoom(session);
+            roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
+        }
+        */
+
+
+        SearchResponse response = searchService.search(search);
+
+        OutputStream out = httpResponse.getOutputStream();
+        XContentBuilder content = XContentFactory.jsonBuilder(out);
+        content.startObject();
+        response.toXContent(content, ToXContent.EMPTY_PARAMS);
+        content.endObject();
+        content.close();
+        out.close();
     }
 
     @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.POST)
