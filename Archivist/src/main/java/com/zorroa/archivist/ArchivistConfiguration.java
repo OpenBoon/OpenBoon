@@ -1,5 +1,6 @@
 package com.zorroa.archivist;
 
+import com.googlecode.flyway.core.Flyway;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -7,13 +8,12 @@ import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SyncTaskExecutor;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import javax.annotation.PostConstruct;
@@ -42,6 +42,20 @@ public class ArchivistConfiguration {
 
         hostName = InetAddress.getLocalHost().getHostName();
         nodeName = String.format("%s_%05d", hostName, number);
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix="archivist.datasource.primary")
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean(name="flyway", initMethod="migrate")
+    @Autowired
+    public Flyway flyway(DataSource datasource) {
+        Flyway flyway =  new Flyway();
+        flyway.setDataSource(datasource);
+        return flyway;
     }
 
     @Bean
@@ -89,39 +103,5 @@ public class ArchivistConfiguration {
                 new MappingJackson2HttpMessageConverter()
         ));
         return adapter;
-    }
-
-    @Bean(name="ingestTaskExecutor")
-    public TaskExecutor ingestTaskExecutor() {
-
-        if (unittest) {
-            SyncTaskExecutor executor = new SyncTaskExecutor();
-            return executor;
-        }
-        else {
-            ThreadPoolTaskExecutor executor =  new ThreadPoolTaskExecutor();
-            executor.setCorePoolSize(4);
-            executor.setDaemon(true);
-            executor.setMaxPoolSize(4);
-            executor.setThreadNamePrefix("ingest");
-            return executor;
-        }
-    }
-
-    @Bean(name="processorTaskExecutor")
-    public TaskExecutor processorTaskExecutor() {
-
-        if (unittest) {
-            SyncTaskExecutor executor = new SyncTaskExecutor();
-            return executor;
-        }
-        else {
-            ThreadPoolTaskExecutor executor =  new ThreadPoolTaskExecutor();
-            executor.setCorePoolSize(4);
-            executor.setDaemon(true);
-            executor.setMaxPoolSize(8);
-            executor.setThreadNamePrefix("processor");
-            return executor;
-        }
     }
 }

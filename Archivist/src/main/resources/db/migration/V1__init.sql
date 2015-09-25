@@ -1,6 +1,4 @@
 
-
-DROP TABLE IF EXISTS user;
 CREATE TABLE user(
   pk_user INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   str_username VARCHAR(255) NOT NULL,
@@ -8,13 +6,17 @@ CREATE TABLE user(
   str_email VARCHAR(255) NOT NULL,
   str_firstname VARCHAR(255),
   str_lastname VARCHAR(255),
-  list_roles ARRAY NOT NULL,
+  list_roles VARCHAR(255) NOT NULL,
   bool_enabled BOOLEAN NOT NULL
 );
 
 CREATE UNIQUE INDEX user_str_username_idx ON user(str_username);
 
-DROP TABLE IF EXISTS session;
+INSERT INTO user (str_username, str_password, str_email, str_firstname, str_lastname, list_roles, bool_enabled)
+    VALUES ('admin', '$2a$10$26Ekb4MDeUdz75G4V2u6geSuI1Hn4jrHUvZafK5M2iHdz5s9oLGyK', 'admin@zorroa.com', 'Joe', 'Admin','ROLE_ADMIN', 1);
+
+-------------------------------------------------------------------------------------
+
 CREATE TABLE session (
   pk_session BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_user INT NOT NULL REFERENCES user (pk_user),
@@ -26,8 +28,8 @@ CREATE TABLE session (
 CREATE UNIQUE INDEX session_cookie_id_uniq_idx ON session (cookie_id);
 CREATE INDEX session_pk_user_idx ON session(pk_user);
 
+-------------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS room;
 CREATE TABLE room (
   pk_room BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   --- The session is set if room is tied to a session, otherwise is a permanent room.
@@ -35,10 +37,14 @@ CREATE TABLE room (
   str_name VARCHAR(255) NOT NULL,
   str_password VARCHAR(100),
   bool_visible BOOLEAN NOT NULL DEFAULT 't',
-  list_invites ARRAY
+  list_invites ARRAY,
+  str_folderId VARCHAR(100)
 );
 
-DROP TABLE IF EXISTS map_session_to_room;
+CREATE INDEX room_pk_session_idx ON room(pk_session);
+
+-------------------------------------------------------------------------------------
+
 CREATE TABLE map_session_to_room (
   id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_session BIGINT NOT NULL REFERENCES session (pk_session) ON DELETE CASCADE,
@@ -46,11 +52,11 @@ CREATE TABLE map_session_to_room (
   pk_room BIGINT REFERENCES room (pk_room) ON DELETE SET NULL
 );
 
---- The session can only be in this table once, the room however may change.
-DROP TABLE IF EXISTS map_session_to_room_uniq_idx;
 CREATE UNIQUE INDEX map_session_to_room_uniq_idx ON map_session_to_room (pk_session);
 
-CREATE TABLE IF NOT EXISTS pipeline (
+-------------------------------------------------------------------------------------
+
+CREATE TABLE pipeline (
   pk_pipeline INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   str_name VARCHAR(64) NOT NULL,
   str_description VARCHAR(255) NOT NULL,
@@ -61,9 +67,11 @@ CREATE TABLE IF NOT EXISTS pipeline (
   list_processors OTHER NOT NULL
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS pipeline_str_name_uniq_idx ON pipeline(str_name);
+CREATE UNIQUE INDEX pipeline_str_name_uniq_idx ON pipeline (str_name);
 
-CREATE TABLE IF NOT EXISTS ingest (
+-------------------------------------------------------------------------------------
+
+CREATE TABLE ingest (
   pk_ingest BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_pipeline INT NOT NULL,
   int_state TINYINT NOT NULL DEFAULT 0,
@@ -81,3 +89,7 @@ CREATE TABLE IF NOT EXISTS ingest (
   bool_update_on_exist BOOLEAN NOT NULL DEFAULT 'f',
   int_asset_worker_threads INT NOT NULL DEFAULT 4
 );
+
+CREATE INDEX ingest_pk_pipeline_idx ON ingest (pk_pipeline);
+
+-------------------------------------------------------------------------------------

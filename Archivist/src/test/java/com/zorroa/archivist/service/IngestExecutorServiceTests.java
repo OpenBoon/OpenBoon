@@ -18,11 +18,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 7/31/15.
  */
-public class IngestSchedulerServiceTests extends ArchivistApplicationTests {
+public class IngestExecutorServiceTests extends ArchivistApplicationTests {
 
 
     @Autowired
-    IngestSchedulerService ingestShedulerService;
+    IngestExecutorService ingestShedulerService;
 
     @Autowired
     IngestPipelineDao ingestPipelineDao;
@@ -31,7 +31,7 @@ public class IngestSchedulerServiceTests extends ArchivistApplicationTests {
     IngestService ingestService;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @Test
     public void testPauseAndResume() {
@@ -52,13 +52,13 @@ public class IngestSchedulerServiceTests extends ArchivistApplicationTests {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                assertTrue(ingestSchedulerService.resume(ingest));
+                assertTrue(ingestExecutorService.resume(ingest));
             }
         }, 2000);
 
 
-        ingestSchedulerService.executeIngest(ingest);   // Race condition!
-        ingestSchedulerService.pause(ingest);
+        ingestExecutorService.executeIngest(ingest);   // Race condition!
+        ingestExecutorService.pause(ingest);
     }
 
     @Test
@@ -70,14 +70,14 @@ public class IngestSchedulerServiceTests extends ArchivistApplicationTests {
                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
         ingestService.createIngestPipeline(builder);
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("default"));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
 
         ingest = ingestService.getIngest(ingest.getId());
         assertEquals(2, ingest.getCreatedCount());
         assertEquals(0, ingest.getUpdatedCount());
         assertEquals(0, ingest.getErrorCount());
 
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         ingest = ingestService.getIngest(ingest.getId());
         assertEquals(0, ingest.getCreatedCount());
         assertEquals(2, ingest.getUpdatedCount());

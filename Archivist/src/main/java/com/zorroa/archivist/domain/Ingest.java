@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Ingest {
@@ -31,6 +32,24 @@ public class Ingest {
                 .add("state", getState())
                 .add("path", getPath())
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+
+        try {
+            return id == ((Ingest)other).getId();
+        } catch (ClassCastException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public long getId() {

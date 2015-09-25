@@ -2,7 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.IngestSchedulerService;
+import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class IngestController {
     IngestService ingestService;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/ingests", method=RequestMethod.POST)
@@ -52,7 +52,7 @@ public class IngestController {
     @RequestMapping(value="/api/v1/ingests/{id}/_execute", method=RequestMethod.POST)
     public Ingest ingest(@PathVariable String id) {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         return ingest;
     }
 
@@ -61,7 +61,7 @@ public class IngestController {
     public Map<String, Object> pause(@PathVariable String id) {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));
         return ImmutableMap.<String, Object>builder()
-                .put("status", ingestSchedulerService.pause(ingest))
+                .put("status", ingestExecutorService.pause(ingest))
                 .build();
     }
 
@@ -70,7 +70,7 @@ public class IngestController {
     public Map<String, Object> stop(@PathVariable String id) {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));
         return ImmutableMap.<String, Object>builder()
-                .put("status", ingestSchedulerService.stop(ingest))
+                .put("status", ingestExecutorService.stop(ingest))
                 .build();
     }
 
@@ -79,7 +79,7 @@ public class IngestController {
     public Map<String, Object> resume(@PathVariable String id) {
         Ingest ingest = ingestService.getIngest(Long.valueOf(id));
         return ImmutableMap.<String, Object>builder()
-                .put("status", ingestSchedulerService.resume(ingest))
+                .put("status", ingestExecutorService.resume(ingest))
                 .build();
     }
 

@@ -18,7 +18,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
     ImageService imageService;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @Autowired
     AssetDao assetDao;
@@ -27,7 +27,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
     public void testIngest_Standard() throws InterruptedException {
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
 
         refreshIndex(1000);
         assertEquals(2, assetDao.getAll().size());
@@ -43,7 +43,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         ingestService.createIngestPipeline(builder);
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("default"));
 
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
         assertEquals(2, assetDao.getAll().size());
     }

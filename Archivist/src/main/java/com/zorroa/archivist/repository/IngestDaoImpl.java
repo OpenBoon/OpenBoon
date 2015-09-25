@@ -220,4 +220,10 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     public boolean updateStoppedTime(Ingest ingest, long time) {
         return jdbc.update("UPDATE ingest SET time_stopped=? WHERE pk_ingest=?", time, ingest.getId()) == 1;
     }
+
+    @Override
+    public List<Ingest> getAll(IngestSchedule schedule) {
+        return jdbc.query("SELECT ingest.* FROM ingest,map_schedule_to_ingest m WHERE m.pk_schedule=? AND ingest.pk_ingest = m.pk_ingest",
+                MAPPER, schedule.getId());
+    }
 }

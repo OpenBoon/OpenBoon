@@ -58,10 +58,13 @@ public class FolderController {
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.DELETE)
-    public boolean delete(@PathVariable String id, HttpSession httpSession) {
+    public Folder delete(@PathVariable String id, HttpSession httpSession) {
         Folder folder = folderService.get(id);
         sendFolderToRoom(MessageType.FOLDER_DELETE, folder, httpSession);
-        return folderService.delete(folder);
+        if (folderService.delete(folder)) {
+            return folder;
+        }
+        return null;
     }
 
     @RequestMapping(value="/api/v1/folders/{id}/_children", method=RequestMethod.GET)

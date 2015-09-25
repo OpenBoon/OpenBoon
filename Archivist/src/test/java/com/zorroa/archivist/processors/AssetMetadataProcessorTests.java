@@ -4,7 +4,7 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
-import com.zorroa.archivist.service.IngestSchedulerService;
+import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
     IngestService ingestService;
 
     @Autowired
-    IngestSchedulerService ingestSchedulerService;
+    IngestExecutorService ingestExecutorService;
 
     @Autowired
     AssetDao assetDao;
@@ -46,7 +46,7 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
         ingestPipelineDao.create(builder);
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("test"));
-        ingestSchedulerService.executeIngest(ingest);
+        ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
         List<Asset> assets = assetDao.getAll();

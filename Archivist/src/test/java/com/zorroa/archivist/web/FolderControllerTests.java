@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,8 +42,7 @@ public class FolderControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Folder>() {
-                });
+                new TypeReference<Folder>() {});
         assertEquals("Behind The Couch", folder.getName());
 
         result = mvc.perform(put("/api/v1/folders/" + folder.getId())
@@ -146,6 +146,7 @@ public class FolderControllerTests extends MockMvcTest {
 
         Folder dad = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
+        assertNotEquals(null, dad.getParentId());
 
         body = "{ \"name\": \"uncly\", \"userId\": 1, \"parentId\": \"" + grandpa.getId() + "\" }";
         mvc.perform(post("/api/v1/folders")
@@ -165,5 +166,16 @@ public class FolderControllerTests extends MockMvcTest {
         assertEquals(2, folders.size());
         assertEquals("daddy", folders.get(0).getName());
         assertEquals("uncly", folders.get(1).getName());
+
+        body = "{ \"name\": \"daddy2\", \"userId\": 1 }";
+        result = mvc.perform(put("/api/v1/folders/" + dad.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(body.getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+        Folder dad2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+        assertEquals(null, dad2.getParentId());
     }
 }

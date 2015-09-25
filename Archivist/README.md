@@ -19,8 +19,7 @@ from GitHub, build and install to the local maven repository.
 ## Starting the Server
 
 ```
-$ mvn package
-$ java -jar target/archivist-1.0.0.jar
+$ mvn spring-boot:run
 ```
 
 The `jps -l` command will list all of the java processes currently managed by the Java virtual
@@ -71,6 +70,7 @@ See the Ingester README for an example of how to run an ingest with external pro
 | /api/v1/login              | POST   | Login via simple HTTP authentication                           |
 | /api/v1/logout             | POST   | Log the authenticated user out                                 |
 | /api/v1/users              | GET    | Get a list of all users                                        |
+| /health                    | GET    | Show the health details for the server
 
 ## Persistent Data Files
 
