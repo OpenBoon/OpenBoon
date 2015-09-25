@@ -2,9 +2,16 @@
   "settings" : {
     "analysis" : {
       "analyzer" : {
-        "stem" : {
-          "tokenizer" : "standard",
-          "filter" : ["standard", "lowercase", "stop", "porter_stem"]
+        "ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "delimiter_filter",
+            "standard",
+            "lowercase",
+            "stop",
+            "ngram_filter"
+          ]
         },
         "path-analyzer": {
           "type": "custom",
@@ -12,7 +19,21 @@
           "filter" : ["standard", "lowercase"]
         }
       },
-       "tokenizer": {
+      "filter": {
+        "delimiter_filter": {
+          "type": "word_delimiter",
+          "catenate_words": true,
+          "preserve_original": true,
+          "split_on_numerics": false
+        },
+        "ngram_filter": {
+          "type": "edgeNGram",
+          "side": "front",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "tokenizer": {
         "path-tokenizer": {
           "type": "path_hierarchy",
           "delimiter": "/"
@@ -47,8 +68,17 @@
           "index" : "not_analyzed"
         },
         "keywords": {
-          "type": "string",
-          "store": true
+          "type": "multi_field",
+          "fields": {
+            "indexed": {
+              "type": "string",
+              "index_analyzer": "ngram_analyzer"
+            },
+            "untouched": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
         },
         "keywords_suggest": {
           "type": "completion",
@@ -64,18 +94,9 @@
           "type" : "object",
           "properties" : {
             "path": {
-              "type": "multi_field",
-              "fields" : {
-                "path" : {
-                  "type" : "string",
-                  "index_analyzer": "path-analyzer",
-                  "index" : "analyzed",
-                  "copy_to": "keywords"
-                },
-                "untouched" : {
-                  "type" : "string",
-                  "index" : "not_analyzed"
-                }
+                "type" : "string",
+                "index" : "not_analyzed",
+                "copy_to": ["keywords.indexed", "keywords.untouched"]
               }
             }
           }
