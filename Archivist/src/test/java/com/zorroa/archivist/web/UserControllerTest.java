@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.UserUpdateBuilder;
 import com.zorroa.archivist.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,6 +63,24 @@ public class UserControllerTest extends MockMvcTest {
         assertEquals(builder.getUsername(), updated.getUsername());
         assertTrue(BCrypt.checkpw("bar", userService.getPassword("foo")));
 
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        User user = userService.get("user");
+        MockHttpSession session = admin();
+        mvc.perform(delete("/api/v1/users/" + user.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        try {
+            userService.get("user");
+            throw new RuntimeException("The user was deleted but he is still there!");
+        } catch(EmptyResultDataAccessException e) {
+            // all good
+        }
     }
 
     @Test(expected=BadCredentialsException.class)

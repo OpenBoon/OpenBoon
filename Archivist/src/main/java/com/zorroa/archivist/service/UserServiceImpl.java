@@ -67,6 +67,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean delete(User user) {
+        return userDao.delete(user);
+    }
+
+    @Override
     public List<User> getAll(Room room) {
         return userDao.getAll(room);
     }

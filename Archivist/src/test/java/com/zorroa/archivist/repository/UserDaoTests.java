@@ -89,6 +89,13 @@ public class UserDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testDelete() {
+        assertTrue(userDao.delete(user));
+        assertFalse(userDao.delete(user));
+    }
+
+
+    @Test
     public void testGetUsers() {
 
         RoomBuilder bld = new RoomBuilder();

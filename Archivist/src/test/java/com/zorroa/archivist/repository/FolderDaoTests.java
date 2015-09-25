@@ -56,7 +56,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         builder = new FolderBuilder("Child", 1);
         builder.setParentId(dad.getId());
         Folder child = folderDao.create(builder);
-        refreshIndex(100);
+        refreshIndex(1000);
 
         List<Folder> folders = folderDao.getChildren(grandpa);
         assertEquals(2, folders.size());
@@ -74,7 +74,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         builder.setQuery(QueryBuilders.matchAllQuery().toString());
         boolean ok = folderDao.update(bimbo, builder);
         assertTrue(ok);
-        refreshIndex(100);
+        refreshIndex(1000);
 
         Folder bimbo2 = folderDao.get(bimbo.getId());
         assertEquals(bimbo2.getName(), "Bimbo-updated");

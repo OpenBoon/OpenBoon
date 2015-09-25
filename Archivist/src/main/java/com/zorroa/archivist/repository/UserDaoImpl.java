@@ -89,6 +89,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
+    public boolean delete(User user) {
+        return jdbc.update("DELETE FROM user WHERE pk_user=?", user.getId()) == 1;
+    }
+
+    @Override
     public boolean update(User user, UserUpdateBuilder builder) {
 
         List<String> updates = Lists.newArrayList();

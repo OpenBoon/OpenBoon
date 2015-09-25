@@ -17,6 +17,8 @@ public interface UserDao {
 
     String getPassword(String username);
 
+    boolean delete(User user);
+
     boolean update(User user, UserUpdateBuilder builder);
     User create(UserBuilder builder);
 }
