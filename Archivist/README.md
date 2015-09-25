@@ -22,6 +22,13 @@ from GitHub, build and install to the local maven repository.
 $ mvn spring-boot:run
 ```
 
+The `jps -l` command will list all of the java processes currently managed by the Java virtual
+machine. The following command will kill any locally running archivist server:
+
+```
+kill $(jps -l | grep archivist | cut -d' ' -f1)
+```
+
 To use external ingest processors, set the `ZORROA_SITE_PATH` to the absolute path to the directory
 containing JAR files. Properly loading processors that use dynamic shared libraries also requires
 configuring the `DYLD_FALLBACK_LIBRARY_PATH` to include paths for any shared libraries (.dyld) and
@@ -65,20 +72,19 @@ See the Ingester README for an example of how to run an ingest with external pro
 | /api/v1/users              | GET    | Get a list of all users                                        |
 | /health                    | GET    | Show the health details for the server
 
-## Talking to the Archivist using Curl
+## Persistent Data Files
 
-Any URL on TCP port 9200 is a raw ElasticSearch endpoint and used for debugging.  This will be disabled
-in a production setup for security purposes and we'll have official SDK endpoints for all of this data.
+The Archivist uses two separate databases, Elasticsearch holds the asset documents (metadata) and
+the folders. A traditional database stores the users, pipelines, ingests, and rooms. Ingests also
+compute proxy images of different resolutions for each source image. All of these files are stored
+in files and persist when the archivist is stopped and restarted.
 
-Clear out the database:
+By default, all of the files are stored in the current working directory where you run the archivist.
+To clear out all the data to a completely clean state, remove the following files and directories
+before starting the archivist:
+
 ```
-curl -XDELETE 'http://localhost:9200/archivist/_all'
-```
-
-Clear out the proxies and all data:
-
-```
-rm -rf data proxies
+rm -rf data proxies snapshots archivist.mv.db
 ```
 
 ### Standard Proxy Processor Configuration
