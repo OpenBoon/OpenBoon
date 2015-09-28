@@ -16,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -108,16 +106,16 @@ public class AssetMetadataProcessor extends IngestProcessor {
         DateTimeFormatter extraDateFormatter = DateTimeFormat.forPattern("yyyy:MM:dd:HH:mm:ss");
 
         for (Directory directory : metadata.getDirectories()) {
-            String dirName = directory.getName().split(" ", 2)[0];
+            String namespace = directory.getName().split(" ", 2)[0];
             for (Tag tag : directory.getTags()) {
-                String tagName = tag.getTagName().replaceAll("[^A-Za-z0-9]", "");
+                String key = tag.getTagName().replaceAll("[^A-Za-z0-9]", "");
                 Object obj = directory.getObject(tag.getTagType());
                 if (obj == null) {
                     continue;
                 }
 
                 Date date = directory.getDate(tag.getTagType());
-                if (date == null && tagName.toLowerCase().contains("datetime") && obj instanceof String) {
+                if (date == null && key.toLowerCase().contains("datetime") && obj instanceof String) {
                     try {
                         DateTime dt = extraDateFormatter.parseDateTime((String)obj);
                         date = dt.toDate();
@@ -129,65 +127,60 @@ public class AssetMetadataProcessor extends IngestProcessor {
                         continue;
                     }
                 }
-                String id = dirName + "." + tagName;
-                if ((obj instanceof String && date == null) ||
-                        (obj.getClass().isArray() && obj.getClass().getComponentType().getName().equals("java.lang.String"))) {
-                    if (idSet.contains(id)) {
-                        asset.map(dirName, tagName, "copy_to", null);
-                    }
-                    asset.map(dirName, tagName, "type", "string");
-                    HashMap<String, String> raw = new HashMap<>(2);
-                    raw.put("type", "string");
-                    raw.put("index", "not_analyzed");
-                    HashMap<String, Object> fields = new HashMap<>(2);
-                    fields.put("raw", raw);
-                    asset.map(dirName, tagName, "fields", fields);
+
+                // Descriptions are human-readable forms of the metadata.
+                // Always save the original format, and also save a description if it
+                // has some useful additional information for searching & display.
+                String description = tag.getDescription();
+                String descriptionKey = key + ".description";
+                if (description.equals(directory.getString(tag.getTagType()))) {
+                    description = null;
                 }
 
-                if (obj.getClass().isArray()) {
+                String id = namespace + "." + key;
+                if (date != null) {
+                    asset.putDate(namespace, key, date);
+                } else if (obj instanceof String) {
+                    String str = (String)obj;
+                    if (idSet.contains(id)) {
+                        asset.putKeyword(namespace, key, str);
+                    } else {
+                        asset.putString(namespace, key, str);
+                    }
+                } else if (obj instanceof Rational) {
+                    Rational rational = (Rational)obj;
+                    asset.put(namespace, key, rational.doubleValue());
+                    if (description != null) {
+                        asset.put(namespace, descriptionKey, description);
+                    }
+                } else if (obj.getClass().isArray()) {
                     String componentName = obj.getClass().getComponentType().getName();
-                    if (componentName.equals("com.drew.lang.Rational")) {
+                    if (componentName.equals("java.lang.String")) {
+                        String[] strList = (String[])obj;
+                        if (idSet.contains(id)) {
+                            asset.putKeywords(namespace, key, strList);
+                        } else {
+                            asset.putStrings(namespace, key, strList);
+                        }
+                    } else if (componentName.equals("com.drew.lang.Rational")) {
                         Rational[] rationals = (Rational[]) obj;
                         Double[] doubles = new Double[rationals.length];
                         for (int i = 0; i < rationals.length; i++) {
                             doubles[i] = rationals[i].doubleValue();
                         }
-                        obj = doubles;
-                    } else if (componentName.equals("byte") && Array.getLength(obj) > 16) {
-                        continue;       // Skip bigger byte arrays with binary data
+                        asset.put(namespace, key, doubles);
+                    } else if (componentName.equals("byte") && Array.getLength(obj) <= 16) {
+                        asset.put(namespace, key, obj);
+                        if (description != null) {
+                            asset.putString(namespace, descriptionKey, description);
+                        }
+                    } else {
+                        asset.put(namespace, key, obj);
                     }
                 } else {
-                    // Convert any object types that do not translate to JSON
-                    if (date != null) {
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS");
-                        obj = dateFormat.format(date);
-                        asset.map(dirName, tagName, "type", "date");
-                    } else if (obj instanceof Rational) {
-                        Rational rational = (Rational)obj;
-                        obj = rational.doubleValue();
-                    }
-                }
-
-                // Always save the raw format
-                asset.put(dirName, tagName, obj);
-
-                // Always save the raw format, and also save a description if it
-                // has some useful additional information for searching & display
-                String description = tag.getDescription();
-                if (description != null &&
-                        !description.equals(directory.getString(tag.getTagType())) &&
-                        (!obj.getClass().isArray() || (!obj.getClass().getComponentType().getName().equals("java.lang.String") && Array.getLength(obj) <= 16))) {
-                    String descTagName = tagName + ".description";
-                    HashMap<String, String> raw = new HashMap<>(2);
-                    raw.put("type", "string");
-                    raw.put("index", "not_analyzed");
-                    HashMap<String, Object> fields = new HashMap<>(2);
-                    fields.put("raw", raw);
-                    asset.map(dirName, descTagName, "fields", fields);
-                    asset.map(dirName, descTagName, "type", "string");
-                    asset.put(dirName, descTagName, description);
-                    if (idSet.contains(id)) {
-                        asset.map(dirName, descTagName, "copy_to", null);
+                    asset.put(namespace, key, obj);
+                    if (description != null) {
+                        asset.putString(namespace, descriptionKey, description);
                     }
                 }
             }
@@ -255,8 +248,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
         }
 
         if (date != null) {
-            asset.map("source", "date", "type", "date");
-            asset.put("source", "date", date);
+            asset.putDate("source", "date", date);
         }
     }
 

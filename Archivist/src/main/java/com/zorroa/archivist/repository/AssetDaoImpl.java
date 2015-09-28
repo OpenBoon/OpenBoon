@@ -72,7 +72,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                         .setSource(mapper)
                         .execute()
                         .actionGet();
-                builder.updateMapped();
             } catch (ElasticsearchException e) {
                 logger.error("Elasticsearch mapping exception for " + builder.getFilename() + ": " + e.getDetailedMessage());
                 e.printStackTrace();
