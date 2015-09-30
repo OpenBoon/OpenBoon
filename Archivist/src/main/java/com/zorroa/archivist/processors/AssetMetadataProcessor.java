@@ -6,7 +6,6 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.drew.metadata.exif.GpsDirectory;
-import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
 import org.elasticsearch.common.joda.time.DateTime;
@@ -15,6 +14,7 @@ import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.geom.Point2D;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -136,16 +136,19 @@ public class AssetMetadataProcessor extends IngestProcessor {
                 if (description.equals(directory.getString(tag.getTagType()))) {
                     description = null;
                 }
+                if (obj.getClass().isArray() && (obj.getClass().getComponentType().getName().equals("java.lang.String") || Array.getLength(obj) > 16)) {
+                    description = null;
+                }
 
                 String id = namespace + "." + key;
                 if (date != null) {
-                    asset.putDate(namespace, key, date);
+                    asset.put(namespace, key, date);
                 } else if (obj instanceof String) {
                     String str = (String)obj;
                     if (idSet.contains(id)) {
                         asset.putKeyword(namespace, key, str);
                     } else {
-                        asset.putString(namespace, key, str);
+                        asset.put(namespace, key, str);
                     }
                 } else if (obj instanceof Rational) {
                     Rational rational = (Rational)obj;
@@ -160,7 +163,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
                         if (idSet.contains(id)) {
                             asset.putKeywords(namespace, key, strList);
                         } else {
-                            asset.putStrings(namespace, key, strList);
+                            asset.put(namespace, key, strList);
                         }
                     } else if (componentName.equals("com.drew.lang.Rational")) {
                         Rational[] rationals = (Rational[]) obj;
@@ -172,15 +175,18 @@ public class AssetMetadataProcessor extends IngestProcessor {
                     } else if (componentName.equals("byte") && Array.getLength(obj) <= 16) {
                         asset.put(namespace, key, obj);
                         if (description != null) {
-                            asset.putString(namespace, descriptionKey, description);
+                            asset.put(namespace, descriptionKey, description);
                         }
                     } else {
                         asset.put(namespace, key, obj);
+                        if (description != null) {
+                            asset.put(namespace, descriptionKey, description);
+                        }
                     }
                 } else {
                     asset.put(namespace, key, obj);
                     if (description != null) {
-                        asset.putString(namespace, descriptionKey, description);
+                        asset.put(namespace, descriptionKey, description);
                     }
                 }
             }
@@ -248,7 +254,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
         }
 
         if (date != null) {
-            asset.putDate("source", "date", date);
+            asset.put("source", "date", date);
         }
     }
 
@@ -266,11 +272,8 @@ public class AssetMetadataProcessor extends IngestProcessor {
                 String longitudeRef = exifDirectory.getString(GpsDirectory.TAG_LONGITUDE_REF);
                 double lat = dmsToDegrees(latitude[0], latitude[1], latitude[2]);
                 double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2]);
-                Map<String, Object> geoPoint = Maps.newHashMapWithExpectedSize(2);
-                geoPoint.put("lat", lat);
-                geoPoint.put("lon", lon);
-                asset.map("source", "location", "type", "geo_point");
-                asset.put("source", "location", geoPoint);
+                Point2D.Double location = new Point2D.Double(lat, lon);
+                asset.put("source", "location", location);
             }
         }
     }
