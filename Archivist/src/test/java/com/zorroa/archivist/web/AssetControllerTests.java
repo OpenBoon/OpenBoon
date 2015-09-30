@@ -63,6 +63,28 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testDateScriptSearch() throws Exception {
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v1/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{\"query\":{\"filtered\":{\"query\":{\"match_all\":{}},\"filter\":{\"script\":{\"script\":\"archivistDate\",\"lang\":\"native\",\"params\":{\"field\":\"source.date\",\"interval\":\"year\",\"terms\":[\"2014\"]}}}}}}".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertTrue(count == 1);
+    }
+
+    @Test
     public void testSearchV2() throws Exception {
 
         MockHttpSession session = admin();

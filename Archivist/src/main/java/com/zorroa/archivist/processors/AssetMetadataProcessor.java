@@ -255,6 +255,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
         }
 
         if (date != null) {
+            asset.map("source", "date", "type", "date");
             asset.put("source", "date", date);
         }
     }
