@@ -226,7 +226,8 @@ public class AssetBuilder {
         // Provide a default copy_to value -> ["keywords", "keywords_suggest"]
         if (value == null && option.equals("copy_to")) {
             List<String> copyToKeywords = new ArrayList<String>();
-            copyToKeywords.add("keywords");
+            copyToKeywords.add("keywords.indexed");
+            copyToKeywords.add("keywords.untouched");
             copyToKeywords.add("keywords_suggest");
             value = copyToKeywords;
         }
