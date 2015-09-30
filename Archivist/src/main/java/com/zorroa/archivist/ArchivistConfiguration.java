@@ -73,13 +73,7 @@ public class ArchivistConfiguration {
                 .put("discovery.zen.ping.multicast.enabled", false)
                 .put("cluster.routing.allocation.disk.threshold_enabled", false)
                 .put("index.query.default_field", "keywords")
-                        .put("script.disable_dynamic", false)
-                        .put("script.inline", "on")
-                        .put("script.update", "off")
-                        .put("script.mapping", "off")
-                        .put("script.search", "off")
-                        .put("script.aggs", "on")
-                .put("script.engine.groovy.inline.aggs", "on");
+                .put("script.native.archivistDate.type", "com.zorroa.archivist.ArchivistDateScriptFactory");
 
         if (unittest) {
             builder.put("path.data", "unittest/data");
