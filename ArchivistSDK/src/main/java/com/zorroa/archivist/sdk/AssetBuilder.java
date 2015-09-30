@@ -24,8 +24,8 @@ public class AssetBuilder {
         this.file = file;
         this.put("source", "filename", this.getFilename());
         this.put("source", "directory", this.getDirectory());
-        this.put("source", "path", this.getAbsolutePath());
         this.put("source", "extension", this.getExtension());
+        this.putKeyword("source", "path", this.getAbsolutePath());
     }
 
     public AssetBuilder(String file) {
