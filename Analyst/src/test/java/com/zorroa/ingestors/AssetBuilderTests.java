@@ -52,7 +52,7 @@ public abstract class AssetBuilderTests {
                     proxy.setHeight(image.getHeight());
                     proxy.setFormat("png");
                     proxyList.add(proxy);
-                    asset.document.put("proxies", proxyList);
+                    asset.getDocument().put("proxies", proxyList);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

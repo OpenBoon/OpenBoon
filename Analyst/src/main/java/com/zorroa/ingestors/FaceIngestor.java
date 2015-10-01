@@ -74,7 +74,7 @@ public class FaceIngestor extends IngestProcessor {
             return;     // Only process images
         }
 
-        List<Proxy> proxyList = (List<Proxy>) asset.document.get("proxies");
+        List<Proxy> proxyList = (List<Proxy>) asset.getDocument().get("proxies");
         if (proxyList == null) {
             logger.error("Cannot find proxy list for " + asset.getFilename() + ", skipping Face analysis");
             return;
@@ -104,12 +104,10 @@ public class FaceIngestor extends IngestProcessor {
         int faceCount = faceDetections.toArray().length;
         logger.info("Detected " + faceCount + " faces in " + asset.getFilename());
         if (faceCount > 0) {
-            String keywords = "face,face" + faceCount;
-            logger.info("FaceIngestor: " + keywords);
-            List<String> keywordList = Arrays.asList(keywords.split(","));
-            asset.map("face", "keywords", "type", "string");
-            asset.map("face", "keywords", "copy_to", null);
-            asset.put("face", "keywords", keywordList);
+            String value = "face,face" + faceCount;
+            logger.info("FaceIngestor: " + value);
+            String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
+            asset.putKeywords("face", "keywords", keywords);
         }
     }
 }
