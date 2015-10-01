@@ -68,7 +68,7 @@ public class CaffeIngestor extends IngestProcessor {
             return;     // Only process images
         }
 
-        List<Proxy> proxyList = (List<Proxy>) asset.document.get("proxies");
+        List<Proxy> proxyList = (List<Proxy>) asset.getDocument().get("proxies");
         if (proxyList == null) {
             logger.error("Cannot find proxy list for " + asset.getFilename() + ", skipping Caffe analysis.");
             return;     // No proxies implies bad image file, which crashes Caffe
@@ -86,12 +86,10 @@ public class CaffeIngestor extends IngestProcessor {
 
         // Perform Caffe analysis
         long nativeCaffeClassifier = caffeClassifier.get().longValue();
-        String keywords = classify(nativeCaffeClassifier, classifyPath);
-        logger.info("CaffeIngestor: " + keywords);
-        List<String> keywordList = Arrays.asList(keywords.split(","));
-        asset.map("caffe", "keywords", "type", "string");
-        asset.map("caffe", "keywords", "copy_to", null);
-        asset.put("caffe", "keywords", keywordList);
+        String value = classify(nativeCaffeClassifier, classifyPath);
+        logger.info("CaffeIngestor: " + value);
+        String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
+        asset.putKeywords("caffe", "keywords", (String[]) keywords);
     }
 
     @Override
