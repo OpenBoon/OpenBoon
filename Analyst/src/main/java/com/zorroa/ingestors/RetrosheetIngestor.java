@@ -230,9 +230,7 @@ public class RetrosheetIngestor extends IngestProcessor {
     public void putField(AssetBuilder asset, String key, String value) {
         if (value == null)
             return;
-        asset.map("retrosheet", key, "type", "string");
-        asset.map("retrosheet", key, "copy_to", null);
-        asset.put("retrosheet", key, value);
+        asset.putKeyword("retrosheet", key, value);
     }
 
     public boolean dateWithoutTime(Date date) {
