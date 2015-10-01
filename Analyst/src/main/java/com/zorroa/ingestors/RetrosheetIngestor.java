@@ -39,6 +39,7 @@ public class RetrosheetIngestor extends IngestProcessor {
     private class Game {
         Date date;
         int lengthMin;
+        Team home;
         Team visitor;
         Site site;
         String dayOrNight;
@@ -134,7 +135,7 @@ public class RetrosheetIngestor extends IngestProcessor {
     public boolean parseGameFiles(File modelFolder) {
         File[] csvFiles = modelFolder.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return name.matches("[0-9]+SFN.csv");
+                return name.matches("[0-9]+SFGiantsGames.csv");
             }
         });
         for (int i = 0; i < csvFiles.length; ++i) {
@@ -181,6 +182,9 @@ public class RetrosheetIngestor extends IngestProcessor {
                     if (info.equals("visteam")) {
                         String abbreviation = value;
                         game.visitor = teamMap.get(abbreviation);
+                    } else if (info.equals("hometeam")) {
+                        String abbreviation = value;
+                        game.home = teamMap.get(abbreviation);
                     } else if (info.equals("date")) {       // e.g. 2014/04/08
                         starttime = value;
                         try {
@@ -279,9 +283,17 @@ public class RetrosheetIngestor extends IngestProcessor {
         if (game == null) {
             return;
         }
-        if (!dateDuringGame(date, game))
-            return;
-        logger.info("Found Retrosheet game against " + game.visitor.nickname + " for " + date);
+        //if (!dateDuringGame(date, game))
+        //    return;
+        logger.info("Found Retrosheet game: " + game.home.nickname + " against " + game.visitor.nickname + " for " + date);
+        if (game.home != null) {
+            putField(asset, "home", game.home.nickname);
+            putField(asset, "home.city", game.home.city);
+            putField(asset, "home.state", game.home.state);
+            if (!game.home.league.equals("NL")) {
+                putField(asset, "home", "interleague");
+            }
+        }
         if (game.visitor != null) {
             putField(asset, "visitor", game.visitor.nickname);
             putField(asset, "visitor.city", game.visitor.city);
