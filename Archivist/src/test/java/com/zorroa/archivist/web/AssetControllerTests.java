@@ -74,7 +74,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{\"query\":{\"query_string\":{\"query\":\"5c\"}}}".getBytes()))
+                .content("{\"query\":{\"query_string\":{\"query\":\"beer\"}}}".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -82,7 +82,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
-        assertTrue(count == 2);
+        assertTrue(count == 1);
     }
 
     @Test

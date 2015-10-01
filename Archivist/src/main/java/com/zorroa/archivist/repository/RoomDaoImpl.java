@@ -30,6 +30,7 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             room.setName(rs.getString("str_name"));
             room.setVisible(rs.getBoolean("bool_visible"));
             room.setFolderId(rs.getString("str_folderId"));
+            // FIXME: Fails when reading an array, perhaps without a default value?
 //            String[] invites = (String[]) rs.getObject("list_invites");
 //            room.setInviteList(ImmutableSet.<String>copyOf(invites));
             return room;
