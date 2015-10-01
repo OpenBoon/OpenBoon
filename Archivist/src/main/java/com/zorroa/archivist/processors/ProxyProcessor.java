@@ -73,8 +73,8 @@ public class ProxyProcessor extends IngestProcessor {
             });
 
             if (!result.isEmpty()) {
-                asset.document.put("tinyProxy", makeTinyProxy(result.get(0)));
-                asset.document.put("proxies", result);
+                asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
+                asset.getDocument().put("proxies", result);
             }
 
             extractDimensions(asset);

@@ -40,7 +40,7 @@ public class AssetControllerTests extends MockMvcTest {
     IngestExecutorService ingestExecutorService;
 
     @Test
-    public void testSearch() throws Exception {
+    public void testSearchAll() throws Exception {
 
         MockHttpSession session = admin();
 
@@ -60,6 +60,29 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
         assertTrue(count == 2);
+    }
+
+    @Test
+    public void testSearch() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v1/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{\"query\":{\"query_string\":{\"query\":\"beer\"}}}".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertTrue(count == 1);
     }
 
     @Test

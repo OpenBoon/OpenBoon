@@ -72,7 +72,7 @@ public class ArchivistConfiguration {
                 .put("node.name", nodeName)
                 .put("discovery.zen.ping.multicast.enabled", false)
                 .put("cluster.routing.allocation.disk.threshold_enabled", false)
-                .put("index.query.default_field", "keywords")
+                .put("index.query.default_field", "keywords.indexed")
                 .put("script.native.archivistDate.type", "com.zorroa.archivist.ArchivistDateScriptFactory");
 
         if (unittest) {
