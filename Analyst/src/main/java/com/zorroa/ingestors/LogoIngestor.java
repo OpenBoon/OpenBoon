@@ -3,15 +3,18 @@ package com.zorroa.ingestors;
 import com.zorroa.archivist.sdk.AssetBuilder;
 import com.zorroa.archivist.sdk.IngestProcessor;
 import com.zorroa.archivist.sdk.Proxy;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Size;
+import org.opencv.core.*;
+import org.opencv.features2d.DMatch;
+import org.opencv.features2d.DescriptorExtractor;
+import org.opencv.features2d.DescriptorMatcher;
+import org.opencv.features2d.FeatureDetector;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +32,9 @@ public class LogoIngestor extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(LogoIngestor.class);
 
     private static String cascadeName = "visaLogo.xml";
+    private static DescriptorMatcher matcher;
+    private static FeatureDetector detector;
+    private static String featurePath;
 
 
     static {
@@ -36,7 +42,7 @@ public class LogoIngestor extends IngestProcessor {
     }
 
     // CascadeClassifier is not thread-safe, so give one to each thread
-    private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>(){
+    private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>() {
         @Override
         protected CascadeClassifier initialValue() {
             Map<String, String> env = System.getenv();
@@ -45,6 +51,15 @@ public class LogoIngestor extends IngestProcessor {
                 logger.error("LogoIngestor requires ZORROA_OPENCV_MODEL_PATH");
                 return null;
             }
+
+            if (matcher == null) {
+                featurePath = modelPath + "/feature/visa.jpg";
+                logger.info("Feature processor feature path: " + featurePath);
+                detector = FeatureDetector.create(FeatureDetector.SIFT);
+                matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE);
+            }
+
+
             String haarPath = modelPath + "/logo/" + cascadeName;
             logger.info("Logo processor haarPath path: " + haarPath);
             CascadeClassifier classifier = null;
@@ -61,7 +76,8 @@ public class LogoIngestor extends IngestProcessor {
         }
     };
 
-    public LogoIngestor() { }
+    public LogoIngestor() {
+    }
 
     @Override
     public void process(AssetBuilder asset) {
@@ -81,29 +97,121 @@ public class LogoIngestor extends IngestProcessor {
             return;
         }
         String classifyPath = asset.getFile().getPath();
-        Size minLogo = new Size(20, 10);
-        Size maxLogo = new Size(1000, 500);
-        for (Proxy proxy : proxyList) {
-            if (proxy.getWidth() >= 1024 || proxy.getHeight() >= 1024) {
-                String proxyName = proxy.getFile();
-                proxyName = proxyName.substring(0, proxyName.lastIndexOf('.'));
-                classifyPath = ingestProcessorService.getProxyFile(proxyName, "png").getPath();
-                break;
-            }
-        }
+        Size minLogo = new Size(100, 50);
+        Size maxLogo = new Size(4000, 2000);
 
         // Perform analysis
         logger.info("Starting logo detection on " + asset.getFilename());
         Mat image = Highgui.imread(classifyPath);
+        Mat cropImg;
+        Size imSize = image.size();
+
         MatOfRect logoDetections = new MatOfRect();
-        cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.001, 15, 0, minLogo, maxLogo);
+        cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.0025, 10, 0, minLogo, maxLogo);
         int logoCount = logoDetections.toArray().length;
         logger.info("Detected " + logoCount + " logos in " + asset.getFilename());
+
+
+        /***********
+         * Uncomment to do detection without SIFT
+         *
         if (logoCount > 0) {
+            logger.info("LogoIngestor: Haar detected " + logoCount + " potential logos.");
             String value = "visa";
+
+            for (Rect rect : logoDetections.toArray()) {
+                // Logo is big if more than 5% of total height
+                if (rect.height / imSize.height > .05) {
+                    value = value + ",bigvisa";
+                }
+
+            }
             logger.info("LogoIngestor: " + value);
             String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
             asset.putKeywords("Logos", "keywords", keywords);
         }
     }
 }
+         *****/
+
+        Mat feature = Highgui.imread(featurePath);
+
+        MatOfKeyPoint kp1 = new MatOfKeyPoint();
+        MatOfKeyPoint kp2  = new MatOfKeyPoint();
+
+        detector.detect(feature, kp1);
+
+        DescriptorExtractor extractor = DescriptorExtractor.create(2);
+
+        Mat desc1 = new Mat();
+        Mat desc2 = new Mat();
+        extractor.compute(feature, kp1, desc1);
+
+        MatOfDMatch matches = new MatOfDMatch();
+
+
+        if (logoCount > 0) {
+            logger.info("LogoIngestor: Haar detected " + logoCount + " potential logos.");
+
+            for (Rect rect : logoDetections.toArray()) {
+
+                // Detect points in the area found by the Haar cascade
+                int xmin = rect.x;
+                if (xmin < 0) xmin = 0;
+
+                int xmax = rect.x+rect.width;
+                if (xmax >= imSize.width) xmax = (int)imSize.width-1;
+
+                int ymin = rect.y;
+                if (ymin < 0) ymin = 0;
+
+                int ymax = rect.y+rect.height;
+                if (ymax >= imSize.height) ymax = (int)imSize.height-1;
+
+                cropImg = image.submat(xmin, xmax, ymin, ymax);
+                detector.detect(cropImg, kp2);
+                extractor.compute(cropImg, kp2, desc2);
+
+
+                // I use matcher.knnmatch in the Python version. I don't know how to do this here.
+                // I'm confused by the list of matches that I need to give knnmatch as a parameter.
+                // The Java code diverges from here on from the Python code...
+                // HELP!
+                matcher.match(desc1, desc2, matches);
+                List<DMatch> matchesList = matches.toList();
+
+                Double max_dist = 0.0;
+                Double min_dist = 10000.0;
+
+                for(int i = 0; i < desc1.rows(); i++){
+                    Double dist = (double) matchesList.get(i).distance;
+                    if(dist < min_dist) min_dist = dist;
+                    if(dist > max_dist) max_dist = dist;
+                }
+
+                logger.info("LogoIngestor: min_dist=" + min_dist);
+                logger.info("LogoIngestor: max_dist=" + max_dist);
+
+                int matchCount = 0;
+
+                for(int i = 0; i < desc1.rows(); i++){
+                    if(matchesList.get(i).distance < 1.2*min_dist){
+                        matchCount += 1;
+                    }
+                }
+
+                if (matchCount > 4) {
+                    String value = "visa";
+                    // Logo is big if more than 5% of total height
+                    if (rect.height / imSize.height > .05) {
+                        value = value + ",bigvisa";
+                    }
+                    logger.info("LogoIngestor: " + value);
+                    String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
+                    asset.putKeywords("Logos", "keywords", keywords);
+                }
+            }
+        }
+    }
+}
+
