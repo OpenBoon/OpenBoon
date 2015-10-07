@@ -13,10 +13,10 @@
             "ngram_filter"
           ]
         },
-        "path-analyzer": {
+        "path_analyzer": {
           "type": "custom",
-          "tokenizer": "path-tokenizer",
-          "filter" : ["standard", "lowercase"]
+          "tokenizer": "path_tokenizer",
+          "filter" : ["standard"]
         }
       },
       "filter": {
@@ -34,7 +34,7 @@
         }
       },
       "tokenizer": {
-        "path-tokenizer": {
+        "path_tokenizer": {
           "type": "path_hierarchy",
           "delimiter": "/"
         }
@@ -93,6 +93,14 @@
         "folders": {
           "type": "string",
           "index": "not_analyzed"
+        },
+        "source": {
+          "properties": {
+            "path": {
+              "type": "string",
+              "index_analyzer": "path_analyzer"
+            }
+          }
         }
       }
     },

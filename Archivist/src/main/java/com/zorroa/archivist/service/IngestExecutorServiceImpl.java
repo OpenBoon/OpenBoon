@@ -314,6 +314,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     asset.put("ingest", "pipeline", pipeline.getId());
                     asset.put("ingest", "builder", ingest.getPath());
                     asset.put("ingest", "time", System.currentTimeMillis());
+                    asset.put("ingest", "guid", ingest.getId());
 
                     // Run the ingest processors to augment the AssetBuilder
                     executeProcessors();
