@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -107,7 +107,7 @@ public class LogoIngestor extends IngestProcessor {
         Size imSize = image.size();
 
         MatOfRect logoDetections = new MatOfRect();
-        cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.0025, 10, 0, minLogo, maxLogo);
+        cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.005, 15, 0, minLogo, maxLogo);
         int logoCount = logoDetections.toArray().length;
         logger.info("Detected " + logoCount + " logos in " + asset.getFilename());
 
@@ -147,11 +147,14 @@ public class LogoIngestor extends IngestProcessor {
         Mat desc2 = new Mat();
         extractor.compute(feature, kp1, desc1);
 
-        MatOfDMatch matches = new MatOfDMatch();
+        //MatOfDMatch matches = new MatOfDMatch();
 
 
         if (logoCount > 0) {
             logger.info("LogoIngestor: Haar detected " + logoCount + " potential logos.");
+
+            String value = "visa";
+            String svgVal = "<svg>";
 
             for (Rect rect : logoDetections.toArray()) {
 
@@ -168,7 +171,7 @@ public class LogoIngestor extends IngestProcessor {
                 int ymax = rect.y+rect.height;
                 if (ymax >= imSize.height) ymax = (int)imSize.height-1;
 
-                cropImg = image.submat(xmin, xmax, ymin, ymax);
+                cropImg = image.submat(ymin, ymax, xmin, xmax);
                 detector.detect(cropImg, kp2);
                 extractor.compute(cropImg, kp2, desc2);
 
@@ -177,39 +180,48 @@ public class LogoIngestor extends IngestProcessor {
                 // I'm confused by the list of matches that I need to give knnmatch as a parameter.
                 // The Java code diverges from here on from the Python code...
                 // HELP!
-                matcher.match(desc1, desc2, matches);
-                List<DMatch> matchesList = matches.toList();
+                //matcher.match(desc1, desc2, matches);
 
-                Double max_dist = 0.0;
-                Double min_dist = 10000.0;
+                //List<List<DMatch>> Lmatches;
+                LinkedList<MatOfDMatch> raw_matches=new LinkedList<MatOfDMatch>();
+                matcher.knnMatch(desc1, desc2, raw_matches, 2);
+                //List<DMatch> matchesList = matches.toList();
 
-                for(int i = 0; i < desc1.rows(); i++){
-                    Double dist = (double) matchesList.get(i).distance;
-                    if(dist < min_dist) min_dist = dist;
-                    if(dist > max_dist) max_dist = dist;
-                }
-
-                logger.info("LogoIngestor: min_dist=" + min_dist);
-                logger.info("LogoIngestor: max_dist=" + max_dist);
-
+                DMatch bestMatch, secondBestMatch;
+                double ratio = 0.75;
                 int matchCount = 0;
 
-                for(int i = 0; i < desc1.rows(); i++){
-                    if(matchesList.get(i).distance < 1.2*min_dist){
+
+                for (MatOfDMatch matOfDMatch : raw_matches) {
+                    bestMatch=matOfDMatch.toArray()[0];
+                    secondBestMatch=matOfDMatch.toArray()[1];
+                    if (bestMatch.distance / secondBestMatch.distance <= ratio) {
                         matchCount += 1;
+
                     }
                 }
 
                 if (matchCount > 4) {
-                    String value = "visa";
+                    value = "visa2";
                     // Logo is big if more than 5% of total height
                     if (rect.height / imSize.height > .05) {
                         value = value + ",bigvisa";
                     }
-                    logger.info("LogoIngestor: " + value);
-                    String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
-                    asset.putKeywords("Logos", "keywords", keywords);
+
+                    // Draw rectangle
+                    svgVal = svgVal + "<polygon points=\"" + xmin + "," + ymin + " " + xmax + "," + ymin + " " + xmax + "," + ymax + " " + xmin + "," + ymax + "\" style=\"fill:none;stroke:green;stroke-width:2\" />";
+
+
                 }
+
+            }
+            logger.info("LogoIngestor: " + value);
+            String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
+            asset.putKeywords("Logos", "keywords", keywords);
+
+            if (svgVal != "<svg>") {
+                svgVal = svgVal + "</svg>";
+                asset.putKeyword("SVG", "Logos", svgVal);
             }
         }
     }

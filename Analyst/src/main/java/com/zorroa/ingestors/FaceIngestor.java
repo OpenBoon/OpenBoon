@@ -6,6 +6,7 @@ import com.zorroa.archivist.sdk.Proxy;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Size;
+import org.opencv.core.Rect;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
@@ -80,17 +81,13 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
         String classifyPath = asset.getFile().getPath();
-        Size minFace = new Size(15, 15);
-        Size maxFace = new Size(200, 200);
+        Size minFace = new Size(80, 80);
+        Size maxFace = new Size(1000, 1000);
         for (Proxy proxy : proxyList) {
-            if (proxy.getWidth() >= 500 || proxy.getHeight() >= 500) {
+            if (proxy.getWidth() >= 1000 || proxy.getHeight() >= 1000) {
                 String proxyName = proxy.getFile();
                 proxyName = proxyName.substring(0, proxyName.lastIndexOf('.'));
                 classifyPath = ingestProcessorService.getProxyFile(proxyName, "png").getPath();
-                minFace.width = minFace.height = proxy.getHeight() / 25;
-                maxFace.width = maxFace.height = minFace.width * 20;
-                logger.info("Face: minFace = " + minFace.width);
-                logger.info("Face: maxFace = " + maxFace.width);
 
                 break;
             }
@@ -105,7 +102,15 @@ public class FaceIngestor extends IngestProcessor {
         logger.info("Detected " + faceCount + " faces in " + asset.getFilename());
         if (faceCount > 0) {
             String value = "face,face" + faceCount;
-            logger.info("FaceIngestor: " + value);
+
+            // Detect faces that are big enough for the 'bigface' label
+            for (Rect rect : faceDetections.toArray()) {
+                if (rect.height > 250) {
+                    value = value + ",bigface";
+                }
+            }
+
+                logger.info("FaceIngestor: " + value);
             String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
             asset.putKeywords("face", "keywords", keywords);
         }
