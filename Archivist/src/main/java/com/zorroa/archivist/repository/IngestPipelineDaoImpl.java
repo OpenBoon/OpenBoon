@@ -73,11 +73,6 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
     }
 
     @Override
-    public IngestPipeline get(String name) {
-        return jdbc.queryForObject("SELECT * FROM pipeline WHERE str_name=?", MAPPER, name);
-    }
-
-    @Override
     public List<IngestPipeline> getAll() {
         return jdbc.query("SELECT * FROM pipeline", MAPPER);
     }

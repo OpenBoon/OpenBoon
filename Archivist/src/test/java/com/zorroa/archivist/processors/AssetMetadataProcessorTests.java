@@ -43,9 +43,9 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
         builder.setName("test");
         builder.addToProcessors(
                 new IngestProcessorFactory("com.zorroa.archivist.processors.AssetMetadataProcessor", args));
-        ingestPipelineDao.create(builder);
+        IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("test"));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 

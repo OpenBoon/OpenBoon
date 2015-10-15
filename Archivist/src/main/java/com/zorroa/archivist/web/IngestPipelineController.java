@@ -28,7 +28,7 @@ public class IngestPipelineController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.GET)
-    public IngestPipeline get(@PathVariable String id) {
+    public IngestPipeline get(@PathVariable Integer id) {
         return ingestService.getIngestPipeline(id);
     }
 
@@ -40,7 +40,7 @@ public class IngestPipelineController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/pipelines/{id}/_ingest", method=RequestMethod.POST)
-    public Ingest ingest(@RequestBody IngestBuilder builder, @PathVariable String id) {
+    public Ingest ingest(@RequestBody IngestBuilder builder, @PathVariable Integer id) {
         return ingestService.createIngest(builder);
     }
 

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.Json;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
@@ -11,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -37,14 +39,12 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Autowired
     IngestExecutorService ingestExecutorService;
 
+    @Autowired
+    RoomService roomService;
+
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
         return ingestPipelineDao.create(builder);
-    }
-
-    @Override
-    public IngestPipeline getIngestPipeline(String name) {
-        return ingestPipelineDao.get(name);
     }
 
     @Override
@@ -69,55 +69,91 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean setIngestRunning(Ingest ingest) {
+        ingest.setState(IngestState.Running);
         return ingestDao.setState(ingest, IngestState.Running);
     }
 
     @Override
     public void resetIngestCounters(Ingest ingest) {
+        ingest.setCreatedCount(0);
+        ingest.setUpdatedCount(0);
+        ingest.setErrorCount(0);
         ingestDao.resetCounters(ingest);
     }
 
     @Override
     public boolean setIngestIdle(Ingest ingest) {
-        return ingestDao.setState(ingest, IngestState.Idle);
+        if (ingestDao.setState(ingest, IngestState.Idle)) {
+            ingest.setState(IngestState.Idle);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean setIngestQueued(Ingest ingest) {
-        return ingestDao.setState(ingest, IngestState.Queued);
+        if (ingestDao.setState(ingest, IngestState.Queued)) {
+            ingest.setState(IngestState.Queued);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean setIngestPaused(Ingest ingest) {
-        return ingestDao.setState(ingest, IngestState.Paused);
+        if (ingestDao.setState(ingest, IngestState.Paused)) {
+            ingest.setState(IngestState.Paused);
+            return true;
+        }
+        return false;
+    }
+
+    private void sendToRoom(Ingest ingest, MessageType messageType) {
+        if (ingest.getRoomId() != 0) {
+            Room room = roomService.get(ingest.getRoomId());
+            if (room != null) {
+                String json = new String(Json.serialize(ingest), StandardCharsets.UTF_8);
+                roomService.sendToRoom(room, new Message(messageType, json));
+            }
+        }
     }
 
     @Override
     public void updateIngestCounters(Ingest ingest, int created, int updated, int errors) {
+        ingest.setCreatedCount(created);
+        ingest.setUpdatedCount(updated);
+        ingest.setErrorCount(errors);
         ingestDao.updateCounters(ingest, created, updated, errors);
+        sendToRoom(ingest, MessageType.INGEST_UPDATE_COUNTERS);
     }
 
     @Override
     public void updateIngestStartTime(Ingest ingest, long time) {
         ingest.setTimeStarted(time);
         ingestDao.updateStartTime(ingest, time);
+        sendToRoom(ingest, MessageType.INGEST_START);
     }
 
     @Override
     public void updateIngestStopTime(Ingest ingest, long time) {
         ingest.setTimeStopped(time);
         ingestDao.updateStoppedTime(ingest, time);
+        sendToRoom(ingest, MessageType.INGEST_STOP);
     }
 
     @Override
     public Ingest createIngest(IngestBuilder builder) {
-        IngestPipeline pipeline = ingestPipelineDao.get(builder.getPipeline());
-        return ingestDao.create(pipeline, builder);
+        IngestPipeline pipeline = ingestPipelineDao.get(builder.getPipelineId());
+        Ingest ingest = ingestDao.create(pipeline, builder);
+        sendToRoom(ingest, MessageType.INGEST_CREATE);
+        return ingest;
     }
 
     @Override
     public boolean deleteIngest(Ingest ingest) {
-        return ingestDao.delete(ingest);
+        boolean ok = ingestDao.delete(ingest);
+        sendToRoom(ingest, MessageType.INGEST_DELETE);
+        return ok;
     }
 
     @Override
@@ -132,10 +168,12 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         }
 
         if (builder.getPipeline() != null) {
-            builder.setPipelineId(ingestPipelineDao.get(builder.getPipeline()).getId());
+            builder.setPipelineId(ingestPipelineDao.get(builder.getPipelineId()).getId());
         }
 
-        return ingestDao.update(ingest, builder);
+        boolean ok = ingestDao.update(ingest, builder);
+        sendToRoom(ingest, MessageType.INGEST_UPDATE);
+        return ok;
     }
 
     @Override

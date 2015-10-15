@@ -9,7 +9,8 @@ public class IngestBuilder {
 
     private String path;
     private Set<String> fileTypes = ImmutableSet.<String>of();
-    private String pipeline = "standard";
+    private int pipelineId = 1;     // "standard" pipeline is always 1
+    private int roomId = 0;
     private boolean updateOnExist = true;
     private int assetWorkerThreads = 4;
 
@@ -51,15 +52,22 @@ public class IngestBuilder {
         return this;
     }
 
-    public String getPipeline() {
-        return pipeline;
+    public int getPipelineId() {
+        return pipelineId;
     }
 
-    public IngestBuilder setPipeline(String pipeline) {
-        this.pipeline = pipeline;
+    public IngestBuilder setPipelineId(int pipelineId) {
+        this.pipelineId = pipelineId;
         return this;
     }
 
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
 
     public boolean isUpdateOnExist() {
         return updateOnExist;
