@@ -40,8 +40,8 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         builder.setName("default");
         builder.addToProcessors(new IngestProcessorFactory(
                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
-        ingestService.createIngestPipeline(builder);
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("default"));
+        IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
 
         ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
@@ -58,7 +58,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
-        updateBuilder.setPipeline(testPipeline.getName());
+        updateBuilder.setPipelineId(testPipeline.getId());
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         assertTrue(ingestService.updateIngest(ingest, updateBuilder));

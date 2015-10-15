@@ -1,10 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +37,8 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
         builder.setName("default");
         builder.addToProcessors(new IngestProcessorFactory(
                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
-        ingestService.createIngestPipeline(builder);
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("default"));
+        IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
 
         /*
          * Set up a timer to resume the ingest.  This is required due to the fact that
@@ -68,8 +65,8 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
         builder.setName("default");
         builder.addToProcessors(new IngestProcessorFactory(
                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
-        ingestService.createIngestPipeline(builder);
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipeline("default"));
+        IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
 
         ingest = ingestService.getIngest(ingest.getId());

@@ -11,8 +11,6 @@ public interface IngestService {
     */
     IngestPipeline createIngestPipeline(IngestPipelineBuilder builder);
 
-    IngestPipeline getIngestPipeline(String id);
-
     List<IngestPipeline> getIngestPipelines();
 
     IngestPipeline getIngestPipeline(int id);

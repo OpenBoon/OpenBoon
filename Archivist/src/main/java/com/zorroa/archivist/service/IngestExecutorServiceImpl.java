@@ -263,12 +263,12 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 runningIngests.remove(ingest.getId());
                 processors.forEach(p->p.teardown());
                 if (!earlyShutdown) {       // Avoid if paused or interrupted
-                    ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
                     ingestService.updateIngestCounters(ingest,
                             createdCount.intValue(),
                             updatedCount.intValue(),
                             errorCount.intValue());
                     ingestService.setIngestIdle(ingest);
+                    ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
                 }
             }
         }
