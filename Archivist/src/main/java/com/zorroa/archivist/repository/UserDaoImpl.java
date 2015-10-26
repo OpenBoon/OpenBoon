@@ -140,7 +140,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         sb.append(" WHERE pk_user=?");
         values.add(user.getId());
 
-        logger.debug("{} {}", sb.toString(), values);
+        logger.debug("updating user '{}', {}", sb.toString(), values);
         return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
 
