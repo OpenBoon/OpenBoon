@@ -3,22 +3,23 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,6 +33,9 @@ public class RoomControllerTests extends MockMvcTest {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RoomDao roomDao;
 
     @Test
     public void testCreate() throws Exception {
@@ -51,6 +55,50 @@ public class RoomControllerTests extends MockMvcTest {
         Room room = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
         assertEquals(bld.getName(), room.getName());
 //        assertEquals(bld.getInviteList(), room.getInviteList());
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+
+        RoomBuilder bld = new RoomBuilder();
+        bld.setName("RoomA");
+        bld.setVisible(true);
+        Room room = roomService.create(bld);
+
+        RoomUpdateBuilder update = new RoomUpdateBuilder();
+        update.setName("RoomB");
+        update.setFolderId(UUID.randomUUID().toString());
+        update.setPassword("test123");
+
+        MvcResult result = mvc.perform(put("/api/v1/rooms/" + room.getId())
+                .session(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(update)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Room updatedRoom = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        assertEquals(update.getName(), updatedRoom.getName());
+        assertEquals(update.getFolderId(), updatedRoom.getFolderId());
+        assertTrue(BCrypt.checkpw("test123", roomDao.getPassword(room.getId())));
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+
+        RoomBuilder bld = new RoomBuilder();
+        bld.setName("RoomA");
+        bld.setVisible(true);
+        Room room = roomService.create(bld);
+
+        MvcResult result = mvc.perform(delete("/api/v1/rooms/" + room.getId())
+                .session(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        boolean isDeleted = Json.deserialize(result.getResponse().getContentAsByteArray(), Boolean.class);
+        assertTrue(isDeleted);
     }
 
     @Test

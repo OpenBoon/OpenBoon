@@ -1,9 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Message;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.Session;
+import com.zorroa.archivist.domain.*;
 
 import java.util.List;
 
@@ -22,4 +19,8 @@ public interface RoomService {
     boolean join(Room room, Session session);
 
     List<Room> getAll(Session session);
+
+    boolean update(Room room, RoomUpdateBuilder updater);
+
+    boolean delete(Room room);
 }

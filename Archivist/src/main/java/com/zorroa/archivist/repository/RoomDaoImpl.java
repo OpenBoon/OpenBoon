@@ -1,10 +1,13 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.Room;
 import com.zorroa.archivist.domain.RoomBuilder;
+import com.zorroa.archivist.domain.RoomUpdateBuilder;
 import com.zorroa.archivist.domain.Session;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Preconditions;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -99,6 +102,55 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         return get(id);
     }
 
+    @Override
+    public boolean update(Room room, RoomUpdateBuilder builder) {
+
+        List<String> updates = Lists.newArrayList();
+        List<Object> values = Lists.newArrayList();
+
+        StringBuilder sb = new StringBuilder(512);
+        sb.append("UPDATE room SET ");
+
+        if (builder.getFolderId() != null) {
+            updates.add("str_folderId=?");
+            values.add(builder.getFolderId());
+        }
+
+        /*
+         * Need to fix the invite list.
+        if (builder.getInviteList() != null) {
+
+        }
+        */
+
+        if (builder.getName() != null) {
+            updates.add("str_name=?");
+            values.add(builder.getName());
+        }
+
+        if (builder.getPassword() != null) {
+            String salted = SecurityUtils.createPasswordHash(builder.getPassword());
+            updates.add("str_password=?");
+            logger.info("salted: {}", salted);
+            values.add(salted);
+        }
+
+        if (values.isEmpty()) {
+            return false;
+        }
+
+        sb.append(StringUtils.join(updates, ", "));
+        sb.append(" WHERE pk_room=?");
+        values.add(room.getId());
+
+        logger.debug("Updating room {} {}", sb.toString(), values);
+        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    }
+
+    @Override
+    public boolean delete(Room room) {
+        return jdbc.update("DELETE FROM room WHERE pk_room=?", room.getId()) == 1;
+    }
 
     @Override
     public String getPassword(long id) {
@@ -120,4 +172,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                 room.getId(), session.getId());
         return result == 1;
     }
+
+
 }

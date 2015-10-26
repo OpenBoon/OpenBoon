@@ -2,10 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Message;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.Session;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.repository.SessionDao;
@@ -93,4 +90,15 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> getAll(Session session) {
         return roomDao.getAll(session);
     }
+
+    @Override
+    public boolean update(Room room, RoomUpdateBuilder updater) {
+        return roomDao.update(room, updater);
+    }
+
+    @Override
+    public boolean delete(Room room) {
+        return roomDao.delete(room);
+    }
+
 }

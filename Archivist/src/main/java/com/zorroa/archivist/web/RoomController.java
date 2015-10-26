@@ -1,14 +1,13 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -82,5 +81,27 @@ public class RoomController {
     public List<User> users(@PathVariable long id) {
         Room room = roomService.get(id);
         return userService.getAll(room);
+    }
+
+    @RequestMapping(value="/api/v1/rooms/{id}", method=RequestMethod.PUT)
+    public Room update(@RequestBody RoomUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
+        Session session = userService.getSession(httpSession);
+
+        if (session.getUserId() == id || SecurityUtils.hasPermission("ROLE_ADMIN")) {
+            Room room = roomService.get(id);
+            roomService.update(room, builder);
+            return roomService.get(id);
+        }
+        else {
+            throw new SecurityException("You do not have the access to modify this room.");
+        }
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value="/api/v1/rooms/{id}", method=RequestMethod.DELETE)
+    public boolean delete(@PathVariable int id) {
+        Room room = roomService.get(id);
+        // TODO: what if people are in the room.
+        return roomService.delete(room);
     }
 }
