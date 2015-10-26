@@ -20,3 +20,6 @@ proxies
 archivist.sublime-project
 archivist.sublime-workspace
 archivist.iml
+
+#Snapshot dir
+snapshots

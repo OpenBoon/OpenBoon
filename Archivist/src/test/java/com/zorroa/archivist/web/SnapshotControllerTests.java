@@ -30,7 +30,9 @@ public class SnapshotControllerTests extends MockMvcTest {
 
     @Test
     public void testSnapshotCreateRestoreGetDelete() throws Exception {
-
+        /**
+         * TODO: will fail until the snapshotting is updated for elastic 1.7
+         */
         // Start by ingesting the standard test assets
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);

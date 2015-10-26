@@ -63,7 +63,12 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         try {
             setupElasticSearchMapping();
             createDefaultIngestPipeline();
-            createSnapshotRepository();
+            /**
+             * TODO: get the snapshot repository working with elastic 1.7
+             *
+             * createSnapshotRepository();
+             */
+
             restartRunningIngests();
         } catch (IOException e) {
             throw new RuntimeException(e);

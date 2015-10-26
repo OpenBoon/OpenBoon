@@ -69,13 +69,20 @@ public abstract class ArchivistApplicationTests {
 
     @Before
     public void setup() {
-        // delete all the assets
+
+        /**
+         * TODO: fix deprecated prepareDeleteByQuery
+         */
         client.prepareDeleteByQuery(alias)
             .setTypes("asset")
             .setQuery(QueryBuilders.matchAllQuery())
             .get();
 
-        // Delete all snapshots
+
+        /**
+         * TODO: fix this for elastic 1.7
+         */
+        /*
         for (SnapshotInfo info : getSnapshotInfos()) {
             DeleteSnapshotRequestBuilder builder = new DeleteSnapshotRequestBuilder(client.admin().cluster());
             builder.setRepository(snapshotRepoName).setSnapshot(info.name());
@@ -89,6 +96,8 @@ public abstract class ArchivistApplicationTests {
         } catch (IndexMissingException e) {
             logger.info("No existing snapshot to delete");
         }
+
+        */
 
 
         /**
