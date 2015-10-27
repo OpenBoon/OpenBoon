@@ -11,7 +11,6 @@ public class IngestUpdateBuilder {
     private Set<String> fileTypes;
     private String pipeline;
     private int pipelineId = -1;
-    private long roomId;
     private boolean updateOnExist;
     private int assetWorkerThreads = -1;
 
@@ -45,14 +44,6 @@ public class IngestUpdateBuilder {
 
     public void setPipelineId(int pipelineId) {
         this.pipelineId = pipelineId;
-    }
-
-    public long getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(long roomId) {
-        this.roomId = roomId;
     }
 
     public boolean isUpdateOnExist() {

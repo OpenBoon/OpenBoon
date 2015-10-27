@@ -10,7 +10,6 @@ public class Ingest {
 
     private long id;
     private int pipelineId;
-    private long roomId;
     private IngestState state;
     private String path;
     private Set<String> fileTypes;
@@ -64,12 +63,6 @@ public class Ingest {
     }
     public void setPipelineId(int pipelineId) {
         this.pipelineId = pipelineId;
-    }
-    public long getRoomId() {
-        return roomId;
-    }
-    public void setRoomId(long roomId) {
-        this.roomId = roomId;
     }
     public IngestState getState() {
         return state;

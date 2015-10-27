@@ -1,0 +1,2 @@
+ALTER TABLE ingest
+DROP COLUMN pk_room
