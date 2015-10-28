@@ -18,25 +18,25 @@ public class IngestScheduleController {
     @Autowired
     IngestScheduleService ingestScheduleService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules", method= RequestMethod.POST)
     public IngestSchedule create(@RequestBody IngestScheduleBuilder builder) {
         return ingestScheduleService.create(builder);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules/{id}", method= RequestMethod.GET)
     public IngestSchedule get(@PathVariable int id) {
         return ingestScheduleService.get(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules", method= RequestMethod.GET)
     public List<IngestSchedule> getAll() {
         return ingestScheduleService.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules/{id}", method= RequestMethod.PUT)
     public void update(@RequestBody IngestSchedule updated, @PathVariable Integer id) {
         // just verify it exists

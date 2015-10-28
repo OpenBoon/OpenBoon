@@ -87,7 +87,7 @@ public class RoomController {
     public Room update(@RequestBody RoomUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
         Session session = userService.getSession(httpSession);
 
-        if (session.getUserId() == id || SecurityUtils.hasPermission("ROLE_ADMIN")) {
+        if (session.getUserId() == id || SecurityUtils.hasPermission("manager", "systems")) {
             Room room = roomService.get(id);
             roomService.update(room, builder);
             return roomService.get(id);
@@ -97,7 +97,6 @@ public class RoomController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/api/v1/rooms/{id}", method=RequestMethod.DELETE)
     public boolean delete(@PathVariable int id) {
         Room room = roomService.get(id);

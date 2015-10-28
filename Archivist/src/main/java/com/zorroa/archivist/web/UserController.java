@@ -36,29 +36,30 @@ public class UserController  {
         req.logout();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('manager')")
     @RequestMapping(value="/api/v1/users")
     public List<User> getAll() {
         return userService.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('manager')")
     @RequestMapping(value="/api/v1/users", method=RequestMethod.POST)
     public User create(@RequestBody UserBuilder builder) {
         return userService.create(builder);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('manager')")
     @RequestMapping(value="/api/v1/users/{id}")
     public User get(@PathVariable int id) {
         return userService.get(id);
     }
 
+    @PreAuthorize("hasRole('manager')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.PUT)
     public User update(@RequestBody UserUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
         Session session = userService.getSession(httpSession);
 
-        if (session.getUserId() == id || SecurityUtils.hasPermission("ROLE_ADMIN")) {
+        if (session.getUserId() == id || SecurityUtils.hasPermission("manager", "systems")) {
             User user = userService.get(id);
             userService.update(user, builder);
             return userService.get(id);
@@ -68,7 +69,7 @@ public class UserController  {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('manager')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
     public void delete(@PathVariable int id) {
         User user = userService.get(id);
