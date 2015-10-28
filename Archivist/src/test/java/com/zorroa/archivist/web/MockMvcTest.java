@@ -56,12 +56,12 @@ public abstract class MockMvcTest extends ArchivistApplicationTests {
 
     protected MockHttpSession user(String name) {
         User user = userService.get(name);
-        return buildSession(new TestingAuthenticationToken(user, "admin", "ROLE_ADMIN"));
+        return buildSession(new TestingAuthenticationToken(user, "admin", "ingest"));
     }
 
     protected MockHttpSession user(Integer id) {
         User user = userService.get(id);
-        return buildSession(new TestingAuthenticationToken(user, "user", "ROLE_USER"));
+        return buildSession(new TestingAuthenticationToken(user, "user", "user"));
     }
 
     /**
@@ -73,6 +73,6 @@ public abstract class MockMvcTest extends ArchivistApplicationTests {
 
     protected MockHttpSession admin(Integer id) {
         User user = userService.get(id);
-        return buildSession(new TestingAuthenticationToken(user, "admin", "ROLE_ADMIN"));
+        return buildSession(new TestingAuthenticationToken(user, "admin", "manager", "ingest", "systems"));
     }
 }

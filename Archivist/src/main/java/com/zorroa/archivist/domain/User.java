@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.base.MoreObjects;
 import com.google.common.hash.HashCode;
 
 import java.util.Set;
@@ -13,7 +14,6 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    private Set<String> roles;
     private Boolean enabled;
 
     public User() { }
@@ -42,14 +42,6 @@ public class User {
         this.email = email;
     }
 
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
-
     public int getId() {
         return id;
     }
@@ -76,6 +68,7 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) { return false; }
         if (!(obj instanceof User)) {
             return false;
         }
@@ -86,6 +79,14 @@ public class User {
     @Override
     public int hashCode() {
         return HashCode.fromInt(getId()).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(getClass())
+                .add("id", getId())
+                .add("username", getUsername())
+                .toString();
     }
 
 }

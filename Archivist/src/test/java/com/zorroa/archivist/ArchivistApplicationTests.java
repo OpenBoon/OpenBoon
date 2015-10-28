@@ -109,7 +109,6 @@ public abstract class ArchivistApplicationTests {
         userBuilder.setLastName("User");
         userBuilder.setUsername("user");
         userBuilder.setPassword("user");
-        userBuilder.setRoles(Sets.newHashSet(StandardRoles.USER));
         userService.create(userBuilder);
     }
 

@@ -31,12 +31,9 @@ public class UserControllerTest extends MockMvcTest {
     @Autowired
     UserService userService;
 
-
-
     @Test
     public void testLogin() throws Exception {
         mvc.perform(post("/api/v1/login").session(admin())).andExpect(status().isOk());
-
     }
 
     @Test

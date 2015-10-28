@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -31,4 +32,12 @@ public interface UserService {
     Session getSession(HttpSession session);
 
     Session getActiveSession();
+
+    List<GrantedAuthority> getGrantedAuthorities(User user);
+
+    List<Permission> getPermissions();
+
+    List<Permission> getPermissions(User user);
+
+    void setPermissions(User user, List<Permission> perms);
 }

@@ -33,7 +33,6 @@ public class UserDaoTests extends ArchivistApplicationTests {
         builder.setUsername("test");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
-        builder.setRoles(Sets.newHashSet(StandardRoles.USER));
         user = userDao.create(builder);
     }
 
@@ -51,7 +50,6 @@ public class UserDaoTests extends ArchivistApplicationTests {
         builder.setUsername("foo");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
-        builder.setRoles(Sets.newHashSet(StandardRoles.USER));
         userDao.create(builder);
 
         assertEquals(4, userDao.getAll().size());

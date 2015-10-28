@@ -48,11 +48,8 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        Set<SimpleGrantedAuthority> authorities =
-                Sets.newHashSetWithExpectedSize(user.getRoles().size());
-        user.getRoles().forEach(a->authorities.add(new SimpleGrantedAuthority(a)));
-
-        return new UsernamePasswordAuthenticationToken(user, storedPassword, authorities);
+        return new UsernamePasswordAuthenticationToken(user, storedPassword,
+                userService.getGrantedAuthorities(user));
     }
 
     @Override

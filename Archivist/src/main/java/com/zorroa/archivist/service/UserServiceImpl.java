@@ -2,11 +2,13 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     SessionDao sessionDao;
+
+    @Autowired
+    PermissionDao permissionDao;
 
     @Override
     public User login() {
@@ -85,4 +90,25 @@ public class UserServiceImpl implements UserService {
     public Session getActiveSession() {
         return sessionDao.get(RequestContextHolder.currentRequestAttributes().getSessionId());
     }
+
+    @Override
+    public List<GrantedAuthority> getGrantedAuthorities(User user) {
+        return permissionDao.getGrantedAuthorities(user);
+    }
+
+    @Override
+    public List<Permission> getPermissions() {
+        return permissionDao.getAll();
+    }
+
+    @Override
+    public List<Permission> getPermissions(User user) {
+        return permissionDao.getAll(user);
+    }
+
+    @Override
+    public void setPermissions(User user, List<Permission> perms) {
+        permissionDao.setPermissions(user, perms);
+    }
+
 }

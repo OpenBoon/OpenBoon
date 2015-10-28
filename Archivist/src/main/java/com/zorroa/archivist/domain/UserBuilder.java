@@ -9,7 +9,6 @@ public class UserBuilder {
     private String firstName;
     private String lastName;
     private String email;
-    private Set<String> roles;
 
     public UserBuilder() { }
 
@@ -21,13 +20,6 @@ public class UserBuilder {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
     public String getFirstName() {
         return firstName;
     }
@@ -59,4 +51,5 @@ public class UserBuilder {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

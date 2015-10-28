@@ -28,11 +28,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         user.setEmail(rs.getString("str_email"));
         user.setFirstName(rs.getString("str_firstname"));
         user.setLastName(rs.getString("str_lastname"));
-        user.setRoles(ImmutableSet.<String>copyOf(
-                Splitter.on(",")
-                        .omitEmptyStrings()
-                        .trimResults()
-                        .splitToList(rs.getString("list_roles"))));
         user.setEnabled(rs.getBoolean("bool_enabled"));
         return user;
     };
@@ -61,9 +56,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
                 "str_email, "+
                 "str_firstname, " +
                 "str_lastname, " +
-                "list_roles, " +
                 "bool_enabled " +
-            ") VALUES (?,?,?,?,?,?,?)";
+            ") VALUES (?,?,?,?,?,?)";
 
     @Override
     public User create(UserBuilder builder) {
@@ -80,8 +74,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setString(3, builder.getEmail());
             ps.setString(4, builder.getFirstName());
             ps.setString(5, builder.getLastName());
-            ps.setString(6, String.join(",", builder.getRoles()));
-            ps.setBoolean(7, true);
+            ps.setBoolean(6, true);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
