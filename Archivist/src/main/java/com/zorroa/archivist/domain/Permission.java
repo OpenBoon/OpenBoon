@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -59,6 +60,7 @@ public class Permission implements GrantedAuthority {
                 .toString();
     }
 
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return name;
