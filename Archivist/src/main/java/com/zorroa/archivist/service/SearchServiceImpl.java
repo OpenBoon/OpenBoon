@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.AssetSearchBuilder;
+import com.zorroa.archivist.repository.PermissionDao;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -18,6 +20,9 @@ import org.springframework.stereotype.Service;
 public class SearchServiceImpl implements SearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
+
+    @Autowired
+    PermissionDao permissionDao;
 
     @Value("${archivist.index.alias}")
     private String alias;
@@ -81,6 +86,22 @@ public class SearchServiceImpl implements SearchService {
             filter.add(createTimeFilter);
         }
 
+        filter.add(getPermissionsFilter());
+
         return filter;
     }
+
+
+    @Override
+    public FilterBuilder getPermissionsFilter() {
+        OrFilterBuilder result = FilterBuilders.orFilter();
+        MissingFilterBuilder part1 = FilterBuilders.missingFilter("permissions.search");
+        TermsFilterBuilder part2 = FilterBuilders.termsFilter("permissions.search",
+                SecurityUtils.getPermissionIds());
+
+        result.add(part1);
+        result.add(part2);
+        return result;
+    }
+
 }

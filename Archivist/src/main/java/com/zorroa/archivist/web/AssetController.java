@@ -137,7 +137,8 @@ public class AssetController {
         QueryBuilder queryBuilder = buildFolderQuery(json);
         String search = json.size() > 0 ? new String(Json.serialize(json), StandardCharsets.UTF_8) : null;
         SearchRequestBuilder builder = client.prepareSearch(alias)
-                .setTypes("asset");
+                .setTypes("asset")
+                .setPostFilter(searchService.getPermissionsFilter());
         if (search != null)
             builder.setExtraSource(search.getBytes());
         if (queryBuilder != null)
@@ -185,6 +186,7 @@ public class AssetController {
         }
 
         SearchRequestBuilder builder = buildSearch(query);
+
         SearchResponse response = builder.get();
         OutputStream out = httpResponse.getOutputStream();
         XContentBuilder content = XContentFactory.jsonBuilder(out);

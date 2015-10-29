@@ -1,17 +1,12 @@
 package com.zorroa.archivist;
 
-import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.StandardRoles;
 import com.zorroa.archivist.domain.UserBuilder;
 import com.zorroa.archivist.service.UserService;
-import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.snapshots.SnapshotInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -21,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -44,6 +42,9 @@ public abstract class ArchivistApplicationTests {
     @Autowired
     protected UserService userService;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
     @Value("${archivist.index.alias}")
     protected String alias;
 
@@ -53,6 +54,8 @@ public abstract class ArchivistApplicationTests {
     protected Set<String> testImages;
 
     public static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
+
+
 
     public ArchivistApplicationTests() {
         logger.info("Setting unit test");
@@ -69,6 +72,12 @@ public abstract class ArchivistApplicationTests {
 
     @Before
     public void setup() {
+
+        /**
+         * Before we can do anything reliably we need a logged in user.
+         */
+        SecurityContextHolder.getContext().setAuthentication(
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
 
         /**
          * TODO: fix deprecated prepareDeleteByQuery
@@ -98,7 +107,6 @@ public abstract class ArchivistApplicationTests {
         }
 
         */
-
 
         /**
          * Adds in a test, non privileged user.

@@ -38,7 +38,7 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
         try {
             storedPassword = userService.getPassword(username);
             user = userService.get(username);
-        } catch (Exception e ) {
+        } catch (Exception e) {
             logger.warn("failed to find user: {}", username, e);
             throw new BadCredentialsException("Invalid username or password");
         }

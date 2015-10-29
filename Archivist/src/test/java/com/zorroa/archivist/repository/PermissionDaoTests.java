@@ -86,14 +86,4 @@ public class PermissionDaoTests extends ArchivistApplicationTests {
         List<Permission> perms = permissionDao.getAll(user);
         assertTrue(perms.contains(permissionDao.get("manager")));
     }
-
-    @Test
-    public void getAllAuthorities() {
-        List<GrantedAuthority> auths = permissionDao.getGrantedAuthorities(user);
-        assertTrue(auths.size() == 0);
-
-        permissionDao.setPermissions(user, permissionDao.getAll());
-        auths = permissionDao.getGrantedAuthorities(user);
-        assertTrue(auths.size() == permissionDao.getAll().size());
-    }
 }

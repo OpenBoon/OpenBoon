@@ -101,6 +101,18 @@
               "index_analyzer": "path_analyzer"
             }
           }
+        },
+        "permissions": {
+          "properties": {
+            "search": {
+              "type": "integer",
+              "index": "not_analyzed"
+            },
+            "export": {
+              "type": "integer",
+              "index": "not_analyzed"
+            }
+          }
         }
       }
     },
