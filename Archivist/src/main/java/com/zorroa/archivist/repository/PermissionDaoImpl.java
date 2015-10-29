@@ -86,18 +86,11 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     @Override
-    public List<GrantedAuthority> getGrantedAuthorities(User user) {
-        return jdbc.query(GET_BY_USER, (rs, i) -> {
-            return new SimpleGrantedAuthority(rs.getString(1));
-        }, user.getId());
-    }
-
-    @Override
     public void setPermissions(User user, List<Permission> perms) {
         deleteAll(user);
-        perms.forEach(p->
-            jdbc.update("INSERT INTO map_permission_to_user (pk_permission, pk_user) VALUES (?,?)",
-                    p.getId(), user.getId()));
+        perms.forEach(p ->
+                jdbc.update("INSERT INTO map_permission_to_user (pk_permission, pk_user) VALUES (?,?)",
+                        p.getId(), user.getId()));
     }
 
     @Override

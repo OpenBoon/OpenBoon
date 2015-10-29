@@ -1,13 +1,14 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
 
 /**
  * Created by chambers on 10/27/15.
  */
-public class Permission {
+public class Permission implements GrantedAuthority {
 
     private int id;
     private String name;
@@ -56,5 +57,10 @@ public class Permission {
                 .add("name", name)
                 .add("description", description)
                 .toString();
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

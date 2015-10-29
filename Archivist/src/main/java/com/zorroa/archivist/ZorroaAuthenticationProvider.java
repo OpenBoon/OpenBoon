@@ -49,7 +49,7 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
         }
 
         return new UsernamePasswordAuthenticationToken(user, storedPassword,
-                userService.getGrantedAuthorities(user));
+                userService.getPermissions(user));
     }
 
     @Override

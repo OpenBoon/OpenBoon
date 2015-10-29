@@ -1,10 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserBuilder;
-import com.zorroa.archivist.domain.UserUpdateBuilder;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController  {
@@ -74,5 +72,38 @@ public class UserController  {
     public void delete(@PathVariable int id) {
         User user = userService.get(id);
         userService.delete(user);
+    }
+
+    /**
+     * Return the list of permissions for the given user id.
+     *
+     * @param id
+     * @return
+     */
+    @PreAuthorize("hasRole('manager')")
+    @RequestMapping(value="/api/v1/users/{id}/permissions", method=RequestMethod.GET)
+    public List<Permission> getPermissions(@PathVariable int id) {
+        User user = userService.get(id);
+        return userService.getPermissions(user);
+    }
+
+    /**
+     * Set an array of integers that correspond to permission IDs.  These
+     * will be assigned to the user as permissions.  The Permission object
+     * assigned are returned back.
+     *
+     * @param pids
+     * @param id
+     * @return
+     */
+    @PreAuthorize("hasRole('manager')")
+    @RequestMapping(value="/api/v1/users/{id}/permissions", method=RequestMethod.PUT)
+    public List<Permission> setPermissions(@RequestBody List<Integer> pids, @PathVariable int id) {
+        User user = userService.get(id);
+        List<Permission> perms = pids.stream().map(
+                i->userService.getPermission(i)).collect(Collectors.<Permission>toList());
+
+        userService.setPermissions(user, perms);
+        return userService.getPermissions(user);
     }
 }

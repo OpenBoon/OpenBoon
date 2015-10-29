@@ -92,11 +92,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<GrantedAuthority> getGrantedAuthorities(User user) {
-        return permissionDao.getGrantedAuthorities(user);
-    }
-
-    @Override
     public List<Permission> getPermissions() {
         return permissionDao.getAll();
     }
@@ -111,4 +106,13 @@ public class UserServiceImpl implements UserService {
         permissionDao.setPermissions(user, perms);
     }
 
+    @Override
+    public Permission getPermission(int id) {
+        return permissionDao.get(id);
+    }
+
+    @Override
+    public Permission createPermission(PermissionBuilder builder) {
+        return permissionDao.create(builder);
+    }
 }

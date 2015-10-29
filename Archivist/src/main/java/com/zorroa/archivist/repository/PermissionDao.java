@@ -24,8 +24,6 @@ public interface PermissionDao {
 
     List<Permission> getAll(User user);
 
-    List<GrantedAuthority> getGrantedAuthorities(User user);
-
     void setPermissions(User user, List<Permission> perms);
 
     void setPermissions(User user, Permission... perms);

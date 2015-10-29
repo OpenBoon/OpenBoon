@@ -33,11 +33,13 @@ public interface UserService {
 
     Session getActiveSession();
 
-    List<GrantedAuthority> getGrantedAuthorities(User user);
-
     List<Permission> getPermissions();
 
     List<Permission> getPermissions(User user);
 
     void setPermissions(User user, List<Permission> perms);
+
+    Permission getPermission(int id);
+
+    Permission createPermission(PermissionBuilder builder);
 }

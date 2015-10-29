@@ -1,7 +1,8 @@
 package com.zorroa.archivist.web;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserUpdateBuilder;
 import com.zorroa.archivist.service.UserService;
@@ -15,11 +16,15 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebAppConfiguration
@@ -98,5 +103,47 @@ public class UserControllerTest extends MockMvcTest {
 
         Json.Mapper.readValue(result.getResponse().getContentAsString(), User.class);
         assertTrue(BCrypt.checkpw("bar", userService.getPassword("foo")));
+    }
+
+    @Test
+    public void testSetPermissions() throws Exception {
+
+        User user = userService.get("user");
+        List<Integer> perms = userService.getPermissions().stream().mapToInt(
+                p->p.getId()).boxed().collect(Collectors.toList());
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId() + "/permissions")
+                .session(session)
+                .content(Json.serialize(perms))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<Permission> response = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Permission>>() {});
+        assertEquals(response, userService.getPermissions());
+    }
+
+    @Test
+    public void testGetPermissions() throws Exception {
+
+        User user = userService.get("user");
+        List<Permission> perms = userService.getPermissions(user);
+        assertEquals(0, perms.size());
+
+        userService.setPermissions(user, userService.getPermissions());
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(get("/api/v1/users/" + user.getId() + "/permissions")
+                .session(session)
+                .content(Json.serialize(perms))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<Permission> response = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Permission>>() {});
+        assertEquals(response, userService.getPermissions());
     }
 }
