@@ -23,6 +23,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -47,6 +50,9 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     @Autowired
     Client client;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
     @Value("${archivist.index.alias}")
     private String alias;
 
@@ -60,6 +66,12 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+
+        /*
+         * Authorize the startup thread as an admin.
+         */
+        SecurityContextHolder.getContext().setAuthentication(
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
         try {
             setupElasticSearchMapping();
             createDefaultIngestPipeline();
