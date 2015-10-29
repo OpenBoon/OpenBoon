@@ -25,7 +25,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             Ingest result = new Ingest();
             result.setId(rs.getLong("pk_ingest"));
             result.setPipelineId(rs.getInt("pk_pipeline"));
-            result.setRoomId(rs.getLong("pk_room"));
             result.setState(IngestState.values()[rs.getInt("int_state")]);
             result.setPath(rs.getString("str_path"));
             result.setTimeCreated(rs.getLong("time_created"));
@@ -54,7 +53,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "ingest " +
             "(" +
                 "pk_pipeline,"+
-                "pk_room,"+
                 "int_state,"+
                 "str_path,"+
                 "list_types,"+
@@ -65,7 +63,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "bool_update_on_exist, " +
                 "int_asset_worker_threads" +
             ") " +
-            "VALUES (" + StringUtils.repeat("?", ",", 11) + ")";
+            "VALUES (" + StringUtils.repeat("?", ",", 10) + ")";
 
     @Override
     public Ingest create(IngestPipeline pipeline, IngestBuilder builder) {
@@ -75,16 +73,15 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             PreparedStatement ps =
                 connection.prepareStatement(INSERT, new String[]{"pk_ingest"});
             ps.setInt(1, pipeline.getId());
-            ps.setLong(2, builder.getRoomId());
-            ps.setInt(3, IngestState.Idle.ordinal());
-            ps.setObject(4, builder.getPath());
-            ps.setObject(5, builder.getFileTypes());
-            ps.setLong(6, time);
-            ps.setString(7, SecurityUtils.getUsername());
-            ps.setLong(8, time);
-            ps.setString(9, SecurityUtils.getUsername());
-            ps.setBoolean(10, builder.isUpdateOnExist());
-            ps.setInt(11, builder.getAssetWorkerThreads());
+            ps.setInt(2, IngestState.Idle.ordinal());
+            ps.setObject(3, builder.getPath());
+            ps.setObject(4, builder.getFileTypes());
+            ps.setLong(5, time);
+            ps.setString(6, SecurityUtils.getUsername());
+            ps.setLong(7, time);
+            ps.setString(8, SecurityUtils.getUsername());
+            ps.setBoolean(9, builder.isUpdateOnExist());
+            ps.setInt(10, builder.getAssetWorkerThreads());
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
@@ -155,11 +152,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         if (builder.getPipelineId() > 0) {
             updates.add("pk_pipeline=?");
             values.add(builder.getPipelineId());
-        }
-
-        if (builder.getRoomId() > 0) {
-            updates.add("pk_room=?");
-            values.add(builder.getRoomId());
         }
 
         if (builder.getAssetWorkerThreads() > 0) {
