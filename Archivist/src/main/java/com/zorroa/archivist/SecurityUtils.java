@@ -55,7 +55,7 @@ public class SecurityUtils {
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
         for (GrantedAuthority g: authorities) {
-            if (_perms.contains(g.toString())) {
+            if (_perms.contains(g.getAuthority())) {
                 return true;
             }
         }
