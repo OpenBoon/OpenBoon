@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
+import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -68,6 +69,17 @@ public class SecurityUtils {
             Permission p = (Permission) g;
             result.add(p.getId());
         }
+        return result;
+    }
+
+    public static FilterBuilder getPermissionsFilter() {
+        OrFilterBuilder result = FilterBuilders.orFilter();
+        MissingFilterBuilder part1 = FilterBuilders.missingFilter("permissions.search");
+        TermsFilterBuilder part2 = FilterBuilders.termsFilter("permissions.search",
+                SecurityUtils.getPermissionIds());
+
+        result.add(part1);
+        result.add(part2);
         return result;
     }
 }

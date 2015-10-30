@@ -9,6 +9,4 @@ import org.elasticsearch.index.query.FilterBuilder;
  */
 public interface SearchService {
     SearchResponse search(AssetSearchBuilder builder);
-
-    FilterBuilder getPermissionsFilter();
 }

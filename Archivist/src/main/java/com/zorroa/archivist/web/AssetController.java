@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
@@ -138,7 +139,7 @@ public class AssetController {
         String search = json.size() > 0 ? new String(Json.serialize(json), StandardCharsets.UTF_8) : null;
         SearchRequestBuilder builder = client.prepareSearch(alias)
                 .setTypes("asset")
-                .setPostFilter(searchService.getPermissionsFilter());
+                .setPostFilter(SecurityUtils.getPermissionsFilter());
         if (search != null)
             builder.setExtraSource(search.getBytes());
         if (queryBuilder != null)

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.security.Security;
+
 /**
  * Created by chambers on 9/25/15.
  */
@@ -86,22 +88,12 @@ public class SearchServiceImpl implements SearchService {
             filter.add(createTimeFilter);
         }
 
-        filter.add(getPermissionsFilter());
+        filter.add(SecurityUtils.getPermissionsFilter());
 
         return filter;
     }
 
 
-    @Override
-    public FilterBuilder getPermissionsFilter() {
-        OrFilterBuilder result = FilterBuilders.orFilter();
-        MissingFilterBuilder part1 = FilterBuilders.missingFilter("permissions.search");
-        TermsFilterBuilder part2 = FilterBuilders.termsFilter("permissions.search",
-                SecurityUtils.getPermissionIds());
 
-        result.add(part1);
-        result.add(part2);
-        return result;
-    }
 
 }
