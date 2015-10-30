@@ -19,31 +19,35 @@ public class AssetSearchBuilder {
         return room;
     }
 
-    public void setRoom(int room) {
+    public AssetSearchBuilder setRoom(int room) {
         this.room = room;
+        return this;
     }
 
     public String getQuery() {
         return query;
     }
 
-    public void setQuery(String query) {
+    public AssetSearchBuilder setQuery(String query) {
         this.query = query;
+        return this;
     }
 
     public String getCreatedBeforeTime() {
         return createdBeforeTime;
     }
 
-    public void setCreatedBeforeTime(String createdBeforeTime) {
+    public AssetSearchBuilder setCreatedBeforeTime(String createdBeforeTime) {
         this.createdBeforeTime = createdBeforeTime;
+        return this;
     }
 
     public String getCreatedAfterTime() {
         return createdAfterTime;
     }
 
-    public void setCreatedAfterTime(String createdAfterTime) {
+    public AssetSearchBuilder setCreatedAfterTime(String createdAfterTime) {
         this.createdAfterTime = createdAfterTime;
+        return this;
     }
 }
