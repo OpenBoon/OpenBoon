@@ -12,15 +12,17 @@ public class PermissionBuilder {
         return description;
     }
 
-    public void setDescription(String description) {
+    public PermissionBuilder setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public PermissionBuilder setName(String name) {
         this.name = name;
+        return this;
     }
 }

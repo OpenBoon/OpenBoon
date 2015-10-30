@@ -9,6 +9,8 @@ import java.util.*;
 
 public class AssetBuilder {
 
+    private final List<Integer> searchPermissions = new ArrayList<>();
+    private final List<Integer> exportPermissions = new ArrayList<>();
     private final Map<String, Object> document = new HashMap<String, Object>();
     private final Map<String, Object> mapping = new HashMap<String, Object>();
     private boolean async = false;
@@ -28,6 +30,8 @@ public class AssetBuilder {
         this.put("source", "directory", this.getDirectory());
         this.put("source", "extension", this.getExtension());
         this.putKeyword("source", "path", this.getAbsolutePath());
+        this.put("permissions", "search", searchPermissions);
+        this.put("permissions", "export", exportPermissions);
     }
 
     public AssetBuilder(String file) {
@@ -49,6 +53,20 @@ public class AssetBuilder {
 
     public String getAbsolutePath() {
         return file.getAbsolutePath();
+    }
+
+    public void setSearchPermissions(Permission ... perms) {
+        searchPermissions.clear();
+        for (Permission p: perms) {
+            searchPermissions.add(p.getId());
+        }
+    }
+
+    public void setExportPermissions(Permission ... perms) {
+        exportPermissions.clear();
+        for (Permission p: perms) {
+            exportPermissions.add(p.getId());
+        }
     }
 
     public String getExtension() {
