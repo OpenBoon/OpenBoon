@@ -1,6 +1,7 @@
 package com.zorroa.archivist;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -17,6 +18,7 @@ public class Json {
     public final static ObjectMapper Mapper = new ObjectMapper();
     static {
         Mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
+        Mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public static byte[] serialize(Object object) {
