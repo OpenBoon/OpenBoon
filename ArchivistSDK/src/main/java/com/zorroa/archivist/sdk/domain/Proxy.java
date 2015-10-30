@@ -1,4 +1,4 @@
-package com.zorroa.archivist.sdk;
+package com.zorroa.archivist.sdk.domain;
 
 public class Proxy {
     private String file;

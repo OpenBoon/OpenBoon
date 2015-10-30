@@ -1,4 +1,7 @@
-package com.zorroa.archivist.sdk;
+package com.zorroa.archivist.sdk.ingest;
+
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.service.IngestProcessorService;
 
 import java.util.Map;
 

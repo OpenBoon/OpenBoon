@@ -1,4 +1,6 @@
-package com.zorroa.archivist.sdk;
+package com.zorroa.archivist.sdk.domain;
+
+import com.zorroa.archivist.sdk.util.IngestUtils;
 
 import java.awt.geom.Point2D;
 import java.io.File;
@@ -233,6 +235,11 @@ public class AssetBuilder {
         }
         field.put(option, value);
     }
+
+    public boolean isImage() {
+        return IngestUtils.SUPPORTED_IMG_FORMATS.contains(getExtension());
+    }
+
 
     @Override
     public String toString() {

@@ -1,0 +1,19 @@
+package com.zorroa.archivist.sdk.domain;
+
+public enum MessageType {
+
+    SESSION,
+    ASSET_SEARCH,
+    ASSET_GET,
+    ASSET_UPDATE,
+    ASSET_UPDATE_FOLDERS,
+    INGEST_CREATE,
+    INGEST_START,
+    INGEST_UPDATE_COUNTERS,
+    INGEST_UPDATE,
+    INGEST_STOP,
+    INGEST_DELETE,
+    FOLDER_CREATE,
+    FOLDER_UPDATE,
+    FOLDER_DELETE
+}
