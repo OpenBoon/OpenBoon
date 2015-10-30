@@ -1,21 +1,14 @@
 package com.zorroa.archivist.web;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArraySet;
-
-import javax.annotation.PostConstruct;
-
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.SessionDao;
-import com.zorroa.archivist.service.RoomService;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.Room;
+import com.zorroa.archivist.sdk.domain.RoomBuilder;
+import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +18,11 @@ import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.util.Assert;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Copied from the standard SessionRegistryImpl except with JDBC support.  Eventually

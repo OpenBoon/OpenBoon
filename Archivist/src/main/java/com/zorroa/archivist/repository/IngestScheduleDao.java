@@ -1,13 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 /**

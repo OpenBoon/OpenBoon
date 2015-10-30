@@ -2,8 +2,11 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.IngestService;
+import com.zorroa.archivist.domain.IngestSchedule;
+import com.zorroa.archivist.domain.IngestScheduleBuilder;
+import com.zorroa.archivist.sdk.domain.Ingest;
+import com.zorroa.archivist.sdk.domain.IngestBuilder;
+import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -2,7 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.sdk.domain.Folder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,7 +13,10 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class FolderControllerTests extends MockMvcTest {

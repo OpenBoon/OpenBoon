@@ -1,13 +1,12 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.RoomService;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -30,7 +29,7 @@ public class RoomController {
     @RequestMapping(value="/api/v1/rooms/{id}/_join", method=RequestMethod.PUT)
     public void join(@PathVariable long id, HttpSession httpSession) {
         Room room = roomService.get(id);
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
         logger.info("Session {} is joining room:{}", session.getId(), room.getId());
         roomService.join(room, session);
     }
@@ -50,7 +49,7 @@ public class RoomController {
      */
     @RequestMapping(value="/api/v1/rooms", method=RequestMethod.GET)
     public List<Room> getAll(HttpSession httpSession) {
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
         return roomService.getAll(session);
     }
 
@@ -66,7 +65,7 @@ public class RoomController {
         logger.info("Creating room {}", builder);
         Room room = roomService.create(builder);
 
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
         roomService.join(room, session);
         return room;
     }
@@ -85,7 +84,7 @@ public class RoomController {
 
     @RequestMapping(value="/api/v1/rooms/{id}", method=RequestMethod.PUT)
     public Room update(@RequestBody RoomUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
 
         if (session.getUserId() == id || SecurityUtils.hasPermission("manager", "systems")) {
             Room room = roomService.get(id);

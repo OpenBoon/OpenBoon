@@ -1,8 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableSet;
-import com.zorroa.archivist.domain.ProxyOutput;
-import com.zorroa.archivist.sdk.Proxy;
+import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.service.ImageService;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.resizers.configurations.Rendering;
 import org.slf4j.Logger;

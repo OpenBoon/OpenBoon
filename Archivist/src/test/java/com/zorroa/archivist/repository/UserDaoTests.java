@@ -1,9 +1,7 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

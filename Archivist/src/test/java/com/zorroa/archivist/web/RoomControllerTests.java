@@ -3,10 +3,10 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.RoomDao;
-import com.zorroa.archivist.service.RoomService;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,10 +17,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RoomControllerTests extends MockMvcTest {
@@ -128,7 +129,7 @@ public class RoomControllerTests extends MockMvcTest {
     public void testJoin() throws Exception {
 
         MockHttpSession httpSession = admin();
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getSession(httpSession.getId());
 
         for (int i=0; i<10; i++) {
             RoomBuilder bld = new RoomBuilder();
@@ -172,10 +173,10 @@ public class RoomControllerTests extends MockMvcTest {
     public void testGetAllUsers() throws Exception {
 
         MockHttpSession admin = admin();
-        Session session1 = userService.getSession(admin);
+        Session session1 = userService.getSession(admin.getId());
 
         MockHttpSession user = user();
-        Session session2 = userService.getSession(user);
+        Session session2 = userService.getSession(user.getId());
 
         RoomBuilder builder = new RoomBuilder();
         builder.setName("foo");

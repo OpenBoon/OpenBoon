@@ -4,9 +4,9 @@ package com.zorroa.archivist.web;
  * Created by chambers on 10/28/15.
  */
 
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.PermissionBuilder;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.Permission;
+import com.zorroa.archivist.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

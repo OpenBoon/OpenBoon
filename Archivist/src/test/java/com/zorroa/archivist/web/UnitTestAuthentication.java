@@ -1,12 +1,9 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.sdk.domain.Permission;
+import com.zorroa.archivist.sdk.domain.User;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 
-import javax.security.auth.Subject;
 import java.util.List;
 
 /**

@@ -3,11 +3,11 @@ package com.zorroa.archivist.processors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zorroa.archivist.domain.ProxyOutput;
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessor;
-import com.zorroa.archivist.sdk.Proxy;
-import com.zorroa.archivist.service.ImageService;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.service.ImageService;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
@@ -19,7 +19,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ProxyProcessor extends IngestProcessor {
@@ -54,7 +55,7 @@ public class ProxyProcessor extends IngestProcessor {
                     new ProxyOutput("png", 1024, 8)
             );
         }
-        if (ingestProcessorService.isImage(asset)) {
+        if (asset.isImage()) {
             List<Proxy> result = Lists.newArrayList();
             for (ProxyOutput output : outputs) {
                 try {

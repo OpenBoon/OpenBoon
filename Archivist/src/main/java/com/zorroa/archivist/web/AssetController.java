@@ -3,12 +3,13 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.AssetService;
-import com.zorroa.archivist.service.FolderService;
-import com.zorroa.archivist.service.RoomService;
+import com.zorroa.archivist.domain.AssetSearchBuilder;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.AssetService;
+import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.service.SearchService;
-import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.get.GetResponse;
@@ -181,7 +182,7 @@ public class AssetController {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         if (roomId > 0) {
-            Session session = userService.getSession(httpSession);
+            Session session = userService.getActiveSession();
             Room room = roomService.getActiveRoom(session);
             roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
         }
@@ -268,7 +269,7 @@ public class AssetController {
     public void get(@PathVariable String id, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
         Room room = roomService.getActiveRoom(session);
         roomService.sendToRoom(room, new Message(MessageType.ASSET_GET, id));
 
@@ -287,7 +288,7 @@ public class AssetController {
     public String update(@RequestBody AssetUpdateBuilder builder, @PathVariable String id, HttpSession httpSession) throws IOException {
         boolean ok = assetService.updateAsset(id, builder);
 
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
         Room room = roomService.getActiveRoom(session);
         String json = new String(Json.serialize(builder.getSource()), StandardCharsets.UTF_8);
         String msg = "{ \"assetId\" : \"" + id + "\", \"source\": " + json + " }";
@@ -306,7 +307,7 @@ public class AssetController {
                 .setRefresh(true);  // Make sure we block until update is finished
         UpdateResponse response = builder.get();
 
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
         Room room = roomService.getActiveRoom(session);
         String msg = "{ \"assetId\" : \"" + id + "\", \"folders\": " + body + " }";
         roomService.sendToRoom(room, new Message(MessageType.ASSET_UPDATE_FOLDERS, msg));

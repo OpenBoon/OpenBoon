@@ -1,10 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.PermissionBuilder;
-import com.zorroa.archivist.domain.User;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.zorroa.archivist.sdk.domain.Permission;
+import com.zorroa.archivist.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.sdk.domain.User;
 
 import java.util.List;
 

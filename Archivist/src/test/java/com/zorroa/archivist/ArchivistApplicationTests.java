@@ -1,7 +1,7 @@
 package com.zorroa.archivist;
 
-import com.zorroa.archivist.domain.UserBuilder;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.UserBuilder;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
 import org.elasticsearch.client.Client;

@@ -2,8 +2,6 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

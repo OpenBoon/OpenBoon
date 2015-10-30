@@ -1,15 +1,13 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserBuilder;
-import com.zorroa.archivist.domain.UserUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.Room;
+import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.archivist.sdk.domain.UserBuilder;
+import com.zorroa.archivist.sdk.domain.UserUpdateBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Preconditions;
-import org.elasticsearch.common.collect.ImmutableSet;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;

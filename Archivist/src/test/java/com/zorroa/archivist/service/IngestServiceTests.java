@@ -1,8 +1,10 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.ImageService;
+import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,16 +1,14 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.RoomUpdateBuilder;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.Room;
+import com.zorroa.archivist.sdk.domain.RoomBuilder;
+import com.zorroa.archivist.sdk.domain.RoomUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.UUID;

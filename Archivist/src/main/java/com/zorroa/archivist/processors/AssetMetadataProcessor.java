@@ -6,8 +6,8 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.drew.metadata.exif.GpsDirectory;
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessor;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.ingest.IngestProcessor;
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.format.DateTimeFormat;
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
@@ -51,7 +51,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
      */
     @Override
     public void process(AssetBuilder asset) {
-        if (ingestProcessorService.isImage(asset)) {
+        if (asset.isImage()) {
             extractImageData(asset);
         }
     }

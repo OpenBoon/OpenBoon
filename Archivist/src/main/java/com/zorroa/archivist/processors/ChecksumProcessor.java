@@ -2,8 +2,8 @@ package com.zorroa.archivist.processors;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessor;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.ingest.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,11 +1,11 @@
 package com.zorroa.archivist.processors;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

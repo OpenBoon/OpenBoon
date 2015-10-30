@@ -1,8 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

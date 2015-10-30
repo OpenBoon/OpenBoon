@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
+import com.zorroa.archivist.sdk.domain.Ingest;
+import com.zorroa.archivist.sdk.domain.IngestBuilder;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestScheduleService;
-import com.zorroa.archivist.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,9 +21,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**

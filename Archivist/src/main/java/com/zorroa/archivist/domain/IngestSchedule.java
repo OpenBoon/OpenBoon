@@ -1,8 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Lists;
-
 import java.time.*;
 import java.util.List;
 

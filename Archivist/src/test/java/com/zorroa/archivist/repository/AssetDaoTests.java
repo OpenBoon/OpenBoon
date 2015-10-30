@@ -2,9 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.domain.AssetUpdateBuilder;
-import com.zorroa.archivist.sdk.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Asset;
+import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

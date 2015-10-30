@@ -2,10 +2,9 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.PermissionBuilder;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.Permission;
+import com.zorroa.archivist.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

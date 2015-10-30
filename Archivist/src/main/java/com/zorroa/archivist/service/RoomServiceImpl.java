@@ -2,20 +2,17 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.repository.SessionDao;
-import org.elasticsearch.common.collect.Maps;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.RoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.security.core.session.SessionCreationEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Service

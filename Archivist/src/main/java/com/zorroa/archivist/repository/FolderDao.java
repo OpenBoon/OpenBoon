@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.FolderBuilder;
 
 import java.util.List;
 

@@ -1,8 +1,9 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderBuilder;
 import com.zorroa.archivist.repository.FolderDao;
+import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class FolderServiceImpl implements  FolderService {
+public class FolderServiceImpl implements FolderService {
 
     @Autowired
     FolderDao folderDao;

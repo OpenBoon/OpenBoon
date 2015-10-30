@@ -1,10 +1,10 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.FolderService;
-import com.zorroa.archivist.service.RoomService;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ public class FolderController {
     UserService userService;
 
     private void sendFolderToRoom(MessageType type, Folder folder, HttpSession httpSession) {
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
         Room room = roomService.getActiveRoom(session);
         String folderJSON = new String(Json.serialize(folder), StandardCharsets.UTF_8);
         roomService.sendToRoom(room, new Message(type, folderJSON));

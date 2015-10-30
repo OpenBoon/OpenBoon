@@ -1,14 +1,14 @@
 package com.zorroa.archivist;
 
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
-import com.zorroa.archivist.domain.IngestState;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
-import com.zorroa.archivist.service.ImageService;
+import com.zorroa.archivist.sdk.domain.Ingest;
+import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
+import com.zorroa.archivist.sdk.domain.IngestState;
+import com.zorroa.archivist.sdk.service.ImageService;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;

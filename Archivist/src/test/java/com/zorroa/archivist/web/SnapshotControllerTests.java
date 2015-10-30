@@ -2,9 +2,14 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.Snapshot;
+import com.zorroa.archivist.domain.SnapshotBuilder;
+import com.zorroa.archivist.domain.SnapshotRestoreBuilder;
+import com.zorroa.archivist.domain.SnapshotState;
+import com.zorroa.archivist.sdk.domain.Ingest;
+import com.zorroa.archivist.sdk.domain.IngestBuilder;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.junit.Test;

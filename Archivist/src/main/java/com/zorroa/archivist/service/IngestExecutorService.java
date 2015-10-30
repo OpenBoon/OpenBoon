@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.sdk.domain.Ingest;
 
 public interface IngestExecutorService {
 

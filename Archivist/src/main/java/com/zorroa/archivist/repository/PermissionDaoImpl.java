@@ -1,14 +1,12 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.PermissionBuilder;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.sdk.domain.Permission;
+import com.zorroa.archivist.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.sdk.domain.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.event;
 
-import com.zorroa.archivist.domain.Message;
-import com.zorroa.archivist.domain.MessageType;
+import com.zorroa.archivist.sdk.domain.MessageType;
+import com.zorroa.archivist.sdk.domain.Message;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

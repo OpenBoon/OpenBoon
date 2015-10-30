@@ -3,13 +3,13 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.IngestPipeline;
-import com.zorroa.archivist.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.domain.IngestPipelineUpdateBuilder;
-import com.zorroa.archivist.domain.IngestProcessorFactory;
 import com.zorroa.archivist.processors.ChecksumProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
-import com.zorroa.archivist.service.IngestService;
+import com.zorroa.archivist.sdk.domain.IngestPipeline;
+import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
+import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,8 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**

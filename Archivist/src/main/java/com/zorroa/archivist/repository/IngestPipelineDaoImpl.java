@@ -2,7 +2,10 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.domain.IngestPipeline;
+import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;

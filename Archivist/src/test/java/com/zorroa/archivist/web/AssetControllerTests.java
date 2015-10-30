@@ -2,13 +2,13 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.Json;
-import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestBuilder;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.sdk.domain.Asset;
+import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.Ingest;
+import com.zorroa.archivist.sdk.domain.IngestBuilder;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,7 +22,9 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AssetControllerTests extends MockMvcTest {

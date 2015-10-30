@@ -2,13 +2,12 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.sdk.domain.Permission;
+import com.zorroa.archivist.sdk.domain.User;
 import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,8 +15,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class SecurityUtils {
 

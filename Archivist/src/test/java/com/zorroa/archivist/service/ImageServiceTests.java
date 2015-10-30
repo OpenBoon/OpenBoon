@@ -2,8 +2,9 @@ package com.zorroa.archivist.service;
 
 import com.google.common.base.Splitter;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.ProxyOutput;
-import com.zorroa.archivist.sdk.Proxy;
+import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.service.ImageService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

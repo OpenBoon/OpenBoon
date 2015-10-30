@@ -1,11 +1,13 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.SessionDao;
+import com.zorroa.archivist.sdk.domain.Room;
+import com.zorroa.archivist.sdk.domain.RoomBuilder;
+import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

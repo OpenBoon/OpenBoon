@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.IngestSchedule;
+import com.zorroa.archivist.sdk.domain.*;
 
 import java.util.List;
 

@@ -1,13 +1,12 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
@@ -55,7 +54,7 @@ public class UserController  {
     @PreAuthorize("hasRole('manager')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.PUT)
     public User update(@RequestBody UserUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
-        Session session = userService.getSession(httpSession);
+        Session session = userService.getActiveSession();
 
         if (session.getUserId() == id || SecurityUtils.hasPermission("manager", "systems")) {
             User user = userService.get(id);

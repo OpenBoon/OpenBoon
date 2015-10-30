@@ -1,9 +1,9 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.RoomBuilder;
-import com.zorroa.archivist.domain.RoomUpdateBuilder;
-import com.zorroa.archivist.domain.Session;
+import com.zorroa.archivist.sdk.domain.Room;
+import com.zorroa.archivist.sdk.domain.RoomBuilder;
+import com.zorroa.archivist.sdk.domain.RoomUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.Session;
 
 import java.util.List;
 

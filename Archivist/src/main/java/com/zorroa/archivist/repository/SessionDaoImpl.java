@@ -1,10 +1,9 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.Room;
-import com.zorroa.archivist.domain.Session;
-import com.zorroa.archivist.domain.User;
-
+import com.zorroa.archivist.sdk.domain.Room;
+import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.domain.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -95,11 +94,6 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
         return jdbc.query(GET + " INNER JOIN map_session_to_room m ON (m.pk_session=session.pk_session) " +
                         "WHERE m.pk_room=?",
                 MAPPER, room.getId());
-    }
-
-    @Override
-    public Session get(HttpSession session) {
-        return jdbc.queryForObject(GET + " WHERE session.cookie_id=?", MAPPER, session.getId());
     }
 
     @Override

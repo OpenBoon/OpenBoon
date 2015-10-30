@@ -1,9 +1,9 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.IngestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,12 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.IngestSchedule;
+import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.service.IngestScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**

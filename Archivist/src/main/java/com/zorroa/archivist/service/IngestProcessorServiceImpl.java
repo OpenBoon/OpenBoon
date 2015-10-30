@@ -1,25 +1,10 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessorServiceBaseImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.zorroa.archivist.sdk.service.IngestProcessorService;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-
 @Service
-public class IngestProcessorServiceImpl extends IngestProcessorServiceBaseImpl {
+public class IngestProcessorServiceImpl implements IngestProcessorService {
 
-    @Autowired
-    protected ImageService imageService;
 
-    @Override
-    public File getProxyFile(String filename, String extension) {
-        return imageService.generateProxyPath(filename, extension);
-    }
-
-    @Override
-    public boolean isImage(AssetBuilder asset) {
-        return imageService.getSupportedFormats().contains(asset.getExtension());
-    }
 }

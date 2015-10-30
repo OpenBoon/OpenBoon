@@ -1,12 +1,11 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.FilterChainProxy;

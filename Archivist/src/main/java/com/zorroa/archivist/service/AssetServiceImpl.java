@@ -1,9 +1,10 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Asset;
-import com.zorroa.archivist.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.sdk.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Asset;
+import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
+import com.zorroa.archivist.sdk.service.AssetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
