@@ -5,7 +5,8 @@ import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,7 +29,7 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
         result.setUserCreated(rs.getString("str_user_created"));
         result.setTimeModified(rs.getLong("time_modified"));
         result.setUserModified(rs.getString("str_user_modified"));
-        result.setProcessors((List<IngestProcessorFactory>) rs.getObject("list_processors"));
+        result.setProcessors((List<ProcessorFactory<IngestProcessor>>) rs.getObject("list_processors"));
         return result;
     };
 

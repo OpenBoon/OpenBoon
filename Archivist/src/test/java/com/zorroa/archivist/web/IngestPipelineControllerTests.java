@@ -8,7 +8,8 @@ import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class IngestPipelineControllerTests extends MockMvcTest {
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("test");
         builder.setDescription("a test pipeline");
-        builder.setProcessors(Lists.newArrayList(new IngestProcessorFactory(ChecksumProcessor.class)));
+        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ChecksumProcessor.class)));
         pipeline = ingestService.createIngestPipeline(builder);
     }
 
@@ -65,7 +66,10 @@ public class IngestPipelineControllerTests extends MockMvcTest {
         IngestPipelineUpdateBuilder builder = new IngestPipelineUpdateBuilder();
         builder.setName("foo");
         builder.setDescription("Foo and Bar");
-        builder.setProcessors(Lists.newArrayList(new IngestProcessorFactory(ProxyProcessor.class)));
+        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ProxyProcessor.class)));
+
+        String v = Json.Mapper.writeValueAsString(builder);
+        IngestPipelineUpdateBuilder b = Json.Mapper.readValue(v, IngestPipelineUpdateBuilder.class);
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(put("/api/v1/pipelines/" + pipeline.getId())

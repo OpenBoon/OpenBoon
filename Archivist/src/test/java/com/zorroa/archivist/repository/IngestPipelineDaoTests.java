@@ -7,7 +7,7 @@ import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import org.elasticsearch.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         IngestPipelineBuilder request = new IngestPipelineBuilder();
         request.setName("test");
         request.setDescription("a test pipeline");
-        request.setProcessors(Lists.newArrayList(new IngestProcessorFactory(ChecksumProcessor.class)));
+        request.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ChecksumProcessor.class)));
         pipeline = ingestPipelineDao.create(request);
     }
 
@@ -45,7 +45,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("default_" + i);
             builder.addToProcessors(
-                    new IngestProcessorFactory("foo.bar.Bing",
+                    new ProcessorFactory<>("foo.bar.Bing",
                             Maps.newHashMap()));
             ingestPipelineDao.create(builder);
         }
@@ -58,7 +58,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         IngestPipelineUpdateBuilder builder = new IngestPipelineUpdateBuilder();
         builder.setName("foo");
         builder.setDescription("foo");
-        builder.setProcessors(Lists.newArrayList(new IngestProcessorFactory(ProxyProcessor.class)));
+        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ProxyProcessor.class)));
 
         assertTrue(ingestPipelineDao.update(pipeline, builder));
         IngestPipeline updated = ingestPipelineDao.get(pipeline.getId());

@@ -4,8 +4,9 @@ import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
 import com.zorroa.archivist.sdk.domain.IngestState;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
@@ -145,8 +146,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         if (ingestService.getIngestPipelines().size() == 0) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("standard");
-            builder.addToProcessors(new IngestProcessorFactory(AssetMetadataProcessor.class));
-            builder.addToProcessors(new IngestProcessorFactory(ProxyProcessor.class));
+            builder.addToProcessors(new ProcessorFactory<IngestProcessor>(AssetMetadataProcessor.class));
+            builder.addToProcessors(new ProcessorFactory<IngestProcessor>(ProxyProcessor.class));
 
             logger.info("Creating 'standard' ingest pipeline");
             ingestService.createIngestPipeline(builder);

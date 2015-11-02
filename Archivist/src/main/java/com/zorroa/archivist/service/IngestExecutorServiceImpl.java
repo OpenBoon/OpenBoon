@@ -7,11 +7,11 @@ import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.IngestException;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.IngestProcessorService;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
-import com.zorroa.archivist.sdk.domain.IngestProcessorFactory;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
@@ -191,8 +191,10 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  */
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
 
-                for (IngestProcessorFactory factory : pipeline.getProcessors()) {
-                    IngestProcessor processor = factory.init();
+                for (ProcessorFactory<IngestProcessor> factory : pipeline.getProcessors()) {
+                    factory.init();
+                    IngestProcessor processor = factory.getInstance();
+
                     if (processor == null) {
                         String msg = "Aborting ingest, processor not found:" + factory.getKlass();
                         logger.warn(msg);
@@ -203,7 +205,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
                     AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                     autowire.autowireBean(processor);
-                    processor.setIngestProcessorService(ingestProcessorService);
                     processors.add(processor);
                 }
 
@@ -336,15 +337,15 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             }
 
             public void executeProcessors() {
-                for (IngestProcessorFactory factory : pipeline.getProcessors()) {
+                for (ProcessorFactory<IngestProcessor>  factory : pipeline.getProcessors()) {
                     try {
-                        IngestProcessor processor = factory.getProcessor();
+                        IngestProcessor processor = factory.getInstance();
                         logger.debug("running processor: {}", processor.getClass());
                         processor.process(asset);
                     } catch (Exception e) {
                         errorCount.increment();
                         logger.warn("Processor {} failed to run on asset {}",
-                                factory.getProcessor().getClass().getCanonicalName(), asset.getFile(), e);
+                                factory.getInstance().getClass().getCanonicalName(), asset.getFile(), e);
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("default");
-        builder.addToProcessors(new IngestProcessorFactory(
+        builder.addToProcessors(new ProcessorFactory<>(
                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
@@ -64,7 +65,7 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("default");
-        builder.addToProcessors(new IngestProcessorFactory(
+        builder.addToProcessors(new ProcessorFactory<>(
                 "com.zorroa.archivist.processors.AssetMetadataProcessor"));
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
