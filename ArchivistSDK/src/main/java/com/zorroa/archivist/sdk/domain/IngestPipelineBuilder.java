@@ -1,29 +1,31 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 
 import java.util.List;
 
 public class IngestPipelineBuilder {
 
-    private List<IngestProcessorFactory> processors;
+    private List<ProcessorFactory<IngestProcessor>> processors;
     private String name;
     private String description;
 
     public IngestPipelineBuilder() { }
 
-    public void addToProcessors(IngestProcessorFactory processor) {
+    public void addToProcessors(ProcessorFactory<IngestProcessor> processor) {
         if (processors == null) {
             processors = Lists.newArrayList();
         }
         processors.add(processor);
     }
 
-    public List<IngestProcessorFactory> getProcessors() {
+    public List<ProcessorFactory<IngestProcessor>> getProcessors() {
         return processors;
     }
 
-    public void setProcessors(List<IngestProcessorFactory> processors) {
+    public void setProcessors(List<ProcessorFactory<IngestProcessor>> processors) {
         this.processors = processors;
     }
 

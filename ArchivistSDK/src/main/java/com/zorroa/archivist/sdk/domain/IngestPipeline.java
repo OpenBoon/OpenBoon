@@ -1,5 +1,8 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+
 import java.util.List;
 
 
@@ -12,7 +15,7 @@ public class IngestPipeline {
     private String userCreated;
     private long timeModified;
     private String userModified;
-    private List<IngestProcessorFactory> processors;
+    private List<ProcessorFactory<IngestProcessor>> processors;
 
     public IngestPipeline() { }
 
@@ -72,11 +75,11 @@ public class IngestPipeline {
         this.userModified = userModified;
     }
 
-    public List<IngestProcessorFactory> getProcessors() {
+    public List<ProcessorFactory<IngestProcessor>> getProcessors() {
         return processors;
     }
 
-    public void setProcessors(List<IngestProcessorFactory> processors) {
+    public void setProcessors(List<ProcessorFactory<IngestProcessor>> processors) {
         this.processors = processors;
     }
 }
