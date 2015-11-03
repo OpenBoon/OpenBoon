@@ -12,6 +12,7 @@ import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,6 +34,7 @@ public class SnapshotControllerTests extends MockMvcTest {
     @Autowired
     IngestExecutorService ingestExecutorService;
 
+    @Ignore
     @Test
     public void testSnapshotCreateRestoreGetDelete() throws Exception {
         /**
