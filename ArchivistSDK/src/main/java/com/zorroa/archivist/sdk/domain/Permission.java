@@ -45,8 +45,11 @@ public class Permission {
     @Override
     public boolean equals(Object other) {
         if (other == null) {  return false; }
-        if (getClass() != other.getClass()) { return false; }
-        return Objects.equals(id, ((Permission)other).getId());
+        try {
+            return Objects.equals(id, ((Permission) other).getId());
+        } catch (ClassCastException e) {
+            return false;
+        }
     }
 
     @Override
