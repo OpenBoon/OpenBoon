@@ -12,7 +12,7 @@ public class Proxy {
         return path;
     }
 
-    public void setPathyeh (String path) {
+    public void setPath (String path) {
         this.path = path;
     }
 
