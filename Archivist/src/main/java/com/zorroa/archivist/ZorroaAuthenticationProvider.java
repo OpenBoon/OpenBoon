@@ -50,15 +50,11 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
         }
 
         return new UsernamePasswordAuthenticationToken(user, storedPassword,
-                upcastPermissions(userService.getPermissions(user)));
+                InternalPermission.upcast(userService.getPermissions(user)));
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return true;
-    }
-    
-    private List<InternalPermission> upcastPermissions(List<Permission> perms) {
-        return perms.stream().map(p -> (InternalPermission) p).collect(Collectors.toList());
     }
 }
