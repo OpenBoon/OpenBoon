@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.PermissionBuilder;
 import com.zorroa.archivist.sdk.domain.User;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,7 +48,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     private static final RowMapper<Permission> MAPPER = (rs, row) -> {
-        Permission p = new Permission();
+        InternalPermission p = new InternalPermission();
         p.setId(rs.getInt("pk_permission"));
         p.setName(rs.getString("str_name"));
         p.setDescription(rs.getString("str_description"));
@@ -84,7 +86,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     @Override
-    public void setPermissions(User user, List<Permission> perms) {
+    public void setPermissions(User user, Collection<? extends Permission> perms) {
         deleteAll(user);
         perms.forEach(p ->
                 jdbc.update("INSERT INTO map_permission_to_user (pk_permission, pk_user) VALUES (?,?)",

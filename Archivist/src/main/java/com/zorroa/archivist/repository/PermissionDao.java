@@ -1,9 +1,11 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.PermissionBuilder;
 import com.zorroa.archivist.sdk.domain.User;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public interface PermissionDao {
 
     List<Permission> getAll(User user);
 
-    void setPermissions(User user, List<Permission> perms);
+    void setPermissions(User user, Collection<? extends Permission> perms);
 
     void setPermissions(User user, Permission... perms);
 }
