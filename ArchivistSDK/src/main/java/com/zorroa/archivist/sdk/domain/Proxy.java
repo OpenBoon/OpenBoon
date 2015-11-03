@@ -1,19 +1,19 @@
 package com.zorroa.archivist.sdk.domain;
 
 public class Proxy {
-    private String file;
+    private String path;
     private int width;
     private int height;
     private String format;
 
     public Proxy() { }
 
-    public String getFile() {
-        return file;
+    public String getPath() {
+        return path;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setPathyeh (String path) {
+        this.path = path;
     }
 
     public int getWidth() {
