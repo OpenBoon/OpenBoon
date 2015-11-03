@@ -1,20 +1,15 @@
 package com.zorroa.archivist.sdk.util;
 
 import com.google.common.collect.ImmutableSet;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import org.springframework.util.ResourceUtils;
 
 import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 /**
  * Created by chambers on 10/30/15.
+ *
+ * These can be static utils, if we need them.
+ *
  */
 public class IngestUtils {
 

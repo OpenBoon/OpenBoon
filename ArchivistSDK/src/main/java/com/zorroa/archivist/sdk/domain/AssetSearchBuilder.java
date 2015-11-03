@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import java.util.List;
+
 /**
  * Created by chambers on 9/25/15.
  */
@@ -14,6 +16,7 @@ public class AssetSearchBuilder {
      */
     public String createdBeforeTime;
     public String createdAfterTime;
+    public List<String> folderIds;
 
     public int getRoom() {
         return room;
@@ -50,4 +53,14 @@ public class AssetSearchBuilder {
         this.createdAfterTime = createdAfterTime;
         return this;
     }
+
+    public List<String> getFolderIds() {
+        return folderIds;
+    }
+
+    public AssetSearchBuilder setFolderIds(List<String> folderIds) {
+        this.folderIds = folderIds;
+        return this;
+    }
+
 }
