@@ -1,8 +1,8 @@
 package com.zorroa.ingestors;
 
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessor;
-import com.zorroa.archivist.sdk.Proxy;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.domain.Proxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public class CaffeIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
-        if (!ingestProcessorService.isImage(asset)) {
+        if (!asset.isImage()) {
             return;     // Only process images
         }
 
@@ -77,9 +77,7 @@ public class CaffeIngestor extends IngestProcessor {
         String classifyPath = asset.getFile().getPath();
         for (Proxy proxy : proxyList) {
             if (proxy.getWidth() >= 256 || proxy.getHeight() >= 256) {
-                String proxyName = proxy.getFile();
-                proxyName = proxyName.substring(0, proxyName.lastIndexOf('.'));
-                classifyPath = ingestProcessorService.getProxyFile(proxyName, "png").getPath();
+                classifyPath = proxy.getPath();
                 break;
             }
         }

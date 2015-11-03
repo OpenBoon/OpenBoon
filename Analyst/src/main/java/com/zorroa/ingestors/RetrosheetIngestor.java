@@ -4,8 +4,8 @@
 
 package com.zorroa.ingestors;
 
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessor;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
@@ -271,7 +271,7 @@ public class RetrosheetIngestor extends IngestProcessor {
                 restrictToGameInterval = Boolean.valueOf(restrictArg.toString());
             }
         }
-        if (!ingestProcessorService.isImage(asset)) {
+        if (!asset.isImage()) {
             return;
         }
         Date date = (Date) asset.get("source", "date");

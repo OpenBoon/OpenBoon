@@ -1,8 +1,8 @@
 package com.zorroa.ingestors;
 
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessor;
-import com.zorroa.archivist.sdk.Proxy;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Size;
@@ -70,7 +70,7 @@ public class FaceIngestor extends IngestProcessor {
             cascadeName = argCascadeName;
         }
 
-        if (!ingestProcessorService.isImage(asset)) {
+        if (!asset.isImage()) {
             return;     // Only process images
         }
 
@@ -84,9 +84,7 @@ public class FaceIngestor extends IngestProcessor {
         Size maxFace = new Size(200, 200);
         for (Proxy proxy : proxyList) {
             if (proxy.getWidth() >= 500 || proxy.getHeight() >= 500) {
-                String proxyName = proxy.getFile();
-                proxyName = proxyName.substring(0, proxyName.lastIndexOf('.'));
-                classifyPath = ingestProcessorService.getProxyFile(proxyName, "png").getPath();
+                classifyPath = proxy.getPath();
                 minFace.width = minFace.height = proxy.getHeight() / 25;
                 maxFace.width = maxFace.height = minFace.width * 20;
                 logger.info("Face: minFace = " + minFace.width);
