@@ -101,7 +101,7 @@ public class ImageServiceImpl implements ImageService {
         Dimension dim = getImageDimensions(outFile);
 
         Proxy result = new Proxy();
-        result.setFile(outFile.getName());
+        result.setPath(outFile.getAbsolutePath());
         result.setWidth(dim.width);
         result.setHeight(dim.height);
         result.setFormat(output.getFormat());
