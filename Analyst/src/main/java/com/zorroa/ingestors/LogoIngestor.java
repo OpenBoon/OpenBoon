@@ -1,8 +1,8 @@
 package com.zorroa.ingestors;
 
-import com.zorroa.archivist.sdk.AssetBuilder;
-import com.zorroa.archivist.sdk.IngestProcessor;
-import com.zorroa.archivist.sdk.Proxy;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.opencv.core.*;
 import org.opencv.features2d.DMatch;
 import org.opencv.features2d.DescriptorExtractor;
@@ -86,7 +86,7 @@ public class LogoIngestor extends IngestProcessor {
             cascadeName = argCascadeName;
         }
 
-        if (!ingestProcessorService.isImage(asset)) {
+        if (!asset.isImage()) {
             return;     // Only process images
         }
 
