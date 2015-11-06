@@ -16,32 +16,40 @@ import java.util.stream.Collectors;
  */
 public class Port<T> {
 
+    public enum Type {
+        Input,
+        Output
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(Port.class);
 
     private final ExportProcessor parent;
 
     private String name;
-    private Class<?> type;
+    private Port.Type type;
     private List<T> values = null;
     private List<T> def = null;
 
     protected List<Socket<T>> sockets = new ArrayList();
-
     protected List<Cord<T>> cords = new ArrayList();
 
-    public Port(String name, ExportProcessor parent) {
+    public Port(String name, Port.Type type, ExportProcessor parent) {
         this.name = name;
+        this.type = type;
         this.parent = parent;
+        parent.addPort(this, type);
     }
 
-    public Port(String name, T def, ExportProcessor parent) {
+    public Port(String name, T def, Port.Type type, ExportProcessor parent) {
         this.name = name;
+        this.type = type;
         this.def = Lists.newArrayList(def);
         this.parent = parent;
+        parent.addPort(this, type);
     }
 
     public String toString() {
-        return String.format("<Port: name=%s Processor: %s", name, parent.getClass().getCanonicalName());
+        return String.format("<Port: name=%s type=%s Processor: %s", name, parent.getClass().getCanonicalName());
     }
 
     public void reset() {

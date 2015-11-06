@@ -1,10 +1,12 @@
 package com.zorroa.archivist.sdk.processor.export;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.processor.Processor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -32,8 +34,10 @@ public abstract class ExportProcessor extends Processor {
     private String workingDirectory;
     protected Asset asset;
 
-    protected List<Port<?>> inputPorts = Lists.newArrayList();
-    protected List<Port<?>> outputPorts = Lists.newArrayList();
+    protected Map<Port.Type, List<Port<?>>> ports = ImmutableMap.<Port.Type, List<Port<?>>>builder()
+            .put(Port.Type.Input, Lists.<Port<?>>newArrayList())
+            .put(Port.Type.Output, Lists.<Port<?>>newArrayList())
+            .build();
 
     public ExportProcessor() {
         this.name = generateName(this.getClass());
@@ -70,22 +74,12 @@ public abstract class ExportProcessor extends Processor {
         return name;
     }
 
-    public List<Port<?>> getInputPorts() {
-        return inputPorts;
+    public List<Port<?>> getPorts(Port.Type type) {
+        return ports.get(type);
     }
 
-    public List<Port<?>> getOutputPorts() {
-        return outputPorts;
-    }
-
-    public Port<?> addInputPort(Port<?> port) {
-        inputPorts.add(port);
-        return port;
-    }
-
-    public Port<?> addOutputPort(Port<?> port) {
-        outputPorts.add(port);
-        return port;
+    public void addPort(Port<?> port, Port.Type type) {
+        ports.get(type).add(port);
     }
 
     public String getWorkingDirectory() {
