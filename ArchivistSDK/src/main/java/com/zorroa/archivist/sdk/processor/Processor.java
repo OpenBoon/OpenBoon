@@ -29,4 +29,9 @@ public class Processor {
      * required.
      */
     public void teardown() { }
+
+    /**
+     * This function is called once and only once before an ingest/export process begins.
+     */
+    public void init() { }
 }
