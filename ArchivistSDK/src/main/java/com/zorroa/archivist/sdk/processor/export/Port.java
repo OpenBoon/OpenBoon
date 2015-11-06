@@ -135,12 +135,10 @@ public class Port<T> {
 
         try {
             String sValue = (String) value;
-
             StringBuffer buffer = new StringBuffer();
             Matcher matcher = EXP_PATTERN.matcher(sValue);
             while(matcher.find()) {
                 String exp = matcher.group(1);
-                logger.info("Exp: {}={}", exp, getParent().getAsset().getValue(exp));
                 matcher.appendReplacement(buffer, getParent().getAsset().getValue(exp));
             }
             matcher.appendTail(buffer);
