@@ -103,7 +103,7 @@ public class ProxyProcessor extends IngestProcessor {
             // Create a 3x3 proxy, avoid borders and blurring by downsampling
             // to an 11x11 image, ignoring the outer frame, and taking the
             // center pixel of each 3x3 block.
-            BufferedImage source = ImageIO.read(imageService.generateProxyPath(smallest.getFile()));
+            BufferedImage source = ImageIO.read(imageService.generateProxyPath(smallest.getPath()));
             BufferedImage tinyImage = new BufferedImage(11, 11, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = tinyImage.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -121,7 +121,7 @@ public class ProxyProcessor extends IngestProcessor {
             return colors;
 
         } catch (IOException e) {
-            logger.warn("Failed to create tiny proxy of " + smallest.getFile() + "," + e, e);
+            logger.warn("Failed to create tiny proxy of " + smallest.getPath() + "," + e, e);
         }
 
         return NO_TINY_PROXY;

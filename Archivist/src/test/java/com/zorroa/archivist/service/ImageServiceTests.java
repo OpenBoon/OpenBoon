@@ -26,7 +26,7 @@ public class ImageServiceTests extends ArchivistApplicationTests {
         ProxyOutput output = new ProxyOutput("png", 128, 8);
         Proxy proxy = imageService.makeProxy(original, output);
         assertEquals(128, proxy.getHeight());
-        List<String> e = Splitter.on('.').limit(2).splitToList(proxy.getFile());
+        List<String> e = Splitter.on('.').limit(2).splitToList(proxy.getPath());
         assertTrue(imageService.generateProxyPath(e.get(0), e.get(1)).exists());
     }
 
