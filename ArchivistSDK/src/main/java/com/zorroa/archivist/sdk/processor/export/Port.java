@@ -1,19 +1,18 @@
 package com.zorroa.archivist.sdk.processor.export;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Created by chambers on 11/5/15.
+ * A Port defines a conduit for which data enters and leaves.  Data enters a port through
+ * a socket and leaves through a Cord.
  */
 public class Port<T> {
 
