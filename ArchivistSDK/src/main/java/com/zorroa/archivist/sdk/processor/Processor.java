@@ -22,4 +22,11 @@ public class Processor {
     public void setArgs(Map<String, Object> args) {
         this.args = args;
     }
+
+    /**
+     * Ths function is called once at the end of the entire ingest/export process.  Its NOT called
+     * on a per-asset basis.  The intent is that subclasses can override this, but its not
+     * required.
+     */
+    public void teardown() { }
 }
