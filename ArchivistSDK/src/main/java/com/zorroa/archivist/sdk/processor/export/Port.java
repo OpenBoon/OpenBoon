@@ -1,6 +1,8 @@
 package com.zorroa.archivist.sdk.processor.export;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.sdk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +129,11 @@ public class Port<T> {
         return socket;
     }
 
-    private final Pattern EXP_PATTERN = Pattern.compile("%\\{(.*?)\\}");
+    private final List<Pattern> EXPRESSION_PATTERNS = ImmutableList.<Pattern>builder()
+            .add(Pattern.compile("%\\{(env):(.*?)\\}"))
+            .add(Pattern.compile("%\\{(export):(.*?)\\}"))
+            .add(Pattern.compile("(%)\\{(.*?)\\}"))
+            .build();
 
     private List<T> handleAssetExpressions(List<T> values) {
         List<T> result = Lists.newArrayListWithCapacity(values.size());
@@ -147,13 +153,46 @@ public class Port<T> {
 
         try {
             String sValue = (String) value;
-            StringBuffer buffer = new StringBuffer();
-            Matcher matcher = EXP_PATTERN.matcher(sValue);
-            while(matcher.find()) {
-                String exp = matcher.group(1);
-                matcher.appendReplacement(buffer, getParent().getAsset().getValue(exp));
+            StringBuffer buffer = null;
+
+            for (Pattern pattern: EXPRESSION_PATTERNS) {
+
+                buffer = new StringBuffer();
+                Matcher matcher = pattern.matcher(sValue);
+
+                while(matcher.find()) {
+                    String type = matcher.group(1);
+                    String expr = matcher.group(2);
+
+                    switch (type) {
+                        case "%":
+                            matcher.appendReplacement(buffer, getParent().getAsset().getValue(expr));
+                            break;
+                        case "env":
+                            matcher.appendReplacement(buffer, System.getenv(expr.toUpperCase()));
+                            break;
+                        case "export":
+                            try {
+                                matcher.appendReplacement(buffer, String.valueOf(
+                                        getParent().getExport().getClass()
+                                        .getMethod("get" + StringUtil.capitalize(expr))
+                                                .invoke(getParent().getExport())));
+                            }
+                            catch (Exception e) {
+                                logger.warn("Failed to handle export expression: {}", expr, e);
+                            }
+                            break;
+                        default:
+                            throw new RuntimeException(String.format(
+                                    "Invalid expression, not supported: '%s'", sValue));
+                    }
+                }
+
+
+                matcher.appendTail(buffer);
+                sValue = buffer.toString();
             }
-            matcher.appendTail(buffer);
+
             return (T) buffer.toString();
 
         } catch (ClassCastException e) {
