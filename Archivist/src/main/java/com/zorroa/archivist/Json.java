@@ -21,6 +21,17 @@ public class Json {
         Mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+
+    public static String serializeToString(Object object) {
+        try {
+            return Json.Mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new org.springframework.dao.DataIntegrityViolationException(
+                    "Failed to serialize object, unexpected: " + e, e);
+        }
+    }
+
+
     public static byte[] serialize(Object object) {
         try {
             return Json.Mapper.writeValueAsBytes(object);
