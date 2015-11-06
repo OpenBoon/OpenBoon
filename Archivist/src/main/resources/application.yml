@@ -39,6 +39,9 @@ archivist:
         format: "png"
     ingest:
         ingestWorkers: 1
+    export:
+        workspacePath: /tmp/archivist/exports
+        outputPath: "%{env:HOME}/Downloads/assetExport%{export:id}"
     snapshot:
         basePath: "snapshots"
         repoName: "backups"
