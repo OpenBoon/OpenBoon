@@ -1,11 +1,15 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.domain.AssetSearchBuilder;
+import com.zorroa.archivist.sdk.domain.AssetSearchBuilder;
+import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.PermissionDao;
+import com.zorroa.archivist.sdk.domain.Asset;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +37,17 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchResponse search(AssetSearchBuilder builder) {
         return buildSearch(builder).get();
+    }
+
+    public Iterable<Asset> scanAndScroll(AssetSearchBuilder builder) {
+
+        SearchResponse rsp = client.prepareSearch(alias)
+                .setSearchType(SearchType.SCAN)
+                .setScroll(new TimeValue(60000))
+                .setQuery(getQuery(builder))
+                .setSize(100).execute().actionGet();
+
+        return new ScanAndScrollAssetIterator(client, rsp);
     }
 
     private SearchRequestBuilder buildSearch(AssetSearchBuilder builder) {

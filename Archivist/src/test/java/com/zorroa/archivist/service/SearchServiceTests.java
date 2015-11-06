@@ -2,13 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.AssetSearchBuilder;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.repository.UserDao;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.Permission;
-import com.zorroa.archivist.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
