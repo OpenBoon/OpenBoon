@@ -32,7 +32,8 @@ public class ScanAndScrollAssetIterator implements Iterable<Asset> {
             @Override
             public boolean hasNext() {
                 if (index >= hits.length) {
-                    hits = client.prepareSearchScroll(rsp.getScrollId()).setScroll("10m").get().getHits().getHits();
+                    hits = client.prepareSearchScroll(rsp.getScrollId()).setScroll("10m")
+                            .get().getHits().getHits();
                     index = 0;
                 }
 
