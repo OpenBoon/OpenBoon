@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.processor.export;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.Asset;
+import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.processor.Processor;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public abstract class ExportProcessor extends Processor {
     private final String name;
     private String workingDirectory;
     protected Asset asset;
+    protected Export export;
 
     protected Map<Port.Type, List<Port<?>>> ports = ImmutableMap.<Port.Type, List<Port<?>>>builder()
             .put(Port.Type.Input, Lists.<Port<?>>newArrayList())
@@ -51,8 +53,9 @@ public abstract class ExportProcessor extends Processor {
      * @param workingDirectory
      * @throws Exception
      */
-    public void execute(Asset asset, String workingDirectory) throws Exception {
+    public void execute(Asset asset, Export export, String workingDirectory) throws Exception {
         this.asset = asset;
+        this.export = export;
         this.workingDirectory = workingDirectory;
 
         process();
@@ -68,6 +71,10 @@ public abstract class ExportProcessor extends Processor {
 
     public Asset getAsset() {
         return asset;
+    }
+
+    public Export getExport() {
+        return export;
     }
 
     public String getName() {
