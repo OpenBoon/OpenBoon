@@ -52,6 +52,10 @@ public class Port<T> {
         return String.format("<Port: name=%s type=%s Processor: %s", name, parent.getClass().getCanonicalName());
     }
 
+    public void setDefault(T value) {
+        this.def = Lists.newArrayList(value);
+    }
+
     public void reset() {
         values = null;;
     }
