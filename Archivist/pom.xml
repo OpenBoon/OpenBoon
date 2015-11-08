@@ -21,6 +21,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <start-class>com.zorroa.archivist.ArchivistApplication</start-class>
     <java.version>1.8</java.version>
+    <com.zorroa.appDir>"/Library/Application Support/Zorroa"</com.zorroa.appDir>
+    <com.zorroa.javaDir>${com.zorroa.appDir}/java</com.zorroa.javaDir>
   </properties>
 
   <dependencies>
@@ -123,10 +125,42 @@
 
   <build>
     <plugins>
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+
+        <executions>
+
+          <execution>
+            <id>Install JAR</id>
+            <phase>install</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>/usr/bin/sudo</executable>
+              <commandlineArgs>cp ${project.basedir}/target/${artifactId}-${version}.jar ${com.zorroa.javaDir}</commandlineArgs>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>Update run-archivist version</id>
+            <phase>install</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>/usr/bin/sudo</executable>
+              <commandlineArgs>sed -i.bak "s/ARCHIVIST_VERSION=.*/ARCHIVIST_VERSION=${version}/g" ${com.zorroa.appDir}/bin/run-archivist.sh</commandlineArgs>
+            </configuration>
+          </execution>
+
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 </project>
