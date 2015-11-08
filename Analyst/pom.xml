@@ -10,7 +10,7 @@
 
     <groupId>com.zorroa</groupId>
     <artifactId>ingestors</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.1</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>archivist-sdk</artifactId>
-            <version>0.4.2</version>
+            <version>0.5.1</version>
             <scope>compile</scope>
         </dependency>
 

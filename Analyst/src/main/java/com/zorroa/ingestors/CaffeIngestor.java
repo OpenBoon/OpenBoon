@@ -24,7 +24,13 @@ public class CaffeIngestor extends IngestProcessor {
 
     static {
         // Note: Must use java -Djava.library.path=<path-to-jnilib>
-        System.loadLibrary("CaffeIngestor");
+        logger.info("Loading Caffe JNI...");
+        try {
+            System.loadLibrary("CaffeIngestor");
+        } catch (UnsatisfiedLinkError e) {
+            System.err.println("CaffeIngestor native code library failed to load.\n" + e);
+        }
+        logger.info("CaffeIngestor finished loading Caffe JNI...");
     }
 
     public static final native long createCaffeClassifier(String deployFile, String modelFile, String meanFile, String wordFile);
@@ -35,6 +41,7 @@ public class CaffeIngestor extends IngestProcessor {
     private static final ThreadLocal<Long> caffeClassifier = new ThreadLocal<Long>() {
         @Override
         protected Long initialValue() {
+            logger.info("Loading caffe models...");
             Map<String, String> env = System.getenv();
             String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
             if (modelPath == null) {
@@ -58,7 +65,6 @@ public class CaffeIngestor extends IngestProcessor {
             return Long.valueOf(nativeCaffeClassifier);
         }
     };
-
 
     public CaffeIngestor() { }
 

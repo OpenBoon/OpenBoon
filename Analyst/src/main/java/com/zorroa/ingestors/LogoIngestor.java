@@ -35,11 +35,7 @@ public class LogoIngestor extends IngestProcessor {
     private static DescriptorMatcher matcher;
     private static FeatureDetector detector;
     private static String featurePath;
-
-
-    static {
-        System.loadLibrary("opencv_java2411");
-    }
+    private static OpenCVLoader openCVLoader = new OpenCVLoader();
 
     // CascadeClassifier is not thread-safe, so give one to each thread
     private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>() {

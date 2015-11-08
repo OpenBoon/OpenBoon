@@ -31,10 +31,7 @@ public class FaceIngestor extends IngestProcessor {
 
     private static String cascadeName = "haarcascade_frontalface_alt.xml";
 
-
-    static {
-        System.loadLibrary("opencv_java2411");
-    }
+    private static OpenCVLoader openCVLoader = new OpenCVLoader();
 
     // CascadeClassifier is not thread-safe, so give one to each thread
     private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>(){
