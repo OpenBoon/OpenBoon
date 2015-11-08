@@ -29,6 +29,7 @@ public class AssetBuilder {
         this.put("source", "filename", this.getFilename());
         this.put("source", "directory", this.getDirectory());
         this.put("source", "extension", this.getExtension());
+        this.put("source", "basename", this.getBasename());
         this.putKeyword("source", "path", this.getAbsolutePath());
         this.put("permissions", "search", searchPermissions);
         this.put("permissions", "export", exportPermissions);
@@ -67,6 +68,14 @@ public class AssetBuilder {
         for (Permission p: perms) {
             exportPermissions.add(p.getId());
         }
+    }
+
+    public String getBasename() {
+        String path = file.getName();
+        try {
+            return path.substring(0, path.lastIndexOf('.')).toLowerCase();
+        } catch (IndexOutOfBoundsException ignore) { /*EMPTY*/ }
+        return "";
     }
 
     public String getExtension() {

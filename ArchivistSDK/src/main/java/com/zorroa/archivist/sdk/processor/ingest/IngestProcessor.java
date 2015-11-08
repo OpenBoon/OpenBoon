@@ -11,10 +11,4 @@ public abstract class IngestProcessor extends Processor {
     public IngestProcessor() { };
 
     public abstract void process(AssetBuilder asset);
-
-    /**
-     * Runs once after an ingest is completed to clean up any per
-     * thread resources.
-     */
-    public void teardown() { }
 }

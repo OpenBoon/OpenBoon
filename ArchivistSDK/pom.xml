@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.zorroa</groupId>
     <artifactId>archivist-sdk</artifactId>
-    <version>0.4.3</version>
+    <version>0.5.1</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -42,7 +42,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
-            <scope>provided</scope>
         </dependency>
 
     </dependencies>
