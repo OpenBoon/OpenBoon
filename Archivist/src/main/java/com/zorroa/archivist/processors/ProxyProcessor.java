@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.ImageService;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -103,7 +104,8 @@ public class ProxyProcessor extends IngestProcessor {
             // Create a 3x3 proxy, avoid borders and blurring by downsampling
             // to an 11x11 image, ignoring the outer frame, and taking the
             // center pixel of each 3x3 block.
-            BufferedImage source = ImageIO.read(imageService.generateProxyPath(smallest.getPath()));
+            File proxyFile = new File(smallest.getPath());
+            BufferedImage source = ImageIO.read(proxyFile);
             BufferedImage tinyImage = new BufferedImage(11, 11, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = tinyImage.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
