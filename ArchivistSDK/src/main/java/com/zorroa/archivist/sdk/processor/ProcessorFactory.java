@@ -35,7 +35,12 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
      */
     private transient volatile T instance = null;
 
-    private transient volatile ClassLoader classLoader = null;
+    /**
+     * The clasLoader is static so that a shared instance is used to load plugins, which may contain
+     * native code. Multiple loaders would result in UnsatisfiedLinkErrors when multiple attempts are
+     * made to dynamically load dependent jnilibs.
+     */
+    private static ClassLoader classLoader = null;
 
     public ProcessorFactory() { }
 
