@@ -15,6 +15,8 @@
 
     <properties>
         <slf4jVersion>1.7.11</slf4jVersion>
+        <com.zorroa.appDir>"/Library/Application Support/Zorroa"</com.zorroa.appDir>
+        <com.zorroa.extensionDir>${com.zorroa.appDir}/java/extensions</com.zorroa.extensionDir>
     </properties>
 
     <dependencies>
@@ -154,6 +156,26 @@
                                 -Llib/caffe
                                 -lcaffe -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
                             </commandlineArgs>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>Install JAR</id>
+                        <phase>install</phase>
+                        <goals><goal>exec</goal></goals>
+                        <configuration>
+                            <executable>/usr/bin/sudo</executable>
+                            <commandlineArgs>cp ${project.basedir}/target/${artifactId}-${version}.jar ${com.zorroa.extensionDir}</commandlineArgs>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>Install jnilib</id>
+                        <phase>install</phase>
+                        <goals><goal>exec</goal></goals>
+                        <configuration>
+                            <executable>/usr/bin/sudo</executable>
+                            <commandlineArgs>cp ${project.basedir}/target/jni/libCaffeIngestor.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
