@@ -1,7 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ExportProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 
 import java.util.List;
@@ -12,7 +12,8 @@ import java.util.List;
 public class ExportPipelineBuilder {
 
     private String name;
-    private List<ProcessorFactory<ExportProcessor>> processors = Lists.newArrayList();
+    private List<ExportProcessorFactory<ExportProcessor>> processors = Lists.newArrayList();
+    private List<ConnectionBuilder> connections = Lists.newArrayList();
 
     public String getName() {
         return name;
@@ -22,15 +23,44 @@ public class ExportPipelineBuilder {
         this.name = name;
     }
 
-    public List<ProcessorFactory<ExportProcessor>> getProcessors() {
+    public List<ExportProcessorFactory<ExportProcessor>> getProcessors() {
         return processors;
     }
 
-    public void setProcessors(List<ProcessorFactory<ExportProcessor>> processors) {
+    public void setProcessors(List<ExportProcessorFactory<ExportProcessor>> processors) {
         this.processors = processors;
     }
 
-    public void addToProcessors(ProcessorFactory<ExportProcessor> processor) {
+    public void addToProcessors(ExportProcessorFactory<ExportProcessor> processor) {
         processors.add(processor);
     }
+
+    public void addToConnections(ConnectionBuilder builder) {
+        connections.add(builder);
+    }
+
+    public void addToConnections(String cord, String socket) {
+        connections.add(new ConnectionBuilder(cord, socket));
+    }
+
+    public void addToConnections(ExportProcessorFactory cord, String cordPort, ExportProcessorFactory socket, String socketPort) {
+        connections.add(new ConnectionBuilder(
+                String.format("%s::%s", cord.getName(), cordPort),
+                String.format("%s::%s", socket.getName(), socketPort)));
+    }
+
+    public List<ConnectionBuilder> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<ConnectionBuilder> connections) {
+        this.connections = connections;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("<ExportPipelineBuilder name='%s'>", name);
+    }
+
 }
