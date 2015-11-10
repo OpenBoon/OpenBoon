@@ -18,94 +18,9 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public abstract class ExportProcessor extends Processor {
 
-    private static final AtomicLong NUMBER = new AtomicLong();
+    public ExportProcessor() { }
 
-    /**
-     * Generates a unique name for an ExportProcessor, which gets used to create
-     * its working directory.  The purpose of it being a class name with a number
-     * is for easy troubleshooting while inspecting data left behind by an export.
-     *
-     * @param processor
-     * @return
-     */
-    public static String generateName(Class<? extends ExportProcessor> processor) {
-        return String.format("%s%04d", processor.getName().substring(
-                processor.getName().lastIndexOf(".")+1), NUMBER.incrementAndGet());
-    }
 
-    private final String name;
-    private String workingDirectory;
-    protected Asset asset;
-    protected Export export;
+    protected abstract void process(Asset asset, Export export, String workingDirectory) throws Exception;
 
-    protected Map<String,Port<?>> allPorts = Maps.newHashMap();
-
-    protected Map<Port.Type, List<Port<?>>> ports = ImmutableMap.<Port.Type, List<Port<?>>>builder()
-            .put(Port.Type.Input, Lists.<Port<?>>newArrayList())
-            .put(Port.Type.Output, Lists.<Port<?>>newArrayList())
-            .build();
-
-    public ExportProcessor() {
-        this.name = generateName(this.getClass());
-    }
-
-    public ExportProcessor(String name) {
-        this.name = name;
-    }
-
-    /**
-     * This function is called by the Export processing engine.  It sets the current
-     * Asset being worked on, as well as the current working directory.
-     *
-     * @param asset
-     * @param workingDirectory
-     * @throws Exception
-     */
-    public void execute(Asset asset, Export export, String workingDirectory) throws Exception {
-        this.asset = asset;
-        this.export = export;
-        this.workingDirectory = workingDirectory;
-
-        process();
-    }
-
-    /**
-     * This method must be implemenented by subclasses.  If an exception is thrown
-     * here, the current asset is skipped over.
-     *
-     * @throws Exception
-     */
-    protected abstract void process() throws Exception;
-
-    public Asset getAsset() {
-        return asset;
-    }
-
-    public Export getExport() {
-        return export;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<Port<?>> getPorts(Port.Type type) {
-        return ports.get(type);
-    }
-
-    public void addPort(Port<?> port, Port.Type type) {
-        if (allPorts.containsKey(port.getName())) {
-            throw new DuplicateElementException("The export processor already has a port with that name");
-        }
-        allPorts.put(port.getName(), port);
-        ports.get(type).add(port);
-    }
-
-    public Port<?> getPort(String name) {
-        return allPorts.get(name);
-    }
-
-    public String getWorkingDirectory() {
-        return workingDirectory;
-    }
 }
