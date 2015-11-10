@@ -228,7 +228,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                             return FileVisitResult.CONTINUE;
                         }
 
-                        if (!ingest.isSupportedFileType(FileUtils.extension(file))) {
+                        /*
+                         * TODO: temporary fix which stops the ingest from touching
+                         * unsupported files.
+                         */
+                        if (!imageService.getSupportedFormats().contains(FileUtils.extension(file))) {
                             return FileVisitResult.CONTINUE;
                         }
 
