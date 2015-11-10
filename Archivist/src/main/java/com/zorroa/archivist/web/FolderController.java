@@ -1,10 +1,10 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.Json;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.sdk.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

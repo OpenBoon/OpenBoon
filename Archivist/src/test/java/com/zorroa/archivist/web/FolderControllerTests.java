@@ -1,8 +1,8 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.Json;
 import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
