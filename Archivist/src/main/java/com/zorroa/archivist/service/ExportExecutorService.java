@@ -5,5 +5,5 @@ package com.zorroa.archivist.service;
  */
 public interface ExportExecutorService {
 
-    ExportGraph getExportGraph();
+
 }
