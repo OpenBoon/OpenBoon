@@ -1,6 +1,5 @@
 package com.zorroa.archivist.sdk.domain;
 
-import java.util.List;
 
 /**
  * Created by chambers on 11/1/15.
@@ -8,13 +7,10 @@ import java.util.List;
 public class ExportBuilder {
 
     /**
-     * The export pipeline the assets should be run through.
-     */
-    private int exportPipelineId;
-
-    /**
-     * The search used to produce a list of exported assets.
+     * Defines the list of assets to export.
      */
     private AssetSearchBuilder search;
+
+
 
 }

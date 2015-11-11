@@ -1,17 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.DuplicateElementException;
-import com.zorroa.archivist.sdk.domain.Export;
-import com.zorroa.archivist.sdk.domain.ExportData;
-import com.zorroa.archivist.sdk.processor.Processor;
-
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * An ExportProcessor is for defining a self contained piece of business logic
@@ -19,7 +8,10 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public abstract class ImageAssetExportOptions {
 
-    private boolean stripMetdata;
+    /**
+     * Strip off all existing image attributes.
+     */
+    private boolean stripMetdata = false;
 
     /**
      * The text for the copy right field, if any.
@@ -32,17 +24,20 @@ public abstract class ImageAssetExportOptions {
     private Map<String, String> attrs;
 
     /**
-     * Image scale.
+     * Image scale.  100 or <=0 is to leave as is.
      */
     private double scale = 100.0;
 
-
+    /**
+     * The quality of the image, if supported. 100 or <= will leave as is.
+     */
     private double quality = 100.0;
 
+    /**
+     * The format of the images, null to keep existing format.
+     */
+    private String format;
 
     public ImageAssetExportOptions() { }
-
-
-
-
+    
 }
