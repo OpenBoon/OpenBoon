@@ -58,4 +58,13 @@ public class Json {
                     "Failed to unserialize object, unexpected " + e, e);
         }
     }
+
+    public static <T> T deserialize(String data, TypeReference<T> valueType) {
+        try {
+            return Json.Mapper.readValue(data, valueType);
+        } catch (IOException e) {
+            throw new MalformedDataException(
+                    "Failed to unserialize object, unexpected " + e, e);
+        }
+    }
 }
