@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>archivist-sdk</artifactId>
-            <version>0.5.1</version>
+            <version>0.6.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -79,7 +79,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <finalName>ingestors</finalName>
+                    <finalName>${project.artifactId}</finalName>
                 </configuration>
             </plugin>
 
@@ -177,7 +177,7 @@
                         <goals><goal>exec</goal></goals>
                         <configuration>
                             <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.basedir}/target/${artifactId}-${version}.jar ${com.zorroa.extensionDir}</commandlineArgs>
+                            <commandlineArgs>cp ${project.basedir}/target/${project.artifactId}.jar ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
