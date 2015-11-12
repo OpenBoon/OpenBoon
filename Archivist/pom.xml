@@ -158,17 +158,7 @@
             <goals><goal>exec</goal></goals>
             <configuration>
               <executable>/usr/bin/sudo</executable>
-              <commandlineArgs>cp ${project.basedir}/target/${artifactId}-${version}.jar ${com.zorroa.javaDir}</commandlineArgs>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>Update run-archivist version</id>
-            <phase>install</phase>
-            <goals><goal>exec</goal></goals>
-            <configuration>
-              <executable>/usr/bin/sudo</executable>
-              <commandlineArgs>sed -i.bak "s/ARCHIVIST_VERSION=.*/ARCHIVIST_VERSION=${version}/g" ${com.zorroa.appDir}/bin/run-archivist.sh</commandlineArgs>
+              <commandlineArgs>cp ${project.basedir}/target/${project.artifactId}.jar ${com.zorroa.javaDir}</commandlineArgs>
             </configuration>
           </execution>
 
