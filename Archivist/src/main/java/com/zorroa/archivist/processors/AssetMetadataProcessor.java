@@ -6,6 +6,8 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.drew.metadata.exif.GpsDirectory;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.elasticsearch.common.joda.time.DateTime;
@@ -85,26 +87,38 @@ public class AssetMetadataProcessor extends IngestProcessor {
         }
     }
 
-    private void extractMetadata(AssetBuilder asset, Metadata metadata) {
-        List<String> keywordArgs = (List<String>) getArgs().get("keywordTags");
-        if (keywordArgs == null) {
-            keywordArgs = new ArrayList<String>();
-            keywordArgs.add("Exif.UserComment");
-            keywordArgs.add("Exif.ColorSpace");
-            keywordArgs.add("Exif.Make");
-            keywordArgs.add("Exif.Model");
-            keywordArgs.add("IPTC.Keywords");
-            keywordArgs.add("IPTC.CopyrightNotice");
-            keywordArgs.add("IPTC.Source");
-            keywordArgs.add("IPTC.City");
-            keywordArgs.add("IPTC.ProvinceState");
-            keywordArgs.add("IPTC.CountryPrimaryLocationName");
-            keywordArgs.add("File.Filename");
-            keywordArgs.add("Xmp.Lens");
-        }
-        Set<String> idSet = new HashSet<String>(keywordArgs);
-        DateTimeFormatter extraDateFormatter = DateTimeFormat.forPattern("yyyy:MM:dd:HH:mm:ss");
+    /**
+     * The default set of tags for building the keyword list.
+     *
+     * TODO: Allow people to manage these with the DB.
+     */
+    private static final Set<String> defaultKeywordTags = ImmutableSet.<String>builder()
+            .add("Exif.UserComment")
+            .add("Exif.ColorSpace")
+            .add("Exif.Make")
+            .add("Exif.Model")
+            .add("IPTC.Keywords")
+            .add("IPTC.CopyrightNotice")
+            .add("IPTC.Source")
+            .add("IPTC.City")
+            .add("IPTC.ProvinceState")
+            .add("IPTC.CountryPrimaryLocationName")
+            .add("File.Filename")
+            .add("Xmp.Lens")
+            .build();
 
+    private void extractMetadata(AssetBuilder asset, Metadata metadata) {
+
+        Set<String> idSet;
+        List<String> keywordArgs = (List<String>) getArgs().get("keywordTags");
+        if (keywordArgs == null || keywordArgs.isEmpty()) {
+            idSet = defaultKeywordTags;
+        }
+        else {
+            idSet = ImmutableSet.copyOf(keywordArgs);
+        }
+
+        DateTimeFormatter extraDateFormatter = DateTimeFormat.forPattern("yyyy:MM:dd:HH:mm:ss");
         for (Directory directory : metadata.getDirectories()) {
             String namespace = directory.getName().split(" ", 2)[0];
             for (Tag tag : directory.getTags()) {
@@ -224,17 +238,20 @@ public class AssetMetadataProcessor extends IngestProcessor {
         return null;
     }
 
+    private static final List<String> defaultDateArgs = ImmutableList.<String>builder()
+            .add("Exif.DateTimeOriginal")
+            .add("Exif.DateTimeDigitized")
+            .add("Exif.DateTime")
+            .add("IPTC.DateCreated") // TODO: Combine IPTC date+time fields
+            .add("IPTC.TimeCreated")
+            .add("File.FileModifiedDate")
+            .build();
+
     private void extractDate(AssetBuilder asset, Metadata metadata) {
         // Get an ordered list of fields from the processor args, or use reasonable defaults
         List<String> dateArgs = (List<String>) getArgs().get("dateTags");
-        if (dateArgs == null) {
-            dateArgs = new ArrayList();
-            dateArgs.add("Exif.DateTimeOriginal");
-            dateArgs.add("Exif.DateTimeDigitized");
-            dateArgs.add("Exif.DateTime");
-            dateArgs.add("IPTC.DateCreated");       // TODO: Combine IPTC date+time fields
-            dateArgs.add("IPTC.TimeCreated");
-            dateArgs.add("File.FileModifiedDate");
+        if (dateArgs == null || dateArgs.isEmpty()) {
+            dateArgs = defaultDateArgs;
         }
 
         // Run through the array of fields, optionally specified as an argument,
