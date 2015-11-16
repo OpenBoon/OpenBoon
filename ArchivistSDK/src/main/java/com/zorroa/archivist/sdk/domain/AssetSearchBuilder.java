@@ -9,6 +9,7 @@ public class AssetSearchBuilder {
 
     private String query;
     private int room = 0;
+    private int exportId = 0;
 
     /*
      * Uses some standard time query format. (now-1d for example)
@@ -63,4 +64,12 @@ public class AssetSearchBuilder {
         return this;
     }
 
+    public AssetSearchBuilder setExportId(int exportId) {
+        this.exportId = exportId;
+        return this;
+    }
+
+    public int getExportId() {
+        return this.exportId;
+    }
 }
