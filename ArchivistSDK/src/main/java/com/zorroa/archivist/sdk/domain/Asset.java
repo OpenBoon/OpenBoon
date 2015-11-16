@@ -37,8 +37,13 @@ public class Asset {
     }
 
     public <T> T getValue(String key) {
-        Map<String, Object> map = getMap(key.substring(0, key.lastIndexOf('.')));
-        return (T) map.get(key.substring(key.lastIndexOf('.')+1));
+        if (key.contains(".")) {
+            Map<String, Object> map = getMap(key.substring(0, key.lastIndexOf('.')));
+            return (T) map.get(key.substring(key.lastIndexOf('.')+1));
+        }
+        else {
+            return (T) document.get(key);
+        }
     }
 
     private Map<String,Object> getMap(String key) {
