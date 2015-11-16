@@ -2,13 +2,9 @@ package com.zorroa.archivist.sdk.domain;
 
 import java.util.Map;
 
-/**
- * An ExportProcessor is for defining a self contained piece of business logic
- * for use within a Export Pipeline.
- */
-public abstract class ExportOptions {
+public class ExportOptions {
 
-    private Images images;
+    private Images images = new Images();
 
     public ExportOptions() { }
 
@@ -52,6 +48,53 @@ public abstract class ExportOptions {
          */
         private String format;
 
+        public boolean isStripMetdata() {
+            return stripMetdata;
+        }
+
+        public void setStripMetdata(boolean stripMetdata) {
+            this.stripMetdata = stripMetdata;
+        }
+
+        public String getCopyrightText() {
+            return copyrightText;
+        }
+
+        public void setCopyrightText(String copyrightText) {
+            this.copyrightText = copyrightText;
+        }
+
+        public Map<String, String> getAttrs() {
+            return attrs;
+        }
+
+        public void setAttrs(Map<String, String> attrs) {
+            this.attrs = attrs;
+        }
+
+        public double getScale() {
+            return scale;
+        }
+
+        public void setScale(double scale) {
+            this.scale = scale;
+        }
+
+        public double getQuality() {
+            return quality;
+        }
+
+        public void setQuality(double quality) {
+            this.quality = quality;
+        }
+
+        public String getFormat() {
+            return format;
+        }
+
+        public void setFormat(String format) {
+            this.format = format;
+        }
     }
 
 }

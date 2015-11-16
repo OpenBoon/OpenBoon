@@ -63,6 +63,9 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
         return klass;
     }
 
+    public String getKlassName() {
+        return klass.substring(klass.lastIndexOf('.')+1);
+    }
     public void setKlass(String klass) {
         this.klass = klass;
     }
@@ -100,6 +103,22 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
     @JsonIgnore
     public T getInstance() {
         return instance;
+    }
+
+    @JsonIgnore
+    public T newInstance() {
+        if (classLoader == null) {
+            classLoader = getSiteClassLoader();
+        }
+
+        try {
+            Class<?> pclass = classLoader.loadClass(klass);
+            instance = (T) pclass.getConstructor().newInstance();
+            instance.setArgs(args);
+            return instance;
+        } catch (Exception e) {
+            throw new ArchivistException("Failed to load class '" + klass + "', " + e, e);
+        }
     }
 
     @JsonIgnore
