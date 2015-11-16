@@ -29,11 +29,4 @@ public class Processor {
      * required.
      */
     public void teardown() { }
-
-    /**
-     * This function is called once and only once before an ingest/export process begins.  Throwing
-     * an exception from init() means the Processor stack could not be initialized and the operation
-     * will not run.
-     */
-    public void init() throws Exception { }
 }
