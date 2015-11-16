@@ -1,15 +1,18 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.service.ExportService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -18,6 +21,9 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     AssetDao assetDao;
+
+    @Autowired
+    ExportService exportService;
 
     @Test
     public void testCreateAndGet() throws IOException {
@@ -72,5 +78,34 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         assetDao.update(asset.getId(), updateBuilder);
         Asset updatedAsset = assetDao.get(asset.getId());
         assertEquals(new Integer(3), updatedAsset.getValue("Xmp.Rating"));
+    }
+
+    @Test
+    public void testAddAssetToExport() {
+        ExportOptions options = new ExportOptions();
+        options.getImages().setFormat("jpg");
+        options.getImages().setScale(.5);
+
+        AssetSearchBuilder search = new AssetSearchBuilder();
+        search.setQuery("beer");
+
+        ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
+        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+
+        ExportBuilder builder = new ExportBuilder();
+        builder.setNote("An export for Bob");
+        builder.setOptions(options);
+        builder.setSearch(search);
+        builder.setOutputs(Lists.newArrayList(outputFactory));
+
+        Export export = exportService.create(builder);
+
+        AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Asset asset = assetDao.create(assetBuilder);
+
+        assetDao.addToExport(asset, export);
+
+        asset = assetDao.get(asset.getId());
+        assertTrue(((List)asset.getValue("exports")).contains(export.getId()));
     }
 }

@@ -3,9 +3,12 @@ package com.zorroa.archivist.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.index.IndexRequest.OpType;
@@ -19,6 +22,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.ScriptService;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
@@ -145,6 +149,16 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             logger.error("Illegal argument error indexing " + builder.getFilename() + ": " + e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public void addToExport(Asset asset, Export export) {
+        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
+        updateBuilder.setScript(
+                "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } else { ctx._source.exports += exportId }",
+                ScriptService.ScriptType.INLINE);
+        updateBuilder.addScriptParam("exportId", export.getId());
+        updateBuilder.get();
     }
 
     @Override
