@@ -101,6 +101,11 @@ public class SearchServiceImpl implements SearchService {
             filter.add(createTimeFilter);
         }
 
+        if (builder.getExportId() > 0) {
+            FilterBuilder exportFilterBuilder = FilterBuilders.termFilter("exports", builder.getExportId());
+            filter.add(exportFilterBuilder);
+        }
+
         filter.add(SecurityUtils.getPermissionsFilter());
 
         return filter;
