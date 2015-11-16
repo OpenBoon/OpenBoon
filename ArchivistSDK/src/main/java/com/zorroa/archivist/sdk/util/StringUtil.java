@@ -9,4 +9,13 @@ public class StringUtil {
         return s.substring(0,1).toUpperCase() + s.substring(1);
     }
 
+    public static String join(String[] array, String delimiter) {
+        StringBuilder sb = new StringBuilder(512);
+        for (String s: array) {
+            sb.append(s);
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        return sb.toString();
+    }
 }
