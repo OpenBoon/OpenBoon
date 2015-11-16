@@ -1,0 +1,7 @@
+path.repo: ["snapshots"]
+
+script.inline: on
+script.indexed: on
+script.update: on
+
+script.engine.groovy.inline.update: on
