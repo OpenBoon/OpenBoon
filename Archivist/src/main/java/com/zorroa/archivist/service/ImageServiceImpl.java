@@ -31,6 +31,9 @@ public class ImageServiceImpl implements ImageService {
     @Value("${archivist.proxies.basePath}")
     private String basePath;
 
+    @Value("${archivist.proxies.format}")
+    private String defaultProxyFormat;
+
     private File proxyPath;
 
     private ImmutableSet<String> supportedFormats;
@@ -111,6 +114,11 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Set<String> getSupportedFormats() {
         return supportedFormats;
+    }
+
+    @Override
+    public String getDefaultProxyFormat() {
+        return defaultProxyFormat;
     }
 
     @Override

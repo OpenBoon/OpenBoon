@@ -36,7 +36,6 @@ archivist:
         alias: "archivist"
     proxies:
         basePath: "proxies"
-        format: "png"
     ingest:
         ingestWorkers: 1
     export:

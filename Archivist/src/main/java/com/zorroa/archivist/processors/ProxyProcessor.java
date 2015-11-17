@@ -50,10 +50,11 @@ public class ProxyProcessor extends IngestProcessor {
     public void process(AssetBuilder asset) {
         List<ProxyOutput> outputs = parseProxyOutput("proxies");
         if (outputs == null) {
+            String format = imageService.getDefaultProxyFormat();
             outputs = Lists.newArrayList(
-                    new ProxyOutput("png", 128, 8),
-                    new ProxyOutput("png", 256, 8),
-                    new ProxyOutput("png", 1024, 8)
+                    new ProxyOutput(format, 128, 8),
+                    new ProxyOutput(format, 256, 8),
+                    new ProxyOutput(format, 1024, 8)
             );
         }
         if (asset.isImage()) {
