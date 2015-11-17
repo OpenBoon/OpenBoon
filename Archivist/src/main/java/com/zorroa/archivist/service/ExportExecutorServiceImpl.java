@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +43,11 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
     @Value("${archivist.export.autoStart}")
     public boolean autoStart;
+
+    @PostConstruct
+    public void init() {
+        startAsync();
+    }
 
     public void execute(Export export) {
 
