@@ -84,12 +84,11 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
          * a "baseFileName" in with the factory args.  baseFileName should not contain the
          * file extension.
          */
-        String outFilePath = getOutputFile(export, result,
-                factory.getArg("baseFileName"), processor.getFileExtension());
+        result.setPath(getOutputFile(export, result,
+                factory.getArg("baseFileName"), processor.getFileExtension()));
 
         jdbc.update("UPDATE export_output SET str_output_file_path=? WHERE pk_export_output=?",
-                outFilePath, result.getId());
-
+                result.getPath(), result.getId());
         return result;
     }
 
