@@ -28,6 +28,14 @@ public class ZipFileExport extends ExportProcessor {
      */
     private String zipEntryPath;
 
+    public String getMimeType() {
+        return "application/zip";
+    }
+
+    public String getFileExtension() {
+        return "zip";
+    }
+
     @Override
     public void teardown() {
         if (zipFile != null) {
@@ -40,19 +48,16 @@ public class ZipFileExport extends ExportProcessor {
     }
 
     @Override
-    public void init(Export export, ExportOutput output, String outputDir) throws Exception {
+    public void init(Export export, ExportOutput output) throws Exception {
+
         if (zipFile != null) {
             // handle someone calling multiple times.
             logger.warn("The export processor '{}' is already initialized", this);
-            return;
         }
 
-
-        zipEntryPath = FileUtils.filename(outputDir);
-
-        String filename = String.format("%s/%s.zip", outputDir, zipEntryPath);
-        logger.info("Initializing zip file: '{}'", filename);
-        zipFile = new ZipOutputStream(new FileOutputStream(filename));
+        logger.info("Initializing zip file: '{}'", output.getPath());
+        zipEntryPath = FileUtils.basename(output.getFileName());
+        zipFile = new ZipOutputStream(new FileOutputStream(output.getPath()));
     }
 
 

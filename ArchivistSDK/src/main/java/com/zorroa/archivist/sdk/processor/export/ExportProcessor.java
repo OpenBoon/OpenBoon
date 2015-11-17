@@ -14,7 +14,11 @@ public abstract class ExportProcessor extends Processor {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void init(Export export, ExportOutput output, String outputDir) throws Exception { }
+    public abstract void init(Export export, ExportOutput output) throws Exception;
 
     public abstract void process(Asset asset) throws Exception;
+
+    public abstract String getMimeType();
+
+    public abstract String getFileExtension();
 }
