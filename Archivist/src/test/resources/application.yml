@@ -35,6 +35,7 @@ archivist:
     index:
         alias: "archivist"
     proxies:
+        format: "jpg"
         basePath: "proxies"
     ingest:
         ingestWorkers: 1
