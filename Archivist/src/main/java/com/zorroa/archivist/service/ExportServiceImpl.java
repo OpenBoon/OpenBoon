@@ -4,6 +4,7 @@ import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportBuilder;
+import com.zorroa.archivist.sdk.domain.ExportFilter;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.OverridesAttribute;
 import java.util.List;
 
 /**
@@ -46,5 +46,11 @@ public class ExportServiceImpl implements ExportService {
     public List<ExportOutput> getAllOutputs(Export export) {
         return exportOutputDao.getAll(export);
     }
+
+    @Override
+    public List<Export> getAll(ExportFilter filter) {
+        return exportDao.getAll(filter);
+    }
+
 }
 

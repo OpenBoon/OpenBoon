@@ -1,10 +1,12 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -40,6 +42,48 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         Preconditions.checkArgument(limit > 0, "Limit must be greater than 0");
         return jdbc.query("SELECT * FROM export_output WHERE int_state=? ORDER BY time_created ASC LIMIT ?",
                 MAPPER, state.ordinal(), limit);
+    }
+
+    @Override
+    public List<Export> getAll(ExportFilter filter) {
+
+        StringBuilder sb = new StringBuilder(512);
+        sb.append("SELECT * FROM export");
+
+        List<String> wheres = Lists.newArrayList();
+        List<Object> values = Lists.newArrayList();
+
+        if (filter.getStates() != null) {
+            wheres.add(JdbcUtils.in("int_state", filter.getStates().size()));
+            filter.getStates().forEach(value -> values.add(value.ordinal()));
+        }
+
+        if (filter.getUsers() != null) {
+            wheres.add(JdbcUtils.in("export.str_user_created", filter.getUsers().size()));
+            values.addAll(filter.getUsers());
+        }
+
+        if (filter.getAfterTime() > 0) {
+            wheres.add("time_created > ?");
+            values.add(filter.getAfterTime());
+        }
+
+        if (filter.getBeforeTime() > 0) {
+            wheres.add("time_created < ?");
+            values.add(filter.getBeforeTime());
+        }
+
+        if (!wheres.isEmpty()) {
+            sb.append(" WHERE ");
+            sb.append(StringUtils.join(wheres, " AND "));
+        }
+
+        // newest first
+        sb.append(" ORDER BY time_created DESC ");
+        sb.append(String.format("LIMIT %d OFFSET %d",
+                filter.getPageSize(), (filter.getPage() - 1) *  filter.getPageSize()));
+
+        return jdbc.query(sb.toString(), MAPPER, values.toArray());
     }
 
     private static final String INSERT =

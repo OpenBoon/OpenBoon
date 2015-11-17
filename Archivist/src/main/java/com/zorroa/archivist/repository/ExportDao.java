@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportBuilder;
+import com.zorroa.archivist.sdk.domain.ExportFilter;
 import com.zorroa.archivist.sdk.domain.ExportState;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public interface ExportDao {
 
     Export get(int id);
+
+    List<Export> getAll(ExportFilter filter);
 
     Export create(ExportBuilder builder);
 
