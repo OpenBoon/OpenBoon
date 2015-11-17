@@ -71,8 +71,12 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean setIngestRunning(Ingest ingest) {
-        ingest.setState(IngestState.Running);
-        return ingestDao.setState(ingest, IngestState.Running);
+        if (ingestDao.setState(ingest, IngestState.Running)) {
+            ingest.setState(IngestState.Running);
+            broadcast(ingest, MessageType.INGEST_UPDATE);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -87,6 +91,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public boolean setIngestIdle(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Idle)) {
             ingest.setState(IngestState.Idle);
+            broadcast(ingest, MessageType.INGEST_UPDATE);
             return true;
         }
         return false;
@@ -96,6 +101,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public boolean setIngestQueued(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Queued)) {
             ingest.setState(IngestState.Queued);
+            broadcast(ingest, MessageType.INGEST_UPDATE);
             return true;
         }
         return false;
@@ -105,6 +111,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public boolean setIngestPaused(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Paused)) {
             ingest.setState(IngestState.Paused);
+            broadcast(ingest, MessageType.INGEST_UPDATE);
             return true;
         }
         return false;
