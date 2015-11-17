@@ -9,4 +9,6 @@ import com.zorroa.archivist.sdk.domain.ExportBuilder;
 public interface ExportService {
 
     Export create(ExportBuilder builder);
+
+    Export get(int id);
 }
