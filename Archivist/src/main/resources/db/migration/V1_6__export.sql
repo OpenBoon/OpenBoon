@@ -8,6 +8,8 @@ CREATE TABLE export (
   json_options TEXT NOT NULL
 );
 
+CREATE INDEX export_int_state_idx ON export (int_state);
+
 CREATE TABLE export_output (
   pk_export_output INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
   pk_export INTEGER NOT NULL REFERENCES export(pk_export),

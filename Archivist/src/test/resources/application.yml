@@ -3,7 +3,7 @@
 # Spring and Spring Boot Settings
 #
 server:
-    port: 8066
+    port: 9066
 
 flyway:
     check-location: true
@@ -30,7 +30,7 @@ archivist:
             username: "sa"
             password: ""
     events:
-        port: 8087
+        port: 9087
 
     index:
         alias: "archivist"
@@ -40,7 +40,8 @@ archivist:
     ingest:
         ingestWorkers: 1
     export:
-        autoStart: true
+        # Disable auto-export for tests, so we can run them manually
+        autoStart: false
         basePath: "exports"
     snapshot:
         basePath: "snapshots"
