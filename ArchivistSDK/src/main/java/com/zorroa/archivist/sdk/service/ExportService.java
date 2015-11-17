@@ -2,6 +2,7 @@ package com.zorroa.archivist.sdk.service;
 
 import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportBuilder;
+import com.zorroa.archivist.sdk.domain.ExportFilter;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface ExportService {
     Export get(int id);
 
     List<ExportOutput> getAllOutputs(Export export);
+
+    List<Export> getAll(ExportFilter filter);
 }
