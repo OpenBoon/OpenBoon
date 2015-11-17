@@ -13,6 +13,7 @@ public class ExportFilter {
     private long afterTime = -1;
     private int page = 1;
 
+    private int pageSize = 10;
 
     public List<String> getUsers() {
         return users;
@@ -52,5 +53,13 @@ public class ExportFilter {
 
     public void setStates(List<ExportState> states) {
         this.states = states;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }
