@@ -36,7 +36,12 @@ public class FileUtils {
      */
     public static String basename(String path) {
         String filename = filename(path);
-        return filename.substring(0, filename.lastIndexOf("."));
+        if (filename.contains(".")) {
+            return filename.substring(0, filename.lastIndexOf("."));
+        }
+        else {
+            return path;
+        }
     }
 
     /**
@@ -49,7 +54,12 @@ public class FileUtils {
      * @return
      */
     public static String filename(String path) {
-        return path.substring(path.lastIndexOf("/") + 1);
+        if (!path.contains("/")) {
+            return path;
+        }
+        else {
+            return path.substring(path.lastIndexOf("/") + 1);
+        }
     }
 
     /**
