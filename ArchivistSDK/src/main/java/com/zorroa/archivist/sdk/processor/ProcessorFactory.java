@@ -26,7 +26,7 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(ProcessorFactory.class);
 
     private String klass;
-    private Map<String, Object> args;
+    private Map<String, Object> args = Maps.newHashMap();
 
     /**
      * These is transient because if we serialize this class, we don't want to serialize the instance
@@ -46,17 +46,15 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
 
     public ProcessorFactory(String klass) {
         this.klass = klass;
-        this.args = Maps.newHashMap();
     }
 
     public ProcessorFactory(String klass, Map<String, Object> args) {
         this.klass = klass;
-        this.args = args;
+        this.args.putAll(args);
     }
 
     public ProcessorFactory(Class<?> klass) {
         this.klass = klass.getCanonicalName();
-        this.args = Maps.newHashMap();
     }
 
     public String getKlass() {
@@ -72,6 +70,14 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
 
     public Map<String, Object> getArgs() {
         return args;
+    }
+
+    public Object getArg(String name, Object dvalue) {
+        return args.getOrDefault(name, dvalue);
+    }
+
+    public Object getArg(String name) {
+        return args.get(name);
     }
 
     public void setArgs(Map<String, Object> args) {
