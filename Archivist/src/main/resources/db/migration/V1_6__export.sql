@@ -13,6 +13,8 @@ CREATE TABLE export_output (
   pk_export INTEGER NOT NULL REFERENCES export(pk_export),
   str_user_created VARCHAR(128) NOT NULL,
   time_created BIGINT NOT NULL,
+  str_output_file_path TEXT,
+  str_mime_type VARCHAR(128) NOT NULL,
   json_factory TEXT NOT NULL
 
 );

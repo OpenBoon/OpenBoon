@@ -124,7 +124,7 @@
     <dependency>
       <groupId>com.zorroa</groupId>
       <artifactId>archivist-sdk</artifactId>
-      <version>0.7.0</version>
+      <version>0.7.1</version>
     </dependency>
 
   </dependencies>
