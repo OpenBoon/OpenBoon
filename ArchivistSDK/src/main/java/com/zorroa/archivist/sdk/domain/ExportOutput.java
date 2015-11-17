@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.util.FileUtils;
 
 /**
  * Exported Output
@@ -14,11 +15,39 @@ public class ExportOutput {
     private int exportId;
     private String createdBy;
     private long createdTime;
+    private String path;
+    private String mimeType;
 
     private ProcessorFactory<ExportProcessor> factory;
 
     public ProcessorFactory<ExportProcessor> getFactory() {
         return factory;
+    }
+
+    @JsonIgnore
+    public String getFileName() {
+        return FileUtils.filename(path);
+    }
+
+    @JsonIgnore
+    public String getDirName() {
+        return FileUtils.dirname(path);
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public void setFactory(ProcessorFactory<ExportProcessor> factory) {
