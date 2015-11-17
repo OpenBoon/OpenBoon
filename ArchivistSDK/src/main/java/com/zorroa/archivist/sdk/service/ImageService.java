@@ -35,6 +35,13 @@ public interface ImageService {
     Set<String> getSupportedFormats();
 
     /**
+     * Return the default proxy image format.
+     *
+     * @return
+     */
+    String getDefaultProxyFormat();
+
+    /**
      * Generates a file path for the given proxy ID.  This does
      * not create the actual directories.
      *
