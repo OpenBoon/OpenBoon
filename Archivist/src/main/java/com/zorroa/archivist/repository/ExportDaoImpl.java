@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.base.Preconditions;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 
 /**
  * Created by chambers on 11/12/15.
@@ -31,6 +33,13 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
     @Override
     public Export get(int id) {
         return jdbc.queryForObject("SELECT * FROM export WHERE pk_export=?", MAPPER, id);
+    }
+
+    @Override
+    public List<Export> getAll(ExportState state, int limit) {
+        Preconditions.checkArgument(limit > 0, "Limit must be greater than 0");
+        return jdbc.query("SELECT * FROM export_output WHERE int_state=? ORDER BY time_created ASC LIMIT ?",
+                MAPPER, state.ordinal(), limit);
     }
 
     private static final String INSERT =
