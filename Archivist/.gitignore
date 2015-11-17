@@ -13,6 +13,8 @@ data
 
 # Proxy folder for unit tests
 proxies
+# Export folder for unit tests
+exports
 
 .DS_store
 
