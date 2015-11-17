@@ -64,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
     public File generateProxyPath(String id, String format) {
 
         if (id.length() < PROXY_ID_MIN_LENGTH) {
-            throw new RuntimeException("Proxy IDs need to be at leaset "
+            throw new RuntimeException("Proxy IDs need to be at least "
                     + PROXY_ID_MIN_LENGTH + " characters.");
         }
 
