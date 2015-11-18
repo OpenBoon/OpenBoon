@@ -18,5 +18,7 @@ public interface ExportService {
 
     List<ExportOutput> getAllOutputs(Export export);
 
+    ExportOutput getOutput(int id);
+
     List<Export> getAll(ExportFilter filter);
 }
