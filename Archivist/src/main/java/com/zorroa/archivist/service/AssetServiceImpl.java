@@ -4,6 +4,7 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
+import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.service.AssetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,5 +47,10 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public boolean updateAsset(String assetId, AssetUpdateBuilder builder) {
         return assetDao.update(assetId, builder);
+    }
+
+    @Override
+    public void addToFolder(Asset asset, Folder folder) {
+        assetDao.addToFolder(asset, folder);
     }
 }

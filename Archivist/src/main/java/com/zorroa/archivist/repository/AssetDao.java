@@ -1,9 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.Export;
+import com.zorroa.archivist.sdk.domain.*;
 
 import java.util.List;
 
@@ -20,6 +17,8 @@ public interface AssetDao {
     boolean existsByPathAfter(String path, long afterTime);
 
     boolean replace(AssetBuilder builder);
+
+    void addToFolder(Asset asset, Folder folder);
 
     boolean update(String assetId, AssetUpdateBuilder builder);
 

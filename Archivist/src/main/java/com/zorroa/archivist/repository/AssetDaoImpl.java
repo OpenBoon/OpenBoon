@@ -5,10 +5,7 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.Export;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.index.IndexRequest.OpType;
@@ -158,6 +155,16 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } else { ctx._source.exports += exportId }",
                 ScriptService.ScriptType.INLINE);
         updateBuilder.addScriptParam("exportId", export.getId());
+        updateBuilder.get();
+    }
+
+    @Override
+    public void addToFolder(Asset asset, Folder folder) {
+        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
+        updateBuilder.setScript(
+                "if (ctx._source.folders == null ) {  ctx._source.folders = [folderId] } else { ctx._source.foldrs += folderId }",
+                ScriptService.ScriptType.INLINE);
+        updateBuilder.addScriptParam("folderId", folder.getId());
         updateBuilder.get();
     }
 

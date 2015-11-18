@@ -101,6 +101,11 @@ public class SearchServiceImpl implements SearchService {
             filter.add(createTimeFilter);
         }
 
+        if (builder.getFolderIds() != null) {
+            FilterBuilder exportFolderBuilder = FilterBuilders.termsFilter("folders", builder.getFolderIds());
+            filter.add(exportFolderBuilder);
+        }
+
         if (builder.getExportId() > 0) {
             FilterBuilder exportFilterBuilder = FilterBuilders.termFilter("exports", builder.getExportId());
             filter.add(exportFilterBuilder);
@@ -110,8 +115,4 @@ public class SearchServiceImpl implements SearchService {
 
         return filter;
     }
-
-
-
-
 }
