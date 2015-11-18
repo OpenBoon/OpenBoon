@@ -15,5 +15,7 @@ public enum MessageType {
     INGEST_DELETE,
     FOLDER_CREATE,
     FOLDER_UPDATE,
-    FOLDER_DELETE
+    FOLDER_DELETE,
+    EXPORT_START,
+    EXPORT_STOP
 }
