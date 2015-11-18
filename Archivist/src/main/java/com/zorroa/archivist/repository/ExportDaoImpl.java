@@ -40,7 +40,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
     @Override
     public List<Export> getAll(ExportState state, int limit) {
         Preconditions.checkArgument(limit > 0, "Limit must be greater than 0");
-        return jdbc.query("SELECT * FROM export_output WHERE int_state=? ORDER BY time_created ASC LIMIT ?",
+        return jdbc.query("SELECT * FROM export WHERE int_state=? ORDER BY time_created ASC LIMIT ?",
                 MAPPER, state.ordinal(), limit);
     }
 
