@@ -112,10 +112,10 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
                     now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DATE));
         }
 
-        String path = String.format("%s/%d%d%d/%d/%d/%s.%s",
+        String path = String.format("%s/%d%d%d/%d/%s.%s",
                 basePath,
                 now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1,
-                now.get(Calendar.DATE),  export.getId(), output.getId(), filename, ext);
+                now.get(Calendar.DATE),  export.getId(), filename, ext);
         return new File(path).getAbsolutePath();
     }
 }
