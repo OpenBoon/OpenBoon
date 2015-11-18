@@ -16,16 +16,18 @@ public class Message {
         return type;
     }
 
-    public void setType(MessageType type) {
+    public Message setType(MessageType type) {
         this.type = type;
+        return this;
     }
 
     public String getPayload() {
         return payload;
     }
 
-    public void setPayload(String payload) {
+    public Message setPayload(String payload) {
         this.payload = payload;
+        return this;
     }
 
     public String toString() {

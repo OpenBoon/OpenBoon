@@ -17,5 +17,6 @@ public enum MessageType {
     FOLDER_UPDATE,
     FOLDER_DELETE,
     EXPORT_START,
-    EXPORT_STOP
+    EXPORT_STOP,
+    EXPORT_ASSET
 }
