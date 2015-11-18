@@ -18,5 +18,6 @@ public enum MessageType {
     FOLDER_DELETE,
     EXPORT_START,
     EXPORT_STOP,
-    EXPORT_ASSET
+    EXPORT_ASSET,
+    EXPORT_OUTPUT_STOP
 }
