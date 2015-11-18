@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by chambers on 11/17/15.
  */
-public class ExportControllerTests  extends MockMvcTest {
+public class ExportControllerTests extends MockMvcTest {
 
     @Autowired
     ExportService exportService;
