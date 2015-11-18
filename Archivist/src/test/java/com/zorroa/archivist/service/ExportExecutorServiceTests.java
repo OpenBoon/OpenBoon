@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
@@ -56,6 +58,7 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
         outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
 
         ExportBuilder builder = new ExportBuilder();
         builder.setNote("An export for Bob");
