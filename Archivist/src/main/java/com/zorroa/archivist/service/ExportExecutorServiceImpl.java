@@ -109,14 +109,19 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                 }
             }
 
-            for (ExportProcessor processor: outputs.values()) {
-                // don't let teardown errors bubble out
+            for (Map.Entry<ExportOutput, ExportProcessor> entry: outputs.entrySet()) {
+                ExportProcessor processor = entry.getValue();
+                ExportOutput output = entry.getKey();
+
                 logger.info("tearing down processor {}", processor);
                 try {
                     processor.teardown();
                 } catch (Exception e) {
                     logger.warn("Failed to tear down processor '{}',", processor, e);
                 }
+
+                eventServerHandler.broadcast(new Message().setType(
+                        MessageType.EXPORT_OUTPUT_STOP).setPayload(Json.serializeToString(output)));
             }
 
         } finally {
