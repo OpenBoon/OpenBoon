@@ -48,6 +48,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
+    public ExportOutput getOutput(int i) {
+        return exportOutputDao.get(i);
+    }
+
+    @Override
     public List<Export> getAll(ExportFilter filter) {
         return exportDao.getAll(filter);
     }
