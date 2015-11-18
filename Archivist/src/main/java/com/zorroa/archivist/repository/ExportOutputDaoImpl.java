@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.List;
@@ -115,6 +116,6 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
                 basePath,
                 now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1,
                 now.get(Calendar.DATE),  export.getId(), output.getId(), filename, ext);
-        return path;
+        return new File(path).getAbsolutePath();
     }
 }
