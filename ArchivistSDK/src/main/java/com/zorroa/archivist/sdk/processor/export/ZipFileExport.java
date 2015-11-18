@@ -56,7 +56,16 @@ public class ZipFileExport extends ExportProcessor {
         }
 
         logger.info("Initializing zip file: '{}'", output.getPath());
-        zipEntryPath = FileUtils.basename(output.getFileName());
+
+        /*
+         * If no entry path is specified as an argument, then the basename of of the directory
+         * becomes the name.  This value is basically a directory in the zip, so the files
+         * go into their own folder when unzipped.
+         *
+         * Setting this to an empty strin
+         *
+         */
+        zipEntryPath = (String) args.getOrDefault("zipEntryPath", FileUtils.basename(output.getFileName()));
         zipFile = new ZipOutputStream(new FileOutputStream(output.getPath()));
     }
 
