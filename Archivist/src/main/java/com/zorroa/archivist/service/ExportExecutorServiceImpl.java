@@ -3,14 +3,13 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.FileUtils;
+import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.Export;
-import com.zorroa.archivist.sdk.domain.ExportState;
-import com.zorroa.archivist.sdk.domain.ExportOutput;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
     @Autowired
     SearchService searchService;
 
+    @Autowired
+    EventServerHandler eventServerHandler;
+
     @Value("${archivist.export.autoStart}")
     public boolean autoStart;
 
@@ -55,10 +57,11 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             logger.warn("Unable to set export '{}' state to running.", export);
             return;
         }
-
         logger.info("executing export: {}", export);
-
         Map<ExportOutput, ExportProcessor> outputs = Maps.newHashMap();
+
+        eventServerHandler.broadcast(new Message().setType(
+                MessageType.EXPORT_START).setPayload(Json.serializeToString(export)));
 
         try {
 
@@ -96,6 +99,10 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     try {
                         processor.process(asset);
                         assetDao.addToExport(asset, export);
+
+                        eventServerHandler.broadcast(new Message().setType(
+                                MessageType.EXPORT_ASSET).setPayload(asset.getId()));
+
                     } catch (Exception e) {
                         logger.warn("Failed to add asset {} to output '{}',", asset, e);
                     }
@@ -113,7 +120,10 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             }
 
         } finally {
-            exportDao.setState(export, ExportState.Finished, ExportState.Running);
+            if (exportDao.setState(export, ExportState.Finished, ExportState.Running)) {
+                eventServerHandler.broadcast(new Message().setType(
+                        MessageType.EXPORT_STOP).setPayload(Json.serializeToString(export)));
+            }
         }
     }
 
