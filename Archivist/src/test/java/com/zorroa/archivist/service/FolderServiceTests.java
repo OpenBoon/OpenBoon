@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.sdk.domain.DuplicateElementException;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.service.FolderService;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class FolderServiceTests extends ArchivistApplicationTests {
@@ -45,5 +48,27 @@ public class FolderServiceTests extends ArchivistApplicationTests {
         Folder revised = folderService.get(folder.getId());
         assertEquals("new", revised.getName());
         assertEquals(2, revised.getUserId());
+    }
+
+    @Test(expected=DuplicateElementException.class)
+    public void testCreateFailureInRoot() {
+        FolderBuilder builder = new FolderBuilder("shizzle", SecurityUtils.getUser().getId());
+        Folder folder1 = folderService.create(builder);
+        folderService.create(builder);
+    }
+
+
+    @Test(expected=DuplicateElementException.class)
+    public void testDeepCreateFailure() {
+        FolderBuilder builder = new FolderBuilder("shizzle", SecurityUtils.getUser().getId());
+        Folder folder1 = folderService.create(builder);
+        assertNull(folder1.getParentId());
+
+        builder = new FolderBuilder("shizzle", SecurityUtils.getUser().getId());
+        builder.setParentId(folder1.getId());
+
+        Folder folder2 = folderService.create(builder);
+        assertEquals(folder2.getParentId(), folder1.getId());
+        folderService.create(builder);
     }
 }
