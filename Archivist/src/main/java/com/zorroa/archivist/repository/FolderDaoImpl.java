@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.util.Json;
@@ -22,7 +23,7 @@ import java.util.Map;
 @Repository
 public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
 
-    private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
+    private TimeBasedGenerator uuidGenerator = Generators.timeBasedGenerator();
 
     @Override
     public String getType() {
@@ -90,9 +91,8 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
 
     @Override
     public Folder create(FolderBuilder builder) {
-        String seed = builder.getName() + builder.getUserId();
         IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
-                .setId(uuidGenerator.generate(seed).toString())
+                .setId(uuidGenerator.generate().toString())
                 .setOpType(IndexRequest.OpType.CREATE)
                 .setSource(Json.serialize(builder.getDocument()))
                 .setRefresh(true);
