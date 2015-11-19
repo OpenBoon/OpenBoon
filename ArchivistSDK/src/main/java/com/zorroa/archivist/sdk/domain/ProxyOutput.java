@@ -9,13 +9,15 @@ public class ProxyOutput implements Serializable {
     private int size;
     private int bpp;
     private String format;
+    private float quality;
 
     public ProxyOutput() { }
 
-    public ProxyOutput(String format, int size, int bpp) {
+    public ProxyOutput(String format, int size, int bpp, float quality) {
         this.format = format;
         this.size = size;
         this.bpp = bpp;
+        this.quality = quality;
     }
 
     public int getSize() {
@@ -42,8 +44,16 @@ public class ProxyOutput implements Serializable {
         this.format = format;
     }
 
+    public float getQuality() {
+        return quality;
+    }
+
+    public void setQuality(float quality) {
+        this.quality = quality;
+    }
+
     public String toString() {
-        return String.format("<ProxyOutput(\"%s\",%d,%d)>", format, size, bpp);
+        return String.format("<ProxyOutput(\"%s\",%d,%d,%f)>", format, size, bpp, quality);
     }
 
     public boolean equals(Object obj) {
