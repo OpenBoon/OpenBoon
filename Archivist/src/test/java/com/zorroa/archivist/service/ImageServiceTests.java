@@ -21,7 +21,7 @@ public class ImageServiceTests extends ArchivistApplicationTests {
     @Test
     public void testMakeProxy() throws IOException {
         File original = this.getTestImage("beer_kettle_01.jpg");
-        ProxyOutput output = new ProxyOutput("png", 128, 8);
+        ProxyOutput output = new ProxyOutput("png", 128, 8, 0.5f);
         Proxy proxy = imageService.makeProxy(original, output);
         assertEquals(128, proxy.getHeight());
         File thumb = new File(proxy.getPath());

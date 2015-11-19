@@ -100,6 +100,7 @@ public class ImageServiceImpl implements ImageService {
             .outputFormat(output.getFormat())
             .keepAspectRatio(true)
             .rendering(Rendering.QUALITY)
+            .outputQuality(output.getQuality())
             .toFile(outFile);
         Dimension dim = getImageDimensions(outFile);
 

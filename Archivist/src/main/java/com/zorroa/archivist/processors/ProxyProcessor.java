@@ -52,19 +52,23 @@ public class ProxyProcessor extends IngestProcessor {
         if (outputs == null) {
             String format = imageService.getDefaultProxyFormat();
             outputs = Lists.newArrayList(
-                    new ProxyOutput(format, 128, 8),
-                    new ProxyOutput(format, 256, 8),
-                    new ProxyOutput(format, 1024, 8)
+                    new ProxyOutput(format, 128, 8, 0.5f),
+                    new ProxyOutput(format, 256, 8, 0.7f),
+                    new ProxyOutput(format, 1024, 8, 0.9f)
             );
         }
         if (asset.isImage()) {
+            extractDimensions(asset);
+            int width = (int)asset.get("source", "width");
             List<Proxy> result = Lists.newArrayList();
             for (ProxyOutput output : outputs) {
-                try {
-                    result.add(imageService.makeProxy(asset.getFile(), output));
-                } catch (IOException e) {
-                    logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
-                    asset.put("source", "error", "Proxy");
+                if (output.getSize() < width) {
+                    try {
+                        result.add(imageService.makeProxy(asset.getFile(), output));
+                    } catch (IOException e) {
+                        logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
+                        asset.put("source", "error", "Proxy");
+                    }
                 }
             }
 
@@ -79,8 +83,6 @@ public class ProxyProcessor extends IngestProcessor {
                 asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
                 asset.getDocument().put("proxies", result);
             }
-
-            extractDimensions(asset);
         }
     }
 
