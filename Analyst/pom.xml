@@ -141,26 +141,26 @@
                 <executions>
 
                     <execution>
-                        <id>Javah CaffeIngestor</id>
+                        <id>Javah CaffeClassifier</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
                             <executable>${basedir}/jni.sh</executable>
-                            <commandlineArgs>javah CaffeIngestor</commandlineArgs>
+                            <commandlineArgs>javah CaffeClassifier</commandlineArgs>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>Javalib CaffeIngestor</id>
+                        <id>Javalib CaffeClassifier</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
                             <executable>${basedir}/jni.sh</executable>
-                            <commandlineArgs>jnilib CaffeIngestor
+                            <commandlineArgs>jnilib CaffeClassifier
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/hdf5
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/CUDA-7.0
@@ -187,7 +187,7 @@
                         <goals><goal>exec</goal></goals>
                         <configuration>
                             <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.basedir}/target/jni/libCaffeIngestor.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
+                            <commandlineArgs>cp ${project.basedir}/target/jni/libCaffeClassifier.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
