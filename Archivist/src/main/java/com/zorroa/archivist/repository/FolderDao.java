@@ -13,6 +13,8 @@ public interface FolderDao {
 
     List<Folder> getChildren(Folder folder);
 
+    boolean exists(String parentId, String name);
+
     Folder create(FolderBuilder builder);
 
     boolean update(Folder folder, FolderBuilder builder);

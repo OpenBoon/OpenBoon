@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -93,5 +94,17 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         assertEquals(folders.size(), 1);
         Folder f = folders.get(0);
         assertEquals(f.getName(), "Snusnu");
+    }
+
+    @Test
+    public void testExists() {
+        FolderBuilder builder = new FolderBuilder("foo", SecurityUtils.getUser().getId());
+        Folder folder1 = folderDao.create(builder);
+        assertTrue(folderDao.exists(null, "foo"));
+
+        builder = new FolderBuilder("bar", SecurityUtils.getUser().getId());
+        builder.setParentId(folder1.getId());
+        Folder folder2 = folderDao.create(builder);
+        assertTrue(folderDao.exists(folder1.getId(), "bar"));
     }
 }

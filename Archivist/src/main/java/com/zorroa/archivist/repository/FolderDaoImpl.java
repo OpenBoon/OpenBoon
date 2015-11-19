@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.util.Json;
+import org.elasticsearch.action.count.CountRequestBuilder;
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -87,6 +90,29 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
     @Override
     public List<Folder> getChildren(Folder folder) {
         return getFolders(QueryBuilders.termQuery("parentId", folder.getId()));
+    }
+
+    @Override
+    public boolean exists(String parentId, String name) {
+        FilterBuilder userFilter = FilterBuilders.termFilter("userId", SecurityUtils.getUser().getId());
+        FilterBuilder nameFilter = FilterBuilders.termFilter("name", name);
+        FilterBuilder parentFilter;
+
+        if (parentId == null) {
+            parentFilter = FilterBuilders.notFilter(FilterBuilders.existsFilter("parentId"));
+        }
+        else {
+            parentFilter = FilterBuilders.termFilter("parentId", parentId);
+        }
+
+        CountResponse count = client.prepareCount(alias)
+                .setTypes(getType())
+                .setQuery(QueryBuilders.filteredQuery(
+                        QueryBuilders.matchAllQuery(),
+                        FilterBuilders.andFilter(
+                                userFilter, parentFilter, nameFilter)))
+                .get();
+        return count.getCount() > 0;
     }
 
     @Override
