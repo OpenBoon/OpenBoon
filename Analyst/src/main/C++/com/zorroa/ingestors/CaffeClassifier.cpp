@@ -6,6 +6,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <algorithm>
 
 #define CPU_ONLY
 
@@ -84,13 +85,28 @@ static string stringFromJString(JNIEnv *env, jstring jstr) {
     return str;
 }
 
-static string replaceAll(string str, const string &from, const string &to) {
-    size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != string::npos) {
-        str.replace(start_pos, from.length(), to);
-        start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+static std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
     }
-    return str;
+    return elems;
+}
+
+static std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, elems);
+    return elems;
+}
+
+static std::string trim(const std::string& str, const std::string& whitespace = " \t") {
+    const size_t strBegin = str.find_first_not_of(whitespace);
+    if (strBegin == std::string::npos)
+        return ""; // no content
+    const size_t strEnd = str.find_last_not_of(whitespace);
+    const size_t strRange = strEnd - strBegin + 1;
+    return str.substr(strBegin, strRange);
 }
 
 /*
@@ -122,11 +138,26 @@ Java_com_zorroa_ingestors_CaffeClassifier_classify(JNIEnv *env, jclass nclass, j
     CHECK(!image->empty()) << "Empty OpenCV matrix image";
 
     std::vector<Prediction> predictions = classifier->Classify(*image);
+    std::vector<Prediction> keywords;
 
-    jobjectArray jKeywords = env->NewObjectArray(predictions.size(), sJNICaffeKeyword->cls, NULL);
-
+    // Sanitize the prediction keywords, removing the imagenet category and expanding synonyms
     for (size_t i = 0; i < predictions.size(); i++) {
-        Prediction p = predictions[i];
+        const Prediction &p = predictions[i];
+        string multiwords = p.first;
+        multiwords = multiwords.substr(multiwords.find_first_of(" \t") + 1);    // remove imagenet category eg. n182736
+        std::vector<string> words = split(multiwords, ',');                     // split into separate keywords
+        for (size_t j = 0; j < words.size(); ++j) {
+            keywords.push_back(std::make_pair(trim(words[j]), p.second));
+        }
+    }
+
+    // Clamp to max of 5 return values to get around JavaVM crash in NewObject with more
+    // than five allocs. Tried calling env->EnsureLocalCapacity both in this method and
+    // in JNI_OnLoad with no success. Sigh. We've previously sorted the predictions.
+    size_t count = std::min(5ul, keywords.size());
+    jobjectArray jKeywords = env->NewObjectArray(count, sJNICaffeKeyword->cls, NULL);
+    for (size_t i = 0; i < count; i++) {
+        const Prediction &p = keywords[i];
         jobject jKeyword = env->NewObject(sJNICaffeKeyword->cls, sJNICaffeKeyword->constructortorID);
         SetJNIKeyword(env, jKeyword, p.first, p.second);
         env->SetObjectArrayElement(jKeywords, i, jKeyword);

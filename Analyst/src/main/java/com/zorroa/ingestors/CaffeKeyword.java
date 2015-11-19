@@ -21,4 +21,8 @@ public class CaffeKeyword {
         this.keyword = keyword;
         this.confidence = confidence;
     }
+
+    public String toString() {
+        return String.format("<CaffeKeyword '%s' confidence='%f'>", keyword, confidence);
+    }
 }

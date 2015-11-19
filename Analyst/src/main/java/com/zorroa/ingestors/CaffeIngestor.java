@@ -1,17 +1,18 @@
 package com.zorroa.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.opencv.core.Mat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.opencv.highgui.Highgui.imread;
 
 /**
  *
@@ -24,6 +25,7 @@ public class CaffeIngestor extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
 
     private static CaffeLoader caffeLoader = new CaffeLoader();
+    private static OpenCVLoader openCVLoader = new OpenCVLoader();
 
     // CaffeClassifier is not thread-safe, so give one to each thread
     private static final ThreadLocal<CaffeClassifier> caffeClassifier = new ThreadLocal<CaffeClassifier>() {
@@ -74,17 +76,15 @@ public class CaffeIngestor extends IngestProcessor {
             }
         }
 
-        // Perform Caffe analysis
-        File file = new File(classifyPath);
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Mat mat = BufferedImageMat.convertBufferedImageToMat(image);
+        // Read the image into a 3-channel BGR matrix.
+        // Note that ImageIO.read returns a 4-channel ABGR
+        Mat mat = imread(classifyPath);
+
+        // Pass the image matrix to the classifier and get back an array of keywords+confidence
         CaffeKeyword[] caffeKeywords = caffeClassifier.get().classify(mat);
 
+        // Convert the array of structs into an array of strings until we have a way
+        // to pass the confidence values.
         String[] keywords = new String[caffeKeywords.length];
         for (int i = 0; i < caffeKeywords.length; ++i) {
             keywords[i] = caffeKeywords[i].keyword;
