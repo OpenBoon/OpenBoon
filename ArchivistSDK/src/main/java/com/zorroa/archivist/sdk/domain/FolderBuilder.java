@@ -1,69 +1,63 @@
 package com.zorroa.archivist.sdk.domain;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class FolderBuilder {
-    private String parentId;
+
+    private String parentId = Folder.ROOT_ID;
     private String name;
-    private int userId;
-    private String query;
+    private AssetSearchBuilder query;
+    private boolean shared = false;
 
     // For the JSON MAPPER we need a simple ctor
     private FolderBuilder() {}
 
     // Name and userId are required arguments
-    public FolderBuilder(String name, int userId) {
+    public FolderBuilder(String name) {
         this.name = name;
-        this.userId = userId;
     }
 
-    public FolderBuilder(String name, int userId, String parentId) {
-        this.parentId = parentId;
+    public FolderBuilder(String name, String parentId) {
         this.name = name;
-        this.userId = userId;
+        this.parentId = parentId;
+    }
+
+    public FolderBuilder(String name, Folder parent) {
+        this.name = name;
+        this.parentId = parent.getId();
     }
 
     public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public FolderBuilder setParentId(String parentId) {
         this.parentId = parentId;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public FolderBuilder setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public int getUserId() {
-        return userId;
+    public boolean isShared() {
+        return shared;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public FolderBuilder setShared(boolean shared) {
+        this.shared = shared;
+        return this;
     }
 
-    public String getQuery() {
+    public AssetSearchBuilder getQuery() {
         return query;
     }
 
-    public void setQuery(String query) {
+    public FolderBuilder setQuery(AssetSearchBuilder query) {
         this.query = query;
-    }
-
-    public Map<String, Object> getDocument() {
-        HashMap<String, Object> doc = new HashMap<String, Object>();
-        doc.put("name", name);
-        doc.put("userId", userId);
-        if (query != null)
-            doc.put("query", query);
-        if (parentId != null)
-            doc.put("parentId", parentId);
-        return doc;
+        return this;
     }
 }

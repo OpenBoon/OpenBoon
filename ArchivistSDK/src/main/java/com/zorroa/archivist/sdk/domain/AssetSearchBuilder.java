@@ -19,6 +19,8 @@ public class AssetSearchBuilder {
     public String createdAfterTime;
     public List<String> folderIds;
 
+    public AssetSearchBuilder() { }
+
     public int getRoom() {
         return room;
     }

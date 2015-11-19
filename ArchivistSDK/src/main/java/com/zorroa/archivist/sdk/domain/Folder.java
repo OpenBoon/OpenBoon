@@ -1,11 +1,16 @@
 package com.zorroa.archivist.sdk.domain;
 
 public class Folder {
+
+    public static final String ROOT_ID = "00000000-0000-0000-0000-000000000000";
+
     private String id;
     private String parentId;
     private String name;
     private int userId;
-    private String query;
+    private AssetSearchBuilder query;
+
+    public Folder() { }
 
     public String getId() {
         return id;
@@ -39,11 +44,11 @@ public class Folder {
         this.userId = userId;
     }
 
-    public String getQuery() {
+    public AssetSearchBuilder getQuery() {
         return query;
     }
 
-    public void setQuery(String query) {
+    public void setQuery(AssetSearchBuilder query) {
         this.query = query;
     }
 }
