@@ -9,9 +9,11 @@ public interface FolderDao {
 
     Folder get(String id);
 
-    List<Folder> getAll(int userId);
+    List<Folder> getAll();
 
     List<Folder> getChildren(Folder folder);
+
+    List<Folder> getAllShared();
 
     boolean exists(String parentId, String name);
 

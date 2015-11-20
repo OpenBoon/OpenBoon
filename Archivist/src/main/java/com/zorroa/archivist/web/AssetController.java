@@ -93,7 +93,7 @@ public class AssetController {
         decendents.add(folder);
         for (Folder child : decendents) {
             if (child.getQuery() != null) {
-                folderQuery.should(QueryBuilders.wrapperQuery(child.getQuery()));
+                folderQuery.should(QueryBuilders.wrapperQuery(child.getQuery().getQuery()));
             } else {
                 folderIds.add(child.getId());
             }

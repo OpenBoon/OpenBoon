@@ -1,10 +1,9 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.sdk.domain.AssetSearchBuilder;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +21,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
     @Test
     public void testCreateAndGet() throws IOException {
         String name = "Foobar the folder";
-        FolderBuilder builder = new FolderBuilder(name, 1);
+        FolderBuilder builder = new FolderBuilder(name);
         Folder folder1 = folderDao.create(builder);
         refreshIndex(100);
 
@@ -33,29 +32,27 @@ public class FolderDaoTests extends ArchivistApplicationTests {
     @Test
     public void testGetUser() {
         String name = "Goo the folder";
-        FolderBuilder builder = new FolderBuilder(name, 3);
+        FolderBuilder builder = new FolderBuilder(name);
         folderDao.create(builder);
-        builder = new FolderBuilder("Bam his brother", 4);
+
+        builder = new FolderBuilder("Bam his brother");
         folderDao.create(builder);
         refreshIndex(100);
 
-        List<Folder> folders = folderDao.getAll(3);
-        assertEquals(1, folders.size());
+        List<Folder> folders = folderDao.getAll();
+        assertEquals(2, folders.size());
     }
 
     @Test
     public void testGetChildren() {
         String name = "Grandpa";
-        FolderBuilder builder = new FolderBuilder(name, 1);
+        FolderBuilder builder = new FolderBuilder(name);
         Folder grandpa = folderDao.create(builder);
-        builder = new FolderBuilder("Dad", 1);
-        builder.setParentId(grandpa.getId());
+        builder = new FolderBuilder("Dad", grandpa);
         Folder dad = folderDao.create(builder);
-        builder = new FolderBuilder("Uncle", 1);
-        builder.setParentId(grandpa.getId());
+        builder = new FolderBuilder("Uncle", grandpa);
         Folder uncle = folderDao.create(builder);
-        builder = new FolderBuilder("Child", 1);
-        builder.setParentId(dad.getId());
+        builder = new FolderBuilder("Child", dad);
         Folder child = folderDao.create(builder);
         refreshIndex(1000);
 
@@ -66,16 +63,16 @@ public class FolderDaoTests extends ArchivistApplicationTests {
     @Test
     public void testUpdate() {
         String name = "Gimbo";
-        FolderBuilder builder = new FolderBuilder(name, 1);
+        FolderBuilder builder = new FolderBuilder(name);
         Folder gimbo = folderDao.create(builder);
-        builder = new FolderBuilder("Bimbo", 1);
+        builder = new FolderBuilder("Bimbo");
         Folder bimbo  = folderDao.create(builder);
-        builder = new FolderBuilder("Bimbo-updated", 1);
-        builder.setParentId(gimbo.getId());
-        builder.setQuery(QueryBuilders.matchAllQuery().toString());
+        builder = new FolderBuilder("Bimbo-updated", gimbo);
+        builder.setQuery(new AssetSearchBuilder());
         boolean ok = folderDao.update(bimbo, builder);
         assertTrue(ok);
         refreshIndex(1000);
+        logger.info("1");
 
         Folder bimbo2 = folderDao.get(bimbo.getId());
         assertEquals(bimbo2.getName(), "Bimbo-updated");
@@ -85,12 +82,12 @@ public class FolderDaoTests extends ArchivistApplicationTests {
     @Test
     public void testDelete() {
         String name = "Foofoo";
-        FolderBuilder builder = new FolderBuilder(name, 5);
+        FolderBuilder builder = new FolderBuilder(name);
         Folder foofoo = folderDao.create(builder);
-        builder = new FolderBuilder("Snusnu", 5);
+        builder = new FolderBuilder("Snusnu");
         Folder snusnu  = folderDao.create(builder);
         folderDao.delete(foofoo);
-        List<Folder> folders = folderDao.getAll(5);
+        List<Folder> folders = folderDao.getAll();
         assertEquals(folders.size(), 1);
         Folder f = folders.get(0);
         assertEquals(f.getName(), "Snusnu");
@@ -98,12 +95,11 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testExists() {
-        FolderBuilder builder = new FolderBuilder("foo", SecurityUtils.getUser().getId());
+        FolderBuilder builder = new FolderBuilder("foo");
         Folder folder1 = folderDao.create(builder);
-        assertTrue(folderDao.exists(null, "foo"));
+        assertTrue(folderDao.exists(Folder.ROOT_ID, "foo"));
 
-        builder = new FolderBuilder("bar", SecurityUtils.getUser().getId());
-        builder.setParentId(folder1.getId());
+        builder = new FolderBuilder("bar", folder1);
         Folder folder2 = folderDao.create(builder);
         assertTrue(folderDao.exists(folder1.getId(), "bar"));
     }

@@ -39,8 +39,14 @@ public class FolderController {
     }
 
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.GET)
-    public List<Folder> getAll(@RequestParam int userId) {
-        return folderService.getAll(userId);
+    public List<Folder> getAll(
+            @RequestParam(value="shared", required=false) String shared) {
+        if (Boolean.parseBoolean(shared)) {
+            return folderService.getAllShared();
+        }
+        else {
+            return folderService.getAll();
+        }
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.GET)

@@ -76,7 +76,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     @Test
     public void testFolderSearch() throws IOException {
 
-        FolderBuilder builder = new FolderBuilder("Da Kind Assets", 1);
+        FolderBuilder builder = new FolderBuilder("Avengers");
         Folder folder1 = folderService.create(builder);
 
         String filename = "captain_america.jpg";

@@ -2,7 +2,9 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.util.Json;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,13 +12,11 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class FolderControllerTests extends MockMvcTest {
@@ -24,40 +24,118 @@ public class FolderControllerTests extends MockMvcTest {
     @Autowired
     FolderController folderController;
 
-    @Test
-    public void testCreateAndGetAndUpdate() throws Exception {
+    Folder folder;
+
+    @Before
+    public void init() throws Exception {
         MockHttpSession session = user();
 
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"Behind The Couch\", \"userId\": 1 }".getBytes()))
+                .content(Json.serialize(new FolderBuilder().setName("TestFolder1"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
+        folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+    }
+
+    @Test
+    public void testCreate() throws Exception {
+        MockHttpSession session = user();
+        MvcResult result = mvc.perform(post("/api/v1/folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(new FolderBuilder().setName("TestFolder2"))))
+                .andExpect(status().isOk())
+                .andReturn();
         Folder folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertEquals("Behind The Couch", folder.getName());
+        assertEquals("TestFolder2", folder.getName());
+    }
 
-        result = mvc.perform(get("/api/v1/folders/" + folder.getId())
+    @Test
+    public void testGet() throws Exception {
+        MockHttpSession session = user();
+        MvcResult result = mvc.perform(get("/api/v1/folders/" + folder.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
-        folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+        Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertEquals("Behind The Couch", folder.getName());
 
-        result = mvc.perform(put("/api/v1/folders/" + folder.getId())
+        assertEquals(folder.getId(), folder2.getId());
+        assertEquals(folder.getParentId(), folder2.getParentId());
+        assertEquals(folder.getUserId(), folder2.getUserId());
+        assertEquals(folder.getName(), folder2.getName());
+    }
+
+    @Test
+    public void testGetAll() throws Exception {
+        MockHttpSession session = user();
+        MvcResult result = mvc.perform(get("/api/v1/folders")
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\" : \"Between the Cushions\", \"userId\" : 2 }".getBytes()))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
-        folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+
+        List<Folder> folders= Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Folder>>() {});
+        assertTrue(folders.contains(folder));
+    }
+
+    @Test
+    public void testGetAllShared() throws Exception {
+        MockHttpSession session = user();
+        MvcResult result = mvc.perform(get("/api/v1/folders?shared=true")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<Folder> folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Folder>>() {});
+        assertFalse(folders.contains(folder));
+
+        // Now flip to shared
+        FolderBuilder builder = new FolderBuilder(folder).setShared(true);
+        mvc.perform(put("/api/v1/folders/" + folder.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(builder)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        result = mvc.perform(get("/api/v1/folders?shared=true")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Folder>>() {});
+        assertTrue(folders.contains(folder));
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        MockHttpSession session = user();
+
+        FolderBuilder builder = new FolderBuilder(folder).setShared(true).setName("TestFolder9000");
+        MvcResult result = mvc.perform(put("/api/v1/folders/" + folder.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(builder)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertEquals("Between the Cushions", folder.getName());
-        assertEquals(2, folder.getUserId());
+        assertEquals(builder.getName(), folder2.getName());
+        assertEquals(builder.isShared(), folder2.isShared());
+        assertEquals(folder.getParentId(), folder2.getParentId());
     }
 
     @Test
@@ -67,62 +145,41 @@ public class FolderControllerTests extends MockMvcTest {
         mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"first\", \"userId\": 8 }".getBytes()))
+                .content(Json.serialize(new FolderBuilder("first"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"second\", \"userId\": 8 }".getBytes()))
+                .content(Json.serialize(new FolderBuilder("second"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Folder folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+        Folder second = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        mvc.perform(delete("/api/v1/folders/" + folder.getId())
+        mvc.perform(delete("/api/v1/folders/" + second.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        result = mvc.perform(get("/api/v1/folders?userId=8")
+        result = mvc.perform(get("/api/v1/folders")
                 .session(session))
                 .andExpect(status().isOk())
                 .andReturn();
+
         List<Folder> folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<Folder>>() {});
-        assertEquals(1, folders.size());
-        assertEquals("first", folders.get(0).getName());
-    }
 
-    @Test
-    public void testGetByUser() throws Exception {
-        MockHttpSession session = user();
+        // This is 2 because of the folder created by init.
+        assertEquals(2, folders.size());
+        Set<String> names = folders.stream().map(Folder::getName).collect(Collectors.toSet());
 
-        mvc.perform(post("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"User1\", \"userId\": 6 }".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        mvc.perform(post("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"User2\", \"userId\": 7 }".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        MvcResult result = mvc.perform(get("/api/v1/folders?userId=7")
-                .session(session))
-                .andExpect(status().isOk())
-                .andReturn();
-        List<Folder> folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Folder>>() {});
-        assertEquals(1, folders.size());
-        assertEquals("User2", folders.get(0).getName());
+        assertTrue(names.contains("first"));
+        assertFalse(names.contains("second"));
+        assertTrue(names.contains(folder.getName()));
     }
 
     @Test
@@ -132,30 +189,27 @@ public class FolderControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"grandpapa\", \"userId\": 1 }".getBytes()))
+                .content(Json.serialize(new FolderBuilder("grandpa"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         Folder grandpa = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        String body = "{ \"name\": \"daddy\", \"userId\": 1, \"parentId\": \"" + grandpa.getId() + "\" }";
         result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(body.getBytes()))
+                .content(Json.serialize(new FolderBuilder("daddy", grandpa))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         Folder dad = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertNotEquals(null, dad.getParentId());
 
-        body = "{ \"name\": \"uncly\", \"userId\": 1, \"parentId\": \"" + grandpa.getId() + "\" }";
         mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(body.getBytes()))
+                .content(Json.serialize(new FolderBuilder("uncly", grandpa))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -164,21 +218,24 @@ public class FolderControllerTests extends MockMvcTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
+
         List<Folder> folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<Folder>>() {});
+
         assertEquals(2, folders.size());
         assertEquals("daddy", folders.get(0).getName());
         assertEquals("uncly", folders.get(1).getName());
 
-        body = "{ \"name\": \"daddy2\", \"userId\": 1 }";
         result = mvc.perform(put("/api/v1/folders/" + dad.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(body.getBytes()))
+                .content(Json.serialize(new FolderBuilder(dad).setName("daddy2"))))
                 .andExpect(status().isOk())
                 .andReturn();
         Folder dad2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertEquals(null, dad2.getParentId());
+
+        assertEquals(grandpa.getId(), dad2.getParentId());
+        assertEquals(dad.getId(), dad2.getId());
     }
 }
