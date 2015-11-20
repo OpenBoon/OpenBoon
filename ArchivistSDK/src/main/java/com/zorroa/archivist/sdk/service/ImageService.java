@@ -1,7 +1,7 @@
 package com.zorroa.archivist.sdk.service;
 
-import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.domain.ProxyOutput;
 
 import java.awt.*;
 import java.io.File;

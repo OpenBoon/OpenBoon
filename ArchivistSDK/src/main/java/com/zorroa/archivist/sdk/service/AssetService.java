@@ -1,8 +1,8 @@
 package com.zorroa.archivist.sdk.service;
 
 import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.domain.Folder;
 
 public interface AssetService {
