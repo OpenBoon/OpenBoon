@@ -8,6 +8,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
@@ -31,7 +32,11 @@ public class ElasticTemplate {
             throw new EmptyResultDataAccessException(
                     "Expected 1 '" + type + "' of id '" + id + "'", 0);
         }
-        return mapper.mapRow(r.getId(), r.getVersion(), r.getSourceAsBytes());
+        try {
+            return mapper.mapRow(r.getId(), r.getVersion(), r.getSourceAsBytes());
+        } catch (Exception e) {
+            throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
+        }
     }
 
     public <T> T queryForObject(SearchRequestBuilder builder, JsonRowMapper<T> mapper) {
@@ -40,7 +45,11 @@ public class ElasticTemplate {
             throw new EmptyResultDataAccessException("Expected 1, was", 0);
         }
         SearchHit hit = r.getHits().getAt(0);
-        return mapper.mapRow(hit.getId(), hit.getVersion(), hit.source());
+        try {
+            return mapper.mapRow(hit.getId(), hit.getVersion(), hit.source());
+        } catch (Exception e) {
+            throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
+        }
     }
 
     public <T> List<T> query(JsonRowMapper<T> mapper) {
@@ -52,7 +61,11 @@ public class ElasticTemplate {
 
         List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
         for (SearchHit hit: r.getHits()) {
-            result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+            try {
+                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+            } catch (Exception e) {
+                throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
+            }
         }
         return result;
     }
@@ -62,7 +75,11 @@ public class ElasticTemplate {
         List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
 
         for (SearchHit hit: r.getHits()) {
-            result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+            try {
+                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+            } catch (Exception e) {
+                throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
+            }
         }
         return result;
     }

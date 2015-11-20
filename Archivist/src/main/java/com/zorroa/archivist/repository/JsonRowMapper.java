@@ -13,6 +13,6 @@ package com.zorroa.archivist.repository;
  */
 public interface JsonRowMapper<T> {
 
-     public T mapRow(String id, long version, byte[] sourceO);
+     public T mapRow(String id, long version, byte[] sourceO) throws Exception;
 
 }
