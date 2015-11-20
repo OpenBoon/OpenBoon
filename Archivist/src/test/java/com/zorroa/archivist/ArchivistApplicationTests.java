@@ -87,7 +87,12 @@ public abstract class ArchivistApplicationTests {
             .setQuery(QueryBuilders.matchAllQuery())
             .get();
 
+        client.prepareDeleteByQuery(alias)
+                .setTypes("folders")
+                .setQuery(QueryBuilders.matchAllQuery())
+                .get();
 
+        refreshIndex(100);
         /**
          * TODO: fix this for elastic 1.7
          */
