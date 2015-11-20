@@ -308,68 +308,7 @@ public class AssetControllerTests extends MockMvcTest {
 //
 //    }
 
-    @Test
-    public void testFolderSearchBasic() throws Exception {
 
-        MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
-
-        List<Asset> assets = assetDao.getAll();
-
-        // Create two folders
-        MvcResult result = mvc.perform(post("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"foo\", \"userId\": 1 }".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Folder foo = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Folder>() {
-                });
-
-        result = mvc.perform(post("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\": \"bar\", \"userId\": 1 }".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Folder bar = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Folder>() {});
-
-        // Assign two collection names to each asset
-        for (int i = 0; i < assets.size(); ++i) {
-            Asset asset = assets.get(i);
-            String folderId = (i % 2) == 0 ? foo.getId() : bar.getId();
-            result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
-                    .session(session)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content("[\"" + folderId + "\"]"))
-                    .andExpect(status().isOk())
-                    .andReturn();
-            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                    new TypeReference<Map<String, Object>>() {});
-            assertEquals(false, json.get("created"));
-        }
-
-        String folderJSON = new String(Json.serialize(foo), StandardCharsets.UTF_8);
-        String query = "{ \"query\": { \"filtered\" : { \"query\" : { \"match_all\": {}}, \"folder\" : " + folderJSON + " }}}";
-        result = mvc.perform(post("/api/v1/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(query.getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        assertEquals(1, (int) hits.get("total"));
-    }
 
 //    @Test
 //    public void testFolderSearchFilter() throws Exception {
