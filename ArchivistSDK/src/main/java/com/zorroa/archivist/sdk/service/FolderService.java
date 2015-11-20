@@ -4,6 +4,7 @@ import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 
 import java.util.List;
+import java.util.Set;
 
 public interface FolderService {
 
@@ -16,6 +17,8 @@ public interface FolderService {
     List<Folder> getChildren(Folder folder);
 
     List<Folder> getAllDecendents(Folder folder);
+
+    Set<String> getAllDecendentIds(List<String> folderIds);
 
     Folder create(FolderBuilder builder);
 
