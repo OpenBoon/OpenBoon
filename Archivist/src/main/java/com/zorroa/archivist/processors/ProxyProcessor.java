@@ -63,12 +63,16 @@ public class ProxyProcessor extends IngestProcessor {
             List<Proxy> result = Lists.newArrayList();
             for (ProxyOutput output : outputs) {
                 if (output.getSize() < width) {
-                    try {
-                        result.add(imageService.makeProxy(asset.getFile(), output));
-                    } catch (IOException e) {
-                        logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
-                        asset.put("source", "error", "Proxy");
+                    addResult(asset, output, result);
+                } else {
+                    if (result.size() == 0) {
+                        // No proxies generated, copy the source file as a proxy
+                        // but use a lower quality and the standard proxy format
+                        String format = imageService.getDefaultProxyFormat();
+                        ProxyOutput sourceProxy = new ProxyOutput(format, width, 8, 0.5f);
+                        addResult(asset, sourceProxy, result);
                     }
+                    break;
                 }
             }
 
@@ -86,7 +90,16 @@ public class ProxyProcessor extends IngestProcessor {
         }
     }
 
-    public void extractDimensions(AssetBuilder asset) {
+    private void addResult(AssetBuilder asset, ProxyOutput output, List<Proxy> result) {
+        try {
+            result.add(imageService.makeProxy(asset.getFile(), output));
+        } catch (IOException e) {
+            logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
+            asset.put("source", "error", "Proxy");
+        }
+    }
+
+    private void extractDimensions(AssetBuilder asset) {
         try {
             Dimension size = imageService.getImageDimensions(asset.getFile());
             asset.put("source", "width", size.width);
@@ -97,12 +110,12 @@ public class ProxyProcessor extends IngestProcessor {
         }
     }
 
-    public static final List<String> NO_TINY_PROXY = ImmutableList.of(
+    private static final List<String> NO_TINY_PROXY = ImmutableList.of(
             "#FF0000", "#FFFFFF", "#FF0000",
             "#FFFFFF", "#FF0000", "#FFFFFF",
             "#FF0000", "#FFFFFF", "#FF0000");
 
-    public List<String> makeTinyProxy(Proxy smallest) {
+    private List<String> makeTinyProxy(Proxy smallest) {
         try {
             // Create a 3x3 proxy, avoid borders and blurring by downsampling
             // to an 11x11 image, ignoring the outer frame, and taking the
