@@ -9,7 +9,9 @@ public interface FolderService {
 
     Folder get(String id);
 
-    List<Folder> getAll(int userId);
+    List<Folder> getAll();
+
+    List<Folder> getAllShared();
 
     List<Folder> getChildren(Folder folder);
 
