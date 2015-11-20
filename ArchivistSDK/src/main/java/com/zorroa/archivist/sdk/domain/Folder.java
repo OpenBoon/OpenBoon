@@ -9,6 +9,7 @@ public class Folder {
     private String name;
     private int userId;
     private AssetSearchBuilder query;
+    private boolean shared;
 
     public Folder() { }
 
@@ -50,5 +51,13 @@ public class Folder {
 
     public void setQuery(AssetSearchBuilder query) {
         this.query = query;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 }
