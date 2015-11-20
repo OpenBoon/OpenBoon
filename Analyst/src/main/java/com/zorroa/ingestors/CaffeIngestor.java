@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,8 @@ public class CaffeIngestor extends IngestProcessor {
 
     private static CaffeLoader caffeLoader = new CaffeLoader();
     private static OpenCVLoader openCVLoader = new OpenCVLoader();
+
+    private float confidenceThreshold = 0.1f;
 
     // CaffeClassifier is not thread-safe, so give one to each thread
     private static final ThreadLocal<CaffeClassifier> caffeClassifier = new ThreadLocal<CaffeClassifier>() {
@@ -85,12 +88,16 @@ public class CaffeIngestor extends IngestProcessor {
 
         // Convert the array of structs into an array of strings until we have a way
         // to pass the confidence values.
-        String[] keywords = new String[caffeKeywords.length];
+        ArrayList<String> keywords = new ArrayList<String>();
         for (int i = 0; i < caffeKeywords.length; ++i) {
-            keywords[i] = caffeKeywords[i].keyword;
+            if (caffeKeywords[i].confidence > confidenceThreshold) {
+                keywords.add(caffeKeywords[i].keyword);
+            }
         }
-        logger.info("CaffeIngestor: " + Arrays.toString(keywords));
-        asset.putKeywords("caffe", "keywords", (String[]) keywords);
+        String[] keywordArray = new String[keywords.size()];
+        keywordArray = keywords.toArray(keywordArray);
+        logger.info("CaffeIngestor: " + Arrays.toString(keywordArray));
+        asset.putKeywords("caffe", "keywords", (String[]) keywordArray);
     }
 
     @Override
