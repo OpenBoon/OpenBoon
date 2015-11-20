@@ -1,10 +1,10 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.SecurityUtils;
-import com.zorroa.archivist.sdk.domain.AssetSearchBuilder;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.Asset;
+import com.zorroa.archivist.sdk.domain.AssetSearchBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;

@@ -6,7 +6,6 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.IngestService;
-import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.ExportExecutorService;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Before;
@@ -16,12 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
-
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -4,7 +4,6 @@ import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.Session;
 import com.zorroa.archivist.sdk.domain.User;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**

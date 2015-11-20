@@ -1,8 +1,6 @@
 package com.zorroa.archivist;
 
-import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.service.UserService;
 import org.slf4j.Logger;
@@ -14,9 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ZorroaAuthenticationProvider implements AuthenticationProvider {
 

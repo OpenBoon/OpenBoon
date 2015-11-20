@@ -9,7 +9,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import javax.servlet.http.HttpSession;
 import java.sql.PreparedStatement;
 import java.util.List;
 

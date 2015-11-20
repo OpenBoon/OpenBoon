@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.PermissionBuilder;
 import com.zorroa.archivist.sdk.domain.User;

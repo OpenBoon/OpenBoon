@@ -3,8 +3,6 @@ package com.zorroa.archivist.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
@@ -20,7 +18,6 @@ import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.ScriptService;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;

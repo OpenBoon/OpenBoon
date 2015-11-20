@@ -6,7 +6,6 @@ import com.zorroa.archivist.sdk.domain.User;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 10/29/15.

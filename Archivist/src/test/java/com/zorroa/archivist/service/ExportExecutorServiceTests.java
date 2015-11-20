@@ -2,14 +2,12 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.IngestService;
-import org.elasticsearch.search.SearchHit;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
