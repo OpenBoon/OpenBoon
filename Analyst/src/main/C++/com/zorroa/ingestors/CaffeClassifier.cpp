@@ -24,31 +24,25 @@ typedef struct JNICaffeKeyword {
     jfieldID confidenceID;
 } JNICaffeKeyword;
 
-static JNICaffeKeyword *sJNICaffeKeyword = NULL;
-
-static void InitJNIKeyword(JNIEnv *env) {
-    if (sJNICaffeKeyword != NULL) {
-        return;
-    }
-    sJNICaffeKeyword = new JNICaffeKeyword;
-    sJNICaffeKeyword->cls = env->FindClass("com/zorroa/ingestors/CaffeKeyword");
-    if (sJNICaffeKeyword->cls == NULL) {
+static void InitJNIKeyword(JNIEnv *env, JNICaffeKeyword &sJNICaffeKeyword) {
+    sJNICaffeKeyword.cls = env->FindClass("com/zorroa/ingestors/CaffeKeyword");
+    if (sJNICaffeKeyword.cls == NULL) {
         fprintf(stderr, "Failed to find CaffeKeyword class in Java environment\n");
         return;
     }
-    sJNICaffeKeyword->constructortorID = env->GetMethodID(sJNICaffeKeyword->cls, "<init>", "()V");
-    if (sJNICaffeKeyword->constructortorID == NULL) {
+    sJNICaffeKeyword.constructortorID = env->GetMethodID(sJNICaffeKeyword.cls, "<init>", "()V");
+    if (sJNICaffeKeyword.constructortorID == NULL) {
         fprintf(stderr, "Failed to find the CaffeKeyword ctorID\n");
         return;
     }
-    sJNICaffeKeyword->keywordID = env->GetFieldID(sJNICaffeKeyword->cls, "keyword", "Ljava/lang/String;");
-    sJNICaffeKeyword->confidenceID = env->GetFieldID(sJNICaffeKeyword->cls, "confidence", "F");
+    sJNICaffeKeyword.keywordID = env->GetFieldID(sJNICaffeKeyword.cls, "keyword", "Ljava/lang/String;");
+    sJNICaffeKeyword.confidenceID = env->GetFieldID(sJNICaffeKeyword.cls, "confidence", "F");
     fprintf(stderr, "Successfully initialized the CaffeKeyword class for use in CaffeClassifier native code\n");
 }
 
-void SetJNIKeyword(JNIEnv * env, jobject jKeyword, string keyword, float confidence) {
-    env->SetObjectField(jKeyword, sJNICaffeKeyword->keywordID, env->NewStringUTF(keyword.c_str()));
-    env->SetFloatField( jKeyword, sJNICaffeKeyword->confidenceID, (jfloat)confidence);
+void SetJNIKeyword(JNIEnv *env, JNICaffeKeyword &sJNICaffeKeyword, jobject jKeyword, string keyword, float confidence) {
+    env->SetObjectField(jKeyword, sJNICaffeKeyword.keywordID, env->NewStringUTF(keyword.c_str()));
+    env->SetFloatField( jKeyword, sJNICaffeKeyword.confidenceID, (jfloat)confidence);
 }
 
 class Classifier {
@@ -120,7 +114,6 @@ Java_com_zorroa_ingestors_CaffeClassifier_createCaffeClassifier(JNIEnv *env, jcl
     if (!initialized) {
         initialized = true;
         google::InitGoogleLogging("ingestors");
-        InitJNIKeyword(env);
     }
     Classifier *classifier = new Classifier(stringFromJString(env, deployObj), stringFromJString(env, modelObj), stringFromJString(env, meanObj), stringFromJString(env, wordObj));
     return (long)classifier;
@@ -151,16 +144,27 @@ Java_com_zorroa_ingestors_CaffeClassifier_classify(JNIEnv *env, jclass nclass, j
         }
     }
 
-    // Clamp to max of 5 return values to get around JavaVM crash in NewObject with more
-    // than five allocs. Tried calling env->EnsureLocalCapacity both in this method and
-    // in JNI_OnLoad with no success. Sigh. We've previously sorted the predictions.
-    size_t count = std::min(5ul, keywords.size());
-    jobjectArray jKeywords = env->NewObjectArray(count, sJNICaffeKeyword->cls, NULL);
-    for (size_t i = 0; i < count; i++) {
+    // Initialize the return class on every call.
+    // Overkill, but we definitely need to do it separately for each thread,
+    // or we get crashes in NewObject or NewObjectArray.
+    JNICaffeKeyword sJNICaffeKeyword;
+    InitJNIKeyword(env, sJNICaffeKeyword);
+
+    // Make sure we have enough local references to fill out our array.
+    // We delete local refs after storing in the array, so this is probably overkill,
+    // but, better safe than sorry!
+    env->EnsureLocalCapacity(keywords.size() + 1 /*array*/);
+
+    jobjectArray jKeywords = env->NewObjectArray(keywords.size(), sJNICaffeKeyword.cls, NULL);
+    for (size_t i = 0; i < keywords.size(); i++) {
         const Prediction &p = keywords[i];
-        jobject jKeyword = env->NewObject(sJNICaffeKeyword->cls, sJNICaffeKeyword->constructortorID);
-        SetJNIKeyword(env, jKeyword, p.first, p.second);
+        jobject jKeyword = env->NewObject(sJNICaffeKeyword.cls, sJNICaffeKeyword.constructortorID);
+        SetJNIKeyword(env, sJNICaffeKeyword, jKeyword, p.first, p.second);
         env->SetObjectArrayElement(jKeywords, i, jKeyword);
+
+        // After storing the object in the array, we can release our local reference
+        // which reduces the chance of hitting the limit of local references.
+        env->DeleteLocalRef(jKeyword);
     }
 
     return jKeywords;
