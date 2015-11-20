@@ -47,7 +47,7 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
         List<Folder> result = Lists.newArrayListWithCapacity(32);
         SearchResponse scroll = client.prepareSearch(alias)
                 .setSearchType(SearchType.SCAN)
-                .setScroll(new TimeValue(60000))
+                .setScroll(new TimeValue(5000))
                 .setQuery(queryBuilder)
                 .setSize(100).execute().actionGet();
 
@@ -63,7 +63,7 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
             }
 
             scroll = client.prepareSearchScroll(scroll.getScrollId())
-                    .setScroll(new TimeValue(600000))
+                    .setScroll(new TimeValue(5000))
                     .execute().actionGet();
 
             if (scroll.getHits().getHits().length == 0) {
