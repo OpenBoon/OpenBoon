@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import java.util.Objects;
+
 public class Folder {
 
     public static final String ROOT_ID = "00000000-0000-0000-0000-000000000000";
@@ -59,5 +61,25 @@ public class Folder {
 
     public void setShared(boolean shared) {
         this.shared = shared;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("<Folder id=%s parent=%s name=%s user=%d shared=%s>",
+                id, parentId, name, userId, shared);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Folder other = (Folder) o;
+        return id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
