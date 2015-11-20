@@ -8,7 +8,14 @@ public class FolderBuilder {
     private boolean shared = false;
 
     // For the JSON MAPPER we need a simple ctor
-    private FolderBuilder() {}
+    public FolderBuilder() {}
+
+    public FolderBuilder(Folder folder) {
+        this.parentId =  folder.getParentId();
+        this.name = folder.getName();
+        this.query = folder.getQuery();
+        this.shared = folder.isShared();
+    }
 
     // Name and userId are required arguments
     public FolderBuilder(String name) {
