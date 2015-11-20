@@ -1,15 +1,19 @@
 package com.zorroa.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import org.opencv.core.Mat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static org.opencv.highgui.Highgui.imread;
 
 /**
  *
@@ -19,54 +23,41 @@ import java.util.Map;
  *
  */
 public class CaffeIngestor extends IngestProcessor {
-
     private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
 
-    static {
-        // Note: Must use java -Djava.library.path=<path-to-jnilib>
-        logger.info("Loading Caffe JNI...");
-        try {
-            System.loadLibrary("CaffeIngestor");
-        } catch (UnsatisfiedLinkError e) {
-            System.err.println("CaffeIngestor native code library failed to load.\n" + e);
-        }
-        logger.info("CaffeIngestor finished loading Caffe JNI...");
-    }
+    private static CaffeLoader caffeLoader = new CaffeLoader();
+    private static OpenCVLoader openCVLoader = new OpenCVLoader();
 
-    public static final native long createCaffeClassifier(String deployFile, String modelFile, String meanFile, String wordFile);
-    public static final native String classify(long caffeClassifier, String imageFile);
-    public static final native void destroyCaffeClassifier(long classifier);
+    private float confidenceThreshold = 0.1f;
 
     // CaffeClassifier is not thread-safe, so give one to each thread
-    private static final ThreadLocal<Long> caffeClassifier = new ThreadLocal<Long>() {
+    private static final ThreadLocal<CaffeClassifier> caffeClassifier = new ThreadLocal<CaffeClassifier>() {
         @Override
-        protected Long initialValue() {
+        protected CaffeClassifier initialValue() {
             logger.info("Loading caffe models...");
             Map<String, String> env = System.getenv();
             String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
             if (modelPath == null) {
                 logger.error("CaffeIngestor requires ZORROA_OPENCV_MODEL_PATH");
-                return Long.valueOf(0);
+                return null;
             }
             String resourcePath = modelPath + "/caffe/imagenet/";
-            String[] name = { "deploy.prototxt", "bvlc_reference_caffenet.caffemodel",
-                    "imagenet_mean.binaryproto", "synset_words.txt" };
+            String[] name = {"deploy.prototxt", "bvlc_reference_caffenet.caffemodel",
+                    "imagenet_mean.binaryproto", "synset_words.txt"};
             File[] file = new File[4];
             for (int i = 0; i < 4; ++i) {
                 file[i] = new File(resourcePath + name[i]);
                 if (!file[i].exists()) {
                     logger.error("CaffeIngestor model file " + file[i].getAbsolutePath() + " does not exist");
-                    return Long.valueOf(0);
+                    return null;
                 }
             }
-            long nativeCaffeClassifier = createCaffeClassifier(file[0].getAbsolutePath(),
+            CaffeClassifier caffeClassifier = new CaffeClassifier(file[0].getAbsolutePath(),
                     file[1].getAbsolutePath(), file[2].getAbsolutePath(), file[3].getAbsolutePath());
             logger.info("CaffeIngestor created");
-            return Long.valueOf(nativeCaffeClassifier);
+            return caffeClassifier;
         }
     };
-
-    public CaffeIngestor() { }
 
     @Override
     public void process(AssetBuilder asset) {
@@ -88,26 +79,31 @@ public class CaffeIngestor extends IngestProcessor {
             }
         }
 
-        // Perform Caffe analysis
-        long nativeCaffeClassifier = caffeClassifier.get().longValue();
-        String value = classify(nativeCaffeClassifier, classifyPath);
-        logger.info("CaffeIngestor: " + value);
-        String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
-        asset.putKeywords("caffe", "keywords", (String[]) keywords);
+        // Read the image into a 3-channel BGR matrix.
+        // Note that ImageIO.read returns a 4-channel ABGR
+        Mat mat = imread(classifyPath);
+
+        // Pass the image matrix to the classifier and get back an array of keywords+confidence
+        CaffeKeyword[] caffeKeywords = caffeClassifier.get().classify(mat);
+
+        // Convert the array of structs into an array of strings until we have a way
+        // to pass the confidence values.
+        ArrayList<String> keywords = new ArrayList<String>();
+        for (int i = 0; i < caffeKeywords.length; ++i) {
+            if (caffeKeywords[i].confidence > confidenceThreshold) {
+                keywords.add(caffeKeywords[i].keyword);
+            }
+        }
+        String[] keywordArray = new String[keywords.size()];
+        keywordArray = keywords.toArray(keywordArray);
+        logger.info("CaffeIngestor: " + Arrays.toString(keywordArray));
+        asset.putKeywords("caffe", "keywords", (String[]) keywordArray);
     }
 
     @Override
     public void teardown() {
-        long nativeCaffeClassifier = caffeClassifier.get().longValue();
-        if (nativeCaffeClassifier != 0) {
-            destroyCaffeClassifier(nativeCaffeClassifier);
-        }
+        caffeClassifier.get().destroy();
         caffeClassifier.set(null);
         caffeClassifier.remove();
-    }
-
-    protected void finalize() throws Throwable {
-        super.finalize();
-        logger.info("Caffe finalizer invoked.");
     }
 }

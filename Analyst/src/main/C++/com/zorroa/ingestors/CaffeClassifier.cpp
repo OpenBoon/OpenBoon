@@ -1,11 +1,12 @@
 #include <jni.h>
 
-#include "CaffeIngestor.h"
+#include "CaffeClassifier.h"
 
 #include <caffe/caffe.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <algorithm>
 
 #define CPU_ONLY
 
@@ -15,12 +16,44 @@ using std::string;
 /* Pair (label, confidence) representing a prediction. */
 typedef std::pair<string, float> Prediction;
 
+/* Info required to construct Java CaffeKeyword objects. */
+typedef struct JNICaffeKeyword {
+    jclass cls;
+    jmethodID constructortorID;
+    jfieldID keywordID;
+    jfieldID confidenceID;
+} JNICaffeKeyword;
+
+static JNICaffeKeyword *sJNICaffeKeyword = NULL;
+
+static void InitJNIKeyword(JNIEnv *env) {
+    if (sJNICaffeKeyword != NULL) {
+        return;
+    }
+    sJNICaffeKeyword = new JNICaffeKeyword;
+    sJNICaffeKeyword->cls = env->FindClass("com/zorroa/ingestors/CaffeKeyword");
+    if (sJNICaffeKeyword->cls == NULL) {
+        fprintf(stderr, "Failed to find CaffeKeyword class in Java environment\n");
+        return;
+    }
+    sJNICaffeKeyword->constructortorID = env->GetMethodID(sJNICaffeKeyword->cls, "<init>", "()V");
+    if (sJNICaffeKeyword->constructortorID == NULL) {
+        fprintf(stderr, "Failed to find the CaffeKeyword ctorID\n");
+        return;
+    }
+    sJNICaffeKeyword->keywordID = env->GetFieldID(sJNICaffeKeyword->cls, "keyword", "Ljava/lang/String;");
+    sJNICaffeKeyword->confidenceID = env->GetFieldID(sJNICaffeKeyword->cls, "confidence", "F");
+    fprintf(stderr, "Successfully initialized the CaffeKeyword class for use in CaffeClassifier native code\n");
+}
+
+void SetJNIKeyword(JNIEnv * env, jobject jKeyword, string keyword, float confidence) {
+    env->SetObjectField(jKeyword, sJNICaffeKeyword->keywordID, env->NewStringUTF(keyword.c_str()));
+    env->SetFloatField( jKeyword, sJNICaffeKeyword->confidenceID, (jfloat)confidence);
+}
+
 class Classifier {
  public:
-  Classifier(const string &model_file,
-             const string &trained_file,
-             const string &mean_file,
-             const string &label_file);
+  Classifier(const string &model_file, const string &trained_file, const string &mean_file, const string &label_file);
 
   std::vector<Prediction> Classify(const cv::Mat &img, int N = 5);
 
@@ -31,8 +64,7 @@ class Classifier {
 
   void WrapInputLayer(std::vector<cv::Mat>* input_channels);
 
-  void Preprocess(const cv::Mat &img,
-                  std::vector<cv::Mat>* input_channels);
+  void Preprocess(const cv::Mat &img, std::vector<cv::Mat>* input_channels);
 
  private:
   shared_ptr<Net<float> > net_;
@@ -53,75 +85,94 @@ static string stringFromJString(JNIEnv *env, jstring jstr) {
     return str;
 }
 
-static string replaceAll(string str, const string &from, const string &to) {
-    size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != string::npos) {
-        str.replace(start_pos, from.length(), to);
-        start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+static std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
     }
-    return str;
+    return elems;
+}
+
+static std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, elems);
+    return elems;
+}
+
+static std::string trim(const std::string& str, const std::string& whitespace = " \t") {
+    const size_t strBegin = str.find_first_not_of(whitespace);
+    if (strBegin == std::string::npos)
+        return ""; // no content
+    const size_t strEnd = str.find_last_not_of(whitespace);
+    const size_t strRange = strEnd - strBegin + 1;
+    return str.substr(strBegin, strRange);
 }
 
 /*
- * Class:     com_zorroa_ingestors_CaffeIngestor
+ * Class:     com_zorroa_ingestors_CaffeClassifier
  * Method:    createCaffeClassifier
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)J
  */
 JNIEXPORT jlong JNICALL
-Java_com_zorroa_ingestors_CaffeIngestor_createCaffeClassifier(JNIEnv *env, jclass nclass, jstring deployObj, jstring modelObj, jstring meanObj, jstring wordObj) {
+Java_com_zorroa_ingestors_CaffeClassifier_createCaffeClassifier(JNIEnv *env, jclass nclass, jstring deployObj, jstring modelObj, jstring meanObj, jstring wordObj) {
     static bool initialized = false;
     if (!initialized) {
         initialized = true;
         google::InitGoogleLogging("ingestors");
+        InitJNIKeyword(env);
     }
     Classifier *classifier = new Classifier(stringFromJString(env, deployObj), stringFromJString(env, modelObj), stringFromJString(env, meanObj), stringFromJString(env, wordObj));
     return (long)classifier;
 }
 
 /*
- * Class:     com_zorroa_ingestors_CaffeIngestor
+ * Class:     com_zorroa_ingestors_CaffeClassifier
  * Method:    classify
- * Signature: (JLjava/lang/String;)Ljava/lang/String;
+ * Signature: (JJ)[Lcom/zorroa/ingestors/CaffeKeyword;
  */
-JNIEXPORT jstring JNICALL
-Java_com_zorroa_ingestors_CaffeIngestor_classify(JNIEnv *env, jclass nclass, jlong jclassifier, jstring imageObj) {
-#if 0
-    static int i = 0;
-    if (++i == 5) {
-        int *p = 0;
-        *p = 10;
-    }
-#endif
+JNIEXPORT jobjectArray JNICALL
+Java_com_zorroa_ingestors_CaffeClassifier_classify(JNIEnv *env, jclass nclass, jlong jclassifier, jlong nativeMat) {
     Classifier *classifier = (Classifier *)jclassifier;
-    string imageFile = stringFromJString(env, imageObj);
-    cv::Mat img = cv::imread(imageFile, -1);
-    CHECK(!img.empty()) << "Unable to decode image " << imageFile;
+    cv::Mat *image = (cv::Mat *)nativeMat;
+    CHECK(!image->empty()) << "Empty OpenCV matrix image";
 
-    std::vector<Prediction> predictions = classifier->Classify(img);
+    std::vector<Prediction> predictions = classifier->Classify(*image);
+    std::vector<Prediction> keywords;
 
-    // Convert top N predictions into a comma-separated string
-    string keywords("");
-    for (size_t i = 0; i < predictions.size(); ++i) {
-        Prediction p = predictions[i];
-        if (i > 0) {
-            keywords += ",";
+    // Sanitize the prediction keywords, removing the imagenet category and expanding synonyms
+    for (size_t i = 0; i < predictions.size(); i++) {
+        const Prediction &p = predictions[i];
+        string multiwords = p.first;
+        multiwords = multiwords.substr(multiwords.find_first_of(" \t") + 1);    // remove imagenet category eg. n182736
+        std::vector<string> words = split(multiwords, ',');                     // split into separate keywords
+        for (size_t j = 0; j < words.size(); ++j) {
+            keywords.push_back(std::make_pair(trim(words[j]), p.second));
         }
-        string words = p.first;
-        // Remove the first word, usually "n02123045" or something weird?
-        words = words.substr(words.find_first_of(" \t") + 1);
-        words = replaceAll(words, ", ", ",");
-        keywords += words;
     }
-    return env->NewStringUTF(keywords.c_str());
+
+    // Clamp to max of 5 return values to get around JavaVM crash in NewObject with more
+    // than five allocs. Tried calling env->EnsureLocalCapacity both in this method and
+    // in JNI_OnLoad with no success. Sigh. We've previously sorted the predictions.
+    size_t count = std::min(5ul, keywords.size());
+    jobjectArray jKeywords = env->NewObjectArray(count, sJNICaffeKeyword->cls, NULL);
+    for (size_t i = 0; i < count; i++) {
+        const Prediction &p = keywords[i];
+        jobject jKeyword = env->NewObject(sJNICaffeKeyword->cls, sJNICaffeKeyword->constructortorID);
+        SetJNIKeyword(env, jKeyword, p.first, p.second);
+        env->SetObjectArrayElement(jKeywords, i, jKeyword);
+    }
+
+    return jKeywords;
 }
 
 /*
- * Class:     com_zorroa_ingestors_CaffeIngestor
+ * Class:     com_zorroa_ingestors_CaffeClassifier
  * Method:    destroyCaffeClassifier
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL
-Java_com_zorroa_ingestors_CaffeIngestor_destroyCaffeClassifier(JNIEnv *env, jclass nclass, jlong jclassifier) {
+Java_com_zorroa_ingestors_CaffeClassifier_destroyCaffeClassifier(JNIEnv *env, jclass nclass, jlong jclassifier) {
     Classifier *classifier = (Classifier *)jclassifier;
     delete classifier;
 }
@@ -229,8 +280,7 @@ void Classifier::SetMean(const string &mean_file) {
 
 std::vector<float> Classifier::Predict(const cv::Mat &img) {
   Blob<float>* input_layer = net_->input_blobs()[0];
-  input_layer->Reshape(1, num_channels_,
-                       input_geometry_.height, input_geometry_.width);
+  input_layer->Reshape(1, num_channels_, input_geometry_.height, input_geometry_.width);
   /* Forward dimension change to all layers. */
   net_->Reshape();
 

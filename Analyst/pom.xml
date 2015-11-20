@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>archivist-sdk</artifactId>
-            <version>0.5.1</version>
+            <version>0.7.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -70,6 +70,18 @@
     <build>
 
         <plugins>
+
+            <!--
+            To rename the JAR the maven-jar-plugin is required until
+            spring-boot 1.3 is released.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -129,26 +141,26 @@
                 <executions>
 
                     <execution>
-                        <id>Javah CaffeIngestor</id>
+                        <id>Javah CaffeClassifier</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
                             <executable>${basedir}/jni.sh</executable>
-                            <commandlineArgs>javah CaffeIngestor</commandlineArgs>
+                            <commandlineArgs>javah CaffeClassifier</commandlineArgs>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>Javalib CaffeIngestor</id>
+                        <id>Javalib CaffeClassifier</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
                             <executable>${basedir}/jni.sh</executable>
-                            <commandlineArgs>jnilib CaffeIngestor
+                            <commandlineArgs>jnilib CaffeClassifier
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/hdf5
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/CUDA-7.0
@@ -165,7 +177,7 @@
                         <goals><goal>exec</goal></goals>
                         <configuration>
                             <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.basedir}/target/${artifactId}-${version}.jar ${com.zorroa.extensionDir}</commandlineArgs>
+                            <commandlineArgs>cp ${project.basedir}/target/${project.artifactId}.jar ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
@@ -175,7 +187,7 @@
                         <goals><goal>exec</goal></goals>
                         <configuration>
                             <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.basedir}/target/jni/libCaffeIngestor.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
+                            <commandlineArgs>cp ${project.basedir}/target/jni/libCaffeClassifier.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
