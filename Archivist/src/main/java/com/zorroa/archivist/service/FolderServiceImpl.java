@@ -129,9 +129,10 @@ public class FolderServiceImpl implements FolderService {
             if (current == null) {
                 return;
             }
-            if (Folder.ROOT_ID.equals(current)) {
+            if (Folder.isRoot(current)) {
                 continue;
             }
+
             try {
                 Set<String> children = childCache.get(current);
                 if (children.isEmpty()) {
