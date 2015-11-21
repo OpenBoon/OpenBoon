@@ -5,6 +5,9 @@ import java.util.Objects;
 public class Folder {
 
     public static final String ROOT_ID = "00000000-0000-0000-0000-000000000000";
+    public static boolean isRoot(String id) {
+        return ROOT_ID.equals(id);
+    }
 
     private String id;
     private String parentId;
