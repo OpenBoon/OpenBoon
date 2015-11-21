@@ -39,7 +39,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         folderDao.create(builder);
         refreshIndex(100);
 
-        List<Folder> folders = folderDao.getAll();
+        List<Folder> folders = folderDao.getChildren(Folder.ROOT_ID);
         assertEquals(2, folders.size());
     }
 
@@ -87,7 +87,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         builder = new FolderBuilder("Snusnu");
         Folder snusnu  = folderDao.create(builder);
         folderDao.delete(foofoo);
-        List<Folder> folders = folderDao.getAll();
+        List<Folder> folders = folderDao.getChildren(Folder.ROOT_ID);
         assertEquals(folders.size(), 1);
         Folder f = folders.get(0);
         assertEquals(f.getName(), "Snusnu");
