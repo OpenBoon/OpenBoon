@@ -15,9 +15,9 @@ public class AssetSearchBuilder {
      * Uses some standard time query format. (now-1d for example)
      * https://www.elastic.co/guide/en/elasticsearch/reference/2.0/query-dsl-range-query.html
      */
-    public String createdBeforeTime;
-    public String createdAfterTime;
-    public List<String> folderIds;
+    private String createdBeforeTime;
+    private String createdAfterTime;
+    private List<String> folderIds;
 
     public AssetSearchBuilder() { }
 
