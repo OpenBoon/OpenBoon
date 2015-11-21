@@ -11,6 +11,8 @@ public interface FolderDao {
 
     List<Folder> getAll();
 
+    List<Folder> getChildren(String parentId);
+
     List<Folder> getChildren(Folder folder);
 
     List<Folder> getAllShared();

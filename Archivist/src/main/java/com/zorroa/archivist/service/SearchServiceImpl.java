@@ -1,10 +1,17 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
+import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.AssetSearchBuilder;
+import com.zorroa.archivist.sdk.domain.Folder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -17,6 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 /**
  * Created by chambers on 9/25/15.
  */
@@ -27,6 +40,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     PermissionDao permissionDao;
+
+    @Autowired
+    FolderDao folderDao;
 
     @Value("${archivist.index.alias}")
     private String alias;
@@ -102,8 +118,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (builder.getFolderIds() != null) {
-            FilterBuilder exportFolderBuilder = FilterBuilders.termsFilter("folders", builder.getFolderIds());
-            filter.add(exportFolderBuilder);
+            filter.add(getFolderFilter(builder));
         }
 
         if (builder.getExportId() > 0) {
@@ -114,5 +129,52 @@ public class SearchServiceImpl implements SearchService {
         filter.add(SecurityUtils.getPermissionsFilter());
 
         return filter;
+    }
+
+    private final LoadingCache<String, Set<String>> childCache = CacheBuilder.newBuilder()
+        .maximumSize(10000)
+        .expireAfterWrite(1, TimeUnit.DAYS)
+        .build(
+            new CacheLoader<String, Set<String>>() {
+                public Set<String> load(String key) throws Exception {
+                    Set<String> result =  Collections.synchronizedSet(folderDao.getChildren(key).stream().map(
+                            Folder::getId).collect(Collectors.toSet()));
+                    return result;
+                }
+            });
+
+    public FilterBuilder getFolderFilter(AssetSearchBuilder builder) {
+        Set<String> result = Sets.newHashSetWithExpectedSize(100);
+        Queue<String> queue = Queues.newLinkedBlockingQueue();
+
+        result.addAll(builder.getFolderIds());
+        queue.addAll(builder.getFolderIds());
+        getChildrenRecursive(result, queue);
+
+        return FilterBuilders.termsFilter("folders", result);
+    }
+
+    private void getChildrenRecursive(Set<String> result, Queue<String> toQuery) {
+
+        while(true) {
+            String current = toQuery.poll();
+            if (current == null) {
+                return;
+            }
+            if (Folder.ROOT_ID.equals(current)) {
+                continue;
+            }
+            try {
+                Set<String> children = childCache.get(current);
+                if (children.isEmpty()) {
+                    continue;
+                }
+                toQuery.addAll(children);
+                result.addAll(children);
+
+            } catch (Exception e) {
+                logger.warn("Failed to obtain child folders for {}", current, e);
+            }
+        }
     }
 }

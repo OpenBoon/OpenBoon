@@ -16,7 +16,6 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -78,7 +77,6 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
     @Override
     public List<Folder> getAll() {
         FilterBuilder filter = FilterBuilders.andFilter(
-                FilterBuilders.termFilter("userId", SecurityUtils.getUser().getId()),
                 FilterBuilders.termFilter("parentId", Folder.ROOT_ID)
         );
 
@@ -102,13 +100,17 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
     }
 
     @Override
+    public List<Folder> getChildren(String parentId) {
+        return getFolders(QueryBuilders.termQuery("parentId", parentId));
+    }
+
+    @Override
     public List<Folder> getChildren(Folder folder) {
         return getFolders(QueryBuilders.termQuery("parentId", folder.getId()));
     }
 
     @Override
     public boolean exists(String parentId, String name) {
-        FilterBuilder userFilter = FilterBuilders.termFilter("userId", SecurityUtils.getUser().getId());
         FilterBuilder nameFilter = FilterBuilders.termFilter("name", name);
         FilterBuilder parentFilter = FilterBuilders.termFilter("parentId", parentId);
 
@@ -117,7 +119,7 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
                 .setQuery(QueryBuilders.filteredQuery(
                         QueryBuilders.matchAllQuery(),
                         FilterBuilders.andFilter(
-                                userFilter, parentFilter, nameFilter)))
+                            parentFilter, nameFilter)))
                 .get();
         return count.getCount() > 0;
     }

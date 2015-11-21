@@ -93,4 +93,31 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assertEquals(1, searchService.search(
                 new AssetSearchBuilder().setFolderIds(Lists.newArrayList(folder1.getId()))).getHits().getTotalHits());
     }
+
+    @Test
+    public void testRecursiveFolderSearch() throws IOException {
+
+        FolderBuilder builder = new FolderBuilder("Avengers");
+        Folder folder1 = folderService.create(builder);
+
+        builder = new FolderBuilder("Age Of Ultron", folder1);
+        Folder folder2 = folderService.create(builder);
+
+        builder = new FolderBuilder("Characters", folder2);
+        Folder folder3 = folderService.create(builder);
+
+        String filename = "captain_america.jpg";
+        String filepath = "/tmp/" + filename;
+        Files.touch(new File(filepath));
+
+        AssetBuilder assetBuilder = new AssetBuilder(filepath);
+        Asset asset1 = assetDao.create(assetBuilder);
+        refreshIndex(100);
+
+        assetService.addToFolder(asset1, folder3);
+        refreshIndex(100);
+
+        assertEquals(1, searchService.search(
+                new AssetSearchBuilder().setFolderIds(Lists.newArrayList(folder1.getId()))).getHits().getTotalHits());
+    }
 }
