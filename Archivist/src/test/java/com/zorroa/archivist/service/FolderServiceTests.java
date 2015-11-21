@@ -53,28 +53,9 @@ public class FolderServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testGetAllShared() {
-        Folder folder1 = folderService.create(new FolderBuilder("test1"));
-        Folder folder1a = folderService.create(new FolderBuilder("test1a", folder1));
-        Folder folder1b = folderService.create(new FolderBuilder("test1b", folder1));
-        Folder folder1c = folderService.create(new FolderBuilder("test1c", folder1));
-
-        List<Folder> shared = folderService.getAllShared();
-        assertEquals(0, shared.size());
-
-        FolderBuilder builder = new FolderBuilder(folder1c);
-        builder.setShared(true);
-        folderService.update(folder1c, builder);
-
-        shared = folderService.getAllShared();
-        assertEquals(1, shared.size());
-        assertTrue(shared.contains(folder1c));
-    }
-
-    @Test
     public void testUpdate() {
         Folder folder = folderService.create(new FolderBuilder("orig"));
-        boolean ok = folderService.update(folder, new FolderBuilder("new").setShared(true));
+        boolean ok = folderService.update(folder, new FolderBuilder("new"));
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
         assertEquals("new", revised.getName());

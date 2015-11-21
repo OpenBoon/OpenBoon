@@ -68,7 +68,7 @@ public class FolderControllerTests extends MockMvcTest {
 
         assertEquals(folder.getId(), folder2.getId());
         assertEquals(folder.getParentId(), folder2.getParentId());
-        assertEquals(folder.getUserId(), folder2.getUserId());
+        assertEquals(folder.getUserCreated(), folder2.getUserCreated());
         assertEquals(folder.getName(), folder2.getName());
     }
 
@@ -87,43 +87,10 @@ public class FolderControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testGetAllShared() throws Exception {
-        MockHttpSession session = user();
-        MvcResult result = mvc.perform(get("/api/v1/folders?shared=true")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<Folder> folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Folder>>() {});
-        assertFalse(folders.contains(folder));
-
-        // Now flip to shared
-        FolderBuilder builder = new FolderBuilder(folder).setShared(true);
-        mvc.perform(put("/api/v1/folders/" + folder.getId())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(builder)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        result = mvc.perform(get("/api/v1/folders?shared=true")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Folder>>() {});
-        assertTrue(folders.contains(folder));
-    }
-
-    @Test
     public void testUpdate() throws Exception {
         MockHttpSession session = user();
 
-        FolderBuilder builder = new FolderBuilder(folder).setShared(true).setName("TestFolder9000");
+        FolderBuilder builder = new FolderBuilder(folder).setName("TestFolder9000");
         MvcResult result = mvc.perform(put("/api/v1/folders/" + folder.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -134,7 +101,6 @@ public class FolderControllerTests extends MockMvcTest {
         Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
         assertEquals(builder.getName(), folder2.getName());
-        assertEquals(builder.isShared(), folder2.isShared());
         assertEquals(folder.getParentId(), folder2.getParentId());
     }
 

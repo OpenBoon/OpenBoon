@@ -85,21 +85,6 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
     }
 
     @Override
-    public List<Folder> getAllShared() {
-        FilterBuilder filter = FilterBuilders.andFilter(
-                FilterBuilders.termFilter("shared", true)
-        );
-
-        FilteredQueryBuilder query = QueryBuilders.filteredQuery(
-                QueryBuilders.matchAllQuery(), filter);
-
-        // Reset the root folder for the shared folder list.
-        List<Folder> folders = getFolders(query);
-        folders.forEach(f -> f.setParentId(Folder.ROOT_ID));
-        return folders;
-    }
-
-    @Override
     public List<Folder> getChildren(String parentId) {
         return getFolders(QueryBuilders.termQuery("parentId", parentId));
     }
@@ -132,7 +117,10 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
          */
         StringBuilder sb = new StringBuilder(Json.serializeToString(builder));
         sb.deleteCharAt(sb.length()-1);
-        sb.append(",\"userId\":");
+        sb.append(",\"userCreated\":");
+        sb.append(SecurityUtils.getUser().getId());
+        sb.append("},");
+        sb.append("\"userModified\":");
         sb.append(SecurityUtils.getUser().getId());
         sb.append("}");
 

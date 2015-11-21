@@ -42,11 +42,6 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<Folder> getAllShared() {
-        return folderDao.getAllShared();
-    }
-
-    @Override
     public List<Folder> getChildren(Folder folder) {
         return folderDao.getChildren(folder);
     }

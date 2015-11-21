@@ -15,8 +15,6 @@ public interface FolderDao {
 
     List<Folder> getChildren(Folder folder);
 
-    List<Folder> getAllShared();
-
     boolean exists(String parentId, String name);
 
     Folder create(FolderBuilder builder);

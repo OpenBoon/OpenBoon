@@ -126,7 +126,10 @@
           "index": "not_analyzed",
           "type": "string"
         },
-        "userId": {
+        "createdUser": {
+          "type": "integer"
+        },
+        "modifiedUser": {
           "type": "integer"
         },
         "name": {
