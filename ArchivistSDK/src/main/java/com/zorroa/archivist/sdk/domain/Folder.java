@@ -9,9 +9,9 @@ public class Folder {
     private String id;
     private String parentId;
     private String name;
-    private int userId;
+    private int userCreated;
+    private int userModified;
     private AssetSearchBuilder query;
-    private boolean shared;
 
     public Folder() { }
 
@@ -39,13 +39,6 @@ public class Folder {
         this.name = name;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public AssetSearchBuilder getQuery() {
         return query;
@@ -55,18 +48,26 @@ public class Folder {
         this.query = query;
     }
 
-    public boolean isShared() {
-        return shared;
+    public int getUserCreated() {
+        return userCreated;
     }
 
-    public void setShared(boolean shared) {
-        this.shared = shared;
+    public void setUserCreated(int userCreated) {
+        this.userCreated = userCreated;
+    }
+
+    public int getUserModified() {
+        return userModified;
+    }
+
+    public void setUserModified(int userModified) {
+        this.userModified = userModified;
     }
 
     @Override
     public String toString() {
-        return String.format("<Folder id=%s parent=%s name=%s user=%d shared=%s>",
-                id, parentId, name, userId, shared);
+        return String.format("<Folder id=%s parent=%s name=%s shared=%s>",
+                id, parentId, name);
     }
 
     @Override

@@ -5,7 +5,6 @@ public class FolderBuilder {
     private String parentId = Folder.ROOT_ID;
     private String name;
     private AssetSearchBuilder query;
-    private boolean shared = false;
 
     // For the JSON MAPPER we need a simple ctor
     public FolderBuilder() {}
@@ -14,7 +13,6 @@ public class FolderBuilder {
         this.parentId =  folder.getParentId();
         this.name = folder.getName();
         this.query = folder.getQuery();
-        this.shared = folder.isShared();
     }
 
     // Name and userId are required arguments
@@ -47,15 +45,6 @@ public class FolderBuilder {
 
     public FolderBuilder setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public boolean isShared() {
-        return shared;
-    }
-
-    public FolderBuilder setShared(boolean shared) {
-        this.shared = shared;
         return this;
     }
 
