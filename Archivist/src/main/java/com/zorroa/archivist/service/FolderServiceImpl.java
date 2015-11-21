@@ -38,7 +38,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public List<Folder> getAll() {
-        return folderDao.getAll();
+        return folderDao.getChildren(Folder.ROOT_ID);
     }
 
     @Override

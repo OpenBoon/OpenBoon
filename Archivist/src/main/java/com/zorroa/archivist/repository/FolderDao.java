@@ -9,8 +9,6 @@ public interface FolderDao {
 
     Folder get(String id);
 
-    List<Folder> getAll();
-
     List<Folder> getChildren(String parentId);
 
     List<Folder> getChildren(Folder folder);

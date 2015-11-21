@@ -75,16 +75,6 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
     }
 
     @Override
-    public List<Folder> getAll() {
-        FilterBuilder filter = FilterBuilders.andFilter(
-                FilterBuilders.termFilter("parentId", Folder.ROOT_ID)
-        );
-
-        FilteredQueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(), filter);
-        return getFolders(query);
-    }
-
-    @Override
     public List<Folder> getChildren(String parentId) {
         return getFolders(QueryBuilders.termQuery("parentId", parentId));
     }
