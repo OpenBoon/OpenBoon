@@ -25,7 +25,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         Export export = new Export();
         export.setId(rs.getInt("pk_export"));
         export.setTimeCreated(rs.getLong("time_created"));
-        export.setUserCreated(rs.getString("str_user_created"));
+        export.setUserCreated(rs.getInt("user_created"));
         export.setNote(rs.getString("str_note"));
         export.setOptions(Json.deserialize(rs.getString("json_options"), ExportOptions.class));
         export.setSearch(Json.deserialize(rs.getString("json_search"), AssetSearchBuilder.class));
@@ -59,7 +59,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         }
 
         if (filter.getUsers() != null) {
-            wheres.add(JdbcUtils.in("export.str_user_created", filter.getUsers().size()));
+            wheres.add(JdbcUtils.in("export.user_created", filter.getUsers().size()));
             values.addAll(filter.getUsers());
         }
 
@@ -88,7 +88,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
 
     private static final String INSERT =
             JdbcUtils.insert("export",
-                    "str_user_created",
+                    "user_created",
                     "time_created",
                     "str_note",
                     "json_search",
@@ -100,7 +100,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         jdbc.update(connection -> {
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_export"});
-            ps.setString(1,SecurityUtils.getUsername());
+            ps.setInt(1,SecurityUtils.getUser().getId());
             ps.setLong(2, System.currentTimeMillis());
             ps.setString(3, builder.getNote() == null ? "" : builder.getNote());
             ps.setString(4, Json.serializeToString(builder.getSearch()));

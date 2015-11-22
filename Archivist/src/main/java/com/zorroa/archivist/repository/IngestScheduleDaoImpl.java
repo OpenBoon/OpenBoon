@@ -28,9 +28,9 @@ public class IngestScheduleDaoImpl extends AbstractDao implements IngestSchedule
                 "schedule " +
             "(" +
                 "str_name,"+
-                "str_user_created,"+
+                "user_created,"+
                 "time_created,"+
-                "str_user_modified, "+
+                "user_modified, "+
                 "time_modified, "+
                 "clock_run_at_time, " +
                 "time_next,"+
@@ -53,9 +53,9 @@ public class IngestScheduleDaoImpl extends AbstractDao implements IngestSchedule
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_schedule"});
             ps.setString(1, builder.getName());
-            ps.setString(2, SecurityUtils.getUsername());
+            ps.setInt(2, SecurityUtils.getUser().getId());
             ps.setLong(3, time);
-            ps.setString(4, SecurityUtils.getUsername());
+            ps.setInt(4, SecurityUtils.getUser().getId());
             ps.setLong(5, time);
 
             /*
@@ -151,7 +151,7 @@ public class IngestScheduleDaoImpl extends AbstractDao implements IngestSchedule
                 "schedule " +
             "SET " +
                 "str_name=?,"+
-                "str_user_modified=?,"+
+                "user_modified=?,"+
                 "time_modified=?,"+
                 "clock_run_at_time=?,"+
                 "time_next=?,"+
@@ -172,7 +172,7 @@ public class IngestScheduleDaoImpl extends AbstractDao implements IngestSchedule
 
         return jdbc.update(UPDATE,
                 schedule.getName(),
-                SecurityUtils.getUsername(),
+                SecurityUtils.getUser().getId(),
                 System.currentTimeMillis(),
                 schedule.getRunAtTime(),
                 IngestSchedule.determineNextRunTime(

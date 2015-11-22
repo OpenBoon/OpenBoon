@@ -32,8 +32,8 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
         ExportOutput output = new ExportOutput();
         output.setId(rs.getInt("pk_export_output"));
         output.setExportId(rs.getInt("pk_export"));
-        output.setCreatedBy(rs.getString("str_user_created"));
-        output.setCreatedTime(rs.getLong("time_created"));
+        output.setUserCreated(rs.getInt("user_created"));
+        output.setTimeCreated(rs.getLong("time_created"));
         output.setPath(rs.getString("str_output_file_path"));
         output.setMimeType(rs.getString("str_mime_type"));
         output.setFactory(Json.deserialize(rs.getString("json_factory"),
@@ -54,7 +54,7 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
     private static final String INSERT =
             JdbcUtils.insert("export_output",
                     "pk_export",
-                    "str_user_created",
+                    "user_created",
                     "time_created",
                     "str_mime_type",
                     "json_factory");
@@ -69,7 +69,7 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_export_output"});
             ps.setInt(1, export.getId());
-            ps.setString(2, SecurityUtils.getUsername());
+            ps.setInt(2, SecurityUtils.getUser().getId());
             ps.setLong(3, System.currentTimeMillis());
             ps.setString(4, processor.getMimeType());
             ps.setString(5, Json.serializeToString(factory));

@@ -26,9 +26,9 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
         result.setName(rs.getString("str_name"));
         result.setDescription(rs.getString("str_description"));
         result.setTimeCreated(rs.getLong("time_created"));
-        result.setUserCreated(rs.getString("str_user_created"));
+        result.setUserCreated(rs.getInt("user_created"));
         result.setTimeModified(rs.getLong("time_modified"));
-        result.setUserModified(rs.getString("str_user_modified"));
+        result.setUserModified(rs.getInt("user_modified"));
         result.setProcessors((List<ProcessorFactory<IngestProcessor>>) rs.getObject("list_processors"));
         return result;
     };
@@ -39,9 +39,9 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
             "(" +
                     "str_name,"+
                     "str_description,"+
-                    "str_user_created,"+
+                    "user_created,"+
                     "time_created,"+
-                    "str_user_modified, "+
+                    "user_modified, "+
                     "time_modified, "+
                     "list_processors " +
             ") "+
@@ -56,9 +56,9 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
                 connection.prepareStatement(INSERT, new String[]{"pk_pipeline"});
             ps.setString(1, builder.getName());
             ps.setString(2, builder.getDescription());
-            ps.setString(3, SecurityUtils.getUsername());
+            ps.setInt(3, SecurityUtils.getUser().getId());
             ps.setLong(4, time);
-            ps.setString(5, SecurityUtils.getUsername());
+            ps.setInt(5, SecurityUtils.getUser().getId());
             ps.setLong(6, time);
             ps.setObject(7, builder.getProcessors());
             return ps;
@@ -108,8 +108,8 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
             return false;
         }
 
-        updates.add("str_user_modified=?");
-        values.add(SecurityUtils.getUsername());
+        updates.add("user_modified=?");
+        values.add(SecurityUtils.getUser().getId());
 
         updates.add("time_modified=?");
         values.add(System.currentTimeMillis());
