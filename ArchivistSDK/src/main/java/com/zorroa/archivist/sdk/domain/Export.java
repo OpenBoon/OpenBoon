@@ -8,7 +8,7 @@ public class Export {
     private int id;
     private String note;
     private long timeCreated;
-    private String userCreated;
+    private int userCreated;
     private ExportState state;
 
     private AssetSearchBuilder search;
@@ -30,11 +30,11 @@ public class Export {
         this.timeCreated = timeCreated;
     }
 
-    public String getUserCreated() {
+    public int getUserCreated() {
         return userCreated;
     }
 
-    public void setUserCreated(String userCreated) {
+    public void setUserCreated(int userCreated) {
         this.userCreated = userCreated;
     }
 

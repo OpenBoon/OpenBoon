@@ -13,9 +13,9 @@ public class Ingest {
     private String path;
     private Set<String> fileTypes;
     private long timeCreated;
-    private String userCreated;
+    private int userCreated;
     private long timeModified;
-    private String userModified;
+    private int userModified;
     private long timeStopped;
     private long timeStarted;
     private int createdCount;
@@ -87,10 +87,10 @@ public class Ingest {
     public void setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
     }
-    public String getUserCreated() {
+    public int getUserCreated() {
         return userCreated;
     }
-    public void setUserCreated(String userCreated) {
+    public void setUserCreated(int userCreated) {
         this.userCreated = userCreated;
     }
     public long getTimeModified() {
@@ -99,10 +99,10 @@ public class Ingest {
     public void setTimeModified(long timeModified) {
         this.timeModified = timeModified;
     }
-    public String getUserModified() {
+    public int getUserModified() {
         return userModified;
     }
-    public void setUserModified(String userModified) {
+    public void setUserModified(int userModified) {
         this.userModified = userModified;
     }
     public long getTimeStopped() {
