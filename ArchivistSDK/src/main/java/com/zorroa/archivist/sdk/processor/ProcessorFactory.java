@@ -61,6 +61,7 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
         return klass;
     }
 
+    @JsonIgnore
     public String getKlassName() {
         return klass.substring(klass.lastIndexOf('.')+1);
     }
