@@ -41,7 +41,7 @@ public class ExportOptions {
         /**
          * The quality of the image, if supported. 100 or <= will leave as is.
          */
-        private double quality = 100.0;
+        private double quality = 1.0;
 
         /**
          * The format of the images, null to keep existing format.
