@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -42,8 +43,11 @@ public class ExportControllerTests extends MockMvcTest {
 
     ExportBuilder builder;
 
+    MockHttpSession session;
+
     @Before
     public void init() {
+        session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);
@@ -70,7 +74,6 @@ public class ExportControllerTests extends MockMvcTest {
 
     @Test
     public void testGetAllByFilter() throws Exception {
-        MockHttpSession session = admin();
         ExportFilter filter = new ExportFilter();
 
         MvcResult result = mvc.perform(post("/api/v1/exports/_search")
@@ -87,8 +90,6 @@ public class ExportControllerTests extends MockMvcTest {
 
     @Test
     public void testCreate() throws Exception {
-        MockHttpSession session = admin();
-
         MvcResult result = mvc.perform(post("/api/v1/exports")
                 .session(session)
                 .content(Json.serialize(builder))
@@ -104,7 +105,6 @@ public class ExportControllerTests extends MockMvcTest {
 
     @Test
     public void testGet() throws Exception {
-        MockHttpSession session = admin();
 
         MvcResult result = mvc.perform(get("/api/v1/exports/" + export.getId())
                 .session(session)
@@ -121,7 +121,6 @@ public class ExportControllerTests extends MockMvcTest {
 
     @Test
     public void testGetAllOutputs() throws Exception {
-        MockHttpSession session = admin();
 
         MvcResult result = mvc.perform(get("/api/v1/exports/" + export.getId() + "/outputs")
                 .session(session)
