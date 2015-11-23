@@ -153,8 +153,8 @@ public class SearchServiceImpl implements SearchService {
      */
     private FilterBuilder getFilter(AssetSearchBuilder builder) {
         AndFilterBuilder filter = FilterBuilders.andFilter();
-        if (builder.getCreatedAfterTime() != null || builder.getCreatedBeforeTime() != null) {
 
+        if (builder.getCreatedAfterTime() != null || builder.getCreatedBeforeTime() != null) {
             RangeFilterBuilder createTimeFilter = FilterBuilders.rangeFilter("timeCreated");
             if (builder.getCreatedAfterTime() != null) {
                 createTimeFilter.gte(builder.getCreatedAfterTime());
@@ -172,6 +172,38 @@ public class SearchServiceImpl implements SearchService {
         if (builder.getExportId() > 0) {
             FilterBuilder exportFilterBuilder = FilterBuilders.termFilter("exports", builder.getExportId());
             filter.add(exportFilterBuilder);
+        }
+
+        if (builder.getExistFields() != null) {
+            for (String term : builder.getExistFields()) {
+                FilterBuilder existsFilterBuilder = FilterBuilders.existsFilter(term);
+                filter.add(existsFilterBuilder);
+            }
+        }
+
+        if (builder.getFieldTerms() != null) {
+            for (AssetFieldTerms fieldTerms : builder.getFieldTerms()) {
+                FilterBuilder termsFilterBuilder = FilterBuilders.termsFilter(fieldTerms.getField(), fieldTerms.getTerms());
+                filter.add(termsFilterBuilder);
+            }
+        }
+
+        if (builder.getFieldRanges() != null) {
+            for (AssetFieldRange fieldRange : builder.getFieldRanges()) {
+                FilterBuilder rangeFilterBuilder = FilterBuilders.rangeFilter(fieldRange.getField())
+                        .gte(fieldRange.getMin())
+                        .lt(fieldRange.getMax());
+                filter.add(rangeFilterBuilder);
+            }
+        }
+
+        if (builder.getScripts() != null) {
+            for (AssetScript script : builder.getScripts()) {
+                FilterBuilder scriptFilterBuilder = FilterBuilders.scriptFilter(script.getName())
+                        .lang("native")
+                        .params(script.getParams());
+                filter.add(scriptFilterBuilder);
+            }
         }
 
         filter.add(SecurityUtils.getPermissionsFilter());
