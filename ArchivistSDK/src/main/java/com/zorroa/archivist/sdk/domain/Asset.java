@@ -20,6 +20,16 @@ public class Asset {
         this.id = id;
     }
 
+    /**
+     * Hard coded for now, this should be set by ingests.
+     * Need schema feature here.
+     *
+     * @return
+     */
+    public AssetType getType() {
+        return AssetType.Image;
+    }
+
     public long getVersion() {
         return version;
     }
