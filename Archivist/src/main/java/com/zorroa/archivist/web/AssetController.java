@@ -156,14 +156,12 @@ public class AssetController {
     public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        /*
         if (search.getRoom() > 0) {
-            Session session = userService.getSession(httpSession);
-            Room room = roomService.getActiveRoom(session);
-            roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
+            Session session = userService.getActiveSession();
+            Room room = roomService.getActiveRoom(session);  // Shouldn't this use search.getRoom()?
+            String json = new String(Json.serialize(search), StandardCharsets.UTF_8);
+            roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, json));
         }
-        */
-
 
         SearchResponse response = searchService.search(search);
 
@@ -198,6 +196,18 @@ public class AssetController {
         out.close();
     }
 
+    @RequestMapping(value="/api/v2/assets/_aggregate", method=RequestMethod.POST)
+    public void aggregate(@RequestBody AssetAggregateBuilder aggregation, HttpServletResponse httpResponse) throws IOException {
+        SearchResponse response = searchService.aggregate(aggregation);
+        OutputStream out = httpResponse.getOutputStream();
+        XContentBuilder content = XContentFactory.jsonBuilder(out);
+        content.startObject();
+        response.toXContent(content, ToXContent.EMPTY_PARAMS);
+        content.endObject();
+        content.close();
+        out.close();
+    }
+
     @RequestMapping(value="/api/v1/assets/_aggregations", method=RequestMethod.POST)
     public void aggregate(@RequestBody String query, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -213,6 +223,22 @@ public class AssetController {
         content.endObject();
         content.close();
         out.close();
+    }
+
+    @RequestMapping(value="/api/v2/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+    public String count(@RequestBody AssetSearchBuilder search) throws IOException {
+        CountResponse response = searchService.count(search);
+        return new StringBuilder(128)
+                .append("{\"count\":")
+                .append(response.getCount())
+                .append(",\"_shards\":{\"total\":")
+                .append(response.getTotalShards())
+                .append(",\"successful\":")
+                .append(response.getSuccessfulShards())
+                .append(",\"failed\":")
+                .append(response.getFailedShards())
+                .append("}}")
+                .toString();
     }
 
     @RequestMapping(value="/api/v1/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -240,6 +266,12 @@ public class AssetController {
             .append(response.getFailedShards())
             .append("}}")
             .toString();
+    }
+
+    @RequestMapping(value="/api/v2/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+    public String suggest(@RequestBody AssetSuggestBuilder search) throws IOException {
+        SuggestResponse response = searchService.suggest(search);
+        return response.toString();
     }
 
     @RequestMapping(value="/api/v1/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
