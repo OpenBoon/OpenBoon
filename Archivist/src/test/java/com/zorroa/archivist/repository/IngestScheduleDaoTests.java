@@ -107,7 +107,7 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
         schedule.setRunAtTime(LocalTime.now().plusHours(2).toString());
         instant = Instant.ofEpochMilli(IngestSchedule.determineNextRunTime(schedule));
         res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        assertEquals(LocalDateTime.now().getDayOfWeek(), res.getDayOfWeek());
+        assertEquals(LocalDateTime.now().plusHours(2).getDayOfWeek(), res.getDayOfWeek());
     }
 
     @Test
