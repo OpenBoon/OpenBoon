@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class ExportFilter {
 
-    private List<String> users;
+    private List<Integer> users;
     private List<ExportState> states;
     private long beforeTime = -1;
     private long afterTime = -1;
@@ -15,11 +15,11 @@ public class ExportFilter {
 
     private int pageSize = 10;
 
-    public List<String> getUsers() {
+    public List<Integer> getUsers() {
         return users;
     }
 
-    public void setUsers(List<String> users) {
+    public void setUsers(List<Integer> users) {
         this.users = users;
     }
 

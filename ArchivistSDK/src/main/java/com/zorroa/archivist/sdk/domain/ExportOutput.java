@@ -13,8 +13,8 @@ public class ExportOutput {
     private int id;
     private String name;
     private int exportId;
-    private String createdBy;
-    private long createdTime;
+    private int userCreated;
+    private long timeCreated;
     private String path;
     private String mimeType;
 
@@ -54,20 +54,20 @@ public class ExportOutput {
         this.factory = factory;
     }
 
-    public long getCreatedTime() {
-        return createdTime;
+    public long getTimeCreated() {
+        return timeCreated;
     }
 
-    public void setCreatedTime(long createdTime) {
-        this.createdTime = createdTime;
+    public void setTimeCreated(long timeCreated) {
+        this.timeCreated = timeCreated;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public int getUserCreated() {
+        return userCreated;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setUserCreated(int userCreated) {
+        this.userCreated = userCreated;
     }
 
     public int getExportId() {
