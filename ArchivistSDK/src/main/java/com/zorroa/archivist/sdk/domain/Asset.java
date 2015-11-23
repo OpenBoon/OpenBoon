@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.Splitter;
+import com.zorroa.archivist.sdk.util.Json;
 
 import java.util.Map;
 
@@ -44,6 +45,10 @@ public class Asset {
 
     public void setDocument(Map<String, Object> data) {
         this.document = data;
+    }
+
+    public <T> T getValue(String namespace, Class<T> klass) {
+        return Json.Mapper.convertValue(document.get(namespace), klass);
     }
 
     public <T> T getValue(String key) {
