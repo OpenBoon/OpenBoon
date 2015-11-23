@@ -29,9 +29,9 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             result.setState(IngestState.values()[rs.getInt("int_state")]);
             result.setPath(rs.getString("str_path"));
             result.setTimeCreated(rs.getLong("time_created"));
-            result.setUserCreated(rs.getString("str_user_created"));
+            result.setUserCreated(rs.getInt("user_created"));
             result.setTimeModified(rs.getLong("time_modified"));
-            result.setUserCreated(rs.getString("str_user_created"));
+            result.setUserModified(rs.getInt("user_modified"));
             result.setFileTypes((Set<String>) rs.getObject("list_types"));
             result.setTimeStarted(rs.getLong("time_started"));
             result.setTimeStopped(rs.getLong("time_stopped"));
@@ -58,9 +58,9 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "str_path,"+
                 "list_types,"+
                 "time_created,"+
-                "str_user_created,"+
+                "user_created,"+
                 "time_modified, "+
-                "str_user_modified, "+
+                "user_modified, "+
                 "bool_update_on_exist, " +
                 "int_asset_worker_threads" +
             ") " +
@@ -78,9 +78,9 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             ps.setObject(3, builder.getPath());
             ps.setObject(4, builder.getFileTypes());
             ps.setLong(5, time);
-            ps.setString(6, SecurityUtils.getUsername());
+            ps.setLong(6, SecurityUtils.getUser().getId());
             ps.setLong(7, time);
-            ps.setString(8, SecurityUtils.getUsername());
+            ps.setLong(8, SecurityUtils.getUser().getId());
             ps.setBoolean(9, builder.isUpdateOnExist());
             ps.setInt(10, builder.getAssetWorkerThreads());
             return ps;
@@ -167,8 +167,8 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         updates.add("bool_update_on_exist=?");
         values.add(builder.isUpdateOnExist());
 
-        updates.add("str_user_modified=?");
-        values.add(SecurityUtils.getUsername());
+        updates.add("user_modified=?");
+        values.add(SecurityUtils.getUser().getId());
 
         updates.add("time_modified=?");
         values.add(System.currentTimeMillis());

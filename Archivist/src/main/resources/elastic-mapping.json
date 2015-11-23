@@ -64,11 +64,11 @@
           "type": "date"
         },
         "userCreated": {
-          "type": "string",
+          "type": "integer",
           "index": "not_analyzed"
         },
         "userModified": {
-          "type": "string",
+          "type": "integer",
           "index": "not_analyzed"
         },
         "keywords": {

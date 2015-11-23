@@ -61,11 +61,11 @@ public class ExportDaoTests extends ArchivistApplicationTests {
     @Test
     public void testGetAllByFilter_User() {
         ExportFilter filter = new ExportFilter();
-        filter.setUsers(Lists.newArrayList("bob"));
+        filter.setUsers(Lists.newArrayList(123));
         List<Export> exports = exportDao.getAll(filter);
         assertEquals(0, exports.size());
 
-        filter.setUsers(Lists.newArrayList(SecurityUtils.getUsername(), "bob", "jane"));
+        filter.setUsers(Lists.newArrayList(SecurityUtils.getUser().getId(), 999, 123));
         exports = exportDao.getAll(filter);
         assertEquals(1, exports.size());
     }
