@@ -2,9 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.Ingest;
-import com.zorroa.archivist.sdk.domain.IngestBuilder;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.IngestExecutorService;
@@ -391,29 +389,136 @@ public class AssetControllerTests extends MockMvcTest {
         }
     }
 
-//    @Test
-//    public void testFilteredSearch() throw Exception {
-//
-//    }
+    @Test
+    public void testFilteredSearch() throws Exception {
+        MockHttpSession session = admin();
 
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
 
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"fieldTerms\" : [ { \"field\" : \"File.FileName.raw\", \"terms\" : [ \"beer_kettle_01.jpg\" ] } ] }"))
+                .andExpect(status().isOk())
+                .andReturn();
 
-//    @Test
-//    public void testFolderSearchFilter() throws Exception {
-//    }
-//
-//    @Test
-//    public void testSearchFolders() throws Exception {
-//
-//    }
-//
-//    @Test
-//    public void testFilteredSearchFolders() throws Exception {
-//
-//    }
-//
-//    @Test
-//    public void testFilteredSearchAndFilterFolders() throws Exception {
-//
-//    }
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testFolderSearchFilter() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v1/folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(new FolderBuilder().setName("TestSearchFolder"))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Folder folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+
+        List<Asset> assets = assetDao.getAll();
+
+        Asset asset = assets.get(0);
+        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("[\"" + folder.getId() + "\"]"))
+                .andExpect(status().isOk())
+                .andReturn();
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(false, json.get("created"));
+
+        result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"folderIds\" : [ \"" + folder.getId() + "\" ] }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testFilterExists() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"existFields\" : [ \"Exif.CustomRendered\" ] }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testFilterRange() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"fieldRanges\" : [ { \"field\" : \"source.date\", \"min\" : \"2014-01-01\", \"max\" : \"2015-01-01\" } ] }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testFilterScript() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"scripts\" : [ { \"name\" : \"archivistDate\", \"params\" : { \"field\" : \"source.date\", \"interval\" : \"year\", \"terms\" : [\"2014\"] } } ] }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
 }
