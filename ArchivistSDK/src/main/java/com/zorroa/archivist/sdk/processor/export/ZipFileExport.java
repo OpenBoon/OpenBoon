@@ -3,7 +3,10 @@ package com.zorroa.archivist.sdk.processor.export;
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
+import com.zorroa.archivist.sdk.domain.ExportedAsset;
 import com.zorroa.archivist.sdk.util.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,10 +18,10 @@ import java.util.zip.ZipOutputStream;
  */
 public class ZipFileExport extends ExportProcessor {
 
-    /**
-     * The ZipOutputStream is opened during init() and closed at teardown().  When process()
-     * is called, the source file is added.
-     */
+   /**
+    * The ZipOutputStream is opened during init() and closed at teardown().  When process()
+    * is called, the source file is added.
+    */
     private ZipOutputStream zipFile = null;
 
     /**
@@ -71,21 +74,22 @@ public class ZipFileExport extends ExportProcessor {
 
 
     @Override
-    public void process(Asset asset) throws Exception {
+    public void process(ExportedAsset asset) throws Exception {
         byte[] buffer = new byte[1024];
 
-        logger.info("Adding {} to zip {}", asset.getValue("source.path"), zipEntryPath);
+        logger.info("Adding {} to zip {}", asset.getCurrentPath(), zipEntryPath);
 
-        ZipEntry ze = new ZipEntry(String.format("%s/%s", zipEntryPath, asset.getValue("source.filename")));
+        ZipEntry ze = new ZipEntry(String.format("%s/%s", zipEntryPath, asset.getCurrentPath()));
         zipFile.putNextEntry(ze);
 
-        FileInputStream stream = new FileInputStream((String)asset.getValue("source.path"));
+        FileInputStream stream = new FileInputStream(asset.getCurrentPath());
         int len;
         while((len = stream.read(buffer)) > 0) {
             zipFile.write(buffer, 0, len);
         }
         stream.close();
         zipFile.closeEntry();
+
     }
 }
 
