@@ -128,7 +128,6 @@ public class AssetControllerTests extends MockMvcTest {
         assertEquals(1, count);
     }
 
-
     @Test
     public void testCount() throws Exception {
 
@@ -149,6 +148,28 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         int count = (int)counts.get("count");
         assertTrue(count == 2);
+    }
+
+    @Test
+    public void testCountV2() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_count")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"query\": \"be\"}".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> counts = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        int count = (int)counts.get("count");
+        assertTrue(count == 1);
     }
 
     @Test
@@ -175,6 +196,51 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testAggregationV2() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"name\" : \"Keywords\", \"field\" : \"keywords.untouched\" }".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
+        Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
+        assertEquals(4, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
+    }
+
+    @Test
+    public void testAggregationScriptV2() throws Exception {
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"name\" : \"Years\", \"script\" : \"archivistDate\", \"scriptParams\" : { \"field\" : \"source.date\", \"interval\" : \"year\" } }".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
+        Map<String, Object> years = (Map<String, Object>) aggs.get("Years");
+        assertEquals(2, ((ArrayList<Map<String, Object>>) years.get("buckets")).size());
+    }
+
+    @Test
     public void testSuggest() throws Exception {
 
         MockHttpSession session = admin();
@@ -194,6 +260,32 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
 
         Map<String, Object> suggestions = (Map<String, Object>) ((ArrayList<Object>)json.get("keyword-suggestions")).get(0);
+        ArrayList<Object> options = (ArrayList<Object>) suggestions.get("options");
+        Map<String, Object> suggestion = (Map<String, Object>) options.get(0);
+        String text = (String)suggestion.get("text");
+        assertTrue(text.equals("reflection"));
+    }
+
+    @Test
+    public void testSuggestV2() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_suggest")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"text\": \"re\" }".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+
+        Map<String, Object> suggestions = (Map<String, Object>) ((ArrayList<Object>)json.get("completions")).get(0);
         ArrayList<Object> options = (ArrayList<Object>) suggestions.get("options");
         Map<String, Object> suggestion = (Map<String, Object>) options.get(0);
         String text = (String)suggestion.get("text");

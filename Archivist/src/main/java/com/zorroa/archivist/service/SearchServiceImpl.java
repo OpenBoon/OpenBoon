@@ -9,15 +9,18 @@ import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.AssetSearchBuilder;
-import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.*;
+import org.elasticsearch.action.count.CountRequestBuilder;
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.suggest.SuggestRequestBuilder;
+import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,21 @@ public class SearchServiceImpl implements SearchService {
         return buildSearch(builder).get();
     }
 
+    @Override
+    public CountResponse count(AssetSearchBuilder builder) {
+        return buildCount(builder).get();
+    }
+
+    @Override
+    public SuggestResponse suggest(AssetSuggestBuilder builder) {
+        return buildSuggest(builder).get();
+    }
+
+    @Override
+    public SearchResponse aggregate(AssetAggregateBuilder builder) {
+        return buildAggregate(builder).get();
+    }
+
     public Iterable<Asset> scanAndScroll(AssetSearchBuilder builder) {
 
         SearchResponse rsp = client.prepareSearch(alias)
@@ -80,8 +98,38 @@ public class SearchServiceImpl implements SearchService {
         return search;
     }
 
-    private QueryBuilder getQuery(AssetSearchBuilder builder) {
+    private CountRequestBuilder buildCount(AssetSearchBuilder builder) {
+        CountRequestBuilder count = client.prepareCount(alias)
+                .setTypes("asset")
+                .setQuery(getQuery(builder));
+        logger.info(count.toString());
+        return count;
+    }
 
+    private SuggestRequestBuilder buildSuggest(AssetSuggestBuilder builder) {
+        // FIXME: We need to use builder.search in here somehow!
+        CompletionSuggestionBuilder completion = new CompletionSuggestionBuilder("completions")
+                .text(builder.getText())
+                .field("keywords_suggest");
+        SuggestRequestBuilder suggest = client.prepareSuggest(alias)
+                .addSuggestion(completion);
+        return  suggest;
+    }
+
+    private SearchRequestBuilder buildAggregate(AssetAggregateBuilder builder) {
+        AssetSearchBuilder search = builder.getSearch();
+        if (search == null) {
+            search = new AssetSearchBuilder();      // Use default empty search == all
+        }
+        SearchRequestBuilder aggregation = client.prepareSearch(alias)
+                .setTypes("asset")
+                .setQuery(getQuery(search))
+                .setAggregations(builder.getAggregations())
+                .setSearchType(SearchType.COUNT);
+        return aggregation;
+    }
+
+    private QueryBuilder getQuery(AssetSearchBuilder builder) {
         QueryBuilder query;
         if (builder.getQuery() != null) {
             query = QueryBuilders.queryStringQuery(builder.getQuery())
