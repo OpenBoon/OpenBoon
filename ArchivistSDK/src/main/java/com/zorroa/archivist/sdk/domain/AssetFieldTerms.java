@@ -17,15 +17,17 @@ public class AssetFieldTerms {
         return field;
     }
 
-    public void setField(String field) {
+    public AssetFieldTerms setField(String field) {
         this.field = field;
+        return this;
     }
 
     public List<String> getTerms() {
         return terms;
     }
 
-    public void setTerms(List<String> terms) {
+    public AssetFieldTerms setTerms(List<String> terms) {
         this.terms = terms;
+        return this;
     }
 }
