@@ -17,15 +17,17 @@ public class AssetScript {
         return name;
     }
 
-    public void setName(String name) {
+    public AssetScript setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Map<String, Object> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
+    public AssetScript setParams(Map<String, Object> params) {
         this.params = params;
+        return this;
     }
 }

@@ -16,23 +16,26 @@ public class AssetFieldRange {
         return field;
     }
 
-    public void setField(String field) {
+    public AssetFieldRange setField(String field) {
         this.field = field;
+        return this;
     }
 
     public String getMin() {
         return min;
     }
 
-    public void setMin(String min) {
+    public AssetFieldRange setMin(String min) {
         this.min = min;
+        return this;
     }
 
     public String getMax() {
         return max;
     }
 
-    public void setMax(String max) {
+    public AssetFieldRange setMax(String max) {
         this.max = max;
+        return this;
     }
 }
