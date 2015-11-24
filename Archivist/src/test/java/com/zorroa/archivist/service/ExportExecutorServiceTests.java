@@ -73,8 +73,8 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         exportExecutorService.execute(export);
         refreshIndex(1000);
 
-        AssetSearchBuilder search = new AssetSearchBuilder();
-        search.setExportId(export.getId());
+        AssetFilter filter = new AssetFilter().setExportId(export.getId());
+        AssetSearchBuilder search = new AssetSearchBuilder().setFilter(filter);
 
         // Assert the export id has been added to the asset.
         assertEquals(1, searchService.search(search).getHits().getHits().length);

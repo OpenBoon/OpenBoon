@@ -90,8 +90,9 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assetService.addToFolder(asset1, folder1);
         refreshIndex(100);
 
+        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setFolderIds(Lists.newArrayList(folder1.getId()))).getHits().getTotalHits());
+                new AssetSearchBuilder().setFilter(filter)).getHits().getTotalHits());
     }
 
     @Test
@@ -117,7 +118,8 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assetService.addToFolder(asset1, folder3);
         refreshIndex(100);
 
+        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setFolderIds(Lists.newArrayList(folder1.getId()))).getHits().getTotalHits());
+                new AssetSearchBuilder().setFilter(filter)).getHits().getTotalHits());
     }
 }
