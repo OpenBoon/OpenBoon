@@ -153,12 +153,12 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)
-    public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
+    public void search(@RequestBody AssetSearchBuilder search, @RequestParam(value="roomId", defaultValue="0", required=false) int roomId, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        if (search.getRoom() > 0) {
+        if (roomId > 0) {
             Session session = userService.getActiveSession();
-            Room room = roomService.getActiveRoom(session);  // Shouldn't this use search.getRoom()?
+            Room room = roomService.getActiveRoom(session);  // FIXME: Should this use roomId?
             String json = new String(Json.serialize(search), StandardCharsets.UTF_8);
             roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, json));
         }
@@ -180,7 +180,7 @@ public class AssetController {
 
         if (roomId > 0) {
             Session session = userService.getActiveSession();
-            Room room = roomService.getActiveRoom(session);
+            Room room = roomService.getActiveRoom(session); // FIXME: Should this use roomId?
             roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, query));
         }
 

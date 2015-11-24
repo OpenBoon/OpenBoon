@@ -142,7 +142,7 @@ public class SearchServiceImpl implements SearchService {
             query = QueryBuilders.matchAllQuery();
         }
 
-        return QueryBuilders.filteredQuery(query, getFilter(builder));
+        return QueryBuilders.filteredQuery(query, getFilter(builder.getFilter()));
     }
 
     /**
@@ -151,10 +151,16 @@ public class SearchServiceImpl implements SearchService {
      * @param builder
      * @return
      */
-    private FilterBuilder getFilter(AssetSearchBuilder builder) {
+    private FilterBuilder getFilter(AssetFilter builder) {
         AndFilterBuilder filter = FilterBuilders.andFilter();
-        if (builder.getCreatedAfterTime() != null || builder.getCreatedBeforeTime() != null) {
 
+        filter.add(SecurityUtils.getPermissionsFilter());
+
+        if (builder == null) {
+            return filter;
+        }
+
+        if (builder.getCreatedAfterTime() != null || builder.getCreatedBeforeTime() != null) {
             RangeFilterBuilder createTimeFilter = FilterBuilders.rangeFilter("timeCreated");
             if (builder.getCreatedAfterTime() != null) {
                 createTimeFilter.gte(builder.getCreatedAfterTime());
@@ -174,7 +180,37 @@ public class SearchServiceImpl implements SearchService {
             filter.add(exportFilterBuilder);
         }
 
-        filter.add(SecurityUtils.getPermissionsFilter());
+        if (builder.getExistFields() != null) {
+            for (String term : builder.getExistFields()) {
+                FilterBuilder existsFilterBuilder = FilterBuilders.existsFilter(term);
+                filter.add(existsFilterBuilder);
+            }
+        }
+
+        if (builder.getFieldTerms() != null) {
+            for (AssetFieldTerms fieldTerms : builder.getFieldTerms()) {
+                FilterBuilder termsFilterBuilder = FilterBuilders.termsFilter(fieldTerms.getField(), fieldTerms.getTerms());
+                filter.add(termsFilterBuilder);
+            }
+        }
+
+        if (builder.getFieldRanges() != null) {
+            for (AssetFieldRange fieldRange : builder.getFieldRanges()) {
+                FilterBuilder rangeFilterBuilder = FilterBuilders.rangeFilter(fieldRange.getField())
+                        .gte(fieldRange.getMin())
+                        .lt(fieldRange.getMax());
+                filter.add(rangeFilterBuilder);
+            }
+        }
+
+        if (builder.getScripts() != null) {
+            for (AssetScript script : builder.getScripts()) {
+                FilterBuilder scriptFilterBuilder = FilterBuilders.scriptFilter(script.getName())
+                        .lang("native")
+                        .params(script.getParams());
+                filter.add(scriptFilterBuilder);
+            }
+        }
 
         return filter;
     }
@@ -191,7 +227,7 @@ public class SearchServiceImpl implements SearchService {
                 }
             });
 
-    public FilterBuilder getFolderFilter(AssetSearchBuilder builder) {
+    public FilterBuilder getFolderFilter(AssetFilter builder) {
         Set<String> result = Sets.newHashSetWithExpectedSize(100);
         Queue<String> queue = Queues.newLinkedBlockingQueue();
 
