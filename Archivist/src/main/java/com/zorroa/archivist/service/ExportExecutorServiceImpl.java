@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Maps;
+import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.event.EventServerHandler;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +44,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
     @Autowired
     EventServerHandler eventServerHandler;
+
+    @Autowired
+    ExportOptionsService exportOptionsService;
 
     @Value("${archivist.export.autoStart}")
     public boolean autoStart;
@@ -70,6 +75,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
              */
             for (ExportOutput output: exportOutputDao.getAll(export)) {
 
+                /*
+                 * Every processor gets its own working directory.
+                 */
                 ExportProcessor processor = output.getFactory().newInstance();
                 FileUtils.makedirs(output.getDirName());
 
@@ -95,15 +103,23 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
              */
             for (Asset asset : searchService.scanAndScroll(export.getSearch())) {
                 logger.info("processing asset {}", (String) asset.getValue("source.path"));
-                for (ExportProcessor processor : outputs.values()) {
+
+                for (Map.Entry<ExportOutput, ExportProcessor> entry : outputs.entrySet()) {
+                    ExportProcessor processor = entry.getValue();
+                    ExportOutput output = entry.getKey();
+
                     try {
-                        processor.process(asset);
+                        processor.process(exportOptionsService.applyOptions(export, output, asset));
                         assetDao.addToExport(asset, export);
 
                         eventServerHandler.broadcast(new Message().setType(
                                 MessageType.EXPORT_ASSET).setPayload(asset.getId()));
 
                     } catch (Exception e) {
+                        /*
+                         * exportOptionsService.applyOptions may throw an exception if there
+                         * is an error processing the source data.
+                         */
                         logger.warn("Failed to add asset {} to output '{}',", asset, e);
                     }
                 }
