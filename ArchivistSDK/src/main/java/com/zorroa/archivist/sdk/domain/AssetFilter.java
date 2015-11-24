@@ -11,8 +11,6 @@ import java.util.List;
  */
 public class AssetFilter {
     private int exportId = 0;                   // Filter to show only this export
-    private String createdBeforeTime;           // Eg. "now-1d" or see ES Range Query DSL for details:
-    private String createdAfterTime;            //     https://www.elastic.co/guide/en/elasticsearch/reference/2.0/query-dsl-range-query.html
     private List<String> folderIds;             // Filter to show the specified folders
     private List<String> existFields;           // Filter for assets that contain any of the specified fields
     private List<AssetFieldTerms> fieldTerms;   // Filter for matching terms in the specified field
@@ -25,24 +23,6 @@ public class AssetFilter {
 
     public AssetFilter setExportId(int exportId) {
         this.exportId = exportId;
-        return this;
-    }
-
-    public String getCreatedBeforeTime() {
-        return createdBeforeTime;
-    }
-
-    public AssetFilter setCreatedBeforeTime(String createdBeforeTime) {
-        this.createdBeforeTime = createdBeforeTime;
-        return this;
-    }
-
-    public String getCreatedAfterTime() {
-        return createdAfterTime;
-    }
-
-    public AssetFilter setCreatedAfterTime(String createdAfterTime) {
-        this.createdAfterTime = createdAfterTime;
         return this;
     }
 
