@@ -142,7 +142,7 @@ public class SearchServiceImpl implements SearchService {
             query = QueryBuilders.matchAllQuery();
         }
 
-        return QueryBuilders.filteredQuery(query, getFilter(builder));
+        return QueryBuilders.filteredQuery(query, getFilter(builder.getFilter()));
     }
 
     /**
@@ -151,8 +151,14 @@ public class SearchServiceImpl implements SearchService {
      * @param builder
      * @return
      */
-    private FilterBuilder getFilter(AssetSearchBuilder builder) {
+    private FilterBuilder getFilter(AssetFilter builder) {
         AndFilterBuilder filter = FilterBuilders.andFilter();
+
+        filter.add(SecurityUtils.getPermissionsFilter());
+
+        if (builder == null) {
+            return filter;
+        }
 
         if (builder.getCreatedAfterTime() != null || builder.getCreatedBeforeTime() != null) {
             RangeFilterBuilder createTimeFilter = FilterBuilders.rangeFilter("timeCreated");
@@ -206,8 +212,6 @@ public class SearchServiceImpl implements SearchService {
             }
         }
 
-        filter.add(SecurityUtils.getPermissionsFilter());
-
         return filter;
     }
 
@@ -223,7 +227,7 @@ public class SearchServiceImpl implements SearchService {
                 }
             });
 
-    public FilterBuilder getFolderFilter(AssetSearchBuilder builder) {
+    public FilterBuilder getFolderFilter(AssetFilter builder) {
         Set<String> result = Sets.newHashSetWithExpectedSize(100);
         Queue<String> queue = Queues.newLinkedBlockingQueue();
 
