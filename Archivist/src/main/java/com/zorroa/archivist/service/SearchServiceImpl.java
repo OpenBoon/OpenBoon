@@ -160,17 +160,6 @@ public class SearchServiceImpl implements SearchService {
             return filter;
         }
 
-        if (builder.getCreatedAfterTime() != null || builder.getCreatedBeforeTime() != null) {
-            RangeFilterBuilder createTimeFilter = FilterBuilders.rangeFilter("timeCreated");
-            if (builder.getCreatedAfterTime() != null) {
-                createTimeFilter.gte(builder.getCreatedAfterTime());
-            }
-            if (builder.getCreatedBeforeTime() != null) {
-                createTimeFilter.lte(builder.getCreatedBeforeTime());
-            }
-            filter.add(createTimeFilter);
-        }
-
         if (builder.getFolderIds() != null) {
             filter.add(getFolderFilter(builder));
         }
