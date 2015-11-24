@@ -1,7 +1,7 @@
 {
-  "settings" : {
-    "analysis" : {
-      "analyzer" : {
+  "settings": {
+    "analysis": {
+      "analyzer": {
         "ngram_analyzer": {
           "type": "custom",
           "tokenizer": "standard",
@@ -16,7 +16,9 @@
         "path_analyzer": {
           "type": "custom",
           "tokenizer": "path_tokenizer",
-          "filter" : ["standard"]
+          "filter": [
+            "standard"
+          ]
         }
       },
       "filter": {
@@ -41,8 +43,7 @@
       }
     }
   },
-
-  "mappings" : {
+  "mappings": {
     "asset": {
       "_all": {
         "enabled": false
