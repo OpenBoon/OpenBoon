@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class AssetAggregateBuilder {
     private String name;
-    private AssetSearchBuilder search;
+    private AssetSearch search;
     private String field;
     private int size;
     private String script;
@@ -20,7 +20,7 @@ public class AssetAggregateBuilder {
     private String excludeRegex;
     private String includeRegex;
 
-    public AssetSearchBuilder getSearch() {
+    public AssetSearch getSearch() {
         return search;
     }
 
@@ -56,7 +56,7 @@ public class AssetAggregateBuilder {
         this.name = name;
     }
 
-    public void setSearch(AssetSearchBuilder search) {
+    public void setSearch(AssetSearch search) {
         this.search = search;
     }
 

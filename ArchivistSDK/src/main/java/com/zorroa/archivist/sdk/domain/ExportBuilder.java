@@ -14,7 +14,7 @@ public class ExportBuilder {
     /**
      * Defines the list of assets to export.
      */
-    private AssetSearchBuilder search;
+    private AssetSearch search;
 
     /**
      * Defines the options for the export.
@@ -33,11 +33,11 @@ public class ExportBuilder {
 
     public ExportBuilder() {}
 
-    public AssetSearchBuilder getSearch() {
+    public AssetSearch getSearch() {
         return search;
     }
 
-    public void setSearch(AssetSearchBuilder search) {
+    public void setSearch(AssetSearch search) {
         this.search = search;
     }
 
