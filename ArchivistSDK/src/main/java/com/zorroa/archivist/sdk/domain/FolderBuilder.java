@@ -4,7 +4,7 @@ public class FolderBuilder {
 
     private String parentId = Folder.ROOT_ID;
     private String name;
-    private AssetSearchBuilder query;
+    private AssetSearch search;
 
     // For the JSON MAPPER we need a simple ctor
     public FolderBuilder() {}
@@ -12,7 +12,7 @@ public class FolderBuilder {
     public FolderBuilder(Folder folder) {
         this.parentId =  folder.getParentId();
         this.name = folder.getName();
-        this.query = folder.getQuery();
+        this.search = folder.getSearch();
     }
 
     // Name and userId are required arguments
@@ -48,12 +48,12 @@ public class FolderBuilder {
         return this;
     }
 
-    public AssetSearchBuilder getQuery() {
-        return query;
+    public AssetSearch getSearch() {
+        return search;
     }
 
-    public FolderBuilder setQuery(AssetSearchBuilder query) {
-        this.query = query;
+    public FolderBuilder setSearch(AssetSearch search) {
+        this.search = search;
         return this;
     }
 }

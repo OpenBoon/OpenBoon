@@ -9,7 +9,7 @@ package com.zorroa.archivist.sdk.domain;
  */
 public class AssetSuggestBuilder {
     String text;
-    AssetSearchBuilder search;
+    AssetSearch search;
 
     public String getText() {
         return text;
@@ -19,11 +19,11 @@ public class AssetSuggestBuilder {
         this.text = text;
     }
 
-    public AssetSearchBuilder getSearch() {
+    public AssetSearch getSearch() {
         return search;
     }
 
-    public void setSearch(AssetSearchBuilder search) {
+    public void setSearch(AssetSearch search) {
         this.search = search;
     }
 }

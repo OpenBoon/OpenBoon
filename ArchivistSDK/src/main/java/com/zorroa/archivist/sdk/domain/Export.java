@@ -11,7 +11,7 @@ public class Export {
     private int userCreated;
     private ExportState state;
 
-    private AssetSearchBuilder search;
+    private AssetSearch search;
     private ExportOptions options;
 
     public int getId() {
@@ -46,11 +46,11 @@ public class Export {
         this.state = state;
     }
 
-    public AssetSearchBuilder getSearch() {
+    public AssetSearch getSearch() {
         return search;
     }
 
-    public void setSearch(AssetSearchBuilder search) {
+    public void setSearch(AssetSearch search) {
         this.search = search;
     }
 
