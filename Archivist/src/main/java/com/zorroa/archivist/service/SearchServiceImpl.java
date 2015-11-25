@@ -73,12 +73,12 @@ public class SearchServiceImpl implements SearchService {
         return buildAggregate(builder).get();
     }
 
-    public Iterable<Asset> scanAndScroll(AssetSearchBuilder builder) {
+    public Iterable<Asset> scanAndScroll(AssetSearch search) {
 
         SearchResponse rsp = client.prepareSearch(alias)
                 .setSearchType(SearchType.SCAN)
                 .setScroll(new TimeValue(60000))
-                .setQuery(getQuery(builder))
+                .setQuery(getQuery(search))
                 .setSize(100).execute().actionGet();
 
         return new ScanAndScrollAssetIterator(client, rsp);
@@ -88,7 +88,7 @@ public class SearchServiceImpl implements SearchService {
 
         SearchRequestBuilder search = client.prepareSearch(alias)
                 .setTypes("asset")
-                .setQuery(getQuery(builder));
+                .setQuery(getQuery(builder.getSearch()));
         logger.info(search.toString());
 
         /*
@@ -101,7 +101,7 @@ public class SearchServiceImpl implements SearchService {
     private CountRequestBuilder buildCount(AssetSearchBuilder builder) {
         CountRequestBuilder count = client.prepareCount(alias)
                 .setTypes("asset")
-                .setQuery(getQuery(builder));
+                .setQuery(getQuery(builder.getSearch()));
         logger.info(count.toString());
         return count;
     }
@@ -117,9 +117,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private SearchRequestBuilder buildAggregate(AssetAggregateBuilder builder) {
-        AssetSearchBuilder search = builder.getSearch();
+        AssetSearch search = builder.getSearch();
         if (search == null) {
-            search = new AssetSearchBuilder();      // Use default empty search == all
+            search = new AssetSearch();      // Use default empty search == all
         }
         SearchRequestBuilder aggregation = client.prepareSearch(alias)
                 .setTypes("asset")
@@ -129,10 +129,10 @@ public class SearchServiceImpl implements SearchService {
         return aggregation;
     }
 
-    private QueryBuilder getQuery(AssetSearchBuilder builder) {
+    private QueryBuilder getQuery(AssetSearch search) {
         QueryBuilder query;
-        if (builder.getQuery() != null) {
-            query = QueryBuilders.queryStringQuery(builder.getQuery())
+        if (search.getQuery() != null) {
+            query = QueryBuilders.queryStringQuery(search.getQuery())
                     .field("keywords.indexed")
                     .field("keywords.untouched", 2)
                     .lenient(true)
@@ -142,11 +142,11 @@ public class SearchServiceImpl implements SearchService {
             query = QueryBuilders.matchAllQuery();
         }
 
-        return QueryBuilders.filteredQuery(query, getFilter(builder.getFilter()));
+        return QueryBuilders.filteredQuery(query, getFilter(search.getFilter()));
     }
 
     /**
-     * Builds an "AND" filter based on all the options in the AssetSearchBuilder.
+     * Builds an "AND" filter based on all the options in the AssetFilter.
      *
      * @param builder
      * @return

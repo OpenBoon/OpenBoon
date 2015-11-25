@@ -2,7 +2,6 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -57,8 +56,7 @@ public class ExportControllerTests extends MockMvcTest {
         options.getImages().setFormat("jpg");
         options.getImages().setScale(.5);
 
-        AssetSearchBuilder search = new AssetSearchBuilder();
-        search.setQuery("beer");
+        AssetSearch search = new AssetSearch().setQuery("beer");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
         outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
