@@ -115,7 +115,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": \"be\"}"))
+                .content("{ \"search\" : { \"query\": \"be\"} }"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -160,7 +160,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_count")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": \"be\"}".getBytes()))
+                .content("{ \"search\" : { \"query\": \"be\"} }".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -400,7 +400,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"filter\" : { \"fieldTerms\" : [ { \"field\" : \"File.FileName.raw\", \"terms\" : [ \"beer_kettle_01.jpg\" ] } ] } }"))
+                .content("{ \"search\" : { \"filter\" : { \"fieldTerms\" : [ { \"field\" : \"File.FileName.raw\", \"terms\" : [ \"beer_kettle_01.jpg\" ] } ] } } }"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -445,7 +445,7 @@ public class AssetControllerTests extends MockMvcTest {
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"filter\" : { \"folderIds\" : [ \"" + folder.getId() + "\" ] } }"))
+                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + folder.getId() + "\" ] } } }"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -467,7 +467,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"filter\" : { \"existFields\" : [ \"Exif.CustomRendered\" ] } }"))
+                .content("{ \"search\" : { \"filter\" : { \"existFields\" : [ \"Exif.CustomRendered\" ] } } }"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -489,7 +489,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"filter\" : { \"fieldRanges\" : [ { \"field\" : \"source.date\", \"min\" : \"2014-01-01\", \"max\" : \"2015-01-01\" } ] } }"))
+                .content("{ \"search\" : { \"filter\" : { \"fieldRanges\" : [ { \"field\" : \"source.date\", \"min\" : \"2014-01-01\", \"max\" : \"2015-01-01\" } ] } } }"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -511,7 +511,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"filter\" : { \"scripts\" : [ { \"name\" : \"archivistDate\", \"params\" : { \"field\" : \"source.date\", \"interval\" : \"year\", \"terms\" : [\"2014\"] } } ] } }"))
+                .content("{ \"search\" : { \"filter\" : { \"scripts\" : [ { \"name\" : \"archivistDate\", \"params\" : { \"field\" : \"source.date\", \"interval\" : \"year\", \"terms\" : [\"2014\"] } } ] } } }"))
                 .andExpect(status().isOk())
                 .andReturn();
 

@@ -51,7 +51,7 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         options.getImages().setFormat("jpg");
         options.getImages().setScale(.5);
 
-        AssetSearchBuilder search = new AssetSearchBuilder();
+        AssetSearch search = new AssetSearch();
         search.setQuery("beer");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
@@ -74,10 +74,11 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         refreshIndex(1000);
 
         AssetFilter filter = new AssetFilter().setExportId(export.getId());
-        AssetSearchBuilder search = new AssetSearchBuilder().setFilter(filter);
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        AssetSearchBuilder builder = new AssetSearchBuilder().setSearch(search);
 
         // Assert the export id has been added to the asset.
-        assertEquals(1, searchService.search(search).getHits().getHits().length);
+        assertEquals(1, searchService.search(builder).getHits().getHits().length);
 
         List<ExportOutput> outputs = exportService.getAllOutputs(export);
         assertTrue(new File(outputs.get(0).getPath()).exists());

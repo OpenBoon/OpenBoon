@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.sdk.domain.AssetSearchBuilder;
+import com.zorroa.archivist.sdk.domain.AssetSearch;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         builder = new FolderBuilder("Bimbo");
         Folder bimbo  = folderDao.create(builder);
         builder = new FolderBuilder("Bimbo-updated", gimbo);
-        builder.setQuery(new AssetSearchBuilder());
+        builder.setSearch(new AssetSearch());
         boolean ok = folderDao.update(bimbo, builder);
         assertTrue(ok);
         refreshIndex(1000);

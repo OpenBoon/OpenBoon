@@ -28,7 +28,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         export.setUserCreated(rs.getInt("user_created"));
         export.setNote(rs.getString("str_note"));
         export.setOptions(Json.deserialize(rs.getString("json_options"), ExportOptions.class));
-        export.setSearch(Json.deserialize(rs.getString("json_search"), AssetSearchBuilder.class));
+        export.setSearch(Json.deserialize(rs.getString("json_search"), AssetSearch.class));
         return export;
     };
 
