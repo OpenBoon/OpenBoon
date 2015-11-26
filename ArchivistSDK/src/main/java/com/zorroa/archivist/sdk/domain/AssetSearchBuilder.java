@@ -1,13 +1,9 @@
 package com.zorroa.archivist.sdk.domain;
 
-import java.util.List;
-
 /**
  * Created by chambers on 9/25/15.
  */
 public class AssetSearchBuilder {
-
-    private String query;                       // Eg. "food and dog", or see ES Query String DSL for details
 
     /**
      * The keyword confidence level to search.  There are currently 5 confidence
@@ -23,34 +19,47 @@ public class AssetSearchBuilder {
      */
     private int confidence = 0;
     private AssetFilter filter;                 // Restrict results to match filter
-    private List<AssetSearchOrder> order;       // FIXME: Ignored! Multilevel sort order
+
+    private AssetSearch search;
+    private int size;
+    private int from;
+    private int room;
 
     public AssetSearchBuilder() { }
 
-    public String getQuery() {
-        return query;
+    public AssetSearch getSearch() {
+        return search;
     }
 
-    public AssetSearchBuilder setQuery(String query) {
-        this.query = query;
+    public AssetSearchBuilder setSearch(AssetSearch search) {
+        this.search = search;
         return this;
     }
 
-    public AssetFilter getFilter() {
-        return filter;
+    public int getSize() {
+        return size;
     }
 
-    public AssetSearchBuilder setFilter(AssetFilter filter) {
-        this.filter = filter;
+    public AssetSearchBuilder setSize(int size) {
+        this.size = size;
         return this;
     }
 
-    public List<AssetSearchOrder> getOrder() {
-        return order;
+    public int getFrom() {
+        return from;
     }
 
-    public AssetSearchBuilder setOrder(List<AssetSearchOrder> order) {
-        this.order = order;
+    public AssetSearchBuilder setFrom(int from) {
+        this.from = from;
+        return this;
+    }
+
+    public int getRoom() {
+        return room;
+    }
+
+    public AssetSearchBuilder setRoom(int room) {
+        this.room = room;
         return this;
     }
 

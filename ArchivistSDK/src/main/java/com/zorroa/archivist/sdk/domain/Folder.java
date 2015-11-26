@@ -14,7 +14,7 @@ public class Folder {
     private String name;
     private int userCreated;
     private int userModified;
-    private AssetSearchBuilder query;
+    private AssetSearch search;
 
     public Folder() { }
 
@@ -42,13 +42,12 @@ public class Folder {
         this.name = name;
     }
 
-
-    public AssetSearchBuilder getQuery() {
-        return query;
+    public AssetSearch getSearch() {
+        return search;
     }
 
-    public void setQuery(AssetSearchBuilder query) {
-        this.query = query;
+    public void setSearch(AssetSearch search) {
+        this.search = search;
     }
 
     public int getUserCreated() {
