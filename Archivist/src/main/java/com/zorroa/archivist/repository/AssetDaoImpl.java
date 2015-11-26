@@ -1,6 +1,10 @@
 package com.zorroa.archivist.repository;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.archivist.sdk.domain.*;
@@ -31,6 +35,17 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
 
+    /**
+     * Special mapper for Assets.
+     */
+    public final static ObjectMapper Mapper = new ObjectMapper();
+    static {
+        Mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
+        Mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    }
+
     @Override
     public String getType() {
         return "asset";
@@ -50,39 +65,20 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     private IndexRequestBuilder buildRequest(AssetBuilder builder, OpType opType) {
-        if (builder.getMapping().size() > 0) {
-            try {
-                XContentBuilder mapper = XContentFactory.jsonBuilder().startObject()
-                        .startObject(getType()).startObject("properties");
-                for (Map.Entry<String, Object> entry : builder.getMapping().entrySet()) {
-                    mapper = mapper.startObject(entry.getKey());
-                    Map<String, Object> namespaceMap = (Map<String, Object>) entry.getValue();
-                    mapper = mapper.field("properties", namespaceMap).endObject();
-                }
-                mapper = mapper.endObject().endObject().endObject();
-                client.admin().indices().preparePutMapping(alias)
-                        .setIgnoreConflicts(true)
-                        .setType(getType())
-                        .setSource(mapper)
-                        .execute()
-                        .actionGet();
-            } catch (ElasticsearchException e) {
-                logger.error("Elasticsearch mapping exception for " + builder.getFilename() + ": " + e.getDetailedMessage());
-                e.printStackTrace();
-            } catch (IOException e) {
-                logger.error("IOException while updating mapping for " + builder.getFilename() + ": " + e.getMessage());
-                e.printStackTrace();
-            }
+        try {
+            return client.prepareIndex(alias, getType())
+                    .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
+                    .setOpType(opType)
+                    .setSource(Mapper.writeValueAsString(builder.getDocument()));
+        } catch (Exception e) {
+            throw new MalformedDataException(
+                    "Failed to serialize object, unexpected " + e, e);
         }
-        return client.prepareIndex(alias, getType())
-                .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
-                .setOpType(opType)
-                .setSource(Json.serialize(builder.getDocument()));
-
     }
 
     @Override
     public Asset create(AssetBuilder builder) {
+        builder.buildKeywords();
         IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.CREATE);
         if (builder.isAsync()) {
             idxBuilder.execute();
@@ -113,7 +109,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 String key = field.substring(idx + 1);              // E.g. makerTag
                 Object oldValue = builder.remove(namespace, key);
                 if (oldValue != null) {
-                    builder.put("source", "warning", field);
+                    builder.put("warnings", "field_warning", field);
                     return replace(builder);
                 }
             }
@@ -123,6 +119,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public boolean replace(AssetBuilder builder) {
+        builder.buildKeywords();
         try {
             IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.INDEX);
             return !idxBuilder.get().isCreated();
@@ -144,9 +141,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public void addToExport(Asset asset, Export export) {
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setScript(
-                "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } else { ctx._source.exports += exportId }",
-                ScriptService.ScriptType.INLINE);
+        updateBuilder.setScript("asset_append_export",
+                ScriptService.ScriptType.INDEXED);
         updateBuilder.addScriptParam("exportId", export.getId());
         updateBuilder.get();
     }
@@ -154,9 +150,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public void addToFolder(Asset asset, Folder folder) {
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setScript(
-                "if (ctx._source.folders == null ) {  ctx._source.folders = [folderId] } else { ctx._source.folders += folderId }",
-                ScriptService.ScriptType.INLINE);
+        updateBuilder.setScript("asset_append_folder",
+                ScriptService.ScriptType.INDEXED);
         updateBuilder.addScriptParam("folderId", folder.getId());
         updateBuilder.get();
     }
