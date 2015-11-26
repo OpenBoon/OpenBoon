@@ -2,17 +2,24 @@ package com.zorroa.archivist.sdk.schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
+import com.zorroa.archivist.sdk.domain.AssetType;
+import com.zorroa.archivist.sdk.util.IngestUtils;
+
+import java.util.Date;
 
 /**
  * Created by chambers on 11/23/15.
  */
-public class Source implements Schema {
+public class SourceSchema implements Schema {
 
+    @Keyword
     private String path;
     private String extension;
     private String filename;
     private String basename;
     private String directory;
+    private Date date;
+    private AssetType type;
 
     public String getPath() {
         return path;
@@ -28,6 +35,7 @@ public class Source implements Schema {
 
     public void setExtension(String ext) {
         this.extension = ext;
+        this.type = IngestUtils.determineAssetType(ext);
     }
 
     public String getFilename() {
@@ -54,6 +62,22 @@ public class Source implements Schema {
         this.directory = directory;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public AssetType getType() {
+        return type;
+    }
+
+    public void setType(AssetType type) {
+        this.type = type;
+    }
+
     @JsonIgnore
     @Override
     public String getNamespace() {
@@ -62,7 +86,8 @@ public class Source implements Schema {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(Source.class)
+        return MoreObjects.toStringHelper(SourceSchema.class)
+                .add("type", type)
                 .add("path", path)
                 .add("ext", extension)
                 .add("filename", filename)

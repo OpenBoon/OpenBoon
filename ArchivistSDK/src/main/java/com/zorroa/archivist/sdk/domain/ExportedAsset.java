@@ -1,7 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
-import com.google.common.collect.Lists;
-import com.zorroa.archivist.sdk.schema.Source;
+import com.zorroa.archivist.sdk.schema.SourceSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public class ExportedAsset {
         this.asset = asset;
         this.export = export;
         this.exportOutput = exportOutput;
-        addPath(asset.getValue("source", Source.class).getPath());
+        addPath(asset.getValue("source", SourceSchema.class).getPath());
     }
 
     /**
