@@ -1,8 +1,8 @@
 package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.processors.AssetMetadataProcessor;
-import com.zorroa.archivist.processors.ProxyProcessor;
+import com.zorroa.archivist.processors.SchemaAssetMetadataProcessor;
+import com.zorroa.archivist.processors.SchemaProxyProcessor;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestState;
@@ -149,8 +149,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         if (ingestService.getIngestPipelines().size() == 0) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("standard");
-            builder.addToProcessors(new ProcessorFactory<IngestProcessor>(AssetMetadataProcessor.class));
-            builder.addToProcessors(new ProcessorFactory<IngestProcessor>(ProxyProcessor.class));
+            builder.addToProcessors(new ProcessorFactory<IngestProcessor>(SchemaAssetMetadataProcessor.class));
+            builder.addToProcessors(new ProcessorFactory<IngestProcessor>(SchemaProxyProcessor.class));
 
             logger.info("Creating 'standard' ingest pipeline");
             ingestService.createIngestPipeline(builder);
