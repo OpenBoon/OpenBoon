@@ -2,43 +2,35 @@
   "settings": {
     "analysis": {
       "analyzer": {
-        "ngram_analyzer": {
-          "type": "custom",
+        "default": {
           "tokenizer": "standard",
           "filter": [
             "delimiter_filter",
             "standard",
             "lowercase",
-            "stop",
-            "ngram_filter"
-          ]
-        },
-        "path_analyzer": {
-          "type": "custom",
-          "tokenizer": "path_tokenizer",
-          "filter": [
-            "standard"
+            "stop"
           ]
         }
       },
       "filter": {
         "delimiter_filter": {
           "type": "word_delimiter",
-          "catenate_words": true,
+          "catenate_words": false,
           "preserve_original": true,
-          "split_on_numerics": false
-        },
-        "ngram_filter": {
-          "type": "edgeNGram",
-          "side": "front",
-          "min_gram": 2,
-          "max_gram": 20
+          "split_on_numerics": false,
+          "generate_word_parts": true
         }
       },
       "tokenizer": {
         "path_tokenizer": {
           "type": "path_hierarchy",
           "delimiter": "/"
+        },
+        "archivist_ngram_tokenizer": {
+          "type": "edgeNGram",
+          "min_gram": 2,
+          "max_gram": 20,
+          "token_chars": ["letter", "digit"]
         }
       }
     }
@@ -73,23 +65,75 @@
           "index": "not_analyzed"
         },
         "keywords": {
-          "type": "multi_field",
-          "fields": {
-            "indexed": {
-              "type": "string",
-              "index_analyzer": "ngram_analyzer"
+          "dynamic": true,
+          "properties": {
+            "suggest": {
+              "type": "completion",
+              "index_analyzer": "simple",
+              "search_analyzer": "simple",
+              "payloads": false
             },
-            "untouched": {
+            "all": {
               "type": "string",
-              "index": "not_analyzed"
+              "fields": {
+                "raw": {
+                  "store": true,
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "level5": {
+              "type": "string",
+              "copy_to": ["keywords.all", "keywords.suggest"],
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "level4": {
+              "type": "string",
+              "copy_to": ["keywords.all", "keywords.suggest"],
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "level3": {
+              "type": "string",
+              "copy_to": ["keywords.all", "keywords.suggest"],
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "level2": {
+              "type": "string",
+              "copy_to": ["keywords.all", "keywords.suggest"],
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "level1": {
+              "type": "string",
+              "copy_to": ["keywords.all", "keywords.suggest"],
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
             }
           }
-        },
-        "keywords_suggest": {
-          "type": "completion",
-          "index_analyzer": "simple",
-          "search_analyzer": "simple",
-          "payloads": false
         },
         "folders": {
           "type": "string",
@@ -99,7 +143,13 @@
           "properties": {
             "path": {
               "type": "string",
-              "index_analyzer": "path_analyzer"
+              "index" : "analyzed",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
             }
           }
         },
@@ -119,7 +169,24 @@
           "type": "integer",
           "index": "not_analyzed"
         }
-      }
+      },
+      "dynamic_templates": [
+        {
+          "string_template": {
+            "match": "*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "folders": {
       "properties": {
