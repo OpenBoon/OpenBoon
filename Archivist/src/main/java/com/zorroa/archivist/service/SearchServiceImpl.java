@@ -110,7 +110,7 @@ public class SearchServiceImpl implements SearchService {
         // FIXME: We need to use builder.search in here somehow!
         CompletionSuggestionBuilder completion = new CompletionSuggestionBuilder("completions")
                 .text(builder.getText())
-                .field("keywords_suggest");
+                .field("keywords.suggest");
         SuggestRequestBuilder suggest = client.prepareSuggest(alias)
                 .addSuggestion(completion);
         return  suggest;
