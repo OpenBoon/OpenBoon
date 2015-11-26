@@ -131,18 +131,30 @@ public class SearchServiceImpl implements SearchService {
 
     private QueryBuilder getQuery(AssetSearchBuilder builder) {
         QueryBuilder query;
+
         if (builder.getQuery() != null) {
-            query = QueryBuilders.queryStringQuery(builder.getQuery())
-                    .field("keywords.indexed")
-                    .field("keywords.untouched", 2)
-                    .lenient(true)
-                    .fuzzyPrefixLength(3)
-                    .analyzer("standard");
+            query = getQueryStringQuery(builder);
         } else {
             query = QueryBuilders.matchAllQuery();
         }
 
         return QueryBuilders.filteredQuery(query, getFilter(builder.getFilter()));
+    }
+
+    private QueryBuilder getQueryStringQuery(AssetSearchBuilder builder) {
+        QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(builder.getQuery());
+        if (builder.getConfidence() <= 0) {
+            query.field("keywords.all.raw", 1);
+            query.field("keywords.all");
+        }
+        else {
+            for (int i = 5; i >= builder.getConfidence(); i--) {
+                query.field(String.format("keywords.level%d.raw", i), i + 1);
+                query.field(String.format("keywords.level%d", i));
+            }
+        }
+        query.lenient(true);
+        return query;
     }
 
     /**
