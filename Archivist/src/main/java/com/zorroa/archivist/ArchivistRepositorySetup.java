@@ -1,5 +1,6 @@
 package com.zorroa.archivist;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.processors.ProxyProcessor;
 import com.zorroa.archivist.sdk.domain.Ingest;
@@ -30,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class ArchivistRepositorySetup implements ApplicationListener<ContextRefreshedEvent> {
@@ -75,6 +77,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
         try {
             setupElasticSearchMapping();
+            createIndexedScripts();
             createDefaultIngestPipeline();
             /**
              * TODO: get the snapshot repository working with elastic 1.7
@@ -152,6 +155,30 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             logger.info("Creating 'standard' ingest pipeline");
             ingestService.createIngestPipeline(builder);
         }
+    }
+
+    private void createIndexedScripts() {
+        logger.info("Creating indexed scripts");
+
+        Map<String, Object> script1 = ImmutableMap.of(
+            "script", "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } else { ctx._source.exports += exportId }",
+            "params", "exportId");
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("asset_append_export")
+                .setSource(script1)
+                .get();
+
+        Map<String, Object> script2 = ImmutableMap.of(
+                "script", "if (ctx._source.folders == null ) {  ctx._source.folders = [folderId] } else { ctx._source.folders += folderId }",
+                "params", "folderId");
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("asset_append_folder")
+                .setSource(script2)
+                .get();
     }
 
     private void createSnapshotRepository() {
