@@ -1,24 +1,57 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.zorroa.archivist.sdk.schema.*;
 import com.zorroa.archivist.sdk.util.IngestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.geom.Point2D;
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class AssetBuilder {
 
-    private final List<Integer> searchPermissions = new ArrayList<>();
-    private final List<Integer> exportPermissions = new ArrayList<>();
-    private final Map<String, Object> document = new HashMap<String, Object>();
-    private final Map<String, Object> mapping = new HashMap<String, Object>();
+    private static final Logger logger = LoggerFactory.getLogger(AssetBuilder.class);
+
+    /**
+     * Currenty the main aggregation point for all the asset data.
+     */
+    private final Map<String, Object> document = new HashMap<>();
+
+    /**
+     * We're using dynamic mapping templates for this now.
+     */
+    @Deprecated
+    private final Map<String, Object> mapping = new HashMap<>();
+
+    /**
+     * Eventually this will replace document, but for now we add schema objects
+     * both here, and to document.
+     */
+    private final Map<String, Schema> schemas = new HashMap<>();
+
     private boolean async = false;
     private final File file;
 
-    // Create a new AssetBuilder for the specified file.
-    // A unique file is required for each asset.
-    // Summary information is stored in the "source" namespace.
+    /**
+     * The SourceSchema describes all the common, non-format specific, source
+     * file information.  Mainly this is file path info and asset type.
+     */
+    private SourceSchema source;
+
+    /**
+     * This schema describes all the different keywords fields.
+     */
+    private KeywordsSchema keywords;
+
+    /**
+     * This schema describes the available permissions fields.
+     */
+    private PermissionSchema permissions;
+
     public AssetBuilder(File file) {
         if (!file.isFile()) {
             throw new IllegalArgumentException(
@@ -26,20 +59,129 @@ public class AssetBuilder {
         }
 
         this.file = file;
-        this.put("source", "filename", this.getFilename());
-        this.put("source", "directory", this.getDirectory());
-        this.put("source", "extension", this.getExtension());
-        this.put("source", "basename", this.getBasename());
-        this.putKeyword("source", "path", this.getAbsolutePath());
-        this.put("permissions", "search", searchPermissions);
-        this.put("permissions", "export", exportPermissions);
+
+        /*
+         * Add the standard schemas.
+         */
+
+        source = new SourceSchema();
+        source.setBasename(getBasename());
+        source.setDirectory(getDirectory());
+        source.setExtension(getExtension());
+        source.setPath(getAbsolutePath());
+        source.setExtension(getExtension());
+        addSchema(source);
+
+        keywords = new KeywordsSchema();
+        addSchema(keywords);
+
+        permissions = new PermissionSchema();
+        addSchema(permissions);
+
     }
 
     public AssetBuilder(String file) {
         this(new File(file));
     }
 
-    // Access the current document values
+    /*
+     * NEW API
+     */
+    public Map<String, Schema> getSchemas() {
+        return schemas;
+    }
+
+    public AssetBuilder addSchema(Schema schema) {
+        this.schemas.put(schema.getNamespace(), schema);
+        this.document.put(schema.getNamespace(), schema);
+        return this;
+    }
+
+    public <T> T getSchema(String namespace, Class<T> type) {
+        return (T) schemas.get(namespace);
+    }
+
+    public <T> T getSchema(String namespace) {
+        return (T) schemas.get(namespace);
+    }
+
+    public <T> T getAttr(String namespace, String key) {
+        try {
+            return (T) new PropertyDescriptor(key,
+                    schemas.get(namespace).getClass()).getReadMethod().invoke(schemas.get(namespace));
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+    public AssetBuilder addKeywords(int confidence, String ... words) {
+        keywords.addKeywords(confidence, words);
+        return this;
+    }
+
+    public AssetBuilder addKeywords(int confidence, Collection<String> words) {
+        keywords.addKeywords(confidence, words.toArray(new String[] {}));
+        return this;
+    }
+
+    public SourceSchema getSource() {
+        return source;
+    }
+
+    public KeywordsSchema getKeywords() {
+        return keywords;
+    }
+
+    public void setAttr(String namespace, String key, String value, int confidence) {
+        setAttr(namespace, key, value);
+        if (confidence > 0) {
+            keywords.addKeywords(confidence, value);
+        }
+    }
+
+    public void setAttr(String namespace, String key, String[] value, int confidence) {
+        setAttr(namespace, key, value);
+        if (confidence > 0) {
+            keywords.addKeywords(confidence, value);
+        }
+    }
+
+    public void setAttr(String namespace, String key, Object value) {
+        AttrSchema schema = (AttrSchema) this.schemas.get(namespace);
+        if (schema == null) {
+            schema = new AttrSchema(namespace);
+            addSchema(schema);
+        }
+        schema.setAttr(key, value);
+    }
+
+    /**
+     * This method copies all schema properties annotated with Keyword
+     * to the proper Keywords bucket.  This is called right before the asset
+     * is added to ElasticSearch.
+     */
+    public void buildKeywords() {
+        KeywordsSchema keywords = getKeywords();
+        for (Schema s: schemas.values()) {
+            for (Field field : s.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                Keyword annotation = field.getAnnotation(Keyword.class);
+                if (annotation == null) {
+                    continue;
+                }
+                try {
+                    keywords.addKeywords(annotation.confidence(), field.get(s).toString());
+                } catch (IllegalAccessException e) {
+                    logger.warn("Failed to access {}, ", field, e);
+                }
+            }
+        }
+    }
+
+    /*
+     * OLD API
+     */
+
     public Map<String, Object> getDocument() {
         return document;
     }
@@ -57,16 +199,16 @@ public class AssetBuilder {
     }
 
     public void setSearchPermissions(Permission ... perms) {
-        searchPermissions.clear();
+        permissions.getSearch().clear();
         for (Permission p: perms) {
-            searchPermissions.add(p.getId());
+            permissions.getSearch().add(p.getId());
         }
     }
 
     public void setExportPermissions(Permission ... perms) {
-        exportPermissions.clear();
+        permissions.getExport().clear();
         for (Permission p: perms) {
-            exportPermissions.add(p.getId());
+            permissions.getExport().add(p.getId());
         }
     }
 
@@ -262,11 +404,6 @@ public class AssetBuilder {
         }
         field.put(option, value);
     }
-
-    public boolean isImage() {
-        return IngestUtils.SUPPORTED_IMG_FORMATS.contains(getExtension());
-    }
-
 
     @Override
     public String toString() {
