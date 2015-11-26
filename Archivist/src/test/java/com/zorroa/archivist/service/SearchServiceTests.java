@@ -122,4 +122,16 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assertEquals(1, searchService.search(
                 new AssetSearchBuilder().setFilter(filter)).getHits().getTotalHits());
     }
+
+    @Test
+    public void testSimpleSearch() throws IOException {
+
+        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder.setAsync(false);
+        Asset asset1 = assetDao.create(assetBuilder);
+        refreshIndex(1000);
+
+        assertEquals(1, searchService.search(
+                new AssetSearchBuilder().setQuery("beer")).getHits().getTotalHits());
+    }
 }

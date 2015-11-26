@@ -6,10 +6,15 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.IngestExecutorService;
+import com.zorroa.archivist.service.SearchService;
+import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
@@ -115,7 +120,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": \"be\"}"))
+                .content(Json.serializeToString(new AssetSearchBuilder().setQuery("beer"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -160,7 +165,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_count")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": \"be\"}".getBytes()))
+                .content(Json.serializeToString(new AssetSearchBuilder().setQuery("beer"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -182,7 +187,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/assets/_aggregations")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": { \"match_all\": {}}, \"aggregations\" : { \"Keywords\" : { \"terms\" : { \"field\" : \"keywords.indexed\" }}}}".getBytes()))
+                .content("{ \"query\": { \"match_all\": {}}, \"aggregations\" : { \"Keywords\" : { \"terms\" : { \"field\" : \"keywords.all\" }}}}".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -205,7 +210,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\" : \"Keywords\", \"field\" : \"keywords.untouched\" }".getBytes()))
+                .content("{ \"name\" : \"Keywords\", \"field\" : \"keywords.all.raw\" }".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -250,7 +255,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/assets/_suggest")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"keyword-suggestions\": { \"text\": \"re\", \"completion\": { \"field\":\"keywords_suggest\"}}}".getBytes()))
+                .content("{ \"keyword-suggestions\": { \"text\": \"re\", \"completion\": { \"field\":\"keywords.suggest\"}}}".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -312,7 +317,6 @@ public class AssetControllerTests extends MockMvcTest {
                     new TypeReference<Map<String, Object>>() {});
             assertEquals(asset.getId(), json.get("_id"));
         }
-
     }
 
     @Test
