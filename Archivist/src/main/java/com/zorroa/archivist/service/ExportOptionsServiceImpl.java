@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.schema.Source;
+import com.zorroa.archivist.sdk.schema.SourceSchema;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class ExportOptionsServiceImpl implements ExportOptionsService {
             return;
         }
 
-        Source source = asset.getAsset().getValue("source", Source.class);
+        SourceSchema source = asset.getAsset().getValue("source", SourceSchema.class);
         String format =  imgOpts.getFormat() == null ? source.getExtension() : imgOpts.getFormat();
         BufferedImage inputImage = ImageIO.read(asset.getCurrentFile());
         BufferedImage outputImage;
