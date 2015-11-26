@@ -7,6 +7,6 @@ public enum AssetType {
     Image,
     Video,
     Document,
-    Model       // Better name for 3d assets?
-
+    Model,       // Better name for 3d assets?
+    Unknown
 }

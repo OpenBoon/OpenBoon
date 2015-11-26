@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.util;
 
 import com.google.common.collect.ImmutableSet;
+import com.zorroa.archivist.sdk.domain.AssetType;
 
 import javax.imageio.ImageIO;
 import java.util.Arrays;
@@ -8,26 +9,26 @@ import java.util.Arrays;
 /**
  * Created by chambers on 10/30/15.
  *
- * These can be static utils, if we need them.
- *
  */
 public class IngestUtils {
 
+    /**
+     * This is a lame way to do this, but it works for now.
+     */
     public static final ImmutableSet<String> SUPPORTED_IMG_FORMATS = ImmutableSet.<String>builder()
             .addAll(Arrays.asList(ImageIO.getReaderFormatNames())).build();
 
-    /*
-    public static File getResourceFile(String path) throws FileNotFoundException {
-        URL url = ResourceUtils.getURL(path);
-        Path resourcePath = Paths.get(url.toURI());
-        return new File(resourcePath.toUri());
+    public static final ImmutableSet<String> SUPPORTED_DOC_FORMATS = ImmutableSet.<String>builder()
+            .add("pdf").build();
 
+    public static AssetType determineAssetType(String ext) {
+        if (SUPPORTED_IMG_FORMATS.contains(ext)) {
+            return AssetType.Image;
+        } else if (SUPPORTED_DOC_FORMATS.contains(ext)) {
+            return AssetType.Document;
+        } else {
+            return AssetType.Unknown;
+        }
     }
-
-    public static File getProxyFile(String filename, String extension) throws FileNotFoundException {
-        File proxyFile = getResourceFile("/proxies");
-        return new File(proxyFile.getAbsoluteFile() + "/" + filename + "." + extension);
-    }
-    */
 
 }
