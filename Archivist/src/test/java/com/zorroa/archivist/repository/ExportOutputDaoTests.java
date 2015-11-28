@@ -35,7 +35,7 @@ public class ExportOutputDaoTests extends ArchivistApplicationTests {
         options.getImages().setFormat("jpg");
         options.getImages().setScale(.5);
 
-        AssetSearchBuilder search = new AssetSearchBuilder();
+        AssetSearch search = new AssetSearch();
         search.setQuery("foo");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();

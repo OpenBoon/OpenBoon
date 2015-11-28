@@ -9,6 +9,7 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.format.DateTimeFormat;
@@ -56,8 +57,12 @@ public class AssetMetadataProcessor extends IngestProcessor {
      */
     @Override
     public void process(AssetBuilder asset) {
-        if (asset.isImage()) {
-            extractImageData(asset);
+        switch(asset.getSource().getType()) {
+            case AssetType.Image:
+                extractImageData(asset);
+                break;
+            default:
+                logger.warn("currenty unsupported Asset type: {}", asset.get
         }
     }
 

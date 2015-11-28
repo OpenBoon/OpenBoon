@@ -73,12 +73,12 @@ public class SearchServiceImpl implements SearchService {
         return buildAggregate(builder).get();
     }
 
-    public Iterable<Asset> scanAndScroll(AssetSearchBuilder builder) {
+    public Iterable<Asset> scanAndScroll(AssetSearch search) {
 
         SearchResponse rsp = client.prepareSearch(alias)
                 .setSearchType(SearchType.SCAN)
                 .setScroll(new TimeValue(60000))
-                .setQuery(getQuery(builder))
+                .setQuery(getQuery(search))
                 .setSize(100).execute().actionGet();
 
         return new ScanAndScrollAssetIterator(client, rsp);
@@ -88,7 +88,7 @@ public class SearchServiceImpl implements SearchService {
 
         SearchRequestBuilder search = client.prepareSearch(alias)
                 .setTypes("asset")
-                .setQuery(getQuery(builder));
+                .setQuery(getQuery(builder.getSearch()));
         logger.info(search.toString());
 
         /*
@@ -101,7 +101,7 @@ public class SearchServiceImpl implements SearchService {
     private CountRequestBuilder buildCount(AssetSearchBuilder builder) {
         CountRequestBuilder count = client.prepareCount(alias)
                 .setTypes("asset")
-                .setQuery(getQuery(builder));
+                .setQuery(getQuery(builder.getSearch()));
         logger.info(count.toString());
         return count;
     }
@@ -117,9 +117,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private SearchRequestBuilder buildAggregate(AssetAggregateBuilder builder) {
-        AssetSearchBuilder search = builder.getSearch();
+        AssetSearch search = builder.getSearch();
         if (search == null) {
-            search = new AssetSearchBuilder();      // Use default empty search == all
+            search = new AssetSearch();      // Use default empty search == all
         }
         SearchRequestBuilder aggregation = client.prepareSearch(alias)
                 .setTypes("asset")
@@ -129,26 +129,26 @@ public class SearchServiceImpl implements SearchService {
         return aggregation;
     }
 
-    private QueryBuilder getQuery(AssetSearchBuilder builder) {
+    private QueryBuilder getQuery(AssetSearch search) {
         QueryBuilder query;
 
-        if (builder.getQuery() != null) {
-            query = getQueryStringQuery(builder);
+        if (search.getQuery() != null) {
+            query = getQueryStringQuery(search);
         } else {
             query = QueryBuilders.matchAllQuery();
         }
 
-        return QueryBuilders.filteredQuery(query, getFilter(builder.getFilter()));
+        return QueryBuilders.filteredQuery(query, getFilter(search.getFilter()));
     }
 
-    private QueryBuilder getQueryStringQuery(AssetSearchBuilder builder) {
-        QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(builder.getQuery());
-        if (builder.getConfidence() <= 0) {
+    private QueryBuilder getQueryStringQuery(AssetSearch search) {
+        QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(search.getQuery());
+        if (search.getConfidence() <= 0) {
             query.field("keywords.all.raw", 1);
             query.field("keywords.all");
         }
         else {
-            for (int i = 5; i >= builder.getConfidence(); i--) {
+            for (int i = 5; i >= search.getConfidence(); i--) {
                 query.field(String.format("keywords.level%d.raw", i), i + 1);
                 query.field(String.format("keywords.level%d", i));
             }
@@ -158,7 +158,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     /**
-     * Builds an "AND" filter based on all the options in the AssetSearchBuilder.
+     * Builds an "AND" filter based on all the options in the AssetFilter.
      *
      * @param builder
      * @return
@@ -170,17 +170,6 @@ public class SearchServiceImpl implements SearchService {
 
         if (builder == null) {
             return filter;
-        }
-
-        if (builder.getCreatedAfterTime() != null || builder.getCreatedBeforeTime() != null) {
-            RangeFilterBuilder createTimeFilter = FilterBuilders.rangeFilter("timeCreated");
-            if (builder.getCreatedAfterTime() != null) {
-                createTimeFilter.gte(builder.getCreatedAfterTime());
-            }
-            if (builder.getCreatedBeforeTime() != null) {
-                createTimeFilter.lte(builder.getCreatedBeforeTime());
-            }
-            filter.add(createTimeFilter);
         }
 
         if (builder.getFolderIds() != null) {

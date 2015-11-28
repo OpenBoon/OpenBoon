@@ -55,8 +55,7 @@ public class ExportOutputControllerTests extends MockMvcTest {
         options.getImages().setFormat("jpg");
         options.getImages().setScale(.5);
 
-        AssetSearchBuilder search = new AssetSearchBuilder();
-        search.setQuery("beer");
+        AssetSearch search = new AssetSearch().setQuery("beer");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
         outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");

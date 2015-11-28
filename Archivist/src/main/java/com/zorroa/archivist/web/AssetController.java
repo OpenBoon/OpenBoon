@@ -92,8 +92,8 @@ public class AssetController {
         List<Folder> decendents = folderService.getAllDecendents(folder);
         decendents.add(folder);
         for (Folder child : decendents) {
-            if (child.getQuery() != null) {
-                folderQuery.should(QueryBuilders.wrapperQuery(child.getQuery().getQuery()));
+            if (child.getSearch() != null) {
+                folderQuery.should(QueryBuilders.wrapperQuery(child.getSearch().getQuery()));
             } else {
                 folderIds.add(child.getId());
             }
@@ -153,10 +153,10 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)
-    public void search(@RequestBody AssetSearchBuilder search, @RequestParam(value="roomId", defaultValue="0", required=false) int roomId, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
+    public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        if (roomId > 0) {
+        if (search.getRoom() > 0) {
             Session session = userService.getActiveSession();
             Room room = roomService.getActiveRoom(session);  // FIXME: Should this use roomId?
             String json = new String(Json.serialize(search), StandardCharsets.UTF_8);

@@ -51,8 +51,9 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Asset asset1 = assetDao.create(builder);
         refreshIndex(100);
 
+        AssetSearch search = new AssetSearch().setQuery("captain");
         assertEquals(0, searchService.search(
-                new AssetSearchBuilder().setQuery("captain")).getHits().getTotalHits());
+                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
 
     }
 
@@ -68,8 +69,9 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Asset asset1 = assetDao.create(builder);
         refreshIndex(100);
 
+        AssetSearch search = new AssetSearch().setQuery("captain");
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setQuery("captain")).getHits().getTotalHits());
+                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
 
     }
 
@@ -91,8 +93,9 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         refreshIndex(100);
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setFilter(filter)).getHits().getTotalHits());
+                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
     }
 
     @Test
@@ -119,8 +122,9 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         refreshIndex(100);
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setFilter(filter)).getHits().getTotalHits());
+                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
     }
 
     @Test
@@ -132,6 +136,6 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         refreshIndex(1000);
 
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setQuery("beer")).getHits().getTotalHits());
+                new AssetSearchBuilder(new AssetSearch("beer"))).getHits().getTotalHits());
     }
 }
