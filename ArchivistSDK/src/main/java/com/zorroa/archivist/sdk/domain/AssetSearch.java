@@ -13,6 +13,7 @@ public class AssetSearch {
     private String query;                       // Eg. "food and dog", or see ES Query String DSL for details
     private AssetFilter filter;                 // Restrict results to match filter
     private List<AssetSearchOrder> order;       // FIXME: Ignored! Multilevel sort order
+    private int confidence = 0;
 
     public String getQuery() {
         return query;
@@ -39,5 +40,13 @@ public class AssetSearch {
     public AssetSearch setOrder(List<AssetSearchOrder> order) {
         this.order = order;
         return this;
+    }
+
+    public int getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(int confidence) {
+        this.confidence = confidence;
     }
 }

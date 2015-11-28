@@ -17,7 +17,7 @@ public class AssetSearchBuilder {
      * You get the idea.
      *
      */
-    private int confidence = 0;
+
     private AssetFilter filter;                 // Restrict results to match filter
 
     private AssetSearch search;
@@ -62,13 +62,4 @@ public class AssetSearchBuilder {
         this.room = room;
         return this;
     }
-
-    public int getConfidence() {
-        return confidence;
-    }
-
-    public void setConfidence(int confidence) {
-        this.confidence = confidence;
-    }
-
 }
