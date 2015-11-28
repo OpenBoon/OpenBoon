@@ -68,7 +68,7 @@ public class Folder {
 
     @Override
     public String toString() {
-        return String.format("<Folder id=%s parent=%s name=%s shared=%s>",
+        return String.format("<Folder id=%s parent=%s name=%s>",
                 id, parentId, name);
     }
 
