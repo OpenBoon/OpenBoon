@@ -1,7 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.zorroa.archivist.sdk.schema.*;
-import com.zorroa.archivist.sdk.util.IngestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,13 +113,13 @@ public class AssetBuilder {
         }
 
     }
-    public AssetBuilder addKeywords(int confidence, String ... words) {
-        keywords.addKeywords(confidence, words);
+    public AssetBuilder addKeywords(int confidence, boolean suggest, String ... words) {
+        keywords.addKeywords(confidence, suggest, words);
         return this;
     }
 
-    public AssetBuilder addKeywords(int confidence, Collection<String> words) {
-        keywords.addKeywords(confidence, words.toArray(new String[] {}));
+    public AssetBuilder addKeywords(int confidence, boolean suggest, Collection<String> words) {
+        keywords.addKeywords(confidence, suggest, words.toArray(new String[] {}));
         return this;
     }
 
@@ -132,18 +131,12 @@ public class AssetBuilder {
         return keywords;
     }
 
-    public void setAttr(String namespace, String key, String value, int confidence) {
+    public void setAttr(String namespace, String key, String ... value) {
         setAttr(namespace, key, value);
-        if (confidence > 0) {
-            keywords.addKeywords(confidence, value);
-        }
     }
 
-    public void setAttr(String namespace, String key, String[] value, int confidence) {
+    public void setAttrAsKeyword(int confidence, String namespace, String key, String ... value) {
         setAttr(namespace, key, value);
-        if (confidence > 0) {
-            keywords.addKeywords(confidence, value);
-        }
     }
 
     public void setAttr(String namespace, String key, Object value) {
@@ -170,7 +163,7 @@ public class AssetBuilder {
                     continue;
                 }
                 try {
-                    keywords.addKeywords(annotation.confidence(), field.get(s).toString());
+                    keywords.addKeywords(annotation.confidence(), false, field.get(s).toString());
                 } catch (IllegalAccessException e) {
                     logger.warn("Failed to access {}, ", field, e);
                 }
