@@ -15,6 +15,12 @@ public class AssetSearch {
     private List<AssetSearchOrder> order;       // FIXME: Ignored! Multilevel sort order
     private int confidence = 0;
 
+    public AssetSearch() { }
+
+    public AssetSearch(String query) {
+        this.query = query;
+    }
+
     public String getQuery() {
         return query;
     }

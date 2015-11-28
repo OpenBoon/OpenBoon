@@ -27,6 +27,10 @@ public class AssetSearchBuilder {
 
     public AssetSearchBuilder() { }
 
+    public AssetSearchBuilder(AssetSearch search) {
+        this.search = search;
+    }
+
     public AssetSearch getSearch() {
         return search;
     }
