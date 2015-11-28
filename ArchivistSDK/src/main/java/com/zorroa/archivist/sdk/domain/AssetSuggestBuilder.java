@@ -15,15 +15,17 @@ public class AssetSuggestBuilder {
         return text;
     }
 
-    public void setText(String text) {
+    public AssetSuggestBuilder setText(String text) {
         this.text = text;
+        return this;
     }
 
     public AssetSearch getSearch() {
         return search;
     }
 
-    public void setSearch(AssetSearch search) {
+    public AssetSuggestBuilder setSearch(AssetSearch search) {
         this.search = search;
+        return this;
     }
 }

@@ -14,40 +14,45 @@ public class UserBuilder {
         return password;
     }
 
-    public void setPassword(String password) {
+    public UserBuilder setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public UserBuilder setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public UserBuilder setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public UserBuilder setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public UserBuilder setUsername(String username) {
         this.username = username;
+        return this;
     }
 
 }
