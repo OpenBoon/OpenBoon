@@ -15,10 +15,9 @@ public class AssetAggregateBuilder {
     private AssetSearch search;
     private String field;
     private int size;
-    private String script;
-    private Map<String, Object> scriptParams;
-    private String excludeRegex;
-    private String includeRegex;
+    private AssetScript script;
+    private String exclude;
+    private String include;
 
     public AssetSearch getSearch() {
         return search;
@@ -31,15 +30,15 @@ public class AssetAggregateBuilder {
             terms.put("field", field);
         }
         if (script != null) {
-            terms.put("script", script);
+            terms.put("script", script.getScript());
             terms.put("lang", "native");
-            terms.put("params", scriptParams);
+            terms.put("params", script.getParams());
         }
-        if (excludeRegex != null) {
-            terms.put("exclude", excludeRegex);
+        if (exclude != null) {
+            terms.put("exclude", exclude);
         }
-        if (includeRegex != null) {
-            terms.put("include", includeRegex);
+        if (include != null) {
+            terms.put("include", include);
         }
         Map<String, Object> names = new HashMap<>();
         names.put("terms", terms);
@@ -52,59 +51,58 @@ public class AssetAggregateBuilder {
         return name;
     }
 
-    public void setName(String name) {
+    public AssetAggregateBuilder setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public void setSearch(AssetSearch search) {
+    public AssetAggregateBuilder setSearch(AssetSearch search) {
         this.search = search;
+        return this;
     }
 
     public String getField() {
         return field;
     }
 
-    public void setField(String field) {
+    public AssetAggregateBuilder setField(String field) {
         this.field = field;
+        return this;
     }
 
     public int getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public AssetAggregateBuilder setSize(int size) {
         this.size = size;
+        return this;
     }
 
-    public String getScript() {
+    public AssetScript getScript() {
         return script;
     }
 
-    public void setScript(String script) {
+    public AssetAggregateBuilder setScript(AssetScript script) {
         this.script = script;
+        return this;
     }
 
-    public Map<String, Object> getScriptParams() {
-        return scriptParams;
+    public String getExclude() {
+        return exclude;
     }
 
-    public void setScriptParams(Map<String, Object> scriptParams) {
-        this.scriptParams = scriptParams;
+    public AssetAggregateBuilder setExclude(String exclude) {
+        this.exclude = exclude;
+        return this;
     }
 
-    public String getExcludeRegex() {
-        return excludeRegex;
+    public String getInclude() {
+        return include;
     }
 
-    public void setExcludeRegex(String excludeRegex) {
-        this.excludeRegex = excludeRegex;
-    }
-
-    public String getIncludeRegex() {
-        return includeRegex;
-    }
-
-    public void setIncludeRegex(String includeRegex) {
-        this.includeRegex = includeRegex;
+    public AssetAggregateBuilder setInclude(String include) {
+        this.include = include;
+        return this;
     }
 }
