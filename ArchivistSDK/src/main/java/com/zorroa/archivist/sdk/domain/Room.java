@@ -11,7 +11,6 @@ public class Room {
     private String name;
     private Set<String> inviteList;
     private boolean visible;
-    private String folderId;
 
     public Room() { }
 
@@ -23,7 +22,6 @@ public class Room {
             .add("name", name)
             .add("visible", visible)
             .add("inviteList", inviteList)
-            .add("folderId", folderId)
             .toString();
     }
 
@@ -65,13 +63,5 @@ public class Room {
 
     public void setSession(String session) {
         this.session = session;
-    }
-
-    public String getFolderId() {
-        return folderId;
-    }
-
-    public void setFolderId(String folderId) {
-        this.folderId = folderId;
     }
 }

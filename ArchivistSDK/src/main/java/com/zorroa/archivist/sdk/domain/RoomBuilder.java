@@ -9,7 +9,6 @@ public class RoomBuilder {
     private Set<String> inviteList;
     private String password;
     private boolean visible = true;
-    private String folderId = null;
 
     public String getName() {
         return name;
@@ -40,11 +39,5 @@ public class RoomBuilder {
     }
     public void setSessionId(Long session) {
         this.sessionId = session;
-    }
-    public String getFolderId() {
-        return folderId;
-    }
-    public void setFolderId(String folderId) {
-        this.folderId = folderId;
     }
 }
