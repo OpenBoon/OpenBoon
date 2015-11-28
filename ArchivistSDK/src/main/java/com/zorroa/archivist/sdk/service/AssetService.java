@@ -17,5 +17,7 @@ public interface AssetService {
 
     boolean updateAsset(String assetId, AssetUpdateBuilder builder);
 
+    boolean select(String assetId, boolean selected);
+
     void addToFolder(Asset asset, Folder folder);
 }
