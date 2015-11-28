@@ -11,8 +11,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.util.UUID;
-
 import static org.junit.Assert.*;
 
 public class RoomDaoTests extends ArchivistApplicationTests {
@@ -105,7 +103,6 @@ public class RoomDaoTests extends ArchivistApplicationTests {
     public void testUpdate() {
         RoomUpdateBuilder updater = new RoomUpdateBuilder();
         updater.setName("test123");
-        updater.setFolderId(UUID.randomUUID().toString());
         updater.setPassword("test123");
 
 
@@ -115,7 +112,6 @@ public class RoomDaoTests extends ArchivistApplicationTests {
 
         Room room2 = roomDao.get(room.getId());
         assertEquals(updater.getName(), room2.getName());
-        assertEquals(updater.getFolderId(), room2.getFolderId());
         assertTrue(BCrypt.checkpw("test123", roomDao.getPassword(room2.getId())));
     }
 

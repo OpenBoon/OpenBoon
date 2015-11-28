@@ -89,6 +89,10 @@
           "type": "string",
           "index": "not_analyzed"
         },
+        "selectedRooms": {
+          "type": "integer",
+          "index": "not_analyzed"
+        },
         "source": {
           "properties": {
             "path": {

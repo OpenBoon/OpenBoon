@@ -10,6 +10,8 @@ import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.UserService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -46,6 +48,12 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     FolderDao folderDao;
+
+    @Autowired
+    RoomService roomService;
+
+    @Autowired
+    UserService userService;
 
     @Value("${archivist.index.alias}")
     private String alias;
@@ -172,13 +180,23 @@ public class SearchServiceImpl implements SearchService {
             return filter;
         }
 
+        if (builder.isSelected()) {
+            Room room = roomService.getActiveRoom(userService.getActiveSession());
+            if (room != null) {
+                TermFilterBuilder selectedBuilder = FilterBuilders.termFilter("selectedRooms", room.getId());
+                filter.add(selectedBuilder);
+            }
+        }
+
         if (builder.getFolderIds() != null) {
             filter.add(getFolderFilter(builder));
         }
 
-        if (builder.getExportId() > 0) {
-            FilterBuilder exportFilterBuilder = FilterBuilders.termFilter("exports", builder.getExportId());
-            filter.add(exportFilterBuilder);
+        if (builder.getExportIds() != null) {
+            for (Integer id : builder.getExportIds()) {
+                FilterBuilder exportFilterBuilder = FilterBuilders.termFilter("exports", id);
+                filter.add(exportFilterBuilder);
+            }
         }
 
         if (builder.getExistFields() != null) {
@@ -206,7 +224,7 @@ public class SearchServiceImpl implements SearchService {
 
         if (builder.getScripts() != null) {
             for (AssetScript script : builder.getScripts()) {
-                FilterBuilder scriptFilterBuilder = FilterBuilders.scriptFilter(script.getName())
+                FilterBuilder scriptFilterBuilder = FilterBuilders.scriptFilter(script.getScript())
                         .lang("native")
                         .params(script.getParams());
                 filter.add(scriptFilterBuilder);

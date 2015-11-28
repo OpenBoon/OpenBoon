@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,9 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Autowired
     IngestExecutorService ingestExecutorService;
+
+    @Autowired
+    SearchService searchService;
 
     @Test
     public void testSearchAll() throws Exception {
@@ -229,10 +233,14 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
+        Map<String, Object> scriptParams = new HashMap<>();
+        scriptParams.put("field", "source.date");
+        scriptParams.put("interval", "year");
+        AssetAggregateBuilder aab = new AssetAggregateBuilder().setName("Years").setScript(new AssetScript().setScript("archivistDate").setParams(scriptParams));
         MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\" : \"Years\", \"script\" : \"archivistDate\", \"scriptParams\" : { \"field\" : \"source.date\", \"interval\" : \"year\" } }".getBytes()))
+                .content(Json.serializeToString(aab)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -512,10 +520,18 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
+        Map<String, Object> scriptParams = new HashMap<>();
+        scriptParams.put("field", "source.date");
+        scriptParams.put("interval", "year");
+        scriptParams.put("terms", new ArrayList<>().add("2014"));
+        AssetScript script = new AssetScript().setScript("archivistDate").setParams(scriptParams);
+        List<AssetScript> scripts = new ArrayList<>();
+        scripts.add(script);
+        AssetSearchBuilder asb = new AssetSearchBuilder().setSearch(new AssetSearch().setFilter(new AssetFilter().setScripts(scripts)));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"scripts\" : [ { \"name\" : \"archivistDate\", \"params\" : { \"field\" : \"source.date\", \"interval\" : \"year\", \"terms\" : [\"2014\"] } } ] } } }"))
+                .content(Json.serializeToString(asb)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -523,6 +539,85 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testSelectAsset() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        // Select two assets
+        List<Asset> assets = assetDao.getAll();
+        Asset asset = assets.get(0);
+        MvcResult result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_select")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"selected\" : 1 }"))
+                .andExpect(status().isOk())
+                .andReturn();
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(true, json.get("success"));
+
+        asset = assets.get(1);
+        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_select")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"selected\" : 1 }"))
+                .andExpect(status().isOk())
+                .andReturn();
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(true, json.get("success"));
+
+        AssetSearchBuilder asb = new AssetSearchBuilder().
+                setSearch(new AssetSearch().
+                        setFilter(new AssetFilter().setSelected(true)));
+
+        refreshIndex(1000);
+
+        // Check to make sure both assets are returned by a selection searcn
+        result =  mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(asb)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(2, count);
+
+        // Deselect one of the assets and check again with another search
+        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_select")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"selected\" : 0 }"))
+                .andExpect(status().isOk())
+                .andReturn();
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(true, json.get("success"));
+
+        refreshIndex(1000);
+
+        result =  mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(asb)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        hits = (Map<String, Object>) json.get("hits");
+        count = (int)hits.get("total");
         assertEquals(1, count);
     }
 }
