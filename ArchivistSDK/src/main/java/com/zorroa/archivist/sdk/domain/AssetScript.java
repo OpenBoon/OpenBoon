@@ -10,15 +10,15 @@ import java.util.Map;
  * A script to use for queries or filters
  */
 public class AssetScript {
-    private String name;
+    private String script;
     private Map<String, Object> params;
 
-    public String getName() {
-        return name;
+    public String getScript() {
+        return script;
     }
 
-    public AssetScript setName(String name) {
-        this.name = name;
+    public AssetScript setScript(String script) {
+        this.script = script;
         return this;
     }
 
