@@ -36,14 +36,14 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
     AssetDao assetDao;
 
     @Test
-    public void testProcess() throws InterruptedException {
+    public void testProcessImage() throws InterruptedException {
 
         Map<String, Object> args = Maps.newHashMap();
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("test");
         builder.addToProcessors(
-                new ProcessorFactory<>("com.zorroa.archivist.processors.AssetMetadataProcessor", args));
+                new ProcessorFactory<>("com.zorroa.archivist.processors.SchemaAssetMetadataProcessor", args));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
@@ -52,6 +52,7 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
 
         List<Asset> assets = assetDao.getAll();
         assertEquals(2, assets.size());
+
         Map<String, Object> sourceMap = (Map<String, Object>) assets.get(0).getDocument().get("source");
         assertTrue(sourceMap.containsKey("date"));
     }
