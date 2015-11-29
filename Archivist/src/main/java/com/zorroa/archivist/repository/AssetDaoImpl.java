@@ -57,17 +57,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         return "asset";
     }
 
-    private static final JsonRowMapper<Asset> MAPPER = new JsonRowMapper<Asset>() {
-        @Override
-        public Asset mapRow(String id, long version, byte[] source)  throws Exception {
-            Map<String, Object> data;
-            data = Json.Mapper.readValue(source, new TypeReference<Map<String, Object>>() {});
-            Asset result = new Asset();
-            result.setId(id);
-            result.setVersion(version);
-            result.setDocument(data);
-            return result;
-        }
+    private static final JsonRowMapper<Asset> MAPPER = (id, version, source) -> {
+        Map<String, Object> data;
+        data = Json.Mapper.readValue(source, new TypeReference<Map<String, Object>>() {});
+        Asset result = new Asset();
+        result.setId(id);
+        result.setVersion(version);
+        result.setDocument(data);
+        return result;
     };
 
     private IndexRequestBuilder buildRequest(AssetBuilder builder, OpType opType) {

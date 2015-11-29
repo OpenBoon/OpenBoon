@@ -16,26 +16,21 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
 @Repository
 public class RoomDaoImpl extends AbstractDao implements RoomDao {
 
-    private static final RowMapper<Room> MAPPER = new RowMapper<Room>() {
-        @Override
-        public Room mapRow(ResultSet rs, int row) throws SQLException {
-            Room room = new Room();
-            room.setId(rs.getLong("pk_room"));
-            room.setName(rs.getString("str_name"));
-            room.setVisible(rs.getBoolean("bool_visible"));
-            // FIXME: Fails when reading an array, perhaps without a default value?
+    private static final RowMapper<Room> MAPPER = (rs, row) -> {
+        Room room = new Room();
+        room.setId(rs.getLong("pk_room"));
+        room.setName(rs.getString("str_name"));
+        room.setVisible(rs.getBoolean("bool_visible"));
+        // FIXME: Fails when reading an array, perhaps without a default value?
 //            String[] invites = (String[]) rs.getObject("list_invites");
 //            room.setInviteList(ImmutableSet.<String>copyOf(invites));
-            return room;
-        }
+        return room;
     };
 
     @Override

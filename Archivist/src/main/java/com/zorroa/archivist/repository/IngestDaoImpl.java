@@ -12,36 +12,31 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
 @Repository
 public class IngestDaoImpl extends AbstractDao implements IngestDao {
 
-    private static final RowMapper<Ingest> MAPPER = new RowMapper<Ingest>() {
-        @Override
-        public Ingest mapRow(ResultSet rs, int row) throws SQLException {
-            Ingest result = new Ingest();
-            result.setId(rs.getLong("pk_ingest"));
-            result.setPipelineId(rs.getInt("pk_pipeline"));
-            result.setState(IngestState.values()[rs.getInt("int_state")]);
-            result.setPath(rs.getString("str_path"));
-            result.setTimeCreated(rs.getLong("time_created"));
-            result.setUserCreated(rs.getInt("user_created"));
-            result.setTimeModified(rs.getLong("time_modified"));
-            result.setUserModified(rs.getInt("user_modified"));
-            result.setFileTypes((Set<String>) rs.getObject("list_types"));
-            result.setTimeStarted(rs.getLong("time_started"));
-            result.setTimeStopped(rs.getLong("time_stopped"));
-            result.setCreatedCount(rs.getInt("int_created_count"));
-            result.setErrorCount(rs.getInt("int_error_count"));
-            result.setUpdatedCount(rs.getInt("int_updated_count"));
-            result.setUpdateOnExist(rs.getBoolean("bool_update_on_exist"));
-            result.setAssetWorkerThreads(rs.getInt("int_asset_worker_threads"));
-            return result;
-        }
+    private static final RowMapper<Ingest> MAPPER = (rs, row) -> {
+        Ingest result = new Ingest();
+        result.setId(rs.getLong("pk_ingest"));
+        result.setPipelineId(rs.getInt("pk_pipeline"));
+        result.setState(IngestState.values()[rs.getInt("int_state")]);
+        result.setPath(rs.getString("str_path"));
+        result.setTimeCreated(rs.getLong("time_created"));
+        result.setUserCreated(rs.getInt("user_created"));
+        result.setTimeModified(rs.getLong("time_modified"));
+        result.setUserModified(rs.getInt("user_modified"));
+        result.setFileTypes((Set<String>) rs.getObject("list_types"));
+        result.setTimeStarted(rs.getLong("time_started"));
+        result.setTimeStopped(rs.getLong("time_stopped"));
+        result.setCreatedCount(rs.getInt("int_created_count"));
+        result.setErrorCount(rs.getInt("int_error_count"));
+        result.setUpdatedCount(rs.getInt("int_updated_count"));
+        result.setUpdateOnExist(rs.getBoolean("bool_update_on_exist"));
+        result.setAssetWorkerThreads(rs.getInt("int_asset_worker_threads"));
+        return result;
     };
 
     @Override
