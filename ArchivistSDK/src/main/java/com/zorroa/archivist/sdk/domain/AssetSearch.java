@@ -13,6 +13,19 @@ public class AssetSearch {
     private String query;                       // Eg. "food and dog", or see ES Query String DSL for details
     private AssetFilter filter;                 // Restrict results to match filter
     private List<AssetSearchOrder> order;       // FIXME: Ignored! Multilevel sort order
+
+    /**
+     * The keyword confidence level to search.  There are currently 5 confidence
+     * buckets, with 5 being the most confident and 1 being the least.
+     *
+     * 0 = disabled (all keywords)
+     * 5 = searches only confidence level 5
+     * 4 = searched 4 and 5
+     * 3 = searches 3,4 and 5
+     *
+     * You get the idea.
+     *
+     */
     private int confidence = 0;
 
     public AssetSearch() { }
