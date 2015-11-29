@@ -559,7 +559,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_select")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"selected\" : 1 }"))
+                .content("{ \"selected\" : true }"))
                 .andExpect(status().isOk())
                 .andReturn();
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
@@ -570,7 +570,7 @@ public class AssetControllerTests extends MockMvcTest {
         result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_select")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"selected\" : 1 }"))
+                .content("{ \"selected\" : true }"))
                 .andExpect(status().isOk())
                 .andReturn();
         json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
@@ -601,7 +601,7 @@ public class AssetControllerTests extends MockMvcTest {
         result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_select")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"selected\" : 0 }"))
+                .content("{ \"selected\" : false }"))
                 .andExpect(status().isOk())
                 .andReturn();
         json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
