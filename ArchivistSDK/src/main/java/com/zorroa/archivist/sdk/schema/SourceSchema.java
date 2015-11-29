@@ -20,6 +20,15 @@ public class SourceSchema implements Schema {
     private String directory;
     private Date date;
     private AssetType type;
+    private String checksum;
+
+    public String getChecksum() {
+        return checksum;
+    }
+
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
+    }
 
     public String getPath() {
         return path;
