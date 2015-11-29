@@ -78,6 +78,15 @@ public class AssetBuilder {
         permissions = new PermissionSchema();
         addSchema(permissions);
 
+        switch(source.getType()) {
+            case Image:
+                addSchema(new ImageSchema());
+                break;
+            default:
+                logger.warn("Unsupported asset type: '%s'", source.getType());
+        }
+
+
     }
 
     public AssetBuilder(String file) {
