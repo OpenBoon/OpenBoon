@@ -1,5 +1,10 @@
 {
   "settings": {
+    "index": {
+      "query": {
+        "default_field": "keywords.all"
+      }
+    },
     "analysis": {
       "analyzer": {
         "default": {
