@@ -358,20 +358,18 @@ public class AssetController {
 
         boolean selected = (Boolean) json.get("selected");
         boolean success = assetService.select(id, selected);
-        String body =  "\"assetId\" : \"" + id + "\", \"selected\" : " + selected;
         if (success) {
             Session session = userService.getActiveSession();
             Room room = roomService.getActiveRoom(session);
-            String msg = "{ " + body + " }";
+            String msg = "{ \"assetIds\" : [ \"" + id + "\" ] }";
             MessageType messageType = selected ? MessageType.ASSET_SELECT : MessageType.ASSET_DESELECT;
             roomService.sendToRoom(room, new Message(messageType, msg));
         }
 
         return new StringBuilder(128)
-                .append("{")
-                .append(body)
-                .append(", \"success\" : ")
-                .append(success)
+                .append("{ \"assetId\" : \"" + id + "\"")
+                .append(", \"selected\" : " + selected)
+                .append(", \"success\" : " + success)
                 .append("}").toString();
     }
 
