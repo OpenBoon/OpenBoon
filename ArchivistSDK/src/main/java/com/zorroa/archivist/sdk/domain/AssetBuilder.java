@@ -137,13 +137,13 @@ public class AssetBuilder {
         return keywords;
     }
 
-    public void setAttr(String namespace, String key, Object ... value) {
+    public void setAttr(String namespace, String key, Object[] values) {
         AttrSchema schema = (AttrSchema) this.schemas.get(namespace);
         if (schema == null) {
             schema = new AttrSchema(namespace);
             addSchema(schema);
         }
-        schema.setAttr(key, value);
+        schema.setAttr(key, values);
     }
 
 
