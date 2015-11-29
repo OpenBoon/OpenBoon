@@ -6,6 +6,7 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.schema.SourceSchema;
 import com.zorroa.archivist.sdk.service.ExportService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,11 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         refreshIndex(100);
 
         Asset asset2 = assetDao.get(asset1.getId());
-        assertEquals("jpg", asset2.getValue("source.extension"));
-        assertEquals("/tmp", asset2.getValue("source.directory"));
-        assertEquals(filepath, asset2.getValue("source.path"));
-        assertEquals(filename, asset2.getValue("source.filename"));
-
+        SourceSchema source = asset2.getValue("source", SourceSchema.class);
+        assertEquals("jpg", source.getExtension());
+        assertEquals("/tmp", source.getDirectory());
+        assertEquals(filepath, source.getPath());
+        assertEquals(filename, source.getFilename());
     }
 
     @Test
