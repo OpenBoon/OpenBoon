@@ -105,7 +105,7 @@ public class SchemaProxyProcessor extends IngestProcessor {
             schema.setHeight(size.height);
         } catch (IOException e) {
             logger.warn("Unable to determine image dimensions: {}: " + e.getMessage(), asset);
-            asset.put("source", "error", "ProxyDimensions");
+            asset.put("errors", getClass().getCanonicalName(), e.getMessage());
         }
     }
 
