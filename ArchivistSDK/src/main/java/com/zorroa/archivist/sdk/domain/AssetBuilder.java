@@ -144,6 +144,10 @@ public class AssetBuilder {
         schema.setAttr(key, value);
     }
 
+    public boolean isType(AssetType type) {
+        return getSource().getType().equals(type);
+    }
+
     /**
      * This method copies all schema properties annotated with Keyword
      * to the proper Keywords bucket.  This is called right before the asset
