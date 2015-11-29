@@ -356,7 +356,7 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/_select", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateFolders(@RequestBody Map<String, Object> json, @PathVariable String id, HttpSession httpSession) throws Exception {
 
-        boolean selected = (Integer) json.get("selected") == 1;
+        boolean selected = (Boolean) json.get("selected");
         boolean success = assetService.select(id, selected);
         String body =  "\"assetId\" : \"" + id + "\", \"selected\" : " + selected;
         if (success) {
