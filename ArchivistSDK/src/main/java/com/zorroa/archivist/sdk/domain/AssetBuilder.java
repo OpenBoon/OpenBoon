@@ -69,6 +69,7 @@ public class AssetBuilder {
         source.setExtension(getExtension());
         source.setPath(getAbsolutePath());
         source.setExtension(getExtension());
+        source.setFilename(getFilename());
         addSchema(source);
 
         keywords = new KeywordsSchema();
