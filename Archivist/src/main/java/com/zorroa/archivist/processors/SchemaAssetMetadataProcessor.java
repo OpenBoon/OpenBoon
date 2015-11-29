@@ -55,7 +55,6 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
     public void process(AssetBuilder asset) {
         switch(asset.getSource().getType()) {
             case Image:
-                asset.addSchema(new ImageSchema());
                 extractImageData(asset);
                 break;
             default:
@@ -185,7 +184,7 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
                     String componentName = value.getClass().getComponentType().getName();
                     if (componentName.equals("java.lang.String")) {
                         String[] strList = (String[])value;
-                        asset.setAttr(namespace, key, strList);
+                        asset.setAttr(namespace, key, value);
                         asset.addKeywords(keywordArgs.contains(id) ? 5 : 0, true, strList);
                     } else if (componentName.equals("com.drew.lang.Rational")) {
                         Rational[] rationals = (Rational[]) value;
