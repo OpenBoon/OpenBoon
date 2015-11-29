@@ -2,10 +2,12 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.IngestPipelineDao;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.domain.Ingest;
+import com.zorroa.archivist.sdk.domain.IngestBuilder;
+import com.zorroa.archivist.sdk.domain.IngestPipeline;
+import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.service.IngestService;
-import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

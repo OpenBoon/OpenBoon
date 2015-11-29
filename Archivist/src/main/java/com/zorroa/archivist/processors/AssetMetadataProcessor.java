@@ -9,7 +9,6 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.format.DateTimeFormat;

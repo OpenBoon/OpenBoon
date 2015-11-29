@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Maps;
-import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.event.EventServerHandler;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
