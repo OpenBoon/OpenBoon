@@ -17,7 +17,7 @@ public class ChecksumProcessor extends IngestProcessor {
     public void process(AssetBuilder asset) {
         try {
             byte[] bytes = Files.toByteArray(asset.getFile());
-            asset.put("source", "hash", Hashing.murmur3_128().hashBytes(bytes).toString());
+            asset.getSource().setChecksum(Hashing.murmur3_128().hashBytes(bytes).toString());
         } catch (IOException e) {
             logger.warn("Failed to calculate CRC for file '{}'", asset.getAbsolutePath(), e);
         }
