@@ -135,10 +135,6 @@ public class AssetBuilder {
         setAttr(namespace, key, value);
     }
 
-    public void setAttrAsKeyword(int confidence, String namespace, String key, String ... value) {
-        setAttr(namespace, key, value);
-    }
-
     public void setAttr(String namespace, String key, Object value) {
         AttrSchema schema = (AttrSchema) this.schemas.get(namespace);
         if (schema == null) {
