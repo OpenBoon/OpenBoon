@@ -146,6 +146,16 @@ public class AssetBuilder {
         schema.setAttr(key, value);
     }
 
+
+    public void setAttr(String namespace, String key, Object value) {
+        AttrSchema schema = (AttrSchema) this.schemas.get(namespace);
+        if (schema == null) {
+            schema = new AttrSchema(namespace);
+            addSchema(schema);
+        }
+        schema.setAttr(key, value);
+    }
+
     public boolean isType(AssetType type) {
         return getSource().getType().equals(type);
     }
