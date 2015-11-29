@@ -7,14 +7,10 @@ import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.SearchService;
-import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
@@ -498,10 +494,15 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex(1000);
 
+        AssetFieldRange range = new AssetFieldRange().setField("source.date").setMin("2014-01-01").setMax("2015-01-01");
+        ArrayList<AssetFieldRange> ranges = new ArrayList<>();
+        ranges.add(range);
+        AssetFilter filter = new AssetFilter().setFieldRanges(ranges);
+        AssetSearchBuilder asb = new AssetSearchBuilder().setSearch(new AssetSearch().setFilter(filter));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"fieldRanges\" : [ { \"field\" : \"source.date\", \"min\" : \"2014-01-01\", \"max\" : \"2015-01-01\" } ] } } }"))
+                .content(Json.serializeToString(asb)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -523,7 +524,9 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> scriptParams = new HashMap<>();
         scriptParams.put("field", "source.date");
         scriptParams.put("interval", "year");
-        scriptParams.put("terms", new ArrayList<>().add("2014"));
+        List<String> terms = new ArrayList<>();
+        terms.add("2014");
+        scriptParams.put("terms", terms);
         AssetScript script = new AssetScript().setScript("archivistDate").setParams(scriptParams);
         List<AssetScript> scripts = new ArrayList<>();
         scripts.add(script);
