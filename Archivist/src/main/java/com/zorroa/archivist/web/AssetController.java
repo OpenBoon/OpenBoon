@@ -156,10 +156,10 @@ public class AssetController {
     public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        if (search.getRoom() > 0) {
+        if (search.getRoomId() > 0) {
             Session session = userService.getActiveSession();
             Room room = roomService.getActiveRoom(session);  // FIXME: Should this use roomId?
-            String json = new String(Json.serialize(search), StandardCharsets.UTF_8);
+            String json = new String(Json.serializeToString(search));
             roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, json));
         }
 
