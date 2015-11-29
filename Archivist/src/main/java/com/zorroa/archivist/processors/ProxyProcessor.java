@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
@@ -57,7 +58,7 @@ public class ProxyProcessor extends IngestProcessor {
                     new ProxyOutput(format, 1024, 8, 0.9f)
             );
         }
-        if (asset.isImage()) {
+        if (asset.isType(AssetType.Image)) {
             extractDimensions(asset);
             int width = (int)asset.get("source", "width");
             List<Proxy> result = Lists.newArrayList();

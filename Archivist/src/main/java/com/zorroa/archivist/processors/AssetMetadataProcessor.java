@@ -58,11 +58,11 @@ public class AssetMetadataProcessor extends IngestProcessor {
     @Override
     public void process(AssetBuilder asset) {
         switch(asset.getSource().getType()) {
-            case AssetType.Image:
+            case Image:
                 extractImageData(asset);
                 break;
             default:
-                logger.warn("currenty unsupported Asset type: {}", asset.get
+                logger.warn("currently unsupported Asset type: {}", asset.getSource().getType());
         }
     }
 

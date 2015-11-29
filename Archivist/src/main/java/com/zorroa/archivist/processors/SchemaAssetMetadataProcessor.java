@@ -176,7 +176,8 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
                  * just add the data to the object
                  */
                 if (value instanceof String) {
-                    asset.setAttr(namespace, key, (String)value, keywordArgs.contains(id) ? 5 : 0);
+                    asset.setAttr(namespace, key, (String)value);
+                    asset.addKeywords(keywordArgs.contains(id) ? 5 : 0, true, (String)value);
                 } else if (value instanceof Rational) {
                     Rational rational = (Rational)value;
                     asset.setAttr(namespace, key, rational.doubleValue());
@@ -184,7 +185,8 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
                     String componentName = value.getClass().getComponentType().getName();
                     if (componentName.equals("java.lang.String")) {
                         String[] strList = (String[])value;
-                        asset.setAttr(namespace, key, strList, keywordArgs.contains(id) ? 5 : 0);
+                        asset.setAttr(namespace, key, strList);
+                        asset.addKeywords(keywordArgs.contains(id) ? 5 : 0, true, strList);
                     } else if (componentName.equals("com.drew.lang.Rational")) {
                         Rational[] rationals = (Rational[]) value;
                         Double[] doubles = new Double[rationals.length];
