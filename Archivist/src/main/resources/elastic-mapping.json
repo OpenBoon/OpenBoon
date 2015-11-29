@@ -82,56 +82,6 @@
                   "index": "not_analyzed"
                 }
               }
-            },
-            "level5": {
-              "type": "string",
-              "copy_to": ["keywords.all", "keywords.suggest"],
-              "fields": {
-                "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
-            },
-            "level4": {
-              "type": "string",
-              "copy_to": ["keywords.all", "keywords.suggest"],
-              "fields": {
-                "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
-            },
-            "level3": {
-              "type": "string",
-              "copy_to": ["keywords.all", "keywords.suggest"],
-              "fields": {
-                "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
-            },
-            "level2": {
-              "type": "string",
-              "copy_to": ["keywords.all", "keywords.suggest"],
-              "fields": {
-                "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
-            },
-            "level1": {
-              "type": "string",
-              "copy_to": ["keywords.all", "keywords.suggest"],
-              "fields": {
-                "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
             }
           }
         },
