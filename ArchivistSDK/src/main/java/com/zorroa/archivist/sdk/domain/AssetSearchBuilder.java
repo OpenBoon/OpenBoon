@@ -8,7 +8,7 @@ public class AssetSearchBuilder {
     private AssetSearch search;
     private int size;
     private int from;
-    private int room;
+    private int roomId;
 
     public AssetSearchBuilder() { }
 
@@ -43,12 +43,12 @@ public class AssetSearchBuilder {
         return this;
     }
 
-    public int getRoom() {
-        return room;
+    public int getRoomId() {
+        return roomId;
     }
 
     public AssetSearchBuilder setRoom(int room) {
-        this.room = room;
+        this.roomId = roomId;
         return this;
     }
 }
