@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -65,7 +64,6 @@ public class RoomControllerTests extends MockMvcTest {
 
         RoomUpdateBuilder update = new RoomUpdateBuilder();
         update.setName("RoomB");
-        update.setFolderId(UUID.randomUUID().toString());
         update.setPassword("test123");
 
         MvcResult result = mvc.perform(put("/api/v1/rooms/" + room.getId())
@@ -77,7 +75,6 @@ public class RoomControllerTests extends MockMvcTest {
 
         Room updatedRoom = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
         assertEquals(update.getName(), updatedRoom.getName());
-        assertEquals(update.getFolderId(), updatedRoom.getFolderId());
         assertTrue(BCrypt.checkpw("test123", roomDao.getPassword(room.getId())));
     }
 

@@ -22,5 +22,7 @@ public interface AssetDao {
 
     boolean update(String assetId, AssetUpdateBuilder builder);
 
+    boolean select(String assetId, boolean selected);
+
     void addToExport(Asset asset, Export export);
 }

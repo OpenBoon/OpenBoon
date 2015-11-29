@@ -24,7 +24,6 @@ import java.util.List;
 @Repository
 public class RoomDaoImpl extends AbstractDao implements RoomDao {
 
-
     private static final RowMapper<Room> MAPPER = new RowMapper<Room>() {
         @Override
         public Room mapRow(ResultSet rs, int row) throws SQLException {
@@ -32,7 +31,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             room.setId(rs.getLong("pk_room"));
             room.setName(rs.getString("str_name"));
             room.setVisible(rs.getBoolean("bool_visible"));
-            room.setFolderId(rs.getString("str_folderId"));
             // FIXME: Fails when reading an array, perhaps without a default value?
 //            String[] invites = (String[]) rs.getObject("list_invites");
 //            room.setInviteList(ImmutableSet.<String>copyOf(invites));
@@ -61,8 +59,7 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                     "str_password",
                     "bool_visible",
                     "list_invites",
-                    "pk_session",
-                    "str_folderId");
+                    "pk_session");
 
     @Override
     public Room create(RoomBuilder builder) {
@@ -91,11 +88,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             else {
                 ps.setLong(5, builder.getSessionId());
             }
-            if (builder.getFolderId() == null) {
-                ps.setNull(6, Types.VARCHAR);
-            } else {
-                ps.setString(6, builder.getFolderId());
-            }
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
@@ -110,11 +102,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
 
         StringBuilder sb = new StringBuilder(512);
         sb.append("UPDATE room SET ");
-
-        if (builder.getFolderId() != null) {
-            updates.add("str_folderId=?");
-            values.add(builder.getFolderId());
-        }
 
         /*
          * Need to fix the invite list.

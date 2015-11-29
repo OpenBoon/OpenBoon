@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -73,7 +74,9 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         exportExecutorService.execute(export);
         refreshIndex(1000);
 
-        AssetFilter filter = new AssetFilter().setExportId(export.getId());
+        List<Integer> exports = new ArrayList<>();
+        exports.add(export.getId());
+        AssetFilter filter = new AssetFilter().setExportIds(exports);
         AssetSearch search = new AssetSearch().setFilter(filter);
         AssetSearchBuilder builder = new AssetSearchBuilder().setSearch(search);
 

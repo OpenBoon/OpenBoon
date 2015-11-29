@@ -198,6 +198,7 @@ public class AssetController {
 
     @RequestMapping(value="/api/v2/assets/_aggregate", method=RequestMethod.POST)
     public void aggregate(@RequestBody AssetAggregateBuilder aggregation, HttpServletResponse httpResponse) throws IOException {
+        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchResponse response = searchService.aggregate(aggregation);
         OutputStream out = httpResponse.getOutputStream();
         XContentBuilder content = XContentFactory.jsonBuilder(out);
@@ -351,4 +352,27 @@ public class AssetController {
                 .append("}")
                 .toString();
     }
+
+    @RequestMapping(value="/api/v1/assets/{id}/_select", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String updateFolders(@RequestBody Map<String, Object> json, @PathVariable String id, HttpSession httpSession) throws Exception {
+
+        boolean selected = (Integer) json.get("selected") == 1;
+        boolean success = assetService.select(id, selected);
+        String body =  "\"assetId\" : \"" + id + "\", \"selected\" : " + selected;
+        if (success) {
+            Session session = userService.getActiveSession();
+            Room room = roomService.getActiveRoom(session);
+            String msg = "{ " + body + " }";
+            MessageType messageType = selected ? MessageType.ASSET_SELECT : MessageType.ASSET_DESELECT;
+            roomService.sendToRoom(room, new Message(messageType, msg));
+        }
+
+        return new StringBuilder(128)
+                .append("{")
+                .append(body)
+                .append(", \"success\" : ")
+                .append(success)
+                .append("}").toString();
+    }
+
 }
