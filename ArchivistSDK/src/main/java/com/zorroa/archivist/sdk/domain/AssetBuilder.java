@@ -114,11 +114,17 @@ public class AssetBuilder {
 
     }
     public AssetBuilder addKeywords(int confidence, boolean suggest, String ... words) {
+        if (confidence < 1) {
+            return this;
+        }
         keywords.addKeywords(confidence, suggest, words);
         return this;
     }
 
     public AssetBuilder addKeywords(int confidence, boolean suggest, Collection<String> words) {
+        if (confidence < 1) {
+            return this;
+        }
         keywords.addKeywords(confidence, suggest, words.toArray(new String[] {}));
         return this;
     }
