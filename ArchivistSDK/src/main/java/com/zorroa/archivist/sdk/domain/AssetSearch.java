@@ -15,23 +15,20 @@ public class AssetSearch {
     private List<AssetSearchOrder> order;       // FIXME: Ignored! Multilevel sort order
 
     /**
-     * The keyword confidence level to search.  There are currently 5 confidence
-     * buckets, with 5 being the most confident and 1 being the least.
-     *
-     * 0 = disabled (all keywords)
-     * 5 = searches only confidence level 5
-     * 4 = searched 4 and 5
-     * 3 = searches 3,4 and 5
-     *
-     * You get the idea.
-     *
+     * The keyword confidence level to search.  A value of 0 means
+     * confidence filtering is disabled.  Value must be between 0 and 1.
      */
-    private int confidence = 0;
+    private double confidence = 0.0;;
 
     public AssetSearch() { }
 
     public AssetSearch(String query) {
         this.query = query;
+    }
+
+    public AssetSearch(String query, double confidence) {
+        this.query = query;
+        this.confidence = confidence;
     }
 
     public String getQuery() {
@@ -61,11 +58,12 @@ public class AssetSearch {
         return this;
     }
 
-    public int getConfidence() {
+    public double getConfidence() {
         return confidence;
     }
 
-    public void setConfidence(int confidence) {
+    public AssetSearch setConfidence(double confidence) {
         this.confidence = confidence;
+        return this;
     }
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -12,16 +11,41 @@ import com.google.common.collect.Sets;
 import java.util.*;
 
 /**
- * Created by chambers on 11/24/15.
+ * A Schema class for managing keywords.
  */
 public class KeywordsSchema implements Schema {
+
+    /**
+     * The maximum confidence value a keyword can have.
+     */
+    public static final double CONFIDENCE_MAX = 1.0;
+
+    /**
+     * The number of buckets the keywords are put into.
+     */
+    public static final int BUCKET_COUNT = 5;
 
     private Map<String, Set<String>> fields = Maps.newHashMap();
     private Set<String> allKeywords = Sets.newHashSet();
     private Set<String> suggestKeywords = Sets.newHashSet();
 
-    public void addKeywords(int confidence, boolean suggest, String... keywords) {
-        String field = String.format("level%03d", confidence);
+    /**
+     * Add a new keyword with the given confidence.  Keywords with a confidence
+     * value les than or equal to 0 are ignored.
+     *
+     * Optionally adds valid keywords to suggestion keywords as well, however
+     * the confidence value should still be greater than 0 for this to happen.
+     *
+     * @param confidence
+     * @param suggest
+     * @param keywords
+     */
+    public void addKeywords(double confidence, boolean suggest, String... keywords) {
+        if (confidence <= 0) {
+            return;
+        }
+
+        String field = String.format("level%d", getBucket(Math.min(confidence, CONFIDENCE_MAX)));
         Set<String> bucket = fields.get(field);
 
         if (bucket == null) {
@@ -34,6 +58,24 @@ public class KeywordsSchema implements Schema {
         if (suggest) {
             suggestKeywords.addAll(allValues);
         }
+    }
+
+    /**
+     * A given keywords to suggestion keywords field.
+     *
+     * @param keywords
+     */
+    public void addSuggestKeywords(String ... keywords) {
+        suggestKeywords.addAll(Arrays.asList(keywords));
+    }
+
+    /**
+     * A given keywords to suggestion keywords field.
+     *
+     * @param keywords
+     */
+    public void addSuggestKeywords(Collection<String> keywords) {
+        suggestKeywords.addAll(keywords);
     }
 
     public void setAllKeywords(Set<String> allKeywords) {
@@ -67,5 +109,10 @@ public class KeywordsSchema implements Schema {
     @JsonAnySetter
     public void set(String name,  Set<String> value) {
         fields.put(name, value);
+    }
+
+    @JsonIgnore
+    public static long getBucket(double confidence) {
+        return Math.round(BUCKET_COUNT * (confidence / CONFIDENCE_MAX));
     }
 }
