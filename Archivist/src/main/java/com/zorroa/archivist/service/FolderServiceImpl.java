@@ -74,7 +74,7 @@ public class FolderServiceImpl implements FolderService {
             }
             return folderDao.create(builder);
         } finally {
-            childCache.invalidate(builder.getParentId());
+            invalidate(null, builder.getParentId());
         }
     }
 
@@ -83,8 +83,7 @@ public class FolderServiceImpl implements FolderService {
         try {
             return folderDao.update(folder, builder);
         } finally {
-            childCache.invalidate(builder.getParentId());
-            childCache.invalidate(folder.getId());
+            invalidate(folder, builder.getParentId());
         }
     }
 
@@ -93,8 +92,17 @@ public class FolderServiceImpl implements FolderService {
         try {
             return folderDao.delete(folder);
         } finally {
+            invalidate(folder);
+        }
+    }
+
+    private void invalidate(Folder folder, String ... additional) {
+        if (folder != null) {
             childCache.invalidate(folder.getParentId());
             childCache.invalidate(folder.getId());
+        }
+        for (String id: additional) {
+            childCache.invalidate(id);
         }
     }
 
