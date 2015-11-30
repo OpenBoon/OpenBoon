@@ -56,14 +56,14 @@ public class FolderServiceImpl implements FolderService {
             return Lists.newArrayListWithCapacity(0);
         }
 
-        List<Folder> decendents = Lists.newArrayList();
-        decendents.addAll(children);
+        List<Folder> descendants = Lists.newArrayList();
+        descendants.addAll(children);
 
         for (Folder child : children) {
             List<Folder> grandchildren = getAllDescendants(child);
-            decendents.addAll(grandchildren);
+            descendants.addAll(grandchildren);
         }
-        return decendents;
+        return descendants;
     }
 
     @Override
