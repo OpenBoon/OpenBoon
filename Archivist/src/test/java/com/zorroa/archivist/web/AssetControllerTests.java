@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -461,6 +462,130 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testFolderChildrenSearchFilter() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        // Create two folders, a parent and its child
+        MvcResult result = mvc.perform(post("/api/v1/folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(new FolderBuilder().setName("ParentSearchFolder"))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Folder parent = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+
+        result = mvc.perform(post("/api/v1/folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(new FolderBuilder().setName("ChildSearchFolder").setParentId(parent.getId()))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Folder child = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+        assertNotEquals(child.getId(), parent.getId());
+
+        // Put a single asset into each folder
+        List<Asset> assets = assetDao.getAll();
+
+        Asset asset = assets.get(0);
+        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("[\"" + parent.getId() + "\"]"))
+                .andExpect(status().isOk())
+                .andReturn();
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(false, json.get("created"));
+
+        asset = assets.get(1);
+        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("[\"" + child.getId() + "\"]"))
+                .andExpect(status().isOk())
+                .andReturn();
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(false, json.get("created"));
+
+        // Searching the child should return a single hit
+        result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + child.getId() + "\" ] } } }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+
+        // Searching without folders returns all hits, which is only two
+        result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"search\" : { } }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        hits = (Map<String, Object>) json.get("hits");
+        count = (int)hits.get("total");
+        assertEquals(2, count);
+
+        // Searching the parent folder should return two hits as well
+        result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + parent.getId() + "\" ] } } }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        hits = (Map<String, Object>) json.get("hits");
+        count = (int)hits.get("total");
+        assertEquals(2, count);
+
+        // Remove the child from the parent folder
+        result = mvc.perform(put("/api/v1/folders/" + child.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(new FolderBuilder())))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        child = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+        assertNotEquals(child.getParentId(), parent.getId());
+
+        // Searching the parent should now return a single hit
+        result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + parent.getId() + "\" ] } } }"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        hits = (Map<String, Object>) json.get("hits");
+        count = (int)hits.get("total");
         assertEquals(1, count);
     }
 
