@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
@@ -16,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
@@ -111,7 +111,7 @@ public class FolderServiceImpl implements FolderService {
             .expireAfterWrite(1, TimeUnit.DAYS)
             .build(new CacheLoader<String, Set<String>>() {
                 public Set<String> load(String key) throws Exception {
-                    Set<String> result =  Collections.synchronizedSet(folderDao.getChildren(key).stream().map(
+                    Set<String> result = ImmutableSet.copyOf(folderDao.getChildren(key).stream().map(
                             Folder::getId).collect(Collectors.toSet()));
                     return result;
                 }
