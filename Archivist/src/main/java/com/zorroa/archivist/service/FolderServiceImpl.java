@@ -65,22 +65,23 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public synchronized Folder create(FolderBuilder builder) {
-        if (folderDao.exists(builder.getParentId(), builder.getName())) {
-            throw new DuplicateElementException(String.format("The folder '%s' already exists.", builder.getName()));
+        try {
+            if (folderDao.exists(builder.getParentId(), builder.getName())) {
+                throw new DuplicateElementException(String.format("The folder '%s' already exists.", builder.getName()));
+            }
+            return folderDao.create(builder);
+        } finally {
+            childCache.invalidate(builder.getParentId());
         }
-        childCache.invalidate(builder.getParentId());
-        return folderDao.create(builder);
     }
 
     @Override
     public boolean update(Folder folder, FolderBuilder builder) {
-        if (!folder.getParentId().equals(builder.getParentId())) {
-            childCache.invalidate(builder.getParentId());
-        }
         try {
             return folderDao.update(folder, builder);
         } finally {
-
+            childCache.invalidate(builder.getParentId());
+            childCache.invalidate(folder.getId());
         }
     }
 
@@ -90,6 +91,7 @@ public class FolderServiceImpl implements FolderService {
             return folderDao.delete(folder);
         } finally {
             childCache.invalidate(folder.getParentId());
+            childCache.invalidate(folder.getId());
         }
     }
 
