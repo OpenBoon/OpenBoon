@@ -275,7 +275,7 @@ public class RetrosheetIngestor extends IngestProcessor {
         if (!asset.isType(AssetType.Image)) {
             return;
         }
-        Date date = (Date) asset.get("source", "date");
+        Date date = asset.getSource().getDate();
         if (date == null) {
             return;
         }

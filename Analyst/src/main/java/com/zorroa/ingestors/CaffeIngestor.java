@@ -93,6 +93,9 @@ public class CaffeIngestor extends IngestProcessor {
         for (int i = 0; i < caffeKeywords.length; ++i) {
             if (caffeKeywords[i].confidence > confidenceThreshold) {
                 keywords.add(caffeKeywords[i].keyword);
+                int confidence = Math.round(caffeKeywords[i].confidence * 6);
+                confidence = confidence > 5 ? 5 : (confidence < 0 ? 0 : confidence);
+                asset.addKeywords(confidence, true, caffeKeywords[i].keyword);
             }
         }
         String[] keywordArray = new String[keywords.size()];
