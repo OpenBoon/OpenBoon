@@ -107,6 +107,8 @@ public class FaceIngestor extends IngestProcessor {
 
                 logger.info("FaceIngestor: " + value);
             String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
+            int confidence = 4;
+            asset.addKeywords(confidence, true, keywords);
             asset.putKeywords("face", "keywords", keywords);
         }
     }
