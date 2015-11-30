@@ -224,6 +224,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     public FilterBuilder getFolderFilter(AssetFilter builder) {
-        return FilterBuilders.termsFilter("folders", folderService.getAllDecendentIds(builder.getFolderIds()));
+        return FilterBuilders.termsFilter("folders",
+                folderService.getAllDescendantIds(builder.getFolderIds(), true));
     }
 }

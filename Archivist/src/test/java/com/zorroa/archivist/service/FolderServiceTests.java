@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.DuplicateElementException;
 import com.zorroa.archivist.sdk.domain.Folder;
@@ -35,6 +36,22 @@ public class FolderServiceTests extends ArchivistApplicationTests {
         folderService.create(new FolderBuilder("cousin", uncle.getId()));
         List<Folder> descendents = folderService.getAllDecendents(grandpa);
         assertEquals(4, descendents.size());
+    }
+
+    @Test
+    public void testGetAllDescendantIds() {
+        Folder grandpa = folderService.create(new FolderBuilder("grandpa"));
+        Folder dad = folderService.create(new FolderBuilder("dad", grandpa.getId()));
+        Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
+        folderService.create(new FolderBuilder("child", dad.getId()));
+        folderService.create(new FolderBuilder("cousin", uncle.getId()));
+        assertEquals(5, folderService.getAllDescendantIds(Lists.newArrayList(grandpa.getId()), true).size());
+        assertEquals(4, folderService.getAllDescendantIds(Lists.newArrayList(grandpa.getId()), false).size());
+
+        assertEquals(5, folderService.getAllDescendantIds(
+                Lists.newArrayList(grandpa.getId(), dad.getId(), uncle.getId()), true).size());
+        assertEquals(4, folderService.getAllDescendantIds(
+                Lists.newArrayList(grandpa.getId(), dad.getId(), uncle.getId()), false).size());
     }
 
     @Test

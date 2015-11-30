@@ -17,11 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Component
 public class FolderServiceImpl implements FolderService {
@@ -96,12 +96,15 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public Set<String> getAllDecendentIds(List<String> folderIds) {
+    public Set<String> getAllDescendantIds(Collection<String> startFolderIds, boolean includeStartFolders) {
         Set<String> result = Sets.newHashSetWithExpectedSize(100);
         Queue<String> queue = Queues.newLinkedBlockingQueue();
 
-        result.addAll(folderIds);
-        queue.addAll(folderIds);
+        if (includeStartFolders) {
+            result.addAll(startFolderIds);
+        }
+
+        queue.addAll(startFolderIds);
         getChildrenRecursive(result, queue);
         return result;
     }
@@ -111,9 +114,8 @@ public class FolderServiceImpl implements FolderService {
             .expireAfterWrite(1, TimeUnit.DAYS)
             .build(new CacheLoader<String, Set<String>>() {
                 public Set<String> load(String key) throws Exception {
-                    Set<String> result = ImmutableSet.copyOf(folderDao.getChildren(key).stream().map(
-                            Folder::getId).collect(Collectors.toSet()));
-                    return result;
+                    return ImmutableSet.copyOf(folderDao.getChildren(key).stream().map(
+                            Folder::getId).iterator());
                 }
             });
 
