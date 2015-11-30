@@ -156,10 +156,10 @@ public class AssetController {
     public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        if (search.getRoom() > 0) {
+        if (search.getRoomId() > 0) {
             Session session = userService.getActiveSession();
             Room room = roomService.getActiveRoom(session);  // FIXME: Should this use roomId?
-            String json = new String(Json.serialize(search), StandardCharsets.UTF_8);
+            String json = new String(Json.serializeToString(search));
             roomService.sendToRoom(room, new Message(MessageType.ASSET_SEARCH, json));
         }
 
@@ -356,22 +356,20 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/_select", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateFolders(@RequestBody Map<String, Object> json, @PathVariable String id, HttpSession httpSession) throws Exception {
 
-        boolean selected = (Integer) json.get("selected") == 1;
+        boolean selected = (Boolean) json.get("selected");
         boolean success = assetService.select(id, selected);
-        String body =  "\"assetId\" : \"" + id + "\", \"selected\" : " + selected;
         if (success) {
             Session session = userService.getActiveSession();
             Room room = roomService.getActiveRoom(session);
-            String msg = "{ " + body + " }";
+            String msg = "{ \"assetIds\" : [ \"" + id + "\" ] }";
             MessageType messageType = selected ? MessageType.ASSET_SELECT : MessageType.ASSET_DESELECT;
             roomService.sendToRoom(room, new Message(messageType, msg));
         }
 
         return new StringBuilder(128)
-                .append("{")
-                .append(body)
-                .append(", \"success\" : ")
-                .append(success)
+                .append("{ \"assetId\" : \"" + id + "\"")
+                .append(", \"selected\" : " + selected)
+                .append(", \"success\" : " + success)
                 .append("}").toString();
     }
 
