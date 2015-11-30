@@ -89,7 +89,7 @@ public class AssetController {
         // Get all the decendents of the folder and create filter & query lists
         ArrayList<String> folderIds = new ArrayList<>();
         BoolQueryBuilder folderQuery = QueryBuilders.boolQuery().minimumNumberShouldMatch(1);
-        List<Folder> decendents = folderService.getAllDecendents(folder);
+        List<Folder> decendents = folderService.getAllDescendants(folder);
         decendents.add(folder);
         for (Folder child : decendents) {
             if (child.getSearch() != null) {

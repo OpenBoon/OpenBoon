@@ -47,7 +47,10 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<Folder> getAllDecendents(Folder folder) {
+    public List<Folder> getAllDescendants(Folder folder) {
+        /**
+         * TODO: add caching here
+         */
         List<Folder> children = getChildren(folder);
         if (children.isEmpty()) {
             return Lists.newArrayListWithCapacity(0);
@@ -57,7 +60,7 @@ public class FolderServiceImpl implements FolderService {
         decendents.addAll(children);
 
         for (Folder child : children) {
-            List<Folder> grandchildren = getAllDecendents(child);
+            List<Folder> grandchildren = getAllDescendants(child);
             decendents.addAll(grandchildren);
         }
         return decendents;

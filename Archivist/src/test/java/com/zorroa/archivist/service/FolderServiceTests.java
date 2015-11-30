@@ -28,13 +28,13 @@ public class FolderServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testDescendents() {
+    public void testDescendants() {
         Folder grandpa = folderService.create(new FolderBuilder("grandpa"));
         Folder dad = folderService.create(new FolderBuilder("dad", grandpa.getId()));
         Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
         folderService.create(new FolderBuilder("child", dad.getId()));
         folderService.create(new FolderBuilder("cousin", uncle.getId()));
-        List<Folder> descendents = folderService.getAllDecendents(grandpa);
+        List<Folder> descendents = folderService.getAllDescendants(grandpa);
         assertEquals(4, descendents.size());
     }
 
