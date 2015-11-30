@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
+import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.format.DateTimeFormat;
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
@@ -179,7 +180,7 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
                  */
                 if (value instanceof String) {
                     asset.setAttr(namespace, key, (String)value);
-                    asset.addKeywords(keywordArgs.contains(id) ? 5 : 0, true, (String)value);
+                    asset.addKeywords(keywordArgs.contains(id) ? KeywordsSchema.CONFIDENCE_MAX : 0, true, (String)value);
                 } else if (value instanceof Rational) {
                     Rational rational = (Rational)value;
                     asset.setAttr(namespace, key, rational.doubleValue());
@@ -188,7 +189,7 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
                     if (componentName.equals("java.lang.String")) {
                         String[] strList = (String[])value;
                         asset.setAttr(namespace, key, value);
-                        asset.addKeywords(keywordArgs.contains(id) ? 5 : 0, true, strList);
+                        asset.addKeywords(keywordArgs.contains(id) ? KeywordsSchema.CONFIDENCE_MAX : 0, true, strList);
                     } else if (componentName.equals("com.drew.lang.Rational")) {
                         Rational[] rationals = (Rational[]) value;
                         Double[] doubles = new Double[rationals.length];

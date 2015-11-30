@@ -128,14 +128,42 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testSimpleSearch() throws IOException {
+    public void testHighConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
         assetBuilder.setAsync(false);
-        Asset asset1 = assetDao.create(assetBuilder);
+        assetBuilder.addKeywords(1, false, "zipzoom");
+        assetDao.create(assetBuilder);
         refreshIndex(1000);
 
+        /*
+         * High confidence words are found at every level.
+         */
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder(new AssetSearch("beer"))).getHits().getTotalHits());
+                new AssetSearchBuilder(new AssetSearch("zipzoom", 1.0))).getHits().getTotalHits());
+        assertEquals(1, searchService.search(
+                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.5))).getHits().getTotalHits());
+        assertEquals(1, searchService.search(
+                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.01))).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testLowConfidenceSearch() throws IOException {
+
+        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder.setAsync(false);
+        assetBuilder.addKeywords(0.1, false, "zipzoom");
+        assetDao.create(assetBuilder);
+        refreshIndex(1000);
+
+        /*
+         * High confidence words are found at every level.
+         */
+        assertEquals(0, searchService.search(
+                new AssetSearchBuilder(new AssetSearch("zipzoom", 1.0))).getHits().getTotalHits());
+        assertEquals(0, searchService.search(
+                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.5))).getHits().getTotalHits());
+        assertEquals(1, searchService.search(
+                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.01))).getHits().getTotalHits());
     }
 }

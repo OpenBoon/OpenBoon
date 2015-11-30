@@ -4,6 +4,7 @@ import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
@@ -145,7 +146,8 @@ public class SearchServiceImpl implements SearchService {
             query.field("keywords.all");
         }
         else {
-            for (int i = 5; i >= search.getConfidence(); i--) {
+            long highBucket = KeywordsSchema.getBucket(search.getConfidence());
+            for (long i=highBucket; i<=KeywordsSchema.BUCKET_COUNT; i++) {
                 query.field(String.format("keywords.level%d.raw", i), i + 1);
                 query.field(String.format("keywords.level%d", i));
             }
