@@ -15,7 +15,13 @@ public interface FolderService {
     
     List<Folder> getChildren(Folder folder);
 
-    List<Folder> getAllDecendents(Folder folder);
+    /**
+     * Return a recursive list of all descendant folders.
+     *
+     * @param folder
+     * @return
+     */
+    List<Folder> getAllDescendants(Folder folder);
 
     /**
      * Returns a Set of all downstream folder Ids starting from the given startFolderIds.  If
