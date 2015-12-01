@@ -5,8 +5,23 @@ import java.util.Objects;
 public class Folder {
 
     public static final String ROOT_ID = "00000000-0000-0000-0000-000000000000";
+
+    /**
+     * Return true if the given folder ID is the root folder's ID.
+     * @param id
+     * @return
+     */
     public static boolean isRoot(String id) {
         return ROOT_ID.equals(id);
+    }
+
+    /**
+     * Return true if the given folder is the root folder.
+     * @param folder
+     * @return
+     */
+    public static boolean isRoot(Folder folder) {
+        return ROOT_ID.equals(folder.getId());
     }
 
     private String id;
