@@ -130,13 +130,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQuery(AssetSearch search) {
-        QueryBuilder query;
-
-        if (search != null && search.getQuery() != null) {
-            query = getQueryStringQuery(search);
-        } else {
-            query = QueryBuilders.matchAllQuery();
-        }
+        QueryBuilder query = getQueryStringQuery(search);
 
         // Do not return early, we need the permission filter in all cases
         AssetFilter filter = search == null ? null : search.getFilter();
@@ -145,6 +139,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
+        if (search == null || search.getQuery() == null || search.getQuery().length() == 0) {
+            return QueryBuilders.matchAllQuery();
+        }
         QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(search.getQuery());
         if (search.getConfidence() <= 0) {
             query.field("keywords.all.raw", 1);
