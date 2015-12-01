@@ -21,6 +21,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,6 +44,11 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
     @Override
     public Folder get(String id) {
         return elastic.queryForObject(id, MAPPER);
+    }
+
+    @Override
+    public List<Folder> getAll(Collection<String> ids) {
+        return getFolders(QueryBuilders.termsQuery("_id", ids));
     }
 
     private List<Folder> getFolders(QueryBuilder queryBuilder) {

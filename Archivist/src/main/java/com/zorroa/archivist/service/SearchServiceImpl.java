@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.SecurityUtils;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.PermissionDao;
@@ -24,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * Created by chambers on 9/25/15.
@@ -226,7 +229,29 @@ public class SearchServiceImpl implements SearchService {
     }
 
     public FilterBuilder getFolderFilter(AssetFilter builder) {
-        return FilterBuilders.termsFilter("folders",
-                folderService.getAllDescendantIds(builder.getFolderIds(), true));
+
+        Set<String> folderIds = Sets.newHashSetWithExpectedSize(64);
+        OrFilterBuilder orFilter = FilterBuilders.orFilter();
+
+        for (Folder folder : folderService.getAllDescendants(folderService.getAll(builder.getFolderIds()), true)) {
+            if (folder.getSearch() != null) {
+                /*
+                 * TODO: by doing this we lose scoring...but get the correct results at least.
+                 * We need to do a larger refactor to work the folder query (if any) into the overall
+                 * query string.
+                 */
+                QueryFilterBuilder queryFilter = FilterBuilders.queryFilter(getQuery(folder.getSearch()));
+                orFilter.add(queryFilter);
+            }
+            else {
+                folderIds.add(folder.getId());
+            }
+        }
+
+        if (!folderIds.isEmpty()) {
+            orFilter.add(FilterBuilders.termsFilter("folders", folderIds));
+        }
+
+        return orFilter;
     }
 }

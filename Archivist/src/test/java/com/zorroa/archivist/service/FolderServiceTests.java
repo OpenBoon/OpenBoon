@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -34,24 +35,24 @@ public class FolderServiceTests extends ArchivistApplicationTests {
         Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
         folderService.create(new FolderBuilder("child", dad.getId()));
         folderService.create(new FolderBuilder("cousin", uncle.getId()));
-        List<Folder> descendents = folderService.getAllDescendants(grandpa);
+        Set<Folder> descendents = folderService.getAllDescendants(grandpa);
         assertEquals(4, descendents.size());
     }
 
     @Test
-    public void testGetAllDescendantIds() {
+    public void testGetAllDescendants() {
         Folder grandpa = folderService.create(new FolderBuilder("grandpa"));
         Folder dad = folderService.create(new FolderBuilder("dad", grandpa.getId()));
         Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
         folderService.create(new FolderBuilder("child", dad.getId()));
         folderService.create(new FolderBuilder("cousin", uncle.getId()));
-        assertEquals(5, folderService.getAllDescendantIds(Lists.newArrayList(grandpa.getId()), true).size());
-        assertEquals(4, folderService.getAllDescendantIds(Lists.newArrayList(grandpa.getId()), false).size());
+        assertEquals(5, folderService.getAllDescendants(Lists.newArrayList(grandpa), true).size());
+        assertEquals(4, folderService.getAllDescendants(Lists.newArrayList(grandpa), false).size());
 
-        assertEquals(5, folderService.getAllDescendantIds(
-                Lists.newArrayList(grandpa.getId(), dad.getId(), uncle.getId()), true).size());
-        assertEquals(4, folderService.getAllDescendantIds(
-                Lists.newArrayList(grandpa.getId(), dad.getId(), uncle.getId()), false).size());
+        assertEquals(5, folderService.getAllDescendants(
+                Lists.newArrayList(grandpa, dad, uncle), true).size());
+        assertEquals(4, folderService.getAllDescendants(
+                Lists.newArrayList(grandpa, dad, uncle), false).size());
     }
 
     @Test

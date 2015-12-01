@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
@@ -42,28 +41,13 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<Folder> getChildren(Folder folder) {
-        return folderDao.getChildren(folder);
+    public List<Folder> getAll(Collection<String> ids) {
+        return folderDao.getAll(ids);
     }
 
     @Override
-    public List<Folder> getAllDescendants(Folder folder) {
-        /**
-         * TODO: add caching here
-         */
-        List<Folder> children = getChildren(folder);
-        if (children.isEmpty()) {
-            return Lists.newArrayListWithCapacity(0);
-        }
-
-        List<Folder> descendants = Lists.newArrayList();
-        descendants.addAll(children);
-
-        for (Folder child : children) {
-            List<Folder> grandchildren = getAllDescendants(child);
-            descendants.addAll(grandchildren);
-        }
-        return descendants;
+    public List<Folder> getChildren(Folder folder) {
+        return folderDao.getChildren(folder);
     }
 
     @Override
@@ -107,26 +91,30 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public Set<String> getAllDescendantIds(Collection<String> startFolderIds, boolean includeStartFolders) {
-        Set<String> result = Sets.newHashSetWithExpectedSize(100);
-        Queue<String> queue = Queues.newLinkedBlockingQueue();
+    public Set<Folder> getAllDescendants(Folder folder) {
+        return getAllDescendants(Lists.newArrayList(folder), false);
+    }
+
+    @Override
+    public Set<Folder> getAllDescendants(Collection<Folder> startFolders, boolean includeStartFolders) {
+        Set<Folder> result = Sets.newHashSetWithExpectedSize(25);
+        Queue<Folder> queue = Queues.newLinkedBlockingQueue();
 
         if (includeStartFolders) {
-            result.addAll(startFolderIds);
+            result.addAll(startFolders);
         }
 
-        queue.addAll(startFolderIds);
-        getChildrenRecursive(result, queue);
+        queue.addAll(startFolders);
+        getChildFoldersRecursive(result, queue);
         return result;
     }
 
-    private final LoadingCache<String, Set<String>> childCache = CacheBuilder.newBuilder()
+    private final LoadingCache<String, List<Folder>> childCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
             .expireAfterWrite(1, TimeUnit.DAYS)
-            .build(new CacheLoader<String, Set<String>>() {
-                public Set<String> load(String key) throws Exception {
-                    return ImmutableSet.copyOf(folderDao.getChildren(key).stream().map(
-                            Folder::getId).iterator());
+            .build(new CacheLoader<String, List<Folder>>() {
+                public List<Folder> load(String key) throws Exception {
+                    return folderDao.getChildren(key);
                 }
             });
 
@@ -137,10 +125,10 @@ public class FolderServiceImpl implements FolderService {
      * @param result
      * @param toQuery
      */
-    private void getChildrenRecursive(Set<String> result, Queue<String> toQuery) {
+    private void getChildFoldersRecursive(Set<Folder> result, Queue<Folder> toQuery) {
 
         while(true) {
-            String current = toQuery.poll();
+            Folder current = toQuery.poll();
             if (current == null) {
                 return;
             }
@@ -149,10 +137,11 @@ public class FolderServiceImpl implements FolderService {
             }
 
             try {
-                Set<String> children = childCache.get(current);
-                if (children.isEmpty()) {
+                List<Folder> children = childCache.get(current.getId());
+                if (children == null || children.isEmpty()) {
                     continue;
                 }
+
                 toQuery.addAll(children);
                 result.addAll(children);
 

@@ -128,6 +128,61 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testSmartFolderSearch() throws IOException {
+
+        FolderBuilder builder = new FolderBuilder("Avengers");
+        Folder folder1 = folderService.create(builder);
+
+        builder = new FolderBuilder("Age Of Ultron", folder1);
+        Folder folder2 = folderService.create(builder);
+
+        builder = new FolderBuilder("Characters", folder2);
+        builder.setSearch(new AssetSearch("captain america"));
+        Folder folder3 = folderService.create(builder);
+
+        String filename = "captain_america.jpg";
+        String filepath = "/tmp/" + filename;
+        Files.touch(new File(filepath));
+
+        AssetBuilder assetBuilder = new AssetBuilder(filepath);
+        Asset asset1 = assetDao.create(assetBuilder);
+        refreshIndex(100);
+
+        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        assertEquals(1, searchService.search(
+                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testLotsOfSmartFolders() throws IOException {
+
+        FolderBuilder builder = new FolderBuilder("people");
+        Folder folder1 = folderService.create(builder);
+
+        for (int i=0; i<100; i++) {
+            builder = new FolderBuilder("person" + i, folder1);
+            builder.setSearch(new AssetSearch("captain america"));
+            folderService.create(builder);
+        }
+
+        refreshIndex(100);
+
+        String filename = "captain_america.jpg";
+        String filepath = "/tmp/" + filename;
+        Files.touch(new File(filepath));
+
+        AssetBuilder assetBuilder = new AssetBuilder(filepath);
+        Asset asset1 = assetDao.create(assetBuilder);
+        refreshIndex(100);
+
+        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        assertEquals(1, searchService.search(
+                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+    }
+
+    @Test
     public void testHighConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
