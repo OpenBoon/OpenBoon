@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class AssetFieldTerms {
     private String field;
-    private List<String> terms;
+    private List<Object> terms;
 
     public String getField() {
         return field;
@@ -22,11 +22,11 @@ public class AssetFieldTerms {
         return this;
     }
 
-    public List<String> getTerms() {
+    public List<Object> getTerms() {
         return terms;
     }
 
-    public AssetFieldTerms setTerms(List<String> terms) {
+    public AssetFieldTerms setTerms(List<Object> terms) {
         this.terms = terms;
         return this;
     }
