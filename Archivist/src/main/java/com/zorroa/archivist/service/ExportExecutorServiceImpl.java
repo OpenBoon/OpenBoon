@@ -9,11 +9,15 @@ import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -41,10 +45,16 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
     SearchService searchService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     EventServerHandler eventServerHandler;
 
     @Autowired
     ExportOptionsService exportOptionsService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Value("${archivist.export.autoStart}")
     public boolean autoStart;
@@ -67,6 +77,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                 MessageType.EXPORT_START).setPayload(Json.serializeToString(export)));
 
         try {
+
+            User user = userService.get(export.getUserCreated());
+            authenticationManager.authenticate(new BackgroundTaskAuthentication(user));
 
             /*
              * Initialize all the processors
@@ -140,9 +153,15 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
         } finally {
             if (exportDao.setState(export, ExportState.Finished, ExportState.Running)) {
+                logger.info("Export ID:{} complete");
                 eventServerHandler.broadcast(new Message().setType(
                         MessageType.EXPORT_STOP).setPayload(Json.serializeToString(export)));
             }
+
+            /**
+             * Logs the user out.
+             */
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
     }
 

@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.zorroa.archivist.ZorroaAuthenticationProvider;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.BackgroundTaskAuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .authenticationProvider(authenticationProvider())
+            .authenticationProvider(backgroundTaskAuthenticationProvider())
             .authenticationEventPublisher(authenticationEventPublisher());
     }
 
@@ -80,6 +82,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationProvider authenticationProvider() {
         return new ZorroaAuthenticationProvider();
     }
+
+    @Bean
+    public AuthenticationProvider backgroundTaskAuthenticationProvider() {
+        return new BackgroundTaskAuthenticationProvider();
+    }
+
 
     @Bean
     public SessionRegistry sessionRegistry() {

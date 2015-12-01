@@ -74,8 +74,16 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         exportExecutorService.execute(export);
         refreshIndex(1000);
 
+        /**
+         * The export executor service logs the user out after
+         * exporting, which will the rest of this test.  So
+         * we'll just re-authenticate.
+         */
+        authenticate();
+
         List<Integer> exports = new ArrayList<>();
         exports.add(export.getId());
+
         AssetFilter filter = new AssetFilter().setExportIds(exports);
         AssetSearch search = new AssetSearch().setFilter(filter);
         AssetSearchBuilder builder = new AssetSearchBuilder().setSearch(search);
