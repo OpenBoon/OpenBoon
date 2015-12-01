@@ -71,10 +71,12 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             return;
         }
         logger.info("executing export: {}", export);
-        Map<ExportOutput, ExportProcessor> outputs = Maps.newHashMap();
-
         eventServerHandler.broadcast(new Message().setType(
                 MessageType.EXPORT_START).setPayload(Json.serializeToString(export)));
+
+
+        Map<ExportOutput, ExportProcessor> outputs = Maps.newHashMap();
+        int assetCount = 0;
 
         try {
 
@@ -114,6 +116,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
              */
             for (Asset asset : searchService.scanAndScroll(export.getSearch())) {
                 logger.info("processing asset {}", (String) asset.getValue("source.path"));
+                assetCount++;
 
                 for (Map.Entry<ExportOutput, ExportProcessor> entry : outputs.entrySet()) {
                     ExportProcessor processor = entry.getValue();
@@ -153,7 +156,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
         } finally {
             if (exportDao.setState(export, ExportState.Finished, ExportState.Running)) {
-                logger.info("Export ID:{} complete");
+                logger.info("Export ID:{} complete, {} assets exported.", export.getId(), assetCount);
                 eventServerHandler.broadcast(new Message().setType(
                         MessageType.EXPORT_STOP).setPayload(Json.serializeToString(export)));
             }
