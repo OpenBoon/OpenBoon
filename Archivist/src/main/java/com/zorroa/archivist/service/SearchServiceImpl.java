@@ -89,6 +89,8 @@ public class SearchServiceImpl implements SearchService {
 
         SearchRequestBuilder search = client.prepareSearch(alias)
                 .setTypes("asset")
+                .setSize(builder.getSize())
+                .setFrom(builder.getFrom())
                 .setQuery(getQuery(builder.getSearch()));
         logger.info(search.toString());
 
@@ -131,18 +133,18 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQuery(AssetSearch search) {
-        QueryBuilder query;
+        QueryBuilder query = getQueryStringQuery(search);
 
-        if (search.getQuery() != null) {
-            query = getQueryStringQuery(search);
-        } else {
-            query = QueryBuilders.matchAllQuery();
-        }
+        // Do not return early, we need the permission filter in all cases
+        AssetFilter filter = search == null ? null : search.getFilter();
 
-        return QueryBuilders.filteredQuery(query, getFilter(search.getFilter()));
+        return QueryBuilders.filteredQuery(query, getFilter(filter));
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
+        if (search == null || search.getQuery() == null || search.getQuery().length() == 0) {
+            return QueryBuilders.matchAllQuery();
+        }
         QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(search.getQuery());
         if (search.getConfidence() <= 0) {
             query.field("keywords.all.raw", 1);
