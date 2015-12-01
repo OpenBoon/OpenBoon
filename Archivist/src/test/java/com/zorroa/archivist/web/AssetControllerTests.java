@@ -590,6 +590,31 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testFromSize() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        AssetSearchBuilder asb = new AssetSearchBuilder().setFrom(1).setSize(1);
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(asb)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(2, count);     // Total count is 2, even though we only get 1 asset in array below
+        ArrayList<Object> assets = (ArrayList<Object>) hits.get("hits");
+        assertEquals(1, assets.size());
+    }
+
+    @Test
     public void testFilterExists() throws Exception {
         MockHttpSession session = user();
 
