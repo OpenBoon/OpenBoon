@@ -79,8 +79,8 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
         try {
 
             User user = userService.get(export.getUserCreated());
-            authenticationManager.authenticate(new BackgroundTaskAuthentication(user));
-
+            SecurityContextHolder.getContext().setAuthentication(
+                    authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
             /*
              * Initialize all the processors
              */

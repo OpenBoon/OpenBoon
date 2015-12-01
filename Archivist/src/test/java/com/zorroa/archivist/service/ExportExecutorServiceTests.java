@@ -11,6 +11,7 @@ import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,6 +71,11 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
 
     @Test
     public void testExecuteExport() {
+
+        /**
+         * Log out the current user to ensure the test authenticates.
+         */
+        SecurityContextHolder.getContext().setAuthentication(null);
 
         exportExecutorService.execute(export);
         refreshIndex(1000);
