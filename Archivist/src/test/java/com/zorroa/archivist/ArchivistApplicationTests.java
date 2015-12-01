@@ -76,8 +76,7 @@ public abstract class ArchivistApplicationTests {
         /**
          * Before we can do anything reliably we need a logged in user.
          */
-        SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
+        authenticate();
 
         /**
          * TODO: fix deprecated prepareDeleteByQuery
@@ -123,6 +122,11 @@ public abstract class ArchivistApplicationTests {
         userBuilder.setUsername("user");
         userBuilder.setPassword("user");
         userService.create(userBuilder);
+    }
+
+    public void authenticate() {
+        SecurityContextHolder.getContext().setAuthentication(
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
     }
 
     public String getStaticImagePath(String subdir) {
