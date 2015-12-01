@@ -6,8 +6,8 @@ import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
-import org.opencv.core.Size;
 import org.opencv.core.Rect;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
@@ -106,10 +106,9 @@ public class FaceIngestor extends IngestProcessor {
             }
 
                 logger.info("FaceIngestor: " + value);
-            String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
+            List<String> keywords = Arrays.asList(value.split(","));
             int confidence = 4;
             asset.addKeywords(confidence, true, keywords);
-            asset.putKeywords("face", "keywords", keywords);
         }
     }
 }
