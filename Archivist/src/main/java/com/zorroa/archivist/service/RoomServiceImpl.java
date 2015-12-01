@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.repository.SessionDao;

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;

@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;

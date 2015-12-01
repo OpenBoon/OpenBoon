@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.domain.UserBuilder;

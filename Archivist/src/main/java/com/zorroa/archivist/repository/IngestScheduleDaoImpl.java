@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import org.apache.commons.lang3.StringUtils;

@@ -1,9 +1,8 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.security;
 
-import com.zorroa.archivist.ZorroaAuthenticationProvider;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
-import com.zorroa.archivist.security.BackgroundTaskAuthenticationProvider;
+import com.zorroa.archivist.web.JdbcSessionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

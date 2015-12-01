@@ -2,7 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.SecurityUtils;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
