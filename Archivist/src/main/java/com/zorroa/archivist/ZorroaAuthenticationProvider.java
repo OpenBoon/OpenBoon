@@ -1,8 +1,10 @@
 package com.zorroa.archivist;
 
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.UnitTestAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.Set;
 
 public class ZorroaAuthenticationProvider implements AuthenticationProvider {
 
@@ -48,8 +52,12 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
                 InternalPermission.upcast(userService.getPermissions(user)));
     }
 
+    private static final Set<Class<?>> SUPPORTED_AUTHENTICATION =
+            ImmutableSet.of(UsernamePasswordAuthenticationToken.class,
+            UnitTestAuthentication.class);
+
     @Override
     public boolean supports(Class<?> authentication) {
-        return true;
+        return SUPPORTED_AUTHENTICATION.contains(authentication);
     }
 }
