@@ -6,7 +6,7 @@ package com.zorroa.archivist.sdk.domain;
 public class AssetSearchBuilder {
 
     private AssetSearch search;
-    private int size;
+    private int size = 10;
     private int from;
     private int roomId;
 
