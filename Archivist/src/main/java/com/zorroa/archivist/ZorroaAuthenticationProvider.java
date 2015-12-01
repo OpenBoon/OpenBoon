@@ -48,7 +48,7 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        return new UsernamePasswordAuthenticationToken(user, storedPassword,
+        return new UsernamePasswordAuthenticationToken(user, "",
                 InternalPermission.upcast(userService.getPermissions(user)));
     }
 
