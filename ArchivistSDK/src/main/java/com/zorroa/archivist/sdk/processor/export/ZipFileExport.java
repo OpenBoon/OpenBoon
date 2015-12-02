@@ -1,12 +1,9 @@
 package com.zorroa.archivist.sdk.processor.export;
 
-import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
 import com.zorroa.archivist.sdk.domain.ExportedAsset;
 import com.zorroa.archivist.sdk.util.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -79,7 +76,7 @@ public class ZipFileExport extends ExportProcessor {
 
         logger.info("Adding {} to zip {}", asset.getCurrentPath(), zipEntryPath);
 
-        ZipEntry ze = new ZipEntry(String.format("%s/%s", zipEntryPath, asset.getCurrentPath()));
+        ZipEntry ze = new ZipEntry(String.format("%s/%s", zipEntryPath, FileUtils.filename(asset.getCurrentPath())));
         zipFile.putNextEntry(ze);
 
         FileInputStream stream = new FileInputStream(asset.getCurrentPath());
