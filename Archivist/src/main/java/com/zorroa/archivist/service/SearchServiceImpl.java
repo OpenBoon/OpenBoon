@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
@@ -9,6 +8,7 @@ import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -133,18 +133,36 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQuery(AssetSearch search) {
-        QueryBuilder query = getQueryStringQuery(search);
+        /**
+         * An empty boolean query is treated like a match all.
+         */
+        BoolQueryBuilder query = QueryBuilders.boolQuery();
 
-        // Do not return early, we need the permission filter in all cases
+        if (search != null && search.getQuery() != null && search.getQuery().length() > 0) {
+            query.must(getQueryStringQuery(search));
+        }
+
         AssetFilter filter = search == null ? null : search.getFilter();
+        Set<String> folderIds = Sets.newHashSetWithExpectedSize(64);
+
+        if (filter != null && filter.getFolderIds() != null) {
+            for (Folder folder : folderService.getAllDescendants(
+                    folderService.getAll(filter.getFolderIds()), true)) {
+                if (folder.getSearch() != null) {
+                    query.must(getQuery(folder.getSearch()));
+                }
+                folderIds.add(folder.getId());
+            }
+
+            if (!folderIds.isEmpty()) {
+                query.should(QueryBuilders.termsQuery("folders", folderIds));
+            }
+        }
 
         return QueryBuilders.filteredQuery(query, getFilter(filter));
     }
 
-    private QueryBuilder getQueryStringQuery(AssetSearch search) {
-        if (search == null || search.getQuery() == null || search.getQuery().length() == 0) {
-            return QueryBuilders.matchAllQuery();
-        }
+    public QueryBuilder getQueryStringQuery(AssetSearch search) {
         QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(search.getQuery());
         if (search.getConfidence() <= 0) {
             query.field("keywords.all.raw", 1);
@@ -158,8 +176,9 @@ public class SearchServiceImpl implements SearchService {
             }
         }
         query.lenient(true);
-        return query;
+        return  query;
     }
+
 
     /**
      * Builds an "AND" filter based on all the options in the AssetFilter.
@@ -182,10 +201,6 @@ public class SearchServiceImpl implements SearchService {
                 TermFilterBuilder selectedBuilder = FilterBuilders.termFilter("selectedRooms", room.getId());
                 filter.add(selectedBuilder);
             }
-        }
-
-        if (builder.getFolderIds() != null) {
-            filter.add(getFolderFilter(builder));
         }
 
         if (builder.getExportIds() != null) {
@@ -228,32 +243,5 @@ public class SearchServiceImpl implements SearchService {
         }
 
         return filter;
-    }
-
-    public FilterBuilder getFolderFilter(AssetFilter builder) {
-
-        Set<String> folderIds = Sets.newHashSetWithExpectedSize(64);
-        OrFilterBuilder orFilter = FilterBuilders.orFilter();
-
-        for (Folder folder : folderService.getAllDescendants(folderService.getAll(builder.getFolderIds()), true)) {
-            if (folder.getSearch() != null) {
-                /*
-                 * TODO: by doing this we lose scoring...but get the correct results at least.
-                 * We need to do a larger refactor to work the folder query (if any) into the overall
-                 * query string.
-                 */
-                QueryFilterBuilder queryFilter = FilterBuilders.queryFilter(getQuery(folder.getSearch()));
-                orFilter.add(queryFilter);
-            }
-            else {
-                folderIds.add(folder.getId());
-            }
-        }
-
-        if (!folderIds.isEmpty()) {
-            orFilter.add(FilterBuilders.termsFilter("folders", folderIds));
-        }
-
-        return orFilter;
     }
 }
