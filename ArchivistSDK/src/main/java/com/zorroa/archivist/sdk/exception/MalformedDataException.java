@@ -1,4 +1,6 @@
-package com.zorroa.archivist.sdk.domain;
+package com.zorroa.archivist.sdk.exception;
+
+import com.zorroa.archivist.sdk.exception.ArchivistException;
 
 /**
  * Created by chambers on 10/30/15.

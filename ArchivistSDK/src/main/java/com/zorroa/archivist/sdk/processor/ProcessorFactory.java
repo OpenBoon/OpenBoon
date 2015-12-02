@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.processor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.ArchivistException;
+import com.zorroa.archivist.sdk.exception.ArchivistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

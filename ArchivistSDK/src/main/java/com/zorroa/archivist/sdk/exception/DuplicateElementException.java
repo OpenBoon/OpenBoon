@@ -1,4 +1,4 @@
-package com.zorroa.archivist.sdk.domain;
+package com.zorroa.archivist.sdk.exception;
 
 /**
  * Created by chambers on 10/27/15.
