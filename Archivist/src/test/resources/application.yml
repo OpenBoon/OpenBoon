@@ -43,6 +43,7 @@ archivist:
         # Disable auto-export for tests, so we can run them manually
         autoStart: false
         basePath: "exports"
+        maxAssetCount: 1
     snapshot:
         basePath: "snapshots"
         repoName: "backups"

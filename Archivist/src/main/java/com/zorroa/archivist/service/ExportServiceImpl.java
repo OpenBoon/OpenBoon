@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.ArchivistException;
 import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
@@ -30,8 +31,20 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     ExportOutputDao exportOutputDao;
 
+    @Value("${archivist.export.maxAssetCount}")
+    int maxAssetCount;
+
     @Override
     public Export create(ExportBuilder builder) {
+
+        long count = searchService.count(new AssetSearchBuilder(builder.getSearch())).getCount();
+        if (count == 0) {
+            throw new ArchivistException("The search did not match any assets.");
+        }
+        else if (count > maxAssetCount) {
+            throw new ArchivistException(String.format("Cannot export more than '%d' assets at a time.", maxAssetCount));
+        }
+
         Export export = exportDao.create(builder);
         for (ProcessorFactory<ExportProcessor> factory: builder.getOutputs()) {
             exportOutputDao.create(export, factory);

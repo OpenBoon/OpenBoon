@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.ArchivistException;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -60,6 +61,33 @@ public class ExportServiceTests extends ArchivistApplicationTests {
         builder.setNote("An export for Bob");
         builder.setOptions(options);
         builder.setSearch(search);
+        builder.setOutputs(Lists.newArrayList(outputFactory));
+
+        export = exportService.create(builder);
+    }
+
+    @Test(expected=ArchivistException.class)
+    public void testExceedMaxAssetCount() {
+        ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
+        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
+
+        ExportBuilder builder = new ExportBuilder();
+        builder.setNote("An export for Bob");
+        builder.setSearch(new AssetSearch());
+        builder.setOutputs(Lists.newArrayList(outputFactory));
+
+        export = exportService.create(builder);
+    }
+
+    @Test(expected=ArchivistException.class)
+    public void testZeroAssetExport() {
+        ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
+        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
+
+        ExportBuilder builder = new ExportBuilder();
+        builder.setSearch(new AssetSearch("oieowieowieowieowieoewo"));
         builder.setOutputs(Lists.newArrayList(outputFactory));
 
         export = exportService.create(builder);
