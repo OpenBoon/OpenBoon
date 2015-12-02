@@ -21,4 +21,7 @@ public interface ExportService {
     ExportOutput getOutput(int id);
 
     List<Export> getAll(ExportFilter filter);
+
+    void restart(Export export);
+
 }
