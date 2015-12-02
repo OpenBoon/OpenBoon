@@ -10,25 +10,45 @@ import java.util.List;
  * Core search query
  */
 public class AssetSearch {
-    private String query;                       // Eg. "food and dog", or see ES Query String DSL for details
-    private AssetFilter filter;                 // Restrict results to match filter
-    private List<AssetSearchOrder> order;       // FIXME: Ignored! Multilevel sort order
+
+    /**
+     * The keyword search being made.
+     */
+    private String query;
+
+    /**
+     * Filters that are applied to the keyword search results.
+     */
+    private AssetFilter filter;
+
+    /**
+     * The order of the results returned.
+     */
+    private List<AssetSearchOrder> order;
 
     /**
      * The keyword confidence level to search.  A value of 0 means
      * confidence filtering is disabled.  Value must be between 0 and 1.
      */
-    private double confidence = 0.0;;
+    private double confidence = 0.0;
 
-    public AssetSearch() { }
+    public AssetSearch() {
+        this.filter = new AssetFilter();
+    }
 
     public AssetSearch(String query) {
+        this();
         this.query = query;
     }
 
     public AssetSearch(String query, double confidence) {
+        this();
         this.query = query;
         this.confidence = confidence;
+    }
+
+    public boolean isQuerySet() {
+        return (query != null && query.length() > 0);
     }
 
     public String getQuery() {

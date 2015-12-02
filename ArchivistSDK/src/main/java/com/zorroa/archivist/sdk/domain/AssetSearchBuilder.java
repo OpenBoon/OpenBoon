@@ -10,7 +10,9 @@ public class AssetSearchBuilder {
     private int from;
     private int roomId;
 
-    public AssetSearchBuilder() { }
+    public AssetSearchBuilder() {
+        search = new AssetSearch();
+    }
 
     public AssetSearchBuilder(AssetSearch search) {
         this.search = search;
@@ -18,15 +20,6 @@ public class AssetSearchBuilder {
 
     public AssetSearch getSearch() {
         return search;
-    }
-
-    /**
-     * Return true if a query string is set.
-     *
-     * @return
-     */
-    public boolean isQuerySet() {
-        return (search != null && search.getQuery() != null && search.getQuery().length() > 0);
     }
 
     public AssetSearchBuilder setSearch(AssetSearch search) {
