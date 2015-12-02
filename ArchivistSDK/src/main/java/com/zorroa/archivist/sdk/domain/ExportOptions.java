@@ -39,7 +39,7 @@ public class ExportOptions {
         private double scale = 100.0;
 
         /**
-         * The quality of the image, if supported. 100 or <= will leave as is.
+         * The quality of the image.  Supported values are between 0.0 and 1.0
          */
         private double quality = 1.0;
 
