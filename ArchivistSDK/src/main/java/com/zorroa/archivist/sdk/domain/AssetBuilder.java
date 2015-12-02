@@ -78,6 +78,9 @@ public class AssetBuilder {
         permissions = new PermissionSchema();
         addSchema(permissions);
 
+        /*
+         * Based on the type of asset, add the corresponding schema.
+         */
         switch(source.getType()) {
             case Image:
                 addSchema(new ImageSchema());
@@ -85,8 +88,6 @@ public class AssetBuilder {
             default:
                 logger.warn("Unsupported asset type: '%s'", source.getType());
         }
-
-
     }
 
     public AssetBuilder(String file) {
