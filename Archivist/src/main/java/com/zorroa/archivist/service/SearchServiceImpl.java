@@ -138,14 +138,13 @@ public class SearchServiceImpl implements SearchService {
          */
         BoolQueryBuilder query = QueryBuilders.boolQuery();
 
-        if (search != null && search.getQuery() != null && search.getQuery().length() > 0) {
+        if (search.isQuerySet()) {
             query.must(getQueryStringQuery(search));
         }
 
-        AssetFilter filter = search == null ? null : search.getFilter();
-        Set<String> folderIds = Sets.newHashSetWithExpectedSize(64);
-
-        if (filter != null && filter.getFolderIds() != null) {
+        AssetFilter filter = search.getFilter();
+        if (filter.getFolderIds() != null) {
+            Set<String> folderIds = Sets.newHashSetWithExpectedSize(64);
             for (Folder folder : folderService.getAllDescendants(
                     folderService.getAll(filter.getFolderIds()), true)) {
                 if (folder.getSearch() != null) {
