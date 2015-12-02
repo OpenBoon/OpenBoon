@@ -162,7 +162,7 @@ public class SearchServiceImpl implements SearchService {
         return QueryBuilders.filteredQuery(query, getFilter(filter));
     }
 
-    public QueryBuilder getQueryStringQuery(AssetSearch search) {
+    private QueryBuilder getQueryStringQuery(AssetSearch search) {
         QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(search.getQuery());
         if (search.getConfidence() <= 0) {
             query.field("keywords.all.raw", 1);
