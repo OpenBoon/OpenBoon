@@ -219,8 +219,6 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
             int[] latitude = exifDirectory.getIntArray(GpsDirectory.TAG_LATITUDE);
             int[] longitude = exifDirectory.getIntArray(GpsDirectory.TAG_LONGITUDE);
             if (latitude != null && longitude != null) {
-                String latitudeRef = exifDirectory.getString(GpsDirectory.TAG_LATITUDE_REF);
-                String longitudeRef = exifDirectory.getString(GpsDirectory.TAG_LONGITUDE_REF);
                 double lat = dmsToDegrees(latitude[0], latitude[1], latitude[2]);
                 double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2]);
                 Point2D.Double location = new Point2D.Double(lat, lon);
