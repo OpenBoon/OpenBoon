@@ -20,6 +20,15 @@ public class AssetSearchBuilder {
         return search;
     }
 
+    /**
+     * Return true if a query string is set.
+     *
+     * @return
+     */
+    public boolean isQuerySet() {
+        return (search != null && search.getQuery() != null && search.getQuery().length() > 0);
+    }
+
     public AssetSearchBuilder setSearch(AssetSearch search) {
         this.search = search;
         return this;
