@@ -17,6 +17,7 @@ public class ExportOutput {
     private long timeCreated;
     private String path;
     private String mimeType;
+    private String fileExtention;
 
     private ProcessorFactory<ExportProcessor> factory;
 
@@ -86,6 +87,13 @@ public class ExportOutput {
         this.id = id;
     }
 
+    public void setFileExtention(String ext) {
+        this.fileExtention = ext;
+    }
+
+    public String getFileExtention() {
+        return fileExtention;
+    }
 
     public String getName() {
         return name;
