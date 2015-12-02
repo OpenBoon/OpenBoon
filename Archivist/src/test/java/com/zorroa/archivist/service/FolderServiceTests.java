@@ -2,9 +2,9 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.sdk.domain.DuplicateElementException;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.exception.DuplicateElementException;
 import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

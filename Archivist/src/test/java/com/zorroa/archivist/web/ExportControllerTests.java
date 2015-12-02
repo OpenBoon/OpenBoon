@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -22,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -34,6 +36,9 @@ public class ExportControllerTests extends MockMvcTest {
 
     @Autowired
     IngestService ingestService;
+
+    @Autowired
+    ExportDao exportDao;
 
     @Autowired
     IngestExecutorService ingestExecutorService;
@@ -115,6 +120,24 @@ public class ExportControllerTests extends MockMvcTest {
         assertEquals(export.getId(), export2.getId());
         assertEquals("beer", export2.getSearch().getQuery());
         assertEquals(export2.getNote(), export.getNote());
+    }
+
+    @Test
+    public void testRestart() throws Exception {
+        /*
+         * artificially set the export to finished.
+         */
+        exportDao.setState(export, ExportState.Finished, ExportState.Queued);
+
+        MvcResult result = mvc.perform(put("/api/v1/exports/" + export.getId() + "/_restart")
+                .session(session)
+                .content(Json.serialize(builder))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Export export2 = Json.Mapper.readValue(result.getResponse().getContentAsString(), Export.class);
+        assertEquals(ExportState.Queued, export2.getState());
     }
 
     @Test

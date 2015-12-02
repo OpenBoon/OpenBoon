@@ -45,4 +45,11 @@ public class ExportController {
         Export export = exportService.get(id);
         return exportService.getAllOutputs(export);
     }
+
+    @PreAuthorize("hasRole('export')")
+    @RequestMapping(value="/api/v1/exports/{id}/_restart", method=RequestMethod.PUT)
+    public Export restart(@PathVariable int id) {
+        exportService.restart(exportService.get(id));
+        return exportService.get(id);
+    }
 }

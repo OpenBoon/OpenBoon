@@ -16,4 +16,6 @@ public interface ExportOutputDao {
     List<ExportOutput> getAll(Export export);
 
     ExportOutput create(Export export,  ProcessorFactory<ExportProcessor> output);
+
+    void updateOutputPath(Export export, ExportOutput output);
 }
