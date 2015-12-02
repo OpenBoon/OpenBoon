@@ -6,6 +6,7 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.ExportExecutorService;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Before;
@@ -68,6 +69,22 @@ public class ExportOutputControllerTests extends MockMvcTest {
         export = exportService.create(builder);
 
         exportExecutorService.execute(export);
+    }
+
+    @Test
+    public void testGet() throws Exception {
+
+        MockHttpSession session = admin();
+        ExportOutput output = exportService.getAllOutputs(export).get(0);
+
+        MvcResult result = mvc.perform(get("/api/v1/outputs/" + output.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ExportOutput output2 = Json.Mapper.readValue(result.getResponse().getContentAsString(), ExportOutput.class);
+        assertEquals(output2, output);
     }
 
     @Test

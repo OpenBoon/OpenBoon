@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
 import com.zorroa.archivist.sdk.service.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +31,8 @@ public class ExportOutputController {
 
     @PreAuthorize("hasRole('export')")
     @RequestMapping(value="/api/v1/outputs/{id}", method=RequestMethod.GET)
-    public Export get(@PathVariable int id) {
-        return exportService.get(id);
+    public ExportOutput get(@PathVariable int id) {
+        return exportService.getOutput(id);
     }
 
 }
