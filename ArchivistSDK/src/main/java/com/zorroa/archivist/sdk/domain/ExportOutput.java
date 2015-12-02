@@ -19,6 +19,8 @@ public class ExportOutput {
     private String mimeType;
     private String fileExtention;
 
+    private long fileSize;
+
     private ProcessorFactory<ExportProcessor> factory;
 
     public ProcessorFactory<ExportProcessor> getFactory() {
@@ -101,6 +103,14 @@ public class ExportOutput {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
     }
 
     @Override

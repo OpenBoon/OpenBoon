@@ -10,6 +10,8 @@ public class Export {
     private long timeCreated;
     private int userCreated;
     private ExportState state;
+    private long totalFileSize;
+    private int assetCount;
 
     private AssetSearch search;
     private ExportOptions options;
@@ -68,6 +70,22 @@ public class Export {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public long getTotalFileSize() {
+        return totalFileSize;
+    }
+
+    public void setTotalFileSize(long totalFileSize) {
+        this.totalFileSize = totalFileSize;
+    }
+
+    public int getAssetCount() {
+        return assetCount;
+    }
+
+    public void setAssetCount(int assetCount) {
+        this.assetCount = assetCount;
     }
 
     @Override
