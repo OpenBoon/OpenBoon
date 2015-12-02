@@ -24,6 +24,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
     private static final RowMapper<Export> MAPPER = (rs, row) -> {
         Export export = new Export();
         export.setId(rs.getInt("pk_export"));
+        export.setState(ExportState.values()[rs.getInt("int_state")]);
         export.setTimeCreated(rs.getLong("time_created"));
         export.setUserCreated(rs.getInt("user_created"));
         export.setNote(rs.getString("str_note"));
