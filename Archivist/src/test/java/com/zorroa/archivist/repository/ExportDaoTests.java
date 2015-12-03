@@ -111,4 +111,13 @@ public class ExportDaoTests extends ArchivistApplicationTests {
         assertTrue(exportDao.setState(export, ExportState.Running, ExportState.Queued));
         assertFalse(exportDao.setState(export, ExportState.Running, ExportState.Queued));
     }
+
+    @Test
+    public void testSetSearch() {
+        AssetSearch newSearch = new AssetSearch("bar");
+        assertTrue(exportDao.setSearch(export, newSearch));
+
+        Export export2 = exportDao.get(export.getId());
+        assertEquals("bar", export2.getSearch().getQuery());
+    }
 }

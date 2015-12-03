@@ -1,9 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.Export;
-import com.zorroa.archivist.sdk.domain.ExportBuilder;
-import com.zorroa.archivist.sdk.domain.ExportFilter;
-import com.zorroa.archivist.sdk.domain.ExportState;
+import com.zorroa.archivist.sdk.domain.*;
 
 import java.util.List;
 
@@ -21,4 +18,13 @@ public interface ExportDao {
     List<Export> getAll(ExportState state, int limit);
 
     boolean setState(Export export, ExportState newState, ExportState oldState);
+
+    /**
+     * Reset the search an export is going to do.  This can only be done on queued exports.
+     *
+     * @param export
+     * @param search
+     * @return
+     */
+    boolean setSearch(Export export, AssetSearch search);
 }

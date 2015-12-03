@@ -123,4 +123,10 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         return jdbc.update("UPDATE export SET int_state=? WHERE pk_export=? AND int_state=?",
                 newState.ordinal(), export.getId(), oldState.ordinal()) == 1;
     }
+
+    @Override
+    public boolean setSearch(Export export, AssetSearch search) {
+        return jdbc.update("UPDATE export SET json_search=? WHERE pk_export=? AND int_state=?",
+            Json.serializeToString(search), export.getId(), ExportState.Queued.ordinal()) == 1;
+    }
 }
