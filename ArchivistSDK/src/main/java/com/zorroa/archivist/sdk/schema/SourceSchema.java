@@ -21,6 +21,7 @@ public class SourceSchema implements Schema {
     private Date date;
     private AssetType type;
     private String checksum;
+    private long fileSize;
 
     public String getChecksum() {
         return checksum;
@@ -85,6 +86,14 @@ public class SourceSchema implements Schema {
 
     public void setType(AssetType type) {
         this.type = type;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
     }
 
     @JsonIgnore
