@@ -16,8 +16,9 @@
             "stop"
           ]
         },
-        "file_path": {
-          "tokenizer": "path_tokenizer"
+        "path_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "path_tokenizer"
         }
       },
       "filter": {
@@ -103,6 +104,20 @@
         },
         "source": {
           "properties": {
+            "directory": {
+              "type": "string",
+              "index": "analyzed",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "dir": {
+                  "type": "string",
+                  "index_analyzer": "path_analyzer"
+                }
+              }
+            },
             "path": {
               "type": "string",
               "index" : "analyzed",
@@ -111,9 +126,9 @@
                   "type": "string",
                   "index": "not_analyzed"
                 },
-                "hierarchy": {
+                "dir": {
                   "type": "string",
-                  "index_analyzer": "file_path"
+                  "index_analyzer": "path_analyzer"
                 }
               }
             }
