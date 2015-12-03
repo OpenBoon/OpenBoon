@@ -24,8 +24,14 @@
     <com.zorroa.appDir>"/Library/Application Support/Zorroa"</com.zorroa.appDir>
     <com.zorroa.javaDir>${com.zorroa.appDir}/java</com.zorroa.javaDir>
   </properties>
-
   <dependencies>
+    
+    <dependency>
+      <groupId>com.zorroa</groupId>
+      <artifactId>archivist-sdk</artifactId>
+      <version>0.13.0</version>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -120,13 +126,6 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.4</version>
     </dependency>
-
-    <dependency>
-      <groupId>com.zorroa</groupId>
-      <artifactId>archivist-sdk</artifactId>
-      <version>0.13.0</version>
-    </dependency>
-
   </dependencies>
 
   <build>
