@@ -118,6 +118,25 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         return get(id);
     }
 
+    private static final String QUEUED =
+            "UPDATE " +
+                "export " +
+            "SET " +
+                "time_started=-1," +
+                "time_stopped=-1," +
+                "int_state=? "+
+            "WHERE " +
+                "pk_export=? "+
+            "AND " +
+                "int_state=?";
+    @Override
+    public boolean setQueued(Export export) {
+        return jdbc.update(QUEUED,
+                ExportState.Queued.ordinal(),
+                export.getId(),
+                ExportState.Finished.ordinal()) == 1;
+    }
+
     private static final String RUNNING =
             "UPDATE " +
                 "export " +

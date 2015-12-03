@@ -17,6 +17,8 @@ public interface ExportDao {
 
     List<Export> getAll(ExportState state, int limit);
 
+    boolean setQueued(Export export);
+
     /**
      * Set the given export state to ExportState.Running.  This also updates the started time
      * to the current timestamp, resets the stop time to -1, and increments the execution counter.

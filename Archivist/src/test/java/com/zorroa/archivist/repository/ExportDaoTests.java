@@ -147,6 +147,31 @@ public class ExportDaoTests extends ArchivistApplicationTests {
         assertTrue(timeStopped > -1);
     }
 
+
+    @Test
+    public void testSetQueued() {
+        long timeStopped = jdbc.queryForObject("SELECT time_stopped FROM export WHERE pk_export=?",
+                Long.class, export.getId());
+        assertEquals(-1, timeStopped);
+        assertFalse(exportDao.setQueued(export));
+
+        assertTrue(exportDao.setRunning(export));
+        timeStopped = jdbc.queryForObject("SELECT time_stopped FROM export WHERE pk_export=?",
+                Long.class, export.getId());
+        assertEquals(-1, timeStopped);
+
+        assertTrue(exportDao.setFinished(export));
+        timeStopped = jdbc.queryForObject("SELECT time_stopped FROM export WHERE pk_export=?",
+                Long.class, export.getId());
+        assertTrue(timeStopped > -1);
+
+        assertTrue(exportDao.setQueued(export));
+        timeStopped = jdbc.queryForObject("SELECT time_stopped FROM export WHERE pk_export=?",
+                Long.class, export.getId());
+        assertEquals(-1, timeStopped);
+    }
+
+
     @Test
     public void testSetSearch() {
         AssetSearch newSearch = new AssetSearch("bar");
