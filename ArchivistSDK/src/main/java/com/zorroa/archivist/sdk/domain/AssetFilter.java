@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class AssetFilter {
     private boolean selected;
+    private List<String> assetIds;              // Filter to show the specified assets
     private List<Integer> exportIds;            // Filter to show the specified exports
     private List<String> folderIds;             // Filter to show the specified folders
     private List<String> existFields;           // Filter for assets that contain any of the specified fields
@@ -24,6 +25,15 @@ public class AssetFilter {
 
     public AssetFilter setSelected(boolean selected) {
         this.selected = selected;
+        return this;
+    }
+
+    public List<String> getAssetIds() {
+        return assetIds;
+    }
+
+    public AssetFilter setAssetIds(List<String> assetIds) {
+        this.assetIds = assetIds;
         return this;
     }
 
