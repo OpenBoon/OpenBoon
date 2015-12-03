@@ -1,5 +1,6 @@
 package com.zorroa.archivist.sdk.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -19,6 +20,8 @@ public class Json {
 
     public final static ObjectMapper Mapper = new ObjectMapper();
     static {
+        Mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        Mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         Mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
         Mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
