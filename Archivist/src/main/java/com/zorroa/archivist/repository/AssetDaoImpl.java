@@ -1,10 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.archivist.sdk.domain.*;
@@ -36,17 +32,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
 
-    /**
-     * Special mapper for Assets.
-     */
-    public final static ObjectMapper Mapper = new ObjectMapper();
-    static {
-        Mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
-        Mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        Mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    }
-
     @Autowired
     RoomService roomService;
 
@@ -60,7 +45,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private static final JsonRowMapper<Asset> MAPPER = (id, version, source) -> {
         Map<String, Object> data;
-        data = Json.Mapper.readValue(source, new TypeReference<Map<String, Object>>() {});
+        data = Json.deserialize(source, new TypeReference<Map<String, Object>>() {
+        });
         Asset result = new Asset();
         result.setId(id);
         result.setVersion(version);
@@ -73,7 +59,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             return client.prepareIndex(alias, getType())
                     .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
                     .setOpType(opType)
-                    .setSource(Mapper.writeValueAsString(builder.getDocument()));
+                    .setSource(Json.serializeToString(builder.getDocument()));
         } catch (Exception e) {
             throw new MalformedDataException(
                     "Failed to serialize object, unexpected " + e, e);
