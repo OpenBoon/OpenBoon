@@ -66,7 +66,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
     public void execute(Export export) {
 
-        if (!exportDao.setState(export, ExportState.Running, ExportState.Queued)) {
+        if (!exportDao.setRunning(export)) {
             logger.warn("Unable to set export '{}' state to running.", export);
             return;
         }
@@ -155,7 +155,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             }
 
         } finally {
-            if (exportDao.setState(export, ExportState.Finished, ExportState.Running)) {
+            if (exportDao.setFinished(export)) {
                 logger.info("Export ID:{} complete, {} assets exported.", export.getId(), assetCount);
                 eventServerHandler.broadcast(new Message().setType(
                         MessageType.EXPORT_STOP).setPayload(Json.serializeToString(export)));
