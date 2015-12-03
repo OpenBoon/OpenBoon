@@ -47,7 +47,7 @@ public class ExportOutputDaoTests extends ArchivistApplicationTests {
         builder.setSearch(search);
         builder.setOutputs(Lists.newArrayList(outputFactory));
 
-        export = exportDao.create(builder);
+        export = exportDao.create(builder, 0, 0);
         output = exportOutputDao.create(export, outputFactory);
     }
 
@@ -63,4 +63,11 @@ public class ExportOutputDaoTests extends ArchivistApplicationTests {
         assertEquals(1, outputs.size());
     }
 
+    @Test
+    public void testSetFileSize() {
+        int size = 1000;
+        exportOutputDao.setFileSize(output, size);
+        ExportOutput output2 = exportOutputDao.get(output.getId());
+        assertEquals(size, output2.getFileSize());
+    }
 }

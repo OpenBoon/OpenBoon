@@ -38,6 +38,7 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
         output.setPath(rs.getString("str_output_file_path"));
         output.setMimeType(rs.getString("str_mime_type"));
         output.setFileExtention(rs.getString("str_file_ext"));
+        output.setFileSize(rs.getLong("int_file_size"));
         output.setFactory(Json.deserialize(rs.getString("json_factory"),
                 new TypeReference<ProcessorFactory<ExportProcessor>>(){}));
         return output;
@@ -46,6 +47,11 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
     @Override
     public ExportOutput get(int id) {
         return jdbc.queryForObject("SELECT * FROM export_output WHERE pk_export_output=?", MAPPER, id);
+    }
+
+    @Override
+    public void setFileSize(ExportOutput output, long size) {
+        jdbc.update("UPDATE export_output SET int_file_size=? WHERE pk_export_output=?", size, output.getId());
     }
 
     @Override

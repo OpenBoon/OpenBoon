@@ -18,4 +18,12 @@ public interface ExportOutputDao {
     ExportOutput create(Export export,  ProcessorFactory<ExportProcessor> output);
 
     void updateOutputPath(Export export, ExportOutput output);
+
+    /**
+     * Set the file size on an export output.  This is only known after the files are processed.
+     *
+     * @param output
+     * @param size
+     */
+    void setFileSize(ExportOutput output, long size);
 }
