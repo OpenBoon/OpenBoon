@@ -15,6 +15,9 @@
             "lowercase",
             "stop"
           ]
+        },
+        "file_path": {
+          "tokenizer": "path_tokenizer"
         }
       },
       "filter": {
@@ -107,6 +110,10 @@
                 "raw": {
                   "type": "string",
                   "index": "not_analyzed"
+                },
+                "hierarchy": {
+                  "type": "string",
+                  "index_analyzer": "file_path"
                 }
               }
             }
