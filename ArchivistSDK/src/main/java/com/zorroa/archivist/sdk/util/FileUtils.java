@@ -95,4 +95,30 @@ public class FileUtils {
     public static String join(String ... e) {
         return StringUtil.join(e, "/");
     }
+
+    private static final String UNITS = "KMGTPE";
+
+    /**
+     * Converts from human readable file size to numeric bytes.
+     *
+     * @return byte value
+     */
+    public static long readbleSizeToBytes(String value)
+    {
+        String identifier = value.substring(value.length()-1);
+        int index = UNITS.indexOf(identifier);
+        long number;
+
+        if (index!=-1) {
+            number = Long.parseLong(value.substring(0, value.length()-2));
+            for (int i = 0; i <= index; i++) {
+                number = number * 1000;
+            }
+        }
+        else {
+            number = Long.parseLong(value);
+        }
+        return number;
+    }
+
 }
