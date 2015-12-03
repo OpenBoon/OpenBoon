@@ -183,6 +183,20 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testGetTotalFileSize() {
+
+        AssetBuilder assetBuilder1 = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        AssetBuilder assetBuilder2 = new AssetBuilder(getStaticImagePath() + "/new_zealand_wellington_harbour.jpg");
+
+        assetDao.create(assetBuilder1);
+        assetDao.create(assetBuilder2);
+        refreshIndex(100);
+
+        long size = searchService.getTotalFileSize(new AssetSearchBuilder());
+        assertEquals(4954250, size);
+    }
+
+    @Test
     public void testHighConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");

@@ -14,4 +14,12 @@ public interface SearchService {
     SuggestResponse suggest(AssetSuggestBuilder builder);
     SearchResponse aggregate(AssetAggregateBuilder builder);
     Iterable<Asset> scanAndScroll(AssetSearch search);
+
+    /**
+     * Return the total file size for the given search.
+     *
+     * @param builder
+     * @return
+     */
+    long getTotalFileSize(AssetSearchBuilder builder);
 }
