@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistException;
 import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 11/1/15.
@@ -76,9 +78,16 @@ public class ExportServiceImpl implements ExportService {
         /*
          * Try to reset the state first.  The current state must be finished.
          */
-        if (!exportDao.setState(export, ExportState.Queued, ExportState.Finished)) {
+        if (!exportDao.setQueued(export)) {
             throw new InvalidStateException("Exports must be finished in order to be restarted.");
         }
+
+        /*
+         * Change the search for the export to find all assets from the last export.  This is to ensure
+         * our record of what was exported stays intact.
+         */
+        exportDao.setSearch(export, new AssetSearch().setFilter(
+                new AssetFilter().setExportIds(Lists.newArrayList(export.getId()))));
 
         /*
          * The exports all get new output names so we don't generate new data on top of old
@@ -88,6 +97,22 @@ public class ExportServiceImpl implements ExportService {
         for (ExportOutput output: outputs) {
             exportOutputDao.updateOutputPath(export, output);
         }
+    }
+
+    @Override
+    public Export duplicate(Export export) {
+        /*
+         * Build a new export from the given current export.
+         */
+        ExportBuilder builder = new ExportBuilder();
+        builder.setSearch(export.getSearch());
+        builder.setOutputs(exportOutputDao.getAll(export).stream().map(
+                e->e.getFactory()).collect(Collectors.toList()));
+        builder.setNote(export.getNote());
+        builder.setOptions(export.getOptions());
+
+        Export newExport = create(builder);
+        return newExport;
     }
 
     @Override

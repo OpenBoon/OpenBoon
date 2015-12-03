@@ -9,13 +9,14 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 12/2/15.
@@ -101,7 +102,7 @@ public class ExportServiceTests extends ArchivistApplicationTests {
 
     @Test
     public void testRestart() {
-        SecurityContextHolder.getContext().setAuthentication(null);
+        logout();
         exportExecutorService.execute(export);
         authenticate();
 
@@ -110,11 +111,36 @@ public class ExportServiceTests extends ArchivistApplicationTests {
         Export export2 = exportService.get(export.getId());
         assertEquals(ExportState.Queued, export2.getState());
 
-        SecurityContextHolder.getContext().setAuthentication(null);
+        logout();
         exportExecutorService.execute(export);
         authenticate();
 
         // The second export should have v2 in the path.
         assertTrue(exportService.getAllOutputs(export).get(0).getPath().contains("/v2/"));
+        // The execute count should be 2.
+        assertEquals(2, (int) jdbc.queryForObject("SELECT int_execute_count FROM export WHERE pk_export=?",
+                Integer.class, export.getId()));
+    }
+
+    @Test
+    public void testDuplicate() {
+        Export export2 = exportService.duplicate(export);
+        assertNotEquals(export.getId(), export2.getId());
+        assertEquals(Json.serializeToString(export.getOptions()), Json.serializeToString(export2.getOptions()));
+        assertEquals(Json.serializeToString(export.getSearch()), Json.serializeToString(export2.getSearch()));
+
+        List<ExportOutput> outputs1 = exportService.getAllOutputs(export);
+        List<ExportOutput> outputs2 = exportService.getAllOutputs(export2);
+
+        assertEquals(outputs1.size(), outputs2.size());
+        for (int i=0; i< outputs1.size(); i++) {
+            ExportOutput output1 = outputs1.get(i);
+            ExportOutput output2 = outputs2.get(i);
+
+            assertNotEquals(output1.getId(), output2.getId());
+            assertEquals(output1.getUserCreated(), output2.getUserCreated());
+            assertEquals(output1.getFactory().getKlass(), output2.getFactory().getKlass());
+            assertEquals(output1.getFileExtention(), output2.getFileExtention());
+        }
     }
 }

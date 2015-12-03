@@ -47,7 +47,7 @@ public class ExportController {
     }
 
     @PreAuthorize("hasRole('export')")
-    @RequestMapping(value="/api/v1/exports/{id}/_restart", method=RequestMethod.PUT)
+    @RequestMapping(value="/api/v1/exports/{id}/_duplicate", method=RequestMethod.PUT)
     public Export restart(@PathVariable int id) {
         exportService.restart(exportService.get(id));
         return exportService.get(id);

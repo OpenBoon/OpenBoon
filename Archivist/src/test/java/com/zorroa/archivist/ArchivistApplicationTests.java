@@ -136,6 +136,10 @@ public abstract class ArchivistApplicationTests {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
     }
 
+    public void logout() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+    }
+
     public String getStaticImagePath(String subdir) {
         FileSystemResource resource = new FileSystemResource(TEST_IMAGE_PATH);
         String path = resource.getFile().getAbsolutePath() + "/" + subdir;
