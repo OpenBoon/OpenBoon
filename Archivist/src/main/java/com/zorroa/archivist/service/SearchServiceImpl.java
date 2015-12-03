@@ -204,7 +204,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (builder.getAssetIds() != null) {
-            FilterBuilder assetsFilterrBuilder = FilterBuilders.termFilter("_id", builder.getAssetIds());
+            FilterBuilder assetsFilterrBuilder = FilterBuilders.termsFilter("_id", builder.getAssetIds());
             filter.add(assetsFilterrBuilder);
         }
 
