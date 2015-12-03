@@ -8,6 +8,7 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.schema.SourceSchema;
 import com.zorroa.archivist.sdk.service.ExportService;
+import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +23,9 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     AssetDao assetDao;
+
+    @Autowired
+    FolderService folderService;
 
     @Autowired
     ExportService exportService;
@@ -81,8 +85,33 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         assertEquals(new Integer(3), updatedAsset.getValue("Xmp.Rating"));
     }
 
+
     @Test
+    public void testAddAssetToFolder() {
+
+        AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Asset asset = assetDao.create(builder);
+
+        FolderBuilder fbuilder = new FolderBuilder("foo");
+        Folder folder = folderService.create(fbuilder);
+        refreshIndex(100);
+
+        assetDao.addToFolder(asset, folder);
+        assetDao.addToFolder(asset, folder);
+        refreshIndex(100);
+
+        asset = assetDao.get(asset.getId());
+        assertTrue(((List)asset.getValue("folders")).contains(folder.getId()));
+        assertEquals(1, ((List)asset.getValue("folders")).size());
+    }
+
     public void testAddAssetToExport() {
+
+        AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Asset asset = assetDao.create(assetBuilder);
+
+        refreshIndex(100);
+
         ExportOptions options = new ExportOptions();
         options.getImages().setFormat("jpg");
         options.getImages().setScale(.5);
@@ -100,13 +129,12 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         builder.setOutputs(Lists.newArrayList(outputFactory));
 
         Export export = exportService.create(builder);
-
-        AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        Asset asset = assetDao.create(assetBuilder);
-
         assetDao.addToExport(asset, export);
+        assetDao.addToExport(asset, export);
+        refreshIndex(100);
 
         asset = assetDao.get(asset.getId());
         assertTrue(((List)asset.getValue("exports")).contains(export.getId()));
+        assertEquals(1, ((List)asset.getValue("exports")).size());
     }
 }

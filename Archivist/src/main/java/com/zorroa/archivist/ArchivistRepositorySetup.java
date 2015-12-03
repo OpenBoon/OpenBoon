@@ -161,7 +161,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         logger.info("Creating indexed scripts");
 
         Map<String, Object> script1 = ImmutableMap.of(
-            "script", "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } else { ctx._source.exports += exportId }",
+            "script", "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } " +
+                        "else { ctx._source.exports += exportId; ctx._source.exports = ctx._source.exports.unique(); }",
             "params", "exportId");
 
         client.preparePutIndexedScript()
@@ -171,7 +172,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 .get();
 
         Map<String, Object> script2 = ImmutableMap.of(
-                "script", "if (ctx._source.folders == null ) {  ctx._source.folders = [folderId] } else { ctx._source.folders += folderId }",
+                "script", "if (ctx._source.folders == null ) { ctx._source.folders = [folderId] } else " +
+                        "{ ctx._source.folders += folderId; ctx._source.folders = ctx._source.folders.unique(); }",
                 "params", "folderId");
 
         client.preparePutIndexedScript()
