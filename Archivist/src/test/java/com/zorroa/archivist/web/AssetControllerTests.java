@@ -720,6 +720,36 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testFilterAsset() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex(1000);
+
+        ArrayList<String> assetIds = new ArrayList<>();
+        List<Asset> assets = assetDao.getAll();
+        Asset asset = assets.get(0);
+        assetIds.add(asset.getId());
+        AssetSearchBuilder asb = new AssetSearchBuilder().setSearch(new AssetSearch().setFilter(new AssetFilter().setAssetIds(assetIds)));
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(asb)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+        ArrayList<Map<String, Object>> hitAssets = (ArrayList<Map<String, Object>>)hits.get("hits");
+        Map<String, Object> doc = (Map<String, Object>)hitAssets.get(0);
+        assertEquals(asset.getId(), doc.get("_id"));
+    }
+
+    @Test
     public void testSelectAsset() throws Exception {
         MockHttpSession session = user();
 

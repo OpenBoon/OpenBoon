@@ -195,11 +195,17 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (builder.isSelected()) {
+            // FIXME: Refactor avoid race conditions, add room endpoints to get selected set atomically
             Room room = roomService.getActiveRoom(userService.getActiveSession());
             if (room != null) {
                 TermFilterBuilder selectedBuilder = FilterBuilders.termFilter("selectedRooms", room.getId());
                 filter.add(selectedBuilder);
             }
+        }
+
+        if (builder.getAssetIds() != null) {
+            FilterBuilder assetsFilterrBuilder = FilterBuilders.termFilter("_id", builder.getAssetIds());
+            filter.add(assetsFilterrBuilder);
         }
 
         if (builder.getExportIds() != null) {
