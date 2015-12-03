@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.util.Set;
 
@@ -51,15 +53,20 @@ public abstract class ArchivistApplicationTests {
     @Value("${archivist.snapshot.repoName}")
     private String snapshotRepoName;
 
+    protected JdbcTemplate jdbc;
+
     protected Set<String> testImages;
 
     public static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
 
-
-
     public ArchivistApplicationTests() {
         logger.info("Setting unit test");
         ArchivistConfiguration.unittest = true;
+    }
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbc = new JdbcTemplate(dataSource);
     }
 
     private ImmutableList<SnapshotInfo> getSnapshotInfos() {

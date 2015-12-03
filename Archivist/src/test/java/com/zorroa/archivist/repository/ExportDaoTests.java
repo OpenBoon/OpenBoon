@@ -113,6 +113,41 @@ public class ExportDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testSetStarted() {
+        int executeCount = jdbc.queryForObject("SELECT int_execute_count FROM export WHERE pk_export=?",
+                Integer.class, export.getId());
+        assertEquals(0, executeCount);
+
+        assertTrue(exportDao.setRunning(export));
+        executeCount = jdbc.queryForObject("SELECT int_execute_count FROM export WHERE pk_export=?",
+                Integer.class, export.getId());
+        assertEquals(1, executeCount);
+
+        assertFalse(exportDao.setRunning(export));
+        executeCount = jdbc.queryForObject("SELECT int_execute_count FROM export WHERE pk_export=?",
+                Integer.class, export.getId());
+        assertEquals(1, executeCount);
+    }
+
+    @Test
+    public void testSetStopped() {
+        long timeStopped = jdbc.queryForObject("SELECT time_stopped FROM export WHERE pk_export=?",
+                Long.class, export.getId());
+        assertEquals(-1, timeStopped);
+        assertFalse(exportDao.setFinished(export));
+
+        assertTrue(exportDao.setRunning(export));
+        timeStopped = jdbc.queryForObject("SELECT time_stopped FROM export WHERE pk_export=?",
+                Long.class, export.getId());
+        assertEquals(-1, timeStopped);
+
+        assertTrue(exportDao.setFinished(export));
+        timeStopped = jdbc.queryForObject("SELECT time_stopped FROM export WHERE pk_export=?",
+                Long.class, export.getId());
+        assertTrue(timeStopped > -1);
+    }
+
+    @Test
     public void testSetSearch() {
         AssetSearch newSearch = new AssetSearch("bar");
         assertTrue(exportDao.setSearch(export, newSearch));

@@ -118,6 +118,47 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         return get(id);
     }
 
+    private static final String RUNNING =
+            "UPDATE " +
+                "export " +
+            "SET " +
+                "time_started=?," +
+                "int_state=?,"+
+                "time_stopped=-1,"+
+                "int_execute_count=int_execute_count+1 " +
+            "WHERE " +
+                "pk_export=? "+
+            "AND " +
+                "int_state=?";
+    @Override
+    public boolean setRunning(Export export) {
+        return jdbc.update(RUNNING,
+                System.currentTimeMillis(),
+                ExportState.Running.ordinal(),
+                export.getId(),
+                ExportState.Queued.ordinal()) == 1;
+    }
+
+    private static final String FINISHED =
+            "UPDATE " +
+                "export " +
+            "SET " +
+                "time_stopped=?,"+
+                "int_state=? "+
+            "WHERE " +
+                "pk_export=? "+
+            "AND " +
+                "int_state=?";
+
+    @Override
+    public boolean setFinished(Export export) {
+        return jdbc.update(FINISHED,
+                System.currentTimeMillis(),
+                ExportState.Finished.ordinal(),
+                export.getId(),
+                ExportState.Running.ordinal()) == 1;
+    }
+
     @Override
     public boolean setState(Export export, ExportState newState, ExportState oldState) {
         return jdbc.update("UPDATE export SET int_state=? WHERE pk_export=? AND int_state=?",
