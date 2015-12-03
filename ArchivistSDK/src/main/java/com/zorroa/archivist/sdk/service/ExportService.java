@@ -22,6 +22,21 @@ public interface ExportService {
 
     List<Export> getAll(ExportFilter filter);
 
+    /**
+     * Restart a given export.  The export will be set back into into the queued
+     * state and will export the exact same files as the original run.
+     *
+     * @param export
+     */
     void restart(Export export);
+
+    /**
+     * Duplicates a given export.  The new export will be in the queued state
+     * and execute the exact same search as the original export. The result
+     * of the new export may be different from the original.
+     *
+     * @param export
+     */
+    Export duplicate(Export export);
 
 }
