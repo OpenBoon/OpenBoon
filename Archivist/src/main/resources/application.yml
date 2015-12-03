@@ -43,6 +43,7 @@ archivist:
         autoStart: true
         basePath: "exports"
         maxAssetCount: 1024
+        maxTotalFileSize: "500M"
     snapshot:
         basePath: "snapshots"
         repoName: "backups"

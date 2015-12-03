@@ -94,6 +94,12 @@ public class ExportServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testExportProperties() {
+        assertEquals(1, export.getAssetCount());
+        assertEquals(1800475, export.getTotalFileSize());
+    }
+
+    @Test
     public void testRestart() {
         SecurityContextHolder.getContext().setAuthentication(null);
         exportExecutorService.execute(export);

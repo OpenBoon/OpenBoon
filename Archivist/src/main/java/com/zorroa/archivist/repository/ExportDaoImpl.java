@@ -30,6 +30,8 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         export.setNote(rs.getString("str_note"));
         export.setOptions(Json.deserialize(rs.getString("json_options"), ExportOptions.class));
         export.setSearch(Json.deserialize(rs.getString("json_search"), AssetSearch.class));
+        export.setTotalFileSize(rs.getLong("int_total_file_size"));
+        export.setAssetCount(rs.getInt("int_asset_count"));
         return export;
     };
 
@@ -93,10 +95,12 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
                     "time_created",
                     "str_note",
                     "json_search",
-                    "json_options");
+                    "json_options",
+                    "int_total_file_size",
+                    "int_asset_count");
 
     @Override
-    public Export create(ExportBuilder builder) {
+    public Export create(ExportBuilder builder, long totalFileSize, long assetCount) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
@@ -106,6 +110,8 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
             ps.setString(3, builder.getNote() == null ? "" : builder.getNote());
             ps.setString(4, Json.serializeToString(builder.getSearch()));
             ps.setString(5, Json.serializeToString(builder.getOptions()));
+            ps.setLong(6, totalFileSize);
+            ps.setLong(7, assetCount);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();

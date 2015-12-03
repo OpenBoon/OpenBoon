@@ -7,6 +7,9 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
+import com.zorroa.archivist.sdk.util.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,8 @@ import java.util.List;
 @Transactional
 public class ExportServiceImpl implements ExportService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ExportServiceImpl.class);
+
     @Autowired
     SearchService searchService;
 
@@ -34,10 +39,18 @@ public class ExportServiceImpl implements ExportService {
     @Value("${archivist.export.maxAssetCount}")
     int maxAssetCount;
 
+    @Value("${archivist.export.maxTotalFileSize}")
+    String maxTotalFileSize;
+
     @Override
     public Export create(ExportBuilder builder) {
 
-        long count = searchService.count(new AssetSearchBuilder(builder.getSearch())).getCount();
+        AssetSearchBuilder asb = new AssetSearchBuilder(builder.getSearch());
+
+        /*
+         * Do the checks for maximum assets and file size.
+         */
+        long count = searchService.count(asb).getCount();
         if (count == 0) {
             throw new ArchivistException("The search did not match any assets.");
         }
@@ -45,7 +58,12 @@ public class ExportServiceImpl implements ExportService {
             throw new ArchivistException(String.format("Cannot export more than '%d' assets at a time.", maxAssetCount));
         }
 
-        Export export = exportDao.create(builder);
+        long totalSize = searchService.getTotalFileSize(asb);
+        if (totalSize >  FileUtils.readbleSizeToBytes(maxTotalFileSize)) {
+            throw new ArchivistException(String.format("Cannot export more than '%s' assets at a time.", maxTotalFileSize));
+        }
+
+        Export export = exportDao.create(builder, totalSize, count);
         for (ProcessorFactory<ExportProcessor> factory: builder.getOutputs()) {
             exportOutputDao.create(export, factory);
         }

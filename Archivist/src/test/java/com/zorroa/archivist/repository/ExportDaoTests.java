@@ -36,7 +36,7 @@ public class ExportDaoTests extends ArchivistApplicationTests {
         builder.setOptions(options);
         builder.setSearch(search);
 
-        export = exportDao.create(builder);
+        export = exportDao.create(builder, 0, 0);
     }
 
     @Test

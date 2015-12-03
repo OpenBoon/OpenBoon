@@ -16,7 +16,7 @@ public interface ExportDao {
 
     List<Export> getAll(ExportFilter filter);
 
-    Export create(ExportBuilder builder);
+    Export create(ExportBuilder builder, long totalFileSize, long assetCount);
 
     List<Export> getAll(ExportState state, int limit);
 
