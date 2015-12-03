@@ -167,7 +167,7 @@ public class SchemaAssetMetadataProcessor extends IngestProcessor {
                  */
                 if (date != null) {
                     int dateFieldPriority = dateArgs.indexOf(id);
-                    if (dateFieldPriority < mostValidDateField) {
+                    if (dateFieldPriority >= 0 && dateFieldPriority < mostValidDateField) {
                         mostValidDateField = dateFieldPriority;
                         asset.getSource().setDate(date);
                         continue;
