@@ -16,14 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -127,7 +123,7 @@ public class ImageServiceImpl implements ImageService {
              * Hold onto the proxy for possible subsequent image opts.
              */
             IMAGE_CACHE.put(outFile, proxy);
-            
+
             Proxy result = new Proxy();
             result.setPath(outFile.getAbsolutePath());
             result.setWidth(proxy.getWidth());
@@ -152,26 +148,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Dimension getImageDimensions(File imgFile) throws IOException {
-        int pos = imgFile.getName().lastIndexOf(".");
-        if (pos == -1)
-            throw new IOException("No extension for file: " + imgFile.getAbsolutePath());
-        String suffix = imgFile.getName().substring(pos + 1);
-        Iterator<ImageReader> iter = ImageIO.getImageReadersBySuffix(suffix);
-        if (iter.hasNext()) {
-            ImageReader reader = iter.next();
-            try {
-                ImageInputStream stream = new FileImageInputStream(imgFile);
-                reader.setInput(stream);
-                int width = reader.getWidth(reader.getMinIndex());
-                int height = reader.getHeight(reader.getMinIndex());
-                return new Dimension(width, height);
-            } catch (IOException e) {
-
-            } finally {
-                reader.dispose();
-            }
+        try {
+            BufferedImage img = IMAGE_CACHE.get(imgFile);
+            return new Dimension(img.getWidth(), img.getHeight());
+        } catch (ExecutionException e) {
+            throw new IOException(e.getCause());
         }
-
-        throw new IOException("Not a known image file: " + imgFile.getAbsolutePath());
     }
 }
