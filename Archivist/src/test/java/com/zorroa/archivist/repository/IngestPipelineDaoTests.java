@@ -53,7 +53,10 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void update() {
+    public void update() throws InterruptedException {
+        // Sleep before doing the update to ensure the modified
+        // time property is incremented.
+        Thread.sleep(5);
 
         IngestPipelineUpdateBuilder builder = new IngestPipelineUpdateBuilder();
         builder.setName("foo");
