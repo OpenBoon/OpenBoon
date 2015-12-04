@@ -55,7 +55,7 @@ public class RoomDaoTests extends ArchivistApplicationTests {
     @Test
     public void testGetAllBySession() {
 
-        sessionDao.create(userService.get(1), "1");
+        Session session = sessionDao.create(userService.get(1), "1");
 
         for (int i=0; i<10; i++) {
             RoomBuilder bld = new RoomBuilder();
@@ -64,7 +64,7 @@ public class RoomDaoTests extends ArchivistApplicationTests {
             roomDao.create(bld);
         }
 
-        assertEquals(11, roomDao.getAll(userService.getActiveSession()).size());
+        assertEquals(11, roomDao.getAll(session).size());
     }
 
     @Test
