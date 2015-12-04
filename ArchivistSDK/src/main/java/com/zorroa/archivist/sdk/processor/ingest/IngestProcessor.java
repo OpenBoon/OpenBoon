@@ -8,4 +8,6 @@ public abstract class IngestProcessor extends Processor {
     public IngestProcessor() { };
 
     public abstract void process(AssetBuilder asset);
+
+    public void init() { };
 }
