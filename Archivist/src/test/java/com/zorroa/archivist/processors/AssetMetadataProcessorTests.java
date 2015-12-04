@@ -59,6 +59,8 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
         assertTrue(schema.getWidth() > 0);
         assertTrue(schema.getHeight() > 0);
 
+        // TODO: Test for more image tags.
+
     }
 
 }
