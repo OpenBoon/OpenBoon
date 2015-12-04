@@ -24,6 +24,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -176,11 +177,17 @@ public class ImageProcessor extends IngestProcessor {
                  * Check for the most valid date.
                  */
                 if (date != null) {
-                    int dateFieldPriority = dateArgs.indexOf(id);
-                    if (dateFieldPriority >= 0 && dateFieldPriority < mostValidDateField) {
-                        mostValidDateField = dateFieldPriority;
-                        asset.getSource().setDate(date);
-                        continue;
+                    Calendar cal = Calendar.getInstance();
+                    int curYear = cal.get(Calendar.YEAR);
+                    cal.setTime(date);
+                    int year = cal.get(Calendar.YEAR);
+                    if (year > 1700 && year <= curYear + 1 /* just to be safe */) {
+                        int dateFieldPriority = dateArgs.indexOf(id);
+                        if (dateFieldPriority >= 0 && dateFieldPriority < mostValidDateField) {
+                            mostValidDateField = dateFieldPriority;
+                            asset.getSource().setDate(date);
+                            continue;
+                        }
                     }
                 }
 
