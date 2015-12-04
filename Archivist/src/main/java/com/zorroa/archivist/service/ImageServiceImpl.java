@@ -112,6 +112,7 @@ public class ImageServiceImpl implements ImageService {
                 .width(output.getSize())
                 .outputFormat(output.getFormat())
                 .keepAspectRatio(true)
+                .imageType(BufferedImage.TYPE_INT_RGB)
                 .rendering(Rendering.QUALITY)
                 .outputQuality(output.getQuality())
                 .asBufferedImage();
