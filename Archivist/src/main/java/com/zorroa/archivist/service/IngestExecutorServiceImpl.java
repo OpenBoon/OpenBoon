@@ -5,10 +5,11 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.FileUtils;
-import com.zorroa.archivist.IngestException;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
+import com.zorroa.archivist.sdk.exception.IngestException;
+import com.zorroa.archivist.sdk.exception.IngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.AssetService;
@@ -206,6 +207,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                     autowire.autowireBean(processor);
                     processors.add(processor);
+                    processor.init();
                 }
 
                 updateCountsTimer = new Timer();
@@ -334,6 +336,15 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     } else {
                         createdCount.increment();
                     }
+                }
+                catch (IngestProcessorException e) {
+                    /*
+                     * If a processor throws an IngestProcessorException that indicates the asset is not processable.
+                     * For now we'll log that here, but once we know more about the errors we'll come up with
+                     * better ways of handling and/or recovering from them.
+                     */
+                    logger.warn("INGEST ERROR {} ON ASSET: '{}', PROCESSOR: {}", e.getMessage(), e.getAsset(),
+                            e.getProcessor().getCanonicalName());
                 }
                 catch (Exception e) {
                     logger.warn("Failed to execute ingest for asset '{}',", asset.getAbsolutePath(), e);

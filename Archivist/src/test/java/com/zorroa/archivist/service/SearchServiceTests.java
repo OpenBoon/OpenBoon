@@ -186,14 +186,16 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     public void testGetTotalFileSize() {
 
         AssetBuilder assetBuilder1 = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder1.getSource().setFileSize(1000);
         AssetBuilder assetBuilder2 = new AssetBuilder(getStaticImagePath() + "/new_zealand_wellington_harbour.jpg");
+        assetBuilder2.getSource().setFileSize(1000);
 
         assetDao.create(assetBuilder1);
         assetDao.create(assetBuilder2);
         refreshIndex(100);
 
         long size = searchService.getTotalFileSize(new AssetSearchBuilder());
-        assertEquals(4954250, size);
+        assertEquals(2000, size);
     }
 
     @Test

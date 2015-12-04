@@ -8,7 +8,6 @@ import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.service.ImageService;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
@@ -59,7 +58,6 @@ public class SchemaProxyProcessor extends IngestProcessor {
             );
         }
         if (asset.isType(AssetType.Image)) {
-            extractDimensions(asset);
             int width = asset.getAttr("image", "width");
             List<Proxy> result = Lists.newArrayList();
             for (ProxyOutput output : outputs) {
@@ -93,18 +91,6 @@ public class SchemaProxyProcessor extends IngestProcessor {
         } catch (IOException e) {
             logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
             asset.put("errors", "SchemaProxyProcessor", e.getMessage());
-        }
-    }
-
-    private void extractDimensions(AssetBuilder asset) {
-        try {
-            Dimension size = imageService.getImageDimensions(asset.getFile());
-            ImageSchema schema = asset.getSchema("image", ImageSchema.class);
-            schema.setWidth(size.width);
-            schema.setHeight(size.height);
-        } catch (IOException e) {
-            logger.warn("Unable to determine image dimensions: {}: " + e.getMessage(), asset);
-            asset.put("errors", getClass().getCanonicalName(), e.getMessage());
         }
     }
 
