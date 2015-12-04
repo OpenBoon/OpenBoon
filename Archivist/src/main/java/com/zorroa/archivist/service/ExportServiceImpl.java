@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,7 +78,7 @@ public class ExportServiceImpl implements ExportService {
          * Try to reset the state first.  The current state must be finished.
          */
         if (!exportDao.setQueued(export)) {
-            throw new InvalidStateException("Exports must be finished in order to be restarted.");
+            throw new ArchivistException("Exports must be finished in order to be restarted.");
         }
 
         /*
