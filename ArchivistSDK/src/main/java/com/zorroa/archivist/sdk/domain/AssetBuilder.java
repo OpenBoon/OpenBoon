@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory;
 import java.awt.geom.Point2D;
 import java.beans.PropertyDescriptor;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
 import java.util.*;
 
 public class AssetBuilder {
@@ -72,13 +70,6 @@ public class AssetBuilder {
         source.setPath(getAbsolutePath());
         source.setExtension(getExtension());
         source.setFilename(getFilename());
-
-        try {
-            source.setFileSize(Files.size(file.toPath()));
-        } catch (IOException e) {
-            logger.warn("Unable to determine the file size of {}", file);
-        }
-
         addSchema(source);
 
         keywords = new KeywordsSchema();
@@ -86,17 +77,6 @@ public class AssetBuilder {
 
         permissions = new PermissionSchema();
         addSchema(permissions);
-
-        /*
-         * Based on the type of asset, add the corresponding schema.
-         */
-        switch(source.getType()) {
-            case Image:
-                addSchema(new ImageSchema());
-                break;
-            default:
-                logger.warn("Unsupported asset type: '%s'", source.getType());
-        }
     }
 
     public AssetBuilder(String file) {
