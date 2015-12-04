@@ -5,6 +5,7 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.common.collect.Maps;
@@ -53,8 +54,11 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
         List<Asset> assets = assetDao.getAll();
         assertEquals(2, assets.size());
 
-        Map<String, Object> sourceMap = (Map<String, Object>) assets.get(0).getDocument().get("source");
-        assertTrue(sourceMap.containsKey("date"));
+        // Verify Image sizes were set.
+        ImageSchema schema = assets.get(0).getValue("image", ImageSchema.class);
+        assertTrue(schema.getWidth() > 0);
+        assertTrue(schema.getHeight() > 0);
+
     }
 
 }
