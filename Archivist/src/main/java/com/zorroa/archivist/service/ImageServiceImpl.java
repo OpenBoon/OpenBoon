@@ -1,5 +1,8 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
@@ -17,11 +20,14 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -37,6 +43,17 @@ public class ImageServiceImpl implements ImageService {
     private File proxyPath;
 
     private ImmutableSet<String> supportedFormats;
+
+    private static final LoadingCache<File, BufferedImage> IMAGE_CACHE = CacheBuilder.newBuilder()
+            .maximumSize(500)
+            .initialCapacity(500)
+            .expireAfterWrite(10, TimeUnit.SECONDS)
+            .concurrencyLevel(4)
+            .build(new CacheLoader<File, BufferedImage>() {
+                public BufferedImage load(File key) throws Exception {
+                    return ImageIO.read(key);
+                }
+            });
 
     @PostConstruct
     public void init() {
@@ -95,21 +112,32 @@ public class ImageServiceImpl implements ImageService {
         String proxyId = UUID.randomUUID().toString();
         File outFile = makeProxyPath(proxyId, output.getFormat());
 
-        Thumbnails.of(original)
-            .width(output.getSize())
-            .outputFormat(output.getFormat())
-            .keepAspectRatio(true)
-            .rendering(Rendering.QUALITY)
-            .outputQuality(output.getQuality())
-            .toFile(outFile);
-        Dimension dim = getImageDimensions(outFile);
+        try {
+            BufferedImage proxy = Thumbnails.of(IMAGE_CACHE.get(original))
+                    .width(output.getSize())
+                    .outputFormat(output.getFormat())
+                    .keepAspectRatio(true)
+                    .rendering(Rendering.QUALITY)
+                    .outputQuality(output.getQuality())
+                    .asBufferedImage();
 
-        Proxy result = new Proxy();
-        result.setPath(outFile.getAbsolutePath());
-        result.setWidth(dim.width);
-        result.setHeight(dim.height);
-        result.setFormat(output.getFormat());
-        return result;
+            ImageIO.write(proxy, output.getFormat(), outFile);
+
+            /*
+             * Hold onto the proxy for possible subsequent image opts.
+             */
+            IMAGE_CACHE.put(outFile, proxy);
+            
+            Proxy result = new Proxy();
+            result.setPath(outFile.getAbsolutePath());
+            result.setWidth(proxy.getWidth());
+            result.setHeight(proxy.getHeight());
+            result.setFormat(output.getFormat());
+            return result;
+
+        } catch (ExecutionException e) {
+            throw new IOException(e.getCause());
+        }
     }
 
     @Override
