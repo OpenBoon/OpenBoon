@@ -41,8 +41,8 @@ public class ImageServiceImpl implements ImageService {
     private ImmutableSet<String> supportedFormats;
 
     private static final LoadingCache<File, BufferedImage> IMAGE_CACHE = CacheBuilder.newBuilder()
-            .maximumSize(500)
-            .initialCapacity(500)
+            .maximumSize(200)
+            .initialCapacity(200)
             .expireAfterWrite(10, TimeUnit.SECONDS)
             .concurrencyLevel(4)
             .build(new CacheLoader<File, BufferedImage>() {
@@ -108,32 +108,22 @@ public class ImageServiceImpl implements ImageService {
         String proxyId = UUID.randomUUID().toString();
         File outFile = makeProxyPath(proxyId, output.getFormat());
 
-        try {
-            BufferedImage proxy = Thumbnails.of(IMAGE_CACHE.get(original))
-                    .width(output.getSize())
-                    .outputFormat(output.getFormat())
-                    .keepAspectRatio(true)
-                    .rendering(Rendering.QUALITY)
-                    .outputQuality(output.getQuality())
-                    .asBufferedImage();
+        BufferedImage proxy = Thumbnails.of(getImage(original))
+                .width(output.getSize())
+                .outputFormat(output.getFormat())
+                .keepAspectRatio(true)
+                .rendering(Rendering.QUALITY)
+                .outputQuality(output.getQuality())
+                .asBufferedImage();
+        ImageIO.write(proxy, output.getFormat(), outFile);
 
-            ImageIO.write(proxy, output.getFormat(), outFile);
+        Proxy result = new Proxy();
+        result.setPath(outFile.getAbsolutePath());
+        result.setWidth(proxy.getWidth());
+        result.setHeight(proxy.getHeight());
+        result.setFormat(output.getFormat());
+        return result;
 
-            /*
-             * Hold onto the proxy for possible subsequent image opts.
-             */
-            IMAGE_CACHE.put(outFile, proxy);
-
-            Proxy result = new Proxy();
-            result.setPath(outFile.getAbsolutePath());
-            result.setWidth(proxy.getWidth());
-            result.setHeight(proxy.getHeight());
-            result.setFormat(output.getFormat());
-            return result;
-
-        } catch (ExecutionException e) {
-            throw new IOException(e.getCause());
-        }
     }
 
     @Override
@@ -147,12 +137,17 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Dimension getImageDimensions(File imgFile) throws IOException {
+    public Dimension getImageDimensions(File file) throws IOException {
+        BufferedImage img = getImage(file);
+        return new Dimension(img.getWidth(), img.getHeight());
+    }
+
+    private BufferedImage getImage(File file)  throws IOException {
         try {
-            BufferedImage img = IMAGE_CACHE.get(imgFile);
-            return new Dimension(img.getWidth(), img.getHeight());
+            return IMAGE_CACHE.get(file);
         } catch (ExecutionException e) {
             throw new IOException(e.getCause());
         }
     }
+
 }
