@@ -219,7 +219,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                                 updatedCount.intValue(),
                                 errorCount.intValue());
                     }
-                }, 1000, 1000);
+                }, 5000, 5000);
 
                 Path start = new File(ingest.getPath()).toPath();
                 Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
