@@ -191,6 +191,18 @@ public class ImageProcessor extends IngestProcessor {
                     }
                 }
 
+                // Descriptions are human-readable forms of the metadata.
+                // Always save the original format, and also save a description if it
+                // has some useful additional information for searching & display.
+                String description = tag.getDescription();
+                String descriptionKey = key + ".description";
+                if (description.equals(directory.getString(tag.getTagType()))) {
+                    description = null;
+                }
+                if (value.getClass().isArray() && (value.getClass().getComponentType().getName().equals("java.lang.String") || Array.getLength(value) > 16)) {
+                    description = null;
+                }
+
                 /*
                  * Check for special data types that need to be handled, otherwise
                  * just add the data to the object
@@ -201,6 +213,9 @@ public class ImageProcessor extends IngestProcessor {
                 } else if (value instanceof Rational) {
                     Rational rational = (Rational)value;
                     asset.setAttr(namespace, key, rational.doubleValue());
+                    if (description != null) {
+                        asset.setAttr(namespace, descriptionKey, description);
+                    }
                 } else if (value.getClass().isArray()) {
                     String componentName = value.getClass().getComponentType().getName();
                     if (componentName.equals("java.lang.String")) {
@@ -216,11 +231,20 @@ public class ImageProcessor extends IngestProcessor {
                         asset.setAttr(namespace, key, doubles);
                     } else if (componentName.equals("byte") && Array.getLength(value) <= 16) {
                         asset.setAttr(namespace, key, value);
+                        if (description != null) {
+                            asset.setAttr(namespace, descriptionKey, description);
+                        }
                     } else {
                         asset.setAttr(namespace, key, value);
+                        if (description != null) {
+                            asset.setAttr(namespace, descriptionKey, description);
+                        }
                     }
                 } else {
                     asset.setAttr(namespace, key, value);
+                    if (description != null) {
+                        asset.setAttr(namespace, descriptionKey, description);
+                    }
                 }
             }
         }
