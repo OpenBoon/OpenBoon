@@ -90,7 +90,7 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
     public void determineNextRuntime() {
         IngestScheduleBuilder builder = new IngestScheduleBuilder();
         builder.setAllDays();
-        builder.setRunAtTime(LocalTime.now().plusHours(2).toString());
+        builder.setRunAtTime(LocalTime.now().minusHours(2).toString());
         builder.setName("test");
         IngestSchedule schedule = ingestScheduleDao.create(builder);
 
