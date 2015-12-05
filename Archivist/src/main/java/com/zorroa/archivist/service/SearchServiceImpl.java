@@ -157,12 +157,21 @@ public class SearchServiceImpl implements SearchService {
         }
 
         AssetFilter filter = search.getFilter();
+        query.must(folderQuery(filter));
+
+        return QueryBuilders.filteredQuery(query, getFilter(filter));
+    }
+
+    // Combine the folder search and filter using SHOULD.
+    // Merged into the main query as a MUST above.
+    private QueryBuilder folderQuery(AssetFilter filter) {
+        BoolQueryBuilder query = QueryBuilders.boolQuery();
         if (filter.getFolderIds() != null) {
             Set<String> folderIds = Sets.newHashSetWithExpectedSize(64);
             for (Folder folder : folderService.getAllDescendants(
                     folderService.getAll(filter.getFolderIds()), true)) {
                 if (folder.getSearch() != null) {
-                    query.must(getQuery(folder.getSearch()));
+                    query.should(getQuery(folder.getSearch()));
                 }
                 folderIds.add(folder.getId());
             }
@@ -171,8 +180,7 @@ public class SearchServiceImpl implements SearchService {
                 query.should(QueryBuilders.termsQuery("folders", folderIds));
             }
         }
-
-        return QueryBuilders.filteredQuery(query, getFilter(filter));
+        return query;
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
