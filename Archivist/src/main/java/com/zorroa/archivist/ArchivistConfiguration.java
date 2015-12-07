@@ -1,6 +1,7 @@
 package com.zorroa.archivist;
 
 import com.googlecode.flyway.core.Flyway;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -63,6 +64,13 @@ public class ArchivistConfiguration {
     public DataSourceTransactionManager transactionManager(DataSource datasource) {
         return new DataSourceTransactionManager(datasource);
     }
+
+    @Bean
+    @Autowired
+    public TransactionEventManager transactionEventManager() {
+        return new TransactionEventManager();
+    }
+
     @Bean
     public Client elastic() throws IOException {
 
