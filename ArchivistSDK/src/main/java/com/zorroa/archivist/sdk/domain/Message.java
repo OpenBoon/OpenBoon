@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.zorroa.archivist.sdk.util.Json;
+
 public class Message {
 
     private MessageType type;
@@ -8,6 +10,11 @@ public class Message {
     public Message(MessageType type, String payload) {
         this.type = type;
         this.payload = payload;
+    }
+
+    public Message(MessageType type, Object payload) {
+        this.type = type;
+        this.payload = Json.serializeToString(payload);
     }
 
     public Message() { }
@@ -27,6 +34,11 @@ public class Message {
 
     public Message setPayload(String payload) {
         this.payload = payload;
+        return this;
+    }
+
+    public Message setPayload(Object payload) {
+        this.payload = Json.serializeToString(payload);
         return this;
     }
 
