@@ -147,11 +147,6 @@ public class AssetController {
         return builder;
     }
 
-    private void sendResponse(HttpServletResponse httpResponse) {
-
-
-    }
-
     @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)
     public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
