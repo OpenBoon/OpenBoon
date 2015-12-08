@@ -8,7 +8,11 @@ public class AssetSearchBuilder {
     private AssetSearch search;
     private int size = 10;
     private int from;
-    private int roomId;
+
+    /**
+     * If this value is true, this search will be set as the current room search.
+     */
+    private boolean useAsRoomSearch = true;
 
     public AssetSearchBuilder() {
         search = new AssetSearch();
@@ -16,6 +20,11 @@ public class AssetSearchBuilder {
 
     public AssetSearchBuilder(AssetSearch search) {
         this.search = search;
+    }
+
+    public AssetSearchBuilder(String query) {
+        search = new AssetSearch();
+        search.setQuery(query);
     }
 
     public AssetSearch getSearch() {
@@ -45,12 +54,12 @@ public class AssetSearchBuilder {
         return this;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public boolean isUseAsRoomSearch() {
+        return useAsRoomSearch;
     }
 
-    public AssetSearchBuilder setRoom(int room) {
-        this.roomId = roomId;
-        return this;
+    public void setUseAsRoomSearch(boolean useAsRoomSearch) {
+        this.useAsRoomSearch = useAsRoomSearch;
     }
+
 }

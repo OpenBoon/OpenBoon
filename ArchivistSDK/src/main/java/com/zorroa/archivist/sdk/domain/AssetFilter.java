@@ -10,7 +10,6 @@ import java.util.List;
  * Restrict a query to a subset of assets matching the filter
  */
 public class AssetFilter {
-    private boolean selected;
     private List<String> assetIds;              // Filter to show the specified assets
     private List<Integer> exportIds;            // Filter to show the specified exports
     private List<String> folderIds;             // Filter to show the specified folders
@@ -18,15 +17,6 @@ public class AssetFilter {
     private List<AssetFieldTerms> fieldTerms;   // Filter for matching terms in the specified field
     private List<AssetFieldRange> fieldRanges;  // Filter for terms within a specified range
     private List<AssetScript> scripts;          // Filter using the specified script and params
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public AssetFilter setSelected(boolean selected) {
-        this.selected = selected;
-        return this;
-    }
 
     public List<String> getAssetIds() {
         return assetIds;
