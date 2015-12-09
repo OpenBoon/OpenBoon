@@ -1,14 +1,12 @@
 package com.zorroa.archivist.web;
 
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
 
@@ -175,12 +172,6 @@ public class RoomController {
         search.setUseAsRoomSearch(false);
         SearchResponse response = searchService.search(search);
 
-        OutputStream out = httpResponse.getOutputStream();
-        XContentBuilder content = XContentFactory.jsonBuilder(out);
-        content.startObject();
-        response.toXContent(content, ToXContent.EMPTY_PARAMS);
-        content.endObject();
-        content.close();
-        out.close();
+        HttpUtils.writeElasticResponse(response, httpResponse);
     }
 }

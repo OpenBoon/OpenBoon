@@ -1,13 +1,14 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -20,9 +21,6 @@ import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Map;
@@ -152,59 +149,28 @@ public class AssetController {
     public void search(@RequestBody AssetSearchBuilder search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchResponse response = searchService.search(search);
-
-        OutputStream out = httpResponse.getOutputStream();
-        XContentBuilder content = XContentFactory.jsonBuilder(out);
-        content.startObject();
-        response.toXContent(content, ToXContent.EMPTY_PARAMS);
-        content.endObject();
-        content.close();
-        out.close();
+        HttpUtils.writeElasticResponse(response, httpResponse);
     }
 
     @RequestMapping(value="/api/v1/assets/_search", method=RequestMethod.POST)
     public void search(@RequestBody String query, @RequestParam(value="roomId", defaultValue="0", required=false) int roomId, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
-        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchRequestBuilder builder = buildSearch(query);
         SearchResponse response = builder.get();
-
-        OutputStream out = httpResponse.getOutputStream();
-        XContentBuilder content = XContentFactory.jsonBuilder(out);
-        content.startObject();
-        response.toXContent(content, ToXContent.EMPTY_PARAMS);
-        content.endObject();
-        content.close();
-        out.close();
+        HttpUtils.writeElasticResponse(response, httpResponse);
     }
 
     @RequestMapping(value="/api/v2/assets/_aggregate", method=RequestMethod.POST)
     public void aggregate(@RequestBody AssetAggregateBuilder aggregation, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchResponse response = searchService.aggregate(aggregation);
-        OutputStream out = httpResponse.getOutputStream();
-        XContentBuilder content = XContentFactory.jsonBuilder(out);
-        content.startObject();
-        response.toXContent(content, ToXContent.EMPTY_PARAMS);
-        content.endObject();
-        content.close();
-        out.close();
+        HttpUtils.writeElasticResponse(response, httpResponse);
     }
 
     @RequestMapping(value="/api/v1/assets/_aggregations", method=RequestMethod.POST)
     public void aggregate(@RequestBody String query, HttpServletResponse httpResponse) throws IOException {
-        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
         SearchRequestBuilder builder = buildSearch(query)
                 .setSearchType(SearchType.COUNT);
-
-        SearchResponse response = builder.get();
-        OutputStream out = httpResponse.getOutputStream();
-        XContentBuilder content = XContentFactory.jsonBuilder(out);
-        content.startObject();
-        response.toXContent(content, ToXContent.EMPTY_PARAMS);
-        content.endObject();
-        content.close();
-        out.close();
+        HttpUtils.writeElasticResponse(builder.get(), httpResponse);
     }
 
     @RequestMapping(value="/api/v2/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -280,21 +246,13 @@ public class AssetController {
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)
     public void get(@PathVariable String id, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
-        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Session session = userService.getActiveSession();
         Room room = roomService.getActiveRoom(session);
         roomService.sendToRoom(room, new Message(MessageType.ASSET_GET, id));
 
         GetResponse response = client.prepareGet(alias, "asset", id).get();
-        OutputStream out = httpResponse.getOutputStream();
-
-        XContentBuilder content = XContentFactory.jsonBuilder(out);
-        content.startObject();
-        response.toXContent(content, ToXContent.EMPTY_PARAMS);
-        content.endObject();
-        content.close();
-        out.close();
+        HttpUtils.writeElasticResponse(response, httpResponse);
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
