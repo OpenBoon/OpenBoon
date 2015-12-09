@@ -19,7 +19,15 @@ public interface AssetService {
 
     boolean replaceAsset(AssetBuilder builder);
 
-    boolean updateAsset(String assetId, AssetUpdateBuilder builder);
+    /**
+     * Update the given assetId with the supplied AssetUpdateBuilder.  Return
+     * the new version number of the asset.
+     *
+     * @param assetId
+     * @param builder
+     * @return
+     */
+    long update(String assetId, AssetUpdateBuilder builder);
 
     boolean select(String assetId, boolean selected);
 
