@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
@@ -18,8 +19,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
-import org.elasticsearch.action.update.UpdateRequestBuilder;
-import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
@@ -33,6 +32,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -269,26 +269,10 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}/_folders", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String updateFolders(@RequestBody String body, @PathVariable String id, HttpSession httpSession) throws Exception {
-
-        // Add the request body array of collection names to the folders field
-        String doc = "{\"folders\":" + body + "}";  // Hand-coded JSON doc update
-        UpdateRequestBuilder builder = client.prepareUpdate(alias, "asset", id)
-                .setDoc(doc)
-                .setRefresh(true);  // Make sure we block until update is finished
-        UpdateResponse response = builder.get();
-
-        Session session = userService.getActiveSession();
-        Room room = roomService.getActiveRoom(session);
-        String msg = "{ \"assetId\" : \"" + id + "\", \"folders\": " + body + " }";
-        roomService.sendToRoom(room, new Message(MessageType.ASSET_UPDATE_FOLDERS, msg));
-
-        return new StringBuilder(128)
-                .append("{\"created\":")
-                .append(response.isCreated())
-                .append(",\"version\":")
-                .append(response.getVersion())
-                .append("}")
-                .toString();
+    public Map<String, Object> setFolders(@RequestBody List<String> folder, @PathVariable String id, HttpSession httpSession) throws Exception {
+        Asset asset = assetService.get(id);
+        List<Folder> folders = folderService.getAll(folder);
+        assetService.setFolders(asset, folders);
+        return ImmutableMap.of("assigned", folders.size());
     }
 }

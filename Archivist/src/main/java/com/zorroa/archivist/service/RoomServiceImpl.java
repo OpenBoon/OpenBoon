@@ -82,6 +82,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public void sendToActiveRoom(Message message) {
+        sendToRoom(getActiveRoom(), message);
+    }
+
+    @Override
     public void sendToRoom(Room room, Message message) {
         /*
          * If the room is null just log it and move on.

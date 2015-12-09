@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.sdk.domain.*;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface AssetDao {
@@ -19,6 +20,8 @@ public interface AssetDao {
     boolean replace(AssetBuilder builder);
 
     void addToFolder(Asset asset, Folder folder);
+
+    long setFolders(Asset asset, Collection<Folder> folders);
 
     boolean update(String assetId, AssetUpdateBuilder builder);
 

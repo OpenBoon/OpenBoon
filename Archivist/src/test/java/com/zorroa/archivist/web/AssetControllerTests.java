@@ -1,8 +1,11 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableList;
+import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.IngestExecutorService;
@@ -13,14 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,6 +26,9 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Autowired
     AssetController assetController;
+
+    @Autowired
+    FolderService folderService;
 
     @Autowired
     IngestService ingestService;
@@ -356,45 +357,35 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFolderAssign() throws Exception {
-
-
         MockHttpSession session = admin();
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
-
         List<Asset> assets = assetDao.getAll();
 
-        // Assign two collection names to each asset
-        for (Asset asset : assets) {
+        Folder folder1 = folderService.create(new FolderBuilder("foo"));
+        Folder folder2 = folderService.create(new FolderBuilder("bar"));
 
+        for (Asset asset : assets) {
             MvcResult result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
                     .session(session)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content("[\"foo\", \"bar\"]"))
+                    .content(Json.serialize(ImmutableList.of(folder1.getId(), folder2.getId()))))
                     .andExpect(status().isOk())
                     .andReturn();
             Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                     new TypeReference<Map<String, Object>>() {});
-            assertEquals(false, json.get("created"));
+            assertEquals(2, (int) json.get("assigned"));
         }
 
-        // Get each asset and verify that it has the assigned folders
+        refreshIndex();
+
+        assets = assetDao.getAll();
         for (Asset asset: assets) {
-            MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
-                    .session(session)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(status().isOk())
-                    .andReturn();
-            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                    new TypeReference<Map<String, Object>>() {});
-            assertEquals(asset.getId(), json.get("_id"));
-            Map<String, Object> source = (Map<String, Object>) json.get("_source");
-            ArrayList<String> folders = (ArrayList<String>) source.get("folders");
-            assertEquals(folders.size(), 2);
-            assertEquals(folders.get(0), "foo");
-            assertEquals(folders.get(1), "bar");
+            Set<String> folderIds = asset.getValue("folders", new TypeReference<Set<String>>() {});
+            assertTrue(folderIds.contains(folder1.getId()));
+            assertTrue(folderIds.contains(folder2.getId()));
         }
     }
 
@@ -449,7 +440,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
-        assertEquals(false, json.get("created"));
+        assertEquals(1, (int) json.get("assigned"));
 
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
@@ -458,11 +449,9 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
+        TestSearchResult searchResult = Json.Mapper.readValue(
+                result.getResponse().getContentAsString(), TestSearchResult.class);
+        assertEquals(1, searchResult.getHits().getTotal());
     }
 
     @Test
@@ -507,7 +496,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
-        assertEquals(false, json.get("created"));
+        assertEquals(1, (int)json.get("assigned"));
 
         asset = assets.get(1);
         result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
@@ -518,7 +507,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andReturn();
         json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
-        assertEquals(false, json.get("created"));
+        assertEquals(1, (int) json.get("assigned"));
 
         // Searching the child should return a single hit
         result = mvc.perform(post("/api/v2/assets/_search")

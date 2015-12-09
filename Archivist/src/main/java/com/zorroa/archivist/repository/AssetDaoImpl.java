@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
 import com.zorroa.archivist.sdk.service.RoomService;
@@ -22,10 +23,12 @@ import org.elasticsearch.script.ScriptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
@@ -144,6 +147,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 ScriptService.ScriptType.INDEXED);
         updateBuilder.addScriptParam("folderId", folder.getId());
         updateBuilder.get();
+    }
+
+    @Override
+    public long setFolders(Asset asset, Collection<Folder> folders) {
+        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
+        updateBuilder.setDoc(ImmutableMap.of("folders", folders.stream().map(
+                Folder::getId).collect(Collectors.toSet())))
+                .setRefresh(true);
+        return updateBuilder.get().getVersion();
     }
 
     @Override
