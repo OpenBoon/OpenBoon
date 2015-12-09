@@ -1,15 +1,15 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.sdk.domain.Room;
-import com.zorroa.archivist.sdk.domain.RoomBuilder;
-import com.zorroa.archivist.sdk.domain.RoomUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -33,6 +33,21 @@ public class RoomDaoTests extends ArchivistApplicationTests {
         builder.setVisible(true);
         builder.setPassword("open seasame");
         room = roomDao.create(builder);
+    }
+
+    @Test
+    public void testCreateWithSearchAndSelection() {
+        RoomBuilder builder = new RoomBuilder();
+        builder.setName("a room");
+        builder.setVisible(true);
+        builder.setSearch(new AssetSearchBuilder("foo"));
+        builder.setSelection(Sets.newHashSet("a", "b", "c"));
+        Room room1 = roomDao.create(builder);
+
+        AssetSearchBuilder asb2 = roomDao.getSearch(room1);
+        assertEquals(builder.getSearch().getSearch().getQuery(), asb2.getSearch().getQuery());
+
+        assertEquals(builder.getSelection(), roomDao.getSelection(room1));
     }
 
     @Test
@@ -119,6 +134,35 @@ public class RoomDaoTests extends ArchivistApplicationTests {
     public void testDelete() {
         assertTrue(roomDao.delete(room));
         assertFalse(roomDao.delete(room));
+    }
+
+    @Test
+    public void testGetAndSetSearch() {
+        AssetSearchBuilder asb1 = new AssetSearchBuilder("foo");
+        roomDao.setSearch(room, asb1);
+
+        AssetSearchBuilder asb2 = roomDao.getSearch(room);
+        assertEquals(asb1.getSearch().getQuery(), asb2.getSearch().getQuery());
+    }
+
+    @Test
+    public void testGetAndSetSelection() {
+        Set<String> selection = Sets.newHashSet("a", "b", "c");
+        roomDao.setSelection(room, selection);
+        assertEquals(selection, roomDao.getSelection(room));
+    }
+
+    @Test
+    public void testGetSharedRoomState() {
+        Set<String> selection1 = Sets.newHashSet("a", "b", "c");
+        AssetSearchBuilder asb1 = new AssetSearchBuilder("foo");
+
+        roomDao.setSelection(room, selection1);
+        roomDao.setSearch(room, asb1);
+
+        SharedRoomState state = roomDao.getSharedState(room);
+        assertEquals(selection1, state.getSelection());
+        assertEquals(asb1.getSearch().getQuery(), state.getSearch().getSearch().getQuery());
     }
 }
 

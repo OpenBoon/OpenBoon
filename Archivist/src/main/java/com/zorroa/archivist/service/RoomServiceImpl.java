@@ -1,17 +1,21 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.exception.MalformedDataException;
 import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +33,9 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     EventServerHandler eventServerHandler;
 
+    @Autowired
+    TransactionEventManager transactionEventManager;
+
     @Override
     public Room get(long id) {
         return roomDao.get(id);
@@ -43,6 +50,17 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room getActiveRoom(Session session) {
         return roomDao.get(session);
+    }
+
+    @Override
+    public Room getActiveRoom() {
+        Session session = sessionDao.get(SecurityUtils.getSessionId());
+        if (session != null) {
+            return roomDao.get(session);
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -98,4 +116,51 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.delete(room);
     }
 
+    /**
+     * The maximum size of a selection that can be propagated to a room.  This will
+     * probably need to be tweaked/tested for very large selections, but 1024 gives
+     * us roughly a 32k packet size.
+     */
+    private static final int SELECTION_MAX_SIZE = 1024;
+
+    public int setSelection(@Nullable Room room, Set<String> selection) {
+        if (room == null) {
+            return -1;
+        }
+        if (selection.size() > SELECTION_MAX_SIZE) {
+            throw new MalformedDataException(String.format(
+                    "The selection is too large, maximum allowed size: '%d' ", SELECTION_MAX_SIZE));
+        }
+        int version = roomDao.setSelection(room, selection);
+        transactionEventManager.afterCommit(()-> {
+            eventServerHandler.broadcast(new Message(MessageType.ROOM_SELECTION_UPDATE,
+                    ImmutableMap.of("roomId", room.getId(), "version", version, "selection", selection)));
+        });
+        return version;
+    }
+
+    public int setSearch(@Nullable Room room, AssetSearchBuilder search) {
+        if (room == null) {
+            return -1;
+        }
+
+        int version = roomDao.setSearch(room, search);
+        transactionEventManager.afterCommit(()-> {
+            eventServerHandler.broadcast(new Message(MessageType.ROOM_SEARCH_UPDATE,
+                    ImmutableMap.of("roomId", room.getId(), "version", version, "search", search)));
+        });
+        return version;
+    }
+
+    public Set<String> getSelection(Room room) {
+        return roomDao.getSelection(room);
+    }
+
+    public AssetSearchBuilder getSearch(Room room) {
+        return roomDao.getSearch(room);
+    }
+
+    public SharedRoomState getSharedState(Room room) {
+        return roomDao.getSharedState(room);
+    }
 }

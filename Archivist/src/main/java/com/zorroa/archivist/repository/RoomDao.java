@@ -1,11 +1,9 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.Room;
-import com.zorroa.archivist.sdk.domain.RoomBuilder;
-import com.zorroa.archivist.sdk.domain.RoomUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.domain.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RoomDao {
 
@@ -23,4 +21,46 @@ public interface RoomDao {
     List<Room> getAll(Session session);
 
     boolean join(Room room, Session session);
+
+    /**
+     * Get the current selection for a room.
+     *
+     * @param room
+     * @return
+     */
+    Set<String> getSelection(Room room);
+
+    /**
+     * Set the current selection for a room, return the rooms version number.
+     *
+     * @param room
+     * @param selection
+     * @return
+     */
+    int setSelection(Room room, Set<String> selection);
+
+    /**
+     * Get the current search for a room.
+     *
+     * @param room
+     * @return
+     */
+    AssetSearchBuilder getSearch(Room room);
+
+    /**
+     * Set the curret search for a room.
+     *
+     * @param room
+     * @param search
+     * @return
+     */
+    int setSearch(Room room, AssetSearchBuilder search);
+
+    /**
+     * A convenience method for pulling down the state of a room
+     * with a single API call.
+     * @param room
+     * @return
+     */
+    SharedRoomState getSharedState(Room room);
 }

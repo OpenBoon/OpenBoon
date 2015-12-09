@@ -1,12 +1,11 @@
 package com.zorroa.archivist.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.archivist.sdk.domain.Room;
-import com.zorroa.archivist.sdk.domain.RoomBuilder;
-import com.zorroa.archivist.sdk.domain.RoomUpdateBuilder;
-import com.zorroa.archivist.sdk.domain.Session;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.common.Preconditions;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Types;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class RoomDaoImpl extends AbstractDao implements RoomDao {
@@ -54,7 +54,9 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                     "str_password",
                     "bool_visible",
                     "list_invites",
-                    "pk_session");
+                    "pk_session",
+                    "json_search",
+                    "json_selection");
 
     @Override
     public Room create(RoomBuilder builder) {
@@ -83,6 +85,10 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             else {
                 ps.setLong(5, builder.getSessionId());
             }
+
+            ps.setString(6, Json.serializeToString(builder.getSearch()));
+            ps.setString(7, Json.serializeToString(builder.getSelection()));
+
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
@@ -149,11 +155,73 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
 
     @Override
     public boolean join(Room room, Session session) {
-        // TODO: query is not letting me add AND pk_room!=new room.
+
         int result = jdbc.update("UPDATE map_session_to_room SET pk_room=? WHERE pk_session=?",
                 room.getId(), session.getId());
         return result == 1;
     }
 
+    private static final String UPDATE_SELECTION =
+            "UPDATE " +
+                "room " +
+            "SET " +
+                "json_selection=?,"+
+                "int_version=int_version+1 " +
+            "WHERE " +
+                "pk_room=?";
 
+    @Override
+    public Set<String> getSelection(Room room) {
+        return Json.deserialize(jdbc.queryForObject(
+                "SELECT json_selection FROM room WHERE pk_room=?", String.class, room.getId()), SET_TYPE_REFERENCE);
+    }
+
+    @Override
+    public int setSelection(Room room, Set<String> selection) {
+        jdbc.update(UPDATE_SELECTION, Json.serializeToString(selection), room.getId());
+        return jdbc.queryForObject("SELECT int_version FROM room WHERE pk_room=?", Integer.class, room.getId());
+    }
+
+    private static final String UPDATE_SEARCH =
+            "UPDATE " +
+                "room " +
+            "SET " +
+                "json_search=?,"+
+                "int_version=int_version+1 " +
+            "WHERE " +
+                "pk_room=?";
+
+    @Override
+    public AssetSearchBuilder getSearch(Room room) {
+        return Json.deserialize(jdbc.queryForObject(
+                "SELECT json_search FROM room WHERE pk_room=?", String.class, room.getId()), AssetSearchBuilder.class);
+    }
+
+    @Override
+    public int setSearch(Room room, AssetSearchBuilder search) {
+        jdbc.update(UPDATE_SEARCH, Json.serializeToString(search), room.getId());
+        return jdbc.queryForObject("SELECT int_version FROM room WHERE pk_room=?", Integer.class, room.getId());
+    }
+
+    private static final String GET_SHARED_STATE =
+            "SELECT " +
+                "json_search,"+
+                "json_selection, " +
+                "int_version " +
+            "FROM " +
+                "room " +
+            "WHERE " +
+                "pk_room=?";
+    @Override
+    public SharedRoomState getSharedState(Room room) {
+        SharedRoomState result = new SharedRoomState();
+        jdbc.query(GET_SHARED_STATE, rs -> {
+            result.setSearch(Json.deserialize(rs.getString(1), AssetSearchBuilder.class));
+            result.setSelection(Json.deserialize(rs.getString(2), SET_TYPE_REFERENCE));
+            result.setVersion(rs.getInt(3));
+        }, room.getId());
+        return result;
+    }
+
+    private static final TypeReference<Set<String>> SET_TYPE_REFERENCE = new TypeReference<Set<String>>() {};
 }

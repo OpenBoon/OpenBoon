@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.util.Set;
 
 /**
@@ -58,7 +59,14 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponse search(AssetSearchBuilder builder) {
-        return buildSearch(builder).get();
+        try {
+            return buildSearch(builder).get();
+        }
+        finally {
+            if (builder.isUseAsRoomSearch()) {
+                roomService.setSearch(roomService.getActiveRoom(), builder);
+            }
+        }
     }
 
     @Override
@@ -134,24 +142,21 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private SearchRequestBuilder buildAggregate(AssetAggregateBuilder builder) {
-        AssetSearch search = builder.getSearch();
-        if (search == null) {
-            search = new AssetSearch();      // Use default empty search == all
-        }
         SearchRequestBuilder aggregation = client.prepareSearch(alias)
                 .setTypes("asset")
-                .setQuery(getQuery(search))
+                .setQuery(getQuery(builder.getSearch()))
                 .setAggregations(builder.getAggregations())
                 .setSearchType(SearchType.COUNT);
         return aggregation;
     }
 
-    private QueryBuilder getQuery(AssetSearch search) {
-        /**
-         * An empty boolean query is treated like a match all.
-         */
-        BoolQueryBuilder query = QueryBuilders.boolQuery();
+    private QueryBuilder getQuery(@Nullable AssetSearch search) {
+        if (search == null) {
+            return QueryBuilders.filteredQuery(
+                    QueryBuilders.matchAllQuery(), getFilter(null));
+        }
 
+        BoolQueryBuilder query = QueryBuilders.boolQuery();
         if (search.isQuerySet()) {
             query.must(getQueryStringQuery(search));
         }
@@ -209,20 +214,10 @@ public class SearchServiceImpl implements SearchService {
      */
     private FilterBuilder getFilter(AssetFilter builder) {
         AndFilterBuilder filter = FilterBuilders.andFilter();
-
         filter.add(SecurityUtils.getPermissionsFilter());
 
         if (builder == null) {
             return filter;
-        }
-
-        if (builder.isSelected()) {
-            // FIXME: Refactor avoid race conditions, add room endpoints to get selected set atomically
-            Room room = roomService.getActiveRoom(userService.getActiveSession());
-            if (room != null) {
-                TermFilterBuilder selectedBuilder = FilterBuilders.termFilter("selectedRooms", room.getId());
-                filter.add(selectedBuilder);
-            }
         }
 
         if (builder.getAssetIds() != null) {

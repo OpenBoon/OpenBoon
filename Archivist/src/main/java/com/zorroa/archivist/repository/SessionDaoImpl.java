@@ -4,6 +4,7 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.Session;
 import com.zorroa.archivist.sdk.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -97,7 +98,11 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
 
     @Override
     public Session get(String cookie) {
-        return jdbc.queryForObject(GET + " WHERE session.cookie_id=?", MAPPER, cookie);
+        try {
+            return jdbc.queryForObject(GET + " WHERE session.cookie_id=?", MAPPER, cookie);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

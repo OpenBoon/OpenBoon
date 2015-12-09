@@ -1,16 +1,26 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.service.SearchService;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.xcontent.ToXContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class RoomController {
@@ -22,6 +32,9 @@ public class RoomController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SearchService searchService;
 
     /**
      * User joins a particular room
@@ -101,5 +114,73 @@ public class RoomController {
         Room room = roomService.get(id);
         // TODO: what if people are in the room.
         return roomService.delete(room);
+    }
+
+    /**
+     * Set the current room selection, returns the new version number of the room.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/rooms/current/selection", method=RequestMethod.PUT)
+    public int setSelection(@RequestBody Set<String> assetIds) {
+        return roomService.setSelection(roomService.getActiveRoom(), assetIds);
+    }
+
+    /**
+     * Return the selected assetIds for the users current room.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/rooms/current/selection", method=RequestMethod.GET)
+    public Set<String> getSelection() {
+        return roomService.getSelection(roomService.getActiveRoom());
+    }
+
+    /**
+     * Return just the current search.  The current search is set simply by searching, so there
+     * is no method to set a room search currently.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/rooms/current/search", method=RequestMethod.GET)
+    public AssetSearchBuilder getSearch() {
+        return roomService.getSearch(roomService.getActiveRoom());
+    }
+
+    /**
+     * Return the full shared room state.  Current this includes the current
+     * search, selection, and state version however it might contain other
+     * data in the future.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/rooms/current/state", method=RequestMethod.GET)
+    public SharedRoomState getSharedState() {
+        return roomService.getSharedState(roomService.getActiveRoom());
+    }
+
+
+    /**
+     * Return the full shared room state.  Current this includes the current
+     * search, selection, and state version however it might contain other
+     * data in the future.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/rooms/current/assets", method=RequestMethod.GET)
+    public void getAssets(HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
+        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        AssetSearchBuilder search = roomService.getSearch(roomService.getActiveRoom());
+        search.setUseAsRoomSearch(false);
+        SearchResponse response = searchService.search(search);
+
+        OutputStream out = httpResponse.getOutputStream();
+        XContentBuilder content = XContentFactory.jsonBuilder(out);
+        content.startObject();
+        response.toXContent(content, ToXContent.EMPTY_PARAMS);
+        content.endObject();
+        content.close();
+        out.close();
     }
 }

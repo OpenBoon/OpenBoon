@@ -2,6 +2,7 @@ package com.zorroa.archivist;
 
 import com.zorroa.archivist.sdk.domain.UserBuilder;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
 import org.elasticsearch.client.Client;
@@ -47,6 +48,9 @@ public abstract class ArchivistApplicationTests {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    TransactionEventManager transactionEventManager;
+
     @Value("${archivist.index.alias}")
     protected String alias;
 
@@ -79,6 +83,13 @@ public abstract class ArchivistApplicationTests {
 
     @Before
     public void setup() {
+
+        /*
+         * Ensures that all transaction events run within the unit test transaction.
+         * If this was not set then  transaction events like AfterCommit would never execute
+         * because unit test transactions are never committed.
+         */
+        transactionEventManager.setImmediateMode(true);
 
         /**
          * Before we can do anything reliably we need a logged in user.

@@ -2,6 +2,8 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.TestSearchResult;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.RoomService;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,6 +36,9 @@ public class RoomControllerTests extends MockMvcTest {
 
     @Autowired
     RoomDao roomDao;
+
+    @Autowired
+    AssetDao assetDao;
 
     @Test
     public void testCreate() throws Exception {
@@ -190,5 +196,134 @@ public class RoomControllerTests extends MockMvcTest {
                 new TypeReference<List<User>>() {});
 
         assertEquals(2, users.size());
+    }
+
+    @Test
+    public void testSetSelection() throws Exception {
+        MockHttpSession session = admin();
+
+        RoomBuilder builder = new RoomBuilder();
+        builder.setName("foo");
+        builder.setVisible(true);
+        Room room1 = roomService.create(builder);
+
+        Session session1 = userService.getSession(session.getId());
+        roomService.join(room1, session1);
+
+        Set<String> selected1 = Sets.newHashSet("a", "b", "c");
+        MvcResult result = mvc.perform(put("/api/v1/rooms/current/selection")
+                .session(session)
+                .content(Json.serialize(selected1))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Set<String> selected2 = roomDao.getSelection(room1);
+        assertEquals(selected1, selected2);
+    }
+
+    @Test
+    public void testGetSelection() throws Exception {
+        MockHttpSession session = admin();
+
+        RoomBuilder builder = new RoomBuilder();
+        builder.setName("foo");
+        builder.setVisible(true);
+        builder.setSelection(Sets.newHashSet("1", "2", "3"));
+        Room room1 = roomService.create(builder);
+
+        Session session1 = userService.getSession(session.getId());
+        roomService.join(room1, session1);
+
+        MvcResult result = mvc.perform(get("/api/v1/rooms/current/selection")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Set<String> selection = Json.Mapper.readValue(result.getResponse().getContentAsByteArray(),
+                new TypeReference<Set<String>>() {});
+        assertEquals(builder.getSelection(), selection);
+    }
+
+    @Test
+    public void testGetSearch() throws Exception {
+        MockHttpSession session = admin();
+
+        RoomBuilder builder = new RoomBuilder();
+        builder.setName("foo");
+        builder.setVisible(true);
+        builder.setSearch(new AssetSearchBuilder("bender"));
+        Room room1 = roomService.create(builder);
+
+        Session session1 = userService.getSession(session.getId());
+        roomService.join(room1, session1);
+
+        MvcResult result = mvc.perform(get("/api/v1/rooms/current/search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        AssetSearchBuilder search = Json.Mapper.readValue(
+                result.getResponse().getContentAsByteArray(), AssetSearchBuilder.class);
+        assertEquals(builder.getSearch().getSearch().getQuery(), search.getSearch().getQuery());
+    }
+
+    @Test
+    public void testGetSharedState() throws Exception {
+        MockHttpSession session = admin();
+
+        RoomBuilder builder = new RoomBuilder();
+        builder.setName("foo");
+        builder.setVisible(true);
+        builder.setSearch(new AssetSearchBuilder("bender"));
+        builder.setSelection(Sets.newHashSet("1", "2", "3"));
+        Room room1 = roomService.create(builder);
+
+        Session session1 = userService.getSession(session.getId());
+        roomService.join(room1, session1);
+
+        MvcResult result = mvc.perform(get("/api/v1/rooms/current/state")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        SharedRoomState state = Json.Mapper.readValue(
+                result.getResponse().getContentAsByteArray(), SharedRoomState.class);
+        assertEquals(builder.getSearch().getSearch().getQuery(), state.getSearch().getSearch().getQuery());
+        assertEquals(builder.getSelection(), state.getSelection());
+    }
+
+    @Test
+    public void testGetAssets() throws Exception {
+        MockHttpSession session = user();
+
+        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder.setAsync(false);
+        assetBuilder.addKeywords(1.0, false, "bender");
+        assetDao.create(assetBuilder);
+        refreshIndex(100);
+
+        RoomBuilder builder = new RoomBuilder();
+        builder.setName("foo");
+        builder.setVisible(true);
+        builder.setSearch(new AssetSearchBuilder("bender"));
+        builder.setSelection(Sets.newHashSet("1", "2", "3"));
+        Room room1 = roomService.create(builder);
+
+        Session session1 = userService.getSession(session.getId());
+        roomService.join(room1, session1);
+
+        MvcResult result = mvc.perform(get("/api/v1/rooms/current/assets")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TestSearchResult response = Json.Mapper.readValue(
+                result.getResponse().getContentAsByteArray(), TestSearchResult.class);
+        assertEquals(1, response.getHits().getTotal());
     }
 }
