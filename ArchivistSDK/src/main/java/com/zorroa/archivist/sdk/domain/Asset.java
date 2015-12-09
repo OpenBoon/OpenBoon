@@ -1,5 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Splitter;
 import com.zorroa.archivist.sdk.util.Json;
 
@@ -49,6 +50,10 @@ public class Asset {
 
     public <T> T getValue(String namespace, Class<T> klass) {
         return Json.Mapper.convertValue(document.get(namespace), klass);
+    }
+
+    public <T> T getValue(String namespace, TypeReference<T> typeRef) {
+        return Json.Mapper.convertValue(document.get(namespace), typeRef);
     }
 
     public <T> T getValue(String key) {
