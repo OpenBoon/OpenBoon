@@ -159,12 +159,12 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public boolean update(String assetId, AssetUpdateBuilder builder) {
+    public long update(String assetId, AssetUpdateBuilder builder) {
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), assetId)
                 .setDoc(builder.getSource())
                 .setRefresh(true);
         UpdateResponse response = updateBuilder.get();
-        return response.getVersion() > 1;   // FIXME: Need to check for version increment, not just >1? 0 == first create
+        return response.getVersion();
     }
 
     @Override

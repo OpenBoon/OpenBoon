@@ -23,7 +23,7 @@ public interface AssetDao {
 
     long setFolders(Asset asset, Collection<Folder> folders);
 
-    boolean update(String assetId, AssetUpdateBuilder builder);
+    long update(String assetId, AssetUpdateBuilder builder);
 
     boolean select(String assetId, boolean selected);
 

@@ -256,16 +256,12 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String update(@RequestBody AssetUpdateBuilder builder, @PathVariable String id, HttpSession httpSession) throws IOException {
-        boolean ok = assetService.updateAsset(id, builder);
-
-        Session session = userService.getActiveSession();
-        Room room = roomService.getActiveRoom(session);
-        String json = new String(Json.serialize(builder.getSource()), StandardCharsets.UTF_8);
-        String msg = "{ \"assetId\" : \"" + id + "\", \"source\": " + json + " }";
-        roomService.sendToRoom(room, new Message(MessageType.ASSET_UPDATE, msg));
-
-        return msg;
+    public Map<String, Object> update(@RequestBody AssetUpdateBuilder builder, @PathVariable String id, HttpSession httpSession) throws IOException {
+        long version = assetService.update(id, builder);
+        return ImmutableMap.of(
+                "assetId", id,
+                "version", version,
+                "source", Json.serializeToString(builder));
     }
 
     @RequestMapping(value="/api/v1/assets/{id}/_folders", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

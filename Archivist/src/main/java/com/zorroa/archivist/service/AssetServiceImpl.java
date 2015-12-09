@@ -5,6 +5,7 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,14 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public boolean updateAsset(String assetId, AssetUpdateBuilder builder) {
-        return assetDao.update(assetId, builder);
+    public long update(String assetId, AssetUpdateBuilder builder) {
+        long version = assetDao.update(assetId, builder);
+        roomService.sendToActiveRoom(new Message(MessageType.ASSET_UPDATE,
+                ImmutableMap.of(
+                        "assetId", assetId,
+                        "version", version,
+                        "source", Json.serializeToString(builder))));
+        return version;
     }
 
     @Override
