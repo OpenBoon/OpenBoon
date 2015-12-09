@@ -145,6 +145,17 @@ public class RoomController {
     }
 
     /**
+     * Return just the current search.  The current search is set simply by searching, so there
+     * is no method to set a room search currently.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/rooms/current/search", method=RequestMethod.PUT)
+    public void setSearch(@RequestBody AssetSearchBuilder search) {
+        roomService.setSearch(roomService.getActiveRoom(), search);
+    }
+
+    /**
      * Return the full shared room state.  Current this includes the current
      * search, selection, and state version however it might contain other
      * data in the future.

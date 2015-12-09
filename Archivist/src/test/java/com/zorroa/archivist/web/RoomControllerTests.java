@@ -271,6 +271,32 @@ public class RoomControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testSetSearch() throws Exception {
+        MockHttpSession session = admin();
+
+        RoomBuilder builder = new RoomBuilder();
+        builder.setName("foo");
+        builder.setVisible(true);
+        builder.setSearch(new AssetSearchBuilder("bender"));
+        Room room1 = roomService.create(builder);
+
+        Session session1 = userService.getSession(session.getId());
+        roomService.join(room1, session1);
+
+        AssetSearchBuilder asb1 = new AssetSearchBuilder("foobar");
+
+        MvcResult result = mvc.perform(put("/api/v1/rooms/current/search")
+                .session(session)
+                .content(Json.serialize(asb1))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        AssetSearchBuilder asb2 = roomService.getSearch(room1);
+        assertEquals(asb1.getSearch().getQuery(), asb2.getSearch().getQuery());
+    }
+
+    @Test
     public void testGetSharedState() throws Exception {
         MockHttpSession session = admin();
 
