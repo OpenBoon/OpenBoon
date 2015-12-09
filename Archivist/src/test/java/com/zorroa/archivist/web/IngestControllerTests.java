@@ -51,7 +51,7 @@ public class IngestControllerTests extends MockMvcTest {
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        refreshIndex();
 
         MvcResult result = mvc.perform(get("/api/v1/ingests")
                 .session(session)

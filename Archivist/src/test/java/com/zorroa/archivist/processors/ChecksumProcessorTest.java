@@ -46,7 +46,7 @@ public class ChecksumProcessorTest extends ArchivistApplicationTests {
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(500);
+        refreshIndex();
 
         List<Asset> assets = assetDao.getAll();
         assertEquals(2, assets.size());

@@ -166,7 +166,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
             folderService.create(builder);
         }
 
-        refreshIndex(100);
+        refreshIndex();
 
         String filename = "captain_america.jpg";
         String filepath = "/tmp/" + filename;
@@ -174,7 +174,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
         Asset asset1 = assetDao.create(assetBuilder);
-        refreshIndex(100);
+        refreshIndex();
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
@@ -192,7 +192,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         assetDao.create(assetBuilder1);
         assetDao.create(assetBuilder2);
-        refreshIndex(100);
+        refreshIndex();
 
         long size = searchService.getTotalFileSize(new AssetSearchBuilder());
         assertEquals(2000, size);
@@ -205,7 +205,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assetBuilder.setAsync(false);
         assetBuilder.addKeywords(1, false, "zipzoom");
         assetDao.create(assetBuilder);
-        refreshIndex(1000);
+        refreshIndex();
 
         /*
          * High confidence words are found at every level.
@@ -225,7 +225,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assetBuilder.setAsync(false);
         assetBuilder.addKeywords(0.1, false, "zipzoom");
         assetDao.create(assetBuilder);
-        refreshIndex(1000);
+        refreshIndex();
 
         /*
          * High confidence words are found at every level.

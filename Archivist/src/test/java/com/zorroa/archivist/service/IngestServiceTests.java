@@ -32,7 +32,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);
 
-        refreshIndex(1000);
+        refreshIndex();
         assertEquals(2, assetDao.getAll().size());
     }
 
@@ -47,7 +47,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
 
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        refreshIndex();
         assertEquals(2, assetDao.getAll().size());
     }
 

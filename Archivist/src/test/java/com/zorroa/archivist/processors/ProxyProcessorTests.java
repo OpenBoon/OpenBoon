@@ -46,7 +46,7 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        refreshIndex();
 
         List<Asset> assets = assetDao.getAll();
         assertEquals(2, assets.size());

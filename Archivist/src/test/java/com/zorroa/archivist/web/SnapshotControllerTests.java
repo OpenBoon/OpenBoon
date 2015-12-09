@@ -43,7 +43,7 @@ public class SnapshotControllerTests extends MockMvcTest {
         // Start by ingesting the standard test assets
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        refreshIndex();
 
         MockHttpSession session = admin();
 
@@ -67,7 +67,7 @@ public class SnapshotControllerTests extends MockMvcTest {
                     .andExpect(status().isOk())
                     .andReturn();
             snapshot = Json.Mapper.readValue(result.getResponse().getContentAsString(), Snapshot.class);
-            refreshIndex(1000);
+            refreshIndex();
         }
 
         // Restore the snapshot to a separate index
@@ -90,7 +90,7 @@ public class SnapshotControllerTests extends MockMvcTest {
                     .andExpect(status().isOk())
                     .andReturn();
             snapshot = Json.Mapper.readValue(result.getResponse().getContentAsString(), Snapshot.class);
-            refreshIndex(1000);
+            refreshIndex();
         } while (snapshot.getState() == SnapshotState.InProgress);
 
         // Count the number of assets in the newly restored index
@@ -119,7 +119,7 @@ public class SnapshotControllerTests extends MockMvcTest {
                 .andReturn();
         ok = Json.Mapper.readValue(result.getResponse().getContentAsString(), Boolean.class);
         assertTrue(ok);
-        refreshIndex(1000);
+        refreshIndex();
 
         // Get all snapshots and verify that we deleted the one we made
         result = mvc.perform(get("/api/v1/snapshots")

@@ -167,22 +167,18 @@ public abstract class ArchivistApplicationTests {
     }
 
     public void refreshIndex() {
-        client.admin().indices().prepareRefresh(alias).get();
+        refreshIndex(10);
     }
 
     public void refreshIndex(long sleep) {
         try {
             Thread.sleep(sleep/2);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
         client.admin().indices().prepareRefresh(alias).get();
         try {
             Thread.sleep(sleep/2);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 }

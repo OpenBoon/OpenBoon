@@ -39,7 +39,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
         AssetBuilder builder = new AssetBuilder(filepath);
         Asset asset1 = assetDao.create(builder);
-        refreshIndex(100);
+        refreshIndex();
 
         Asset asset2 = assetDao.get(asset1.getId());
         SourceSchema source = asset2.getValue("source", SourceSchema.class);

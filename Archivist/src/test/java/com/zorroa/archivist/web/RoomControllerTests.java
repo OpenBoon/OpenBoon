@@ -304,7 +304,7 @@ public class RoomControllerTests extends MockMvcTest {
         assetBuilder.setAsync(false);
         assetBuilder.addKeywords(1.0, false, "bender");
         assetDao.create(assetBuilder);
-        refreshIndex(100);
+        refreshIndex();
 
         RoomBuilder builder = new RoomBuilder();
         builder.setName("foo");

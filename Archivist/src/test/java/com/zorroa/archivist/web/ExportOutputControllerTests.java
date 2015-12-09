@@ -50,7 +50,7 @@ public class ExportOutputControllerTests extends MockMvcTest {
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        refreshIndex();
 
         ExportOptions options = new ExportOptions();
         options.getImages().setFormat("jpg");

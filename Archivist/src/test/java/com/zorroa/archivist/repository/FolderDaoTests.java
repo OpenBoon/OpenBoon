@@ -23,7 +23,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         String name = "Foobar the folder";
         FolderBuilder builder = new FolderBuilder(name);
         Folder folder1 = folderDao.create(builder);
-        refreshIndex(100);
+        refreshIndex();
 
         Folder folder2 = folderDao.get(folder1.getId());
         assertEquals(folder2.getName(), name);
@@ -37,7 +37,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
         builder = new FolderBuilder("Bam his brother");
         folderDao.create(builder);
-        refreshIndex(100);
+        refreshIndex();
 
         List<Folder> folders = folderDao.getChildren(Folder.ROOT_ID);
         assertEquals(2, folders.size());
@@ -54,7 +54,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         Folder uncle = folderDao.create(builder);
         builder = new FolderBuilder("Child", dad);
         Folder child = folderDao.create(builder);
-        refreshIndex(1000);
+        refreshIndex();
 
         List<Folder> folders = folderDao.getChildren(grandpa);
         assertEquals(2, folders.size());
@@ -71,7 +71,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         builder.setSearch(new AssetSearch());
         boolean ok = folderDao.update(bimbo, builder);
         assertTrue(ok);
-        refreshIndex(1000);
+        refreshIndex();
         logger.info("1");
 
         Folder bimbo2 = folderDao.get(bimbo.getId());
