@@ -145,8 +145,7 @@ public class RoomController {
     }
 
     /**
-     * Return just the current search.  The current search is set simply by searching, so there
-     * is no method to set a room search currently.
+     * Set the current search property on a room.
      *
      * @return
      */
