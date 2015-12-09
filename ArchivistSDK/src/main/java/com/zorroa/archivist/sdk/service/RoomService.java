@@ -25,6 +25,8 @@ public interface RoomService {
 
     void sendToRoom(Room room, Message message);
 
+    void sendToActiveRoom(Message message);
+
     boolean join(Room room, Session session);
 
     List<Room> getAll(Session session);

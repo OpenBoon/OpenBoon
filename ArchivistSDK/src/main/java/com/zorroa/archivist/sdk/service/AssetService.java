@@ -11,6 +11,8 @@ public interface AssetService {
 
     Asset createAsset(AssetBuilder builder);
 
+    Asset get(String id);
+
     boolean assetExistsByPath(String path);
 
     boolean assetExistsByPathAfter(String path, long afterTime);
