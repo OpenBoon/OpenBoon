@@ -261,7 +261,7 @@ public class AssetController {
         return ImmutableMap.of(
                 "assetId", id,
                 "version", version,
-                "source", Json.serializeToString(builder));
+                "source", builder);
     }
 
     @RequestMapping(value="/api/v1/assets/{id}/_folders", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

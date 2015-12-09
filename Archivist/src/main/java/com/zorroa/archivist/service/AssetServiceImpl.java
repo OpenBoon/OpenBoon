@@ -5,7 +5,6 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.RoomService;
-import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +61,7 @@ public class AssetServiceImpl implements AssetService {
                 ImmutableMap.of(
                         "assetId", assetId,
                         "version", version,
-                        "source", Json.serializeToString(builder))));
+                        "source", builder)));
         return version;
     }
 
