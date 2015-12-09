@@ -2,7 +2,6 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.archivist.FileUtils;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.ExportDao;
@@ -10,6 +9,7 @@ import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import org.slf4j.Logger;
