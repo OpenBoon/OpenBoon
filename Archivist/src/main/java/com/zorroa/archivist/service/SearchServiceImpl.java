@@ -59,14 +59,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponse search(AssetSearchBuilder builder) {
-        try {
-            return buildSearch(builder).get();
-        }
-        finally {
-            if (builder.isUseAsRoomSearch()) {
-                roomService.setSearch(roomService.getActiveRoom(), builder);
-            }
-        }
+        return buildSearch(builder).get();
     }
 
     @Override
