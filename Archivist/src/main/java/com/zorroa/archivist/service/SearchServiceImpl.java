@@ -197,7 +197,12 @@ public class SearchServiceImpl implements SearchService {
             StringBuilder sb = new StringBuilder(query.length() + 10);
             for (String part: Splitter.on(" ").omitEmptyStrings().trimResults().split(query)) {
                 sb.append(part);
-                sb.append("~ ");
+                if (part.endsWith("~")) {
+                    sb.append(" ");
+                }
+                else {
+                    sb.append("~ ");
+                }
             }
             sb.deleteCharAt(sb.length()-1);
             query = sb.toString();
