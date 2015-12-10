@@ -140,7 +140,7 @@ public class RoomServiceImpl implements RoomService {
         }
         int version = roomDao.setSelection(room, selection);
         transactionEventManager.afterCommit(()-> {
-            eventServerHandler.broadcast(new Message(MessageType.ROOM_SELECTION_UPDATE,
+            sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SELECTION_UPDATE,
                     ImmutableMap.of("roomId", room.getId(), "version", version, "selection", selection)));
         });
         return version;
@@ -153,7 +153,7 @@ public class RoomServiceImpl implements RoomService {
 
         int version = roomDao.setSearch(room, search);
         transactionEventManager.afterCommit(()-> {
-            eventServerHandler.broadcast(new Message(MessageType.ROOM_SEARCH_UPDATE,
+            sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SEARCH_UPDATE,
                     ImmutableMap.of("roomId", room.getId(), "version", version, "search", search)));
         });
         return version;
