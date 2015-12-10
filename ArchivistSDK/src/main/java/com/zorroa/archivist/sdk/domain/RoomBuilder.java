@@ -15,7 +15,7 @@ public class RoomBuilder {
     /**
      * The current search at room creation time, if any.
      */
-    private AssetSearchBuilder search;
+    private AssetSearch search;
 
     /**
      * The  selected assets at room creation time, if any.
@@ -53,14 +53,14 @@ public class RoomBuilder {
         this.sessionId = session;
     }
 
-    public AssetSearchBuilder getSearch() {
+    public AssetSearch getSearch() {
         if (search == null) {
-            search = new AssetSearchBuilder();
+            search = new AssetSearch();
         }
         return search;
     }
 
-    public void setSearch(AssetSearchBuilder search) {
+    public void setSearch(AssetSearch search) {
         this.search = search;
     }
 

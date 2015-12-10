@@ -32,6 +32,19 @@ public class AssetSearch {
      */
     private double confidence = 0.0;
 
+    /**
+     * The size of the result to return.  If left unset the value will
+     * default to a server controlled setting.
+     */
+    private Integer size;
+
+    /**
+     * The offset from which to return results from.  This is used for
+     * paging large results.  If left unset the value will default
+     * to 0.
+     */
+    private Integer from;
+
     public AssetSearch() {
         this.filter = new AssetFilter();
     }
@@ -46,6 +59,11 @@ public class AssetSearch {
         this.query = query;
         this.confidence = confidence;
     }
+
+    public AssetSearch(AssetFilter filter) {
+        this.filter = filter;
+    }
+
 
     public boolean isQuerySet() {
         return (query != null && query.length() > 0);
@@ -84,6 +102,24 @@ public class AssetSearch {
 
     public AssetSearch setConfidence(double confidence) {
         this.confidence = confidence;
+        return this;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public AssetSearch setSize(Integer size) {
+        this.size = size;
+        return this;
+    }
+
+    public Integer getFrom() {
+        return from;
+    }
+
+    public AssetSearch setFrom(Integer from) {
+        this.from = from;
         return this;
     }
 }

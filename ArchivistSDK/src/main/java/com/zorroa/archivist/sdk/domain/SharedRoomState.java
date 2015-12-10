@@ -10,7 +10,7 @@ public class SharedRoomState {
     /**
      * The last search of a room.
      */
-    private AssetSearchBuilder search;
+    private AssetSearch search;
 
     /**
      * The last selection made in a room.
@@ -27,11 +27,11 @@ public class SharedRoomState {
 
     private int version;
 
-    public AssetSearchBuilder getSearch() {
+    public AssetSearch getSearch() {
         return search;
     }
 
-    public void setSearch(AssetSearchBuilder search) {
+    public void setSearch(AssetSearch search) {
         this.search = search;
     }
 

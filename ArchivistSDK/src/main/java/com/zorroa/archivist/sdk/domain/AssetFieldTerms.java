@@ -4,6 +4,7 @@
 
 package com.zorroa.archivist.sdk.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,6 +13,18 @@ import java.util.List;
 public class AssetFieldTerms {
     private String field;
     private List<Object> terms;
+
+    public AssetFieldTerms() { }
+
+    public AssetFieldTerms(String field, Object ... terms) {
+        this.field = field;
+        this.terms = Arrays.asList(terms);
+    }
+
+    public AssetFieldTerms(String field, List<Object> terms) {
+        this.field = field;
+        this.terms = terms;
+    }
 
     public String getField() {
         return field;

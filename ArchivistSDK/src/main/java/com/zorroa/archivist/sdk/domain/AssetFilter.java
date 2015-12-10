@@ -4,6 +4,8 @@
 
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 /**
@@ -27,12 +29,32 @@ public class AssetFilter {
         return this;
     }
 
+    public AssetFilter addToAssetIds(String ... ids) {
+        if (assetIds == null) {
+            assetIds = Lists.newArrayList();
+        }
+        for (String id: ids) {
+            assetIds.add(id);
+        }
+        return this;
+    }
+
     public List<Integer> getExportIds() {
         return exportIds;
     }
 
     public AssetFilter setExportIds(List<Integer> exportIds) {
         this.exportIds = exportIds;
+        return this;
+    }
+
+    public AssetFilter addToExportIds(int ... ids) {
+        if (exportIds == null) {
+            exportIds = Lists.newArrayList();
+        }
+        for (int id: ids) {
+            exportIds.add(id);
+        }
         return this;
     }
 
@@ -45,6 +67,16 @@ public class AssetFilter {
         return this;
     }
 
+    public AssetFilter addToFolderIds(String ... ids) {
+        if (folderIds == null) {
+            folderIds = Lists.newArrayList();
+        }
+        for (String id: ids) {
+            folderIds.add(id);
+        }
+        return this;
+    }
+
     public List<String> getExistFields() {
         return existFields;
     }
@@ -54,12 +86,30 @@ public class AssetFilter {
         return this;
     }
 
+    public AssetFilter addToExistFields(String ... fields) {
+        if (existFields == null) {
+            existFields = Lists.newArrayList();
+        }
+        for (String field: fields) {
+            existFields.add(field);
+        }
+        return this;
+    }
+
     public List<AssetFieldTerms> getFieldTerms() {
         return fieldTerms;
     }
 
     public AssetFilter setFieldTerms(List<AssetFieldTerms> fieldTerms) {
         this.fieldTerms = fieldTerms;
+        return this;
+    }
+
+    public AssetFilter addToFieldTerms(String field, Object ... terms) {
+        if (fieldTerms == null) {
+            fieldTerms = Lists.newArrayList();
+        }
+        fieldTerms.add(new AssetFieldTerms(field, terms));
         return this;
     }
 

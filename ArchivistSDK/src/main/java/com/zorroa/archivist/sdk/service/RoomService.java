@@ -47,13 +47,14 @@ public interface RoomService {
 
     /**
      * Set the current search for the room and emit the current
-     * search into the event stream.
+     * search into the event stream.   Setting a new search
+     * also clears the current selection.
      *
      * @param room
      * @param search
      * @return
      */
-    int setSearch(Room room, AssetSearchBuilder search);
+    int setSearch(Room room, AssetSearch search);
 
     /**
      * Return the current Asset selection in the room.
@@ -69,7 +70,7 @@ public interface RoomService {
      * @param room
      * @return
      */
-    AssetSearchBuilder getSearch(Room room);
+    AssetSearch getSearch(Room room);
 
     /**
      * Return all data that is part of the shared state of the room.
