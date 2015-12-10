@@ -113,6 +113,6 @@ public class KeywordsSchema implements Schema {
 
     @JsonIgnore
     public static long getBucket(double confidence) {
-        return Math.round(BUCKET_COUNT * (confidence / CONFIDENCE_MAX));
+        return Math.max(1, Math.round(BUCKET_COUNT * (confidence / CONFIDENCE_MAX)));
     }
 }
