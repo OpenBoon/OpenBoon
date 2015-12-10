@@ -9,8 +9,8 @@ import org.elasticsearch.action.suggest.SuggestResponse;
  * Created by chambers on 9/25/15.
  */
 public interface SearchService {
-    SearchResponse search(AssetSearchBuilder builder);
-    CountResponse count(AssetSearchBuilder builder);
+    SearchResponse search(AssetSearch builder);
+    CountResponse count(AssetSearch builder);
     SuggestResponse suggest(AssetSuggestBuilder builder);
     SearchResponse aggregate(AssetAggregateBuilder builder);
     Iterable<Asset> scanAndScroll(AssetSearch search);
@@ -21,5 +21,5 @@ public interface SearchService {
      * @param builder
      * @return
      */
-    long getTotalFileSize(AssetSearchBuilder builder);
+    long getTotalFileSize(AssetSearch builder);
 }

@@ -6,11 +6,9 @@ import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.SearchService;
-import org.elasticsearch.action.search.SearchResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -140,7 +138,7 @@ public class RoomController {
      * @return
      */
     @RequestMapping(value="/api/v1/rooms/current/search", method=RequestMethod.GET)
-    public AssetSearchBuilder getSearch() {
+    public AssetSearch getSearch() {
         return roomService.getSearch(roomService.getActiveRoom());
     }
 
@@ -150,7 +148,7 @@ public class RoomController {
      * @return
      */
     @RequestMapping(value="/api/v1/rooms/current/search", method=RequestMethod.PUT)
-    public void setSearch(@RequestBody AssetSearchBuilder search) {
+    public void setSearch(@RequestBody AssetSearch search) {
         roomService.setSearch(roomService.getActiveRoom(), search);
     }
 
@@ -176,12 +174,7 @@ public class RoomController {
      */
     @RequestMapping(value="/api/v1/rooms/current/assets", method=RequestMethod.GET)
     public void getAssets(HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
-        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-        AssetSearchBuilder search = roomService.getSearch(roomService.getActiveRoom());
-        search.setUseAsRoomSearch(false);
-        SearchResponse response = searchService.search(search);
-
-        HttpUtils.writeElasticResponse(response, httpResponse);
+        AssetSearch search = roomService.getSearch(roomService.getActiveRoom());
+        HttpUtils.writeElasticResponse(searchService.search(search), httpResponse);
     }
 }

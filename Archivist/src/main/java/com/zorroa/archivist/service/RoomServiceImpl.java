@@ -146,7 +146,7 @@ public class RoomServiceImpl implements RoomService {
         return version;
     }
 
-    public int setSearch(@Nullable Room room, AssetSearchBuilder search) {
+    public int setSearch(@Nullable Room room, AssetSearch search) {
         if (room == null) {
             return -1;
         }
@@ -163,7 +163,7 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.getSelection(room);
     }
 
-    public AssetSearchBuilder getSearch(Room room) {
+    public AssetSearch getSearch(Room room) {
         return roomDao.getSearch(room);
     }
 

@@ -193,13 +193,13 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                 "pk_room=?";
 
     @Override
-    public AssetSearchBuilder getSearch(Room room) {
+    public AssetSearch getSearch(Room room) {
         return Json.deserialize(jdbc.queryForObject(
-                "SELECT json_search FROM room WHERE pk_room=?", String.class, room.getId()), AssetSearchBuilder.class);
+                "SELECT json_search FROM room WHERE pk_room=?", String.class, room.getId()), AssetSearch.class);
     }
 
     @Override
-    public int setSearch(Room room, AssetSearchBuilder search) {
+    public int setSearch(Room room, AssetSearch search) {
         jdbc.update(UPDATE_SEARCH, Json.serializeToString(search), room.getId());
         return jdbc.queryForObject("SELECT int_version FROM room WHERE pk_room=?", Integer.class, room.getId());
     }
@@ -217,7 +217,7 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
     public SharedRoomState getSharedState(Room room) {
         SharedRoomState result = new SharedRoomState();
         jdbc.query(GET_SHARED_STATE, rs -> {
-            result.setSearch(Json.deserialize(rs.getString(1), AssetSearchBuilder.class));
+            result.setSearch(Json.deserialize(rs.getString(1), AssetSearch.class));
             result.setSelection(Json.deserialize(rs.getString(2), SET_TYPE_REFERENCE));
             result.setVersion(rs.getInt(3));
         }, room.getId());

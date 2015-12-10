@@ -40,12 +40,12 @@ public class RoomDaoTests extends ArchivistApplicationTests {
         RoomBuilder builder = new RoomBuilder();
         builder.setName("a room");
         builder.setVisible(true);
-        builder.setSearch(new AssetSearchBuilder("foo"));
+        builder.setSearch(new AssetSearch("foo"));
         builder.setSelection(Sets.newHashSet("a", "b", "c"));
         Room room1 = roomDao.create(builder);
 
-        AssetSearchBuilder asb2 = roomDao.getSearch(room1);
-        assertEquals(builder.getSearch().getSearch().getQuery(), asb2.getSearch().getQuery());
+        AssetSearch asb2 = roomDao.getSearch(room1);
+        assertEquals(builder.getSearch().getQuery(), asb2.getQuery());
 
         assertEquals(builder.getSelection(), roomDao.getSelection(room1));
     }
@@ -140,11 +140,11 @@ public class RoomDaoTests extends ArchivistApplicationTests {
     public void testGetAndSetSearch() {
         roomDao.setSelection(room, Sets.newHashSet("a", "b", "c"));
 
-        AssetSearchBuilder asb1 = new AssetSearchBuilder("foo");
+        AssetSearch asb1 = new AssetSearch("foo");
         roomDao.setSearch(room, asb1);
 
-        AssetSearchBuilder asb2 = roomDao.getSearch(room);
-        assertEquals(asb1.getSearch().getQuery(), asb2.getSearch().getQuery());
+        AssetSearch asb2 = roomDao.getSearch(room);
+        assertEquals(asb1.getQuery(), asb2.getQuery());
 
         Set<String> selection = roomDao.getSelection(room);
         assertTrue(selection.isEmpty());
@@ -160,14 +160,14 @@ public class RoomDaoTests extends ArchivistApplicationTests {
     @Test
     public void testGetSharedRoomState() {
         Set<String> selection1 = Sets.newHashSet("a", "b", "c");
-        AssetSearchBuilder asb1 = new AssetSearchBuilder("foo");
+        AssetSearch asb1 = new AssetSearch("foo");
 
         roomDao.setSearch(room, asb1);
         roomDao.setSelection(room, selection1);
 
         SharedRoomState state = roomDao.getSharedState(room);
         assertEquals(selection1, state.getSelection());
-        assertEquals(asb1.getSearch().getQuery(), state.getSearch().getSearch().getQuery());
+        assertEquals(asb1.getQuery(), state.getSearch().getQuery());
     }
 }
 

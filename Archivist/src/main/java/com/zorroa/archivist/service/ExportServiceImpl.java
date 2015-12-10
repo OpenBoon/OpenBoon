@@ -46,12 +46,10 @@ public class ExportServiceImpl implements ExportService {
     @Override
     public Export create(ExportBuilder builder) {
 
-        AssetSearchBuilder asb = new AssetSearchBuilder(builder.getSearch());
-
         /*
          * Do the checks for maximum assets and file size.
          */
-        long count = searchService.count(asb).getCount();
+        long count = searchService.count(builder.getSearch()).getCount();
         if (count == 0) {
             throw new ArchivistException("The search did not match any assets.");
         }
@@ -59,7 +57,7 @@ public class ExportServiceImpl implements ExportService {
             throw new ArchivistException(String.format("Cannot export more than '%d' assets at a time.", maxAssetCount));
         }
 
-        long totalSize = searchService.getTotalFileSize(asb);
+        long totalSize = searchService.getTotalFileSize(builder.getSearch());
         if (totalSize >  FileUtils.readbleSizeToBytes(maxTotalFileSize)) {
             throw new ArchivistException(String.format("Cannot export more than '%s' assets at a time.", maxTotalFileSize));
         }

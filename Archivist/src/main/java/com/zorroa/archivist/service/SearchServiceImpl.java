@@ -58,12 +58,12 @@ public class SearchServiceImpl implements SearchService {
     Client client;
 
     @Override
-    public SearchResponse search(AssetSearchBuilder builder) {
-        return buildSearch(builder).get();
+    public SearchResponse search(AssetSearch search) {
+        return buildSearch(search).get();
     }
 
     @Override
-    public CountResponse count(AssetSearchBuilder builder) {
+    public CountResponse count(AssetSearch builder) {
         return buildCount(builder).get();
     }
 
@@ -78,10 +78,10 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public long getTotalFileSize(AssetSearchBuilder builder) {
+    public long getTotalFileSize(AssetSearch search) {
         Sum sum = client.prepareSearch(alias)
                 .setTypes("asset")
-                .setQuery(getQuery(builder.getSearch()))
+                .setQuery(getQuery(search))
                 .addAggregation(AggregationBuilders.sum("totalFileSize").field("source.fileSize"))
                 .setSearchType(SearchType.COUNT)
                 .get().getAggregations().get("totalFileSize");
@@ -100,26 +100,33 @@ public class SearchServiceImpl implements SearchService {
         return new ScanAndScrollAssetIterator(client, rsp);
     }
 
-    private SearchRequestBuilder buildSearch(AssetSearchBuilder builder) {
+    private SearchRequestBuilder buildSearch(AssetSearch search) {
 
-        SearchRequestBuilder search = client.prepareSearch(alias)
+        SearchRequestBuilder request = client.prepareSearch(alias)
                 .setTypes("asset")
-                .setSize(builder.getSize())
-                .setFrom(builder.getFrom())
-                .setQuery(getQuery(builder.getSearch()));
+                .setQuery(getQuery(search));
+
+        if (search.getFrom() != null) {
+            request.setFrom(search.getFrom());
+        }
+
+        if (search.getSize() != null) {
+            request.setSize(search.getSize());
+        }
+
         logger.info(search.toString());
 
         /*
-         * alternative sorting and paging here.
+         * TODO: alternative sorting and paging here.
          */
 
-        return search;
+        return request;
     }
 
-    private CountRequestBuilder buildCount(AssetSearchBuilder builder) {
+    private CountRequestBuilder buildCount(AssetSearch search) {
         CountRequestBuilder count = client.prepareCount(alias)
                 .setTypes("asset")
-                .setQuery(getQuery(builder.getSearch()));
+                .setQuery(getQuery(search));
         logger.info(count.toString());
         return count;
     }

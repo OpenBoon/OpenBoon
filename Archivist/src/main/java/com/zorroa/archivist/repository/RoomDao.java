@@ -45,7 +45,7 @@ public interface RoomDao {
      * @param room
      * @return
      */
-    AssetSearchBuilder getSearch(Room room);
+    AssetSearch getSearch(Room room);
 
     /**
      * Set the curret search for a room.
@@ -54,7 +54,7 @@ public interface RoomDao {
      * @param search
      * @return
      */
-    int setSearch(Room room, AssetSearchBuilder search);
+    int setSearch(Room room, AssetSearch search);
 
     /**
      * A convenience method for pulling down the state of a room

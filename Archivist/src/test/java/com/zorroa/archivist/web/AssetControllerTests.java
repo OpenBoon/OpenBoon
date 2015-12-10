@@ -122,7 +122,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(new AssetSearchBuilder(new AssetSearch("beer")))))
+                .content(Json.serializeToString(new AssetSearch("beer"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -167,7 +167,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v2/assets/_count")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(new AssetSearchBuilder(new AssetSearch("beer")))))
+                .content(Json.serializeToString(new AssetSearch("beer"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -397,10 +397,11 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
+        AssetSearch search = new AssetSearch(new AssetFilter().addToFieldTerms("File.FileName.raw", "beer_kettle_01.jpg"));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"fieldTerms\" : [ { \"field\" : \"File.FileName.raw\", \"terms\" : [ \"beer_kettle_01.jpg\" ] } ] } } }"))
+                .content(Json.serialize(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -442,10 +443,12 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertEquals(1, (int) json.get("assigned"));
 
+        AssetSearch search = new AssetSearch(new AssetFilter().addToFolderIds(folder.getId()));
+
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + folder.getId() + "\" ] } } }"))
+                .content(Json.serialize(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -509,11 +512,13 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertEquals(1, (int) json.get("assigned"));
 
+        AssetSearch search = new AssetSearch(new AssetFilter().addToFolderIds(child.getId()));
+
         // Searching the child should return a single hit
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + child.getId() + "\" ] } } }"))
+                .content(Json.serialize(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -523,11 +528,12 @@ public class AssetControllerTests extends MockMvcTest {
         int count = (int)hits.get("total");
         assertEquals(1, count);
 
+        search = new AssetSearch();
         // Searching without folders returns all hits, which is only two
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { } }"))
+                .content(Json.serialize(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -537,11 +543,13 @@ public class AssetControllerTests extends MockMvcTest {
         count = (int)hits.get("total");
         assertEquals(2, count);
 
+        search = new AssetSearch(new AssetFilter().addToFolderIds(parent.getId()));
+
         // Searching the parent folder should return two hits as well
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + parent.getId() + "\" ] } } }"))
+                .content(Json.serialize(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -563,11 +571,13 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Folder>() {});
         assertNotEquals(child.getParentId(), parent.getId());
 
+        search = new AssetSearch(new AssetFilter().addToFolderIds(parent.getId()));
+
         // Searching the parent should now return a single hit
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"folderIds\" : [ \"" + parent.getId() + "\" ] } } }"))
+                .content(Json.serialize(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -586,12 +596,11 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
-        AssetSearchBuilder asb = new AssetSearchBuilder().setSearch(
-                new AssetSearch().setQuery(""));
+        AssetSearch search = new AssetSearch("");
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(asb)))
+                .content(Json.serializeToString(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -610,11 +619,11 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
-        AssetSearchBuilder asb = new AssetSearchBuilder().setFrom(1).setSize(1);
+        AssetSearch search = new AssetSearch().setFrom(1).setSize(1);
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(asb)))
+                .content(Json.serializeToString(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -635,10 +644,12 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
+        AssetSearch search = new AssetSearch(new AssetFilter().addToExistFields("Exif.CustomRendered"));
+
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"search\" : { \"filter\" : { \"existFields\" : [ \"Exif.CustomRendered\" ] } } }"))
+                .content(Json.serialize(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -660,12 +671,12 @@ public class AssetControllerTests extends MockMvcTest {
         AssetFieldRange range = new AssetFieldRange().setField("source.date").setMin("2014-01-01").setMax("2015-01-01");
         ArrayList<AssetFieldRange> ranges = new ArrayList<>();
         ranges.add(range);
-        AssetFilter filter = new AssetFilter().setFieldRanges(ranges);
-        AssetSearchBuilder asb = new AssetSearchBuilder().setSearch(new AssetSearch().setFilter(filter));
+
+        AssetSearch search = new AssetSearch(new AssetFilter().setFieldRanges(ranges));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(asb)))
+                .content(Json.serializeToString(search)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -693,7 +704,7 @@ public class AssetControllerTests extends MockMvcTest {
         AssetScript script = new AssetScript().setScript("archivistDate").setParams(scriptParams);
         List<AssetScript> scripts = new ArrayList<>();
         scripts.add(script);
-        AssetSearchBuilder asb = new AssetSearchBuilder().setSearch(new AssetSearch().setFilter(new AssetFilter().setScripts(scripts)));
+        AssetSearch asb = new AssetSearch(new AssetFilter().setScripts(scripts));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -720,7 +731,7 @@ public class AssetControllerTests extends MockMvcTest {
         List<Asset> assets = assetDao.getAll();
         Asset asset = assets.get(0);
         assetIds.add(asset.getId());
-        AssetSearchBuilder asb = new AssetSearchBuilder().setSearch(new AssetSearch().setFilter(new AssetFilter().setAssetIds(assetIds)));
+        AssetSearch asb = new AssetSearch(new AssetFilter().setAssetIds(assetIds));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

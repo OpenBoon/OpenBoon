@@ -52,8 +52,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         refreshIndex(100);
 
         AssetSearch search = new AssetSearch().setQuery("captain");
-        assertEquals(0, searchService.search(
-                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+        assertEquals(0, searchService.search(search).getHits().getTotalHits());
 
     }
 
@@ -70,8 +69,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         refreshIndex(100);
 
         AssetSearch search = new AssetSearch().setQuery("captain");
-        assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
     }
 
@@ -94,8 +92,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
-        assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
     @Test
@@ -123,8 +120,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
-        assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
     @Test
@@ -150,8 +146,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
-        assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
     @Test
@@ -178,8 +173,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
-        assertEquals(1, searchService.search(
-                new AssetSearchBuilder().setSearch(search)).getHits().getTotalHits());
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
     @Test
@@ -194,7 +188,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assetDao.create(assetBuilder2);
         refreshIndex();
 
-        long size = searchService.getTotalFileSize(new AssetSearchBuilder());
+        long size = searchService.getTotalFileSize(new AssetSearch());
         assertEquals(2000, size);
     }
 
@@ -211,11 +205,11 @@ public class SearchServiceTests extends ArchivistApplicationTests {
          * High confidence words are found at every level.
          */
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder(new AssetSearch("zipzoom", 1.0))).getHits().getTotalHits());
+                new AssetSearch("zipzoom", 1.0)).getHits().getTotalHits());
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.5))).getHits().getTotalHits());
+                new AssetSearch("zipzoom", 0.5)).getHits().getTotalHits());
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.01))).getHits().getTotalHits());
+                new AssetSearch("zipzoom", 0.01)).getHits().getTotalHits());
     }
 
     @Test
@@ -231,10 +225,10 @@ public class SearchServiceTests extends ArchivistApplicationTests {
          * High confidence words are found at every level.
          */
         assertEquals(0, searchService.search(
-                new AssetSearchBuilder(new AssetSearch("zipzoom", 1.0))).getHits().getTotalHits());
+                new AssetSearch("zipzoom", 1.0)).getHits().getTotalHits());
         assertEquals(0, searchService.search(
-                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.5))).getHits().getTotalHits());
+                new AssetSearch("zipzoom", 0.5)).getHits().getTotalHits());
         assertEquals(1, searchService.search(
-                new AssetSearchBuilder(new AssetSearch("zipzoom", 0.01))).getHits().getTotalHits());
+                new AssetSearch("zipzoom", 0.01)).getHits().getTotalHits());
     }
 }

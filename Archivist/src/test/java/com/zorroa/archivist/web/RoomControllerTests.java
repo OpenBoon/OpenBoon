@@ -253,7 +253,7 @@ public class RoomControllerTests extends MockMvcTest {
         RoomBuilder builder = new RoomBuilder();
         builder.setName("foo");
         builder.setVisible(true);
-        builder.setSearch(new AssetSearchBuilder("bender"));
+        builder.setSearch(new AssetSearch("bender"));
         Room room1 = roomService.create(builder);
 
         Session session1 = userService.getSession(session.getId());
@@ -265,9 +265,9 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        AssetSearchBuilder search = Json.Mapper.readValue(
-                result.getResponse().getContentAsByteArray(), AssetSearchBuilder.class);
-        assertEquals(builder.getSearch().getSearch().getQuery(), search.getSearch().getQuery());
+        AssetSearch search = Json.Mapper.readValue(
+                result.getResponse().getContentAsByteArray(), AssetSearch.class);
+        assertEquals(builder.getSearch().getQuery(), search.getQuery());
     }
 
     @Test
@@ -277,13 +277,13 @@ public class RoomControllerTests extends MockMvcTest {
         RoomBuilder builder = new RoomBuilder();
         builder.setName("foo");
         builder.setVisible(true);
-        builder.setSearch(new AssetSearchBuilder("bender"));
+        builder.setSearch(new AssetSearch("bender"));
         Room room1 = roomService.create(builder);
 
         Session session1 = userService.getSession(session.getId());
         roomService.join(room1, session1);
 
-        AssetSearchBuilder asb1 = new AssetSearchBuilder("foobar");
+        AssetSearch asb1 = new AssetSearch("foobar");
 
         MvcResult result = mvc.perform(put("/api/v1/rooms/current/search")
                 .session(session)
@@ -292,8 +292,8 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        AssetSearchBuilder asb2 = roomService.getSearch(room1);
-        assertEquals(asb1.getSearch().getQuery(), asb2.getSearch().getQuery());
+        AssetSearch asb2 = roomService.getSearch(room1);
+        assertEquals(asb1.getQuery(), asb2.getQuery());
     }
 
     @Test
@@ -303,7 +303,7 @@ public class RoomControllerTests extends MockMvcTest {
         RoomBuilder builder = new RoomBuilder();
         builder.setName("foo");
         builder.setVisible(true);
-        builder.setSearch(new AssetSearchBuilder("bender"));
+        builder.setSearch(new AssetSearch("bender"));
         builder.setSelection(Sets.newHashSet("1", "2", "3"));
         Room room1 = roomService.create(builder);
 
@@ -318,7 +318,7 @@ public class RoomControllerTests extends MockMvcTest {
 
         SharedRoomState state = Json.Mapper.readValue(
                 result.getResponse().getContentAsByteArray(), SharedRoomState.class);
-        assertEquals(builder.getSearch().getSearch().getQuery(), state.getSearch().getSearch().getQuery());
+        assertEquals(builder.getSearch().getQuery(), state.getSearch().getQuery());
         assertEquals(builder.getSelection(), state.getSelection());
     }
 
@@ -335,7 +335,7 @@ public class RoomControllerTests extends MockMvcTest {
         RoomBuilder builder = new RoomBuilder();
         builder.setName("foo");
         builder.setVisible(true);
-        builder.setSearch(new AssetSearchBuilder("bender"));
+        builder.setSearch(new AssetSearch("bender"));
         builder.setSelection(Sets.newHashSet("1", "2", "3"));
         Room room1 = roomService.create(builder);
 
