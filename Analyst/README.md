@@ -3,6 +3,9 @@
 Archivist ingestors that use the OpenCV libraries, including OpenCV Java bindings
 and Caffe C++ library.
 
+We include the runtime libraries for ingestors in the lib directory, but, to compile
+the Ingestor module, you need the OpenCV Java wrapers: brew install opencv
+
 ## Testing ingestors
 
 The project includes a simple test scaffold that instantiates individual ingestors and
