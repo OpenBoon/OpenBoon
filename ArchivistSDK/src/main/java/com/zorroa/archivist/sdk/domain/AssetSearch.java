@@ -45,6 +45,11 @@ public class AssetSearch {
      */
     private Integer from;
 
+    /**
+     * Set to true to do fuzzy matching on the query.
+     */
+    private boolean fuzzy = true;
+
     public AssetSearch() {
         this.filter = new AssetFilter();
     }
@@ -122,4 +127,14 @@ public class AssetSearch {
         this.from = from;
         return this;
     }
+
+    public boolean isFuzzy() {
+        return fuzzy;
+    }
+
+    public AssetSearch setFuzzy(boolean fuzzy) {
+        this.fuzzy = fuzzy;
+        return this;
+    }
+
 }
