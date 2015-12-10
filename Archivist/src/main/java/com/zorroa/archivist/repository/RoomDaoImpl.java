@@ -187,6 +187,7 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                 "room " +
             "SET " +
                 "json_search=?,"+
+                "json_selection='[]',"+
                 "int_version=int_version+1 " +
             "WHERE " +
                 "pk_room=?";

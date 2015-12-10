@@ -138,11 +138,16 @@ public class RoomDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetAndSetSearch() {
+        roomDao.setSelection(room, Sets.newHashSet("a", "b", "c"));
+
         AssetSearchBuilder asb1 = new AssetSearchBuilder("foo");
         roomDao.setSearch(room, asb1);
 
         AssetSearchBuilder asb2 = roomDao.getSearch(room);
         assertEquals(asb1.getSearch().getQuery(), asb2.getSearch().getQuery());
+
+        Set<String> selection = roomDao.getSelection(room);
+        assertTrue(selection.isEmpty());
     }
 
     @Test
@@ -157,8 +162,8 @@ public class RoomDaoTests extends ArchivistApplicationTests {
         Set<String> selection1 = Sets.newHashSet("a", "b", "c");
         AssetSearchBuilder asb1 = new AssetSearchBuilder("foo");
 
-        roomDao.setSelection(room, selection1);
         roomDao.setSearch(room, asb1);
+        roomDao.setSelection(room, selection1);
 
         SharedRoomState state = roomDao.getSharedState(room);
         assertEquals(selection1, state.getSelection());
