@@ -231,4 +231,30 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         assertEquals(1, searchService.search(
                 new AssetSearch("zipzoom", 0.01)).getHits().getTotalHits());
     }
+
+    @Test
+    public void testNoConfidenceSearch() throws IOException {
+
+        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder.setAsync(false);
+        assetBuilder.addKeywords(0.1, false, "zipzoom");
+        assetDao.create(assetBuilder);
+        refreshIndex();
+
+        assertEquals(1, searchService.search(
+                new AssetSearch("zipzoom", 0.0)).getHits().getTotalHits());
+
+    }
+
+    @Test
+    public void testFuzzySearch() throws IOException {
+
+        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder.addKeywords(0.1, false, "zoolander");
+        assetDao.create(assetBuilder);
+        refreshIndex();
+
+        assertEquals(1, searchService.search(
+                new AssetSearch("zoolandar", 0.0).setFuzzy(true)).getHits().getTotalHits());
+    }
 }

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.repository.PermissionDao;
@@ -17,6 +18,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -114,7 +116,7 @@ public class SearchServiceImpl implements SearchService {
             request.setSize(search.getSize());
         }
 
-        logger.info(search.toString());
+        logger.info(request.toString());
 
         /*
          * TODO: alternative sorting and paging here.
@@ -189,20 +191,48 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
-        QueryStringQueryBuilder query = QueryBuilders.queryStringQuery(search.getQuery());
-        if (search.getConfidence() <= 0) {
-            query.field("keywords.all.raw", 1);
-            query.field("keywords.all");
-        }
-        else {
-            long highBucket = KeywordsSchema.getBucket(search.getConfidence());
-            for (long i=highBucket; i<=KeywordsSchema.BUCKET_COUNT; i++) {
-                query.field(String.format("keywords.level%d.raw", i), i + 1);
-                query.field(String.format("keywords.level%d", i));
+
+        String query = search.getQuery();
+        if (search.isFuzzy() && query != null) {
+            StringBuilder sb = new StringBuilder(query.length() + 10);
+            for (String part: Splitter.on(" ").omitEmptyStrings().trimResults().split(query)) {
+                sb.append(part);
+                sb.append("~ ");
             }
+            sb.deleteCharAt(sb.length()-1);
+            query = sb.toString();
         }
-        query.lenient(true);
-        return  query;
+
+        QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
+
+        /*
+         * Note: the default boost is 1
+         *
+         * With 5 keyword buckets, the boosts work out to:
+         * 1 = 0.1
+         * 2 = 0.5
+         * 3 = 1.0 (DEFAULT)
+         * 4 = 1.5
+         * 5 = 2.0
+         *
+         * The indexed fields get 1/2 as much boost.
+         *
+         * TODO: switch to BigDecmial to deal with rounding errors.
+         * TODO: function score query is another option
+         */
+        long highBucket = KeywordsSchema.getBucket(search.getConfidence());
+        for (long i=highBucket; i<=KeywordsSchema.BUCKET_COUNT; i++) {
+            float boost = Math.max(0.1f, (i - 1) * 0.5f);
+            qstring.field(String.format("keywords.level%d.raw", i), boost);
+            qstring.field(String.format("keywords.level%d", i), boost * 0.5f);
+        }
+        /*
+         * leading wildcards can cause load issues.
+         */
+        qstring.allowLeadingWildcard(false);
+        qstring.lenient(true);
+        qstring.fuzziness(Fuzziness.AUTO);
+        return qstring;
     }
 
 
