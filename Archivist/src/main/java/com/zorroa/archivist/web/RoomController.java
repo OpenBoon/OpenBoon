@@ -117,8 +117,8 @@ public class RoomController {
      * @return
      */
     @RequestMapping(value="/api/v1/rooms/current/selection", method=RequestMethod.PUT)
-    public int setSelection(@RequestBody Set<String> assetIds) {
-        return roomService.setSelection(roomService.getActiveRoom(), assetIds);
+    public void setSelection(@RequestBody Set<String> assetIds) {
+        roomService.setSelection(roomService.getActiveRoom(), assetIds);
     }
 
     /**
