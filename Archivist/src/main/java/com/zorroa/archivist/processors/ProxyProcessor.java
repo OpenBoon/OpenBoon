@@ -50,32 +50,32 @@ public class ProxyProcessor extends IngestProcessor {
                     new ProxyOutput(format, 1024, 8, 0.9f)
             );
         }
-        if (asset.isType(AssetType.Image)) {
-            int width = asset.getAttr("image", "width");
-            List<Proxy> result = Lists.newArrayList();
-            for (ProxyOutput output : outputs) {
-                if (output.getSize() < width) {
-                    addResult(asset, output, result);
-                } else {
-                    if (result.size() == 0) {
-                        // No proxies generated, copy the source file as a proxy
-                        // but use a lower quality and the standard proxy format
-                        String format = imageService.getDefaultProxyFormat();
-                        ProxyOutput sourceProxy = new ProxyOutput(format, width, 8, 0.5f);
-                        addResult(asset, sourceProxy, result);
-                    }
-                    break;
+
+        int width = asset.getAttr("image", "width");
+        List<Proxy> result = Lists.newArrayList();
+        for (ProxyOutput output : outputs) {
+            if (output.getSize() < width) {
+                addResult(asset, output, result);
+            } else {
+                if (result.size() == 0) {
+                    // No proxies generated, copy the source file as a proxy
+                    // but use a lower quality and the standard proxy format
+                    String format = imageService.getDefaultProxyFormat();
+                    ProxyOutput sourceProxy = new ProxyOutput(format, width, 8, 0.5f);
+                    addResult(asset, sourceProxy, result);
                 }
-            }
-
-            if (!result.isEmpty()) {
-                Collections.sort(result, (o1, o2) ->
-                        Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight()));
-
-                asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
-                asset.getDocument().put("proxies", result);
+                break;
             }
         }
+
+        if (!result.isEmpty()) {
+            Collections.sort(result, (o1, o2) ->
+                    Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight()));
+
+            asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
+            asset.getDocument().put("proxies", result);
+        }
+
     }
 
     private void addResult(AssetBuilder asset, ProxyOutput output, List<Proxy> result) {
