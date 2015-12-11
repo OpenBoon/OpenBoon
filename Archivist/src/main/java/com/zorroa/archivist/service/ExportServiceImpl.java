@@ -9,6 +9,7 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +111,11 @@ public class ExportServiceImpl implements ExportService {
 
         Export newExport = create(builder);
         return newExport;
+    }
+
+    @Override
+    public boolean cancel(Export export) {
+        return exportDao.setCancelled(export);
     }
 
     @Override

@@ -59,4 +59,11 @@ public class ExportController {
         exportService.restart(exportService.get(id));
         return exportService.get(id);
     }
+
+    @PreAuthorize("hasRole('export')")
+    @RequestMapping(value="/api/v1/exports/{id}/_cancel", method=RequestMethod.PUT)
+    public Export cancel(@PathVariable int id) {
+        exportService.cancel(exportService.get(id));
+        return exportService.get(id);
+    }
 }

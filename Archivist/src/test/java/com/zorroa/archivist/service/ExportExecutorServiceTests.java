@@ -99,4 +99,21 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         List<ExportOutput> outputs = exportService.getAllOutputs(export);
         assertTrue(new File(outputs.get(0).getPath()).exists());
     }
+
+    @Test
+    public void testCancelExport() {
+
+        /**
+         * Log out the current user to ensure the test authenticates.
+         */
+        SecurityContextHolder.getContext().setAuthentication(null);
+
+        assertTrue(exportService.cancel(export));
+        exportExecutorService.execute(export);
+
+        Export export2 = exportService.get(export.getId());
+        assertEquals(1, export2.getAssetCount());
+        assertEquals(ExportState.Cancelled, export2.getState());
+        assertTrue(export2.getTimeStopped() > -1);
+    }
 }

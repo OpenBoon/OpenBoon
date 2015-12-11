@@ -154,4 +154,22 @@ public class ExportControllerTests extends MockMvcTest {
                 new TypeReference<List<ExportOutput>>() { });
         assertEquals(1, outputs.size());
     }
+
+    @Test
+    public void testCancel() throws Exception {
+        /*
+         * artificially set the export to running.
+         */
+        exportDao.setState(export, ExportState.Running, ExportState.Queued);
+
+        MvcResult result = mvc.perform(put("/api/v1/exports/" + export.getId() + "/_cancel")
+                .session(session)
+                .content(Json.serialize(builder))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Export export2 = Json.Mapper.readValue(result.getResponse().getContentAsString(), Export.class);
+        assertEquals(ExportState.Cancelled, export2.getState());
+    }
 }

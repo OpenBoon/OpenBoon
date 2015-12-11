@@ -32,6 +32,9 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
         export.setSearch(Json.deserialize(rs.getString("json_search"), AssetSearch.class));
         export.setTotalFileSize(rs.getLong("int_total_file_size"));
         export.setAssetCount(rs.getInt("int_asset_count"));
+        export.setTimeStarted(rs.getLong("time_started"));
+        export.setTimeStopped(rs.getLong("time_stopped"));
+        export.setTotalFileSize(rs.getLong("int_total_file_size"));
         return export;
     };
 
@@ -178,6 +181,27 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
                 ExportState.Running.ordinal()) == 1;
     }
 
+    private static final String CANCELLED =
+            "UPDATE " +
+                "export " +
+            "SET " +
+                "time_stopped=?,"+
+                "int_state=? "+
+            "WHERE " +
+                "pk_export=? "+
+            "AND " +
+                "int_state IN (?,?)";
+
+    @Override
+    public boolean setCancelled(Export export) {
+        return jdbc.update(CANCELLED,
+                System.currentTimeMillis(),
+                ExportState.Cancelled.ordinal(),
+                export.getId(),
+                ExportState.Running.ordinal(),
+                ExportState.Queued.ordinal()) == 1;
+    }
+
     @Override
     public boolean setState(Export export, ExportState newState, ExportState oldState) {
         return jdbc.update("UPDATE export SET int_state=? WHERE pk_export=? AND int_state=?",
@@ -188,5 +212,11 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
     public boolean setSearch(Export export, AssetSearch search) {
         return jdbc.update("UPDATE export SET json_search=? WHERE pk_export=? AND int_state=?",
             Json.serializeToString(search), export.getId(), ExportState.Queued.ordinal()) == 1;
+    }
+
+    @Override
+    public boolean isInState(Export export, ExportState state) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM export WHERE pk_export=? AND int_state=?",
+                Integer.class, export.getId(), state.ordinal()) == 1;
     }
 }

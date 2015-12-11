@@ -67,7 +67,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
     public void execute(Export export) {
 
         if (!exportDao.setRunning(export)) {
-            logger.warn("Unable to set export '{}' state to running.", export);
+            logger.warn("Unable to set export '{}' state to running.  In not in queued state.", exportDao.get(export.getId()));
             return;
         }
         logger.info("executing export: {}", export);
@@ -136,9 +136,17 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                          */
                         logger.warn("Failed to add asset {} to output '{}',", asset, e);
                     }
+
+                    if (exportDao.isInState(export, ExportState.Cancelled)) {
+                        logger.warn("Export {} was cancelled", export);
+                        break;
+                    }
                 }
             }
 
+            /*
+             * For cancelled exports we still go through tear downs.
+             */
             for (Map.Entry<ExportOutput, ExportProcessor> entry: outputs.entrySet()) {
                 ExportProcessor processor = entry.getValue();
                 ExportOutput output = entry.getKey();
@@ -155,6 +163,10 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             }
 
         } finally {
+            /*
+             * Cancelled exports don't get set to finished, they state in the canceled state
+             * so people can see they are cancelled.
+             */
             if (exportDao.setFinished(export)) {
                 logger.info("Export ID:{} complete, {} assets exported.", export.getId(), assetCount);
                 eventServerHandler.broadcast(new Message().setType(

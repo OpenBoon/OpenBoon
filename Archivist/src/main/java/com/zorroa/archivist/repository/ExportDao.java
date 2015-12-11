@@ -37,6 +37,8 @@ public interface ExportDao {
      */
     boolean setFinished(Export export);
 
+    boolean setCancelled(Export export);
+
     boolean setState(Export export, ExportState newState, ExportState oldState);
 
     /**
@@ -47,4 +49,6 @@ public interface ExportDao {
      * @return
      */
     boolean setSearch(Export export, AssetSearch search);
+
+    boolean isInState(Export export, ExportState state);
 }
