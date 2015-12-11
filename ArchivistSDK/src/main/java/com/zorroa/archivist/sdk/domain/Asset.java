@@ -66,6 +66,10 @@ public class Asset {
         }
     }
 
+    public boolean containsKey(String name) {
+        return document.containsKey(name);
+    }
+
     private Map<String,Object> getMap(String key) {
         // TODO: this might not always be a map.
         Map<String,Object> current = null;
