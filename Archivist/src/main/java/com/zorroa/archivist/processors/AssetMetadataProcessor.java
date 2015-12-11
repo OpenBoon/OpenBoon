@@ -48,8 +48,11 @@ public class AssetMetadataProcessor extends IngestProcessor {
         }
 
         IngestProcessor delegate = assetTypeProcessors.get(asset.getSource().getType());
-        if (delegate != null) {
-            delegate.process(asset);
+        if (delegate == null) {
+            throw new IngestProcessorException(String.format(
+                    "Unsupported file: '%s",asset.getAbsolutePath()) , asset, getClass());
         }
+
+        delegate.process(asset);
     }
 }

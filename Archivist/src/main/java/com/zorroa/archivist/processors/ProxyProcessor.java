@@ -33,6 +33,11 @@ public class ProxyProcessor extends IngestProcessor {
     public ProxyProcessor() { }
 
     @Override
+    public boolean handlesAssetType(AssetType type) {
+        return AssetType.Image.equals(type);
+    }
+
+    @Override
     public void process(AssetBuilder asset) {
         List<ProxyOutput> outputs = Json.Mapper.convertValue(getArgs().get("proxies"),
                 new TypeReference<List<ProxyOutput>>() {});

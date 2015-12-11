@@ -9,6 +9,7 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.exception.IngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
@@ -51,6 +52,12 @@ public class ImageProcessor extends IngestProcessor {
         this.imageService = imageService;
     }
 
+    @Override
+    public boolean handlesAssetType(AssetType type) {
+        return AssetType.Image.equals(type);
+    }
+
+    @Override
     public void process(AssetBuilder asset) {
 
         /**

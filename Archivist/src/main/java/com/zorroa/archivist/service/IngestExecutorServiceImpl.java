@@ -17,6 +17,7 @@ import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestProcessorService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.archivist.sdk.util.IngestUtils;
 import org.elasticsearch.common.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -232,10 +233,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                             return FileVisitResult.CONTINUE;
                         }
 
-                        /*
-                         * TODO: temporary fix which stops the ingest from touching
-                         * unsupported files.
-                         */
+                        if (!IngestUtils.isSupportedFormat(FileUtils.extension(file))) {
+                            return FileVisitResult.CONTINUE;
+                        }
                         if (!imageService.getSupportedFormats().contains(FileUtils.extension(file))) {
                             return FileVisitResult.CONTINUE;
                         }
@@ -357,9 +357,22 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 for (ProcessorFactory<IngestProcessor>  factory : pipeline.getProcessors()) {
                     try {
                         IngestProcessor processor = factory.getInstance();
+                        if (!processor.handlesAssetType(asset.getSource().getType())) {
+                            continue;
+                        }
                         logger.debug("running processor: {}", processor.getClass());
                         processor.process(asset);
+                    } catch (IngestProcessorException e) {
+                        /*
+                         * This exception short circuits the processor.
+                         */
+                        errorCount.increment();
+                        throw e;
+
                     } catch (Exception e) {
+                        /**
+                         * All other exceptions
+                         */
                         errorCount.increment();
                         logger.warn("Processor {} failed to run on asset {}",
                                 factory.getInstance().getClass().getCanonicalName(), asset.getFile(), e);
