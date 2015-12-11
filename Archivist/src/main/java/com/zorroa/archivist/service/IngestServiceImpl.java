@@ -4,6 +4,8 @@ import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -46,6 +49,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
+        removeDefaultProcessors(builder.getProcessors());
         return ingestPipelineDao.create(builder);
     }
 
@@ -61,6 +65,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder) {
+        removeDefaultProcessors(builder.getProcessors());
         return ingestPipelineDao.update(pipeline, builder);
     }
 
@@ -204,6 +209,18 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    /**
+     * Scrubs the list of processors of any default processors.
+     *
+     * @param processors
+     */
+    private void removeDefaultProcessors(List<ProcessorFactory<IngestProcessor>> processors) {
+        /*
+         * Might have to eventually update this to handle multiple types.
+         */
+        processors.stream().filter(f->f.getKlass().contains("AssetMetadataProcessor")).collect(Collectors.toList());
     }
 }
 

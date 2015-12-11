@@ -39,9 +39,7 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("test");
         builder.addToProcessors(
-                new ProcessorFactory<>("com.zorroa.archivist.processors.SchemaAssetMetadataProcessor", args));
-        builder.addToProcessors(
-                new ProcessorFactory<>("com.zorroa.archivist.processors.SchemaProxyProcessor", args));
+                new ProcessorFactory<>("com.zorroa.archivist.processors.ProxyProcessor", args));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));

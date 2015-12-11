@@ -1,14 +1,13 @@
 package com.zorroa.archivist.processors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.ImageService;
+import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
@@ -22,7 +21,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ProxyProcessor extends IngestProcessor {
@@ -34,22 +32,11 @@ public class ProxyProcessor extends IngestProcessor {
 
     public ProxyProcessor() { }
 
-    protected  List<ProxyOutput> parseProxyOutput(String key) {
-        try {   // Re-parse from generic args Map to List<ProxyOutput>
-            ObjectMapper mapper = new ObjectMapper();
-            Object proxyList = getArgs().get("proxies");
-            return mapper.readValue(mapper.writeValueAsString(proxyList), new TypeReference<List<ProxyOutput>>(){});
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     @Override
     public void process(AssetBuilder asset) {
-        List<ProxyOutput> outputs = parseProxyOutput("proxies");
+        List<ProxyOutput> outputs = Json.Mapper.convertValue(getArgs().get("proxies"),
+                new TypeReference<List<ProxyOutput>>() {});
+
         if (outputs == null) {
             String format = imageService.getDefaultProxyFormat();
             outputs = Lists.newArrayList(
@@ -59,8 +46,7 @@ public class ProxyProcessor extends IngestProcessor {
             );
         }
         if (asset.isType(AssetType.Image)) {
-            extractDimensions(asset);
-            int width = (int)asset.get("source", "width");
+            int width = asset.getAttr("image", "width");
             List<Proxy> result = Lists.newArrayList();
             for (ProxyOutput output : outputs) {
                 if (output.getSize() < width) {
@@ -77,14 +63,10 @@ public class ProxyProcessor extends IngestProcessor {
                 }
             }
 
-            Collections.sort(result, new Comparator<Proxy>() {
-                @Override
-                public int compare(Proxy o1, Proxy o2) {
-                    return Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight());
-                }
-            });
-
             if (!result.isEmpty()) {
+                Collections.sort(result, (o1, o2) ->
+                        Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight()));
+
                 asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
                 asset.getDocument().put("proxies", result);
             }
@@ -96,18 +78,7 @@ public class ProxyProcessor extends IngestProcessor {
             result.add(imageService.makeProxy(asset.getFile(), output));
         } catch (IOException e) {
             logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
-            asset.put("source", "error", "Proxy");
-        }
-    }
-
-    private void extractDimensions(AssetBuilder asset) {
-        try {
-            Dimension size = imageService.getImageDimensions(asset.getFile());
-            asset.put("source", "width", size.width);
-            asset.put("source", "height", size.height);
-        } catch (IOException e) {
-            logger.warn("Unable to determine image dimensions: {}: " + e.getMessage(), asset);
-            asset.put("source", "error", "ProxyDimensions");
+            asset.put("errors", "SchemaProxyProcessor", e.getMessage());
         }
     }
 

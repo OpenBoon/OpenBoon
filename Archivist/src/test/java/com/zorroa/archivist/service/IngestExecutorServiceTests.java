@@ -6,7 +6,6 @@ import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,6 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("default");
-        builder.addToProcessors(new ProcessorFactory<>(
-                "com.zorroa.archivist.processors.AssetMetadataProcessor"));
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
 
@@ -71,8 +68,7 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("default");
-        builder.addToProcessors(new ProcessorFactory<>(
-                "com.zorroa.archivist.processors.SchemaAssetMetadataProcessor"));
+
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);

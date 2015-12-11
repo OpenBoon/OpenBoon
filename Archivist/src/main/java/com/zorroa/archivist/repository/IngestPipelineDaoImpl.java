@@ -1,6 +1,8 @@
 package com.zorroa.archivist.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
@@ -29,7 +31,8 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
         result.setUserCreated(rs.getInt("user_created"));
         result.setTimeModified(rs.getLong("time_modified"));
         result.setUserModified(rs.getInt("user_modified"));
-        result.setProcessors((List<ProcessorFactory<IngestProcessor>>) rs.getObject("list_processors"));
+        result.setProcessors(Json.deserialize(rs.getString("json_processors"),
+                new TypeReference<List<ProcessorFactory<IngestProcessor>>>() {}));
         return result;
     };
 
@@ -43,7 +46,7 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
                     "time_created,"+
                     "user_modified, "+
                     "time_modified, "+
-                    "list_processors " +
+                    "json_processors " +
             ") "+
             "VALUES (?,?,?,?,?,?,?)";
 
@@ -60,7 +63,7 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
             ps.setLong(4, time);
             ps.setInt(5, SecurityUtils.getUser().getId());
             ps.setLong(6, time);
-            ps.setObject(7, builder.getProcessors());
+            ps.setObject(7, Json.serializeToString(builder.getProcessors()));
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -100,8 +103,8 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
         }
 
         if (builder.getProcessors() != null) {
-            updates.add("list_processors=?");
-            values.add(builder.getProcessors());
+            updates.add("json_processors=?");
+            values.add(Json.serializeToString(builder.getProcessors()));
         }
 
         if (updates.isEmpty()) {
