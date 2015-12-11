@@ -12,12 +12,11 @@ public class IngestPipelineBuilder {
     private String name;
     private String description;
 
-    public IngestPipelineBuilder() { }
+    public IngestPipelineBuilder() {
+        processors = Lists.newArrayList();
+    }
 
     public void addToProcessors(ProcessorFactory<IngestProcessor> processor) {
-        if (processors == null) {
-            processors = Lists.newArrayList();
-        }
         processors.add(processor);
     }
 
