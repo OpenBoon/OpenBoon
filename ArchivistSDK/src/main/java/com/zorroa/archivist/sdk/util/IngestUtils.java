@@ -1,10 +1,9 @@
 package com.zorroa.archivist.sdk.util;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.sdk.domain.AssetType;
 
-import javax.imageio.ImageIO;
-import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Created by chambers on 10/30/15.
@@ -12,23 +11,24 @@ import java.util.Arrays;
  */
 public class IngestUtils {
 
-    /**
-     * This is a lame way to do this, but it works for now.
-     */
-    public static final ImmutableSet<String> SUPPORTED_IMG_FORMATS = ImmutableSet.<String>builder()
-            .addAll(Arrays.asList(ImageIO.getReaderFormatNames())).build();
+    public static final Map<String, AssetType> SUPPORTED_FORMATS = ImmutableMap.<String, AssetType>builder()
+            /*
+             * Image
+             */
+            .put("jpg", AssetType.Image)
+            .put("jpeg", AssetType.Image)
+            .put("png", AssetType.Image)
+            .put("gif", AssetType.Image)
+            .put("bmp", AssetType.Image)
 
-    public static final ImmutableSet<String> SUPPORTED_DOC_FORMATS = ImmutableSet.<String>builder()
-            .add("pdf").build();
+            .build();
+
 
     public static AssetType determineAssetType(String ext) {
-        if (SUPPORTED_IMG_FORMATS.contains(ext)) {
-            return AssetType.Image;
-        } else if (SUPPORTED_DOC_FORMATS.contains(ext)) {
-            return AssetType.Document;
-        } else {
-            return AssetType.Unknown;
-        }
+        return SUPPORTED_FORMATS.getOrDefault(ext.toLowerCase(), AssetType.Unknown);
     }
 
+    public static boolean isSupportedFormat(String ext) {
+        return SUPPORTED_FORMATS.containsKey(ext.toLowerCase());
+    }
 }
