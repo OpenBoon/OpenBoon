@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.base.MoreObjects;
+
 public class Proxy {
     private String path;
     private int width;
@@ -38,5 +40,36 @@ public class Proxy {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Proxy)) return false;
+
+        Proxy proxy = (Proxy) o;
+
+        if (getWidth() != proxy.getWidth()) return false;
+        if (getHeight() != proxy.getHeight()) return false;
+        return !(getPath() != null ? !getPath().equals(proxy.getPath()) : proxy.getPath() != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPath() != null ? getPath().hashCode() : 0;
+        result = 31 * result + getWidth();
+        result = 31 * result + getHeight();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("path", path)
+                .add("width", width)
+                .add("height", height)
+                .add("format", format)
+                .toString();
     }
 }
