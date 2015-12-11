@@ -39,4 +39,14 @@ public interface ExportService {
      */
     Export duplicate(Export export);
 
+    /**
+     * Cancel the export.  This will set the export state to Cancelled.  A Running
+     * export will be stopped immediately, however all the export processor tear
+     * down functions will run.
+     *
+     * @param export
+     * @return
+     */
+    boolean cancel(Export export);
+
 }

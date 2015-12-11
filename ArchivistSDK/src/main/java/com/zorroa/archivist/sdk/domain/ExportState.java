@@ -6,5 +6,6 @@ package com.zorroa.archivist.sdk.domain;
 public enum ExportState {
     Queued,
     Running,
-    Finished
+    Finished,
+    Cancelled
 }
