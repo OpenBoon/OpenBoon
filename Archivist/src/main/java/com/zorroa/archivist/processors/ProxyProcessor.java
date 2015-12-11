@@ -6,6 +6,7 @@ import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.common.collect.ImmutableList;
@@ -52,7 +53,8 @@ public class ProxyProcessor extends IngestProcessor {
         }
 
         int width = asset.getAttr("image", "width");
-        List<Proxy> result = Lists.newArrayList();
+        ProxySchema result = new ProxySchema();
+
         for (ProxyOutput output : outputs) {
             if (output.getSize() < width) {
                 addResult(asset, output, result);
@@ -73,12 +75,12 @@ public class ProxyProcessor extends IngestProcessor {
                     Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight()));
 
             asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
-            asset.getDocument().put("proxies", result);
+            asset.addSchema(result);
         }
 
     }
 
-    private void addResult(AssetBuilder asset, ProxyOutput output, List<Proxy> result) {
+    private void addResult(AssetBuilder asset, ProxyOutput output, ProxySchema result) {
         try {
             result.add(imageService.makeProxy(asset.getFile(), output));
         } catch (IOException e) {

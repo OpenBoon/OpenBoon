@@ -5,17 +5,17 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class ProxyProcessorTests extends ArchivistApplicationTests {
 
@@ -42,13 +42,21 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>("com.zorroa.archivist.processors.ProxyProcessor", args));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(
+                getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
-        List<Asset> assets = assetDao.getAll();
-        assertEquals(2, assets.size());
-        assertTrue(assets.get(0).getDocument().containsKey("tinyProxy"));
+        Asset asset = assetDao.getAll().get(0);
+        assertTrue(asset.containsKey("tinyProxy"));
+        assertTrue(asset.containsKey("proxies"));
+        ProxySchema proxies = asset.getValue("proxies", ProxySchema.class);
+
+        int[] widths = new int[] { 128, 256, 1024 };
+        for (int i=0; i<widths.length; i++) {
+            Proxy p = proxies.get(i);
+            assertEquals(p.getWidth(), widths[i]);
+        }
     }
 
 }
