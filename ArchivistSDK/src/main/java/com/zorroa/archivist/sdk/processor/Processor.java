@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.processor;
 
 import com.google.common.collect.Maps;
+import com.zorroa.archivist.sdk.domain.AssetType;
 
 import java.util.Map;
 
@@ -29,4 +30,15 @@ public class Processor {
      * required.
      */
     public void teardown() { }
+
+    /**
+     * Return true if the processor handles a given AssetType.  The default implementation
+     * returns true.
+     *
+     * @param type
+     * @return
+     */
+    public boolean handlesAssetType(AssetType type) {
+        return true;
+    }
 }
