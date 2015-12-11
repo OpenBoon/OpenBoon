@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created by chambers on 11/1/15.
  */
@@ -15,6 +17,10 @@ public class Export {
 
     private AssetSearch search;
     private ExportOptions options;
+
+    public long timeStarted;
+    public long timeStopped;
+    public int executeCount;
 
     public int getId() {
         return id;
@@ -86,6 +92,38 @@ public class Export {
 
     public void setAssetCount(int assetCount) {
         this.assetCount = assetCount;
+    }
+
+    public long getTimeStarted() {
+        return timeStarted;
+    }
+
+    public void setTimeStarted(long timeStarted) {
+        this.timeStarted = timeStarted;
+    }
+
+    public long getTimeStopped() {
+        return timeStopped;
+    }
+
+    public void setTimeStopped(long timeStopped) {
+        this.timeStopped = timeStopped;
+    }
+
+    public int getExecuteCount() {
+        return executeCount;
+    }
+
+    public void setExecuteCount(int executeCount) {
+        this.executeCount = executeCount;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("state", state.toString())
+                .toString();
     }
 
     @Override
