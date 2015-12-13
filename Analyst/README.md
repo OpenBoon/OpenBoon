@@ -25,6 +25,10 @@ If your ingestor uses a third party JAR file, it must be in the ZORROA_SITE_PATH
 For example, the FaceIngestor uses the opencv-2411.jar, so you must put the
 opencv-2411.jar file in the `ZORROA_SITE_PATH`.
 
+The OpenCV JAR file must be installed to the local maven repository with:
+
+`mvn install:install-file -Dfile=lib/face/opencv-2412.jar -DgroupId=org.opencv -DartifactId=opencv -Dversion=2.4.12 -Dpackaging=jar`
+
 Some ingestors will load model files using the `ZORROA_OPENCV_MODEL_PATH` environment
 variable. This generally points to the top of a shared model path and each processor
 uses files from a subdirectory. Set it to, e.g. `<ingestors-project>/models` and place
