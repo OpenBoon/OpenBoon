@@ -126,8 +126,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                         processor.process(exportOptionsService.applyOptions(export, output, asset));
                         assetDao.addToExport(asset, export);
 
+                        String payload = "{ \"assetId\" : " + asset.getId() + ", \"exportId\" : " + export.getId() + " }";
                         eventServerHandler.broadcast(new Message().setType(
-                                MessageType.EXPORT_ASSET).setPayload(asset.getId()));
+                                MessageType.EXPORT_ASSET).setPayload(payload));
 
                     } catch (Exception e) {
                         /*
