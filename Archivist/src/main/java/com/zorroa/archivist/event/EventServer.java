@@ -39,17 +39,14 @@ public class EventServer {
     }
 
     public void start() {
-        thread.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    bootstrap.bind(port).sync().channel().closeFuture().sync();
-                } catch (InterruptedException ignore) {
-                    //
-                }
-                finally {
-                    shutdown();
-                }
+        thread.execute(() -> {
+            try {
+                bootstrap.bind(port).sync().channel().closeFuture().sync();
+            } catch (InterruptedException ignore) {
+                //
+            }
+            finally {
+                shutdown();
             }
         });
     }
