@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.event.EventServerHandler;
@@ -125,10 +126,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     try {
                         processor.process(exportOptionsService.applyOptions(export, output, asset));
                         assetDao.addToExport(asset, export);
-
-                        String payload = "{ \"assetId\" : " + asset.getId() + ", \"exportId\" : " + export.getId() + " }";
                         eventServerHandler.broadcast(new Message().setType(
-                                MessageType.EXPORT_ASSET).setPayload(payload));
+                                MessageType.EXPORT_ASSET).setPayload(
+                                    ImmutableMap.of("assetId", asset.getId(), "exportId", export.getId()));
 
                     } catch (Exception e) {
                         /*
