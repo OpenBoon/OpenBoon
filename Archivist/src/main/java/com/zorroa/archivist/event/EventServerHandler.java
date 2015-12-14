@@ -38,21 +38,15 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     public void send(Set<String> sessions, String payload) {
-        logger.trace("sending message to: {} {}", sessions, payload);
-        for (Channel channel: channels) {
-            String _session = (String) channel.attr(AttributeKey.valueOf("session")).get();
-            if (sessions.contains(_session)) {
-                logger.trace("Found channel: {}", channel.remoteAddress());
-                try {
-                    logger.info("{}", channel.writeAndFlush(payload + "\r\n").sync());
-                } catch (InterruptedException ignore) {
-                    //ignore
-                }
-            }
-        }
+        //TODO: remove string concat, push up to Message class
+        channels.writeAndFlush(payload + "\r\n", (c)-> {
+            String session = (String) c.attr(AttributeKey.valueOf("session")).get();
+            return sessions.contains(session);
+        });
     }
 
     public void broadcast(Message message) {
+        //TODO: remove string concat, push up to Message class
         logger.trace("broadcasting message: {}", message);
         String text = message.toString() + "\r\n";
         channels.writeAndFlush(text);
