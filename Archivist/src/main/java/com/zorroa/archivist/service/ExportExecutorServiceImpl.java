@@ -128,7 +128,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                         assetDao.addToExport(asset, export);
                         eventServerHandler.broadcast(new Message().setType(
                                 MessageType.EXPORT_ASSET).setPayload(
-                                    ImmutableMap.of("assetId", asset.getId(), "exportId", export.getId()));
+                                    ImmutableMap.of("assetId", asset.getId(), "exportId", export.getId())));
 
                     } catch (Exception e) {
                         /*
