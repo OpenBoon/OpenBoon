@@ -6,8 +6,6 @@ import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
-import com.zorroa.archivist.sdk.service.RoomService;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.index.IndexRequest.OpType;
@@ -20,7 +18,6 @@ import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.ScriptService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -34,12 +31,6 @@ import java.util.stream.Collectors;
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
-
-    @Autowired
-    RoomService roomService;
-
-    @Autowired
-    UserService userService;
 
     @Override
     public String getType() {
@@ -165,18 +156,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setRefresh(true);
         UpdateResponse response = updateBuilder.get();
         return response.getVersion();
-    }
-
-    @Override
-    public boolean select(String assetId, boolean selected) {
-        Room room = roomService.getActiveRoom(userService.getActiveSession());
-        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), assetId)
-                .setScript("if (ctx._source.selectedRooms == null ) {  ctx._source.selectedRooms = [roomId] } else { if (selected) { ctx._source.selectedRooms += roomId } else { ctx._source.selectedRooms -= roomId }}",
-                        ScriptService.ScriptType.INLINE)
-                .addScriptParam("roomId", room.getId())
-                .addScriptParam("selected", selected);
-        UpdateResponse response = updateBuilder.get();
-        return response.getVersion() > 1;    // FIXME: Need to check for version increment, not just >1? 0 == first create
     }
 
     @Override
