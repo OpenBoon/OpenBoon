@@ -8,6 +8,7 @@ import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -22,6 +23,10 @@ public class SecurityUtils {
 
     public static String createPasswordHash(String plainPassword) {
         return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+    }
+
+    public static Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     public static String getSessionId() {
