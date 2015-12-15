@@ -43,74 +43,6 @@ public class AssetControllerTests extends MockMvcTest {
     SearchService searchService;
 
     @Test
-    public void testSearchAll() throws Exception {
-
-        MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
-
-        MvcResult result = mvc.perform(post("/api/v1/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": { \"match_all\": {}}}".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertTrue(count == 2);
-    }
-
-    @Test
-    public void testSearch() throws Exception {
-
-        MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
-
-        MvcResult result = mvc.perform(post("/api/v1/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{\"query\":{\"query_string\":{\"query\":\"beer\"}}}".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertTrue(count == 1);
-    }
-
-    @Test
-    public void testDateScriptSearch() throws Exception {
-        MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
-
-        MvcResult result = mvc.perform(post("/api/v1/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{\"query\":{\"filtered\":{\"query\":{\"match_all\":{}},\"filter\":{\"script\":{\"script\":\"archivistDate\",\"lang\":\"native\",\"params\":{\"field\":\"source.date\",\"interval\":\"year\",\"terms\":[\"2014\"]}}}}}}".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertTrue(count == 1);
-    }
-
-    @Test
     public void testSearchV2() throws Exception {
 
         MockHttpSession session = admin();
@@ -134,28 +66,6 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testCount() throws Exception {
-
-        MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
-
-        MvcResult result = mvc.perform(post("/api/v1/assets/_count")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": { \"match_all\": {}}}".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> counts = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        int count = (int)counts.get("count");
-        assertTrue(count == 2);
-    }
-
-    @Test
     public void testCountV2() throws Exception {
 
         MockHttpSession session = admin();
@@ -175,29 +85,6 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         int count = (int)counts.get("count");
         assertTrue(count == 1);
-    }
-
-    @Test
-    public void testAggregation() throws Exception {
-
-        MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
-
-        MvcResult result = mvc.perform(post("/api/v1/assets/_aggregations")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"query\": { \"match_all\": {}}, \"aggregations\" : { \"Keywords\" : { \"terms\" : { \"field\" : \"keywords.all\" }}}}".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
-        Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
-        assertEquals(10, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
     }
 
     @Test
