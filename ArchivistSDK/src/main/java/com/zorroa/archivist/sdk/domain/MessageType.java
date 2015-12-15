@@ -7,15 +7,9 @@ public enum MessageType {
      */
 
     SESSION,
-    @Deprecated
-    ASSET_SEARCH,
     ASSET_GET,
     ASSET_UPDATE,
     ASSET_UPDATE_FOLDERS,
-    @Deprecated
-    ASSET_SELECT,
-    @Deprecated
-    ASSET_DESELECT,
     INGEST_CREATE,
     INGEST_START,
     INGEST_UPDATE_COUNTERS,
