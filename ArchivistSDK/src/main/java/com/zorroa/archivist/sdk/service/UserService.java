@@ -29,7 +29,9 @@ public interface UserService {
 
     Session getActiveSession();
 
-    Session getSession(String id);
+    Session getSession(String cookieId);
+
+    Session getSession(long id);
 
     List<Permission> getPermissions();
 
