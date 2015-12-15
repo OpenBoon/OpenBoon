@@ -37,7 +37,7 @@ import java.util.Set;
 @Transactional
 public abstract class ArchivistApplicationTests {
 
-    public static final Logger logger = LoggerFactory.getLogger(ArchivistConfiguration.class);
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     protected Client client;

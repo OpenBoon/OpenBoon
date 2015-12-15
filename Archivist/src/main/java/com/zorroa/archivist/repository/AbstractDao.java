@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 
 public class AbstractDao {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractDao.class);
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected JdbcTemplate jdbc;
 
