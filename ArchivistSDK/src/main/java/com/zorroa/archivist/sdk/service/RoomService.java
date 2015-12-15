@@ -23,10 +23,6 @@ public interface RoomService {
 
     Room get(Session session);
 
-    void sendToRoom(Room room, Message message);
-
-    void sendToActiveRoom(Message message);
-
     boolean join(Room room, Session session);
 
     List<Room> getAll(Session session);
