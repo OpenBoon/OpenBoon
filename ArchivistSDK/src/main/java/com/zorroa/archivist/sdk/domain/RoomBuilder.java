@@ -6,10 +6,29 @@ import java.util.Set;
 
 public class RoomBuilder {
 
+    /**
+     * The session ID that created the room.
+     */
     private Long sessionId = null;
+
+    /*
+     * The name of the room.
+     */
     private String name;
+
+    /**
+     * The invite list for the room.
+     */
     private Set<String> inviteList;
+
+    /**
+     * A password for entering the room.
+     */
     private String password;
+
+    /**
+     * Determines if the room is visible or not.
+     */
     private boolean visible = true;
 
     /**
@@ -22,35 +41,50 @@ public class RoomBuilder {
      */
     private Set<String> selection;
 
+    public RoomBuilder() { }
+
+    public RoomBuilder(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
-    public void setName(String name) {
+    public RoomBuilder setName(String name) {
         this.name = name;
+        return this;
     }
     public Set<String> getInviteList() {
         return inviteList;
     }
-    public void setInviteList(Set<String> inviteList) {
+
+    public RoomBuilder setInviteList(Set<String> inviteList) {
         this.inviteList = inviteList;
+        return this;
     }
     public String getPassword() {
         return password;
     }
-    public void setPassword(String password) {
+
+    public RoomBuilder setPassword(String password) {
         this.password = password;
+        return this;
     }
     public boolean isVisible() {
         return visible;
     }
-    public void setVisible(boolean visible) {
+
+    public RoomBuilder setVisible(boolean visible) {
         this.visible = visible;
+        return this;
     }
     public Long getSessionId() {
         return sessionId;
     }
-    public void setSessionId(Long session) {
+
+    public RoomBuilder setSessionId(Long session) {
         this.sessionId = session;
+        return this;
     }
 
     public AssetSearch getSearch() {
@@ -60,8 +94,9 @@ public class RoomBuilder {
         return search;
     }
 
-    public void setSearch(AssetSearch search) {
+    public RoomBuilder setSearch(AssetSearch search) {
         this.search = search;
+        return this;
     }
 
     public Set<String> getSelection() {
@@ -71,7 +106,8 @@ public class RoomBuilder {
         return selection;
     }
 
-    public void setSelection(Set<String> selection) {
+    public RoomBuilder setSelection(Set<String> selection) {
         this.selection = selection;
+        return this;
     }
 }
