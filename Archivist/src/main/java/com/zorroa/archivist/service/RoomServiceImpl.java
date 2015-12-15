@@ -1,12 +1,11 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
-import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -33,10 +32,10 @@ public class RoomServiceImpl implements RoomService {
     SessionDao sessionDao;
 
     @Autowired
-    EventServerHandler eventServerHandler;
+    TransactionEventManager transactionEventManager;
 
     @Autowired
-    TransactionEventManager transactionEventManager;
+    MessagingService messagingService;
 
     @Override
     public Room get(long id) {
@@ -82,33 +81,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void sendToActiveRoom(Message message) {
-        sendToRoom(getActiveRoom(), message);
-    }
-
-    @Override
-    public void sendToRoom(Room room, Message message) {
-        /*
-         * If the room is null just log it and move on.
-         */
-        if (room == null) {
-            logger.warn("The current session {} is not in a room.", SecurityUtils.getSessionId());
-            return;
-        }
-
-        if (message.getPayload() == null) {
-            logger.warn("The current session {} has a null message payload", SecurityUtils.getSessionId());
-            return;
-        }
-
-        logger.info("Sending: {} to active room", message.toString());
-
-        Set<String> cookies = Sets.newHashSet();
-        sessionDao.getAll(room).forEach(s -> cookies.add(s.getCookieId()));
-        eventServerHandler.send(cookies, message.toString());
-    }
-
-    @Override
     public List<Room> getAll(Session session) {
         return roomDao.getAll(session);
     }
@@ -140,7 +112,7 @@ public class RoomServiceImpl implements RoomService {
         }
         int version = roomDao.setSelection(room, selection);
         transactionEventManager.afterCommit(()-> {
-            sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SELECTION_UPDATE,
+            messagingService.sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SELECTION_UPDATE,
                     ImmutableMap.of("roomId", room.getId(), "version", version, "selection", selection)));
         });
         return version;
@@ -153,7 +125,7 @@ public class RoomServiceImpl implements RoomService {
 
         int version = roomDao.setSearch(room, search);
         transactionEventManager.afterCommit(()-> {
-            sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SEARCH_UPDATE,
+            messagingService.sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SEARCH_UPDATE,
                     ImmutableMap.of("roomId", room.getId(), "version", version, "search", search)));
         });
         return version;

@@ -9,12 +9,15 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.domain.Message;
+import com.zorroa.archivist.sdk.domain.MessageType;
 import com.zorroa.archivist.sdk.exception.DuplicateElementException;
 import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,13 +25,16 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-@Component
+@Service
 public class FolderServiceImpl implements FolderService {
 
     private static final Logger logger = LoggerFactory.getLogger(FolderServiceImpl.class);
 
     @Autowired
     FolderDao folderDao;
+
+    @Autowired
+    MessagingService messagingService;
 
     @Override
     public Folder get(String id) {
@@ -56,7 +62,9 @@ public class FolderServiceImpl implements FolderService {
             if (folderDao.exists(builder.getParentId(), builder.getName())) {
                 throw new DuplicateElementException(String.format("The folder '%s' already exists.", builder.getName()));
             }
-            return folderDao.create(builder);
+            Folder folder = folderDao.create(builder);
+            messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_CREATE, folder));
+            return folder;
         } finally {
             invalidate(null, builder.getParentId());
         }
@@ -65,7 +73,12 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public boolean update(Folder folder, FolderBuilder builder) {
         try {
-            return folderDao.update(folder, builder);
+            boolean result = folderDao.update(folder, builder);
+            if (result) {
+                messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_UPDATE,
+                        get(folder.getId())));
+            }
+            return result;
         } finally {
             invalidate(folder, builder.getParentId());
         }
@@ -74,7 +87,11 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public boolean delete(Folder folder) {
         try {
-            return folderDao.delete(folder);
+            boolean result = folderDao.delete(folder);
+            if (result) {
+                messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_DELETE, folder));
+            }
+            return result;
         } finally {
             invalidate(folder);
         }

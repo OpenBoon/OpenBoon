@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     public User get(int id) {
         return userDao.get(id);
     }
-    
+
     @Override
     public List<User> getAll() {
         return userDao.getAll();
@@ -86,7 +86,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Session getSession(String id) {
+    public Session getSession(String cookieId) {
+        return sessionDao.get(cookieId);
+    }
+
+    @Override
+    public Session getSession(long id) {
         return sessionDao.get(id);
     }
 

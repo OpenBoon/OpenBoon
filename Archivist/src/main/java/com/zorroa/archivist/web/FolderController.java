@@ -1,15 +1,14 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.service.UserService;
-import com.zorroa.archivist.sdk.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -19,23 +18,14 @@ public class FolderController {
     FolderService folderService;
 
     @Autowired
-    RoomService roomService;
+    MessagingService messagingService;
 
     @Autowired
     UserService userService;
 
-    private void sendFolderToRoom(MessageType type, Folder folder, HttpSession httpSession) {
-        Session session = userService.getActiveSession();
-        Room room = roomService.getActiveRoom(session);
-        String folderJSON = new String(Json.serialize(folder), StandardCharsets.UTF_8);
-        roomService.sendToRoom(room, new Message(type, folderJSON));
-    }
-
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.POST)
     public Folder create(@RequestBody FolderBuilder builder, HttpSession httpSession) {
-        Folder folder = folderService.create(builder);
-        sendFolderToRoom(MessageType.FOLDER_CREATE, folder, httpSession);
-        return folder;
+        return folderService.create(builder);
     }
 
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.GET)
@@ -52,15 +42,12 @@ public class FolderController {
     public Folder update(@RequestBody FolderBuilder builder, @PathVariable String id, HttpSession httpSession) {
         Folder folder = folderService.get(id);
         folderService.update(folder, builder);
-        folder = folderService.get(folder.getId());
-        sendFolderToRoom(MessageType.FOLDER_UPDATE, folder, httpSession);
-        return folder;
+        return folderService.get(folder.getId());
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.DELETE)
     public Folder delete(@PathVariable String id, HttpSession httpSession) {
         Folder folder = folderService.get(id);
-        sendFolderToRoom(MessageType.FOLDER_DELETE, folder, httpSession);
         if (folderService.delete(folder)) {
             return folder;
         }

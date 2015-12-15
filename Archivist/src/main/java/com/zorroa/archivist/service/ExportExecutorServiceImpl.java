@@ -3,12 +3,12 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.Json;
@@ -49,7 +49,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
     UserService userService;
 
     @Autowired
-    EventServerHandler eventServerHandler;
+    MessagingService messagingService;
 
     @Autowired
     ExportOptionsService exportOptionsService;
@@ -72,18 +72,22 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             return;
         }
         logger.info("executing export: {}", export);
-        eventServerHandler.broadcast(new Message().setType(
+        messagingService.broadcast(new Message().setType(
                 MessageType.EXPORT_START).setPayload(Json.serializeToString(export)));
 
 
         Map<ExportOutput, ExportProcessor> outputs = Maps.newHashMap();
         int assetCount = 0;
 
+        /*
+        * Set the authentication to the user that created the export.
+        */
+        User user = userService.get(export.getUserCreated());
+        SecurityContextHolder.getContext().setAuthentication(
+                authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
+
         try {
 
-            User user = userService.get(export.getUserCreated());
-            SecurityContextHolder.getContext().setAuthentication(
-                    authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
             /*
              * Initialize all the processors
              */
@@ -126,7 +130,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     try {
                         processor.process(exportOptionsService.applyOptions(export, output, asset));
                         assetDao.addToExport(asset, export);
-                        eventServerHandler.broadcast(new Message().setType(
+                        messagingService.sendToUser(user, new Message().setType(
                                 MessageType.EXPORT_ASSET).setPayload(
                                     ImmutableMap.of("assetId", asset.getId(), "exportId", export.getId())));
 
@@ -159,7 +163,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     logger.warn("Failed to tear down processor '{}',", processor, e);
                 }
 
-                eventServerHandler.broadcast(new Message().setType(
+                messagingService.sendToUser(user, new Message().setType(
                         MessageType.EXPORT_OUTPUT_STOP).setPayload(Json.serializeToString(output)));
             }
 
@@ -170,7 +174,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
              */
             if (exportDao.setFinished(export)) {
                 logger.info("Export ID:{} complete, {} assets exported.", export.getId(), assetCount);
-                eventServerHandler.broadcast(new Message().setType(
+                messagingService.sendToUser(user, new Message().setType(
                         MessageType.EXPORT_STOP).setPayload(Json.serializeToString(export)));
             }
 

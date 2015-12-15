@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
-import com.zorroa.archivist.sdk.service.RoomService;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class AssetServiceImpl implements AssetService {
     AssetDao assetDao;
 
     @Autowired
-    RoomService roomService;
+    MessagingService messagingService;
 
     @Override
     public Asset get(String id) {
@@ -57,7 +57,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public long update(String assetId, AssetUpdateBuilder builder) {
         long version = assetDao.update(assetId, builder);
-        roomService.sendToActiveRoom(new Message(MessageType.ASSET_UPDATE,
+        messagingService.sendToActiveRoom(new Message(MessageType.ASSET_UPDATE,
                 ImmutableMap.of(
                         "assetId", assetId,
                         "version", version,
@@ -79,7 +79,7 @@ public class AssetServiceImpl implements AssetService {
     public void setFolders(Asset asset, Collection<Folder> folders) {
         long version = assetDao.setFolders(asset, folders);
 
-        roomService.sendToActiveRoom(new Message(MessageType.ASSET_UPDATE_FOLDERS,
+        messagingService.sendToActiveRoom(new Message(MessageType.ASSET_UPDATE_FOLDERS,
             ImmutableMap.of(
                     "assetId", asset.getId(),
                     "folders", folders.stream().map(Folder::getId).collect(Collectors.toList()),
