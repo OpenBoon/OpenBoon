@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
