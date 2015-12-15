@@ -22,15 +22,23 @@ public class TestMessagingClient {
 
     private static final Logger logger = LoggerFactory.getLogger(TestMessagingClient.class);
 
-    static final String HOST = System.getProperty("host", "127.0.0.1");
-    static final int PORT = Integer.parseInt(System.getProperty("port", "8087"));
+    private String host;
+    private int port = Integer.parseInt(System.getProperty("port", "8087"));
 
     Channel channel;
     EventLoopGroup group;
 
     private static final Queue<String> queue = Queues.newLinkedBlockingQueue();
 
+    public TestMessagingClient(int port) throws Exception {
+        this.port = port;
+        this.host = "127.0.0.1";
+        connect();
+    }
+
     public TestMessagingClient() throws Exception {
+        this.port = 8087;
+        this.host = "127.0.0.1";
         connect();
     }
     public void sendSession(String id) {
@@ -60,7 +68,7 @@ public class TestMessagingClient {
                 .handler(new TestMesssagingClientInitializer());
 
         // Start the connection attempt.
-        channel = b.connect(HOST, PORT).sync().channel();
+        channel = b.connect(host, port).sync().channel();
     }
 
     public static class TestMesssagingClientHandler extends SimpleChannelInboundHandler<String> {

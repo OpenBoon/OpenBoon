@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -35,12 +36,15 @@ public class MessageServiceTests extends ArchivistApplicationTests {
     @Autowired
     SessionRegistry sessionRegistry;
 
+    @Value("${archivist.events.port}")
+    private int port;
+
     TestMessagingClient client;
     Room room;
 
     @Before
     public void init() throws Exception {
-        client = new TestMessagingClient();
+        client = new TestMessagingClient(port);
         room = roomService.create(new RoomBuilder("test"));
 
         MockHttpServletRequest request = new MockHttpServletRequest();
