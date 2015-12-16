@@ -66,7 +66,32 @@ public class ValidateIngestTestsIT {
         file.delete();
     }
 
+    private static Boolean waitForHealthyArchivst(int maxAttempts) throws InterruptedException, IOException {
+        Boolean isStarted = false;
+        for (int attempts = 0; attempts < maxAttempts; ++attempts) {
+            if (!isStarted && attempts > 0) {
+                System.out.println("Waiting for Archivist to start...");
+                Thread.sleep(3000);
+            }
+            try {
+                String response = sendJson("health", "GET", null);
+                Map<String, Object> json = Json.Mapper.readValue(response,
+                        new TypeReference<Map<String, Object>>() {});
+                String status = (String) json.get("status");
+                isStarted = status.equals("UP");
+            } catch (ConnectException e) {
+                System.out.println("Archivist not yet healthy: " + e);
+            }
+        }
+        return isStarted;
+    }
+
     private static void startArchivist() throws IOException, InterruptedException {
+        if (waitForHealthyArchivst(1)) {
+            System.out.println("Testing Ingestors with already running archivist -- make sure to kill or clean the database before testing!");
+            return;
+        }
+
         ProcessBuilder pb = new ProcessBuilder();
         String pwd = System.getProperty("user.dir");;
         File cwd = new File(pwd + "/Database");
@@ -77,9 +102,19 @@ public class ValidateIngestTestsIT {
             cwd.mkdir();
         }
         pb.directory(cwd);
+        String archivistSrc = pwd + "/../Archivist/target/archivist.jar";
+        File archivist = new File(archivistSrc);
+        if (!archivist.exists()) {
+            String archivistSys = "/Library/Application Support/Zorroa/java/archivist.jar";
+            archivist = new File(archivistSys);
+            if (!archivist.exists()) {
+                System.err.println("Cannot find archivist.jar in Archivist source (" + archivistSrc + ") or system-wide Zorroa directory (" + archivistSys + ")");
+                return;
+            }
+        }
         Map<String, String> env = pb.environment();
-	String cmd =  "/usr/bin/java -Djava.class.path=" + pwd + "/lib/face -Djava.library.path=" + pwd +"/target/jni:" + pwd + "/lib/face -jar \"" + pwd + "/../Archivist/target/archivist.jar\"";
-        System.out.println("Archivist commandline: " + cmd);
+	String cmd =  "/usr/bin/java -Djava.class.path=" + pwd + "/lib/face -Djava.library.path=" + pwd +"/target/jni:" + pwd + "/lib/face -jar \"" + archivist.getAbsolutePath() + "\"";
+        System.out.println("Starting Archivist with command: " + cmd);
         pb.command("/bin/bash", "-c", cmd);
         env.put("ZORROA_OPENCV_MODEL_PATH", pwd + "/models");
         env.put("ZORROA_SITE_PATH", pwd + "/target");
@@ -91,29 +126,14 @@ public class ValidateIngestTestsIT {
         assert pb.redirectOutput().file() == log;
         assert archivistProcess.getInputStream().read() == -1;
 
-        Boolean isStarted = false;
-        final int maxAttempts = 20;
-        for (int attempts = 0; attempts < maxAttempts; ++attempts) {
-            if (!isStarted) {
-                System.out.println("Waiting for Archivist to start...");
-                Thread.sleep(3000);
-            }
-            try {
-                String response = sendJson("health", "GET", null);
-                Map<String, Object> json = Json.Mapper.readValue(response,
-                        new TypeReference<Map<String, Object>>() {});
-                String status = (String) json.get("status");
-                isStarted = status.equals("UP");
-            } catch (ConnectException e) {
-                System.out.println("Connection exception" + e);
-            }
-        }
+        Boolean isStarted = waitForHealthyArchivst(20);
         if (!isStarted) {
             System.out.println("Cannot start Archivist");
             terminateArchivist();
         } else {
             System.out.println("Archivist is healthy");
         }
+
     }
 
     private static void ingest() throws IOException, InterruptedException {

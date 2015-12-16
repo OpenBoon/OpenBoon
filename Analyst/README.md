@@ -37,6 +37,36 @@ the ingestor to test the basic JNI loading and a second test in one of the Tests
 that will be run during the integration-test phase.
 
 
+### Testing without Archivist source
+
+Ingestor integration tests will be run with the Archivist. If an archivist is already running,
+it will be used for testing, and if no archivist is running, the test scaffold will attempt
+to start a new Archivist, irst attempting to use the archivist.jar compiled in a sibling
+Archivist source directory adjacent to the Ingestor repo, i.e. 
+../Archivist/target/archivist.jar. If that file does not exist, the test scaffold will
+try to launch the archivist using the installer version from
+/Library/Application Support/Zorroa/java/archivist.jar. If you want to debug the Archivist
+during Ingestor tests, just start it manually in a shell or the IDE before running the
+Ingestor tests.
+
+The test scaffold will run the archivist and set the java.class.path and java.library.path
+to the local Ingestor directories so that tests are run using the latest Ingestor source.
+If you want to test your ingestors using the installed archivist, you must:
+
+1. Stop any currently running archivist either manually or using `/Library/Application Support/Zorroa/bin/stop-archivist`
+2. `mvn install` to package the ingestor.jar and copy it to `/Library/Application Support/Zorroa/java/extensions`. Note that you will be asked for your admin password to copy to the system-wide directory.
+3. Re-start the archivist either manually or from within the Curator > File > Server by selecting "Single User Mode"
+4. Configure an ingest pipeline that includes your ingestor using Window > Pipelines
+5. Use the pipeline with your ingestor to load new files using File > Open
+
+If you are using the installed version of the Archivist, the Database is stored in
+`~/Library/Application Support/Zorroa/Database`. If you want to clear out the database
+before re-running your tests so you can cleanly test your new code:
+
+1. Stop any currently running archivist either manually or using `/Library/Application Support/Zorroa/bin/stop-archivist`
+2. Manually remove the Database directory, or run `/Library/Application Support/Zorroa/bin/delete-local-db.sh`
+
+
 ## Installing and running ingestors in Archivist
 
 The Archivist will load JAR files containing ingestors using the `ZORROA_SITE_PATH`
