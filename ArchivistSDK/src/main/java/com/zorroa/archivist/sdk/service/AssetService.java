@@ -29,8 +29,6 @@ public interface AssetService {
      */
     long update(String assetId, AssetUpdateBuilder builder);
 
-    boolean select(String assetId, boolean selected);
-
     void addToFolder(Asset asset, Folder folder);
 
     void setFolders(Asset asset, Collection<Folder> folders);
