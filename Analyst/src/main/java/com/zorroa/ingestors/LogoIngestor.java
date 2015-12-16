@@ -101,11 +101,6 @@ public class LogoIngestor extends IngestProcessor {
         Mat cropImg;
         Size imSize = image.size();
 
-        //MatOfInt rejectLevels = new MatOfInt();
-        //MatOfDouble levelWeights = new MatOfDouble();
-        //boolean outputRejectLevels = false;
-        //cascadeClassifier.get().detectMultiScale(image, logoDetections, rejectLevels, levelWeights, 1.005, 5, 0, minLogo, maxLogo, outputRejectLevels);
-
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
         // in order to estimate a confidence value
         // OPTIMIZE: Use the size of the resulting rectangles to tweak minLogo and maxLogo in order to save the detector a bunch of work
