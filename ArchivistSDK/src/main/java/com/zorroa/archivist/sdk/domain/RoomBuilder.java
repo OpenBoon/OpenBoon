@@ -12,11 +12,6 @@ public class RoomBuilder {
     private String name;
 
     /**
-     * The invite list for the room.
-     */
-    private Set<String> inviteList;
-
-    /**
      * A password for entering the room.
      */
     private String password;
@@ -49,14 +44,7 @@ public class RoomBuilder {
         this.name = name;
         return this;
     }
-    public Set<String> getInviteList() {
-        return inviteList;
-    }
 
-    public RoomBuilder setInviteList(Set<String> inviteList) {
-        this.inviteList = inviteList;
-        return this;
-    }
     public String getPassword() {
         return password;
     }
