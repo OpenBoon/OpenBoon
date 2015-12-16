@@ -32,5 +32,21 @@ public enum MessageType {
     /**
      * Emitted when the room search has changed.
      */
-    ROOM_SEARCH_UPDATE
+    ROOM_SEARCH_UPDATE,
+
+    /**
+     * Emitted to the room when a user joins.
+     */
+    ROOM_USER_JOINED,
+
+    /**
+     * Emitted to room when user leaves.
+     */
+    ROOM_USER_LEFT,
+
+    /**
+     * A room was updated.  This means some other property of the room changed
+     * besides the selection or update.
+     */
+    ROOM_UPDATED
 }
