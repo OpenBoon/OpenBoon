@@ -19,7 +19,9 @@
 #include <cstddef> // NULL
 #include <boost/config.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/scoped_ptr.hpp>
+
+// can't use this - much as I'd like to as borland doesn't support it
+// #include <boost/scoped_ptr.hpp>
 
 #include <boost/archive/basic_archive.hpp>
 #include <boost/serialization/tracking_enum.hpp>
@@ -46,7 +48,9 @@ class BOOST_ARCHIVE_OR_WARCHIVE_DECL(BOOST_PP_EMPTY()) basic_oarchive :
 {
     friend class basic_oarchive_impl;
     // hide implementation of this class to minimize header conclusion
-    boost::scoped_ptr<basic_oarchive_impl> pimpl;
+    // in client code. note: borland can't use scoped_ptr
+    //boost::scoped_ptr<basic_oarchive_impl> pimpl;
+    basic_oarchive_impl * pimpl;
 
     // overload these to bracket object attributes. Used to implement
     // xml archives

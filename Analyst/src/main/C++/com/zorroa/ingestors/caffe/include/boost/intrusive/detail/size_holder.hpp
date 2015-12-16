@@ -13,11 +13,7 @@
 #ifndef BOOST_INTRUSIVE_DETAIL_SIZE_HOLDER_HPP
 #define BOOST_INTRUSIVE_DETAIL_SIZE_HOLDER_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 

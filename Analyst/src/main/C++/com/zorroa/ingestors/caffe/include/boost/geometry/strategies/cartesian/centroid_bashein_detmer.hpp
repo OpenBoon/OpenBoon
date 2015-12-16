@@ -4,11 +4,6 @@
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2015.
-// Modifications copyright (c) 2015 Oracle and/or its affiliates.
-
-// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
-
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
 
@@ -19,8 +14,6 @@
 #ifndef BOOST_GEOMETRY_STRATEGIES_CARTESIAN_CENTROID_BASHEIN_DETMER_HPP
 #define BOOST_GEOMETRY_STRATEGIES_CARTESIAN_CENTROID_BASHEIN_DETMER_HPP
 
-
-#include <cstddef>
 
 #include <boost/mpl/if.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -150,7 +143,7 @@ private :
     class sums
     {
         friend class bashein_detmer;
-        std::size_t count;
+        int count;
         calculation_type sum_a2;
         calculation_type sum_x;
         calculation_type sum_y;

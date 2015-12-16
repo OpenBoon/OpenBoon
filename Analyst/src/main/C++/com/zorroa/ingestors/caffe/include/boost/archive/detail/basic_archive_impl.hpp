@@ -16,6 +16,9 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
+// can't use this - much as I'd like to as borland doesn't support it
+// #include <boost/scoped_ptr.hpp>
+
 #include <set>
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header

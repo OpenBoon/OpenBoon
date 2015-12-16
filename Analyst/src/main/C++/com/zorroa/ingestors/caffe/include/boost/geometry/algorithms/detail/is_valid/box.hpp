@@ -1,6 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2015, Oracle and/or its affiliates.
+// Copyright (c) 2014, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 
@@ -16,7 +16,6 @@
 #include <boost/geometry/core/tags.hpp>
 #include <boost/geometry/core/coordinate_dimension.hpp>
 
-#include <boost/geometry/algorithms/validity_failure_type.hpp>
 #include <boost/geometry/algorithms/dispatch/is_valid.hpp>
 
 
@@ -31,22 +30,15 @@ namespace detail { namespace is_valid
 template <typename Box, std::size_t I>
 struct has_valid_corners
 {
-    template <typename VisitPolicy>
-    static inline bool apply(Box const& box, VisitPolicy& visitor)
+    static inline bool apply(Box const& box)
     {
-        if (math::equals(geometry::get<geometry::min_corner, I-1>(box),
-                         geometry::get<geometry::max_corner, I-1>(box)))
+        if ( geometry::get<geometry::max_corner, I-1>(box)
+             <=
+             geometry::get<geometry::min_corner, I-1>(box) )
         {
-            return
-                visitor.template apply<failure_wrong_topological_dimension>();
+            return false;
         }
-        else if (geometry::get<geometry::min_corner, I-1>(box)
-                 >
-                 geometry::get<geometry::max_corner, I-1>(box))
-        {
-            return visitor.template apply<failure_wrong_corner_order>();
-        }
-        return has_valid_corners<Box, I-1>::apply(box, visitor);
+        return has_valid_corners<Box, I-1>::apply(box);
     }
 };
 
@@ -54,10 +46,9 @@ struct has_valid_corners
 template <typename Box>
 struct has_valid_corners<Box, 0>
 {
-    template <typename VisitPolicy>
-    static inline bool apply(Box const&, VisitPolicy& visitor)
+    static inline bool apply(Box const&)
     {
-        return visitor.template apply<no_failure>();
+        return true;
     }
 };
 

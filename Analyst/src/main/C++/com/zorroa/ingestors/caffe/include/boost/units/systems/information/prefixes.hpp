@@ -7,8 +7,8 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_UNITS_SYSTEMS_INFORMATION_PREFIXES_HPP_INCLUDED
-#define BOOST_UNITS_SYSTEMS_INFORMATION_PREFIXES_HPP_INCLUDED
+#ifndef BOOST_UNITS_INFORMATION_PREFIXES_HPP
+#define BOOST_UNITS_INFORMATION_PREFIXES_HPP
 
 #include <boost/units/make_scaled_unit.hpp>
 #include <boost/units/static_rational.hpp>
@@ -36,10 +36,8 @@ BOOST_UNITS_INFOSYS_PREFIX(60, exbi);
 BOOST_UNITS_INFOSYS_PREFIX(70, zebi);
 BOOST_UNITS_INFOSYS_PREFIX(80, yobi);
 
-} // namespace information
-} // namespace units
-} // namespace boost
+}}}
 
 #undef BOOST_UNITS_INFOSYS_PREFIX
 
-#endif // BOOST_UNITS_SYSTEMS_INFORMATION_PREFIXES_HPP_INCLUDED
+#endif

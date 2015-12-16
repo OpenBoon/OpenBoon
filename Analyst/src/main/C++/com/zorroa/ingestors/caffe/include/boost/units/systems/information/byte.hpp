@@ -7,8 +7,8 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_UNITS_SYSTEMS_INFORMATION_BYTE_HPP_INCLUDED
-#define BOOST_UNITS_SYSTEMS_INFORMATION_BYTE_HPP_INCLUDED
+#ifndef BOOST_UNITS_INFORMATION_BYTE_HPP
+#define BOOST_UNITS_INFORMATION_BYTE_HPP
 
 #include <boost/units/make_system.hpp>
 #include <boost/units/unit.hpp>
@@ -27,8 +27,7 @@ typedef unit<dimensionless_type, system> dimensionless;
 namespace hu {
 namespace byte {
 typedef unit<information_dimension, system> info;
-} // namespace bit
-} // namespace hu
+}}
 
 BOOST_UNITS_STATIC_CONSTANT(byte, hu::byte::info);
 BOOST_UNITS_STATIC_CONSTANT(bytes, hu::byte::info);
@@ -38,8 +37,6 @@ BOOST_UNITS_STATIC_CONSTANT(bytes, hu::byte::info);
 // must be explicitly referred to
 typedef hu::byte::info info;
 
-} // namespace information
-} // namespace units
-} // namespace boost
+}}}
 
-#endif // BOOST_UNITS_SYSTEMS_INFORMATION_BYTE_HPP_INCLUDED
+#endif

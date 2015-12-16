@@ -23,8 +23,7 @@ namespace boost { namespace fusion
             typedef map<> type;
         };
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
-    inline map<>
+    BOOST_FUSION_GPU_ENABLED inline map<>
     map_tie()
     {
         return map<>();
@@ -44,12 +43,12 @@ namespace boost { namespace fusion
         typename K0
       , typename D0
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> >
-    map_tie(D0 & arg0)
+    map_tie(D0 & _0)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> >(
-            fusion::pair_tie<K0>(arg0));
+            fusion::pair_tie<K0>(_0));
     }
     namespace result_of
     {
@@ -66,12 +65,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1
       , typename D0 , typename D1
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> >
-    map_tie(D0 & arg0 , D1 & arg1)
+    map_tie(D0 & _0 , D1 & _1)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1));
     }
     namespace result_of
     {
@@ -88,12 +87,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2
       , typename D0 , typename D1 , typename D2
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2));
     }
     namespace result_of
     {
@@ -110,12 +109,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3
       , typename D0 , typename D1 , typename D2 , typename D3
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3));
     }
     namespace result_of
     {
@@ -132,12 +131,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4));
     }
     namespace result_of
     {
@@ -154,12 +153,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5));
     }
     namespace result_of
     {
@@ -176,12 +175,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6));
     }
     namespace result_of
     {
@@ -198,12 +197,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7));
     }
     namespace result_of
     {
@@ -220,12 +219,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8));
     }
     namespace result_of
     {
@@ -242,12 +241,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9));
     }
     namespace result_of
     {
@@ -264,12 +263,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10));
     }
     namespace result_of
     {
@@ -286,12 +285,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11));
     }
     namespace result_of
     {
@@ -308,12 +307,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12));
     }
     namespace result_of
     {
@@ -330,12 +329,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12 , typename K13
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12 , typename D13
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12 , D13 & arg13)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12 , D13 & _13)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12) , fusion::pair_tie<K13>(arg13));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12) , fusion::pair_tie<K13>(_13));
     }
     namespace result_of
     {
@@ -352,12 +351,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12 , typename K13 , typename K14
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12 , typename D13 , typename D14
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12 , D13 & arg13 , D14 & arg14)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12 , D13 & _13 , D14 & _14)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12) , fusion::pair_tie<K13>(arg13) , fusion::pair_tie<K14>(arg14));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12) , fusion::pair_tie<K13>(_13) , fusion::pair_tie<K14>(_14));
     }
     namespace result_of
     {
@@ -374,12 +373,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12 , typename K13 , typename K14 , typename K15
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12 , typename D13 , typename D14 , typename D15
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12 , D13 & arg13 , D14 & arg14 , D15 & arg15)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12 , D13 & _13 , D14 & _14 , D15 & _15)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12) , fusion::pair_tie<K13>(arg13) , fusion::pair_tie<K14>(arg14) , fusion::pair_tie<K15>(arg15));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12) , fusion::pair_tie<K13>(_13) , fusion::pair_tie<K14>(_14) , fusion::pair_tie<K15>(_15));
     }
     namespace result_of
     {
@@ -396,12 +395,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12 , typename K13 , typename K14 , typename K15 , typename K16
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12 , typename D13 , typename D14 , typename D15 , typename D16
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12 , D13 & arg13 , D14 & arg14 , D15 & arg15 , D16 & arg16)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12 , D13 & _13 , D14 & _14 , D15 & _15 , D16 & _16)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12) , fusion::pair_tie<K13>(arg13) , fusion::pair_tie<K14>(arg14) , fusion::pair_tie<K15>(arg15) , fusion::pair_tie<K16>(arg16));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12) , fusion::pair_tie<K13>(_13) , fusion::pair_tie<K14>(_14) , fusion::pair_tie<K15>(_15) , fusion::pair_tie<K16>(_16));
     }
     namespace result_of
     {
@@ -418,12 +417,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12 , typename K13 , typename K14 , typename K15 , typename K16 , typename K17
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12 , typename D13 , typename D14 , typename D15 , typename D16 , typename D17
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> , fusion::pair< K17 , typename add_reference<D17>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12 , D13 & arg13 , D14 & arg14 , D15 & arg15 , D16 & arg16 , D17 & arg17)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12 , D13 & _13 , D14 & _14 , D15 & _15 , D16 & _16 , D17 & _17)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> , fusion::pair< K17 , typename add_reference<D17>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12) , fusion::pair_tie<K13>(arg13) , fusion::pair_tie<K14>(arg14) , fusion::pair_tie<K15>(arg15) , fusion::pair_tie<K16>(arg16) , fusion::pair_tie<K17>(arg17));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12) , fusion::pair_tie<K13>(_13) , fusion::pair_tie<K14>(_14) , fusion::pair_tie<K15>(_15) , fusion::pair_tie<K16>(_16) , fusion::pair_tie<K17>(_17));
     }
     namespace result_of
     {
@@ -440,12 +439,12 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12 , typename K13 , typename K14 , typename K15 , typename K16 , typename K17 , typename K18
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12 , typename D13 , typename D14 , typename D15 , typename D16 , typename D17 , typename D18
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> , fusion::pair< K17 , typename add_reference<D17>::type> , fusion::pair< K18 , typename add_reference<D18>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12 , D13 & arg13 , D14 & arg14 , D15 & arg15 , D16 & arg16 , D17 & arg17 , D18 & arg18)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12 , D13 & _13 , D14 & _14 , D15 & _15 , D16 & _16 , D17 & _17 , D18 & _18)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> , fusion::pair< K17 , typename add_reference<D17>::type> , fusion::pair< K18 , typename add_reference<D18>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12) , fusion::pair_tie<K13>(arg13) , fusion::pair_tie<K14>(arg14) , fusion::pair_tie<K15>(arg15) , fusion::pair_tie<K16>(arg16) , fusion::pair_tie<K17>(arg17) , fusion::pair_tie<K18>(arg18));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12) , fusion::pair_tie<K13>(_13) , fusion::pair_tie<K14>(_14) , fusion::pair_tie<K15>(_15) , fusion::pair_tie<K16>(_16) , fusion::pair_tie<K17>(_17) , fusion::pair_tie<K18>(_18));
     }
     namespace result_of
     {
@@ -462,11 +461,11 @@ namespace boost { namespace fusion
         typename K0 , typename K1 , typename K2 , typename K3 , typename K4 , typename K5 , typename K6 , typename K7 , typename K8 , typename K9 , typename K10 , typename K11 , typename K12 , typename K13 , typename K14 , typename K15 , typename K16 , typename K17 , typename K18 , typename K19
       , typename D0 , typename D1 , typename D2 , typename D3 , typename D4 , typename D5 , typename D6 , typename D7 , typename D8 , typename D9 , typename D10 , typename D11 , typename D12 , typename D13 , typename D14 , typename D15 , typename D16 , typename D17 , typename D18 , typename D19
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> , fusion::pair< K17 , typename add_reference<D17>::type> , fusion::pair< K18 , typename add_reference<D18>::type> , fusion::pair< K19 , typename add_reference<D19>::type> >
-    map_tie(D0 & arg0 , D1 & arg1 , D2 & arg2 , D3 & arg3 , D4 & arg4 , D5 & arg5 , D6 & arg6 , D7 & arg7 , D8 & arg8 , D9 & arg9 , D10 & arg10 , D11 & arg11 , D12 & arg12 , D13 & arg13 , D14 & arg14 , D15 & arg15 , D16 & arg16 , D17 & arg17 , D18 & arg18 , D19 & arg19)
+    map_tie(D0 & _0 , D1 & _1 , D2 & _2 , D3 & _3 , D4 & _4 , D5 & _5 , D6 & _6 , D7 & _7 , D8 & _8 , D9 & _9 , D10 & _10 , D11 & _11 , D12 & _12 , D13 & _13 , D14 & _14 , D15 & _15 , D16 & _16 , D17 & _17 , D18 & _18 , D19 & _19)
     {
         return map<fusion::pair< K0 , typename add_reference<D0>::type> , fusion::pair< K1 , typename add_reference<D1>::type> , fusion::pair< K2 , typename add_reference<D2>::type> , fusion::pair< K3 , typename add_reference<D3>::type> , fusion::pair< K4 , typename add_reference<D4>::type> , fusion::pair< K5 , typename add_reference<D5>::type> , fusion::pair< K6 , typename add_reference<D6>::type> , fusion::pair< K7 , typename add_reference<D7>::type> , fusion::pair< K8 , typename add_reference<D8>::type> , fusion::pair< K9 , typename add_reference<D9>::type> , fusion::pair< K10 , typename add_reference<D10>::type> , fusion::pair< K11 , typename add_reference<D11>::type> , fusion::pair< K12 , typename add_reference<D12>::type> , fusion::pair< K13 , typename add_reference<D13>::type> , fusion::pair< K14 , typename add_reference<D14>::type> , fusion::pair< K15 , typename add_reference<D15>::type> , fusion::pair< K16 , typename add_reference<D16>::type> , fusion::pair< K17 , typename add_reference<D17>::type> , fusion::pair< K18 , typename add_reference<D18>::type> , fusion::pair< K19 , typename add_reference<D19>::type> >(
-            fusion::pair_tie<K0>(arg0) , fusion::pair_tie<K1>(arg1) , fusion::pair_tie<K2>(arg2) , fusion::pair_tie<K3>(arg3) , fusion::pair_tie<K4>(arg4) , fusion::pair_tie<K5>(arg5) , fusion::pair_tie<K6>(arg6) , fusion::pair_tie<K7>(arg7) , fusion::pair_tie<K8>(arg8) , fusion::pair_tie<K9>(arg9) , fusion::pair_tie<K10>(arg10) , fusion::pair_tie<K11>(arg11) , fusion::pair_tie<K12>(arg12) , fusion::pair_tie<K13>(arg13) , fusion::pair_tie<K14>(arg14) , fusion::pair_tie<K15>(arg15) , fusion::pair_tie<K16>(arg16) , fusion::pair_tie<K17>(arg17) , fusion::pair_tie<K18>(arg18) , fusion::pair_tie<K19>(arg19));
+            fusion::pair_tie<K0>(_0) , fusion::pair_tie<K1>(_1) , fusion::pair_tie<K2>(_2) , fusion::pair_tie<K3>(_3) , fusion::pair_tie<K4>(_4) , fusion::pair_tie<K5>(_5) , fusion::pair_tie<K6>(_6) , fusion::pair_tie<K7>(_7) , fusion::pair_tie<K8>(_8) , fusion::pair_tie<K9>(_9) , fusion::pair_tie<K10>(_10) , fusion::pair_tie<K11>(_11) , fusion::pair_tie<K12>(_12) , fusion::pair_tie<K13>(_13) , fusion::pair_tie<K14>(_14) , fusion::pair_tie<K15>(_15) , fusion::pair_tie<K16>(_16) , fusion::pair_tie<K17>(_17) , fusion::pair_tie<K18>(_18) , fusion::pair_tie<K19>(_19));
     }
 }}

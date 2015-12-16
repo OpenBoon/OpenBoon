@@ -12,6 +12,10 @@
 #ifndef BOOST_INTRUSIVE_BSTREE_HPP
 #define BOOST_INTRUSIVE_BSTREE_HPP
 
+#if defined(_MSC_VER)
+#  pragma once
+#endif
+
 #include <boost/intrusive/detail/config_begin.hpp>
 #include <boost/intrusive/intrusive_fwd.hpp>
 
@@ -34,22 +38,18 @@
 #include <boost/intrusive/detail/simple_disposers.hpp>
 #include <boost/intrusive/detail/size_holder.hpp>
 #include <boost/intrusive/detail/algo_type.hpp>
-#include <boost/intrusive/detail/algorithm.hpp>
 
 #include <boost/intrusive/detail/get_value_traits.hpp>
 #include <boost/intrusive/bstree_algorithms.hpp>
 #include <boost/intrusive/link_mode.hpp>
 #include <boost/intrusive/parent_from_member.hpp>
 #include <boost/move/utility_core.hpp>
-#include <boost/move/adl_move_swap.hpp>
 
-#include <boost/intrusive/detail/minimal_pair_header.hpp>
+#include <utility>   //pair,lexicographical_compare
+#include <algorithm> //swap
 #include <cstddef>   //size_t...
-#include <boost/intrusive/detail/minimal_less_equal_header.hpp>//less, equal_to
+#include <functional>//less, equal_to
 
-#if defined(BOOST_HAS_PRAGMA_ONCE)
-#  pragma once
-#endif
 
 namespace boost {
 namespace intrusive {
@@ -85,8 +85,8 @@ struct bstbase3
    typedef typename node_traits::const_node_ptr                      const_node_ptr;
    typedef tree_iterator<value_traits, false>                                                   iterator;
    typedef tree_iterator<value_traits, true>                                                    const_iterator;
-   typedef boost::intrusive::reverse_iterator<iterator>                                         reverse_iterator;
-   typedef boost::intrusive::reverse_iterator<const_iterator>                                   const_reverse_iterator;
+   typedef boost::intrusive::detail::reverse_iterator<iterator>                                 reverse_iterator;
+   typedef boost::intrusive::detail::reverse_iterator<const_iterator>                           const_reverse_iterator;
    typedef BOOST_INTRUSIVE_IMPDEF(typename value_traits::pointer)                               pointer;
    typedef BOOST_INTRUSIVE_IMPDEF(typename value_traits::const_pointer)                         const_pointer;
    typedef BOOST_INTRUSIVE_IMPDEF(typename pointer_traits<pointer>::element_type)               value_type;
@@ -94,8 +94,7 @@ struct bstbase3
    typedef BOOST_INTRUSIVE_IMPDEF(typename pointer_traits<pointer>::reference)                  reference;
    typedef BOOST_INTRUSIVE_IMPDEF(typename pointer_traits<const_pointer>::reference)            const_reference;
    typedef BOOST_INTRUSIVE_IMPDEF(typename pointer_traits<const_pointer>::difference_type)      difference_type;
-   typedef typename detail::get_header_holder_type
-      < value_traits,HeaderHolder >::type                                                       header_holder_type;
+   typedef HeaderHolder                                                                        header_holder_type;
 
    static const bool safemode_or_autounlink = is_safe_autounlink<value_traits::link_mode>::value;
    static const bool stateful_value_traits = detail::is_stateful_value_traits<value_traits>::value;
@@ -228,13 +227,13 @@ struct bstbase3
 };
 
 template<class Less, class T>
-struct get_compare
+struct get_less
 {
    typedef Less type;
 };
 
 template<class T>
-struct get_compare<void, T>
+struct get_less<void, T>
 {
    typedef ::std::less<T> type;
 };
@@ -242,16 +241,15 @@ struct get_compare<void, T>
 template<class ValueTraits, class VoidOrKeyComp, algo_types AlgoType, typename HeaderHolder>
 struct bstbase2
    //Put the (possibly empty) functor in the first position to get EBO in MSVC
-   //Use public inheritance to avoid MSVC bugs with closures
-   : public detail::ebo_functor_holder<typename get_compare< VoidOrKeyComp
+   : public detail::ebo_functor_holder<typename get_less< VoidOrKeyComp
                             , typename ValueTraits::value_type
                             >::type>
    , public bstbase3<ValueTraits, AlgoType, HeaderHolder>
 {
-   typedef bstbase3<ValueTraits, AlgoType, HeaderHolder>             treeheader_t;
+   typedef bstbase3<ValueTraits, AlgoType, HeaderHolder>            treeheader_t;
    typedef typename treeheader_t::value_traits                       value_traits;
    typedef typename treeheader_t::node_algorithms                    node_algorithms;
-   typedef typename get_compare
+   typedef typename get_less
       < VoidOrKeyComp, typename value_traits::value_type>::type      value_compare;
    typedef BOOST_INTRUSIVE_IMPDEF(value_compare)                     key_compare;
    typedef typename treeheader_t::iterator                           iterator;
@@ -269,7 +267,7 @@ struct bstbase2
    value_compare &comp()
    {  return this->get();  }
 
-   typedef BOOST_INTRUSIVE_IMPDEF(typename value_traits::pointer)                               pointer;
+   typedef BOOST_INTRUSIVE_IMPDEF(typename value_traits::pointer)                          pointer;
    typedef BOOST_INTRUSIVE_IMPDEF(typename value_traits::const_pointer)                         const_pointer;
    typedef BOOST_INTRUSIVE_IMPDEF(typename pointer_traits<pointer>::element_type)               value_type;
    typedef BOOST_INTRUSIVE_IMPDEF(value_type)                                                   key_type;
@@ -620,8 +618,8 @@ class bstree_impl
    typedef BOOST_INTRUSIVE_IMPDEF(value_compare)                                                key_compare;
    typedef BOOST_INTRUSIVE_IMPDEF(iterator_type)                                                iterator;
    typedef BOOST_INTRUSIVE_IMPDEF(const_iterator_type)                                          const_iterator;
-   typedef BOOST_INTRUSIVE_IMPDEF(boost::intrusive::reverse_iterator<iterator>)                 reverse_iterator;
-   typedef BOOST_INTRUSIVE_IMPDEF(boost::intrusive::reverse_iterator<const_iterator>)           const_reverse_iterator;
+   typedef BOOST_INTRUSIVE_IMPDEF(boost::intrusive::detail::reverse_iterator<iterator>)         reverse_iterator;
+   typedef BOOST_INTRUSIVE_IMPDEF(boost::intrusive::detail::reverse_iterator<const_iterator>)   const_reverse_iterator;
    typedef BOOST_INTRUSIVE_IMPDEF(typename value_traits::node_traits)                           node_traits;
    typedef BOOST_INTRUSIVE_IMPDEF(typename node_traits::node)                                   node;
    typedef BOOST_INTRUSIVE_IMPDEF(typename node_traits::node_ptr)                               node_ptr;
@@ -913,7 +911,8 @@ class bstree_impl
    void swap(bstree_impl& other)
    {
       //This can throw
-      ::boost::adl_move_swap(this->comp(), this->comp());
+      using std::swap;
+      swap(this->comp(), this->comp());
       //These can't throw
       node_algorithms::swap_tree(this->header_ptr(), node_ptr(other.header_ptr()));
       if(constant_time_size){
@@ -945,44 +944,9 @@ class bstree_impl
          detail::exception_disposer<bstree_impl, Disposer>
             rollback(*this, disposer);
          node_algorithms::clone
-            (src.header_ptr()
-            ,this->header_ptr()
+            (const_node_ptr(src.header_ptr())
+            ,node_ptr(this->header_ptr())
             ,detail::node_cloner <Cloner,    value_traits, AlgoType>(cloner,   &this->get_value_traits())
-            ,detail::node_disposer<Disposer, value_traits, AlgoType>(disposer, &this->get_value_traits()));
-         this->sz_traits().set_size(src.sz_traits().get_size());
-         this->comp() = src.comp();
-         rollback.release();
-      }
-   }
-
-   //! <b>Requires</b>: Disposer::operator()(pointer) shouldn't throw.
-   //!   Cloner should yield to nodes equivalent to the original nodes.
-   //!
-   //! <b>Effects</b>: Erases all the elements from *this
-   //!   calling Disposer::operator()(pointer), clones all the
-   //!   elements from src calling Cloner::operator()(const_reference )
-   //!   and inserts them on *this. Copies the predicate from the source container.
-   //!
-   //!   If cloner throws, all cloned elements are unlinked and disposed
-   //!   calling Disposer::operator()(pointer).
-   //!
-   //! <b>Complexity</b>: Linear to erased plus inserted elements.
-   //!
-   //! <b>Throws</b>: If cloner throws or predicate copy assignment throws. Basic guarantee.
-   //!
-   //! <b>Note</b>: This version can modify the source container, useful to implement
-   //!    move semantics.
-   template <class Cloner, class Disposer>
-   void clone_from(bstree_impl &src, Cloner cloner, Disposer disposer)
-   {
-      this->clear_and_dispose(disposer);
-      if(!src.empty()){
-         detail::exception_disposer<bstree_impl, Disposer>
-            rollback(*this, disposer);
-         node_algorithms::clone
-            (src.header_ptr()
-            ,this->header_ptr()
-            ,detail::node_cloner <Cloner,    value_traits, AlgoType, false>(cloner,   &this->get_value_traits())
             ,detail::node_disposer<Disposer, value_traits, AlgoType>(disposer, &this->get_value_traits()));
          this->sz_traits().set_size(src.sz_traits().get_size());
          this->comp() = src.comp();
@@ -1307,7 +1271,7 @@ class bstree_impl
       node_algorithms::push_front(this->header_ptr(), to_insert);
    }
 
-   //! <b>Effects</b>: Erases the element pointed to by i.
+   //! <b>Effects</b>: Erases the element pointed to by pos.
    //!
    //! <b>Complexity</b>: Average complexity for erase element is constant time.
    //!
@@ -1380,7 +1344,7 @@ class bstree_impl
 
    //! <b>Requires</b>: Disposer::operator()(pointer) shouldn't throw.
    //!
-   //! <b>Effects</b>: Erases the element pointed to by i.
+   //! <b>Effects</b>: Erases the element pointed to by pos.
    //!   Disposer::operator()(pointer) is called for the removed element.
    //!
    //! <b>Complexity</b>: Average complexity for erase element is constant time.
@@ -1987,7 +1951,7 @@ inline bool operator<
 ( const bstree_impl<ValueTraits, VoidKeyComp, SizeType, ConstantTimeSize, AlgoType, HeaderHolder> &x
 , const bstree_impl<ValueTraits, VoidKeyComp, SizeType, ConstantTimeSize, AlgoType, HeaderHolder> &y)
 #endif
-{  return ::boost::intrusive::algo_lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());  }
+{  return std::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());  }
 
 #if defined(BOOST_INTRUSIVE_DOXYGEN_INVOKED)
 template<class T, class ...Options>
@@ -2003,11 +1967,29 @@ bool operator==
 #endif
 {
    typedef bstree_impl<ValueTraits, VoidKeyComp, SizeType, ConstantTimeSize, AlgoType, HeaderHolder> tree_type;
+   typedef typename tree_type::const_iterator const_iterator;
 
    if(tree_type::constant_time_size && x.size() != y.size()){
       return false;
    }
-   return boost::intrusive::algo_equal(x.cbegin(), x.cend(), y.cbegin(), y.cend());
+   const_iterator end1 = x.end();
+   const_iterator i1 = x.begin();
+   const_iterator i2 = y.begin();
+   if(tree_type::constant_time_size){
+      while (i1 != end1 && *i1 == *i2) {
+         ++i1;
+         ++i2;
+      }
+      return i1 == end1;
+   }
+   else{
+      const_iterator end2 = y.end();
+      while (i1 != end1 && i2 != end2 && *i1 == *i2) {
+         ++i1;
+         ++i2;
+      }
+      return i1 == end1 && i2 == end2;
+   }
 }
 
 #if defined(BOOST_INTRUSIVE_DOXYGEN_INVOKED)
@@ -2103,6 +2085,8 @@ struct make_bstree
 
    typedef typename detail::get_value_traits
       <T, typename packed_options::proto_value_traits>::type value_traits;
+   typedef typename detail::get_header_holder_type
+      < value_traits, typename packed_options::header_holder_type >::type header_holder_type;
 
    typedef bstree_impl
          < value_traits
@@ -2110,7 +2094,7 @@ struct make_bstree
          , typename packed_options::size_type
          , packed_options::constant_time_size
          , BsTreeAlgorithms
-         , typename packed_options::header_holder_type
+         , header_holder_type
          > implementation_defined;
    /// @endcond
    typedef implementation_defined type;
@@ -2165,11 +2149,11 @@ class bstree
    {}
 
    bstree(BOOST_RV_REF(bstree) x)
-      :  Base(BOOST_MOVE_BASE(Base, x))
+      :  Base(::boost::move(static_cast<Base&>(x)))
    {}
 
    bstree& operator=(BOOST_RV_REF(bstree) x)
-   {  return static_cast<bstree &>(this->Base::operator=(BOOST_MOVE_BASE(Base, x)));  }
+   {  return static_cast<bstree &>(this->Base::operator=(::boost::move(static_cast<Base&>(x))));  }
 
    static bstree &container_from_end_iterator(iterator end_iterator)
    {  return static_cast<bstree &>(Base::container_from_end_iterator(end_iterator));   }

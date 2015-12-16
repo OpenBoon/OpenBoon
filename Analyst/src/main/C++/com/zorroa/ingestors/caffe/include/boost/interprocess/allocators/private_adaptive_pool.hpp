@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_PRIVATE_ADAPTIVE_POOL_HPP
 #define BOOST_INTERPROCESS_PRIVATE_ADAPTIVE_POOL_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -28,12 +24,12 @@
 #include <boost/assert.hpp>
 #include <boost/utility/addressof.hpp>
 #include <boost/interprocess/allocators/detail/adaptive_node_pool.hpp>
-#include <boost/interprocess/containers/version_type.hpp>
 #include <boost/container/detail/multiallocation_chain.hpp>
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/detail/utilities.hpp>
 #include <boost/interprocess/detail/workaround.hpp>
-#include <boost/move/adl_move_swap.hpp>
+#include <memory>
+#include <algorithm>
 #include <cstddef>
 
 //!\file
@@ -172,7 +168,7 @@ class private_adaptive_pool_base
    //!Swaps allocators. Does not throw. If each allocator is placed in a
    //!different shared memory segments, the result is undefined.
    friend void swap(self_t &alloc1,self_t &alloc2)
-   {  boost::adl_move_swap(alloc1.m_node_pool, alloc2.m_node_pool);  }
+   {  alloc1.m_node_pool.swap(alloc2.m_node_pool);  }
 
    #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
    private:
@@ -392,8 +388,11 @@ class private_adaptive_pool
    //!allocate, allocation_command and allocate_many.
    size_type size(const pointer &p) const;
 
-   pointer allocation_command(boost::interprocess::allocation_type command,
-                         size_type limit_size, size_type &prefer_in_recvd_out_size, pointer &reuse);
+   std::pair<pointer, bool>
+      allocation_command(boost::interprocess::allocation_type command,
+                         size_type limit_size,
+                         size_type preferred_size,
+                         size_type &received_size, const pointer &reuse = 0);
 
    //!Allocates many elements of size elem_size in a contiguous block
    //!of memory. The minimum number to be allocated is min_elements,

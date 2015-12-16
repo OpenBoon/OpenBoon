@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_CONTAINERS_ALLOCATION_TYPE_HPP
 #define BOOST_INTERPROCESS_CONTAINERS_ALLOCATION_TYPE_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -41,4 +37,4 @@ static const allocation_type zero_memory        = boost::container::zero_memory;
 
 #include <boost/interprocess/detail/config_end.hpp>
 
-#endif //   #ifndef  BOOST_INTERPROCESS_CONTAINERS_ALLOCATION_TYPE_HPP
+#endif //   #ifndef  BOOST_INTERPROCESS_CONTAINERS_VERSION_TYPE_HPP

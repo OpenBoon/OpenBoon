@@ -20,9 +20,8 @@
 #define BOOST_GEOMETRY_ALGORITHMS_PERIMETER_HPP
 
 #include <boost/range/metafunctions.hpp>
-
-#include <boost/variant/apply_visitor.hpp>
 #include <boost/variant/static_visitor.hpp>
+#include <boost/variant/apply_visitor.hpp>
 #include <boost/variant/variant_fwd.hpp>
 
 #include <boost/geometry/algorithms/length.hpp>

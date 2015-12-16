@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_UNORDERED_MAP_INDEX_HPP
 #define BOOST_INTERPROCESS_UNORDERED_MAP_INDEX_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -23,13 +19,10 @@
 #include <boost/interprocess/detail/workaround.hpp>
 
 #include <functional>
-#include <boost/intrusive/detail/minimal_pair_header.hpp>
+#include <utility>
 #include <boost/unordered_map.hpp>
 #include <boost/interprocess/detail/utilities.hpp>
 #include <boost/interprocess/allocators/private_adaptive_pool.hpp>
-
-#include <boost/intrusive/detail/minimal_pair_header.hpp>         //std::pair
-#include <boost/intrusive/detail/minimal_less_equal_header.hpp>   //std::less
 
 //!\file
 //!Describes index adaptor of boost::unordered_map container, to use it

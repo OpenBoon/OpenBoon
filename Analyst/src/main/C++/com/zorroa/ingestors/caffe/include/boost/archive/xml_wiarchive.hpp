@@ -23,21 +23,12 @@
 
 #include <istream>
 
-#include <boost/smart_ptr/scoped_ptr.hpp>
+//#include <boost/scoped_ptr.hpp>
 #include <boost/archive/detail/auto_link_warchive.hpp>
 #include <boost/archive/basic_text_iprimitive.hpp>
 #include <boost/archive/basic_xml_iarchive.hpp>
 #include <boost/archive/detail/register_archive.hpp>
 #include <boost/serialization/item_version_type.hpp>
-
-#ifdef BOOST_NO_CXX11_HDR_CODECVT
-    #include <boost/archive/detail/utf8_codecvt_facet.hpp>
-#else
-    #include <codecvt>
-    namespace boost { namespace archive { namespace detail {
-        typedef std::codecvt_utf8<wchar_t> utf8_codecvt_facet;
-    } } }
-#endif
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
@@ -46,7 +37,7 @@
 #  pragma warning(disable : 4511 4512)
 #endif
 
-namespace boost {
+namespace boost { 
 namespace archive {
 
 namespace detail {
@@ -78,7 +69,10 @@ protected:
         friend class load_access;
     #endif
 #endif
-    boost::scoped_ptr<xml_wgrammar> gimpl;
+    // instances of micro xml parser to parse start preambles
+    // scoped_ptr doesn't play nice with borland - so use a naked pointer
+    // scoped_ptr<xml_wgrammar> gimpl;
+    xml_wgrammar *gimpl;
     std::wistream & get_is(){
         return is;
     }

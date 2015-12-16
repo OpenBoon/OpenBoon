@@ -7,8 +7,8 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_UNITS_SYSTEMS_INFORMATION_SHANNON_HPP_INCLUDED
-#define BOOST_UNITS_SYSTEMS_INFORMATION_SHANNON_HPP_INCLUDED
+#ifndef BOOST_UNITS_INFORMATION_SHANNON_HPP
+#define BOOST_UNITS_INFORMATION_SHANNON_HPP
 
 #include <boost/units/systems/information/byte.hpp>
 #include <boost/units/base_units/information/shannon.hpp>
@@ -20,14 +20,11 @@ namespace information {
 namespace hu {
 namespace shannon {
 typedef unit<information_dimension, make_system<shannon_base_unit>::type> info;
-} // namespace bit
-} // namespace hu
+}}
 
 BOOST_UNITS_STATIC_CONSTANT(shannon, hu::shannon::info);
 BOOST_UNITS_STATIC_CONSTANT(shannons, hu::shannon::info);
 
-} // namespace information
-} // namespace units
-} // namespace boost
+}}}
 
-#endif // BOOST_UNITS_SYSTEMS_INFORMATION_SHANNON_HPP_INCLUDED
+#endif

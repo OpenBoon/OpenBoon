@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_INTERMODULE_SINGLETON_COMMON_HPP
 #define BOOST_INTERPROCESS_INTERMODULE_SINGLETON_COMMON_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #pragma once
 #endif
 
@@ -25,7 +21,7 @@
 #include <boost/interprocess/detail/atomic.hpp>
 #include <boost/interprocess/detail/os_thread_functions.hpp>
 #include <boost/interprocess/exceptions.hpp>
-#include <boost/container/detail/type_traits.hpp>  //alignment_of, aligned_storage
+#include <boost/type_traits/type_with_alignment.hpp>
 #include <boost/interprocess/detail/mpl.hpp>
 #include <boost/interprocess/sync/spin/wait.hpp>
 #include <boost/assert.hpp>
@@ -290,7 +286,7 @@ class intermodule_singleton_common
    static union mem_holder_t
    {
       unsigned char map_mem [sizeof(ThreadSafeGlobalMap)];
-      ::boost::container::container_detail::max_align_t aligner;
+      ::boost::detail::max_align aligner;
    } mem_holder;
 };
 

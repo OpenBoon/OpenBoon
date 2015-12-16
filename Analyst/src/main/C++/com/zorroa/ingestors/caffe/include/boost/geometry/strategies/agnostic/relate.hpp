@@ -20,9 +20,10 @@ namespace boost { namespace geometry
 namespace strategy { namespace relate
 {
 
-template <typename Geometry1, typename Geometry2, typename StaticMask>
+template <typename StaticMask>
 struct relate
 {
+    template <typename Geometry1, typename Geometry2>
     static inline bool apply(Geometry1 const& geometry1, Geometry2 const& geometry2)
     {
         return detail::relate::relate<StaticMask>(geometry1, geometry2);
@@ -43,23 +44,13 @@ namespace services
 template <typename Geometry1, typename Geometry2, typename AnyTag1, typename AnyTag2, typename AnyCS>
 struct default_strategy<AnyTag1, AnyTag2, AnyTag1, AnyTag2, AnyCS, AnyCS, Geometry1, Geometry2>
 {
-    typedef strategy::relate::relate
-        <
-            Geometry1,
-            Geometry2,
-            detail::relate::static_mask_within
-        > type;
+    typedef strategy::relate::relate<detail::relate::static_mask_within> type;
 };
 
 template <typename Geometry1, typename Geometry2, typename AnyTag1, typename AnyTag2, typename AnyCS>
 struct default_strategy<AnyTag1, AnyTag2, AnyTag1, areal_tag, AnyCS, AnyCS, Geometry1, Geometry2>
 {
-    typedef strategy::relate::relate
-        <
-            Geometry1,
-            Geometry2,
-            detail::relate::static_mask_within
-        > type;
+    typedef strategy::relate::relate<detail::relate::static_mask_within> type;
 };
 
 
@@ -80,23 +71,13 @@ namespace strategy { namespace covered_by { namespace services
 template <typename Geometry1, typename Geometry2, typename AnyTag1, typename AnyTag2, typename AnyCS>
 struct default_strategy<AnyTag1, AnyTag2, AnyTag1, AnyTag2, AnyCS, AnyCS, Geometry1, Geometry2>
 {
-    typedef strategy::relate::relate
-        <
-            Geometry1,
-            Geometry2,
-            detail::relate::static_mask_covered_by
-        > type;
+    typedef strategy::relate::relate<detail::relate::static_mask_covered_by> type;
 };
 
 template <typename Geometry1, typename Geometry2, typename AnyTag1, typename AnyTag2, typename AnyCS>
 struct default_strategy<AnyTag1, AnyTag2, AnyTag1, areal_tag, AnyCS, AnyCS, Geometry1, Geometry2>
 {
-    typedef strategy::relate::relate
-        <
-            Geometry1,
-            Geometry2,
-            detail::relate::static_mask_covered_by
-        > type;
+    typedef strategy::relate::relate<detail::relate::static_mask_covered_by> type;
 };
 
 

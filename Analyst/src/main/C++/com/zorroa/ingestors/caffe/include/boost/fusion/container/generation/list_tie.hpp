@@ -89,12 +89,12 @@ namespace boost { namespace fusion
     }
 
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline list<BOOST_PP_ENUM(N, BOOST_FUSION_REF, _)>
-    list_tie(BOOST_PP_ENUM_BINARY_PARAMS(N, T, & arg))
+    list_tie(BOOST_PP_ENUM_BINARY_PARAMS(N, T, & _))
     {
         return list<BOOST_PP_ENUM(N, BOOST_FUSION_REF, _)>(
-            BOOST_PP_ENUM_PARAMS(N, arg));
+            BOOST_PP_ENUM_PARAMS(N, _));
     }
 
 #undef N

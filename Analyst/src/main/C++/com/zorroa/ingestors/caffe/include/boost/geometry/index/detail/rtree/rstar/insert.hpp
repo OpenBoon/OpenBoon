@@ -472,9 +472,8 @@ public:
         , m_relative_level(relative_level), m_allocators(allocators)
     {}
 
-    inline void operator()(internal_node & n)
+    inline void operator()(internal_node & BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(n))
     {
-        boost::ignore_unused(n);
         BOOST_GEOMETRY_INDEX_ASSERT(&n == &rtree::get<internal_node>(*m_root), "current node should be the root");
 
         // Distinguish between situation when reinserts are required and use adequate visitor, otherwise use default one
@@ -499,9 +498,8 @@ public:
         }
     }
 
-    inline void operator()(leaf & n)
+    inline void operator()(leaf & BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(n))
     {
-        boost::ignore_unused(n);
         BOOST_GEOMETRY_INDEX_ASSERT(&n == &rtree::get<leaf>(*m_root), "current node should be the root");
 
         // Distinguish between situation when reinserts are required and use adequate visitor, otherwise use default one

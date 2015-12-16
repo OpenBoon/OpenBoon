@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_XSI_SHARED_MEMORY_DEVICE_HPP
 #define BOOST_INTERPROCESS_XSI_SHARED_MEMORY_DEVICE_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -32,7 +28,6 @@
 #include <boost/interprocess/detail/utilities.hpp>
 #include <boost/interprocess/detail/os_file_functions.hpp>
 #include <boost/interprocess/detail/shared_dir_helpers.hpp>
-#include <boost/interprocess/detail/simple_swap.hpp>
 #include <boost/interprocess/interprocess_fwd.hpp>
 #include <boost/interprocess/exceptions.hpp>
 
@@ -186,7 +181,7 @@ inline const char *xsi_shared_memory_device::get_name() const
 inline void xsi_shared_memory_device::swap(xsi_shared_memory_device &other)
 {
    m_shm.swap(other.m_shm);
-   (simple_swap)(m_mode,  other.m_mode);
+   std::swap(m_mode,  other.m_mode);
    m_name.swap(other.m_name);
 }
 

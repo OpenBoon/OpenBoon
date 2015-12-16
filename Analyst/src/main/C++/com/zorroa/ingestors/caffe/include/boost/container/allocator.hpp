@@ -11,11 +11,7 @@
 #ifndef BOOST_CONTAINER_ALLOCATOR_HPP
 #define BOOST_CONTAINER_ALLOCATOR_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
 #  pragma once
 #endif
 
@@ -29,6 +25,7 @@
 #include <boost/static_assert.hpp>
 #include <cstddef>
 #include <cassert>
+#include <new>
 
 namespace boost {
 namespace container {
@@ -159,12 +156,12 @@ class allocator
 
    //!Default constructor
    //!Never throws
-   allocator() BOOST_NOEXCEPT_OR_NOTHROW
+   allocator() BOOST_CONTAINER_NOEXCEPT
    {}
 
    //!Constructor from other allocator.
    //!Never throws
-   allocator(const allocator &) BOOST_NOEXCEPT_OR_NOTHROW
+   allocator(const allocator &) BOOST_CONTAINER_NOEXCEPT
    {}
 
    //!Constructor from related allocator.
@@ -174,7 +171,7 @@ class allocator
             #ifndef BOOST_CONTAINER_DOXYGEN_INVOKED
             , Version, AllocationDisableMask
             #endif
-            > &) BOOST_NOEXCEPT_OR_NOTHROW
+            > &) BOOST_CONTAINER_NOEXCEPT
    {}
 
    //!Allocates memory for an array of count elements.
@@ -194,43 +191,45 @@ class allocator
 
    //!Deallocates previously allocated memory.
    //!Never throws
-   void deallocate(pointer ptr, size_type) BOOST_NOEXCEPT_OR_NOTHROW
+   void deallocate(pointer ptr, size_type) BOOST_CONTAINER_NOEXCEPT
    {  boost_cont_free(ptr);  }
 
    //!Returns the maximum number of elements that could be allocated.
    //!Never throws
-   size_type max_size() const BOOST_NOEXCEPT_OR_NOTHROW
+   size_type max_size() const BOOST_CONTAINER_NOEXCEPT
    {  return size_type(-1)/sizeof(T);   }
 
    //!Swaps two allocators, does nothing
    //!because this allocator is stateless
-   friend void swap(self_t &, self_t &) BOOST_NOEXCEPT_OR_NOTHROW
+   friend void swap(self_t &, self_t &) BOOST_CONTAINER_NOEXCEPT
    {}
 
    //!An allocator always compares to true, as memory allocated with one
    //!instance can be deallocated by another instance
-   friend bool operator==(const allocator &, const allocator &) BOOST_NOEXCEPT_OR_NOTHROW
+   friend bool operator==(const allocator &, const allocator &) BOOST_CONTAINER_NOEXCEPT
    {  return true;   }
 
    //!An allocator always compares to false, as memory allocated with one
    //!instance can be deallocated by another instance
-   friend bool operator!=(const allocator &, const allocator &) BOOST_NOEXCEPT_OR_NOTHROW
+   friend bool operator!=(const allocator &, const allocator &) BOOST_CONTAINER_NOEXCEPT
    {  return false;   }
 
    //!An advanced function that offers in-place expansion shrink to fit and new allocation
    //!capabilities. Memory allocated with this function can only be deallocated with deallocate()
    //!or deallocate_many().
    //!This function is available only with Version == 2
-   pointer allocation_command(allocation_type command,
+   std::pair<pointer, bool>
+      allocation_command(allocation_type command,
                          size_type limit_size,
-                         size_type &prefer_in_recvd_out_size,
-                         pointer &reuse)
+                         size_type preferred_size,
+                         size_type &received_size, pointer reuse = pointer())
    {
       BOOST_STATIC_ASSERT(( Version > 1 ));
       const allocation_type mask(AllocationDisableMask);
       command &= ~mask;
-      pointer ret = this->priv_allocation_command(command, limit_size, prefer_in_recvd_out_size, reuse);
-      if(!ret && !(command & BOOST_CONTAINER_NOTHROW_ALLOCATION))
+      std::pair<pointer, bool> ret =
+         priv_allocation_command(command, limit_size, preferred_size, received_size, reuse);
+      if(!ret.first && !(command & BOOST_CONTAINER_NOTHROW_ALLOCATION))
          boost::container::throw_bad_alloc();
       return ret;
    }
@@ -240,7 +239,7 @@ class allocator
    //!Memory must not have been allocated with
    //!allocate_one or allocate_individual.
    //!This function is available only with Version == 2
-   size_type size(pointer p) const BOOST_NOEXCEPT_OR_NOTHROW
+   size_type size(pointer p) const BOOST_CONTAINER_NOEXCEPT
    {
       BOOST_STATIC_ASSERT(( Version > 1 ));
       return boost_cont_size(p);
@@ -269,7 +268,7 @@ class allocator
    //!You should never use deallocate_one to deallocate memory allocated
    //!with other functions different from allocate_one() or allocate_individual.
    //Never throws
-   void deallocate_one(pointer p) BOOST_NOEXCEPT_OR_NOTHROW
+   void deallocate_one(pointer p) BOOST_CONTAINER_NOEXCEPT
    {
       BOOST_STATIC_ASSERT(( Version > 1 ));
       return this->deallocate(p, 1);
@@ -277,7 +276,7 @@ class allocator
 
    //!Deallocates memory allocated with allocate_one() or allocate_individual().
    //!This function is available only with Version == 2
-   void deallocate_individual(multiallocation_chain &chain) BOOST_NOEXCEPT_OR_NOTHROW
+   void deallocate_individual(multiallocation_chain &chain) BOOST_CONTAINER_NOEXCEPT
    {
       BOOST_STATIC_ASSERT(( Version > 1 ));
       return this->deallocate_many(chain);
@@ -327,7 +326,7 @@ class allocator
    //!Deallocates several elements allocated by
    //!allocate_many(), allocate(), or allocation_command().
    //!This function is available only with Version == 2
-   void deallocate_many(multiallocation_chain &chain) BOOST_NOEXCEPT_OR_NOTHROW
+   void deallocate_many(multiallocation_chain &chain) BOOST_CONTAINER_NOEXCEPT
    {
       BOOST_STATIC_ASSERT(( Version > 1 ));
       boost_cont_memchain ch;
@@ -340,26 +339,22 @@ class allocator
 
    private:
 
-   pointer priv_allocation_command
-      (allocation_type command,    std::size_t limit_size
-      ,size_type &prefer_in_recvd_out_size
-      ,pointer &reuse_ptr)
+   std::pair<pointer, bool> priv_allocation_command
+      (allocation_type command,   std::size_t limit_size
+      ,std::size_t preferred_size,std::size_t &received_size, void *reuse_ptr)
    {
-      std::size_t const preferred_size = prefer_in_recvd_out_size;
       boost_cont_command_ret_t ret = {0 , 0};
       if((limit_size > this->max_size()) | (preferred_size > this->max_size())){
-         return pointer();
+         return std::pair<pointer, bool>(pointer(), false);
       }
       std::size_t l_size = limit_size*sizeof(T);
       std::size_t p_size = preferred_size*sizeof(T);
       std::size_t r_size;
       {
-         void* reuse_ptr_void = reuse_ptr;
-         ret = boost_cont_allocation_command(command, sizeof(T), l_size, p_size, &r_size, reuse_ptr_void);
-         reuse_ptr = ret.second ? static_cast<T*>(reuse_ptr_void) : 0;
+         ret = boost_cont_allocation_command(command, sizeof(T), l_size, p_size, &r_size, reuse_ptr);
       }
-      prefer_in_recvd_out_size = r_size/sizeof(T);
-      return (pointer)ret.first;
+      received_size = r_size/sizeof(T);
+      return std::pair<pointer, bool>(static_cast<pointer>(ret.first), !!ret.second);
    }
 };
 

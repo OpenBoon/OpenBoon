@@ -13,7 +13,6 @@ http://www.boost.org/LICENSE_1_0.txt)
 #include <boost/predef/library/c/gnu.h>
 #include <boost/predef/os/macos.h>
 #include <boost/predef/os/bsd.h>
-#include <boost/predef/os/android.h>
 
 /*`
 [heading `BOOST_ENDIAN_*`]
@@ -54,7 +53,7 @@ information and acquired knowledge:
  */
 #if !BOOST_ENDIAN_BIG_BYTE && !BOOST_ENDIAN_BIG_WORD && \
     !BOOST_ENDIAN_LITTLE_BYTE && !BOOST_ENDIAN_LITTLE_WORD
-#   if BOOST_LIB_C_GNU || BOOST_OS_ANDROID
+#   if BOOST_LIB_C_GNU
 #       include <endian.h>
 #   else
 #       if BOOST_OS_MACOS
@@ -70,29 +69,29 @@ information and acquired knowledge:
 #       endif
 #   endif
 #   if defined(__BYTE_ORDER)
-#       if defined(__BIG_ENDIAN) && (__BYTE_ORDER == __BIG_ENDIAN)
+#       if (__BYTE_ORDER == __BIG_ENDIAN)
 #           undef BOOST_ENDIAN_BIG_BYTE
 #           define BOOST_ENDIAN_BIG_BYTE BOOST_VERSION_NUMBER_AVAILABLE
 #       endif
-#       if defined(__LITTLE_ENDIAN) && (__BYTE_ORDER == __LITTLE_ENDIAN)
+#       if (__BYTE_ORDER == __LITTLE_ENDIAN)
 #           undef BOOST_ENDIAN_LITTLE_BYTE
 #           define BOOST_ENDIAN_LITTLE_BYTE BOOST_VERSION_NUMBER_AVAILABLE
 #       endif
-#       if defined(__PDP_ENDIAN) && (__BYTE_ORDER == __PDP_ENDIAN)
+#       if (__BYTE_ORDER == __PDP_ENDIAN)
 #           undef BOOST_ENDIAN_LITTLE_WORD
 #           define BOOST_ENDIAN_LITTLE_WORD BOOST_VERSION_NUMBER_AVAILABLE
 #       endif
 #   endif
 #   if !defined(__BYTE_ORDER) && defined(_BYTE_ORDER)
-#       if defined(_BIG_ENDIAN) && (_BYTE_ORDER == _BIG_ENDIAN)
+#       if (_BYTE_ORDER == _BIG_ENDIAN)
 #           undef BOOST_ENDIAN_BIG_BYTE
 #           define BOOST_ENDIAN_BIG_BYTE BOOST_VERSION_NUMBER_AVAILABLE
 #       endif
-#       if defined(_LITTLE_ENDIAN) && (_BYTE_ORDER == _LITTLE_ENDIAN)
+#       if (_BYTE_ORDER == _LITTLE_ENDIAN)
 #           undef BOOST_ENDIAN_LITTLE_BYTE
 #           define BOOST_ENDIAN_LITTLE_BYTE BOOST_VERSION_NUMBER_AVAILABLE
 #       endif
-#       if defined(_PDP_ENDIAN) && (_BYTE_ORDER == _PDP_ENDIAN)
+#       if (_BYTE_ORDER == _PDP_ENDIAN)
 #           undef BOOST_ENDIAN_LITTLE_WORD
 #           define BOOST_ENDIAN_LITTLE_WORD BOOST_VERSION_NUMBER_AVAILABLE
 #       endif

@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_ALLOCATOR_HPP
 #define BOOST_INTERPROCESS_ALLOCATOR_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -34,8 +30,10 @@
 #include <boost/assert.hpp>
 #include <boost/utility/addressof.hpp>
 #include <boost/interprocess/detail/type_traits.hpp>
-#include <boost/container/detail/placement_new.hpp>
 
+#include <memory>
+#include <new>
+#include <algorithm>
 #include <cstddef>
 #include <stdexcept>
 
@@ -166,7 +164,7 @@ class allocator
    //!Swap segment manager. Does not throw. If each allocator is placed in
    //!different memory segments, the result is undefined.
    friend void swap(self_t &alloc1, self_t &alloc2)
-   {  boost::adl_move_swap(alloc1.mp_mngr, alloc2.mp_mngr);   }
+   {  ipcdetail::do_swap(alloc1.mp_mngr, alloc2.mp_mngr);   }
 
    //!Returns maximum the number of objects the previously allocated memory
    //!pointed by p can hold. This size only works for memory allocated with
@@ -176,13 +174,14 @@ class allocator
       return (size_type)mp_mngr->size(ipcdetail::to_raw_pointer(p))/sizeof(T);
    }
 
-   pointer allocation_command(boost::interprocess::allocation_type command,
-                           size_type limit_size, size_type &prefer_in_recvd_out_size, pointer &reuse)
+   std::pair<pointer, bool>
+      allocation_command(boost::interprocess::allocation_type command,
+                         size_type limit_size,
+                         size_type preferred_size,
+                         size_type &received_size, const pointer &reuse = 0)
    {
-      value_type *reuse_raw = ipcdetail::to_raw_pointer(reuse);
-      pointer const p = mp_mngr->allocation_command(command, limit_size, prefer_in_recvd_out_size, reuse_raw);
-      reuse = reuse_raw;
-      return p;
+      return mp_mngr->allocation_command
+         (command, limit_size, preferred_size, received_size, ipcdetail::to_raw_pointer(reuse));
    }
 
    //!Allocates many elements of size elem_size in a contiguous block
@@ -261,7 +260,7 @@ class allocator
    //!For backwards compatibility with libraries using C++03 allocators
    template<class P>
    void construct(const pointer &ptr, BOOST_FWD_REF(P) p)
-   {  ::new((void*)ipcdetail::to_raw_pointer(ptr), boost_container_new_t()) value_type(::boost::forward<P>(p));  }
+   {  ::new((void*)ipcdetail::to_raw_pointer(ptr)) value_type(::boost::forward<P>(p));  }
 
    //!Destroys object. Throws if object's
    //!destructor throws

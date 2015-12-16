@@ -194,7 +194,7 @@ public:
             {
                 uniform_01<RealType> uniform;
                 RealType sqsum;
-                RealType x, y;
+                RealType x, y, z;
                 do {
                     x = uniform(eng) * 2 - 1;
                     y = uniform(eng) * 2 - 1;

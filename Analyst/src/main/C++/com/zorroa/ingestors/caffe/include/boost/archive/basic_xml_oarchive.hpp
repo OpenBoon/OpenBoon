@@ -17,9 +17,6 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <boost/config.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/serialization/pfto.hpp>
-#include <boost/detail/workaround.hpp>
 
 #include <boost/archive/detail/common_oarchive.hpp>
 
@@ -27,6 +24,7 @@
 #include <boost/serialization/tracking.hpp>
 #include <boost/serialization/string.hpp>
 
+#include <boost/mpl/assert.hpp>
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 

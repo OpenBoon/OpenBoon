@@ -96,8 +96,7 @@ class allocators<Allocator, Value, Parameters, Box, node_variant_dynamic_tag>
         typename node<
             Value, Parameters, Box,
             allocators<Allocator, Value, Parameters, Box, node_variant_dynamic_tag>,
-            node_variant_dynamic_tag
-        >::type
+            node_variant_dynamic_tag>::type
     >::other
 {
     typedef typename Allocator::template rebind<
@@ -181,7 +180,7 @@ struct create_variant_node
         if ( 0 == p )
             throw_runtime_error("boost::geometry::index::rtree node creation failed");
 
-        scoped_deallocator<AllocNode> deallocator(p, alloc_node);
+        auto_deallocator<AllocNode> deallocator(alloc_node, p);
 
         Al::construct(alloc_node, boost::addressof(*p), Node(alloc_node)); // implicit cast to Variant
 

@@ -11,7 +11,6 @@
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/fusion/support/config.hpp>
-#include <boost/fusion/support/is_sequence.hpp>
 #include <boost/fusion/container/vector/vector_fwd.hpp>
 #include <boost/fusion/container/vector/detail/vector_n_chooser.hpp>
 #include <boost/fusion/sequence/intrinsic/begin.hpp>
@@ -21,7 +20,6 @@
 #include <boost/type_traits/add_const.hpp>
 #include <boost/type_traits/is_base_of.hpp>
 #include <boost/detail/workaround.hpp>
-#include <boost/core/enable_if.hpp>
 
 #define FUSION_HASH #
 
@@ -31,7 +29,7 @@
     ctor_helper(rhs, is_base_of<vector, Sequence>())                          \
 
 #define BOOST_FUSION_VECTOR_CTOR_HELPER()                                     \
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED                                  \
+    BOOST_FUSION_GPU_ENABLED                                                  \
     static vector_n const&                                                    \
     ctor_helper(vector const& rhs, mpl::true_)                                \
     {                                                                         \
@@ -39,7 +37,7 @@
     }                                                                         \
                                                                               \
     template <typename T>                                                     \
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED                                  \
+    BOOST_FUSION_GPU_ENABLED                                                  \
     static T const&                                                           \
     ctor_helper(T const& rhs, mpl::false_)                                    \
     {                                                                         \
@@ -102,46 +100,35 @@ namespace boost { namespace fusion
         typedef typename vector_n::category category;
         typedef typename vector_n::is_view is_view;
 
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector()
             : vec() {}
 
         template <BOOST_PP_ENUM_PARAMS(FUSION_MAX_VECTOR_SIZE, typename U)>
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector(vector<BOOST_PP_ENUM_PARAMS(FUSION_MAX_VECTOR_SIZE, U)> const& rhs)
             : vec(rhs.vec) {}
 
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector(vector const& rhs)
             : vec(rhs.vec) {}
 
         template <typename Sequence>
-        // XXX:
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-        BOOST_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-        BOOST_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
-        vector(Sequence const& rhs,
-            typename boost::enable_if<traits::is_sequence<Sequence> >::type* = 0)
+        vector(Sequence const& rhs)
             : vec(BOOST_FUSION_VECTOR_COPY_INIT()) {}
 
         //  Expand a couple of forwarding constructors for arguments
         //  of type (T0), (T0, T1), (T0, T1, T2) etc. Example:
         //
         //  vector(
-        //      typename detail::call_param<T0>::type arg0
-        //    , typename detail::call_param<T1>::type arg1)
-        //    : vec(arg0, arg1) {}
+        //      typename detail::call_param<T0>::type _0
+        //    , typename detail::call_param<T1>::type _1)
+        //    : vec(_0, _1) {}
         #include <boost/fusion/container/vector/detail/vector_forward_ctor.hpp>
 
         template <BOOST_PP_ENUM_PARAMS(FUSION_MAX_VECTOR_SIZE, typename U)>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector&
         operator=(vector<BOOST_PP_ENUM_PARAMS(FUSION_MAX_VECTOR_SIZE, U)> const& rhs)
         {
@@ -150,7 +137,7 @@ FUSION_HASH endif
         }
 
         template <typename T>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector&
         operator=(T const& rhs)
         {
@@ -158,7 +145,7 @@ FUSION_HASH endif
             return *this;
         }
 
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector&
         operator=(vector const& rhs)
         {
@@ -171,11 +158,10 @@ FUSION_HASH if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 #endif
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) || \
     (defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES))
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector(vector&& rhs)
             : vec(std::forward<vector_n>(rhs.vec)) {}
-
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector&
         operator=(vector&& rhs)
         {
@@ -184,11 +170,11 @@ FUSION_HASH if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
         }
 
         template <typename T>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         vector&
         operator=(T&& rhs)
         {
-            vec = BOOST_FUSION_FWD_ELEM(T, rhs);
+            vec = std::forward<T>(rhs);
             return *this;
         }
 #endif
@@ -197,7 +183,7 @@ FUSION_HASH endif
 #endif
 
         template <int N>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         typename add_reference<
             typename mpl::at_c<types, N>::type
         >::type
@@ -207,7 +193,7 @@ FUSION_HASH endif
         }
 
         template <int N>
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         typename add_reference<
             typename add_const<
                 typename mpl::at_c<types, N>::type
@@ -219,7 +205,7 @@ FUSION_HASH endif
         }
 
         template <typename I>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         typename add_reference<
             typename mpl::at<types, I>::type
         >::type
@@ -229,7 +215,7 @@ FUSION_HASH endif
         }
 
         template<typename I>
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         typename add_reference<
             typename add_const<
                 typename mpl::at<types, I>::type

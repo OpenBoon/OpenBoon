@@ -15,10 +15,6 @@
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 
-#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
-#   include <utility> // for std::forward, std::move
-#endif
-
 #ifdef BOOST_MSVC
 #pragma warning(push)
 #pragma warning(disable:4521)

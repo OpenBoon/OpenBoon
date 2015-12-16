@@ -27,12 +27,12 @@ namespace boost { namespace fusion
         template <typename ...T>
         struct make_deque
         {
-            typedef deque<typename detail::as_fusion_element<T>::type...> type;
+            typedef deque<T...> type;
         };
     }
 
     template <typename ...T>
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline deque<typename detail::as_fusion_element<T>::type...>
     make_deque(T const&... arg)
     {

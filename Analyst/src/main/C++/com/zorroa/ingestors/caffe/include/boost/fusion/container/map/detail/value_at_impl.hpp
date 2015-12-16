@@ -9,7 +9,6 @@
 
 #include <boost/fusion/support/config.hpp>
 #include <boost/mpl/at.hpp>
-#include <boost/utility/declval.hpp>
 
 namespace boost { namespace fusion
 {
@@ -28,7 +27,7 @@ namespace boost { namespace fusion
             {
                 typedef mpl::int_<N::value> index;
                 typedef
-                    decltype(boost::declval<Sequence>().get_val(index()))
+                    decltype(std::declval<Sequence>().get_val(index()))
                 type;
             };
         };

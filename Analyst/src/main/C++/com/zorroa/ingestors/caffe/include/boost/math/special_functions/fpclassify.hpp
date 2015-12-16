@@ -309,7 +309,7 @@ namespace detail {
       if(std::numeric_limits<T>::is_specialized)
          return isfinite_impl(x, generic_tag<true>());
 #endif
-       (void)x; // warning suppression.
+       (void)x; // warning supression.
        return true;
     }
 
@@ -453,7 +453,7 @@ namespace detail {
       if(std::numeric_limits<T>::is_specialized)
          return isinf_impl(x, generic_tag<true>());
 #endif
-        (void)x; // warning suppression.
+        (void)x; // warning supression.
         return false;
     }
 
@@ -541,7 +541,7 @@ namespace detail {
       if(std::numeric_limits<T>::is_specialized)
          return isnan_impl(x, generic_tag<true>());
 #endif
-        (void)x; // warning suppression
+        (void)x; // warning supression
         return false;
     }
 

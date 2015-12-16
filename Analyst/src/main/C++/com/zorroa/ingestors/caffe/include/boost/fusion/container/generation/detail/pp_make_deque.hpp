@@ -57,12 +57,14 @@ namespace boost { namespace fusion
         };
     }
 
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
-    inline deque<>
+    BOOST_FUSION_GPU_ENABLED inline deque<>
     make_deque()
     {
         return deque<>();
     }
+
+#define BOOST_FUSION_AS_FUSION_ELEMENT(z, n, data)                               \
+    typename detail::as_fusion_element<BOOST_PP_CAT(T, n)>::type
 
 #define BOOST_FUSION_AS_FUSION_ELEMENT(z, n, data)                               \
     typename detail::as_fusion_element<BOOST_PP_CAT(T, n)>::type
@@ -103,12 +105,12 @@ namespace boost { namespace fusion
     }
 
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline deque<BOOST_PP_ENUM(N, BOOST_FUSION_AS_FUSION_ELEMENT, _)>
-    make_deque(BOOST_PP_ENUM_BINARY_PARAMS(N, T, const& arg))
+    make_deque(BOOST_PP_ENUM_BINARY_PARAMS(N, T, const& _))
     {
         return deque<BOOST_PP_ENUM(N, BOOST_FUSION_AS_FUSION_ELEMENT, _)>(
-            BOOST_PP_ENUM_PARAMS(N, arg));
+            BOOST_PP_ENUM_PARAMS(N, _));
     }
 
 #undef N
