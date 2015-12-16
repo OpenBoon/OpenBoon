@@ -18,9 +18,18 @@ public interface RoomDao {
 
     String getPassword(long id);
 
-    List<Room> getAll(Session session);
+    List<Room> getAll();
 
     boolean join(Room room, Session session);
+
+    boolean leave(Room room, Session session);
+
+    /**
+     * Return true of the given session is in the given room.
+     * @param session
+     * @return
+     */
+    boolean isInRoom(Room room, Session session);
 
     /**
      * Get the current selection for a room.

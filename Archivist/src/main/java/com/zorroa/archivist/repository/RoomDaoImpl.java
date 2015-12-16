@@ -15,7 +15,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.Types;
 import java.util.List;
 import java.util.Set;
 
@@ -28,8 +27,8 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         room.setName(rs.getString("str_name"));
         room.setVisible(rs.getBoolean("bool_visible"));
         // FIXME: Fails when reading an array, perhaps without a default value?
-//            String[] invites = (String[]) rs.getObject("list_invites");
-//            room.setInviteList(ImmutableSet.<String>copyOf(invites));
+//      String[] invites = (String[]) rs.getObject("list_invites");
+//      room.setInviteList(ImmutableSet.<String>copyOf(invites));
         return room;
     };
 
@@ -54,7 +53,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                     "str_password",
                     "bool_visible",
                     "list_invites",
-                    "pk_session",
                     "json_search",
                     "json_selection");
 
@@ -79,15 +77,8 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                 ps.setObject(4, builder.getInviteList().toArray(new String[]{}));
             }
 
-            if (builder.getSessionId() == null) {
-                ps.setNull(5, Types.BIGINT);
-            }
-            else {
-                ps.setLong(5, builder.getSessionId());
-            }
-
-            ps.setString(6, Json.serializeToString(builder.getSearch()));
-            ps.setString(7, Json.serializeToString(builder.getSelection()));
+            ps.setString(5, Json.serializeToString(builder.getSearch()));
+            ps.setString(6, Json.serializeToString(builder.getSelection()));
 
             return ps;
         }, keyHolder);
@@ -146,19 +137,32 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
     }
 
     @Override
-    public List<Room> getAll(Session session) {
-        /*
-         * Should return all rooms and our own session room.
-         */
-        return jdbc.query("SELECT * FROM room WHERE (bool_visible='t' OR pk_session=?)", MAPPER, session.getId());
+    public List<Room> getAll() {
+        return jdbc.query("SELECT * FROM room WHERE bool_visible=1", MAPPER);
     }
 
     @Override
     public boolean join(Room room, Session session) {
 
-        int result = jdbc.update("UPDATE map_session_to_room SET pk_room=? WHERE pk_session=?",
+        if (jdbc.update("UPDATE map_session_to_room SET pk_room=? WHERE pk_session=?",
+                room.getId(), session.getId()) == 1) {
+            return true;
+        }
+        jdbc.update("INSERT INTO map_session_to_room (pk_room, pk_session) VALUES (?,?)",
                 room.getId(), session.getId());
-        return result == 1;
+        return true;
+    }
+
+    @Override
+    public boolean leave(Room room, Session session) {
+        return jdbc.update("DELETE FROM map_session_to_room WHERE pk_room=? AND pk_session=?",
+                room.getId(), session.getId()) == 1;
+    }
+
+    @Override
+    public boolean isInRoom(Room room, Session session) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM map_session_to_room WHERE pk_room=? AND pk_session=?",
+                Integer.class, room.getId(), session.getId()) == 1;
     }
 
     private static final String UPDATE_SELECTION =

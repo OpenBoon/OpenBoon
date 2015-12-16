@@ -4,7 +4,6 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.TestMessagingClient;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.MessagingService;
-import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.junit.After;
@@ -72,6 +71,13 @@ public class MessageServiceTests extends ArchivistApplicationTests {
         messagingService.sendToActiveRoom(new Message("TEST", "foo"));
         assertEquals("TEST\tfoo", client.pop());
     }
+
+    @Test
+    public void testSendToActiveRoomWithNoRoom() throws Exception {
+        messagingService.sendToActiveRoom(new Message("TEST", "foo"));
+        assertEquals("TEST\tfoo", client.pop());
+    }
+
 
     @Test
     public void testSendToRoom() throws Exception {

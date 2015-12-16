@@ -3,12 +3,8 @@ package com.zorroa.archivist.security;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.repository.SessionDao;
-import com.zorroa.archivist.sdk.domain.Room;
-import com.zorroa.archivist.sdk.domain.RoomBuilder;
 import com.zorroa.archivist.sdk.domain.Session;
 import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.service.RoomService;
-import com.zorroa.archivist.sdk.service.UserService;
 import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +35,6 @@ public class JdbcSessionRegistry implements SessionRegistry {
 
     @Autowired
     SessionDao sessionDao;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    RoomService roomService;
 
     private Map<Object, Set<String>> principals = Maps.newHashMap();
     private Map<String, SessionInformation> sessionIds = Maps.newHashMap();
@@ -115,16 +105,7 @@ public class JdbcSessionRegistry implements SessionRegistry {
         }
 
         Session session = sessionDao.create((User)principal, sessionId);
-
-        RoomBuilder bld = new RoomBuilder();
-        bld.setName("personal-" + session.getUsername());
-        bld.setVisible(false);
-        bld.setSessionId(session.getId());
-
-        Room room = roomService.create(bld);
-        roomService.join(room, session);
-
-        sessionIds.put(sessionId,
+        sessionIds.put(session.getCookieId(),
                 new SessionInformation(principal, sessionId, new Date()));
 
         Set<String> sessionsUsedByPrincipal = principals.get(principal);

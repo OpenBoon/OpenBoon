@@ -6,9 +6,9 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.service.RoomService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -121,8 +121,7 @@ public class RoomControllerTests extends MockMvcTest {
         List<Room> rooms = Json.Mapper.readValue(
                 result.getResponse().getContentAsByteArray(), new TypeReference<List<Room>>() {
         });
-        // Take into account room created by session
-        assertEquals(11, rooms.size());
+        assertEquals(10, rooms.size());
     }
 
     @Test
@@ -148,6 +147,34 @@ public class RoomControllerTests extends MockMvcTest {
             assertEquals(room.getId(), room2.getId());
         }
     }
+
+    @Test
+    public void testLeave() throws Exception {
+
+        MockHttpSession httpSession = admin();
+        Session session = userService.getSession(httpSession.getId());
+
+        RoomBuilder bld = new RoomBuilder("Roomy");
+        bld.setVisible(true);
+        Room room = roomService.create(bld);
+
+        mvc.perform(put("/api/v1/rooms/" + room.getId() + "/_join")
+                .session(httpSession)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(room.getId(), roomService.getActiveRoom(session).getId());
+
+        mvc.perform(put("/api/v1/rooms/" + room.getId() + "/_leave")
+                .session(httpSession)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertNull(roomService.getActiveRoom(session));
+    }
+
 
     @Test
     public void testGet() throws Exception {

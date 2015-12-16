@@ -2,12 +2,10 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.repository.RoomDao;
-import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
 import com.zorroa.archivist.sdk.service.MessagingService;
-import com.zorroa.archivist.sdk.service.RoomService;
-import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,7 @@ public class RoomServiceImpl implements RoomService {
     RoomDao roomDao;
 
     @Autowired
-    SessionDao sessionDao;
+    UserService userService;
 
     @Autowired
     TransactionEventManager transactionEventManager;
@@ -55,39 +53,67 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room getActiveRoom() {
-        Session session = sessionDao.get(SecurityUtils.getSessionId());
-        if (session != null) {
-            return roomDao.get(session);
-        }
-        else {
+        Session session = userService.getActiveSession();
+        if (session == null) {
             return null;
         }
-    }
-
-    @Override
-    public boolean join(Room room, Session session) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Session {} is joining room {}", session, room);
-        }
-        return roomDao.join(room, session);
-    }
-
-    @Override
-    public Room get(Session session) {
-        /*
-         * Handle the case where the session is not in a room.
-         */
         return roomDao.get(session);
     }
 
     @Override
-    public List<Room> getAll(Session session) {
-        return roomDao.getAll(session);
+    public boolean join(Room room) {
+        return join(room, userService.getActiveSession());
+    }
+
+    @Override
+    public boolean join(Room room, Session session) {
+        if (session == null) {
+            return false;
+        }
+        if (roomDao.isInRoom(room, session)) {
+            return false;
+        }
+        boolean result = roomDao.join(room, session);
+        if (result) {
+            transactionEventManager.afterCommit(()->
+                    messagingService.sendToRoom(room, new Message(MessageType.ROOM_USER_JOINED,
+                            ImmutableMap.of("userId", session.getUserId()))));
+        }
+        return result;
+    }
+
+    @Override
+    public boolean leave(Room room) {
+        return leave(room, userService.getActiveSession());
+    }
+
+    @Override
+    public boolean leave(Room room, Session session) {
+        if (session == null || room == null) {
+            return false;
+        }
+        boolean result = roomDao.leave(room, session);
+        if (result) {
+            transactionEventManager.afterCommit(()->
+                    messagingService.sendToRoom(room, new Message(MessageType.ROOM_USER_LEFT,
+                            ImmutableMap.of("userId", session.getUserId()))));
+        }
+        return result;
+    }
+
+    @Override
+    public List<Room> getAll() {
+        return roomDao.getAll();
     }
 
     @Override
     public boolean update(Room room, RoomUpdateBuilder updater) {
-        return roomDao.update(room, updater);
+        boolean result = roomDao.update(room, updater);
+        transactionEventManager.afterCommit(()-> {
+            messagingService.sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_UPDATED,
+                    ImmutableMap.of("roomId", room.getId())));
+        });
+        return result;
     }
 
     @Override
@@ -95,20 +121,14 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.delete(room);
     }
 
-    /**
-     * The maximum size of a selection that can be propagated to a room.  This will
-     * probably need to be tweaked/tested for very large selections, but 1024 gives
-     * us roughly a 32k packet size.
-     */
-    private static final int SELECTION_MAX_SIZE = 1024;
-
     public int setSelection(@Nullable Room room, Set<String> selection) {
         if (room == null) {
             return -1;
         }
         if (selection.size() > SELECTION_MAX_SIZE) {
             throw new MalformedDataException(String.format(
-                    "The selection is too large, maximum allowed size: '%d' ", SELECTION_MAX_SIZE));
+                    "The selection is too large, maximum allowed size: '%d', size: '%d'",
+                        SELECTION_MAX_SIZE, selection.size()));
         }
         int version = roomDao.setSelection(room, selection);
         transactionEventManager.afterCommit(()-> {

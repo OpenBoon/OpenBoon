@@ -43,10 +43,6 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
 
         long id = keyHolder.getKey().longValue();
 
-        // Create the session to room mapping with a null room. The room gets
-        // joined and updated at a later point.
-        jdbc.update("INSERT INTO map_session_to_room (pk_session, pk_room) VALUES (?,?)", id, null);
-
         Session s = new Session();
         s.setId(id);
         s.setUserId(user.getId());

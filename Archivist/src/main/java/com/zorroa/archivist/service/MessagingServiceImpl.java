@@ -7,7 +7,6 @@ import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.Session;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.service.MessagingService;
-import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.slf4j.Logger;
@@ -50,10 +49,10 @@ public class MessagingServiceImpl implements MessagingService {
     @Override
     public void sendToRoom(Room room, Message message) {
         /*
-         * If the room is null just log it and move on.
+         * If the user has no room, then just send to their session.
          */
         if (room == null) {
-            logger.warn("The current session {} is not in a room.", SecurityUtils.getSessionId());
+            sendToActiveSession(message);
             return;
         }
 
@@ -62,13 +61,12 @@ public class MessagingServiceImpl implements MessagingService {
             return;
         }
 
-        logger.info("Sending: {} to active room", message);
         eventServerHandler.send(sessionDao.getAll(room), message);
     }
 
     @Override
     public void sendToActiveSession(Message message) {
-        sendToRoom(roomService.getActiveRoom(), message);
+        sendToSession(userService.getActiveSession(), message);
     }
 
     @Override

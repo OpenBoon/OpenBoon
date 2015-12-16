@@ -68,21 +68,6 @@ public class RoomDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testGetAllBySession() {
-
-        Session session = sessionDao.create(userService.get(1), "1");
-
-        for (int i=0; i<10; i++) {
-            RoomBuilder bld = new RoomBuilder();
-            bld.setName("room" + i);
-            bld.setVisible(true);
-            roomDao.create(bld);
-        }
-
-        assertEquals(11, roomDao.getAll(session).size());
-    }
-
-    @Test
     public void testJoin() {
 
         RoomBuilder bld = new RoomBuilder();

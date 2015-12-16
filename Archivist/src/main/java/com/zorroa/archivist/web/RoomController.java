@@ -1,10 +1,11 @@
 package com.zorroa.archivist.web;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.RoomService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.SearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +36,18 @@ public class RoomController {
      * User joins a particular room
      */
     @RequestMapping(value="/api/v1/rooms/{id}/_join", method=RequestMethod.PUT)
-    public void join(@PathVariable long id, HttpSession httpSession) {
+    public Object join(@PathVariable long id, HttpSession httpSession) {
         Room room = roomService.get(id);
-        Session session = userService.getActiveSession();
-        logger.info("Session {} is joining room:{}", session.getId(), room.getId());
-        roomService.join(room, session);
+        return ImmutableMap.of("roomId", room.getId(), "result", roomService.join(room));
+    }
+
+    /**
+     * User leaves a particular room
+     */
+    @RequestMapping(value="/api/v1/rooms/{id}/_leave", method=RequestMethod.PUT)
+    public Object leave(@PathVariable long id, HttpSession httpSession) {
+        Room room = roomService.get(id);
+        return ImmutableMap.of("roomId", room.getId(), "result", roomService.leave(room));
     }
 
     /**
@@ -56,9 +64,8 @@ public class RoomController {
      * @return
      */
     @RequestMapping(value="/api/v1/rooms", method=RequestMethod.GET)
-    public List<Room> getAll(HttpSession httpSession) {
-        Session session = userService.getActiveSession();
-        return roomService.getAll(session);
+    public List<Room> getAll() {
+        return roomService.getAll();
     }
 
     /**
@@ -69,12 +76,8 @@ public class RoomController {
      */
     @RequestMapping(value="/api/v1/rooms", method=RequestMethod.POST)
     public Room create(@RequestBody RoomBuilder builder, HttpSession httpSession) {
-        // Don't allow session rooms
-        logger.info("Creating room {}", builder);
         Room room = roomService.create(builder);
-
-        Session session = userService.getActiveSession();
-        roomService.join(room, session);
+        roomService.join(room);
         return room;
     }
 
