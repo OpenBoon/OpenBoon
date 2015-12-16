@@ -10,7 +10,6 @@ public class RoomUpdateBuilder {
     private String name;
     private Set<String> inviteList;
     private String password;
-    private String folderId;
 
     public String getName() {
         return name;
@@ -36,11 +35,4 @@ public class RoomUpdateBuilder {
         this.password = password;
     }
 
-    public String getFolderId() {
-        return folderId;
-    }
-
-    public void setFolderId(String folderId) {
-        this.folderId = folderId;
-    }
 }

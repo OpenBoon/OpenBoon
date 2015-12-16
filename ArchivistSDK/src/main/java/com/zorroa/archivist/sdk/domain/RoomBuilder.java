@@ -7,11 +7,6 @@ import java.util.Set;
 public class RoomBuilder {
 
     /**
-     * The session ID that created the room.
-     */
-    private Long sessionId = null;
-
-    /*
      * The name of the room.
      */
     private String name;
@@ -76,14 +71,6 @@ public class RoomBuilder {
 
     public RoomBuilder setVisible(boolean visible) {
         this.visible = visible;
-        return this;
-    }
-    public Long getSessionId() {
-        return sessionId;
-    }
-
-    public RoomBuilder setSessionId(Long session) {
-        this.sessionId = session;
         return this;
     }
 

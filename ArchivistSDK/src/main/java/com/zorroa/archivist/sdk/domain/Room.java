@@ -7,7 +7,6 @@ import java.util.Set;
 public class Room {
 
     private long id;
-    private String session;
     private String name;
     private Set<String> inviteList;
     private boolean visible;
@@ -18,7 +17,6 @@ public class Room {
     public String toString() {
         return MoreObjects.toStringHelper(Room.class)
             .add("id", id)
-            .add("session", session)
             .add("name", name)
             .add("visible", visible)
             .add("inviteList", inviteList)
@@ -55,13 +53,5 @@ public class Room {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    public String getSession() {
-        return session;
-    }
-
-    public void setSession(String session) {
-        this.session = session;
     }
 }
