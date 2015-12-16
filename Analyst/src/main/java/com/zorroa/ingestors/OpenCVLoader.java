@@ -4,6 +4,9 @@
 
 package com.zorroa.ingestors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Statically loads the shared OpenCV java classes to avoid having
  * link collisions when separate plugins load the same dylib.
@@ -11,11 +14,16 @@ package com.zorroa.ingestors;
  * re-loading the static OpenCVLoader libraries.
  */
 public class OpenCVLoader {
+    private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
+
     static {
+	logger.info("OpenCVLoader initializing OpenCV JNI...");
         try {
-            System.loadLibrary("opencv_java2411");
+            System.loadLibrary("opencv_java2412");
+            System.out.println("Loaded OpenCV 2412 native library");
         } catch (UnsatisfiedLinkError e) {
-            System.err.println("OpenCV 2411 native code library failed to load.\n" + e);
+            System.err.println("OpenCV 2412 native code library failed to load:" + e);
         }
+        logger.info("OpenCVLoader finished loading 2412.");
     }
 }

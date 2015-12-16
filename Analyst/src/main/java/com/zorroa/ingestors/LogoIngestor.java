@@ -213,6 +213,7 @@ public class LogoIngestor extends IngestProcessor {
 
             }
             logger.info("LogoIngestor: " + value);
+            asset.addKeywords(0.8, true, Arrays.asList(value.split(",")));
             String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
             asset.putKeywords("Logos", "keywords", keywords);
 

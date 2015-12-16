@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.opencv</groupId>
             <artifactId>opencv</artifactId>
-            <version>2.4.11</version>
+            <version>2.4.12</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -60,6 +60,25 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.5.3</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -120,10 +139,10 @@
                             <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <file>lib/face/opencv-2411.jar</file>
+                            <file>lib/face/opencv-2412.jar</file>
                             <groupId>org.opencv</groupId>
                             <artifactId>opencv</artifactId>
-                            <version>2.4.11</version>
+                            <version>2.4.12</version>
                             <packaging>jar</packaging>
                         </configuration>
                     </execution>
@@ -163,7 +182,7 @@
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/CUDA-7.0
                                 -I/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers
                                 -Llib/caffe
-                                -lcaffe -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
+                                -lcaffe -lboost_system -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
                             </commandlineArgs>
                         </configuration>
                     </execution>
@@ -195,12 +214,26 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>-Djava.library.path=${project.basedir}/target/jni:${project.basedir}/lib/face</argLine>
+                    <argLine>-Djava.class.path=${project.basedir}/lib/face -Djava.library.path=${project.basedir}/target/jni:${project.basedir}/lib/face</argLine>
                     <environmentVariables>
-                        <DYLD_FALLBACK_LIBRARY_PATH>${project.basedir}/lib/caffe:${project.basedir}/lib/face</DYLD_FALLBACK_LIBRARY_PATH>
                         <ZORROA_OPENCV_MODEL_PATH>${project.basedir}/models</ZORROA_OPENCV_MODEL_PATH>
                     </environmentVariables>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.17</version>
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
