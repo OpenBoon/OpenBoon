@@ -1,7 +1,5 @@
 package com.zorroa.archivist.security;
 
-import com.zorroa.archivist.sdk.service.RoomService;
-import com.zorroa.archivist.sdk.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,6 @@ import org.springframework.security.core.session.SessionRegistry;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-
-    @Autowired
-    RoomService roomService;
-
-    @Autowired
-    UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

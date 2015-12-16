@@ -6,8 +6,6 @@ import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.RoomService;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.count.CountResponse;
@@ -39,12 +37,6 @@ public class AssetController {
 
     @Autowired
     AssetService assetService;
-
-    @Autowired
-    RoomService roomService;
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     FolderService folderService;

@@ -4,7 +4,6 @@ import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.MessagingService;
-import com.zorroa.archivist.sdk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +18,6 @@ public class FolderController {
 
     @Autowired
     MessagingService messagingService;
-
-    @Autowired
-    UserService userService;
 
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.POST)
     public Folder create(@RequestBody FolderBuilder builder, HttpSession httpSession) {

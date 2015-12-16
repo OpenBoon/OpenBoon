@@ -66,11 +66,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public boolean select(String assetId, boolean selected) {
-        return assetDao.select(assetId, selected);
-    }
-
-    @Override
     public void addToFolder(Asset asset, Folder folder) {
         assetDao.addToFolder(asset, folder);
     }

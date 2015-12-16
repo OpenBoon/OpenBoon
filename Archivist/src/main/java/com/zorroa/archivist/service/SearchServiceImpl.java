@@ -3,12 +3,9 @@ package com.zorroa.archivist.service;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
-import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.RoomService;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -41,14 +38,6 @@ public class SearchServiceImpl implements SearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
 
-    @Autowired
-    PermissionDao permissionDao;
-
-    @Autowired
-    RoomService roomService;
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     FolderService folderService;
