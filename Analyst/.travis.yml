@@ -5,7 +5,7 @@ jdk:
   - oraclejdk8
 
 install:
-  - mvn install:install-file -Dfile=lib/face/opencv-2412.jar -DgroupId=org.opencv -DartifactId=opencv -Dversion=2.4.12 -Dpackaging=jar
+  - ./travis/travis-local-libs.sh
   - ./travis/travis-ingestor-files.sh
   - ./travis/travis-install-archivist-sdk.sh
   - ./travis/travis-install-archivist.sh
