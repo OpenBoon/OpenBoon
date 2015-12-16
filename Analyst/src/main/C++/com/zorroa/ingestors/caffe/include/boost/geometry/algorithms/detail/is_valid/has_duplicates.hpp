@@ -1,6 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2015, Oracle and/or its affiliates.
+// Copyright (c) 2014, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 
@@ -15,10 +15,8 @@
 #include <boost/geometry/core/closure.hpp>
 
 #include <boost/geometry/policies/compare.hpp>
-#include <boost/geometry/policies/is_valid/default_policy.hpp>
 
 #include <boost/geometry/views/closeable_view.hpp>
-#include <boost/geometry/algorithms/validity_failure_type.hpp>
 
 
 namespace boost { namespace geometry
@@ -32,8 +30,7 @@ namespace detail { namespace is_valid
 template <typename Range, closure_selector Closure>
 struct has_duplicates
 {
-    template <typename VisitPolicy>
-    static inline bool apply(Range const& range, VisitPolicy& visitor)
+    static inline bool apply(Range const& range)
     {
         typedef typename closeable_view<Range const, Closure>::type view_type;
         typedef typename boost::range_iterator<view_type const>::type iterator;
@@ -42,7 +39,7 @@ struct has_duplicates
 
         if ( boost::size(view) < 2 )
         {
-            return ! visitor.template apply<no_failure>();
+            return false;
         }
 
         geometry::equal_to<typename boost::range_value<Range>::type> equal;
@@ -53,10 +50,10 @@ struct has_duplicates
         {
             if ( equal(*it, *next) )
             {
-                return ! visitor.template apply<failure_duplicate_points>(*it);
+                return true;
             }
         }
-        return ! visitor.template apply<no_failure>();
+        return false;
     }
 };
 

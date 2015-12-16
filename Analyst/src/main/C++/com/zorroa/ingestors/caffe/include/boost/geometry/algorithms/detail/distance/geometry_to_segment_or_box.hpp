@@ -35,8 +35,6 @@
 
 #include <boost/geometry/algorithms/detail/distance/is_comparable.hpp>
 
-#include <boost/geometry/util/condition.hpp>
-
 
 namespace boost { namespace geometry
 {
@@ -217,7 +215,7 @@ public:
 
         // consider all distances of the points in the geometry to the
         // segment or box
-        comparable_return_type cd_min1(0);
+        comparable_return_type cd_min1;
         point_iterator_type pit_min;
         seg_or_box_iterator_type it_min1 = seg_or_box_points.begin();
         seg_or_box_iterator_type it_min2 = ++seg_or_box_points.begin();
@@ -248,7 +246,7 @@ public:
 
         // consider all distances of the points in the segment or box to the
         // segments of the geometry
-        comparable_return_type cd_min2(0);
+        comparable_return_type cd_min2;
         segment_iterator_type sit_min;
         typename std::vector<segment_or_box_point>::const_iterator it_min;
 
@@ -273,7 +271,7 @@ public:
             }
         }
 
-        if (BOOST_GEOMETRY_CONDITION(is_comparable<Strategy>::value))
+        if (is_comparable<Strategy>::value)
         {
             return (std::min)(cd_min1, cd_min2);
         }

@@ -144,10 +144,11 @@ protected:
             typename Info,
             typename Point1,
             typename Point2,
-            typename IntersectionInfo
+            typename IntersectionInfo,
+            typename DirInfo
         >
         static inline void apply(Info& , Point1 const& , Point2 const& ,
-                                 IntersectionInfo const& )
+                                 IntersectionInfo const& , DirInfo const& )
         {
         }
     };

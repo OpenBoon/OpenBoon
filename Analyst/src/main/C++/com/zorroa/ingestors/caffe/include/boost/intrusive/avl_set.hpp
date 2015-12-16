@@ -12,16 +12,16 @@
 #ifndef BOOST_INTRUSIVE_AVL_SET_HPP
 #define BOOST_INTRUSIVE_AVL_SET_HPP
 
+#if defined(_MSC_VER)
+#  pragma once
+#endif
+
 #include <boost/intrusive/detail/config_begin.hpp>
 #include <boost/intrusive/intrusive_fwd.hpp>
 #include <boost/intrusive/avltree.hpp>
 #include <boost/intrusive/detail/mpl.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/static_assert.hpp>
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
-#  pragma once
-#endif
 
 namespace boost {
 namespace intrusive {
@@ -96,12 +96,12 @@ class avl_set_impl
 
    //! @copydoc ::boost::intrusive::avltree::avltree(avltree &&)
    avl_set_impl(BOOST_RV_REF(avl_set_impl) x)
-      :  tree_type(BOOST_MOVE_BASE(tree_type, x))
+      :  tree_type(::boost::move(static_cast<tree_type&>(x)))
    {}
 
    //! @copydoc ::boost::intrusive::avltree::operator=(avltree &&)
    avl_set_impl& operator=(BOOST_RV_REF(avl_set_impl) x)
-   {  return static_cast<avl_set_impl&>(tree_type::operator=(BOOST_MOVE_BASE(tree_type, x))); }
+   {  return static_cast<avl_set_impl&>(tree_type::operator=(::boost::move(static_cast<tree_type&>(x)))); }
 
    #ifdef BOOST_INTRUSIVE_DOXYGEN_INVOKED
 
@@ -268,7 +268,7 @@ class avl_set_impl
 
    //! @copydoc ::boost::intrusive::avltree::lower_bound(const_reference)
    iterator lower_bound(const_reference value);
-
+   
    //! @copydoc ::boost::intrusive::avltree::lower_bound(const KeyType&,KeyValueCompare)
    template<class KeyType, class KeyValueCompare>
    iterator lower_bound(const KeyType& key, KeyValueCompare comp);
@@ -418,13 +418,15 @@ struct make_avl_set
 
    typedef typename detail::get_value_traits
       <T, typename packed_options::proto_value_traits>::type value_traits;
+   typedef typename detail::get_header_holder_type
+      < value_traits, typename packed_options::header_holder_type >::type header_holder_type;
 
    typedef avl_set_impl
          < value_traits
          , typename packed_options::compare
          , typename packed_options::size_type
          , packed_options::constant_time_size
-         , typename packed_options::header_holder_type
+         , header_holder_type
          > implementation_defined;
    /// @endcond
    typedef implementation_defined type;
@@ -477,11 +479,11 @@ class avl_set
    {}
 
    avl_set(BOOST_RV_REF(avl_set) x)
-      :  Base(BOOST_MOVE_BASE(Base, x))
+      :  Base(::boost::move(static_cast<Base&>(x)))
    {}
 
    avl_set& operator=(BOOST_RV_REF(avl_set) x)
-   {  return static_cast<avl_set &>(this->Base::operator=(BOOST_MOVE_BASE(Base, x)));  }
+   {  return static_cast<avl_set &>(this->Base::operator=(::boost::move(static_cast<Base&>(x))));  }
 
    static avl_set &container_from_end_iterator(iterator end_iterator)
    {  return static_cast<avl_set &>(Base::container_from_end_iterator(end_iterator));   }
@@ -567,12 +569,12 @@ class avl_multiset_impl
 
    //! @copydoc ::boost::intrusive::avltree::avltree(avltree &&)
    avl_multiset_impl(BOOST_RV_REF(avl_multiset_impl) x)
-      :  tree_type(BOOST_MOVE_BASE(tree_type, x))
+      :  tree_type(::boost::move(static_cast<tree_type&>(x)))
    {}
 
    //! @copydoc ::boost::intrusive::avltree::operator=(avltree &&)
    avl_multiset_impl& operator=(BOOST_RV_REF(avl_multiset_impl) x)
-   {  return static_cast<avl_multiset_impl&>(tree_type::operator=(BOOST_MOVE_BASE(tree_type, x))); }
+   {  return static_cast<avl_multiset_impl&>(tree_type::operator=(::boost::move(static_cast<tree_type&>(x)))); }
 
    #ifdef BOOST_INTRUSIVE_DOXYGEN_INVOKED
    //! @copydoc ::boost::intrusive::avltree::~avltree()
@@ -644,7 +646,7 @@ class avl_multiset_impl
    //! @copydoc ::boost::intrusive::avltree::clone_from
    template <class Cloner, class Disposer>
    void clone_from(const avl_multiset_impl &src, Cloner cloner, Disposer disposer);
-
+   
    #endif   //#ifdef BOOST_iNTRUSIVE_DOXYGEN_INVOKED
 
    //! @copydoc ::boost::intrusive::avltree::insert_equal(reference)
@@ -715,7 +717,7 @@ class avl_multiset_impl
 
    //! @copydoc ::boost::intrusive::avltree::lower_bound(const_reference)
    iterator lower_bound(const_reference value);
-
+   
    //! @copydoc ::boost::intrusive::avltree::lower_bound(const KeyType&,KeyValueCompare)
    template<class KeyType, class KeyValueCompare>
    iterator lower_bound(const KeyType& key, KeyValueCompare comp);
@@ -857,13 +859,15 @@ struct make_avl_multiset
 
    typedef typename detail::get_value_traits
       <T, typename packed_options::proto_value_traits>::type value_traits;
+   typedef typename detail::get_header_holder_type
+      < value_traits, typename packed_options::header_holder_type >::type header_holder_type;
 
    typedef avl_multiset_impl
          < value_traits
          , typename packed_options::compare
          , typename packed_options::size_type
          , packed_options::constant_time_size
-         , typename packed_options::header_holder_type
+         , header_holder_type
          > implementation_defined;
    /// @endcond
    typedef implementation_defined type;
@@ -917,11 +921,11 @@ class avl_multiset
    {}
 
    avl_multiset(BOOST_RV_REF(avl_multiset) x)
-      :  Base(BOOST_MOVE_BASE(Base, x))
+      :  Base(::boost::move(static_cast<Base&>(x)))
    {}
 
    avl_multiset& operator=(BOOST_RV_REF(avl_multiset) x)
-   {  return static_cast<avl_multiset &>(this->Base::operator=(BOOST_MOVE_BASE(Base, x)));  }
+   {  return static_cast<avl_multiset &>(this->Base::operator=(::boost::move(static_cast<Base&>(x))));  }
 
    static avl_multiset &container_from_end_iterator(iterator end_iterator)
    {  return static_cast<avl_multiset &>(Base::container_from_end_iterator(end_iterator));   }

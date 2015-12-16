@@ -18,7 +18,6 @@
 
 #include <boost/assert.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 
 namespace boost {
   namespace signals2 {

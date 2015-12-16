@@ -1,12 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 1995, 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 1995, 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 1995 Maarten Hilferink, Amsterdam, the Netherlands
-
-// This file was modified by Oracle on 2015.
-// Modifications copyright (c) 2015, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
@@ -20,9 +15,6 @@
 
 
 #include <cstddef>
-#ifdef BOOST_GEOMETRY_DEBUG_DOUGLAS_PEUCKER
-#include <iostream>
-#endif
 #include <vector>
 
 #include <boost/range.hpp>
@@ -31,7 +23,10 @@
 #include <boost/geometry/strategies/distance.hpp>
 
 
-#ifdef BOOST_GEOMETRY_DEBUG_DOUGLAS_PEUCKER
+
+//#define GL_DEBUG_DOUGLAS_PEUCKER
+
+#ifdef GL_DEBUG_DOUGLAS_PEUCKER
 #include <boost/geometry/io/dsv/write.hpp>
 #endif
 
@@ -131,7 +126,7 @@ namespace detail
             // because we want to consider a candidate point in between
             if (size <= 2)
             {
-#ifdef BOOST_GEOMETRY_DEBUG_DOUGLAS_PEUCKER
+#ifdef GL_DEBUG_DOUGLAS_PEUCKER
                 if (begin != end)
                 {
                     std::cout << "ignore between " << dsv(begin->p)
@@ -145,7 +140,7 @@ namespace detail
 
             iterator_type last = end - 1;
 
-#ifdef BOOST_GEOMETRY_DEBUG_DOUGLAS_PEUCKER
+#ifdef GL_DEBUG_DOUGLAS_PEUCKER
             std::cout << "find between " << dsv(begin->p)
                 << " and " << dsv(last->p)
                 << " size=" << size << std::endl;
@@ -160,7 +155,7 @@ namespace detail
             {
                 distance_type dist = ps_distance_strategy.apply(it->p, begin->p, last->p);
 
-#ifdef BOOST_GEOMETRY_DEBUG_DOUGLAS_PEUCKER
+#ifdef GL_DEBUG_DOUGLAS_PEUCKER
                 std::cout << "consider " << dsv(it->p)
                     << " at " << double(dist)
                     << ((dist > max_dist) ? " maybe" : " no")
@@ -178,7 +173,7 @@ namespace detail
             // and handle segments in between recursively
             if ( less()(max_dist, md) )
             {
-#ifdef BOOST_GEOMETRY_DEBUG_DOUGLAS_PEUCKER
+#ifdef GL_DEBUG_DOUGLAS_PEUCKER
                 std::cout << "use " << dsv(candidate->p) << std::endl;
 #endif
 
@@ -198,10 +193,6 @@ namespace detail
                                     OutputIterator out,
                                     distance_type max_distance) const
         {
-#ifdef BOOST_GEOMETRY_DEBUG_DOUGLAS_PEUCKER
-                std::cout << "max distance: " << max_distance
-                          << std::endl << std::endl;
-#endif
             distance_strategy_type strategy;
 
             // Copy coordinates, a vector of references to all points
@@ -237,6 +228,8 @@ namespace detail
         }
 
     };
+
+
 }
 #endif // DOXYGEN_NO_DETAIL
 
@@ -276,28 +269,18 @@ public :
             PointDistanceStrategy
         >::distance_type distance_type;
 
+    typedef distance_type return_type;
+
     template <typename Range, typename OutputIterator>
     static inline OutputIterator apply(Range const& range,
                                        OutputIterator out,
-                                       distance_type const& max_distance)
+                                       distance_type max_distance)
     {
-        namespace services = strategy::distance::services;
-
-        typedef typename services::comparable_type
-            <
-                PointDistanceStrategy
-            >::type comparable_distance_strategy_type;
-
         return detail::douglas_peucker
             <
-                Point, comparable_distance_strategy_type
-            >().apply(range, out,
-                      services::result_from_distance
-                          <
-                              comparable_distance_strategy_type, Point, Point
-                          >::apply(comparable_distance_strategy_type(),
-                                   max_distance)
-                      );
+                Point,
+                PointDistanceStrategy
+            >().apply(range, out, max_distance);
     }
 
 };

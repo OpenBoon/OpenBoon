@@ -13,11 +13,7 @@
 #ifndef BOOST_INTRUSIVE_ANY_NODE_HPP
 #define BOOST_INTRUSIVE_ANY_NODE_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -47,13 +43,13 @@ struct any_list_node_traits
    typedef typename node::node_ptr        node_ptr;
    typedef typename node::const_node_ptr  const_node_ptr;
 
-   static node_ptr get_next(const const_node_ptr & n)
+   static const node_ptr &get_next(const const_node_ptr & n)
    {  return n->node_ptr_1;  }
 
    static void set_next(const node_ptr & n, const node_ptr & next)
    {  n->node_ptr_1 = next;  }
 
-   static node_ptr get_previous(const const_node_ptr & n)
+   static const node_ptr &get_previous(const const_node_ptr & n)
    {  return n->node_ptr_2;  }
 
    static void set_previous(const node_ptr & n, const node_ptr & prev)
@@ -68,7 +64,7 @@ struct any_slist_node_traits
    typedef typename node::node_ptr        node_ptr;
    typedef typename node::const_node_ptr  const_node_ptr;
 
-   static node_ptr get_next(const const_node_ptr & n)
+   static const node_ptr &get_next(const const_node_ptr & n)
    {  return n->node_ptr_1;  }
 
    static void set_next(const node_ptr & n, const node_ptr & next)
@@ -88,7 +84,7 @@ struct any_unordered_node_traits
    static const bool store_hash        = true;
    static const bool optimize_multikey = true;
 
-   static node_ptr get_next(const const_node_ptr & n)
+   static const node_ptr &get_next(const const_node_ptr & n)
    {  return n->node_ptr_1;   }
 
    static void set_next(const node_ptr & n, const node_ptr & next)
@@ -117,19 +113,19 @@ struct any_rbtree_node_traits
 
    typedef std::size_t color;
 
-   static node_ptr get_parent(const const_node_ptr & n)
+   static const node_ptr &get_parent(const const_node_ptr & n)
    {  return n->node_ptr_1;  }
 
    static void set_parent(const node_ptr & n, const node_ptr & p)
    {  n->node_ptr_1 = p;  }
 
-   static node_ptr get_left(const const_node_ptr & n)
+   static const node_ptr &get_left(const const_node_ptr & n)
    {  return n->node_ptr_2;  }
 
    static void set_left(const node_ptr & n, const node_ptr & l)
    {  n->node_ptr_2 = l;  }
 
-   static node_ptr get_right(const const_node_ptr & n)
+   static const node_ptr &get_right(const const_node_ptr & n)
    {  return n->node_ptr_3;  }
 
    static void set_right(const node_ptr & n, const node_ptr & r)
@@ -158,19 +154,19 @@ struct any_avltree_node_traits
 
    typedef std::size_t balance;
 
-   static node_ptr get_parent(const const_node_ptr & n)
+   static const node_ptr &get_parent(const const_node_ptr & n)
    {  return n->node_ptr_1;  }
 
    static void set_parent(const node_ptr & n, const node_ptr & p)
    {  n->node_ptr_1 = p;  }
 
-   static node_ptr get_left(const const_node_ptr & n)
+   static const node_ptr &get_left(const const_node_ptr & n)
    {  return n->node_ptr_2;  }
 
    static void set_left(const node_ptr & n, const node_ptr & l)
    {  n->node_ptr_2 = l;  }
 
-   static node_ptr get_right(const const_node_ptr & n)
+   static const node_ptr &get_right(const const_node_ptr & n)
    {  return n->node_ptr_3;  }
 
    static void set_right(const node_ptr & n, const node_ptr & r)
@@ -200,19 +196,19 @@ struct any_tree_node_traits
    typedef typename node::node_ptr        node_ptr;
    typedef typename node::const_node_ptr  const_node_ptr;
 
-   static node_ptr get_parent(const const_node_ptr & n)
+   static const node_ptr &get_parent(const const_node_ptr & n)
    {  return n->node_ptr_1;  }
 
    static void set_parent(const node_ptr & n, const node_ptr & p)
    {  n->node_ptr_1 = p;  }
 
-   static node_ptr get_left(const const_node_ptr & n)
+   static const node_ptr &get_left(const const_node_ptr & n)
    {  return n->node_ptr_2;  }
 
    static void set_left(const node_ptr & n, const node_ptr & l)
    {  n->node_ptr_2 = l;  }
 
-   static node_ptr get_right(const const_node_ptr & n)
+   static const node_ptr &get_right(const const_node_ptr & n)
    {  return n->node_ptr_3;  }
 
    static void set_right(const node_ptr & n, const node_ptr & r)

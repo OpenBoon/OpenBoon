@@ -55,8 +55,7 @@ struct single_geometry<Geometry, true>
     static inline return_type apply(Geometry & g, Id const& id)
     {
         BOOST_ASSERT(id.multi_index >= 0);
-        typedef typename boost::range_size<Geometry>::type size_type;
-        return range::at(g, static_cast<size_type>(id.multi_index));
+        return range::at(g, id.multi_index);
     }
 };
 

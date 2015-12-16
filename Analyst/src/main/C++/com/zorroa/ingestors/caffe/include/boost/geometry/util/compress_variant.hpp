@@ -1,13 +1,8 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
-// Copyright (c) 2008-2015 Bruno Lalande, Paris, France.
-// Copyright (c) 2009-2015 Mateusz Loskot, London, UK.
-
-// This file was modified by Oracle on 2015.
-// Modifications copyright (c) 2015, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
+// Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
+// Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
@@ -41,31 +36,28 @@ namespace detail
 
 template <typename Variant>
 struct unique_types:
-    boost::mpl::fold<
-        typename boost::mpl::reverse_fold<
+    mpl::fold<
+        typename mpl::reverse_fold<
             typename Variant::types,
-            boost::mpl::set<>,
-            boost::mpl::insert<
-                boost::mpl::placeholders::_1,
-                boost::mpl::placeholders::_2
+            mpl::set<>,
+            mpl::insert<
+                mpl::placeholders::_1,
+                mpl::placeholders::_2
             >
         >::type,
-        boost::mpl::vector<>,
-        boost::mpl::push_back
-            <
-                boost::mpl::placeholders::_1, boost::mpl::placeholders::_2
-            >
+        mpl::vector<>,
+        mpl::push_back<mpl::placeholders::_1, mpl::placeholders::_2>
     >
 {};
 
 template <typename Types>
 struct variant_or_single:
-    boost::mpl::if_<
-        boost::mpl::equal_to<
-            boost::mpl::size<Types>,
-            boost::mpl::int_<1>
+    mpl::if_<
+        mpl::equal_to<
+            mpl::size<Types>,
+            mpl::int_<1>
         >,
-        typename boost::mpl::front<Types>::type,
+        typename mpl::front<Types>::type,
         typename make_variant_over<Types>::type
     >
 {};
@@ -83,8 +75,8 @@ struct variant_or_single:
     \code
         typedef variant<int, float, int, long> variant_type;
         typedef compress_variant<variant_type>::type compressed;
-        typedef boost::mpl::vector<int, float, long> result_types;
-        BOOST_MPL_ASSERT(( boost::mpl::equal<compressed::types, result_types> ));
+        typedef mpl::vector<int, float, long> result_types;
+        BOOST_MPL_ASSERT(( mpl::equal<compressed::types, result_types> ));
 
         typedef variant<int, int, int> one_type_variant_type;
         typedef compress_variant<one_type_variant_type>::type single_type;

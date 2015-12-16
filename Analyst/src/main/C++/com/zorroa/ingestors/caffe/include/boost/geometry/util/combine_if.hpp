@@ -1,11 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2015 Samuel Debionne, Grenoble, France.
-
-// This file was modified by Oracle on 2015.
-// Modifications copyright (c) 2015, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
+// Copyright (c) 2014 Samuel Debionne, Grenoble, France.
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
@@ -41,16 +36,16 @@ namespace util
     \ingroup utility
     \par Example
     \code
-        typedef boost::mpl::vector<boost::mpl::int_<0>, boost::mpl::int_<1> > types;
+        typedef mpl::vector<mpl::int_<0>, mpl::int_<1> > types;
         typedef combine_if<types, types, always<true_> >::type combinations;
-        typedef boost::mpl::vector<
-            pair<boost::mpl::int_<1>, boost::mpl::int_<1> >,
-            pair<boost::mpl::int_<1>, boost::mpl::int_<0> >,
-            pair<boost::mpl::int_<0>, boost::mpl::int_<1> >,
-            pair<boost::mpl::int_<0>, boost::mpl::int_<0> >        
+        typedef mpl::vector<
+            pair<mpl::int_<1>, mpl::int_<1> >,
+            pair<mpl::int_<1>, mpl::int_<0> >,
+            pair<mpl::int_<0>, mpl::int_<1> >,
+            pair<mpl::int_<0>, mpl::int_<0> >        
         > result_types;
         
-        BOOST_MPL_ASSERT(( boost::mpl::equal<combinations, result_types> ));
+        BOOST_MPL_ASSERT(( mpl::equal<combinations, result_types> ));
     \endcode
 */
 template <typename Sequence1, typename Sequence2, typename Pred>
@@ -61,29 +56,18 @@ struct combine_if
         template <typename Result, typename T>
         struct apply
         {
-            typedef typename boost::mpl::fold<Sequence2, Result,
-                boost::mpl::if_
+            typedef typename mpl::fold<Sequence2, Result,
+                mpl::if_
                 <
-                    boost::mpl::bind
-                        <
-                            typename boost::mpl::lambda<Pred>::type,
-                            T,
-                            boost::mpl::_2
-                        >,
-                    boost::mpl::insert
-                        <
-                            boost::mpl::_1, boost::mpl::pair<T, boost::mpl::_2>
-                        >,
-                    boost::mpl::_1
+                    mpl::bind<typename mpl::lambda<Pred>::type, T, mpl::_2>,
+                    mpl::insert<mpl::_1, mpl::pair<T, mpl::_2> >,
+                    mpl::_1
                 >
             >::type type;
         };
     };
 
-    typedef typename boost::mpl::fold
-        <
-            Sequence1, boost::mpl::set0<>, combine
-        >::type type;
+    typedef typename mpl::fold<Sequence1, mpl::set0<>, combine>::type type;
 };
 
 

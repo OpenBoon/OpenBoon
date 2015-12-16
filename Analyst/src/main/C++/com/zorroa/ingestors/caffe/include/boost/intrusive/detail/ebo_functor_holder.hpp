@@ -14,13 +14,11 @@
 #ifndef BOOST_INTRUSIVE_DETAIL_EBO_HOLDER_HPP
 #define BOOST_INTRUSIVE_DETAIL_EBO_HOLDER_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
+
+#include <boost/config.hpp>
 
 namespace boost {
 namespace intrusive {
@@ -183,7 +181,7 @@ class ebo_functor_holder_impl<T, false>
    public:
    ebo_functor_holder_impl()
    {}
-   explicit ebo_functor_holder_impl(const T& t)
+   ebo_functor_holder_impl(const T& t)
       :  T(t)
    {}
    template<class Arg1, class Arg2>
@@ -204,7 +202,7 @@ class ebo_functor_holder
 
    public:
    ebo_functor_holder(){}
-   explicit ebo_functor_holder(const T& t)
+   ebo_functor_holder(const T& t)
       :  super(t)
    {}
 

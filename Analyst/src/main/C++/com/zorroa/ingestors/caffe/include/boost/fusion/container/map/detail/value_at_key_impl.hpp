@@ -12,7 +12,6 @@
 #include <boost/type_traits/is_const.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/identity.hpp>
-#include <boost/utility/declval.hpp>
 
 namespace boost { namespace fusion
 {
@@ -30,7 +29,7 @@ namespace boost { namespace fusion
             struct apply
             {
                 typedef
-                    decltype(boost::declval<Sequence>().get_val(mpl::identity<Key>()))
+                    decltype(std::declval<Sequence>().get_val(mpl::identity<Key>()))
                 type;
             };
         };

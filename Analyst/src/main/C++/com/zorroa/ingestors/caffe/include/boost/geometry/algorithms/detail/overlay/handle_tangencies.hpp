@@ -28,11 +28,6 @@
 #include <boost/geometry/geometries/segment.hpp>
 
 
-// TODO: the approach below should be completely replaced by the new
-// get_left_turns, to keep the outgoing vector which has open space one of its
-// sides.
-
-
 namespace boost { namespace geometry
 {
 
@@ -80,12 +75,6 @@ private :
         point_type,
         RobustPolicy
     >::type robust_point_type;
-
-    inline bool default_order(Indexed const& left, Indexed const& right) const
-    {
-        // We've nothing to sort on. Take the indexes
-        return left.turn_index < right.turn_index;
-    }
 
     // Still necessary in some situations,
     // for example #case_102_multi, #case_107_multi, #case_recursive_boxes_3
@@ -347,7 +336,7 @@ private :
 #endif
         //debug_consider(0, left, right, header, false, "-> return", ret);
 
-        return default_order(left, right);
+        return left.turn_index < right.turn_index;
     }
 
 
@@ -380,17 +369,11 @@ private :
         // Both located at same side (#58, pie_21_7_21_0_3)
         if (side_ri_p * side_si_p == 1 && side_si_r != 0)
         {
+            // Take the most left one
             if (left.subject->operation == operation_union
                 && right.subject->operation == operation_union)
             {
-                int const side_ri_s = m_strategy.apply(si, sj, ri);
-                if (side_si_r == side_ri_s)
-                {
-                    return default_order(left, right);
-                }
-
-                // Take the most left one
-                bool const ret = side_si_r == 1;
+                bool ret = side_si_r == 1;
                 //debug_consider(0, left, right, header, false, "same side", ret);
                 return ret;
             }
@@ -424,12 +407,6 @@ private :
         // One coming from left (#90, #94, #95)
         if (side_si_r != 0 && (side_ri_p != 0 || side_si_p != 0))
         {
-            int const side_ri_s = m_strategy.apply(si, sj, ri);
-            if (side_si_r == side_ri_s)
-            {
-                return default_order(left, right);
-            }
-
             bool ret = false;
 
 #if BOOST_GEOMETRY_HANDLE_TANGENCIES_WITH_OVERLAP_INFO
@@ -487,7 +464,7 @@ private :
             return ! consider_iu_iu(right, left, header, true);
         }
 
-        return default_order(left, right);
+        return left.turn_index < right.turn_index;
     }
 
     inline bool consider_ii(Indexed const& left, Indexed const& right,
@@ -511,17 +488,19 @@ private :
             bool const ret = side_si_r != 1;
             return ret;
         }
-        return default_order(left, right);
+        return left.turn_index < right.turn_index;
     }
 
 
 public :
     inline bool operator()(Indexed const& left, Indexed const& right) const
     {
+        bool const default_order = left.turn_index < right.turn_index;
+
         if ((m_turn_points[left.turn_index].discarded || left.discarded)
             && (m_turn_points[right.turn_index].discarded || right.discarded))
         {
-            return default_order(left, right);
+            return default_order;
         }
         else if (m_turn_points[left.turn_index].discarded || left.discarded)
         {
@@ -546,7 +525,7 @@ public :
             // uu/uu, Order is arbitrary
             // Note: uu/uu is discarded now before so this point will
             //       not be reached.
-            return default_order(left, right);
+            return default_order;
         }
         else if (m_turn_points[left.turn_index].combination(operation_intersection, operation_union)
                 && m_turn_points[right.turn_index].combination(operation_intersection, operation_union))
@@ -608,7 +587,7 @@ public :
                 << std::endl;
 #endif
 
-        return default_order(left, right);
+        return default_order;
     }
 };
 
@@ -729,7 +708,7 @@ inline void handle_cluster(Iterator begin_cluster, Iterator end_cluster,
             for_operation, geometry1, geometry2, strategy);
 
 
-    // Then sort this range (discarded rows will be ordered first and will be removed in enrich_assign)
+    // Then sort this range (discard rows will be ordered first and will be removed in enrich_assign)
     std::sort(begin_cluster, end_cluster,
                 sort_in_cluster
                     <

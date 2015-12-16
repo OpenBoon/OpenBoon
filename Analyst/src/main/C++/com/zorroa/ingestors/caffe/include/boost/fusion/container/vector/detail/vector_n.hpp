@@ -19,16 +19,16 @@
     m##n(other.m##n)
 
 #define FUSION_VECTOR_CTOR_FORWARD(z, n, _)                                     \
-   m##n(BOOST_FUSION_FWD_ELEM(T##n, other.m##n))
+   m##n(std::forward<T##n>(other.m##n))
 
 #define FUSION_VECTOR_CTOR_ARG_FWD(z, n, _)                                     \
-   m##n(BOOST_FUSION_FWD_ELEM(U##n, _##n))
+   m##n(std::forward<U##n>(_##n))
 
 #define FUSION_VECTOR_MEMBER_DECL(z, n, _)                                      \
     T##n m##n;
 
 #define FUSION_VECTOR_MEMBER_FORWARD(z, n, _)                                   \
-   BOOST_FUSION_FWD_ELEM(U##n, _##n)
+   std::forward<U##n>(_##n)
 
 #define FUSION_VECTOR_MEMBER_ASSIGN(z, n, _)                                    \
     this->BOOST_PP_CAT(m, n) = vec.BOOST_PP_CAT(m, n);
@@ -41,11 +41,9 @@
         BOOST_PP_CAT(T, n)>(vec.BOOST_PP_CAT(m, n));
 
 #define FUSION_VECTOR_MEMBER_AT_IMPL(z, n, _)                                   \
-    BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED                              \
-        typename add_reference<T##n>::type                                      \
+    BOOST_FUSION_GPU_ENABLED typename add_reference<T##n>::type                 \
         at_impl(mpl::int_<n>) { return this->m##n; }                            \
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED                                    \
-        typename add_reference<typename add_const<T##n>::type>::type            \
+    BOOST_FUSION_GPU_ENABLED typename add_reference<typename add_const<T##n>::type>::type \
         at_impl(mpl::int_<n>) const { return this->m##n; }
 
 #define FUSION_VECTOR_MEMBER_ITER_DECL_VAR(z, n, _)                             \
@@ -61,7 +59,7 @@
     template <BOOST_PP_ENUM_PARAMS(N, typename T)>
     struct BOOST_PP_CAT(vector_data, N)
     {
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector_data, N)()
             : BOOST_PP_ENUM(N, FUSION_VECTOR_CTOR_DEFAULT_INIT, _) {}
 
@@ -71,51 +69,31 @@ FUSION_HASH if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) || \
     (defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES))
         template <BOOST_PP_ENUM_PARAMS(N, typename U)>
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
-        BOOST_PP_CAT(vector_data, N)(BOOST_PP_ENUM_BINARY_PARAMS(N, U, && arg)
+        BOOST_PP_CAT(vector_data, N)(BOOST_PP_ENUM_BINARY_PARAMS(N, U, && _)
           , typename boost::enable_if<is_convertible<U0, T0> >::type* /*dummy*/ = 0
         )
-            : BOOST_PP_ENUM(N, FUSION_VECTOR_CTOR_ARG_FWD, arg) {}
-
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+            : BOOST_PP_ENUM(N, FUSION_VECTOR_CTOR_ARG_FWD, _) {}
         BOOST_PP_CAT(vector_data, N)(
             BOOST_PP_CAT(vector_data, N)&& other)
-            : BOOST_PP_ENUM(N, FUSION_VECTOR_CTOR_FORWARD, arg) {}
+            : BOOST_PP_ENUM(N, FUSION_VECTOR_CTOR_FORWARD, _) {}
 #endif
 #if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
 FUSION_HASH endif
 #endif
 
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-    BOOST_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-    BOOST_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector_data, N)(
             BOOST_PP_ENUM_BINARY_PARAMS(
-                N, typename detail::call_param<T, >::type arg))
-            : BOOST_PP_ENUM(N, FUSION_VECTOR_CTOR_INIT, arg) {}
+                N, typename detail::call_param<T, >::type _))
+            : BOOST_PP_ENUM(N, FUSION_VECTOR_CTOR_INIT, _) {}
 
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector_data, N)(
             BOOST_PP_CAT(vector_data, N) const& other)
             : BOOST_PP_ENUM(N, FUSION_VECTOR_MEMBER_CTOR_INIT, _) {}
 
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector_data, N)&
         operator=(BOOST_PP_CAT(vector_data, N) const& vec)
         {
@@ -124,15 +102,6 @@ FUSION_HASH endif
         }
 
         template <typename Sequence>
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-    BOOST_CXX14_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-    BOOST_CXX14_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
         static BOOST_PP_CAT(vector_data, N)
         init_from_sequence(Sequence const& seq)
@@ -144,15 +113,6 @@ FUSION_HASH endif
         }
 
         template <typename Sequence>
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-    BOOST_CXX14_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-    BOOST_CXX14_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
         static BOOST_PP_CAT(vector_data, N)
         init_from_sequence(Sequence& seq)
@@ -180,26 +140,17 @@ FUSION_HASH endif
         typedef random_access_traversal_tag category;
         typedef mpl::int_<N> size;
 
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)() {}
 
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-    BOOST_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-    BOOST_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
 #if (N == 1)
         explicit
 #endif
         BOOST_PP_CAT(vector, N)(
             BOOST_PP_ENUM_BINARY_PARAMS(
-                N, typename detail::call_param<T, >::type arg))
-            : base_type(BOOST_PP_ENUM_PARAMS(N, arg)) {}
+                N, typename detail::call_param<T, >::type _))
+            : base_type(BOOST_PP_ENUM_PARAMS(N, _)) {}
 
 #if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
 FUSION_HASH if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
@@ -207,36 +158,27 @@ FUSION_HASH if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) || \
     (defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES))
         template <BOOST_PP_ENUM_PARAMS(N, typename U)>
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
 #if (N == 1)
         explicit
         BOOST_PP_CAT(vector, N)(U0&& _0
           , typename boost::enable_if<is_convertible<U0, T0> >::type* /*dummy*/ = 0
           )
-         : base_type(BOOST_FUSION_FWD_ELEM(U0, _0)) {}
+         : base_type(std::forward<U0>(_0)) {}
 #else
-        BOOST_PP_CAT(vector, N)(BOOST_PP_ENUM_BINARY_PARAMS(N, U, && arg))
-            : base_type(BOOST_PP_ENUM(N, FUSION_VECTOR_MEMBER_FORWARD, arg)) {}
+        BOOST_PP_CAT(vector, N)(BOOST_PP_ENUM_BINARY_PARAMS(N, U, && _))
+            : base_type(BOOST_PP_ENUM(N, FUSION_VECTOR_MEMBER_FORWARD, _)) {}
 #endif
 
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)(BOOST_PP_CAT(vector, N)&& rhs)
             : base_type(std::forward<base_type>(rhs)) {}
 
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)(BOOST_PP_CAT(vector, N) const& rhs)
             : base_type(static_cast<base_type const&>(rhs)) {}
 
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)&
         operator=(BOOST_PP_CAT(vector, N) const& vec)
         {
@@ -244,7 +186,7 @@ FUSION_HASH endif
             return *this;
         }
 
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)&
         operator=(BOOST_PP_CAT(vector, N)&& vec)
         {
@@ -257,34 +199,15 @@ FUSION_HASH endif
 #endif
 
         template <BOOST_PP_ENUM_PARAMS(N, typename U)>
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-    BOOST_CXX14_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-    BOOST_CXX14_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)(
             BOOST_PP_CAT(vector, N)<BOOST_PP_ENUM_PARAMS(N, U)> const& vec)
             : base_type(BOOST_PP_ENUM_PARAMS(N, vec.m)) {}
 
         template <typename Sequence>
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)(
             Sequence const& seq
-          , typename boost::enable_if<traits::is_sequence<Sequence> >::type* = 0
 #if (N == 1)
           , typename boost::disable_if<is_convertible<Sequence, T0> >::type* /*dummy*/ = 0
 #endif
@@ -292,19 +215,9 @@ FUSION_HASH endif
             : base_type(base_type::init_from_sequence(seq)) {}
 
         template <typename Sequence>
-#if defined(__WAVE__) && defined(BOOST_FUSION_CREATE_PREPROCESSED_FILES)
-FUSION_HASH if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-FUSION_HASH endif
-#else
-#if !defined(BOOST_CLANG)
-        BOOST_CXX14_CONSTEXPR
-#endif
-#endif
         BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)(
             Sequence& seq
-          , typename boost::enable_if<traits::is_sequence<Sequence> >::type* = 0
 #if (N == 1)
           , typename boost::disable_if<is_convertible<Sequence, T0> >::type* /*dummy*/ = 0
 #endif
@@ -312,7 +225,7 @@ FUSION_HASH endif
             : base_type(base_type::init_from_sequence(seq)) {}
 
         template <BOOST_PP_ENUM_PARAMS(N, typename U)>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         BOOST_PP_CAT(vector, N)&
         operator=(BOOST_PP_CAT(vector, N)<BOOST_PP_ENUM_PARAMS(N, U)> const& vec)
         {
@@ -321,7 +234,7 @@ FUSION_HASH endif
         }
 
         template <typename Sequence>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         typename boost::disable_if<is_convertible<Sequence, T0>, this_type&>::type
         operator=(Sequence const& seq)
         {
@@ -335,7 +248,7 @@ FUSION_HASH endif
         BOOST_PP_REPEAT(N, FUSION_VECTOR_MEMBER_AT_IMPL, _)
 
         template<typename I>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         typename add_reference<typename mpl::at<types, I>::type>::type
         at_impl(I)
         {
@@ -343,7 +256,7 @@ FUSION_HASH endif
         }
 
         template<typename I>
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         typename add_reference<typename add_const<typename mpl::at<types, I>::type>::type>::type
         at_impl(I) const
         {

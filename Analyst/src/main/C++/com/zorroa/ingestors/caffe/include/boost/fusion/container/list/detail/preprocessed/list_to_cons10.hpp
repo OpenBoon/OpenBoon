@@ -17,75 +17,75 @@ namespace boost { namespace fusion { namespace detail
         tail_list_to_cons;
         typedef typename tail_list_to_cons::type tail_type;
         typedef cons<head_type, tail_type> type;
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0)
+    call(typename detail::call_param<T0 >::type _0)
     {
-        return type(arg0
+        return type(_0 
             );
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1));
+        return type(_0 
+            , tail_list_to_cons::call(_1));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2 , typename detail::call_param<T3 >::type arg3)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2 , typename detail::call_param<T3 >::type _3)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2 , arg3));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2 , _3));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2 , typename detail::call_param<T3 >::type arg3 , typename detail::call_param<T4 >::type arg4)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2 , typename detail::call_param<T3 >::type _3 , typename detail::call_param<T4 >::type _4)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2 , arg3 , arg4));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2 , _3 , _4));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2 , typename detail::call_param<T3 >::type arg3 , typename detail::call_param<T4 >::type arg4 , typename detail::call_param<T5 >::type arg5)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2 , typename detail::call_param<T3 >::type _3 , typename detail::call_param<T4 >::type _4 , typename detail::call_param<T5 >::type _5)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2 , arg3 , arg4 , arg5));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2 , _3 , _4 , _5));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2 , typename detail::call_param<T3 >::type arg3 , typename detail::call_param<T4 >::type arg4 , typename detail::call_param<T5 >::type arg5 , typename detail::call_param<T6 >::type arg6)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2 , typename detail::call_param<T3 >::type _3 , typename detail::call_param<T4 >::type _4 , typename detail::call_param<T5 >::type _5 , typename detail::call_param<T6 >::type _6)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2 , arg3 , arg4 , arg5 , arg6));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2 , _3 , _4 , _5 , _6));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2 , typename detail::call_param<T3 >::type arg3 , typename detail::call_param<T4 >::type arg4 , typename detail::call_param<T5 >::type arg5 , typename detail::call_param<T6 >::type arg6 , typename detail::call_param<T7 >::type arg7)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2 , typename detail::call_param<T3 >::type _3 , typename detail::call_param<T4 >::type _4 , typename detail::call_param<T5 >::type _5 , typename detail::call_param<T6 >::type _6 , typename detail::call_param<T7 >::type _7)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2 , arg3 , arg4 , arg5 , arg6 , arg7));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2 , _3 , _4 , _5 , _6 , _7));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2 , typename detail::call_param<T3 >::type arg3 , typename detail::call_param<T4 >::type arg4 , typename detail::call_param<T5 >::type arg5 , typename detail::call_param<T6 >::type arg6 , typename detail::call_param<T7 >::type arg7 , typename detail::call_param<T8 >::type arg8)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2 , typename detail::call_param<T3 >::type _3 , typename detail::call_param<T4 >::type _4 , typename detail::call_param<T5 >::type _5 , typename detail::call_param<T6 >::type _6 , typename detail::call_param<T7 >::type _7 , typename detail::call_param<T8 >::type _8)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2 , arg3 , arg4 , arg5 , arg6 , arg7 , arg8));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2 , _3 , _4 , _5 , _6 , _7 , _8));
     }
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
-    call(typename detail::call_param<T0 >::type arg0 , typename detail::call_param<T1 >::type arg1 , typename detail::call_param<T2 >::type arg2 , typename detail::call_param<T3 >::type arg3 , typename detail::call_param<T4 >::type arg4 , typename detail::call_param<T5 >::type arg5 , typename detail::call_param<T6 >::type arg6 , typename detail::call_param<T7 >::type arg7 , typename detail::call_param<T8 >::type arg8 , typename detail::call_param<T9 >::type arg9)
+    call(typename detail::call_param<T0 >::type _0 , typename detail::call_param<T1 >::type _1 , typename detail::call_param<T2 >::type _2 , typename detail::call_param<T3 >::type _3 , typename detail::call_param<T4 >::type _4 , typename detail::call_param<T5 >::type _5 , typename detail::call_param<T6 >::type _6 , typename detail::call_param<T7 >::type _7 , typename detail::call_param<T8 >::type _8 , typename detail::call_param<T9 >::type _9)
     {
-        return type(arg0
-            , tail_list_to_cons::call(arg1 , arg2 , arg3 , arg4 , arg5 , arg6 , arg7 , arg8 , arg9));
+        return type(_0 
+            , tail_list_to_cons::call(_1 , _2 , _3 , _4 , _5 , _6 , _7 , _8 , _9));
     }
     };
     template <>

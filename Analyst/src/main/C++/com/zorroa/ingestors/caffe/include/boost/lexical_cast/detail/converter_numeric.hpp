@@ -31,7 +31,6 @@
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
 #include <boost/type_traits/is_base_of.hpp>
-#include <boost/type_traits/is_float.hpp>
 
 #include <boost/numeric/conversion/cast.hpp>
 

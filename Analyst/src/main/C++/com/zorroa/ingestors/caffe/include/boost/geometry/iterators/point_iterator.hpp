@@ -11,7 +11,6 @@
 #define BOOST_GEOMETRY_ITERATORS_POINT_ITERATOR_HPP
 
 #include <boost/assert.hpp>
-#include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/mpl/assert.hpp>
 #include <boost/type_traits/is_convertible.hpp>
 #include <boost/range.hpp>
@@ -246,26 +245,33 @@ struct points_end<MultiPolygon, multi_polygon_tag>
 // MK:: need to add doc here
 template <typename Geometry>
 class point_iterator
-    : public boost::iterator_adaptor
-        <
-            point_iterator<Geometry>,
-            typename detail::point_iterator::iterator_type<Geometry>::type
-        >
+    : public detail::point_iterator::iterator_type<Geometry>::type
 {
 private:
+    typedef typename detail::point_iterator::iterator_type<Geometry>::type base;
+
+    inline base* base_ptr()
+    {
+        return this;
+    }
+
+    inline base const* base_ptr() const
+    {
+        return this;
+    }
+
     template <typename OtherGeometry> friend class point_iterator;
     template <typename G> friend inline point_iterator<G> points_begin(G&);
     template <typename G> friend inline point_iterator<G> points_end(G&);
 
-    inline point_iterator(typename point_iterator::base_type const& base_it)
-        : point_iterator::iterator_adaptor_(base_it) {}
+    inline point_iterator(base const& base_it) : base(base_it) {}
 
 public:
     inline point_iterator() {}
 
     template <typename OtherGeometry>
     inline point_iterator(point_iterator<OtherGeometry> const& other)
-        : point_iterator::iterator_adaptor_(other.base())
+        : base(*other.base_ptr())
     {
         static const bool is_conv
             = boost::is_convertible<

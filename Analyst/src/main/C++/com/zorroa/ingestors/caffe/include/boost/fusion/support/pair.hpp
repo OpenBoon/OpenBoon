@@ -16,7 +16,6 @@
 #include <boost/config.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/is_convertible.hpp>
-#include <boost/type_traits/is_lvalue_reference.hpp>
 
 #if defined (BOOST_MSVC)
 #  pragma warning(push)
@@ -29,47 +28,48 @@ namespace boost { namespace fusion
     template <typename First, typename Second>
     struct pair
     {
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair()
             : second() {}
 
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair(pair const& rhs)
             : second(rhs.second) {}
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair(pair&& rhs)
-            : second(BOOST_FUSION_FWD_ELEM(Second, rhs.second)) {}
+            : second(std::forward<Second>(rhs.second)) {}
 #endif
 
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair(typename detail::call_param<Second>::type val)
             : second(val) {}
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+
         template <typename Second2>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair(Second2&& val
-          , typename boost::disable_if<is_lvalue_reference<Second2> >::type* /* dummy */ = 0
           , typename boost::enable_if<is_convertible<Second2, Second> >::type* /*dummy*/ = 0
-        ) : second(BOOST_FUSION_FWD_ELEM(Second, val)) {}
+        ) : second(std::forward<Second2>(val)) {}
+
 #endif
 
         template <typename Second2>
-        BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair(pair<First, Second2> const& rhs)
             : second(rhs.second) {}
 
         template <typename Second2>
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair& operator=(pair<First, Second2> const& rhs)
         {
             second = rhs.second;
             return *this;
         }
 
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair& operator=(pair const& rhs)
         {
             second = rhs.second;
@@ -77,10 +77,10 @@ namespace boost { namespace fusion
         }
 
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-        BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+        BOOST_FUSION_GPU_ENABLED
         pair& operator=(pair&& rhs)
         {
-            second = BOOST_FUSION_FWD_ELEM(Second, rhs.second);
+            second = std::forward<Second>(rhs.second);
             return *this;
         }
 #endif
@@ -113,7 +113,7 @@ namespace boost { namespace fusion
     }
 
     template <typename First, typename Second>
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline typename result_of::make_pair<First,Second>::type
     make_pair(Second const& val)
     {
@@ -137,7 +137,7 @@ namespace boost { namespace fusion
     }
 
     template <typename First, typename SecondL, typename SecondR>
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline bool
     operator==(pair<First, SecondL> const& l, pair<First, SecondR> const& r)
     {
@@ -145,7 +145,7 @@ namespace boost { namespace fusion
     }
 
     template <typename First, typename SecondL, typename SecondR>
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline bool
     operator!=(pair<First, SecondL> const& l, pair<First, SecondR> const& r)
     {
@@ -153,7 +153,7 @@ namespace boost { namespace fusion
     }
 
     template <typename First, typename SecondL, typename SecondR>
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline bool
     operator<(pair<First, SecondL> const& l, pair<First, SecondR> const& r)
     {

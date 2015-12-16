@@ -13,11 +13,7 @@
 #ifndef BOOST_INTRUSIVE_COMMON_SLIST_ALGORITHMS_HPP
 #define BOOST_INTRUSIVE_COMMON_SLIST_ALGORITHMS_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -147,7 +143,7 @@ class common_slist_algorithms
             }
             BOOST_CATCH(...){
                node_traits::set_next(last_to_remove, new_f);
-               BOOST_RETHROW;
+               throw;
             }
             BOOST_CATCH_END
             node_traits::set_next(last_to_remove, new_f);

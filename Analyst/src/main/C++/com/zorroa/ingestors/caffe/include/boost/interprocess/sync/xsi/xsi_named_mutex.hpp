@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_XSI_XSI_NAMED_MUTEX_HPP
 #define BOOST_INTERPROCESS_XSI_XSI_NAMED_MUTEX_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -34,13 +30,11 @@
 #include <boost/interprocess/interprocess_fwd.hpp>
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/sync/xsi/basic_xsi_semaphore.hpp>
-#include <boost/interprocess/detail/simple_swap.hpp>
-
 #include <cstddef>
 #include <boost/assert.hpp>
 #include <boost/cstdint.hpp>
 #include <string>
-
+#include <boost/assert.hpp>
 
 //!\file
 //!Describes a class representing a xsi-based named_mutex.
@@ -148,10 +142,10 @@ inline const char *xsi_named_mutex::get_path() const
 
 inline void xsi_named_mutex::swap(xsi_named_mutex &other)
 {
-   (simple_swap)(m_key,   other.m_key);
-   (simple_swap)(m_id,    other.m_id);
-   (simple_swap)(m_semid, other.m_semid);
-   (simple_swap)(m_perm,  other.m_perm);
+   std::swap(m_key,   other.m_key);
+   std::swap(m_id,    other.m_id);
+   std::swap(m_semid, other.m_semid);
+   std::swap(m_perm,  other.m_perm);
    m_path.swap(other.m_path);
 }
 

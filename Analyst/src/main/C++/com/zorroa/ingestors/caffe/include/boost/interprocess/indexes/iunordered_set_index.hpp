@@ -11,25 +11,20 @@
 #ifndef BOOST_INTERPROCESS_IUNORDERED_SET_INDEX_HPP
 #define BOOST_INTERPROCESS_IUNORDERED_SET_INDEX_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
 #include <boost/interprocess/detail/config_begin.hpp>
 #include <boost/interprocess/detail/workaround.hpp>
 
+#include <functional>
+#include <utility>
+
 #include <boost/interprocess/detail/utilities.hpp>
-#include <boost/interprocess/allocators/allocator.hpp>
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/intrusive/unordered_set.hpp>
-#include <boost/intrusive/detail/minimal_pair_header.hpp>
-#include <boost/intrusive/detail/minimal_less_equal_header.hpp>   //std::less
-#include <boost/container/detail/minimal_char_traits_header.hpp>  //std::char_traits
-#include <boost/container/detail/placement_new.hpp>
+#include <boost/interprocess/allocators/allocator.hpp>
 
 //!\file
 //!Describes index adaptor of boost::intrusive::unordered_set container, to use it
@@ -173,7 +168,7 @@ class iunordered_set_index
       bucket_ptr buckets = alloc.allocate(num);
       bucket_ptr buckets_init = buckets;
       for(size_type i = 0; i < num; ++i){
-         ::new(to_raw_pointer(buckets_init++), boost_container_new_t())bucket_type();
+         new(to_raw_pointer(buckets_init++))bucket_type();
       }
       return buckets;
    }
@@ -184,9 +179,9 @@ class iunordered_set_index
    {
       if(old_size <= new_size )
          return old_size;
-      size_type received_size = new_size;
+      size_type received_size;
       if(!alloc.allocation_command
-         (boost::interprocess::try_shrink_in_place | boost::interprocess::nothrow_allocation, old_size, received_size, buckets)){
+         (boost::interprocess::try_shrink_in_place | boost::interprocess::nothrow_allocation, old_size, new_size, received_size, buckets).first){
          return old_size;
       }
 
@@ -198,7 +193,7 @@ class iunordered_set_index
       }
 
       bucket_ptr shunk_p = alloc.allocation_command
-         (boost::interprocess::shrink_in_place | boost::interprocess::nothrow_allocation, received_size, received_size, buckets);
+         (boost::interprocess::shrink_in_place | boost::interprocess::nothrow_allocation, received_size, received_size, received_size, buckets).first;
       BOOST_ASSERT(buckets == shunk_p); (void)shunk_p;
 
       bucket_ptr buckets_init = buckets + received_size;
@@ -212,23 +207,24 @@ class iunordered_set_index
       ( bucket_ptr old_buckets, const size_type old_num
       , allocator_type &alloc,  const size_type new_num)
    {
-      size_type received_size = new_num;
-      bucket_ptr reuse(old_buckets);
-      bucket_ptr ret = alloc.allocation_command
-            (boost::interprocess::expand_fwd | boost::interprocess::allocate_new, new_num, received_size, reuse);
-      if(ret == old_buckets){
+      size_type received_size;
+      std::pair<bucket_ptr, bool> ret =
+         alloc.allocation_command
+            (boost::interprocess::expand_fwd | boost::interprocess::allocate_new, new_num, new_num, received_size, old_buckets);
+      if(ret.first == old_buckets){
          bucket_ptr buckets_init = old_buckets + old_num;
          for(size_type i = 0; i < (new_num - old_num); ++i){
-            ::new(to_raw_pointer(buckets_init++), boost_container_new_t())bucket_type();
+            new(to_raw_pointer(buckets_init++))bucket_type();
          }
       }
       else{
-         bucket_ptr buckets_init = ret;
+         bucket_ptr buckets_init = ret.first;
          for(size_type i = 0; i < new_num; ++i){
-            ::new(to_raw_pointer(buckets_init++), boost_container_new_t())bucket_type();
+            new(to_raw_pointer(buckets_init++))bucket_type();
          }
       }
-      return ret;
+
+      return ret.first;
    }
 
    static void destroy_buckets

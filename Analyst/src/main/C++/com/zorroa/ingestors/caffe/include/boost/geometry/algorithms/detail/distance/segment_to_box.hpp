@@ -28,7 +28,6 @@
 #include <boost/geometry/core/tags.hpp>
 
 #include <boost/geometry/util/calculation_type.hpp>
-#include <boost/geometry/util/condition.hpp>
 #include <boost/geometry/util/math.hpp>
 
 #include <boost/geometry/strategies/distance.hpp>
@@ -152,7 +151,7 @@ public:
             }
         }
 
-        if (BOOST_GEOMETRY_CONDITION(is_comparable<Strategy>::value))
+        if (is_comparable<Strategy>::value)
         {
             return cd[imin];
         }

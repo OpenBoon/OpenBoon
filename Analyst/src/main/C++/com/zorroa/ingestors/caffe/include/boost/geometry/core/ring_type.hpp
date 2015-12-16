@@ -1,13 +1,8 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
-// Copyright (c) 2008-2015 Bruno Lalande, Paris, France.
-// Copyright (c) 2009-2015 Mateusz Loskot, London, UK.
-
-// This file was modified by Oracle on 2015.
-// Modifications copyright (c) 2015, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
+// Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
+// Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
@@ -100,7 +95,7 @@ struct ring_return_type<polygon_tag, Polygon>
 {
     typedef typename boost::remove_const<Polygon>::type nc_polygon_type;
 
-    typedef typename boost::mpl::if_
+    typedef typename mpl::if_
         <
             boost::is_const<Polygon>,
             typename traits::ring_const_type<nc_polygon_type>::type,
@@ -115,7 +110,7 @@ struct ring_return_type<multi_linestring_tag, MultiLinestring>
     typedef typename ring_return_type
         <
             linestring_tag,
-            typename boost::mpl::if_
+            typename mpl::if_
                 <
                     boost::is_const<MultiLinestring>,
                     typename boost::range_value<MultiLinestring>::type const,
@@ -131,7 +126,7 @@ struct ring_return_type<multi_polygon_tag, MultiPolygon>
     typedef typename ring_return_type
         <
             polygon_tag,
-            typename boost::mpl::if_
+            typename mpl::if_
                 <
                     boost::is_const<MultiPolygon>,
                     typename boost::range_value<MultiPolygon>::type const,

@@ -1,6 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2015, Oracle and/or its affiliates.
+// Copyright (c) 2014, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 
@@ -9,11 +9,6 @@
 
 #ifndef BOOST_GEOMETRY_ALGORITHMS_DETAIL_IS_VALID_HAS_VALID_SELF_TURNS_HPP
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_IS_VALID_HAS_VALID_SELF_TURNS_HPP
-
-#include <vector>
-
-#include <boost/assert.hpp>
-#include <boost/range.hpp>
 
 #include <boost/geometry/core/point_type.hpp>
 
@@ -26,6 +21,7 @@
 #include <boost/geometry/algorithms/detail/overlay/self_turn_points.hpp>
 
 #include <boost/geometry/algorithms/detail/is_valid/is_acceptable_turn.hpp>
+
 
 namespace boost { namespace geometry
 {
@@ -68,10 +64,8 @@ public:
         > turn_type;
 
     // returns true if all turns are valid
-    template <typename Turns, typename VisitPolicy>
-    static inline bool apply(Geometry const& geometry,
-                             Turns& turns,
-                             VisitPolicy& visitor)
+    template <typename Turns>
+    static inline bool apply(Geometry const& geometry, Turns& turns)
     {
         rescale_policy_type robust_policy
             = geometry::get_rescale_policy<rescale_policy_type>(geometry);
@@ -86,23 +80,7 @@ public:
                                           turns,
                                           interrupt_policy);
 
-        if (interrupt_policy.has_intersections)
-        {
-            BOOST_ASSERT(! boost::empty(turns));
-            return visitor.template apply<failure_self_intersections>(turns);
-        }
-        else
-        {
-            return visitor.template apply<no_failure>();
-        }
-    }
-
-    // returns true if all turns are valid
-    template <typename VisitPolicy>
-    static inline bool apply(Geometry const& geometry, VisitPolicy& visitor)
-    {
-        std::vector<turn_type> turns;
-        return apply(geometry, turns, visitor);
+        return !interrupt_policy.has_intersections;
     }
 };
 

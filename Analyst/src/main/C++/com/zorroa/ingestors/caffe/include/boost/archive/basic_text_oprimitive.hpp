@@ -61,6 +61,8 @@ namespace std{
 namespace boost {
 namespace archive {
 
+class save_access;
+
 /////////////////////////////////////////////////////////////////////////
 // class basic_text_oprimitive - output of prmitives to stream
 template<class OStream>

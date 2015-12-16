@@ -155,7 +155,7 @@ struct indexed_access<index::detail::bounded_view<Segment, Box, Tag, box_tag>,
 
     //static inline void set(box_type & b, coordinate_type const& value)
     //{
-    //    BOOST_GEOMETRY_INDEX_ASSERT(false, "unable to modify a box through view");
+    //    BOOST_ASSERT(false);
     //}
 };
 
@@ -173,7 +173,7 @@ struct indexed_access<index::detail::bounded_view<Segment, Box, Tag, box_tag>,
 
     //static inline void set(box_type & b, coordinate_type const& value)
     //{
-    //    BOOST_GEOMETRY_INDEX_ASSERT(false, "unable to modify a box through view");
+    //    BOOST_ASSERT(false);
     //}
 };
 

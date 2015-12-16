@@ -10,22 +10,19 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef BOOST_INTRUSIVE_DETAIL_REVERSE_ITERATOR_HPP
-#define BOOST_INTRUSIVE_DETAIL_REVERSE_ITERATOR_HPP
+#ifndef BOOST_INTRUSIVE_DETAIL_ITERATOR_HPP
+#define BOOST_INTRUSIVE_DETAIL_ITERATOR_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
 #include <boost/intrusive/detail/config_begin.hpp>
-#include <boost/intrusive/detail/iterator.hpp>
+#include <boost/intrusive/detail/iiterator.hpp>
 
 namespace boost {
 namespace intrusive {
+namespace detail {
 
 template<class It>
 class reverse_iterator
@@ -63,7 +60,7 @@ class reverse_iterator
    {  It temp(m_current);   --temp; return temp.operator->(); }
 
    reference operator[](difference_type off) const
-   {  return this->m_current[-off-1];  }
+   {  return this->m_current[-off];  }
 
    reverse_iterator& operator++()
    {  --m_current;   return *this;   }
@@ -133,9 +130,10 @@ class reverse_iterator
    It m_current;   // the wrapped iterator
 };
 
-} //namespace intrusive {
-} //namespace boost {
+} //namespace detail
+} //namespace intrusive
+} //namespace boost
 
 #include <boost/intrusive/detail/config_end.hpp>
 
-#endif //BOOST_INTRUSIVE_DETAIL_REVERSE_ITERATOR_HPP
+#endif //BOOST_INTRUSIVE_DETAIL_ITERATOR_HPP

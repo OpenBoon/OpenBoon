@@ -235,16 +235,14 @@ namespace boost { namespace fusion
         template <typename Stream, typename Char, typename Traits>              \
         Stream& operator>>(Stream& s, const name##_type<Char,Traits>& m)        \
         {                                                                       \
-            string_ios_manip<name##_tag, Stream> manip(s);                      \
-            manip.set(m.data);                                                  \
+            string_ios_manip<name##_tag, Stream>(s).set(m.data);                \
             return s;                                                           \
         }                                                                       \
                                                                                 \
         template <typename Stream, typename Char, typename Traits>              \
         Stream& operator<<(Stream& s, const name##_type<Char,Traits>& m)        \
         {                                                                       \
-            string_ios_manip<name##_tag, Stream> manip(s);                      \
-            manip.set(m.data);                                                  \
+            string_ios_manip<name##_tag, Stream>(s).set(m.data);                \
             return s;                                                           \
         }                                                                       \
     }                                                                           \

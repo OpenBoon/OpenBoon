@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_MAPPED_REGION_HPP
 #define BOOST_INTERPROCESS_MAPPED_REGION_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -30,8 +26,6 @@
 #include <string>
 #include <boost/cstdint.hpp>
 #include <boost/assert.hpp>
-#include <boost/move/adl_move_swap.hpp>
-
 //Some Unixes use caddr_t instead of void * in madvise
 //              SunOS                                 Tru64                               HP-UX                    AIX
 #if defined(sun) || defined(__sun) || defined(__osf__) || defined(__osf) || defined(_hpux) || defined(hpux) || defined(_AIX)
@@ -859,14 +853,14 @@ inline std::size_t mapped_region::get_page_size()
 
 inline void mapped_region::swap(mapped_region &other)
 {
-   ::boost::adl_move_swap(this->m_base, other.m_base);
-   ::boost::adl_move_swap(this->m_size, other.m_size);
-   ::boost::adl_move_swap(this->m_page_offset, other.m_page_offset);
-   ::boost::adl_move_swap(this->m_mode,  other.m_mode);
+   ipcdetail::do_swap(this->m_base, other.m_base);
+   ipcdetail::do_swap(this->m_size, other.m_size);
+   ipcdetail::do_swap(this->m_page_offset, other.m_page_offset);
+   ipcdetail::do_swap(this->m_mode,  other.m_mode);
    #if defined (BOOST_INTERPROCESS_WINDOWS)
-   ::boost::adl_move_swap(this->m_file_or_mapping_hnd, other.m_file_or_mapping_hnd);
+   ipcdetail::do_swap(this->m_file_or_mapping_hnd, other.m_file_or_mapping_hnd);
    #else
-   ::boost::adl_move_swap(this->m_is_xsi, other.m_is_xsi);
+   ipcdetail::do_swap(this->m_is_xsi, other.m_is_xsi);
    #endif
 }
 

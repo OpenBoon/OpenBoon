@@ -29,11 +29,7 @@
 
 #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 

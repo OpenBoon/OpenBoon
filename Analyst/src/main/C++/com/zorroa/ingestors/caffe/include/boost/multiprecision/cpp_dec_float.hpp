@@ -165,7 +165,7 @@ private:
 
 public:
    // Constructors
-   cpp_dec_float() BOOST_NOEXCEPT_IF(noexcept(array_type())) :
+   cpp_dec_float() :
       data(),
       exp (static_cast<ExponentType>(0)),
       neg (false),
@@ -210,7 +210,7 @@ public:
             from_unsigned_long_long(i);
       }
 
-   cpp_dec_float(const cpp_dec_float& f) BOOST_NOEXCEPT_IF(noexcept(array_type(std::declval<const array_type&>()))) :
+   cpp_dec_float(const cpp_dec_float& f) :
       data (f.data),
       exp (f.exp),
       neg (f.neg),
@@ -326,22 +326,14 @@ public:
    static const cpp_dec_float& long_double_min()
    {
       init.do_nothing();
-#ifdef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
-      static cpp_dec_float val(static_cast<long double>((std::numeric_limits<double>::min)()));
-#else
       static cpp_dec_float val((std::numeric_limits<long double>::min)());
-#endif
       return val;
    }
 
    static const cpp_dec_float& long_double_max()
    {
       init.do_nothing();
-#ifdef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
-      static cpp_dec_float val(static_cast<long double>((std::numeric_limits<double>::max)()));
-#else
       static cpp_dec_float val((std::numeric_limits<long double>::max)());
-#endif
       return val;
    }
 
@@ -374,7 +366,7 @@ public:
    }
 
    // Basic operations.
-   cpp_dec_float& operator=(const cpp_dec_float& v) BOOST_NOEXCEPT_IF(noexcept(std::declval<array_type&>() = std::declval<const array_type&>()))
+   cpp_dec_float& operator=(const cpp_dec_float& v)
    {
       data = v.data;
       exp = v.exp;
@@ -1775,7 +1767,7 @@ std::string cpp_dec_float<Digits10, ExponentType, Allocator>::str(boost::intmax_
       // We only get here if the output format is "fixed" and we just need to
       // round the first non-zero digit.
       number_of_digits -= my_exp + 1; // reset to original value
-      str.insert(static_cast<std::string::size_type>(0), std::string::size_type(number_of_digits), '0');
+      str.insert(0, std::string::size_type(number_of_digits), '0');
       have_leading_zeros = true;
    }
 
@@ -1783,7 +1775,7 @@ std::string cpp_dec_float<Digits10, ExponentType, Allocator>::str(boost::intmax_
    {
       str = "0";
       if(isneg())
-         str.insert(static_cast<std::string::size_type>(0), 1, '-');
+         str.insert(0, 1, '-');
       boost::multiprecision::detail::format_float_string(str, 0, number_of_digits - my_exp - 1, f, this->iszero());
       return str;
    }
@@ -1874,7 +1866,7 @@ std::string cpp_dec_float<Digits10, ExponentType, Allocator>::str(boost::intmax_
    }
 
    if(isneg())
-      str.insert(static_cast<std::string::size_type>(0), 1, '-');
+      str.insert(0, 1, '-');
 
    boost::multiprecision::detail::format_float_string(str, my_exp, org_digits, f, this->iszero());
    return str;
@@ -1971,7 +1963,7 @@ bool cpp_dec_float<Digits10, ExponentType, Allocator>::rd_string(const char* con
       // Remove all trailing insignificant zeros.
       const std::string::const_reverse_iterator rit_non_zero = std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
 
-      if(rit_non_zero != static_cast<std::string::const_reverse_iterator>(str.rbegin()))
+      if(rit_non_zero != str.rbegin())
       {
          const std::string::size_type ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rit_non_zero);
          str.erase(str.begin() + ofs, str.end());
@@ -2001,7 +1993,7 @@ bool cpp_dec_float<Digits10, ExponentType, Allocator>::rd_string(const char* con
 
          // Bring one single digit into the mantissa and adjust the exponent accordingly.
          str.erase(str.begin(), it_non_zero);
-         str.insert(static_cast<std::string::size_type>(1u), ".");
+         str.insert(static_cast<std::size_t>(1u), ".");
          exp -= static_cast<ExponentType>(delta_exp + 1u);
       }
    }
@@ -2037,9 +2029,9 @@ bool cpp_dec_float<Digits10, ExponentType, Allocator>::rd_string(const char* con
    // Do the decimal point shift.
    if(n_shift != static_cast<std::size_t>(0u))
    {
-      str.insert(static_cast<std::string::size_type>(pos_plus_one + n_shift), ".");
+      str.insert(static_cast<std::size_t>(pos_plus_one + n_shift), ".");
 
-      str.erase(pos, static_cast<std::string::size_type>(1u));
+      str.erase(pos, static_cast<std::size_t>(1u));
 
       exp -= static_cast<ExponentType>(n_shift);
    }
@@ -2232,8 +2224,6 @@ cpp_dec_float<Digits10, ExponentType, Allocator>& cpp_dec_float<Digits10, Expone
    *this = zero();
 
    f = frexp(a, &e);
-   // See https://svn.boost.org/trac/boost/ticket/10924 for an example of why this may go wrong:
-   BOOST_ASSERT((boost::math::isfinite)(f));
 
    static const int shift = std::numeric_limits<int>::digits - 1;
 
@@ -2241,7 +2231,6 @@ cpp_dec_float<Digits10, ExponentType, Allocator>& cpp_dec_float<Digits10, Expone
    {
       // extract int sized bits from f:
       f = ldexp(f, shift);
-      BOOST_ASSERT((boost::math::isfinite)(f));
       term = floor(f);
       e -= shift;
       *this *= pow2(shift);

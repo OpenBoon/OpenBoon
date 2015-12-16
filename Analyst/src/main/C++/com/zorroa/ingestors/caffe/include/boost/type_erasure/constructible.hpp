@@ -13,7 +13,6 @@
 #ifndef BOOST_TYPE_ERASURE_CONSTRUCTIBLE_HPP_INCLUDED
 #define BOOST_TYPE_ERASURE_CONSTRUCTIBLE_HPP_INCLUDED
 
-#include <boost/detail/workaround.hpp>
 #include <boost/preprocessor/iteration/iterate.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
@@ -61,9 +60,7 @@ struct vtable_adapter;
 template<class Sig>
 struct constructible {};
 
-#elif !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && \
-    !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) && \
-    !BOOST_WORKAROUND(BOOST_MSVC, == 1800)
+#elif !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 
 template<class R, class... T>
 struct constructible<R(T...)>

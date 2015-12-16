@@ -56,13 +56,13 @@ struct indexed_turn_operation
     TurnOperation const* subject;
 
     inline indexed_turn_operation(std::size_t ti, std::size_t oi,
-                TurnOperation const& sub,
+                TurnOperation const& s,
                 segment_identifier const& oid)
         : turn_index(ti)
         , operation_index(oi)
         , discarded(false)
         , other_seg_id(&oid)
-        , subject(boost::addressof(sub))
+        , subject(&s)
     {}
 
 };
@@ -114,12 +114,6 @@ private :
 
     typedef typename geometry::point_type<Geometry1>::type point_type;
 
-    inline bool default_order(Indexed const& left, Indexed const& right) const
-    {
-        // We've nothing to sort on. Take the indexes
-        return left.turn_index < right.turn_index;
-    }
-
     inline bool consider_relative_order(Indexed const& left,
                     Indexed const& right) const
     {
@@ -154,12 +148,7 @@ private :
 
         // If they both turn left: the most left as last
         // If they both turn right: this is not relevant, but take also here most left
-        if (side_rj_s != side_sj_r)
-        {
-            return side_rj_s < side_sj_r;
-        }
-
-        return default_order(left, right);
+        return side_rj_s < side_sj_r;
     }
 
 public :
@@ -168,32 +157,30 @@ public :
     // but to the "indexed_turn_operation"
     inline bool operator()(Indexed const& left, Indexed const& right) const
     {
-        if (! (left.subject->seg_id == right.subject->seg_id))
+        segment_identifier const& sl = left.subject->seg_id;
+        segment_identifier const& sr = right.subject->seg_id;
+
+        if (sl == sr)
         {
-            return left.subject->seg_id < right.subject->seg_id;
+            // Both left and right are located on the SAME segment.
+            if (left.subject->fraction == right.subject->fraction)
+            {
+                // First check "real" intersection (crosses)
+                // -> distance zero due to precision, solve it by sorting
+                if (m_turn_points[left.turn_index].method == method_crosses
+                    && m_turn_points[right.turn_index].method == method_crosses)
+                {
+                    return consider_relative_order(left, right);
+                }
+
+                // If that is not the case, cluster it later on.
+                // Indicate that this is necessary.
+                *m_clustered = true;
+            }
         }
-
-        // Both left and right are located on the SAME segment.
-
-        if (! (left.subject->fraction == right.subject->fraction))
-        {
-            return left.subject->fraction < right.subject->fraction;
-        }
-
-
-        // First check "real" intersection (crosses)
-        // -> distance zero due to precision, solve it by sorting
-        if (m_turn_points[left.turn_index].method == method_crosses
-            && m_turn_points[right.turn_index].method == method_crosses)
-        {
-            return consider_relative_order(left, right);
-        }
-
-        // If that is not the case, cluster it later on.
-        // Indicate that this is necessary.
-        *m_clustered = true;
-
-        return default_order(left, right);
+        return sl == sr
+            ? left.subject->fraction < right.subject->fraction
+            : sl < sr;
     }
 };
 

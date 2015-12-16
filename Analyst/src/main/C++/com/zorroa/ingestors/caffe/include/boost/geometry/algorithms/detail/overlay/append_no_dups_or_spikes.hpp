@@ -20,7 +20,6 @@
 #include <boost/geometry/algorithms/detail/point_is_spike_or_equal.hpp>
 #include <boost/geometry/algorithms/detail/equals/point_point.hpp>
 
-#include <boost/geometry/util/condition.hpp>
 #include <boost/geometry/util/range.hpp>
 
 
@@ -43,7 +42,7 @@ inline bool points_equal_or_close(Point1 const& point1,
         return true;
     }
 
-    if (BOOST_GEOMETRY_CONDITION(! RobustPolicy::enabled))
+    if (! RobustPolicy::enabled)
     {
         return false;
     }
@@ -128,7 +127,7 @@ inline void clean_closing_dups_and_spikes(Range& range,
         iterator_type first = boost::begin(range);
         iterator_type second = first + 1;
         iterator_type ultimate = boost::end(range) - 1;
-        if (BOOST_GEOMETRY_CONDITION(closed))
+        if (closed)
         {
             ultimate--;
         }
@@ -138,7 +137,7 @@ inline void clean_closing_dups_and_spikes(Range& range,
         if (point_is_spike_or_equal(*second, *ultimate, *first, robust_policy))
         {
             range::erase(range, first);
-            if (BOOST_GEOMETRY_CONDITION(closed))
+            if (closed)
             {
                 // Remove closing last point
                 range::resize(range, boost::size(range) - 1);

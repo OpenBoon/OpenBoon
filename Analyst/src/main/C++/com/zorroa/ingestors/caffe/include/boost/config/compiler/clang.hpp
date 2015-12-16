@@ -189,7 +189,7 @@
 #  define BOOST_NO_CXX11_USER_DEFINED_LITERALS
 #endif
 
-#if !__has_feature(cxx_alignas)
+#if !(__has_feature(cxx_alignas) || __has_extension(cxx_alignas))
 #  define BOOST_NO_CXX11_ALIGNAS
 #endif
 
@@ -205,23 +205,23 @@
 #  define BOOST_NO_CXX11_FINAL
 #endif
 
-#if !(__has_feature(__cxx_binary_literals__) || __has_extension(__cxx_binary_literals__))
+#if !(__has_feature(cxx_binary_literals) || __has_extension(cxx_binary_literals))
 #  define BOOST_NO_CXX14_BINARY_LITERALS
 #endif
 
-#if !__has_feature(__cxx_decltype_auto__)
+#if !(__has_feature(cxx_decltype_auto) || __has_extension(cxx_decltype_auto))
 #  define BOOST_NO_CXX14_DECLTYPE_AUTO
 #endif
 
-#if !__has_feature(__cxx_aggregate_nsdmi__)
+#if !(__has_feature(cxx_aggregate_nsdmi) || __has_extension(cxx_aggregate_nsdmi))
 #  define BOOST_NO_CXX14_AGGREGATE_NSDMI
 #endif
 
-#if !__has_feature(__cxx_init_captures__)
+#if !(__has_feature(cxx_init_captures) || __has_extension(cxx_init_captures))
 #  define BOOST_NO_CXX14_INITIALIZED_LAMBDA_CAPTURES
 #endif
 
-#if !__has_feature(__cxx_generic_lambdas__)
+#if !(__has_feature(cxx_generic_lambdas) || __has_extension(cxx_generic_lambdas))
 #  define BOOST_NO_CXX14_GENERIC_LAMBDAS
 #endif
 
@@ -239,15 +239,16 @@
 // so instead verify that we have a feature that was introduced at the same time as working C++14
 // constexpr (generic lambda's in this case):
 //
-#if !__has_feature(__cxx_generic_lambdas__) || !__has_feature(__cxx_relaxed_constexpr__)
+#if !__has_feature(cxx_generic_lambdas) \
+  || !(__has_feature(cxx_relaxed_constexpr) || __has_extension(cxx_relaxed_constexpr))
 #  define BOOST_NO_CXX14_CONSTEXPR
 #endif
 
-#if !__has_feature(__cxx_return_type_deduction__)
+#if !(__has_feature(cxx_return_type_deduction) || __has_extension(cxx_return_type_deduction))
 #  define BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 #endif
 
-#if !__has_feature(__cxx_variable_templates__)
+#if !(__has_feature(cxx_variable_templates) || __has_extension(cxx_variable_templates))
 #  define BOOST_NO_CXX14_VARIABLE_TEMPLATES
 #endif
 

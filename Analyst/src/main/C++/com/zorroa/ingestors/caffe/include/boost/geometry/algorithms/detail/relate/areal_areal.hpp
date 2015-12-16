@@ -2,21 +2,19 @@
 
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2013, 2014, 2015.
-// Modifications copyright (c) 2013-2015 Oracle and/or its affiliates.
-
-// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+// This file was modified by Oracle on 2013, 2014.
+// Modifications copyright (c) 2013-2014 Oracle and/or its affiliates.
 
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+
 #ifndef BOOST_GEOMETRY_ALGORITHMS_DETAIL_RELATE_AREAL_AREAL_HPP
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_RELATE_AREAL_AREAL_HPP
 
 #include <boost/geometry/core/topological_dimension.hpp>
-
-#include <boost/geometry/util/condition.hpp>
 #include <boost/geometry/util/range.hpp>
 
 #include <boost/geometry/algorithms/num_interior_rings.hpp>
@@ -199,7 +197,7 @@ struct areal_areal
         // The result should be FFFFFFFFF
         relate::set<exterior, exterior, result_dimension<Geometry2>::value>(result);// FFFFFFFFd, d in [1,9] or T
 
-        if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
+        if ( result.interrupt )
             return;
 
         // get and analyse turns
@@ -209,17 +207,17 @@ struct areal_areal
         interrupt_policy_areal_areal<Result> interrupt_policy(geometry1, geometry2, result);
 
         turns::get_turns<Geometry1, Geometry2>::apply(turns, geometry1, geometry2, interrupt_policy);
-        if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
+        if ( result.interrupt )
             return;
 
         no_turns_aa_pred<Geometry2, Result, false> pred1(geometry2, result);
         for_each_disjoint_geometry_if<0, Geometry1>::apply(turns.begin(), turns.end(), geometry1, pred1);
-        if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
+        if ( result.interrupt )
             return;
 
         no_turns_aa_pred<Geometry1, Result, true> pred2(geometry1, result);
         for_each_disjoint_geometry_if<1, Geometry2>::apply(turns.begin(), turns.end(), geometry2, pred2);
-        if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
+        if ( result.interrupt )
             return;
         
         if ( turns.empty() )
@@ -244,7 +242,7 @@ struct areal_areal
                 turns_analyser<turn_type, 0> analyser;
                 analyse_each_turn(result, analyser, turns.begin(), turns.end());
 
-                if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
+                if ( result.interrupt )
                     return;
             }
 
@@ -259,7 +257,7 @@ struct areal_areal
                 uncertain_rings_analyser<0, Result, Geometry1, Geometry2> rings_analyser(result, geometry1, geometry2);
                 analyse_uncertain_rings<0>::apply(rings_analyser, turns.begin(), turns.end());
 
-                if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
+                if ( result.interrupt )
                     return;
             }
         }
@@ -283,7 +281,7 @@ struct areal_areal
                 turns_analyser<turn_type, 1> analyser;
                 analyse_each_turn(result, analyser, turns.begin(), turns.end());
 
-                if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
+                if ( result.interrupt )
                     return;
             }
 
@@ -551,7 +549,7 @@ struct areal_areal
         {
             analyser.apply(res, it);
 
-            if ( BOOST_GEOMETRY_CONDITION(res.interrupt) )
+            if ( res.interrupt )
                 return;
         }
 
@@ -575,7 +573,8 @@ struct areal_areal
         {
             // check which relations must be analysed
 
-            if ( ! may_update<interior, interior, '2', transpose_result>(m_result) )
+            if ( ! may_update<interior, interior, '2', transpose_result>(m_result)
+              && ! may_update<boundary, interior, '1', transpose_result>(m_result) )
             {
                 m_flags |= 1;
             }
@@ -596,7 +595,7 @@ struct areal_areal
         inline void no_turns(segment_identifier const& seg_id)
         {
             // if those flags are set nothing will change
-            if ( m_flags == 7 )
+            if ( (m_flags & 3) == 3 )
             {
                 return;
             }
@@ -615,18 +614,15 @@ struct areal_areal
             // to know which other single geometries should be checked
 
             // TODO: optimize! e.g. use spatial index
-            // O(N) - running it in a loop gives O(NM)
+            // O(N) - running it in a loop would gives O(NM)
             int const pig = detail::within::point_in_geometry(range::front(range_ref), other_geometry);
 
             //BOOST_ASSERT(pig != 0);
             if ( pig > 0 )
             {
+                update<boundary, interior, '1', transpose_result>(m_result);
                 update<interior, interior, '2', transpose_result>(m_result);
                 m_flags |= 1;
-
-                update<boundary, interior, '1', transpose_result>(m_result);
-                update<exterior, interior, '2', transpose_result>(m_result);
-                m_flags |= 4;
             }
             else
             {
@@ -700,6 +696,12 @@ struct areal_areal
                 update<boundary, exterior, '1', transpose_result>(m_result);
                 update<interior, exterior, '2', transpose_result>(m_result);
                 m_flags |= 2;
+
+                // not necessary since this will be checked in the next iteration
+                // but increases the pruning strength
+                // WARNING: this is not reflected in flags
+                update<exterior, boundary, '1', transpose_result>(m_result);
+                update<exterior, interior, '2', transpose_result>(m_result);
             }
 
             interrupt = m_flags == 7 || m_result.interrupt; // interrupt if the result won't be changed in the future
@@ -793,8 +795,7 @@ struct areal_areal
         {
             segment_identifier const& seg_id = turn.operations[OpId].seg_id;
 
-            signed_index_type
-                count = boost::numeric_cast<signed_index_type>(
+            int count = boost::numeric_cast<int>(
                             geometry::num_interior_rings(
                                 detail::single_geometry(analyser.geometry, seg_id)));
             
@@ -802,10 +803,7 @@ struct areal_areal
         }
 
         template <typename Analyser, typename Turn>
-        static inline void for_no_turns_rings(Analyser & analyser,
-                                              Turn const& turn,
-                                              signed_index_type first,
-                                              signed_index_type last)
+        static inline void for_no_turns_rings(Analyser & analyser, Turn const& turn, int first, int last)
         {
             segment_identifier seg_id = turn.operations[OpId].seg_id;
 

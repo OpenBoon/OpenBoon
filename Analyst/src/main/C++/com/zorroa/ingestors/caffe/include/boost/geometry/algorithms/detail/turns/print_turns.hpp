@@ -10,9 +10,9 @@
 #ifndef BOOST_GEOMETRY_ALGORITHMS_DETAIL_TURNS_PRINT_TURNS_HPP
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_TURNS_PRINT_TURNS_HPP
 
-#include <algorithm>
 #include <iostream>
 
+#include <boost/foreach.hpp>
 #include <boost/range.hpp>
 
 #include <boost/geometry/algorithms/detail/overlay/traversal_info.hpp>
@@ -27,16 +27,21 @@ namespace boost { namespace geometry
 namespace detail { namespace turns
 {
 
-struct turn_printer
-{
-    turn_printer(std::ostream & os)
-        : index(0)
-        , out(os)
-    {}
 
-    template <typename Turn>
-    void operator()(Turn const& turn)
+
+template <typename Geometry1, typename Geometry2, typename Turns>
+static inline void print_turns(Geometry1 const& g1,
+                               Geometry2 const& g2,
+                               Turns const& turns)
+{
+    typedef typename boost::range_value<Turns>::type turn_info;
+
+    std::cout << geometry::wkt(g1) << std::endl;
+    std::cout << geometry::wkt(g2) << std::endl;
+    int index = 0;
+    BOOST_FOREACH(turn_info const& turn, turns)
     {
+        std::ostream& out = std::cout;
         out << index
             << ": " << geometry::method_char(turn.method);
 
@@ -76,22 +81,8 @@ struct turn_printer
         out << ' ' << geometry::dsv(turn.point) << ' ';
 
         ++index;
-        out << std::endl;
+        std::cout << std::endl;
     }
-
-    int index;
-    std::ostream & out;
-};
-
-template <typename Geometry1, typename Geometry2, typename Turns>
-static inline void print_turns(Geometry1 const& g1,
-                               Geometry2 const& g2,
-                               Turns const& turns)
-{
-    std::cout << geometry::wkt(g1) << std::endl;
-    std::cout << geometry::wkt(g2) << std::endl;
-
-    std::for_each(boost::begin(turns), boost::end(turns), turn_printer(std::cout));
 }
 
 

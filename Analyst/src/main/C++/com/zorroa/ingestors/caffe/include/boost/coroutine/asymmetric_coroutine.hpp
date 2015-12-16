@@ -788,7 +788,12 @@ public:
             return * this;
         }
 
-        iterator operator++( int);
+        iterator operator++( int)
+        {
+            iterator tmp( * this);
+            ++*this;
+            return tmp;
+        }
 
         reference_t operator*() const
         {
@@ -1169,7 +1174,12 @@ public:
             return * this;
         }
 
-        iterator operator++( int);
+        iterator operator++( int)
+        {
+            iterator tmp( * this);
+            ++*this;
+            return tmp;
+        }
 
         reference_t operator*() const
         {

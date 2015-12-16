@@ -62,8 +62,7 @@ namespace boost { namespace fusion
         };
     }
 
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
-    inline map<>
+    BOOST_FUSION_GPU_ENABLED inline map<>
     map_tie()
     {
         return map<>();
@@ -74,7 +73,7 @@ namespace boost { namespace fusion
         BOOST_PP_CAT(K, n)                                                                          \
       , typename add_reference<BOOST_PP_CAT(D, n)>::type>
 
-#define BOOST_FUSION_PAIR_TIE(z, n, _)                                         \
+#define BOOST_FUSION_PAIR_TIE(z, n, data)                                      \
     fusion::pair_tie<BOOST_PP_CAT(K, n)>(BOOST_PP_CAT(_, n))                   \
 
 #define BOOST_PP_FILENAME_1 <boost/fusion/container/generation/detail/pp_map_tie.hpp>
@@ -120,12 +119,12 @@ namespace boost { namespace fusion
         BOOST_PP_ENUM_PARAMS(N, typename K)
       , BOOST_PP_ENUM_PARAMS(N, typename D)
     >
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     inline map<BOOST_PP_ENUM(N, BOOST_FUSION_TIED_PAIR, _)>
-    map_tie(BOOST_PP_ENUM_BINARY_PARAMS(N, D, & arg))
+    map_tie(BOOST_PP_ENUM_BINARY_PARAMS(N, D, & _))
     {
         return map<BOOST_PP_ENUM(N, BOOST_FUSION_TIED_PAIR, _)>(
-            BOOST_PP_ENUM(N, BOOST_FUSION_PAIR_TIE, arg));
+            BOOST_PP_ENUM(N, BOOST_FUSION_PAIR_TIE, _));
     }
 
 #undef N

@@ -13,15 +13,15 @@
 #ifndef BOOST_INTRUSIVE_OPTIONS_HPP
 #define BOOST_INTRUSIVE_OPTIONS_HPP
 
+#if defined(_MSC_VER)
+#  pragma once
+#endif
+
 #include <boost/intrusive/detail/config_begin.hpp>
 #include <boost/intrusive/intrusive_fwd.hpp>
 #include <boost/intrusive/link_mode.hpp>
 #include <boost/intrusive/pack_options.hpp>
 #include <boost/intrusive/detail/mpl.hpp>
-
-#if defined(BOOST_HAS_PRAGMA_ONCE)
-#  pragma once
-#endif
 
 namespace boost {
 namespace intrusive {
@@ -37,7 +37,8 @@ struct fhtraits;
 template<class T, class Hook, Hook T::* P>
 struct mhtraits;
 
-struct dft_tag;
+//typedef void default_tag;
+struct default_tag;
 struct member_tag;
 
 template<class SupposedValueTraits>
@@ -126,7 +127,7 @@ struct member_hook
 //      //always single inheritance, the offset of the node is exactly the offset of
 //      //the hook. Since the node type is shared between all member hooks, this saves
 //      //quite a lot of symbol stuff.
-//      , (Ptr2MemNode)PtrToMember
+//      , (Ptr2MemNode)PtrToMember 
 //      , MemberHook::hooktags::link_mode> member_value_traits;
    typedef mhtraits <Parent, MemberHook, PtrToMember> member_value_traits;
    template<class Base>
@@ -230,7 +231,7 @@ struct hook_defaults
 {
    typedef void* void_pointer;
    static const link_mode_type link_mode = safe_link;
-   typedef dft_tag tag;
+   typedef default_tag tag;
    static const bool optimize_size = false;
    static const bool store_hash = false;
    static const bool linear = false;

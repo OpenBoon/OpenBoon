@@ -11,11 +11,7 @@
 #ifndef BOOST_INTERPROCESS_DETAIL_FILE_WRAPPER_HPP
 #define BOOST_INTERPROCESS_DETAIL_FILE_WRAPPER_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
-#endif
-#
-#if defined(BOOST_HAS_PRAGMA_ONCE)
+#if defined(_MSC_VER)
 #  pragma once
 #endif
 
@@ -25,7 +21,6 @@
 #include <boost/interprocess/creation_tags.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/interprocess/creation_tags.hpp>
-#include <boost/interprocess/detail/simple_swap.hpp>
 
 namespace boost {
 namespace interprocess {
@@ -132,8 +127,8 @@ inline bool file_wrapper::get_size(offset_t &size) const
 
 inline void file_wrapper::swap(file_wrapper &other)
 {
-   (simple_swap)(m_handle,  other.m_handle);
-   (simple_swap)(m_mode,    other.m_mode);
+   std::swap(m_handle,  other.m_handle);
+   std::swap(m_mode,    other.m_mode);
    m_filename.swap(other.m_filename);
 }
 

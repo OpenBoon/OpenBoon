@@ -1,6 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2015, Oracle and/or its affiliates.
+// Copyright (c) 2014, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 
@@ -15,7 +15,6 @@
 
 #include <boost/geometry/algorithms/assign.hpp>
 #include <boost/geometry/algorithms/equals.hpp>
-#include <boost/geometry/algorithms/validity_failure_type.hpp>
 
 #include <boost/geometry/algorithms/dispatch/is_valid.hpp>
 
@@ -41,22 +40,13 @@ namespace dispatch
 template <typename Segment>
 struct is_valid<Segment, segment_tag>
 {
-    template <typename VisitPolicy>
-    static inline bool apply(Segment const& segment, VisitPolicy& visitor)
+    static inline bool apply(Segment const& segment)
     {
         typename point_type<Segment>::type p[2];
         detail::assign_point_from_index<0>(segment, p[0]);
         detail::assign_point_from_index<1>(segment, p[1]);
 
-        if(! geometry::equals(p[0], p[1]))
-        {
-            return visitor.template apply<no_failure>();
-        }
-        else
-        {
-            return
-                visitor.template apply<failure_wrong_topological_dimension>();
-        }
+        return !geometry::equals(p[0], p[1]);
     }
 };
 

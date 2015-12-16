@@ -26,14 +26,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 #define N BOOST_PP_ITERATION()
 
-    BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
+    BOOST_FUSION_GPU_ENABLED
     static type
     call(BOOST_PP_ENUM_BINARY_PARAMS(
-        N, typename detail::call_param<T, >::type arg))
+        N, typename detail::call_param<T, >::type _))
     {
-        return type(arg0
+        return type(_0 
 #if N > 1
-            , tail_list_to_cons::call(BOOST_PP_ENUM_SHIFTED_PARAMS(N, arg)));
+            , tail_list_to_cons::call(BOOST_PP_ENUM_SHIFTED_PARAMS(N, _)));
 #else
             );
 #endif

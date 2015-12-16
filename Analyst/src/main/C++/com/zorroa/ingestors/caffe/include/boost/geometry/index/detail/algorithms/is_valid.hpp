@@ -80,9 +80,6 @@ struct is_valid<Indexable, segment_tag>
 template <typename Indexable>
 inline bool is_valid(Indexable const& b)
 {
-    // CONSIDER: detection of NaNs
-    // e.g. by comparison of b with copy of b
-
     return dispatch::is_valid<Indexable>::apply(b);
 }
 
