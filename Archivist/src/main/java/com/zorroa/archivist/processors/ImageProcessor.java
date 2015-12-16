@@ -206,7 +206,9 @@ public class ImageProcessor extends IngestProcessor {
                 if (description.equals(directory.getString(tag.getTagType()))) {
                     description = null;
                 }
-                if (value.getClass().isArray() && (value.getClass().getComponentType().getName().equals("java.lang.String") || Array.getLength(value) > 16)) {
+                if (value.getClass().isArray() &&
+                        (value.getClass().getComponentType().getName().equals("java.lang.String")
+                                || Array.getLength(value) > 16)) {
                     description = null;
                 }
 
