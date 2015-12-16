@@ -45,8 +45,6 @@ public class RoomControllerTests extends MockMvcTest {
         RoomBuilder bld = new RoomBuilder();
         bld.setName("A Room");
         bld.setVisible(true);
-        // Disable invite list until we fix the RoomDao bug reading invitation arrays
-//        bld.setInviteList(Sets.newHashSet("mvchambers@me.com"));
 
         MvcResult result = mvc.perform(post("/api/v1/rooms")
                  .session(admin())
@@ -57,7 +55,6 @@ public class RoomControllerTests extends MockMvcTest {
 
         Room room = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
         assertEquals(bld.getName(), room.getName());
-//        assertEquals(bld.getInviteList(), room.getInviteList());
     }
 
     @Test
@@ -182,7 +179,6 @@ public class RoomControllerTests extends MockMvcTest {
         RoomBuilder bld = new RoomBuilder();
         bld.setName("A Room");
         bld.setVisible(true);
-        bld.setInviteList(Sets.newHashSet("mvchambers@me.com"));
         Room room1 = roomService.create(bld);
 
         MvcResult result = mvc.perform(get("/api/v1/rooms/" + room1.getId())
@@ -193,7 +189,6 @@ public class RoomControllerTests extends MockMvcTest {
 
         Room room2 = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
         assertEquals(room1.getName(), room2.getName());
-        assertEquals(room1.getInviteList(), room2.getInviteList());
     }
 
     @Test

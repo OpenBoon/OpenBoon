@@ -26,9 +26,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
         room.setId(rs.getLong("pk_room"));
         room.setName(rs.getString("str_name"));
         room.setVisible(rs.getBoolean("bool_visible"));
-        // FIXME: Fails when reading an array, perhaps without a default value?
-//      String[] invites = (String[]) rs.getObject("list_invites");
-//      room.setInviteList(ImmutableSet.<String>copyOf(invites));
         return room;
     };
 
@@ -52,7 +49,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
                     "str_name",
                     "str_password",
                     "bool_visible",
-                    "list_invites",
                     "json_search",
                     "json_selection");
 
@@ -70,16 +66,8 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             ps.setString(1, builder.getName());
             ps.setString(2, builder.getPassword());
             ps.setBoolean(3, builder.isVisible());
-            if (builder.getInviteList() == null) {
-                ps.setObject(4, new String[]{});
-            }
-            else {
-                ps.setObject(4, builder.getInviteList().toArray(new String[]{}));
-            }
-
-            ps.setString(5, Json.serializeToString(builder.getSearch()));
-            ps.setString(6, Json.serializeToString(builder.getSelection()));
-
+            ps.setString(4, Json.serializeToString(builder.getSearch()));
+            ps.setString(5, Json.serializeToString(builder.getSelection()));
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
@@ -94,13 +82,6 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
 
         StringBuilder sb = new StringBuilder(512);
         sb.append("UPDATE room SET ");
-
-        /*
-         * Need to fix the invite list.
-        if (builder.getInviteList() != null) {
-
-        }
-        */
 
         if (builder.getName() != null) {
             updates.add("str_name=?");
