@@ -24,6 +24,14 @@ public class Processor {
         this.args = args;
     }
 
+    public <T> T getArg(String key) {
+        return (T) this.args.get(key);
+    }
+
+    public void setArg(String key, Object value) {
+        this.args.put(key, value);
+    }
+
     /**
      * Ths function is called once at the end of the entire ingest/export process.  Its NOT called
      * on a per-asset basis.  The intent is that subclasses can override this, but its not
