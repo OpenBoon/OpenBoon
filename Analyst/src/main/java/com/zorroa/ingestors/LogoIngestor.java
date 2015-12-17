@@ -5,8 +5,7 @@ import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.opencv.core.*;
-import org.opencv.features2d.DMatch;
-import org.opencv.features2d.DescriptorExtractor;
+
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.FeatureDetector;
 import org.opencv.highgui.Highgui;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,49 +101,35 @@ public class LogoIngestor extends IngestProcessor {
         Mat cropImg;
         Size imSize = image.size();
 
+        // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
+        // in order to estimate a confidence value
+        // OPTIMIZE: Use the size of the resulting rectangles to tweak minLogo and maxLogo in order to save the detector a bunch of work
+        double confidence = 0;
         MatOfRect logoDetections = new MatOfRect();
-        cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.005, 15, 0, minLogo, maxLogo);
+
+        cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.0075, 20, 0, minLogo, maxLogo);
         int logoCount = logoDetections.toArray().length;
-        logger.info("Detected " + logoCount + " logos in " + asset.getFilename());
-
-
-        /***********
-         * Uncomment to do detection without SIFT
-         *
         if (logoCount > 0) {
-            logger.info("LogoIngestor: Haar detected " + logoCount + " potential logos.");
-            String value = "visa";
-
-            for (Rect rect : logoDetections.toArray()) {
-                // Logo is big if more than 5% of total height
-                if (rect.height / imSize.height > .05) {
-                    value = value + ",bigvisa";
+            confidence = 0.2;
+            cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.0075, 30, 0, minLogo, maxLogo);
+            int Count = logoDetections.toArray().length;
+            if (Count > 0) {
+                confidence = .4;
+                logoCount = Count;
+                cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.005, 40, 0, minLogo, maxLogo);
+                Count = logoDetections.toArray().length;
+                if (Count > 0) {
+                    confidence = .6;
+                    logoCount = Count;
+                    cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.005, 60, 0, minLogo, maxLogo);
+                    Count = logoDetections.toArray().length;
+                    if (Count > 0) {
+                        confidence = .8;
+                        logoCount = Count;
+                    }
                 }
-
             }
-            logger.info("LogoIngestor: " + value);
-            String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
-            asset.putKeywords("Logos", "keywords", keywords);
         }
-    }
-}
-         *****/
-
-        Mat feature = Highgui.imread(featurePath);
-
-        MatOfKeyPoint kp1 = new MatOfKeyPoint();
-        MatOfKeyPoint kp2  = new MatOfKeyPoint();
-
-        detector.detect(feature, kp1);
-
-        DescriptorExtractor extractor = DescriptorExtractor.create(2);
-
-        Mat desc1 = new Mat();
-        Mat desc2 = new Mat();
-        extractor.compute(feature, kp1, desc1);
-
-        //MatOfDMatch matches = new MatOfDMatch();
-
 
         if (logoCount > 0) {
             logger.info("LogoIngestor: Haar detected " + logoCount + " potential logos.");
@@ -155,71 +139,40 @@ public class LogoIngestor extends IngestProcessor {
 
             for (Rect rect : logoDetections.toArray()) {
 
+
                 // Detect points in the area found by the Haar cascade
                 int xmin = rect.x;
                 if (xmin < 0) xmin = 0;
 
-                int xmax = rect.x+rect.width;
+                int xmax = rect.x + rect.width;
                 if (xmax >= imSize.width) xmax = (int)imSize.width-1;
 
                 int ymin = rect.y;
                 if (ymin < 0) ymin = 0;
 
-                int ymax = rect.y+rect.height;
+                int ymax = rect.y + rect.height;
                 if (ymax >= imSize.height) ymax = (int)imSize.height-1;
 
-                cropImg = image.submat(ymin, ymax, xmin, xmax);
-                detector.detect(cropImg, kp2);
-                extractor.compute(cropImg, kp2, desc2);
-
-
-                // I use matcher.knnmatch in the Python version. I don't know how to do this here.
-                // I'm confused by the list of matches that I need to give knnmatch as a parameter.
-                // The Java code diverges from here on from the Python code...
-                // HELP!
-                //matcher.match(desc1, desc2, matches);
-
-                //List<List<DMatch>> Lmatches;
-                LinkedList<MatOfDMatch> raw_matches=new LinkedList<MatOfDMatch>();
-                matcher.knnMatch(desc1, desc2, raw_matches, 2);
-                //List<DMatch> matchesList = matches.toList();
-
-                DMatch bestMatch, secondBestMatch;
-                double ratio = 0.75;
-                int matchCount = 0;
-
-
-                for (MatOfDMatch matOfDMatch : raw_matches) {
-                    bestMatch=matOfDMatch.toArray()[0];
-                    secondBestMatch=matOfDMatch.toArray()[1];
-                    if (bestMatch.distance / secondBestMatch.distance <= ratio) {
-                        matchCount += 1;
-
-                    }
+                // Logo is big if more than 5% of total height
+                if (rect.height / imSize.height > .05) {
+                    confidence += .2;
+                    value = value + ",bigvisa";
                 }
 
-                if (matchCount > 4) {
-                    value = "visa2";
-                    // Logo is big if more than 5% of total height
-                    if (rect.height / imSize.height > .05) {
-                        value = value + ",bigvisa";
-                    }
-
-                    // Draw rectangle
-                    svgVal = svgVal + "<polygon points=\"" + xmin + "," + ymin + " " + xmax + "," + ymin + " " + xmax + "," + ymax + " " + xmin + "," + ymax + "\" style=\"fill:none;stroke:green;stroke-width:2\" />";
-
-
-                }
+                // Draw rectangle
+                svgVal += "<polygon points=\"" + xmin + "," + ymin + " " + xmax + "," + ymin + " " + xmax + "," + ymax + " " + xmin + "," + ymax + "\" style=\"fill:none;stroke:green;stroke-width:2\" />";
 
             }
+
             logger.info("LogoIngestor: " + value);
-            asset.addKeywords(0.8, true, Arrays.asList(value.split(",")));
-            String[] keywords = (String[]) Arrays.asList(value.split(",")).toArray();
-            asset.putKeywords("Logos", "keywords", keywords);
+            value = value + ",visa" + confidence;
+            List<String> keywords = Arrays.asList(value.split(","));
+            asset.addKeywords(confidence, true, keywords);
+            asset.put("Logos", "keywords", (String[]) keywords.toArray());
 
             if (svgVal != "<svg>") {
-                svgVal = svgVal + "</svg>";
-                asset.putKeyword("SVG", "Logos", svgVal);
+                svgVal += "</svg>";
+                asset.put("SVG", "Logos", svgVal);
             }
         }
     }

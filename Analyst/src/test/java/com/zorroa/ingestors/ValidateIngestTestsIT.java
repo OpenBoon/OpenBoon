@@ -113,7 +113,7 @@ public class ValidateIngestTestsIT {
             }
         }
         Map<String, String> env = pb.environment();
-	String cmd =  "/usr/bin/java -Djava.class.path=" + pwd + "/lib/face -Djava.library.path=" + pwd +"/target/jni:" + pwd + "/lib/face -jar \"" + archivist.getAbsolutePath() + "\"";
+	    String cmd =  "/usr/bin/java -Djava.class.path=" + pwd + "/lib/face -Djava.library.path=" + pwd +"/target/jni:" + pwd + "/lib/face -jar \"" + archivist.getAbsolutePath() + "\"";
         System.out.println("Starting Archivist with command: " + cmd);
         pb.command("/bin/bash", "-c", cmd);
         env.put("ZORROA_OPENCV_MODEL_PATH", pwd + "/models");
@@ -202,7 +202,7 @@ public class ValidateIngestTestsIT {
     @Test
     public void testCaffeSearch() throws  IOException {
         Integer count = count("scoreboard");
-        assertEquals(1, count.intValue());
+        assertEquals(2, count.intValue());
     }
 
     @Test
