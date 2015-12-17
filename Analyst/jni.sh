@@ -2,7 +2,7 @@
 #
 # Generate JNI header or compile JNI library for a java class
 
-#set -x
+#set -ex
 
 Usage ()
 {
@@ -93,6 +93,7 @@ elif [ "${COMMAND}" == "jnilib" ]; then
     JNI_LIB=${TARGET_DIR}/lib${CLASS_NAME_EXT}.jnilib
     echo "Linking ${JNI_LIB}"
     cc -dynamiclib ${EXTRA_LIBS} -o ${JNI_LIB} ${TARGET_DIR}/${CLASS_NAME_EXT}.o
+    ./jni_relink.py ${JNI_LIB}
 else
     Usage
     exit 1
