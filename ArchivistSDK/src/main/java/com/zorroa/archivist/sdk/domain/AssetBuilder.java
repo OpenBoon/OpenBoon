@@ -109,10 +109,16 @@ public class AssetBuilder {
             return (T) new PropertyDescriptor(key,
                     schemas.get(namespace).getClass()).getReadMethod().invoke(schemas.get(namespace));
         } catch (Exception e) {
-            return null;
+            try {
+                Map<String,Object> schema = (Map<String,Object>) schemas.get(namespace);
+                return (T) schema.get(key);
+            }
+            catch (ClassCastException ex) {
+                return null;
+            }
         }
-
     }
+
     public AssetBuilder addKeywords(double confidence, boolean suggest, String ... words) {
         keywords.addKeywords(confidence, suggest, words);
         return this;
