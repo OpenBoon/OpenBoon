@@ -34,7 +34,12 @@ To run all the tests use:
 
 When adding a new ingestor, add at least two tests: one regular test that simply instantiates
 the ingestor to test the basic JNI loading and a second test in one of the TestsIT.java files
-that will be run during the integration-test phase.
+that will be run during the integration-test phase. Look at the existing Tests.java and TestsIT.java
+files for examples.
+
+The Archivist log file for the integration-test is stored in `<Ingestors>/Database/archivist.log`.
+If you have errors during the ingestion, you will want to look into this file to see if
+Java emitted any errors during the ingestion.
 
 
 ### Testing without Archivist source
