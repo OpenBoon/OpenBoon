@@ -171,6 +171,18 @@
         <executions>
 
           <execution>
+            <id>Remove Local Database</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>/bin/rm</executable>
+              <commandlineArgs>-rf proxies exports unittest db/archivist.mv.db</commandlineArgs>
+            </configuration>
+          </execution>
+
+          <execution>
             <id>Install JAR</id>
             <phase>install</phase>
             <goals><goal>exec</goal></goals>
