@@ -44,6 +44,30 @@ public class Json {
         }
     }
 
+    public static String serializeToString(Object object, String onNull) {
+        if (object == null) {
+            return onNull;
+        }
+        try {
+            return Json.Mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new MalformedDataException(
+                    "Failed to serialize object, unexpected: " + e, e);
+        }
+    }
+
+    public static byte[] serialize(Object object, String onNull) {
+        if (object == null) {
+            return onNull.getBytes();
+        }
+        try {
+            return Json.Mapper.writeValueAsBytes(object);
+        } catch (JsonProcessingException e) {
+            throw new MalformedDataException(
+                    "Failed to serialize object, unexpected: " + e, e);
+        }
+    }
+
     public static <T> T deserialize(byte[] data, Class<T> valueType) {
         try {
             return Json.Mapper.readValue(data, valueType);
