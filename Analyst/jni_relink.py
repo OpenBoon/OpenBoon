@@ -21,6 +21,29 @@ local_lib_dir = "target/jni"
 rpath_dir = "lib"
 processed_libs = Set()
 
+def findLibOnRpath(basename):
+    find_cmd = "find " + rpath_dir + " -name " + basename
+    find = os.popen(find_cmd).readlines()
+    if len(find) != 1:
+        return 0
+    find_lib = find[0].rstrip(' \t\n')
+    return find_lib
+
+def copyAndUpdateId(src_lib, local_lib):
+    new_id = 0
+    basename = ntpath.basename(local_lib)
+    new_id = bundle_lib_path + "/" + basename
+    if not os.path.isfile(local_lib):
+        if os.path.isfile(src_lib):
+            shutil.copyfile(src_lib, local_lib)
+            os.chmod(local_lib, 0755)
+            id_cmd = "install_name_tool -id " + new_id + " " + local_lib
+            # print("@rpath: " + id_cmd)
+            os.popen(id_cmd)
+    if new_id == 0:
+        print("WARNING: Cannot find local copy of " + basename + " -- may cause SIGILL errors at runtime on older machines")
+    return new_id
+
 def relink(lib):
     # print("Relinking: " + lib)
     dep_cmd = "otool -L " + lib + " | sed 's/(.*//g'"
@@ -30,94 +53,37 @@ def relink(lib):
     # print(deps)
     for dep in deps:
         dep = dep.rstrip(' \t\n').strip(' \t')
-        if dep.endswith(':'):
+        dep_basename = ntpath.basename(dep)
+        local_lib = local_lib_dir + "/" + dep_basename
+        # print(dep + " base: " + dep_basename + " local: " + local_lib)
+        if dep.endswith(':') or dep_basename == ntpath.basename(lib):
             # print("Skipping current lib: " + dep)
             continue
-        if dep.startswith('@rpath/'):
-            rpath_basename = ntpath.basename(dep)
-            find_cmd = "find " + rpath_dir + " -name " + rpath_basename
-            find = os.popen(find_cmd).readlines()
-            if len(find) != 1:
-                print("Error finding " + dep + ": Found " + find)
-                exit(-1);
-            find_lib = find[0].rstrip(' \t\n')
-            find_local_lib = local_lib_dir + "/" + rpath_basename
-            if not os.path.isfile(find_local_lib):
-                if os.path.isfile(find_lib):
-                    shutil.copyfile(find_lib, find_local_lib)
-                    os.chmod(find_local_lib, 0755)
-                    new_find_id = bundle_lib_path + "/" + rpath_basename
-                    id_cmd = "install_name_tool -id " + new_find_id + " " + find_local_lib
-                    # print("@rpath: " + id_cmd)
-                    os.popen(id_cmd)
-                else:
-                    print("ERROR: Cannot find @rpath lib ", find_lib)
-            change_cmd = "install_name_tool -change " + dep + " " + new_find_id + " " + lib
-            # print("@rpath: " + change_cmd)
-            os.popen(change_cmd)
-            if (rpath_basename not in processed_libs):
-                processed_libs.add(rpath_basename)
-                relink(find_local_lib)
-        elif dep.startswith('@loader_path'):
-            loader_basename = ntpath.basename(dep)
-            find_cmd = "find " + rpath_dir + " -name " + loader_basename
-            # print("@loader_path: " + find_cmd)
-            find = os.popen(find_cmd).readlines()
-            if len(find) != 1:
-                print("Error finding " + dep + ": Found " + repr(find))
-                exit(-1);
-                continue
-            find_lib = find[0].rstrip(' \t\n')
-            find_local_lib = local_lib_dir + "/" + loader_basename
-            if not os.path.isfile(find_local_lib):
-                if os.path.isfile(find_lib):
-                    shutil.copyfile(find_lib, find_local_lib)
-                    os.chmod(find_local_lib, 0755)
-                else:
-                    print("ERROR: Cannot find @rpath lib ", find_lib)
-            if (loader_basename not in processed_libs):
-                processed_libs.add(loader_basename)
-                relink(find_local_lib)
-        elif not dep.startswith('/usr/local/'):
+        if dep.startswith('@rpath/') or dep.startswith('@loader_path') or dep.startswith('/usr/local/'):
+            find_lib = findLibOnRpath(dep_basename)
+            if find_lib == 0:
+                print("Cannot find local library " + dep_basename)
+                exit(-1)
+            new_id = copyAndUpdateId(find_lib, local_lib)
+            if dep.startswith('@rpath') or dep.startswith('/usr/local/'):
+                change_cmd = "install_name_tool -change " + dep + " " + new_id + " " + lib
+                # print("@rpath: " + change_cmd)
+                os.popen(change_cmd)
+                if not dep.startswith('/usr/local/'):
+                    alt_id = dep
+                    if os.path.isfile(dep):
+                        # print("otool -DX " + dep)
+                        alt_id = os.popen("otool -DX " + dep).readline().rstrip('\n')
+                    change_cmd = "install_name_tool -change " + alt_id + " " + new_id + " " + lib
+                    # print(change_cmd)
+                    os.popen(change_cmd)
+        else:
             # print("Skipping system dependency: " + dep)
             continue
-        else:
-            dep_id = dep
-            if os.path.isfile(dep):
-                # print("otool -DX " + dep)
-                dep_id = os.popen("otool -DX " + dep).readline().rstrip('\n')
-            dep_basename = ntpath.basename(dep)
-            new_dep_id = bundle_lib_path + "/" + dep_basename
-            dep_local_lib = local_lib_dir + "/" + dep_basename
-            find_cmd = "find " + rpath_dir + " -name " + dep_basename
-            find_lib = dep
-            find = os.popen(find_cmd).readlines()
-            if len(find) > 1:
-                print("Error finding " + dep + ": Found " + find)
-                exit(-1);
-                continue
-            elif len(find) == 1:
-                find_lib = find[0].rstrip(' \t\n')
-            else:
-                print("WARNING: Cannot find local copy of " + dep + " -- may cause SIGILL errors at runtime on older machines")
-            if not os.path.isfile(dep_local_lib):
-                if os.path.isfile(find_lib):
-                    shutil.copyfile(find_lib, dep_local_lib)
-                    os.chmod(dep_local_lib, 0755)
-                    id_cmd = "install_name_tool -id " + new_dep_id + " " + dep_local_lib
-                    # print(id_cmd)
-                    os.popen(id_cmd)
-                else:
-                    print("ERROR: Cannot find source lib " + find_lib)
-            change_cmd = "install_name_tool -change " + dep_id + " " + new_dep_id + " " + lib
-            # print(change_cmd)
-            os.popen(change_cmd)
-            change_cmd = "install_name_tool -change " + dep + " " + new_dep_id + " " + lib
-            # print(change_cmd)
-            os.popen(change_cmd)
-            if (dep_basename not in processed_libs):
-                processed_libs.add(dep_basename)
-                relink(dep_local_lib)
+
+        if (dep_basename not in processed_libs):
+            processed_libs.add(dep_basename)
+            relink(local_lib)
 
 
 if __name__ == "__main__":
