@@ -3,10 +3,10 @@ package com.zorroa.archivist.repository;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
 import org.elasticsearch.action.index.IndexRequest;
@@ -19,6 +19,7 @@ import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -110,10 +111,11 @@ public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
 
     @Override
     public Folder create(FolderBuilder builder) {
-        /*
-         * There is some better way to do this that doesn't require
-         * userId to be in the folder builder.
-         */
+        if (exists(builder.getParentId(), builder.getName())) {
+            throw new DataIntegrityViolationException(
+                    String.format("The folder '%s' already exists.", builder.getName()));
+        }
+
         StringBuilder sb = new StringBuilder(Json.serializeToString(builder));
         sb.deleteCharAt(sb.length()-1);
         sb.append(",\"userCreated\":");

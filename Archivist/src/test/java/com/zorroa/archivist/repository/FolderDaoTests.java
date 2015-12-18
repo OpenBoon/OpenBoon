@@ -6,6 +6,7 @@ import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +28,14 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
         Folder folder2 = folderDao.get(folder1.getId());
         assertEquals(folder2.getName(), name);
+    }
+
+    @Test(expected= DataIntegrityViolationException.class)
+    public void testCreateDuplicate() throws IOException {
+        String name = "Foobar the folder";
+        FolderBuilder builder = new FolderBuilder(name);
+        folderDao.create(builder);
+        folderDao.create(builder);
     }
 
     @Test

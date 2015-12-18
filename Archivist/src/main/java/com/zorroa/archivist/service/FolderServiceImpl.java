@@ -11,7 +11,6 @@ import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.domain.Message;
 import com.zorroa.archivist.sdk.domain.MessageType;
-import com.zorroa.archivist.sdk.exception.DuplicateElementException;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.MessagingService;
 import org.slf4j.Logger;
@@ -59,9 +58,6 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public synchronized Folder create(FolderBuilder builder) {
         try {
-            if (folderDao.exists(builder.getParentId(), builder.getName())) {
-                throw new DuplicateElementException(String.format("The folder '%s' already exists.", builder.getName()));
-            }
             Folder folder = folderDao.create(builder);
             messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_CREATE, folder));
             return folder;
