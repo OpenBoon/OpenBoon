@@ -99,4 +99,31 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
         assertTrue(builder.getKeywords().getAllKeywords().contains("One"));
         assertTrue(builder.getKeywords().getAllKeywords().contains("Ten"));
     }
+
+
+    @Test
+    public void testProcessSingleInFilter() throws Exception {
+
+        SimpleExcelIngestor.Filter filter = new SimpleExcelIngestor.Filter();
+        filter.setColumn("D");
+        filter.setRelation(SimpleExcelIngestor.Relation.in);
+        filter.setValue("${keywords.allKeywords}");
+
+        SimpleExcelIngestor.Mapping mapping = new SimpleExcelIngestor.Mapping();
+        mapping.setFilters(Lists.newArrayList(filter));
+        mapping.addField("G", new SimpleExcelIngestor.Field(
+                null, SimpleExcelIngestor.Type.string).setAddToKeywords(true));
+
+        SimpleExcelIngestor ingestor = new SimpleExcelIngestor();
+        ingestor.setArg("file", "src/test/resources/excelFile.xlsx");
+        ingestor.setArg("mappings", Lists.newArrayList(mapping));
+
+        AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        builder.getKeywords().addKeywords(1, false, "Two");
+
+        ingestor.init();
+        ingestor.process(builder);
+
+        assertTrue(builder.getKeywords().getAllKeywords().contains("beer_kettle_02.jpg"));
+    }
 }

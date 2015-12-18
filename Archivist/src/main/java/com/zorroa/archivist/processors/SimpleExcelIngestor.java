@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -93,8 +94,6 @@ public class SimpleExcelIngestor extends IngestProcessor {
                         case bool:
                             assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getBooleanCellValue());
                             break;
-                        case csv:
-                            String[] values = cell.getStringCellValue().trim().split(",");
                         default:
                             assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getStringCellValue());
                             break;
@@ -154,15 +153,20 @@ public class SimpleExcelIngestor extends IngestProcessor {
     }
 
     private boolean compareValue(AssetBuilder assetBuilder, String cellValue, Filter filter) {
-        String value;
+
+        String expression;
+        Object value;
         try {
-            value = (String) filter.getValue();
-            if (value.startsWith("${")) {
-                String[] parts = value.substring(2, value.length()-1).split("\\.");
-                value = assetBuilder.getAttr(parts[0], parts[1]).toString();
+            expression = (String) filter.getValue();
+            if (expression.startsWith("${")) {
+                String[] parts = expression.substring(2, expression.length() - 1).split("\\.");
+                value = assetBuilder.getAttr(parts[0], parts[1]);
+            }
+            else {
+                value = filter.getValue();
             }
         } catch (Exception e) {
-            logger.warn("Failed to compare string value, castign error,", e);
+            logger.warn("Failed to compare string value, casting error,", e);
             return false;
         }
 
@@ -171,6 +175,11 @@ public class SimpleExcelIngestor extends IngestProcessor {
                 return cellValue.equals(value);
             case is_not:
                 return !cellValue.equals(value);
+            case in:
+                if (value instanceof Collection<?>) {
+                    return ((Collection)value).contains(cellValue);
+                }
+                return false;
             default:
                 return false;
         }
@@ -322,7 +331,8 @@ public class SimpleExcelIngestor extends IngestProcessor {
 
     public enum Relation {
         is,
-        is_not
+        is_not,
+        in
     }
 
     public enum Type {
