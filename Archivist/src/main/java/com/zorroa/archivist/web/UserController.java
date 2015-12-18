@@ -1,8 +1,8 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,27 +32,27 @@ public class UserController  {
         req.logout();
     }
 
-    @PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('manager')")
     @RequestMapping(value="/api/v1/users")
     public List<User> getAll() {
         return userService.getAll();
     }
 
-    @PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('manager')")
     @RequestMapping(value="/api/v1/users", method=RequestMethod.POST)
     public User create(@RequestBody UserBuilder builder) {
         return userService.create(builder);
     }
 
-    @PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('manager')")
     @RequestMapping(value="/api/v1/users/{id}")
     public User get(@PathVariable int id) {
         return userService.get(id);
     }
 
-    @PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('manager')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.PUT)
-    public User update(@RequestBody UserUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
+    public User update(@RequestBody UserUpdateBuilder builder, @PathVariable int id) {
         Session session = userService.getActiveSession();
 
         if (session.getUserId() == id || SecurityUtils.hasPermission("manager", "systems")) {
@@ -66,7 +65,7 @@ public class UserController  {
         }
     }
 
-    @PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('manager')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
     public void delete(@PathVariable int id) {
         User user = userService.get(id);
@@ -79,7 +78,7 @@ public class UserController  {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('manager')")
     @RequestMapping(value="/api/v1/users/{id}/permissions", method=RequestMethod.GET)
     public List<Permission> getPermissions(@PathVariable int id) {
         User user = userService.get(id);
@@ -95,7 +94,7 @@ public class UserController  {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('manager')")
+    @PreAuthorize("hasAuthority('manager')")
     @RequestMapping(value="/api/v1/users/{id}/permissions", method=RequestMethod.PUT)
     public List<Permission> setPermissions(@RequestBody List<Integer> pids, @PathVariable int id) {
         User user = userService.get(id);

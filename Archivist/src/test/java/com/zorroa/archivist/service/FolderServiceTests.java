@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
-import com.zorroa.archivist.sdk.exception.DuplicateElementException;
 import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Set;
@@ -79,14 +79,14 @@ public class FolderServiceTests extends ArchivistApplicationTests {
         assertEquals("new", revised.getName());
     }
 
-    @Test(expected=DuplicateElementException.class)
+    @Test(expected=DataIntegrityViolationException.class)
     public void testCreateFailureInRoot() {
         FolderBuilder builder = new FolderBuilder("shizzle");
         Folder folder1 = folderService.create(builder);
         folderService.create(builder);
     }
 
-    @Test(expected=DuplicateElementException.class)
+    @Test(expected=DataIntegrityViolationException.class)
     public void testDeepCreateFailure() {
         FolderBuilder builder = new FolderBuilder("shizzle");
         Folder folder1 = folderService.create(builder);

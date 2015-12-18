@@ -20,47 +20,47 @@ public class ExportController {
     @Autowired
     ExportService exportService;
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/exports", method= RequestMethod.POST)
     public Export create(@RequestBody ExportBuilder builder) {
         return exportService.create(builder);
     }
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/exports/{id}", method=RequestMethod.GET)
     public Export get(@PathVariable int id) {
         return exportService.get(id);
     }
 
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/exports/_search", method=RequestMethod.POST)
     public List<Export> getAll(@RequestBody ExportFilter filter) {
         return exportService.getAll(filter);
     }
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/exports/{id}/outputs", method=RequestMethod.GET)
     public List<ExportOutput> getAllOutputs(@PathVariable int id) {
         Export export = exportService.get(id);
         return exportService.getAllOutputs(export);
     }
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/exports/{id}/_duplicate", method=RequestMethod.PUT)
     public Export duplicate(@PathVariable int id) {
         exportService.duplicate(exportService.get(id));
         return exportService.get(id);
     }
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/exports/{id}/_restart", method=RequestMethod.PUT)
     public Export restart(@PathVariable int id) {
         exportService.restart(exportService.get(id));
         return exportService.get(id);
     }
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/exports/{id}/_cancel", method=RequestMethod.PUT)
     public Export cancel(@PathVariable int id) {
         exportService.cancel(exportService.get(id));

@@ -16,32 +16,32 @@ public class SnapshotController {
     @Autowired
     SnapshotService snapshotService;
 
-    @PreAuthorize("hasRole('systems')")
+    @PreAuthorize("hasAuthority('systems')")
     @RequestMapping(value = "/api/v1/snapshots", method = RequestMethod.POST)
     public Snapshot create(@RequestBody SnapshotBuilder builder) {
         return snapshotService.create(builder);
     }
 
-    @PreAuthorize("hasRole('systems')")
+    @PreAuthorize("hasAuthority('systems')")
     @RequestMapping(value = "/api/v1/snapshots", method = RequestMethod.GET)
     public List<Snapshot> getAll() {
         return snapshotService.getAll();
     }
 
-    @PreAuthorize("hasRole('systems')")
+    @PreAuthorize("hasAuthority('systems')")
     @RequestMapping(value = "/api/v1/snapshots/{name}", method = RequestMethod.GET)
     public Snapshot get(@PathVariable String name) {
         return snapshotService.get(name);
     }
 
-    @PreAuthorize("hasRole('systems')")
+    @PreAuthorize("hasAuthority('systems')")
     @RequestMapping(value = "/api/v1/snapshots/{name}/_restore", method = RequestMethod.PUT)
     public boolean restore(@PathVariable String name, @RequestBody SnapshotRestoreBuilder builder) {
         Snapshot snapshot = snapshotService.get(name);
         return snapshotService.restore(snapshot, builder);
     }
 
-    @PreAuthorize("hasRole('systems')")
+    @PreAuthorize("hasAuthority('systems')")
     @RequestMapping(value = "/api/v1/snapshots/{name}", method = RequestMethod.DELETE)
     public boolean delete(@PathVariable String name) {
         Snapshot snapshot = snapshotService.get(name);

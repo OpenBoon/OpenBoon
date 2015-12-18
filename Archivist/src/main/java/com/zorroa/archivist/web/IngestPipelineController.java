@@ -20,31 +20,31 @@ public class IngestPipelineController {
     @Autowired
     IngestService ingestService;
 
-    @PreAuthorize("hasRole('ingest')")
+    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.POST)
     public IngestPipeline create(@RequestBody IngestPipelineBuilder builder) {
         return ingestService.createIngestPipeline(builder);
     }
 
-    @PreAuthorize("hasRole('ingest')")
+    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.GET)
     public IngestPipeline get(@PathVariable Integer id) {
         return ingestService.getIngestPipeline(id);
     }
 
-    @PreAuthorize("hasRole('ingest')")
+    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.GET)
     public List<IngestPipeline> getAll() {
         return ingestService.getIngestPipelines();
     }
 
-    @PreAuthorize("hasRole('ingest')")
+    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/pipelines/{id}/_ingest", method=RequestMethod.POST)
     public Ingest ingest(@RequestBody IngestBuilder builder, @PathVariable Integer id) {
         return ingestService.createIngest(builder);
     }
 
-    @PreAuthorize("hasRole('ingest')")
+    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.PUT)
     public IngestPipeline update(@RequestBody IngestPipelineUpdateBuilder builder, @PathVariable Integer id) {
         IngestPipeline pipeline = ingestService.getIngestPipeline(id);
@@ -52,7 +52,7 @@ public class IngestPipelineController {
         return ingestService.getIngestPipeline(id);
     }
 
-    @PreAuthorize("hasRole('ingest')")
+    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable Integer id) {
         IngestPipeline pipeline = ingestService.getIngestPipeline(id);

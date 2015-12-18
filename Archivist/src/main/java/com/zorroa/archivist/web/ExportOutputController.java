@@ -18,7 +18,7 @@ public class ExportOutputController {
     @Autowired
     ExportService exportService;
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @ResponseBody
     @RequestMapping(value = "/api/v1/outputs/{outputId}/_download", method=RequestMethod.GET)
     public FileSystemResource download(
@@ -29,7 +29,7 @@ public class ExportOutputController {
         return new FileSystemResource(output.getPath());
     }
 
-    @PreAuthorize("hasRole('export')")
+    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/outputs/{id}", method=RequestMethod.GET)
     public ExportOutput get(@PathVariable int id) {
         return exportService.getOutput(id);
