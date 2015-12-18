@@ -5,6 +5,7 @@ jdk:
   - oraclejdk8
 
 install:
+  - ./travis/travis-opencv-install.sh 
   - ./travis/travis-ingestor-files.sh
   - ./travis/travis-install-archivist-sdk.sh
   - ./travis/travis-install-archivist.sh

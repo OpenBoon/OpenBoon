@@ -177,7 +177,7 @@
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/hdf5
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/CUDA-7.0
                                 -I/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers
-                                -Llib/caffe
+                                -Llib/caffe -Llib/local/lib
                                 -lcaffe -lboost_system -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
                             </commandlineArgs>
                         </configuration>
