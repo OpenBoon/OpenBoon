@@ -2,6 +2,7 @@ package com.zorroa.archivist;
 
 import com.googlecode.flyway.core.Flyway;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.archivist.web.RestControllerAdvice;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -27,6 +29,7 @@ import java.util.Random;
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 @Configuration
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 public class ArchivistConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ArchivistConfiguration.class);
@@ -43,6 +46,11 @@ public class ArchivistConfiguration {
 
         hostName = InetAddress.getLocalHost().getHostName();
         nodeName = String.format("%s_%05d", hostName, number);
+    }
+
+    @Bean
+    public RestControllerAdvice restControllerAspect() {
+        return new RestControllerAdvice();
     }
 
     @Bean
