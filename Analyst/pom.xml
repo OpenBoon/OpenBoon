@@ -153,6 +153,18 @@
                     </execution>
 
                     <execution>
+                        <id>Install OpenCV</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>mvn</executable>
+                            <commandlineArgs>install:install-file -Dfile=lib/face/opencv-2412.jar -DgroupId=org.opencv -DartifactId=opencv -Dversion=2.4.12 -Dpackaging=jar</commandlineArgs>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
                         <id>Javalib CaffeClassifier</id>
                         <phase>compile</phase>
                         <goals>
@@ -165,9 +177,33 @@
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/hdf5
                                 -Isrc/main/C++/com/zorroa/ingestors/caffe/include/CUDA-7.0
                                 -I/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers
-                                -Llib/caffe
+                                -Llib/caffe -Llib/local/lib
                                 -lcaffe -lboost_system -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
                             </commandlineArgs>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>Move OpenCV to target-jni</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/bin/cp</executable>
+                            <commandlineArgs>${basedir}/lib/face/libopencv_java2412.dylib ${project.build.directory}/jni</commandlineArgs>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>Relink OpenCV JNI</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${basedir}/jni_relink.py</executable>
+                            <commandlineArgs>${project.build.directory}/jni/libopencv_java2412.dylib</commandlineArgs>
                         </configuration>
                     </execution>
 
@@ -177,17 +213,27 @@
                         <goals><goal>exec</goal></goals>
                         <configuration>
                             <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.basedir}/target/${project.artifactId}.jar ${com.zorroa.extensionDir}</commandlineArgs>
+                            <commandlineArgs>cp ${project.build.directory}/${project.artifactId}.jar ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>Install jnilib</id>
+                        <id>Install Caffe jnilib</id>
                         <phase>install</phase>
                         <goals><goal>exec</goal></goals>
                         <configuration>
                             <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.basedir}/target/jni/libCaffeClassifier.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
+                            <commandlineArgs>cp ${project.build.directory}/jni/libCaffeClassifier.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>Install OpenCV jnilib</id>
+                        <phase>install</phase>
+                        <goals><goal>exec</goal></goals>
+                        <configuration>
+                            <executable>/usr/bin/sudo</executable>
+                            <commandlineArgs>cp ${project.build.directory}/jni/libopencv_java2412.dylib ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
@@ -202,7 +248,7 @@
                     <includes>
                         <include>**/*Tests.java</include>
                     </includes>
-                    <argLine>-Djava.class.path=${project.basedir}/lib/face -Djava.library.path=${project.basedir}/target/jni:${project.basedir}/lib/face</argLine>
+                    <argLine>-Djava.class.path=${project.basedir}/lib/face -Djava.library.path=${project.build.directory}/jni</argLine>
                     <environmentVariables>
                         <ZORROA_OPENCV_MODEL_PATH>${project.basedir}/models</ZORROA_OPENCV_MODEL_PATH>
                     </environmentVariables>
