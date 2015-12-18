@@ -72,7 +72,7 @@ public class SimpleExcelIngestor extends IngestProcessor {
         for (Mapping mapping: mappings) {
             //row.getCell(CellReference.convertColStringToIndex(query.getColumn()));
 
-            Row row = filter(mapping.getFilters());
+            Row row = filter(assetBuilder, mapping.getFilters());
             if (row == null) {
                 continue;
             }
@@ -100,10 +100,10 @@ public class SimpleExcelIngestor extends IngestProcessor {
         }
     }
 
-    private Row filter(List<Filter> filters) {
+    private Row filter(AssetBuilder assetBuilder, List<Filter> filters) {
 
         for (Row row: sheet) {
-            if (matchFilters(row, filters)) {
+            if (matchFilters(assetBuilder, row, filters)) {
                 return row;
             }
         }
@@ -111,10 +111,10 @@ public class SimpleExcelIngestor extends IngestProcessor {
     }
 
 
-    private boolean matchFilters(Row row, List<Filter> filters) {
+    private boolean matchFilters(AssetBuilder assetBuilder, Row row, List<Filter> filters) {
         int matchesNeeded = filters.size();
         for (Filter filter: filters) {
-            if (!matchFilter(row, filter)) {
+            if (!matchFilter(assetBuilder, row, filter)) {
                 return false;
             }
             else {
@@ -124,31 +124,43 @@ public class SimpleExcelIngestor extends IngestProcessor {
         return matchesNeeded == 0;
     }
 
-    private boolean matchFilter(Row row, Filter filter) {
+    private boolean matchFilter(AssetBuilder assetBuilder, Row row, Filter filter) {
         Cell cell = row.getCell(CellReference.convertColStringToIndex(filter.getColumn()));
         int cellType = cell.getCellType();
         switch (cellType) {
             case Cell.CELL_TYPE_STRING:
-                return compareValue(cell.getStringCellValue(), filter);
+                return compareValue(assetBuilder, cell.getStringCellValue(), filter);
             case Cell.CELL_TYPE_NUMERIC:
-                return compareValue(BigDecimal.valueOf(cell.getNumericCellValue()), filter);
+                return compareValue(assetBuilder, BigDecimal.valueOf(cell.getNumericCellValue()), filter);
             default:
                 return false;
         }
     }
 
-    private boolean compareValue(String cellValue, Filter filter) {
+    private boolean compareValue(AssetBuilder assetBuilder, String cellValue, Filter filter) {
+        String value;
+        try {
+            value = (String) filter.getValue();
+            if (value.startsWith("${")) {
+                String[] parts = value.substring(2, value.length()-1).split("\\.");
+                value = assetBuilder.getAttr(parts[0], parts[1]).toString();
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to compare string value, castign error,", e);
+            return false;
+        }
+
         switch (filter.getRelation()) {
             case is:
-                return cellValue.equals(filter.getValue());
+                return cellValue.equals(value);
             case is_not:
-                return !cellValue.equals(filter.getValue());
+                return !cellValue.equals(value);
             default:
                 return false;
         }
     }
 
-    private boolean compareValue(BigDecimal cellValue, Filter filter) {
+    private boolean compareValue(AssetBuilder assetBuilder, BigDecimal cellValue, Filter filter) {
         boolean result;
 
         BigDecimal value = new BigDecimal(((Number)filter.getValue()).doubleValue());
@@ -189,7 +201,7 @@ public class SimpleExcelIngestor extends IngestProcessor {
                     "attr" : "foo.C",
                             "type" : 1
                 },
-                "D" : {
+                "D"
                     "attr" : "foo.D",
                             "type" : 0
                 },
@@ -200,8 +212,8 @@ public class SimpleExcelIngestor extends IngestProcessor {
             },
             "filters" : [ {
                 "column" : "C",
-                        "relation" : 0,
-                        "value" : 7
+                "relation" : 0,
+                "value" : 7
             } ]
         } ]
     */
