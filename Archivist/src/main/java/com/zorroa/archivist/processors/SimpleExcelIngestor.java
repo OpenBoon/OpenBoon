@@ -63,6 +63,7 @@ public class SimpleExcelIngestor extends IngestProcessor {
                     });
         }
         catch (Exception e) {
+            logger.warn("Failed to handle args {}", getArgs(), e);
             throw new IngestException(e.getMessage(), e);
         }
     }
