@@ -82,19 +82,35 @@ public class SimpleExcelIngestor extends IngestProcessor {
                 Field field = entry.getValue();
                 Cell cell = row.getCell(CellReference.convertColStringToIndex(column));
 
-                switch (field.getType()) {
-                    case integer:
-                        assetBuilder.setAttr(field.getNamespace(), field.getField(), new Double(cell.getNumericCellValue()).intValue());
-                        break;
-                    case decimal:
-                        assetBuilder.setAttr(field.getNamespace(), field.getField(),cell.getNumericCellValue());
-                        break;
-                    case bool:
-                        assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getBooleanCellValue());
-                        break;
-                    default:
-                        assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getStringCellValue());
-                        break;
+                if (field.getAttr() != null) {
+                    switch (field.getType()) {
+                        case integer:
+                            assetBuilder.setAttr(field.getNamespace(), field.getField(), new Double(cell.getNumericCellValue()).intValue());
+                            break;
+                        case decimal:
+                            assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getNumericCellValue());
+                            break;
+                        case bool:
+                            assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getBooleanCellValue());
+                            break;
+                        case csv:
+                            String[] values = cell.getStringCellValue().trim().split(",");
+                        default:
+                            assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getStringCellValue());
+                            break;
+                    }
+                }
+
+                if (field.isAddToKeywords()) {
+                    switch (field.getType()) {
+                        case csv:
+                            String[] values = cell.getStringCellValue().trim().split(",");
+                            assetBuilder.getKeywords().addKeywords(1, false, values);
+                            break;
+                        default:
+                            assetBuilder.getKeywords().addKeywords(1, false, cell.getStringCellValue());
+                            break;
+                    }
                 }
             }
         }
@@ -195,19 +211,19 @@ public class SimpleExcelIngestor extends IngestProcessor {
             "fields" : {
                 "B" : {
                     "attr" : "foo.B",
-                            "type" : 0
+                    "type" : 0
                 },
                 "C" : {
                     "attr" : "foo.C",
-                            "type" : 1
+                    "type" : 1
                 },
                 "D"
                     "attr" : "foo.D",
-                            "type" : 0
+                    "type" : 0
                 },
                 "E" : {
                     "attr" : "foo.E",
-                            "type" : 2
+                    "type" : 2
                 }
             },
             "filters" : [ {
@@ -222,6 +238,7 @@ public class SimpleExcelIngestor extends IngestProcessor {
 
         private String attr;
         private Type type;
+        private boolean addToKeywords;
 
         public Field() { }
 
@@ -268,6 +285,14 @@ public class SimpleExcelIngestor extends IngestProcessor {
             this.attr = attr;
         }
 
+        public boolean isAddToKeywords() {
+            return addToKeywords;
+        }
+
+        public Field setAddToKeywords(boolean addToKeywords) {
+            this.addToKeywords = addToKeywords;
+            return this;
+        }
     }
 
     public static class Mapping {
@@ -304,7 +329,8 @@ public class SimpleExcelIngestor extends IngestProcessor {
         string,
         integer,
         decimal,
-        bool
+        bool,
+        csv
     }
 
     public static class Filter {

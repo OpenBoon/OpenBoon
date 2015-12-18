@@ -6,6 +6,7 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 12/16/15.
@@ -69,7 +70,33 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
 
         assertEquals("A", builder.getAttr("foo", "B"));
         assertEquals(1, (int) builder.getAttr("foo", "C"));
-        assertEquals("One", builder.getAttr("foo", "D"));
+        assertEquals("One,Ten", builder.getAttr("foo", "D"));
         assertEquals(1.2, builder.getAttr("foo", "E"), 0.1);
+    }
+
+    @Test
+    public void testProcessSingleFilterKeywords() throws Exception {
+
+        SimpleExcelIngestor.Filter filter = new SimpleExcelIngestor.Filter();
+        filter.setColumn("G");
+        filter.setRelation(SimpleExcelIngestor.Relation.is);
+        filter.setValue("${source.filename}");
+
+        SimpleExcelIngestor.Mapping mapping = new SimpleExcelIngestor.Mapping();
+        mapping.setFilters(Lists.newArrayList(filter));
+        mapping.addField("D", new SimpleExcelIngestor.Field(
+                null, SimpleExcelIngestor.Type.csv).setAddToKeywords(true));
+
+        SimpleExcelIngestor ingestor = new SimpleExcelIngestor();
+        ingestor.setArg("file", "src/test/resources/excelFile.xlsx");
+        ingestor.setArg("mappings", Lists.newArrayList(mapping));
+
+        AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+
+        ingestor.init();
+        ingestor.process(builder);
+
+        assertTrue(builder.getKeywords().getAllKeywords().contains("One"));
+        assertTrue(builder.getKeywords().getAllKeywords().contains("Ten"));
     }
 }
