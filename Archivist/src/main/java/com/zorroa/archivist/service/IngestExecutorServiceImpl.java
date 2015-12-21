@@ -236,9 +236,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         if (!IngestUtils.isSupportedFormat(FileUtils.extension(file))) {
                             return FileVisitResult.CONTINUE;
                         }
-                        if (!imageService.getSupportedFormats().contains(FileUtils.extension(file))) {
-                            return FileVisitResult.CONTINUE;
-                        }
 
                         if (logger.isDebugEnabled()) {
                             logger.debug("Found file: {}", file);
