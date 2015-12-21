@@ -122,33 +122,42 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public int setSelection(@Nullable Room room, Set<String> selection) {
-        if (room == null) {
-            return -1;
-        }
         if (selection.size() > SELECTION_MAX_SIZE) {
             throw new MalformedDataException(String.format(
                     "The selection is too large, maximum allowed size: '%d', size: '%d'",
                         SELECTION_MAX_SIZE, selection.size()));
         }
-        int version = roomDao.setSelection(room, selection);
-        transactionEventManager.afterCommit(()-> {
-            messagingService.sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SELECTION_UPDATE,
-                    ImmutableMap.of("roomId", room.getId(), "version", version, "selection", selection)));
-        });
-        return version;
+        if (room != null) {
+            int version = roomDao.setSelection(room, selection);
+            transactionEventManager.afterCommit(() -> {
+                messagingService.sendToRoom(room, new Message(MessageType.ROOM_SELECTION_UPDATE,
+                        ImmutableMap.of("roomId", room.getId(), "version", version, "selection", selection)));
+            });
+            return version;
+        }
+        else {
+            messagingService.sendToActiveRoom(new Message(MessageType.ROOM_SELECTION_UPDATE,
+                    ImmutableMap.of("version", -1, "selection", selection)));
+            return -1;
+        }
     }
 
     public int setSearch(@Nullable Room room, AssetSearch search) {
-        if (room == null) {
+        if (room != null) {
+            int version = roomDao.setSearch(room, search);
+            transactionEventManager.afterCommit(() -> {
+                messagingService.sendToRoom(room, new Message(MessageType.ROOM_SEARCH_UPDATE,
+                        ImmutableMap.of("roomId", room.getId(), "version", version, "search", search)));
+            });
+            return version;
+        }
+        else {
+            transactionEventManager.afterCommit(() -> {
+                messagingService.sendToActiveRoom(new Message(MessageType.ROOM_SEARCH_UPDATE,
+                        ImmutableMap.of("version", -1, "search", search)));
+            });
             return -1;
         }
-
-        int version = roomDao.setSearch(room, search);
-        transactionEventManager.afterCommit(()-> {
-            messagingService.sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_SEARCH_UPDATE,
-                    ImmutableMap.of("roomId", room.getId(), "version", version, "search", search)));
-        });
-        return version;
     }
 
     public Set<String> getSelection(Room room) {
