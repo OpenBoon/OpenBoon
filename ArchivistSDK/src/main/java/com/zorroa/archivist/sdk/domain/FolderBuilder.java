@@ -2,7 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 public class FolderBuilder {
 
-    private String parentId = Folder.ROOT_ID;
+    private Integer parentId = Folder.ROOT_ID;
     private String name;
     private AssetSearch search;
 
@@ -20,7 +20,7 @@ public class FolderBuilder {
         this.name = name;
     }
 
-    public FolderBuilder(String name, String parentId) {
+    public FolderBuilder(String name, int parentId) {
         this.name = name;
         this.parentId = parentId;
     }
@@ -30,11 +30,11 @@ public class FolderBuilder {
         this.parentId = parent.getId();
     }
 
-    public String getParentId() {
+    public int getParentId() {
         return parentId;
     }
 
-    public FolderBuilder setParentId(String parentId) {
+    public FolderBuilder setParentId(int parentId) {
         this.parentId = parentId;
         return this;
     }

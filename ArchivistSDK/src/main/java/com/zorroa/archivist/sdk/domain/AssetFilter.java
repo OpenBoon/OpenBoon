@@ -14,7 +14,7 @@ import java.util.List;
 public class AssetFilter {
     private List<String> assetIds;              // Filter to show the specified assets
     private List<Integer> exportIds;            // Filter to show the specified exports
-    private List<String> folderIds;             // Filter to show the specified folders
+    private List<Integer> folderIds;             // Filter to show the specified folders
     private List<String> existFields;           // Filter for assets that contain any of the specified fields
     private List<AssetFieldTerms> fieldTerms;   // Filter for matching terms in the specified field
     private List<AssetFieldRange> fieldRanges;  // Filter for terms within a specified range
@@ -58,20 +58,20 @@ public class AssetFilter {
         return this;
     }
 
-    public List<String> getFolderIds() {
+    public List<Integer> getFolderIds() {
         return folderIds;
     }
 
-    public AssetFilter setFolderIds(List<String> folderIds) {
+    public AssetFilter setFolderIds(List<Integer> folderIds) {
         this.folderIds = folderIds;
         return this;
     }
 
-    public AssetFilter addToFolderIds(String ... ids) {
+    public AssetFilter addToFolderIds(Integer ... ids) {
         if (folderIds == null) {
             folderIds = Lists.newArrayList();
         }
-        for (String id: ids) {
+        for (Integer id: ids) {
             folderIds.add(id);
         }
         return this;

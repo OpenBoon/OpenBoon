@@ -4,15 +4,15 @@ import java.util.Objects;
 
 public class Folder {
 
-    public static final String ROOT_ID = "00000000-0000-0000-0000-000000000000";
+    public static final Integer ROOT_ID = 0;
 
     /**
      * Return true if the given folder ID is the root folder's ID.
      * @param id
      * @return
      */
-    public static boolean isRoot(String id) {
-        return ROOT_ID.equals(id);
+    public static boolean isRoot(int id) {
+        return ROOT_ID == id;
     }
 
     /**
@@ -21,31 +21,35 @@ public class Folder {
      * @return
      */
     public static boolean isRoot(Folder folder) {
-        return ROOT_ID.equals(folder.getId());
+        return ROOT_ID == folder.getId();
     }
 
-    private String id;
-    private String parentId;
+    private Integer id;
+    private Integer parentId;
     private String name;
     private int userCreated;
     private int userModified;
+    private long timeCreated;
+    private long timeModified;
+    private boolean recursive;
+
     private AssetSearch search;
 
     public Folder() { }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(int parentId) {
         this.parentId = parentId;
     }
 
@@ -81,6 +85,30 @@ public class Folder {
         this.userModified = userModified;
     }
 
+    public boolean isRecursive() {
+        return recursive;
+    }
+
+    public void setRecursive(boolean recursive) {
+        this.recursive = recursive;
+    }
+
+    public long getTimeModified() {
+        return timeModified;
+    }
+
+    public void setTimeModified(long timeModified) {
+        this.timeModified = timeModified;
+    }
+
+    public long getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(long timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
     @Override
     public String toString() {
         return String.format("<Folder id=%s parent=%s name=%s>",
@@ -93,11 +121,11 @@ public class Folder {
         if (o == null || getClass() != o.getClass()) return false;
 
         Folder other = (Folder) o;
-        return id.equals(other.id);
+        return id.intValue() == other.id.intValue();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id.intValue());
     }
 }

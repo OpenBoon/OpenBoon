@@ -9,7 +9,9 @@ import java.util.Set;
 
 public interface FolderService {
 
-    Folder get(String id);
+    Folder get(int id);
+
+    Folder get(int parent, String name);
 
     List<Folder> getAll();
 
@@ -19,7 +21,7 @@ public interface FolderService {
      * @param ids
      * @return
      */
-    List<Folder> getAll(Collection<String> ids);
+    List<Folder> getAll(Collection<Integer> ids);
 
     List<Folder> getChildren(Folder folder);
 
@@ -46,4 +48,6 @@ public interface FolderService {
     boolean update(Folder folder, FolderBuilder builder);
 
     boolean delete(Folder folder);
+
+    Folder get(String path);
 }
