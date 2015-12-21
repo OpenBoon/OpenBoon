@@ -71,6 +71,18 @@ public class FolderServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testGetByPath() {
+        Folder folder1 = folderService.create(new FolderBuilder("test1"));
+        Folder folder1a = folderService.create(new FolderBuilder("test1a", folder1));
+        Folder folder1b = folderService.create(new FolderBuilder("test1b", folder1a));
+        Folder folder1c = folderService.create(new FolderBuilder("test1c", folder1b));
+
+        Folder folder = folderService.get("/test1/test1a/test1b/test1c");
+        assertEquals(folder1b.getId(), folder.getParentId());
+        assertEquals(folder1c.getName(), folder.getName());
+    }
+
+    @Test
     public void testUpdate() {
         Folder folder = folderService.create(new FolderBuilder("orig"));
         boolean ok = folderService.update(folder, new FolderBuilder("new"));

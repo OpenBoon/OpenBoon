@@ -270,7 +270,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll();
         for (Asset asset: assets) {
-            Set<String> folderIds = asset.getValue("folders", new TypeReference<Set<String>>() {});
+            Set<Integer> folderIds = asset.getValue("folders", new TypeReference<Set<Integer>>() {});
             assertTrue(folderIds.contains(folder1.getId()));
             assertTrue(folderIds.contains(folder2.getId()));
         }

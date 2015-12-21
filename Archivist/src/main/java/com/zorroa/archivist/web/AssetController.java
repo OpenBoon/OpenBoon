@@ -109,7 +109,7 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody AssetUpdateBuilder builder, @PathVariable String id, HttpSession httpSession) throws IOException {
+    public Map<String, Object> update(@RequestBody AssetUpdateBuilder builder, @PathVariable String id) throws IOException {
         long version = assetService.update(id, builder);
         return ImmutableMap.of(
                 "assetId", id,
@@ -118,7 +118,7 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}/_folders", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> setFolders(@RequestBody List<String> folder, @PathVariable String id, HttpSession httpSession) throws Exception {
+    public Map<String, Object> setFolders(@RequestBody List<Integer> folder, @PathVariable String id) throws Exception {
         Asset asset = assetService.get(id);
         List<Folder> folders = folderService.getAll(folder);
         assetService.setFolders(asset, folders);

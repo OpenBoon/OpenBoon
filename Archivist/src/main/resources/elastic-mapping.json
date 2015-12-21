@@ -95,7 +95,7 @@
           }
         },
         "folders": {
-          "type": "string",
+          "type": "integer",
           "index": "not_analyzed"
         },
         "selectedRooms": {
@@ -168,28 +168,6 @@
           }
         }
       ]
-    },
-    "folders": {
-      "properties": {
-        "parentId": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "createdUser": {
-          "type": "integer"
-        },
-        "modifiedUser": {
-          "type": "integer"
-        },
-        "name": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "query": {
-          "index": "not_analyzed",
-          "type": "object"
-        }
-      }
     }
   }
 }

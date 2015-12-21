@@ -1,11 +1,12 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PermissionDao permissionDao;
 
+    @Autowired
+    FolderService folderService;
+
     @Override
     public User login() {
         return userDao.get(SecurityUtils.getUsername());
@@ -38,7 +42,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserBuilder builder) {
-        return userDao.create(builder);
+        User user = userDao.create(builder);
+
+        Folder userRoot = folderService.get(Folder.ROOT_ID, "users");
+        folderService.create(new FolderBuilder()
+                .setName(user.getUsername())
+                .setParentId(userRoot.getId()));
+        return user;
     }
 
     @Override

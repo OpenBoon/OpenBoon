@@ -163,7 +163,7 @@ public class SearchServiceImpl implements SearchService {
     private QueryBuilder folderQuery(AssetFilter filter) {
         BoolQueryBuilder query = QueryBuilders.boolQuery();
         if (filter.getFolderIds() != null) {
-            Set<String> folderIds = Sets.newHashSetWithExpectedSize(64);
+            Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(64);
             for (Folder folder : folderService.getAllDescendants(
                     folderService.getAll(filter.getFolderIds()), true)) {
                 if (folder.getSearch() != null) {

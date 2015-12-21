@@ -73,6 +73,21 @@ public class FolderControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testGetByPath() throws Exception {
+        MockHttpSession session = user();
+        MvcResult result = mvc.perform(get("/api/v1/folders/_/users")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+        Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+
+        assertEquals("users", folder2.getName());
+        assertEquals(Folder.ROOT_ID, folder2.getParentId());
+    }
+
+    @Test
     public void testGetAll() throws Exception {
         MockHttpSession session = user();
         MvcResult result = mvc.perform(get("/api/v1/folders")
@@ -139,8 +154,8 @@ public class FolderControllerTests extends MockMvcTest {
         List<Folder> folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<Folder>>() {});
 
-        // This is 2 because of the folder created by init.
-        assertEquals(2, folders.size());
+        // This is 4 because of the folder created by init and the user folder
+        assertEquals(3, folders.size());
         Set<String> names = folders.stream().map(Folder::getName).collect(Collectors.toSet());
 
         assertTrue(names.contains("first"));

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -16,6 +17,7 @@ import com.zorroa.archivist.sdk.service.MessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -36,9 +38,30 @@ public class FolderServiceImpl implements FolderService {
     MessagingService messagingService;
 
     @Override
-    public Folder get(String id) {
+    public Folder get(int id) {
         return folderDao.get(id);
     }
+
+    @Override
+    public Folder get(int parent, String name) {
+        return folderDao.get(parent, name);
+    }
+
+    @Override
+    public Folder get(String path) {
+        logger.info("path: {}", path);
+        int parentId = Folder.ROOT_ID;
+        Folder current = null;
+        for (String name: Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
+            current = folderDao.get(parentId, name);
+            parentId = current.getId();
+        }
+        if (current == null) {
+            throw new EmptyResultDataAccessException("Failed to find folder path: " + path, 1);
+        }
+        return current;
+    }
+
 
     @Override
     public List<Folder> getAll() {
@@ -46,7 +69,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<Folder> getAll(Collection<String> ids) {
+    public List<Folder> getAll(Collection<Integer> ids) {
         return folderDao.getAll(ids);
     }
 
@@ -93,12 +116,12 @@ public class FolderServiceImpl implements FolderService {
         }
     }
 
-    private void invalidate(Folder folder, String ... additional) {
+    private void invalidate(Folder folder, int ... additional) {
         if (folder != null) {
             childCache.invalidate(folder.getParentId());
             childCache.invalidate(folder.getId());
         }
-        for (String id: additional) {
+        for (int id: additional) {
             childCache.invalidate(id);
         }
     }
@@ -122,11 +145,11 @@ public class FolderServiceImpl implements FolderService {
         return result;
     }
 
-    private final LoadingCache<String, List<Folder>> childCache = CacheBuilder.newBuilder()
+    private final LoadingCache<Integer, List<Folder>> childCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
             .expireAfterWrite(1, TimeUnit.DAYS)
-            .build(new CacheLoader<String, List<Folder>>() {
-                public List<Folder> load(String key) throws Exception {
+            .build(new CacheLoader<Integer, List<Folder>>() {
+                public List<Folder> load(Integer key) throws Exception {
                     return folderDao.getChildren(key);
                 }
             });

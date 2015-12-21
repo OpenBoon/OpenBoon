@@ -1,158 +1,168 @@
 package com.zorroa.archivist.repository;
 
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.sdk.domain.AssetSearch;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
-import org.elasticsearch.action.count.CountResponse;
-import org.elasticsearch.action.delete.DeleteRequestBuilder;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Repository
-public class FolderDaoImpl extends AbstractElasticDao implements FolderDao {
+public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
-    private TimeBasedGenerator uuidGenerator = Generators.timeBasedGenerator();
+    private static final RowMapper<Folder> MAPPER = (rs, row) -> {
+        Folder folder = new Folder();
+        folder.setId(rs.getInt("pk_folder"));
+        folder.setName(rs.getString("str_name"));
+        folder.setUserCreated(rs.getInt("user_created"));
+        folder.setUserModified(rs.getInt("user_modified"));
+        folder.setRecursive(rs.getBoolean("bool_recursive"));
+        folder.setTimeCreated(rs.getLong("time_created"));
+        folder.setTimeModified(rs.getLong("time_modified"));
 
-    @Override
-    public String getType() {
-        return "folders";
-    }
+        Object parent = rs.getObject("pk_parent");
+        if (parent != null) {
+            folder.setParentId((Integer) parent);
+        }
 
-    private static final JsonRowMapper<Folder> MAPPER = (id, version, source) -> {
-        Folder folder = Json.deserialize(source, Folder.class);
-        folder.setId(id);
+        String search = rs.getString("json_search");
+        if (search != null) {
+            folder.setSearch(Json.deserialize(search, AssetSearch.class));
+        }
+
         return folder;
     };
 
+    private static final String GET =
+            "SELECT " +
+                "* " +
+            "FROM " +
+                "folder ";
     @Override
-    public Folder get(String id) {
-        return elastic.queryForObject(id, MAPPER);
+    public Folder get(int id) {
+        return jdbc.queryForObject(GET + " WHERE pk_folder=?", MAPPER, id);
     }
 
     @Override
-    public List<Folder> getAll(Collection<String> ids) {
-        return getFolders(QueryBuilders.termsQuery("_id", ids));
-    }
-
-    private List<Folder> getFolders(QueryBuilder queryBuilder) {
-        List<Folder> result = Lists.newArrayListWithCapacity(32);
-        SearchResponse scroll = client.prepareSearch(alias)
-                .setSearchType(SearchType.SCAN)
-                .setScroll(new TimeValue(5000))
-                .setQuery(queryBuilder)
-                .setSize(100).execute().actionGet();
-
-        while(true) {
-            for (SearchHit hit: scroll.getHits().getHits()) {
-                try {
-                    result.add(MAPPER.mapRow(hit.getId(), hit.getVersion(), hit.source()));
-                } catch (Exception e) {
-                    // Whatever data we got was unable to be deserialized...maybe bad folder
-                    // warn, but move on
-                    logger.warn("Unable to deserialize folder Id: {}", hit.getId(), e);
-                }
-            }
-
-            scroll = client.prepareSearchScroll(scroll.getScrollId())
-                    .setScroll(new TimeValue(5000))
-                    .execute().actionGet();
-
-            if (scroll.getHits().getHits().length == 0) {
-                break;
-            }
-        }
-
-        Collections.sort(result, (f1, f2) -> f1.getName().compareTo(f2.getName()));
-        return result;
+    public Folder get(int parent, String name) {
+        return jdbc.queryForObject(GET + " WHERE pk_parent=? and str_name=?", MAPPER, parent, name);
     }
 
     @Override
-    public List<Folder> getChildren(String parentId) {
-        return getFolders(QueryBuilders.termQuery("parentId", parentId));
+    public Folder get(Folder parent, String name) {
+        return get(parent.getId(), name);
+    }
+
+    @Override
+    public List<Folder> getAll(Collection<Integer> ids) {
+        StringBuilder sb = new StringBuilder(512);
+        sb.append(GET);
+        sb.append(" WHERE ");
+        sb.append(JdbcUtils.in("pk_folder", ids.size()));
+        return jdbc.query(sb.toString(), MAPPER, ids.toArray());
+    }
+
+    @Override
+    public List<Folder> getChildren(int parentId) {
+        StringBuilder sb = new StringBuilder(512);
+        sb.append(GET);
+        sb.append(" WHERE pk_parent=?");
+        return jdbc.query(sb.toString(), MAPPER, parentId);
     }
 
     @Override
     public List<Folder> getChildren(Folder folder) {
-        return getFolders(QueryBuilders.termQuery("parentId", folder.getId()));
+        return getChildren(folder.getId());
     }
 
     @Override
-    public boolean exists(String parentId, String name) {
-        FilterBuilder nameFilter = FilterBuilders.termFilter("name", name);
-        FilterBuilder parentFilter = FilterBuilders.termFilter("parentId", parentId);
-
-        CountResponse count = client.prepareCount(alias)
-                .setTypes(getType())
-                .setQuery(QueryBuilders.filteredQuery(
-                        QueryBuilders.matchAllQuery(),
-                        FilterBuilders.andFilter(
-                            parentFilter, nameFilter)))
-                .get();
-        return count.getCount() > 0;
+    public boolean exists(int parentId, String name) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE pk_parent=? AND str_name=?",
+                Integer.class, parentId, name) == 1;
     }
+
+    @Override
+    public boolean exists(Folder parent, String name) {
+        return exists(parent.getId(), name);
+    }
+
+    private static final String INSERT =
+            JdbcUtils.insert("folder",
+                    "pk_parent",
+                    "str_name",
+                    "user_created",
+                    "time_created",
+                    "user_modified",
+                    "time_modified",
+                    "json_search");
 
     @Override
     public Folder create(FolderBuilder builder) {
-        if (exists(builder.getParentId(), builder.getName())) {
-            throw new DataIntegrityViolationException(
-                    String.format("The folder '%s' already exists.", builder.getName()));
-        }
+        long time = System.currentTimeMillis();
+        int user = SecurityUtils.getUser().getId();
 
-        StringBuilder sb = new StringBuilder(Json.serializeToString(builder));
-        sb.deleteCharAt(sb.length()-1);
-        sb.append(",\"userCreated\":");
-        sb.append(SecurityUtils.getUser().getId());
-        sb.append("},");
-        sb.append("\"userModified\":");
-        sb.append(SecurityUtils.getUser().getId());
-        sb.append("}");
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbc.update(connection -> {
+            PreparedStatement ps =
+                    connection.prepareStatement(INSERT, new String[]{"pk_folder"});
+            ps.setInt(1, builder.getParentId());
+            ps.setString(2, builder.getName());
+            ps.setInt(3, user);
+            ps.setLong(4, time);
+            ps.setInt(5, user);
+            ps.setLong(6, time);
+            ps.setString(7, Json.serializeToString(builder.getSearch(), null));
+            return ps;
+        }, keyHolder);
 
-        IndexRequestBuilder idxBuilder = client.prepareIndex(alias, getType())
-                .setId(uuidGenerator.generate().toString())
-                .setOpType(IndexRequest.OpType.CREATE)
-                .setSource(sb.toString())
-                .setRefresh(true);
-        String id = idxBuilder.get().getId();
-        return get(id);
+        Folder folder = new Folder();
+        folder.setId(keyHolder.getKey().intValue());
+        folder.setParentId(builder.getParentId());
+        folder.setName(builder.getName());
+        folder.setSearch(builder.getSearch());
+        folder.setUserCreated(user);
+        return folder;
     }
 
     @Override
     public boolean update(Folder folder, FolderBuilder builder) {
-        client.prepareUpdate(alias, getType(), folder.getId())
-                .setDoc(Json.serializeToString(builder))
-                .setRefresh(true)
-                .setRetryOnConflict(1)
-                .get().isCreated();
-        return true;
+
+        List<Object> values = Lists.newArrayList();
+        List<String> sets = Lists.newArrayList();
+
+        if (builder.getName() != null) {
+            sets.add("str_name=?");
+            values.add(builder.getName());
+        }
+
+
+        sets.add("pk_parent=?");
+        values.add(builder.getParentId());
+
+        sets.add("json_search=?");
+        values.add(Json.serializeToString(builder.getSearch(), null));
+
+        values.add(folder.getId());
+
+        StringBuilder sb = new StringBuilder(512);
+        sb.append("UPDATE folder SET ");
+        sb.append(String.join(",", sets));
+        sb.append(" WHERE pk_folder=?");
+
+        return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
 
     @Override
     public boolean delete(Folder folder) {
-        DeleteRequestBuilder builder = client.prepareDelete()
-                .setIndex(alias)
-                .setType(getType())
-                .setId(folder.getId())
-                .setType("folders")
-                .setRefresh(true);
-        String id = builder.get().getId();
-        return id.equals(folder.getId());
+        return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) ==1;
     }
 }

@@ -39,20 +39,6 @@ public class FolderDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testGetUser() {
-        String name = "Goo the folder";
-        FolderBuilder builder = new FolderBuilder(name);
-        folderDao.create(builder);
-
-        builder = new FolderBuilder("Bam his brother");
-        folderDao.create(builder);
-        refreshIndex();
-
-        List<Folder> folders = folderDao.getChildren(Folder.ROOT_ID);
-        assertEquals(2, folders.size());
-    }
-
-    @Test
     public void testGetChildren() {
         String name = "Grandpa";
         FolderBuilder builder = new FolderBuilder(name);
@@ -80,8 +66,6 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         builder.setSearch(new AssetSearch());
         boolean ok = folderDao.update(bimbo, builder);
         assertTrue(ok);
-        refreshIndex();
-        logger.info("1");
 
         Folder bimbo2 = folderDao.get(bimbo.getId());
         assertEquals(bimbo2.getName(), "Bimbo-updated");
@@ -90,16 +74,10 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testDelete() {
-        String name = "Foofoo";
-        FolderBuilder builder = new FolderBuilder(name);
-        Folder foofoo = folderDao.create(builder);
-        builder = new FolderBuilder("Snusnu");
-        Folder snusnu  = folderDao.create(builder);
-        folderDao.delete(foofoo);
-        List<Folder> folders = folderDao.getChildren(Folder.ROOT_ID);
-        assertEquals(folders.size(), 1);
-        Folder f = folders.get(0);
-        assertEquals(f.getName(), "Snusnu");
+        int count = folderDao.getChildren(Folder.ROOT_ID).size();
+        Folder f = folderDao.create(new FolderBuilder("test"));
+        assertTrue(folderDao.delete(f));
+        assertEquals(count, folderDao.getChildren(Folder.ROOT_ID).size());
     }
 
     @Test

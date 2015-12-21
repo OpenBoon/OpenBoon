@@ -8,15 +8,21 @@ import java.util.List;
 
 public interface FolderDao {
 
-    Folder get(String id);
+    Folder get(int id);
 
-    List<Folder> getAll(Collection<String> ids);
+    Folder get(int parent, String name);
 
-    List<Folder> getChildren(String parentId);
+    Folder get(Folder parent, String name);
+
+    List<Folder> getAll(Collection<Integer> ids);
+
+    List<Folder> getChildren(int parentId);
 
     List<Folder> getChildren(Folder folder);
 
-    boolean exists(String parentId, String name);
+    boolean exists(int parentId, String name);
+
+    boolean exists(Folder parent, String name);
 
     Folder create(FolderBuilder builder);
 
