@@ -66,7 +66,7 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
             ps.setString(1, builder.getName());
             ps.setString(2, builder.getPassword());
             ps.setBoolean(3, builder.isVisible());
-            ps.setString(4, Json.serializeToString(builder.getSearch()));
+            ps.setString(4, Json.serializeToString(builder.getSearch(), null));
             ps.setString(5, Json.serializeToString(builder.getSelection()));
             return ps;
         }, keyHolder);
