@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.AssetSearch;
 import com.zorroa.archivist.sdk.domain.Folder;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class FolderDaoTests extends ArchivistApplicationTests {
@@ -24,10 +26,30 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         String name = "Foobar the folder";
         FolderBuilder builder = new FolderBuilder(name);
         Folder folder1 = folderDao.create(builder);
-        refreshIndex();
 
         Folder folder2 = folderDao.get(folder1.getId());
         assertEquals(folder2.getName(), name);
+    }
+
+    @Test
+    public void testGetByParentAndName() throws IOException {
+        String name = "test";
+        FolderBuilder builder = new FolderBuilder(name);
+        Folder folder1 = folderDao.create(builder);
+        Folder folder2 = folderDao.get(Folder.ROOT_ID, name);
+        assertEquals(folder1, folder1);
+    }
+
+    @Test
+    public void testGetAll() throws IOException {
+        Folder folder1 = folderDao.create(new FolderBuilder("test1"));
+        Folder folder2 = folderDao.create(new FolderBuilder("test2"));
+        Folder folder3 = folderDao.create(new FolderBuilder("test3"));
+        List<Folder> some = folderDao.getAll(
+                Lists.newArrayList(folder2.getId(), folder3.getId()));
+        assertTrue(some.contains(folder2));
+        assertTrue(some.contains(folder3));
+        assertFalse(some.contains(folder1));
     }
 
     @Test(expected= DataIntegrityViolationException.class)
