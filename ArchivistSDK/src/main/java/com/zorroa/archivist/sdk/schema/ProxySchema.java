@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zorroa.archivist.sdk.domain.Proxy;
 
 /**
- * Created by chambers on 12/11/15.
+ * The ProxySchema is a list of available proxy objects.
  */
 public class ProxySchema extends ListSchema<Proxy> {
 

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.sdk.schema;
 
 /**
- * Created by chambers on 11/25/15.
+ * The ingest schema contains all the information related to the ingest that brought in the asset.
  */
 public class IngestSchema implements Schema {
 

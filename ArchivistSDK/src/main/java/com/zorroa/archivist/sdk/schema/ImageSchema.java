@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.schema;
 import java.awt.geom.Point2D;
 
 /**
- * Image Schem contains options that only pertain to Image assets.
+ * Image Schema contains options that only pertain to Image assets.
  */
 public class ImageSchema implements Schema {
 

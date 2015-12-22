@@ -8,7 +8,13 @@ import com.zorroa.archivist.sdk.util.IngestUtils;
 import java.util.Date;
 
 /**
- * Created by chambers on 11/23/15.
+ * The source schema contains everything that can be cleaned from the file path
+ * itself without opening, reading or performing an otherwise potentially I/O blocking
+ * operation.  The current exception to this rule in checksum which is being moved
+ * to its own area.
+ *
+ * Every asset should at least have a valid source schema.
+ *
  */
 public class SourceSchema implements Schema {
 

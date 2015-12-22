@@ -5,7 +5,7 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 
 /**
- * Created by chambers on 11/25/15.
+ * The PermissionSchema contains the permissions needed to access the asset.
  */
 public class PermissionSchema implements Schema {
 
