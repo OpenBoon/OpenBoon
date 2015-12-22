@@ -1,8 +1,10 @@
 package com.zorroa.archivist.sdk.util;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetType;
 
+import javax.imageio.ImageIO;
 import java.util.Map;
 
 /**
@@ -15,14 +17,17 @@ public class IngestUtils {
             /*
              * Image
              */
-            .put("jpg", AssetType.Image)
-            .put("jpeg", AssetType.Image)
-            .put("png", AssetType.Image)
-            .put("gif", AssetType.Image)
-            .put("bmp", AssetType.Image)
 
+            .putAll(getImageFormats())
             .build();
 
+    private static Map<String, AssetType> getImageFormats() {
+        Map<String, AssetType> result  = Maps.newHashMap();
+        for (String format: ImageIO.getReaderFormatNames()) {
+            result.put(format.toLowerCase(), AssetType.Image);
+        }
+        return result;
+    }
 
     public static AssetType determineAssetType(String ext) {
         return SUPPORTED_FORMATS.getOrDefault(ext.toLowerCase(), AssetType.Unknown);
@@ -31,4 +36,6 @@ public class IngestUtils {
     public static boolean isSupportedFormat(String ext) {
         return SUPPORTED_FORMATS.containsKey(ext.toLowerCase());
     }
+
+
 }
