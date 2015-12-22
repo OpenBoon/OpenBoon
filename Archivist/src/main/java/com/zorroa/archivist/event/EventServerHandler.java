@@ -74,6 +74,7 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     public void send(Session session, Message message) {
+        logger.info("Attempting to send to session cookie: {}", session.getCookieId());
         Channel channel = channelMap.asMap().get(session.getCookieId());
         if (channel == null) {
             return;
@@ -96,7 +97,7 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
 
         switch(type) {
         case SESSION:
-            logger.trace("Setting cookie attr on channel: {}", cookieId);
+            logger.info("Caching session cookie socket: {}", cookieId);
             channelMap.put(cookieId, ctx.channel());
             ctx.channel().attr(AttributeKey.valueOf("cookie")).set(cookieId);
             ctx.channel().writeAndFlush("OK" + END_MESSAGE);
