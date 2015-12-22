@@ -57,7 +57,7 @@ public class MessagingServiceImpl implements MessagingService {
         }
 
         if (message.getPayload() == null) {
-            logger.warn("The current session {} has a null message payload", SecurityUtils.getSessionId());
+            logger.warn("The current session {} has a null message payload", SecurityUtils.getCookieId());
             return;
         }
 
@@ -75,12 +75,12 @@ public class MessagingServiceImpl implements MessagingService {
          * If the room is null just log it and move on.
          */
         if (session == null) {
-            logger.warn("The current session {} is null.", SecurityUtils.getSessionId());
+            logger.warn("The current session {} is null.", SecurityUtils.getCookieId());
             return;
         }
 
         if (message.getPayload() == null) {
-            logger.warn("The not sending null message payload to {}", SecurityUtils.getSessionId());
+            logger.warn("The not sending null message payload to {}", SecurityUtils.getCookieId());
             return;
         }
 

@@ -50,8 +50,8 @@ public class MessageServiceTests extends ArchivistApplicationTests {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         sessionRegistry.registerNewSession(request.getSession().getId(), SecurityUtils.getUser());
 
-        roomService.join(room, userService.getSession(SecurityUtils.getSessionId()));
-        client.sendSession(SecurityUtils.getSessionId());
+        roomService.join(room, userService.getSession(SecurityUtils.getCookieId()));
+        client.sendSession(SecurityUtils.getCookieId());
         assertEquals("OK", client.pop());
     }
 
@@ -93,7 +93,7 @@ public class MessageServiceTests extends ArchivistApplicationTests {
 
     @Test
     public void testSendSession() throws Exception {
-        Session session = userService.getSession(SecurityUtils.getSessionId());
+        Session session = userService.getSession(SecurityUtils.getCookieId());
         messagingService.sendToSession(session, new Message("TEST", "foo"));
         assertEquals("TEST\tfoo", client.pop());
     }

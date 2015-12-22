@@ -29,7 +29,7 @@ public class SecurityUtils {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public static String getSessionId() {
+    public static String getCookieId() {
         return RequestContextHolder.currentRequestAttributes().getSessionId();
     }
 

@@ -45,7 +45,7 @@ public class RoomServiceTests extends ArchivistApplicationTests {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         sessionRegistry.registerNewSession(request.getSession().getId(), SecurityUtils.getUser());
-        session = userService.getSession(SecurityUtils.getSessionId());
+        session = userService.getSession(SecurityUtils.getCookieId());
     }
 
     @Test
