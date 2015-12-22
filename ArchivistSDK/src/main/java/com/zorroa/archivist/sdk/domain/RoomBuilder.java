@@ -63,9 +63,6 @@ public class RoomBuilder {
     }
 
     public AssetSearch getSearch() {
-        if (search == null) {
-            search = new AssetSearch();
-        }
         return search;
     }
 
