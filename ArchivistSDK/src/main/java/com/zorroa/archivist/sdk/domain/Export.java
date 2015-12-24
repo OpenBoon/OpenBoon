@@ -18,9 +18,9 @@ public class Export {
     private AssetSearch search;
     private ExportOptions options;
 
-    public long timeStarted;
-    public long timeStopped;
-    public int executeCount;
+    private long timeStarted;
+    private long timeStopped;
+    private int executeCount;
 
     public int getId() {
         return id;
