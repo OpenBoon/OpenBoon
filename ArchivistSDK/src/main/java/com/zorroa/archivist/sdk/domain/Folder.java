@@ -121,8 +121,8 @@ public class Folder {
 
     @Override
     public String toString() {
-        return String.format("<Folder id=%s parent=%s name=%s>",
-                id, parentId, name);
+        return String.format("<Folder id=%s parent=%s name=%s acl=%s>",
+                id, parentId, name, acl);
     }
 
     @Override

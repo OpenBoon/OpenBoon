@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ForwardingList;
 import com.google.common.collect.Lists;
 
@@ -60,5 +61,10 @@ public class Acl extends ForwardingList<AclEntry> {
     @JsonIgnore
     protected List<AclEntry> delegate() {
         return delegate;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("entries", delegate).toString();
     }
 }

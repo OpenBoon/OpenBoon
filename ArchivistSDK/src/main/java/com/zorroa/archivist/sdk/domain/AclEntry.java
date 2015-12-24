@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * An AclEntry define a permission and the access type for the permission.
  */
@@ -13,6 +15,12 @@ public class AclEntry {
     public AclEntry(Permission perm, Access... access) {
         this(perm.getId(), access);
     }
+
+    public AclEntry(int permId, int access) {
+        this.permissionId = permId;
+        this.access = access;
+    }
+
     public AclEntry(int permId, Access... access) {
         this.permissionId = permId;
         this.access = 0;
@@ -41,5 +49,11 @@ public class AclEntry {
         this.access = access;
     }
 
-
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("perm", permissionId)
+                .add("access", access)
+                .toString();
+    }
 }
