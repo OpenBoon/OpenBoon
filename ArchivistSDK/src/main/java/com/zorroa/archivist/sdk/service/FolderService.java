@@ -1,5 +1,6 @@
 package com.zorroa.archivist.sdk.service;
 
+import com.zorroa.archivist.sdk.domain.Acl;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 
@@ -50,4 +51,6 @@ public interface FolderService {
     boolean delete(Folder folder);
 
     Folder get(String path);
+
+    void setAcl(Folder folder, Acl acl);
 }

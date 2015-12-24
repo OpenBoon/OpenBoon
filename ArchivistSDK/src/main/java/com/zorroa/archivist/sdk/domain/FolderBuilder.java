@@ -5,6 +5,7 @@ public class FolderBuilder {
     private Integer parentId = Folder.ROOT_ID;
     private String name;
     private AssetSearch search;
+    private Acl acl;
 
     // For the JSON MAPPER we need a simple ctor
     public FolderBuilder() {}
@@ -54,6 +55,15 @@ public class FolderBuilder {
 
     public FolderBuilder setSearch(AssetSearch search) {
         this.search = search;
+        return this;
+    }
+
+    public Acl getAcl() {
+        return acl;
+    }
+
+    public FolderBuilder setAcl(Acl acl) {
+        this.acl = acl;
         return this;
     }
 }

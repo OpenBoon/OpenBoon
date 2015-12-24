@@ -7,6 +7,7 @@ public class UserBuilder {
     private String firstName;
     private String lastName;
     private String email;
+    private Integer[] permissionIds;
 
     public UserBuilder() { }
 
@@ -55,4 +56,20 @@ public class UserBuilder {
         return this;
     }
 
+    public Integer[] getPermissionIds() {
+        return permissionIds;
+    }
+
+    public UserBuilder setPermissionIds(Integer[] permissions) {
+        this.permissionIds = permissions;
+        return this;
+    }
+
+    public UserBuilder setPermissions(Permission ... permissions) {
+        this.permissionIds = new Integer[permissions.length];
+        for (int i=0; i<permissions.length; i++) {
+            this.permissionIds[i] = permissions[i].getId();
+        }
+        return this;
+    }
 }

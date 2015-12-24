@@ -11,6 +11,7 @@ public class Permission {
 
     private int id;
     private String name;
+    private String type;
     private String description;
 
     public int getId() {
@@ -37,6 +38,14 @@ public class Permission {
         this.description = description;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, 829);
@@ -57,6 +66,7 @@ public class Permission {
         return MoreObjects.toStringHelper(getClass())
                 .add("id", id)
                 .add("name", name)
+                .add("type", type)
                 .add("description", description)
                 .toString();
     }

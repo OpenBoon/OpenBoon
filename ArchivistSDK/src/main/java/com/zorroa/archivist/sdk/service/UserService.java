@@ -39,7 +39,15 @@ public interface UserService {
 
     void setPermissions(User user, List<Permission> perms);
 
+    void setPermissions(User user, Permission ... perms);
+
     Permission getPermission(int id);
 
     Permission createPermission(PermissionBuilder builder);
+
+    Permission getPermission(String name);
+
+    boolean hasPermission(User user, Permission permission);
+
+    boolean deletePermission(Permission permission);
 }

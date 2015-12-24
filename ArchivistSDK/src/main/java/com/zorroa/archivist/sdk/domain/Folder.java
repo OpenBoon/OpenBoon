@@ -32,6 +32,7 @@ public class Folder {
     private long timeCreated;
     private long timeModified;
     private boolean recursive;
+    private Acl acl;
 
     private AssetSearch search;
 
@@ -107,6 +108,15 @@ public class Folder {
 
     public void setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
+    }
+
+    public Acl getAcl() {
+        return acl;
+    }
+
+    public Folder setAcl(Acl acl) {
+        this.acl = acl;
+        return this;
     }
 
     @Override
