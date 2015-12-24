@@ -97,7 +97,7 @@ public class RoomController {
     public Room update(@RequestBody RoomUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
         Session session = userService.getActiveSession();
 
-        if (session.getUserId() == id || SecurityUtils.hasPermission("manager", "systems")) {
+        if (session.getUserId() == id || SecurityUtils.hasPermission("group::manager", "group::systems")) {
             Room room = roomService.get(id);
             roomService.update(room, builder);
             return roomService.get(id);

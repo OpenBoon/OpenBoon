@@ -92,13 +92,10 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
         Asset asset = assetDao.create(builder);
 
-        FolderBuilder fbuilder = new FolderBuilder("foo");
-        Folder folder = folderService.create(fbuilder);
-        refreshIndex(100);
+        Folder folder = folderService.create(new FolderBuilder("foo"));
 
         assetDao.addToFolder(asset, folder);
         assetDao.addToFolder(asset, folder);
-        refreshIndex(100);
 
         asset = assetDao.get(asset.getId());
         assertTrue(((List)asset.getValue("folders")).contains(folder.getId()));

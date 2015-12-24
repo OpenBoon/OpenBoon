@@ -118,7 +118,7 @@ public class UserControllerTest extends MockMvcTest {
 
         List<Permission> response = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<Permission>>() {});
-        assertEquals(response, userService.getPermissions());
+        assertEquals(response, userService.getPermissions(user));
     }
 
     @Test
@@ -126,9 +126,10 @@ public class UserControllerTest extends MockMvcTest {
 
         User user = userService.get("user");
         List<Permission> perms = userService.getPermissions(user);
-        assertEquals(0, perms.size());
+        assertTrue(perms.size() > 0);
 
-        userService.setPermissions(user, userService.getPermissions());
+        userService.setPermissions(user, userService.getPermission("group::superuser"));
+        perms.add(userService.getPermission("group::superuser"));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/users/" + user.getId() + "/permissions")
@@ -140,6 +141,6 @@ public class UserControllerTest extends MockMvcTest {
 
         List<Permission> response = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<Permission>>() {});
-        assertEquals(response, userService.getPermissions());
+        assertEquals(response, userService.getPermissions(user));
     }
 }

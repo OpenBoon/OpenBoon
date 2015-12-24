@@ -12,31 +12,28 @@ import java.util.List;
 /**
  * Created by chambers on 9/18/15.
  */
+@PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
 @RestController
 public class IngestScheduleController {
 
     @Autowired
     IngestScheduleService ingestScheduleService;
 
-    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules", method= RequestMethod.POST)
     public IngestSchedule create(@RequestBody IngestScheduleBuilder builder) {
         return ingestScheduleService.create(builder);
     }
 
-    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules/{id}", method= RequestMethod.GET)
     public IngestSchedule get(@PathVariable int id) {
         return ingestScheduleService.get(id);
     }
 
-    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules", method= RequestMethod.GET)
     public List<IngestSchedule> getAll() {
         return ingestScheduleService.getAll();
     }
 
-    @PreAuthorize("hasAuthority('ingest')")
     @RequestMapping(value="/api/v1/ingestSchedules/{id}", method= RequestMethod.PUT)
     public void update(@RequestBody IngestSchedule updated, @PathVariable Integer id) {
         // just verify it exists

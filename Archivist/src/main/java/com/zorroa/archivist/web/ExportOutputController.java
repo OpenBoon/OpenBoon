@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletResponse;
  * Created by chambers on 11/18/15.
  */
 @RestController
+@PreAuthorize("hasAuthority('group::export') || hasAuthority('group::superuser')")
 public class ExportOutputController {
 
     @Autowired
     ExportService exportService;
 
-    @PreAuthorize("hasAuthority('export')")
     @ResponseBody
     @RequestMapping(value = "/api/v1/outputs/{outputId}/_download", method=RequestMethod.GET)
     public FileSystemResource download(
@@ -29,7 +29,6 @@ public class ExportOutputController {
         return new FileSystemResource(output.getPath());
     }
 
-    @PreAuthorize("hasAuthority('export')")
     @RequestMapping(value="/api/v1/outputs/{id}", method=RequestMethod.GET)
     public ExportOutput get(@PathVariable int id) {
         return exportService.getOutput(id);

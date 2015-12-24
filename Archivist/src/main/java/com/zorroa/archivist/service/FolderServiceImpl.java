@@ -8,25 +8,27 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.repository.FolderDao;
-import com.zorroa.archivist.sdk.domain.Folder;
-import com.zorroa.archivist.sdk.domain.FolderBuilder;
-import com.zorroa.archivist.sdk.domain.Message;
-import com.zorroa.archivist.sdk.domain.MessageType;
+import com.zorroa.archivist.repository.PermissionDao;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.MessagingService;
+import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class FolderServiceImpl implements FolderService {
 
     private static final Logger logger = LoggerFactory.getLogger(FolderServiceImpl.class);
@@ -35,7 +37,19 @@ public class FolderServiceImpl implements FolderService {
     FolderDao folderDao;
 
     @Autowired
+    PermissionDao permissionDao;
+
+    @Autowired
     MessagingService messagingService;
+
+    @Autowired
+    TransactionEventManager transactionEventManager;
+
+    @Override
+    public void setAcl(Folder folder, Acl acl) {
+        folderDao.setAcl(folder, acl);
+        transactionEventManager.afterCommit(()->invalidate(folder));
+    }
 
     @Override
     public Folder get(int id) {
@@ -49,19 +63,14 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public Folder get(String path) {
-        logger.info("path: {}", path);
         int parentId = Folder.ROOT_ID;
         Folder current = null;
         for (String name: Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
             current = folderDao.get(parentId, name);
             parentId = current.getId();
         }
-        if (current == null) {
-            throw new EmptyResultDataAccessException("Failed to find folder path: " + path, 1);
-        }
         return current;
     }
-
 
     @Override
     public List<Folder> getAll() {
@@ -80,40 +89,34 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public synchronized Folder create(FolderBuilder builder) {
-        try {
-            Folder folder = folderDao.create(builder);
-            messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_CREATE, folder));
-            return folder;
-        } finally {
+        Folder folder = folderDao.create(builder);
+        folderDao.setAcl(folder, builder.getAcl());
+        transactionEventManager.afterCommit(() -> {
             invalidate(null, builder.getParentId());
-        }
+        });
+        messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_CREATE, folder));
+        return folder;
     }
 
     @Override
     public boolean update(Folder folder, FolderBuilder builder) {
-        try {
-            boolean result = folderDao.update(folder, builder);
-            if (result) {
-                messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_UPDATE,
-                        get(folder.getId())));
-            }
-            return result;
-        } finally {
-            invalidate(folder, builder.getParentId());
+        boolean result = folderDao.update(folder, builder);
+        if (result) {
+            transactionEventManager.afterCommit(() -> invalidate(folder, builder.getParentId()));
+            messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_UPDATE,
+                    get(folder.getId())));
         }
+        return result;
     }
 
     @Override
     public boolean delete(Folder folder) {
-        try {
-            boolean result = folderDao.delete(folder);
-            if (result) {
-                messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_DELETE, folder));
-            }
-            return result;
-        } finally {
-            invalidate(folder);
+        boolean result = folderDao.delete(folder);
+        if (result) {
+            messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_DELETE, folder));
+            transactionEventManager.afterCommit(() -> invalidate(folder));
         }
+        return result;
     }
 
     private void invalidate(Folder folder, int ... additional) {
@@ -121,6 +124,7 @@ public class FolderServiceImpl implements FolderService {
             childCache.invalidate(folder.getParentId());
             childCache.invalidate(folder.getId());
         }
+
         for (int id: additional) {
             childCache.invalidate(id);
         }
@@ -150,7 +154,7 @@ public class FolderServiceImpl implements FolderService {
             .expireAfterWrite(1, TimeUnit.DAYS)
             .build(new CacheLoader<Integer, List<Folder>>() {
                 public List<Folder> load(Integer key) throws Exception {
-                    return folderDao.getChildren(key);
+                    return folderDao.getChildrenInsecure(key);
                 }
             });
 
@@ -172,8 +176,23 @@ public class FolderServiceImpl implements FolderService {
                 continue;
             }
 
+            /*
+             * This is a potential optimization to try out that limits the need to traverse into all
+             * child folders from a root.  For example, if /exports is set with a query that searches
+             * for all assets that have an export ID, then there is no need to traverse all the sub
+             * folders.
+             */
+            if (current.isRecursive()) {
+                logger.info("Folder is not recursive, skipping: {}", current);
+                continue;
+            }
             try {
-                List<Folder> children = childCache.get(current.getId());
+
+                List<Folder> children = childCache.get(current.getId())
+                        .stream()
+                        .filter(f-> f.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Read))
+                        .collect(Collectors.toList());
+
                 if (children == null || children.isEmpty()) {
                     continue;
                 }

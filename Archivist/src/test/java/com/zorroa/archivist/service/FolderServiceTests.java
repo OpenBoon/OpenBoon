@@ -2,12 +2,15 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.sdk.domain.Access;
+import com.zorroa.archivist.sdk.domain.Acl;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 import java.util.Set;
@@ -18,6 +21,17 @@ public class FolderServiceTests extends ArchivistApplicationTests {
 
     @Autowired
     FolderService folderService;
+
+    @Test(expected=EmptyResultDataAccessException.class)
+    public void testSetAcl() {
+        FolderBuilder builder = new FolderBuilder("Folder");
+        Folder folder = folderService.create(builder);
+        folderService.get(folder.getId());
+
+        folderService.setAcl(folder, new Acl().addEntry(
+                userService.getPermission("group::superuser"), Access.Read));
+        folderService.get(folder.getId());
+    }
 
     @Test
     public void testCreateAndGet() {

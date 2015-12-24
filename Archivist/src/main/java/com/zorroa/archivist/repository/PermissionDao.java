@@ -23,7 +23,19 @@ public interface PermissionDao {
 
     List<Permission> getAll(User user);
 
-    void setPermissions(User user, Collection<? extends Permission> perms);
+    List<Permission> getAll(String type);
 
-    void setPermissions(User user, Permission... perms);
+    List<Permission> getAll(Integer[] ids);
+
+    void setOnUser(User user, Collection<? extends Permission> perms);
+
+    void setOnUser(User user, Permission... perms);
+
+    boolean assign(User user, Permission perm, boolean immuable);
+
+    boolean delete(Permission perm);
+
+    boolean delete(User user);
+
+    boolean hasPermission(User user, Permission permission);
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -34,7 +35,7 @@ public class PermissionDaoTests extends ArchivistApplicationTests {
     @Before
     public void init() {
         PermissionBuilder b = new PermissionBuilder();
-        b.setName("avatar");
+        b.setName("project::avatar");
         b.setDescription("Access to the Avatar project");
         perm = permissionDao.create(b);
 
@@ -51,7 +52,7 @@ public class PermissionDaoTests extends ArchivistApplicationTests {
     @Test
     public void testCreate() {
         PermissionBuilder b = new PermissionBuilder();
-        b.setName("test");
+        b.setName("group::test");
         b.setDescription("test");
 
         Permission p = permissionDao.create(b);
@@ -73,16 +74,61 @@ public class PermissionDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testSetPermissions() {
-        permissionDao.setPermissions(user, Lists.newArrayList(permissionDao.get("manager")));
-        List<Permission> perms = permissionDao.getAll(user);
-        assertTrue(perms.contains(permissionDao.get("manager")));
+    public void testGetAllByType() {
+        List<Permission> perms = permissionDao.getAll("user");
+        /*
+         * There are 3 active users in this test: admin, user, and test.
+         */
+        assertEquals(3, perms.size());
     }
 
     @Test
-    public void testSetPermissionsVargs() {
-        permissionDao.setPermissions(user, permissionDao.get("manager"));
+    public void testGetAllByIds() {
+        List<Permission> perms1 = permissionDao.getAll();
+        List<Permission> perms2 = permissionDao.getAll(new Integer[] {
+            perms1.get(0).getId(), perms1.get(1).getId()
+        });
+        assertEquals(2, perms2.size());
+        assertTrue(perms2.contains(perms1.get(0)));
+        assertTrue(perms2.contains(perms1.get(1)));
+    }
+
+
+    @Test
+    public void testSetOnUser() {
+        permissionDao.setOnUser(user, Lists.newArrayList(permissionDao.get("group::manager")));
         List<Permission> perms = permissionDao.getAll(user);
-        assertTrue(perms.contains(permissionDao.get("manager")));
+        assertTrue(perms.contains(permissionDao.get("group::manager")));
+    }
+
+    @Test
+    public void testSetOnUserVargs() {
+        permissionDao.setOnUser(user, permissionDao.get("group::manager"));
+        List<Permission> perms = permissionDao.getAll(user);
+        assertTrue(perms.contains(permissionDao.get("group::manager")));
+    }
+
+    @Test
+    public void testAssignPermission() {
+        assertTrue(permissionDao.assign(user, permissionDao.get("group::manager"), false));
+        assertFalse(permissionDao.assign(user, permissionDao.get("group::manager"), false));
+    }
+
+    @Test
+    public void testDelete() {
+        /*
+         * Internally managed permissions cannot be deleted in this way.
+         */
+        assertFalse(permissionDao.delete(permissionDao.get("group::manager")));
+        assertTrue(permissionDao.delete(permissionDao.get("project::avatar")));
+    }
+
+    @Test
+    public void testDeleteByUser() {
+        /*
+         * User permissions are deleted by user.
+         */
+        assertTrue(permissionDao.delete(user));
+        assertFalse(permissionDao.delete(user));
     }
 }

@@ -29,7 +29,7 @@ public class PermissionContollerTests extends MockMvcTest {
     @Test
     public void testCreate() throws Exception {
         PermissionBuilder b = new PermissionBuilder();
-        b.setName("project:sw");
+        b.setName("project::sw");
         b.setDescription("Star Wars crew members");
 
         MockHttpSession session = admin();
@@ -66,7 +66,7 @@ public class PermissionContollerTests extends MockMvcTest {
     public void testGet() throws Exception {
 
         PermissionBuilder b = new PermissionBuilder();
-        b.setName("project:sw");
+        b.setName("project::sw");
         b.setDescription("Star Wars crew members");
         Permission perm = userService.createPermission(b);
 
@@ -85,7 +85,7 @@ public class PermissionContollerTests extends MockMvcTest {
     public void testFoo() throws Exception {
 
         PermissionBuilder b = new PermissionBuilder();
-        b.setName("project:sw");
+        b.setName("project::sw");
         b.setDescription("Star Wars crew members");
         Permission perm = userService.createPermission(b);
 

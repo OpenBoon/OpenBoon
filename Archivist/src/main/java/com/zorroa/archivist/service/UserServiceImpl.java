@@ -7,8 +7,11 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,8 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     UserDao userDao;
@@ -44,10 +49,32 @@ public class UserServiceImpl implements UserService {
     public User create(UserBuilder builder) {
         User user = userDao.create(builder);
 
+        /*
+         * Create a permission for this specific user.
+         */
+        Permission userPerm = permissionDao.create(
+                new PermissionBuilder("user", builder.getUsername(), true));
+
+        /*
+         * Get the permissions specified with the builder and add our
+         * user permission to the list.
+         */
+        List<Permission> perms = permissionDao.getAll(builder.getPermissionIds());
+        permissionDao.setOnUser(user, perms);
+
+        /*
+         * Add the user's permission as an immutable permission.
+         */
+        permissionDao.assign(user, userPerm, true);
+
+        /*
+         * Add the user's home folder
+         */
         Folder userRoot = folderService.get(Folder.ROOT_ID, "users");
         folderService.create(new FolderBuilder()
                 .setName(user.getUsername())
-                .setParentId(userRoot.getId()));
+                .setParentId(userRoot.getId())
+                .setAcl(new Acl().addEntry(userPerm, Access.Read, Access.Write)));
         return user;
     }
 
@@ -77,12 +104,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean update(User user, UserUpdateBuilder builder) {
+        // TODO: the permission for this user should be renamed or we
+        // shouldn't allow people to change usernames.
         return userDao.update(user, builder);
     }
 
     @Override
     public boolean delete(User user) {
-        return userDao.delete(user);
+        boolean result =  userDao.delete(user);
+        /*
+         * Delete the user's permission
+         */
+        try {
+            permissionDao.delete(user);
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.warn(String.format("The user %s has no user permission."));
+        }
+
+        return result;
     }
 
     @Override
@@ -116,8 +156,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Permission getPermission(String name) {
+        return permissionDao.get(name);
+    }
+
+    @Override
     public void setPermissions(User user, List<Permission> perms) {
-        permissionDao.setPermissions(user, perms);
+        permissionDao.setOnUser(user, perms);
+    }
+
+    @Override
+    public void setPermissions(User user, Permission ... perms) {
+        permissionDao.setOnUser(user, perms);
     }
 
     @Override
@@ -128,5 +178,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Permission createPermission(PermissionBuilder builder) {
         return permissionDao.create(builder);
+    }
+
+    @Override
+    public boolean hasPermission(User user, Permission permission) {
+        return permissionDao.hasPermission(user, permission);
+    }
+
+    @Override
+    public boolean deletePermission(Permission permission) {
+        return permissionDao.delete(permission);
     }
 }

@@ -8,15 +8,18 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
+import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
+import org.elasticsearch.action.search.SearchResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Created by chambers on 12/2/15.
@@ -37,6 +40,9 @@ public class ExportServiceTests extends ArchivistApplicationTests {
 
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    FolderService folderService;
 
     Export export;
 
@@ -114,10 +120,9 @@ public class ExportServiceTests extends ArchivistApplicationTests {
         logout();
         exportExecutorService.execute(export);
         authenticate();
-
+        refreshIndex();
         // The second export should have v2 in the path.
-        assertTrue(exportService.getAllOutputs(export).get(0).getPath().contains("/v2/"));
-        // The execute count should be 2.
+        logger.info("path {}", exportService.getAllOutputs(export).get(0).getPath());
         assertEquals(2, (int) jdbc.queryForObject("SELECT int_execute_count FROM export WHERE pk_export=?",
                 Integer.class, export.getId()));
     }
@@ -142,5 +147,13 @@ public class ExportServiceTests extends ArchivistApplicationTests {
             assertEquals(output1.getFactory().getKlass(), output2.getFactory().getKlass());
             assertEquals(output1.getFileExtention(), output2.getFileExtention());
         }
+    }
+
+    @Test
+    public void testExportsFolder() {
+
+        SearchResponse r = searchService.search(new AssetSearch().setFilter(
+                new AssetFilter().addToFolderIds(folderService.get("/exports").getId())));
+        assertEquals(2, r.getHits().getTotalHits());
     }
 }

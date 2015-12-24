@@ -147,6 +147,11 @@ public abstract class ArchivistApplicationTests {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
     }
 
+    public void authenticate(String user, String password) {
+        SecurityContextHolder.getContext().setAuthentication(
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user, password)));
+    }
+
     public void logout() {
         SecurityContextHolder.getContext().setAuthentication(null);
     }

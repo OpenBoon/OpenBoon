@@ -8,6 +8,7 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,7 +45,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         String filepath = "/tmp/" + filename;
         Files.touch(new File(filepath));
 
-        Permission perm = userService.createPermission(new PermissionBuilder().setName("test").setDescription("test"));
+        Permission perm = userService.createPermission(new PermissionBuilder().setName("group::test"));
 
         AssetBuilder builder = new AssetBuilder(filepath);
         builder.setSearchPermissions(perm);
@@ -64,13 +65,17 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder builder = new AssetBuilder(filepath);
-        builder.setSearchPermissions(userService.getPermissions().get(0));
+
+        /*
+         * Add a permission from the current user to the asset.
+         */
+        builder.setSearchPermissions(
+                userService.getPermissions(SecurityUtils.getUser()).get(0));
         Asset asset1 = assetDao.create(builder);
         refreshIndex(100);
 
         AssetSearch search = new AssetSearch().setQuery("captain");
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
-
     }
 
     @Test

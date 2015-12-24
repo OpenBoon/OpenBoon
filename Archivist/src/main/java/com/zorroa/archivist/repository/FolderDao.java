@@ -1,5 +1,7 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.sdk.domain.Access;
+import com.zorroa.archivist.sdk.domain.Acl;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
 
@@ -18,6 +20,8 @@ public interface FolderDao {
 
     List<Folder> getChildren(int parentId);
 
+    List<Folder> getChildrenInsecure(int parentId);
+
     List<Folder> getChildren(Folder folder);
 
     boolean exists(int parentId, String name);
@@ -29,4 +33,10 @@ public interface FolderDao {
     boolean update(Folder folder, FolderBuilder builder);
 
     boolean delete(Folder folder);
+
+    boolean hasAccess(Folder folder, Access access);
+
+    void setAcl(Folder folder, Acl acl);
+
+    Acl getAcl(Folder folder);
 }

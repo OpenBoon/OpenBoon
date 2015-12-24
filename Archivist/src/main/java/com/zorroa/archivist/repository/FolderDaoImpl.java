@@ -1,10 +1,9 @@
 package com.zorroa.archivist.repository;
 
+import com.drew.lang.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.sdk.domain.AssetSearch;
-import com.zorroa.archivist.sdk.domain.Folder;
-import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,7 +18,7 @@ import java.util.List;
 @Repository
 public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
-    private static final RowMapper<Folder> MAPPER = (rs, row) -> {
+    private final RowMapper<Folder> MAPPER = (rs, row) -> {
         Folder folder = new Folder();
         folder.setId(rs.getInt("pk_folder"));
         folder.setName(rs.getString("str_name"));
@@ -39,6 +38,10 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             folder.setSearch(Json.deserialize(search, AssetSearch.class));
         }
 
+        /*
+         * Might turn into an issue but we have lots of caching around folders
+         */
+        folder.setAcl(getAcl(folder));
         return folder;
     };
 
@@ -49,12 +52,14 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                 "folder ";
     @Override
     public Folder get(int id) {
-        return jdbc.queryForObject(GET + " WHERE pk_folder=?", MAPPER, id);
+        return jdbc.queryForObject(appendReadAccess(GET + " WHERE pk_folder=?"), MAPPER, appendAclArgs(id));
     }
 
     @Override
     public Folder get(int parent, String name) {
-        return jdbc.queryForObject(GET + " WHERE pk_parent=? and str_name=?", MAPPER, parent, name);
+        return jdbc.queryForObject(
+                appendReadAccess(GET + " WHERE pk_parent=? and str_name=?"), MAPPER,
+                appendAclArgs(parent, name));
     }
 
     @Override
@@ -73,6 +78,14 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public List<Folder> getChildren(int parentId) {
+        StringBuilder sb = new StringBuilder(512);
+        sb.append(GET);
+        sb.append(" WHERE pk_parent=?");
+        return jdbc.query(appendReadAccess(sb.toString()), MAPPER, appendAclArgs(parentId));
+    }
+
+    @Override
+    public List<Folder> getChildrenInsecure(int parentId) {
         StringBuilder sb = new StringBuilder(512);
         sb.append(GET);
         sb.append(" WHERE pk_parent=?");
@@ -130,6 +143,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         folder.setName(builder.getName());
         folder.setSearch(builder.getSearch());
         folder.setUserCreated(user);
+        folder.setAcl(builder.getAcl());
         return folder;
     }
 
@@ -144,7 +158,6 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             values.add(builder.getName());
         }
 
-
         sets.add("pk_parent=?");
         values.add(builder.getParentId());
 
@@ -156,7 +169,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         StringBuilder sb = new StringBuilder(512);
         sb.append("UPDATE folder SET ");
         sb.append(String.join(",", sets));
-        sb.append(" WHERE pk_folder=?");
+        sb.append(" WHERE pk_folder=? ");
 
         return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
@@ -164,5 +177,88 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public boolean delete(Folder folder) {
         return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) ==1;
+    }
+
+    @Override
+    public boolean hasAccess(Folder folder, Access access) {
+        return jdbc.queryForObject(appendAccess("SELECT COUNT(1) FROM folder WHERE pk_folder=?", access),
+                Integer.class, appendAclArgs(folder.getId())) > 0;
+    }
+
+    @Override
+    public void setAcl(Folder folder, @Nullable Acl acl) {
+        jdbc.update("DELETE FROM folder_acl WHERE pk_folder=?", folder.getId());
+        if (acl == null || acl.isEmpty()) {
+            return;
+        }
+        for (AclEntry entry: acl) {
+            jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
+                    entry.getPermissionId(), folder.getId(), entry.getAccess());
+        }
+    }
+
+    @Override
+    public Acl getAcl(Folder folder) {
+        Acl result = new Acl();
+        jdbc.query("SELECT * FROM  folder_acl WHERE pk_folder=?", rs -> {
+            result.add(new AclEntry(rs.getInt("pk_permission"), rs.getInt("int_access")));
+        }, folder.getId());
+        return result;
+    }
+
+    /**
+     * Append the permissions check to the given query.
+     *
+     * @param query
+     * @return
+     */
+    private String appendAccess(String query, Access access) {
+        if (SecurityUtils.hasPermission("group::superuser")) {
+            return query;
+        }
+
+        StringBuilder sb = new StringBuilder(query.length() + 256);
+        sb.append(query);
+        if (query.contains("WHERE")) {
+            sb.append(" AND ");
+        }
+        else {
+            sb.append(" WHERE ");
+        }
+        sb.append("((");
+        sb.append("SELECT COUNT(1) FROM folder_acl WHERE folder_acl.pk_folder=folder.pk_folder AND ");
+        sb.append(JdbcUtils.in("folder_acl.pk_permission", SecurityUtils.getPermissionIds().size()));
+        sb.append(" AND BITAND(");
+        sb.append(access.getValue());
+        sb.append(",int_access) = " + access.getValue() + ") > 0 OR (");
+        sb.append("SELECT COUNT(1) FROM folder_acl WHERE folder_acl.pk_folder=folder.pk_folder) = 0)");
+        return sb.toString();
+    }
+
+    /**
+     * Append the permissions check to the given query.
+     *
+     * @param query
+     * @return
+     */
+    private String appendWriteAccess(String query) {
+        return appendAccess(query, Access.Write);
+    }
+
+    private String appendReadAccess(String query) {
+        return appendAccess(query, Access.Read);
+    }
+
+    public Object[] appendAclArgs(Object ... args) {
+        if (SecurityUtils.hasPermission("group::superuser")) {
+            return args;
+        }
+
+        List<Object> result = Lists.newArrayListWithCapacity(args.length + SecurityUtils.getPermissionIds().size());
+        for (Object a: args) {
+            result.add(a);
+        }
+        result.addAll(SecurityUtils.getPermissionIds());
+        return result.toArray();
     }
 }
