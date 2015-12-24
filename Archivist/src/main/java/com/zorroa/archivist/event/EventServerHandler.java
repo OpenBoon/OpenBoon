@@ -31,7 +31,7 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
     private final Cache<String, Channel> channelMap = CacheBuilder.newBuilder()
             .weakValues()
             .removalListener((c) -> {
-                logger.info("Channel {} was removed", c);
+                logger.info("Channel {} was closed", c);
             })
             .build();
 
@@ -55,7 +55,7 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
     public void send(Collection<Session> sessions, Message message) {
         String text = message.serialize(END_MESSAGE);
 
-        for (Session session: sessions) {
+        for (Session session : sessions) {
             Channel channel = channelMap.asMap().get(session.getCookieId());
             if (channel == null || !channel.isOpen()) {
                 continue;
@@ -88,12 +88,29 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
         }
     }
 
+    public void channelInactive(ChannelHandlerContext ctx)
+            throws Exception {
+        Object cookieId = ctx.channel().attr(AttributeKey.valueOf("cookie")).get();
+        if (cookieId == null) {
+            return;
+        }
+        channelMap.invalidate(cookieId);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg)
             throws Exception {
 
-        MessageType type = MessageType.valueOf(msg.substring(0, msg.indexOf(' ')));
-        String cookieId = msg.substring(msg.indexOf(' ') + 1);
+        MessageType type;
+        String cookieId;
+
+        try {
+            type = MessageType.valueOf(msg.substring(0, msg.indexOf(' ')));
+            cookieId = msg.substring(msg.indexOf(' ') + 1);
+        } catch (Exception e) {
+            logger.warn("Invalid socket command: {} from {}", msg, ctx.channel());
+            return;
+        }
 
         switch(type) {
         case SESSION:
