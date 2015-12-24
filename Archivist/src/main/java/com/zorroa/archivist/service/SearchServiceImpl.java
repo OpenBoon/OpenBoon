@@ -118,7 +118,7 @@ public class SearchServiceImpl implements SearchService {
         CountRequestBuilder count = client.prepareCount(alias)
                 .setTypes("asset")
                 .setQuery(getQuery(search));
-        logger.info(count.toString());
+//        logger.info(count.toString());
         return count;
     }
 
