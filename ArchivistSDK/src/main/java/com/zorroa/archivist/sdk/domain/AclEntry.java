@@ -11,15 +11,16 @@ public class AclEntry {
     public AclEntry() { }
 
     public AclEntry(Permission perm, Access... access) {
-        this.permissionId = perm.getId();
-        this.access = 0;
-        for (Access a: access) {
-            this.access = this.access + a.getValue();
-        }
+        this(perm.getId(), access);
     }
     public AclEntry(int permId, Access... access) {
         this.permissionId = permId;
         this.access = 0;
+
+        if (access.length == 0) {
+            access = Access.values();
+        }
+
         for (Access a: access) {
             this.access = this.access + a.getValue();
         }
