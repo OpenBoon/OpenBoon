@@ -98,10 +98,6 @@
           "type": "integer",
           "index": "not_analyzed"
         },
-        "selectedRooms": {
-          "type": "integer",
-          "index": "not_analyzed"
-        },
         "source": {
           "properties": {
             "directory": {
