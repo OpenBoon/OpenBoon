@@ -67,15 +67,6 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
     public void execute(Export export) {
 
-        if (!exportDao.setRunning(export)) {
-            logger.warn("Unable to set export '{}' state to running.  In not in queued state.", exportDao.get(export.getId()));
-            return;
-        }
-        logger.info("executing export: {}", export);
-        messagingService.broadcast(new Message().setType(
-                MessageType.EXPORT_START).setPayload(Json.serializeToString(export)));
-
-
         Map<ExportOutput, ExportProcessor> outputs = Maps.newHashMap();
         int assetCount = 0;
 
@@ -85,6 +76,14 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
         User user = userService.get(export.getUserCreated());
         SecurityContextHolder.getContext().setAuthentication(
                 authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
+
+        if (!exportDao.setRunning(export)) {
+            logger.warn("Unable to set export '{}' state to running.  In not in queued state.", exportDao.get(export.getId()));
+            return;
+        }
+        logger.info("executing export: {}", export);
+        messagingService.sendToUser(user, new Message().setType(
+                MessageType.EXPORT_START).setPayload(Json.serializeToString(exportDao.get(export.getId()))));
 
         try {
 
@@ -175,7 +174,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             if (exportDao.setFinished(export)) {
                 logger.info("Export ID:{} complete, {} assets exported.", export.getId(), assetCount);
                 messagingService.sendToUser(user, new Message().setType(
-                        MessageType.EXPORT_STOP).setPayload(Json.serializeToString(export)));
+                        MessageType.EXPORT_STOP).setPayload(Json.serializeToString(exportDao.get(export.getId()))));
             }
 
             /**

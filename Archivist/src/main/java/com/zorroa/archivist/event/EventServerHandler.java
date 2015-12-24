@@ -57,7 +57,7 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
 
         for (Session session: sessions) {
             Channel channel = channelMap.asMap().get(session.getCookieId());
-            if (channel == null) {
+            if (channel == null || !channel.isOpen()) {
                 continue;
             }
             try {
@@ -76,7 +76,7 @@ public class EventServerHandler extends SimpleChannelInboundHandler<String> {
     public void send(Session session, Message message) {
         logger.info("Attempting to send to session cookie: {}", session.getCookieId());
         Channel channel = channelMap.asMap().get(session.getCookieId());
-        if (channel == null) {
+        if (channel == null || !channel.isOpen()) {
             return;
         }
 
