@@ -245,15 +245,13 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (builder.getAssetIds() != null) {
-            FilterBuilder assetsFilterrBuilder = FilterBuilders.termsFilter("_id", builder.getAssetIds());
-            filter.add(assetsFilterrBuilder);
+            FilterBuilder assetsFilterBuilder = FilterBuilders.termsFilter("_id", builder.getAssetIds());
+            filter.add(assetsFilterBuilder);
         }
 
         if (builder.getExportIds() != null) {
-            for (Integer id : builder.getExportIds()) {
-                FilterBuilder exportFilterBuilder = FilterBuilders.termFilter("exports", id);
-                filter.add(exportFilterBuilder);
-            }
+            FilterBuilder exportsFilterBuilder = FilterBuilders.termsFilter("exports", builder.getExportIds());
+            filter.add(exportsFilterBuilder);
         }
 
         if (builder.getExistFields() != null) {
