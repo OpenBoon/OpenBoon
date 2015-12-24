@@ -9,16 +9,25 @@ public class PermissionBuilder {
 
     private String name;
     private String description;
-    private boolean internal = false;
 
-    public PermissionBuilder() { }
+    /**
+     * Immutable permissions are managed by the archivist and cannot be manually
+     * removed via the API.
+     */
+    private final boolean immutable;
 
-    public PermissionBuilder(String type, String name) {
+    public PermissionBuilder() {
+        this.immutable = false;
+    }
+
+    public PermissionBuilder(String type, String name, boolean immutable) {
         setName(String.format("%s::%s", type, name));
+        this.immutable = false;
     }
 
     public PermissionBuilder(String name) {
         setName(name);
+        this.immutable = false;
     }
 
     public String getDescription() {
@@ -48,12 +57,7 @@ public class PermissionBuilder {
     }
 
     @JsonIgnore
-    public boolean isInternal() {
-        return internal;
-    }
-
-    public PermissionBuilder setInternal(boolean internal) {
-        this.internal = internal;
-        return this;
+    public boolean isImmutable() {
+        return immutable;
     }
 }
