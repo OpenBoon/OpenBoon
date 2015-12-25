@@ -21,6 +21,8 @@ public interface AssetDao {
 
     void addToFolder(Asset asset, Folder folder);
 
+    void removeFromFolder(Asset asset, Folder folder);
+
     long setFolders(Asset asset, Collection<Folder> folders);
 
     long update(String assetId, AssetUpdateBuilder builder);

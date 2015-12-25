@@ -141,6 +141,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
+    public void removeFromFolder(Asset asset, Folder folder) {
+        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
+        updateBuilder.setScript("asset_remove_folder",
+                ScriptService.ScriptType.INDEXED);
+        updateBuilder.addScriptParam("folderId", folder.getId());
+        updateBuilder.get();
+    }
+
+    @Override
     public long setFolders(Asset asset, Collection<Folder> folders) {
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
         updateBuilder.setDoc(ImmutableMap.of("folders", folders.stream().map(

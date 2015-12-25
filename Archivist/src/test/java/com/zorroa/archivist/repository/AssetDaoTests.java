@@ -9,6 +9,7 @@ import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.schema.SourceSchema;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -100,6 +101,27 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         asset = assetDao.get(asset.getId());
         assertTrue(((List)asset.getValue("folders")).contains(folder.getId()));
         assertEquals(1, ((List)asset.getValue("folders")).size());
+    }
+
+    @Test
+    public void testRemoveFromFolder() {
+        AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Asset asset = assetDao.create(builder);
+
+        Folder folder = folderService.create(new FolderBuilder("foo"));
+        assetDao.addToFolder(asset, folder);
+        refreshIndex();
+
+        asset = assetDao.get(asset.getId());
+        assertTrue(((List)asset.getValue("folders")).contains(folder.getId()));
+
+        assetDao.removeFromFolder(asset, folder);
+        refreshIndex();
+
+        asset = assetDao.get(asset.getId());
+        logger.info(Json.serializeToString(asset.getValue("folders")));
+
+        assertFalse(((List)asset.getValue("folders")).contains(folder.getId()));
     }
 
     public void testAddAssetToExport() {

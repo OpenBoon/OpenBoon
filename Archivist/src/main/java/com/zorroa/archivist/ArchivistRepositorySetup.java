@@ -148,7 +148,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("standard");
             builder.addToProcessors(new ProcessorFactory<>(ProxyProcessor.class));
-
             logger.info("Creating 'standard' ingest pipeline");
             ingestService.createIngestPipeline(builder);
         }
@@ -177,6 +176,16 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 .setScriptLang("groovy")
                 .setId("asset_append_folder")
                 .setSource(script2)
+                .get();
+
+        Map<String, Object> script3 = ImmutableMap.of(
+                "script", "if (ctx._source.folders != null ) { ctx._source.folders.removeIf( {f -> f == folderId} )}",
+                "params", "folderId");
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("asset_remove_folder")
+                .setSource(script3)
                 .get();
     }
 
