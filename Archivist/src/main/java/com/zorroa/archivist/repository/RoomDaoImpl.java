@@ -202,8 +202,16 @@ public class RoomDaoImpl extends AbstractDao implements RoomDao {
     public SharedRoomState getSharedState(Room room) {
         SharedRoomState result = new SharedRoomState();
         jdbc.query(GET_SHARED_STATE, rs -> {
-            result.setSearch(Json.deserialize(rs.getString(1), AssetSearch.class));
-            result.setSelection(Json.deserialize(rs.getString(2), SET_TYPE_REFERENCE));
+            // AssetSearch can be null
+            String assetSearchJson = rs.getString(1);
+            if (assetSearchJson != null) {
+                result.setSearch(Json.deserialize(assetSearchJson, AssetSearch.class));
+            }
+            // Empty selection is actually [], but check just to be safe
+            String selectionJson = rs.getString(2);
+            if (selectionJson != null) {
+                result.setSelection(Json.deserialize(selectionJson, SET_TYPE_REFERENCE));
+            }
             result.setVersion(rs.getInt(3));
         }, room.getId());
         return result;

@@ -154,5 +154,13 @@ public class RoomDaoTests extends ArchivistApplicationTests {
         assertEquals(selection1, state.getSelection());
         assertEquals(asb1.getQuery(), state.getSearch().getQuery());
     }
+
+    @Test
+    public void testGetEmptyRoomState() {
+        SharedRoomState state = roomDao.getSharedState(room);
+        Set<String> emptySelection = Sets.newHashSet();
+        assertEquals(emptySelection, state.getSelection());
+        assertEquals(null, state.getSearch());
+    }
 }
 
