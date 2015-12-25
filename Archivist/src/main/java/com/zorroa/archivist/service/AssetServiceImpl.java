@@ -71,6 +71,11 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    public void removeFromFolder(Asset asset, Folder folder) {
+        assetDao.removeFromFolder(asset, folder);
+    }
+
+    @Override
     public void setFolders(Asset asset, Collection<Folder> folders) {
         long version = assetDao.setFolders(asset, folders);
 
