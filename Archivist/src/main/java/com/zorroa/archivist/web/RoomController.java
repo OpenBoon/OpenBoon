@@ -42,11 +42,11 @@ public class RoomController {
     }
 
     /**
-     * User leaves a particular room
+     * User leaves the current room
      */
-    @RequestMapping(value="/api/v1/rooms/{id}/_leave", method=RequestMethod.PUT)
-    public Object leave(@PathVariable long id, HttpSession httpSession) {
-        Room room = roomService.get(id);
+    @RequestMapping(value="/api/v1/rooms/current/_leave", method=RequestMethod.PUT)
+    public Object leave(HttpSession httpSession) {
+        Room room = roomService.getActiveRoom();
         return ImmutableMap.of("roomId", room.getId(), "result", roomService.leave(room));
     }
 

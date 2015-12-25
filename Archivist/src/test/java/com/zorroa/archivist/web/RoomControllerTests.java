@@ -163,7 +163,7 @@ public class RoomControllerTests extends MockMvcTest {
 
         assertEquals(room.getId(), roomService.getActiveRoom(session).getId());
 
-        mvc.perform(put("/api/v1/rooms/" + room.getId() + "/_leave")
+        mvc.perform(put("/api/v1/rooms/current/_leave")
                 .session(httpSession)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
