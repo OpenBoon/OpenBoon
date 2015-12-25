@@ -31,5 +31,7 @@ public interface AssetService {
 
     void addToFolder(Asset asset, Folder folder);
 
+    void removeFromFolder(Asset asset, Folder folder);
+
     void setFolders(Asset asset, Collection<Folder> folders);
 }
