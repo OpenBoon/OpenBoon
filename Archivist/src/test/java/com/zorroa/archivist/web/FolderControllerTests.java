@@ -1,9 +1,13 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.sdk.domain.Folder;
-import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.TestSearchResult;
+import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,18 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Autowired
     FolderController folderController;
+
+    @Autowired
+    IngestService ingestService;
+
+    @Autowired
+    AssetDao assetDao;
+
+    @Autowired
+    FolderService folderService;
+
+    @Autowired
+    IngestExecutorService ingestExecutorService;
 
     Folder folder;
 
@@ -218,5 +234,90 @@ public class FolderControllerTests extends MockMvcTest {
 
         assertEquals(grandpa.getId(), dad2.getParentId());
         assertEquals(dad.getId(), dad2.getId());
+    }
+
+    @Test
+    public void testAddAsset() throws Exception {
+        authenticate();
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex();
+        List<Asset> assets = assetDao.getAll();
+
+        Folder folder1 = folderService.create(new FolderBuilder("foo"));
+
+        MockHttpSession session = admin();
+        mvc.perform(post("/api/v1/folders/" + folder1.getId() + "/assets")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        refreshIndex();
+
+        assets = assetDao.getAll();
+        for (Asset asset: assets) {
+            Set<Integer> folderIds = asset.getValue("folders", new TypeReference<Set<Integer>>() {});
+            assertTrue(folderIds.contains(folder1.getId()));
+        }
+    }
+
+    @Test
+    public void testRemoveAsset() throws Exception {
+        authenticate();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex();
+        List<Asset> assets = assetDao.getAll();
+
+        Folder folder1 = folderService.create(new FolderBuilder("foo"));
+        for (Asset asset: assets) {
+            assetDao.addToFolder(asset, folder1);
+        }
+        refreshIndex();
+
+        MockHttpSession session = admin();
+        mvc.perform(delete("/api/v1/folders/" + folder1.getId() + "/assets")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        refreshIndex();
+        assets = assetDao.getAll();
+        for (Asset asset: assets) {
+            Set<Integer> folderIds = asset.getValue("folders", new TypeReference<Set<Integer>>() {});
+            assertFalse(folderIds.contains(folder1.getId()));
+        }
+    }
+
+    @Test
+    public void testGetAssets() throws Exception {
+        authenticate();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex();
+        List<Asset> assets = assetDao.getAll();
+
+        Folder folder1 = folderService.create(new FolderBuilder("foo"));
+        for (Asset asset: assets) {
+            assetDao.addToFolder(asset, folder1);
+        }
+        refreshIndex();
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(get("/api/v1/folders/" + folder1.getId() + "/assets")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TestSearchResult searchResult = Json.Mapper.readValue(
+                result.getResponse().getContentAsString(), TestSearchResult.class);
+        assertEquals(assets.size(), searchResult.getHits().getTotal());
     }
 }

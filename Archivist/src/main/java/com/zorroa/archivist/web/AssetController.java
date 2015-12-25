@@ -45,7 +45,7 @@ public class AssetController {
     SearchService searchService;
 
     @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)
-    public void search(@RequestBody AssetSearch search, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
+    public void search(@RequestBody AssetSearch search, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchResponse response = searchService.search(search);
         HttpUtils.writeElasticResponse(response, httpResponse);
