@@ -3,6 +3,7 @@ package com.zorroa.archivist.processors;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.AssetType;
+import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.exception.IngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.ImageService;
@@ -32,7 +33,7 @@ public class AssetMetadataProcessor extends IngestProcessor {
     private ImageService imageService;
 
     @Override
-    public void init() {
+    public void init(Ingest ingest) {
         /*
          * Set up the delegate processors.
          */

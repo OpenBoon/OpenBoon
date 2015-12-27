@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
+import com.zorroa.archivist.processors.AggregatorIngestor;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
@@ -194,7 +195,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  */
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
                 pipeline.getProcessors().add(0, new ProcessorFactory<>(AssetMetadataProcessor.class));
-
+                pipeline.getProcessors().add(new ProcessorFactory<>(AggregatorIngestor.class));
                 for (ProcessorFactory<IngestProcessor> factory : pipeline.getProcessors()) {
                     factory.init();
                     IngestProcessor processor = factory.getInstance();
@@ -210,7 +211,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                     autowire.autowireBean(processor);
                     processors.add(processor);
-                    processor.init();
+                    processor.init(ingest);
                 }
 
                 updateCountsTimer = new Timer();

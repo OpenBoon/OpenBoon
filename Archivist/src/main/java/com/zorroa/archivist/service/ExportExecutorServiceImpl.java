@@ -3,10 +3,12 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
+import com.zorroa.archivist.processors.ExportDateAggregator;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.service.UserService;
@@ -17,11 +19,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -57,6 +62,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    ApplicationContext applicationContext;
+
     @Value("${archivist.export.autoStart}")
     public boolean autoStart;
 
@@ -90,13 +98,20 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             /*
              * Initialize all the processors
              */
-            for (ExportOutput output: exportOutputDao.getAll(export)) {
+            List<ExportOutput> allOutputs = exportOutputDao.getAll(export);
+            ExportOutput aggregatorOutput = new ExportOutput();
+            aggregatorOutput.setFactory(new ProcessorFactory<>(ExportDateAggregator.class));
+            allOutputs.add(aggregatorOutput);
 
-                /*
-                 * Every processor gets its own working directory.
-                 */
+            for (ExportOutput output: allOutputs) {
+
                 ExportProcessor processor = output.getFactory().newInstance();
-                FileUtils.makedirs(output.getDirName());
+                if (output.getPath() != null) {
+                    // Create a working directory for each output
+                    FileUtils.makedirs(output.getDirName());
+                }
+                AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+                autowire.autowireBean(processor);
 
                 try {
                     processor.init(export, output);
