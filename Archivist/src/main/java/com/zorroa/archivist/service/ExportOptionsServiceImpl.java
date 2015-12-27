@@ -24,7 +24,7 @@ public class ExportOptionsServiceImpl implements ExportOptionsService {
         ExportedAsset result = new ExportedAsset(export, output, asset);
         switch (asset.getType()) {
             case Image:
-                applyImageOptions(export, output, result);
+                applyImageOptions(export, result);
                 break;
             default:
                 logger.warn("Asset type: '{}' currently not supported.", asset.getType());
@@ -32,7 +32,11 @@ public class ExportOptionsServiceImpl implements ExportOptionsService {
         return result;
     }
 
-    public void applyImageOptions(Export export, ExportOutput output, ExportedAsset asset) throws Exception {
+    public void applyImageOptions(Export export, ExportedAsset asset) throws Exception {
+        if (asset.getExportOutput().getPath() == null) {
+            return;
+        }
+
         ExportOptions.Images imgOpts = export.getOptions().getImages();
         if (imgOpts == null) {
             return;
