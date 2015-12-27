@@ -29,6 +29,12 @@ public class AssetFilter {
         return this;
     }
 
+    public AssetFilter setAssetId(String assetId) {
+        assetIds = Lists.newArrayList();
+        assetIds.add(assetId);
+        return this;
+    }
+
     public AssetFilter addToAssetIds(String ... ids) {
         if (assetIds == null) {
             assetIds = Lists.newArrayList();
@@ -45,6 +51,12 @@ public class AssetFilter {
 
     public AssetFilter setExportIds(List<Integer> exportIds) {
         this.exportIds = exportIds;
+        return this;
+    }
+
+    public AssetFilter setExportId(Integer exportId) {
+        exportIds = Lists.newArrayList();
+        exportIds.add(exportId);
         return this;
     }
 
@@ -67,6 +79,12 @@ public class AssetFilter {
         return this;
     }
 
+    public AssetFilter setFolderId(Integer folderId) {
+        folderIds = Lists.newArrayList();
+        folderIds.add(folderId);
+        return this;
+    }
+
     public AssetFilter addToFolderIds(Integer ... ids) {
         if (folderIds == null) {
             folderIds = Lists.newArrayList();
@@ -83,6 +101,12 @@ public class AssetFilter {
 
     public AssetFilter setExistFields(List<String> existFields) {
         this.existFields = existFields;
+        return this;
+    }
+
+    public AssetFilter setExistField(String existField) {
+        existFields = Lists.newArrayList();
+        existFields.add(existField);
         return this;
     }
 
@@ -105,6 +129,12 @@ public class AssetFilter {
         return this;
     }
 
+    public AssetFilter setFieldTerm(AssetFieldTerms fieldTerm) {
+        fieldTerms = Lists.newArrayList();
+        fieldTerms.add(fieldTerm);
+        return this;
+    }
+
     public AssetFilter addToFieldTerms(String field, Object ... terms) {
         if (fieldTerms == null) {
             fieldTerms = Lists.newArrayList();
@@ -122,12 +152,24 @@ public class AssetFilter {
         return this;
     }
 
+    public AssetFilter setFieldRange(AssetFieldRange fieldRange) {
+        fieldRanges = Lists.newArrayList();
+        fieldRanges.add(fieldRange);
+        return this;
+    }
+
     public List<AssetScript> getScripts() {
         return scripts;
     }
 
     public AssetFilter setScripts(List<AssetScript> scripts) {
         this.scripts = scripts;
+        return this;
+    }
+
+    public AssetFilter setScript(AssetScript script) {
+        scripts = Lists.newArrayList();
+        scripts.add(script);
         return this;
     }
 }
