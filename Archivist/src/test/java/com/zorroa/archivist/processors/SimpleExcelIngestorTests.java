@@ -35,7 +35,7 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
 
         AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
 
-        ingestor.init();
+        ingestor.init(null);
         ingestor.process(builder);
 
         assertEquals("G", builder.getAttr("foo", "B"));
@@ -65,7 +65,7 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
 
         AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
 
-        ingestor.init();
+        ingestor.init(null);
         ingestor.process(builder);
 
         assertEquals("A", builder.getAttr("foo", "B"));
@@ -93,7 +93,7 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
 
         AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
 
-        ingestor.init();
+        ingestor.init(null);
         ingestor.process(builder);
 
         assertTrue(builder.getKeywords().getAllKeywords().contains("One"));
@@ -121,7 +121,7 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
         AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
         builder.getKeywords().addKeywords(1, false, "Two");
 
-        ingestor.init();
+        ingestor.init(null);
         ingestor.process(builder);
 
         assertTrue(builder.getKeywords().getAllKeywords().contains("beer_kettle_02.jpg"));

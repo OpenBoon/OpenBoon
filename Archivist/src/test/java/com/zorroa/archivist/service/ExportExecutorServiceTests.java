@@ -7,17 +7,23 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
+import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
+import org.elasticsearch.action.count.CountResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.File;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -39,6 +45,9 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
 
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    FolderService folderService;
 
     Export export;
 
@@ -115,5 +124,35 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         assertEquals(1, export2.getAssetCount());
         assertEquals(ExportState.Cancelled, export2.getState());
         assertTrue(export2.getTimeStopped() > -1);
+    }
+
+    @Test
+    public void testExportAggregator() {
+        /**
+         * Log out the current user to ensure the test authenticates.
+         */
+        SecurityContextHolder.getContext().setAuthentication(null);
+
+        exportExecutorService.execute(export);
+
+        authenticate();
+
+        Date date = new Date(export.getTimeCreated());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        String yearName = Integer.toString(year);
+        int month = cal.get(Calendar.MONTH);
+        String monthName = new DateFormatSymbols().getMonths()[month];
+
+        String path = "/Export/" + yearName + "/" + monthName;
+        Folder exportMonthFolder = folderService.get(path);
+        assertNotEquals(null, exportMonthFolder);
+
+        refreshIndex(1000);
+
+        AssetSearch search = new AssetSearch().setFilter(new AssetFilter().setFolderId(exportMonthFolder.getId()));
+        CountResponse response = searchService.count(search);
+        assertEquals(1, response.getCount());
     }
 }

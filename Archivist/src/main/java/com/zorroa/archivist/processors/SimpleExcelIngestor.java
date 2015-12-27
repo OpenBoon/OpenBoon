@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.Json;
@@ -44,7 +45,7 @@ public class SimpleExcelIngestor extends IngestProcessor {
      * @throws Exception
      */
     @Override
-    public void init() {
+    public void init(Ingest ingest) {
 
         try {
             String fileName = getArg("file");
