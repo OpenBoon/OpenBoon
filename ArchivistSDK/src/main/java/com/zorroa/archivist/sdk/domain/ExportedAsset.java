@@ -54,6 +54,10 @@ public class ExportedAsset {
         return asset;
     }
 
+    public ExportOutput getExportOutput() {
+        return exportOutput;
+    }
+
     /**
      * Prepends a path to the LIFO list.  The head of the list is the current
      * working file.
