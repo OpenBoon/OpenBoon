@@ -4,6 +4,7 @@
 
 package com.zorroa.archivist.sdk.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +41,13 @@ public class AssetFieldTerms {
     }
 
     public AssetFieldTerms setTerms(List<Object> terms) {
+        this.terms = terms;
+        return this;
+    }
+
+    public AssetFieldTerms setTerm(Object term) {
+        ArrayList<Object> terms = new ArrayList<>();
+        terms.add(term);
         this.terms = terms;
         return this;
     }
