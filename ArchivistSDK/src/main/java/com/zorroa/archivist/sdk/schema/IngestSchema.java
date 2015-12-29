@@ -7,7 +7,8 @@ public class IngestSchema implements Schema {
 
     private int id;
     private int pipeline;
-    private String path;
+
+    private long timestamp = System.currentTimeMillis();
 
     @Override
     public String getNamespace() {
@@ -30,11 +31,7 @@ public class IngestSchema implements Schema {
         this.pipeline = pipeline;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
+    public long getTimestamp() {
+        return timestamp;
     }
 }
