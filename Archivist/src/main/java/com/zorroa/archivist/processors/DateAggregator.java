@@ -1,5 +1,6 @@
 package com.zorroa.archivist.processors;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.FolderService;
@@ -50,11 +51,13 @@ public class DateAggregator extends IngestProcessor {
             try {
                 yearFolder = folderService.get(dateFolder.getId(), yearName);
             } catch (EmptyResultDataAccessException e) {
-                yearFolder = folderService.create(new FolderBuilder().setName(yearBucket.getKey())
+                yearFolder = folderService.create(new FolderBuilder().setName(yearName)
                         .setParentId(dateFolder.getId()));
             }
 
-            AssetAggregateBuilder monthAggBuilder = createMonthAggBuilder(yearFolder.getSearch());
+            AssetSearch yearSearch = new AssetSearch().setFilter(new AssetFilter()
+                    .setScript(yearScript(yearName)));
+            AssetAggregateBuilder monthAggBuilder = createMonthAggBuilder(yearSearch);
             SearchResponse monthResponse = searchService.aggregate(monthAggBuilder);
 
             // Create each month folder for this year
@@ -74,14 +77,22 @@ public class DateAggregator extends IngestProcessor {
         }
     }
 
-    private AssetAggregateBuilder createYearAggBuilder() {
+    private AssetScript yearScript(String year) {
         Map<String, Object> yearParams = new HashMap<>();
         yearParams.put("field", "source.date");
         yearParams.put("interval", "year");
+        if (year != null) {
+            ArrayList<String> yearTerms = Lists.newArrayList();
+            yearTerms.add(year);
+            yearParams.put("terms", yearTerms);
+        }
+        return new AssetScript().setScript("archivistDate").setParams(yearParams);
+    }
+
+    private AssetAggregateBuilder createYearAggBuilder() {
         AssetFilter dateExistsFilter = new AssetFilter().setExistField("source.date");
         AssetSearch dateExistsSearch = new AssetSearch().setFilter(dateExistsFilter);
-        AssetScript yearScript = new AssetScript().setScript("archivistDate").setParams(yearParams);
-        return new AssetAggregateBuilder().setName("year").setScript(yearScript)
+        return new AssetAggregateBuilder().setName("year").setScript(yearScript(null))
                 .setSearch(dateExistsSearch).setSize(1000);
     }
 
@@ -95,7 +106,7 @@ public class DateAggregator extends IngestProcessor {
     }
 
     public void createMonthFolder(int year, int month, Folder parentFolder) {
-        String name = Integer.toString(year) + " " + new DateFormatSymbols().getMonths()[month];
+        String name = new DateFormatSymbols().getMonths()[month];
         try {
             folderService.get(parentFolder.getId(), name);
         } catch (EmptyResultDataAccessException e) {
