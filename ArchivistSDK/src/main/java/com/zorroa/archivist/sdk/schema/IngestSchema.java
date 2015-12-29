@@ -5,7 +5,7 @@ package com.zorroa.archivist.sdk.schema;
  */
 public class IngestSchema implements Schema {
 
-    private long id;
+    private int id;
     private int pipeline;
     private String path;
 
@@ -14,11 +14,11 @@ public class IngestSchema implements Schema {
         return "ingest";
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
