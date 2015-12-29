@@ -105,13 +105,6 @@ public abstract class ArchivistApplicationTests {
         }
         refreshIndex(100);
 
-        /*
-        client.prepareDeleteByQuery(alias)
-            .setTypes("asset")
-            .setQuery(QueryBuilders.matchAllQuery())
-            .get();
-        */
-
 
         /**
          * TODO: fix this for elastic 1.7
@@ -167,7 +160,6 @@ public abstract class ArchivistApplicationTests {
     public String getStaticImagePath(String subdir) {
         FileSystemResource resource = new FileSystemResource(TEST_IMAGE_PATH);
         String path = resource.getFile().getAbsolutePath() + "/" + subdir;
-//        logger.info("test image path: {}", path);
         return path;
     }
 

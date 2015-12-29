@@ -75,22 +75,25 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         SecurityContextHolder.getContext().setAuthentication(
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
         try {
-            setupElasticSearchMapping();
-            createIndexedScripts();
+            if (!ArchivistConfiguration.unittest) {
+                setupElasticSearchMapping();
+                createIndexedScripts();
+            }
+            createEventLogTemplate();         createEventLogTemplate();
             createDefaultIngestPipeline();
+
             /**
              * TODO: get the snapshot repository working with elastic 1.7
              *
              * createSnapshotRepository();
              */
-
             restartRunningIngests();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void setupElasticSearchMapping() throws IOException {
+    public void setupElasticSearchMapping() throws IOException {
 
         ClassPathResource resource = new ClassPathResource("elastic-mapping.json");
         byte[] mappingSource = ByteStreams.toByteArray(resource.getInputStream());
@@ -100,16 +103,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
          * re-mapping purposes, but for now we're hard coding to 1
          */
         indexName = String.format("%s_%02d", alias, 1);
-
-        if (ArchivistConfiguration.unittest) {
-            logger.info("Unit test, deleting exiting index");
-            try {
-                client.admin().indices().prepareClose(indexName).get();
-                client.admin().indices().prepareDelete(indexName).get();
-            } catch (org.elasticsearch.indices.IndexMissingException ignore) {
-                // Index might not have been setup yet.
-            }
-        }
 
         try {
             logger.info("Setting up ElasticSearch index: {} with alias: {}", indexName, alias);
@@ -144,6 +137,13 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         client.admin().indices().prepareRefresh(alias).get();
     }
 
+    public void createEventLogTemplate() throws IOException {
+        logger.info("creating event log template");
+        ClassPathResource resource = new ClassPathResource("eventlog-template.json");
+        byte[] source = ByteStreams.toByteArray(resource.getInputStream());
+        client.admin().indices().preparePutTemplate("eventlog").setSource(source).get();
+    }
+
     private void createDefaultIngestPipeline() {
         if (ingestService.getIngestPipelines().size() == 0) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
@@ -154,7 +154,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         }
     }
 
-    private void createIndexedScripts() {
+    public void createIndexedScripts() {
         logger.info("Creating indexed scripts");
 
         Map<String, Object> script1 = ImmutableMap.of(
