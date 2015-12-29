@@ -13,6 +13,7 @@ import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.exception.IngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.service.*;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.IngestUtils;
@@ -318,13 +319,10 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     }
 
                     logger.debug("Ingesting: {}", asset);
-
-                    // Store per-ingest id and time info.
-                    // Store last time for each ingest to properly handle overlap.
-                    asset.put("ingest", "pipeline", pipeline.getId());
-                    asset.put("ingest", "builder", ingest.getPath());
-                    asset.put("ingest", "time", System.currentTimeMillis());
-                    asset.put("ingest", "guid", ingest.getId());
+                    IngestSchema ingestSchema = new IngestSchema();
+                    ingestSchema.setId(ingest.getId());
+                    ingestSchema.setPipeline(pipeline.getId());
+                    asset.addSchema(ingestSchema);
 
                     // Run the ingest processors to augment the AssetBuilder
                     executeProcessors();
