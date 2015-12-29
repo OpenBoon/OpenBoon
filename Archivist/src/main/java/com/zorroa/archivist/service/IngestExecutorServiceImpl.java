@@ -13,10 +13,7 @@ import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.exception.IngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.service.AssetService;
-import com.zorroa.archivist.sdk.service.ImageService;
-import com.zorroa.archivist.sdk.service.IngestProcessorService;
-import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.service.*;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.IngestUtils;
 import org.elasticsearch.common.Preconditions;
@@ -64,6 +61,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     ApplicationContext applicationContext;
+
+    @Autowired
+    EventLogService eventLogService;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
@@ -343,11 +343,14 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * For now we'll log that here, but once we know more about the errors we'll come up with
                      * better ways of handling and/or recovering from them.
                      */
-                    logger.warn("INGEST ERROR {} ON ASSET: '{}', PROCESSOR: {}", e.getMessage(), e.getAsset(),
-                            e.getProcessor().getCanonicalName());
+                    String message = "Ingest error {} on Asset '{}', Processor: {}";
+                    logger.warn(message, e.getMessage(), e.getAsset(),e.getProcessor().getSimpleName());
+                    eventLogService.log(ingest, message, e, e.getMessage(), e.getAsset(), e.getProcessor().getSimpleName());
                 }
                 catch (Exception e) {
-                    logger.warn("Failed to execute ingest for asset '{}',", asset.getAbsolutePath(), e);
+                    String message = "Failed to execute ingest for path '{}'";
+                    logger.warn(message, asset.getAbsolutePath(), e);
+                    eventLogService.log(ingest, message, e, asset.getAbsolutePath());
                 }
             }
 
