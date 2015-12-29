@@ -78,7 +78,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
         assertFalse(SecurityUtils.hasPermission("group::superuser"));
 
-        Folder pub = folderDao.get(0, "public");
+        Folder pub = folderDao.get(0, "Folders");
         Folder f1 = folderDao.create(new FolderBuilder("level1", pub));
         Folder f2 = folderDao.create(new FolderBuilder("level2", pub));
         Folder f3 = folderDao.create(new FolderBuilder("level3", pub));

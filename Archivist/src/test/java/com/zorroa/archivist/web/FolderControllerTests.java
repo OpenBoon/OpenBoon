@@ -91,7 +91,7 @@ public class FolderControllerTests extends MockMvcTest {
     @Test
     public void testGetByPath() throws Exception {
         MockHttpSession session = user();
-        MvcResult result = mvc.perform(get("/api/v1/folders/_/users")
+        MvcResult result = mvc.perform(get("/api/v1/folders/_/Users")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -99,7 +99,7 @@ public class FolderControllerTests extends MockMvcTest {
         Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        assertEquals("users", folder2.getName());
+        assertEquals("Users", folder2.getName());
         assertEquals(Folder.ROOT_ID, folder2.getParentId());
     }
 

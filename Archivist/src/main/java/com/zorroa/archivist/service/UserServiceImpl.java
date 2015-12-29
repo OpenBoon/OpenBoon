@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         /*
          * Add the user's home folder
          */
-        Folder userRoot = folderService.get(Folder.ROOT_ID, "users");
+        Folder userRoot = folderService.get(Folder.ROOT_ID, "Users");
         folderService.create(new FolderBuilder()
                 .setName(user.getUsername())
                 .setParentId(userRoot.getId())

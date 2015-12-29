@@ -42,7 +42,7 @@ public class UserServiceTests extends ArchivistApplicationTests {
         /*
          * Get the user's personal folder.
          */
-        Folder folder = folderService.get("/users/test");
+        Folder folder = folderService.get("/Users/test");
         assertEquals(folder.getName(), user.getUsername());
 
         /*

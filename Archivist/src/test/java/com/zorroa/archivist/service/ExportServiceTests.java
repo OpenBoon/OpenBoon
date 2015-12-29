@@ -153,7 +153,7 @@ public class ExportServiceTests extends ArchivistApplicationTests {
     public void testExportsFolder() {
 
         SearchResponse r = searchService.search(new AssetSearch().setFilter(
-                new AssetFilter().addToFolderIds(folderService.get("/exports").getId())));
+                new AssetFilter().addToFolderIds(folderService.get("/Exports").getId())));
         assertEquals(2, r.getHits().getTotalHits());
     }
 }
