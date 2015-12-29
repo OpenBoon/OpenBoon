@@ -71,6 +71,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         /*
          * Authorize the startup thread as an admin.
          */
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
         SecurityContextHolder.getContext().setAuthentication(
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
         try {
