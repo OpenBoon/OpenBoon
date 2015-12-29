@@ -249,13 +249,15 @@ public class SearchServiceImpl implements SearchService {
             filter.add(assetsFilterBuilder);
         }
 
-        /*
         if (builder.getIngestIds() != null) {
-            // FIXME: Icky that "ingest.guid" does not match "exports"
-            FilterBuilder ingestsFilterBuilder = FilterBuilders.termsFilter("ingest.guid", builder.getIngestIds());
+            /**
+             * An asset can be exported N times so the "exports" field is an array.  For ingest, we record
+             * the first ingest ID along with the pipeline, so the value is an embedded object.  Thus, how
+             * they are queried is not the same.
+             */
+            FilterBuilder ingestsFilterBuilder = FilterBuilders.termsFilter("ingest.id", builder.getIngestIds());
             filter.add(ingestsFilterBuilder);
         }
-        */
 
         if (builder.getExportIds() != null) {
             FilterBuilder exportsFilterBuilder = FilterBuilders.termsFilter("exports", builder.getExportIds());

@@ -6,6 +6,7 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -57,9 +58,14 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public Folder get(int parent, String name) {
-        return jdbc.queryForObject(
-                appendReadAccess(GET + " WHERE pk_parent=? and str_name=?"), MAPPER,
-                appendAclArgs(parent, name));
+        try {
+            return jdbc.queryForObject(
+                    appendReadAccess(GET + " WHERE pk_parent=? and str_name=?"), MAPPER,
+                    appendAclArgs(parent, name));
+        } catch (EmptyResultDataAccessException e ) {
+            throw new EmptyResultDataAccessException(String.format("Failed to find folder, parent: %s name: %s",
+                    parent, name), 1);
+        }
     }
 
     @Override
