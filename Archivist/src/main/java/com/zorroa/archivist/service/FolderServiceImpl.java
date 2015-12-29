@@ -94,7 +94,7 @@ public class FolderServiceImpl implements FolderService {
         transactionEventManager.afterCommit(() -> {
             invalidate(null, builder.getParentId());
         });
-        messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_CREATE, folder));
+        messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
         return folder;
     }
 
@@ -103,7 +103,7 @@ public class FolderServiceImpl implements FolderService {
         boolean result = folderDao.update(folder, builder);
         if (result) {
             transactionEventManager.afterCommit(() -> invalidate(folder, builder.getParentId()));
-            messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_UPDATE,
+            messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
                     get(folder.getId())));
         }
         return result;
@@ -113,7 +113,7 @@ public class FolderServiceImpl implements FolderService {
     public boolean delete(Folder folder) {
         boolean result = folderDao.delete(folder);
         if (result) {
-            messagingService.sendToActiveRoom(new Message(MessageType.FOLDER_DELETE, folder));
+            messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
             transactionEventManager.afterCommit(() -> invalidate(folder));
         }
         return result;
