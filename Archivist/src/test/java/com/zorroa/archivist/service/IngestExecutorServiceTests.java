@@ -101,9 +101,13 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
         refreshIndex(1000);
 
         // Validate date folders
-        Folder monthFolder = folderService.get("/Date/2014/2014 October");
+        Folder yearFolder = folderService.get("/Date/2014");
+        assertNotEquals(null, yearFolder);
+        List<Folder> yearChildren = folderService.getChildren(yearFolder);
+        assertEquals(1, yearChildren.size());
+        Folder monthFolder = folderService.get("/Date/2014/October");
         assertNotEquals(null, monthFolder);
-        monthFolder = folderService.get("/Date/2015/2015 February");
+        monthFolder = folderService.get("/Date/2015/February");
         assertNotEquals(null, monthFolder);
         AssetSearch search = new AssetSearch().setFilter(new AssetFilter().setFolderId(monthFolder.getId()));
         CountResponse response = searchService.count(search);
