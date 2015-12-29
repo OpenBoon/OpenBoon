@@ -64,7 +64,7 @@ public abstract class ArchivistApplicationTests {
     public static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
 
     public ArchivistApplicationTests() {
-        logger.info("Setting unit test");
+//        logger.info("Setting unit test");
         ArchivistConfiguration.unittest = true;
     }
 
