@@ -1,0 +1,157 @@
+package com.zorroa.archivist.repository;
+
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.util.Json;
+import org.elasticsearch.client.Client;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+/**
+ * Each test is also testing the getAll function.
+ */
+public class EventLogDaoTests extends ArchivistApplicationTests {
+
+    @Autowired
+    EventLogDao eventLogDao;
+
+    @Autowired
+    AssetDao assetDao;
+
+    @Autowired
+    IngestService ingestService;
+
+    @Autowired
+    Client client;
+
+    Ingest ingest;
+    IngestPipeline pipeline;
+
+    @Before
+    public void init() {
+
+        /**
+         * So the logging happens right away, otherwise the test exits before the
+         * data is applied and we don't see any mapping errors.
+         */
+        eventLogDao.setSynchronous(true);
+
+        pipeline = ingestService.getIngestPipeline(1);
+        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
+        ingest = ingestService.createIngest(builder);
+    }
+
+    @Test
+    public void testSimpleLog() {
+        eventLogDao.log("testing {} {} {}", 1, 2, 3);
+        refreshIndex("eventlog", 100);
+
+        EventLogSearch search = new EventLogSearch();
+        assertEquals(1, eventLogDao.getAll(search).getHits().totalHits());
+    }
+
+    @Test
+    public void testLogIngest() {
+        eventLogDao.log(ingest, "testing {} {} {}", 1, 2, 3);
+        refreshIndex("eventlog", 100);
+
+        EventLogSearch search = new EventLogSearch();
+        search.setIds(Sets.newHashSet(String.valueOf(ingest.getId())));
+        assertEquals(1, eventLogDao.getAll(search).getHits().totalHits());
+
+        search = new EventLogSearch();
+        search.setTypes(Sets.newHashSet("Ingest"));
+        assertEquals(1, eventLogDao.getAll(search).getHits().totalHits());
+    }
+
+    @Test
+    public void testLogAsset() {
+
+        AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        Asset asset = assetDao.create(builder);
+        refreshIndex();
+
+        eventLogDao.log(asset, "testing {} {} {}", 1, 2, 3);
+        refreshIndex("eventlog", 100);
+
+        EventLogSearch search = new EventLogSearch();
+        search.setIds(Sets.newHashSet(asset.getId()));
+        assertEquals(1, eventLogDao.getAll(search).getHits().totalHits());
+
+        search = new EventLogSearch();
+        search.setTypes(Sets.newHashSet("Asset"));
+        assertEquals(1, eventLogDao.getAll(search).getHits().totalHits());
+    }
+
+    @Test
+    public void testLog() {
+        EventLogMessage message = new EventLogMessage();
+        message.setId("1");
+        message.setMessage("a log message");
+        message.setPath("/foo/bar/bing");
+        message.setTags(Sets.newHashSet("foo", "bar"));
+        message.setType("Asset");
+        eventLogDao.log(message);
+        refreshIndex("eventlog", 100);
+
+        EventLogSearch search = new EventLogSearch();
+        search.setTags(Sets.newHashSet("foo", "bing"));
+        assertEquals(1, eventLogDao.getAll(search).getHits().totalHits());
+    }
+
+    @Test
+    public void testLogException() {
+        EventLogMessage message = new EventLogMessage();
+        message.setMessage("a log message");
+        message.setException(new Exception("foo bar!"));
+        eventLogDao.log(message);
+        refreshIndex("eventlog", 100);
+
+        String[] stack = Json.Mapper.convertValue(
+                eventLogDao.getAll().getHits().getHits()[0].getSource().get("stack"), String[].class);
+        assertTrue(stack.length > 0);
+    }
+
+    @Test
+    public void testGetAllEmptySearch() {
+        eventLogDao.log(ingest, "testing {} {} {}", 1, 2, 3);
+        refreshIndex("eventlog", 100);
+
+        assertEquals(1, eventLogDao.getAll(new EventLogSearch()).getHits().totalHits());
+    }
+
+    @Test
+    public void testGetAllPaged() {
+        for (int i=0; i<10; i++) {
+            eventLogDao.log(ingest, "part:{}", i);
+        }
+        refreshIndex("eventlog", 100);
+
+        /**
+         * With 10 entries, a limit of 8 on page 2 should be 2 hits.
+         */
+        assertEquals(2, eventLogDao.getAll(new EventLogSearch()
+                .setPage(2)
+                .setLimit(8))
+                .getHits().getHits().length);
+    }
+
+    @Test
+    public void testGetAllWithMessageQueryString() {
+        eventLogDao.log(ingest, "test jim bob mary {} {} {}", 1, 2, 3);
+        eventLogDao.log(ingest, "test jesus joseph mary {} {} {}", 1, 2, 3);
+        refreshIndex("eventlog", 100);
+
+        assertEquals(1, eventLogDao.getAll(new EventLogSearch("jim")).getHits().totalHits());
+        assertEquals(0, eventLogDao.getAll(new EventLogSearch("bob jesus")).getHits().totalHits());
+        assertEquals(2, eventLogDao.getAll(new EventLogSearch("bob | mary")).getHits().totalHits());
+        assertEquals(2, eventLogDao.getAll(new EventLogSearch("ingest")).getHits().totalHits());
+        assertEquals(1, eventLogDao.getAll(new EventLogSearch("ingest bob")).getHits().totalHits());
+    }
+}
