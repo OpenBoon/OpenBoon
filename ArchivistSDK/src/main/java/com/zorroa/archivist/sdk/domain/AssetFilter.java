@@ -13,8 +13,9 @@ import java.util.List;
  */
 public class AssetFilter {
     private List<String> assetIds;              // Filter to show the specified assets
+    private List<Integer> ingestIds;            // Filter to show the specified ingests
     private List<Integer> exportIds;            // Filter to show the specified exports
-    private List<Integer> folderIds;             // Filter to show the specified folders
+    private List<Integer> folderIds;            // Filter to show the specified folders
     private List<String> existFields;           // Filter for assets that contain any of the specified fields
     private List<AssetFieldTerms> fieldTerms;   // Filter for matching terms in the specified field
     private List<AssetFieldRange> fieldRanges;  // Filter for terms within a specified range
@@ -41,6 +42,31 @@ public class AssetFilter {
         }
         for (String id: ids) {
             assetIds.add(id);
+        }
+        return this;
+    }
+
+    public List<Integer> getIngestIds() {
+        return ingestIds;
+    }
+
+    public AssetFilter setIngestIds(List<Integer> ingestIds) {
+        this.ingestIds = ingestIds;
+        return this;
+    }
+
+    public AssetFilter setIngestId(Integer ingestId) {
+        ingestIds = Lists.newArrayList();
+        ingestIds.add(ingestId);
+        return this;
+    }
+
+    public AssetFilter addToIngestIds(int ... ids) {
+        if (ingestIds == null) {
+            ingestIds = Lists.newArrayList();
+        }
+        for (int id: ids) {
+            ingestIds.add(id);
         }
         return this;
     }
