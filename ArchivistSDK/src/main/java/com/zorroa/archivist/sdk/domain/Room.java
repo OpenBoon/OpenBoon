@@ -2,9 +2,9 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
 
-public class Room {
+public class Room implements Id {
 
-    private long id;
+    private int id;
     private String name;
     private boolean visible;
 
@@ -19,11 +19,11 @@ public class Room {
             .toString();
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -6,7 +6,7 @@ import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import java.util.List;
 
 
-public class IngestPipeline {
+public class IngestPipeline implements Id {
 
     private int id;
     private String name;

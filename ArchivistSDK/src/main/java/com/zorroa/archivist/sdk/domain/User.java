@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.domain;
 import com.google.common.base.MoreObjects;
 import com.google.common.hash.HashCode;
 
-public class User {
+public class User implements Id {
 
     private int id;
     private String username;

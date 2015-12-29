@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Created by chambers on 10/27/15.
  */
-public class Permission {
+public class Permission implements Id {
 
     private int id;
     private String name;

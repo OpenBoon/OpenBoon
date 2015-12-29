@@ -5,7 +5,7 @@ import com.google.common.base.MoreObjects;
 /**
  * Created by chambers on 11/1/15.
  */
-public class Export {
+public class Export implements Id {
 
     private int id;
     private String note;

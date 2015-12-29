@@ -5,9 +5,9 @@ import com.google.common.base.MoreObjects;
 import java.util.Objects;
 import java.util.Set;
 
-public class Ingest {
+public class Ingest implements Id {
 
-    private long id;
+    private int id;
     private int pipelineId;
     private IngestState state;
     private String path;
@@ -51,10 +51,10 @@ public class Ingest {
         return Objects.hash(id);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
     public int getPipelineId() {

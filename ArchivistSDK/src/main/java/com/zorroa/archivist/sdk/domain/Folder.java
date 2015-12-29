@@ -2,7 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 import java.util.Objects;
 
-public class Folder {
+public class Folder implements Id {
 
     public static final Integer ROOT_ID = 0;
 
@@ -24,7 +24,7 @@ public class Folder {
         return ROOT_ID == folder.getId();
     }
 
-    private Integer id;
+    private int id;
     private Integer parentId;
     private String name;
     private int userCreated;
@@ -38,7 +38,7 @@ public class Folder {
 
     public Folder() { }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -131,11 +131,11 @@ public class Folder {
         if (o == null || getClass() != o.getClass()) return false;
 
         Folder other = (Folder) o;
-        return id.intValue() == other.id.intValue();
+        return id == other.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id.intValue());
+        return Objects.hash(id);
     }
 }
