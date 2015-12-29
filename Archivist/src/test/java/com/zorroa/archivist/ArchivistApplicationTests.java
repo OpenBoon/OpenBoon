@@ -159,7 +159,7 @@ public abstract class ArchivistApplicationTests {
     public String getStaticImagePath(String subdir) {
         FileSystemResource resource = new FileSystemResource(TEST_IMAGE_PATH);
         String path = resource.getFile().getAbsolutePath() + "/" + subdir;
-        logger.info("test image path: {}", path);
+//        logger.info("test image path: {}", path);
         return path;
     }
 

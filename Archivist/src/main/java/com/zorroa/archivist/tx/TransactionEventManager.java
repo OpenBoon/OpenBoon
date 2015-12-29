@@ -48,7 +48,7 @@ public class TransactionEventManager {
         Preconditions.checkNotNull(runnable, "The AsyncTransactionSynchronization cannot be null");
         if (isImmediateMode()) {
             try {
-                logger.info("Executing TXS in immedate  mode: '{}'", runnable.getClass().getCanonicalName());
+//                logger.info("Executing TXS in immedate  mode: '{}'", runnable.getClass().getCanonicalName());
                 runnable.run();
             }
             catch (Exception e) {

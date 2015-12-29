@@ -80,7 +80,7 @@ public class MessagingServiceImpl implements MessagingService {
         }
 
         if (message.getPayload() == null) {
-            logger.warn("The not sending null message payload to {}", SecurityUtils.getCookieId());
+            logger.warn("Not sending null message payload to {}", SecurityUtils.getCookieId());
             return;
         }
 
