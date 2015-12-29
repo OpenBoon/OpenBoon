@@ -79,7 +79,7 @@ public class IngestScheduleDaoImpl extends AbstractDao implements IngestSchedule
         int id = keyHolder.getKey().intValue();
 
         if (builder.getIngestIds() != null) {
-            for (Long ingestId : builder.getIngestIds()) {
+            for (Integer ingestId : builder.getIngestIds()) {
                 jdbc.update(UPDATE_INGESTS, id, ingestId);
             }
         }
@@ -93,7 +93,7 @@ public class IngestScheduleDaoImpl extends AbstractDao implements IngestSchedule
         result.setName(rs.getString("str_name"));
         result.setRunAtTime(rs.getString("clock_run_at_time"));
         result.setIngestIds(jdbc.queryForList("SELECT pk_ingest FROM map_schedule_to_ingest WHERE pk_schedule=?",
-                Long.class, rs.getInt("pk_schedule")));
+                Integer.class, rs.getInt("pk_schedule")));
         List<DayOfWeek> days = Lists.newArrayList();
         for (String v : rs.getString("csv_days").split(",")) {
             days.add(DayOfWeek.values()[Integer.valueOf(v).intValue()]);
@@ -126,7 +126,7 @@ public class IngestScheduleDaoImpl extends AbstractDao implements IngestSchedule
     }
 
     @Override
-    public void mapScheduleToIngests(IngestSchedule schedule, List<Long> ingests) {
+    public void mapScheduleToIngests(IngestSchedule schedule, List<Integer> ingests) {
         jdbc.update("DELETE FROM map_schedule_to_ingest WHERE pk_schedule=?", schedule.getId());
 
         if (ingests == null || ingests.isEmpty()) {

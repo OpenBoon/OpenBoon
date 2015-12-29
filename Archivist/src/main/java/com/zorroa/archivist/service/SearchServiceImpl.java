@@ -249,11 +249,13 @@ public class SearchServiceImpl implements SearchService {
             filter.add(assetsFilterBuilder);
         }
 
+        /*
         if (builder.getIngestIds() != null) {
             // FIXME: Icky that "ingest.guid" does not match "exports"
             FilterBuilder ingestsFilterBuilder = FilterBuilders.termsFilter("ingest.guid", builder.getIngestIds());
-        filter.add(ingestsFilterBuilder);
+            filter.add(ingestsFilterBuilder);
         }
+        */
 
         if (builder.getExportIds() != null) {
             FilterBuilder exportsFilterBuilder = FilterBuilders.termsFilter("exports", builder.getExportIds());

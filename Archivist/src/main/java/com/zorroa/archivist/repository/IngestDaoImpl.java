@@ -20,7 +20,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
 
     private static final RowMapper<Ingest> MAPPER = (rs, row) -> {
         Ingest result = new Ingest();
-        result.setId(rs.getLong("pk_ingest"));
+        result.setId(rs.getInt("pk_ingest"));
         result.setPipelineId(rs.getInt("pk_pipeline"));
         result.setState(IngestState.values()[rs.getInt("int_state")]);
         result.setPath(rs.getString("str_path"));

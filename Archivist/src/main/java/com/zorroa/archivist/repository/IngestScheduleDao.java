@@ -20,7 +20,7 @@ public interface IngestScheduleDao {
 
     void started(IngestSchedule schedule);
 
-    void mapScheduleToIngests(IngestSchedule schedule, List<Long> ingests);
+    void mapScheduleToIngests(IngestSchedule schedule, List<Integer> ingests);
 
     boolean update(IngestSchedule schedule);
 }

@@ -232,7 +232,7 @@ public class FolderControllerTests extends MockMvcTest {
         Folder dad2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        assertEquals(grandpa.getId(), dad2.getParentId());
+        assertEquals(grandpa.getId(), dad2.getParentId().intValue());
         assertEquals(dad.getId(), dad2.getId());
     }
 

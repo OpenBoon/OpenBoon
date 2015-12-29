@@ -456,7 +456,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         child = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertNotEquals(child.getParentId(), parent.getId());
+        assertNotEquals(child.getParentId().intValue(), parent.getId());
 
         search = new AssetSearch(new AssetFilter().addToFolderIds(parent.getId()));
 

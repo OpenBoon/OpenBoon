@@ -12,7 +12,7 @@ public class IngestSchedule {
     private String name;
     private String runAtTime;
     private List<DayOfWeek> days;
-    private List<Long> ingestIds;
+    private List<Integer> ingestIds;
 
     public int getId() {
         return id;
@@ -47,11 +47,11 @@ public class IngestSchedule {
         this.days = days;
     }
 
-    public List<Long> getIngestIds() {
+    public List<Integer> getIngestIds() {
         return ingestIds;
     }
 
-    public void setIngestIds(List<Long> ingestIds) {
+    public void setIngestIds(List<Integer> ingestIds) {
         this.ingestIds = ingestIds;
     }
 

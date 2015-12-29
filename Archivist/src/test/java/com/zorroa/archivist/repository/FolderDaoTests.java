@@ -130,7 +130,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
         Folder bimbo2 = folderDao.get(bimbo.getId());
         assertEquals(bimbo2.getName(), "Bimbo-updated");
-        assertEquals(bimbo2.getParentId(), gimbo.getId());
+        assertEquals(bimbo2.getParentId().intValue(), gimbo.getId());
     }
 
     @Test

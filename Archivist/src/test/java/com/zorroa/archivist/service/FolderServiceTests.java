@@ -92,7 +92,7 @@ public class FolderServiceTests extends ArchivistApplicationTests {
         Folder folder1c = folderService.create(new FolderBuilder("test1c", folder1b));
 
         Folder folder = folderService.get("/test1/test1a/test1b/test1c");
-        assertEquals(folder1b.getId(), folder.getParentId());
+        assertEquals(folder1b.getId(), folder.getParentId().intValue());
         assertEquals(folder1c.getName(), folder.getName());
     }
 
@@ -122,7 +122,7 @@ public class FolderServiceTests extends ArchivistApplicationTests {
         builder.setParentId(folder1.getId());
 
         Folder folder2 = folderService.create(builder);
-        assertEquals(folder2.getParentId(), folder1.getId());
+        assertEquals(folder2.getParentId().intValue(), folder1.getId());
         folderService.create(builder);
     }
 }

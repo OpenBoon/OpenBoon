@@ -22,7 +22,7 @@ public class IngestScheduleBuilder {
     /**
      * The IDs of the ingests to put on this schedule.
      */
-    private List<Long> ingestIds;
+    private List<Integer> ingestIds;
 
     /**
      * Bitwise 1=mon, 2=tues, 3=wed, etc
@@ -52,11 +52,11 @@ public class IngestScheduleBuilder {
     }
 
 
-    public List<Long> getIngestIds() {
+    public List<Integer> getIngestIds() {
         return ingestIds;
     }
 
-    public void setIngestIds(List<Long> ingestIds) {
+    public void setIngestIds(List<Integer> ingestIds) {
         this.ingestIds = ingestIds;
     }
 

@@ -68,7 +68,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
 
-    private final ConcurrentMap<Long, IngestWorker> runningIngests = Maps.newConcurrentMap();
+    private final ConcurrentMap<Integer, IngestWorker> runningIngests = Maps.newConcurrentMap();
 
     private Executor ingestExecutor;
 
