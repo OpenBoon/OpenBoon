@@ -40,8 +40,8 @@ public class IngestPathAggregator extends IngestProcessor {
             ingestFolder = folderService.get(ingestsFolder.getId(), ingest.getPath());
         } catch (EmptyResultDataAccessException e) {
             // Folder does not exist, create a new one
-            AssetFilter ingestFilter = new AssetFilter().setFieldTerm(new AssetFieldTerms()
-                    .setField("ingest.guid").setTerm(ingest.getId()));
+            int ingestId = (int)ingest.getId();     // FIXME: int-cast from long is dangerous
+            AssetFilter ingestFilter = new AssetFilter().setIngestId(ingestId);
             FolderBuilder ingestBuilder = new FolderBuilder().setName(ingest.getPath())
                     .setParentId(ingestsFolder.getId()).setSearch(new AssetSearch().setFilter(ingestFilter));
             ingestFolder = folderService.create(ingestBuilder);
