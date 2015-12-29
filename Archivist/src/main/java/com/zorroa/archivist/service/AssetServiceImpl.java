@@ -57,7 +57,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public long update(String assetId, AssetUpdateBuilder builder) {
         long version = assetDao.update(assetId, builder);
-        messagingService.sendToActiveRoom(new Message(MessageType.ASSET_UPDATE,
+        messagingService.broadcast(new Message(MessageType.ASSET_UPDATE,
                 ImmutableMap.of(
                         "assetId", assetId,
                         "version", version,
@@ -79,7 +79,7 @@ public class AssetServiceImpl implements AssetService {
     public void setFolders(Asset asset, Collection<Folder> folders) {
         long version = assetDao.setFolders(asset, folders);
 
-        messagingService.sendToActiveRoom(new Message(MessageType.ASSET_UPDATE_FOLDERS,
+        messagingService.broadcast(new Message(MessageType.ASSET_UPDATE_FOLDERS,
             ImmutableMap.of(
                     "assetId", asset.getId(),
                     "folders", folders.stream().map(Folder::getId).collect(Collectors.toList()),
