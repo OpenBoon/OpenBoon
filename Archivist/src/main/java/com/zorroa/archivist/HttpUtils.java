@@ -24,8 +24,11 @@ public class HttpUtils {
      */
     public static void writeElasticResponse(ToXContent result, HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
         OutputStream out = response.getOutputStream();
+        writeElasticResponse(result, out);
+    }
+
+    public static void writeElasticResponse(ToXContent result, OutputStream out) throws IOException {
         XContentBuilder content = XContentFactory.jsonBuilder(out);
         try {
             content.startObject();
