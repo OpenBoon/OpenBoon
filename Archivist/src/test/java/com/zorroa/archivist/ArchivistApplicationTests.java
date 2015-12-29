@@ -7,7 +7,6 @@ import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestB
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.ImmutableList;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.snapshots.SnapshotInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -22,18 +21,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ArchivistApplication.class)
 @WebAppConfiguration
-@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
 @Transactional
 public abstract class ArchivistApplicationTests {
 
@@ -50,6 +48,9 @@ public abstract class ArchivistApplicationTests {
 
     @Autowired
     TransactionEventManager transactionEventManager;
+
+    @Autowired
+    ArchivistRepositorySetup archivistRepositorySetup;
 
     @Value("${archivist.index.alias}")
     protected String alias;
@@ -92,24 +93,26 @@ public abstract class ArchivistApplicationTests {
         transactionEventManager.setImmediateMode(true);
 
         /**
-         * Before we can do anything reliably we need a logged in user.
+         * Delete all indexes.
          */
-        authenticate();
+        client.admin().indices().prepareDelete("_all").get();
 
-        /**
-         * TODO: fix deprecated prepareDeleteByQuery
-         */
+        try {
+            archivistRepositorySetup.setupElasticSearchMapping();
+            archivistRepositorySetup.createIndexedScripts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        refreshIndex(100);
+
+        /*
         client.prepareDeleteByQuery(alias)
             .setTypes("asset")
             .setQuery(QueryBuilders.matchAllQuery())
             .get();
+        */
 
-        client.prepareDeleteByQuery(alias)
-                .setTypes("folders")
-                .setQuery(QueryBuilders.matchAllQuery())
-                .get();
 
-        refreshIndex(100);
         /**
          * TODO: fix this for elastic 1.7
          */
@@ -129,6 +132,11 @@ public abstract class ArchivistApplicationTests {
         }
 
         */
+
+        /**
+         * Before we can do anything reliably we need a logged in user.
+         */
+        authenticate();
 
         /**
          * Adds in a test, non privileged user.
@@ -176,6 +184,10 @@ public abstract class ArchivistApplicationTests {
     }
 
     public void refreshIndex(long sleep) {
+        refreshIndex(alias, sleep);
+    }
+
+    public void refreshIndex(String alias, long sleep) {
         try {
             Thread.sleep(sleep/2);
         } catch (InterruptedException e) {
@@ -186,4 +198,5 @@ public abstract class ArchivistApplicationTests {
         } catch (InterruptedException e) {
         }
     }
+
 }
