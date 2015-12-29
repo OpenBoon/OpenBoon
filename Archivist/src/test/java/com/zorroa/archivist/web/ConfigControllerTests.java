@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by chambers on 12/22/15.
  */
-public class ConfigControllerTests   extends MockMvcTest {
+public class ConfigControllerTests extends MockMvcTest {
 
     @Test
     public void testSupportedFormats() throws Exception {
