@@ -524,6 +524,33 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testFilterIngest() throws Exception {
+        MockHttpSession session = user();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        ingestExecutorService.executeIngest(ingest);
+        ingest = ingestService.createIngest((new IngestBuilder(getStaticImagePath("canyon"))));
+        ingestExecutorService.executeIngest(ingest);
+
+        refreshIndex();
+
+        AssetSearch search = new AssetSearch(new AssetFilter().setIngestId((int) /*danger!*/ingest.getId()));
+
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(search)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
     public void testFilterExists() throws Exception {
         MockHttpSession session = user();
 
