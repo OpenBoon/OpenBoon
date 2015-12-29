@@ -21,6 +21,7 @@ public class Json {
     public final static ObjectMapper Mapper = new ObjectMapper();
     static {
         Mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        Mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
         Mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         Mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true);
         Mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
