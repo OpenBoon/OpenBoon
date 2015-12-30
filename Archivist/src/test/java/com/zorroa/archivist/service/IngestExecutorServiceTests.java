@@ -121,7 +121,7 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
         assertEquals(1, response.getCount());
 
         // Validate ingest path folders
-        Folder ingestFolder = folderService.get("/Ingest");
+        Folder ingestFolder = folderService.get("/Ingests");
         assertNotEquals(null, ingestFolder);
         List<Folder> children = folderService.getChildren(ingestFolder);
         assertEquals(1, children.size());

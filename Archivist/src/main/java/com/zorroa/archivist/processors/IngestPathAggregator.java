@@ -30,9 +30,9 @@ public class IngestPathAggregator extends IngestProcessor {
         // Create the root folder for all ingests, if needed
         Folder ingestsFolder;
         try {
-            ingestsFolder = folderService.get(0, "Ingest");
+            ingestsFolder = folderService.get(0, "Ingests");
         } catch (EmptyResultDataAccessException e) {
-            ingestsFolder = folderService.create(new FolderBuilder().setName("Ingest"));
+            ingestsFolder = folderService.create(new FolderBuilder().setName("Ingests"));
         }
 
         // Create a root folder for this ingest (watch out for name with slashes!)
