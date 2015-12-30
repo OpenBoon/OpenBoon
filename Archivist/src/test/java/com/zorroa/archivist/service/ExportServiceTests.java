@@ -15,6 +15,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class ExportServiceTests extends ArchivistApplicationTests {
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        refreshIndex();
 
         ExportOptions options = new ExportOptions();
         options.getImages().setFormat("jpg");
@@ -150,8 +151,29 @@ public class ExportServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testExportsFolder() {
+    public void testOfflineExport() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        exportExecutorService.execute(export);
+        refreshIndex();
+        authenticate();
 
+        assertEquals(1, exportService.offline(export));
+        assertEquals(0, exportService.offline(export));
+    }
+
+    @Test
+    public void testOfflineExportOutput() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        exportExecutorService.execute(export);
+        refreshIndex();
+        authenticate();
+
+        assertEquals(true, exportService.offline(exportService.getAllOutputs(export).get(0)));
+        assertEquals(false, exportService.offline(exportService.getAllOutputs(export).get(0)));
+    }
+
+    @Test
+    public void testExportsFolder() {
         SearchResponse r = searchService.search(new AssetSearch().setFilter(
                 new AssetFilter().addToFolderIds(folderService.get("/Exports").getId())));
         assertEquals(2, r.getHits().getTotalHits());

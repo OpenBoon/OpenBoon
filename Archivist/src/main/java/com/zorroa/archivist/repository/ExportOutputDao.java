@@ -15,7 +15,23 @@ public interface ExportOutputDao {
 
     List<ExportOutput> getAll(Export export);
 
-    ExportOutput create(Export export,  ProcessorFactory<ExportProcessor> output);
+    /**
+     * Set the output's status to offline
+     *
+     * @param output
+     * @return
+     */
+    boolean setOffline(ExportOutput output);
+
+    /**
+     * Sets the output's status to online and update time_online.
+     *
+     * @param output
+     * @return
+     */
+    boolean setOnline(ExportOutput output);
+
+    ExportOutput create(Export export, ProcessorFactory<ExportProcessor> output);
 
     void updateOutputPath(Export export, ExportOutput output);
 
@@ -26,4 +42,12 @@ public interface ExportOutputDao {
      * @param size
      */
     void setFileSize(ExportOutput output, long size);
+
+    /**
+     * Return all expired outputs.
+     *
+     * @param expireTimeMills
+     * @return
+     */
+    List<ExportOutput> getAllExpired(long expireTimeMills);
 }

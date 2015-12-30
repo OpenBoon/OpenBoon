@@ -7,9 +7,9 @@ import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.util.FileUtils;
-import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,9 @@ import java.util.stream.Collectors;
 public class ExportServiceImpl implements ExportService {
 
     private static final Logger logger = LoggerFactory.getLogger(ExportServiceImpl.class);
+
+    @Autowired
+    EventLogService eventLogService;
 
     @Autowired
     SearchService searchService;
@@ -138,5 +144,33 @@ public class ExportServiceImpl implements ExportService {
         return exportDao.getAll(filter);
     }
 
+    @Override
+    public boolean offline(ExportOutput output) {
+        try {
+            if (Files.deleteIfExists(new File(output.getPath()).toPath())) {
+                exportOutputDao.setOffline(output);
+                eventLogService.log(output, "Output was deleted: ", output);
+                return true;
+            }
+            else {
+                eventLogService.log("Could not delete export output, file did not exist. {}", output);
+            }
+
+        } catch (IOException e) {
+            eventLogService.log("Failed to offline output: {}", e, output);
+        }
+        return false;
+    }
+
+    @Override
+    public int offline(Export export) {
+        int result = 0;
+        for (ExportOutput output: getAllOutputs(export)) {
+            if (offline(output)) {
+                result++;
+            }
+        }
+        return result;
+    }
 }
 

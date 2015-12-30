@@ -10,10 +10,12 @@ import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.sdk.util.StringUtil;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ import java.util.concurrent.TimeUnit;
 public class ExportExecutorServiceImpl extends AbstractScheduledService implements ExportExecutorService {
 
     private static final Logger logger = LoggerFactory.getLogger(ExportExecutorServiceImpl.class);
+
+    @Autowired
+    ExportService exportService;
 
     @Autowired
     ExportDao exportDao;
@@ -67,6 +72,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
     @Value("${archivist.export.autoStart}")
     public boolean autoStart;
+
+    @Value("${archivist.export.expireTime}")
+    private String expireTime;
 
     @PostConstruct
     public void init() {
@@ -173,6 +181,13 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                 logger.info("tearing down processor {}", processor);
                 try {
                     processor.teardown();
+
+                    /**
+                     * Set the exports as online if the path exists
+                     */
+                    if (output.pathExists()) {
+                        exportOutputDao.setOnline(output);
+                    }
                 } catch (Exception e) {
                     logger.warn("Failed to tear down processor '{}',", processor, e);
                 }
@@ -183,13 +198,18 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
         } finally {
             /*
-             * Cancelled exports don't get set to finished, they state in the canceled state
-             * so people can see they are cancelled.
+             * Cancelled exports don't get set to finished, they state in the canceled state.
              */
             if (exportDao.setFinished(export)) {
                 logger.info("Export ID:{} complete, {} assets exported.", export.getId(), assetCount);
                 messagingService.sendToUser(user, new Message().setType(
                         MessageType.EXPORT_STOP).setPayload(Json.serializeToString(exportDao.get(export.getId()))));
+            }
+            else if (exportDao.isInState(export, ExportState.Cancelled)) {
+                /**
+                 * Offline any files we might have generated right away.
+                 */
+                exportService.offline(export);
             }
 
             /**
@@ -216,6 +236,14 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
             } catch (Exception e) {
                 logger.warn("Error starting export {}, ", export, e);
             }
+        }
+
+        /**
+         * Check for expired outputs.
+         */
+        for (ExportOutput output: exportOutputDao.getAllExpired(
+                StringUtil.durationToMillis(expireTime))) {
+            exportService.offline(output);
         }
     }
 

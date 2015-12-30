@@ -5,6 +5,7 @@ import com.zorroa.archivist.ArchivistException;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
+import com.zorroa.archivist.sdk.domain.ExportState;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.util.Json;
@@ -39,6 +40,9 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
         output.setMimeType(rs.getString("str_mime_type"));
         output.setFileExtention(rs.getString("str_file_ext"));
         output.setFileSize(rs.getLong("int_file_size"));
+        output.setOffline(rs.getBoolean("bool_offline"));
+        output.setTimeOffline(rs.getLong("time_offline"));
+        output.setTimeOnline(rs.getLong("time_online"));
         output.setFactory(Json.deserialize(rs.getString("json_factory"),
                 new TypeReference<ProcessorFactory<ExportProcessor>>(){}));
         return output;
@@ -57,6 +61,41 @@ public class ExportOutputDaoImpl extends AbstractDao implements ExportOutputDao 
     @Override
     public List<ExportOutput> getAll(Export export) {
         return jdbc.query("SELECT * FROM export_output WHERE pk_export=?", MAPPER, export.getId());
+    }
+
+    private static final String GET_EXPIRED =
+        "SELECT " +
+            "export_output.* " +
+        "FROM " +
+            "export_output, " +
+            "export " +
+        "WHERE " +
+            "export_output.pk_export = export.pk_export " +
+        "AND " +
+            "export_output.bool_offline = 0 " +
+        "AND " +
+            "export.int_state = ? " +
+        "AND " +
+            "(? - export_output.time_online) > ?";
+
+    @Override
+    public List<ExportOutput> getAllExpired(long expireTimeMills) {
+        return jdbc.query(GET_EXPIRED, MAPPER, ExportState.Finished.ordinal(),
+                System.currentTimeMillis(), expireTimeMills);
+    }
+
+    @Override
+    public boolean setOffline(ExportOutput output) {
+        return jdbc.update("UPDATE export_output " +
+                "SET bool_offline=1, time_offline=? WHERE pk_export_output=? AND bool_offline=0",
+                System.currentTimeMillis(), output.getId()) == 1;
+    }
+
+    @Override
+    public boolean setOnline(ExportOutput output) {
+        return jdbc.update("UPDATE export_output " +
+                "SET bool_offline=0, time_online=? WHERE pk_export_output=? AND bool_offline=1",
+                System.currentTimeMillis(), output.getId()) == 1;
     }
 
     private static final String INSERT =

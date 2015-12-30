@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 11/12/15.
@@ -69,5 +71,24 @@ public class ExportOutputDaoTests extends ArchivistApplicationTests {
         exportOutputDao.setFileSize(output, size);
         ExportOutput output2 = exportOutputDao.get(output.getId());
         assertEquals(size, output2.getFileSize());
+    }
+
+    @Test
+    public void testGetAllExpired() throws InterruptedException {
+        assertTrue(exportDao.setRunning(export));
+        assertTrue(exportDao.setFinished(export));
+        exportOutputDao.setOnline(output);
+        Thread.sleep(100);
+
+        assertEquals(0, exportOutputDao.getAllExpired(1000).size());
+        assertEquals(1, exportOutputDao.getAllExpired(50).size());
+    }
+
+    @Test
+    public void testsStOnlineOfflineStatus() {
+        assertTrue(exportOutputDao.setOnline(output));
+        assertFalse(exportOutputDao.setOnline(output));
+        assertTrue(exportOutputDao.setOffline(output));
+        assertFalse(exportOutputDao.setOffline(output));
     }
 }
