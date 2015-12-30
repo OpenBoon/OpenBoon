@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class AggregatorIngestor extends IngestProcessor {
     private int assetsSinceLastAgg = 0;
-    private final int kAggCount = 256;
+    private final int kAggCount = 128;
     private ArrayList<IngestProcessor> aggregators = new ArrayList<>();
 
     @Autowired
