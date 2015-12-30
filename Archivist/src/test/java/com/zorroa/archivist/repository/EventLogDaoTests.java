@@ -49,7 +49,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testSimpleLog() {
-        eventLogDao.log("testing {} {} {}", 1, 2, 3);
+        eventLogDao.log(new EventLogMessage("testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         EventLogSearch search = new EventLogSearch();
@@ -58,7 +58,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testLogIngest() {
-        eventLogDao.log(ingest, "testing {} {} {}", 1, 2, 3);
+        eventLogDao.log(new EventLogMessage(ingest, "testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         EventLogSearch search = new EventLogSearch();
@@ -77,7 +77,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
         Asset asset = assetDao.create(builder);
         refreshIndex();
 
-        eventLogDao.log(asset, "testing {} {} {}", 1, 2, 3);
+        eventLogDao.log(new EventLogMessage(asset, "testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         EventLogSearch search = new EventLogSearch();
@@ -120,7 +120,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetAllEmptySearch() {
-        eventLogDao.log(ingest, "testing {} {} {}", 1, 2, 3);
+        eventLogDao.log(new EventLogMessage(ingest, "testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         assertEquals(1, eventLogDao.getAll(new EventLogSearch()).getHits().totalHits());
@@ -129,7 +129,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
     @Test
     public void testGetAllPaged() {
         for (int i=0; i<10; i++) {
-            eventLogDao.log(ingest, "part:{}", i);
+            eventLogDao.log(new EventLogMessage(ingest, "part:{}", i));
         }
         refreshIndex("eventlog", 100);
 
@@ -144,8 +144,8 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetAllWithMessageQueryString() {
-        eventLogDao.log(ingest, "test jim bob mary {} {} {}", 1, 2, 3);
-        eventLogDao.log(ingest, "test jesus joseph mary {} {} {}", 1, 2, 3);
+        eventLogDao.log(new EventLogMessage(ingest, "test jim bob mary {} {} {}", 1, 2, 3));
+        eventLogDao.log(new EventLogMessage(ingest, "test jesus joseph mary {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         assertEquals(1, eventLogDao.getAll(new EventLogSearch("jim")).getHits().totalHits());

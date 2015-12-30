@@ -23,27 +23,32 @@ public class EventLogServiceImpl implements EventLogService {
     }
 
     @Override
-    public void log(Id id, String s, Object... objects) {
-        eventLogDao.log(id, s, objects);
+    public void log(Id object, String message, Object... args) {
+        EventLogMessage event = new EventLogMessage(object, message, args);
+        log(event);
     }
 
     @Override
-    public void log(String s, Object... objects) {
-        eventLogDao.log(s, objects);
+    public void log(Id object, String message, Throwable ex, Object... args) {
+        EventLogMessage event = new EventLogMessage(object, message, args);
+        log(event);
     }
 
     @Override
-    public void log(Id id, String s, Throwable throwable, Object... objects) {
-        eventLogDao.log(id, s, throwable, objects);
+    public void log(Asset asset, String message, Object... args) {
+        EventLogMessage event = new EventLogMessage(asset, message, args);
+        log(event);
     }
 
     @Override
-    public void log(Asset asset, String s, Object... objects) {
-        eventLogDao.log(asset, s, objects);
+    public void log(Asset asset, String message, Throwable ex, Object... args) {
+        EventLogMessage event = new EventLogMessage(asset, message, args);
+        log(event);
     }
 
     @Override
-    public void log(Asset asset, String s, Throwable throwable, Object... objects) {
-        eventLogDao.log(asset, s, throwable, objects);
+    public void log(String message, Object... args) {
+        EventLogMessage event = new EventLogMessage(message, args);
+        log(event);
     }
 }

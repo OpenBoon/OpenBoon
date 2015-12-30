@@ -2,10 +2,8 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
-import com.zorroa.archivist.sdk.domain.Id;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.index.IndexRequest;
@@ -86,35 +84,6 @@ public class EventLogDaoImpl implements EventLogDao {
         log(event, null);
     }
 
-    @Override
-    public void log(Id object, String message, Object ... args) {
-        EventLogMessage event = new EventLogMessage(object, message, args);
-        log(event);
-    }
-
-    @Override
-    public void log(Id object, String message, Throwable ex, Object ... args) {
-        EventLogMessage event = new EventLogMessage(object, message, args);
-        log(event);
-    }
-
-    @Override
-    public void log(Asset asset, String message, Object ... args) {
-        EventLogMessage event = new EventLogMessage(asset, message, args);
-        log(event);
-    }
-
-    @Override
-    public void log(Asset asset, String message, Throwable ex, Object ... args) {
-        EventLogMessage event = new EventLogMessage(asset, message, args);
-        log(event);
-    }
-
-    @Override
-    public void log(String message, Object ... args) {
-        EventLogMessage event = new EventLogMessage(message, args);
-        log(event);
-    }
 
     @Override
     public SearchResponse getAll() {

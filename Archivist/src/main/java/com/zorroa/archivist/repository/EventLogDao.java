@@ -1,9 +1,7 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
-import com.zorroa.archivist.sdk.domain.Id;
 import org.elasticsearch.action.search.SearchResponse;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -40,16 +38,6 @@ static String[] getStackTrace(Throwable ex) {
      * @param message
      */
     void log(EventLogMessage message);
-
-    void log(Id object, String message, Object ... args);
-
-    void log(String message, Object ... args);
-
-    void log(Id object, String message, Throwable ex, Object ... args);
-
-    void log(Asset asset, String message, Object ... args);
-
-    void log(Asset object, String message, Throwable ex, Object ... args);
 
     SearchResponse getAll();
 
