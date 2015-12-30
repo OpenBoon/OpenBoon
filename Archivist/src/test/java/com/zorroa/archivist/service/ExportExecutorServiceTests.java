@@ -145,7 +145,7 @@ public class ExportExecutorServiceTests extends ArchivistApplicationTests {
         int month = cal.get(Calendar.MONTH);
         String monthName = new DateFormatSymbols().getMonths()[month];
 
-        String path = "/Export/" + yearName + "/" + monthName;
+        String path = "/Exports/" + yearName + "/" + monthName;
         Folder exportMonthFolder = folderService.get(path);
         assertNotEquals(null, exportMonthFolder);
 

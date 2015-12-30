@@ -20,9 +20,9 @@ public class ExportDateAggregator extends ExportProcessor {
     public void init(Export export, ExportOutput exportOutput) throws Exception {
         Folder exportsFolder;
         try {
-            exportsFolder = folderService.get(0, "Export");
+            exportsFolder = folderService.get(0, "Exports");
         } catch (EmptyResultDataAccessException e) {
-            FolderBuilder ingestBuilder = new FolderBuilder().setName("Export").
+            FolderBuilder ingestBuilder = new FolderBuilder().setName("Exports").
                     setSearch(new AssetSearch());
             exportsFolder = folderService.create(ingestBuilder);
         }
