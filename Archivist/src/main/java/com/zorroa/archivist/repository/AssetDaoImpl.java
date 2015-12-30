@@ -128,7 +128,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         updateBuilder.setScript("asset_append_export",
                 ScriptService.ScriptType.INDEXED);
         updateBuilder.addScriptParam("exportId", export.getId());
-        updateBuilder.get();
+        updateBuilder.setRefresh(true).get();
     }
 
     @Override
@@ -137,7 +137,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         updateBuilder.setScript("asset_append_folder",
                 ScriptService.ScriptType.INDEXED);
         updateBuilder.addScriptParam("folderId", folder.getId());
-        updateBuilder.get();
+        updateBuilder.setRefresh(true).get();
     }
 
     @Override
@@ -146,16 +146,17 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         updateBuilder.setScript("asset_remove_folder",
                 ScriptService.ScriptType.INDEXED);
         updateBuilder.addScriptParam("folderId", folder.getId());
-        updateBuilder.get();
+        updateBuilder.setRefresh(true).get();
     }
 
+    @Deprecated
     @Override
     public long setFolders(Asset asset, Collection<Folder> folders) {
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
         updateBuilder.setDoc(ImmutableMap.of("folders", folders.stream().map(
                 Folder::getId).collect(Collectors.toSet())))
                 .setRefresh(true);
-        return updateBuilder.get().getVersion();
+        return updateBuilder.setRefresh(true).get().getVersion();
     }
 
     @Override

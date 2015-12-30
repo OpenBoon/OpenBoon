@@ -10,9 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 /**
  *
  * @author chambers
@@ -75,14 +72,4 @@ public class AssetServiceImpl implements AssetService {
         assetDao.removeFromFolder(asset, folder);
     }
 
-    @Override
-    public void setFolders(Asset asset, Collection<Folder> folders) {
-        long version = assetDao.setFolders(asset, folders);
-
-        messagingService.broadcast(new Message(MessageType.ASSET_UPDATE_FOLDERS,
-            ImmutableMap.of(
-                    "assetId", asset.getId(),
-                    "folders", folders.stream().map(Folder::getId).collect(Collectors.toList()),
-                    "version", version)));
-    }
 }
