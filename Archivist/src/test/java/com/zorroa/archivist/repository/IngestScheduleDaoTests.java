@@ -80,7 +80,7 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
         builder.setName("test");
         IngestSchedule schedule = ingestScheduleDao.create(builder);
 
-        Thread.sleep(1000);
+        Thread.sleep(1500);
 
         List<IngestSchedule> ready = ingestScheduleDao.getAllReady();
         assertEquals(1, ready.size());
