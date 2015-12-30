@@ -5,10 +5,12 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.util.FileUtils;
 
+import java.io.File;
+
 /**
  * Exported Output
  */
-public class ExportOutput {
+public class ExportOutput implements Id {
 
     private int id;
     private String name;
@@ -18,7 +20,9 @@ public class ExportOutput {
     private String path;
     private String mimeType;
     private String fileExtention;
-
+    private boolean offline;
+    private long timeOnline;
+    private long timeOffline;
     private long fileSize;
 
     private ProcessorFactory<ExportProcessor> factory;
@@ -113,9 +117,44 @@ public class ExportOutput {
         this.fileSize = fileSize;
     }
 
+    public boolean pathExists() {
+        if (path == null) {
+            return false;
+        }
+        return new File(path).exists();
+    }
+
+    public boolean isOffline() {
+        return offline;
+    }
+
+    public ExportOutput setOffline(boolean offline) {
+        this.offline = offline;
+        return this;
+    }
+
+    public long getTimeOnline() {
+        return timeOnline;
+    }
+
+    public ExportOutput setTimeOnline(long timeOnline) {
+        this.timeOnline = timeOnline;
+        return this;
+    }
+
+    public long getTimeOffline() {
+        return timeOffline;
+    }
+
+    public ExportOutput setTimeOffline(long timeOffline) {
+        this.timeOffline = timeOffline;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return String.format("<Export id='%d' type='%s'>", getId(), factory.getKlassName());
+        return String.format("<ExportOutput id='%d' export='%d' path='%s' type='%s'>",
+                getId(), getExportId(), getPath(), factory.getKlassName());
     }
 
     @Override

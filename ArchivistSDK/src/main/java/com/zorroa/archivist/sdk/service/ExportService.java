@@ -49,4 +49,20 @@ public interface ExportService {
      */
     boolean cancel(Export export);
 
+    /**
+     * Offline a given export output.
+     *
+     * @param output
+     * @return
+     */
+    boolean offline(ExportOutput output);
+
+    /**
+     * Offline and entire export.  Returns the number of exports offlined.
+     *
+     * @param export
+     * @return
+     */
+    public int offline(Export export);
+
 }
