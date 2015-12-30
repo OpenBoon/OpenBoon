@@ -5,8 +5,6 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.domain.Folder;
 
-import java.util.Collection;
-
 public interface AssetService {
 
     Asset createAsset(AssetBuilder builder);
@@ -32,6 +30,4 @@ public interface AssetService {
     void addToFolder(Asset asset, Folder folder);
 
     void removeFromFolder(Asset asset, Folder folder);
-
-    void setFolders(Asset asset, Collection<Folder> folders);
 }
