@@ -17,6 +17,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -253,20 +254,19 @@ public class AssetControllerTests extends MockMvcTest {
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
         Folder folder2 = folderService.create(new FolderBuilder("bar"));
+        mvc.perform(post("/api/v1/folders/" + folder1.getId() + "/assets")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .andExpect(status().isOk())
+                .andReturn();
 
-        for (Asset asset : assets) {
-            MvcResult result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
-                    .session(session)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content(Json.serialize(ImmutableList.of(folder1.getId(), folder2.getId()))))
-                    .andExpect(status().isOk())
-                    .andReturn();
-            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                    new TypeReference<Map<String, Object>>() {});
-            assertEquals(2, (int) json.get("assigned"));
-        }
-
-        refreshIndex();
+        mvc.perform(post("/api/v1/folders/" + folder2.getId() + "/assets")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .andExpect(status().isOk())
+                .andReturn();
 
         assets = assetDao.getAll();
         for (Asset asset: assets) {
@@ -320,15 +320,12 @@ public class AssetControllerTests extends MockMvcTest {
         List<Asset> assets = assetDao.getAll();
 
         Asset asset = assets.get(0);
-        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
+        mvc.perform(post("/api/v1/folders/" + folder.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("[\"" + folder.getId() + "\"]"))
+                .content(Json.serialize(ImmutableList.of(asset.getId()))))
                 .andExpect(status().isOk())
                 .andReturn();
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        assertEquals(1, (int) json.get("assigned"));
 
         AssetSearch search = new AssetSearch(new AssetFilter().addToFolderIds(folder.getId()));
 
@@ -378,26 +375,20 @@ public class AssetControllerTests extends MockMvcTest {
         List<Asset> assets = assetDao.getAll();
 
         Asset asset = assets.get(0);
-        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
+        mvc.perform(post("/api/v1/folders/" + parent.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("[\"" + parent.getId() + "\"]"))
+                .content(Json.serialize(ImmutableList.of(asset.getId()))))
                 .andExpect(status().isOk())
                 .andReturn();
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        assertEquals(1, (int)json.get("assigned"));
 
         asset = assets.get(1);
-        result = mvc.perform(post("/api/v1/assets/" + asset.getId() + "/_folders")
+        mvc.perform(post("/api/v1/folders/" + child.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("[\"" + child.getId() + "\"]"))
+                .content(Json.serialize(ImmutableList.of(asset.getId()))))
                 .andExpect(status().isOk())
                 .andReturn();
-        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        assertEquals(1, (int) json.get("assigned"));
 
         AssetSearch search = new AssetSearch(new AssetFilter().addToFolderIds(child.getId()));
 
@@ -409,7 +400,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");

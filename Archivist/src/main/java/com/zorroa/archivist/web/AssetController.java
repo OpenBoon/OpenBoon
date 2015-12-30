@@ -3,7 +3,10 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.domain.AssetAggregateBuilder;
+import com.zorroa.archivist.sdk.domain.AssetSearch;
+import com.zorroa.archivist.sdk.domain.AssetSuggestBuilder;
+import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.util.Json;
@@ -23,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -117,11 +119,4 @@ public class AssetController {
                 "source", builder);
     }
 
-    @RequestMapping(value="/api/v1/assets/{id}/_folders", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> setFolders(@RequestBody List<Integer> folder, @PathVariable String id) throws Exception {
-        Asset asset = assetService.get(id);
-        List<Folder> folders = folderService.getAll(folder);
-        assetService.setFolders(asset, folders);
-        return ImmutableMap.of("assigned", folders.size());
-    }
 }

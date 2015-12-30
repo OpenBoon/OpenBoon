@@ -1,9 +1,11 @@
 package com.zorroa.archivist.web;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,9 @@ public class FolderController {
 
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    MessagingService messagingService;
 
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.POST)
     public Folder create(@RequestBody FolderBuilder builder, HttpSession httpSession) {
@@ -94,6 +99,8 @@ public class FolderController {
             Asset asset = assetService.get(assetId);
             assetService.removeFromFolder(asset, folder);
         }
+        messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
+                ImmutableMap.of("assetIds", assetIds, "folderId", folder.getId())));
     }
 
     /**
@@ -112,5 +119,7 @@ public class FolderController {
             Asset asset = assetService.get(assetId);
             assetService.addToFolder(asset, folder);
         }
+        messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
+                ImmutableMap.of("assetIds", assetIds, "folderId", folder.getId())));
     }
 }

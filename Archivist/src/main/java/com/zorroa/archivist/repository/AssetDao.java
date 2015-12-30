@@ -23,6 +23,7 @@ public interface AssetDao {
 
     void removeFromFolder(Asset asset, Folder folder);
 
+    @Deprecated
     long setFolders(Asset asset, Collection<Folder> folders);
 
     long update(String assetId, AssetUpdateBuilder builder);
