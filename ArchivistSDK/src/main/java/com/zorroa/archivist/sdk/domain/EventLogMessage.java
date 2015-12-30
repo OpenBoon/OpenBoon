@@ -1,5 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.base.MoreObjects;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.Set;
@@ -125,4 +126,17 @@ public class EventLogMessage {
         this.type = type;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("message", message)
+                .add("exception", exception.getMessage())
+                .add("object", type)
+                .add("id", id)
+                .add("tags", tags)
+                .add("path", path)
+                .toString();
+    }
+
 }
