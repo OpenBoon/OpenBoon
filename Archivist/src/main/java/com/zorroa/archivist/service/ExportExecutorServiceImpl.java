@@ -10,6 +10,7 @@ import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.service.UserService;
@@ -60,6 +61,9 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
     @Autowired
     MessagingService messagingService;
+
+    @Autowired
+    EventLogService eventLogService;
 
     @Autowired
     ExportOptionsService exportOptionsService;
@@ -152,6 +156,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     try {
                         processor.process(exportOptionsService.applyOptions(export, output, asset));
                         assetDao.addToExport(asset, export);
+                        eventLogService.log(asset, "Added to export {}", export.getId());
                         messagingService.sendToUser(user, new Message().setType(
                                 MessageType.EXPORT_ASSET).setPayload(
                                     ImmutableMap.of("assetId", asset.getId(), "exportId", export.getId())));
@@ -162,10 +167,12 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                          * is an error processing the source data.
                          */
                         logger.warn("Failed to add asset {} to output '{}',", asset, e);
+                        eventLogService.log(asset, "Failed to add asset to export {}", e, export.getId());
                     }
 
                     if (exportDao.isInState(export, ExportState.Cancelled)) {
                         logger.warn("Export {} was cancelled", export);
+                        eventLogService.log(export, "Export was canceled");
                         break;
                     }
                 }
@@ -183,13 +190,14 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     processor.teardown();
 
                     /**
-                     * Set the exports as online if the path exists
+                     * Set the exports as online if the
                      */
                     if (output.pathExists()) {
                         exportOutputDao.setOnline(output);
                     }
                 } catch (Exception e) {
                     logger.warn("Failed to tear down processor '{}',", processor, e);
+                    eventLogService.log(output, "Failed to tear down output processor", e);
                 }
 
                 messagingService.sendToUser(user, new Message().setType(

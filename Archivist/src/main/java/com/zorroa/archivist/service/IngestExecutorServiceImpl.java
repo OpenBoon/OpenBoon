@@ -7,6 +7,7 @@ import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.processors.AggregatorIngestor;
 import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.exception.IngestException;
@@ -325,7 +326,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     asset.addSchema(ingestSchema);
 
                     // Run the ingest processors to augment the AssetBuilder
-                    executeProcessors();
+                    executeProcessors(ingest);
 
                     // Store the asset using the final builder
                     logger.debug("Creating asset: {}", asset);
@@ -352,7 +353,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 }
             }
 
-            public void executeProcessors() {
+            public void executeProcessors(Ingest ingest) {
                 for (ProcessorFactory<IngestProcessor>  factory : pipeline.getProcessors()) {
                     try {
                         IngestProcessor processor = factory.getInstance();
@@ -373,8 +374,12 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          * All other exceptions
                          */
                         errorCount.increment();
-                        logger.warn("Processor {} failed to run on asset {}",
-                                factory.getInstance().getClass().getCanonicalName(), asset.getFile(), e);
+                        String name = factory.getInstance().getClass().getSimpleName();
+                        logger.warn("Processor {} failed to run on asset {}", name, asset.getFile(), e);
+                        eventLogService.log(
+                                new EventLogMessage(ingest, "Processor {} failed to ingest {}", name, asset.getFile())
+                                        .setPath(asset.getAbsolutePath())
+                                        .setException(e));
                     }
                 }
             }
