@@ -42,10 +42,6 @@ public class AssetBuilder {
      */
     private PermissionSchema permissions;
 
-    /**
-     * The existing asset.  If none exists it will be null.
-     */
-    private Asset previousVersion;
 
     public AssetBuilder(File file) {
         if (!file.isFile()) {
@@ -86,6 +82,10 @@ public class AssetBuilder {
     public AssetBuilder addSchema(Schema schema) {
         this.document.put(schema.getNamespace(), schema);
         return this;
+    }
+
+    public boolean namespaceExists(String namespace) {
+        return document.containsKey(namespace);
     }
 
     public <T> T getSchema(String namespace, Class<T> type) {
@@ -174,13 +174,11 @@ public class AssetBuilder {
         }
     }
 
-
-    public Asset getPreviousVersion() {
-        return previousVersion;
-    }
-
-    public void setPreviousVersion(Asset previousVersion) {
-        this.previousVersion = previousVersion;
+    public void setPreviousVersion(Asset asset) {
+        if (asset == null) {
+            return;
+        }
+        document.putAll(asset.getDocument());
     }
 
     public File getFile() {
