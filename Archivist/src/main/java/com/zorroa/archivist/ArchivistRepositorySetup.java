@@ -79,7 +79,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 setupElasticSearchMapping();
                 createIndexedScripts();
             }
-            createEventLogTemplate();         createEventLogTemplate();
+            createEventLogTemplate();
             createDefaultIngestPipeline();
 
             /**
