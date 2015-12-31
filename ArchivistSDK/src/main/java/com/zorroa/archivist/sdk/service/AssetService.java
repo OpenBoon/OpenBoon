@@ -7,7 +7,9 @@ import com.zorroa.archivist.sdk.domain.Folder;
 
 public interface AssetService {
 
-    Asset createAsset(AssetBuilder builder);
+    Asset upsert(AssetBuilder builder);
+
+    String upsertAsync(AssetBuilder builder);
 
     Asset get(String id);
 
@@ -15,7 +17,6 @@ public interface AssetService {
 
     boolean assetExistsByPathAfter(String path, long afterTime);
 
-    boolean replaceAsset(AssetBuilder builder);
 
     /**
      * Update the given assetId with the supplied AssetUpdateBuilder.  Return
