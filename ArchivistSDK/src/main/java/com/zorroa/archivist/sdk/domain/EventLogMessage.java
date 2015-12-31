@@ -133,7 +133,7 @@ public class EventLogMessage {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("message", message)
-                .add("exception", exception.getMessage())
+                .add("exception", exception)
                 .add("object", type)
                 .add("id", id)
                 .add("tags", tags)
