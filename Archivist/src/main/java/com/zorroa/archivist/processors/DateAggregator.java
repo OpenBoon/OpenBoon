@@ -7,6 +7,8 @@ import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -17,6 +19,8 @@ import java.util.*;
 
 public class DateAggregator extends IngestProcessor {
 
+    private static final Logger logger = LoggerFactory.getLogger(DateAggregator.class);
+
     private Folder dateFolder;
 
     @Autowired
@@ -25,28 +29,31 @@ public class DateAggregator extends IngestProcessor {
     @Autowired
     FolderService folderService;
 
+
+    @Override
+    public void init(Ingest ingest) {
+        /*
+         * Letting this throw if Date is not there...it should be there.
+         */
+        dateFolder =  folderService.get(0, "Date");
+    }
+
     @Override
     public void process(AssetBuilder asset) {
         // Create an aggregation over all of the years
         AssetAggregateBuilder yearAggBuilder = createYearAggBuilder();
         SearchResponse yearResponse = searchService.aggregate(yearAggBuilder);
 
-        // Create the top level date folder, if needed
         Terms yearTerms = yearResponse.getAggregations().get("year");
         Collection<Terms.Bucket> yearBuckets = yearTerms.getBuckets();
-        if (yearBuckets.size() > 0 && dateFolder == null) {
-            try {
-                dateFolder = folderService.get(0, "Date");
-            } catch (EmptyResultDataAccessException e) {
-                dateFolder = folderService.create(new FolderBuilder().setName("Date"));
-            }
-        }
+
 
         // Create each year folder and aggregate over each month in the year
         // FIXME: We should use a single multi-level agg for year/month
         for (Terms.Bucket yearBucket: yearBuckets) {
             int year = yearBucket.getKeyAsNumber().intValue();
             String yearName = Integer.toString(year);
+
             Folder yearFolder = null;
             try {
                 yearFolder = folderService.get(dateFolder.getId(), yearName);
@@ -93,7 +100,7 @@ public class DateAggregator extends IngestProcessor {
         AssetFilter dateExistsFilter = new AssetFilter().setExistField("source.date");
         AssetSearch dateExistsSearch = new AssetSearch().setFilter(dateExistsFilter);
         return new AssetAggregateBuilder().setName("year").setScript(yearScript(null))
-                .setSearch(dateExistsSearch).setSize(1000);
+                .setSearch(dateExistsSearch).setSize(0);
     }
 
     private AssetAggregateBuilder createMonthAggBuilder(AssetSearch yearSearch) {
