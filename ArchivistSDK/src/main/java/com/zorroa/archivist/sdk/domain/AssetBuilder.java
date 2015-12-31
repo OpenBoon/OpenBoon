@@ -42,6 +42,11 @@ public class AssetBuilder {
      */
     private PermissionSchema permissions;
 
+    /**
+     * The existing asset.  If none exists it will be null.
+     */
+    private Asset previousVersion;
+
     public AssetBuilder(File file) {
         if (!file.isFile()) {
             throw new IllegalArgumentException(
@@ -169,6 +174,14 @@ public class AssetBuilder {
         }
     }
 
+
+    public Asset getPreviousVersion() {
+        return previousVersion;
+    }
+
+    public void setPreviousVersion(Asset previousVersion) {
+        this.previousVersion = previousVersion;
+    }
 
     public File getFile() {
         return file;
