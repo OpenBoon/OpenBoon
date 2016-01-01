@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -91,25 +92,74 @@ public class FaceIngestor extends IngestProcessor {
         // Perform facial analysis
         logger.info("Starting facial detection on " + asset.getFilename());
         Mat image = Highgui.imread(classifyPath);
+        Size imSize = image.size();
+
+        // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
+        // in order to estimate a confidence value
+        // In the code below, detectMultiScale is called four times, each with a bigger threshold for the number of detections required
+        // (and also with a different scaling factor--these values were found by trial and error)
+        // Confidence values are assigned depending on when the classifier finds the face. We use a maximum value of 0.5,
+        // in order to save the rest of the range (up to 1.0) to increase the confidence according to logo size.
+        // OPTIMIZE: Use the size of the resulting rectangles to tweak minFace and maxFace in order to save the detector a bunch of work
+        double confidence = 0;
         MatOfRect faceDetections = new MatOfRect();
-        cascadeClassifier.get().detectMultiScale(image, faceDetections, 1.05, 12, 0, minFace, maxFace);
-        int faceCount = faceDetections.toArray().length;
+        MatOfRect newFaceDetections = new MatOfRect();
+
+        class ClassifyOptions {
+            public double scaleFactor, detectionThreshold, finalConfidence;
+
+            public ClassifyOptions(double scaleFactor, double detectionThreshold, double finalConfidence) {
+                this.scaleFactor = scaleFactor;
+                this.detectionThreshold = detectionThreshold;
+                this.finalConfidence = finalConfidence;
+            }
+        }
+        List<ClassifyOptions> options = Arrays.asList(
+                new ClassifyOptions(1.05, 5, 0.1),
+                new ClassifyOptions(1.05, 10, 0.2),
+                new ClassifyOptions(1.05, 20, 0.3),
+                new ClassifyOptions(1.05, 40, 0.5));
+
+        int faceCount = 0;
+        for (int i = 0; i < options.size(); i++) {
+            cascadeClassifier.get().detectMultiScale(image, newFaceDetections, options.get(i).scaleFactor, (int)options.get(i).detectionThreshold, 0, minFace, maxFace);
+            int count = newFaceDetections.toArray().length;
+            if (count > 0) {
+                confidence = options.get(i).finalConfidence;
+                // We want to save Count and faceDetections ONLY if something was detected, so it's not overwritten to empty the last time
+                faceCount = count;
+                faceDetections = newFaceDetections;
+            } else {
+                break;
+            }
+        }
+
         logger.info("Detected " + faceCount + " faces in " + asset.getFilename());
         if (faceCount > 0) {
-            String value = "face,face" + faceCount;
+            List<String> keywords =  new ArrayList<String>(
+                    Arrays.asList("face", "face" + faceCount)
+            );
 
             // Detect faces that are big enough for the 'bigface' label
             for (Rect rect : faceDetections.toArray()) {
-                if (rect.height > 250) {
-                    value = value + ",bigface";
+                double relSize = rect.height / imSize.height;
+                if (relSize > .1) {
+                    confidence += relSize;
+                    if (confidence > 1) {
+                        confidence = 1;
+                    }
+                    keywords.add("bigface");
                 }
             }
-
-                logger.info("FaceIngestor: " + value);
-            List<String> keywords = Arrays.asList(value.split(","));
-            int confidence = 4;
+            logger.info("FaceIngestor: " + keywords);
             asset.addKeywords(confidence, true, keywords);
-            asset.setAttr("face", "keywords", (String[])keywords.toArray());
+
+            // For debugging purposes, We are adding "face"+confidence as an attribute, so we can see the actual number in
+            // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,
+            // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
+            // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
+            keywords.add("face" + confidence);
+            asset.setAttr("face", "keywords", keywords);
         }
     }
 }

@@ -20,8 +20,11 @@ public class ValidateIngestTestsIT extends IntegrationTest {
 
     @Test
     public void testFaceSearch() throws  IOException {
-        Integer count = countQuery("face2");
+        Integer count = countQuery("bigface");
         assertEquals(1, count.intValue());
+        count = countQuery("face");
+        assertEquals(2, count.intValue());
+
     }
 
     @Test
