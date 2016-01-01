@@ -73,7 +73,6 @@ public class SimpleExcelIngestor extends IngestProcessor {
     public void process(AssetBuilder assetBuilder) {
 
         for (Mapping mapping: mappings) {
-            //row.getCell(CellReference.convertColStringToIndex(query.getColumn()));
 
             Row row = filter(assetBuilder, mapping.getFilters());
             if (row == null) {
