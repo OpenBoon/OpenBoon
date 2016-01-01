@@ -5,16 +5,13 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.exception.MalformedDataException;
 import com.zorroa.archivist.sdk.util.Json;
-import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.index.IndexRequest.OpType;
-import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.common.util.concurrent.UncategorizedExecutionException;
-import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.ScriptService;
@@ -23,8 +20,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Repository
@@ -48,32 +43,54 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         return result;
     };
 
-    private IndexRequestBuilder buildRequest(AssetBuilder builder, OpType opType) {
-        try {
-            return client.prepareIndex(alias, getType())
-                    .setId(uuidGenerator.generate(builder.getAbsolutePath()).toString())
-                    .setOpType(opType)
-                    .setSource(Json.serializeToString(builder.getDocument()));
-        } catch (Exception e) {
-            throw new MalformedDataException(
-                    "Failed to serialize object, unexpected " + e, e);
-        }
+    private UpdateRequestBuilder buildRequest(AssetBuilder builder, String id) {
+        builder.buildKeywords();
+        byte[] doc = Json.serialize(builder.getDocument());
+        return client.prepareUpdate(alias, getType(), id)
+                .setDoc(doc)
+                .setId(id)
+                .setUpsert(doc);
     }
 
     @Override
-    public Asset create(AssetBuilder builder) {
-        builder.buildKeywords();
-        IndexRequestBuilder idxBuilder = buildRequest(builder, OpType.CREATE);
-        if (builder.isAsync()) {
-            idxBuilder.execute();
-            return null;
-        }
-        else {
-            idxBuilder.setRefresh(true);
-            String id = idxBuilder.get().getId();
-            return get(id);
-        }
+    public Asset upsert(AssetBuilder builder) {
+        String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
+        UpdateRequestBuilder upsert = buildRequest(builder, id);
+        upsert.setRefresh(true);
+        upsert.get();
+        return get(id);
     }
+
+    @Override
+    public String upsertAsync(AssetBuilder builder) {
+        String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
+        UpdateRequestBuilder upsert = buildRequest(builder, id);
+        upsert.execute();
+        return id;
+    }
+
+    @Override
+    public String upsertAsync(AssetBuilder builder, ActionListener<UpdateResponse> listener) {
+        String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
+        UpdateRequestBuilder upsert = buildRequest(builder, id);
+        upsert.execute(listener);
+        return id;
+    }
+
+    @Override
+    public BulkResponse bulkUpsert(List<AssetBuilder> builders) {
+        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        for (AssetBuilder builder: builders) {
+            String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
+            bulkRequest.add(buildRequest(builder, id));
+        }
+        return bulkRequest.get();
+    }
+
+    /*
+
+    These are commented out until we figure out what they are used for.  There
+    might be a better way to reocover from the problem.
 
     private String fieldFromError(String error, String regex) {
         Pattern pattern = Pattern.compile(regex);
@@ -83,6 +100,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
         return null;
     }
+
 
     private boolean removeFieldAndRetryReplace(AssetBuilder builder, String error, String regex) {
         String field = fieldFromError(error, regex);                // E.g Exif.makerTag
@@ -121,6 +139,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             return false;
         }
     }
+    */
 
     @Override
     public void addToExport(Asset asset, Export export) {
@@ -183,6 +202,16 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
+    public Asset getByPath(String path) {
+        List<Asset> assets = elastic.query(client.prepareSearch(alias).setTypes("asset").setQuery(
+                QueryBuilders.termQuery("source.path.raw", path)), MAPPER);
+        if (assets.isEmpty()) {
+            return null;
+        }
+        return assets.get(0);
+    }
+
+    @Override
     public boolean existsByPathAfter(String path, long afterTime) {
         long count = client.prepareCount(alias)
                 .setQuery(QueryBuilders.filteredQuery(
@@ -201,5 +230,10 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), MAPPER);
 
+    }
+
+    @Override
+    public void refresh() {
+        client.admin().indices().prepareRefresh(alias).get();
     }
 }

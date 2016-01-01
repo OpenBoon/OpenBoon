@@ -32,13 +32,13 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public Asset createAsset(AssetBuilder builder) {
-        return assetDao.create(builder);
+    public Asset upsert(AssetBuilder builder) {
+        return assetDao.upsert(builder);
     }
 
     @Override
-    public boolean replaceAsset(AssetBuilder builder) {
-        return assetDao.replace(builder);
+    public String upsertAsync(AssetBuilder builder) {
+        return assetDao.upsertAsync(builder);
     }
 
     @Override
