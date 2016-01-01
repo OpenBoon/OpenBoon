@@ -168,11 +168,11 @@ public class LogoIngestor extends IngestProcessor {
             value = value + ",visa" + confidence;
             List<String> keywords = Arrays.asList(value.split(","));
             asset.addKeywords(confidence, true, keywords);
-            asset.put("Logos", "keywords", (String[]) keywords.toArray());
+            asset.setAttr("Logos", "keywords", (String[]) keywords.toArray());
 
             if (svgVal != "<svg>") {
                 svgVal += "</svg>";
-                asset.put("SVG", "Logos", svgVal);
+                asset.setAttr("SVG", "Logos", svgVal);
             }
         }
     }

@@ -235,7 +235,6 @@ public class RetrosheetIngestor extends IngestProcessor {
     public void putField(AssetBuilder asset, String key, String value) {
         if (value == null)
             return;
-        asset.putKeyword("retrosheet", key, value);
         asset.addKeywords(0.8, true, value);
     }
 

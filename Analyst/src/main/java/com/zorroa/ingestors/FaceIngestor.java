@@ -109,7 +109,7 @@ public class FaceIngestor extends IngestProcessor {
             List<String> keywords = Arrays.asList(value.split(","));
             int confidence = 4;
             asset.addKeywords(confidence, true, keywords);
-            asset.put("face", "keywords", (String[])keywords.toArray());
+            asset.setAttr("face", "keywords", (String[])keywords.toArray());
         }
     }
 }

@@ -101,7 +101,7 @@ public class CaffeIngestor extends IngestProcessor {
         String[] keywordArray = new String[keywords.size()];
         keywordArray = keywords.toArray(keywordArray);
         logger.info("CaffeIngestor: " + Arrays.toString(keywordArray));
-        asset.put("caffe", "keywords", keywordArray);
+        asset.setAttr("caffe", "keywords", keywordArray);
     }
 
     @Override
