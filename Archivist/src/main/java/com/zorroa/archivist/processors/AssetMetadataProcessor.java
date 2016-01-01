@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.domain.Ingest;
-import com.zorroa.archivist.sdk.exception.IngestProcessorException;
+import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.ImageService;
 import org.slf4j.Logger;
@@ -45,13 +45,13 @@ public class AssetMetadataProcessor extends IngestProcessor {
         try {
             asset.getSource().setFileSize(Files.size(asset.getFile().toPath()));
         } catch (IOException e) {
-            throw new IngestProcessorException("Unable to determine file size", asset, getClass());
+            throw new UnrecoverableIngestProcessorException("Unable to determine file size", getClass());
         }
 
         IngestProcessor delegate = assetTypeProcessors.get(asset.getSource().getType());
         if (delegate == null) {
-            throw new IngestProcessorException(String.format(
-                    "Unsupported file: '%s",asset.getAbsolutePath()) , asset, getClass());
+            throw new UnrecoverableIngestProcessorException("Unsupported file type: "
+                    + asset.getExtension(), getClass());
         }
 
         delegate.process(asset);
