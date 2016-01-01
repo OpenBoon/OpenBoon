@@ -1,6 +1,7 @@
 package com.zorroa.archivist.processors;
 
 import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
 import com.drew.lang.Rational;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
@@ -9,8 +10,7 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.AssetType;
-import com.zorroa.archivist.sdk.exception.IngestProcessorException;
+import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
@@ -53,43 +53,45 @@ public class ImageProcessor extends IngestProcessor {
     }
 
     @Override
-    public boolean handlesAssetType(AssetType type) {
-        return AssetType.Image.equals(type);
-    }
-
-    @Override
     public void process(AssetBuilder asset) {
 
-        /**
-         * Adds the Image type schema to this asset.
+        /*
+         * Extract the standard image metadata, like width/height.
          */
-        asset.addSchema(new ImageSchema());
-
-        /**
-         * Extracts source metadata.  This must succeed or else the asset will continue to have
-         * various failures.
-         */
-        extractSourceMetadata(asset);
+        if (!asset.contains("image")) {
+            extractImageMetadata(asset);
+        }
+        else {
+            logger.debug("Image metadata already exists for {}", asset);
+        }
 
         /*
-         * Extract all metadata fields into the format <directory>:<tag>=<value>,
-         * and store two versions of the value, the original value, and an optional
-         * .description variant which is more human-readable. Tag names are stored
-         * using a string containing only [A-Za-a0-9] characters, with spaces, dashes
-         * and other characters removed. This results in the EXIF-standard names,
-         * though some formats (e.g. IPTC) contain tags with '/' or '-', (ugh).
-         * Some tags have multiple names, which we'll handle later.
+         * Extract EXIF metadata
          */
+        extractExifMetadata(asset);
+    }
+
+    /**
+     * Extract all metadata fields into the format <directory>:<tag>=<value>,
+     * and store two versions of the value, the original value, and an optional
+     * .description variant which is more human-readable. Tag names are stored
+     * using a string containing only [A-Za-a0-9] characters, with spaces, dashes
+     * and other characters removed. This results in the EXIF-standard names,
+     * though some formats (e.g. IPTC) contain tags with '/' or '-', (ugh).
+     * Some tags have multiple names, which we'll handle later.
+     *
+     * @param asset
+     */
+    private void extractExifMetadata(AssetBuilder asset) {
         try {
             Metadata metadata = ImageMetadataReader.readMetadata(asset.getFile());
             extractExifMetadata(asset, metadata);   // Extract all useful metadata fields in raw & descriptive format
             extractExifLocation(asset, metadata);   // Find the best location value and promote to top-level
-        } catch (Exception e) {
-            logger.warn("Failed to load metadata: " + e.getMessage());
-            asset.put("errors", getClass().getCanonicalName(), e.getMessage());
+        } catch (IOException | ImageProcessingException e) {
+            throw new UnrecoverableIngestProcessorException(
+                    "Unable to extract EXIF metadata from " + asset.getAbsolutePath(), e, getClass());
         }
     }
-
     /**
      * Extracts the non-EXIF metadata from the image.  This can include things like size,
      * colorspace, or anything else defined in the ImageSchema class.
@@ -99,15 +101,16 @@ public class ImageProcessor extends IngestProcessor {
      *
      * @param asset
      */
-    private void extractSourceMetadata(AssetBuilder asset) {
+    private void extractImageMetadata(AssetBuilder asset) {
         try {
             Dimension size = imageService.getImageDimensions(asset.getFile());
-            ImageSchema schema = asset.getSchema("image");
+            ImageSchema schema = new ImageSchema();
             schema.setWidth(size.width);
             schema.setHeight(size.height);
+            asset.addSchema(schema);
         } catch (IOException e) {
-            throw new IngestProcessorException(String.format("Unable to determine image dimensions for '%s', %s",
-                    asset, e.getMessage()), asset, getClass());
+            throw new UnrecoverableIngestProcessorException(
+                    "Unable to determine image dimensions" + asset.getAbsolutePath(), e, getClass());
         }
     }
 
@@ -148,7 +151,7 @@ public class ImageProcessor extends IngestProcessor {
         List<String> dateArgs = getArgs().containsKey("dateTags") ?
                 (List<String>)getArgs().get("dateTags") : defaultDateArgs;
 
-        /**
+        /*
          * Set our mostValidDateField to a value outside the possible range.
          * If we find a date field less than this value we use it.  If we then
          * find one even further up the list, we use that.

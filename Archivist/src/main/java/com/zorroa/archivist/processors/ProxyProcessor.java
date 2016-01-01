@@ -1,12 +1,10 @@
 package com.zorroa.archivist.processors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.AssetType;
-import com.zorroa.archivist.sdk.domain.Proxy;
-import com.zorroa.archivist.sdk.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
+import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.common.collect.ImmutableList;
@@ -29,17 +27,25 @@ public class ProxyProcessor extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
 
     @Autowired
-    protected ImageService imageService;
+    ImageService imageService;
+
+    @Autowired
+    EventLogService eventLogService;
 
     public ProxyProcessor() { }
 
     @Override
-    public boolean handlesAssetType(AssetType type) {
-        return AssetType.Image.equals(type);
-    }
-
-    @Override
     public void process(AssetBuilder asset) {
+        if (asset.contains("proxies")) {
+            logger.debug("Proxy images already exist for {}", asset);
+            //TODO: check if config changed.
+            return;
+        }
+
+        if (!asset.isType(AssetType.Image)) {
+            return;
+        }
+
         List<ProxyOutput> outputs = Json.Mapper.convertValue(getArgs().get("proxies"),
                 new TypeReference<List<ProxyOutput>>() {});
 
@@ -84,8 +90,10 @@ public class ProxyProcessor extends IngestProcessor {
         try {
             result.add(imageService.makeProxy(asset.getFile(), output));
         } catch (IOException e) {
-            logger.warn("Failed to create proxy {}: " + e.getMessage(), output);
-            asset.put("errors", "SchemaProxyProcessor", e.getMessage());
+            eventLogService.log(
+                    new EventLogMessage("Failed to make proxy of {}", asset.getAbsolutePath())
+                    .setException(e)
+                    .setPath(asset.getAbsolutePath()));
         }
     }
 
