@@ -74,23 +74,29 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
         SecurityContextHolder.getContext().setAuthentication(
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
-        try {
-            if (!ArchivistConfiguration.unittest) {
-                setupElasticSearchMapping();
-                createIndexedScripts();
-            }
-            createEventLogTemplate();
-            createDefaultIngestPipeline();
 
-            /**
-             * TODO: get the snapshot repository working with elastic 1.7
-             *
-             * createSnapshotRepository();
-             */
-            restartRunningIngests();
+        try {
+            setupDataSources();
         } catch (IOException e) {
+            logger.error("Failed to setup datasources, ", e);
             throw new RuntimeException(e);
         }
+        /**
+         * TODO: get the snapshot repository working with elastic 1.7
+         *
+         * createSnapshotRepository();
+         */
+        restartRunningIngests();
+    }
+
+    public void setupDataSources() throws IOException {
+        logger.info("Setting up data sources");
+        setupElasticSearchMapping();
+        createIndexedScripts();
+        createEventLogTemplate();
+        createDefaultIngestPipeline();
+
+        refreshIndex();
     }
 
     public void setupElasticSearchMapping() throws IOException {
@@ -118,11 +124,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 .setSource(mappingSource)
                 .addAlias(new Alias(alias))
                 .get();
-
-            /*
-             * Once all default docs are made we refresh the index.
-             */
-            refreshIndex();
 
         } catch (IndexAlreadyExistsException ignore) {
             logger.info("Index {}/{} was already setup", indexName, alias);

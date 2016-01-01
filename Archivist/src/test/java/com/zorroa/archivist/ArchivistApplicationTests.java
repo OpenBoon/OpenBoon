@@ -83,7 +83,7 @@ public abstract class ArchivistApplicationTests {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws IOException {
 
         /*
          * Ensures that all transaction events run within the unit test transaction.
@@ -93,18 +93,11 @@ public abstract class ArchivistApplicationTests {
         transactionEventManager.setImmediateMode(true);
 
         /**
-         * Delete all indexes.
+         * Delete and recreate all indexes
          */
         client.admin().indices().prepareDelete("_all").get();
-
-        try {
-            archivistRepositorySetup.setupElasticSearchMapping();
-            archivistRepositorySetup.createIndexedScripts();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        archivistRepositorySetup.setupDataSources();
         refreshIndex(100);
-
 
         /**
          * TODO: fix this for elastic 1.7
