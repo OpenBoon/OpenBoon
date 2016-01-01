@@ -2,8 +2,6 @@ package com.zorroa.archivist.sdk.schema;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -26,8 +24,8 @@ public class KeywordsSchema implements Schema {
     public static final int BUCKET_COUNT = 5;
 
     private Map<String, Set<String>> fields = Maps.newHashMap();
-    private Set<String> allKeywords = Sets.newHashSet();
-    private Set<String> suggestKeywords = Sets.newHashSet();
+    private Set<String> all = Sets.newHashSet();
+    private Set<String> suggest = Sets.newHashSet();
 
     /**
      * Add a new keyword with the given confidence.  Keywords with a confidence
@@ -37,10 +35,10 @@ public class KeywordsSchema implements Schema {
      * the confidence value should still be greater than 0 for this to happen.
      *
      * @param confidence
-     * @param suggest
+     * @param suggestion
      * @param keywords
      */
-    public void addKeywords(double confidence, boolean suggest, String... keywords) {
+    public void addKeywords(double confidence, boolean suggestion, String... keywords) {
         if (confidence <= 0) {
             return;
         }
@@ -54,9 +52,9 @@ public class KeywordsSchema implements Schema {
         }
         List<String> allValues = Arrays.asList(keywords);
         bucket.addAll(allValues);
-        allKeywords.addAll(allValues);
-        if (suggest) {
-            suggestKeywords.addAll(allValues);
+        all.addAll(allValues);
+        if (suggestion) {
+            suggest.addAll(allValues);
         }
     }
 
@@ -66,7 +64,7 @@ public class KeywordsSchema implements Schema {
      * @param keywords
      */
     public void addSuggestKeywords(String ... keywords) {
-        suggestKeywords.addAll(Arrays.asList(keywords));
+        suggest.addAll(Arrays.asList(keywords));
     }
 
     /**
@@ -74,26 +72,24 @@ public class KeywordsSchema implements Schema {
      *
      * @param keywords
      */
-    public void addSuggestKeywords(Collection<String> keywords) {
-        suggestKeywords.addAll(keywords);
+    public void addSuggest(Collection<String> keywords) {
+        suggest.addAll(keywords);
     }
 
-    public void setAllKeywords(Set<String> allKeywords) {
-        this.allKeywords = allKeywords;
+    public void setAll(Set<String> allKeywords) {
+        this.all = allKeywords;
     }
 
-    public void setSuggestKeywords(Set<String> suggestKeywords) {
-        this.suggestKeywords = suggestKeywords;
+    public void setSuggest(Set<String> suggestKeywords) {
+        this.suggest = suggestKeywords;
     }
 
-    @JsonProperty("all")
-    public Set<String> getAllKeywords() {
-        return ImmutableSet.copyOf(allKeywords);
+    public Set<String> getAll() {
+        return ImmutableSet.copyOf(all);
     }
 
-    @JsonProperty("suggest")
-    public Set<String> getSuggestKeywords() {
-        return ImmutableSet.copyOf(suggestKeywords);
+    public Set<String> getSuggest() {
+        return ImmutableSet.copyOf(suggest);
     }
 
     @Override
@@ -111,7 +107,6 @@ public class KeywordsSchema implements Schema {
         fields.put(name, value);
     }
 
-    @JsonIgnore
     public static long getBucket(double confidence) {
         return Math.max(1, Math.round(BUCKET_COUNT * (confidence / CONFIDENCE_MAX)));
     }
