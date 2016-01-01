@@ -1,25 +1,20 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.archivist.sdk.schema.*;
+import com.zorroa.archivist.sdk.schema.Keyword;
+import com.zorroa.archivist.sdk.schema.KeywordsSchema;
+import com.zorroa.archivist.sdk.schema.PermissionSchema;
+import com.zorroa.archivist.sdk.schema.SourceSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-public class AssetBuilder {
+public class AssetBuilder extends Document{
 
     private static final Logger logger = LoggerFactory.getLogger(AssetBuilder.class);
-
-    /**
-     * Contains the entire JSON document
-     */
-    private final Map<String, Object> document = new HashMap<>();
 
     /**
      * The file.
@@ -75,51 +70,6 @@ public class AssetBuilder {
         this(new File(file));
     }
 
-    public Map<String, Object> getDocument() {
-        return document;
-    }
-
-    public AssetBuilder addSchema(Schema schema) {
-        this.document.put(schema.getNamespace(), schema);
-        return this;
-    }
-
-    public boolean namespaceExists(String namespace) {
-        return document.containsKey(namespace);
-    }
-
-    public <T> T getSchema(String namespace, Class<T> type) {
-        return (T) document.get(namespace);
-    }
-
-    public <T> T getSchema(String namespace) {
-        return (T) document.get(namespace);
-    }
-
-    public <T> T getAttr(String namespace, String key) {
-        try {
-            return (T) new PropertyDescriptor(key,
-                    document.get(namespace).getClass()).getReadMethod().invoke(document.get(namespace));
-        } catch (Exception e) {
-            try {
-                Map<String,Object> schema = (Map<String,Object>) document.get(namespace);
-                return (T) schema.get(key);
-            }
-            catch (ClassCastException ex) {
-                return null;
-            }
-        }
-    }
-
-    public void setAttr(String namespace, String key, Object value) {
-        AttrSchema schema = (AttrSchema) this.document.get(namespace);
-        if (schema == null) {
-            schema = new AttrSchema(namespace);
-            addSchema(schema);
-        }
-        schema.setAttr(key, value);
-    }
-
     public AssetBuilder addKeywords(double confidence, boolean suggest, String ... words) {
         keywords.addKeywords(confidence, suggest, words);
         return this;
@@ -136,15 +86,6 @@ public class AssetBuilder {
 
     public KeywordsSchema getKeywords() {
         return keywords;
-    }
-
-    public void setAttr(String namespace, String key, Object[] values) {
-        AttrSchema schema = (AttrSchema) this.document.get(namespace);
-        if (schema == null) {
-            schema = new AttrSchema(namespace);
-            addSchema(schema);
-        }
-        schema.setAttr(key, values);
     }
 
     public boolean isType(AssetType type) {

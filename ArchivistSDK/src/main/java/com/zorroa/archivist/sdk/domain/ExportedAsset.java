@@ -24,7 +24,7 @@ public class ExportedAsset {
         this.asset = asset;
         this.export = export;
         this.exportOutput = exportOutput;
-        addPath(asset.getValue("source", SourceSchema.class).getPath());
+        addPath(asset.getSchema("source", SourceSchema.class).getPath());
     }
 
     /**

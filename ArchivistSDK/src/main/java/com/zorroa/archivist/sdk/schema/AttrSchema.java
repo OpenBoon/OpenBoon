@@ -23,11 +23,12 @@ public class AttrSchema extends ForwardingMap<String, Object> implements Schema 
         return namespace;
     }
 
-    public void setAttr(String name, Object value) {
+    public AttrSchema setAttr(String name, Object value) {
         this.put(name, value);
+        return this;
     }
 
-    public <T> T setAttr(String key) {
+    public <T> T getAttr(String key) {
         return (T) this.get(key);
     }
 

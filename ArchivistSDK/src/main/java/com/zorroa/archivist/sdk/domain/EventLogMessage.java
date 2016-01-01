@@ -55,7 +55,7 @@ public class EventLogMessage {
         this.id = asset.getId();
         this.type = "Asset";
         this.message =  MessageFormatter.arrayFormat(message, args).getMessage();
-        this.path = asset.getValue("source.path");
+        this.path = asset.getAttr("source.path");
     }
 
     public EventLogMessage(Asset asset, String message, Throwable exception, Object ... args) {
@@ -63,7 +63,7 @@ public class EventLogMessage {
         this.type = "Asset";
         this.message = MessageFormatter.arrayFormat(message, args).getMessage();
         this.exception = exception;
-        this.path = asset.getValue("source.path");
+        this.path = asset.getAttr("source.path");
     }
 
     public String getMessage() {
