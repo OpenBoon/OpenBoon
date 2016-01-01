@@ -53,7 +53,6 @@ public class DateAggregator extends IngestProcessor {
         for (Terms.Bucket yearBucket: yearBuckets) {
             int year = yearBucket.getKeyAsNumber().intValue();
             String yearName = Integer.toString(year);
-
             Folder yearFolder = null;
             try {
                 yearFolder = folderService.get(dateFolder.getId(), yearName);
