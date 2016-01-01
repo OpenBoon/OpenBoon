@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.schema.Schema;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
@@ -171,7 +172,7 @@ public class FolderControllerTests extends MockMvcTest {
                 new TypeReference<List<Folder>>() {});
 
         // This is 4 because of the folder created by init and the user folder
-        assertEquals(3, folders.size());
+        assertEquals(4, folders.size());
         Set<String> names = folders.stream().map(Folder::getName).collect(Collectors.toSet());
 
         assertTrue(names.contains("first"));
@@ -258,7 +259,7 @@ public class FolderControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll();
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getValue("folders", new TypeReference<Set<Integer>>() {});
+            Set<Integer> folderIds = asset.getSchema("folders", Schema.SET_OF_INTS);
             assertTrue(folderIds.contains(folder1.getId()));
         }
     }
@@ -289,7 +290,7 @@ public class FolderControllerTests extends MockMvcTest {
         refreshIndex();
         assets = assetDao.getAll();
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getValue("folders", new TypeReference<Set<Integer>>() {});
+            Set<Integer> folderIds = asset.getSchema("folders", Schema.SET_OF_INTS);
             assertFalse(folderIds.contains(folder1.getId()));
         }
     }

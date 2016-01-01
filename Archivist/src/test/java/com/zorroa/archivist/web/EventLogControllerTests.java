@@ -34,18 +34,17 @@ public class EventLogControllerTests extends MockMvcTest {
         for (int i=0; i<10; i++) {
             eventLogSerivce.log(new EventLogMessage("log message #{}", i).setTags(Sets.newHashSet("bilbo" + i)));
         }
-        refreshIndex("eventlog", 50);
+        refreshIndex("eventlog", 10);
     }
 
     @Test
     public void testGetAllEmptySearch() throws Exception {
-
+        long current = eventLogDao.getAll(new EventLogSearch()).getHits().totalHits();
         MvcResult result = mvc.perform(post("/api/v1/eventlog/_search")
                 .session(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
-
         TestSearchResult hits = Json.Mapper.readValue(
                 result.getResponse().getContentAsString(), TestSearchResult.class);
         assertEquals(10, hits.getHits().getTotal());

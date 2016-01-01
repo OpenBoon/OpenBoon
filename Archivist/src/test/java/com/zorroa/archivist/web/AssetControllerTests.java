@@ -240,7 +240,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         Asset xmp = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), xmp.getValue("Xmp.Rating"));
+        assertEquals(new Integer(3), xmp.getAttr("Xmp.Rating"));
     }
 
     @Test
@@ -270,7 +270,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll();
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getValue("folders", new TypeReference<Set<Integer>>() {});
+            Set<Integer> folderIds = asset.getSchema("folders", new TypeReference<Set<Integer>>() {});
             assertTrue(folderIds.contains(folder1.getId()));
             assertTrue(folderIds.contains(folder2.getId()));
         }

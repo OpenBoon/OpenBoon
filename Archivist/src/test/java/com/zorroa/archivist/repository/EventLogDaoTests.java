@@ -35,7 +35,6 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Before
     public void init() {
-
         /**
          * So the logging happens right away, otherwise the test exits before the
          * data is applied and we don't see any mapping errors.
@@ -45,15 +44,24 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
         pipeline = ingestService.getIngestPipeline(1);
         IngestBuilder builder = new IngestBuilder(getStaticImagePath());
         ingest = ingestService.createIngest(builder);
+
+        /**
+         * Adding a single log will create the alias.
+         */
+        eventLogDao.log(new EventLogMessage("starting event log test"));
+        refreshIndex("eventlog", 10);
     }
+
 
     @Test
     public void testSimpleLog() {
+        long current = eventLogDao.getAll(new EventLogSearch()).getHits().totalHits();
         eventLogDao.log(new EventLogMessage("testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
+        logger.info("current:{}", current);
         EventLogSearch search = new EventLogSearch();
-        assertEquals(1, eventLogDao.getAll(search).getHits().totalHits());
+        assertEquals(current+1, eventLogDao.getAll(search).getHits().totalHits());
     }
 
     @Test
@@ -74,7 +82,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
     public void testLogAsset() {
 
         AssetBuilder builder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        Asset asset = assetDao.create(builder);
+        Asset asset = assetDao.upsert(builder);
         refreshIndex();
 
         eventLogDao.log(new EventLogMessage(asset, "testing {} {} {}", 1, 2, 3));
@@ -120,14 +128,15 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetAllEmptySearch() {
+
         eventLogDao.log(new EventLogMessage(ingest, "testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
-
-        assertEquals(1, eventLogDao.getAll(new EventLogSearch()).getHits().totalHits());
+        assertEquals(2, eventLogDao.getAll(new EventLogSearch()).getHits().totalHits());
     }
 
     @Test
     public void testGetAllPaged() {
+        long current = eventLogDao.getAll(new EventLogSearch()).getHits().totalHits();
         for (int i=0; i<10; i++) {
             eventLogDao.log(new EventLogMessage(ingest, "part:{}", i));
         }
@@ -136,7 +145,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
         /**
          * With 10 entries, a limit of 8 on page 2 should be 2 hits.
          */
-        assertEquals(2, eventLogDao.getAll(new EventLogSearch()
+        assertEquals(2 + current, eventLogDao.getAll(new EventLogSearch()
                 .setPage(2)
                 .setLimit(8))
                 .getHits().getHits().length);

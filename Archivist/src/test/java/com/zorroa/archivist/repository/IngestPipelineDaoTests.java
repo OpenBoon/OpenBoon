@@ -40,7 +40,6 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void getAll() {
-
         for (int i = 0; i <= 10; i++) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("default_" + i);

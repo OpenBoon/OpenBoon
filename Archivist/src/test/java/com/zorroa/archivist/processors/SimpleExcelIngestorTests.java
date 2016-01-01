@@ -96,8 +96,8 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
         ingestor.init(null);
         ingestor.process(builder);
 
-        assertTrue(builder.getKeywords().getAllKeywords().contains("One"));
-        assertTrue(builder.getKeywords().getAllKeywords().contains("Ten"));
+        assertTrue(builder.getKeywords().getAll().contains("One"));
+        assertTrue(builder.getKeywords().getAll().contains("Ten"));
     }
 
 
@@ -107,7 +107,7 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
         SimpleExcelIngestor.Filter filter = new SimpleExcelIngestor.Filter();
         filter.setColumn("D");
         filter.setRelation(SimpleExcelIngestor.Relation.in);
-        filter.setValue("${keywords.allKeywords}");
+        filter.setValue("${keywords.all}");
 
         SimpleExcelIngestor.Mapping mapping = new SimpleExcelIngestor.Mapping();
         mapping.setFilters(Lists.newArrayList(filter));
@@ -124,6 +124,6 @@ public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
         ingestor.init(null);
         ingestor.process(builder);
 
-        assertTrue(builder.getKeywords().getAllKeywords().contains("beer_kettle_02.jpg"));
+        assertTrue(builder.getKeywords().getAll().contains("beer_kettle_02.jpg"));
     }
 }

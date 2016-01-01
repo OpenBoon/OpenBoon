@@ -48,9 +48,9 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
         refreshIndex();
 
         Asset asset = assetDao.getAll().get(0);
-        assertTrue(asset.containsKey("tinyProxy"));
-        assertTrue(asset.containsKey("proxies"));
-        ProxySchema proxies = asset.getValue("proxies", ProxySchema.class);
+        assertTrue(asset.contains("tinyProxy"));
+        assertTrue(asset.contains("proxies"));
+        ProxySchema proxies = asset.getSchema("proxies", ProxySchema.class);
 
         int[] widths = new int[] { 128, 256, 1024 };
         for (int i=0; i<widths.length; i++) {

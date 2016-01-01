@@ -49,7 +49,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetBuilder builder = new AssetBuilder(filepath);
         builder.setSearchPermissions(perm);
-        Asset asset1 = assetDao.create(builder);
+        Asset asset1 = assetDao.upsert(builder);
         refreshIndex(100);
 
         AssetSearch search = new AssetSearch().setQuery("captain");
@@ -71,7 +71,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
          */
         builder.setSearchPermissions(
                 userService.getPermissions(SecurityUtils.getUser()).get(0));
-        Asset asset1 = assetDao.create(builder);
+        Asset asset1 = assetDao.upsert(builder);
         refreshIndex(100);
 
         AssetSearch search = new AssetSearch().setQuery("captain");
@@ -89,7 +89,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
-        Asset asset1 = assetDao.create(assetBuilder);
+        Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
         assetService.addToFolder(asset1, folder1);
@@ -117,7 +117,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
-        Asset asset1 = assetDao.create(assetBuilder);
+        Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
         assetService.addToFolder(asset1, folder3);
@@ -146,7 +146,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
-        Asset asset1 = assetDao.create(assetBuilder);
+        Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
@@ -173,7 +173,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
-        Asset asset1 = assetDao.create(assetBuilder);
+        Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex();
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
@@ -189,8 +189,8 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         AssetBuilder assetBuilder2 = new AssetBuilder(getStaticImagePath() + "/new_zealand_wellington_harbour.jpg");
         assetBuilder2.getSource().setFileSize(1000);
 
-        assetDao.create(assetBuilder1);
-        assetDao.create(assetBuilder2);
+        assetDao.upsert(assetBuilder1);
+        assetDao.upsert(assetBuilder2);
         refreshIndex();
 
         long size = searchService.getTotalFileSize(new AssetSearch());
@@ -201,9 +201,8 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     public void testHighConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.setAsync(false);
         assetBuilder.addKeywords(1, false, "zipzoom");
-        assetDao.create(assetBuilder);
+        assetDao.upsert(assetBuilder);
         refreshIndex();
 
         /*
@@ -221,9 +220,8 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     public void testLowConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.setAsync(false);
         assetBuilder.addKeywords(0.1, false, "zipzoom");
-        assetDao.create(assetBuilder);
+        assetDao.upsert(assetBuilder);
         refreshIndex();
 
         /*
@@ -241,9 +239,8 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     public void testNoConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.setAsync(false);
         assetBuilder.addKeywords(0.1, false, "zipzoom");
-        assetDao.create(assetBuilder);
+        assetDao.upsert(assetBuilder);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -256,7 +253,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
         assetBuilder.addKeywords(0.1, false, "zoolander");
-        assetDao.create(assetBuilder);
+        assetDao.upsert(assetBuilder);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -270,7 +267,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
          */
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
         assetBuilder.addKeywords(0.1, false, "zoolander~");
-        assetDao.create(assetBuilder);
+        assetDao.upsert(assetBuilder);
         refreshIndex();
 
         assertEquals(1, searchService.search(

@@ -90,7 +90,7 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testIngestAggregators() {
+    public void testIngestAggregators() throws InterruptedException {
         // Create and execute an ingest
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("default");
@@ -98,7 +98,7 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("agg")).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
 
-        refreshIndex(1000);
+        refreshIndex();
 
         // Validate date folders
         Folder yearFolder = folderService.get("/Date/2014");

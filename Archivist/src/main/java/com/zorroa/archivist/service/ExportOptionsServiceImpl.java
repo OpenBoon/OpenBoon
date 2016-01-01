@@ -42,7 +42,7 @@ public class ExportOptionsServiceImpl implements ExportOptionsService {
             return;
         }
 
-        SourceSchema source = asset.getAsset().getValue("source", SourceSchema.class);
+        SourceSchema source = asset.getAsset().getSchema("source", SourceSchema.class);
         String format =  imgOpts.getFormat() == null ? source.getExtension() : imgOpts.getFormat();
         BufferedImage inputImage = ImageIO.read(asset.getCurrentFile());
         BufferedImage outputImage;

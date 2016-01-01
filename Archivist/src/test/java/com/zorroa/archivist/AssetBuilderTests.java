@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 public class AssetBuilderTests extends ArchivistApplicationTests {
 
     @Test
-     public void testCreate() {
+    public void testCreate() {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
         assertEquals("jpg", builder.getExtension());
         assertEquals(getStaticImagePath(), builder.getDirectory());

@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+
 public abstract class MockMvcTest extends ArchivistApplicationTests {
 
     @Autowired
@@ -32,7 +34,7 @@ public abstract class MockMvcTest extends ArchivistApplicationTests {
     protected MockMvc mvc;
 
     @Before
-    public void setup() {
+    public void setup() throws IOException {
         super.setup();
         this.mvc = MockMvcBuilders
                 .webAppContextSetup(this.wac)

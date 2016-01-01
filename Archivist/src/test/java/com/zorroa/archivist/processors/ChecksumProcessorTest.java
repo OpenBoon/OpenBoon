@@ -52,8 +52,8 @@ public class ChecksumProcessorTest extends ArchivistApplicationTests {
         assertEquals(2, assets.size());
 
         for (Asset asset: assets) {
-            String path = asset.getValue("source.path");
-            String crc32 = asset.getValue("source.checksum");
+            String path = asset.getAttr("source.path");
+            String crc32 = asset.getAttr("source.checksum");
 
             if (path.contains("beer_kettle_01.jpg")) {
                 assertEquals(crc32, "9faa728d41dfb2c9416fb7c7fc6ad77d");

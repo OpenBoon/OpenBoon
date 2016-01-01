@@ -52,7 +52,7 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
         assertEquals(2, assets.size());
 
         // Verify Image sizes were set.
-        ImageSchema schema = assets.get(0).getValue("image", ImageSchema.class);
+        ImageSchema schema = assets.get(0).getSchema("image", ImageSchema.class);
         assertTrue(schema.getWidth() > 0);
         assertTrue(schema.getHeight() > 0);
 
