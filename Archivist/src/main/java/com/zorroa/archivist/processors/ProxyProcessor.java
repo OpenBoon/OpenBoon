@@ -42,6 +42,11 @@ public class ProxyProcessor extends IngestProcessor {
             return;
         }
 
+        if (!asset.contains("image")) {
+            logger.debug("There is no image metadata for making a proxy.");
+            return;
+        }
+
         if (!asset.isType(AssetType.Image)) {
             return;
         }
