@@ -105,8 +105,6 @@ public class SearchServiceImpl implements SearchService {
             request.setSize(search.getSize());
         }
 
-        logger.info(request.toString());
-
         /*
          * TODO: alternative sorting and paging here.
          */
@@ -118,7 +116,6 @@ public class SearchServiceImpl implements SearchService {
         CountRequestBuilder count = client.prepareCount(alias)
                 .setTypes("asset")
                 .setQuery(getQuery(search));
-//        logger.info(count.toString());
         return count;
     }
 
