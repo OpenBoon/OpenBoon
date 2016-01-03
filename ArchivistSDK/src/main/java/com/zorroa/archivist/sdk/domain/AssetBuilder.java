@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.util.Collection;
 
 public class AssetBuilder extends Document{
@@ -77,6 +78,13 @@ public class AssetBuilder extends Document{
         source.setPath(getAbsolutePath());
         source.setExtension(getExtension());
         source.setFilename(getFilename());
+
+        try {
+            source.setFileSize(Files.size(file.toPath()));
+        } catch (IOException e) {
+            source.setFileSize(0);
+        }
+
         addSchema(source);
 
         keywords = new KeywordsSchema();
