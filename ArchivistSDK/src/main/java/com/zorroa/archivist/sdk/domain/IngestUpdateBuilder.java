@@ -1,14 +1,11 @@
 package com.zorroa.archivist.sdk.domain;
 
-import java.util.Set;
-
 /**
  * Created by chambers on 7/11/15.
  */
 public class IngestUpdateBuilder {
 
     private String path;
-    private Set<String> fileTypes;
     private String pipeline;
     private int pipelineId = -1;
     private boolean updateOnExist;
@@ -20,14 +17,6 @@ public class IngestUpdateBuilder {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public Set<String> getFileTypes() {
-        return fileTypes;
-    }
-
-    public void setFileTypes(Set<String> fileTypes) {
-        this.fileTypes = fileTypes;
     }
 
     public String getPipeline() {

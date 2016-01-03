@@ -3,7 +3,6 @@ package com.zorroa.archivist.sdk.domain;
 import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
-import java.util.Set;
 
 public class Ingest implements Id {
 
@@ -11,7 +10,6 @@ public class Ingest implements Id {
     private int pipelineId;
     private IngestState state;
     private String path;
-    private Set<String> fileTypes;
     private long timeCreated;
     private int userCreated;
     private long timeModified;
@@ -75,12 +73,7 @@ public class Ingest implements Id {
     public void setPath(String path) {
         this.path = path;
     }
-    public Set<String> getFileTypes() {
-        return fileTypes;
-    }
-    public void setFileTypes(Set<String> fileTypes) {
-        this.fileTypes = fileTypes;
-    }
+
     public long getTimeCreated() {
         return timeCreated;
     }
@@ -124,13 +117,6 @@ public class Ingest implements Id {
         this.updatedCount = updatedCount;
     }
 
-    public boolean isSupportedFileType(String type) {
-        if (fileTypes.isEmpty()) {
-            return true;
-        }
-
-        return fileTypes.contains(type);
-    }
     public int getCreatedCount() {
         return createdCount;
     }
