@@ -15,6 +15,10 @@ public interface IngestService {
 
     IngestPipeline getIngestPipeline(int id);
 
+    IngestPipeline getIngestPipeline(String name);
+
+    boolean ingestPipelineExists(String name);
+
     void updateIngestCounters(Ingest ingest, int created, int updated, int errors);
 
     void updateIngestStartTime(Ingest ingest, long time);
