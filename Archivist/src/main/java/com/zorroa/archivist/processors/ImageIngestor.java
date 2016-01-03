@@ -14,16 +14,17 @@ import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
-import com.zorroa.archivist.sdk.service.ImageService;
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.format.DateTimeFormat;
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,29 +38,25 @@ import java.util.Set;
  * DPX headers, etc.
  *
  */
-public class ImageProcessor extends IngestProcessor {
+public class ImageIngestor extends IngestProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(ImageProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImageIngestor.class);
 
-    /**
-     * For this is being passed in by the super processor.
-     */
-    private ImageService imageService;
-
-    public ImageProcessor() { }
-
-    public ImageProcessor(ImageService imageService) {
-        this.imageService = imageService;
+    public ImageIngestor() {
+        for (String format: ImageIO.getReaderFormatNames()) {
+            supportedFormats.add(format);
+        }
     }
 
     @Override
     public void process(AssetBuilder asset) {
 
+
         /*
          * Extract the standard image metadata, like width/height.
          */
         if (!asset.contains("image")) {
-            extractImageMetadata(asset);
+            extractImageMetadata(asset, asset.getInputStream());
         }
         else {
             logger.debug("Image metadata already exists for {}", asset);
@@ -84,7 +81,7 @@ public class ImageProcessor extends IngestProcessor {
      */
     private void extractExifMetadata(AssetBuilder asset) {
         try {
-            Metadata metadata = ImageMetadataReader.readMetadata(asset.getFile());
+            Metadata metadata = ImageMetadataReader.readMetadata(asset.getInputStream());
             extractExifMetadata(asset, metadata);   // Extract all useful metadata fields in raw & descriptive format
             extractExifLocation(asset, metadata);   // Find the best location value and promote to top-level
         } catch (IOException | ImageProcessingException e) {
@@ -101,12 +98,13 @@ public class ImageProcessor extends IngestProcessor {
      *
      * @param asset
      */
-    private void extractImageMetadata(AssetBuilder asset) {
+    private void extractImageMetadata(AssetBuilder asset, InputStream inputStream) {
         try {
-            Dimension size = imageService.getImageDimensions(asset.getFile());
+            BufferedImage image = ImageIO.read(asset.getInputStream());
+            asset.setImage(image);
             ImageSchema schema = new ImageSchema();
-            schema.setWidth(size.width);
-            schema.setHeight(size.height);
+            schema.setWidth(image.getWidth());
+            schema.setHeight(image.getHeight());
             asset.addSchema(schema);
         } catch (IOException e) {
             throw new UnrecoverableIngestProcessorException(

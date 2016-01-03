@@ -42,12 +42,8 @@ public class ProxyProcessor extends IngestProcessor {
             return;
         }
 
-        if (!asset.contains("image")) {
+        if (asset.getImage() == null)  {
             logger.debug("There is no image metadata for making a proxy.");
-            return;
-        }
-
-        if (!asset.isType(AssetType.Image)) {
             return;
         }
 
@@ -63,7 +59,7 @@ public class ProxyProcessor extends IngestProcessor {
             );
         }
 
-        int width = asset.getAttr("image", "width");
+        int width = asset.getImage().getWidth();
         ProxySchema result = new ProxySchema();
 
         for (ProxyOutput output : outputs) {
@@ -93,7 +89,7 @@ public class ProxyProcessor extends IngestProcessor {
 
     private void addResult(AssetBuilder asset, ProxyOutput output, ProxySchema result) {
         try {
-            result.add(imageService.makeProxy(asset.getFile(), output));
+            result.add(imageService.makeProxy(asset.getImage(), output));
         } catch (IOException e) {
             eventLogService.log(
                     new EventLogMessage("Failed to make proxy of {}", asset.getAbsolutePath())

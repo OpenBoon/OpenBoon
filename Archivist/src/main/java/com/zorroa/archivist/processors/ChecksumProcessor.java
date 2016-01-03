@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class ChecksumProcessor extends IngestProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(AssetMetadataProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChecksumProcessor.class);
 
     @Override
     public void process(AssetBuilder asset) {

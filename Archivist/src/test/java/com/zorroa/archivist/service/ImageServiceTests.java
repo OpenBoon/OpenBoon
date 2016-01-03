@@ -7,6 +7,8 @@ import com.zorroa.archivist.sdk.service.ImageService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,8 +25,10 @@ public class ImageServiceTests extends ArchivistApplicationTests {
         File original = this.getTestImage("beer_kettle_01.jpg");
         ProxyOutput output = new ProxyOutput("png", 128, 8, 0.5f);
         Proxy proxy = imageService.makeProxy(original, output);
-        assertEquals(128, proxy.getWidth());
-        assertEquals(96, proxy.getHeight());
+
+        BufferedImage image = ImageIO.read(new File(proxy.getPath()));
+        assertEquals(128, image.getWidth());
+        assertEquals(96, image.getHeight());
         File thumb = new File(proxy.getPath());
         assertTrue(thumb.exists());
     }

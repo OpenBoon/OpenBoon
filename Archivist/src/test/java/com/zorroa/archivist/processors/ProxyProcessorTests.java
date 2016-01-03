@@ -8,14 +8,11 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
-import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Map;
-
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ProxyProcessorTests extends ArchivistApplicationTests {
 
@@ -34,16 +31,16 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
     @Test
     public void testProcess() throws InterruptedException {
 
-        Map<String, Object> args = Maps.newHashMap();
-
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
-        builder.setName("test");
+        builder.setName("proxy");
         builder.addToProcessors(
-                new ProcessorFactory<>("com.zorroa.archivist.processors.ProxyProcessor", args));
+                new ProcessorFactory<>(ImageIngestor.class));
+        builder.addToProcessors(
+                new ProcessorFactory<>(ProxyProcessor.class));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(
-                getStaticImagePath()).setPipelineId(pipeline.getId()));
+                getStaticImagePath("standard")).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 

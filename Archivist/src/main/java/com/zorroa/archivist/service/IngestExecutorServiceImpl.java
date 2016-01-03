@@ -1,11 +1,11 @@
 package com.zorroa.archivist.service;
 
+import com.beust.jcommander.internal.Sets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.processors.AggregatorIngestor;
-import com.zorroa.archivist.processors.AssetMetadataProcessor;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
@@ -18,10 +18,8 @@ import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ImageService;
-import com.zorroa.archivist.sdk.service.IngestProcessorService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.FileUtils;
-import com.zorroa.archivist.sdk.util.IngestUtils;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.update.UpdateResponse;
@@ -44,6 +42,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.*;
@@ -59,9 +58,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     IngestService ingestService;
-
-    @Autowired
-    IngestProcessorService ingestProcessorService;
 
     @Autowired
     ImageService imageService;
@@ -253,16 +249,23 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             // running the tear down later on.
             List<IngestProcessor> processors = Lists.newArrayList();
 
+            /*
+             * Gather up the supported formats for each of the processors we're running
+             * and use that to filter the list of files that gets sent to the processors.
+             * This way we don't even send the work to the asset worker threads.
+             */
+            Set<String> supportedFormats = Sets.newHashSet();
+
             try {
                 /*
                  * Initialize everything we need to run this ingest
                  */
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
-                pipeline.getProcessors().add(0, new ProcessorFactory<>(AssetMetadataProcessor.class));
                 pipeline.getProcessors().add(new ProcessorFactory<>(AggregatorIngestor.class));
                 for (ProcessorFactory<IngestProcessor> factory : pipeline.getProcessors()) {
                     factory.init();
                     IngestProcessor processor = factory.getInstance();
+                    supportedFormats.addAll(processor.supportedFormats());
 
                     if (processor == null) {
                         String msg = "Aborting ingest, processor not found:" + factory.getKlass();
@@ -294,7 +297,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                             return FileVisitResult.CONTINUE;
                         }
 
-                        if (!IngestUtils.isSupportedFormat(FileUtils.extension(file))) {
+                        if (file.getFileName().toString().startsWith(".")) {
+                            return FileVisitResult.CONTINUE;
+                        }
+
+                        if(!supportedFormats.contains(FileUtils.extension(file)) && !supportedFormats.isEmpty()) {
                             return FileVisitResult.CONTINUE;
                         }
 
@@ -396,7 +403,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     /*
                      * Set the previous version of the asset.
                      */
-                    asset.setPreviousVersion(assetDao.getByPath(asset.getAbsolutePath()));
+                    asset.setPreviousVersion(
+                            assetDao.getByPath(asset.getAbsolutePath()));
 
                     /*
                      * Run the ingest processors
@@ -430,6 +438,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 for (ProcessorFactory<IngestProcessor>  factory : pipeline.getProcessors()) {
                     try {
                         IngestProcessor processor = factory.getInstance();
+                        if (!processor.isSupportedFormat(asset.getExtension())) {
+                            continue;
+                        }
                         logger.debug("running processor: {}", processor.getClass());
                         processor.process(asset);
 

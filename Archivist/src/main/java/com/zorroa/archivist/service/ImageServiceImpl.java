@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.service.ImageService;
@@ -16,11 +15,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Set;
+import java.io.InputStream;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +37,6 @@ public class ImageServiceImpl implements ImageService {
 
     private File proxyPath;
 
-    private ImmutableSet<String> supportedFormats;
-
     private static final LoadingCache<File, BufferedImage> IMAGE_CACHE = CacheBuilder.newBuilder()
             .maximumSize(200)
             .initialCapacity(200)
@@ -55,12 +52,6 @@ public class ImageServiceImpl implements ImageService {
     public void init() {
         proxyPath = new File(basePath);
         proxyPath.mkdirs();
-
-        ImmutableSet.Builder<String> builder = ImmutableSet.<String>builder();
-        for (String name: ImageIO.getReaderFormatNames()) {
-            builder.add(name);
-        }
-        supportedFormats = builder.build();
     }
 
     /**
@@ -105,10 +96,38 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Proxy makeProxy(File original, ProxyOutput output) throws IOException {
+        return makeProxy(new FileInputStream(original), output);
+    }
+
+    @Override
+    public Proxy makeProxy(BufferedImage original, ProxyOutput output) throws IOException {
         String proxyId = UUID.randomUUID().toString();
         File outFile = makeProxyPath(proxyId, output.getFormat());
 
-        BufferedImage proxy = Thumbnails.of(getImage(original))
+        BufferedImage proxy = Thumbnails.of(original)
+                .width(output.getSize())
+                .outputFormat(output.getFormat())
+                .keepAspectRatio(true)
+                .imageType(BufferedImage.TYPE_INT_RGB)
+                .rendering(Rendering.QUALITY)
+                .outputQuality(output.getQuality())
+                .asBufferedImage();
+        ImageIO.write(proxy, output.getFormat(), outFile);
+
+        Proxy result = new Proxy();
+        result.setPath(outFile.getAbsolutePath());
+        result.setWidth(proxy.getWidth());
+        result.setHeight(proxy.getHeight());
+        result.setFormat(output.getFormat());
+        return result;
+    }
+
+    @Override
+    public Proxy makeProxy(InputStream original, ProxyOutput output) throws IOException {
+        String proxyId = UUID.randomUUID().toString();
+        File outFile = makeProxyPath(proxyId, output.getFormat());
+
+        BufferedImage proxy = Thumbnails.of(original)
                 .width(output.getSize())
                 .outputFormat(output.getFormat())
                 .keepAspectRatio(true)
@@ -127,20 +146,10 @@ public class ImageServiceImpl implements ImageService {
 
     }
 
-    @Override
-    public Set<String> getSupportedFormats() {
-        return supportedFormats;
-    }
 
     @Override
     public String getDefaultProxyFormat() {
         return defaultProxyFormat;
-    }
-
-    @Override
-    public Dimension getImageDimensions(File file) throws IOException {
-        BufferedImage img = getImage(file);
-        return new Dimension(img.getWidth(), img.getHeight());
     }
 
     private BufferedImage getImage(File file)  throws IOException {

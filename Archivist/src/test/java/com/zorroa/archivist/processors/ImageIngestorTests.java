@@ -4,6 +4,7 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
@@ -20,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by wex on 7/6/15.
  */
-public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
+public class ImageIngestorTests extends ArchivistApplicationTests {
 
 
     @Autowired
@@ -41,7 +42,9 @@ public class AssetMetadataProcessorTests extends ArchivistApplicationTests {
         Map<String, Object> args = Maps.newHashMap();
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
-        builder.setName("test");
+        builder.setName("image");
+        builder.addToProcessors(
+                new ProcessorFactory<>(ImageIngestor.class));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
