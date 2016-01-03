@@ -37,7 +37,7 @@ public class IngestDaoTests extends ArchivistApplicationTests {
 
     @Before
     public void init() {
-        pipeline = ingestService.getIngestPipeline(1);
+        pipeline = ingestService.getIngestPipeline("standard");
         IngestBuilder builder = new IngestBuilder(getStaticImagePath());
         ingest = ingestDao.create(pipeline, builder);
     }

@@ -4,8 +4,6 @@ import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
@@ -14,11 +12,11 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -28,7 +26,8 @@ import java.util.stream.Collectors;
  * @author chambers
  *
  */
-@Component
+@Service
+@Transactional
 public class IngestServiceImpl implements IngestService, ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
@@ -49,7 +48,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
-        removeDefaultProcessors(builder.getProcessors());
         return ingestPipelineDao.create(builder);
     }
 
@@ -59,13 +57,22 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    public IngestPipeline getIngestPipeline(String s) {
+        return ingestPipelineDao.get(s);
+    }
+
+    @Override
+    public boolean ingestPipelineExists(String s) {
+        return ingestPipelineDao.exists(s);
+    }
+
+    @Override
     public List<IngestPipeline> getIngestPipelines() {
         return ingestPipelineDao.getAll();
     }
 
     @Override
     public boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder) {
-        removeDefaultProcessors(builder.getProcessors());
         return ingestPipelineDao.update(pipeline, builder);
     }
 
@@ -152,7 +159,13 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public Ingest createIngest(IngestBuilder builder) {
-        IngestPipeline pipeline = ingestPipelineDao.get(builder.getPipelineId());
+        IngestPipeline pipeline;
+        if (builder.getPipelineId() == -1) {
+            pipeline = ingestPipelineDao.get("standard");
+        }
+        else {
+            pipeline = ingestPipelineDao.get(builder.getPipelineId());
+        }
         Ingest ingest = ingestDao.create(pipeline, builder);
         broadcast(ingest, MessageType.INGEST_CREATE);
         return ingest;
@@ -209,18 +222,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
         this.applicationContext = applicationContext;
-    }
-
-    /**
-     * Scrubs the list of processors of any default processors.
-     *
-     * @param processors
-     */
-    private void removeDefaultProcessors(List<ProcessorFactory<IngestProcessor>> processors) {
-        /*
-         * Might have to eventually update this to handle multiple types.
-         */
-        processors.stream().filter(f->f.getKlass().contains("AssetMetadataProcessor")).collect(Collectors.toList());
     }
 }
 

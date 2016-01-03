@@ -50,7 +50,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
         ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        refreshIndex(10);
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)

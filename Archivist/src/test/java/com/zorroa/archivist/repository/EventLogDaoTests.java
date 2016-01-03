@@ -41,7 +41,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
          */
         eventLogDao.setSynchronous(true);
 
-        pipeline = ingestService.getIngestPipeline(1);
+        pipeline = ingestService.getIngestPipeline("standard");
         IngestBuilder builder = new IngestBuilder(getStaticImagePath());
         ingest = ingestService.createIngest(builder);
 

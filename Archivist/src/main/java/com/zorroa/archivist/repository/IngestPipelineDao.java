@@ -10,6 +10,10 @@ public interface IngestPipelineDao {
 
     IngestPipeline create(IngestPipelineBuilder pipeline);
 
+    IngestPipeline get(String name);
+
+    boolean exists(String name);
+
     List<IngestPipeline> getAll();
 
     IngestPipeline get(int id);

@@ -2,7 +2,9 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.processors.ImageIngestor;
+import com.zorroa.archivist.processors.PdfIngestor;
 import com.zorroa.archivist.processors.ProxyProcessor;
+import com.zorroa.archivist.processors.VideoIngestor;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestState;
@@ -147,12 +149,13 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     }
 
     private void createDefaultIngestPipeline() {
-        if (ingestService.getIngestPipelines().size() == 0) {
+        if (!ingestService.ingestPipelineExists("standard")) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("standard");
             builder.addToProcessors(new ProcessorFactory<>(ImageIngestor.class));
+            builder.addToProcessors(new ProcessorFactory<>(VideoIngestor.class));
+            builder.addToProcessors(new ProcessorFactory<>(PdfIngestor.class));
             builder.addToProcessors(new ProcessorFactory<>(ProxyProcessor.class));
-            logger.info("Creating 'standard' ingest pipeline");
             ingestService.createIngestPipeline(builder);
         }
     }

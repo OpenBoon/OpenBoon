@@ -62,10 +62,9 @@ public abstract class ArchivistApplicationTests {
 
     protected Set<String> testImages;
 
-    public static final String TEST_IMAGE_PATH = "src/test/resources/static/images";
+    public static final String TEST_DATA_PATH = "src/test/resources/static";
 
     public ArchivistApplicationTests() {
-//        logger.info("Setting unit test");
         ArchivistConfiguration.unittest = true;
     }
 
@@ -151,7 +150,7 @@ public abstract class ArchivistApplicationTests {
     }
 
     public String getStaticImagePath(String subdir) {
-        FileSystemResource resource = new FileSystemResource(TEST_IMAGE_PATH);
+        FileSystemResource resource = new FileSystemResource(TEST_DATA_PATH + "/images");
         String path = resource.getFile().getAbsolutePath() + "/" + subdir;
         return path;
     }
