@@ -8,7 +8,8 @@ import com.zorroa.archivist.sdk.schema.SourceSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
@@ -37,6 +38,25 @@ public class AssetBuilder extends Document{
      */
     private PermissionSchema permissions;
 
+    /**
+     * An fileinput stream that can be reset.  Much of the Java image manipulation or
+     * metadata APIs take an InputStream as an argument, but in general you can't go
+     * backwards with InputStreams.
+     *
+     * Calling getInputStream() the first time will create a new input stream.
+     * Subsequent calls to getInputStream() will return the same input stream
+     * reset to position 0.
+     *
+     */
+    private MarkableFileInputStream inputStream;
+
+    /**
+     * The image representation of this asset.  An asset, may not be an image, it might
+     * be a PDF or a word document, but to make a proxy for this asset we need an image
+     * of some kind or not proxy can be made.
+     *
+     */
+    private BufferedImage image;
 
     public AssetBuilder(File file) {
         if (!file.isFile()) {
@@ -168,6 +188,32 @@ public class AssetBuilder extends Document{
         return file.getName();
     }
 
+    public BufferedImage getImage() {
+        return this.image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public InputStream getInputStream() {
+        if (inputStream == null) {
+            try {
+                inputStream = new MarkableFileInputStream(new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                // shouldn't really happen but throw a runtime if it does.
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            try {
+                inputStream.reset();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return inputStream;
+    }
 
     @Override
     public String toString() {
