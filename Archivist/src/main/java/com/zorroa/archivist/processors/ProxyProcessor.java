@@ -1,12 +1,17 @@
 package com.zorroa.archivist.processors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.EventLogMessage;
+import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.util.Json;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.resizers.configurations.Rendering;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
@@ -21,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class ProxyProcessor extends IngestProcessor {
 
@@ -89,7 +95,7 @@ public class ProxyProcessor extends IngestProcessor {
 
     private void addResult(AssetBuilder asset, ProxyOutput output, ProxySchema result) {
         try {
-            result.add(imageService.makeProxy(asset.getImage(), output));
+            result.add(makeProxy(asset.getImage(), output));
         } catch (IOException e) {
             eventLogService.log(
                     new EventLogMessage("Failed to make proxy of {}", asset.getAbsolutePath())
@@ -131,5 +137,28 @@ public class ProxyProcessor extends IngestProcessor {
         }
 
         return NO_TINY_PROXY;
+    }
+
+    public Proxy makeProxy(BufferedImage image, ProxyOutput output) throws IOException {
+        String proxyId = UUID.randomUUID().toString();
+        File outFile = imageService.allocateProxyPath(proxyId, output.getFormat());
+
+        BufferedImage proxy = Thumbnails.of(image)
+                .width(output.getSize())
+                .outputFormat(output.getFormat())
+                .keepAspectRatio(true)
+                .imageType(BufferedImage.TYPE_INT_RGB)
+                .rendering(Rendering.QUALITY)
+                .outputQuality(output.getQuality())
+                .asBufferedImage();
+        ImageIO.write(proxy, output.getFormat(), outFile);
+
+        Proxy result = new Proxy();
+        result.setPath(outFile.getAbsolutePath());
+        result.setWidth(proxy.getWidth());
+        result.setHeight(proxy.getHeight());
+        result.setFormat(output.getFormat());
+        return result;
+
     }
 }

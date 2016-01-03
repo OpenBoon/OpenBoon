@@ -63,7 +63,7 @@ public class ProxyController {
 
     private ProxyImage loadProxyImage(String id) throws IOException {
         String[] e = id.split("\\.");
-        return ProxyImage.load(imageService.generateProxyPath(e[0], e[1]));
+        return ProxyImage.load(imageService.allocateProxyPath(e[0], e[1]));
     }
 
     private static class ProxyImage {
