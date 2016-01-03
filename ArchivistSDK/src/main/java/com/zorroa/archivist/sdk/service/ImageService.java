@@ -3,10 +3,10 @@ package com.zorroa.archivist.sdk.service;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
+import java.io.InputStream;
 
 public interface ImageService {
 
@@ -20,19 +20,24 @@ public interface ImageService {
     Proxy makeProxy(File original, ProxyOutput output) throws IOException;
 
     /**
+     * Make a proxy image for the image file using the given proxy output.
      *
-     * @param imgFile
+     * @param original
+     * @param output
      * @return
      * @throws IOException
      */
-    Dimension getImageDimensions(File imgFile) throws IOException;
+    Proxy makeProxy(InputStream original, ProxyOutput output) throws IOException;
 
     /**
-     * Return the set of supported formats the service can operate on.
+     * Make a proxy image for the image file using the given proxy output.
      *
+     * @param original
+     * @param output
      * @return
+     * @throws IOException
      */
-    Set<String> getSupportedFormats();
+    Proxy makeProxy(BufferedImage original, ProxyOutput output) throws IOException;
 
     /**
      * Return the default proxy image format.
