@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
@@ -68,7 +67,6 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals(ingest01.getTimeModified(), ingest.getTimeModified());
         assertEquals(ingest01.getTimeStarted(), ingest.getTimeStarted());
         assertEquals(ingest01.getTimeStopped(), ingest.getTimeStopped());
-        assertEquals(ingest01.getFileTypes(), ingest.getFileTypes());
         assertEquals(ingest01.getUserCreated(), ingest.getUserCreated());
         assertEquals(ingest01.getUserModified(), ingest.getUserModified());
     }
@@ -142,7 +140,6 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
-        updateBuilder.setFileTypes(Sets.newHashSet("jpg"));
         updateBuilder.setPath("/foo");
         updateBuilder.setPipelineId(testPipeline.getId());
         updateBuilder.setAssetWorkerThreads(6);
@@ -151,8 +148,6 @@ public class IngestDaoTests extends ArchivistApplicationTests {
 
         Ingest updatedIngest = ingestDao.get(ingest.getId());
         assertEquals("/foo", updatedIngest.getPath());
-        assertTrue(updatedIngest.getFileTypes().contains("jpg"));
-        assertEquals(1, updatedIngest.getFileTypes().size());
         assertEquals(updatedIngest.getAssetWorkerThreads(), 6);
         assertEquals(testPipeline.getId(), updatedIngest.getPipelineId());
     }

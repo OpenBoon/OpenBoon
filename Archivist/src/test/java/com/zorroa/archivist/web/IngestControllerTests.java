@@ -2,7 +2,6 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.IngestService;
@@ -120,7 +119,6 @@ public class IngestControllerTests extends MockMvcTest {
 
         IngestBuilder builder = new IngestBuilder();
         builder.setPath(getStaticImagePath());
-        builder.setFileTypes(Sets.newHashSet("jpg"));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(post("/api/v1/ingests")
@@ -139,7 +137,6 @@ public class IngestControllerTests extends MockMvcTest {
 
         IngestUpdateBuilder builder = new IngestUpdateBuilder();
         builder.setPath("/vol/data");
-        builder.setFileTypes(Sets.newHashSet("jpg"));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(put("/api/v1/ingests/" + ingest.getId())
@@ -153,7 +150,6 @@ public class IngestControllerTests extends MockMvcTest {
         assertEquals(ingest.getId(), updatedIngest.getId());
 
         assertEquals(builder.getPath(), updatedIngest.getPath());
-        assertEquals(builder.getFileTypes(), updatedIngest.getFileTypes());
     }
 
     @Test
@@ -177,7 +173,6 @@ public class IngestControllerTests extends MockMvcTest {
 
         IngestBuilder builder = new IngestBuilder();
         builder.setPath(getStaticImagePath());
-        builder.setFileTypes(Sets.newHashSet("jpg"));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(post("/api/v1/ingests/")

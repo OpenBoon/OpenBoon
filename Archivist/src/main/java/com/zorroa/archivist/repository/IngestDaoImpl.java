@@ -2,9 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class IngestDaoImpl extends AbstractDao implements IngestDao {
@@ -28,7 +27,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         result.setUserCreated(rs.getInt("user_created"));
         result.setTimeModified(rs.getLong("time_modified"));
         result.setUserModified(rs.getInt("user_modified"));
-        result.setFileTypes((Set<String>) rs.getObject("list_types"));
         result.setTimeStarted(rs.getLong("time_started"));
         result.setTimeStopped(rs.getLong("time_stopped"));
         result.setCreatedCount(rs.getInt("int_created_count"));
@@ -51,7 +49,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "pk_pipeline,"+
                 "int_state,"+
                 "str_path,"+
-                "list_types,"+
                 "time_created,"+
                 "user_created,"+
                 "time_modified, "+
@@ -59,7 +56,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "bool_update_on_exist, " +
                 "int_asset_worker_threads" +
             ") " +
-            "VALUES (" + StringUtils.repeat("?", ",", 10) + ")";
+            "VALUES (" + StringUtils.repeat("?", ",", 9) + ")";
 
     @Override
     public Ingest create(IngestPipeline pipeline, IngestBuilder builder) {
@@ -71,13 +68,12 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             ps.setInt(1, pipeline.getId());
             ps.setInt(2, IngestState.Idle.ordinal());
             ps.setObject(3, builder.getPath());
-            ps.setObject(4, builder.getFileTypes());
-            ps.setLong(5, time);
-            ps.setLong(6, SecurityUtils.getUser().getId());
-            ps.setLong(7, time);
-            ps.setLong(8, SecurityUtils.getUser().getId());
-            ps.setBoolean(9, builder.isUpdateOnExist());
-            ps.setInt(10, builder.getAssetWorkerThreads());
+            ps.setLong(4, time);
+            ps.setLong(5, SecurityUtils.getUser().getId());
+            ps.setLong(6, time);
+            ps.setLong(7, SecurityUtils.getUser().getId());
+            ps.setBoolean(8, builder.isUpdateOnExist());
+            ps.setInt(9, builder.getAssetWorkerThreads());
             return ps;
         }, keyHolder);
         long id = keyHolder.getKey().longValue();
@@ -138,11 +134,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         if (builder.getPath() != null) {
             updates.add("str_path=?");
             values.add(builder.getPath());
-        }
-
-        if (builder.getFileTypes() != null) {
-            updates.add("list_types=?");
-            values.add(builder.getFileTypes());
         }
 
         if (builder.getPipelineId() > 0) {

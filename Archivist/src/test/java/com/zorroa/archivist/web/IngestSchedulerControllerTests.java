@@ -2,7 +2,6 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
@@ -38,7 +37,6 @@ public class IngestSchedulerControllerTests extends MockMvcTest {
     public Ingest createIngest() {
         IngestBuilder ib = new IngestBuilder();
         ib.setPath(getStaticImagePath());
-        ib.setFileTypes(Sets.newHashSet("jpg"));
         return ingestService.createIngest(ib);
     }
 

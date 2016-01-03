@@ -280,11 +280,11 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFilteredSearch() throws Exception {
         MockHttpSession session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addToFieldTerms("File.FileName.raw", "beer_kettle_01.jpg"));
+        AssetSearch search = new AssetSearch(new AssetFilter().addToFieldTerms("source.filename.raw", "beer_kettle_01.jpg"));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -295,6 +295,8 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+
+
         int count = (int)hits.get("total");
         assertEquals(1, count);
     }
