@@ -341,12 +341,12 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 if (!earlyShutdown) {
                     ingestService.setIngestIdle(finishedIngest);
 
-                    eventLogService.log(ingest, "ingest finished , created {}, updated: {}, errors:{}",
-                            ingest.getCreatedCount(), ingest.getUpdatedCount(), ingest.getErrorCount());
+                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors:{}",
+                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 }
                 else {
-                    eventLogService.log(ingest, "ingest was manually shut down, created {}, updated: {}, errors:{}",
-                            ingest.getCreatedCount(), ingest.getUpdatedCount(), ingest.getErrorCount());
+                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors:{}",
+                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 }
             }
         }
