@@ -21,6 +21,7 @@ import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.FileUtils;
+import org.apache.tika.Tika;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.Preconditions;
 import org.slf4j.Logger;
@@ -351,6 +352,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         }
 
         private class AssetWorker implements Runnable {
+            private final Tika tika = new Tika();
 
             private final IngestPipeline pipeline;
             private final Ingest ingest;
@@ -369,18 +371,23 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     logger.debug("Ingesting: {}", asset);
 
                     /*
-                     * Add the ingest info to the asset.
+                     * Set the previous version of the asset.
+                     */
+                    asset.setPreviousVersion(
+                            assetDao.getByPath(asset.getAbsolutePath()));
+
+                    /*
+                     * Use Tika to detect the asset type.
+                     */
+                    asset.getSource().setType(tika.detect(asset.getSource().getPath()));
+
+                    /*
+                     * Add or overwrite the ingest info to the asset.
                      */
                     IngestSchema ingestSchema = new IngestSchema();
                     ingestSchema.setId(ingest.getId());
                     ingestSchema.setPipeline(pipeline.getId());
                     asset.addSchema(ingestSchema);
-
-                    /*
-                     * Set the previous version of the asset.
-                     */
-                    asset.setPreviousVersion(
-                            assetDao.getByPath(asset.getAbsolutePath()));
 
                     /*
                      * Run the ingest processors

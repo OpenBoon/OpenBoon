@@ -2,6 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.SourceSchema;
+import com.zorroa.archivist.security.ExportOptionsService;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,19 +17,19 @@ public class ExportOptionsServiceImpl implements ExportOptionsService {
 
     private static final Logger logger = LoggerFactory.getLogger(ExportOptionsServiceImpl.class);
 
+
     @Override
     public ExportedAsset applyOptions(Export export, ExportOutput output, Asset asset) throws Exception {
         /*
          * Currently we only handle image data.
          */
         ExportedAsset result = new ExportedAsset(export, output, asset);
-        switch (asset.getType()) {
-            case Image:
-                applyImageOptions(export, result);
-                break;
-            default:
-                logger.warn("Asset type: '{}' currently not supported.", asset.getType());
+        String type = result.getAsset().getSource().getType();
+
+        if (type.startsWith("image/")) {
+            applyImageOptions(export, result);
         }
+        // TODO: add other types.
         return result;
     }
 
