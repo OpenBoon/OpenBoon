@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -85,61 +86,65 @@ public class LogoIngestor extends IngestProcessor {
             return;
         }
 
-        List<Proxy> proxyList = (List<Proxy>) asset.getDocument().get("proxies");
-
-        if (proxyList == null) {
-            logger.error("Cannot find proxy list for " + asset.getFilename() + ", skipping Logo analysis");
-            return;
-        }
         String classifyPath = asset.getFile().getPath();
         Size minLogo = new Size(100, 50);
         Size maxLogo = new Size(4000, 2000);
 
-        // Perform analysis
+        // Perform analysis on the full resolution source image. The VISA and other logos tend to be rather small in
+        // the frame, and using the proxy misses many logos.
         logger.info("Starting logo detection on " + asset.getFilename());
         Mat image = Highgui.imread(classifyPath);
-        Mat cropImg;
         Size imSize = image.size();
 
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
-        // in order to estimate a confidence value
+        // in order to estimate a confidence value.
+        // In the code below, detectMultiScale is called four times, each with a bigger threshold for the number of detections required
+        // (and also with a different scaling factor--these values were found by trial and error)
+        // Confidence values are assigned depending on when the classifier finds the logo. We use a maximum value of 0.5,
+        // in order to save the rest of the range (up to 1.0) to increase the confidence according to logo size.
         // OPTIMIZE: Use the size of the resulting rectangles to tweak minLogo and maxLogo in order to save the detector a bunch of work
         double confidence = 0;
         MatOfRect logoDetections = new MatOfRect();
+        MatOfRect newLogoDetections = new MatOfRect();
 
-        cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.0075, 20, 0, minLogo, maxLogo);
-        int logoCount = logoDetections.toArray().length;
-        if (logoCount > 0) {
-            confidence = 0.2;
-            cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.0075, 30, 0, minLogo, maxLogo);
-            int Count = logoDetections.toArray().length;
-            if (Count > 0) {
-                confidence = .4;
-                logoCount = Count;
-                cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.005, 40, 0, minLogo, maxLogo);
-                Count = logoDetections.toArray().length;
-                if (Count > 0) {
-                    confidence = .6;
-                    logoCount = Count;
-                    cascadeClassifier.get().detectMultiScale(image, logoDetections, 1.005, 60, 0, minLogo, maxLogo);
-                    Count = logoDetections.toArray().length;
-                    if (Count > 0) {
-                        confidence = .8;
-                        logoCount = Count;
-                    }
-                }
+        class ClassifyOptions {
+            public double scaleFactor, detectionThreshold, finalConfidence;
+
+            public ClassifyOptions(double scaleFactor, double detectionThreshold, double finalConfidence) {
+                this.scaleFactor = scaleFactor;
+                this.detectionThreshold = detectionThreshold;
+                this.finalConfidence = finalConfidence;
+            }
+        }
+        List<ClassifyOptions> options = Arrays.asList(
+                new ClassifyOptions(1.0075, 20, 0.1),
+                new ClassifyOptions(1.0075, 30, 0.2),
+                new ClassifyOptions(1.005, 40, 0.3),
+                new ClassifyOptions(1.005, 60, 0.5));
+
+        int logoCount = 0;
+        for (int i = 0; i < options.size(); i++) {
+            cascadeClassifier.get().detectMultiScale(image, newLogoDetections, options.get(i).scaleFactor, (int)options.get(i).detectionThreshold, 0, minLogo, maxLogo);
+            int count = newLogoDetections.toArray().length;
+            if (count > 0) {
+                confidence = options.get(i).finalConfidence;
+                // I want to save Count and logoDetections ONLY if something was detected, so it's not overwritten to empty the last time
+                logoCount = count;
+                logoDetections = newLogoDetections;
+            } else {
+                break;
             }
         }
 
         if (logoCount > 0) {
             logger.info("LogoIngestor: Haar detected " + logoCount + " potential logos.");
 
-            String value = "visa";
+            List<String> keywords =  new ArrayList<String>();
+            keywords.add("visa");
+
             String svgVal = "<svg>";
 
             for (Rect rect : logoDetections.toArray()) {
-
-
                 // Detect points in the area found by the Haar cascade
                 int xmin = rect.x;
                 if (xmin < 0) xmin = 0;
@@ -154,9 +159,13 @@ public class LogoIngestor extends IngestProcessor {
                 if (ymax >= imSize.height) ymax = (int)imSize.height-1;
 
                 // Logo is big if more than 5% of total height
-                if (rect.height / imSize.height > .05) {
-                    confidence += .2;
-                    value = value + ",bigvisa";
+                double relSize = rect.height / imSize.height;
+                if (relSize > .05) {
+                    confidence += relSize;
+                    if (confidence > 1) {
+                        confidence = 1;
+                    }
+                    keywords.add("bigvisa");
                 }
 
                 // Draw rectangle
@@ -164,11 +173,15 @@ public class LogoIngestor extends IngestProcessor {
 
             }
 
-            logger.info("LogoIngestor: " + value);
-            value = value + ",visa" + confidence;
-            List<String> keywords = Arrays.asList(value.split(","));
+            logger.info("LogoIngestor: " + keywords);
             asset.addKeywords(confidence, true, keywords);
-            asset.setAttr("Logos", "keywords", (String[]) keywords.toArray());
+
+            // For debugging purposes, We are adding "visa"+confidence as an attribute, so we can see the actual number in
+            // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,
+            // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
+            // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
+            keywords.add("visa" + confidence);
+            asset.setAttr("Logos", "keywords", keywords);
 
             if (svgVal != "<svg>") {
                 svgVal += "</svg>";
