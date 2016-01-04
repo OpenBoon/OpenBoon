@@ -1,7 +1,6 @@
 package com.zorroa.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.AssetType;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.opencv.core.Mat;
@@ -69,8 +68,8 @@ public class FaceIngestor extends IngestProcessor {
             cascadeName = argCascadeName;
         }
 
-        if (!asset.isType(AssetType.Image)) {
-            return;     // Only process images
+        if (!asset.getSource().getType().startsWith("image")) {
+            return;
         }
 
         List<Proxy> proxyList = (List<Proxy>) asset.getDocument().get("proxies");
