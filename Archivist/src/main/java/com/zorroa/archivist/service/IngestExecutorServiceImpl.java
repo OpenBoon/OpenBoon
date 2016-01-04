@@ -332,10 +332,13 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  */
                 runningIngests.remove(ingest.getId());
 
+                /*
+                 * Pull a new copy of the ingest with all updated fields.
+                 */
+                Ingest finishedIngest = ingestService.getIngest(ingest.getId());
+
                 if (!earlyShutdown) {
-                    // Do this with 1 API call
-                    ingestService.setIngestIdle(ingest);
-                    ingestService.updateIngestStopTime(ingest, System.currentTimeMillis());
+                    ingestService.setIngestIdle(finishedIngest);
 
                     eventLogService.log(ingest, "ingest finished , created {}, updated: {}, errors:{}",
                             ingest.getCreatedCount(), ingest.getUpdatedCount(), ingest.getErrorCount());

@@ -84,7 +84,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public boolean setIngestRunning(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Running)) {
-            ingest.setState(IngestState.Running);
             broadcast(ingest, MessageType.INGEST_UPDATE);
             return true;
         }
@@ -93,16 +92,13 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public void resetIngestCounters(Ingest ingest) {
-        ingest.setCreatedCount(0);
-        ingest.setUpdatedCount(0);
-        ingest.setErrorCount(0);
         ingestDao.resetCounters(ingest);
     }
 
     @Override
     public boolean setIngestIdle(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Idle)) {
-            ingest.setState(IngestState.Idle);
+            ingestDao.updateStoppedTime(ingest, System.currentTimeMillis());
             broadcast(ingest, MessageType.INGEST_UPDATE);
             return true;
         }
@@ -112,7 +108,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public boolean setIngestQueued(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Queued)) {
-            ingest.setState(IngestState.Queued);
             broadcast(ingest, MessageType.INGEST_UPDATE);
             return true;
         }
@@ -122,7 +117,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public boolean setIngestPaused(Ingest ingest) {
         if (ingestDao.setState(ingest, IngestState.Paused)) {
-            ingest.setState(IngestState.Paused);
             broadcast(ingest, MessageType.INGEST_UPDATE);
             return true;
         }
@@ -130,6 +124,10 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     private void broadcast(Ingest ingest, MessageType messageType) {
+        /*
+         * Pulling an updated copy of the ingest to account for any changed fields.
+         */
+        ingest = getIngest(ingest.getId());
         String json = new String(Json.serialize(ingest), StandardCharsets.UTF_8);
         eventServerHandler.broadcast(new Message(messageType, json));
     }
@@ -143,14 +141,12 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public void updateIngestStartTime(Ingest ingest, long time) {
         ingest.setTimeStarted(time);
-        ingestDao.updateStartTime(ingest, time);
         broadcast(ingest, MessageType.INGEST_START);
     }
 
     @Override
     public void updateIngestStopTime(Ingest ingest, long time) {
         ingest.setTimeStopped(time);
-        ingestDao.updateStoppedTime(ingest, time);
         broadcast(ingest, MessageType.INGEST_STOP);
     }
 
@@ -181,9 +177,12 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         // Update active ingest thread counts
         if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
                 ingest.getAssetWorkerThreads() != builder.getAssetWorkerThreads()) {
-            ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());  // set new worker count
-            ingestExecutorService.pause(ingest);
-            ingestExecutorService.resume(ingest);
+            
+            synchronized(ingest) {
+                ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());
+                ingestExecutorService.pause(ingest);
+                ingestExecutorService.resume(ingest);
+            }
         }
 
         if (builder.getPipeline() != null) {
