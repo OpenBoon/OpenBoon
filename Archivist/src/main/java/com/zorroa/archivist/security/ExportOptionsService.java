@@ -1,4 +1,4 @@
-package com.zorroa.archivist.service;
+package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.Export;

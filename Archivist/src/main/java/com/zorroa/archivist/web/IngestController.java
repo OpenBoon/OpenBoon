@@ -31,8 +31,8 @@ public class IngestController {
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.GET)
-    public Ingest get(@PathVariable String id) {
-        return ingestService.getIngest(Long.valueOf(id));
+    public Ingest get(@PathVariable int id) {
+        return ingestService.getIngest(id);
     }
 
     @RequestMapping(value="/api/v1/ingests", method=RequestMethod.GET)
@@ -46,42 +46,42 @@ public class IngestController {
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}/_execute", method=RequestMethod.POST)
-    public Ingest ingest(@PathVariable String id) {
-        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+    public Ingest ingest(@PathVariable int id) {
+        Ingest ingest = ingestService.getIngest(id);
         ingestExecutorService.executeIngest(ingest);
         return ingest;
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}/_pause", method=RequestMethod.PUT)
-    public Ingest pause(@PathVariable String id) {
-        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+    public Ingest pause(@PathVariable int id) {
+        Ingest ingest = ingestService.getIngest(id);
         ingestExecutorService.pause(ingest);
         return ingest;
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}/_stop", method=RequestMethod.PUT)
-    public Ingest stop(@PathVariable String id) {
-        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+    public Ingest stop(@PathVariable int id) {
+        Ingest ingest = ingestService.getIngest(id);
         ingestExecutorService.stop(ingest);
         return ingest;
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}/_resume", method=RequestMethod.PUT)
-    public Ingest resume(@PathVariable String id) {
-        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+    public Ingest resume(@PathVariable int id) {
+        Ingest ingest = ingestService.getIngest(id);
         ingestExecutorService.resume(ingest);
         return ingest;
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.PUT)
-    public Ingest update(@RequestBody IngestUpdateBuilder builder, @PathVariable String id) {
-        Ingest ingest = ingestService.getIngest(Long.valueOf(id));
+    public Ingest update(@RequestBody IngestUpdateBuilder builder, @PathVariable int id) {
+        Ingest ingest = ingestService.getIngest(id);
         ingestService.updateIngest(ingest, builder);
         return ingestService.getIngest(ingest.getId());
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.DELETE)
-    public Map<String, Object> delete(@PathVariable Long id) {
+    public Map<String, Object> delete(@PathVariable int id) {
         Ingest ingest = ingestService.getIngest(id);
 
         try {
