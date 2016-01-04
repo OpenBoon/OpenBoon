@@ -17,6 +17,7 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,6 +90,12 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public synchronized Folder create(FolderBuilder builder) {
+        Folder parent = folderDao.get(builder.getParentId());
+
+        if(!parent.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
+            throw new AccessDeniedException("You do not have write access to this folder");
+        }
+
         Folder folder = folderDao.create(builder);
         folderDao.setAcl(folder, builder.getAcl());
         transactionEventManager.afterCommit(() -> {
