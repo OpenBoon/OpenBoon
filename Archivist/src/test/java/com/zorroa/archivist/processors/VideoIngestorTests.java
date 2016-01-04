@@ -1,16 +1,14 @@
 package com.zorroa.archivist.processors;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
+import com.zorroa.archivist.service.SearchService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +27,7 @@ public class VideoIngestorTests extends ArchivistApplicationTests {
     IngestExecutorService ingestExecutorService;
 
     @Autowired
-    AssetDao assetDao;
+    SearchService searchService;
 
     @Test
     public void testProcess() throws InterruptedException {
@@ -47,10 +45,9 @@ public class VideoIngestorTests extends ArchivistApplicationTests {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
-        List<Asset> assets = assetDao.getAll();
-        assertEquals(1, assets.size());
-
-
+        assertEquals(1,
+                searchService.search(new AssetSearch().setFilter(
+                        new AssetFilter().addToFieldTerms("video.format", "mp4"))).getHits().totalHits());
     }
 }
 

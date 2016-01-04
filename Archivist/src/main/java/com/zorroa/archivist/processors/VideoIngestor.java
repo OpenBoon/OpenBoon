@@ -45,24 +45,40 @@ public class VideoIngestor extends IngestProcessor {
             video.setHeight(Integer.parseInt(metadata.get("tiff:ImageLength")));
             video.setWidth(Integer.parseInt(metadata.get("tiff:ImageWidth")));
             video.setAudioSampleRate(Integer.parseInt(metadata.get("xmpDM:audioSampleRate")));
-            video.setAudioSampleRate(Integer.parseInt(metadata.get("xmpDM:duration")));
-            assetBuilder.addSchema(video);
+            video.setDuration(Double.parseDouble(metadata.get("xmpDM:duration")));
+            assetBuilder.addSchema("video", video);
+
         } catch (Exception e) {
+            logger.warn("{}", e);
             eventLogService.log("Failed to extra metadata from video: {}", e, assetBuilder.getFilename());
         }
     }
 
     public void extractImage(AssetBuilder assetBuilder) {
+
+        Java2DFrameConverter converter = new Java2DFrameConverter();
+
         try {
             FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(assetBuilder.getFile());
             grabber.start();
-            Java2DFrameConverter converter = new Java2DFrameConverter();
+
+            /*
+             * This metadata seems to get only get populated if we start playback.
+             */
+            VideoSchema video = assetBuilder.getSchema("video", VideoSchema.class);
+            video.setFrames(grabber.getLengthInFrames());
+            video.setAspectRatio(grabber.getAspectRatio());
+            video.setAudioChannels(grabber.getAudioChannels());
+            video.setFormat(grabber.getFormat());
+            video.setFrameRate(grabber.getFrameRate());
+            video.setSampleRate(grabber.getSampleRate());
 
             Frame frame = grabber.grabImage();
             BufferedImage image = converter.convert(frame);
             assetBuilder.setImage(image);
             grabber.stop();
         } catch (Exception e) {
+            logger.warn("{}", e);
             eventLogService.log("Failed to capture image from video: {}", e, assetBuilder.getFilename());
         }
     }
