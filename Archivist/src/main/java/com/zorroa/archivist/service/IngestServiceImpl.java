@@ -12,6 +12,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -127,7 +128,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         /*
          * Pulling an updated copy of the ingest to account for any changed fields.
          */
-        ingest = getIngest(ingest.getId());
+        try {
+            ingest = getIngest(ingest.getId());
+        } catch (EmptyResultDataAccessException ignore) {
+            
+        }
         String json = new String(Json.serialize(ingest), StandardCharsets.UTF_8);
         eventServerHandler.broadcast(new Message(messageType, json));
     }
@@ -177,7 +182,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         // Update active ingest thread counts
         if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
                 ingest.getAssetWorkerThreads() != builder.getAssetWorkerThreads()) {
-            
+
             synchronized(ingest) {
                 ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());
                 ingestExecutorService.pause(ingest);
