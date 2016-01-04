@@ -185,6 +185,60 @@ public class Document {
         return this;
     }
 
+    /**
+     * Remove an attribute. This only works on arbitrary attributes, not
+     * on actual schemed attributes.
+     *
+     * @param namespace
+     * @param key
+     * @return
+     */
+    public boolean removeAttr(String namespace, String key) {
+        Object schema = this.document.get(namespace);
+        if (schema == null) {
+          return false;
+        }
+
+        try {
+            Map<String, Object> _schema = (Map<String, Object>) schema;
+            return _schema.remove(key) != null;
+        } catch (Exception ignore) {
+
+        }
+        return false;
+    }
+
+    /**
+     * Remove an attribute. This only works on arbitrary attributes, not
+     * on actual schemed attributes.
+     *
+     * @param name
+     * @return
+     */
+    public boolean removeAttr(String name) {
+        if (name.contains(".")) {
+            Object current = document;
+            for (String e: Splitter.on('.').split(name.substring(0, name.lastIndexOf('.')))) {
+                current = getObject(current, e);
+                if (current == null) {
+                    return false;
+                }
+            }
+
+            try {
+                Map<String, Object> _schema = (Map<String, Object>) current;
+                return _schema.remove(name.substring(name.lastIndexOf('.')+1)) != null;
+            } catch (Exception ignore) {
+
+            }
+            return false;
+        }
+        else {
+            return document.remove(name) != null;
+        }
+    }
+
+
     private <T> T getObject(Object object, String key) {
         if (object == null) {
             return null;
