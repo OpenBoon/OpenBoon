@@ -19,8 +19,6 @@ public interface IngestService {
 
     boolean ingestPipelineExists(String name);
 
-    void updateIngestCounters(Ingest ingest, int created, int updated, int errors);
-
     void updateIngestStartTime(Ingest ingest, long time);
 
     void updateIngestStopTime(Ingest ingest, long time);
@@ -45,6 +43,8 @@ public interface IngestService {
     boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder);
 
     boolean deleteIngestPipeline(IngestPipeline pipeline);
+
+    void incrementIngestCounters(Ingest ingest, int created, int updated, int errors);
 
     boolean setIngestRunning(Ingest ingest);
 
