@@ -11,7 +11,7 @@ install:
   - ./travis/travis-install-archivist.sh
 
 script:
-  - mvn integration-test
+  - mvn verify
 
 notifications:
   slack: zorroa:U0489fQGuSPls5EZZfSUoGsL
