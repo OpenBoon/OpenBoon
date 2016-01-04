@@ -131,7 +131,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         try {
             ingest = getIngest(ingest.getId());
         } catch (EmptyResultDataAccessException ignore) {
-            
+
         }
         String json = new String(Json.serialize(ingest), StandardCharsets.UTF_8);
         eventServerHandler.broadcast(new Message(messageType, json));
