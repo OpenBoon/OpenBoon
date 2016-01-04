@@ -125,11 +125,14 @@ public class IntegrationTest {
         env.put("ZORROA_OPENCV_MODEL_PATH", pwd + "/models");
         env.put("ZORROA_SITE_PATH", pwd + "/target");
         File log = new File("Database/archivist.log");
-        pb.redirectErrorStream(true);
+        File err = new File("Database/archivist.err");
+        pb.redirectErrorStream(true);   // FIXME: Not sure we are really getting stderr...
+        pb.redirectError(ProcessBuilder.Redirect.appendTo(err));
         pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
         archivistProcess = pb.start();
         assert pb.redirectInput() == ProcessBuilder.Redirect.PIPE;
         assert pb.redirectOutput().file() == log;
+        assert pb.redirectError().file() == err;
         assert archivistProcess.getInputStream().read() == -1;
 
         Boolean isStarted = waitForHealthyArchivst(20);
@@ -143,7 +146,7 @@ public class IntegrationTest {
     }
 
     private static void ingest() throws IOException, InterruptedException {
-        String allProcessorPipeline = "{ \"name\" : \"standard\", \"processors\" : [ { \"klass\" : \"com.zorroa.archivist.processors.AssetMetadataProcessor\" }, { \"klass\" : \"com.zorroa.archivist.processors.ProxyProcessor\" }, { \"klass\" : \"com.zorroa.ingestors.FaceIngestor\" }, { \"klass\" : \"com.zorroa.ingestors.CaffeIngestor\" }, { \"klass\" : \"com.zorroa.ingestors.LogoIngestor\"}, { \"klass\" : \"com.zorroa.ingestors.RetrosheetIngestor\"} ] }";
+        String allProcessorPipeline = "{ \"name\" : \"standard\", \"processors\" : [ { \"klass\" : \"com.zorroa.archivist.processors.ImageIngestor\" }, { \"klass\" : \"com.zorroa.archivist.processors.ProxyProcessor\" }, { \"klass\" : \"com.zorroa.ingestors.FaceIngestor\" }, { \"klass\" : \"com.zorroa.ingestors.CaffeIngestor\" }, { \"klass\" : \"com.zorroa.ingestors.LogoIngestor\"}, { \"klass\" : \"com.zorroa.ingestors.RetrosheetIngestor\"} ] }";
         String response = sendJson("api/v1/pipelines/1", "PUT", allProcessorPipeline);
         System.out.println(response);
         String pwd = System.getProperty("user.dir");;
