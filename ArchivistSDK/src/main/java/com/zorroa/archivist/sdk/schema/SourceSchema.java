@@ -101,6 +101,30 @@ public class SourceSchema implements Schema {
     }
 
     @JsonIgnore
+    public boolean isSuperType(String type) {
+        if (type == null) {
+            return false;
+        }
+        return this.type.startsWith(type + "/");
+    }
+
+    @JsonIgnore
+    public boolean isSubType(String type) {
+        if (type == null) {
+            return false;
+        }
+        return this.type.endsWith("/" + type);
+    }
+
+    @JsonIgnore
+    public boolean isType(String type) {
+        if (type == null) {
+            return false;
+        }
+        return this.type.equals(type);
+    }
+
+    @JsonIgnore
     @Override
     public String getNamespace() {
         return "source";
