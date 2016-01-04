@@ -53,6 +53,7 @@ public abstract class AssetBuilderTests {
             if (extIndex < 0)    // Check only last name component first
                 continue;
             AssetBuilder asset = new AssetBuilder(file.getAbsolutePath());
+            asset.getSource().setType("image/" + asset.getExtension());
             List<Proxy> proxyList = new ArrayList<Proxy>();
             File proxyFile = new File(proxyFolder + "/" + filename.substring(0, extIndex) + "-proxy.png");
             if (proxyFile.exists()) {
