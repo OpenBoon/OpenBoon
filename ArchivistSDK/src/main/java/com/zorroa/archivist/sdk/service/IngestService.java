@@ -32,7 +32,7 @@ public interface IngestService {
 
     boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder);
 
-    Ingest getIngest(long id);
+    Ingest getIngest(int id);
 
     List<Ingest> getAllIngests();
 
