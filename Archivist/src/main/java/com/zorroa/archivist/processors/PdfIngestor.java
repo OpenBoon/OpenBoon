@@ -44,7 +44,7 @@ public class PdfIngestor extends IngestProcessor {
             schema.setTitle(metadata.get("title"));
             schema.setPages(Integer.valueOf(metadata.get("xmpTPg:NPages")));
             assetBuilder.getSource().setDate(metadata.getDate(Property.get("Last-Save-Date")));
-
+            assetBuilder.addSchema(schema);
         } catch (Exception e) {
             eventLogService.log(
                     "Failed to extract metadata from PDF: {}", e, assetBuilder.getAbsolutePath());

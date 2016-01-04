@@ -7,7 +7,9 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.IngestExecutorService;
+import com.zorroa.archivist.service.SearchService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,6 +35,9 @@ public class PdfIngestorTests extends ArchivistApplicationTests {
     @Autowired
     AssetDao assetDao;
 
+    @Autowired
+    SearchService searchService;
+
     @Test
     public void testProcess() throws InterruptedException {
 
@@ -56,5 +61,25 @@ public class PdfIngestorTests extends ArchivistApplicationTests {
         assertTrue(new File(proxies.get(0).getPath()).exists());
     }
 
+    @Test
+    public void testSearchByTitle() throws InterruptedException {
+
+        IngestPipelineBuilder builder = new IngestPipelineBuilder();
+        builder.setName("pdf");
+        builder.addToProcessors(
+                new ProcessorFactory<>(PdfIngestor.class));
+        builder.addToProcessors(
+                new ProcessorFactory<>(ProxyProcessor.class));
+        IngestPipeline pipeline = ingestPipelineDao.create(builder);
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(TEST_DATA_PATH).setPipelineId(pipeline.getId()));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex();
+
+        List<Asset> assets = assetDao.getAll();
+        logger.info(Json.serializeToString(assets.get(0)));
+
+        assertEquals(1, searchService.search(new AssetSearch().setQuery("Microsoft")).getHits().totalHits());
+    }
 }
 
