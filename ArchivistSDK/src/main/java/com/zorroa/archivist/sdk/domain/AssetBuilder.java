@@ -116,10 +116,6 @@ public class AssetBuilder extends Document{
         return keywords;
     }
 
-    public boolean isType(AssetType type) {
-        return getSource().getType().equals(type);
-    }
-
     /**
      * This method copies all schema properties annotated with Keyword
      * to the proper Keywords bucket.  This is called right before the asset

@@ -2,8 +2,6 @@ package com.zorroa.archivist.sdk.schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
-import com.zorroa.archivist.sdk.domain.AssetType;
-import com.zorroa.archivist.sdk.util.IngestUtils;
 
 import java.util.Date;
 
@@ -25,9 +23,9 @@ public class SourceSchema implements Schema {
     private String basename;
     private String directory;
     private Date date;
-    private AssetType type;
     private String checksum;
     private long fileSize;
+    private String type;
 
     public String getChecksum() {
         return checksum;
@@ -51,7 +49,6 @@ public class SourceSchema implements Schema {
 
     public void setExtension(String ext) {
         this.extension = ext;
-        this.type = IngestUtils.determineAssetType(ext);
     }
 
     public String getFilename() {
@@ -86,20 +83,21 @@ public class SourceSchema implements Schema {
         this.date = date;
     }
 
-    public AssetType getType() {
-        return type;
-    }
-
-    public void setType(AssetType type) {
-        this.type = type;
-    }
-
     public long getFileSize() {
         return fileSize;
     }
 
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public SourceSchema setType(String type) {
+        this.type = type;
+        return this;
     }
 
     @JsonIgnore
@@ -111,8 +109,8 @@ public class SourceSchema implements Schema {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(SourceSchema.class)
-                .add("type", type)
                 .add("path", path)
+                .add("type", type)
                 .add("ext", extension)
                 .add("filename", filename)
                 .add("basename", basename)

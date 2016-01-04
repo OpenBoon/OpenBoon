@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.zorroa.archivist.sdk.schema.SourceSchema;
+
 public class Asset extends Document {
 
     private String id;
@@ -15,11 +17,6 @@ public class Asset extends Document {
         this.id = id;
     }
 
-    public AssetType getType() {
-        int type = getAttr("source.type");
-        return AssetType.values()[type];
-    }
-
     public long getVersion() {
         return version;
     }
@@ -28,5 +25,7 @@ public class Asset extends Document {
         this.version = version;
     }
 
-
+    public SourceSchema getSource() {
+        return getSchema("source", SourceSchema.class);
+    }
 }
