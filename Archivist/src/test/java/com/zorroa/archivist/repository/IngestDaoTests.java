@@ -153,8 +153,8 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testCounters() {
-        ingestDao.updateCounters(ingest, 1, 2, 3);
+    public void testIncrementCounters() {
+        ingestDao.incrementCounters(ingest, 1, 2, 3);
         Ingest ingest01 = ingestDao.get(ingest.getId());
         assertEquals(1, ingest01.getCreatedCount());
         assertEquals(2, ingest01.getUpdatedCount());

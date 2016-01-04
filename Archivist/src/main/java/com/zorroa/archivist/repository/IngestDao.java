@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IngestDao {
 
-    Ingest get(long id);
+    Ingest get(int id);
 
     Ingest create(IngestPipeline pipeline, IngestBuilder builder);
 
@@ -27,7 +27,7 @@ public interface IngestDao {
 
     void resetCounters(Ingest ingest);
 
-    void updateCounters(Ingest ingest, int created, int updated, int errors);
+    void incrementCounters(Ingest ingest, int created, int updated, int errors);
 
     boolean updateStartTime(Ingest ingest, long time);
 

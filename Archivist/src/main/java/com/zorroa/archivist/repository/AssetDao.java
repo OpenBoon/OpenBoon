@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.sdk.domain.*;
 import org.elasticsearch.action.ActionListener;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 
 import java.util.Collection;
@@ -35,7 +35,7 @@ public interface AssetDao {
 
     long update(String assetId, AssetUpdateBuilder builder);
 
-    BulkResponse bulkUpsert(List<AssetBuilder> builders);
+    BulkAssetUpsertResult bulkUpsert(List<AssetBuilder> builders);
 
     void addToExport(Asset asset, Export export);
 

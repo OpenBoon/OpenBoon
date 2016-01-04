@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -91,8 +92,8 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         assetDao.addToFolder(asset, folder);
 
         asset = assetDao.get(asset.getId());
-        assertTrue(((List)asset.getAttr("folders")).contains(folder.getId()));
-        assertEquals(1, ((List)asset.getAttr("folders")).size());
+        assertTrue(((List) asset.getAttr("folders")).contains(folder.getId()));
+        assertEquals(1, ((List) asset.getAttr("folders")).size());
     }
 
     @Test
@@ -105,7 +106,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         refreshIndex();
 
         asset = assetDao.get(asset.getId());
-        assertTrue(((List)asset.getAttr("folders")).contains(folder.getId()));
+        assertTrue(((List) asset.getAttr("folders")).contains(folder.getId()));
 
         assetDao.removeFromFolder(asset, folder);
         refreshIndex();
@@ -113,9 +114,10 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         asset = assetDao.get(asset.getId());
         logger.info(Json.serializeToString(asset.getAttr("folders")));
 
-        assertFalse(((List)asset.getAttr("folders")).contains(folder.getId()));
+        assertFalse(((List) asset.getAttr("folders")).contains(folder.getId()));
     }
 
+    @Test
     public void testAddAssetToExport() {
 
         AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
@@ -145,7 +147,22 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         refreshIndex(100);
 
         asset = assetDao.get(asset.getId());
-        assertTrue(((List)asset.getAttr("exports")).contains(export.getId()));
-        assertEquals(1, ((List)asset.getAttr("exports")).size());
+        assertTrue(((List) asset.getAttr("exports")).contains(export.getId()));
+        assertEquals(1, ((List) asset.getAttr("exports")).size());
+    }
+
+    @Test
+    public void testBulkUpsertErrorRecovery() {
+        AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        assetBuilder.setAttr("foo", "bar", 1.0);
+        assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
+        refreshIndex();
+
+        assetBuilder = new AssetBuilder(getTestImage("new_zealand_wellington_harbour.jpg"));
+        assetBuilder.setAttr("foo", "bar", "bing");
+        BulkAssetUpsertResult result = assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
+        assertEquals(1, result.created);
+        assertEquals(1, result.retries);
+
     }
 }

@@ -135,11 +135,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public void updateIngestCounters(Ingest ingest, int created, int updated, int errors) {
-        ingest.setCreatedCount(created);
-        ingest.setUpdatedCount(updated);
-        ingest.setErrorCount(errors);
-        ingestDao.updateCounters(ingest, created, updated, errors);
+    public void incrementIngestCounters(Ingest ingest, int created, int updated, int errors) {
+        ingestDao.incrementCounters(ingest, created, updated, errors);
         broadcast(ingest, MessageType.INGEST_UPDATE_COUNTERS);
     }
 
@@ -199,7 +196,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public Ingest getIngest(long id) {
+    public Ingest getIngest(int id) {
         return ingestDao.get(id);
     }
 

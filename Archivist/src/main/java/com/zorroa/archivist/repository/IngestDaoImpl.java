@@ -38,7 +38,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     };
 
     @Override
-    public Ingest get(long id) {
+    public Ingest get(int id) {
         return jdbc.queryForObject("SELECT * FROM ingest WHERE pk_ingest=?", MAPPER, id);
     }
 
@@ -76,7 +76,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             ps.setInt(9, builder.getAssetWorkerThreads());
             return ps;
         }, keyHolder);
-        long id = keyHolder.getKey().longValue();
+        int id = keyHolder.getKey().intValue();
         return get(id);
     }
 
@@ -192,10 +192,19 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 ingest.getId());
     }
 
+    private static final String INCREMENT_COUNTERS =
+            "UPDATE " +
+                "ingest " +
+            "SET " +
+                "int_created_count=int_created_count+?," +
+                "int_updated_count=int_updated_count+?," +
+                "int_error_count=int_error_count+? " +
+            "WHERE " +
+                "pk_ingest=?";
+
     @Override
-    public void updateCounters(Ingest ingest, int created, int updated, int errors) {
-        jdbc.update("UPDATE ingest SET int_created_count=?,int_updated_count=?,int_error_count=? WHERE pk_ingest=?",
-                created, updated, errors, ingest.getId());
+    public void incrementCounters(Ingest ingest, int created, int updated, int errors) {
+        jdbc.update(INCREMENT_COUNTERS, created, updated, errors, ingest.getId());
     }
 
     @Override
