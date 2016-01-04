@@ -5,7 +5,9 @@ package com.zorroa.archivist.sdk.schema;
  */
 public class DocumentSchema implements Schema {
 
+    @Keyword
     private String title;
+    @Keyword
     private String author;
     private int pages;
 
