@@ -1,5 +1,8 @@
 package com.zorroa.archivist.sdk.util;
 
+import com.google.common.base.Splitter;
+
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -19,6 +22,34 @@ public class StringUtil {
         }
         sb.deleteCharAt(sb.length()-1);
         return sb.toString();
+    }
+
+    /**
+     * A pattern for splitting up a string by all whitespace, including new lines and carriage returns.
+     * Note: Intellij doesn't seem to support \R yet, but it does compile.
+     */
+    private static final Pattern WORD_STREAM_PATTERN = Pattern.compile("\\R|\\p{javaSpaceChar}");
+
+    /**
+     * Return an Iterable<String> of all individual words in a string.
+     *
+     * @param words
+     * @return
+     */
+    public static Iterable<String> getWordStream(String words) {
+        return Splitter.on(WORD_STREAM_PATTERN)
+                .trimResults().omitEmptyStrings().split(words);
+    }
+
+    /**
+     * Return a list of all individual words in a string.
+     *
+     * @param words
+     * @return
+     */
+    public static List<String> getWordList(String words) {
+        return Splitter.on(WORD_STREAM_PATTERN)
+                .trimResults().omitEmptyStrings().splitToList(words);
     }
 
 
