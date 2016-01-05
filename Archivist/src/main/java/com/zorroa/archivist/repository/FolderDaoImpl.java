@@ -143,14 +143,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             return ps;
         }, keyHolder);
 
-        Folder folder = new Folder();
-        folder.setId(keyHolder.getKey().intValue());
-        folder.setParentId(builder.getParentId());
-        folder.setName(builder.getName());
-        folder.setSearch(builder.getSearch());
-        folder.setUserCreated(user);
-        folder.setAcl(builder.getAcl());
-        return folder;
+        return get(keyHolder.getKey().intValue());
     }
 
     @Override
