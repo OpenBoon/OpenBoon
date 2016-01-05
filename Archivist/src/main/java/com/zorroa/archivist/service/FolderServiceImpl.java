@@ -91,9 +91,8 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public synchronized Folder create(FolderBuilder builder) {
         Folder parent = folderDao.get(builder.getParentId());
-
         if(!parent.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
-            throw new AccessDeniedException("You do not have write access to this folder");
+            throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
         Folder folder = folderDao.create(builder);
@@ -107,6 +106,11 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean update(Folder folder, FolderBuilder builder) {
+
+        if(!folder.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
+            throw new AccessDeniedException("You cannot make changes to this folder");
+        }
+
         boolean result = folderDao.update(folder, builder);
         if (result) {
             transactionEventManager.afterCommit(() -> invalidate(folder, builder.getParentId()));
@@ -118,6 +122,11 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean delete(Folder folder) {
+
+        if(!folder.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
+            throw new AccessDeniedException("You cannot make changes to this folder");
+        }
+
         boolean result = folderDao.delete(folder);
         if (result) {
             messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
