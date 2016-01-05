@@ -59,6 +59,39 @@ public class KeywordsSchema implements Schema {
     }
 
     /**
+     * Add a new keyword with the given confidence.  Keywords with a confidence
+     * value les than or equal to 0 are ignored.
+     *
+     * Optionally adds valid keywords to suggestion keywords as well, however
+     * the confidence value should still be greater than 0 for this to happen.
+     *
+     * @param confidence
+     * @param suggestion
+     * @param keywords
+     */
+    public void addKeywords(double confidence, boolean suggestion, Iterable<String> keywords) {
+        if (confidence <= 0) {
+            return;
+        }
+
+        String field = String.format("level%d", getBucket(Math.min(confidence, CONFIDENCE_MAX)));
+        Set<String> bucket = fields.get(field);
+
+        if (bucket == null) {
+            bucket = Sets.newHashSet();
+            fields.put(field, bucket);
+        }
+
+        for (String word: keywords) {
+            bucket.add(word);
+            all.add(word);
+            if (suggestion) {
+                suggest.add(word);
+            }
+        }
+    }
+
+    /**
      * A given keywords to suggestion keywords field.
      *
      * @param keywords

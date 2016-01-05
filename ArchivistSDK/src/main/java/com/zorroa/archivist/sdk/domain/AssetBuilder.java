@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
-import java.util.Collection;
 
 public class AssetBuilder extends Document{
 
@@ -103,8 +102,8 @@ public class AssetBuilder extends Document{
         return this;
     }
 
-    public AssetBuilder addKeywords(double confidence, boolean suggest, Collection<String> words) {
-        keywords.addKeywords(confidence, suggest, words.toArray(new String[] {}));
+    public AssetBuilder addKeywords(double confidence, boolean suggest, Iterable<String> words) {
+        keywords.addKeywords(confidence, suggest, words);
         return this;
     }
 
