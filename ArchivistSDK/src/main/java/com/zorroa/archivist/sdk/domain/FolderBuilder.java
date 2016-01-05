@@ -2,7 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 public class FolderBuilder {
 
-    private Integer parentId;
+    private Integer parentId = Folder.ROOT_ID;
     private String name;
     private AssetSearch search;
     private Acl acl;
