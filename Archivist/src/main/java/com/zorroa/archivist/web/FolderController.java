@@ -56,7 +56,7 @@ public class FolderController {
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.PUT)
-    public Folder update(@RequestBody FolderBuilder builder, @PathVariable int id) {
+    public Folder update(@RequestBody FolderUpdateBuilder builder, @PathVariable int id) {
         Folder folder = folderService.get(id);
         folderService.update(folder, builder);
         return folderService.get(folder.getId());

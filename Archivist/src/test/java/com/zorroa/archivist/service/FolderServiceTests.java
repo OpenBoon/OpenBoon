@@ -2,10 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.sdk.domain.Access;
-import com.zorroa.archivist.sdk.domain.Acl;
-import com.zorroa.archivist.sdk.domain.Folder;
-import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +96,7 @@ public class FolderServiceTests extends ArchivistApplicationTests {
     @Test
     public void testUpdate() {
         Folder folder = folderService.create(new FolderBuilder("orig"));
-        boolean ok = folderService.update(folder, new FolderBuilder("new"));
+        boolean ok = folderService.update(folder, new FolderUpdateBuilder().setName("new"));
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
         assertEquals("new", revised.getName());

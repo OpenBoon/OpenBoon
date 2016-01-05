@@ -105,7 +105,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public boolean update(Folder folder, FolderBuilder builder) {
+    public boolean update(Folder folder, FolderUpdateBuilder builder) {
 
         if(!folder.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");

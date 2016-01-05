@@ -118,19 +118,12 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testUpdate() {
-        String name = "Gimbo";
-        FolderBuilder builder = new FolderBuilder(name);
-        Folder gimbo = folderDao.create(builder);
-        builder = new FolderBuilder("Bimbo");
-        Folder bimbo  = folderDao.create(builder);
-        builder = new FolderBuilder("Bimbo-updated", gimbo);
-        builder.setSearch(new AssetSearch());
-        boolean ok = folderDao.update(bimbo, builder);
-        assertTrue(ok);
-
-        Folder bimbo2 = folderDao.get(bimbo.getId());
-        assertEquals(bimbo2.getName(), "Bimbo-updated");
-        assertEquals(bimbo2.getParentId().intValue(), gimbo.getId());
+        Folder v1 = folderDao.create(new FolderBuilder("v1", Folder.ROOT_ID));
+        folderDao.update(v1, new FolderUpdateBuilder().setName("v2"));
+        Folder v2 = folderDao.get(v1.getId());
+        assertEquals("v2", v2.getName());
+        assertEquals(null, v2.getSearch());
+        assertEquals(0, v2.getAcl().size());
     }
 
     @Test

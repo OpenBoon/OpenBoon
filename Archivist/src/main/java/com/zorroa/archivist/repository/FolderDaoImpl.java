@@ -133,7 +133,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         jdbc.update(connection -> {
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_folder"});
-            ps.setInt(1, builder.getParentId());
+            ps.setInt(1, builder.getParentId() == null ?  Folder.ROOT_ID : builder.getParentId());
             ps.setString(2, builder.getName());
             ps.setInt(3, user);
             ps.setLong(4, time);
@@ -147,21 +147,29 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
-    public boolean update(Folder folder, FolderBuilder builder) {
+    public boolean update(Folder folder, FolderUpdateBuilder builder) {
+
+        if (builder.isset("acl")) {
+            setAcl(folder, builder.getAcl());
+        }
 
         List<Object> values = Lists.newArrayList();
         List<String> sets = Lists.newArrayList();
 
-        if (builder.getName() != null) {
+        if (builder.isset("name")) {
             sets.add("str_name=?");
             values.add(builder.getName());
         }
 
-        sets.add("pk_parent=?");
-        values.add(builder.getParentId());
+        if (builder.isset("parentId")) {
+            sets.add("pk_parent=?");
+            values.add(builder.getParentId());
+        }
 
-        sets.add("json_search=?");
-        values.add(Json.serializeToString(builder.getSearch(), null));
+        if (builder.isset("search")) {
+            sets.add("json_search=?");
+            values.add(Json.serializeToString(builder.getSearch(), null));
+        }
 
         values.add(folder.getId());
 
