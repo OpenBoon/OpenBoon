@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.service;
 import com.zorroa.archivist.sdk.domain.Acl;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.domain.FolderBuilder;
+import com.zorroa.archivist.sdk.domain.FolderUpdateBuilder;
 
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +47,7 @@ public interface FolderService {
 
     Folder create(FolderBuilder builder);
 
-    boolean update(Folder folder, FolderBuilder builder);
+    boolean update(Folder folder, FolderUpdateBuilder builder);
 
     boolean delete(Folder folder);
 

@@ -1,21 +1,44 @@
 package com.zorroa.archivist.sdk.domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
 
+import java.util.List;
+
+/**
+ *
+ */
 public class AssetUpdateBuilder {
-    private Map<String, Object> source = new HashMap<String, Object>();
 
-    public Map<String, Object> getSource() {
-        return source;
+    /**
+     * Tweaks are changes to ingested data that we want to preserve
+     * even if the data gets re-ingested.
+     */
+    private List<Tweak> tweaks = Lists.newArrayList();
+
+
+    /**
+     * Permissions
+     */
+
+    /**
+     *
+     */
+
+    /**
+     * Remove a keyword
+     */
+
+    public enum TweakOp {
+        RemoveField,
+        RemoveValue,
+        RemoveAsset,
+        MergeAsset,
+        SetValue,
     }
 
-    public void put(String namespace, String key, Object value) {
-        Map<String,Object> map = (Map<String,Object>) source.get(namespace);
-        if (map == null) {
-            map = new HashMap<String, Object>(16);
-            source.put(namespace, map);
-        }
-        map.put(key,  value);
+    private static class Tweak {
+        private TweakOp op;
+        private String field;
+        private Object value;
     }
 }
