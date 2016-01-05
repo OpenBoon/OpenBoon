@@ -31,11 +31,11 @@ public class FolderBuilder {
         this.parentId = parent.getId();
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public FolderBuilder setParentId(int parentId) {
+    public FolderBuilder setParentId(Integer parentId) {
         this.parentId = parentId;
         return this;
     }
