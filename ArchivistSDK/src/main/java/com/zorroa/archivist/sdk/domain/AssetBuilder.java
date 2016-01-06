@@ -218,6 +218,27 @@ public class AssetBuilder extends Document{
         return inputStream;
     }
 
+    public boolean isSuperType(String type) {
+        if (type == null) {
+            return false;
+        }
+        return this.source.getType().startsWith(type + "/");
+    }
+
+    public boolean isSubType(String type) {
+        if (type == null) {
+            return false;
+        }
+        return this.source.getType().endsWith("/" + type);
+    }
+
+    public boolean isType(String type) {
+        if (type == null) {
+            return false;
+        }
+        return this.source.isType(type);
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
