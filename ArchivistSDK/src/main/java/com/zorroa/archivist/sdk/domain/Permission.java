@@ -1,5 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
@@ -44,6 +45,11 @@ public class Permission implements Id {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonIgnore
+    public String getAuthority() {
+        return new StringBuilder(64).append(type).append("::").append(name).toString();
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class PermissionBuilder {
 
     private String name;
+    private String type;
     private String description;
 
     /**
@@ -21,11 +22,13 @@ public class PermissionBuilder {
     }
 
     public PermissionBuilder(String type, String name, boolean immutable) {
-        setName(String.format("%s::%s", type, name));
+        this.name = name;
+        this.type = type;
         this.immutable = false;
     }
 
-    public PermissionBuilder(String name) {
+    public PermissionBuilder(String type, String name) {
+        setType(type);
         setName(name);
         this.immutable = false;
     }
@@ -43,16 +46,16 @@ public class PermissionBuilder {
         return name;
     }
 
-    @JsonIgnore
     public String getType() {
-        return name.split("::")[0];
-    }
+        return type; }
 
     public PermissionBuilder setName(String name) {
-        if (!name.contains("::") || name.indexOf("::") != name.lastIndexOf("::")) {
-            throw new IllegalArgumentException("Permissions must be in the format of 'namespace::group'");
-        }
         this.name = name;
+        return this;
+    }
+
+    public PermissionBuilder setType(String type) {
+        this.type = type;
         return this;
     }
 
@@ -61,3 +64,4 @@ public class PermissionBuilder {
         return immutable;
     }
 }
+
