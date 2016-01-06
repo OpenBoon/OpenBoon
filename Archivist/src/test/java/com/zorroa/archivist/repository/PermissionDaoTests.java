@@ -34,8 +34,7 @@ public class PermissionDaoTests extends ArchivistApplicationTests {
 
     @Before
     public void init() {
-        PermissionBuilder b = new PermissionBuilder();
-        b.setName("project::avatar");
+        PermissionBuilder b = new PermissionBuilder("project", "avatar");
         b.setDescription("Access to the Avatar project");
         perm = permissionDao.create(b);
 
@@ -51,8 +50,7 @@ public class PermissionDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testCreate() {
-        PermissionBuilder b = new PermissionBuilder();
-        b.setName("group::test");
+        PermissionBuilder b = new PermissionBuilder("group", "test");
         b.setDescription("test");
 
         Permission p = permissionDao.create(b);

@@ -67,8 +67,9 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     @Override
-    public Permission get(String name) {
-        return jdbc.queryForObject("SELECT * FROM permission WHERE str_name=?", MAPPER, name);
+    public Permission get(String authority) {
+        String[] parts = authority.split("::");
+        return jdbc.queryForObject("SELECT * FROM permission WHERE str_type=? AND str_name=?", MAPPER, parts);
     }
 
     @Override
@@ -144,8 +145,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public boolean delete(User user) {
-        String name = "user::" + user.getUsername();
-        return jdbc.update("DELETE FROM permission WHERE str_name=?", name) == 1;
+        return jdbc.update("DELETE FROM permission WHERE str_type='user' AND str_name=?", user.getUsername()) == 1;
     }
 
     private void removeAllPermissions(User user) {

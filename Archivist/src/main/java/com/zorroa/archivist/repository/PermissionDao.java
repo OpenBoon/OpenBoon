@@ -17,7 +17,7 @@ public interface PermissionDao {
 
     Permission get(int id);
 
-    Permission get(String name);
+    Permission get(String authority);
 
     List<Permission> getAll();
 
@@ -31,7 +31,7 @@ public interface PermissionDao {
 
     void setOnUser(User user, Permission... perms);
 
-    boolean assign(User user, Permission perm, boolean immuable);
+    boolean assign(User user, Permission perm, boolean immutable);
 
     boolean delete(Permission perm);
 

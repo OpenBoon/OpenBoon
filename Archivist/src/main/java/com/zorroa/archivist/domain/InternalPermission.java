@@ -12,11 +12,6 @@ import java.util.stream.Collectors;
  */
 public class InternalPermission extends Permission implements GrantedAuthority {
 
-    @Override
-    public String getAuthority() {
-        return getName();
-    }
-
     public static List<InternalPermission> upcast(Collection<Permission> perms) {
         return perms.stream().map(p -> (InternalPermission) p).collect(Collectors.toList());
     }

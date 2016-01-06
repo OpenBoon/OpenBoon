@@ -45,7 +45,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         String filepath = "/tmp/" + filename;
         Files.touch(new File(filepath));
 
-        Permission perm = userService.createPermission(new PermissionBuilder().setName("group::test"));
+        Permission perm = userService.createPermission(new PermissionBuilder("group", "test"));
 
         AssetBuilder builder = new AssetBuilder(filepath);
         builder.setSearchPermissions(perm);

@@ -96,7 +96,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         Folder folder1 = folderDao.create(builder);
         assertTrue(folderDao.hasAccess(folder1, Access.Read));
 
-        Permission p = userService.createPermission(new PermissionBuilder().setName("group::foo"));
+        Permission p = userService.createPermission(new PermissionBuilder("group", "foo"));
         Acl acl = new Acl();
         acl.addEntry(p, Access.Read);
         folderDao.setAcl(folder1, acl);
@@ -109,7 +109,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         FolderBuilder builder = new FolderBuilder("test");
         Folder folder1 = folderDao.create(builder);
 
-        Permission p = userService.createPermission(new PermissionBuilder().setName("group::foo"));
+        Permission p = userService.createPermission(new PermissionBuilder("group","foo"));
         folderDao.setAcl(folder1, new Acl().addEntry(p, Access.Read));
 
         Acl acl = folderDao.getAcl(folder1);
