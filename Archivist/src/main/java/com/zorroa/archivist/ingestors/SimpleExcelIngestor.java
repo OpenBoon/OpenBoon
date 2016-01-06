@@ -1,4 +1,4 @@
-package com.zorroa.archivist.processors;
+package com.zorroa.archivist.ingestors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;

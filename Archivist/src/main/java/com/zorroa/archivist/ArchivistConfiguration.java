@@ -1,12 +1,12 @@
 package com.zorroa.archivist;
 
-import org.flywaydb.core.Flyway;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.RestControllerAdvice;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
+import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.zorroa.archivist.processors;
+package com.zorroa.archivist.ingestors;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;

@@ -1,4 +1,4 @@
-package com.zorroa.archivist.processors;
+package com.zorroa.archivist.ingestors;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;

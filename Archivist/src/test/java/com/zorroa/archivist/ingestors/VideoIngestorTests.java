@@ -1,4 +1,4 @@
-package com.zorroa.archivist.processors;
+package com.zorroa.archivist.ingestors;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.IngestPipelineDao;

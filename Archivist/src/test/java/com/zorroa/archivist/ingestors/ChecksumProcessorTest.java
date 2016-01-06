@@ -1,11 +1,10 @@
-package com.zorroa.archivist.processors;
+package com.zorroa.archivist.ingestors;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.common.collect.Maps;
@@ -16,13 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
- * Created by wex on 7/6/15.
+ * Created by chambers on 7/3/15.
  */
-public class ImageIngestorTests extends ArchivistApplicationTests {
-
+public class ChecksumProcessorTest extends ArchivistApplicationTests {
 
     @Autowired
     IngestPipelineDao ingestPipelineDao;
@@ -37,14 +34,14 @@ public class ImageIngestorTests extends ArchivistApplicationTests {
     AssetDao assetDao;
 
     @Test
-    public void testProcessImage() throws InterruptedException {
+    public void testProcess() throws InterruptedException {
 
         Map<String, Object> args = Maps.newHashMap();
 
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
-        builder.setName("image");
+        builder.setName("test");
         builder.addToProcessors(
-                new ProcessorFactory<>(ImageIngestor.class));
+                new ProcessorFactory<>(ChecksumProcessor.class));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
@@ -54,13 +51,17 @@ public class ImageIngestorTests extends ArchivistApplicationTests {
         List<Asset> assets = assetDao.getAll();
         assertEquals(2, assets.size());
 
-        // Verify Image sizes were set.
-        ImageSchema schema = assets.get(0).getSchema("image", ImageSchema.class);
-        assertTrue(schema.getWidth() > 0);
-        assertTrue(schema.getHeight() > 0);
+        for (Asset asset: assets) {
+            String path = asset.getAttr("source.path");
+            String crc32 = asset.getAttr("source.checksum");
 
-        // TODO: Test for more image tags.
+            if (path.contains("beer_kettle_01.jpg")) {
+                assertEquals(crc32, "9faa728d41dfb2c9416fb7c7fc6ad77d");
+            }
 
+            if (path.contains("new_zealand_wellington_harbour.jpg")) {
+                assertEquals(crc32, "306a7de6f3d2da7bb4cd540e2cbfba8e");
+            }
+        }
     }
-
 }

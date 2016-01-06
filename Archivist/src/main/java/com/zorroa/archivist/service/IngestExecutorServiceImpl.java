@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.domain.BulkAssetUpsertResult;
-import com.zorroa.archivist.processors.AggregatorIngestor;
+import com.zorroa.archivist.ingestors.AggregatorIngestor;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;

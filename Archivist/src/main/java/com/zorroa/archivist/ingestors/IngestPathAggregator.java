@@ -1,4 +1,4 @@
-package com.zorroa.archivist.processors;
+package com.zorroa.archivist.ingestors;
 
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.*;

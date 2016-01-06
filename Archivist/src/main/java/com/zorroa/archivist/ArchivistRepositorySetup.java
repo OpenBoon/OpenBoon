@@ -1,10 +1,10 @@
 package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.processors.ImageIngestor;
-import com.zorroa.archivist.processors.PdfIngestor;
-import com.zorroa.archivist.processors.ProxyProcessor;
-import com.zorroa.archivist.processors.VideoIngestor;
+import com.zorroa.archivist.ingestors.ImageIngestor;
+import com.zorroa.archivist.ingestors.PdfIngestor;
+import com.zorroa.archivist.ingestors.ProxyProcessor;
+import com.zorroa.archivist.ingestors.VideoIngestor;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestState;

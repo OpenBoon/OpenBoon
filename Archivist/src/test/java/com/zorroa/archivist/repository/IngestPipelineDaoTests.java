@@ -2,8 +2,8 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.processors.ChecksumProcessor;
-import com.zorroa.archivist.processors.ProxyProcessor;
+import com.zorroa.archivist.ingestors.ChecksumProcessor;
+import com.zorroa.archivist.ingestors.ProxyProcessor;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
