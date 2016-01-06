@@ -37,7 +37,5 @@ public class PluginsControllerTests extends MockMvcTest {
         for (String ingestor: ingestors) {
             assertTrue(ingestor.startsWith("com.zorroa.archivist.ingestors"));
         }
-
     }
-
 }
