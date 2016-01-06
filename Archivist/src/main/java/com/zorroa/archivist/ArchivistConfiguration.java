@@ -1,6 +1,6 @@
 package com.zorroa.archivist;
 
-import com.googlecode.flyway.core.Flyway;
+import org.flywaydb.core.Flyway;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.RestControllerAdvice;
 import org.elasticsearch.client.Client;
