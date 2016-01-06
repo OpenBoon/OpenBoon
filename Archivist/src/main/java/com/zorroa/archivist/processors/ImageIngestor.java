@@ -163,9 +163,12 @@ public class ImageIngestor extends IngestProcessor {
                 if (value == null) {
                     continue;
                 }
+
                 String key = tag.getTagName().replaceAll("[^A-Za-z0-9]", "");
                 String id = namespace + "." + key;
 
+
+                //logger.info("{}= {}", id, value);
                 /*
                  * Handle string formatted dates
                  */
@@ -218,18 +221,28 @@ public class ImageIngestor extends IngestProcessor {
                  * just add the data to the object
                  */
                 if (value instanceof String) {
-                    asset.setAttr(namespace, key, (String)value);
-                    asset.addKeywords(keywordArgs.contains(id) ? KeywordsSchema.CONFIDENCE_MAX : 0, true, (String)value);
+
+                    String strValue = (String) value;
+                    if (strValue.length() >= 256) {
+                        continue;
+                    }
+                    asset.setAttr(namespace, key, strValue);
+                    asset.addKeywords(keywordArgs.contains(id) ? KeywordsSchema.CONFIDENCE_MAX : 0, true, strValue);
                 } else if (value instanceof Rational) {
                     Rational rational = (Rational)value;
                     asset.setAttr(namespace, key, rational.doubleValue());
                     if (description != null) {
                         asset.setAttr(namespace, descriptionKey, description);
                     }
+                } else if (value instanceof Number) {
+                    asset.setAttr(namespace, key, value);
+                    if (description != null) {
+                        asset.setAttr(namespace, descriptionKey, description);
+                    }
                 } else if (value.getClass().isArray()) {
                     String componentName = value.getClass().getComponentType().getName();
                     if (componentName.equals("java.lang.String")) {
-                        String[] strList = (String[])value;
+                        String[] strList = (String[]) value;
                         asset.setAttr(namespace, key, value);
                         asset.addKeywords(keywordArgs.contains(id) ? KeywordsSchema.CONFIDENCE_MAX : 0, true, strList);
                     } else if (componentName.equals("com.drew.lang.Rational")) {
@@ -239,23 +252,20 @@ public class ImageIngestor extends IngestProcessor {
                             doubles[i] = rationals[i].doubleValue();
                         }
                         asset.setAttr(namespace, key, doubles);
-                    } else if (componentName.equals("byte") && Array.getLength(value) <= 16) {
-                        asset.setAttr(namespace, key, value);
-                        if (description != null) {
-                            asset.setAttr(namespace, descriptionKey, description);
+                    } else if (value.getClass().getComponentType().isPrimitive()) {
+                        if (Array.getLength(value) <= 16) {
+                            asset.setAttr(namespace, key, value);
+                            if (description != null) {
+                                asset.setAttr(namespace, descriptionKey, description);
+                            }
                         }
-                    } else {
-                        asset.setAttr(namespace, key, value);
-                        if (description != null) {
-                            asset.setAttr(namespace, descriptionKey, description);
-                        }
-                    }
-                } else {
-                    asset.setAttr(namespace, key, value);
-                    if (description != null) {
-                        asset.setAttr(namespace, descriptionKey, description);
                     }
                 }
+                /*
+                 * If the value isn't a type we specifically handle, then its just
+                 * skipped over.  It likely will just be garble to ElasticSearch
+                 * anyway.
+                 */
             }
         }
     }
