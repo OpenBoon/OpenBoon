@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -23,29 +24,14 @@ public class IngestPathAggregator extends IngestProcessor {
     FolderService folderService;
 
     @Autowired
+    IngestService ingestService;
+
+    @Autowired
     SearchService searchService;
 
     @Override
     public void init(Ingest ingest) {
-        // Create the root folder for all ingests, if needed
-        Folder ingestsFolder;
-        try {
-            ingestsFolder = folderService.get(0, "Ingests");
-        } catch (EmptyResultDataAccessException e) {
-            ingestsFolder = folderService.create(new FolderBuilder().setName("Ingests"));
-        }
-
-        // Create a root folder for this ingest (watch out for name with slashes!)
-        try {
-            ingestFolder = folderService.get(ingestsFolder.getId(), ingest.getPath());
-        } catch (EmptyResultDataAccessException e) {
-            // Folder does not exist, create a new one
-            int ingestId = (int)ingest.getId();     // FIXME: int-cast from long is dangerous
-            AssetFilter ingestFilter = new AssetFilter().setIngestId(ingestId);
-            FolderBuilder ingestBuilder = new FolderBuilder().setName(ingest.getPath())
-                    .setParentId(ingestsFolder.getId()).setSearch(new AssetSearch().setFilter(ingestFilter));
-            ingestFolder = folderService.create(ingestBuilder);
-        }
+        ingestFolder = ingestService.getIngestFolder(ingest);
         excludePathRoot = ".{1," + Integer.toString(ingest.getPath().length()) + "}";
     }
 

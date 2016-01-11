@@ -4,6 +4,7 @@ import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
@@ -46,6 +47,9 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Autowired
     EventServerHandler eventServerHandler;
+
+    @Autowired
+    FolderService folderService;
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
@@ -166,11 +170,17 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         }
         Ingest ingest = ingestDao.create(pipeline, builder);
         broadcast(ingest, MessageType.INGEST_CREATE);
+
+        // Create ingest folder asynchronously to avoid event dependency loop,
+        // but don't wait for processing since clients see the folder
+        new Thread(new Runnable() { public void run() { getIngestFolder(ingest); }}).start();
+
         return ingest;
     }
 
     @Override
     public boolean deleteIngest(Ingest ingest) {
+        new Thread(new Runnable() { public void run() { folderService.delete(getIngestFolder(ingest)); }}).start();
         boolean ok = ingestDao.delete(ingest);
         broadcast(ingest, MessageType.INGEST_DELETE);
         return ok;
@@ -223,6 +233,32 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public Folder getIngestFolder(Ingest ingest) {
+        synchronized (folderService) {
+            // Create the root folder for all ingests, if needed
+            Folder ingestsFolder;
+            try {
+                ingestsFolder = folderService.get(0, "Ingests");
+            } catch (EmptyResultDataAccessException e) {
+                ingestsFolder = folderService.create(new FolderBuilder().setName("Ingests"));
+            }
+
+            // Create a root folder for this ingest (watch out for name with slashes!)
+            String name = Integer.toString(ingest.getId()) + ":" + ingest.getPath();
+            try {
+                return folderService.get(ingestsFolder.getId(), name);
+            } catch (EmptyResultDataAccessException e) {
+                // Folder does not exist, create a new one
+                int ingestId = (int) ingest.getId();     // FIXME: int-cast from long is dangerous
+                AssetFilter ingestFilter = new AssetFilter().setIngestId(ingestId);
+                FolderBuilder ingestBuilder = new FolderBuilder().setName(name).setParentId(ingestsFolder.getId())
+                        .setSearch(new AssetSearch().setFilter(ingestFilter));
+                return folderService.create(ingestBuilder);
+            }
+        }
     }
 }
 
