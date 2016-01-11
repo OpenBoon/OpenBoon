@@ -115,8 +115,8 @@ public class FolderServiceImpl implements FolderService {
                 folderDao.setAcl(folder, builder.getAcl());
                 transactionEventManager.afterCommit(() -> {
                     invalidate(null, builder.getParentId());
+                    messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
                 });
-                messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
                 return folder;
             } catch (DataIntegrityViolationException e) {
                return null;
