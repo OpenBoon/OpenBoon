@@ -135,7 +135,8 @@ public class AssetBuilder extends Document{
                     }
                     keywords.addKeywords(annotation.confidence(), false, field.get(s).toString());
                 } catch (Exception e) {
-                    logger.warn("Failed to access field marked with @Keyword, ", field, e);
+                    logger.warn("Failed to access field '{}' on class '{}' marked with @Keyword, on asset {} ",
+                            field.getName(), s.getClass().getCanonicalName(), source.getPath());
                 }
             }
         }

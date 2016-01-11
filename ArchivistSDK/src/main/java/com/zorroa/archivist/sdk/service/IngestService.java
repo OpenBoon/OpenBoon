@@ -56,4 +56,11 @@ public interface IngestService {
 
     boolean setIngestPaused(Ingest ingest);
 
+    /**
+     * Get the folder linked to the given ingest.
+     *
+     * @param ingest
+     * @return
+     */
+    Folder getFolder(Ingest ingest);
 }

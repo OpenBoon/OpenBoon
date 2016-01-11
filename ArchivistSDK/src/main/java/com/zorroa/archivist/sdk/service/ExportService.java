@@ -1,9 +1,6 @@
 package com.zorroa.archivist.sdk.service;
 
-import com.zorroa.archivist.sdk.domain.Export;
-import com.zorroa.archivist.sdk.domain.ExportBuilder;
-import com.zorroa.archivist.sdk.domain.ExportFilter;
-import com.zorroa.archivist.sdk.domain.ExportOutput;
+import com.zorroa.archivist.sdk.domain.*;
 
 import java.util.List;
 
@@ -65,4 +62,11 @@ public interface ExportService {
      */
     public int offline(Export export);
 
+    /**
+     * Get the folder linked to the given Export.
+     *
+     * @param export
+     * @return
+     */
+    Folder getFolder(Export export);
 }
