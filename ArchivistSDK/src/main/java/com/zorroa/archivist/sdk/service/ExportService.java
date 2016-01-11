@@ -63,10 +63,10 @@ public interface ExportService {
     public int offline(Export export);
 
     /**
-     * Get or create a folder for this export.
+     * Get the folder linked to the given Export.
      *
      * @param export
      * @return
      */
-    public Folder folder(Export export);
+    Folder getFolder(Export export);
 }
