@@ -37,7 +37,7 @@ public class PluginsController {
                     }
                 } catch (java.lang.NoClassDefFoundError ignore) {
                     /*
-                     * This fails for dynamimcally loaded classes that inherit from an
+                     * This fails for dynamically loaded classes that inherit from an
                      * external base class.
                      */
                 }
