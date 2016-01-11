@@ -22,7 +22,7 @@ public class PluginsControllerTests extends MockMvcTest {
     public void testGetAll() throws Exception {
         MockHttpSession session = admin();
 
-        MvcResult result = mvc.perform(get("/api/v1/plugins/ingestors")
+        MvcResult result = mvc.perform(get("/api/v1/plugins/ingest")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
