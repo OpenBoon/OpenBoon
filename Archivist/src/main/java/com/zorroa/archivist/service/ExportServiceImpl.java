@@ -11,11 +11,11 @@ import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +53,9 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     ExportOutputDao exportOutputDao;
 
+    @Autowired
+    TransactionEventManager transactionEventManager;
+
     @Value("${archivist.export.maxAssetCount}")
     int maxAssetCount;
 
@@ -83,9 +86,9 @@ public class ExportServiceImpl implements ExportService {
             exportOutputDao.create(export, factory);
         }
 
-        // Create the folder asynchronously to avoid event dependency loop,
-        // but don't wait for processing to begin since clients see the folder
-        new Thread(new Runnable() { public void run() { folder(export); }}).run();
+        transactionEventManager.afterCommit(() -> {
+            createFolder(export);
+        }, false);
 
         return export;
     }
@@ -188,58 +191,55 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public Folder folder(Export export) {
-        Folder exportsFolder;
-        try {
-            exportsFolder = folderService.get(0, "Exports");
-        } catch (EmptyResultDataAccessException e) {
-            FolderBuilder exportBuilder = new FolderBuilder().setName("Exports").
-                    setSearch(new AssetSearch());
-            exportsFolder = folderService.create(exportBuilder);
-        }
-
-        // Consider adding a standard date folder hierarchy constructor to folder service
+    public Folder getFolder(Export export) {
+        DateFormatSymbols symbols = new DateFormatSymbols();
         Date date = new Date(export.getTimeCreated());
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
-        int year = cal.get(Calendar.YEAR);
-        String yearName = Integer.toString(year);
-        Folder yearFolder;
-        try {
-            yearFolder = folderService.get(exportsFolder.getId(), yearName);
-        } catch (EmptyResultDataAccessException e) {
-            yearFolder = folderService.create(new FolderBuilder().
-                    setParentId(exportsFolder.getId()).setName(yearName));
-        }
+        String[] folders = new String[] {
+                "Exports",
+                String.valueOf(cal.get(Calendar.YEAR)),
+                symbols.getMonths()[cal.get(Calendar.MONTH)],
+                new SimpleDateFormat("EEEE, MMM dd").format(date),
+                new SimpleDateFormat("hh:mm:ss a").format(date)
+        };
 
-        int month = cal.get(Calendar.MONTH);
-        String monthName = new DateFormatSymbols().getMonths()[month];
-        Folder monthFolder;
-        try {
-            monthFolder = folderService.get(yearFolder.getId(), monthName);
-        } catch (EmptyResultDataAccessException e) {
-            monthFolder = folderService.create(new FolderBuilder().setName(monthName).setParentId(yearFolder.getId()));
-        }
+        String path = "/" + String.join("/", folders);
+        return folderService.get(path);
+    }
 
-        String dayName = new SimpleDateFormat("EEEE, MMM dd").format(date);
-        Folder dayFolder;
-        try {
-            dayFolder = folderService.get(monthFolder.getId(), dayName);
-        } catch (EmptyResultDataAccessException e) {
-            dayFolder = folderService.create(new FolderBuilder().setName(dayName)
-                    .setParentId(monthFolder.getId()));
-        }
+    /**
+     * Called directly after new export is committed to the DB.
+     *
+     * @param export
+     * @return
+     */
+    private Folder createFolder(Export export) {
+        DateFormatSymbols symbols = new DateFormatSymbols();
+        Date date = new Date(export.getTimeCreated());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
 
-        String exportName = new SimpleDateFormat("hh:mm:ss a").format(date);
-        try {
-            return folderService.get(dayFolder.getId(), exportName);
-        } catch (EmptyResultDataAccessException e) {
-            AssetFilter exportFilter = new AssetFilter().setExportId(export.getId());
-            FolderBuilder exportBuilder = new FolderBuilder().setName(exportName).setSearch(new AssetSearch()
-                    .setFilter(exportFilter)).setParentId(dayFolder.getId());
-            return folderService.create(exportBuilder);
+        String[] folders = new String[] {
+                String.valueOf(cal.get(Calendar.YEAR)),
+                symbols.getMonths()[cal.get(Calendar.MONTH)],
+                new SimpleDateFormat("EEEE, MMM dd").format(date),
+                new SimpleDateFormat("hh:mm:ss a").format(date)
+        };
+
+        Folder current = folderService.get("/Exports");
+        for (String name: folders) {
+            current = folderService.create(new FolderBuilder(name, current.getId()));
         }
+        /*
+         * Now current is the last folder created, just add the search
+         */
+        AssetFilter filter = new AssetFilter().setExportId(export.getId());
+        folderService.update(current, new FolderUpdateBuilder().setSearch(
+                new AssetSearch().setFilter(filter)));
+
+        return current;
     }
 }
 

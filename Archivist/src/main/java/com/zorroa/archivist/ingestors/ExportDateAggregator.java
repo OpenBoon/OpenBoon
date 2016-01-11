@@ -6,7 +6,6 @@ import com.zorroa.archivist.sdk.domain.ExportedAsset;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
-import com.zorroa.archivist.sdk.service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ExportDateAggregator extends ExportProcessor {
@@ -14,15 +13,11 @@ public class ExportDateAggregator extends ExportProcessor {
     private Folder exportFolder;
 
     @Autowired
-    FolderService folderService;
-
-    @Autowired
     ExportService exportService;
-
 
     @Override
     public void init(Export export, ExportOutput exportOutput) throws Exception {
-        exportFolder = exportService.folder(export);
+        exportFolder = exportService.getFolder(export);
     }
 
     @Override

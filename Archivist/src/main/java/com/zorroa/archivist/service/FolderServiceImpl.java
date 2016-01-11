@@ -74,6 +74,7 @@ public class FolderServiceImpl implements FolderService {
         int parentId = Folder.ROOT_ID;
         Folder current = null;
         for (String name: Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
+            logger.info("getting name:{}", name);
             current = folderDao.get(parentId, name);
             parentId = current.getId();
         }
@@ -114,7 +115,7 @@ public class FolderServiceImpl implements FolderService {
                 Folder folder = folderDao.create(builder);
                 folderDao.setAcl(folder, builder.getAcl());
                 transactionEventManager.afterCommit(() -> {
-                    invalidate(null, builder.getParentId());
+                    invalidate(null, parent.getId());
                     messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
                 });
                 return folder;
@@ -149,7 +150,7 @@ public class FolderServiceImpl implements FolderService {
 
         boolean result = folderDao.update(folder, builder);
         if (result) {
-            transactionEventManager.afterCommit(() -> invalidate(folder, builder.getParentId()));
+            transactionEventManager.afterCommit(() -> invalidate(folder, folder.getParentId()));
             messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
                     get(folder.getId())));
         }

@@ -7,6 +7,7 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -50,6 +51,9 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Autowired
     FolderService folderService;
+
+    @Autowired
+    TransactionEventManager transactionEventManager;
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
@@ -138,7 +142,10 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
         }
         String json = new String(Json.serialize(ingest), StandardCharsets.UTF_8);
-        eventServerHandler.broadcast(new Message(messageType, json));
+
+        transactionEventManager.afterCommit(() -> {
+            eventServerHandler.broadcast(new Message(messageType, json));
+        });
     }
 
     @Override
@@ -169,19 +176,28 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
             pipeline = ingestPipelineDao.get(builder.getPipelineId());
         }
         Ingest ingest = ingestDao.create(pipeline, builder);
+
+        transactionEventManager.afterCommit(() -> {
+            String folderName = String.format("%d:%s", ingest.getId(), ingest.getPath());
+            AssetFilter ingestFilter = new AssetFilter().setIngestId(ingest.getId());
+            FolderBuilder fBuilder = new FolderBuilder()
+                    .setName(folderName)
+                    .setParentId(folderService.get("/Ingests").getId())
+                    .setSearch(new AssetSearch().setFilter(ingestFilter));
+            folderService.create(fBuilder);
+        }, false);
+
         broadcast(ingest, MessageType.INGEST_CREATE);
-
-        // Create ingest folder asynchronously to avoid event dependency loop,
-        // but don't wait for processing since clients see the folder
-        new Thread(new Runnable() { public void run() { getIngestFolder(ingest); }}).start();
-
         return ingest;
     }
 
     @Override
     public boolean deleteIngest(Ingest ingest) {
-        new Thread(new Runnable() { public void run() { folderService.delete(getIngestFolder(ingest)); }}).start();
         boolean ok = ingestDao.delete(ingest);
+        transactionEventManager.afterCommit(() -> {
+
+        });
+
         broadcast(ingest, MessageType.INGEST_DELETE);
         return ok;
     }
@@ -236,29 +252,9 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public Folder getIngestFolder(Ingest ingest) {
-        synchronized (folderService) {
-            // Create the root folder for all ingests, if needed
-            Folder ingestsFolder;
-            try {
-                ingestsFolder = folderService.get(0, "Ingests");
-            } catch (EmptyResultDataAccessException e) {
-                ingestsFolder = folderService.create(new FolderBuilder().setName("Ingests"));
-            }
-
-            // Create a root folder for this ingest (watch out for name with slashes!)
-            String name = Integer.toString(ingest.getId()) + ":" + ingest.getPath();
-            try {
-                return folderService.get(ingestsFolder.getId(), name);
-            } catch (EmptyResultDataAccessException e) {
-                // Folder does not exist, create a new one
-                int ingestId = (int) ingest.getId();     // FIXME: int-cast from long is dangerous
-                AssetFilter ingestFilter = new AssetFilter().setIngestId(ingestId);
-                FolderBuilder ingestBuilder = new FolderBuilder().setName(name).setParentId(ingestsFolder.getId())
-                        .setSearch(new AssetSearch().setFilter(ingestFilter));
-                return folderService.create(ingestBuilder);
-            }
-        }
+    public Folder getFolder(Ingest ingest) {
+        return folderService.get(folderService.get("/Ingests").getId(),
+                String.format("%d:%s", ingest.getId(), ingest.getPath()));
     }
 }
 

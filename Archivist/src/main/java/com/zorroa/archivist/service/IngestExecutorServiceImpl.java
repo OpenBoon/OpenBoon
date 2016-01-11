@@ -47,7 +47,8 @@ import java.util.TimerTask;
 import java.util.concurrent.*;
 
 @Component
-public class IngestExecutorServiceImpl implements IngestExecutorService {
+public class
+IngestExecutorServiceImpl implements IngestExecutorService {
 
     private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
 
