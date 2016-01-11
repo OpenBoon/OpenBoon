@@ -130,9 +130,13 @@ public class AssetBuilder extends Document{
                     continue;
                 }
                 try {
+                    if (field.get(s) == null) {
+                        continue;
+                    }
                     keywords.addKeywords(annotation.confidence(), false, field.get(s).toString());
-                } catch (IllegalAccessException e) {
-                    logger.warn("Failed to access {}, ", field, e);
+                } catch (Exception e) {
+                    logger.warn("Failed to access field '{}' on class '{}' marked with @Keyword, on asset {} ",
+                            field.getName(), s.getClass().getCanonicalName(), source.getPath());
                 }
             }
         }
