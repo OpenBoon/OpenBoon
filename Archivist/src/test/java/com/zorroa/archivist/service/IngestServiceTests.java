@@ -9,6 +9,7 @@ import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -67,5 +68,24 @@ public class IngestServiceTests extends ArchivistApplicationTests {
 
         ingest = ingestService.getIngest(ingest.getId());
         assertEquals(testPipeline.getId(), ingest.getPipelineId());
+    }
+
+
+    @Test(expected=EmptyResultDataAccessException.class)
+    public void testDelete() throws InterruptedException {
+
+        IngestPipelineBuilder ipb = new IngestPipelineBuilder();
+        ipb.setName("test");
+        ipb.setDescription("A test pipeline");
+        ipb.addToProcessors(new ProcessorFactory<>(ChecksumProcessor.class));
+        IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
+
+        IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
+        updateBuilder.setPipelineId(testPipeline.getId());
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        assertTrue(ingestService.deleteIngest(ingest));
+
+        ingestService.getFolder(ingest);
     }
 }

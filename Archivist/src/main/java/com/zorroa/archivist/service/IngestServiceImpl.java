@@ -195,8 +195,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public boolean deleteIngest(Ingest ingest) {
         boolean ok = ingestDao.delete(ingest);
         transactionEventManager.afterCommit(() -> {
-
-        });
+            folderService.delete(getFolder(ingest));
+        }, false);
 
         broadcast(ingest, MessageType.INGEST_DELETE);
         return ok;
