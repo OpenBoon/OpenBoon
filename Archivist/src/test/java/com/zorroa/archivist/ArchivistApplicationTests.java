@@ -17,13 +17,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -50,6 +55,9 @@ public abstract class ArchivistApplicationTests {
 
     @Autowired
     TransactionEventManager transactionEventManager;
+
+    @Autowired
+    DataSourceTransactionManager transactionManager;
 
     @Autowired
     ArchivistRepositorySetup archivistRepositorySetup;
@@ -87,6 +95,27 @@ public abstract class ArchivistApplicationTests {
     public void setup() throws IOException {
 
         /*
+          * Now that folders are created using what is essentially a nested transaction,
+          * we can't rely on the unittests to roll them back.  For this, we manually delete
+          * every folder not created by the SQL schema migration.
+          *
+          * Eventually we need a different way to do this because it relies on the created
+          * time, which just happens to be the same for all schema created folders.
+          *
+          * //TODO: find a more robust way to handle deleting folders created by a test.
+          * Maybe use naming conventions (test_) or utilize a new field on the table.
+          *
+         */
+        TransactionTemplate tmpl = new TransactionTemplate(transactionManager);
+        tmpl.setPropagationBehavior(Propagation.NOT_SUPPORTED.ordinal());
+                tmpl.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                jdbc.update("DELETE FROM folder WHERE time_created !=1450709321000");
+            }
+        });
+
+        /*
          * Ensures that all transaction events run within the unit test transaction.
          * If this was not set then  transaction events like AfterCommit would never execute
          * because unit test transactions are never committed.
@@ -107,6 +136,7 @@ public abstract class ArchivistApplicationTests {
         for (SnapshotInfo info : getSnapshotInfos()) {
             DeleteSnapshotRequestBuilder builder = new DeleteSnapshotRequestBuilder(client.admin().cluster());
             builder.setRepository(snapshotRepoName).setSnapshot(info.name());
+
             builder.execute().actionGet();
         }
 

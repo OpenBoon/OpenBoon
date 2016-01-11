@@ -105,6 +105,7 @@ public class FolderServiceTests extends ArchivistApplicationTests {
     @Test(expected=DataIntegrityViolationException.class)
     public void testCreateFailureInRoot() {
         FolderBuilder builder = new FolderBuilder("shizzle");
+        builder.setExpectCreate(true);
         Folder folder1 = folderService.create(builder);
         folderService.create(builder);
     }
@@ -117,6 +118,7 @@ public class FolderServiceTests extends ArchivistApplicationTests {
 
         builder = new FolderBuilder("shizzle");
         builder.setParentId(folder1.getId());
+        builder.setExpectCreate(true);
 
         Folder folder2 = folderService.create(builder);
         assertEquals(folder2.getParentId().intValue(), folder1.getId());

@@ -49,7 +49,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
         assertFalse(some.contains(folder1));
     }
 
-    @Test(expected= DataIntegrityViolationException.class)
+    @Test(expected=DataIntegrityViolationException.class)
     public void testCreateDuplicate() throws IOException {
         String name = "Foobar the folder";
         FolderBuilder builder = new FolderBuilder(name);

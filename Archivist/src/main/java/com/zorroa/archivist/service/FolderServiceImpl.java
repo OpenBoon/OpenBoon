@@ -17,9 +17,13 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +49,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     TransactionEventManager transactionEventManager;
+
+    @Autowired
+    DataSourceTransactionManager transactionManager;
 
     @Override
     public void setAcl(Folder folder, Acl acl) {
@@ -89,19 +96,48 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public synchronized Folder create(FolderBuilder builder) {
+
         Folder parent = folderDao.get(builder.getParentId());
-        if(!parent.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
+        if (!parent.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
-        Folder folder = folderDao.create(builder);
-        folderDao.setAcl(folder, builder.getAcl());
-        transactionEventManager.afterCommit(() -> {
-            invalidate(null, builder.getParentId());
+        /*
+          * The current transaction (if any) is suspended by calling the FolderService.create() function.
+          * Using transaction template, we create a new transaction, add the folder, and commit it.
+         */
+        TransactionTemplate tmpl = new TransactionTemplate(transactionManager);
+        Folder result = tmpl.execute(transactionStatus -> {
+            try {
+                Folder folder = folderDao.create(builder);
+                folderDao.setAcl(folder, builder.getAcl());
+                transactionEventManager.afterCommit(() -> {
+                    invalidate(null, builder.getParentId());
+                });
+                messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
+                return folder;
+            } catch (DataIntegrityViolationException e) {
+               return null;
+            }
         });
-        messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
-        return folder;
+
+        /*
+          * If null is returned from our new transaction then there was an error creating
+          * the folder.  If we expected the folder to be created, an exception is thrown.
+          * Otherwise, we return the existing folder.
+         */
+        if (result == null) {
+            if (builder.isExpectCreate()) {
+                throw new DataIntegrityViolationException("Folder '" + builder.getName() + "' already exists");
+            }
+            else {
+                result = folderDao.get(builder.getParentId(), builder.getName());
+            }
+        }
+
+        return result;
     }
 
     @Override
