@@ -25,14 +25,21 @@ public class PluginsController {
     private Set<String> EXCLUDE_INGESTORS =
             ImmutableSet.of("com.zorroa.archivist.sdk.processor.ingest.IngestProcessor");
 
-    @RequestMapping(value="/api/v1/plugins/ingestors", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/plugins/ingest", method= RequestMethod.GET)
     public List<String> ingestors() {
         List<String> result = Lists.newArrayListWithCapacity(30);
         try {
             ClassPath classPath = ClassPath.from(getClass().getClassLoader());
             for (ClassPath.ClassInfo info: classPath.getTopLevelClassesRecursive("com.zorroa")) {
-                if (IngestProcessor.class.isAssignableFrom(info.load()) && !EXCLUDE_INGESTORS.contains(info.getName())) {
-                    result.add(info.getName());
+                try {
+                    if (IngestProcessor.class.isAssignableFrom(info.load()) && !EXCLUDE_INGESTORS.contains(info.getName())) {
+                        result.add(info.getName());
+                    }
+                } catch (java.lang.NoClassDefFoundError ignore) {
+                    /*
+                     * This fails for dynamimcally loaded classes that inherit from an
+                     * external base class.
+                     */
                 }
             }
         } catch (IOException e) {
