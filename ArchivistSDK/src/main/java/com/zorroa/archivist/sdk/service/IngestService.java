@@ -56,4 +56,5 @@ public interface IngestService {
 
     boolean setIngestPaused(Ingest ingest);
 
+    Folder getIngestFolder(Ingest ingest);
 }
