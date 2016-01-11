@@ -74,7 +74,6 @@ public class FolderServiceImpl implements FolderService {
         int parentId = Folder.ROOT_ID;
         Folder current = null;
         for (String name: Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
-            logger.info("getting name:{}", name);
             current = folderDao.get(parentId, name);
             parentId = current.getId();
         }
