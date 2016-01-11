@@ -26,7 +26,7 @@ public class PluginsController {
             ImmutableSet.of("com.zorroa.archivist.sdk.processor.ingest.IngestProcessor");
 
     @RequestMapping(value="/api/v1/plugins/ingest", method= RequestMethod.GET)
-    public List<String> ingestors() {
+    public List<String> ingest() {
         List<String> result = Lists.newArrayListWithCapacity(30);
         try {
             ClassPath classPath = ClassPath.from(getClass().getClassLoader());
