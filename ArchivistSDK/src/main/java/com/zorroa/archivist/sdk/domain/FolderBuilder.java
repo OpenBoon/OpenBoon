@@ -7,6 +7,8 @@ public class FolderBuilder {
     private AssetSearch search;
     private Acl acl;
 
+    private boolean expectCreate=false;
+
     // For the JSON MAPPER we need a simple ctor
     public FolderBuilder() {}
 
@@ -64,6 +66,15 @@ public class FolderBuilder {
 
     public FolderBuilder setAcl(Acl acl) {
         this.acl = acl;
+        return this;
+    }
+
+    public boolean isExpectCreate() {
+        return expectCreate;
+    }
+
+    public FolderBuilder setExpectCreate(boolean expectCreate) {
+        this.expectCreate = expectCreate;
         return this;
     }
 }
