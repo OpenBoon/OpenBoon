@@ -172,11 +172,9 @@ public class FolderServiceImpl implements FolderService {
 
         boolean result = folderDao.delete(folder);
         if (result) {
-            messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(folder);
-                messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
-                        get(folder.getId())));
+                messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
             });
         }
         return result;
