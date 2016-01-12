@@ -1,18 +1,17 @@
-package com.zorroa.vision.ingestors;
+package com.zorroa.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.vision.AssetBuilderTests;
-import com.zorroa.vision.ingestors.LogoIngestor;
 import org.junit.Test;
 
-public class LogoIngestorTests extends AssetBuilderTests {
+public class FaceIngestorTests extends AssetBuilderTests {
 
     @Test
     public void testProcess() throws InterruptedException {
-        LogoIngestor logo = new LogoIngestor();
-        setup(logo);
+        FaceIngestor face = new FaceIngestor();
+        setup(face);
         for (AssetBuilder asset : testAssets) {
-            logo.process(asset);
+            face.process(asset);
         }
     }
 

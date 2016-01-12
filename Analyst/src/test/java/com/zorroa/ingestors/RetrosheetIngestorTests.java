@@ -2,7 +2,7 @@
  * Copyright (c) 2015 by Zorroa
  */
 
-package com.zorroa.vision.ingestors;
+package com.zorroa.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.vision.AssetBuilderTests;
