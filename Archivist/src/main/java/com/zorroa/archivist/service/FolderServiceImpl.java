@@ -155,7 +155,7 @@ public class FolderServiceImpl implements FolderService {
         boolean result = folderDao.update(folder, builder);
         if (result) {
             transactionEventManager.afterCommitSync(() -> {
-                invalidate(folder, folder.getParentId());
+                invalidate(folder, builder.getParentId());
                 messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
                         get(folder.getId())));
             });
@@ -196,13 +196,18 @@ public class FolderServiceImpl implements FolderService {
                 ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));
     }
 
-    private void invalidate(Folder folder, int ... additional) {
+    private void invalidate(Folder folder, Integer ... additional) {
         if (folder != null) {
-            childCache.invalidate(folder.getParentId());
+            if (folder.getParentId()!= null) {
+                childCache.invalidate(folder.getParentId());
+            }
             childCache.invalidate(folder.getId());
         }
 
-        for (int id: additional) {
+        for (Integer id: additional) {
+            if (id == null) {
+                continue;
+            }
             childCache.invalidate(id);
         }
     }

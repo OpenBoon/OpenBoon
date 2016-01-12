@@ -102,6 +102,23 @@ public class FolderServiceTests extends ArchivistApplicationTests {
         assertEquals("new", revised.getName());
     }
 
+    @Test
+    public void testUpdateWithNewParent() {
+        Folder folder1 = folderService.create(new FolderBuilder("orig"));
+        Folder folder2 = folderService.create(new FolderBuilder("unorig"));
+        boolean ok = folderService.update(folder2, new FolderUpdateBuilder().setParentId(folder1.getId()));
+        assertTrue(ok);
+
+        Folder revised = folderService.get(folder2.getId());
+        assertEquals(folder1.getId(), revised.getParentId().intValue());
+
+        Set<Folder> folders = folderService.getAllDescendants(Lists.newArrayList(folder1), false);
+        assertTrue(folders.contains(folder2));
+
+        folders = folderService.getAllDescendants(Lists.newArrayList(folder2), false);
+        assertTrue(folders.isEmpty());
+    }
+
     @Test(expected=DataIntegrityViolationException.class)
     public void testCreateFailureInRoot() {
         FolderBuilder builder = new FolderBuilder("shizzle");
