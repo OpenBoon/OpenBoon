@@ -4,9 +4,11 @@ import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
@@ -40,6 +42,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     FolderDao folderDao;
+
+    @Autowired
+    AssetDao assetDao;
 
     @Autowired
     PermissionDao permissionDao;
@@ -169,6 +174,20 @@ public class FolderServiceImpl implements FolderService {
             transactionEventManager.afterCommit(() -> invalidate(folder));
         }
         return result;
+    }
+
+    public void addAssets(Folder folder, List<String> assetIds) {
+        int result = assetDao.addToFolder(folder, assetIds);
+        invalidate(folder);
+        messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
+                ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
+    }
+
+    public void removeAssets(Folder folder, List<String> assetIds) {
+        int result = assetDao.removeFromFolder(folder, assetIds);
+        invalidate(folder);
+        messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
+                ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));
     }
 
     private void invalidate(Folder folder, int ... additional) {

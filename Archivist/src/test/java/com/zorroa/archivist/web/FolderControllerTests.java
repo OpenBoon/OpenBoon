@@ -274,9 +274,7 @@ public class FolderControllerTests extends MockMvcTest {
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
-        for (Asset asset: assets) {
-            assetDao.addToFolder(asset, folder1);
-        }
+        folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
         refreshIndex();
 
         MockHttpSession session = admin();
@@ -305,9 +303,7 @@ public class FolderControllerTests extends MockMvcTest {
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
-        for (Asset asset: assets) {
-            assetDao.addToFolder(asset, folder1);
-        }
+        folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
         refreshIndex();
 
         MockHttpSession session = admin();

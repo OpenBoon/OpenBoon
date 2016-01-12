@@ -88,8 +88,8 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
         Folder folder = folderService.create(new FolderBuilder("foo"));
 
-        assetDao.addToFolder(asset, folder);
-        assetDao.addToFolder(asset, folder);
+        assetDao.addToFolder(folder, Lists.newArrayList(asset.getId(), asset.getId()));
+        assetDao.addToFolder(folder, Lists.newArrayList(asset.getId(), asset.getId()));
 
         asset = assetDao.get(asset.getId());
         assertTrue(((List) asset.getAttr("folders")).contains(folder.getId()));
@@ -102,13 +102,13 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         Asset asset = assetDao.upsert(builder);
 
         Folder folder = folderService.create(new FolderBuilder("foo"));
-        assetDao.addToFolder(asset, folder);
+        assetDao.addToFolder(folder, Lists.newArrayList(asset.getId()));
         refreshIndex();
 
         asset = assetDao.get(asset.getId());
         assertTrue(((List) asset.getAttr("folders")).contains(folder.getId()));
 
-        assetDao.removeFromFolder(asset, folder);
+        assetDao.removeFromFolder(folder, Lists.newArrayList(asset.getId()));
         refreshIndex();
 
         asset = assetDao.get(asset.getId());

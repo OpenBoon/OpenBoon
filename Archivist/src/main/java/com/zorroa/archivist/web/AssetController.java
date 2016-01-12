@@ -24,7 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
@@ -105,7 +104,7 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)
-    public void get(@PathVariable String id, HttpSession httpSession, HttpServletResponse httpResponse) throws IOException {
+    public void get(@PathVariable String id, HttpServletResponse httpResponse) throws IOException {
         GetResponse response = client.prepareGet(alias, "asset", id).get();
         HttpUtils.writeElasticResponse(response, httpResponse);
     }

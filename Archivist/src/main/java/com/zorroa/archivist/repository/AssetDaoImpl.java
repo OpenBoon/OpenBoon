@@ -4,7 +4,6 @@ import com.beust.jcommander.internal.Lists;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
-import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
@@ -20,12 +19,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.ScriptService;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
@@ -155,31 +152,48 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public void addToFolder(Asset asset, Folder folder) {
-        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setScript("asset_append_folder",
-                ScriptService.ScriptType.INDEXED);
-        updateBuilder.addScriptParam("folderId", folder.getId());
-        updateBuilder.setRefresh(true).get();
+    public int addToFolder(Folder folder, List<String> assetIds) {
+        int result = 0;
+
+        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        for (String id: assetIds) {
+            UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
+            updateBuilder.setScript("asset_append_folder",
+                    ScriptService.ScriptType.INDEXED);
+            updateBuilder.addScriptParam("folderId", folder.getId());
+            bulkRequest.add(updateBuilder);
+        }
+
+        BulkResponse bulk = bulkRequest.setRefresh(true).get();
+        for (BulkItemResponse rsp:  bulk.getItems()) {
+            if (!rsp.isFailed()) {
+                result++;
+            }
+        }
+        return result;
     }
 
     @Override
-    public void removeFromFolder(Asset asset, Folder folder) {
-        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setScript("asset_remove_folder",
-                ScriptService.ScriptType.INDEXED);
-        updateBuilder.addScriptParam("folderId", folder.getId());
-        updateBuilder.setRefresh(true).get();
-    }
+    public int removeFromFolder(Folder folder, List<String> assetIds) {
 
-    @Deprecated
-    @Override
-    public long setFolders(Asset asset, Collection<Folder> folders) {
-        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setDoc(ImmutableMap.of("folders", folders.stream().map(
-                Folder::getId).collect(Collectors.toSet())))
-                .setRefresh(true);
-        return updateBuilder.setRefresh(true).get().getVersion();
+        int result = 0;
+
+        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        for (String id: assetIds) {
+            UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
+            updateBuilder.setScript("asset_remove_folder",
+                    ScriptService.ScriptType.INDEXED);
+            updateBuilder.addScriptParam("folderId", folder.getId());
+            bulkRequest.add(updateBuilder);
+        }
+
+        BulkResponse bulk = bulkRequest.setRefresh(true).get();
+        for (BulkItemResponse rsp:  bulk.getItems()) {
+            if (!rsp.isFailed()) {
+                result++;
+            }
+        }
+        return result;
     }
 
     @Override

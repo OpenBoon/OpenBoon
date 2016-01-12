@@ -92,7 +92,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
-        assetService.addToFolder(asset1, folder1);
+        folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
@@ -120,7 +120,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
-        assetService.addToFolder(asset1, folder3);
+        folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
         AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));

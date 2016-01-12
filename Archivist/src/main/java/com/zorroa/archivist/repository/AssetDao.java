@@ -5,7 +5,6 @@ import com.zorroa.archivist.sdk.domain.*;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.update.UpdateResponse;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface AssetDao {
@@ -26,12 +25,9 @@ public interface AssetDao {
 
     boolean existsByPathAfter(String path, long afterTime);
 
-    void addToFolder(Asset asset, Folder folder);
+    int addToFolder(Folder folder, List<String> assetIds);
 
-    void removeFromFolder(Asset asset, Folder folder);
-
-    @Deprecated
-    long setFolders(Asset asset, Collection<Folder> folders);
+    int removeFromFolder(Folder folder, List<String> assetIds);
 
     long update(String assetId, AssetUpdateBuilder builder);
 

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web;
 
-import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.service.AssetService;
@@ -91,16 +90,11 @@ public class FolderController {
      * @throws Exception
      */
     @RequestMapping(value="/api/v1/folders/{id}/assets", method=RequestMethod.DELETE)
-    public void removeAsset(
+    public void removeAssets(
             @RequestBody List<String> assetIds,
             @PathVariable Integer id) throws Exception {
         Folder folder = folderService.get(id);
-        for (String assetId: assetIds) {
-            Asset asset = assetService.get(assetId);
-            assetService.removeFromFolder(asset, folder);
-        }
-        messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
-                ImmutableMap.of("assetIds", assetIds, "folderId", folder.getId())));
+        folderService.removeAssets(folder, assetIds);
     }
 
     /**
@@ -111,15 +105,10 @@ public class FolderController {
      * @throws Exception
      */
     @RequestMapping(value="/api/v1/folders/{id}/assets", method=RequestMethod.POST)
-    public void addAsset(
+    public void addAssets(
             @RequestBody List<String> assetIds,
             @PathVariable Integer id) throws Exception {
         Folder folder = folderService.get(id);
-        for (String assetId: assetIds) {
-            Asset asset = assetService.get(assetId);
-            assetService.addToFolder(asset, folder);
-        }
-        messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
-                ImmutableMap.of("assetIds", assetIds, "folderId", folder.getId())));
+        folderService.addAssets(folder, assetIds);
     }
 }
