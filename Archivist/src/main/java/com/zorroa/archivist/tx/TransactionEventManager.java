@@ -28,6 +28,13 @@ public class TransactionEventManager {
     private boolean immediateMode = false;
 
     /**
+     * Queue up and AfterCommitSync which executes inline with original request.
+     */
+    public void afterCommitSync(AfterCommit runnable) {
+        register(runnable, false);
+    }
+
+    /**
      * Queue up and AfterCommit runnable and override the isAsync() method with the given boolean.
      * @param runnable
      * @param async

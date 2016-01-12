@@ -118,8 +118,8 @@ public class FolderServiceImpl implements FolderService {
             try {
                 Folder folder = folderDao.create(builder);
                 folderDao.setAcl(folder, builder.getAcl());
-                transactionEventManager.afterCommit(() -> {
-                    invalidate(null, parent.getId());
+                transactionEventManager.afterCommitSync(() -> {
+                    invalidate(parent);
                     messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
                 });
                 return folder;
@@ -154,9 +154,11 @@ public class FolderServiceImpl implements FolderService {
 
         boolean result = folderDao.update(folder, builder);
         if (result) {
-            transactionEventManager.afterCommit(() -> invalidate(folder, folder.getParentId()));
-            messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
-                    get(folder.getId())));
+            transactionEventManager.afterCommitSync(() -> {
+                invalidate(folder, folder.getParentId());
+                messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
+                        get(folder.getId())));
+            });
         }
         return result;
     }
@@ -171,11 +173,16 @@ public class FolderServiceImpl implements FolderService {
         boolean result = folderDao.delete(folder);
         if (result) {
             messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
-            transactionEventManager.afterCommit(() -> invalidate(folder));
+            transactionEventManager.afterCommitSync(() -> {
+                invalidate(folder);
+                messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
+                        get(folder.getId())));
+            });
         }
         return result;
     }
 
+    @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public void addAssets(Folder folder, List<String> assetIds) {
         int result = assetDao.addToFolder(folder, assetIds);
         invalidate(folder);
@@ -183,6 +190,7 @@ public class FolderServiceImpl implements FolderService {
                 ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
     }
 
+    @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public void removeAssets(Folder folder, List<String> assetIds) {
         int result = assetDao.removeFromFolder(folder, assetIds);
         invalidate(folder);
