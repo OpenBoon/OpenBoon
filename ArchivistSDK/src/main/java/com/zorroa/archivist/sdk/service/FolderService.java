@@ -54,4 +54,8 @@ public interface FolderService {
     Folder get(String path);
 
     void setAcl(Folder folder, Acl acl);
+
+    void addAssets(Folder folder, List<String> assetIds);
+
+    void removeAssets(Folder folder, List<String> assetIds);
 }
