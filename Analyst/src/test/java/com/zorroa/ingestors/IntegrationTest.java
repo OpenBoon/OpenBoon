@@ -2,7 +2,7 @@
  * Copyright (c) 2015 by Zorroa
  */
 
-package com.zorroa.vision;
+package com.zorroa.ingestors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.io.CharStreams;

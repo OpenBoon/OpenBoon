@@ -1,4 +1,4 @@
-package com.zorroa.vision;
+package com.zorroa.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;

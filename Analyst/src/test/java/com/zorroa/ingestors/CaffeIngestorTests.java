@@ -1,7 +1,6 @@
 package com.zorroa.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.vision.AssetBuilderTests;
 import org.junit.Test;
 
 public class CaffeIngestorTests extends AssetBuilderTests {
