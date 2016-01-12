@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.ClassPath;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +30,16 @@ public class PluginsController {
     public List<String> ingest() {
         List<String> result = Lists.newArrayListWithCapacity(30);
         try {
-            ClassPath classPath = ClassPath.from(getClass().getClassLoader());
+            // Use the special ingest factory ClassLoader
+            ClassLoader classLoader = new ProcessorFactory<>().getSiteClassLoader();
+            ClassPath classPath = ClassPath.from(classLoader);
             for (ClassPath.ClassInfo info: classPath.getTopLevelClassesRecursive("com.zorroa")) {
                 try {
-                    if (IngestProcessor.class.isAssignableFrom(info.load()) && !EXCLUDE_INGESTORS.contains(info.getName())) {
+                    Class<?> clazz = classLoader.loadClass(info.getName()); // Avoid Guava's info.load()
+                    if (IngestProcessor.class.isAssignableFrom(clazz) && !EXCLUDE_INGESTORS.contains(info.getName())) {
                         result.add(info.getName());
                     }
-                } catch (java.lang.NoClassDefFoundError ignore) {
+                } catch (java.lang.NoClassDefFoundError | ClassNotFoundException ignore) {
                     /*
                      * This fails for dynamically loaded classes that inherit from an
                      * external base class.
