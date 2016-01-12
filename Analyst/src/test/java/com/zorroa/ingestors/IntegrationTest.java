@@ -146,10 +146,10 @@ public class IntegrationTest {
     static final String[] ALL_INGEST_PROCESSORS = {
             "com.zorroa.archivist.ingestors.ImageIngestor",
             "com.zorroa.archivist.ingestors.ProxyProcessor",
-            "com.zorroa.vision.ingestors.FaceIngestor",
-            "com.zorroa.vision.ingestors.CaffeIngestor",
-            "com.zorroa.vision.ingestors.LogoIngestor",
-            "com.zorroa.vision.ingestors.RetrosheetIngestor"
+            "com.zorroa.ingestors.FaceIngestor",
+            "com.zorroa.ingestors.CaffeIngestor",
+            "com.zorroa.ingestors.LogoIngestor",
+            "com.zorroa.ingestors.RetrosheetIngestor"
     };
 
     private static void ingest() throws IOException, InterruptedException {
