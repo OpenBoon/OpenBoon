@@ -9,7 +9,9 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ExportService;
+import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,10 +45,16 @@ public class ExportServiceImpl implements ExportService {
     SearchService searchService;
 
     @Autowired
+    FolderService folderService;
+
+    @Autowired
     ExportDao exportDao;
 
     @Autowired
     ExportOutputDao exportOutputDao;
+
+    @Autowired
+    TransactionEventManager transactionEventManager;
 
     @Value("${archivist.export.maxAssetCount}")
     int maxAssetCount;
@@ -73,6 +85,11 @@ public class ExportServiceImpl implements ExportService {
         for (ProcessorFactory<ExportProcessor> factory: builder.getOutputs()) {
             exportOutputDao.create(export, factory);
         }
+
+        transactionEventManager.afterCommit(() -> {
+            createFolder(export);
+        }, false);
+
         return export;
     }
 
@@ -171,6 +188,58 @@ public class ExportServiceImpl implements ExportService {
             }
         }
         return result;
+    }
+
+    @Override
+    public Folder getFolder(Export export) {
+        DateFormatSymbols symbols = new DateFormatSymbols();
+        Date date = new Date(export.getTimeCreated());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        String[] folders = new String[] {
+                "Exports",
+                String.valueOf(cal.get(Calendar.YEAR)),
+                symbols.getMonths()[cal.get(Calendar.MONTH)],
+                new SimpleDateFormat("EEEE, MMM dd").format(date),
+                new SimpleDateFormat("hh:mm:ss a").format(date)
+        };
+
+        String path = "/" + String.join("/", folders);
+        return folderService.get(path);
+    }
+
+    /**
+     * Called directly after new export is committed to the DB.
+     *
+     * @param export
+     * @return
+     */
+    private Folder createFolder(Export export) {
+        DateFormatSymbols symbols = new DateFormatSymbols();
+        Date date = new Date(export.getTimeCreated());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        String[] folders = new String[] {
+                String.valueOf(cal.get(Calendar.YEAR)),
+                symbols.getMonths()[cal.get(Calendar.MONTH)],
+                new SimpleDateFormat("EEEE, MMM dd").format(date),
+                new SimpleDateFormat("hh:mm:ss a").format(date)
+        };
+
+        Folder current = folderService.get("/Exports");
+        for (String name: folders) {
+            current = folderService.create(new FolderBuilder(name, current.getId()));
+        }
+        /*
+         * Now current is the last folder created, just add the search
+         */
+        AssetFilter filter = new AssetFilter().setExportId(export.getId());
+        folderService.update(current, new FolderUpdateBuilder().setSearch(
+                new AssetSearch().setFilter(filter)));
+
+        return current;
     }
 }
 

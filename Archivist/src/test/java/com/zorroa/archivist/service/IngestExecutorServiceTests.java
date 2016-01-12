@@ -82,6 +82,8 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
         assertEquals(0, ingest.getUpdatedCount());
         assertEquals(0, ingest.getErrorCount());
 
+        refreshIndex(100);
+
         ingestExecutorService.executeIngest(ingest);
         ingest = ingestService.getIngest(ingest.getId());
         assertEquals(0, ingest.getCreatedCount());
@@ -118,12 +120,9 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
         assertEquals(1, response.getCount());
 
         // Validate ingest path folders
-        Folder ingestFolder = folderService.get("/Ingests");
+        Folder ingestFolder = ingestService.getFolder(ingest);
         assertNotEquals(null, ingestFolder);
         List<Folder> children = folderService.getChildren(ingestFolder);
-        assertEquals(1, children.size());
-        Folder aggFolder = children.get(0);
-        children = folderService.getChildren(aggFolder);
         assertEquals(1, children.size());
         Folder childFolder = children.get(0);
         assertEquals("child", childFolder.getName());

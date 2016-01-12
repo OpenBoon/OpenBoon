@@ -4,8 +4,10 @@ import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -46,6 +48,12 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Autowired
     EventServerHandler eventServerHandler;
+
+    @Autowired
+    FolderService folderService;
+
+    @Autowired
+    TransactionEventManager transactionEventManager;
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
@@ -134,7 +142,10 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
         }
         String json = new String(Json.serialize(ingest), StandardCharsets.UTF_8);
-        eventServerHandler.broadcast(new Message(messageType, json));
+
+        transactionEventManager.afterCommit(() -> {
+            eventServerHandler.broadcast(new Message(messageType, json));
+        });
     }
 
     @Override
@@ -165,6 +176,17 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
             pipeline = ingestPipelineDao.get(builder.getPipelineId());
         }
         Ingest ingest = ingestDao.create(pipeline, builder);
+
+        transactionEventManager.afterCommit(() -> {
+            String folderName = String.format("%d:%s", ingest.getId(), ingest.getPath());
+            AssetFilter ingestFilter = new AssetFilter().setIngestId(ingest.getId());
+            FolderBuilder fBuilder = new FolderBuilder()
+                    .setName(folderName)
+                    .setParentId(folderService.get("/Ingests").getId())
+                    .setSearch(new AssetSearch().setFilter(ingestFilter));
+            folderService.create(fBuilder);
+        }, false);
+
         broadcast(ingest, MessageType.INGEST_CREATE);
         return ingest;
     }
@@ -172,6 +194,10 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public boolean deleteIngest(Ingest ingest) {
         boolean ok = ingestDao.delete(ingest);
+        transactionEventManager.afterCommit(() -> {
+            folderService.delete(getFolder(ingest));
+        }, false);
+
         broadcast(ingest, MessageType.INGEST_DELETE);
         return ok;
     }
@@ -223,6 +249,12 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public Folder getFolder(Ingest ingest) {
+        return folderService.get(folderService.get("/Ingests").getId(),
+                String.format("%d:%s", ingest.getId(), ingest.getPath()));
     }
 }
 
