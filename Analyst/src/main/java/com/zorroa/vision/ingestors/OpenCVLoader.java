@@ -2,7 +2,7 @@
  * Copyright (c) 2015 by Zorroa
  */
 
-package com.zorroa.ingestors;
+package com.zorroa.vision.ingestors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

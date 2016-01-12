@@ -1,7 +1,6 @@
-package com.zorroa.ingestors;
+package com.zorroa.vision.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;

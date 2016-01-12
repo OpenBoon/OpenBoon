@@ -2,9 +2,10 @@
  * Copyright (c) 2015 by Zorroa
  */
 
-package com.zorroa.ingestors;
+package com.zorroa.vision.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.vision.AssetBuilderTests;
 import org.junit.Test;
 
 public class RetrosheetIngestorTests extends AssetBuilderTests {

@@ -2,19 +2,27 @@
  * Copyright (c) 2015 by Zorroa
  */
 
-package com.zorroa.ingestors;
+package com.zorroa.vision;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.domain.AssetSearch;
+import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.Json;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.*;
 import java.util.Map;
 
 public class IntegrationTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
+
     static Process archivistProcess;
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -119,7 +127,7 @@ public class IntegrationTest {
             }
         }
         Map<String, String> env = pb.environment();
-        String cmd =  "/usr/bin/java -Djava.class.path=" + pwd + "/lib/face -Djava.library.path=" + pwd +"/target/jni:" + pwd + "/lib/face -jar \"" + archivist.getAbsolutePath() + "\"";
+        String cmd =  "/usr/bin/java  -Djava.class.path=" + pwd + "/lib/face -Djava.library.path=" + pwd +"/target/jni:" + pwd + "/lib/face -jar \"" + archivist.getAbsolutePath() + "\" --logging.file=/tmp/log";
         System.out.println("Starting Archivist with command: " + cmd);
         pb.command("/bin/bash", "-c", cmd);
         env.put("ZORROA_OPENCV_MODEL_PATH", pwd + "/models");
@@ -130,6 +138,7 @@ public class IntegrationTest {
         pb.redirectError(ProcessBuilder.Redirect.appendTo(err));
         pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
         archivistProcess = pb.start();
+
         assert pb.redirectInput() == ProcessBuilder.Redirect.PIPE;
         assert pb.redirectOutput().file() == log;
         assert pb.redirectError().file() == err;
@@ -145,9 +154,24 @@ public class IntegrationTest {
 
     }
 
+    static final String[] ALL_INGEST_PROCESSORS = {
+            "com.zorroa.archivist.ingestors.ImageIngestor",
+            "com.zorroa.archivist.ingestors.ProxyProcessor",
+            "com.zorroa.vision.ingestors.FaceIngestor",
+            "com.zorroa.vision.ingestors.CaffeIngestor",
+            "com.zorroa.vision.ingestors.LogoIngestor",
+            "com.zorroa.vision.ingestors.RetrosheetIngestor"
+    };
+
     private static void ingest() throws IOException, InterruptedException {
-        String allProcessorPipeline = "{ \"name\" : \"standard\", \"processors\" : [ { \"klass\" : \"com.zorroa.archivist.processors.ImageIngestor\" }, { \"klass\" : \"com.zorroa.archivist.processors.ProxyProcessor\" }, { \"klass\" : \"com.zorroa.ingestors.FaceIngestor\" }, { \"klass\" : \"com.zorroa.ingestors.CaffeIngestor\" }, { \"klass\" : \"com.zorroa.ingestors.LogoIngestor\"}, { \"klass\" : \"com.zorroa.ingestors.RetrosheetIngestor\"} ] }";
-        String response = sendJson("api/v1/pipelines/1", "PUT", allProcessorPipeline);
+
+        IngestPipelineBuilder builder = new IngestPipelineBuilder();
+        builder.setName("standard");
+        for (String processor: ALL_INGEST_PROCESSORS) {
+            builder.addToProcessors(new ProcessorFactory<IngestProcessor>(processor));
+        }
+
+        String response = sendJson("api/v1/pipelines/1", "PUT", Json.serializeToString(builder));
         System.out.println(response);
         String pwd = System.getProperty("user.dir");;
         String ingestDir = pwd + "/src/test/resources/images";

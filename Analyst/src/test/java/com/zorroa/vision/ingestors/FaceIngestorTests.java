@@ -1,6 +1,8 @@
-package com.zorroa.ingestors;
+package com.zorroa.vision.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.vision.AssetBuilderTests;
+import com.zorroa.vision.ingestors.FaceIngestor;
 import org.junit.Test;
 
 public class FaceIngestorTests extends AssetBuilderTests {
