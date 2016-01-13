@@ -122,6 +122,17 @@ public class UserServiceImpl implements UserService {
             logger.warn(String.format("The user %s has no user permission."));
         }
 
+        /*
+         * Delete the user's folder
+         */
+        try {
+            Folder userFolder = folderService.get("/Users/" + user.getUsername());
+            folderService.delete(userFolder);
+        }
+        catch (EmptyResultDataAccessException e) {
+            logger.warn(String.format("The user %s has no user folder."));
+        }
+
         return result;
     }
 

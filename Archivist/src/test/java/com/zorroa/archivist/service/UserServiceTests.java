@@ -56,6 +56,21 @@ public class UserServiceTests extends ArchivistApplicationTests {
         assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
     }
 
+    @Test
+    public void deleteUser() {
+        UserBuilder builder = new UserBuilder();
+        builder.setUsername("test");
+        builder.setPassword("123password");
+        builder.setEmail("test@test.com");
+        builder.setFirstName("Bilbo");
+        builder.setLastName("Baggings");
+        builder.setPermissions(
+                userService.getPermission("group::user"));
+        User user = userService.create(builder);
 
+        assertTrue(userService.delete(user));
+        assertFalse(folderService.exists("/Users/test"));
 
+        userService.create(builder);
+    }
 }
