@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.schema;
 
+import com.zorroa.archivist.sdk.util.Json;
+
 /**
  * Created by chambers on 1/3/16.
  */
@@ -9,6 +11,9 @@ public class DocumentSchema implements Schema {
     private String title;
     @Keyword
     private String author;
+
+    private String body;
+
     private int pages;
 
     public String getTitle() {
@@ -38,8 +43,21 @@ public class DocumentSchema implements Schema {
         return this;
     }
 
+    public String getBody() {
+        return body;
+    }
+
+    public DocumentSchema setBody(String body) {
+        this.body = body;
+        return this;
+    }
+
     @Override
     public String getNamespace() {
         return "document";
+    }
+
+    public String toString() {
+        return Json.serializeToString(this);
     }
 }
