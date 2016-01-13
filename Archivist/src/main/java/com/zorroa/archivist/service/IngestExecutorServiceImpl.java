@@ -274,7 +274,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                             return FileVisitResult.CONTINUE;
                         }
 
-                        if(!supportedFormats.contains(FileUtils.extension(file)) && !supportedFormats.isEmpty()) {
+                        if(!supportedFormats.contains(FileUtils.extension(file).toLowerCase())
+                                && !supportedFormats.isEmpty()) {
                             return FileVisitResult.CONTINUE;
                         }
 
