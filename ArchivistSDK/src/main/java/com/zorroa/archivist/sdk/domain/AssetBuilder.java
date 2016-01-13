@@ -186,7 +186,7 @@ public class AssetBuilder extends Document{
     public String getExtension() {
         String path = file.getName();
         try {
-            return path.substring(path.lastIndexOf('.') + 1).toLowerCase();
+            return path.substring(path.lastIndexOf('.') + 1);
         } catch (IndexOutOfBoundsException ignore) { /*EMPTY*/ }
         return "";
     }
