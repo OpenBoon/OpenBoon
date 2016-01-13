@@ -105,6 +105,30 @@ public class FolderControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testExitsByPath() throws Exception {
+        MockHttpSession session = user();
+        MvcResult result = mvc.perform(get("/api/v1/folders/_exists/Users")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+        boolean exists = Json.Mapper.readValue(result.getResponse().getContentAsString(), Boolean.class);
+        assertTrue(exists);
+    }
+
+    @Test
+    public void testExitsByPathFailure() throws Exception {
+        MockHttpSession session = user();
+        MvcResult result = mvc.perform(get("/api/v1/folders/_exists/blah")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+        boolean exists = Json.Mapper.readValue(result.getResponse().getContentAsString(), Boolean.class);
+        assertFalse(exists);
+    }
+
+    @Test
     public void testGetAll() throws Exception {
         MockHttpSession session = user();
         MvcResult result = mvc.perform(get("/api/v1/folders")

@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,21 @@ public class FolderServiceImpl implements FolderService {
             parentId = current.getId();
         }
         return current;
+    }
+
+    @Override
+    public boolean exists(String path) {
+        int parentId = Folder.ROOT_ID;
+        Folder current = null;
+        for (String name: Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
+            try {
+                current = folderDao.get(parentId, name);
+                parentId = current.getId();
+            } catch (EmptyResultDataAccessException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

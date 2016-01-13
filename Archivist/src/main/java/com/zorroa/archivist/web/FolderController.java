@@ -54,6 +54,14 @@ public class FolderController {
         return folderService.get(path);
     }
 
+    @RequestMapping(value="/api/v1/folders/_exists/**", method=RequestMethod.GET)
+    public boolean exists(HttpServletRequest request) {
+        String path = (String) request.getAttribute(
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        path = path.substring(path.indexOf("/_exists/") + 2);
+        return folderService.exists(path);
+    }
+
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.PUT)
     public Folder update(@RequestBody FolderUpdateBuilder builder, @PathVariable int id) {
         Folder folder = folderService.get(id);

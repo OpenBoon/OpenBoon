@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.web.exceptions.DuplicateException;
 import com.zorroa.archivist.web.exceptions.NullResultException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,10 +33,36 @@ public class RestControllerAdvice {
         try {
             return pjp.proceed();
         } catch (EmptyResultDataAccessException e) {
-            throw new NullResultException(e);
+            logStackTrace(e);
+            throw new NullResultException(e.getMessage());
         }
         catch (DataIntegrityViolationException e) {
-            throw new DuplicateException(e);
+            logStackTrace(e);
+            throw new DuplicateException(e.getMessage());
         }
+    }
+
+    private void logStackTrace(Exception e) {
+        StringBuilder sb = new StringBuilder(4096);
+        sb.append("REST error:");
+        sb.append(e.getMessage());
+        sb.append("\n");
+
+        if (e.getCause() != null) {
+            sb.append("Cause:");
+            sb.append(e.getCause().getMessage());
+            sb.append("\n");
+        }
+
+        StackTraceElement[] elements = e.getStackTrace();
+        for (int i=0; i<10; i++) {
+            sb.append(elements[i].toString());
+            sb.append("\n");
+        }
+
+        sb.append("User: ");
+        sb.append(SecurityUtils.getUsername());
+        sb.append("\n");
+        logger.warn(sb.toString());
     }
 }
