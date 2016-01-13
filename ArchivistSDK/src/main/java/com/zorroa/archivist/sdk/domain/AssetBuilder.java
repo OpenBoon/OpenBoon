@@ -178,7 +178,7 @@ public class AssetBuilder extends Document{
     public String getBasename() {
         String path = file.getName();
         try {
-            return path.substring(0, path.lastIndexOf('.')).toLowerCase();
+            return path.substring(0, path.lastIndexOf('.'));
         } catch (IndexOutOfBoundsException ignore) { /*EMPTY*/ }
         return "";
     }
