@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.util;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -28,7 +29,7 @@ public class StringUtil {
      * A pattern for splitting up a string by all whitespace, including new lines and carriage returns.
      * Note: Intellij doesn't seem to support \R yet, but it does compile.
      */
-    private static final Pattern WORD_STREAM_PATTERN = Pattern.compile("\\R|\\p{javaSpaceChar}");
+    public static final Pattern WORD_STREAM_PATTERN = Pattern.compile("\\R|\\p{javaSpaceChar}");
 
     /**
      * Return an Iterable<String> of all individual words in a string.
@@ -37,19 +38,41 @@ public class StringUtil {
      * @return
      */
     public static Iterable<String> getWordStream(String words) {
+        if (words == null) {
+            return Lists.newArrayListWithCapacity(0);
+        }
         return Splitter.on(WORD_STREAM_PATTERN)
                 .trimResults().omitEmptyStrings().split(words);
     }
 
     /**
-     * Return a list of all individual words in a string.
+     * Return an Iterable<String> of all individual words in a string.
      *
      * @param words
      * @return
      */
     public static List<String> getWordList(String words) {
+        if (words == null) {
+            return Lists.newArrayListWithCapacity(0);
+        }
         return Splitter.on(WORD_STREAM_PATTERN)
                 .trimResults().omitEmptyStrings().splitToList(words);
+    }
+
+
+    /**
+     * Strip all letters from a word and return all integers
+     * as a single number
+     *
+     * @param word
+     * @return
+     */
+    public static Integer findInteger(String word) {
+        word = word.replaceAll("[^0-9]", "");
+        if (word.isEmpty()) {
+            return null;
+        }
+        return Integer.valueOf(word);
     }
 
 
