@@ -47,7 +47,10 @@ public class ImageIngestorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>(ImageIngestor.class));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
+        Ingest ingest = ingestService.createIngest(
+                new IngestBuilder(getStaticImagePath())
+                        .setName("ImageIngestTest")
+                        .setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 

@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
 import com.zorroa.archivist.sdk.service.IngestService;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -88,11 +89,21 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void determineNextRuntime() {
+
         IngestScheduleBuilder builder = new IngestScheduleBuilder();
         builder.setAllDays();
-        builder.setRunAtTime(LocalTime.now().minusHours(2).toString());
+        builder.setRunAtTime(LocalTime.now().minusHours(6).toString());
         builder.setName("test");
         IngestSchedule schedule = ingestScheduleDao.create(builder);
+
+        DateTime nextRunTime = new DateTime(IngestSchedule.determineNextRunTime(schedule));
+        DateTime now = new DateTime();
+
+
+        boolean timeFromYesterday = nextRunTime.toDateMidnight().isBefore(now.toDateMidnight());
+        logger.info("{}", timeFromYesterday);
+
+
 
         /*
          * If the time is earlier than today, than we run today.

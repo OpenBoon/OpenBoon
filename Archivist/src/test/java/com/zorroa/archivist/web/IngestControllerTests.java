@@ -118,7 +118,7 @@ public class IngestControllerTests extends MockMvcTest {
     public void testCreate() throws Exception {
 
         IngestBuilder builder = new IngestBuilder();
-        builder.setPath(getStaticImagePath());
+        builder.addToPaths(getStaticImagePath());
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(post("/api/v1/ingests")
@@ -136,7 +136,7 @@ public class IngestControllerTests extends MockMvcTest {
     public void testUpdate() throws Exception {
 
         IngestUpdateBuilder builder = new IngestUpdateBuilder();
-        builder.setPath("/vol/data");
+        builder.addToPaths("/vol/data");
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(put("/api/v1/ingests/" + ingest.getId())
@@ -149,7 +149,7 @@ public class IngestControllerTests extends MockMvcTest {
         Ingest updatedIngest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
         assertEquals(ingest.getId(), updatedIngest.getId());
 
-        assertEquals(builder.getPath(), updatedIngest.getPath());
+        assertEquals(builder.getPaths(), updatedIngest.getPaths());
     }
 
     @Test
@@ -172,7 +172,7 @@ public class IngestControllerTests extends MockMvcTest {
     public void testExecute() throws Exception {
 
         IngestBuilder builder = new IngestBuilder();
-        builder.setPath(getStaticImagePath());
+        builder.addToPaths(getStaticImagePath());
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(post("/api/v1/ingests/")

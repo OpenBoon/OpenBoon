@@ -1,9 +1,11 @@
 package com.zorroa.archivist.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,8 +23,9 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         Ingest result = new Ingest();
         result.setId(rs.getInt("pk_ingest"));
         result.setPipelineId(rs.getInt("pk_pipeline"));
+        result.setName(rs.getString("str_name"));
         result.setState(IngestState.values()[rs.getInt("int_state")]);
-        result.setPath(rs.getString("str_path"));
+        result.setPaths(Json.deserialize(rs.getString("json_paths"), new TypeReference<List<String>>() {}));
         result.setTimeCreated(rs.getLong("time_created"));
         result.setUserCreated(rs.getInt("user_created"));
         result.setTimeModified(rs.getLong("time_modified"));
@@ -48,12 +51,12 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             "(" +
                 "pk_pipeline,"+
                 "int_state,"+
-                "str_path,"+
+                "str_name,"+
+                "json_paths,"+
                 "time_created,"+
                 "user_created,"+
                 "time_modified, "+
                 "user_modified, "+
-                "bool_update_on_exist, " +
                 "int_asset_worker_threads" +
             ") " +
             "VALUES (" + StringUtils.repeat("?", ",", 9) + ")";
@@ -67,12 +70,12 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 connection.prepareStatement(INSERT, new String[]{"pk_ingest"});
             ps.setInt(1, pipeline.getId());
             ps.setInt(2, IngestState.Idle.ordinal());
-            ps.setObject(3, builder.getPath());
-            ps.setLong(4, time);
-            ps.setLong(5, SecurityUtils.getUser().getId());
-            ps.setLong(6, time);
-            ps.setLong(7, SecurityUtils.getUser().getId());
-            ps.setBoolean(8, builder.isUpdateOnExist());
+            ps.setString(3, builder.getName() != null ? builder.getName() : builder.getPaths().get(0));
+            ps.setObject(4, Json.serializeToString(builder.getPaths()));
+            ps.setLong(5, time);
+            ps.setLong(6, SecurityUtils.getUser().getId());
+            ps.setLong(7, time);
+            ps.setLong(8, SecurityUtils.getUser().getId());
             ps.setInt(9, builder.getAssetWorkerThreads());
             return ps;
         }, keyHolder);
@@ -131,17 +134,22 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         List<String> updates = Lists.newArrayList();
         List<Object> values = Lists.newArrayList();
 
-        if (builder.getPath() != null) {
-            updates.add("str_path=?");
-            values.add(builder.getPath());
+        if (builder.isset("paths"))  {
+            updates.add("json_paths=?");
+            values.add(Json.serializeToString(builder.getPaths()));
         }
 
-        if (builder.getPipelineId() > 0) {
+        if (builder.isset("pipelineId")) {
             updates.add("pk_pipeline=?");
             values.add(builder.getPipelineId());
         }
 
-        if (builder.getAssetWorkerThreads() > 0) {
+        if (builder.isset("name")) {
+            updates.add("str_name=?");
+            values.add(builder.getName());
+        }
+
+        if (builder.isset("assetWorkerThreads") && builder.getAssetWorkerThreads() > 0) {
             updates.add("int_asset_worker_threads=?");
             values.add(builder.getAssetWorkerThreads());
         }
@@ -149,9 +157,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         if (updates.isEmpty()) {
             return false;
         }
-
-        updates.add("bool_update_on_exist=?");
-        values.add(builder.isUpdateOnExist());
 
         updates.add("user_modified=?");
         values.add(SecurityUtils.getUser().getId());
