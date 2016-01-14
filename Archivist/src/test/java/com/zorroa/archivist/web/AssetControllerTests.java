@@ -108,7 +108,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
         Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
-        assertEquals(4, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
+        assertEquals(5, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
     }
 
     @Test
