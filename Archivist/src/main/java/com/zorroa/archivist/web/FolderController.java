@@ -58,7 +58,7 @@ public class FolderController {
     public boolean exists(HttpServletRequest request) {
         String path = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        path = path.substring(path.indexOf("/_exists/") + 2);
+        path = path.replace("/api/v1/folders/_exists", "");
         return folderService.exists(path);
     }
 

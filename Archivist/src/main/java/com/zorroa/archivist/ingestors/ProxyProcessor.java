@@ -11,6 +11,9 @@ import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.util.Json;
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.filters.Flip;
+import net.coobird.thumbnailator.filters.ImageFilter;
+import net.coobird.thumbnailator.filters.Rotation;
 import net.coobird.thumbnailator.resizers.configurations.Rendering;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
@@ -94,7 +97,7 @@ public class ProxyProcessor extends IngestProcessor {
 
     private void addResult(AssetBuilder asset, ProxyOutput output, ProxySchema result) {
         try {
-            result.add(makeProxy(asset.getImage(), output));
+            result.add(makeProxy(asset.getImage(), output, getOrientationFilters(asset)));
         } catch (IOException e) {
             /*
              * If we fail to make a proxy, then throw, its probably a bad file.  We could also
@@ -141,25 +144,84 @@ public class ProxyProcessor extends IngestProcessor {
     }
 
     public Proxy makeProxy(BufferedImage image, ProxyOutput output) throws IOException {
+        return makeProxy(image, output, Lists.newArrayListWithCapacity(0));
+    }
+
+    public Proxy makeProxy(BufferedImage image, ProxyOutput output, List<ImageFilter> filters) throws IOException {
         String proxyId = UUID.randomUUID().toString();
         File outFile = imageService.allocateProxyPath(proxyId, output.getFormat());
 
-        BufferedImage proxy = Thumbnails.of(image)
+            Thumbnails.of(image)
                 .width(output.getSize())
                 .outputFormat(output.getFormat())
+                .addFilters(filters)
                 .keepAspectRatio(true)
                 .imageType(BufferedImage.TYPE_INT_RGB)
                 .rendering(Rendering.QUALITY)
                 .outputQuality(output.getQuality())
-                .asBufferedImage();
-        ImageIO.write(proxy, output.getFormat(), outFile);
+                .toFile(outFile);
 
         Proxy result = new Proxy();
         result.setPath(outFile.getAbsolutePath());
-        result.setWidth(proxy.getWidth());
-        result.setHeight(proxy.getHeight());
+        result.setWidth(output.getSize());
+        result.setHeight(Math.round(output.getSize() / (image.getWidth() / (float)image.getHeight())));
         result.setFormat(output.getFormat());
         return result;
+    }
 
+    /**
+     * EXIF orientation matrix.
+     */
+    private static final int NONE = 0;
+    private static final int HORIZONTAL = 1;
+    private static final int VERTICAL = 2;
+    private static final int[][] ORIENT_MATRIX = new int[][] {
+            new int[] {  0, NONE},
+            new int[] {  0, HORIZONTAL},
+            new int[] {180, NONE},
+            new int[] {  0, VERTICAL},
+            new int[] { 90, HORIZONTAL},
+            new int[] { 90, NONE},
+            new int[] {270, HORIZONTAL},
+            new int[] {270, NONE},
+    };
+
+    /**
+     * Read in the Exif.Orientation flag and return a list of
+     * image filters that will properly rotate/flip the image.
+     *
+     * @param asset
+     * @return
+     */
+    private static List<ImageFilter> getOrientationFilters(AssetBuilder asset) {
+
+        List<ImageFilter> filters = Lists.newArrayListWithCapacity(2);
+
+        try {
+            Integer index = asset.getAttr("Exif.Orientation");
+            if (index == null) {
+                return filters;
+            }
+
+            int degrees = ORIENT_MATRIX[index][0];
+            if (degrees!= 0) {
+                /*
+                 * System quietly ignores negative degrees, so we have to
+                 * subtract from 360
+                 */
+                filters.add(Rotation.newRotator(degrees));
+            }
+            switch(ORIENT_MATRIX[index][1])  {
+                case HORIZONTAL:
+                    filters.add(Flip.HORIZONTAL);
+                    break;
+                case VERTICAL:
+                    filters.add(Flip.VERTICAL);
+                    break;
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to determine image orientation: {}", asset, e);
+        }
+        return filters;
     }
 }

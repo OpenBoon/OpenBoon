@@ -163,6 +163,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
         private boolean earlyShutdown = false;
 
+        private Set<String> supportedFormats = Sets.newHashSet();
+
         public IngestWorker(Ingest ingest) {
             this.ingest = ingest;
             assetExecutor = new AssetExecutor(ingest.getAssetWorkerThreads());
@@ -213,48 +215,30 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         @Override
         public void run() {
 
-
             if (!ingestService.setIngestRunning(ingest)) {
                 logger.warn("Unable to set ingest {} to the running state.", ingest);
                 return;
             }
 
-            // Keep a list of the processor instances which we'll use for
-            // running the tear down later on.
-            List<IngestProcessor> processors = Lists.newArrayList();
-
-            /*
-             * Gather up the supported formats for each of the processors we're running
-             * and use that to filter the list of files that gets sent to the processors.
-             * This way we don't even send the work to the asset worker threads.
-             */
-            Set<String> supportedFormats = Sets.newHashSet();
+            List<IngestProcessor> processors = null;
+            IngestPipeline pipeline;
 
             try {
-                /*
-                 * Initialize everything we need to run this ingest
-                 */
-                IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
-                pipeline.getProcessors().add(new ProcessorFactory<>(AggregatorIngestor.class));
-                for (ProcessorFactory<IngestProcessor> factory : pipeline.getProcessors()) {
-                    factory.init();
-                    IngestProcessor processor = factory.getInstance();
-                    supportedFormats.addAll(processor.supportedFormats());
-
-                    if (processor == null) {
-                        String msg = "Aborting ingest, processor not found:" + factory.getKlass();
-                        logger.warn(msg);
-                        throw new IngestException(msg);
-                    }
-                    Preconditions.checkNotNull(processor, "The IngestProcessor class: " + factory.getKlass() +
-                            " was not found, aborting ingest");
-
-                    AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
-                    autowire.autowireBean(processor);
-                    processors.add(processor);
-                    processor.init(ingest);
+                try {
+                    pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
+                    processors = setupIngestProcessors(pipeline);
+                }
+                catch (Exception e) {
+                    /*
+                     * Something went wrong setting up the ingestor classes.
+                     */
+                    logger.warn("Failed to setup the ingest pipeline, unexpected: {}", e.getMessage(), e);
+                    return;
                 }
 
+                /*
+                 * Start a timer to bulk index any queued work from the asset processing threads.
+                 */
                 bulkIndexTimer.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
@@ -262,7 +246,118 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     }
                 }, 3000, 5000);
 
-                Path start = new File(ingest.getPath()).toPath();
+
+                try {
+                    walkIngestPaths(ingest, pipeline);
+                }
+                catch (Exception e) {
+                    /*
+                     * Something went wrong while walking the file system, however the asset
+                     * threads might still be working so we don't want to jump right into
+                     * the lower finally block, but wait until the asset threads are done.
+                     */
+                    eventLogService.log(ingest, "Failed to execute ingest on paths {}", ingest.getPaths());
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+                }
+
+                /*
+                 * Block forever until the queue is empty and all threads
+                 * have stopped working.
+                 */
+                assetExecutor.waitForCompletion();
+
+            } finally {
+                /*
+                 * Cancel the update timer, then run one fina bulk index.
+                 */
+                bulkIndexTimer.cancel();
+                bulkIndex(-1);
+
+                /*
+                 * Force a refresh so the tear downs can see any recently added data.
+                 */
+                assetDao.refresh();
+
+                /*
+                 * Run all of the tear downs
+                 */
+                if (processors != null) {
+                    processors.forEach(p -> p.teardown());
+                }
+
+                /*
+                 * Remove the current ingest from running ingests.
+                 */
+                runningIngests.remove(ingest.getId());
+
+                /*
+                 * Pull a new copy of the ingest with all updated fields.
+                 */
+                Ingest finishedIngest = ingestService.getIngest(ingest.getId());
+
+                if (!earlyShutdown) {
+                    ingestService.setIngestIdle(finishedIngest);
+
+                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors: {}",
+                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
+                }
+                else {
+                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors: {}",
+                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
+                }
+            }
+        }
+
+        /**
+         * Setup the ingest processors for the given pipeline.  This involves
+         * creating an instance of the processor and wiring it up with
+         * dependencies.
+         *
+         * Return a list of ready to run IngestProcessors
+         *
+         * @param pipeline
+         * @return
+         */
+        public List<IngestProcessor> setupIngestProcessors(IngestPipeline pipeline) {
+
+            List<IngestProcessor> processors = Lists.newArrayListWithCapacity(pipeline.getProcessors().size());
+
+            pipeline.getProcessors().add(new ProcessorFactory<>(AggregatorIngestor.class));
+            for (ProcessorFactory<IngestProcessor> factory : pipeline.getProcessors()) {
+                factory.init();
+                IngestProcessor processor = factory.getInstance();
+                supportedFormats.addAll(processor.supportedFormats());
+
+                if (processor == null) {
+                    String msg = "Aborting ingest, processor not found:" + factory.getKlass();
+                    logger.warn(msg);
+                    throw new IngestException(msg);
+                }
+                Preconditions.checkNotNull(processor, "The IngestProcessor class: " + factory.getKlass() +
+                        " was not found, aborting ingest");
+
+                AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+                autowire.autowireBean(processor);
+                processors.add(processor);
+                processor.init(ingest);
+            }
+
+            return processors;
+        }
+
+        /**
+         * Walks the file paths specified on an ingest. When a valid asset is found its handed
+         * to the asset processor threads.
+         *
+         * @param ingest
+         * @param pipeline
+         * @throws IOException
+         */
+        private void walkIngestPaths(Ingest ingest, IngestPipeline pipeline) throws IOException {
+
+            for (String path: ingest.getPaths()) {
+                Path start = new File(path).toPath();
+
                 Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
@@ -300,58 +395,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         return FileVisitResult.CONTINUE;
                     }
                 });
-
-                /*
-                 * Block forever until the queue is empty and all threads
-                 * have stopped working.
-                 */
-                assetExecutor.waitForCompletion();
-
-            } catch (Exception e) {
-                /*
-                 * A catch all for anything that could stop ths thread from running.
-                 */
-                logger.warn("Failed to execute ingest, unexpected: {}", e.getMessage(), e);
-                eventLogService.log(ingest, "Failed to execute ingest", e);
-                messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
-
-            } finally {
-                /*
-                 * Cancel the update timer, then run one fina bulk index.
-                 */
-                bulkIndexTimer.cancel();
-                bulkIndex(-1);
-
-                /*
-                 * Force a refresh so the tear downs can see any recently added data.
-                 */
-                assetDao.refresh();
-
-                /*
-                 * Run all of the tear downs
-                 */
-                processors.forEach(p->p.teardown());
-
-                /*
-                 * Remove the current ingest from running ingests.
-                 */
-                runningIngests.remove(ingest.getId());
-
-                /*
-                 * Pull a new copy of the ingest with all updated fields.
-                 */
-                Ingest finishedIngest = ingestService.getIngest(ingest.getId());
-
-                if (!earlyShutdown) {
-                    ingestService.setIngestIdle(finishedIngest);
-
-                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors: {}",
-                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
-                }
-                else {
-                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors: {}",
-                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
-                }
             }
         }
 
@@ -371,9 +414,14 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             @Override
             public void run() {
 
-                try {
-                    logger.debug("Ingesting: {}", asset);
+                logger.debug("Ingesting: {}", asset);
 
+                /*
+                 * This first block tries to load in past data and determine the
+                 * file type of the asset.  The ingest data is then attached
+                 * to the asset.
+                 */
+                try {
                     /*
                      * Set the previous version of the asset.
                      */
@@ -393,6 +441,25 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     ingestSchema.setPipeline(pipeline.getId());
                     asset.addSchema(ingestSchema);
 
+                } catch (Exception e) {
+                    eventLogService.log(ingest, "Ingest error '{}', could not determine asset type on '{}'",
+                            e, e.getMessage(), asset.getAbsolutePath());
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+
+                    /*
+                     * Can't go further, return.
+                     */
+                    return;
+                }
+
+                /*
+                 * Once we know we have what is on the surface a valid file, we execute
+                 * the processors on the asset.  The only exception that can be thrown
+                 * from executeProcessors() is an UnrecoverableIngestProcessorException.  All
+                 * other exceptions are handled and logged by executeProcessors() but are
+                 * not considered critical.
+                 */
+                try {
                     /*
                      * Run the ingest processors
                      */
@@ -410,15 +477,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * For now we'll log that here, but once we know more about the errors we'll come up with
                      * better ways of handling and/or recovering from them.
                      */
-                    String message = "Ingest error {} on Asset '{}', Processor: {}";
-                    logger.warn(message, e.getMessage(), asset, e.getProcessor().getSimpleName());
-                    eventLogService.log(ingest, message, e, e.getMessage(), asset, e.getProcessor().getSimpleName());
-                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
-                }
-                catch (Exception e) {
-                    String message = "Failed to execute ingest, unexpected exception for path '{}'";
-                    logger.error(message, asset.getAbsolutePath(), e);
-                    eventLogService.log(ingest, message, e, asset.getAbsolutePath());
+                    eventLogService.log(ingest, "Critical ingest pipeline error '{}' on asset '{}', Processor: {} failed.",
+                            e, e.getMessage(), asset, e.getProcessor().getSimpleName());
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
             }
@@ -435,20 +495,17 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
                     } catch (UnrecoverableIngestProcessorException e) {
                         /*
-                         * This exception short circuits the processor.
+                         * This exception short circuits the processor. This is handled above.
                          */
-                        logger.warn("Processor {} failed to run on asset {}",
-                                e.getProcessor().getSimpleName(), asset.getFile(), e);
                         throw e;
 
                     } catch (Exception e) {
                         /*
-                         * All other exceptions are just logged.
+                         * All other exceptions are just logged and don't bubble out.
                          */
-                        String name = factory.getInstance().getClass().getSimpleName();
-                        logger.warn("Processor {} failed to run on asset {}", name, asset.getFile(), e);
                         eventLogService.log(
-                                new EventLogMessage(ingest, "Processor {} failed to ingest {}", name, asset.getFile())
+                                new EventLogMessage(ingest, "Ingest pipeline error '{}', on asset '{}', Processor '{}' failed.",
+                                        e.getMessage(), asset.getAbsolutePath(), factory.getKlassName())
                                         .setPath(asset.getAbsolutePath())
                                         .setException(e));
                         messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));

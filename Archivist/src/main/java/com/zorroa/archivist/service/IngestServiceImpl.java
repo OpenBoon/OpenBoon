@@ -178,7 +178,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         Ingest ingest = ingestDao.create(pipeline, builder);
 
         transactionEventManager.afterCommit(() -> {
-            String folderName = String.format("%d:%s", ingest.getId(), ingest.getPath());
+            String folderName = String.format("%d:%s", ingest.getId(), ingest.getName());
             AssetFilter ingestFilter = new AssetFilter().setIngestId(ingest.getId());
             FolderBuilder fBuilder = new FolderBuilder()
                     .setName(folderName)
@@ -254,7 +254,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public Folder getFolder(Ingest ingest) {
         return folderService.get(folderService.get("/Ingests").getId(),
-                String.format("%d:%s", ingest.getId(), ingest.getPath()));
+                String.format("%d:%s", ingest.getId(), ingest.getName()));
     }
 }
 
