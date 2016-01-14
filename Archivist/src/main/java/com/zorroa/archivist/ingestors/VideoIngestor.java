@@ -1,6 +1,7 @@
 package com.zorroa.archivist.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.VideoSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
@@ -49,8 +50,8 @@ public class VideoIngestor extends IngestProcessor {
             assetBuilder.addSchema("video", video);
 
         } catch (Exception e) {
-            logger.warn("{}", e);
-            eventLogService.log("Failed to extra metadata from video: {}", e, assetBuilder.getFilename());
+            throw new UnrecoverableIngestProcessorException(
+                    "Unable to extract video metadata from " + assetBuilder.getAbsolutePath(), e, getClass());
         }
     }
 
@@ -78,8 +79,8 @@ public class VideoIngestor extends IngestProcessor {
             assetBuilder.setImage(image);
             grabber.stop();
         } catch (Exception e) {
-            logger.warn("{}", e);
-            eventLogService.log("Failed to capture image from video: {}", e, assetBuilder.getFilename());
+            throw new UnrecoverableIngestProcessorException(
+                    "Unable to extract video metadata from " + assetBuilder.getAbsolutePath(), e, getClass());
         }
     }
 }

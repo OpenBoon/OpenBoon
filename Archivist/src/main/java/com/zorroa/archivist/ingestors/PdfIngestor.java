@@ -1,6 +1,7 @@
 package com.zorroa.archivist.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.DocumentSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
@@ -46,8 +47,8 @@ public class PdfIngestor extends IngestProcessor {
             assetBuilder.getSource().setDate(metadata.getDate(Property.get("Last-Save-Date")));
             assetBuilder.addSchema(schema);
         } catch (Exception e) {
-            eventLogService.log(
-                    "Failed to extract metadata from PDF: {}", e, assetBuilder.getAbsolutePath());
+            throw new UnrecoverableIngestProcessorException(
+                    "Unable to extract PDF metadata from " + assetBuilder.getAbsolutePath(), e, getClass());
         }
     }
 
@@ -68,8 +69,8 @@ public class PdfIngestor extends IngestProcessor {
             PDPage page = pages.get(0);
             assetBuilder.setImage(page.convertToImage());
         } catch (Exception e) {
-            eventLogService.log(
-                    "Failed to extract image from PDF: {}", e, assetBuilder.getAbsolutePath());
+            throw new UnrecoverableIngestProcessorException(
+                    "Unable to extract PDF image from " + assetBuilder.getAbsolutePath(), e, getClass());
         }
     }
 }
