@@ -5,6 +5,7 @@ import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.DocumentSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
+import com.zorroa.archivist.sdk.util.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.tika.metadata.Metadata;
@@ -53,8 +54,10 @@ public class PdfIngestor extends IngestProcessor {
     }
 
     public void extractImage(AssetBuilder assetBuilder) {
+
+        PDDocument document = null;
         try {
-            PDDocument document = PDDocument.load(assetBuilder.getInputStream());
+            document = PDDocument.load(assetBuilder.getInputStream());
             if (document.isEncrypted()) {
                 try {
                     document.decrypt("");
@@ -71,6 +74,9 @@ public class PdfIngestor extends IngestProcessor {
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
                     "Unable to extract PDF image from " + assetBuilder.getAbsolutePath(), e, getClass());
+        }
+        finally {
+            FileUtils.close(document);
         }
     }
 }
