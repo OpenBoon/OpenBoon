@@ -8,10 +8,7 @@ import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.ingestors.AggregatorIngestor;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.EventLogMessage;
-import com.zorroa.archivist.sdk.domain.Ingest;
-import com.zorroa.archivist.sdk.domain.IngestPipeline;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
@@ -20,6 +17,7 @@ import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import org.apache.tika.Tika;
 import org.elasticsearch.client.Client;
@@ -68,6 +66,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     EventLogService eventLogService;
+
+    @Autowired
+    MessagingService messagingService;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
@@ -311,6 +312,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  * A catch all for anything that could stop ths thread from running.
                  */
                 logger.warn("Failed to execute ingest, unexpected: {}", e.getMessage(), e);
+                eventLogService.log(ingest, "Failed to execute ingest", e);
+                messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
 
             } finally {
                 /*
@@ -342,11 +345,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 if (!earlyShutdown) {
                     ingestService.setIngestIdle(finishedIngest);
 
-                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors:{}",
+                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 }
                 else {
-                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors:{}",
+                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 }
             }
@@ -410,11 +413,13 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     String message = "Ingest error {} on Asset '{}', Processor: {}";
                     logger.warn(message, e.getMessage(), asset, e.getProcessor().getSimpleName());
                     eventLogService.log(ingest, message, e, e.getMessage(), asset, e.getProcessor().getSimpleName());
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
                 catch (Exception e) {
                     String message = "Failed to execute ingest, unexpected exception for path '{}'";
                     logger.error(message, asset.getAbsolutePath(), e);
                     eventLogService.log(ingest, message, e, asset.getAbsolutePath());
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
             }
 
@@ -446,6 +451,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                                 new EventLogMessage(ingest, "Processor {} failed to ingest {}", name, asset.getFile())
                                         .setPath(asset.getAbsolutePath())
                                         .setException(e));
+                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                     }
                 }
             }

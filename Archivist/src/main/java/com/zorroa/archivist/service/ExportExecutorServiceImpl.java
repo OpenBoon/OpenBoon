@@ -132,6 +132,8 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
 
                 } catch (Exception e) {
                     logger.warn("Failed to initialize output '{}',", output.getFactory().getKlassName(), e);
+                    eventLogService.log(output, "Failed to initialize", e);
+                    messagingService.broadcast(new Message(MessageType.EXPORT_EXCEPTION, export));
                 }
             }
 
@@ -169,6 +171,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                          */
                         logger.warn("Failed to add asset {} to output '{}',", asset, e);
                         eventLogService.log(asset, "Failed to add asset to export {}", e, export.getId());
+                        messagingService.broadcast(new Message(MessageType.EXPORT_EXCEPTION, export));
                     }
 
                     if (exportDao.isInState(export, ExportState.Cancelled)) {
@@ -199,6 +202,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                 } catch (Exception e) {
                     logger.warn("Failed to tear down processor '{}',", processor, e);
                     eventLogService.log(output, "Failed to tear down output processor", e);
+                    messagingService.broadcast(new Message(MessageType.EXPORT_EXCEPTION, export));
                 }
 
                 messagingService.sendToUser(user, new Message().setType(
