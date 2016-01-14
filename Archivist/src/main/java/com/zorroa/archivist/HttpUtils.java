@@ -1,12 +1,12 @@
 package com.zorroa.archivist;
 
+import com.zorroa.archivist.sdk.util.FileUtils;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -36,24 +36,7 @@ public class HttpUtils {
             content.endObject();
         } finally {
             content.close();
-            close(out);
-        }
-    }
-
-    /**
-     * Handles the case where closing a stream may fail.
-     *
-     * @param c
-     */
-    private static final void close(Closeable c) {
-        if (c == null) {
-            return;
-        }
-        try {
-            c.close();
-        }
-        catch (IOException e) {
-            // ignore
+            FileUtils.close(out);
         }
     }
 }
