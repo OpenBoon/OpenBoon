@@ -2,6 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Ingest implements Id {
@@ -9,7 +10,8 @@ public class Ingest implements Id {
     private int id;
     private int pipelineId;
     private IngestState state;
-    private String path;
+    private List<String> paths;
+    private String name;
     private long timeCreated;
     private int userCreated;
     private long timeModified;
@@ -26,8 +28,9 @@ public class Ingest implements Id {
     public String toString() {
         return MoreObjects.toStringHelper(getClass())
                 .add("id", getId())
+                .add("name", getName())
                 .add("state", getState())
-                .add("path", getPath())
+                .add("path", getPaths())
                 .toString();
     }
 
@@ -49,6 +52,15 @@ public class Ingest implements Id {
         return Objects.hash(id);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Ingest setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public int getId() {
         return id;
     }
@@ -67,13 +79,12 @@ public class Ingest implements Id {
     public void setState(IngestState state) {
         this.state = state;
     }
-    public String getPath() {
-        return path;
+    public List<String> getPaths() {
+        return paths;
     }
-    public void setPath(String path) {
-        this.path = path;
+    public void setPaths(List<String> paths) {
+        this.paths = paths;
     }
-
     public long getTimeCreated() {
         return timeCreated;
     }
