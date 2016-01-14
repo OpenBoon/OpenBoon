@@ -1,7 +1,6 @@
 package com.zorroa.archivist.ingestors;
 
 import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
 import com.drew.lang.Rational;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
@@ -84,7 +83,7 @@ public class ImageIngestor extends IngestProcessor {
             Metadata metadata = ImageMetadataReader.readMetadata(asset.getInputStream());
             extractExifMetadata(asset, metadata);   // Extract all useful metadata fields in raw & descriptive format
             extractExifLocation(asset, metadata);   // Find the best location value and promote to top-level
-        } catch (IOException | ImageProcessingException e) {
+        } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
                     "Unable to extract EXIF metadata from " + asset.getAbsolutePath(), e, getClass());
         }
@@ -106,7 +105,7 @@ public class ImageIngestor extends IngestProcessor {
             schema.setWidth(image.getWidth());
             schema.setHeight(image.getHeight());
             asset.addSchema(schema);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
                     "Unable to determine image dimensions" + asset.getAbsolutePath(), e, getClass());
         }
