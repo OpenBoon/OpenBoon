@@ -3,7 +3,9 @@ package com.zorroa.archivist.sdk.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 public class FileUtils {
@@ -121,4 +123,20 @@ public class FileUtils {
         return number;
     }
 
+    /**
+     * Quietly close the given closable.
+     *
+     * @param c
+     */
+    public static final void close(Closeable c) {
+        if (c == null) {
+            return;
+        }
+        try {
+            c.close();
+        }
+        catch (IOException e) {
+            // ignore
+        }
+    }
 }
