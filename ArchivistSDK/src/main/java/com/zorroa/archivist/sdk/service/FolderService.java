@@ -15,6 +15,8 @@ public interface FolderService {
 
     Folder get(int parent, String name);
 
+    boolean exists(String path);
+
     List<Folder> getAll();
 
     /**
