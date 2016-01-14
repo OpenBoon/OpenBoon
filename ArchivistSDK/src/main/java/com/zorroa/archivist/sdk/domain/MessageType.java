@@ -15,6 +15,7 @@ public enum MessageType {
     INGEST_UPDATE,
     INGEST_STOP,
     INGEST_DELETE,
+    INGEST_EXCEPTION,
     FOLDER_CREATE,
     FOLDER_UPDATE,
     FOLDER_DELETE,
@@ -24,6 +25,7 @@ public enum MessageType {
     EXPORT_STOP,
     EXPORT_ASSET,
     EXPORT_OUTPUT_STOP,
+    EXPORT_EXCEPTION,
 
     /**
      * Emitted when the room selection has changed.

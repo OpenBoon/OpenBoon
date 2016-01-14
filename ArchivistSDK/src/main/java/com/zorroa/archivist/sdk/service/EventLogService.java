@@ -19,6 +19,6 @@ public interface EventLogService {
 
     void log(Asset asset, String message, Object... args);
 
-    void log(Asset object, String message, Throwable ex, Object... args);
+    void log(Asset asset, String message, Throwable ex, Object... args);
 
 }
