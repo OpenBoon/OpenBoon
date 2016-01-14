@@ -2,9 +2,9 @@ package com.zorroa.archivist.ingestors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
+import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
@@ -90,17 +90,18 @@ public class ProxyProcessor extends IngestProcessor {
             asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
             asset.addSchema(result);
         }
-
     }
 
     private void addResult(AssetBuilder asset, ProxyOutput output, ProxySchema result) {
         try {
             result.add(makeProxy(asset.getImage(), output));
         } catch (IOException e) {
-            eventLogService.log(
-                    new EventLogMessage("Failed to make proxy of {}", asset.getAbsolutePath())
-                    .setException(e)
-                    .setPath(asset.getAbsolutePath()));
+            /*
+             * If we fail to make a proxy, then throw, its probably a bad file.  We could also
+             * fail if we don't have any proxies at all
+             */
+            throw new UnrecoverableIngestProcessorException("Failed to make proxy of:" + asset.getAbsolutePath(),
+                    e, getClass());
         }
     }
 
