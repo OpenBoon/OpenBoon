@@ -9,7 +9,6 @@ import com.zorroa.archivist.sdk.util.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.Property;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +41,12 @@ public class PdfIngestor extends IngestProcessor {
         try {
             parser.parse(assetBuilder.getInputStream(), handler, metadata);
             DocumentSchema schema = new DocumentSchema();
+            /*
             schema.setAuthor(metadata.get("Author"));
             schema.setTitle(metadata.get("title"));
             schema.setPages(Integer.valueOf(metadata.get("xmpTPg:NPages")));
             assetBuilder.getSource().setDate(metadata.getDate(Property.get("Last-Save-Date")));
+            */
             assetBuilder.addSchema(schema);
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
