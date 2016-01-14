@@ -23,8 +23,14 @@ public class EventLogServiceImpl implements EventLogService {
 
     @Override
     public void log(EventLogMessage logMessageBuilder) {
+        if (logMessageBuilder.getException()!= null) {
+            logger.warn(logMessageBuilder.toString());
+        }
+        else {
+            logger.info(logMessageBuilder.toString());
+        }
+
         eventLogDao.log(logMessageBuilder);
-        logger.info(logMessageBuilder.toString());
     }
 
     @Override
