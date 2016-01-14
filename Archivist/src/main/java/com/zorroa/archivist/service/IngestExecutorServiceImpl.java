@@ -8,10 +8,7 @@ import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.ingestors.AggregatorIngestor;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.EventLogMessage;
-import com.zorroa.archivist.sdk.domain.Ingest;
-import com.zorroa.archivist.sdk.domain.IngestPipeline;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
@@ -20,6 +17,7 @@ import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import org.apache.tika.Tika;
 import org.elasticsearch.client.Client;
@@ -68,6 +66,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     EventLogService eventLogService;
+
+    @Autowired
+    MessagingService messagingService;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
@@ -255,7 +256,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * threads might still be working so we don't want to jump right into
                      * the lower finally block, but wait until the asset threads are done.
                      */
-                    logger.warn("Failed walking ingest file paths: {}", ingest.getPaths(), e);
+                    eventLogService.log(ingest, "Failed to execute ingest on paths {}", ingest.getPaths());
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
                 /*
@@ -263,7 +265,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  * have stopped working.
                  */
                 assetExecutor.waitForCompletion();
-
 
             } finally {
                 /*
@@ -297,11 +298,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 if (!earlyShutdown) {
                     ingestService.setIngestIdle(finishedIngest);
 
-                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors:{}",
+                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 }
                 else {
-                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors:{}",
+                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 }
             }
@@ -413,9 +414,14 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             @Override
             public void run() {
 
-                try {
-                    logger.debug("Ingesting: {}", asset);
+                logger.debug("Ingesting: {}", asset);
 
+                /*
+                 * This first block tries to load in past data and determine the
+                 * file type of the asset.  The ingest data is then attached
+                 * to the asset.
+                 */
+                try {
                     /*
                      * Set the previous version of the asset.
                      */
@@ -435,6 +441,25 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     ingestSchema.setPipeline(pipeline.getId());
                     asset.addSchema(ingestSchema);
 
+                } catch (Exception e) {
+                    eventLogService.log(ingest, "Ingest error '{}', could not determine asset type on '{}'",
+                            e, e.getMessage(), asset.getAbsolutePath());
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+
+                    /*
+                     * Can't go further, return.
+                     */
+                    return;
+                }
+
+                /*
+                 * Once we know we have what is on the surface a valid file, we execute
+                 * the processors on the asset.  The only exception that can be thrown
+                 * from executeProcessors() is an UnrecoverableIngestProcessorException.  All
+                 * other exceptions are handled and logged by executeProcessors() but are
+                 * not considered critical.
+                 */
+                try {
                     /*
                      * Run the ingest processors
                      */
@@ -452,14 +477,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * For now we'll log that here, but once we know more about the errors we'll come up with
                      * better ways of handling and/or recovering from them.
                      */
-                    String message = "Ingest error {} on Asset '{}', Processor: {}";
-                    logger.warn(message, e.getMessage(), asset, e.getProcessor().getSimpleName());
-                    eventLogService.log(ingest, message, e, e.getMessage(), asset, e.getProcessor().getSimpleName());
-                }
-                catch (Exception e) {
-                    String message = "Failed to execute ingest, unexpected exception for path '{}'";
-                    logger.error(message, asset.getAbsolutePath(), e);
-                    eventLogService.log(ingest, message, e, asset.getAbsolutePath());
+                    eventLogService.log(ingest, "Critical ingest pipeline error '{}' on asset '{}', Processor: {} failed.",
+                            e, e.getMessage(), asset, e.getProcessor().getSimpleName());
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
             }
 
@@ -475,22 +495,20 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
                     } catch (UnrecoverableIngestProcessorException e) {
                         /*
-                         * This exception short circuits the processor.
+                         * This exception short circuits the processor. This is handled above.
                          */
-                        logger.warn("Processor {} failed to run on asset {}",
-                                e.getProcessor().getSimpleName(), asset.getFile(), e);
                         throw e;
 
                     } catch (Exception e) {
                         /*
-                         * All other exceptions are just logged.
+                         * All other exceptions are just logged and don't bubble out.
                          */
-                        String name = factory.getInstance().getClass().getSimpleName();
-                        logger.warn("Processor {} failed to run on asset {}", name, asset.getFile(), e);
                         eventLogService.log(
-                                new EventLogMessage(ingest, "Processor {} failed to ingest {}", name, asset.getFile())
+                                new EventLogMessage(ingest, "Ingest pipeline error '{}', on asset '{}', Processor '{}' failed.",
+                                        e.getMessage(), asset.getAbsolutePath(), factory.getKlassName())
                                         .setPath(asset.getAbsolutePath())
                                         .setException(e));
+                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                     }
                 }
             }

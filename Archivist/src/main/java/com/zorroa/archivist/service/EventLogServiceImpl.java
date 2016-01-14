@@ -35,7 +35,7 @@ public class EventLogServiceImpl implements EventLogService {
 
     @Override
     public void log(Id object, String message, Throwable ex, Object... args) {
-        EventLogMessage event = new EventLogMessage(object, message, args);
+        EventLogMessage event = new EventLogMessage(object, message, ex, args);
         log(event);
     }
 
@@ -47,7 +47,7 @@ public class EventLogServiceImpl implements EventLogService {
 
     @Override
     public void log(Asset asset, String message, Throwable ex, Object... args) {
-        EventLogMessage event = new EventLogMessage(asset, message, args);
+        EventLogMessage event = new EventLogMessage(asset, message, ex, args);
         log(event);
     }
 
