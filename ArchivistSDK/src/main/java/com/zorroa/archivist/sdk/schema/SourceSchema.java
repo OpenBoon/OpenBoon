@@ -25,6 +25,8 @@ public class SourceSchema implements Schema {
     private Date date;
     private String checksum;
     private long fileSize;
+
+    @Keyword
     private String type;
 
     public String getChecksum() {
