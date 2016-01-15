@@ -139,6 +139,10 @@
             "export": {
               "type": "integer",
               "index": "not_analyzed"
+            },
+            "write": {
+              "type": "integer",
+              "index": "not_analyzed"
             }
           }
         },

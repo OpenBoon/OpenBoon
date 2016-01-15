@@ -2,14 +2,17 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.SearchService;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -214,7 +217,7 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdateRating() throws Exception {
 
         MockHttpSession session = admin();
 
@@ -233,14 +236,52 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertEquals(asset.getId(), json.get("_id"));
 
-        result = mvc.perform(put("/api/v1/assets/" + asset.getId())
+        AssetUpdateBuilder update = new AssetUpdateBuilder();
+        update.setRating(3);
+
+        mvc.perform(put("/api/v1/assets/" + asset.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"source\" : { \"Xmp\" : { \"Rating\" : 3 } } }"))
+                .content(Json.serializeToString(update)))
                 .andExpect(status().isOk())
                 .andReturn();
-        Asset xmp = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), xmp.getAttr("Xmp.Rating"));
+        Asset updated = assetDao.get(asset.getId());
+        assertEquals(new Integer(3), updated.getAttr("user.rating"));
+    }
+
+
+    @Test
+    public void testUpdatePermissions() throws Exception {
+
+        MockHttpSession session = admin();
+
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
+        ingestExecutorService.executeIngest(ingest);
+        refreshIndex();
+
+        List<Asset> assets = assetDao.getAll();
+        Asset asset = assets.get(0);
+        MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertEquals(asset.getId(), json.get("_id"));
+
+        AssetUpdateBuilder update = new AssetUpdateBuilder();
+        update.setPermissions(new PermissionSchema().setSearch(Sets.newHashSet(1)));
+
+        mvc.perform(put("/api/v1/assets/" + asset.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(update)))
+                .andExpect(status().isOk())
+                .andReturn();
+        Asset updated = assetDao.get(asset.getId());
+        PermissionSchema updatedPermissions = updated.getSchema("permissions", PermissionSchema.class);
+        assertEquals(Sets.newHashSet(1), updatedPermissions.getSearch());
     }
 
     @Test
@@ -575,7 +616,12 @@ public class AssetControllerTests extends MockMvcTest {
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
-        AssetFieldRange range = new AssetFieldRange().setField("source.date").setMin("2014-01-01").setMax("2015-01-01");
+        DateTime dateTime = new DateTime();
+        int year = dateTime.getYear();
+
+        AssetFieldRange range = new AssetFieldRange()
+                .setField("source.date")
+                .setMin(String.format("%d-01-01", year-1)).setMax(String.format("%d-01-01", year+1));
         ArrayList<AssetFieldRange> ranges = new ArrayList<>();
         ranges.add(range);
 

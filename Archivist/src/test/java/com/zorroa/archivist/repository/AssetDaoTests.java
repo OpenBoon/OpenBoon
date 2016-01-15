@@ -1,12 +1,14 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.sdk.schema.SourceSchema;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.FolderService;
@@ -69,15 +71,38 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdateRating() {
         AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
         Asset asset = assetDao.upsert(builder);
-        refreshIndex(100);
+        refreshIndex();
+
         AssetUpdateBuilder updateBuilder = new AssetUpdateBuilder();
-        updateBuilder.put("Xmp", "Rating", new Integer(3));
+        updateBuilder.setRating(3);
+
         assetDao.update(asset.getId(), updateBuilder);
         Asset updatedAsset = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), updatedAsset.getAttr("Xmp.Rating"));
+        assertEquals(new Integer(3), updatedAsset.getAttr("user.rating"));
+    }
+
+    @Test
+    public void testUpdatePermissions() {
+        AssetBuilder builder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Asset asset = assetDao.upsert(builder);
+        refreshIndex();
+
+        AssetUpdateBuilder updateBuilder = new AssetUpdateBuilder();
+        updateBuilder.setPermissions(new PermissionSchema()
+                .setWrite(Sets.newHashSet(1,2))
+                .setSearch(Sets.newHashSet(3,4))
+                .setExport(Sets.newHashSet(5)));
+
+        assetDao.update(asset.getId(), updateBuilder);
+        Asset updatedAsset = assetDao.get(asset.getId());
+
+        PermissionSchema updatedPermissions = updatedAsset.getSchema("permissions", PermissionSchema.class);
+        assertEquals(Sets.newHashSet(1,2), updatedPermissions.getWrite());
+        assertEquals(Sets.newHashSet(3,4), updatedPermissions.getSearch());
+        assertEquals(Sets.newHashSet(5), updatedPermissions.getExport());
     }
 
     @Test

@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.Calendar;
@@ -50,12 +49,24 @@ public class ImageIngestor extends IngestProcessor {
     @Override
     public void process(AssetBuilder asset) {
 
-
         /*
          * Extract the standard image metadata, like width/height.
          */
         if (!asset.contains("image")) {
             extractImageMetadata(asset, asset.getInputStream());
+
+            /**
+             * Need to copy fields from the standard metadata area to someplace we can control.
+             * Maybe these can be in a user editable schema.
+             */
+            try {
+                if (!asset.isUpdate()) {
+                    int rating = asset.getAttrOrDefault("Xmp.Rating", 0);
+                    asset.setAttr("user", "rating", rating);
+                }
+            } catch (Exception e) {
+                logger.warn("Failed to set image rating on {}", asset.getAbsolutePath(), e);
+            }
         }
         else {
             logger.debug("Image metadata already exists for {}", asset);
@@ -165,7 +176,6 @@ public class ImageIngestor extends IngestProcessor {
 
                 String key = tag.getTagName().replaceAll("[^A-Za-z0-9]", "");
                 String id = namespace + "." + key;
-
 
                 //logger.info("{}= {}", id, value);
                 /*

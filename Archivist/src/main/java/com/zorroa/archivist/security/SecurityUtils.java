@@ -1,7 +1,7 @@
 package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.User;
 import org.elasticsearch.index.query.*;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 public class SecurityUtils {
 
@@ -65,8 +65,15 @@ public class SecurityUtils {
         return false;
     }
 
-    public static List<Integer> getPermissionIds() {
-        List<Integer> result = Lists.newArrayList();
+    public static boolean hasPermission(Set<Integer> permIds) {
+        if (permIds.isEmpty()) {
+            return true;
+        }
+        return !Sets.intersection(permIds, SecurityUtils.getPermissionIds()).isEmpty();
+    }
+
+    public static Set<Integer> getPermissionIds() {
+        Set<Integer> result = Sets.newHashSet();
         for (GrantedAuthority g: SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
             Permission p = (Permission) g;
             result.add(p.getId());

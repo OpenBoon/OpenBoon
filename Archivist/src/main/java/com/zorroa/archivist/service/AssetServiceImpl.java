@@ -2,12 +2,16 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.sdk.service.AssetService;
 import com.zorroa.archivist.sdk.service.MessagingService;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,6 +26,9 @@ public class AssetServiceImpl implements AssetService {
 
     @Autowired
     AssetDao assetDao;
+
+    @Autowired
+    PermissionDao permissionDao;
 
     @Autowired
     MessagingService messagingService;
@@ -53,6 +60,14 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public long update(String assetId, AssetUpdateBuilder builder) {
+
+        Asset asset = assetDao.get(assetId);
+        PermissionSchema permissions = asset.getSchema("permissions", PermissionSchema.class);
+
+        if (!SecurityUtils.hasPermission(permissions.getWrite())) {
+            throw new AccessDeniedException("You cannot make changes to this asset.");
+        }
+
         long version = assetDao.update(assetId, builder);
         messagingService.broadcast(new Message(MessageType.ASSET_UPDATE,
                 ImmutableMap.of(

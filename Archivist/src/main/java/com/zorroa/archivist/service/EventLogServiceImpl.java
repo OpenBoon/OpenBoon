@@ -24,7 +24,7 @@ public class EventLogServiceImpl implements EventLogService {
     @Override
     public void log(EventLogMessage logMessageBuilder) {
         if (logMessageBuilder.getException()!= null) {
-            logger.warn(logMessageBuilder.toString());
+            logger.warn(logMessageBuilder.toString(), logMessageBuilder.getException());
         }
         else {
             logger.info(logMessageBuilder.toString());

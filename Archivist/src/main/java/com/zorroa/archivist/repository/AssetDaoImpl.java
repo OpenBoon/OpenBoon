@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.beust.jcommander.internal.Lists;
+import com.beust.jcommander.internal.Maps;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
@@ -198,9 +199,26 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public long update(String assetId, AssetUpdateBuilder builder) {
+
+        Map<String, Object> document = Maps.newHashMap();
+
+        if (builder.isset("permissions")) {
+            document.put("permissions", builder.getPermissions());
+        }
+
+        Map<String, Object> user = Maps.newHashMap();
+        if (builder.isset("rating")) {
+            user.put("rating", builder.getRating());
+        }
+
+        if (!user.isEmpty()) {
+            document.put("user", user);
+        }
+
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), assetId)
-                .setDoc(builder.getSource())
-                .setRefresh(true);
+            .setDoc(Json.serializeToString(document))
+            .setRefresh(true);
+
         UpdateResponse response = updateBuilder.get();
         return response.getVersion();
     }
