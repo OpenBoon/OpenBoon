@@ -11,6 +11,7 @@ public class PermissionSchema implements Schema {
 
     Set<Integer> search = Sets.newHashSet();
     Set<Integer> export = Sets.newHashSet();
+    Set<Integer> write = Sets.newHashSet();
 
     @Override
     public String getNamespace() {
@@ -31,5 +32,14 @@ public class PermissionSchema implements Schema {
 
     public void setExport(Set<Integer> export) {
         this.export = export;
+    }
+
+    public Set<Integer> getWrite() {
+        return write;
+    }
+
+    public PermissionSchema setWrite(Set<Integer> write) {
+        this.write = write;
+        return this;
     }
 }
