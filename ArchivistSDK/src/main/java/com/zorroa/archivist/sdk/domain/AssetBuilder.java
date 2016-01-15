@@ -88,6 +88,7 @@ public class AssetBuilder extends Document{
         }
 
         addSchema(source);
+        addSchema(new UserSchema());
 
         keywords = new KeywordsSchema();
         addSchema(keywords);
