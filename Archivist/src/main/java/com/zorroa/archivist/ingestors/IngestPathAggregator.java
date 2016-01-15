@@ -32,7 +32,8 @@ public class IngestPathAggregator extends IngestProcessor {
     @Override
     public void init(Ingest ingest) {
         ingestFolder = ingestService.getFolder(ingest);
-        excludePathRoot = ".{1," + Integer.toString(ingest.getName().length()) + "}";
+        String path = ingest.getPaths().get(0);     // FIXME: Only works with single path!
+        excludePathRoot = ".{1," + Integer.toString(path.length()) + "}";
     }
 
     @Override
