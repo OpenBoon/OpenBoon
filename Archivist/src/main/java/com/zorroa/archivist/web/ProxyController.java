@@ -5,7 +5,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.ByteStreams;
 import com.zorroa.archivist.sdk.service.ImageService;
-import com.zorroa.archivist.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +49,7 @@ public class ProxyController {
         ProxyImage image = proxyCache.get(id);
         return ResponseEntity.ok()
                 .contentLength(image.size)
-                .contentType(MediaType.parseMediaType(image.type))
+                .contentType(image.type)
                 .body(image.content);
     }
 
@@ -71,7 +71,8 @@ public class ProxyController {
     private static class ProxyImage {
         public byte[] content;
         public long size;
-        public String type;
+        public MediaType type;
+
 
         public static final ProxyImage load(File file) throws IOException {
             RandomAccessFile f = new RandomAccessFile(file, "r");
@@ -80,7 +81,7 @@ public class ProxyController {
                 result.content = new byte[(int)f.length()];
                 f.readFully(result.content);
                 result.size = f.length();
-                result.type = "image/" + FileUtils.extension(file.getAbsolutePath());
+                result.type = MediaType.parseMediaType(Files.probeContentType(file.toPath()));
                 return result;
             } finally {
                 f.close();
