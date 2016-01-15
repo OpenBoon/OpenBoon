@@ -21,17 +21,18 @@ public class PermissionSchema implements Schema {
     public Set<Integer> getSearch() {
         return search;
     }
-
-    public void setSearch(Set<Integer> search) {
+    public PermissionSchema setSearch(Set<Integer> search) {
         this.search = search;
+        return this;
     }
 
     public Set<Integer> getExport() {
         return export;
     }
 
-    public void setExport(Set<Integer> export) {
+    public PermissionSchema setExport(Set<Integer> export) {
         this.export = export;
+        return this;
     }
 
     public Set<Integer> getWrite() {
