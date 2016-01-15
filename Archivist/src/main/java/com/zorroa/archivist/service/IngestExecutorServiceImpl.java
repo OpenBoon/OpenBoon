@@ -480,6 +480,14 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     eventLogService.log(ingest, "Critical ingest pipeline error '{}' on asset '{}', Processor: {} failed.",
                             e, e.getMessage(), asset, e.getProcessor().getSimpleName());
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+
+                    /*
+                     * When an asset is not added/updated, then we increment the error count.  Note that
+                     * the bulkIndex() function increments the error count when all processors run
+                     * but elastic rejects the data.  This increments the error count when a processor
+                     * actually fails.
+                     */
+                    ingestService.incrementIngestCounters(ingest, 0, 0, 1);
                 }
             }
 
