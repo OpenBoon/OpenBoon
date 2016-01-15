@@ -37,6 +37,13 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public File allocateProxyPath(String id, String format) {
+        File result = getProxyPath(id, format);
+        result.getParentFile().mkdirs();
+        return result;
+    }
+
+    @Override
+    public File getProxyPath(String id, String format) {
 
         if (id.length() < PROXY_ID_MIN_LENGTH) {
             throw new RuntimeException("Proxy IDs need to be at least "
@@ -53,9 +60,7 @@ public class ImageServiceImpl implements ImageService {
         }
         sb.append(id);
         sb.append("." + format);
-        File result = new File(sb.toString());
-        result.getParentFile().mkdirs();
-        return result;
+        return new File(sb.toString());
     }
 
     @Override

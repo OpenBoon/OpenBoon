@@ -5,6 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.ByteStreams;
 import com.zorroa.archivist.sdk.service.ImageService;
+import com.zorroa.archivist.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,15 @@ import java.util.concurrent.TimeUnit;
 @Controller
 public class ProxyController {
 
-    private static final int CACHE_MAX_SIZE = 1000;
-    private static final int CACHE_TIMEOUT_MINUTES = 60;
+    private static final int CACHE_MAX_SIZE = 5000;
+    private static final int CACHE_TIMEOUT_MINUTES = 5;
 
     @Autowired
     ImageService imageService;
 
     private final LoadingCache<String, ProxyImage> proxyCache = CacheBuilder.newBuilder()
         .maximumSize(CACHE_MAX_SIZE)
+        .concurrencyLevel(20)
         .expireAfterWrite(CACHE_TIMEOUT_MINUTES, TimeUnit.MINUTES)
         .build(new CacheLoader<String, ProxyImage>() {
          public ProxyImage load(String key) throws Exception {
@@ -47,14 +49,14 @@ public class ProxyController {
         ProxyImage image = proxyCache.get(id);
         return ResponseEntity.ok()
                 .contentLength(image.size)
-                .contentType(image.type)
+                .contentType(MediaType.parseMediaType(image.type))
                 .body(image.content);
     }
 
     @ExceptionHandler(ExecutionException.class)
     public ResponseEntity<byte[]> brokenImage() throws IOException {
         byte[] bytes = ByteStreams.toByteArray(
-                getClass().getResourceAsStream( "/broken128.png"));
+                getClass().getResourceAsStream("/broken128.png"));
         return ResponseEntity.ok()
                 .contentLength(bytes.length)
                 .contentType(MediaType.IMAGE_PNG)
@@ -63,13 +65,13 @@ public class ProxyController {
 
     private ProxyImage loadProxyImage(String id) throws IOException {
         String[] e = id.split("\\.");
-        return ProxyImage.load(imageService.allocateProxyPath(e[0], e[1]));
+        return ProxyImage.load(imageService.getProxyPath(e[0], e[1]));
     }
 
     private static class ProxyImage {
         public byte[] content;
-        public final MediaType type = MediaType.IMAGE_PNG;
         public long size;
+        public String type;
 
         public static final ProxyImage load(File file) throws IOException {
             RandomAccessFile f = new RandomAccessFile(file, "r");
@@ -78,6 +80,7 @@ public class ProxyController {
                 result.content = new byte[(int)f.length()];
                 f.readFully(result.content);
                 result.size = f.length();
+                result.type = "image/" + FileUtils.extension(file.getAbsolutePath());
                 return result;
             } finally {
                 f.close();
