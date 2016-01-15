@@ -44,7 +44,7 @@ public interface IngestService {
 
     boolean deleteIngestPipeline(IngestPipeline pipeline);
 
-    void incrementIngestCounters(Ingest ingest, int created, int updated, int errors);
+    void incrementIngestCounters(Ingest ingest, int created, int updated, int errors, int warnings);
 
     boolean setIngestRunning(Ingest ingest);
 

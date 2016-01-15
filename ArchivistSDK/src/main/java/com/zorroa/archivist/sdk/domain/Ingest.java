@@ -21,6 +21,7 @@ public class Ingest implements Id {
     private int createdCount;
     private int updatedCount;
     private int errorCount;
+    private int warningCount;
     private boolean updateOnExist;
     private int assetWorkerThreads;
 
@@ -155,5 +156,15 @@ public class Ingest implements Id {
 
     public void setAssetWorkerThreads(int assetWorkerThreads) {
         this.assetWorkerThreads = assetWorkerThreads;
+    }
+
+
+    public int getWarningCount() {
+        return warningCount;
+    }
+
+    public Ingest setWarningCount(int warningCount) {
+        this.warningCount = warningCount;
+        return this;
     }
 }
