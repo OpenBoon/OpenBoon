@@ -27,7 +27,7 @@ public interface IngestDao {
 
     void resetCounters(Ingest ingest);
 
-    void incrementCounters(Ingest ingest, int created, int updated, int errors);
+    void incrementCounters(Ingest ingest, int created, int updated, int errors, int warnings);
 
     boolean updateStartTime(Ingest ingest, long time);
 

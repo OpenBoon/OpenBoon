@@ -21,7 +21,6 @@ import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import org.apache.tika.Tika;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,7 +204,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
             BulkAssetUpsertResult result = assetDao.bulkUpsert(assets);
             ingestService.incrementIngestCounters(
-                    ingest, result.created, result.updated, result.errorsNotRecoverable);
+                    ingest, result.created, result.updated, result.errorsNotRecoverable, 0);
             eventLogService.log(ingest, "Bulk asset indexing result {}", result);
             for (String error: result.errors) {
                 eventLogService.log(ingest, error);
@@ -485,7 +484,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * but elastic rejects the data.  This increments the error count when a processor
                      * actually fails.
                      */
-                    ingestService.incrementIngestCounters(ingest, 0, 0, 1);
+                    ingestService.incrementIngestCounters(ingest, 0, 0, 1, 0);
                 }
             }
 
@@ -510,11 +509,16 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          * All other exceptions are just logged and don't bubble out.
                          */
                         eventLogService.log(
-                                new EventLogMessage(ingest, "Ingest pipeline error '{}', on asset '{}', Processor '{}' failed.",
+                                new EventLogMessage(ingest, "Ingest pipeline warning '{}', on asset '{}', Processor '{}' failed.",
                                         e.getMessage(), asset.getAbsolutePath(), factory.getKlassName())
                                         .setPath(asset.getAbsolutePath())
                                         .setException(e));
                         messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+
+                        /*
+                         * Increment warnings on this ingest.
+                         */
+                        ingestService.incrementIngestCounters(ingest, 0, 0, 0 ,1);
                     }
                 }
             }

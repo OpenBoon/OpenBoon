@@ -35,6 +35,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         result.setCreatedCount(rs.getInt("int_created_count"));
         result.setErrorCount(rs.getInt("int_error_count"));
         result.setUpdatedCount(rs.getInt("int_updated_count"));
+        result.setWarningCount(rs.getInt("int_warning_count"));
         result.setUpdateOnExist(rs.getBoolean("bool_update_on_exist"));
         result.setAssetWorkerThreads(rs.getInt("int_asset_worker_threads"));
         return result;
@@ -193,7 +194,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     @Override
     public void resetCounters(Ingest ingest) {
         jdbc.update("UPDATE ingest SET " +
-                        "int_created_count=0, int_updated_count=0, int_error_count=0 WHERE pk_ingest=?",
+                        "int_created_count=0, int_updated_count=0, int_error_count=0, int_warning_count=0 WHERE pk_ingest=?",
                 ingest.getId());
     }
 
@@ -203,13 +204,14 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             "SET " +
                 "int_created_count=int_created_count+?," +
                 "int_updated_count=int_updated_count+?," +
-                "int_error_count=int_error_count+? " +
+                "int_error_count=int_error_count+?, " +
+                "int_warning_count=int_warning_count+? " +
             "WHERE " +
                 "pk_ingest=?";
 
     @Override
-    public void incrementCounters(Ingest ingest, int created, int updated, int errors) {
-        jdbc.update(INCREMENT_COUNTERS, created, updated, errors, ingest.getId());
+    public void incrementCounters(Ingest ingest, int created, int updated, int errors, int warnings) {
+        jdbc.update(INCREMENT_COUNTERS, created, updated, errors, warnings, ingest.getId());
     }
 
     @Override
