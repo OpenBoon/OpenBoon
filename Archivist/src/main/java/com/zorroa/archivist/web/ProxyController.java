@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -81,7 +80,7 @@ public class ProxyController {
                 result.content = new byte[(int)f.length()];
                 f.readFully(result.content);
                 result.size = f.length();
-                result.type = MediaType.parseMediaType(Files.probeContentType(file.toPath()));
+                result.type = MediaType.IMAGE_JPEG;
                 return result;
             } finally {
                 f.close();
