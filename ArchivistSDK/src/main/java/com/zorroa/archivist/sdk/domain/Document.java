@@ -139,6 +139,31 @@ public class Document {
     }
 
     /**
+     * Retrieve a value of an internal schema using dot notation style, for example:
+     * String path = doc.get("source.path").  If the value does not exist return
+     * the supplied default value.
+     *
+     * @param key
+     * @param <T>
+     * @return
+     */
+    public <T> T getAttrOrDefault(String key, T def) {
+        if (key.contains(".")) {
+            Object current = document;
+            for (String e: Splitter.on('.').split(key.substring(0, key.lastIndexOf('.')))) {
+                current = getObject(current, e);
+                if (current == null) {
+                    return def;
+                }
+            }
+            return (T) getObject(current, key.substring(key.lastIndexOf('.')+1));
+        }
+        else {
+            return (T) document.getOrDefault(key, def);
+        }
+    }
+
+    /**
      * Set an attribute.
      *
      * @param namespace
