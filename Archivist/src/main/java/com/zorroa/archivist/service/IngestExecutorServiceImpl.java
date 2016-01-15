@@ -233,6 +233,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * Something went wrong setting up the ingestor classes.
                      */
                     logger.warn("Failed to setup the ingest pipeline, unexpected: {}", e.getMessage(), e);
+                    eventLogService.log(ingest, "Failed to setup the ingest pipeline", e);
+                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                     return;
                 }
 
@@ -256,7 +258,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * threads might still be working so we don't want to jump right into
                      * the lower finally block, but wait until the asset threads are done.
                      */
-                    eventLogService.log(ingest, "Failed to execute ingest on paths {}", ingest.getPaths());
+                    eventLogService.log(ingest, "Failed to execute ingest on paths {}", e, ingest.getPaths());
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
