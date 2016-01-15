@@ -1,10 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.archivist.sdk.schema.Keyword;
-import com.zorroa.archivist.sdk.schema.KeywordsSchema;
-import com.zorroa.archivist.sdk.schema.PermissionSchema;
-import com.zorroa.archivist.sdk.schema.SourceSchema;
+import com.zorroa.archivist.sdk.schema.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +54,12 @@ public class AssetBuilder extends Document{
      *
      */
     private BufferedImage image;
+
+    /**
+     * Return true of the asset already exists and this builder is going to update, not
+     * create the asset;
+     */
+    private boolean update = false;
 
     public AssetBuilder(File file) {
         if (!file.isFile()) {
@@ -142,10 +145,15 @@ public class AssetBuilder extends Document{
         }
     }
 
+    public boolean isUpdate() {
+        return update;
+    }
+
     public void setPreviousVersion(Asset asset) {
         if (asset == null) {
             return;
         }
+        update = true;
         document.putAll(asset.getDocument());
     }
 
