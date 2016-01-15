@@ -45,7 +45,7 @@ public class Acl extends ForwardingList<AclEntry> {
         return false;
     }
 
-    public boolean hasAccess(List<Integer> permissions, Access access) {
+    public boolean hasAccess(Iterable<Integer> permissions, Access access) {
         if (delegate.isEmpty()) {
             return true;
         }
