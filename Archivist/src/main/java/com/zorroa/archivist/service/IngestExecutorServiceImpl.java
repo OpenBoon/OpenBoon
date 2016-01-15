@@ -331,12 +331,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 supportedFormats.addAll(processor.supportedFormats());
 
                 if (processor == null) {
-                    String msg = "Aborting ingest, processor not found:" + factory.getKlass();
-                    logger.warn(msg);
-                    throw new IngestException(msg);
+                    throw new IngestException("Aborting ingest, processor not found:" + factory.getKlass());
                 }
-                Preconditions.checkNotNull(processor, "The IngestProcessor class: " + factory.getKlass() +
-                        " was not found, aborting ingest");
 
                 AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
                 autowire.autowireBean(processor);
