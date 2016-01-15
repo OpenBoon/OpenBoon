@@ -94,7 +94,7 @@ public class IngestExecutorServiceTests extends ArchivistApplicationTests {
     @Test
     public void testIngestAggregators() throws InterruptedException {
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("agg")));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("agg")).setName("Agg"));
         ingestExecutorService.executeIngest(ingest);
 
         refreshIndex();
