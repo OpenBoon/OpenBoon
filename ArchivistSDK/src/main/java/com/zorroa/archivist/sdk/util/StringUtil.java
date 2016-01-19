@@ -25,6 +25,19 @@ public class StringUtil {
         return sb.toString();
     }
 
+
+    public static final Pattern NUMBER_PATTERN =  Pattern.compile("^[-+]?\\d*\\.?\\d+$");
+
+    /**
+     * Return true if the string parses as a number.
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isNumeric(String s) {
+        return NUMBER_PATTERN.matcher(s).matches();
+    }
+
     /**
      * A pattern for splitting up a string by all whitespace, including new lines and carriage returns.
      * Note: Intellij doesn't seem to support \R yet, but it does compile.
