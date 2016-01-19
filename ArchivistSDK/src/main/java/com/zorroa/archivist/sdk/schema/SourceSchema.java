@@ -2,8 +2,10 @@ package com.zorroa.archivist.sdk.schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * The source schema contains everything that can be cleaned from the file path
@@ -25,6 +27,7 @@ public class SourceSchema implements Schema {
     private Date date;
     private String checksum;
     private long fileSize;
+    private List<String> relatedPaths;
 
     @Keyword
     private String type;
@@ -124,6 +127,21 @@ public class SourceSchema implements Schema {
             return false;
         }
         return this.type.equals(type);
+    }
+
+    public void setRelatedPaths(List<String> relatedPaths) {
+        this.relatedPaths = relatedPaths;
+    }
+
+    public List<String> getRelatedPaths() {
+        return relatedPaths;
+    }
+
+    public void addToRelatedPaths(String path) {
+        if (relatedPaths == null) {
+            relatedPaths = Lists.newArrayList();
+        }
+        this.relatedPaths.add(path);
     }
 
     @JsonIgnore
