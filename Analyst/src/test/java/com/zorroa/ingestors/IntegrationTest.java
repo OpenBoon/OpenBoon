@@ -163,7 +163,7 @@ public class IntegrationTest {
         sendJson("api/v1/pipelines/1", "PUT", Json.serializeToString(builder));
         String pwd = System.getProperty("user.dir");;
         String ingestDir = pwd + "/src/test/resources/images";
-        sendJson("api/v1/ingests", "POST", "{ \"path\": \"" + ingestDir + "\", \"assetWorkerThreads\" : 1 }");
+        sendJson("api/v1/ingests", "POST", "{ \"paths\": [\"" + ingestDir + "\"], \"assetWorkerThreads\" : 1 }");
         sendJson("api/v1/ingests/1/_execute", "POST", null);
 
         Boolean isRunning = true;
