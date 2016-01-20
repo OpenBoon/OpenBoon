@@ -29,7 +29,6 @@ public class RestControllerAdvice {
 
     @Around("restController() && execute()")
     public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
-
         try {
             return pjp.proceed();
         } catch (EmptyResultDataAccessException e) {
