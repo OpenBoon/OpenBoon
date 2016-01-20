@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.exception.ArchivistException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.service.ExportService;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.util.NestedServletException;
 
 import java.util.List;
 
@@ -121,11 +121,8 @@ public class ExportControllerTests extends MockMvcTest {
         assertEquals(export2.getNote(), export.getNote());
     }
 
-    @Test(expected=ArchivistException.class)
+    @Test(expected=NestedServletException.class)
     public void testRestartOnQueued() throws Exception {
-        /*
-         * artificially set the export to finished.
-         */
         MvcResult result = mvc.perform(put("/api/v1/exports/" + export.getId() + "/_restart")
                 .session(session)
                 .content(Json.serialize(builder))
