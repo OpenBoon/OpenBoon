@@ -6,6 +6,7 @@ import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
+import com.zorroa.archivist.sdk.schema.UserSchema;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.common.collect.Maps;
@@ -48,22 +49,26 @@ public class ImageIngestorTests extends ArchivistApplicationTests {
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
         Ingest ingest = ingestService.createIngest(
-                new IngestBuilder(getStaticImagePath())
+                new IngestBuilder(getStaticImagePath("agg"))
                         .setName("ImageIngestTest")
                         .setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
         List<Asset> assets = assetDao.getAll();
-        assertEquals(2, assets.size());
+        assertEquals(3, assets.size());
 
-        // Verify Image sizes were set.
-        ImageSchema schema = assets.get(0).getSchema("image", ImageSchema.class);
-        assertTrue(schema.getWidth() > 0);
-        assertTrue(schema.getHeight() > 0);
+        for (Asset asset: assets) {
+            ImageSchema schema = assets.get(0).getSchema("image", ImageSchema.class);
+            assertTrue(schema.getWidth() > 0);
+            assertTrue(schema.getHeight() > 0);
 
-
-
+            /**
+             * Check we have a rating.
+             */
+            if (asset.getSource().getBasename().contains("painted_canyon")) {
+                assertEquals(4, (int) asset.getSchema("user", UserSchema.class).getRating());
+            }
+        }
     }
-
 }

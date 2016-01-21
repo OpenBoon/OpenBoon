@@ -54,15 +54,15 @@ public class ImageIngestor extends IngestProcessor {
          */
         if (!asset.contains("image")) {
             extractImageMetadata(asset, asset.getInputStream());
+            extractExifMetadata(asset);
 
             /**
              * Need to copy fields from the standard metadata area to someplace we can control.
-             * Maybe these can be in a user editable schema.
              */
             try {
                 if (!asset.isUpdate()) {
-                    int rating = asset.getAttrOrDefault("Xmp.Rating", 0);
-                    asset.setAttr("user", "rating", rating);
+                    Number rating = asset.getAttrOrDefault("Xmp.Rating", 0.0);
+                    asset.setAttr("user", "rating", rating.intValue());
                 }
             } catch (Exception e) {
                 logger.warn("Failed to set image rating on {}", asset.getAbsolutePath(), e);
@@ -71,11 +71,6 @@ public class ImageIngestor extends IngestProcessor {
         else {
             logger.debug("Image metadata already exists for {}", asset);
         }
-
-        /*
-         * Extract EXIF metadata
-         */
-        extractExifMetadata(asset);
     }
 
     /**
