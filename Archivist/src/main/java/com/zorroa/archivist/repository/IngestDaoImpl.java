@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.IngestSchedule;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class IngestDaoImpl extends AbstractDao implements IngestDao {
@@ -228,5 +230,23 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     public List<Ingest> getAll(IngestSchedule schedule) {
         return jdbc.query("SELECT ingest.* FROM ingest,map_schedule_to_ingest m WHERE m.pk_schedule=? AND ingest.pk_ingest = m.pk_ingest",
                 MAPPER, schedule.getId());
+    }
+
+    @Override
+    public void beginWorkOnPath(Ingest ingest, String path) {
+        jdbc.update("INSERT INTO ingest_skip (pk_ingest, str_path, time_created) VALUES (?,?,?)",
+                ingest.getId(), path, System.currentTimeMillis());
+    }
+
+    @Override
+    public void endWorkOnPath(Ingest ingest, String path) {
+        jdbc.update("DELETE FROM ingest_skip WHERE pk_ingest=? AND str_path=?",
+                ingest.getId(), path);
+    }
+
+    @Override
+    public Set<String> getSkippedPaths(Ingest ingest) {
+        return ImmutableSet.copyOf(jdbc.queryForList(
+                "SELECT str_path FROM ingest_skip WHERE pk_ingest=?", String.class, ingest.getId()));
     }
 }

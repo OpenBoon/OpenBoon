@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -255,6 +256,21 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public Folder getFolder(Ingest ingest) {
         return folderService.get(folderService.get("/Ingests").getId(),
                 String.format("%d:%s", ingest.getId(), ingest.getName()));
+    }
+
+    @Override
+    public void beginWorkOnPath(Ingest ingest, String path) {
+        ingestDao.beginWorkOnPath(ingest, path);
+    }
+
+    @Override
+    public void endWorkOnPath(Ingest ingest, String path) {
+        ingestDao.endWorkOnPath(ingest, path);
+    }
+
+    @Override
+    public Set<String> getSkippedPaths(Ingest ingest) {
+        return ingestDao.getSkippedPaths(ingest);
     }
 }
 

@@ -164,6 +164,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
         private Set<String> supportedFormats = Sets.newHashSet();
 
+        private Set<String> skippedPaths;
+
         public IngestWorker(Ingest ingest) {
             this.ingest = ingest;
             assetExecutor = new AssetExecutor(ingest.getAssetWorkerThreads());
@@ -235,6 +237,14 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     eventLogService.log(ingest, "Failed to setup the ingest pipeline", e);
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                     return;
+                }
+
+                /*
+                 * Figure out the skipped paths
+                 */
+                skippedPaths = ingestService.getSkippedPaths(ingest);
+                for (String path: skippedPaths) {
+                    eventLogService.log(ingest, "Skipping path due to previous failure: {}", path);
                 }
 
                 /*
@@ -357,23 +367,30 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
                 Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
                     @Override
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                    public FileVisitResult visitFile(Path path, BasicFileAttributes attrs)
                             throws IOException {
-                        if (!file.toFile().isFile()) {
+
+                        final File file = path.toFile();
+
+                        if (!file.isFile()) {
                             return FileVisitResult.CONTINUE;
                         }
 
-                        if (file.getFileName().toString().startsWith(".")) {
+                        if (path.getFileName().toString().startsWith(".")) {
                             return FileVisitResult.CONTINUE;
                         }
 
-                        if(!supportedFormats.contains(FileUtils.extension(file).toLowerCase())
+                        if(!supportedFormats.contains(FileUtils.extension(path).toLowerCase())
                                 && !supportedFormats.isEmpty()) {
                             return FileVisitResult.CONTINUE;
                         }
 
+                        if (skippedPaths.contains(file.getAbsolutePath())) {
+                            return FileVisitResult.CONTINUE;
+                        }
+
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Found file: {}", file);
+                            logger.debug("Found file: {}", path);
                         }
 
                         AssetWorker assetWorker = new AssetWorker(pipeline, ingest, file);
@@ -402,17 +419,16 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             private final Ingest ingest;
             private final AssetBuilder asset;
 
-            public AssetWorker(IngestPipeline pipeline, Ingest ingest, Path path) {
+            public AssetWorker(IngestPipeline pipeline, Ingest ingest, File file) {
                 this.pipeline = pipeline;
                 this.ingest = ingest;
-                this.asset = new AssetBuilder(path.toFile());
+                this.asset = new AssetBuilder(file);
             }
 
             @Override
             public void run() {
 
                 logger.debug("Ingesting: {}", asset);
-
                 /*
                  * This first block tries to load in past data and determine the
                  * file type of the asset.  The ingest data is then attached
@@ -448,6 +464,12 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      */
                     return;
                 }
+
+                /*
+                 * Add the path to the skip table. We'll delete it if the asset is
+                 * processed successfully.
+                 */
+                ingestService.beginWorkOnPath(ingest, asset.getAbsolutePath());
 
                 /*
                  * Once we know we have what is on the surface a valid file, we execute
@@ -486,9 +508,13 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      */
                     ingestService.incrementIngestCounters(ingest, 0, 0, 1, 0);
                 }
+                finally {
+                    ingestService.endWorkOnPath(ingest, asset.getAbsolutePath());
+                }
             }
 
             public void executeProcessors(Ingest ingest) {
+
                 for (ProcessorFactory<IngestProcessor>  factory : pipeline.getProcessors()) {
                     try {
                         IngestProcessor processor = factory.getInstance();

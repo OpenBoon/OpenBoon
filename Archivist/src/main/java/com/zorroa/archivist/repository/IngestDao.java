@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.sdk.domain.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IngestDao {
 
@@ -34,4 +35,10 @@ public interface IngestDao {
     boolean updateStoppedTime(Ingest ingest, long time);
 
     List<Ingest> getAll(IngestSchedule schedule);
+
+    void beginWorkOnPath(Ingest ingest, String path);
+
+    void endWorkOnPath(Ingest ingest, String path);
+
+    Set<String> getSkippedPaths(Ingest ingest);
 }

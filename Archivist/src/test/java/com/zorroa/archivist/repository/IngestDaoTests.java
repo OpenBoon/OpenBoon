@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -167,6 +168,18 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         assertEquals(0, ingest01.getUpdatedCount());
         assertEquals(0, ingest01.getErrorCount());
         assertEquals(0, ingest01.getWarningCount());
+    }
+
+    @Test
+    public void testSkipTable() {
+        String path = "/test/foo.tif";
+        ingestDao.beginWorkOnPath(ingest, path);
+        Set<String> skipped = ingestDao.getSkippedPaths(ingest);
+        assertTrue(skipped.contains(path));
+
+        ingestDao.endWorkOnPath(ingest, path);
+        skipped = ingestDao.getSkippedPaths(ingest);
+        assertFalse(skipped.contains(path));
     }
 
 }
