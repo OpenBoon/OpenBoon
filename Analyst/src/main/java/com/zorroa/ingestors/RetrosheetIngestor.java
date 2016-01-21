@@ -235,6 +235,7 @@ public class RetrosheetIngestor extends IngestProcessor {
         if (value == null)
             return;
         asset.addKeywords(0.8, true, value);
+        asset.setAttr("retrosheet", key, value);
     }
 
     public boolean dateWithoutTime(Date date) {
