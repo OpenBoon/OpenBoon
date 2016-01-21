@@ -11,6 +11,7 @@ import com.zorroa.archivist.sdk.domain.IngestState;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.action.admin.indices.alias.Alias;
@@ -27,7 +28,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -76,7 +76,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
          */
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
         SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
+                authenticationManager.authenticate(new InternalAuthentication()));
 
         try {
             setupDataSources();

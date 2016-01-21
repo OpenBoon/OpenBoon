@@ -11,14 +11,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistry;
 
 
 @Configuration
-@EnableWebMvcSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -48,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
             .authenticationProvider(authenticationProvider())
             .authenticationProvider(backgroundTaskAuthenticationProvider())
+            .authenticationProvider(internalAuthenticationProvider())
             .authenticationEventPublisher(authenticationEventPublisher());
     }
 
@@ -78,6 +77,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BackgroundTaskAuthenticationProvider();
     }
 
+    @Bean
+    public AuthenticationProvider internalAuthenticationProvider() {
+        return new InternalAuthenticationProvider();
+    }
 
     @Bean
     public SessionRegistry sessionRegistry() {
