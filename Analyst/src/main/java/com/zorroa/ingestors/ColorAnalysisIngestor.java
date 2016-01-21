@@ -227,8 +227,8 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         }
 
         // Read parameters
-        String argColorSpace = (String) getArgs().get("ColorSpace");
-        if (argColorSpace != null) {
+        if (getArgs().get("ColorSpace") != null) {
+            String argColorSpace = (String) getArgs().get("ColorSpace");
             if (argColorSpace.compareTo("HSV")!= 0 && argColorSpace.compareTo("Lab") != 0 && argColorSpace.compareTo("BGR") != 0) {
                 logger.info(argColorSpace + " is not a recognized color space. Switching to default BGR");
             }
@@ -245,6 +245,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         Mat imgToAnalyze = Highgui.imread(filePath, Highgui.CV_LOAD_IMAGE_COLOR);
         if (imgToAnalyze.empty()) {
             logger.info("Could not read image file: " + filePath);
+            return;
         }
 
         /*
