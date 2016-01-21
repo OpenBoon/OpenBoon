@@ -50,6 +50,11 @@ public class ImageIngestor extends IngestProcessor {
     public void process(AssetBuilder asset) {
 
         /*
+         * Extract EXIF metadata before image to get Exif.Orientation
+         */
+        extractExifMetadata(asset);
+
+        /*
          * Extract the standard image metadata, like width/height.
          */
         if (!asset.contains("image")) {
@@ -65,17 +70,12 @@ public class ImageIngestor extends IngestProcessor {
                     asset.setAttr("user", "rating", rating);
                 }
             } catch (Exception e) {
-                logger.warn("Failed to set image rating on {}", asset.getAbsolutePath(), e);
+                // Xmp.Rating is only set in some images, not finding it is fine
             }
         }
         else {
             logger.debug("Image metadata already exists for {}", asset);
         }
-
-        /*
-         * Extract EXIF metadata
-         */
-        extractExifMetadata(asset);
     }
 
     /**
@@ -113,8 +113,19 @@ public class ImageIngestor extends IngestProcessor {
             BufferedImage image = ImageIO.read(asset.getInputStream());
             asset.setImage(image);
             ImageSchema schema = new ImageSchema();
-            schema.setWidth(image.getWidth());
-            schema.setHeight(image.getHeight());
+            int w = image.getWidth();
+            int h = image.getHeight();
+            try {
+                if ((Integer)asset.getAttr("Exif.Orientation") > 4) {
+                    int tmp = w;
+                    w = h;
+                    h = tmp;
+                }
+            } catch (NullPointerException e) {
+                // No orientation field, no need to flip dimensions
+            }
+            schema.setWidth(w);
+            schema.setHeight(h);
             asset.addSchema(schema);
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
