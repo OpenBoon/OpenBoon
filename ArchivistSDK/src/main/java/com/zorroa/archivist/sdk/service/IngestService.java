@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.service;
 import com.zorroa.archivist.sdk.domain.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IngestService {
 
@@ -55,6 +56,12 @@ public interface IngestService {
     boolean setIngestQueued(Ingest ingest);
 
     boolean setIngestPaused(Ingest ingest);
+
+    void beginWorkOnPath(Ingest ingest, String path);
+
+    void endWorkOnPath(Ingest ingest, String path);
+
+    Set<String> getSkippedPaths(Ingest ingest);
 
     /**
      * Get the folder linked to the given ingest.
