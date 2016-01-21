@@ -18,14 +18,10 @@ import java.util.Set;
 
 public class ZorroaAuthenticationProvider implements AuthenticationProvider {
 
-    protected static final Logger logger = LoggerFactory.getLogger(ZorroaAuthenticationProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(ZorroaAuthenticationProvider.class);
 
     @Autowired
     UserService userService;
-
-    public ZorroaAuthenticationProvider() {
-        // TODO Auto-generated constructor stub
-    }
 
     @Override
     public Authentication authenticate(Authentication authentication)
