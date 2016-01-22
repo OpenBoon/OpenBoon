@@ -230,14 +230,14 @@ public class ExportServiceImpl implements ExportService {
 
         Folder current = folderService.get("/Exports");
         for (String name: folders) {
-            current = folderService.create(new FolderBuilder(name, current.getId()));
+            FolderBuilder builder = new FolderBuilder(name, current.getId());
+            if (name == folders[folders.length - 1]) {
+                // Folder broadcast to clients in create must have search
+                AssetFilter filter = new AssetFilter().setExportId(export.getId());
+                builder.setSearch(new AssetSearch().setFilter(filter));
+            }
+            current = folderService.create(builder);
         }
-        /*
-         * Now current is the last folder created, just add the search
-         */
-        AssetFilter filter = new AssetFilter().setExportId(export.getId());
-        folderService.update(current, new FolderUpdateBuilder().setSearch(
-                new AssetSearch().setFilter(filter)));
 
         return current;
     }
