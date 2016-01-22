@@ -179,7 +179,7 @@ public class ProxyProcessor extends IngestProcessor {
             new int[] {  0, NONE},
             new int[] {  0, HORIZONTAL},
             new int[] {180, NONE},
-            new int[] {  0, VERTICAL},
+            new int[] {180, HORIZONTAL},
             new int[] { 90, HORIZONTAL},
             new int[] { 90, NONE},
             new int[] {270, HORIZONTAL},
@@ -198,9 +198,12 @@ public class ProxyProcessor extends IngestProcessor {
         List<ImageFilter> filters = Lists.newArrayListWithCapacity(2);
 
         try {
-            Integer index = asset.getAttr("Exif.Orientation");
-            if (index == null) {
-                return filters;
+            Integer index = asset.getAttr("Exif.Orientation");  // Throws NPE on failure
+            index -= 1;         // Exif.Orientation is [1,8]
+            if (index < 0) {    // Clamp, just in case
+                index = 0;
+            } else if (index > 7) {
+                index = 7;
             }
 
             int degrees = ORIENT_MATRIX[index][0];

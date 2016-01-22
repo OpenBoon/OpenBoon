@@ -100,7 +100,7 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
         DateTime now = new DateTime();
 
 
-        boolean timeFromYesterday = nextRunTime.toDateMidnight().isBefore(now.toDateMidnight());
+        boolean timeFromYesterday = nextRunTime.withTimeAtStartOfDay().isBefore(now.withTimeAtStartOfDay());
         logger.info("{}", timeFromYesterday);
 
 
