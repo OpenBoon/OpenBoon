@@ -94,6 +94,12 @@ public class FolderServiceTests extends ArchivistApplicationTests {
     }
 
     @Test
+    public void testGetByPathFail() {
+        Folder folder = folderService.get("/foo/bar/bam");
+        assertEquals(null, folder);
+    }
+
+    @Test
     public void testExistsByPath() {
         Folder folder1 = folderService.create(new FolderBuilder("test1"));
         Folder folder1a = folderService.create(new FolderBuilder("test1a", folder1));

@@ -54,6 +54,7 @@ public class FolderController {
         return folderService.get(path);
     }
 
+    @Deprecated
     @RequestMapping(value="/api/v1/folders/_exists/**", method=RequestMethod.GET)
     public boolean exists(HttpServletRequest request) {
         String path = (String) request.getAttribute(

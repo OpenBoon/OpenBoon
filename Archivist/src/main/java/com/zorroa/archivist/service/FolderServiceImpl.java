@@ -79,11 +79,18 @@ public class FolderServiceImpl implements FolderService {
     public Folder get(String path) {
         int parentId = Folder.ROOT_ID;
         Folder current = null;
-        for (String name: Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
-            current = folderDao.get(parentId, name);
-            parentId = current.getId();
+        try {
+            for (String name : Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
+                current = folderDao.get(parentId, name);
+                parentId = current.getId();
+            }
+            return current;
+        } catch (EmptyResultDataAccessException e) {
+            logger.warn("Cannot get folder at " + path + e);
+            return null;
+        } catch (Exception e) {
+            throw e;
         }
-        return current;
     }
 
     @Override
