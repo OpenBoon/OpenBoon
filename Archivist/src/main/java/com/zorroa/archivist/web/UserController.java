@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
 @RestController
 public class UserController  {
 
@@ -33,11 +32,13 @@ public class UserController  {
         req.logout();
     }
 
+    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users")
     public List<User> getAll() {
         return userService.getAll();
     }
 
+    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users", method=RequestMethod.POST)
     public User create(@RequestBody UserBuilder builder) {
         return userService.create(builder);
@@ -62,6 +63,7 @@ public class UserController  {
         }
     }
 
+    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
     public void delete(@PathVariable int id) {
         User user = userService.get(id);
@@ -89,6 +91,7 @@ public class UserController  {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users/{id}/permissions", method=RequestMethod.PUT)
     public List<Permission> setPermissions(@RequestBody List<Integer> pids, @PathVariable int id) {
         User user = userService.get(id);
