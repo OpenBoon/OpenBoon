@@ -50,17 +50,13 @@ public class ImageIngestor extends IngestProcessor {
     public void process(AssetBuilder asset) {
 
         /*
-         * Extract EXIF metadata before image to get Exif.Orientation
-         */
-        extractExifMetadata(asset);
-
-        /*
          * Extract the standard image metadata, like width/height.
          */
         if (!asset.contains("image")) {
-            extractImageMetadata(asset, asset.getInputStream());
-            extractExifMetadata(asset);
 
+            asset.addSchema(new ImageSchema());
+            extractExifMetadata(asset);
+            extractImageMetadata(asset, asset.getInputStream());
             /**
              * Need to copy fields from the standard metadata area to someplace we can control.
              */
@@ -95,6 +91,7 @@ public class ImageIngestor extends IngestProcessor {
             extractExifMetadata(asset, metadata);   // Extract all useful metadata fields in raw & descriptive format
             extractExifLocation(asset, metadata);   // Find the best location value and promote to top-level
         } catch (Exception e) {
+            logger.info("failed", e);
             throw new UnrecoverableIngestProcessorException(
                     "Unable to extract EXIF metadata from " + asset.getAbsolutePath(), e, getClass());
         }
@@ -112,7 +109,6 @@ public class ImageIngestor extends IngestProcessor {
         try {
             BufferedImage image = ImageIO.read(asset.getInputStream());
             asset.setImage(image);
-            ImageSchema schema = new ImageSchema();
             int w = image.getWidth();
             int h = image.getHeight();
             try {
@@ -124,6 +120,7 @@ public class ImageIngestor extends IngestProcessor {
             } catch (NullPointerException e) {
                 // No orientation field, no need to flip dimensions
             }
+            ImageSchema schema = asset.getSchema("image", ImageSchema.class);
             schema.setWidth(w);
             schema.setHeight(h);
             asset.addSchema(schema);
