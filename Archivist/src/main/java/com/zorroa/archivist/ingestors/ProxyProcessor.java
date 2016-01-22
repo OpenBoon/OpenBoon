@@ -222,6 +222,8 @@ public class ProxyProcessor extends IngestProcessor {
                     filters.add(Flip.VERTICAL);
                     break;
             }
+        } catch (NullPointerException e) {
+            // No orientation field, no need to flip dimensions
         } catch (Exception e) {
             logger.warn("Failed to determine image orientation: {}", asset, e);
         }
