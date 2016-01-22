@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Math.abs;
+
 /**
  * The ImageProcessor contains all of the logic to process an image.  This includes populating
  * the ImageSchema on the asset and gleaning as much information as possible from the file
@@ -252,6 +254,10 @@ public class ImageIngestor extends IngestProcessor {
                         asset.setAttr(namespace, descriptionKey, description);
                     }
                 } else if (value instanceof Number) {
+                    if (value instanceof Double) {
+                        Double num = (Double) value;
+                        value = new Double(clampToNSDecimalRange(num.doubleValue()));
+                    }
                     asset.setAttr(namespace, key, value);
                     if (description != null) {
                         asset.setAttr(namespace, descriptionKey, description);
@@ -269,6 +275,11 @@ public class ImageIngestor extends IngestProcessor {
                             doubles[i] = rationals[i].doubleValue();
                         }
                         asset.setAttr(namespace, key, doubles);
+                    } else if (componentName.equals("double")) {
+                        double[] doubles = (double[]) value;
+                        for (int i = 0; i < doubles.length; i++) {
+                            doubles[i] = clampToNSDecimalRange(doubles[i]);
+                        }
                     } else if (value.getClass().getComponentType().isPrimitive()) {
                         if (Array.getLength(value) <= 16) {
                             asset.setAttr(namespace, key, value);
@@ -287,8 +298,28 @@ public class ImageIngestor extends IngestProcessor {
         }
     }
 
+    /*
+     * Clamp the double value to a range that can be safely transmitted via JSON.
+     * NSJSONSerialization cannot properly convert all double values from JSON.
+     * See:
+     * http://stackoverflow.com/questions/18650365/valid-json-but-cocoa-error-3840-from-afnetworking-nsjsonserialization
+     * http://stackoverflow.com/questions/20198040/how-to-determine-the-true-data-type-of-an-nsnumber
+     */
+    private static double clampToNSDecimalRange(double d) {
+        if (abs(d) < 1E-128) {
+            return 0;
+        }
+        if (d > 1E308) {
+            return 1E308;
+        }
+        if (d < -1E308) {
+            return -1E308;
+        }
+        return d;
+    }
+
     private static double dmsToDegrees(int d, int m, int s) {
-        return Math.signum(d) * (Math.abs(d) + (m / 60.0) + (s / 3600.0));
+        return Math.signum(d) * (abs(d) + (m / 60.0) + (s / 3600.0));
     }
 
     private void extractExifLocation(AssetBuilder asset, Metadata metadata) {
