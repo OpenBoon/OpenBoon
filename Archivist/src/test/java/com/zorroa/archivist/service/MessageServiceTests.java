@@ -52,6 +52,7 @@ public class MessageServiceTests extends ArchivistApplicationTests {
 
         roomService.join(room, userService.getSession(SecurityUtils.getCookieId()));
         client.sendSession(SecurityUtils.getCookieId());
+        Thread.sleep(100);
         assertEquals("OK", client.pop());
     }
 
