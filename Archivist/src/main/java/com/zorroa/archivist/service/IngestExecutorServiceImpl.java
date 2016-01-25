@@ -46,7 +46,7 @@ import java.util.concurrent.*;
 @Component
 public class IngestExecutorServiceImpl implements IngestExecutorService {
 
-    private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(IngestExecutorServiceImpl.class);
 
     @Autowired
     Client client;
