@@ -25,12 +25,12 @@ public class RatingAggregator extends IngestProcessor {
         try {
             ratingFolder = folderService.get(0, "★ Rating");
         } catch (EmptyResultDataAccessException e) {
-            AssetFilter ratingFilter = new AssetFilter().setExistField("Xmp.Rating");
+            AssetFilter ratingFilter = new AssetFilter().setExistField("user.rating");
             FolderBuilder ratingBuilder = new FolderBuilder().setName("★ Rating")
                     .setSearch(new AssetSearch().setFilter(ratingFilter));
             ratingFolder = folderService.create(ratingBuilder);
             for (int i = 1; i <= 5; ++i) {
-                AssetFieldTerms terms = new AssetFieldTerms().setField("Xmp.Rating")
+                AssetFieldTerms terms = new AssetFieldTerms().setField("user.rating")
                         .setTerm(Integer.toString(i));
                 AssetFilter starFilter = new AssetFilter().setFieldTerm(terms);
                 String starTitle = new String(new char[i]).replace("\0", "★");
