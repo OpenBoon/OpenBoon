@@ -25,7 +25,6 @@
     <com.zorroa.javaDir>${com.zorroa.appDir}/java</com.zorroa.javaDir>
   </properties>
   <dependencies>
-
     <dependency>
       <groupId>com.zorroa</groupId>
       <artifactId>archivist-sdk</artifactId>
@@ -156,21 +155,59 @@
     </dependency>
 
     <dependency>
+      <groupId>com.twelvemonkeys.common</groupId>
+      <artifactId>common-image</artifactId>
+      <version>3.3-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/common-image-3.3-SNAPSHOT.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>com.twelvemonkeys.common</groupId>
+      <artifactId>common-io</artifactId>
+      <version>3.3-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/common-io-3.3-SNAPSHOT.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>com.twelvemonkeys.common</groupId>
+      <artifactId>common-lang</artifactId>
+      <version>3.3-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/common-lang-3.3-SNAPSHOT.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>com.twelvemonkeys.imageio</groupId>
+      <artifactId>imageio-core</artifactId>
+      <version>3.3-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/imageio-core-3.3-SNAPSHOT.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>com.twelvemonkeys.imageio</groupId>
+      <artifactId>imageio-metadata</artifactId>
+      <version>3.3-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/imageio-metadata-3.3-SNAPSHOT.jar</systemPath>
+    </dependency>
+
+    <dependency>
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-tiff</artifactId>
-      <version>3.2.1</version>
+      <version>3.3-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/imageio-tiff-3.3-SNAPSHOT.jar</systemPath>
     </dependency>
 
     <dependency>
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-psd</artifactId>
-      <version>3.2.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.twelvemonkeys.imageio</groupId>
-      <artifactId>imageio-jpeg</artifactId>
-      <version>3.2.1</version>
+      <version>3.3-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/imageio-psd-3.3-SNAPSHOT.jar</systemPath>
     </dependency>
 
     <dependency>
@@ -178,6 +215,13 @@
       <artifactId>javacv</artifactId>
       <version>1.1</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.bytedeco.javacpp-presets</groupId>
+      <artifactId>tesseract</artifactId>
+      <version>3.04-1.1</version>
+    </dependency>
+
 
   </dependencies>
 
