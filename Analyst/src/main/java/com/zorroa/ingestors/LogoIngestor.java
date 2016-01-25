@@ -6,8 +6,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
-import org.opencv.features2d.DescriptorMatcher;
-import org.opencv.features2d.FeatureDetector;
 import org.opencv.highgui.Highgui;
 import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
@@ -32,10 +30,6 @@ public class LogoIngestor extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(LogoIngestor.class);
 
     private static String cascadeName = "visaLogo.xml";
-    private static DescriptorMatcher matcher;
-    private static FeatureDetector detector;
-    private static String featurePath;
-    private static OpenCVLoader openCVLoader = new OpenCVLoader();
 
     // CascadeClassifier is not thread-safe, so give one to each thread
     private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>() {
@@ -47,14 +41,6 @@ public class LogoIngestor extends IngestProcessor {
                 logger.error("LogoIngestor requires ZORROA_OPENCV_MODEL_PATH");
                 return null;
             }
-
-            if (matcher == null) {
-                featurePath = modelPath + "/feature/visa.jpg";
-                logger.info("Feature processor feature path: " + featurePath);
-                detector = FeatureDetector.create(FeatureDetector.SIFT);
-                matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE);
-            }
-
 
             String haarPath = modelPath + "/logo/" + cascadeName;
             logger.info("Logo processor haarPath path: " + haarPath);
