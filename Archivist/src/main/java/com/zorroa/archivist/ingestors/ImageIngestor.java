@@ -64,8 +64,10 @@ public class ImageIngestor extends IngestProcessor {
              */
             try {
                 if (!asset.isUpdate()) {
-                    Number rating = asset.getAttrOrDefault("Xmp.Rating", 0.0);
-                    asset.setAttr("user", "rating", rating.intValue());
+                    Number rating = asset.getAttr("Xmp.Rating");
+                    if (rating != null) {
+                        asset.setAttr("user", "rating", rating.intValue());
+                    }
                 }
             } catch (Exception e) {
                 // Xmp.Rating is only set in some images, not finding it is fine
