@@ -10,7 +10,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 
-public class AssetBuilder extends Document{
+public class AssetBuilder extends Document {
 
     private static final Logger logger = LoggerFactory.getLogger(AssetBuilder.class);
 
@@ -250,6 +250,17 @@ public class AssetBuilder extends Document{
             return false;
         }
         return this.source.isType(type);
+    }
+
+    public void close() {
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            }
+            catch (Exception ignore) {
+
+            }
+        }
     }
 
     @Override
