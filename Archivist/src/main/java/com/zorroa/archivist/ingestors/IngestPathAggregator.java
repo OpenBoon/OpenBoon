@@ -5,6 +5,7 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.service.IngestService;
+import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -16,10 +17,6 @@ import java.util.Map;
 
 public class IngestPathAggregator extends IngestProcessor {
 
-    private Folder ingestFolder;
-    private String excludePathRoot;
-    private Map<String, Folder> pathMap = Maps.newHashMap();
-
     @Autowired
     FolderService folderService;
 
@@ -29,9 +26,21 @@ public class IngestPathAggregator extends IngestProcessor {
     @Autowired
     SearchService searchService;
 
+    @Autowired
+    UserService userService;
+
+    private Folder ingestFolder;
+    private String excludePathRoot;
+    private Map<String, Folder> pathMap = Maps.newHashMap();
+    private Acl acl;
+
     @Override
     public void init(Ingest ingest) {
         ingestFolder = ingestService.getFolder(ingest);
+        acl = new Acl()
+                .addEntry(userService.getPermission("internal::server"), Access.Write, Access.Read)
+                .addEntry(userService.getPermission("group::user"), Access.Read);
+
         String path = ingest.getPaths().get(0);     // FIXME: Only works with single path!
         excludePathRoot = ".{1," + Integer.toString(path.length()) + "}";
     }
@@ -74,7 +83,8 @@ public class IngestPathAggregator extends IngestProcessor {
                         .setField("source.directory.dir").setTerm(path));
                 FolderBuilder pathBuilder = new FolderBuilder().setName(title)
                         .setParentId(parentFolder.getId())
-                        .setSearch(new AssetSearch().setFilter(pathFilter));
+                        .setSearch(new AssetSearch().setFilter(pathFilter))
+                        .setAcl(acl);
                 pathFolder = folderService.create(pathBuilder);
             }
             pathMap.put(path, pathFolder);

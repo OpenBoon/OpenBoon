@@ -37,7 +37,7 @@ public class UserServiceTests extends ArchivistApplicationTests {
          * Re-authenticate this test as the user we just made.  Otherwise we can't
          * access the user folder.
          */
-        authenticate(user.getUsername(), "123password");
+        authenticate(user.getUsername());
 
         /*
          * Get the user's personal folder.

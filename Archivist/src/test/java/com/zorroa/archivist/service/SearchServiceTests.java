@@ -59,7 +59,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
     @Test
     public void testSearchPermissionsHit() throws IOException {
-
+        authenticate("admin");
         String filename = "captain_america.jpg";
         String filepath = "/tmp/" + filename;
         Files.touch(new File(filepath));

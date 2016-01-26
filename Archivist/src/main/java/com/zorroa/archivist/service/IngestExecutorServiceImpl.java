@@ -19,6 +19,8 @@ import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.archivist.security.BackgroundTaskAuthentication;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.tika.Tika;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
@@ -27,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -68,6 +72,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     MessagingService messagingService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
@@ -220,6 +227,13 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 logger.warn("Unable to set ingest {} to the running state.", ingest);
                 return;
             }
+
+            /**
+             * Re-authorize this thread with the same user using InternalAuthentication.  This will add
+             * the internal::server permission to their list of permissions.
+             */
+            SecurityContextHolder.getContext().setAuthentication(
+                    authenticationManager.authenticate(new BackgroundTaskAuthentication(SecurityUtils.getUser())));
 
             List<IngestProcessor> processors = null;
             IngestPipeline pipeline;

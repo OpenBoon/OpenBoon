@@ -1,7 +1,9 @@
 package com.zorroa.archivist;
 
+import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.domain.UserBuilder;
 import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
@@ -19,7 +21,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -167,14 +168,20 @@ public abstract class ArchivistApplicationTests {
         userService.create(userBuilder);
     }
 
+    /**
+     * Athenticates a user as admin but with all permissions, including internal ones.
+     */
     public void authenticate() {
         SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("admin", "admin")));
+                authenticationManager.authenticate(new UnitTestAuthentication(userService.get("admin"),
+                        userService.getPermissions())));
     }
 
-    public void authenticate(String user, String password) {
+    public void authenticate(String username) {
+        User user = userService.get(username);
         SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user, password)));
+                authenticationManager.authenticate(new UnitTestAuthentication(user,
+                        userService.getPermissions(user))));
     }
 
     public void logout() {

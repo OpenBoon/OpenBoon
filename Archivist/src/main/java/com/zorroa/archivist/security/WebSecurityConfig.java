@@ -1,5 +1,6 @@
 package com.zorroa.archivist.security;
 
+import com.zorroa.archivist.ArchivistConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationProvider(backgroundTaskAuthenticationProvider())
             .authenticationProvider(internalAuthenticationProvider())
             .authenticationEventPublisher(authenticationEventPublisher());
+
+        /**
+         * If its a unit test we add our rubber stamp authenticator.
+         */
+        if (ArchivistConfiguration.unittest) {
+            auth.authenticationProvider(new UnitTestAuthenticationProvider());
+        }
     }
 
     @Bean

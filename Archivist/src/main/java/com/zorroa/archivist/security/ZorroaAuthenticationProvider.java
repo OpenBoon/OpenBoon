@@ -48,8 +48,7 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
     }
 
     private static final Set<Class<?>> SUPPORTED_AUTHENTICATION =
-            ImmutableSet.of(UsernamePasswordAuthenticationToken.class,
-            UnitTestAuthentication.class);
+            ImmutableSet.of(UsernamePasswordAuthenticationToken.class);
 
     @Override
     public boolean supports(Class<?> authentication) {

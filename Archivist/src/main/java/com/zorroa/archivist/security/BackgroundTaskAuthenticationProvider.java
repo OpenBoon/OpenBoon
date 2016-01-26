@@ -1,16 +1,20 @@
 package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.domain.InternalPermission;
+import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
+import java.util.List;
+
 /**
- * Created by chambers on 12/1/15.
+ * BackgroundTaskAuthenticationProvider takes whatever permissions a user has and adds
+ * the internal::server permission, which gives the thread the ability to write into
+ * special areas.
  */
 public class BackgroundTaskAuthenticationProvider implements AuthenticationProvider {
 
@@ -19,12 +23,9 @@ public class BackgroundTaskAuthenticationProvider implements AuthenticationProvi
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
-        String username = authentication.getName();
-        User user = (User) authentication.getPrincipal();
-        return new RunAsUserToken(username,user, "",
-                InternalPermission.upcast(userService.getPermissions(user)),
-                null);
+        List<Permission> perms = userService.getPermissions((User) authentication.getPrincipal());
+        perms.add(userService.getPermission("internal::server"));
+        return new InternalAuthentication(authentication.getPrincipal(), InternalPermission.upcast(perms));
     }
 
     @Override

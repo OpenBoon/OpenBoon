@@ -13,22 +13,19 @@ import java.util.List;
 public class UnitTestAuthentication extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = 1L;
-    private final Object credentials;
     private final Object principal;
     private final String username;
 
-    public UnitTestAuthentication(User principal, Object credentials, List<Permission> authorities) {
+    public UnitTestAuthentication(User principal, List<Permission> authorities) {
         super(InternalPermission.upcast(authorities));
         this.principal = principal;
-        this.credentials = credentials;
         this.username = principal.getUsername();
     }
 
     @Override
     public Object getCredentials() {
-        return credentials;
+        return "";
     }
-
     @Override
     public Object getPrincipal() {
         return principal;

@@ -74,7 +74,11 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public List<Permission> getAll() {
-        return jdbc.query("SELECT * FROM permission WHERE str_type != 'user'", MAPPER);
+        /**
+         * This function does not return user/internal perms, just the perm that can be
+         * manually assigned.
+         */
+        return jdbc.query("SELECT * FROM permission WHERE str_type NOT IN ('user', 'internal')", MAPPER);
     }
 
     private static final String GET_BY_USER =

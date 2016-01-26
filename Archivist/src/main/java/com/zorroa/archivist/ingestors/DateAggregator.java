@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.service.FolderService;
+import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -21,14 +22,17 @@ public class DateAggregator extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(DateAggregator.class);
 
-    private Folder dateFolder;
-
     @Autowired
     SearchService searchService;
 
     @Autowired
     FolderService folderService;
 
+    @Autowired
+    UserService userService;
+
+    private Folder dateFolder;
+    private Acl acl;
 
     @Override
     public void init(Ingest ingest) {
@@ -36,10 +40,14 @@ public class DateAggregator extends IngestProcessor {
          * Letting this throw if Date is not there...it should be there.
          */
         dateFolder =  folderService.get(0, "Date");
+        acl = new Acl()
+                .addEntry(userService.getPermission("internal::server"), Access.Write, Access.Read)
+                .addEntry(userService.getPermission("group::user"), Access.Read);
     }
 
     @Override
     public void process(AssetBuilder asset) {
+
         // Create an aggregation over all of the years
         AssetAggregateBuilder yearAggBuilder = createYearAggBuilder();
         SearchResponse yearResponse = searchService.aggregate(yearAggBuilder);
@@ -57,8 +65,10 @@ public class DateAggregator extends IngestProcessor {
             try {
                 yearFolder = folderService.get(dateFolder.getId(), yearName);
             } catch (EmptyResultDataAccessException e) {
-                yearFolder = folderService.create(new FolderBuilder().setName(yearName)
-                        .setParentId(dateFolder.getId()));
+                yearFolder = folderService.create(new FolderBuilder()
+                        .setName(yearName)
+                        .setParentId(dateFolder.getId())
+                        .setAcl(acl));
             }
 
             AssetSearch yearSearch = new AssetSearch().setFilter(new AssetFilter()
@@ -123,10 +133,12 @@ public class DateAggregator extends IngestProcessor {
                     .setMin(min).setMax(max);
             AssetFilter monthFilter = new AssetFilter().setFieldRange(fieldRange);
             AssetSearch monthSearch = new AssetSearch().setFilter(monthFilter);
-            FolderBuilder monthBuilder = new FolderBuilder().setName(name).setSearch(monthSearch)
-                    .setParentId(parentFolder.getId());
+            FolderBuilder monthBuilder = new FolderBuilder()
+                    .setName(name)
+                    .setSearch(monthSearch)
+                    .setParentId(parentFolder.getId())
+                    .setAcl(acl);
             folderService.create(monthBuilder);
         }
     }
-
 }

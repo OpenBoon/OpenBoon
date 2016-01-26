@@ -21,6 +21,8 @@ public class FolderServiceTests extends ArchivistApplicationTests {
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testSetAcl() {
+        authenticate("admin");
+
         FolderBuilder builder = new FolderBuilder("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());

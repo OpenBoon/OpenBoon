@@ -75,7 +75,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetChildrenInsecure() {
-
+        authenticate("admin");
         assertFalse(SecurityUtils.hasPermission("group::superuser"));
 
         Folder pub = folderDao.get(0, "Folders");
@@ -92,6 +92,7 @@ public class FolderDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testHasAccess() throws IOException {
+        authenticate("admin");
         FolderBuilder builder = new FolderBuilder("test");
         Folder folder1 = folderDao.create(builder);
         assertTrue(folderDao.hasAccess(folder1, Access.Read));
