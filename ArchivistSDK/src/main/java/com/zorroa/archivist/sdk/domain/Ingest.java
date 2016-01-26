@@ -22,7 +22,6 @@ public class Ingest implements Id {
     private int updatedCount;
     private int errorCount;
     private int warningCount;
-    private boolean updateOnExist;
     private int assetWorkerThreads;
 
     @Override
@@ -140,14 +139,6 @@ public class Ingest implements Id {
     }
     public void setErrorCount(int errorCount) {
         this.errorCount = errorCount;
-    }
-
-    public boolean isUpdateOnExist() {
-        return updateOnExist;
-    }
-
-    public void setUpdateOnExist(boolean updateOnExist) {
-        this.updateOnExist = updateOnExist;
     }
 
     public int getAssetWorkerThreads() {
