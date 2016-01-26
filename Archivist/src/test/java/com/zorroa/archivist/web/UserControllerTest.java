@@ -43,7 +43,6 @@ public class UserControllerTest extends MockMvcTest {
         User user = userService.get("user");
 
         UserUpdateBuilder builder = new UserUpdateBuilder();
-        builder.setUsername("foo");
         builder.setPassword("bar");
         builder.setEmail("test@test.com");
 
@@ -58,8 +57,7 @@ public class UserControllerTest extends MockMvcTest {
         User updated = Json.Mapper.readValue(result.getResponse().getContentAsString(), User.class);
         assertEquals(user.getId(), updated.getId());
         assertEquals(builder.getEmail(), updated.getEmail());
-        assertEquals(builder.getUsername(), updated.getUsername());
-        assertTrue(BCrypt.checkpw("bar", userService.getPassword("foo")));
+        assertTrue(BCrypt.checkpw("bar", userService.getPassword("user")));
 
     }
 

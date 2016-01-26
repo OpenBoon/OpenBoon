@@ -106,6 +106,12 @@ public class UserServiceImpl implements UserService {
     public boolean update(User user, UserUpdateBuilder builder) {
         // TODO: the permission for this user should be renamed or we
         // shouldn't allow people to change usernames.
+        assert builder.getUsername() == null || user.getUsername() == builder.getUsername();
+
+        if (builder.getPermissionIds() != null) {
+            List<Permission> perms = permissionDao.getAll(builder.getPermissionIds());
+            permissionDao.setOnUser(user, perms);
+        }
         return userDao.update(user, builder);
     }
 
