@@ -8,7 +8,6 @@ public class IngestBuilder {
     private String name;
     private List<String> paths;
     private int pipelineId = -1;
-    private boolean updateOnExist = true;
     private int assetWorkerThreads = 4;
 
     public IngestBuilder() { }
@@ -42,14 +41,6 @@ public class IngestBuilder {
     public IngestBuilder setPipelineId(int pipelineId) {
         this.pipelineId = pipelineId;
         return this;
-    }
-
-    public boolean isUpdateOnExist() {
-        return updateOnExist;
-    }
-
-    public void setUpdateOnExist(boolean updateOnExist) {
-        this.updateOnExist = updateOnExist;
     }
 
     public int getAssetWorkerThreads() {
