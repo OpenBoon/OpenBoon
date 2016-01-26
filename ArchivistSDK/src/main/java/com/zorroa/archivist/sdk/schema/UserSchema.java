@@ -5,7 +5,7 @@ package com.zorroa.archivist.sdk.schema;
  */
 public class UserSchema implements Schema {
 
-    private Integer rating = 0;
+    private Integer rating = null;
 
     public Integer getRating() {
         return rating;
