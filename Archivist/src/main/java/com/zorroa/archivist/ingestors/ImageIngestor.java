@@ -228,7 +228,7 @@ public class ImageIngestor extends IngestProcessor {
                 // has some useful additional information for searching & display.
                 String description = tag.getDescription();
                 String descriptionKey = key + ".description";
-                if (description.equals(directory.getString(tag.getTagType()))) {
+                if (description != null && description.equals(directory.getString(tag.getTagType()))) {
                     description = null;
                 }
                 if (value.getClass().isArray() &&
