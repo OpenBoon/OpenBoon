@@ -47,7 +47,12 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     private UpdateRequestBuilder buildRequest(AssetBuilder builder, String id) {
+        /**
+         * Close the AssetBuilder which has an open file handle to the asset itself.
+         */
+        builder.close();
         builder.buildKeywords();
+
         byte[] doc = Json.serialize(builder.getDocument());
         return client.prepareUpdate(alias, getType(), id)
                 .setDoc(doc)
