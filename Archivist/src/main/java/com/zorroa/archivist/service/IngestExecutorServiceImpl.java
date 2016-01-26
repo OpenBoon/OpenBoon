@@ -228,18 +228,20 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 return;
             }
 
-            /**
-             * Re-authorize this thread with the same user using InternalAuthentication.  This will add
-             * the internal::server permission to their list of permissions.
-             */
-            SecurityContextHolder.getContext().setAuthentication(
-                    authenticationManager.authenticate(new BackgroundTaskAuthentication(SecurityUtils.getUser())));
-
             List<IngestProcessor> processors = null;
             IngestPipeline pipeline;
 
             try {
+
                 try {
+                    /**
+                     * Re-authorize this thread with the same user using InternalAuthentication.  This will add
+                     * the internal::server permission to their list of permissions.
+                     */
+                    SecurityContextHolder.getContext().setAuthentication(
+                            authenticationManager.authenticate(new BackgroundTaskAuthentication(SecurityUtils.getUser())));
+
+                    
                     pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
                     processors = setupIngestProcessors(pipeline);
                 }
