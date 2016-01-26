@@ -36,6 +36,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
 
+    private static final String INGEST_ROOT = "/Imports";
+
     ApplicationContext applicationContext;
 
     @Autowired
@@ -183,7 +185,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
             AssetFilter ingestFilter = new AssetFilter().setIngestId(ingest.getId());
             FolderBuilder fBuilder = new FolderBuilder()
                     .setName(folderName)
-                    .setParentId(folderService.get("/Ingests").getId())
+                    .setParentId(folderService.get(INGEST_ROOT).getId())
                     .setSearch(new AssetSearch().setFilter(ingestFilter));
             folderService.create(fBuilder);
         }, false);
@@ -254,7 +256,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public Folder getFolder(Ingest ingest) {
-        return folderService.get(folderService.get("/Ingests").getId(),
+        return folderService.get(folderService.get(INGEST_ROOT).getId(),
                 String.format("%d:%s", ingest.getId(), ingest.getName()));
     }
 
