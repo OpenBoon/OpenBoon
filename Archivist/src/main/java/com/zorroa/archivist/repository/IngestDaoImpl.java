@@ -38,7 +38,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         result.setErrorCount(rs.getInt("int_error_count"));
         result.setUpdatedCount(rs.getInt("int_updated_count"));
         result.setWarningCount(rs.getInt("int_warning_count"));
-        result.setUpdateOnExist(rs.getBoolean("bool_update_on_exist"));
         result.setAssetWorkerThreads(rs.getInt("int_asset_worker_threads"));
         return result;
     };
