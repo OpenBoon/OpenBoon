@@ -28,11 +28,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.4" level="project" />
-    <orderEntry type="library" name="Maven: org.bytedeco.javacpp-presets:tesseract:3.04-1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.bytedeco.javacpp-presets:leptonica:1.72-1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.bytedeco.javacpp-presets:leptonica:macosx-x86_64:1.72-1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.bytedeco:javacpp:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.bytedeco.javacpp-presets:tesseract:macosx-x86_64:3.04-1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:18.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
