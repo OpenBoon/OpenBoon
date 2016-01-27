@@ -26,8 +26,17 @@ public class SourceSchema implements Schema {
     private String directory;
     private Date date;
     private String checksum;
-    private long fileSize;
     private List<String> relatedPaths;
+
+    /**
+     * File stat() values.
+     */
+    private long fileSize;
+    private Date timeCreated;
+    private Date timeModified;
+    private Date timeAccessed;
+    private String owner;
+    private String group;
 
     @Keyword
     private String type;
@@ -142,6 +151,51 @@ public class SourceSchema implements Schema {
             relatedPaths = Lists.newArrayList();
         }
         this.relatedPaths.add(path);
+    }
+
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
+
+    public SourceSchema setTimeCreated(Date timeCreated) {
+        this.timeCreated = timeCreated;
+        return this;
+    }
+
+    public Date getTimeModified() {
+        return timeModified;
+    }
+
+    public SourceSchema setTimeModified(Date timeModified) {
+        this.timeModified = timeModified;
+        return this;
+    }
+
+    public Date getTimeAccessed() {
+        return timeAccessed;
+    }
+
+    public SourceSchema setTimeAccessed(Date timeAccessed) {
+        this.timeAccessed = timeAccessed;
+        return this;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public SourceSchema setOwner(String owner) {
+        this.owner = owner;
+        return this;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public SourceSchema setGroup(String group) {
+        this.group = group;
+        return this;
     }
 
     @JsonIgnore
