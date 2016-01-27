@@ -30,7 +30,7 @@ public class PdfIngestor extends IngestProcessor {
     @Override
     public void process(AssetBuilder assetBuilder) {
 
-        if (assetBuilder.contains("document")) {
+        if (assetBuilder.contains("document") && !assetBuilder.isChanged()) {
             logger.debug("'document' schema already exists, skipping: {}", assetBuilder);
         }
 

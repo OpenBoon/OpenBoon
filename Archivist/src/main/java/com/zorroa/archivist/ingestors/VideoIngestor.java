@@ -32,7 +32,7 @@ public class VideoIngestor extends IngestProcessor {
     @Override
     public void process(AssetBuilder assetBuilder) {
 
-        if (assetBuilder.contains("video")) {
+        if (assetBuilder.contains("video") && !assetBuilder.isChanged()) {
             logger.debug("'video' schema already exists, skipping: {}", assetBuilder);
             return;
         }

@@ -45,9 +45,9 @@ public class ProxyProcessor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
-        if (asset.contains("proxies")) {
+
+        if (asset.contains("proxies") && !asset.isChanged()) {
             logger.debug("Proxy images already exist for {}", asset);
-            //TODO: check if config changed.
             return;
         }
 

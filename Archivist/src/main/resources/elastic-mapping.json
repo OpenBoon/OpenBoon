@@ -60,20 +60,6 @@
           "index": "not_analyzed",
           "type": "string"
         },
-        "timeCreated": {
-          "type": "date"
-        },
-        "timeModified": {
-          "type": "date"
-        },
-        "userCreated": {
-          "type": "integer",
-          "index": "not_analyzed"
-        },
-        "userModified": {
-          "type": "integer",
-          "index": "not_analyzed"
-        },
         "keywords": {
           "dynamic": true,
           "properties": {
@@ -153,6 +139,15 @@
         }
       },
       "dynamic_templates": [
+        {
+          "time_template": {
+            "match": "^time[A-Z]{1}.*?$",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "date"
+            }
+          }
+        },
         {
           "string_template": {
             "match": "*",
