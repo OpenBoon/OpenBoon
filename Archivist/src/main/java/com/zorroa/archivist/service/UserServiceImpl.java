@@ -83,6 +83,11 @@ public class UserServiceImpl implements UserService {
                 .setName(user.getUsername())
                 .setParentId(userRoot.getId())
                 .setAcl(new Acl().addEntry(userPerm, Access.Read, Access.Write)));
+
+        transactionEventManager.afterCommitSync(() -> {
+            messagingService.broadcast(new Message("USER_CREATE", user));
+        });
+
         return user;
     }
 
@@ -120,7 +125,14 @@ public class UserServiceImpl implements UserService {
             List<Permission> perms = permissionDao.getAll(builder.getPermissionIds());
             permissionDao.setOnUser(user, perms);
         }
-        return userDao.update(user, builder);
+
+        boolean result = userDao.update(user, builder);
+        if (result) {
+            transactionEventManager.afterCommitSync(() -> {
+                messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
+            });
+        }
+        return result;
     }
 
     @Override
@@ -145,6 +157,12 @@ public class UserServiceImpl implements UserService {
         }
         catch (EmptyResultDataAccessException e) {
             logger.warn(String.format("The user %s has no user folder."));
+        }
+
+        if (result) {
+            transactionEventManager.afterCommitSync(() -> {
+                messagingService.broadcast(new Message("USER_DELETE", user));
+            });
         }
 
         return result;
