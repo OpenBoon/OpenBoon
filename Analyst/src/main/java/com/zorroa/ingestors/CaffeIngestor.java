@@ -1,16 +1,16 @@
 package com.zorroa.ingestors;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.opencv.core.Mat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static org.opencv.highgui.Highgui.imread;
@@ -34,7 +34,7 @@ public class CaffeIngestor extends IngestProcessor {
     private static final ThreadLocal<CaffeClassifier> caffeClassifier = new ThreadLocal<CaffeClassifier>() {
         @Override
         protected CaffeClassifier initialValue() {
-            logger.info("Loading caffe models...");
+            logger.debug("Loading caffe models...");
             Map<String, String> env = System.getenv();
             String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
             if (modelPath == null) {
@@ -54,20 +54,26 @@ public class CaffeIngestor extends IngestProcessor {
             }
             CaffeClassifier caffeClassifier = new CaffeClassifier(file[0].getAbsolutePath(),
                     file[1].getAbsolutePath(), file[2].getAbsolutePath(), file[3].getAbsolutePath());
-            logger.info("CaffeIngestor created");
+            logger.debug("CaffeIngestor created");
             return caffeClassifier;
         }
     };
 
     @Override
     public void process(AssetBuilder asset) {
-        if (!asset.getSource().getType().startsWith("image")) {
+        if (!asset.isSuperType("image")) {
             return;
         }
-        List<Proxy> proxyList = (List<Proxy>) asset.getDocument().get("proxies");
+
+        ProxySchema proxyList = asset.getSchema("proxies", ProxySchema.class);
         if (proxyList == null) {
-            logger.error("Cannot find proxy list for " + asset.getFilename() + ", skipping Caffe analysis.");
-            return;     // No proxies implies bad image file, which crashes Caffe
+            logger.warn("Cannot find proxy list for {}, skipping Caffe analysis.", asset);
+            return;
+        }
+
+        if (asset.contains("caffe")) {
+            logger.debug("{} has already been processed by caffe.", asset);
+            return;
         }
 
         String classifyPath = asset.getFile().getPath();
@@ -87,7 +93,7 @@ public class CaffeIngestor extends IngestProcessor {
 
         // Convert the array of structs into an array of strings until we have a way
         // to pass the confidence values.
-        ArrayList<String> keywords = new ArrayList<String>();
+        ArrayList<String> keywords = Lists.newArrayListWithCapacity(caffeKeywords.length);
         for (int i = 0; i < caffeKeywords.length; ++i) {
             if (caffeKeywords[i].confidence > confidenceThreshold) {
                 keywords.add(caffeKeywords[i].keyword);
@@ -96,10 +102,7 @@ public class CaffeIngestor extends IngestProcessor {
                 asset.addKeywords(confidence, true, caffeKeywords[i].keyword);
             }
         }
-        String[] keywordArray = new String[keywords.size()];
-        keywordArray = keywords.toArray(keywordArray);
-        logger.info("CaffeIngestor: " + Arrays.toString(keywordArray));
-        asset.setAttr("caffe", "keywords", keywordArray);
+        asset.setAttr("caffe", "keywords", keywords);
     }
 
     @Override

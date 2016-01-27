@@ -1,7 +1,9 @@
 package com.zorroa.ingestors;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.util.StringUtil;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -13,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -43,12 +44,12 @@ public class LogoIngestor extends IngestProcessor {
             }
 
             String haarPath = modelPath + "/logo/" + cascadeName;
-            logger.info("Logo processor haarPath path: " + haarPath);
+            logger.debug("Logo processor haarPath path: {}", haarPath);
             CascadeClassifier classifier = null;
             try {
                 classifier = new CascadeClassifier(haarPath);
                 if (classifier != null) {
-                    logger.info("Logo classifier initialized");
+                    logger.debug("Logo classifier initialized");
                 }
             } catch (Exception e) {
                 logger.error("Logo classifier failed to initialize: " + e.toString());
@@ -58,11 +59,20 @@ public class LogoIngestor extends IngestProcessor {
         }
     };
 
-    public LogoIngestor() {
-    }
+    public LogoIngestor() { }
 
     @Override
     public void process(AssetBuilder asset) {
+
+        if (!asset.isSuperType("image")) {
+            return;
+        }
+
+        if (asset.contains("Logos")) {
+            logger.debug("{} has already been processed by LogoIngestor.", asset);
+            return;
+        }
+
         String argCascadeName = (String) getArgs().get("CascadeName");
         if (argCascadeName != null) {
             cascadeName = argCascadeName;
@@ -77,7 +87,7 @@ public class LogoIngestor extends IngestProcessor {
 
         // Perform analysis on the full resolution source image. The VISA and other logos tend to be rather small in
         // the frame, and using the proxy misses many logos.
-        logger.info("Starting logo detection on " + asset.getFilename());
+        logger.debug("Starting logo detection on {}", asset.getFilename());
         Mat image = Highgui.imread(classifyPath);
         Size imSize = image.size();
 
@@ -121,57 +131,57 @@ public class LogoIngestor extends IngestProcessor {
             }
         }
 
-        if (logoCount > 0) {
-            logger.info("LogoIngestor: Haar detected " + logoCount + " potential logos.");
+        if (logoCount < 1) {
+            return;
+        }
 
-            List<String> keywords =  new ArrayList<String>();
-            keywords.add("visa");
+        logger.debug("LogoIngestor: Haar detected {} potential logos.", logoCount);
+        List<String> keywords = Lists.newArrayList("visa");
 
-            String svgVal = "<svg>";
+        StringBuilder svgVal = new StringBuilder(1024);
+        svgVal.append("<svg>");
 
-            for (Rect rect : logoDetections.toArray()) {
-                // Detect points in the area found by the Haar cascade
-                int xmin = rect.x;
-                if (xmin < 0) xmin = 0;
+        for (Rect rect : logoDetections.toArray()) {
+            // Detect points in the area found by the Haar cascade
+            int xmin = rect.x;
+            if (xmin < 0) xmin = 0;
 
-                int xmax = rect.x + rect.width;
-                if (xmax >= imSize.width) xmax = (int)imSize.width-1;
+            int xmax = rect.x + rect.width;
+            if (xmax >= imSize.width) xmax = (int)imSize.width-1;
 
-                int ymin = rect.y;
-                if (ymin < 0) ymin = 0;
+            int ymin = rect.y;
+            if (ymin < 0) ymin = 0;
 
-                int ymax = rect.y + rect.height;
-                if (ymax >= imSize.height) ymax = (int)imSize.height-1;
+            int ymax = rect.y + rect.height;
+            if (ymax >= imSize.height) ymax = (int)imSize.height-1;
 
-                // Logo is big if more than 5% of total height
-                double relSize = rect.height / imSize.height;
-                if (relSize > .05) {
-                    confidence += relSize;
-                    if (confidence > 1) {
-                        confidence = 1;
-                    }
-                    keywords.add("bigvisa");
+            // Logo is big if more than 5% of total height
+            double relSize = rect.height / imSize.height;
+            if (relSize > .05) {
+                confidence += relSize;
+                if (confidence > 1) {
+                    confidence = 1;
                 }
-
-                // Draw rectangle
-                svgVal += "<polygon points=\"" + xmin + "," + ymin + " " + xmax + "," + ymin + " " + xmax + "," + ymax + " " + xmin + "," + ymax + "\" style=\"fill:none;stroke:green;stroke-width:2\" />";
-
+                keywords.add("bigvisa");
             }
+            svgVal.append("<polygon points=\"");
+            svgVal.append(StringUtil.join(",", xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax));
+            svgVal.append("\" style=\"fill:none;stroke:green;stroke-width:2\" />");
+        }
 
-            logger.info("LogoIngestor: " + keywords);
-            asset.addKeywords(confidence, true, keywords);
+        logger.debug("LogoIngestor keywords {}", keywords);
+        asset.addKeywords(confidence, true, keywords);
 
-            // For debugging purposes, We are adding "visa"+confidence as an attribute, so we can see the actual number in
-            // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,
-            // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
-            // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
-            keywords.add("visa" + confidence);
-            asset.setAttr("Logos", "keywords", keywords);
+        // For debugging purposes, We are adding "visa"+confidence as an attribute, so we can see the actual number in
+        // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,
+        // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
+        // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
+        keywords.add("visa" + confidence);
+        asset.setAttr("Logos", "keywords", keywords);
 
-            if (svgVal != "<svg>") {
-                svgVal += "</svg>";
-                asset.setAttr("SVG", "Logos", svgVal);
-            }
+        if (svgVal.length() > "<svg>".length()) {
+            svgVal.append("</svg>");
+            asset.setAttr("SVG", "Logos", svgVal.toString());
         }
     }
 }

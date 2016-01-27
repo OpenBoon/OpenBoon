@@ -1,5 +1,6 @@
 package com.zorroa.ingestors;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -45,12 +45,11 @@ public class FaceIngestor extends IngestProcessor {
                 return null;
             }
             String haarPath = modelPath + "/face/" + cascadeName;
-            logger.info("Face processor haarPath path: " + haarPath);
             CascadeClassifier classifier = null;
             try {
                 classifier = new CascadeClassifier(haarPath);
                 if (classifier != null) {
-                    logger.info("Face classifier initialized");
+                    logger.debug("Face classifier initialized");
                 }
             } catch (Exception e) {
                 logger.error("Face classifier failed to initialize: " + e.toString());
@@ -64,6 +63,16 @@ public class FaceIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
+
+        if (!asset.isSuperType("image")) {
+            return;
+        }
+
+        if (asset.contains("face")) {
+            logger.debug("{} has already been processed by FaceIngestor.", asset);
+            return;
+        }
+
         String argCascadeName = (String) getArgs().get("CascadeName");
         if (argCascadeName != null) {
             cascadeName = argCascadeName;
@@ -89,7 +98,7 @@ public class FaceIngestor extends IngestProcessor {
         }
 
         // Perform facial analysis
-        logger.info("Starting facial detection on " + asset.getFilename());
+        logger.debug("Starting facial detection on {} ", asset);
         Mat image = Highgui.imread(classifyPath);
         Size imSize = image.size();
 
@@ -133,11 +142,9 @@ public class FaceIngestor extends IngestProcessor {
             }
         }
 
-        logger.info("Detected " + faceCount + " faces in " + asset.getFilename());
+        logger.debug("Detected '{}' faces in {}", faceCount, asset);
         if (faceCount > 0) {
-            List<String> keywords =  new ArrayList<String>(
-                    Arrays.asList("face", "face" + faceCount)
-            );
+            List<String> keywords = Lists.newArrayList("face", "face" + faceCount);
 
             // Detect faces that are big enough for the 'bigface' label
             for (Rect rect : faceDetections.toArray()) {
@@ -150,7 +157,6 @@ public class FaceIngestor extends IngestProcessor {
                     keywords.add("bigface");
                 }
             }
-            logger.info("FaceIngestor: " + keywords);
             asset.addKeywords(confidence, true, keywords);
 
             // For debugging purposes, We are adding "face"+confidence as an attribute, so we can see the actual number in

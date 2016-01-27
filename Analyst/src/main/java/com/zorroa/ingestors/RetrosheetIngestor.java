@@ -222,10 +222,8 @@ public class RetrosheetIngestor extends IngestProcessor {
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.warn("Failed to parse retrosheet file for {}", file, e);
         }
 
         return true;
@@ -262,6 +260,9 @@ public class RetrosheetIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
+
+        // TODO: need a retrosheet or event schema.
+
         if (!parseError && teamMap.size() == 0) {
             if (!readModelFiles()) {
                 parseError = true;
@@ -286,7 +287,9 @@ public class RetrosheetIngestor extends IngestProcessor {
         }
         //if (!dateDuringGame(date, game))
         //    return;
-        logger.info("Found Retrosheet game: " + game.home.nickname + " against " + game.visitor.nickname + " for " + date);
+        logger.debug("Found Retrosheet game: '{}' against '{}' for {}",
+                game.home.nickname,  game.visitor.nickname, date);
+
         if (game.home != null) {
             putField(asset, "home", game.home.nickname);
             putField(asset, "home.city", game.home.city);
