@@ -9,6 +9,9 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.util.Date;
 
 public class AssetBuilder extends Document {
 
@@ -61,6 +64,13 @@ public class AssetBuilder extends Document {
      */
     private boolean update = false;
 
+    /**
+     * The 'changed' property is true when an asset is new or the file size or modified
+     * date has changed.
+     */
+    private boolean changed = true;
+
+
     public AssetBuilder(File file) {
         if (!file.isFile()) {
             throw new IllegalArgumentException(
@@ -82,7 +92,14 @@ public class AssetBuilder extends Document {
         source.setFilename(getFilename());
 
         try {
-            source.setFileSize(Files.size(file.toPath()));
+            PosixFileAttributes attrs = Files.getFileAttributeView(
+                    file.toPath(), PosixFileAttributeView.class).readAttributes();
+            source.setFileSize(attrs.size());
+            source.setTimeAccessed(new Date(attrs.lastAccessTime().toMillis()));
+            source.setTimeModified(new Date(attrs.lastModifiedTime().toMillis()));
+            source.setTimeCreated(new Date(attrs.creationTime().toMillis()));
+            source.setOwner(attrs.owner().getName());
+            source.setGroup(attrs.group().getName());
         } catch (IOException e) {
             source.setFileSize(0);
         }
@@ -154,6 +171,13 @@ public class AssetBuilder extends Document {
         if (asset == null) {
             return;
         }
+
+        SourceSchema currentSource = asset.getSchema("source", SourceSchema.class);
+        if (currentSource.getTimeModified() == source.getTimeModified() ||
+                currentSource.getFileSize() == source.getFileSize()) {
+            setChanged(false);
+        }
+
         update = true;
         document.putAll(asset.getDocument());
     }
@@ -250,6 +274,15 @@ public class AssetBuilder extends Document {
             return false;
         }
         return this.source.isType(type);
+    }
+
+    public boolean isChanged() {
+        return changed;
+    }
+
+    public AssetBuilder setChanged(boolean changed) {
+        this.changed = changed;
+        return this;
     }
 
     public void close() {
