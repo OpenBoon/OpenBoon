@@ -31,6 +31,12 @@ public class VideoIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder assetBuilder) {
+
+        if (assetBuilder.contains("video")) {
+            logger.debug("'video' schema already exists, skipping: {}", assetBuilder);
+            return;
+        }
+
         extractMetadata(assetBuilder);
         extractImage(assetBuilder);
     }

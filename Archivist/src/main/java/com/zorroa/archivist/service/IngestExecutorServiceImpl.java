@@ -241,7 +241,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     SecurityContextHolder.getContext().setAuthentication(
                             authenticationManager.authenticate(new BackgroundTaskAuthentication(SecurityUtils.getUser())));
 
-                    
                     pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
                     processors = setupIngestProcessors(pipeline);
                 }

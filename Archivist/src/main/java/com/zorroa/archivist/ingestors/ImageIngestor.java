@@ -95,7 +95,6 @@ public class ImageIngestor extends IngestProcessor {
             extractExifMetadata(asset, metadata);   // Extract all useful metadata fields in raw & descriptive format
             extractExifLocation(asset, metadata);   // Find the best location value and promote to top-level
         } catch (Exception e) {
-            logger.info("failed", e);
             throw new UnrecoverableIngestProcessorException(
                     "Unable to extract EXIF metadata from " + asset.getAbsolutePath(), e, getClass());
         }

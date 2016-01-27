@@ -29,6 +29,11 @@ public class PdfIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder assetBuilder) {
+
+        if (assetBuilder.contains("document")) {
+            logger.debug("'document' schema already exists, skipping: {}", assetBuilder);
+        }
+
         extractMetadata(assetBuilder);
         extractImage(assetBuilder);
     }
