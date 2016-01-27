@@ -15,7 +15,14 @@ public class StringUtil {
         return s.substring(0,1).toUpperCase() + s.substring(1);
     }
 
-    public static String join(String[] array, String delimiter) {
+    /**
+     * Join an array of strings using the given delimiter.
+     *
+     * @param delimiter
+     * @param array
+     * @return
+     */
+    public static String join(String delimiter, String ... array) {
         StringBuilder sb = new StringBuilder(512);
         for (String s: array) {
             sb.append(s);
@@ -25,6 +32,22 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * Join an array of integers using the given delimiter.
+     *
+     * @param delimiter
+     * @param values
+     * @return
+     */
+    public static String join(String delimiter, int ... values) {
+        StringBuilder sb = new StringBuilder(512);
+        for (int v: values) {
+            sb.append(v);
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        return sb.toString();
+    }
 
     public static final Pattern NUMBER_PATTERN =  Pattern.compile("^[-+]?\\d*\\.?\\d+$");
 

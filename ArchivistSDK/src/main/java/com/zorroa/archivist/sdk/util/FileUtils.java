@@ -95,7 +95,7 @@ public class FileUtils {
      * @return
      */
     public static String join(String ... e) {
-        return StringUtil.join(e, "/");
+        return StringUtil.join("/", e);
     }
 
     private static final String UNITS = "KMGTPE";
