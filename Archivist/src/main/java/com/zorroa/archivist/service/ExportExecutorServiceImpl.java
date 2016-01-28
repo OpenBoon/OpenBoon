@@ -10,6 +10,7 @@ import com.zorroa.archivist.repository.ExportOutputDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.archivist.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.ExportService;
 import com.zorroa.archivist.sdk.service.MessagingService;
@@ -19,6 +20,7 @@ import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.sdk.util.StringUtil;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.ExportOptionsService;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,7 +133,6 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     outputs.put(output, processor);
 
                 } catch (Exception e) {
-                    logger.warn("Failed to initialize output '{}',", output.getFactory().getKlassName(), e);
                     eventLogService.log(output, "Failed to initialize", e);
                     messagingService.broadcast(new Message(MessageType.EXPORT_EXCEPTION, export));
                 }
@@ -149,6 +150,14 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
              * rewind)
              */
             for (Asset asset : searchService.scanAndScroll(export.getSearch())) {
+
+                PermissionSchema perms = asset.getSchema("permissions", PermissionSchema.class);
+                if (!SecurityUtils.hasPermission(perms.getExport())) {
+                    eventLogService.log(export, "User '{}' does not have permission to export {}, skipping",
+                            SecurityUtils.getUsername(), asset);
+                    continue;
+                }
+
                 logger.info("processing asset {}", (String) asset.getAttr("source.path"));
                 assetCount++;
 
