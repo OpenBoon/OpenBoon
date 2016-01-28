@@ -111,7 +111,7 @@ public class PermissionIngestorTests extends ArchivistApplicationTests {
         Export export = exportService.create(eBuilder);
         exportExecutorService.execute(export);
         refreshIndex(1000);
-        
+
         authenticate();
 
         List<Integer> exports = new ArrayList<>();

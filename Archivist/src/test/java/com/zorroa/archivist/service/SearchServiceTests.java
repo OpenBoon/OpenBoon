@@ -48,7 +48,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Permission perm = userService.createPermission(new PermissionBuilder("group", "test"));
 
         AssetBuilder builder = new AssetBuilder(filepath);
-        builder.setSearchPermissions(perm);
+        builder.setSearchPermissions(Lists.newArrayList(perm));
         Asset asset1 = assetDao.upsert(builder);
         refreshIndex(100);
 
@@ -70,7 +70,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
          * Add a permission from the current user to the asset.
          */
         builder.setSearchPermissions(
-                userService.getPermissions(SecurityUtils.getUser()).get(0));
+                Lists.newArrayList(userService.getPermissions(SecurityUtils.getUser()).get(0)));
         Asset asset1 = assetDao.upsert(builder);
         refreshIndex(100);
 
