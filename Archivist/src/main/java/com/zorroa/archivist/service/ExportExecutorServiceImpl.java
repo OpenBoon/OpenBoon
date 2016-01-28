@@ -174,11 +174,13 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                         messagingService.broadcast(new Message(MessageType.EXPORT_EXCEPTION, export));
                     }
 
-                    if (exportDao.isInState(export, ExportState.Cancelled)) {
-                        logger.warn("Export {} was cancelled", export);
-                        eventLogService.log(export, "Export was canceled");
-                        break;
-                    }
+                }
+
+                // Check for cancellation in outer loop to break out for reals
+                if (exportDao.isInState(export, ExportState.Cancelled)) {
+                    logger.warn("Export {} was cancelled", export);
+                    eventLogService.log(export, "Export was canceled");
+                    break;
                 }
             }
 
