@@ -2,8 +2,10 @@ package com.zorroa.ingestors;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -62,6 +64,14 @@ public class FaceIngestor extends IngestProcessor {
     public FaceIngestor() { }
 
     @Override
+    public void init(Ingest ingest) {
+        String argCascadeName = (String) getArgs().get("CascadeName");
+        if (argCascadeName != null) {
+            cascadeName = argCascadeName;
+        }
+    }
+
+    @Override
     public void process(AssetBuilder asset) {
 
         if (!asset.isSuperType("image")) {
@@ -73,20 +83,12 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
-        String argCascadeName = (String) getArgs().get("CascadeName");
-        if (argCascadeName != null) {
-            cascadeName = argCascadeName;
-        }
-
-        if (!asset.getSource().getType().startsWith("image")) {
-            return;
-        }
-
-        List<Proxy> proxyList = (List<Proxy>) asset.getDocument().get("proxies");
+        ProxySchema proxyList = asset.getSchema("proxies", ProxySchema.class);
         if (proxyList == null) {
-            logger.error("Cannot find proxy list for " + asset.getFilename() + ", skipping Face analysis");
+            logger.warn("Cannot find proxy list for {}, skipping Face analysis.", asset);
             return;
         }
+
         String classifyPath = asset.getFile().getPath();
         Size minFace = new Size(80, 80);
         Size maxFace = new Size(1000, 1000);
