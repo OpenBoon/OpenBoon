@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFileAttributes;
+import java.util.Collection;
 import java.util.Date;
 
 public class AssetBuilder extends Document {
@@ -194,14 +195,21 @@ public class AssetBuilder extends Document {
         return file.getAbsolutePath();
     }
 
-    public void setSearchPermissions(Permission ... perms) {
+    public void setWritePermissions(Collection<Permission> perms) {
+        permissions.getWrite().clear();
+        for (Permission p: perms) {
+            permissions.getWrite().add(p.getId());
+        }
+    }
+
+    public void setSearchPermissions(Collection<Permission> perms) {
         permissions.getSearch().clear();
         for (Permission p: perms) {
             permissions.getSearch().add(p.getId());
         }
     }
 
-    public void setExportPermissions(Permission ... perms) {
+    public void setExportPermissions(Collection<Permission> perms) {
         permissions.getExport().clear();
         for (Permission p: perms) {
             permissions.getExport().add(p.getId());
