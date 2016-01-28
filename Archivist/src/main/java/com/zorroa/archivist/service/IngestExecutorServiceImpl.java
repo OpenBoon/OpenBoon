@@ -99,7 +99,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     }
 
     protected boolean start(Ingest ingest, boolean firstStart) {
-        IngestWorker worker = new IngestWorker(ingest);
+        IngestWorker worker = new IngestWorker(ingest, SecurityUtils.getUser());
 
         if (runningIngests.putIfAbsent(ingest.getId(), worker) == null) {
 
@@ -167,14 +167,17 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
         private final Ingest ingest;
 
+        private final User user;
+
         private boolean earlyShutdown = false;
 
         private Set<String> supportedFormats = Sets.newHashSet();
 
         private Set<String> skippedPaths;
 
-        public IngestWorker(Ingest ingest) {
+        public IngestWorker(Ingest ingest, User user) {
             this.ingest = ingest;
+            this.user = user;
             assetExecutor = new AssetExecutor(ingest.getAssetWorkerThreads());
         }
 
@@ -239,7 +242,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * the internal::server permission to their list of permissions.
                      */
                     SecurityContextHolder.getContext().setAuthentication(
-                            authenticationManager.authenticate(new BackgroundTaskAuthentication(SecurityUtils.getUser())));
+                            authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
 
                     pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
                     processors = setupIngestProcessors(pipeline);
