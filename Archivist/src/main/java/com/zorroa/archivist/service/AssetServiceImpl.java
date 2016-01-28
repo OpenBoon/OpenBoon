@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  *
  * @author chambers
@@ -36,6 +38,11 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Asset get(String id) {
         return assetDao.get(id);
+    }
+
+    @Override
+    public List<Asset> getAll() {
+        return assetDao.getAll();
     }
 
     @Override
