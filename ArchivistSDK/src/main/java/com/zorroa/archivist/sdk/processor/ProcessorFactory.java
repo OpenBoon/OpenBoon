@@ -57,6 +57,11 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
         this.klass = klass.getCanonicalName();
     }
 
+    public ProcessorFactory(Class<?> klass, Map<String, Object> args) {
+        this.klass = klass.getCanonicalName();
+        this.args.putAll(args);
+    }
+
     public String getKlass() {
         return klass;
     }
