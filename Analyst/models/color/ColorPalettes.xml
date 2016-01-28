@@ -1,12 +1,8 @@
 <?xml version="1.0"?>
-<!--
-// Color palettes used to map dominant colors to textual color descriptors.
-// First palette consists of standard "X11 web colors" as found at this URL: https://en.wikipedia.org/wiki/Web_colors
--->
 
 <color_storage>
 
-    <color_palette name="X11_web_colors">
+    <color_palette type="X11_web_colors">
 
         <color>
             <name>Pink</name>
