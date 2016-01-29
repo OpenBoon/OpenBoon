@@ -5,8 +5,6 @@
 package com.zorroa.ingestors;
 
 import org.opencv.core.Mat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
@@ -16,8 +14,6 @@ import java.util.HashMap;
  *
  */
 public class CaffeClassifier {
-    private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
-
     private static final native long createCaffeClassifier(String deployPath, String modelPath, String meanPath, String wordPath);
     private static final native CaffeKeyword[] classify(long caffeClassifier, long imageMat);
     private static final native void destroyCaffeClassifier(long classifier);
