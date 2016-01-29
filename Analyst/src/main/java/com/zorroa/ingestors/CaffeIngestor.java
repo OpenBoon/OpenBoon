@@ -71,7 +71,7 @@ public class CaffeIngestor extends IngestProcessor {
             return;
         }
 
-        if (asset.contains("caffe")) {
+        if (asset.contains("caffe") && !asset.isChanged()) {
             logger.debug("{} has already been processed by caffe.", asset);
             return;
         }

@@ -78,7 +78,7 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
-        if (asset.contains("face")) {
+        if (asset.contains("face") && !asset.isChanged()) {
             logger.debug("{} has already been processed by FaceIngestor.", asset);
             return;
         }
