@@ -42,7 +42,6 @@ static void InitJNIKeyword(JNIEnv *env, JNICaffeKeyword &sJNICaffeKeyword) {
     }
     sJNICaffeKeyword.keywordID = env->GetFieldID(sJNICaffeKeyword.cls, "keyword", "Ljava/lang/String;");
     sJNICaffeKeyword.confidenceID = env->GetFieldID(sJNICaffeKeyword.cls, "confidence", "F");
-    fprintf(stderr, "Successfully initialized the CaffeKeyword class for use in CaffeClassifier native code\n");
 }
 
 void SetJNIKeyword(JNIEnv *env, JNICaffeKeyword &sJNICaffeKeyword, jobject jKeyword, string keyword, float confidence) {
