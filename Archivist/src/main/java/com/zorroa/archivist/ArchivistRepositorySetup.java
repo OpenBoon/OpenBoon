@@ -9,7 +9,6 @@ import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestState;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.IngestExecutorService;
@@ -47,9 +46,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     @Autowired
     IngestExecutorService ingestExecutorService;
-
-    @Autowired
-    ImageService imageService;
 
     @Autowired
     Client client;
