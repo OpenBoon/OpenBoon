@@ -14,7 +14,7 @@ public class AssetExecutor extends ThreadPoolExecutor {
 
     public AssetExecutor(int threads) {
         super(threads, threads, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
-        this.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("ASSET WORKER-%d").build());
+        this.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("ASSET_WORKER-%d").build());
     }
 
     public void waitForCompletion() {
