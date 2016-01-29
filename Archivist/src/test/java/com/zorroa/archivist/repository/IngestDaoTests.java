@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.ingestors.ChecksumProcessor;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +25,6 @@ public class IngestDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     IngestService ingestService;
-
-    @Autowired
-    ImageService imageService;
 
     @Autowired
     IngestScheduleDao ingestScheduleDao;
@@ -173,11 +169,11 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     @Test
     public void testSkipTable() {
         String path = "/test/foo.tif";
-        ingestDao.beginWorkOnPath(ingest, path);
+        ingestDao.addSkippedPath(ingest, path);
         Set<String> skipped = ingestDao.getSkippedPaths(ingest);
         assertTrue(skipped.contains(path));
 
-        ingestDao.endWorkOnPath(ingest, path);
+        ingestDao.removeSkippedPath(ingest, path);
         skipped = ingestDao.getSkippedPaths(ingest);
         assertFalse(skipped.contains(path));
     }

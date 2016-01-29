@@ -36,9 +36,9 @@ public interface IngestDao {
 
     List<Ingest> getAll(IngestSchedule schedule);
 
-    void beginWorkOnPath(Ingest ingest, String path);
+    void addSkippedPath(Ingest ingest, String path);
 
-    void endWorkOnPath(Ingest ingest, String path);
+    void removeSkippedPath(Ingest ingest, String path);
 
     Set<String> getSkippedPaths(Ingest ingest);
 }

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Charsets;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
@@ -14,13 +15,20 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -261,18 +269,78 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
+    @Transactional(propagation=Propagation.SUPPORTS)
     public void beginWorkOnPath(Ingest ingest, String path) {
-        ingestDao.beginWorkOnPath(ingest, path);
+        String tmp = getTmpWorkFilePath(ingest);
+        try {
+            Files.write(new File(tmp).toPath(), path.getBytes(Charsets.UTF_8));
+        } catch (IOException e) {
+            logger.warn("Failed to write work file '{}'", tmp, e);
+        }
     }
 
     @Override
+    @Transactional(propagation=Propagation.SUPPORTS)
     public void endWorkOnPath(Ingest ingest, String path) {
-        ingestDao.endWorkOnPath(ingest, path);
+        String tmp = getTmpWorkFilePath(ingest);
+        try {
+            Files.delete(Paths.get(tmp));
+        } catch (IOException e) {
+            logger.warn("Failed to remove work file '{}'", tmp, e);
+        }
     }
 
     @Override
+    @Transactional(propagation=Propagation.SUPPORTS)
     public Set<String> getSkippedPaths(Ingest ingest) {
+        Pattern filter = Pattern.compile(String.format("\\.%d\\.archivist", ingest.getId()));
+
+        File[] files = new File("/tmp").listFiles();
+        for (File file: files) {
+            if (!file.isFile()) {
+                continue;
+            }
+            if (!filter.matcher(file.getName()).find()) {
+                continue;
+            }
+            try {
+                String path = com.google.common.io.Files.readFirstLine(file, Charsets.UTF_8);
+                try {
+                    ingestDao.addSkippedPath(ingest, path);
+                } catch (DuplicateKeyException e) {
+                    /*
+                     * The path is already skipped.
+                     */
+                }
+                try {
+                    Files.delete(file.toPath());
+                } catch (IOException e) {
+                    logger.warn("Failed to delete work file '{}'", path, e);
+                }
+
+            } catch (IOException e) {
+                logger.warn("Failed to read work file '{}'", file.getAbsolutePath(), e);
+            }
+        }
+
         return ingestDao.getSkippedPaths(ingest);
     }
+
+    /**
+     * Where the work file is written.  If the server crashes during n ingest, any file left on disk
+     * is skipped during that time.
+     *
+     * @param ingest
+     * @return
+     */
+    private String getTmpWorkFilePath(Ingest ingest) {
+        return new StringBuilder(64)
+                .append("/tmp/")
+                .append(Thread.currentThread().getName())
+                .append(".")
+                .append(ingest.getId())
+                .append(".archivist").toString();
+    }
+
 }
 

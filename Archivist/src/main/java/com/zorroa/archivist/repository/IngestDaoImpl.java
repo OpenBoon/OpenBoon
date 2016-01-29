@@ -232,13 +232,13 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     }
 
     @Override
-    public void beginWorkOnPath(Ingest ingest, String path) {
+    public void addSkippedPath(Ingest ingest, String path) {
         jdbc.update("INSERT INTO ingest_skip (pk_ingest, str_path, time_created) VALUES (?,?,?)",
                 ingest.getId(), path, System.currentTimeMillis());
     }
 
     @Override
-    public void endWorkOnPath(Ingest ingest, String path) {
+    public void removeSkippedPath(Ingest ingest, String path) {
         jdbc.update("DELETE FROM ingest_skip WHERE pk_ingest=? AND str_path=?",
                 ingest.getId(), path);
     }
