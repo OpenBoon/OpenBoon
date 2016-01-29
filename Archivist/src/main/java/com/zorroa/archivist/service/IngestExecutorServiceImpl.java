@@ -15,7 +15,6 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
-import com.zorroa.archivist.sdk.service.ImageService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.sdk.util.FileUtils;
@@ -57,9 +56,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     IngestService ingestService;
-
-    @Autowired
-    ImageService imageService;
 
     @Autowired
     AssetDao assetDao;
