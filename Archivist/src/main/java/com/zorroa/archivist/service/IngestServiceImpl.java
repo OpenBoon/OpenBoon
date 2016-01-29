@@ -154,19 +154,19 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public void incrementIngestCounters(Ingest ingest, int created, int updated, int errors, int warnings) {
         ingestDao.incrementCounters(ingest, created, updated, errors, warnings);
-        broadcast(ingest, MessageType.INGEST_UPDATE_COUNTERS);
+        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_UPDATE_COUNTERS);
     }
 
     @Override
     public void updateIngestStartTime(Ingest ingest, long time) {
-        ingest.setTimeStarted(time);
-        broadcast(ingest, MessageType.INGEST_START);
+        ingestDao.updateStartTime(ingest, time);
+        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_START);
     }
 
     @Override
     public void updateIngestStopTime(Ingest ingest, long time) {
-        ingest.setTimeStopped(time);
-        broadcast(ingest, MessageType.INGEST_STOP);
+        ingestDao.updateStoppedTime(ingest, time);
+        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_STOP);
     }
 
     @Override
