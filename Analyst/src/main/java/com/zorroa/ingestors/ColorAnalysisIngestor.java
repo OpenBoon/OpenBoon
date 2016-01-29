@@ -75,7 +75,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
      * Currently uses K-means clustering technique to take advantage as it is readily available
      * with OpenCV. However, another VQ technique could be used.
      */
-    public HashMap<int[], Float> performVQAnalysis(Mat imgToAnalyze){
+    public Map<int[], Float> performVQAnalysis(Mat imgToAnalyze){
 
         /*
             Identify clusters.
@@ -99,7 +99,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         logger.info("Completed k-means clustering.");
         logger.info("==== Initial Clusters =====");
         for (int i = 0; i < nClusters; i++) {
-            logger.info("Cluster: " + centers.get(i, 0)[0] + "," + centers.get(i, 1)[0] + "," + centers.get(i, 2)[0]);
+            logger.info("Cluster: {}, {}, {} ", centers.get(i, 0)[0], centers.get(i, 1)[0], centers.get(i, 2)[0]);
         }
 
         // Merge clusters whose centers are very close to one another:
@@ -150,7 +150,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
 
         logger.info("==== New Clusters =====");
         for (int i = 0; i < nClusters; i++) {
-            logger.info("Cluster: " + centers.get(i, 0)[0] + "," + centers.get(i, 1)[0] + "," + centers.get(i, 2)[0]);
+            logger.info("Cluster: {}, {}, {}", centers.get(i, 0)[0], centers.get(i, 1)[0], centers.get(i, 2)[0]);
         }
 
         HashMap<int[], Float> analysisResult = new HashMap<int[], Float>();
@@ -173,7 +173,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
             center[2] = (int) centers.get(i,2)[0];
             if (center[0] != -1 && center[1] != -1 && center[2] != -1) {
                 analysisResult.put(center, new Float(tempHolder[i]));
-                logger.info("Center: " + center[0] + "," + center[1] + "," + center[2] + " - %age: " + tempHolder[i] * 100);
+                logger.info("Center: {}, {}, {} - coverage: {}", center[0], center[1], center[2], tempHolder[i] * 100);
             }
         }
 
@@ -187,7 +187,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
      * @param  nBins  number of bins desired along each dimension
      * @return 3D histogram stored as a map between non-zero histogram bins and count (normalized to be between 0 & 1)
      */
-    public HashMap<int[], Float> performUniformQuantizationAnalysis(Mat imgToAnalyze, int[] ranges, int[] nBins){
+    public Map<int[], Float> performUniformQuantizationAnalysis(Mat imgToAnalyze, int[] ranges, int[] nBins){
 
         float[][][] threedHist = new float[nBins[0]][nBins[1]][nBins[2]];
         for (int i = 0; i < nBins[0]; i++) {
@@ -257,17 +257,9 @@ public class ColorAnalysisIngestor extends IngestProcessor {
                 colorPalette.put(colorValues, name);
             }
         }
-        catch(IOException ioe){
+        catch(IOException | ParserConfigurationException | SAXException e){
             logger.info("Exception found.");
             return null;
-        }
-        catch(ParserConfigurationException pce){
-            logger.info("Exception found.");
-            return null;
-        }
-        catch(SAXException se){
-            logger.info("Exception found.");
-            return  null;
         }
         // TBD: Catch exceptions
         return colorPalette;
@@ -293,11 +285,11 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         // Open files to perform analysis on. If proxies are available, use the smallest one
         // up to 128x128. If none is available, throw exception (as per convo with Dan).
         String filePath = asset.getFile().getPath();
-        logger.info("Starting color analysis for: " + filePath);
+        logger.info("Starting color analysis for: {} ", filePath);
         Mat imgToAnalyze = null;
         List<Proxy> proxyList = (List<Proxy>) asset.getDocument().get("proxies");
         if (proxyList == null) {
-            logger.error("Cannot find proxy list for: " + filePath + ". Skipping Color Analysis.");
+            logger.error("Cannot find proxy list for: '{}'. Skipping Color Analysis.", filePath);
             asset.setAttr("ColorAnalysis", "ColorClusters", null);
             asset.setAttr("ColorAnalysis", "ColorMapping", null);
             return; // TBD: Add exception throw (it is not part of interface is it?)
@@ -318,13 +310,13 @@ public class ColorAnalysisIngestor extends IngestProcessor {
             if(proxyToUse != null) {
                 imgToAnalyze = Highgui.imread(proxyToUse.getPath());
                 if (imgToAnalyze.empty()) {
-                    logger.error("Cannot open proxy with path: " + proxyToUse.getPath() + ". Skipping Color Analysis.");
+                    logger.warn("Cannot open proxy with path: '{}'. Skipping Color Analysis.", proxyToUse.getPath());
                     asset.setAttr("ColorAnalysis", "ColorClusters", null);
                     asset.setAttr("ColorAnalysis", "ColorMapping", null);
                 }
             }
             else {
-                logger.error("Proxy selection for the Color Analysis yielded null result. Skipping Color Analysis.");
+                logger.warn("Proxy selection for the Color Analysis yielded null result. Skipping Color Analysis.");
                 asset.setAttr("ColorAnalysis", "ColorClusters", null);
                 asset.setAttr("ColorAnalysis", "ColorMapping", null);
             }
@@ -344,21 +336,21 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         File colorPaletteFile = new File(resourcePath + "ColorPalettes.xml"); // XXX TBD: Don't hard code filename here
         HashMap<int[], String> colorPalette = loadColorPaletteFromXmlFile(colorPaletteFile);
         if (colorPalette == null) {
-            logger.info("Color Palette could not be loaded.");
+            logger.error("Color Palette could not be loaded.");
         }
 
         // Read parameters
         if (getArgs().get("ColorSpace") != null) {
             String argColorSpace = (String) getArgs().get("ColorSpace");
             if (argColorSpace.compareTo("HSV")!= 0 && argColorSpace.compareTo("Lab") != 0 && argColorSpace.compareTo("BGR") != 0) {
-                logger.info(argColorSpace + " is not a recognized color space. Switching to default BGR");
+                logger.info("{} is not a recognized color space. Switching to default BGR", argColorSpace);
             }
             else {
                 colorSpace = argColorSpace;
             }
         }
         else {
-            logger.info("No color space specified, using default color space: " + colorSpace);
+            logger.info("No color space specified, using default color space: {}", colorSpace);
         }
 
         /*
@@ -389,7 +381,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         */
 
         logger.info("=== Color Analysis results ===");
-        HashMap<int[], Float> colorAnalysisResults = performVQAnalysis(imgToAnalyze);
+        Map<int[], Float> colorAnalysisResults = performVQAnalysis(imgToAnalyze);
         HashMap<int[], String> colorMappingResults = new HashMap<int[], String>();
         Set<int[]> colorClusters = colorAnalysisResults.keySet();
         Set<int[]> paletteColors = colorPalette.keySet();
@@ -409,7 +401,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
             }
             colorMappingResults.put(cluster, colorName);
             float coverage = ((Float) colorAnalysisResults.get(cluster)).floatValue() * 100;
-            logger.info("Dominant color: " + cluster[0] + "," + cluster[1] + "," + cluster[2] + " -> " + colorName + " w. coverage: " + Float.toString(coverage));
+            logger.info("Dominant color: {}, {}, {} -> {} w. coverage: {}", cluster[0], cluster[1], cluster[2], colorName, Float.toString(coverage));
         }
 
         // Finalize outputs passed via assets
