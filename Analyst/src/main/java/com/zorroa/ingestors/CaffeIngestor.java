@@ -95,11 +95,11 @@ public class CaffeIngestor extends IngestProcessor {
         // to pass the confidence values.
         ArrayList<String> keywords = Lists.newArrayListWithCapacity(caffeKeywords.length);
         for (int i = 0; i < caffeKeywords.length; ++i) {
+            // WARNING: Caffe confidence is not an absolute value.
+            //          It is a relative value for the top five keywords for any image.
             if (caffeKeywords[i].confidence > confidenceThreshold) {
                 keywords.add(caffeKeywords[i].keyword);
-                int confidence = Math.round(caffeKeywords[i].confidence * 6);
-                confidence = confidence > 5 ? 5 : (confidence < 0 ? 0 : confidence);
-                asset.addKeywords(confidence, true, caffeKeywords[i].keyword);
+                asset.addKeywords(caffeKeywords[i].confidence, true, caffeKeywords[i].keyword);
             }
         }
         asset.setAttr("caffe", "keywords", keywords);
