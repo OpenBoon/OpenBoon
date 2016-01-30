@@ -36,9 +36,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     private static final JsonRowMapper<Asset> MAPPER = (id, version, source) -> {
-        Map<String, Object> data;
-        data = Json.deserialize(source, new TypeReference<Map<String, Object>>() {
-        });
+        Map<String, Object> data = Json.deserialize(source, new TypeReference<Map<String, Object>>() {});
         Asset result = new Asset();
         result.setId(id);
         result.setVersion(version);
