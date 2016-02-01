@@ -42,20 +42,7 @@ public class KeywordsSchema implements Schema {
         if (confidence <= 0) {
             return;
         }
-
-        String field = String.format("level%d", getBucket(Math.min(confidence, CONFIDENCE_MAX)));
-        Set<String> bucket = fields.get(field);
-
-        if (bucket == null) {
-            bucket = Sets.newHashSet();
-            fields.put(field, bucket);
-        }
-        List<String> allValues = Arrays.asList(keywords);
-        bucket.addAll(allValues);
-        all.addAll(allValues);
-        if (suggestion) {
-            suggest.addAll(allValues);
-        }
+        addKeywords(confidence, suggestion, Arrays.asList(keywords));
     }
 
     /**
