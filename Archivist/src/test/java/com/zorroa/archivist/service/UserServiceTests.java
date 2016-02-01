@@ -94,7 +94,9 @@ public class UserServiceTests extends ArchivistApplicationTests {
         user = userService.get(user.getId());
         assertTrue(user.getLastName().equals("Sackville-Baggins"));
         permissions = userService.getPermissions(user);
+
         boolean foundManager = false;
+
         for (Permission permission : permissions) {
             if (permission.getName().equals("manager")) {
                 foundManager = true;
@@ -103,4 +105,27 @@ public class UserServiceTests extends ArchivistApplicationTests {
         }
         assertTrue(foundManager);
     }
+
+
+    @Test
+    public void testImmutablePermissions() {
+        UserUpdateBuilder builder = new UserUpdateBuilder();
+        builder.setPermissionIds(new Integer[]{
+                userService.getPermission("group::superuser").getId()});
+
+        User admin = userService.get("admin");
+        userService.update(admin, builder);
+
+        logger.info("{}", userService.getPermissions(admin));
+
+        for (Permission p: userService.getPermissions(admin)) {
+            logger.info("{}", p);
+            if (p.getName().equals("admin") && p.getType().equals("user")) {
+                // We found the user permission, all good
+                return;
+            }
+        }
+        throw new RuntimeException("The admin user was missing the user::admin permission");
+    }
+
 }
