@@ -8,7 +8,7 @@ public class IngestBuilder {
     private String name;
     private List<String> paths;
     private int pipelineId = -1;
-    private int assetWorkerThreads = 4;
+    private int assetWorkerThreads = 2;
 
     public IngestBuilder() { }
 
