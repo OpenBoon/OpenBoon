@@ -5,7 +5,7 @@
 
   <groupId>com.zorroa</groupId>
   <artifactId>archivist</artifactId>
-  <version>0.16.0</version>
+  <version>0.17.0</version>
   <packaging>jar</packaging>
 
   <name>zorroa-archivist</name>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.zorroa</groupId>
       <artifactId>archivist-sdk</artifactId>
-      <version>0.16.0</version>
+      <version>0.17.0</version>
     </dependency>
 
     <dependency>
