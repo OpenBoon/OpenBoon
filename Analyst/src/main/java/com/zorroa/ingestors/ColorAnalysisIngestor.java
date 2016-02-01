@@ -75,7 +75,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
      * Currently uses K-means clustering technique to take advantage as it is readily available
      * with OpenCV. However, another VQ technique could be used.
      */
-    public Map<int[], Float> performVQAnalysis(Mat imgToAnalyze){
+    Map<int[], Float> performVQAnalysis(Mat imgToAnalyze){
 
         /*
             Identify clusters.
@@ -187,7 +187,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
      * @param  nBins  number of bins desired along each dimension
      * @return 3D histogram stored as a map between non-zero histogram bins and count (normalized to be between 0 & 1)
      */
-    public Map<int[], Float> performUniformQuantizationAnalysis(Mat imgToAnalyze, int[] ranges, int[] nBins){
+    Map<int[], Float> performUniformQuantizationAnalysis(Mat imgToAnalyze, int[] ranges, int[] nBins){
 
         float[][][] threedHist = new float[nBins[0]][nBins[1]][nBins[2]];
         for (int i = 0; i < nBins[0]; i++) {
@@ -233,7 +233,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
      */
     // XXX: This will need to be moved elsewhere so the palette is loaded before the analysis
     // XXX: and passed with the builder
-    public HashMap<int[], String> loadColorPaletteFromXmlFile(File colorPaletteFile) {
+    Map<int[], String> loadColorPaletteFromXmlFile(File colorPaletteFile) {
 
         HashMap<int[], String> colorPalette = new HashMap<int[], String>();
 
@@ -265,6 +265,38 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         return colorPalette;
 
     }
+
+    /**
+     * Maps color cluster centers (coordinates in chosen color space) to color names based on a supplied color palette.
+     * This is currently performed by finding the nearest palette color (based on pre-defined distance at this time).
+     * @param clusters The set of colors to assign names to
+     * @param colorPalette The color palette that will be used to map color coordinates to color name
+     */
+    Map<int[], String> performColorMapping(Map<int[], Float> clusters, Map<int[], String> colorPalette) {
+
+        HashMap<int[], String> colorMappingResults = new HashMap<int[], String>();
+        Set<int[]> paletteColors = colorPalette.keySet();
+        for (int[] cluster : clusters.keySet()) {
+            double minDist = Double.MAX_VALUE;
+            String colorName = "";
+            for (int[] paletteColor : paletteColors) {
+                double d1 = (double)( cluster[0] - paletteColor[0] );
+                double d2 = (double)( cluster[1] - paletteColor[1] );
+                double d3 = (double)( cluster[2] - paletteColor[2] );
+                double d = Math.sqrt( d1*d1 + d2*d2 + d3*d3);
+                //double d = Math.abs(d1) + Math.abs(d2) + Math.abs(d3);
+                if ( d < minDist ) {
+                    minDist = d;
+                    colorName = colorPalette.get(paletteColor);
+                }
+            }
+            colorMappingResults.put(cluster, colorName);
+            float coverage = ((Float) clusters.get(cluster)).floatValue() * 100;
+            logger.info("Dominant color: {}, {}, {} -> {} w. coverage: {}", cluster[0], cluster[1], cluster[2], colorName, Float.toString(coverage));
+        }
+        return colorMappingResults;
+    }
+
 
     /** Performs the color analysis on the supplied asset
      @param asset The asset to analyse
@@ -334,7 +366,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         }
         String resourcePath = modelPath + "/color/";
         File colorPaletteFile = new File(resourcePath + "ColorPalettes.xml"); // XXX TBD: Don't hard code filename here
-        HashMap<int[], String> colorPalette = loadColorPaletteFromXmlFile(colorPaletteFile);
+        Map<int[], String> colorPalette = loadColorPaletteFromXmlFile(colorPaletteFile);
         if (colorPalette == null) {
             logger.error("Color Palette could not be loaded.");
         }
@@ -382,27 +414,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
 
         logger.info("=== Color Analysis results ===");
         Map<int[], Float> colorAnalysisResults = performVQAnalysis(imgToAnalyze);
-        HashMap<int[], String> colorMappingResults = new HashMap<int[], String>();
-        Set<int[]> colorClusters = colorAnalysisResults.keySet();
-        Set<int[]> paletteColors = colorPalette.keySet();
-        for (int[] cluster : colorClusters) {
-            double minDist = Double.MAX_VALUE;
-            String colorName = "";
-            for (int[] paletteColor : paletteColors) {
-                double d1 = (double)( cluster[0] - paletteColor[0] );
-                double d2 = (double)( cluster[1] - paletteColor[1] );
-                double d3 = (double)( cluster[2] - paletteColor[2] );
-                double d = Math.sqrt( d1*d1 + d2*d2 + d3*d3);
-                //double d = Math.abs(d1) + Math.abs(d2) + Math.abs(d3);
-                if ( d < minDist ) {
-                    minDist = d;
-                    colorName = colorPalette.get(paletteColor);
-                }
-            }
-            colorMappingResults.put(cluster, colorName);
-            float coverage = ((Float) colorAnalysisResults.get(cluster)).floatValue() * 100;
-            logger.info("Dominant color: {}, {}, {} -> {} w. coverage: {}", cluster[0], cluster[1], cluster[2], colorName, Float.toString(coverage));
-        }
+        Map<int[], String> colorMappingResults = performColorMapping(colorAnalysisResults, colorPalette);
 
         // Finalize outputs passed via assets
         asset.setAttr("ColorAnalysis", "ColorClusters", colorAnalysisResults);

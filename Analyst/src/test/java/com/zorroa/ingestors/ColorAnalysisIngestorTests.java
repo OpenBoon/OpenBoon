@@ -4,6 +4,7 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import static org.junit.Assert.assertNotEquals;
@@ -28,9 +29,10 @@ public class ColorAnalysisIngestorTests extends AssetBuilderTests {
 
             // Process the asset to compute histograms
             testIngestor.process(asset);
-            HashMap<double[], Float> analysisResults = asset.getAttr("ColorAnalysis", "ColorClusters");
+            Map<int[], Float> analysisResults = asset.getAttr("ColorAnalysis", "ColorClusters");
+            Map<int[], String> colorMapping = asset.getAttr("ColorAnalysis", "ColorMapping");
             assertNotEquals(analysisResults, null);
-
+            assertNotEquals(colorMapping, null);
         }
     }
 
