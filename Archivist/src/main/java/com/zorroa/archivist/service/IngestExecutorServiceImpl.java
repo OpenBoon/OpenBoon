@@ -1,10 +1,14 @@
 package com.zorroa.archivist.service;
 
 import com.beust.jcommander.internal.Sets;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
+import com.zorroa.archivist.crawlers.AbstractCrawler;
+import com.zorroa.archivist.crawlers.FileCrawler;
+import com.zorroa.archivist.crawlers.HttpCrawler;
 import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.ingestors.AggregatorIngestor;
 import com.zorroa.archivist.repository.AssetDao;
@@ -17,7 +21,6 @@ import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.service.MessagingService;
-import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.tika.Tika;
@@ -35,16 +38,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.net.URI;
+import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 @Component
 public class IngestExecutorServiceImpl implements IngestExecutorService {
@@ -71,6 +68,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    ObjectFileSystem objectFileSystem;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
@@ -376,53 +376,41 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
          */
         private void walkIngestPaths(Ingest ingest, IngestPipeline pipeline) throws IOException {
 
+            Consumer<File> consumer = file -> {
+                AssetWorker assetWorker = new AssetWorker(pipeline, ingest, file);
+                if (ArchivistConfiguration.unittest) {
+                    assetWorker.run();
+                } else {
+                    assetExecutor.execute(assetWorker);
+                }
+            };
+
+            /**
+             * For now this is a hard coded list, but we'll need to support plugins
+             * for cralwers as well.
+             */
+            Map<String, AbstractCrawler> crawlers = ImmutableMap.of(
+                    "file", new FileCrawler(objectFileSystem),
+                    "http", new HttpCrawler(objectFileSystem));
+
             for (String path: ingest.getPaths()) {
-                Path start = new File(path).toPath();
 
-                Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
-                    @Override
-                    public FileVisitResult visitFile(Path path, BasicFileAttributes attrs)
-                            throws IOException {
+                URI uri = URI.create(path);
+                String type = uri.getScheme();
+                if (type == null) {
+                    type = "file";
+                    uri = URI.create("file:" + path);
+                }
 
-                        final File file = path.toFile();
+                AbstractCrawler crawler = crawlers.get(type);
+                if (crawler == null) {
+                    eventLogService.log("No crawler class for type: '{}'", type);
+                    continue;
+                }
 
-                        if (!file.isFile()) {
-                            return FileVisitResult.CONTINUE;
-                        }
-
-                        if (path.getFileName().toString().startsWith(".")) {
-                            return FileVisitResult.CONTINUE;
-                        }
-
-                        if(!supportedFormats.contains(FileUtils.extension(path).toLowerCase())
-                                && !supportedFormats.isEmpty()) {
-                            return FileVisitResult.CONTINUE;
-                        }
-
-                        if (skippedPaths.contains(file.getAbsolutePath())) {
-                            return FileVisitResult.CONTINUE;
-                        }
-
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Found file: {}", path);
-                        }
-
-                        AssetWorker assetWorker = new AssetWorker(pipeline, ingest, file);
-                        if (ArchivistConfiguration.unittest) {
-                            assetWorker.run();
-                        } else {
-                            assetExecutor.execute(assetWorker);
-                        }
-
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    @Override
-                    public FileVisitResult postVisitDirectory(Path dir, IOException e)
-                            throws IOException {
-                        return FileVisitResult.CONTINUE;
-                    }
-                });
+                crawler.setTargetFileFormats(supportedFormats);
+                crawler.setIgnoredPaths(skippedPaths);
+                crawler.start(uri, consumer);
             }
         }
 

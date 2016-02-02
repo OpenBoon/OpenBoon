@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
@@ -23,9 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -179,6 +182,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public Ingest createIngest(IngestBuilder builder) {
+        builder.setPaths(normalizePaths(builder.getPaths()));
+
         IngestPipeline pipeline;
         if (builder.getPipelineId() == -1) {
             pipeline = ingestPipelineDao.get("standard");
@@ -215,6 +220,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
+        builder.setPaths(normalizePaths(builder.getPaths()));
 
         // Update active ingest thread counts
         if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
@@ -324,6 +330,33 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         }
 
         return ingestDao.getSkippedPaths(ingest);
+    }
+
+    public List<String> normalizePaths(Collection<String> paths) {
+        if (paths == null) {
+            return null;
+        }
+        List<String> result = Lists.newArrayListWithCapacity(paths.size());
+        for (String path: paths) {
+            result.add(normalizePath(path));
+        }
+        return result;
+    }
+
+    public String normalizePath(String path) {
+        String result = path;
+
+        URI uri = URI.create(path);
+        /**
+         * If the URI has no scheme, then it must be an absolute file path.
+         */
+        if (uri.getScheme() == null) {
+            if (!path.startsWith("/") || path.contains("../")) {
+                throw new IllegalArgumentException("File path must be absolute.");
+            }
+            path = "file:" + path;
+        }
+        return result;
     }
 
     /**

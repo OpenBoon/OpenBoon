@@ -53,7 +53,7 @@ public class PermissionIngestorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>(PermissionIngestor.class, ImmutableMap.of("search", Lists.newArrayList("group::superuser"))));
 
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(TEST_DATA_PATH).setPipelineId(pipeline.getId()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
@@ -69,7 +69,7 @@ public class PermissionIngestorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>(PermissionIngestor.class, ImmutableMap.of("write", Lists.newArrayList("group::superuser"))));
 
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(TEST_DATA_PATH).setPipelineId(pipeline.getId()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
@@ -86,7 +86,7 @@ public class PermissionIngestorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>(PermissionIngestor.class, ImmutableMap.of("export", Lists.newArrayList("group::superuser"))));
 
         IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")).setPipelineId(pipeline.getId()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 

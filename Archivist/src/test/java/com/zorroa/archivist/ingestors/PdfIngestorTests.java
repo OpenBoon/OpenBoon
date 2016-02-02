@@ -9,11 +9,11 @@ import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.IngestExecutorService;
+import com.zorroa.archivist.service.ObjectFileSystem;
 import com.zorroa.archivist.service.SearchService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +38,9 @@ public class PdfIngestorTests extends ArchivistApplicationTests {
     @Autowired
     SearchService searchService;
 
+    @Autowired
+    ObjectFileSystem objectFileSystem;
+
     @Test
     public void testProcess() throws InterruptedException {
 
@@ -49,7 +52,7 @@ public class PdfIngestorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>(ProxyProcessor.class));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(TEST_DATA_PATH).setPipelineId(pipeline.getId()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(TEST_DATA_PATH + "/office").setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 
@@ -58,7 +61,8 @@ public class PdfIngestorTests extends ArchivistApplicationTests {
 
         ProxySchema proxies = assets.get(0).getSchema("proxies", ProxySchema.class);
         assertEquals(3, proxies.size());
-        assertTrue(new File(proxies.get(0).getPath()).exists());
+
+        assertTrue(objectFileSystem.find("proxies", proxies.get(0).getName()).exists());
     }
 
     @Test
@@ -72,7 +76,7 @@ public class PdfIngestorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>(ProxyProcessor.class));
         IngestPipeline pipeline = ingestPipelineDao.create(builder);
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(TEST_DATA_PATH).setPipelineId(pipeline.getId()));
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(TEST_DATA_PATH + "/office").setPipelineId(pipeline.getId()));
         ingestExecutorService.executeIngest(ingest);
         refreshIndex();
 

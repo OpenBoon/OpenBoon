@@ -73,7 +73,7 @@ public abstract class ArchivistApplicationTests {
 
     protected Set<String> testImages;
 
-    public static final String TEST_DATA_PATH = "src/test/resources/static";
+    public static final String TEST_DATA_PATH = new File("src/test/resources/static").getAbsolutePath();
 
     public ArchivistApplicationTests() {
         ArchivistConfiguration.unittest = true;
