@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.domain;
 import com.google.common.base.MoreObjects;
 
 public class Proxy {
+    private String name;
     private String path;
     private int width;
     private int height;
@@ -42,6 +43,15 @@ public class Proxy {
         this.format = format;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Proxy setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,6 +77,7 @@ public class Proxy {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("path", path)
+                .add("name", name)
                 .add("width", width)
                 .add("height", height)
                 .add("format", format)
