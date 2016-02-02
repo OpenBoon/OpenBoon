@@ -1,6 +1,7 @@
 package com.zorroa.archivist.ingestors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.zorroa.archivist.domain.Allocation;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
@@ -8,12 +9,12 @@ import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.service.EventLogService;
-import com.zorroa.archivist.sdk.service.ImageService;
+import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.service.ObjectFileSystem;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.filters.Flip;
 import net.coobird.thumbnailator.filters.ImageFilter;
-import net.coobird.thumbnailator.filters.Rotation;
 import net.coobird.thumbnailator.resizers.configurations.Rendering;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.Lists;
@@ -21,25 +22,32 @@ import org.elasticsearch.common.primitives.Ints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class ProxyProcessor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
 
     @Autowired
-    ImageService imageService;
+    EventLogService eventLogService;
 
     @Autowired
-    EventLogService eventLogService;
+    ObjectFileSystem objectFileSystem;
+
+    @Value("${archivist.proxies.format}")
+    private String defaultProxyFormat;
 
     public ProxyProcessor() { }
 
@@ -60,52 +68,115 @@ public class ProxyProcessor extends IngestProcessor {
                 new TypeReference<List<ProxyOutput>>() {});
 
         if (outputs == null) {
-            String format = imageService.getDefaultProxyFormat();
+            String format = defaultProxyFormat;
             outputs = Lists.newArrayList(
-                    new ProxyOutput(format, 128, 8, 0.5f),
+                    new ProxyOutput(format, 1024, 8, 0.9f),
                     new ProxyOutput(format, 256, 8, 0.7f),
-                    new ProxyOutput(format, 1024, 8, 0.9f)
+                    new ProxyOutput(format, 128, 8, 0.5f)
             );
         }
 
-        int width = asset.getImage().getWidth();
         ProxySchema result = new ProxySchema();
 
-        for (ProxyOutput output : outputs) {
-            if (output.getSize() < width) {
-                addResult(asset, output, result);
-            } else {
-                if (result.size() == 0) {
-                    // No proxies generated, copy the source file as a proxy
-                    // but use a lower quality and the standard proxy format
-                    String format = imageService.getDefaultProxyFormat();
-                    ProxyOutput sourceProxy = new ProxyOutput(format, width, 8, 0.5f);
-                    addResult(asset, sourceProxy, result);
-                }
-                break;
-            }
-        }
+        /*
+         * Create an allocation for these proxies.
+         */
+        Allocation allocation = objectFileSystem.build("proxies").create();
 
-        if (!result.isEmpty()) {
+        /*
+         * Sort our proxy definitions large to small so we can make subsequent proxies
+         * from the largest proxy.
+         */
+        Collections.sort(outputs, (o1, o2) -> Integer.compare(o2.getSize(), o1.getSize()));
+
+        /*
+         * The first proxy is the large proxy.
+         */
+        BufferedImage largeProxy = null;
+
+        try {
+            final int width = asset.getImage().getWidth();
+            for (ProxyOutput spec : outputs) {
+                if (spec.getSize() > width) {
+                    continue;
+                }
+                Proxy proxy = writeProxy(largeProxy != null ? largeProxy : asset.getImage(),
+                        spec, allocation, getOrientationFilters(asset));
+                result.add(proxy);
+                if (largeProxy == null) {
+                    largeProxy = proxy.getImage();
+                }
+            }
+
+            /*
+             * If the source is too small for a proxy, make it a proxy!
+             */
+            if (result.isEmpty()) {
+                ProxyOutput spec = new ProxyOutput(defaultProxyFormat, width, 8, 0.5f);
+                Proxy proxy = writeProxy(asset.getImage(), spec, allocation, getOrientationFilters(asset));
+                result.add(proxy);
+            }
+
+            /*
+             * Resort the outputs so the smallest proxy is first.
+             */
             Collections.sort(result, (o1, o2) ->
                     Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight()));
 
             asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
             asset.addSchema(result);
-        }
-    }
 
-    private void addResult(AssetBuilder asset, ProxyOutput output, ProxySchema result) {
-        try {
-            result.add(makeProxy(asset.getImage(), output, getOrientationFilters(asset)));
         } catch (IOException e) {
-            /*
-             * If we fail to make a proxy, then throw, its probably a bad file.  We could also
-             * fail if we don't have any proxies at all
-             */
             throw new UnrecoverableIngestProcessorException("Failed to make proxy of:" + asset.getAbsolutePath(),
                     e, getClass());
         }
+    }
+
+    /**
+     * Write a proxy of the buffered image using the settings found in ProxyOutput
+     * to the given Allocation.  Also apply any supplied image filters.
+     *
+     * @param image
+     * @param output
+     * @param allocation
+     * @param filters
+     * @return
+     * @throws IOException
+     */
+    private Proxy writeProxy(BufferedImage image, ProxyOutput output, Allocation allocation, List<ImageFilter> filters) throws IOException {
+        int height = Math.round(output.getSize() / (image.getWidth() / (float)image.getHeight()));
+        File path = allocation.getAbsolutePath(output.getFormat(), output.getSize() + "x" + height);
+
+        BufferedImage proxyImage = Thumbnails.of(image)
+                .width(output.getSize())
+                .height(height)
+                .imageType(BufferedImage.TYPE_INT_RGB)
+                .rendering(Rendering.QUALITY)
+                .addFilters(filters)
+                .asBufferedImage();
+
+        ImageWriter writer = ImageIO.getImageWritersByFormatName(output.getFormat()).next();
+        /*
+         * Doesn't seem to work on PNG.
+         */
+        if (output.getFormat().equals("jpg")) {
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            param.setCompressionQuality(output.getQuality());
+        }
+
+        ImageOutputStream ios = ImageIO.createImageOutputStream(path);
+        writer.setOutput(ios);
+        writer.write(proxyImage);
+
+        Proxy result = new Proxy();
+        result.setImage(image);
+        result.setPath(path.getPath());
+        result.setName(FileUtils.filename(path.getPath()));
+        result.setWidth(output.getSize());
+        result.setHeight(height);
+        result.setFormat(output.getFormat());
+        return result;
     }
 
     private static final List<String> NO_TINY_PROXY = ImmutableList.of(
@@ -113,60 +184,31 @@ public class ProxyProcessor extends IngestProcessor {
             "#FFFFFF", "#FF0000", "#FFFFFF",
             "#FF0000", "#FFFFFF", "#FF0000");
 
-    private List<String> makeTinyProxy(Proxy smallest) {
-        try {
-            // Create a 3x3 proxy, avoid borders and blurring by downsampling
-            // to an 11x11 image, ignoring the outer frame, and taking the
-            // center pixel of each 3x3 block.
-            File proxyFile = new File(smallest.getPath());
-            BufferedImage source = ImageIO.read(proxyFile);
-            BufferedImage tinyImage = new BufferedImage(11, 11, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = tinyImage.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            g2.drawImage(source, 0, 0, 11, 11, null);
-            g2.dispose();
+    /**
+     * Create a 3x3 proxy, avoid borders and blurring by downsampling
+     * to an 11x11 image, ignoring the outer frame, and taking the
+     * center pixel of each 3x3 block.
+     *
+     * @param proxy
+     * @return
+     */
+    private List<String> makeTinyProxy(Proxy proxy) {
+        BufferedImage source = proxy.getImage();
+        BufferedImage tinyImage = new BufferedImage(11, 11, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = tinyImage.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2.drawImage(source, 0, 0, 11, 11, null);
+        g2.dispose();
 
-            List<String> colors = Lists.newArrayListWithCapacity(9);
-            for (int y = 0; y < 3; y++) {
-                for (int x = 0; x < 3; x++) {
-                    Color c = new Color(tinyImage.getRGB(x * 3 + 2, y * 3 + 2));
-                    colors.add(String.format("#%02x%02x%02x", c.getRed(),c.getGreen(),c.getBlue()));
-                }
+        List<String> colors = Lists.newArrayListWithCapacity(9);
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                Color c = new Color(tinyImage.getRGB(x * 3 + 2, y * 3 + 2));
+                colors.add(String.format("#%02x%02x%02x", c.getRed(),c.getGreen(),c.getBlue()));
             }
-
-            return colors;
-
-        } catch (IOException e) {
-            logger.warn("Failed to create tiny proxy of " + smallest.getPath() + "," + e, e);
         }
 
-        return NO_TINY_PROXY;
-    }
-
-    public Proxy makeProxy(BufferedImage image, ProxyOutput output) throws IOException {
-        return makeProxy(image, output, Lists.newArrayListWithCapacity(0));
-    }
-
-    public Proxy makeProxy(BufferedImage image, ProxyOutput output, List<ImageFilter> filters) throws IOException {
-        String proxyId = UUID.randomUUID().toString();
-        File outFile = imageService.allocateProxyPath(proxyId, output.getFormat());
-
-            Thumbnails.of(image)
-                .width(output.getSize())
-                .outputFormat(output.getFormat())
-                .addFilters(filters)
-                .keepAspectRatio(true)
-                .imageType(BufferedImage.TYPE_INT_RGB)
-                .rendering(Rendering.QUALITY)
-                .outputQuality(output.getQuality())
-                .toFile(outFile);
-
-        Proxy result = new Proxy();
-        result.setPath(outFile.getAbsolutePath());
-        result.setWidth(output.getSize());
-        result.setHeight(Math.round(output.getSize() / (image.getWidth() / (float)image.getHeight())));
-        result.setFormat(output.getFormat());
-        return result;
+        return colors;
     }
 
     /**
@@ -207,12 +249,8 @@ public class ProxyProcessor extends IngestProcessor {
             }
 
             int degrees = ORIENT_MATRIX[index][0];
-            if (degrees!= 0) {
-                /*
-                 * System quietly ignores negative degrees, so we have to
-                 * subtract from 360
-                 */
-                filters.add(Rotation.newRotator(degrees));
+            if (degrees != 0) {
+                filters.add(new ExifOrientationFilter(degrees));
             }
             switch(ORIENT_MATRIX[index][1])  {
                 case HORIZONTAL:
@@ -222,11 +260,53 @@ public class ProxyProcessor extends IngestProcessor {
                     filters.add(Flip.VERTICAL);
                     break;
             }
+
         } catch (NullPointerException e) {
             // No orientation field, no need to flip dimensions
         } catch (Exception e) {
             logger.warn("Failed to determine image orientation: {}", asset, e);
         }
         return filters;
+    }
+
+    /**
+     * An AffineTransform based image rotation filter.
+     */
+    private static class ExifOrientationFilter implements ImageFilter {
+
+        private final double degrees;
+
+        public ExifOrientationFilter(double degrees) {
+            this.degrees = degrees;
+        }
+
+        @Override
+        public BufferedImage apply(BufferedImage original) {
+
+            if (degrees == 0) {
+                return original;
+            }
+
+            double theta = Math.toRadians(degrees);
+            double cos = Math.abs(Math.cos(theta));
+            double sin = Math.abs(Math.sin(theta));
+            double width  = original.getWidth();
+            double height = original.getHeight();
+            int w = (int)(width * cos + height * sin);
+            int h = (int)(width * sin + height * cos);
+
+            BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2 = out.createGraphics();
+
+            double x = w/2;
+            double y = h/2;
+            AffineTransform at = AffineTransform.getRotateInstance(theta, x, y);
+            x = (w - width)/2;
+            y = (h - height)/2;
+            at.translate(x, y);
+            g2.drawRenderedImage(original, at);
+            g2.dispose();
+            return out;
+        }
     }
 }

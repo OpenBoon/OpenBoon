@@ -4,7 +4,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.ByteStreams;
-import com.zorroa.archivist.sdk.service.ImageService;
+import com.zorroa.archivist.service.ObjectFileSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +28,13 @@ import java.util.concurrent.TimeUnit;
 @Controller
 public class ProxyController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProxyController.class);
+
     private static final int CACHE_MAX_SIZE = 5000;
     private static final int CACHE_TIMEOUT_MINUTES = 5;
 
     @Autowired
-    ImageService imageService;
+    ObjectFileSystem objectFileSystem;
 
     private final LoadingCache<String, ProxyImage> proxyCache = CacheBuilder.newBuilder()
         .maximumSize(CACHE_MAX_SIZE)
@@ -63,15 +67,13 @@ public class ProxyController {
     }
 
     private ProxyImage loadProxyImage(String id) throws IOException {
-        String[] e = id.split("\\.");
-        return ProxyImage.load(imageService.getProxyPath(e[0], e[1]));
+        return ProxyImage.load(objectFileSystem.find("proxies", id));
     }
 
     private static class ProxyImage {
         public byte[] content;
         public long size;
         public MediaType type;
-
 
         public static final ProxyImage load(File file) throws IOException {
             RandomAccessFile f = new RandomAccessFile(file, "r");
