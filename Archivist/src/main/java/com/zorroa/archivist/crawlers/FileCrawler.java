@@ -23,45 +23,41 @@ public class FileCrawler extends AbstractCrawler {
     }
 
     @Override
-    public void start(URI uri, Consumer<File> consumer) {
-        logger.info("URI: {}", uri);
+    public void start(URI uri, Consumer<File> consumer) throws IOException {
         Path start = new File(uri).toPath();
-        try {
-            Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs)
-                        throws IOException {
 
-                    final File file = path.toFile();
+        Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path path, BasicFileAttributes attrs)
+                    throws IOException {
 
-                    if (!file.isFile()) {
-                        return FileVisitResult.CONTINUE;
-                    }
+                final File file = path.toFile();
 
-                    if (path.getFileName().toString().startsWith(".")) {
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    if (!targetFileFormats.contains(FileUtils.extension(path).toLowerCase())
-                            && !targetFileFormats.isEmpty()) {
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    if (ignoredPaths.contains(file.getAbsolutePath())) {
-                        return FileVisitResult.CONTINUE;
-                    }
-                    consumer.accept(file);
+                if (!file.isFile()) {
                     return FileVisitResult.CONTINUE;
                 }
 
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException e)
-                        throws IOException {
+                if (path.getFileName().toString().startsWith(".")) {
                     return FileVisitResult.CONTINUE;
                 }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+                if (!targetFileFormats.contains(FileUtils.extension(path).toLowerCase())
+                        && !targetFileFormats.isEmpty()) {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                if (ignoredPaths.contains(file.getAbsolutePath())) {
+                    return FileVisitResult.CONTINUE;
+                }
+                consumer.accept(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException e)
+                    throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 }
