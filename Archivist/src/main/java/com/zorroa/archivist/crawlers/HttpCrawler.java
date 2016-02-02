@@ -76,7 +76,6 @@ public class HttpCrawler extends AbstractCrawler {
 
     @Override
     public void start(URI uri, Consumer<File> consumer) throws IOException {
-        logger.info("adding valid host: {}", uri.getHost());
         validDomains.add(uri.getHost());
 
         if (targetFileFormats.isEmpty()) {
