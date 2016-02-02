@@ -1,6 +1,9 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
+
+import java.awt.image.BufferedImage;
 
 public class Proxy {
     private String name;
@@ -8,6 +11,7 @@ public class Proxy {
     private int width;
     private int height;
     private String format;
+    private BufferedImage image;
 
     public Proxy() { }
 
@@ -49,6 +53,16 @@ public class Proxy {
 
     public Proxy setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    @JsonIgnore
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public Proxy setImage(BufferedImage image) {
+        this.image = image;
         return this;
     }
 
