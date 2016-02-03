@@ -1,9 +1,11 @@
 package com.zorroa.archivist;
 
+import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.domain.UserBuilder;
 import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.UnitTestAuthentication;
+import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
@@ -63,6 +65,9 @@ public abstract class ArchivistApplicationTests {
     @Autowired
     ArchivistRepositorySetup archivistRepositorySetup;
 
+    @Autowired
+    MigrationService migrationService;
+
     @Value("${archivist.index.alias}")
     protected String alias;
 
@@ -94,6 +99,10 @@ public abstract class ArchivistApplicationTests {
 
     @Before
     public void setup() throws IOException {
+        /**
+         * Before we can do anything reliably we need a logged in user.
+         */
+        authenticate();
 
         /*
           * Now that folders are created using what is essentially a nested transaction,
@@ -123,10 +132,13 @@ public abstract class ArchivistApplicationTests {
          */
         transactionEventManager.setImmediateMode(true);
 
-        /**
-         * Delete and recreate all indexes
+        /*
+         * The Elastic index(s) has been created, but we have to delete it and recreate it
+         * so each test has a clean index.  Once this is done we can call setupDataSources()
+         * which adds some standard data to both databases.
          */
         client.admin().indices().prepareDelete("_all").get();
+        migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true);
         archivistRepositorySetup.setupDataSources();
         refreshIndex(100);
 
@@ -150,11 +162,6 @@ public abstract class ArchivistApplicationTests {
         }
 
         */
-
-        /**
-         * Before we can do anything reliably we need a logged in user.
-         */
-        authenticate();
 
         /**
          * Adds in a test, non privileged user.

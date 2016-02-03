@@ -448,6 +448,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      */
                     asset.getSource().setType(tika.detect(asset.getSource().getPath()));
 
+
                     /*
                      * Add or overwrite the ingest info to the asset.
                      */
@@ -455,6 +456,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     ingestSchema.setId(ingest.getId());
                     ingestSchema.setPipeline(pipeline.getId());
                     asset.addSchema(ingestSchema);
+
 
                 } catch (Exception e) {
                     eventLogService.log(ingest, "Ingest error '{}', could not determine asset type on '{}'",

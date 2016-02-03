@@ -12,13 +12,12 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.IngestExecutorService;
+import com.zorroa.archivist.service.MigrationService;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
-import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.io.ByteStreams;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,9 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    MigrationService migrationService;
+
     @Value("${archivist.index.alias}")
     private String alias;
 
@@ -62,74 +64,43 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     @Value("${archivist.snapshot.repoName}")
     private String snapshotRepoName;
 
-    private String indexName;
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
-        /*
-         * Authorize the startup thread as an admin.
-         */
-        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-        SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new InternalAuthentication()));
-
-        try {
-            setupDataSources();
-        } catch (IOException e) {
-            logger.error("Failed to setup datasources, ", e);
-            throw new RuntimeException(e);
-        }
         /**
-         * TODO: get the snapshot repository working with elastic 1.7
-         *
-         * createSnapshotRepository();
+         * During unit tests, setupDataSources() is called after the indexes are prepared
+         * for a unit test.
          */
-        restartRunningIngests();
+        if (!ArchivistConfiguration.unittest) {
+            /*
+             * Authorize the startup thread as an admin.
+             */
+            SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+            SecurityContextHolder.getContext().setAuthentication(
+                    authenticationManager.authenticate(new InternalAuthentication()));
+
+            migrationService.processAll();
+
+            try {
+                setupDataSources();
+            } catch (IOException e) {
+                logger.error("Failed to setup datasources, ", e);
+                throw new RuntimeException(e);
+            }
+            /**
+             * TODO: get the snapshot repository working with elastic 1.7
+             *
+             * createSnapshotRepository();
+             */
+            restartRunningIngests();
+        }
     }
 
     public void setupDataSources() throws IOException {
         logger.info("Setting up data sources");
-        setupElasticSearchMapping();
         createIndexedScripts();
         createEventLogTemplate();
         createDefaultIngestPipeline();
-
         refreshIndex();
-    }
-
-    public void setupElasticSearchMapping() throws IOException {
-
-        ClassPathResource resource = new ClassPathResource("elastic-mapping.json");
-        byte[] mappingSource = ByteStreams.toByteArray(resource.getInputStream());
-
-        /*
-         * Eventually we'll have to keep track of this number somewhere for
-         * re-mapping purposes, but for now we're hard coding to 1
-         */
-        indexName = String.format("%s_%02d", alias, 1);
-
-        try {
-            logger.info("Setting up ElasticSearch index: {} with alias: {}", indexName, alias);
-            Settings settings = ImmutableSettings.settingsBuilder()
-                    .put("number_of_shards", 1)
-                    .put("number_of_replicas", 0)
-                    .build();
-
-            client.admin()
-                .indices()
-                .prepareCreate(indexName)
-                .setSettings(settings)
-                .setSource(mappingSource)
-                .addAlias(new Alias(alias))
-                .get();
-
-        } catch (IndexAlreadyExistsException ignore) {
-            logger.info("Index {}/{} was already setup", indexName, alias);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to setup elasticsearch, unexpected: " + e, e);
-        }
     }
 
     public void refreshIndex() {
