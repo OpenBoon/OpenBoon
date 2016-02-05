@@ -1,7 +1,6 @@
 {
   "migration": {
-    "version": 1,
-    "reindex": false,
+    "reindex": true,
     "reingest": false
   },
   "settings": {
@@ -140,6 +139,13 @@
         "exports": {
           "type": "integer",
           "index": "not_analyzed"
+        },
+        "imports": {
+          "properties": {
+            "id": {"type": "integer"},
+            "pipeline": {"type": "integer"},
+            "timestamp": {"type": "date" }
+          }
         }
       },
       "dynamic_templates": [

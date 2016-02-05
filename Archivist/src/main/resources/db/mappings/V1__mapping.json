@@ -1,8 +1,5 @@
 {
-  "migration": {
-    "reindex": true,
-    "reingest": false
-  },
+  "version": 1,
   "settings": {
     "index": {
       "query": {

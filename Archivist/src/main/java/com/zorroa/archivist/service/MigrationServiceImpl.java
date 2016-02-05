@@ -23,12 +23,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by chambers on 2/2/16.
@@ -46,6 +53,9 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Autowired
     Client client;
+
+    @Autowired
+    DataSourceTransactionManager transactionManager;
 
     /**
      * We need these here to ensure we run AFTER flyway.
@@ -74,7 +84,7 @@ public class MigrationServiceImpl implements MigrationService {
         /**
          * TODO: Don't let ingests run during migrations.
          */
-
+        logger.info("Processing migrations");
         for (Migration m : migrations) {
             switch (m.getType()) {
                 case ElasticSearchIndex:
@@ -97,30 +107,12 @@ public class MigrationServiceImpl implements MigrationService {
     @Override
     public void processElasticMigration(Migration m, boolean force) {
 
-        Map<String, Object> mapping = null;
+        ElasticMigrationProperties props;
         try {
-            ClassPathResource resource = new ClassPathResource(m.getPath());
-            mapping = Json.Mapper.readValue(resource.getInputStream(),
-                    new TypeReference<Map<String, Object>>() {});
-
+            props = getLatestVersion(m);
         } catch (IOException e) {
             logger.warn("Failed to migration elastic index, unable to load elastic mapping: {}", m.getPath());
             throw new ArchivistException("Failed to setup ElasticSearch index, ", e);
-        }
-
-        /**
-         * Assume the mapping version is 1.  This should handle people updating from 0.15 to 0.17
-         */
-        ElasticMigrationProperties props = new ElasticMigrationProperties();
-        if (mapping.containsKey("version")) {
-            props.setVersion((int) mapping.get("version"));
-        }
-        else if (mapping.containsKey("migration")) {
-            props = Json.Mapper.convertValue(
-                    mapping.get("migration"), ElasticMigrationProperties.class);
-        }
-        else {
-            logger.warn("Unable to find version/migration info in mapping.");
         }
 
         final String oldIndex = String.format("%s_%02d", alias, m.getVersion());
@@ -132,24 +124,38 @@ public class MigrationServiceImpl implements MigrationService {
          * If neither index exists then its the first time the index has been created.
          */
         if (!oldIndexExists && !newIndexExists) {
-            force = true;
+            logger.info("No indexes exist, {} will be created", newIndex);
+        }
+        else {
+
+            if (props.getVersion() == m.getVersion()) {
+                logger.info("'{}' mapping V{} is the current version", m.getName(), m.getVersion());
+                return;
+            }
+
+            /**
+             * For unit tests, suspend the unit test transaction and execute the update
+             * in a separate transaction, that we're not starting at V1 every time.
+             */
+            TransactionTemplate tt = new TransactionTemplate(transactionManager);
+            tt.setPropagationBehavior(Propagation.REQUIRES_NEW.ordinal());
+            logger.info("Updating version to {}", props.getVersion());
+            if (!tt.execute(
+                    transactionStatus -> migrationDao.setVersion(m, props.getVersion()))) {
+                return;
+            }
         }
 
-        if (!force) {
-            if (props.getVersion() == m.getVersion()) {
-                return;
-            }
-
-            if (!migrationDao.setVersion(m, props.getVersion())) {
-                return;
-            }
+        if (newIndexExists) {
+            logger.warn("New index '{}' already exists, may not be latest version", newIndex);
+            return;
         }
 
         logger.info("Processing migration: {}, path={}, force={}", m.getName(), m.getPath(), force);
         client.admin()
                 .indices()
                 .prepareCreate(newIndex)
-                .setSource(mapping)
+                .setSource(props.getMapping())
                 .get();
 
         /**
@@ -249,10 +255,53 @@ public class MigrationServiceImpl implements MigrationService {
         client.admin().indices().prepareClose(oldIndex);
     }
 
+
+    private static final Pattern MAPPING_NAMING_CONV = Pattern.compile("^V(\\d+)__(.*?).json$");
+
+    public ElasticMigrationProperties getLatestVersion(Migration m) throws IOException {
+        ElasticMigrationProperties result = new ElasticMigrationProperties();
+
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(getClass().getClassLoader());
+        Resource[] resources = resolver.getResources(m.getPath());
+        for (Resource resource : resources) {
+            Matcher matcher = MAPPING_NAMING_CONV.matcher(resource.getFilename());
+            if (!matcher.matches()) {
+                logger.warn("'{}' is not using the proper naming convention.", resource.getFilename());
+                continue;
+            }
+
+            int version = Integer.valueOf(matcher.group(1));
+            Map<String, Object> mapping = Json.Mapper.readValue(resource.getInputStream(), Json.GENERIC_MAP);
+
+            if (mapping.containsKey("version")) {
+                result.setVersion((int) mapping.get("version"));
+                result.setMapping(mapping);
+            }
+            else if (mapping.containsKey("migration")) {
+                Map<String, Boolean> props = Json.Mapper.convertValue(mapping.get("migration"),
+                        new TypeReference<Map<String, Boolean>>(){});
+                result.incrementVersion(version, mapping);
+                if (props.get("reindex")) {
+                    result.setReindex(true);
+                }
+                if (props.get("reingest")) {
+                    result.setReingest(true);
+                }
+            }
+            else {
+                logger.warn("Unable to find version/migration info in mapping {}", resource.getFilename());
+            }
+        }
+
+        logger.info("latest '{}' mapping ver: {} (source='{}')", m.getName(), result.getVersion(), m.getPath());
+        return result;
+    }
+
     private static class ElasticMigrationProperties {
         private int version = 1;
         private boolean reindex = false;
         private boolean reingest = false;
+        private Map<String, Object> mapping;
 
         public int getVersion() {
             return version;
@@ -260,6 +309,14 @@ public class MigrationServiceImpl implements MigrationService {
 
         public ElasticMigrationProperties setVersion(int version) {
             this.version = version;
+            return this;
+        }
+
+        public ElasticMigrationProperties incrementVersion(int version, Map<String, Object> mapping) {
+            if (version > this.version) {
+                this.version = version;
+                this.mapping = mapping;
+            }
             return this;
         }
 
@@ -278,6 +335,15 @@ public class MigrationServiceImpl implements MigrationService {
 
         public ElasticMigrationProperties setReingest(boolean reingest) {
             this.reingest = reingest;
+            return this;
+        }
+
+        public Map<String, Object> getMapping() {
+            return mapping;
+        }
+
+        public ElasticMigrationProperties setMapping(Map<String, Object> mapping) {
+            this.mapping = mapping;
             return this;
         }
     }

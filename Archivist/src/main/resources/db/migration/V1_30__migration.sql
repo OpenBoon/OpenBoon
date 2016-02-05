@@ -14,5 +14,5 @@ CREATE TABLE migration (
 );
 
 INSERT INTO migration (int_type, str_name, str_path, int_version, time_applied)
-  VALUES (0, 'elastic', 'elastic-mapping.json', 1, 1454449960000);
+  VALUES (0, 'elastic', 'classpath:/db/mappings/*.json', 1, 1454449960000);
 

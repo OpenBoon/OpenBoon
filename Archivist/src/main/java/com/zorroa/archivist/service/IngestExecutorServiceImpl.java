@@ -448,15 +448,21 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      */
                     asset.getSource().setType(tika.detect(asset.getSource().getPath()));
 
+                    /*
+                     * 0.16 to 0.17, the "ingest" namespace has gone away, so we'll just remove it.
+                     * TODO: Would be nice to somehow have a file where these kinds of transformations can be defined.
+                     */
+                    asset.removeAttr("ingest");
 
                     /*
-                     * Add or overwrite the ingest info to the asset.
+                     * Add the existing ingest.
                      */
-                    IngestSchema ingestSchema = new IngestSchema();
-                    ingestSchema.setId(ingest.getId());
-                    ingestSchema.setPipeline(pipeline.getId());
-                    asset.addSchema(ingestSchema);
-
+                    IngestSchema ingestSchema = asset.getSchema("imports", IngestSchema.class);
+                    if (ingestSchema == null) {
+                        ingestSchema = new IngestSchema();
+                        asset.addSchema(ingestSchema);
+                    }
+                    ingestSchema.addIngest(ingest);
 
                 } catch (Exception e) {
                     eventLogService.log(ingest, "Ingest error '{}', could not determine asset type on '{}'",
