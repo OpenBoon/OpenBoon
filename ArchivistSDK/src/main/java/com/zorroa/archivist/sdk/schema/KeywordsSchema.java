@@ -27,6 +27,34 @@ public class KeywordsSchema implements Schema {
     private Set<String> all = Sets.newHashSet();
     private Set<String> suggest = Sets.newHashSet();
 
+
+    /**
+     * Add an array of keywords to the highest confidence and suggestion words
+     * with the given type.
+     *
+     * @param type
+     * @param keywords
+     */
+    public void addKeywords(String type,  String ... keywords) {
+        addKeywords(type, Arrays.asList(keywords));
+    }
+
+    /**
+     * Add an array of keywords to the highest confidence and suggestion words
+     * with the given type.
+     *
+     * @param type
+     * @param keywords
+     */
+    public void addKeywords(String type,  Iterable<String> keywords) {
+        Set<String> words = fields.get("type");
+        if (words == null) {
+            words = Sets.newHashSet();
+            fields.put(type, words);
+        }
+        addKeywords(1, true, keywords);
+    }
+
     /**
      * Add a new keyword with the given confidence.  Keywords with a confidence
      * value les than or equal to 0 are ignored.
