@@ -6,16 +6,13 @@ import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.PermissionBuilder;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.domain.UserBuilder;
-import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 10/28/15.
@@ -24,9 +21,6 @@ public class PermissionDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     PermissionDao permissionDao;
-
-    @Autowired
-    UserService userSerivce;
 
     Permission perm;
 

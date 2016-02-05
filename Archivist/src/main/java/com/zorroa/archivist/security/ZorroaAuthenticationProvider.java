@@ -3,7 +3,7 @@ package com.zorroa.archivist.security;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

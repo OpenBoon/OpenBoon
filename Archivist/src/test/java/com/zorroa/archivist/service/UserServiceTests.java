@@ -2,9 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -14,9 +12,6 @@ import static org.junit.Assert.*;
  * Created by chambers on 12/23/15.
  */
 public class UserServiceTests extends ArchivistApplicationTests {
-
-    @Autowired
-    FolderService folderService;
 
     @Test
     public void createUser() {

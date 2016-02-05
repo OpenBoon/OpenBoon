@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
-import com.zorroa.archivist.sdk.service.MessagingService;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,13 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.IngestService;
 import org.elasticsearch.action.count.CountResponse;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Timer;
@@ -19,25 +15,6 @@ import static org.junit.Assert.*;
  * Created by chambers on 7/31/15.
  */
 public class IngestExecutorServiceTests extends ArchivistApplicationTests {
-
-
-    @Autowired
-    IngestExecutorService ingestShedulerService;
-
-    @Autowired
-    IngestPipelineDao ingestPipelineDao;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
-    @Autowired
-    SearchService searchService;
-
-    @Autowired
-    FolderService folderService;
 
     @Test
     public void testPauseAndResume() {

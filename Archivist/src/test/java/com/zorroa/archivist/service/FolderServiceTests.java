@@ -3,9 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.FolderService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -15,9 +13,6 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class FolderServiceTests extends ArchivistApplicationTests {
-
-    @Autowired
-    FolderService folderService;
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testSetAcl() {

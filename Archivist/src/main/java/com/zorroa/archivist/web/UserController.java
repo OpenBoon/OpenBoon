@@ -1,8 +1,8 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

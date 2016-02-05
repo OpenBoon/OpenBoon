@@ -6,14 +6,7 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.service.AssetService;
-import com.zorroa.archivist.sdk.service.ExportService;
-import com.zorroa.archivist.sdk.service.IngestService;
-import com.zorroa.archivist.service.ExportExecutorService;
-import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.SearchService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
@@ -25,24 +18,6 @@ import static org.junit.Assert.assertEquals;
  * Created by chambers on 1/28/16.
  */
 public class PermissionIngestorTests extends ArchivistApplicationTests {
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
-    @Autowired
-    SearchService searchService;
-
-    @Autowired
-    AssetService assetService;
-
-    @Autowired
-    ExportExecutorService exportExecutorService;
-
-    @Autowired
-    ExportService exportService;
 
     @Test
     public void testSetSearchPermission() {

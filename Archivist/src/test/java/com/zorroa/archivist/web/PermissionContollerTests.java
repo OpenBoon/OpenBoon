@@ -3,10 +3,8 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.PermissionBuilder;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,9 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by chambers on 10/28/15.
  */
 public class PermissionContollerTests extends MockMvcTest {
-
-    @Autowired
-    UserService userSerivce;
 
     @Test
     public void testCreate() throws Exception {

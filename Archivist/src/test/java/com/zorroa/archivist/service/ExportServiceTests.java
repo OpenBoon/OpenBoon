@@ -7,14 +7,10 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.ArchivistException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.service.ExportService;
-import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.action.search.SearchResponse;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
@@ -26,24 +22,6 @@ import static org.junit.Assert.assertNotEquals;
  * Created by chambers on 12/2/15.
  */
 public class ExportServiceTests extends ArchivistApplicationTests {
-
-    @Autowired
-    ExportExecutorService exportExecutorService;
-
-    @Autowired
-    ExportService exportService;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
-    @Autowired
-    SearchService searchService;
-
-    @Autowired
-    FolderService folderService;
 
     Export export;
 

@@ -5,7 +5,6 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
-import com.zorroa.archivist.sdk.service.EventLogService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by chambers on 12/29/15.
  */
 public class EventLogControllerTests extends MockMvcTest {
-
-    @Autowired
-    EventLogService eventLogSerivce;
-
+    
     @Autowired
     EventLogDao eventLogDao;
 

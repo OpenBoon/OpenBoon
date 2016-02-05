@@ -8,11 +8,9 @@ import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
@@ -29,9 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by chambers on 7/12/15.
  */
 public class IngestPipelineControllerTests extends MockMvcTest {
-
-    @Autowired
-    IngestService ingestService;
 
     IngestPipeline pipeline;
 

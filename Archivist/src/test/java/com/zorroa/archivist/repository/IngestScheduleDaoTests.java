@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
-import com.zorroa.archivist.sdk.service.IngestService;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,6 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     IngestScheduleDao ingestScheduleDao;
-
-    @Autowired
-    IngestService ingestService;
 
     @Test
     public void create() {

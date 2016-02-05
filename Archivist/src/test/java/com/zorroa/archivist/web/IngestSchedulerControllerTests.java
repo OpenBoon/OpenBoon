@@ -6,11 +6,8 @@ import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.IngestScheduleService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
@@ -27,12 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by chambers on 9/18/15.
  */
 public class IngestSchedulerControllerTests extends MockMvcTest {
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestScheduleService ingestScheduleService;
 
     public Ingest createIngest() {
         IngestBuilder ib = new IngestBuilder();

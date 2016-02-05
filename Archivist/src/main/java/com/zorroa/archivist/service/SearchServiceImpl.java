@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
-import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;

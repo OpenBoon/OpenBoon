@@ -2,30 +2,16 @@ package com.zorroa.archivist.ingestors;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
-import com.zorroa.archivist.sdk.service.IngestService;
-import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ProxyProcessorTests extends ArchivistApplicationTests {
 
-    @Autowired
-    IngestPipelineDao ingestPipelineDao;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
-    @Autowired
     AssetDao assetDao;
 
     @Test
@@ -37,7 +23,7 @@ public class ProxyProcessorTests extends ArchivistApplicationTests {
                 new ProcessorFactory<>(ImageIngestor.class));
         builder.addToProcessors(
                 new ProcessorFactory<>(ProxyProcessor.class));
-        IngestPipeline pipeline = ingestPipelineDao.create(builder);
+        IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
 
         Ingest ingest = ingestService.createIngest(new IngestBuilder(
                 getStaticImagePath("standard")).setPipelineId(pipeline.getId()));

@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,6 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class RoomDaoTests extends ArchivistApplicationTests {
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     RoomDao roomDao;

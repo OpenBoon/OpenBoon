@@ -5,7 +5,7 @@ import com.zorroa.archivist.sdk.domain.ExportOutput;
 import com.zorroa.archivist.sdk.domain.ExportedAsset;
 import com.zorroa.archivist.sdk.domain.Folder;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.service.ExportService;
+import com.zorroa.archivist.service.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ExportDateAggregator extends ExportProcessor {

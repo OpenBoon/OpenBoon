@@ -4,7 +4,6 @@ import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.Id;
-import com.zorroa.archivist.sdk.service.EventLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
