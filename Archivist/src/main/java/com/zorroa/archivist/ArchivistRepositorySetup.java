@@ -104,12 +104,12 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     }
 
     public void refreshIndex() {
-        logger.info("refreshing index: '{}'", alias);
+        logger.info("Refreshing index: '{}'", alias);
         client.admin().indices().prepareRefresh(alias).get();
     }
 
     public void createEventLogTemplate() throws IOException {
-        logger.info("creating event log template");
+        logger.info("Creating event log template");
         ClassPathResource resource = new ClassPathResource("eventlog-template.json");
         byte[] source = ByteStreams.toByteArray(resource.getInputStream());
         client.admin().indices().preparePutTemplate("eventlog").setSource(source).get();
