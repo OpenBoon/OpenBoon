@@ -5,8 +5,6 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.PermissionSchema;
-import com.zorroa.archivist.sdk.service.AssetService;
-import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

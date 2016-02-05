@@ -6,8 +6,6 @@ import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.RoomBuilder;
 import com.zorroa.archivist.sdk.domain.Session;
 import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.service.RoomService;
-import com.zorroa.archivist.sdk.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,12 +22,6 @@ public class SessionDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     SessionDao sessionDao;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    RoomService roomService;
 
     @Test
     public void testCreate() {

@@ -2,9 +2,9 @@ package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.AssetService;
-import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.MessagingService;
+import com.zorroa.archivist.service.AssetService;
+import com.zorroa.archivist.service.FolderService;
+import com.zorroa.archivist.service.MessagingService;
 import com.zorroa.archivist.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

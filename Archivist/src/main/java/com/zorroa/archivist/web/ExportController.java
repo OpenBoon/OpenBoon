@@ -4,7 +4,7 @@ import com.zorroa.archivist.sdk.domain.Export;
 import com.zorroa.archivist.sdk.domain.ExportBuilder;
 import com.zorroa.archivist.sdk.domain.ExportFilter;
 import com.zorroa.archivist.sdk.domain.ExportOutput;
-import com.zorroa.archivist.sdk.service.ExportService;
+import com.zorroa.archivist.service.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

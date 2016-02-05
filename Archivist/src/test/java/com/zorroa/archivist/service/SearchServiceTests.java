@@ -5,9 +5,6 @@ import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.AssetService;
-import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +19,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class SearchServiceTests extends ArchivistApplicationTests {
 
-
     @Autowired
     AssetDao assetDao;
-
-    @Autowired
-    SearchService searchService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    FolderService folderService;
-
-    @Autowired
-    AssetService assetService;
 
     @Test
     public void testSearchPermissionsMiss() throws IOException {

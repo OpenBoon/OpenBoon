@@ -7,8 +7,6 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.schema.UserSchema;
-import com.zorroa.archivist.sdk.service.IngestService;
-import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +22,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class ImageIngestorTests extends ArchivistApplicationTests {
 
-
     @Autowired
     IngestPipelineDao ingestPipelineDao;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
 
     @Autowired
     AssetDao assetDao;

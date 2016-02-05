@@ -12,8 +12,6 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.MessagingService;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import org.slf4j.Logger;

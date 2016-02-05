@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +26,7 @@ public class FolderControllerTests extends MockMvcTest {
     FolderController folderController;
 
     @Autowired
-    IngestService ingestService;
-
-    @Autowired
     AssetDao assetDao;
-
-    @Autowired
-    FolderService folderService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
 
     Folder folder;
 

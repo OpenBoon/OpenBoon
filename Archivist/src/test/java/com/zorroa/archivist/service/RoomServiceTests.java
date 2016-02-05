@@ -5,7 +5,6 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +28,6 @@ public class RoomServiceTests extends ArchivistApplicationTests {
 
     @Autowired
     SessionDao sessionDao;
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     SessionRegistry sessionRegistry;

@@ -7,7 +7,7 @@ package com.zorroa.archivist.web;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.PermissionBuilder;
-import com.zorroa.archivist.sdk.service.UserService;
+import com.zorroa.archivist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

@@ -4,14 +4,9 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.service.ExportService;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.ExportExecutorService;
-import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
@@ -28,21 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class ExportOutputControllerTests extends MockMvcTest {
 
-
-    @Autowired
-    ExportService exportService;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
-    @Autowired
-    ExportExecutorService exportExecutorService;
-
     Export export;
-
     ExportBuilder builder;
 
     @Before

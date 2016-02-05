@@ -7,11 +7,7 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.PermissionSchema;
-import com.zorroa.archivist.sdk.service.FolderService;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.SearchService;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +28,7 @@ public class AssetControllerTests extends MockMvcTest {
     AssetController assetController;
 
     @Autowired
-    FolderService folderService;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
     AssetDao assetDao;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
-    @Autowired
-    SearchService searchService;
 
     @Test
     public void testSearchV2() throws Exception {
@@ -568,7 +552,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         refreshIndex();
 
-        AssetSearch search = new AssetSearch(new AssetFilter().setIngestId((int) /*danger!*/ingest.getId()));
+        AssetSearch search = new AssetSearch(new AssetFilter().setIngestId(ingest.getId()));
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)

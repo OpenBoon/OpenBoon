@@ -5,8 +5,6 @@ import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
-import com.zorroa.archivist.sdk.service.IngestService;
-import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProxyControllerTests  extends MockMvcTest {
 
     @Autowired
-    AssetController assetController;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
     AssetDao assetDao;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
 
     Ingest ingest;
 

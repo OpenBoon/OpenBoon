@@ -3,8 +3,6 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.TestMessagingClient;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.MessagingService;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -22,15 +20,6 @@ import static org.junit.Assert.assertEquals;
  * Created by chambers on 12/14/15.
  */
 public class MessageServiceTests extends ArchivistApplicationTests {
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    RoomService roomService;
-
-    @Autowired
-    MessagingService messagingService;
 
     @Autowired
     SessionRegistry sessionRegistry;

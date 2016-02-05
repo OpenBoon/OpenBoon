@@ -6,10 +6,7 @@ import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.service.ExportService;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.IngestExecutorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,21 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ExportControllerTests extends MockMvcTest {
 
     @Autowired
-    ExportService exportService;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
     ExportDao exportDao;
 
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
     Export export;
-
     ExportBuilder builder;
-
     MockHttpSession session;
 
     @Before

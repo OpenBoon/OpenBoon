@@ -3,9 +3,8 @@ package com.zorroa.archivist;
 import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.domain.UserBuilder;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.security.UnitTestAuthentication;
-import com.zorroa.archivist.service.MigrationService;
+import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
@@ -54,6 +53,42 @@ public abstract class ArchivistApplicationTests {
     protected UserService userService;
 
     @Autowired
+    protected MigrationService migrationService;
+
+    @Autowired
+    protected FolderService folderService;
+
+    @Autowired
+    protected IngestExecutorService ingestExecutorService;
+
+    @Autowired
+    protected IngestScheduleService ingestScheduleService;
+
+    @Autowired
+    protected ExportExecutorService exportExecutorService;
+
+    @Autowired
+    protected ExportService exportService;
+
+    @Autowired
+    protected IngestService ingestService;
+
+    @Autowired
+    protected SearchService searchService;
+
+    @Autowired
+    protected AssetService assetService;
+
+    @Autowired
+    protected RoomService roomService;
+
+    @Autowired
+    protected MessagingService messagingService;
+
+    @Autowired
+    protected EventLogService eventLogSerivce;
+
+    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
@@ -64,9 +99,6 @@ public abstract class ArchivistApplicationTests {
 
     @Autowired
     ArchivistRepositorySetup archivistRepositorySetup;
-
-    @Autowired
-    MigrationService migrationService;
 
     @Value("${archivist.index.alias}")
     protected String alias;

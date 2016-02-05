@@ -5,8 +5,7 @@ import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.service.IngestService;
-import com.zorroa.archivist.service.IngestExecutorService;
+import com.zorroa.archivist.service.IngestService;
 import org.elasticsearch.common.collect.Maps;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class ChecksumProcessorTest extends ArchivistApplicationTests {
 
     @Autowired
     IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
 
     @Autowired
     AssetDao assetDao;

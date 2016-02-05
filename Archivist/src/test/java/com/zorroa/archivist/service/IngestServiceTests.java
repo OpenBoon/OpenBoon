@@ -5,7 +5,6 @@ import com.zorroa.archivist.ingestors.ChecksumProcessor;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.service.IngestService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,12 +13,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class IngestServiceTests extends ArchivistApplicationTests {
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
 
     @Autowired
     AssetDao assetDao;

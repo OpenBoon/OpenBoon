@@ -10,8 +10,6 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.sdk.schema.SourceSchema;
-import com.zorroa.archivist.sdk.service.ExportService;
-import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +25,6 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
     @Autowired
     AssetDao assetDao;
-
-    @Autowired
-    FolderService folderService;
-
-    @Autowired
-    ExportService exportService;
 
     @Test
     public void testUpsertAndGet() throws IOException {

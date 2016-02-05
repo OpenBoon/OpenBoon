@@ -6,9 +6,7 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.RoomService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,12 +25,6 @@ public class RoomControllerTests extends MockMvcTest {
 
     @Autowired
     RoomController roomController;
-
-    @Autowired
-    RoomService roomService;
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     RoomDao roomDao;

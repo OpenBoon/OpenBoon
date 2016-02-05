@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.domain.UserUpdateBuilder;
-import com.zorroa.archivist.sdk.service.UserService;
 import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,6 @@ public class UserControllerTest extends MockMvcTest {
 
     @Autowired
     UserController userController;
-
-    @Autowired
-    UserService userService;
 
     @Test
     public void testLogin() throws Exception {

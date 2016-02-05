@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
-import com.zorroa.archivist.sdk.service.FolderService;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -252,7 +251,7 @@ public class SearchServiceImpl implements SearchService {
              * the first ingest ID along with the pipeline, so the value is an embedded object.  Thus, how
              * they are queried is not the same.
              */
-            FilterBuilder ingestsFilterBuilder = FilterBuilders.termsFilter("ingest.id", builder.getIngestIds());
+            FilterBuilder ingestsFilterBuilder = FilterBuilders.termsFilter("imports.id", builder.getIngestIds());
             filter.add(ingestsFilterBuilder);
         }
 

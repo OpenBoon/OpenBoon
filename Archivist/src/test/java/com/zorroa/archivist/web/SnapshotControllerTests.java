@@ -7,14 +7,11 @@ import com.zorroa.archivist.domain.SnapshotRestoreBuilder;
 import com.zorroa.archivist.domain.SnapshotState;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
-import com.zorroa.archivist.sdk.service.IngestService;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.IngestExecutorService;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
@@ -27,12 +24,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SnapshotControllerTests extends MockMvcTest {
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
 
     @Ignore
     @Test

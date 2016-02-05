@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class SimpleExcelIngestorTests extends ArchivistApplicationTests {
 
-
     @Test
     public void testProcessSingleFilter() throws Exception {
 
