@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Some basic JSON utilities.
@@ -17,6 +20,12 @@ import java.io.IOException;
  *
  */
 public class Json {
+
+    public static TypeReference<Map<String, Object>> GENERIC_MAP = new TypeReference<Map<String, Object>>() { };
+    public static TypeReference<Set<Integer>> SET_OF_INTS = new TypeReference<Set<Integer>>() { };
+    public static TypeReference<Set<String>> SET_OF_STRINGS = new TypeReference<Set<String>>() { };
+    public static TypeReference<List<Integer>> LIST_OF_INTS = new TypeReference<List<Integer>>() { };
+    public static TypeReference<List<String>> LIST_OF_STRINGS = new TypeReference<List<String>>() { };
 
     public final static ObjectMapper Mapper = new ObjectMapper();
     static {
