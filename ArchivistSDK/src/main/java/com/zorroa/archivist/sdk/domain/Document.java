@@ -73,7 +73,11 @@ public class Document {
      * @return
      */
     public <T> T getSchema(String namespace, Class<T> klass) {
-        return Json.Mapper.convertValue(document.get(namespace), klass);
+        try {
+            return Json.Mapper.convertValue(document.get(namespace), klass);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**
@@ -86,7 +90,11 @@ public class Document {
      * @return
      */
     public <T> T getSchema(String namespace, TypeReference<T> typeRef) {
-        return Json.Mapper.convertValue(document.get(namespace), typeRef);
+        try {
+            return Json.Mapper.convertValue(document.get(namespace), typeRef);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**
