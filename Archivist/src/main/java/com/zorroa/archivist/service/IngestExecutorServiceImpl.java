@@ -460,7 +460,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     IngestSchema ingestSchema = asset.getSchema("imports", IngestSchema.class);
                     if (ingestSchema == null) {
                         ingestSchema = new IngestSchema();
-                        asset.addSchema(ingestSchema);
+                        asset.addSchema("imports", ingestSchema);
                     }
                     ingestSchema.addIngest(ingest);
 
