@@ -3,10 +3,10 @@ package com.zorroa.archivist.ingestors;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.service.ObjectFileSystem;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

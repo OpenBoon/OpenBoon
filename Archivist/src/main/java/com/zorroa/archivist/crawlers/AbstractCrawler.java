@@ -2,7 +2,7 @@ package com.zorroa.archivist.crawlers;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.service.ObjectFileSystem;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public abstract class AbstractCrawler {
     /**
      * A place to store any files not local to the archivist.
      */
-    protected  ObjectFileSystem fileSystem;
+    protected ObjectFileSystem fileSystem;
 
     /**
      * The file formats the crawler should target.

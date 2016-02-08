@@ -1,5 +1,6 @@
 package com.zorroa.archivist;
 
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.RestControllerAdvice;
 import org.elasticsearch.client.Client;
@@ -15,6 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -39,6 +41,9 @@ public class ArchivistConfiguration {
 
     public static boolean unittest = false;
 
+    @Autowired
+    private Environment env;
+
     @PostConstruct
     public void init() throws UnknownHostException {
         Random rand = new Random(System.nanoTime());
@@ -57,6 +62,15 @@ public class ArchivistConfiguration {
     @ConfigurationProperties(prefix="archivist.datasource.primary")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
+    }
+
+    @Bean(initMethod="init")
+    public ObjectFileSystem fileSystem() throws Exception {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        Class fileSystemClass = classLoader.loadClass(env.getProperty("archivist.filesystem.class"));
+        ObjectFileSystem fs = (ObjectFileSystem) fileSystemClass.newInstance();
+        fs.setLocation(env.getProperty("archivist.filesystem.location"));
+        return fs;
     }
 
     @Bean(name="flyway", initMethod="migrate")

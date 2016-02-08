@@ -1,17 +1,17 @@
 package com.zorroa.archivist.ingestors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.domain.Allocation;
+import com.zorroa.archivist.sdk.domain.Allocation;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.EventLogService;
-import com.zorroa.archivist.service.ObjectFileSystem;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.filters.Flip;
 import net.coobird.thumbnailator.filters.ImageFilter;

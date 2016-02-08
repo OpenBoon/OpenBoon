@@ -1,7 +1,7 @@
 package com.zorroa.archivist.crawlers;
 
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.util.FileUtils;
-import com.zorroa.archivist.service.ObjectFileSystem;
 
 import java.io.File;
 import java.io.IOException;

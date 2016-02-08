@@ -2,9 +2,9 @@ package com.zorroa.archivist.crawlers;
 
 import com.beust.jcommander.internal.Lists;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.Allocation;
+import com.zorroa.archivist.sdk.domain.Allocation;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.util.FileUtils;
-import com.zorroa.archivist.service.ObjectFileSystem;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
