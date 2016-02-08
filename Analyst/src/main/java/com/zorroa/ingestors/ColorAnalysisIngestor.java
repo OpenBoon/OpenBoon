@@ -57,7 +57,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
 
     //! Color space used
     //! Default: HSV
-    String colorSpace = "BGR";
+    String colorSpace = "Lab";
 
     //! Logger
     private static final Logger logger = LoggerFactory.getLogger(ColorAnalysisIngestor.class);
@@ -228,11 +228,13 @@ public class ColorAnalysisIngestor extends IngestProcessor {
     }
 
 
-    /** Load color palette from supplied xml file
+    /** Loads the color palette from supplied xml file.
+     * Will convert the palette to the color space specified for analysis
      * @param colorPaletteFile The file to read from
      */
     // XXX: This will need to be moved elsewhere so the palette is loaded before the analysis
     // XXX: and passed with the builder
+    // XXX: Also right now assuming palette is in RGB.
     Map<int[], String> loadColorPaletteFromXmlFile(File colorPaletteFile) {
 
         HashMap<int[], String> colorPalette = new HashMap<int[], String>();
@@ -254,6 +256,17 @@ public class ColorAnalysisIngestor extends IngestProcessor {
                 colorValues[2] = Integer.parseInt(elem.getElementsByTagName("rvalue").item(0).getChildNodes().item(0).getNodeValue());
                 colorValues[1] = Integer.parseInt(elem.getElementsByTagName("gvalue").item(0).getChildNodes().item(0).getNodeValue());
                 colorValues[0] = Integer.parseInt(elem.getElementsByTagName("bvalue").item(0).getChildNodes().item(0).getNodeValue());
+                if (colorSpace.compareTo("Lab") == 0) {
+                    Mat rgbColors = new Mat(1, 1, CvType.CV_32FC3);
+                    Mat labColors = new Mat(1, 1, CvType.CV_32FC3);
+                    float[] fpaletteColor = {(float) (colorValues[0]/255.0f), (float) (colorValues[1]/255.0f), (float) (colorValues[2]/255.0f)};
+                    rgbColors.put(0, 0, fpaletteColor);
+                    Imgproc.cvtColor(rgbColors, labColors, Imgproc.COLOR_BGR2Lab);
+                    colorValues[0] = (int) labColors.get(0,0)[0] * 255 / 100;
+                    colorValues[1] = (int) labColors.get(0,0)[1] + 128;
+                    colorValues[2] = (int) labColors.get(0,0)[2] + 128;
+                    //logger.info("Lab palette color {}: Lab: {}, {}, {}", name, colorValues[0], colorValues[1], colorValues[2]);
+                }
                 colorPalette.put(colorValues, name);
             }
         }
@@ -278,13 +291,17 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         Set<int[]> paletteColors = colorPalette.keySet();
         for (int[] cluster : clusters.keySet()) {
             double minDist = Double.MAX_VALUE;
+
             String colorName = "";
+
             for (int[] paletteColor : paletteColors) {
+
                 double d1 = (double)( cluster[0] - paletteColor[0] );
                 double d2 = (double)( cluster[1] - paletteColor[1] );
                 double d3 = (double)( cluster[2] - paletteColor[2] );
-                double d = Math.sqrt( d1*d1 + d2*d2 + d3*d3);
-                //double d = Math.abs(d1) + Math.abs(d2) + Math.abs(d3);
+
+                //double d = Math.sqrt( d1*d1 + d2*d2 + d3*d3);
+                double d = Math.abs(d1) + Math.abs(d2) + Math.abs(d3);
                 if ( d < minDist ) {
                     minDist = d;
                     colorName = colorPalette.get(paletteColor);
