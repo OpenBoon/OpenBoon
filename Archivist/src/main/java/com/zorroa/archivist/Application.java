@@ -10,9 +10,9 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 @SpringBootApplication
 @EnableConfigurationProperties
-public class ArchivistApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(ArchivistApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

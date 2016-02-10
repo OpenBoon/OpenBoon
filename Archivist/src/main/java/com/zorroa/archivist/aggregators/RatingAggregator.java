@@ -1,4 +1,4 @@
-package com.zorroa.archivist.ingestors;
+package com.zorroa.archivist.aggregators;
 
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;

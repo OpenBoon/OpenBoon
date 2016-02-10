@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.ingestors.ChecksumProcessor;
+import com.zorroa.archivist.TestIngestor;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
@@ -46,7 +46,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         IngestPipelineBuilder ipb = new IngestPipelineBuilder();
         ipb.setName("test");
         ipb.setDescription("A test pipeline");
-        ipb.addToProcessors(new ProcessorFactory<>(ChecksumProcessor.class));
+        ipb.addToProcessors(new ProcessorFactory<>(TestIngestor.class));
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
@@ -66,7 +66,7 @@ public class IngestServiceTests extends ArchivistApplicationTests {
         IngestPipelineBuilder ipb = new IngestPipelineBuilder();
         ipb.setName("test");
         ipb.setDescription("A test pipeline");
-        ipb.addToProcessors(new ProcessorFactory<>(ChecksumProcessor.class));
+        ipb.addToProcessors(new ProcessorFactory<>(TestIngestor.class));
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository;
 
-import com.drew.lang.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.sdk.domain.*;
@@ -193,7 +192,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
-    public void setAcl(Folder folder, @Nullable Acl acl) {
+    public void setAcl(Folder folder, Acl acl) {
         jdbc.update("DELETE FROM folder_acl WHERE pk_folder=?", folder.getId());
         if (acl == null || acl.isEmpty()) {
             return;

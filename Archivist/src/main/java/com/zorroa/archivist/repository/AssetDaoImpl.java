@@ -1,10 +1,10 @@
 package com.zorroa.archivist.repository;
 
-import com.beust.jcommander.internal.Lists;
-import com.beust.jcommander.internal.Maps;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;

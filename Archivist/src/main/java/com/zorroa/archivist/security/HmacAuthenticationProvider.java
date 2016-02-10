@@ -5,7 +5,7 @@ import com.google.common.io.Files;
 import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.service.UserService;
-import org.bouncycastle.util.encoders.Hex;
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class HmacAuthenticationProvider implements AuthenticationProvider {
         try {
             Mac mac = Mac.getInstance("HmacSHA1");
             mac.init(new SecretKeySpec(getKey(username).getBytes(), "HmacSHA1"));
-            String crypted = Hex.toHexString(mac.doFinal(msgClear.getBytes()));
+            String crypted = Hex.encodeHexString(mac.doFinal(msgClear.getBytes()));
 
             if (crypted.equals(msgCrypt)) {
                 User user = userService.get(username);

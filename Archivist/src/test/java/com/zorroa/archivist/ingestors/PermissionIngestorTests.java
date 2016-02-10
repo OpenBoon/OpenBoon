@@ -1,7 +1,7 @@
 package com.zorroa.archivist.ingestors;
 
-import com.beust.jcommander.internal.Lists;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;

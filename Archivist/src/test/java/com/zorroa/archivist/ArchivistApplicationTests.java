@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ArchivistApplication.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @TestPropertySource("/test.properties")
 @WebAppConfiguration
 @Transactional

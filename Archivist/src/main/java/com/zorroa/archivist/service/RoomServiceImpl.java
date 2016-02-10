@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -119,7 +118,7 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.delete(room);
     }
 
-    public int setSelection(@Nullable Room room, Set<String> selection) {
+    public int setSelection(Room room, Set<String> selection) {
         if (selection.size() > SELECTION_MAX_SIZE) {
             throw new MalformedDataException(String.format(
                     "The selection is too large, maximum allowed size: '%d', size: '%d'",
@@ -140,7 +139,7 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-    public int setSearch(@Nullable Room room, AssetSearch search) {
+    public int setSearch(Room room, AssetSearch search) {
         if (room != null) {
             int version = roomDao.setSearch(room, search);
             transactionEventManager.afterCommit(() -> {

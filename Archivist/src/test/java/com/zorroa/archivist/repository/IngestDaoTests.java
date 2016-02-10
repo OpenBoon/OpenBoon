@@ -2,9 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.TestIngestor;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
-import com.zorroa.archivist.ingestors.ChecksumProcessor;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import org.junit.Before;
@@ -130,7 +130,7 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         IngestPipelineBuilder ipb = new IngestPipelineBuilder();
         ipb.setName("test");
         ipb.setDescription("A test pipeline");
-        ipb.addToProcessors(new ProcessorFactory<>(ChecksumProcessor.class));
+        ipb.addToProcessors(new ProcessorFactory<>(TestIngestor.class));
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();

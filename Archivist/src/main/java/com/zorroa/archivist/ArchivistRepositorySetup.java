@@ -1,10 +1,6 @@
 package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.ingestors.ImageIngestor;
-import com.zorroa.archivist.ingestors.PdfIngestor;
-import com.zorroa.archivist.ingestors.ProxyProcessor;
-import com.zorroa.archivist.ingestors.VideoIngestor;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestState;
@@ -119,10 +115,10 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         if (!ingestService.ingestPipelineExists("standard")) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("standard");
-            builder.addToProcessors(new ProcessorFactory<>(ImageIngestor.class));
-            builder.addToProcessors(new ProcessorFactory<>(VideoIngestor.class));
-            builder.addToProcessors(new ProcessorFactory<>(PdfIngestor.class));
-            builder.addToProcessors(new ProcessorFactory<>(ProxyProcessor.class));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.VideoIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.PdfIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyProcessor"));
             ingestService.createIngestPipeline(builder);
         }
     }

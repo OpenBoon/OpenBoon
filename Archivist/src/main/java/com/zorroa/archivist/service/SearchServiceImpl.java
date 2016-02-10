@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
 import java.util.Set;
 
 /**
@@ -137,7 +136,7 @@ public class SearchServiceImpl implements SearchService {
         return aggregation;
     }
 
-    private QueryBuilder getQuery(@Nullable AssetSearch search) {
+    private QueryBuilder getQuery(AssetSearch search) {
         if (search == null) {
             return QueryBuilders.filteredQuery(
                     QueryBuilders.matchAllQuery(), getFilter(null));

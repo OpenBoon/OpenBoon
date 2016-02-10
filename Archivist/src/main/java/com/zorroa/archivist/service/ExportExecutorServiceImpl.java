@@ -3,7 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.archivist.ingestors.ExportDateAggregator;
+import com.zorroa.archivist.aggregators.ExportDateAggregator;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.ExportOutputDao;
