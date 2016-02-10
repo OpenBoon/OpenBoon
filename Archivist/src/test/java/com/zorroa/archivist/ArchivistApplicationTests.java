@@ -1,6 +1,7 @@
 package com.zorroa.archivist;
 
 import com.zorroa.archivist.domain.MigrationType;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.sdk.domain.UserBuilder;
 import com.zorroa.archivist.security.UnitTestAuthentication;
@@ -207,6 +208,15 @@ public abstract class ArchivistApplicationTests {
         userService.create(userBuilder);
     }
 
+    public void addTestAssets(String subdir) {
+        FileSystemResource resource = new FileSystemResource(TEST_DATA_PATH + "/images/" + subdir);
+        for (File f: resource.getFile().listFiles()) {
+            AssetBuilder b = new AssetBuilder(f);
+            assetService.upsert(b);
+        }
+        refreshIndex();
+    }
+
     /**
      * Athenticates a user as admin but with all permissions, including internal ones.
      */
@@ -227,6 +237,9 @@ public abstract class ArchivistApplicationTests {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
+    /*
+     * TODO: We can refactor these to go away eventually.  See addTestAssets()
+     */
     public String getStaticImagePath(String subdir) {
         FileSystemResource resource = new FileSystemResource(TEST_DATA_PATH + "/images");
         String path = resource.getFile().getAbsolutePath() + "/" + subdir;
