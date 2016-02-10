@@ -23,11 +23,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 
     @Before
     public void init() {
-        IngestPipelineBuilder request = new IngestPipelineBuilder();
-        request.setName("test");
-        request.setDescription("a test pipeline");
-        request.setProcessors(Lists.newArrayList(new ProcessorFactory<>(TestIngestor.class)));
-        pipeline = ingestPipelineDao.create(request);
+        addTestAssets("standard");
     }
 
     @Test
@@ -59,7 +55,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         IngestPipelineUpdateBuilder builder = new IngestPipelineUpdateBuilder();
         builder.setName("foo");
         builder.setDescription("foo");
-        //builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ProxyProcessor.class)));
+        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(TestIngestor.class)));
 
         assertTrue(ingestPipelineDao.update(pipeline, builder));
         IngestPipeline updated = ingestPipelineDao.get(pipeline.getId());
