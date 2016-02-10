@@ -264,7 +264,7 @@
                     </includes>
                     <argLine>-Djava.class.path=${project.basedir}/lib/face -Djava.library.path=${project.build.directory}/jni</argLine>
                     <environmentVariables>
-                        <ZORROA_OPENCV_MODEL_PATH>${project.basedir}/models</ZORROA_OPENCV_MODEL_PATH>
+                        <ZORROA_MODEL_PATH>${project.basedir}/models</ZORROA_MODEL_PATH>
                     </environmentVariables>
                 </configuration>
             </plugin>

@@ -37,9 +37,9 @@ public class LogoIngestor extends IngestProcessor {
         @Override
         protected CascadeClassifier initialValue() {
             Map<String, String> env = System.getenv();
-            String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
+            String modelPath = env.get("ZORROA_MODEL_PATH");
             if (modelPath == null) {
-                logger.error("LogoIngestor requires ZORROA_OPENCV_MODEL_PATH");
+                logger.error("LogoIngestor requires ZORROA_MODEL_PATH");
                 return null;
             }
 

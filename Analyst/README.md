@@ -81,7 +81,7 @@ If your ingestor uses a third party JAR file, it must be in the ZORROA_SITE_PATH
 For example, the FaceIngestor uses the opencv-2411.jar, so you must put the
 opencv-2412.jar file in the `ZORROA_SITE_PATH`.
 
-Some ingestors will load model files using the `ZORROA_OPENCV_MODEL_PATH` environment
+Some ingestors will load model files using the `ZORROA_MODEL_PATH` environment
 variable. This generally points to the top of a shared model path and each processor
 uses files from a subdirectory. Set it to, e.g. `<ingestors-project>/models` and place
 the Caffe models under `<ingestors-project>/models/caffe/imagenet`.
@@ -95,7 +95,7 @@ libraries from Ingestors/lib/local to /usr/local and makes symlinks for /usr/loc
 #!/bin/bash
 set -x
 INGESTORS_PROJECT=/Users/wex/Zorroa/src/Ingestors
-export ZORROA_OPENCV_MODEL_PATH=${INGESTORS_PROJECT}/models
+export ZORROA_MODEL_PATH=${INGESTORS_PROJECT}/models
 export ZORROA_SITE_PATH=${INGESTORS_PROJECT}/target
 java -Djava.class.path=${INGESTORS_PROJECT}/lib/face -Djava.library.path=${INGESTORS_PROJECT}/target/jni:${INGESTORS_PROJECT}/lib/face -jar target/archivist.jar
 ```

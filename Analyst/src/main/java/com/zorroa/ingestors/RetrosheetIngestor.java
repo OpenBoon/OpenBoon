@@ -56,15 +56,15 @@ public class RetrosheetIngestor extends IngestProcessor {
     private boolean parseError = false;
     private boolean restrictToGameInterval = true;
 
-    private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
+    private static final Logger logger = LoggerFactory.getLogger(RetrosheetIngestor.class);
 
     public RetrosheetIngestor() { }
 
     public boolean readModelFiles() {
         Map<String, String> env = System.getenv();
-        String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
+        String modelPath = env.get("ZORROA_MODEL_PATH");
         if (modelPath == null) {
-            logger.error("RetrosheetIngestor requires ZORROA_OPENCV_MODEL_PATH");
+            logger.error("RetrosheetIngestor requires ZORROA_MODEL_PATH");
             return false;
         }
         File modelFolder = new File(modelPath + "/retrosheet");
