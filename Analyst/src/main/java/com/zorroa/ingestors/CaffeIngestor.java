@@ -36,9 +36,9 @@ public class CaffeIngestor extends IngestProcessor {
         protected CaffeClassifier initialValue() {
             logger.debug("Loading caffe models...");
             Map<String, String> env = System.getenv();
-            String modelPath = env.get("ZORROA_OPENCV_MODEL_PATH");
+            String modelPath = env.get("ZORROA_MODEL_PATH");
             if (modelPath == null) {
-                logger.error("CaffeIngestor requires ZORROA_OPENCV_MODEL_PATH");
+                logger.error("CaffeIngestor requires ZORROA_MODEL_PATH");
                 return null;
             }
             String resourcePath = modelPath + "/caffe/imagenet/";

@@ -128,7 +128,7 @@ public class IntegrationTest {
         String cmd =  "/usr/bin/java  -Djava.class.path=" + pwd + "/lib/face -Djava.library.path=" + pwd +"/target/jni:" + pwd + "/lib/face -jar \"" + archivist.getAbsolutePath() + "\" --logging.file=/tmp/log";
         logger.info("Starting Archivist with command: {}", cmd);
         pb.command("/bin/sh", "-c", cmd);
-        env.put("ZORROA_OPENCV_MODEL_PATH", pwd + "/models");
+        env.put("ZORROA_MODEL_PATH", pwd + "/models");
         env.put("ZORROA_SITE_PATH", pwd + "/target");
 
         archivistProcess = pb.start();
