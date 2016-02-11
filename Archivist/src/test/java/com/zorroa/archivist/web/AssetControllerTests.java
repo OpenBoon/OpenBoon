@@ -35,9 +35,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(10);
+        addTestAssets("standard");
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
@@ -58,9 +56,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        addTestAssets("standard");
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_count")
                 .session(session)
@@ -205,9 +201,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("canyon");
 
         List<Asset> assets = assetDao.getAll();
         Asset asset = assets.get(0);
@@ -239,9 +233,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("canyon");
 
         List<Asset> assets = assetDao.getAll();
         Asset asset = assets.get(0);
@@ -272,9 +264,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFolderAssign() throws Exception {
         MockHttpSession session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("canyon");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
@@ -305,9 +295,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFilteredSearch() throws Exception {
         MockHttpSession session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         AssetSearch search = new AssetSearch(new AssetFilter().addToFieldTerms("source.filename.raw", "beer_kettle_01.jpg"));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
@@ -330,9 +318,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFolderSearchFilter() throws Exception {
         MockHttpSession session = user();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
@@ -372,9 +358,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFolderChildrenSearchFilter() throws Exception {
         MockHttpSession session = user();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         // Create two folders, a parent and its child
         MvcResult result = mvc.perform(post("/api/v1/folders")
@@ -497,9 +481,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testEmptySearch() throws Exception {
         MockHttpSession session = user();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         AssetSearch search = new AssetSearch("");
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
@@ -520,9 +502,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFromSize() throws Exception {
         MockHttpSession session = user();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         AssetSearch search = new AssetSearch().setFrom(1).setSize(1);
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
@@ -660,9 +640,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFilterAsset() throws Exception {
         MockHttpSession session = user();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         ArrayList<String> assetIds = new ArrayList<>();
         List<Asset> assets = assetDao.getAll();

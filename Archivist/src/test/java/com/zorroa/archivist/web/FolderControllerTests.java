@@ -251,9 +251,7 @@ public class FolderControllerTests extends MockMvcTest {
     @Test
     public void testAddAsset() throws Exception {
         authenticate();
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
@@ -279,9 +277,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testRemoveAsset() throws Exception {
         authenticate();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
@@ -308,9 +304,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testGetAssets() throws Exception {
         authenticate();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));

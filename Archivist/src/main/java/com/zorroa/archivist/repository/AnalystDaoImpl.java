@@ -20,6 +20,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
 
     private static final String INSERT = JdbcUtils.insert("analyst",
             "str_host",
+            /* AnalystState? */
             "int_threads_total",
             "int_threads_active",
             "int_process_success",
@@ -82,6 +83,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
 
     private static final RowMapper<Analyst> MAPPER = (rs, row) -> {
         Analyst a = new Analyst();
+        a.setId(rs.getInt("pk_analyst"));
         a.setHost(rs.getString("str_host"));
         a.setData(rs.getBoolean("bool_data"));
         a.setProcessFailed(rs.getInt("int_process_failed"));

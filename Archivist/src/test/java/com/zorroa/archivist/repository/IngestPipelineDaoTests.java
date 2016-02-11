@@ -23,7 +23,11 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 
     @Before
     public void init() {
-        addTestAssets("standard");
+        IngestPipelineBuilder request = new IngestPipelineBuilder();
+        request.setName("test");
+        request.setDescription("a test pipeline");
+        request.setProcessors(Lists.newArrayList(new ProcessorFactory<>(TestIngestor.class)));
+        pipeline = ingestPipelineDao.create(request);
     }
 
     @Test
