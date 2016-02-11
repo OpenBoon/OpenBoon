@@ -24,7 +24,7 @@ public class SourceSchema implements Schema {
     private String filename;
     private String basename;
     private String directory;
-    private Date date;
+    private Date date = new Date();
     private String checksum;
     private List<String> relatedPaths;
 
