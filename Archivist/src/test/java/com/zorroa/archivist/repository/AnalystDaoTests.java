@@ -36,7 +36,7 @@ public class AnalystDaoTests extends ArchivistApplicationTests {
     @Test
     public void testUpdate() {
         AnalystPing p = new AnalystPing();
-        p.setHost("localhost");
+        p.setHost("foo");
 
         assertFalse(analystDao.update(p));
         analystDao.create(p);
