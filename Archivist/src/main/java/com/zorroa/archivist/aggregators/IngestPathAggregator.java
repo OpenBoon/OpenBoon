@@ -2,7 +2,6 @@ package com.zorroa.archivist.aggregators;
 
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.SearchService;
@@ -15,7 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.Collection;
 import java.util.Map;
 
-public class IngestPathAggregator extends IngestProcessor {
+public class IngestPathAggregator extends Aggregator {
 
     @Autowired
     FolderService folderService;
@@ -46,7 +45,7 @@ public class IngestPathAggregator extends IngestProcessor {
     }
 
     @Override
-    public void process(AssetBuilder asset) {
+    public void aggregate() {
         // Aggregate over the pathIndexed source.directory.dir field to get each path component
         AssetAggregateBuilder pathAggBuilder = new AssetAggregateBuilder().setName("path")
                 .setField("source.directory.dir").setSearch(ingestFolder.getSearch())

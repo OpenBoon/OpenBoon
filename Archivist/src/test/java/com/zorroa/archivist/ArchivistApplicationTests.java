@@ -1,9 +1,13 @@
 package com.zorroa.archivist;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.aggregators.Aggregator;
 import com.zorroa.archivist.domain.MigrationType;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.domain.UserBuilder;
+import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.schema.IngestSchema;
+import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -23,6 +27,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,6 +41,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -208,22 +214,66 @@ public abstract class ArchivistApplicationTests {
         userService.create(userBuilder);
     }
 
-    public void addTestAssets(String subdir) {
+    private static final Set<String> SUPPORTED_FORMATS = ImmutableSet.of(
+            "jpg", "pdf", "mov", "gif", "tif");
+
+    public List<AssetBuilder> getTestAssets(String subdir) {
+        List<AssetBuilder> result = Lists.newArrayList();
         FileSystemResource resource = new FileSystemResource(TEST_DATA_PATH + "/images/" + subdir);
         for (File f: resource.getFile().listFiles()) {
-            AssetBuilder b = new AssetBuilder(f);
-            assetService.upsert(b);
+
+            if (f.isFile()) {
+                if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
+                    AssetBuilder b = new AssetBuilder(f);
+                    b.setAttr("user", "rating", 4);
+                    b.setAttr("test", "path", resource.getFile().getAbsolutePath());
+                    result.add(b);
+                }
+            }
+        }
+
+        for (File f: resource.getFile().listFiles()) {
+            if (f.isDirectory()) {
+                result.addAll(getTestAssets(subdir + "/" + f.getName()));
+            }
+        }
+
+        return result;
+    }
+
+    public Ingest addTestAssets(String subdir) {
+        return addTestAssets(getTestAssets(subdir));
+    }
+
+    public Ingest addTestAssets(List<AssetBuilder> builders) {
+
+        logger.info("testPath: {}", (String) builders.get(0).getAttr("test.path"));
+        Ingest i = ingestService.createIngest(
+                new IngestBuilder().setName("foo").addToPaths(builders.get(0).getAttr("test.path")));
+
+        IngestSchema schema = new IngestSchema();
+        schema.addIngest(i);
+        for (AssetBuilder builder: builders) {
+            logger.info("Adding test asset: {}", builder.getAbsolutePath());
+            builder.addSchema(schema);
+            assetService.upsert(builder);
         }
         refreshIndex();
+
+        for (Aggregator a: ingestExecutorService.getAggregators(i)) {
+            a.aggregate();
+        }
+
+        return i;
     }
 
     /**
      * Athenticates a user as admin but with all permissions, including internal ones.
      */
     public void authenticate() {
+        Authentication auth = new BackgroundTaskAuthentication(userService.get("admin"));
         SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new UnitTestAuthentication(userService.get("admin"),
-                        userService.getPermissions())));
+                authenticationManager.authenticate(auth));
     }
 
     public void authenticate(String username) {

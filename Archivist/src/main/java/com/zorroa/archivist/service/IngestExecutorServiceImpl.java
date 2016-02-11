@@ -1,10 +1,15 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
+import com.zorroa.archivist.aggregators.Aggregator;
+import com.zorroa.archivist.aggregators.DateAggregator;
+import com.zorroa.archivist.aggregators.IngestPathAggregator;
+import com.zorroa.archivist.domain.UnitTestProcessor;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.crawlers.AbstractCrawler;
 import com.zorroa.archivist.sdk.crawlers.FileCrawler;
@@ -18,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,8 +33,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -85,6 +90,19 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     @Override
     public boolean resume(Ingest ingest) {
         return start(ingest, false /*don't reset counters*/);
+    }
+
+    @Override
+    public List<Aggregator> getAggregators(Ingest ingest) {
+        List<Aggregator> aggregators = Lists.newArrayList();
+        aggregators.add(new DateAggregator());
+        aggregators.add(new IngestPathAggregator());
+        AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+        for (Aggregator aggregator : aggregators) {
+            autowire.autowireBean(aggregator);
+            aggregator.init(ingest);
+        }
+        return aggregators;
     }
 
     protected boolean start(Ingest ingest, boolean firstStart) {
@@ -155,10 +173,17 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
         private Set<String> skippedPaths;
 
+        private Timer aggregationTimer;
+
+        private List<Aggregator> aggregators;
+
         public IngestWorker(Ingest ingest, User user) {
             this.ingest = ingest;
             this.user = user;
             assetExecutor = new AssetExecutor(ingest.getAssetWorkerThreads());
+            aggregators = getAggregators(ingest);
+            startAggregators();
+
         }
 
         public void shutdown() {
@@ -173,6 +198,19 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             }
         }
 
+        public void startAggregators() {
+            aggregationTimer = new Timer(true);
+            aggregationTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!runningIngests.isEmpty()) {
+                        for (Aggregator aggregator : aggregators) {
+                            aggregator.aggregate();
+                        }
+                    }
+                }
+            }, 10000, 10000);
+        }
 
         @Override
         public void run() {
@@ -227,10 +265,16 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
             } finally {
 
+                aggregationTimer.cancel();
                 /*
                  * Force a refresh so the tear downs can see any recently added data.
                  */
                 assetDao.refresh();
+                if (aggregators != null) {
+                    for (Aggregator aggregator : aggregators) {
+                        aggregator.aggregate();
+                    }
+                }
 
                 /*
                  * Remove the current ingest from running ingests.
@@ -267,12 +311,20 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             Consumer<File> consumer = file -> {
                 totalAssets.increment();
                 assetExecutor.execute(() -> {
-                    try {
-                        /*
-                         * TODO: Add analyst client communication here.
-                         */
-                    } catch (Exception e) {
-                        logger.warn("Failed to analyze: {}", file, e);
+                    if (ArchivistConfiguration.unittest) {
+                        AssetBuilder a = new AssetBuilder(file);
+                        UnitTestProcessor p = new UnitTestProcessor();
+                        p.process(a);
+                        assetDao.upsert(a);
+                    }
+                    else {
+                        try {
+                            /*
+                             * TODO: Add analyst client communication here.
+                             */
+                        } catch (Exception e) {
+                            logger.warn("Failed to analyze: {}", file, e);
+                        }
                     }
                 });
             };

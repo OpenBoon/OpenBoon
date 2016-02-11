@@ -34,7 +34,6 @@ public class AssetControllerTests extends MockMvcTest {
     public void testSearchV2() throws Exception {
 
         MockHttpSession session = admin();
-
         addTestAssets("standard");
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
@@ -55,7 +54,6 @@ public class AssetControllerTests extends MockMvcTest {
     public void testCountV2() throws Exception {
 
         MockHttpSession session = admin();
-
         addTestAssets("standard");
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_count")
@@ -75,10 +73,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testAggregationV2() throws Exception {
 
         MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        addTestAssets("agg");
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
                 .session(session)
@@ -91,16 +86,13 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
         Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
-        assertEquals(5, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
+        assertEquals(3, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
     }
 
     @Test
     public void testAggregationScriptV2() throws Exception {
         MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        addTestAssets("agg");
 
         Map<String, Object> scriptParams = new HashMap<>();
         scriptParams.put("field", "source.date");
@@ -117,17 +109,18 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
         Map<String, Object> years = (Map<String, Object>) aggs.get("Years");
-        assertEquals(2, ((ArrayList<Map<String, Object>>) years.get("buckets")).size());
+        assertEquals(1, ((ArrayList<Map<String, Object>>) years.get("buckets")).size());
     }
 
     @Test
     public void testSuggest() throws Exception {
 
         MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        List<AssetBuilder> builders = getTestAssets("canyon");
+        for (AssetBuilder builder: builders) {
+            builder.addKeywords(1, true, "reflection");
+        }
+        addTestAssets(builders);
 
         MvcResult result = mvc.perform(post("/api/v1/assets/_suggest")
                 .session(session)
@@ -150,10 +143,11 @@ public class AssetControllerTests extends MockMvcTest {
     public void testSuggestV2() throws Exception {
 
         MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        List<AssetBuilder> builders = getTestAssets("canyon");
+        for (AssetBuilder builder: builders) {
+            builder.addKeywords(1, true, "reflection");
+        }
+        addTestAssets(builders);
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_suggest")
                 .session(session)
@@ -176,13 +170,9 @@ public class AssetControllerTests extends MockMvcTest {
     public void testGet() throws Exception {
 
         MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("canyon")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         List<Asset> assets = assetDao.getAll();
-
         for (Asset asset: assets) {
 
             MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
@@ -429,6 +419,7 @@ public class AssetControllerTests extends MockMvcTest {
         json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
         hits = (Map<String, Object>) json.get("hits");
+        logger.info(result.getResponse().getContentAsString());
         count = (int)hits.get("total");
         assertEquals(2, count);
 
@@ -525,15 +516,9 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFilterIngest() throws Exception {
         MockHttpSession session = user();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        ingest = ingestService.createIngest((new IngestBuilder(getStaticImagePath("canyon"))));
-        ingestExecutorService.executeIngest(ingest);
-
-        refreshIndex();
+        Ingest ingest = addTestAssets("canyon");
 
         AssetSearch search = new AssetSearch(new AssetFilter().setIngestId(ingest.getId()));
-
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -551,12 +536,9 @@ public class AssetControllerTests extends MockMvcTest {
     @Test
     public void testFilterExists() throws Exception {
         MockHttpSession session = user();
+        addTestAssets("canyon");
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
-
-        AssetSearch search = new AssetSearch(new AssetFilter().addToExistFields("Exif.CustomRendered"));
+        AssetSearch search = new AssetSearch(new AssetFilter().addToExistFields("source.path"));
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
@@ -576,9 +558,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFilterRange() throws Exception {
         MockHttpSession session = user();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         DateTime dateTime = new DateTime();
         int year = dateTime.getYear();
@@ -601,22 +581,22 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
-        assertEquals(1, count);
+        assertEquals(2, count);
     }
 
     @Test
     public void testFilterScript() throws Exception {
         MockHttpSession session = user();
+        addTestAssets("standard");
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        DateTime dateTime = new DateTime();
+        int year = dateTime.getYear();
 
         Map<String, Object> scriptParams = new HashMap<>();
         scriptParams.put("field", "source.date");
         scriptParams.put("interval", "year");
         List<String> terms = new ArrayList<>();
-        terms.add("2014");
+        terms.add(String.valueOf(year));
         scriptParams.put("terms", terms);
         AssetScript script = new AssetScript().setScript("archivistDate").setParams(scriptParams);
         List<AssetScript> scripts = new ArrayList<>();
@@ -633,7 +613,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
-        assertEquals(1, count);
+        assertEquals(2, count);
     }
 
     @Test
