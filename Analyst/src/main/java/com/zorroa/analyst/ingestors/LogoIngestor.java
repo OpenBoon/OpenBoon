@@ -1,4 +1,4 @@
-package com.zorroa.ingestors;
+package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
