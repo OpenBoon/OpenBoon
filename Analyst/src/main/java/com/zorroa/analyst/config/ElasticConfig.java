@@ -31,7 +31,7 @@ public class ElasticConfig {
                 ImmutableSettings.settingsBuilder()
                         .put("cluster.name", "zorroa")
                         .put("node.name", nodeName)
-                        .put("node.master", false)
+                        .put("node.master", true)
                         .put("cluster.routing.allocation.disk.threshold_enabled", false)
                         .put("script.indexed", true)
                         .put("script.update", true)
