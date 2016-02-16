@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zorroa</groupId>
-    <artifactId>ingestors</artifactId>
+    <artifactId>analyst</artifactId>
     <version>0.17.0</version>
     <packaging>jar</packaging>
 
