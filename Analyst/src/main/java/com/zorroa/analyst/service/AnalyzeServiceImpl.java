@@ -43,7 +43,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             .build(new CacheLoader<ProcessorFactory<IngestProcessor>, IngestProcessor>() {
                 @Override
                 public IngestProcessor load(ProcessorFactory<IngestProcessor> factory) throws Exception {
-                    IngestProcessor processor =  factory.getInstance();
+                    IngestProcessor processor =  factory.newInstance();
                     processor.init();
                     return processor;
                 }
@@ -89,6 +89,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 for (ProcessorFactory<IngestProcessor> factory : req.getProcessors()) {
                     try {
                         IngestProcessor processor = ingestProcessorCache.get(factory);
+                        if (!processor.isSupportedFormat(builder.getExtension())) {
+                            continue;
+                        }
                         processor.process(builder);
                     } catch (ExecutionException | UnrecoverableIngestProcessorException e) {
                         /*
