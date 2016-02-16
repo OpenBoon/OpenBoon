@@ -17,6 +17,7 @@ import com.zorroa.archivist.sdk.util.StringUtil;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.ExportOptionsService;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.service.EventLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

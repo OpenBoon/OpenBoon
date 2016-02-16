@@ -1,14 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
-import com.zorroa.archivist.sdk.util.Json;
-import org.elasticsearch.action.ActionListener;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
@@ -18,13 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The event log is a temporary/rotating log of events which are time sensitive.
@@ -37,53 +24,6 @@ public class EventLogDaoImpl implements EventLogDao {
 
     @Autowired
     Client client;
-
-    private String hostname;
-    private boolean synchronous = false;
-
-    @PostConstruct
-    public void init() {
-        try {
-            hostname = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            hostname = "unknown";
-        }
-    }
-
-    public void setSynchronous(boolean value) {
-        this.synchronous = value;
-    }
-
-    public void log(EventLogMessage event, ActionListener<IndexResponse> listener) {
-        Map<String, Object> source = Maps.newHashMap();
-        source.put("id", event.getId());
-        source.put("type", event.getType());
-        source.put("timestamp", event.getTimestamp());
-        source.put("message", event.getMessage());
-        source.put("tags", event.getTags());
-        source.put("stack", EventLogDao.getStackTrace(event.getException()));
-        source.put("path", event.getPath());
-        source.put("host", hostname);
-
-        String date = new SimpleDateFormat("yyyy_MM_dd").format(new Date(event.getTimestamp()));
-        String str = Json.serializeToString(source);
-
-        IndexRequestBuilder builder = client.prepareIndex("eventlog_" + date, "event")
-                .setOpType(IndexRequest.OpType.INDEX).setSource(str);
-        if (listener != null) {
-            builder.execute(listener);
-        }
-        else if (synchronous) {
-            builder.get();
-        } else {
-            builder.execute();
-        }
-    }
-
-    public void log(EventLogMessage event) {
-        log(event, null);
-    }
-
 
     @Override
     public SearchResponse getAll() {

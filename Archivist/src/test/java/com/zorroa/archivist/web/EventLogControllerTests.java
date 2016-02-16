@@ -6,6 +6,7 @@ import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.common.service.EventLogService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,12 @@ public class EventLogControllerTests extends MockMvcTest {
     @Autowired
     EventLogDao eventLogDao;
 
+    @Autowired
+    EventLogService eventLogService;
+
     @Before
     public void init() {
-        eventLogDao.setSynchronous(true);
+        eventLogService.setSynchronous(true);
         for (int i=0; i<10; i++) {
             eventLogSerivce.log(new EventLogMessage("log message #{}", i).setTags(Sets.newHashSet("bilbo" + i)));
         }

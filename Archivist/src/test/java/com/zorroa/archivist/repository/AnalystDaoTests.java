@@ -56,7 +56,7 @@ public class AnalystDaoTests extends ArchivistApplicationTests {
             p.setHost("test" + i);
             analystDao.create(p);
         }
-        assertEquals(11, (int)jdbc.queryForObject("SELECT COUNT(1) FROM analyst", Integer.class));
-        assertEquals(11, analystDao.getAll().size());
+        assertEquals(12, (int)jdbc.queryForObject("SELECT COUNT(1) FROM analyst", Integer.class));
+        assertEquals(12, analystDao.getAll().size());
     }
 }
