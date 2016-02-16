@@ -1,9 +1,8 @@
 package com.zorroa.common.service;
 
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
-import com.zorroa.archivist.sdk.domain.Id;
+import com.zorroa.archivist.sdk.domain.EventLoggable;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.index.IndexRequest;
@@ -53,30 +52,18 @@ public class EventLogServiceImpl implements EventLogService {
             logger.info(logMessageBuilder.toString());
         }
 
-        log(logMessageBuilder);
+        create(logMessageBuilder, null);
     }
 
     @Override
-    public void log(Id object, String message, Object... args) {
+    public void log(EventLoggable object, String message, Object... args) {
         EventLogMessage event = new EventLogMessage(object, message, args);
         log(event);
     }
 
     @Override
-    public void log(Id object, String message, Throwable ex, Object... args) {
+    public void log(EventLoggable object, String message, Throwable ex, Object... args) {
         EventLogMessage event = new EventLogMessage(object, message, ex, args);
-        log(event);
-    }
-
-    @Override
-    public void log(Asset asset, String message, Object... args) {
-        EventLogMessage event = new EventLogMessage(asset, message, args);
-        log(event);
-    }
-
-    @Override
-    public void log(Asset asset, String message, Throwable ex, Object... args) {
-        EventLogMessage event = new EventLogMessage(asset, message, ex, args);
         log(event);
     }
 
@@ -84,6 +71,21 @@ public class EventLogServiceImpl implements EventLogService {
     public void log(String message, Object... args) {
         EventLogMessage event = new EventLogMessage(message, args);
         log(event);
+    }
+
+    @Override
+    public void log(String message, Throwable ex, Object... args) {
+        EventLogMessage event = new EventLogMessage(message, args).setException(ex);
+        log(event);
+    }
+
+    public boolean isSynchronous() {
+        return synchronous;
+    }
+
+    @Override
+    public void setSynchronous(boolean synchronous) {
+        this.synchronous = synchronous;
     }
 
     private void create(EventLogMessage event, ActionListener<IndexResponse> listener) {
