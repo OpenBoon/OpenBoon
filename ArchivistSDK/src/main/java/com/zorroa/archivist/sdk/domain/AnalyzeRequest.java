@@ -8,8 +8,9 @@ import java.util.List;
 /**
  * Created by chambers on 2/8/16.
  */
-public class AnalyzeRequest {
-
+public class AnalyzeRequest implements EventLoggable {
+    private int ingestId;
+    private int ingestPipelineId;
     private List<String> paths;
     private String user;
     private List<ProcessorFactory<IngestProcessor>> processors;
@@ -39,5 +40,33 @@ public class AnalyzeRequest {
     public AnalyzeRequest setPaths(List<String> paths) {
         this.paths = paths;
         return this;
+    }
+
+    public int getIngestId() {
+        return ingestId;
+    }
+
+    public AnalyzeRequest setIngestId(int ingestId) {
+        this.ingestId = ingestId;
+        return this;
+    }
+
+    public int getIngestPipelineId() {
+        return ingestPipelineId;
+    }
+
+    public AnalyzeRequest setIngestPipelineId(int ingestPipelineId) {
+        this.ingestPipelineId = ingestPipelineId;
+        return this;
+    }
+
+    @Override
+    public Object getLogId() {
+        return ingestId;
+    }
+
+    @Override
+    public String getLogType() {
+        return "Ingest";
     }
 }
