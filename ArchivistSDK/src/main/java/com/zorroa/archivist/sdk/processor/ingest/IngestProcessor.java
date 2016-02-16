@@ -2,7 +2,6 @@ package com.zorroa.archivist.sdk.processor.ingest;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.processor.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,5 +42,5 @@ public abstract class IngestProcessor extends Processor {
         return supportedFormats.contains(format.toLowerCase());
     }
 
-    public void init(Ingest ingest) { };
+    public void init() { };
 }
