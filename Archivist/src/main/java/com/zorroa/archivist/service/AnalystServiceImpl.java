@@ -1,11 +1,14 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.repository.AnalystDao;
+import com.zorroa.archivist.sdk.domain.Analyst;
 import com.zorroa.archivist.sdk.domain.AnalystPing;
 import com.zorroa.archivist.sdk.domain.AnalystState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by chambers on 2/9/16.
@@ -40,5 +43,10 @@ public class AnalystServiceImpl implements AnalystService {
         if (analystDao.update(ping)) {
             analystDao.setState(ping.getHost(), AnalystState.SHUTDOWN, AnalystState.UP);
         }
+    }
+
+    @Override
+    public List<Analyst> getAll() {
+        return analystDao.getAll();
     }
 }
