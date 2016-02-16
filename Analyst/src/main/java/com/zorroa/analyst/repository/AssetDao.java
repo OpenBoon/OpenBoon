@@ -1,6 +1,6 @@
 package com.zorroa.analyst.repository;
 
-import com.zorroa.analyst.domain.BulkAssetUpsertResult;
+import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface AssetDao {
 
-    BulkAssetUpsertResult bulkUpsert(List<AssetBuilder> builders);
+    AnalyzeResult bulkUpsert(List<AssetBuilder> builders);
 
 
 }

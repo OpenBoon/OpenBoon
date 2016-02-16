@@ -3,7 +3,7 @@ package com.zorroa.analyst.repository;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.Lists;
-import com.zorroa.analyst.domain.BulkAssetUpsertResult;
+import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -35,8 +35,8 @@ public class AssetDaoImpl implements AssetDao {
     private String alias;
 
     @Override
-    public BulkAssetUpsertResult bulkUpsert(List<AssetBuilder> builders) {
-        BulkAssetUpsertResult result = new BulkAssetUpsertResult();
+    public AnalyzeResult bulkUpsert(List<AssetBuilder> builders) {
+        AnalyzeResult result = new AnalyzeResult();
         List<AssetBuilder> retries = Lists.newArrayList();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
