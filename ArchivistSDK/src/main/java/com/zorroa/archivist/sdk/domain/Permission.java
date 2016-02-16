@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Created by chambers on 10/27/15.
  */
-public class Permission implements Id {
+public class Permission implements EventLoggable {
 
     private int id;
     private String name;
@@ -75,5 +75,10 @@ public class Permission implements Id {
                 .add("type", type)
                 .add("description", description)
                 .toString();
+    }
+
+    @Override
+    public Object getLogId() {
+        return id;
     }
 }

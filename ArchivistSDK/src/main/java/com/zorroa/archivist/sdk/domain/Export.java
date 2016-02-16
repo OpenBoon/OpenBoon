@@ -5,7 +5,7 @@ import com.google.common.base.MoreObjects;
 /**
  * Created by chambers on 11/1/15.
  */
-public class Export implements Id {
+public class Export implements EventLoggable {
 
     private int id;
     private String note;
@@ -137,6 +137,11 @@ public class Export implements Id {
 
     @Override
     public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public Object getLogId() {
         return id;
     }
 }

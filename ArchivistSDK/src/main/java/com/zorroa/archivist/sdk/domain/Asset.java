@@ -2,7 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.zorroa.archivist.sdk.schema.SourceSchema;
 
-public class Asset extends Document {
+public class Asset extends Document implements EventLoggable {
 
     private String id;
     private long version;
@@ -27,5 +27,10 @@ public class Asset extends Document {
 
     public SourceSchema getSource() {
         return getSchema("source", SourceSchema.class);
+    }
+
+    @Override
+    public Object getLogId() {
+        return id;
     }
 }

@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * Exported Output
  */
-public class ExportOutput implements Id {
+public class ExportOutput implements EventLoggable {
 
     private int id;
     private String name;
@@ -168,6 +168,11 @@ public class ExportOutput implements Id {
 
     @Override
     public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public Object getLogId() {
         return id;
     }
 }

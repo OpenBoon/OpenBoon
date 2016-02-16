@@ -38,32 +38,17 @@ public class EventLogMessage {
         this.message =  MessageFormatter.arrayFormat(message, args).getMessage();
     }
 
-    public EventLogMessage(Id object, String message, Object ... args) {
-        this.id = String.valueOf(object.getId());
-        this.type = object.getClass().getSimpleName();
+    public EventLogMessage(EventLoggable object, String message, Object ... args) {
+        this.id = object.getLogId().toString();
+        this.type = object.getLogType();
         this.message =  MessageFormatter.arrayFormat(message, args).getMessage();
     }
 
-    public EventLogMessage(Id object, String message, Throwable exception, Object ... args) {
-        this.id = String.valueOf(object.getId());
-        this.type = object.getClass().getSimpleName();
+    public EventLogMessage(EventLoggable object, String message, Throwable exception, Object ... args) {
+        this.id = object.getLogId().toString();
+        this.type = object.getLogType();
         this.message = MessageFormatter.arrayFormat(message, args).getMessage();
         this.exception = exception;
-    }
-
-    public EventLogMessage(Asset asset, String message, Object ... args) {
-        this.id = asset.getId();
-        this.type = "Asset";
-        this.message =  MessageFormatter.arrayFormat(message, args).getMessage();
-        this.path = asset.getAttr("source.path");
-    }
-
-    public EventLogMessage(Asset asset, String message, Throwable exception, Object ... args) {
-        this.id = asset.getId();
-        this.type = "Asset";
-        this.message = MessageFormatter.arrayFormat(message, args).getMessage();
-        this.exception = exception;
-        this.path = asset.getAttr("source.path");
     }
 
     public String getMessage() {

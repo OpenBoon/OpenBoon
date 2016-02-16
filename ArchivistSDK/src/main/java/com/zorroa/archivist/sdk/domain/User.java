@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.domain;
 import com.google.common.base.MoreObjects;
 import com.google.common.hash.HashCode;
 
-public class User implements Id {
+public class User implements EventLoggable {
 
     private int id;
     private String username;
@@ -85,4 +85,8 @@ public class User implements Id {
                 .toString();
     }
 
+    @Override
+    public Object getLogId() {
+        return id;
+    }
 }

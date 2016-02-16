@@ -2,7 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
 
-public class Room implements Id {
+public class Room implements EventLoggable {
 
     private int id;
     private String name;
@@ -41,5 +41,10 @@ public class Room implements Id {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    @Override
+    public Object getLogId() {
+        return id;
     }
 }
