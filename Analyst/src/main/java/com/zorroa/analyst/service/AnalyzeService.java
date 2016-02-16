@@ -6,7 +6,7 @@ import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 /**
  * Created by chambers on 2/8/16.
  */
-public interface WorkerService {
+public interface AnalyzeService {
 
     AnalyzeResult analyze(AnalyzeRequest req);
 }

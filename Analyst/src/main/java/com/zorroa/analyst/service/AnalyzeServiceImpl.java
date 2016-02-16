@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
  * Created by chambers on 2/8/16.
  */
 @Component
-public class WorkerServiceImpl implements WorkerService {
+public class AnalyzeServiceImpl implements AnalyzeService {
 
-    private static final Logger logger = LoggerFactory.getLogger(WorkerServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
 
     private static final Tika tika = new Tika();
 
