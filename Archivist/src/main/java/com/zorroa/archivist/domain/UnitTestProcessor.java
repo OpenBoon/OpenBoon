@@ -10,7 +10,7 @@ import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 public class UnitTestProcessor extends IngestProcessor {
 
     @Override
-    public void init(Ingest ingest) {
+    public void init() {
 
     }
 
