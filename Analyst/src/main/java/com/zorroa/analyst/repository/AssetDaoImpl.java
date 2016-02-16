@@ -31,7 +31,7 @@ public class AssetDaoImpl implements AssetDao {
     @Autowired
     Client client;
 
-    @Value("%{zorroa.index.alias}")
+    @Value("${analyst.index.alias}")
     private String alias;
 
     @Override
