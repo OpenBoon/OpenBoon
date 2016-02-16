@@ -7,6 +7,18 @@
     <groupId>com.zorroa</groupId>
     <artifactId>java-common</artifactId>
     <version>0.17</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -21,12 +33,25 @@
         </dependency>
 
         <dependency>
+            <groupId>com.zorroa</groupId>
+            <artifactId>archivist-sdk</artifactId>
+            <version>0.17.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>1.7.4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
