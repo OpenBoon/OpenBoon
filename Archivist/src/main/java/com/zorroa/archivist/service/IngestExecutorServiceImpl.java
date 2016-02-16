@@ -10,7 +10,9 @@ import com.zorroa.archivist.aggregators.Aggregator;
 import com.zorroa.archivist.aggregators.DateAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.domain.UnitTestProcessor;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
 import com.zorroa.archivist.sdk.crawlers.AbstractCrawler;
 import com.zorroa.archivist.sdk.crawlers.FileCrawler;
 import com.zorroa.archivist.sdk.crawlers.HttpCrawler;
@@ -18,6 +20,7 @@ import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.service.EventLogService;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -32,7 +36,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.security.KeyStore;
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
@@ -40,6 +46,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Component
 public class IngestExecutorServiceImpl implements IngestExecutorService {
@@ -69,6 +76,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     ObjectFileSystem objectFileSystem;
+
+    @Autowired
+    AnalystDao analystDao;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
@@ -157,6 +167,23 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         return true;
     }
 
+    private AnalystClient getAnalystClient() throws Exception {
+
+        AnalystClient client = new AnalystClient(analystDao.getAll(AnalystState.UP)
+                .stream().map(Analyst::getAddress).collect(Collectors.toList()));
+
+        KeyStore keystore = KeyStore.getInstance("PKCS12");
+        InputStream keystoreInput = new ClassPathResource("keystore.p12").getInputStream();
+        keystore.load(keystoreInput, "zorroa" .toCharArray());
+
+        KeyStore trustStore = KeyStore.getInstance("PKCS12");
+        InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
+        trustStore.load(trustStoreInput, "zorroa" .toCharArray());
+
+        client.init(keystore, "zorroa", trustStore);
+        return client;
+    }
+
     public class IngestWorker implements Runnable {
 
         private AssetExecutor assetExecutor;
@@ -176,7 +203,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         private Timer aggregationTimer;
 
         private List<Aggregator> aggregators;
-
+        
         public IngestWorker(Ingest ingest, User user) {
             this.ingest = ingest;
             this.user = user;
@@ -263,6 +290,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
+                assetExecutor.waitForCompletion();
+
             } finally {
 
                 aggregationTimer.cancel();
@@ -298,6 +327,42 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             }
         }
 
+        private void analyze(AnalystClient analysts, AnalyzeRequest req) {
+            assetExecutor.execute(() -> {
+
+                if (ArchivistConfiguration.unittest) {
+                    for (String path: req.getPaths()) {
+                        AssetBuilder a = new AssetBuilder(path);
+                        UnitTestProcessor p = new UnitTestProcessor();
+                        p.process(a);
+                        assetDao.upsert(a);
+                    }
+                }
+                else {
+                    try {
+                        /**
+                         * This call is synchronous...otherwise we can't really
+                         * keep track of when the ingest is done.  However, the
+                         * data might not be in elastic when this returns.
+                         */
+                        AnalyzeResult result =  analysts.analyze(req);
+                        ingestService.incrementIngestCounters(ingest,
+                                result.created, result.updated, result.errorsNotRecoverable, result.errorsRecoverable);
+
+                    } catch (Exception e) {
+                        /**
+                         * This catch block is for handling the case where the AnalystClient
+                         * cannot find any hosts to contact.  They are either down,  or rejecting
+                         * work for some reason.  A lot of things can happen here...we keep trying
+                         * or eventually cancel the ingest.
+                         */
+                        logger.warn("Failed to contact analyst for processing ingest: {}", req.getIngestId());
+                    }
+                }
+            });
+        }
+
+
         /**
          * Walks the file paths specified on an ingest. When a valid asset is found its handed
          * to the asset processor threads.
@@ -308,25 +373,34 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
          */
         private void walkIngestPaths(Ingest ingest, IngestPipeline pipeline) throws IOException {
 
+            AnalystClient analyst;
+            try {
+                analyst = getAnalystClient();
+            }
+            catch (Exception e) {
+                eventLogService.log(ingest, "Failed to find available analysts.");
+                return;
+            }
+
+            List<String> paths = Lists.newArrayListWithCapacity(50);
+
             Consumer<File> consumer = file -> {
                 totalAssets.increment();
-                assetExecutor.execute(() -> {
-                    if (ArchivistConfiguration.unittest) {
-                        AssetBuilder a = new AssetBuilder(file);
-                        UnitTestProcessor p = new UnitTestProcessor();
-                        p.process(a);
-                        assetDao.upsert(a);
-                    }
-                    else {
-                        try {
-                            /*
-                             * TODO: Add analyst client communication here.
-                             */
-                        } catch (Exception e) {
-                            logger.warn("Failed to analyze: {}", file, e);
-                        }
-                    }
-                });
+                paths.add(file.getAbsolutePath());
+
+                if (paths.size() < 10) {
+                    return;
+                }
+
+                List<String> copyOfPaths = Lists.newArrayList(paths);
+                paths.clear();
+
+                analyze(analyst, new AnalyzeRequest()
+                        .setUser(user.getUsername())
+                        .setIngestId(ingest.getId())
+                        .setIngestPipelineId(ingest.getPipelineId())
+                        .setPaths(copyOfPaths)
+                        .setProcessors(pipeline.getProcessors()));
             };
 
             /**
@@ -355,6 +429,15 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 crawler.setTargetFileFormats(supportedFormats);
                 crawler.setIgnoredPaths(skippedPaths);
                 crawler.start(uri, consumer);
+            }
+
+            if (!paths.isEmpty()) {
+                analyze(analyst, new AnalyzeRequest()
+                        .setUser(user.getUsername())
+                        .setIngestId(ingest.getId())
+                        .setIngestPipelineId(ingest.getPipelineId())
+                        .setPaths(paths)
+                        .setProcessors(pipeline.getProcessors()));
             }
         }
     }
