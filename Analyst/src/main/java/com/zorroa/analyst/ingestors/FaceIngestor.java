@@ -64,7 +64,7 @@ public class FaceIngestor extends IngestProcessor {
     public FaceIngestor() { }
 
     @Override
-    public void init(Ingest ingest) {
+    public void init() {
         String argCascadeName = (String) getArgs().get("CascadeName");
         if (argCascadeName != null) {
             cascadeName = argCascadeName;

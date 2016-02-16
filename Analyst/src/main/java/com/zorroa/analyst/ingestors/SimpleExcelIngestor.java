@@ -45,7 +45,7 @@ public class SimpleExcelIngestor extends IngestProcessor {
      * @throws Exception
      */
     @Override
-    public void init(Ingest ingest) {
+    public void init() {
 
         try {
             String fileName = getArg("file");
