@@ -41,7 +41,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     @Override
     protected void runOneIteration() throws Exception {
         try {
-            logger.info("Sending register ping");
             archivistClient.registerAnalyst(getPing());
         } catch (Exception e) {
             logger.warn("Failed to register as worker node, ", e);
