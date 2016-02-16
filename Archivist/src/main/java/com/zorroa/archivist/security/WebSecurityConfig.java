@@ -32,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/health/**").permitAll()
+                .antMatchers("/api/v1/analyst/_register").permitAll()
+                .antMatchers("/api/v1/analyst/_shutdown").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .httpBasic()
