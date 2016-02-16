@@ -3,31 +3,54 @@ package com.zorroa.archivist.sdk.client.analyst;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.client.Http;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
+import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import org.apache.http.HttpHost;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.io.IOException;
+import java.security.KeyStore;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by chambers on 2/8/16.
  */
 public class AnalystClient {
 
-    private final CloseableHttpClient client;
+    public static final int DEFAULT_PORT = 8099;
+    private CloseableHttpClient client;
     private final List<HttpHost> hosts;
+    private final AtomicInteger requestCount  = new AtomicInteger();
 
-    public AnalystClient(String host) {
-        this(Lists.newArrayList(new HttpHost(host)));
+    public AnalystClient(Collection<String> analysts) {
+        hosts = Lists.newArrayList();
+        for (String analsyst: analysts) {
+            if (analsyst.contains(":")) {
+                String[] parts = analsyst.split(":");
+                hosts.add(new HttpHost(parts[0], Integer.valueOf(parts[1]), "https"));
+            } else {
+                hosts.add(new HttpHost(analsyst, DEFAULT_PORT, "https"));
+            }
+        }
+
+        if (hosts.isEmpty()) {
+            throw new IllegalArgumentException("Cannot initialize a client with no hosts");
+        }
     }
 
-    public AnalystClient(List<HttpHost> hosts) {
-        this.hosts = hosts;
-        this.client = HttpClients.custom()
-                .setConnectionManager(new PoolingHttpClientConnectionManager())
-                .build();
+    private HttpHost nextHost() {
+        if (hosts.size() == 1) {
+            return hosts.get(0);
+        } else {
+            /* Round robbin */
+            int count = requestCount.incrementAndGet();
+            return hosts.get(count % hosts.size());
+        }
+    }
+
+    public void init(KeyStore keyStore, String keyPass, KeyStore trustStore) throws Exception {
+        this.client = Http.initSSLClient(keyStore, keyPass, trustStore);
     }
 
     /**
@@ -38,7 +61,7 @@ public class AnalystClient {
      * @return
      * @throws IOException
      */
-    public void analyze(AnalyzeRequest analyzeRequest) throws IOException {
-        Http.post(client, hosts.get(0), "/api/v1/analyze", analyzeRequest);
+    public AnalyzeResult analyze(AnalyzeRequest analyzeRequest) throws IOException {
+       return Http.post(client, nextHost(), "/api/v1/analyze", analyzeRequest, AnalyzeResult.class);
     }
 }
