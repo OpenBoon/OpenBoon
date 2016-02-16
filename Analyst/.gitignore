@@ -10,6 +10,7 @@
 
 # Build directory
 target
+data
 
 .DS_store
 
