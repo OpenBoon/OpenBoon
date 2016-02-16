@@ -9,6 +9,7 @@ public class Analyst {
 
     private int id;
     private String host;
+    private int port;
     private AnalystState state;
     private boolean data;
     private int threadsTotal;
@@ -89,13 +90,21 @@ public class Analyst {
         return this;
     }
 
-
     public int getId() {
         return id;
     }
 
     public Analyst setId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public Analyst setPort(int port) {
+        this.port = port;
         return this;
     }
 

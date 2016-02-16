@@ -6,6 +6,7 @@ package com.zorroa.archivist.sdk.domain;
 public class AnalystPing {
 
     private String host;
+    private int port;
     private boolean data = true;
     private int threadsTotal = -1;
     private int threadsActive = 0;
@@ -82,4 +83,12 @@ public class AnalystPing {
         return this;
     }
 
+    public int getPort() {
+        return port;
+    }
+
+    public AnalystPing setPort(int port) {
+        this.port = port;
+        return this;
+    }
 }
