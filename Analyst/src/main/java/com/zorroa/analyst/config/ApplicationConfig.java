@@ -1,9 +1,11 @@
 package com.zorroa.analyst.config;
 
 import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;
-import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -21,15 +23,13 @@ public class ApplicationConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
-    @Bean
-    public ApplicationProperties properties() {
-        return new ApplicationProperties();
-    }
+    @Autowired
+    ApplicationProperties properties;
 
     @Bean
     public ArchivistClient archivist() throws Exception {
 
-        ArchivistClient client =  new ArchivistClient(properties().getString("analyst.master.host"));
+        ArchivistClient client =  new ArchivistClient(properties.getString("analyst.master.host"));
 
         KeyStore keystore = KeyStore.getInstance("PKCS12");
         InputStream keystoreInput = new ClassPathResource("keystore.p12").getInputStream();
@@ -46,7 +46,7 @@ public class ApplicationConfig {
     @Bean
     public Executor ingestThreadPool() {
 
-        int threads = Math.max(properties().getInt("analyst.executor.threads"),
+        int threads = Math.max(properties.getInt("analyst.executor.threads"),
                 Runtime.getRuntime().availableProcessors());
 
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -55,5 +55,14 @@ public class ApplicationConfig {
         executor.setThreadNamePrefix("Ingest");
         executor.setQueueCapacity(1000);
         return executor;
+    }
+
+    @Bean(initMethod="init")
+    public ObjectFileSystem fileSystem() throws Exception {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        Class fileSystemClass = classLoader.loadClass(properties.getString("analyst.filesystem.class"));
+        ObjectFileSystem fs = (ObjectFileSystem) fileSystemClass.newInstance();
+        fs.setLocation(properties.getString("analyst.filesystem.location"));
+        return fs;
     }
 }
