@@ -21,18 +21,46 @@ public class Allocation {
     private UUID id;
     private String category;
     private File path;
+    private File relative;
     private AtomicBoolean exists = new AtomicBoolean(false);
 
-    public Allocation(UUID id, String category, File path) {
+    public Allocation(UUID id, String category, File path, File relative) {
         this.id = id;
         this.category = category;
         this.path = path;
+        this.relative = relative;
         this.exists.set(path.exists());
     }
 
     public Allocation create() {
         this.path.mkdirs();
         return this;
+    }
+
+    public String getRelativePath(String name) {
+        return new StringBuilder(256)
+                .append(relative.toString())
+                .append("/")
+                .append(id.toString())
+                .append("_")
+                .append(name)
+                .toString();
+    }
+
+    public File getRelativePath(String type, Object ... tokens) {
+        StringBuilder sb = new StringBuilder(256)
+                .append(relative.toString())
+                .append("/")
+                .append(id.toString())
+                .append("_");
+        for (Object token: tokens) {
+            sb.append(token.toString().replace('.', '_'));
+            sb.append("_");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append(".");
+        sb.append(type);
+        return new File(sb.toString());
     }
 
     public File getAbsolutePath(String name) {

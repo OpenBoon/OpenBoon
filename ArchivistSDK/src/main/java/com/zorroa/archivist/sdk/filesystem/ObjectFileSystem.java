@@ -24,6 +24,11 @@ public interface ObjectFileSystem {
     void setLocation(String location);
 
     /**
+     * Get the URI location of the file system;
+     */
+    String getLocation();
+
+    /**
      * Create an allocation for the given category of data.  An allocation
      * is a directory.
      *
@@ -49,4 +54,5 @@ public interface ObjectFileSystem {
      */
     File find(String category, String name);
 
+    File get(String category, String path);
 }
