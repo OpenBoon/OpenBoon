@@ -2,6 +2,7 @@ package com.zorroa.archivist.sdk.processor.ingest;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,11 @@ public abstract class IngestProcessor extends Processor {
 
     protected Set<String> supportedFormats = Sets.newHashSet();
 
+    protected ObjectFileSystem objectFileSystem;
+
     public IngestProcessor() { };
+
+    public void init() { };
 
     public abstract void process(AssetBuilder asset);
 
@@ -42,5 +47,13 @@ public abstract class IngestProcessor extends Processor {
         return supportedFormats.contains(format.toLowerCase());
     }
 
-    public void init() { };
+
+    public ObjectFileSystem getObjectFileSystem() {
+        return objectFileSystem;
+    }
+
+    public Processor setObjectFileSystem(ObjectFileSystem objectFileSystem) {
+        this.objectFileSystem = objectFileSystem;
+        return this;
+    }
 }

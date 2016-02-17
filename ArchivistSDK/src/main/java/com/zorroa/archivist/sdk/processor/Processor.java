@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.processor;
 
 import com.google.common.collect.Maps;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import java.util.Map;
  * Created by chambers on 11/2/15.
  */
 public class Processor {
+
+    protected ObjectFileSystem objectFileSystem;
 
     protected Map<String, Object> args;
 
@@ -21,6 +24,15 @@ public class Processor {
 
     public void setArgs(Map<String, Object> args) {
         this.args = args;
+    }
+
+    public ObjectFileSystem getObjectFileSystem() {
+        return objectFileSystem;
+    }
+
+    public Processor setObjectFileSystem(ObjectFileSystem objectFileSystem) {
+        this.objectFileSystem = objectFileSystem;
+        return this;
     }
 
     public <T> T getArg(String key) {
