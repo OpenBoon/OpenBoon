@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
 import com.zorroa.archivist.sdk.domain.Analyst;
 import com.zorroa.archivist.sdk.domain.AnalystPing;
 
@@ -14,4 +15,6 @@ public interface AnalystService {
     void shutdown(AnalystPing ping);
 
     List<Analyst> getAll();
+
+    AnalystClient getAnalystClient() throws Exception;
 }

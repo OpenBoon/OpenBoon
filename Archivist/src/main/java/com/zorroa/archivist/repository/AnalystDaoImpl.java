@@ -20,7 +20,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
 
     private static final String INSERT = JdbcUtils.insert("analyst",
             "str_host",
-            /* AnalystState? */
+            "int_port",
             "int_threads_total",
             "int_threads_active",
             "int_process_success",
@@ -38,14 +38,15 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_analyst"});
             ps.setString(1, ping.getHost());
-            ps.setInt(2, ping.getThreadsTotal());
-            ps.setInt(3, ping.getThreadsActive());
-            ps.setInt(4, ping.getProcessSuccess());
-            ps.setInt(5, ping.getProcessFailed());
-            ps.setInt(6, ping.getQueueSize());
-            ps.setLong(7, time);
+            ps.setInt(2, ping.getPort());
+            ps.setInt(3, ping.getThreadsTotal());
+            ps.setInt(4, ping.getThreadsActive());
+            ps.setInt(5, ping.getProcessSuccess());
+            ps.setInt(6, ping.getProcessFailed());
+            ps.setInt(7, ping.getQueueSize());
             ps.setLong(8, time);
-            ps.setBoolean(9, ping.isData());
+            ps.setLong(9, time);
+            ps.setBoolean(10, ping.isData());
 
             return ps;
         }, keyHolder);
@@ -65,7 +66,9 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
                 "bool_data=?, " +
                 "time_updated=? "+
             "WHERE " +
-                "str_host=?";
+                "str_host=? " +
+            "AND " +
+                "int_port =?";
 
     @Override
     public boolean update(AnalystPing ping) {
@@ -78,13 +81,15 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
                 ping.getQueueSize(),
                 ping.isData(),
                 time,
-                ping.getHost()) == 1;
+                ping.getHost(),
+                ping.getPort()) == 1;
     }
 
     private static final RowMapper<Analyst> MAPPER = (rs, row) -> {
         Analyst a = new Analyst();
         a.setId(rs.getInt("pk_analyst"));
         a.setHost(rs.getString("str_host"));
+        a.setPort(rs.getInt("int_port"));
         a.setData(rs.getBoolean("bool_data"));
         a.setProcessFailed(rs.getInt("int_process_failed"));
         a.setProcessSuccess(rs.getInt("int_process_success"));
