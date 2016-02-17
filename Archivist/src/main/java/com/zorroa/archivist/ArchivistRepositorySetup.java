@@ -34,9 +34,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     private static final Logger logger = LoggerFactory.getLogger(ArchivistRepositorySetup.class);
 
     @Autowired
-    ArchivistConfiguration config;
-
-    @Autowired
     IngestService ingestService;
 
     @Autowired
