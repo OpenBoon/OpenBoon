@@ -18,10 +18,6 @@ public class Analyst {
     private int processFailed;
     private int queueSize;
 
-    public String getAddress() {
-        return host + ":" + port;
-    }
-
     public String getHost() {
         return host;
     }
