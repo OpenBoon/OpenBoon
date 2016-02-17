@@ -1,12 +1,14 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
+
 /**
  * Created by chambers on 2/10/16.
  */
 public class AnalystPing {
 
     private String host;
-    private int port;
+    private int port = AnalystClient.DEFAULT_PORT;
     private boolean data = true;
     private int threadsTotal = -1;
     private int threadsActive = 0;
