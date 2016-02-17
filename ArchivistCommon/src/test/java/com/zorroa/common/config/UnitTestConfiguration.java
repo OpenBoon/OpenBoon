@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class UnitTestConfiguration {
 
     @Bean
-    public ApplicationProperties properties() {
-        return new ApplicationProperties();
+    public SpringApplicationProperties properties() {
+        return new SpringApplicationProperties();
     }
 
 }

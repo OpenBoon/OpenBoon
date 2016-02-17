@@ -17,10 +17,10 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=UnitTestConfiguration.class)
 @TestPropertySource("classpath:/application.properties")
-public class ApplicationPropertiesTests {
+public class SpringApplicationPropertiesTests {
 
     @Autowired
-    ApplicationProperties properties;
+    SpringApplicationProperties properties;
 
     @Test
     public void testGet() {

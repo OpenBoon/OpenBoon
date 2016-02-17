@@ -1,6 +1,7 @@
 package com.zorroa.common.config;
 
 import com.google.common.collect.Maps;
+import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -13,12 +14,12 @@ import java.util.Map;
 /**
  * Created by chambers on 2/12/16.
  */
-public class ApplicationProperties {
+public class SpringApplicationProperties implements ApplicationProperties {
 
     @Autowired
     ConfigurableEnvironment env;
 
-    public ApplicationProperties() { }
+    public SpringApplicationProperties() { }
 
     public <T> T get(String key, Class<T> type) {
         return (T) env.getProperty(key, type);
