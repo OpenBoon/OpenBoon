@@ -4,7 +4,6 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by chambers on 2/8/16.
@@ -15,7 +14,6 @@ public class AnalyzeRequest implements EventLoggable {
     private List<String> paths;
     private String user;
     private List<ProcessorFactory<IngestProcessor>> processors;
-    private Map<String, Object> fileSystemArgs;
 
     public List<ProcessorFactory<IngestProcessor>> getProcessors() {
         return processors;
@@ -59,15 +57,6 @@ public class AnalyzeRequest implements EventLoggable {
 
     public AnalyzeRequest setIngestPipelineId(int ingestPipelineId) {
         this.ingestPipelineId = ingestPipelineId;
-        return this;
-    }
-
-    public Map<String, Object> getFileSystemArgs() {
-        return fileSystemArgs;
-    }
-
-    public AnalyzeRequest setFileSystemArgs(Map<String, Object> fileSystemArgs) {
-        this.fileSystemArgs = fileSystemArgs;
         return this;
     }
 
