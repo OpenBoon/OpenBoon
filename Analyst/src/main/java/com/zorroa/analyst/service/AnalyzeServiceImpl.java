@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.analyst.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
+import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
@@ -38,6 +39,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Autowired
     ObjectFileSystem objectFileSystem;
+
+    @Autowired
+    ApplicationProperties applicationProperties;
 
     @Override
     public AnalyzeResult analyze(AnalyzeRequest req) {
@@ -126,6 +130,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         List<IngestProcessor> result = Lists.newArrayListWithCapacity(req.getProcessors().size());
         for (ProcessorFactory<IngestProcessor> factory : req.getProcessors()) {
             IngestProcessor p = factory.newInstance();
+            p.setApplicationProperties(applicationProperties);
             p.setObjectFileSystem(objectFileSystem);
             p.init();
             result.add(p);
