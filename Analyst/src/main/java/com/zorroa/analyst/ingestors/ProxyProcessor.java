@@ -21,7 +21,6 @@ import org.elasticsearch.common.primitives.Ints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -32,6 +31,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,13 +39,12 @@ public class ProxyProcessor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
 
-    @Autowired
-    ObjectFileSystem objectFileSystem;
-
-    @Value("${archivist.proxies.format}")
-    private String defaultProxyFormat;
+    private String defaultProxyFormat = "jpg";
 
     public ProxyProcessor() { }
+
+    @Autowired
+    ObjectFileSystem objectFileSystem;
 
     @Override
     public void process(AssetBuilder asset) {
@@ -165,9 +164,18 @@ public class ProxyProcessor extends IngestProcessor {
         writer.setOutput(ios);
         writer.write(proxyImage);
 
+        StringBuilder url = new StringBuilder(128);
+        url.append("https://");
+        url.append(InetAddress.getLocalHost().getHostAddress());
+        url.append(":");
+        url.append(applicationProperties.getInt("server.port"));
+        url.append("/api/v1/fs/");
+        url.append(allocation.getRelativePath(output.getFormat(), output.getSize() + "x" + height));
+
         Proxy result = new Proxy();
         result.setImage(image);
-        result.setPath(path.getPath());
+        result.setPath(path.getAbsolutePath());
+        result.setUri(url.toString());
         result.setName(FileUtils.filename(path.getPath()));
         result.setWidth(output.getSize());
         result.setHeight(height);
