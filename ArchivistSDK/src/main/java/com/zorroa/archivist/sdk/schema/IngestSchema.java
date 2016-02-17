@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.schema;
 
 import com.google.common.base.Objects;
+import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.Ingest;
 
 /**
@@ -17,10 +18,20 @@ public class IngestSchema extends SetSchema<IngestSchema.IngestProperties> imple
         add(new IngestProperties(ingest));
     }
 
+    public void addIngest(AnalyzeRequest req) {
+        add(new IngestProperties(req));
+    }
+
     public static class IngestProperties {
         private int id;
         private int pipeline;
         private long timestamp;
+
+        public IngestProperties(AnalyzeRequest req) {
+            this.id = req.getIngestId();
+            this.pipeline = req.getIngestPipelineId();
+            this.timestamp  =System.currentTimeMillis();
+        }
 
         public IngestProperties(Ingest ingest) {
             this.id = ingest.getId();
