@@ -1,13 +1,14 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.reflect.ClassPath;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.IngestUtils;
+import com.zorroa.archivist.service.AnalystService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,14 +28,20 @@ public class ConfigController {
     private Set<String> EXCLUDE_INGESTORS =
             ImmutableSet.of("com.zorroa.archivist.sdk.processor.ingest.IngestProcessor");
 
+    @Autowired
+    AnalystService analystService;
+
     @RequestMapping(value = "/api/v1/config/supported_formats", method = RequestMethod.GET)
     public Object supportedFormats() {
         return IngestUtils.SUPPORTED_FORMATS;
     }
 
     @RequestMapping(value="/api/v1/plugins/ingest", method= RequestMethod.GET)
-    public List<String> ingest() {
-        List<String> result = Lists.newArrayListWithCapacity(30);
+    public List<String> ingest() throws Exception {
+
+        logger.info("getting ingestors");
+        List<String> result = analystService.getAnalystClient().getAvailableIngestors();
+
         try {
             // Use the special ingest factory ClassLoader
             ClassLoader classLoader = new ProcessorFactory<>().getSiteClassLoader();
