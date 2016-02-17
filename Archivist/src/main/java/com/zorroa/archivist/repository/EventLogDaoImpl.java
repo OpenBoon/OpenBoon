@@ -9,6 +9,7 @@ import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
@@ -97,6 +98,13 @@ public class EventLogDaoImpl implements EventLogDao {
                 .setSize(search.getLimit())
                 .setFrom((search.getPage() -1) * (search.getLimit()))
                 .addSort("timestamp", SortOrder.DESC)
+                .get();
+    }
+
+    @Override
+    public CountResponse getCount(EventLogSearch search) {
+        return client.prepareCount("eventlog")
+                .setQuery(getQuery(search))
                 .get();
     }
 

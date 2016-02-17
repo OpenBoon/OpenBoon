@@ -11,7 +11,6 @@ import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
-import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
@@ -61,18 +60,7 @@ public class AssetController {
 
     @RequestMapping(value="/api/v2/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     public String count(@RequestBody AssetSearch search) throws IOException {
-        CountResponse response = searchService.count(search);
-        return new StringBuilder(128)
-                .append("{\"count\":")
-                .append(response.getCount())
-                .append(",\"_shards\":{\"total\":")
-                .append(response.getTotalShards())
-                .append(",\"successful\":")
-                .append(response.getSuccessfulShards())
-                .append(",\"failed\":")
-                .append(response.getFailedShards())
-                .append("}}")
-                .toString();
+        return HttpUtils.countResponse(searchService.count(search));
     }
 
     @RequestMapping(value="/api/v2/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)

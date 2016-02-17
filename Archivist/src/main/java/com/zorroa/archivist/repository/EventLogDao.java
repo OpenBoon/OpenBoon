@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -48,6 +49,14 @@ static String[] getStackTrace(Throwable ex) {
      * @return
      */
     SearchResponse getAll(EventLogSearch search);
+
+    /**
+     * Execute a count query in the event log.
+     *
+     * @param search
+     * @return
+     */
+    CountResponse getCount(EventLogSearch search);
 
     /**
      * Only set true for unit tests.  When set to true, all of the log
