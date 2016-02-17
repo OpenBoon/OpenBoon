@@ -10,7 +10,6 @@ import com.zorroa.archivist.aggregators.Aggregator;
 import com.zorroa.archivist.aggregators.DateAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.domain.UnitTestProcessor;
-import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
 import com.zorroa.archivist.sdk.crawlers.AbstractCrawler;
@@ -28,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -36,9 +34,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.security.KeyStore;
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
@@ -46,7 +42,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Component
 public class IngestExecutorServiceImpl implements IngestExecutorService {
@@ -66,6 +61,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     ApplicationContext applicationContext;
 
     @Autowired
+    ApplicationProperties applicationProperties;
+
+    @Autowired
     EventLogService eventLogService;
 
     @Autowired
@@ -78,7 +76,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     ObjectFileSystem objectFileSystem;
 
     @Autowired
-    AnalystDao analystDao;
+    AnalystService analystService;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
@@ -167,23 +165,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         return true;
     }
 
-    private AnalystClient getAnalystClient() throws Exception {
-
-        AnalystClient client = new AnalystClient(analystDao.getAll(AnalystState.UP)
-                .stream().map(Analyst::getAddress).collect(Collectors.toList()));
-
-        KeyStore keystore = KeyStore.getInstance("PKCS12");
-        InputStream keystoreInput = new ClassPathResource("keystore.p12").getInputStream();
-        keystore.load(keystoreInput, "zorroa" .toCharArray());
-
-        KeyStore trustStore = KeyStore.getInstance("PKCS12");
-        InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
-        trustStore.load(trustStoreInput, "zorroa" .toCharArray());
-
-        client.init(keystore, "zorroa", trustStore);
-        return client;
-    }
-
     public class IngestWorker implements Runnable {
 
         private AssetExecutor assetExecutor;
@@ -203,7 +184,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         private Timer aggregationTimer;
 
         private List<Aggregator> aggregators;
-        
+
         public IngestWorker(Ingest ingest, User user) {
             this.ingest = ingest;
             this.user = user;
@@ -356,7 +337,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          * work for some reason.  A lot of things can happen here...we keep trying
                          * or eventually cancel the ingest.
                          */
-                        logger.warn("Failed to contact analyst for processing ingest: {}", req.getIngestId());
+                        logger.warn("Failed to contact analyst for processing ingest,", e);
                     }
                 }
             });
@@ -375,7 +356,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
             AnalystClient analyst;
             try {
-                analyst = getAnalystClient();
+                analyst = analystService.getAnalystClient();
             }
             catch (Exception e) {
                 eventLogService.log(ingest, "Failed to find available analysts.");
