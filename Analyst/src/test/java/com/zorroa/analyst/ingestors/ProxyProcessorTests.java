@@ -1,14 +1,11 @@
 package com.zorroa.analyst.ingestors;
 
 import com.zorroa.analyst.AbstractTest;
-import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 
@@ -19,18 +16,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class ProxyProcessorTests extends AbstractTest {
 
-    @Autowired
-    ApplicationProperties applicationProperties;
-
-    @Autowired
-    ObjectFileSystem objectFileSystem;
-
     @Test
     public void testProcess() {
 
         IngestProcessor imageProcessor = initIngestProcessor(new ImageIngestor());
         IngestProcessor proxyProcessor = initIngestProcessor(new ProxyProcessor());
-        
+
         AssetBuilder builder = new AssetBuilder(new File("src/test/resources/images/toucan.jpg"));
         imageProcessor.process(builder);
         proxyProcessor.process(builder);
@@ -39,6 +30,4 @@ public class ProxyProcessorTests extends AbstractTest {
             assertTrue(new File(proxy.getPath()).isFile());
         }
     }
-
-
 }

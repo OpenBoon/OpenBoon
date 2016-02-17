@@ -25,10 +25,10 @@ public abstract class AbstractTest {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    ApplicationProperties applicationProperties;
+    protected ApplicationProperties applicationProperties;
 
     @Autowired
-    ObjectFileSystem objectFileSystem;
+    protected ObjectFileSystem objectFileSystem;
 
     public IngestProcessor initIngestProcessor(IngestProcessor p) {
         p.setObjectFileSystem(objectFileSystem);
