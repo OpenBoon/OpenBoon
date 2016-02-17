@@ -6,7 +6,6 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
@@ -20,7 +19,6 @@ import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.primitives.Ints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -42,9 +40,6 @@ public class ProxyProcessor extends IngestProcessor {
     private String defaultProxyFormat = "jpg";
 
     public ProxyProcessor() { }
-
-    @Autowired
-    ObjectFileSystem objectFileSystem;
 
     @Override
     public void process(AssetBuilder asset) {
