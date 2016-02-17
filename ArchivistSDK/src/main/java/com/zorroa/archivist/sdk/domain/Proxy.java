@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 public class Proxy {
     private String name;
-    private String path;
+    private String uri;
     private int width;
     private int height;
     private String format;
@@ -15,12 +15,12 @@ public class Proxy {
 
     public Proxy() { }
 
-    public String getPath() {
-        return path;
+    public String getUri() {
+        return uri;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public int getWidth() {
@@ -75,13 +75,13 @@ public class Proxy {
 
         if (getWidth() != proxy.getWidth()) return false;
         if (getHeight() != proxy.getHeight()) return false;
-        return !(getPath() != null ? !getPath().equals(proxy.getPath()) : proxy.getPath() != null);
+        return !(getUri() != null ? !getUri().equals(proxy.getUri()) : proxy.getUri() != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = getPath() != null ? getPath().hashCode() : 0;
+        int result = getUri() != null ? getUri().hashCode() : 0;
         result = 31 * result + getWidth();
         result = 31 * result + getHeight();
         return result;
@@ -90,7 +90,7 @@ public class Proxy {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("path", path)
+                .add("uri", uri)
                 .add("name", name)
                 .add("width", width)
                 .add("height", height)
