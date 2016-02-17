@@ -1,9 +1,11 @@
 package com.zorroa.archivist.sdk.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.util.Json;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -41,6 +43,22 @@ public class Http {
         return null;
     }
 
+    public static <T> T post(HttpClient client, HttpHost host, String url, Object body, TypeReference<T> type) {
+        try {
+            HttpPost post = new HttpPost(url);
+            if (body != null) {
+                post.setHeader("Content-Type", "application/json");
+                post.setEntity(new ByteArrayEntity(Json.serialize(body)));
+            }
+            HttpResponse response = client.execute(host, post);
+            return Json.Mapper.readValue(response.getEntity().getContent(), type);
+        } catch (Exception e) {
+            ExceptionTranslator.translate(e);
+        }
+
+        return null;
+    }
+
     public static void post(HttpClient client, HttpHost host, String url, Object body) {
         try {
             HttpPost post = new HttpPost(url);
@@ -52,6 +70,30 @@ public class Http {
         } catch (Exception e) {
             ExceptionTranslator.translate(e);
         }
+    }
+
+    public static <T> T get(HttpClient client, HttpHost host, String url, Class<T> resultType) {
+        try {
+            HttpGet get = new HttpGet(url);
+            HttpResponse response = client.execute(host, get);
+            return Json.Mapper.readValue(response.getEntity().getContent(), resultType);
+        } catch (Exception e) {
+            ExceptionTranslator.translate(e);
+        }
+
+        return null;
+    }
+
+    public static <T> T get(HttpClient client, HttpHost host, String url, TypeReference<T> type) {
+        try {
+            HttpGet get = new HttpGet(url);
+            HttpResponse response = client.execute(host, get);
+            return Json.Mapper.readValue(response.getEntity().getContent(), type);
+        } catch (Exception e) {
+            ExceptionTranslator.translate(e);
+        }
+
+        return null;
     }
 
     public static CloseableHttpClient initSSLClient(KeyStore keyStore, String keyPass, KeyStore trustStore) throws Exception {
