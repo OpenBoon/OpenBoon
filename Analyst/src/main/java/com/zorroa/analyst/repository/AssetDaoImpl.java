@@ -37,6 +37,9 @@ public class AssetDaoImpl implements AssetDao {
     @Override
     public AnalyzeResult bulkUpsert(List<AssetBuilder> builders) {
         AnalyzeResult result = new AnalyzeResult();
+        if (builders.isEmpty()) {
+            return result;
+        }
         List<AssetBuilder> retries = Lists.newArrayList();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
