@@ -3,7 +3,7 @@ package com.zorroa.analyst.service;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;
 import com.zorroa.archivist.sdk.domain.AnalystPing;
-import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
