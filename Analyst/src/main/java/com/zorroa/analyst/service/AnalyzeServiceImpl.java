@@ -1,16 +1,16 @@
 package com.zorroa.analyst.service;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.zorroa.analyst.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.common.service.EventLogService;
 import org.apache.tika.Tika;
 import org.slf4j.Logger;
@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chambers on 2/8/16.
@@ -32,36 +30,34 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     private static final Tika tika = new Tika();
 
-    /**
-     * A global ingestor cache, cached based on the class and arguments.
-     */
-    private final LoadingCache<ProcessorFactory<IngestProcessor>, IngestProcessor> ingestProcessorCache =
-            CacheBuilder.newBuilder()
-            .concurrencyLevel(4)
-            .initialCapacity(50)
-            .expireAfterAccess(1, TimeUnit.HOURS)
-            .build(new CacheLoader<ProcessorFactory<IngestProcessor>, IngestProcessor>() {
-                @Override
-                public IngestProcessor load(ProcessorFactory<IngestProcessor> factory) throws Exception {
-                    IngestProcessor processor =  factory.newInstance();
-                    processor.init();
-                    return processor;
-                }
-            });
-
     @Autowired
     AssetDao assetDao;
 
     @Autowired
     EventLogService eventLogService;
 
+    @Autowired
+    ObjectFileSystem objectFileSystem;
+
     @Override
     public AnalyzeResult analyze(AnalyzeRequest req) {
 
         List<AssetBuilder> result = Lists.newArrayListWithCapacity(req.getPaths().size());
+        List<IngestProcessor> processors;
+
+        try {
+            processors = createProcessingPipeline(req);
+        } catch (Exception e) {
+            throw new IngestException("Failed to initialize ingest pipeline, " + e.getMessage(), e);
+        }
+
+        IngestSchema ingestSchema = new IngestSchema();
+        ingestSchema.addIngest(req);
 
         for (String path: req.getPaths()) {
+            logger.info("processing: {}", path);
             AssetBuilder builder = new AssetBuilder(path);
+            builder.addSchema(ingestSchema);
 
             try {
                 /*
@@ -83,17 +79,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
 
             try {
+
                 /*
                  * Run the ingest processors
                  */
-                for (ProcessorFactory<IngestProcessor> factory : req.getProcessors()) {
+                for (IngestProcessor processor : processors) {
                     try {
-                        IngestProcessor processor = ingestProcessorCache.get(factory);
                         if (!processor.isSupportedFormat(builder.getExtension())) {
                             continue;
                         }
                         processor.process(builder);
-                    } catch (ExecutionException | UnrecoverableIngestProcessorException e) {
+                    } catch (UnrecoverableIngestProcessorException e) {
                         /*
                          * This exception short circuits the processor. This is handle in outside
                          * catch block.  (see below)
@@ -107,12 +103,34 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
                 result.add(builder);
 
-            } catch (ExecutionException | UnrecoverableIngestProcessorException e) {
+            } catch (UnrecoverableIngestProcessorException e) {
                 eventLogService.log(req, "Unrecoverable ingest error '{}', processing pipeline failed: '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
             }
         }
 
         return assetDao.bulkUpsert(result);
+    }
+
+    /**
+     *
+     * Create the processing pipeline.
+     * TODO: add caching to this.
+     *
+     * @param req
+     * @return
+     * @throws Exception
+     */
+    private List<IngestProcessor> createProcessingPipeline(AnalyzeRequest req) throws Exception {
+
+        List<IngestProcessor> result = Lists.newArrayListWithCapacity(req.getProcessors().size());
+        for (ProcessorFactory<IngestProcessor> factory : req.getProcessors()) {
+            IngestProcessor p = factory.newInstance();
+            p.setObjectFileSystem(objectFileSystem);
+            p.init();
+            result.add(p);
+        }
+
+        return result;
     }
 }
