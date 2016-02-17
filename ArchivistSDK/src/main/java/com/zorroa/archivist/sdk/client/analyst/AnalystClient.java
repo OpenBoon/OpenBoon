@@ -2,6 +2,7 @@ package com.zorroa.archivist.sdk.client.analyst;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.client.Http;
+import com.zorroa.archivist.sdk.domain.Analyst;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import com.zorroa.archivist.sdk.util.Json;
@@ -21,32 +22,42 @@ public class AnalystClient {
 
     public static final int DEFAULT_PORT = 8099;
     private CloseableHttpClient client;
-    private final List<HttpHost> hosts;
-    private final AtomicInteger requestCount  = new AtomicInteger();
+    private final List<HttpHost> hosts =  Lists.newArrayList();
+    private final AtomicInteger requestCount = new AtomicInteger();
+
+    public AnalystClient() {};
 
     public AnalystClient(Collection<String> analysts) {
-        hosts = Lists.newArrayList();
-        for (String analsyst: analysts) {
-            if (analsyst.contains(":")) {
-                String[] parts = analsyst.split(":");
+        for (String analyst: analysts) {
+            if (analyst.contains(":")) {
+                String[] parts = analyst.split(":");
                 hosts.add(new HttpHost(parts[0], Integer.valueOf(parts[1]), "https"));
             } else {
-                hosts.add(new HttpHost(analsyst, DEFAULT_PORT, "https"));
+                hosts.add(new HttpHost(analyst, DEFAULT_PORT, "https"));
             }
         }
+    }
 
-        if (hosts.isEmpty()) {
-            throw new IllegalArgumentException("Cannot initialize a client with no hosts");
+    public void addHost(Analyst analyst) {
+        hosts.add(new HttpHost(analyst.getHost(), analyst.getPort(), "https"));
+    }
+
+    public void addHosts(Collection<Analyst> analysts) {
+        for (Analyst analyst: analysts) {
+            hosts.add(new HttpHost(analyst.getHost(), analyst.getPort(), "https"));
         }
     }
 
     private HttpHost nextHost() {
         if (hosts.size() == 1) {
             return hosts.get(0);
-        } else {
+        } else if (hosts.size() > 1) {
             /* Round robbin */
             int count = requestCount.incrementAndGet();
             return hosts.get(count % hosts.size());
+        }
+        else {
+            throw new IllegalStateException("No analyst hosts to connec to");
         }
     }
 
