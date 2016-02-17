@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.client.Http;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
+import com.zorroa.archivist.sdk.util.Json;
 import org.apache.http.HttpHost;
 import org.apache.http.impl.client.CloseableHttpClient;
 
@@ -63,5 +64,16 @@ public class AnalystClient {
      */
     public AnalyzeResult analyze(AnalyzeRequest analyzeRequest) throws IOException {
        return Http.post(client, nextHost(), "/api/v1/analyze", analyzeRequest, AnalyzeResult.class);
+    }
+
+    /**
+     * Analyze the given path and return an AssetBuilder complete with all gathered
+     * metadata.
+     *
+     * @return
+     * @throws IOException
+     */
+    public List<String> getAvailableIngestors() {
+        return Http.get(client, nextHost(), "/api/v1/plugins/ingest", Json.LIST_OF_STRINGS);
     }
 }
