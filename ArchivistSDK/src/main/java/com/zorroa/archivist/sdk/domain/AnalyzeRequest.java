@@ -9,8 +9,8 @@ import java.util.List;
  * Created by chambers on 2/8/16.
  */
 public class AnalyzeRequest implements EventLoggable {
-    private int ingestId;
-    private int ingestPipelineId;
+    private Integer ingestId;
+    private Integer ingestPipelineId;
     private List<String> paths;
     private String user;
     private List<ProcessorFactory<IngestProcessor>> processors;
@@ -42,20 +42,20 @@ public class AnalyzeRequest implements EventLoggable {
         return this;
     }
 
-    public int getIngestId() {
+    public Integer getIngestId() {
         return ingestId;
     }
 
-    public AnalyzeRequest setIngestId(int ingestId) {
+    public AnalyzeRequest setIngestId(Integer ingestId) {
         this.ingestId = ingestId;
         return this;
     }
 
-    public int getIngestPipelineId() {
+    public Integer getIngestPipelineId() {
         return ingestPipelineId;
     }
 
-    public AnalyzeRequest setIngestPipelineId(int ingestPipelineId) {
+    public AnalyzeRequest setIngestPipelineId(Integer ingestPipelineId) {
         this.ingestPipelineId = ingestPipelineId;
         return this;
     }
