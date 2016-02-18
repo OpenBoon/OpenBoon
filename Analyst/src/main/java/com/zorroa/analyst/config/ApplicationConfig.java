@@ -28,18 +28,11 @@ public class ApplicationConfig {
 
     @Bean
     public ArchivistClient archivist() throws Exception {
-
-        ArchivistClient client =  new ArchivistClient(properties.getString("analyst.master.host"));
-
-        KeyStore keystore = KeyStore.getInstance("PKCS12");
-        InputStream keystoreInput = new ClassPathResource("keystore.p12").getInputStream();
-        keystore.load(keystoreInput, "zorroa".toCharArray());
-
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
         InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
         trustStore.load(trustStoreInput, "zorroa".toCharArray());
 
-        client.init(keystore, "zorroa", trustStore);
+        ArchivistClient client =  new ArchivistClient(trustStore, properties.getString("analyst.master.host"));
         return client;
     }
 
