@@ -56,13 +56,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             throw new IngestException("Failed to initialize ingest pipeline, " + e.getMessage(), e);
         }
 
-        IngestSchema ingestSchema = new IngestSchema();
-        ingestSchema.addIngest(req);
+        IngestSchema ingestSchema = null;
+        if (req.getIngestId() != null) {
+            ingestSchema = new IngestSchema();
+            ingestSchema.addIngest(req);
+        }
 
         for (String path: req.getPaths()) {
             logger.info("processing: {}", path);
+            result.tried++;
             AssetBuilder builder = new AssetBuilder(path);
-            builder.addSchema(ingestSchema);
+            if (ingestSchema != null) {
+                builder.addSchema(ingestSchema);
+            }
 
             try {
                 /*
