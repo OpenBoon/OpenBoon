@@ -23,7 +23,7 @@ import javax.net.ssl.SSLContext;
 import java.security.KeyStore;
 
 /**
- * Created by chambers on 2/8/16.
+ * An convience class for making HTTP/HTTPS requests with Apache HttpClient.
  */
 public class Http {
 
@@ -96,20 +96,27 @@ public class Http {
         return null;
     }
 
-    public static CloseableHttpClient initSSLClient(KeyStore keyStore, String keyPass, KeyStore trustStore) throws Exception {
+    /**
+     *
+     * @param trustStore
+     * @return
+     * @throws Exception
+     */
+    public static CloseableHttpClient initClient(KeyStore trustStore) {
+        PoolingHttpClientConnectionManager cm;
+        try {
+            SSLContext ctx = SSLContexts.custom()
+                    .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
+                    .build();
+            SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(ctx, new NoopHostnameVerifier());
+            Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
+                    .<ConnectionSocketFactory> create().register("https", factory)
+                    .build();
+            cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 
-        SSLContext ctx = SSLContexts.custom()
-                .loadKeyMaterial(keyStore, keyPass.toCharArray())
-                .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-                .build();
-
-        SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(ctx, new NoopHostnameVerifier());
-
-        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
-                .<ConnectionSocketFactory> create().register("https", factory)
-                .build();
-
-        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+        } catch (Exception e) {
+            cm = new PoolingHttpClientConnectionManager();
+        }
 
         return HttpClients.custom()
                 .setConnectionManager(cm)

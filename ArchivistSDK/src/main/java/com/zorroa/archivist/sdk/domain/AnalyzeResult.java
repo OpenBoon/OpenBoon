@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class AnalyzeResult {
 
+    public int tried = 0;
     public int created = 0;
     public int updated = 0;
     public int warnings = 0;
@@ -21,6 +22,7 @@ public class AnalyzeResult {
     public List<String> logs = Lists.newArrayList();
 
     public AnalyzeResult add(AnalyzeResult other) {
+        tried+=other.tried;
         created+=other.created;
         updated+=other.updated;
         warnings+=other.warnings;
@@ -33,6 +35,7 @@ public class AnalyzeResult {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .add("tried", tried)
                 .add("created", created)
                 .add("updated", updated)
                 .add("warnings", warnings)
