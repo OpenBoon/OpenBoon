@@ -2,6 +2,8 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
 
+import java.util.List;
+
 /**
  * Created by chambers on 2/10/16.
  */
@@ -14,6 +16,7 @@ public class AnalystPing {
     private int processSuccess = 0;
     private int processFailed = 0;
     private int queueSize = 0;
+    private List<String> ingestProcessorClasses;
 
     public AnalystPing() {}
 
@@ -81,6 +84,15 @@ public class AnalystPing {
 
     public AnalystPing setProcessSuccess(int processSuccess) {
         this.processSuccess = processSuccess;
+        return this;
+    }
+
+    public List<String> getIngestProcessorClasses() {
+        return ingestProcessorClasses;
+    }
+
+    public AnalystPing setIngestProcessorClasses(List<String> ingestProcessorClasses) {
+        this.ingestProcessorClasses = ingestProcessorClasses;
         return this;
     }
 

@@ -2,6 +2,8 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.Objects;
 
+import java.util.List;
+
 /**
  * Created by chambers on 2/10/16.
  */
@@ -16,6 +18,7 @@ public class Analyst {
     private int processSuccess;
     private int processFailed;
     private int queueSize;
+    private List<String> ingestProcessorClasses;
 
     public String getUrl() {
         return url;
@@ -95,6 +98,15 @@ public class Analyst {
 
     public Analyst setId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public List<String> getIngestProcessorClasses() {
+        return ingestProcessorClasses;
+    }
+
+    public Analyst setIngestProcessorClasses(List<String> ingestProcessorClasses) {
+        this.ingestProcessorClasses = ingestProcessorClasses;
         return this;
     }
 
