@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class UUIDFileSystem implements ObjectFileSystem {
 
-    protected final Logger logger = LoggerFactory.getLogger(UUIDFileSystem.class);
+    private static final Logger logger = LoggerFactory.getLogger(UUIDFileSystem.class);
 
     private static final int DEEPNESS = 4;
 
