@@ -5,7 +5,7 @@ import com.google.common.base.MoreObjects;
 import java.util.List;
 import java.util.Objects;
 
-public class Ingest implements Id {
+public class Ingest implements EventLoggable {
 
     private int id;
     private int pipelineId;
@@ -157,5 +157,10 @@ public class Ingest implements Id {
     public Ingest setWarningCount(int warningCount) {
         this.warningCount = warningCount;
         return this;
+    }
+
+    @Override
+    public Object getLogId() {
+        return id;
     }
 }

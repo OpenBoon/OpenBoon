@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.processor;
 
 import com.google.common.collect.Maps;
+import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import java.util.Map;
 public class Processor {
 
     protected Map<String, Object> args;
+    protected ApplicationProperties applicationProperties;
 
     public Processor() {
         this.args = Maps.newHashMap();
@@ -29,6 +31,15 @@ public class Processor {
 
     public void setArg(String key, Object value) {
         this.args.put(key, value);
+    }
+
+    public ApplicationProperties getApplicationProperties() {
+        return applicationProperties;
+    }
+
+    public Processor setApplicationProperties(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
+        return this;
     }
 
     /**

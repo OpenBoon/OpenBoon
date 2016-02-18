@@ -6,7 +6,7 @@ import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import java.util.List;
 
 
-public class IngestPipeline implements Id {
+public class IngestPipeline implements EventLoggable {
 
     private int id;
     private String name;
@@ -81,5 +81,10 @@ public class IngestPipeline implements Id {
 
     public void setProcessors(List<ProcessorFactory<IngestProcessor>> processors) {
         this.processors = processors;
+    }
+
+    @Override
+    public Object getLogId() {
+        return id;
     }
 }

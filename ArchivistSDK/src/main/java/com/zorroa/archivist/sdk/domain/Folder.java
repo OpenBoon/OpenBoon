@@ -2,7 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 import java.util.Objects;
 
-public class Folder implements Id {
+public class Folder implements EventLoggable {
 
     public static final Integer ROOT_ID = 0;
 
@@ -137,5 +137,10 @@ public class Folder implements Id {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public Object getLogId() {
+        return id;
     }
 }

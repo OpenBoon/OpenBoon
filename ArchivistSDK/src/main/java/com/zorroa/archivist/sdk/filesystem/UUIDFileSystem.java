@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.UUID;
 
 /**
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 public class UUIDFileSystem implements ObjectFileSystem {
 
-    protected final Logger logger = LoggerFactory.getLogger(UUIDFileSystem.class);
+    private static final Logger logger = LoggerFactory.getLogger(UUIDFileSystem.class);
 
     private static final int DEEPNESS = 4;
 
@@ -24,14 +25,24 @@ public class UUIDFileSystem implements ObjectFileSystem {
     private File storageBaseDir;
     private String location;
 
+    public UUIDFileSystem() {}
+
+    public UUIDFileSystem(String location) {
+        this.location = location;
+        this.init();
+    }
+
     @Override
     public void init() {
-        storageBaseDir = new File(location);
+        storageBaseDir = new File(location).getAbsoluteFile();
         storageBaseDir.mkdirs();
     }
 
     public void setLocation(String location) {
         this.location = location;
+    }
+    public String getLocation() {
+        return location;
     }
 
     @Override
@@ -43,12 +54,29 @@ public class UUIDFileSystem implements ObjectFileSystem {
     public Allocation build(Object id, String category) {
         UUID uuid = nameBasedGenerator.generate(id.toString());
         File path = buildPath(category, uuid.toString(), false);
-        return new Allocation(uuid, category, path);
+        return new Allocation(uuid, category, path, relative(path));
     }
 
     @Override
     public File find(String category, String name) {
         return buildPath(category, name, true);
+    }
+
+    @Override
+    public File get(String category, String path) {
+        return new File(new StringBuilder(256)
+                .append(storageBaseDir.getAbsolutePath())
+                .append("/")
+                .append(category)
+                .append("/")
+                .append(path)
+                .toString());
+    }
+
+    private File relative(File path) {
+        Path abs = path.toPath();
+        Path base = storageBaseDir.toPath();
+        return base.relativize(abs).toFile();
     }
 
     private File buildPath(String category, String name, boolean includeName) {

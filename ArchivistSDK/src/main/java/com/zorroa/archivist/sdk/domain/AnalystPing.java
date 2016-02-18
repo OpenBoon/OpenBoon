@@ -1,12 +1,13 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created by chambers on 2/10/16.
  */
 public class AnalystPing {
 
-    private String host;
-    private int port;
+    private String url;
     private boolean data = true;
     private int threadsTotal = -1;
     private int threadsActive = 0;
@@ -16,16 +17,16 @@ public class AnalystPing {
 
     public AnalystPing() {}
 
-    public AnalystPing(String host) {
-        this.setHost(host);
+    public AnalystPing(String url) {
+        this.setUrl(url);
     }
 
-    public String getHost() {
-        return host;
+    public String getUrl() {
+        return url;
     }
 
-    public AnalystPing setHost(String host) {
-        this.host = host;
+    public AnalystPing setUrl(String url) {
+        this.url = url;
         return this;
     }
 
@@ -83,12 +84,16 @@ public class AnalystPing {
         return this;
     }
 
-    public int getPort() {
-        return port;
-    }
-
-    public AnalystPing setPort(int port) {
-        this.port = port;
-        return this;
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("url", url)
+                .add("data", data)
+                .add("threadsTotal", threadsTotal)
+                .add("threadsActive", threadsActive)
+                .add("processSuccess", processSuccess)
+                .add("processFailed", processFailed)
+                .add("queueSize", queueSize)
+                .toString();
     }
 }
