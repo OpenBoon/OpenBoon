@@ -1,9 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.Lists;
-
-import java.util.List;
 
 /**
  * No need for getters/setters in this class
@@ -12,17 +9,17 @@ public class AnalyzeResult {
 
     public int created = 0;
     public int updated = 0;
-    public int errorsRecoverable = 0;
-    public int errorsNotRecoverable = 0;
+    public int warnings = 0;
     public int retries = 0;
-    public List<String> errors = Lists.newArrayList();
+    public int errors = 0;
 
-    public void add(AnalyzeResult other) {
+    public AnalyzeResult add(AnalyzeResult other) {
         created+=other.created;
         updated+=other.updated;
-        errorsRecoverable+=other.errorsRecoverable;
-        errorsNotRecoverable+=other.errorsNotRecoverable;
+        warnings+=other.warnings;
+        errors+=other.errors;
         retries+=other.retries;
+        return this;
     }
 
     @Override
@@ -30,8 +27,8 @@ public class AnalyzeResult {
         return MoreObjects.toStringHelper(this)
                 .add("created", created)
                 .add("updated", updated)
-                .add("errorsRecoverable", errorsRecoverable)
-                .add("errorsNotRecoverable", errorsNotRecoverable)
+                .add("warnings", warnings)
+                .add("errors", errors)
                 .add("retries", retries)
                 .toString();
     }
