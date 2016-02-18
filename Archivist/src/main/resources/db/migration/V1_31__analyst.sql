@@ -1,7 +1,6 @@
 CREATE TABLE analyst (
   pk_analyst INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  str_host VARCHAR(128) NOT NULL,
-  int_port INTEGER NOT NULL,
+  str_url VARCHAR(128) NOT NULL,
   int_state INTEGER NOT NULL DEFAULT 1,
   bool_locked BOOLEAN NOT NULL DEFAULT 0,
   bool_data BOOLEAN NOT NULL,
@@ -14,4 +13,4 @@ CREATE TABLE analyst (
   time_updated BIGINT NOT NULL
 );
 
-CREATE UNIQUE INDEX analyst_str_name_uniq_idx ON analyst (str_host, int_port);
+CREATE UNIQUE INDEX analyst_str_name_uniq_idx ON analyst (str_url);

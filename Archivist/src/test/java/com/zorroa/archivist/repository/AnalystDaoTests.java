@@ -22,21 +22,21 @@ public class AnalystDaoTests extends ArchivistApplicationTests {
     @Before
     public void init() {
         AnalystPing p = new AnalystPing();
-        p.setHost("localhost");
+        p.setUrl("https://localhost:8099");
         analyst = analystDao.create(p);
     }
 
     @Test
     public void testCreate() {
         AnalystPing p = new AnalystPing();
-        p.setHost("test");
-        assertEquals("test", analystDao.create(p).getHost());
+        p.setUrl("https://10.0.0.1:8099");
+        assertEquals("https://10.0.0.1:8099", analystDao.create(p).getUrl());
     }
 
     @Test
     public void testUpdate() {
         AnalystPing p = new AnalystPing();
-        p.setHost("foo");
+        p.setUrl("https://10.0.0.1:8099");
 
         assertFalse(analystDao.update(p));
         analystDao.create(p);
@@ -51,12 +51,13 @@ public class AnalystDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetAll() {
+        int currentCount = jdbc.queryForObject("SELECT COUNT(1) FROM analyst", Integer.class);
         for (int i=0; i<10; i++) {
             AnalystPing p = new AnalystPing();
-            p.setHost("test" + i);
+            p.setUrl("https://10.0.0." + i + ":8099");
             analystDao.create(p);
         }
-        assertEquals(11, (int)jdbc.queryForObject("SELECT COUNT(1) FROM analyst", Integer.class));
-        assertEquals(11, analystDao.getAll().size());
+        assertEquals(currentCount + 10, (int)jdbc.queryForObject("SELECT COUNT(1) FROM analyst", Integer.class));
+        assertEquals(currentCount + 10, analystDao.getAll().size());
     }
 }

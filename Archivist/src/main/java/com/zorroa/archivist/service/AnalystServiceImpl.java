@@ -35,7 +35,7 @@ public class AnalystServiceImpl implements AnalystService {
              * if the node is in a certain state, which is why this isn't part of the
              * standard update.
              */
-            analystDao.setState(ping.getHost(), AnalystState.UP);
+            analystDao.setState(ping.getUrl(), AnalystState.UP);
         }
     }
 
@@ -45,7 +45,7 @@ public class AnalystServiceImpl implements AnalystService {
          * Do a final update then then set the state to shutdown.
          */
         if (analystDao.update(ping)) {
-            analystDao.setState(ping.getHost(), AnalystState.SHUTDOWN, AnalystState.UP);
+            analystDao.setState(ping.getUrl(), AnalystState.SHUTDOWN, AnalystState.UP);
         }
     }
 
@@ -57,19 +57,14 @@ public class AnalystServiceImpl implements AnalystService {
     @Override
     public AnalystClient getAnalystClient() throws Exception {
 
-        AnalystClient client = new AnalystClient();
-        client.addHosts(analystDao.getAll(AnalystState.UP));
-
-        KeyStore keystore = KeyStore.getInstance("PKCS12");
-        InputStream keystoreInput = new ClassPathResource("keystore.p12").getInputStream();
-        keystore.load(keystoreInput, "zorroa" .toCharArray());
-
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
         InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
         trustStore.load(trustStoreInput, "zorroa" .toCharArray());
 
-        client.init(keystore, "zorroa", trustStore);
+        AnalystClient client = new AnalystClient(trustStore);
+        for (Analyst a:  analystDao.getAll(AnalystState.UP)) {
+            client.getLoadBalancer().addHost(a.getUrl());
+        }
         return client;
     }
-
 }
