@@ -4,6 +4,7 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.sdk.domain.Analyst;
 import com.zorroa.archivist.sdk.domain.AnalystPing;
 import com.zorroa.archivist.sdk.domain.AnalystState;
+import com.zorroa.archivist.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -27,7 +28,8 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
             "int_queue_size",
             "time_created",
             "time_updated",
-            "bool_data");
+            "bool_data",
+            "json_ingestor_classes");
 
     @Override
     public Analyst create(AnalystPing ping) {
@@ -45,7 +47,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
             ps.setLong(7, time);
             ps.setLong(8, time);
             ps.setBoolean(9, ping.isData());
-
+            ps.setString(10, Json.serializeToString(ping.getIngestProcessorClasses()));
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -62,7 +64,8 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
                 "int_process_failed=?,"+
                 "int_queue_size=?,"+
                 "bool_data=?, " +
-                "time_updated=? "+
+                "time_updated=?, "+
+                "json_ingestor_classes=? " +
             "WHERE " +
                 "str_url=?";
 
@@ -77,6 +80,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
                 ping.getQueueSize(),
                 ping.isData(),
                 time,
+                Json.serializeToString(ping.getIngestProcessorClasses()),
                 ping.getUrl()) == 1;
     }
 
@@ -91,6 +95,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
         a.setState(AnalystState.values()[rs.getInt("int_state")]);
         a.setThreadsActive(rs.getInt("int_threads_active"));
         a.setThreadsTotal(rs.getInt("int_threads_total"));
+        a.setIngestProcessorClasses(Json.deserialize(rs.getString("json_ingestor_classes"), Json.LIST_OF_STRINGS));
         return a;
     };
 

@@ -10,7 +10,8 @@ CREATE TABLE analyst (
   int_process_success INTEGER NOT NULL,
   int_process_failed INTEGER NOT NULL,
   time_created BIGINT NOT NULL,
-  time_updated BIGINT NOT NULL
+  time_updated BIGINT NOT NULL,
+  json_ingestor_classes TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX analyst_str_name_uniq_idx ON analyst (str_url);
