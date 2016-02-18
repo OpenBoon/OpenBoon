@@ -328,7 +328,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          */
                         AnalyzeResult result =  analysts.analyze(req);
                         ingestService.incrementIngestCounters(ingest,
-                                result.created, result.updated, result.errorsNotRecoverable, result.errorsRecoverable);
+                                result.created, result.updated, result.warnings, result.errors);
 
                     } catch (Exception e) {
                         /**
