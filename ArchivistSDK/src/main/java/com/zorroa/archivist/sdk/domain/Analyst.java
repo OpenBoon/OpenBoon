@@ -8,8 +8,7 @@ import com.google.common.base.Objects;
 public class Analyst {
 
     private int id;
-    private String host;
-    private int port;
+    private String url;
     private AnalystState state;
     private boolean data;
     private int threadsTotal;
@@ -18,12 +17,12 @@ public class Analyst {
     private int processFailed;
     private int queueSize;
 
-    public String getHost() {
-        return host;
+    public String getUrl() {
+        return url;
     }
 
-    public Analyst setHost(String host) {
-        this.host = host;
+    public Analyst setUrl(String url) {
+        this.url = url;
         return this;
     }
 
@@ -96,15 +95,6 @@ public class Analyst {
 
     public Analyst setId(int id) {
         this.id = id;
-        return this;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public Analyst setPort(int port) {
-        this.port = port;
         return this;
     }
 
