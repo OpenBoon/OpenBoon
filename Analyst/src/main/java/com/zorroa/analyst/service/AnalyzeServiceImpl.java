@@ -46,7 +46,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     @Override
     public AnalyzeResult analyze(AnalyzeRequest req) {
 
-        List<AssetBuilder> result = Lists.newArrayListWithCapacity(req.getPaths().size());
+        AnalyzeResult result = new AnalyzeResult();
+        List<AssetBuilder> assets = Lists.newArrayListWithCapacity(req.getPaths().size());
         List<IngestProcessor> processors;
 
         try {
@@ -75,11 +76,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             } catch (Exception e) {
                 eventLogService.log(req, "Ingest error '{}', could not determine asset type on '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
-
-                /*
-                 * Can't go further, return.
-                 */
-                throw new RuntimeException(e);
+                result.errors++;
+                continue;
             }
 
             try {
@@ -102,18 +100,20 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                     } catch (Exception e) {
                         eventLogService.log(req, "Ingest warning '{}', processing pipeline failed: '{}'",
                                 e, e.getMessage(), builder.getAbsolutePath());
+                        result.warnings++;
                     }
                 }
 
-                result.add(builder);
+                assets.add(builder);
 
             } catch (UnrecoverableIngestProcessorException e) {
                 eventLogService.log(req, "Unrecoverable ingest error '{}', processing pipeline failed: '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
+                result.errors++;
             }
         }
 
-        return assetDao.bulkUpsert(result);
+        return assetDao.bulkUpsert(assets).add(result);
     }
 
     /**
