@@ -33,8 +33,12 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     @Autowired
     Executor ingestThreadPool;
 
+    private String url;
+
     @PostConstruct
-    public void init() {
+    public void init() throws UnknownHostException {
+        String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
+        url = protocol + "://" + InetAddress.getLocalHost().getHostAddress() + ":" + properties.getInt("server.port");
         startAsync();
     }
 
@@ -58,10 +62,10 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     }
 
     private AnalystPing getPing() throws UnknownHostException {
+
         ThreadPoolTaskExecutor e = (ThreadPoolTaskExecutor) ingestThreadPool;
         AnalystPing ping = new AnalystPing();
-        ping.setHost(InetAddress.getLocalHost().getHostAddress());
-        ping.setPort(properties.getInt("server.port"));
+        ping.setUrl(url);
         ping.setQueueSize(e.getThreadPoolExecutor().getQueue().size());
         ping.setThreadsActive(e.getActiveCount());
         ping.setThreadsTotal(e.getPoolSize());
