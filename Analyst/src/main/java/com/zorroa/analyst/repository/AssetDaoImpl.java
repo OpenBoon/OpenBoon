@@ -57,12 +57,12 @@ public class AssetDaoImpl implements AssetDao {
                 String message = response.getFailure().getMessage();
                 AssetBuilder asset = builders.get(index);
                 if (removeBrokenField(asset, message)) {
-                    result.errorsRecoverable++;
+                    result.warnings++;
                     retries.add(builders.get(index));
                 } else {
-                    result.errors.add(new StringBuilder(1024).append(
+                    result.logs.add(new StringBuilder(1024).append(
                             message).append(",").append(asset.getAbsolutePath()).toString());
-                    result.errorsNotRecoverable++;
+                    result.errors++;
                 }
             } else if (update.isCreated()) {
                 result.created++;

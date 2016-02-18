@@ -113,7 +113,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
         }
 
-        return assetDao.bulkUpsert(assets).add(result);
+        result = assetDao.bulkUpsert(assets).add(result);
+        if (!result.logs.isEmpty()) {
+            for (String log: result.logs) {
+                eventLogService.log(req, log);
+            }
+            result.logs.clear();
+        }
+        return result;
     }
 
     /**
