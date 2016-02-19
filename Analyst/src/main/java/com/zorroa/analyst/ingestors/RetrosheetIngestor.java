@@ -56,7 +56,7 @@ public class RetrosheetIngestor extends IngestProcessor {
     private boolean parseError = false;
     private boolean restrictToGameInterval = true;
 
-    private static final Logger logger = LoggerFactory.getLogger(RetrosheetIngestor.class);
+    private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
 
     public RetrosheetIngestor() { }
 
@@ -273,7 +273,7 @@ public class RetrosheetIngestor extends IngestProcessor {
                 restrictToGameInterval = Boolean.valueOf(restrictArg.toString());
             }
         }
-        if (!asset.getSource().getType().startsWith("image")) {
+        if (!asset.isSuperType("image")) {
             return;
         }
         Date date = asset.getSource().getDate();

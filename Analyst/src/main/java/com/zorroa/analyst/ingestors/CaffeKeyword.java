@@ -4,6 +4,8 @@
 
 package com.zorroa.analyst.ingestors;
 
+import java.util.List;
+
 /**
  *
  * Returned value from Caffe classification.
@@ -12,17 +14,17 @@ package com.zorroa.analyst.ingestors;
  *
  */
 public class CaffeKeyword {
-    String keyword;
+    List<String> keywords;
     float confidence;
 
     CaffeKeyword() {}
 
-    CaffeKeyword(String keyword, float confidence) {
-        this.keyword = keyword;
+    CaffeKeyword(List<String> keywords, float confidence) {
+        this.keywords = keywords;
         this.confidence = confidence;
     }
 
     public String toString() {
-        return String.format("<CaffeKeyword '%s' confidence='%f'>", keyword, confidence);
+        return String.format("<CaffeKeyword '%s' confidence='%f'>", keywords, confidence);
     }
 }

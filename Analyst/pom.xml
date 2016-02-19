@@ -50,12 +50,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.opencv</groupId>
-            <artifactId>opencv</artifactId>
-            <version>2.4.12</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.1</version>
@@ -190,6 +184,18 @@
             <version>1.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>opencv</artifactId>
+            <version>3.0.0-1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>caffe</artifactId>
+            <version>master-1.1</version>
+        </dependency>
+
         <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
@@ -220,27 +226,6 @@
                     <finalName>${project.artifactId}</finalName>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <id>install-opencv</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <file>lib/face/opencv-2412.jar</file>
-                            <groupId>org.opencv</groupId>
-                            <artifactId>opencv</artifactId>
-                            <version>2.4.12</version>
-                            <packaging>jar</packaging>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -250,99 +235,12 @@
                 <executions>
 
                     <execution>
-                        <id>Javah CaffeClassifier</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/jni.sh</executable>
-                            <commandlineArgs>javah CaffeClassifier</commandlineArgs>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>Install OpenCV</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>mvn</executable>
-                            <commandlineArgs>install:install-file -Dfile=lib/face/opencv-2412.jar -DgroupId=org.opencv -DartifactId=opencv -Dversion=2.4.12 -Dpackaging=jar</commandlineArgs>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>Javalib CaffeClassifier</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/jni.sh</executable>
-                            <commandlineArgs>jnilib CaffeClassifier
-                                -Isrc/main/C++/com/zorroa/ingestors/caffe/include
-                                -Isrc/main/C++/com/zorroa/ingestors/caffe/include/hdf5
-                                -Isrc/main/C++/com/zorroa/ingestors/caffe/include/CUDA-7.0
-                                -I/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers
-                                -Llib/caffe -Llib/local/lib
-                                -lcaffe -lboost_system -lglog -lopencv_core -lopencv_highgui -lopencv_imgproc  -lstdc++
-                            </commandlineArgs>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>Move OpenCV to target-jni</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>/bin/cp</executable>
-                            <commandlineArgs>${basedir}/lib/face/libopencv_java2412.dylib ${project.build.directory}/jni</commandlineArgs>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>Relink OpenCV JNI</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${basedir}/jni_relink.py</executable>
-                            <commandlineArgs>${project.build.directory}/jni/libopencv_java2412.dylib</commandlineArgs>
-                        </configuration>
-                    </execution>
-
-                    <execution>
                         <id>Install JAR</id>
                         <phase>install</phase>
                         <goals><goal>exec</goal></goals>
                         <configuration>
                             <executable>/usr/bin/sudo</executable>
                             <commandlineArgs>cp ${project.build.directory}/${project.artifactId}.jar ${com.zorroa.extensionDir}</commandlineArgs>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>Install Caffe jnilib</id>
-                        <phase>install</phase>
-                        <goals><goal>exec</goal></goals>
-                        <configuration>
-                            <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.build.directory}/jni/libCaffeClassifier.jnilib ${com.zorroa.extensionDir}</commandlineArgs>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>Install OpenCV jnilib</id>
-                        <phase>install</phase>
-                        <goals><goal>exec</goal></goals>
-                        <configuration>
-                            <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.build.directory}/jni/libopencv_java2412.dylib ${com.zorroa.extensionDir}</commandlineArgs>
                         </configuration>
                     </execution>
 
@@ -362,21 +260,6 @@
                         <ZORROA_MODEL_PATH>${project.basedir}/models</ZORROA_MODEL_PATH>
                     </environmentVariables>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.17</version>
-                <executions>
-                    <execution>
-                        <id>integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>

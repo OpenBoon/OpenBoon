@@ -6,12 +6,6 @@ import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Rect;
-import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
-import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +13,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.bytedeco.javacpp.opencv_core.Mat;
+import static org.bytedeco.javacpp.opencv_core.Rect;
+import static org.bytedeco.javacpp.opencv_core.RectVector;
+import static org.bytedeco.javacpp.opencv_core.Size;
+import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
+import static org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 
 
 /**
@@ -33,8 +33,6 @@ public class FaceIngestor extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(FaceIngestor.class);
 
     private static String cascadeName = "haarcascade_frontalface_alt.xml";
-
-    private static OpenCVLoader openCVLoader = new OpenCVLoader();
 
     // CascadeClassifier is not thread-safe, so give one to each thread
     private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>(){
@@ -101,7 +99,7 @@ public class FaceIngestor extends IngestProcessor {
 
         // Perform facial analysis
         logger.debug("Starting facial detection on {} ", asset);
-        Mat image = Highgui.imread(classifyPath);
+        Mat image = imread(classifyPath);
         Size imSize = image.size();
 
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
@@ -112,8 +110,8 @@ public class FaceIngestor extends IngestProcessor {
         // in order to save the rest of the range (up to 1.0) to increase the confidence according to logo size.
         // OPTIMIZE: Use the size of the resulting rectangles to tweak minFace and maxFace in order to save the detector a bunch of work
         double confidence = 0;
-        MatOfRect faceDetections = new MatOfRect();
-        MatOfRect newFaceDetections = new MatOfRect();
+        RectVector faceDetections = new RectVector();
+        RectVector newFaceDetections = new RectVector();
 
         class ClassifyOptions {
             public double scaleFactor, detectionThreshold, finalConfidence;
@@ -130,10 +128,10 @@ public class FaceIngestor extends IngestProcessor {
                 new ClassifyOptions(1.05, 20, 0.3),
                 new ClassifyOptions(1.05, 40, 0.5));
 
-        int faceCount = 0;
+        long faceCount = 0;
         for (int i = 0; i < options.size(); i++) {
             cascadeClassifier.get().detectMultiScale(image, newFaceDetections, options.get(i).scaleFactor, (int)options.get(i).detectionThreshold, 0, minFace, maxFace);
-            int count = newFaceDetections.toArray().length;
+            long count = newFaceDetections.size();
             if (count > 0) {
                 confidence = options.get(i).finalConfidence;
                 // We want to save Count and faceDetections ONLY if something was detected, so it's not overwritten to empty the last time
@@ -149,8 +147,9 @@ public class FaceIngestor extends IngestProcessor {
             List<String> keywords = Lists.newArrayList("face", "face" + faceCount);
 
             // Detect faces that are big enough for the 'bigface' label
-            for (Rect rect : faceDetections.toArray()) {
-                double relSize = rect.height / imSize.height;
+            for (int i = 0; i < faceDetections.size(); ++i) {
+                Rect rect = faceDetections.get(i);
+                double relSize = rect.height() / imSize.height();
                 if (relSize > .1) {
                     confidence += relSize;
                     if (confidence > 1) {
