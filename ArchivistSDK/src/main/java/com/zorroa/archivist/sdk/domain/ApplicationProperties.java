@@ -17,4 +17,9 @@ public interface ApplicationProperties {
     double getDouble(String key, double def);
     boolean getBoolean(String key, boolean def);
     Map<String,Object> getMap(String prefix);
+    int max(String key, int value);
+    double max(String key, double value);
+    int min(String key, int value);
+    double min(String key, double value);
+
 }
