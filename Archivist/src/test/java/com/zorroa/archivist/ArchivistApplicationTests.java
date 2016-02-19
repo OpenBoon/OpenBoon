@@ -249,8 +249,9 @@ public abstract class ArchivistApplicationTests {
     public Ingest addTestAssets(List<AssetBuilder> builders) {
 
         logger.info("testPath: {}", (String) builders.get(0).getAttr("test.path"));
+        String path = builders.get(0).getAttr("test.path");
         Ingest i = ingestService.createIngest(
-                new IngestBuilder().setName("foo").addToPaths(builders.get(0).getAttr("test.path")));
+                new IngestBuilder().setName("foo").addToPaths(path));
 
         IngestSchema schema = new IngestSchema();
         schema.addIngest(i);
