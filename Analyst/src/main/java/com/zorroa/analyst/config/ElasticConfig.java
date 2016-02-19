@@ -32,6 +32,7 @@ public class ElasticConfig {
                         .put("cluster.name", "zorroa")
                         .put("node.name", nodeName)
                         .put("node.master", true)
+                        .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
                         .put("cluster.routing.allocation.disk.threshold_enabled", false)
                         .put("script.indexed", true)
                         .put("script.update", true)
