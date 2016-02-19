@@ -1,7 +1,11 @@
 package com.zorroa.archivist;
 
+import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.common.repository.AssetDao;
+import com.zorroa.common.repository.AssetDaoImpl;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.common.service.EventLogServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +15,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CommonServicesConfig {
 
+    @Autowired
+    ApplicationProperties applicationProperties;
+
     @Bean
     public EventLogService eventLogService() {
         return new EventLogServiceImpl();
+    }
+
+    @Bean
+    public AssetDao assetDao() {
+        return new AssetDaoImpl(applicationProperties.getString("zorroa.common.index.alias"));
     }
 }

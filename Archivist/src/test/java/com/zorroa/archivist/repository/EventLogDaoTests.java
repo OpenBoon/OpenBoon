@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
 import org.junit.Before;
 import org.junit.Test;

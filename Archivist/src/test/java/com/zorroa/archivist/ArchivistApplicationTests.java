@@ -108,7 +108,7 @@ public abstract class ArchivistApplicationTests {
     @Autowired
     ArchivistRepositorySetup archivistRepositorySetup;
 
-    @Value("${archivist.index.alias}")
+    @Value("${zorroa.common.index.alias}")
     protected String alias;
 
     @Value("${archivist.snapshot.repoName}")

@@ -48,7 +48,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     @Autowired
     MigrationService migrationService;
 
-    @Value("${archivist.index.alias}")
+    @Value("${zorroa.common.index.alias}")
     private String alias;
 
     @Value("${archivist.snapshot.basePath}")

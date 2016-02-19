@@ -36,11 +36,10 @@ public class SearchServiceImpl implements SearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
 
-
     @Autowired
     FolderService folderService;
 
-    @Value("${archivist.index.alias}")
+    @Value("${zorroa.common.index.alias}")
     private String alias;
 
     @Autowired
