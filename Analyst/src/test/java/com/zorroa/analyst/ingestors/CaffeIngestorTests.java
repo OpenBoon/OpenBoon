@@ -32,9 +32,8 @@ public class CaffeIngestorTests extends AbstractTest {
         caffeProcessor.process(builder);
 
         List<String> keywords = builder.getAttr("caffe", "keywords");
-        assertEquals(3, keywords.size());
-        assertEquals("neck brace", keywords.get(0));
+        assertEquals(2, keywords.size());
+        assertEquals("soccer ball", keywords.get(0));
         assertEquals("swing", keywords.get(1));
-        assertEquals("soccer ball", keywords.get(2));
     }
 }

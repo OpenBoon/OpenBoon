@@ -8,14 +8,13 @@ import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.bytedeco.javacpp.opencv_core.Mat;
-import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 
 /**
  *
@@ -73,13 +72,12 @@ public class CaffeIngestor extends IngestProcessor {
         }
 
         // Get the source image as an OpenCV Mat
-        Mat source = selectSource(asset);
+        BufferedImage source = selectSource(asset);
 
         // Pass the image matrix to the classifier and get back an array of keywords+confidence
         final float confidenceThreshold = 0.1f;
         List<CaffeKeyword> caffeKeywords = caffeClassifier.get().classify(source, 5, confidenceThreshold);
 
-        logger.info("Caffe keywords {}", caffeKeywords);
         // Add keywords with confidence and as a single block
         ArrayList<String> keywords = Lists.newArrayListWithCapacity(caffeKeywords.size());
         for (CaffeKeyword caffeKeyword : caffeKeywords) {
@@ -89,25 +87,20 @@ public class CaffeIngestor extends IngestProcessor {
         asset.setAttr("caffe", "keywords", keywords);
     }
 
-    private Mat selectSource(AssetBuilder asset) {
+    private BufferedImage selectSource(AssetBuilder asset) {
         ProxySchema proxyList = asset.getAttr("proxies");
         if (proxyList == null) {
             logger.warn("Cannot find proxy list for {}, skipping Caffe analysis.", asset);
             return null;
         }
 
-        String classifyPath = asset.getFile().getPath();
         for (Proxy proxy : proxyList) {
             if (proxy.getWidth() >= 256 || proxy.getHeight() >= 256) {
-                classifyPath = proxy.getPath();
-//                mat = bufferedImageToMat(proxy.getImage());
-                break;
+                return proxy.getImage();
             }
         }
 
-        // Read the image into a 3-channel BGR matrix.
-        // Note that ImageIO.read returns a 4-channel ABGR
-        return imread(classifyPath);
+        return asset.getImage();
     }
 
     @Override
