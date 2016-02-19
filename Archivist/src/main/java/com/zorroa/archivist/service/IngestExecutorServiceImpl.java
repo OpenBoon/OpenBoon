@@ -188,7 +188,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         public IngestWorker(Ingest ingest, User user) {
             this.ingest = ingest;
             this.user = user;
-            assetExecutor = new AssetExecutor(ingest.getAssetWorkerThreads());
+            this.assetExecutor = new AssetExecutor(
+                    applicationProperties.max("archivist.ingest.defaultAssetWorkers", ingest.getAssetWorkerThreads()));
             aggregators = getAggregators(ingest);
             startAggregators();
 
