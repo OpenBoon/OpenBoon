@@ -116,7 +116,7 @@ public class ProxyProcessor extends IngestProcessor {
             asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
             asset.addSchema(result);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException("Failed to make proxy of:" + asset.getAbsolutePath(),
                     e, getClass());
         }
@@ -133,7 +133,7 @@ public class ProxyProcessor extends IngestProcessor {
      * @return
      * @throws IOException
      */
-    private Proxy writeProxy(BufferedImage image, ProxyOutput output, Allocation allocation, List<ImageFilter> filters) throws IOException {
+    private Proxy writeProxy(BufferedImage image, ProxyOutput output, Allocation allocation, List<ImageFilter> filters) throws Exception {
         int height = Math.round(output.getSize() / (image.getWidth() / (float)image.getHeight()));
         File path = allocation.getAbsolutePath(output.getFormat(), output.getSize() + "x" + height);
 
@@ -155,9 +155,12 @@ public class ProxyProcessor extends IngestProcessor {
             param.setCompressionQuality(output.getQuality());
         }
 
-        ImageOutputStream ios = ImageIO.createImageOutputStream(path);
-        writer.setOutput(ios);
-        writer.write(proxyImage);
+        try (ImageOutputStream ios = ImageIO.createImageOutputStream(path)) {
+            writer.setOutput(ios);
+            writer.write(proxyImage);
+        } finally {
+            writer.dispose();
+        }
 
         StringBuilder url = new StringBuilder(128);
         url.append("https://");
