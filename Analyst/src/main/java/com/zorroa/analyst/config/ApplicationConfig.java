@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.InputStream;
 import java.security.KeyStore;
-import java.util.concurrent.Executor;
 
 /**
  * Created by chambers on 2/12/16.
@@ -37,7 +37,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public Executor ingestThreadPool() {
+    public AsyncTaskExecutor ingestThreadPool() {
 
         int threads = Math.max(properties.getInt("analyst.executor.threads"),
                 Runtime.getRuntime().availableProcessors());
@@ -46,7 +46,7 @@ public class ApplicationConfig {
         executor.setCorePoolSize(threads);
         executor.setMaxPoolSize(threads);
         executor.setThreadNamePrefix("Ingest");
-        executor.setQueueCapacity(1000);
+        executor.setQueueCapacity(100);
         return executor;
     }
 

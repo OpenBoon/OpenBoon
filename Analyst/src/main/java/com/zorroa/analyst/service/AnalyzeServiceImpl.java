@@ -17,6 +17,7 @@ import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -43,8 +44,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     @Autowired
     ApplicationProperties applicationProperties;
 
+    @Autowired
+    AsyncTaskExecutor ingestThreadPool;
+
     @Override
     public AnalyzeResult analyze(AnalyzeRequest req) {
+        try {
+            return ingestThreadPool.submit(() -> asyncAnalyze(req)).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    private AnalyzeResult asyncAnalyze(AnalyzeRequest req) {
 
         AnalyzeResult result = new AnalyzeResult();
         List<AssetBuilder> assets = Lists.newArrayListWithCapacity(req.getPaths().size());
