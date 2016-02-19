@@ -5,15 +5,17 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
-import org.opencv.core.Mat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import static org.opencv.highgui.Highgui.imread;
+import static org.bytedeco.javacpp.opencv_core.Mat;
+import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 
 /**
  *
@@ -24,11 +26,6 @@ import static org.opencv.highgui.Highgui.imread;
  */
 public class CaffeIngestor extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
-
-    private static CaffeLoader caffeLoader = new CaffeLoader();
-    private static OpenCVLoader openCVLoader = new OpenCVLoader();
-
-    private float confidenceThreshold = 0.1f;
 
     // CaffeClassifier is not thread-safe, so give one to each thread
     private static final ThreadLocal<CaffeClassifier> caffeClassifier = new ThreadLocal<CaffeClassifier>() {
@@ -52,8 +49,13 @@ public class CaffeIngestor extends IngestProcessor {
                     return null;
                 }
             }
-            CaffeClassifier caffeClassifier = new CaffeClassifier(file[0].getAbsolutePath(),
-                    file[1].getAbsolutePath(), file[2].getAbsolutePath(), file[3].getAbsolutePath());
+            CaffeClassifier caffeClassifier = null;
+            try {
+                caffeClassifier = new CaffeClassifier(file[0].getAbsolutePath(),
+                        file[1].getAbsolutePath(), file[2].getAbsolutePath(), file[3].getAbsolutePath());
+            } catch (IOException e) {
+                logger.error("Failed to initialize Caffe {}", e);
+            }
             logger.debug("CaffeIngestor created");
             return caffeClassifier;
         }
@@ -65,44 +67,47 @@ public class CaffeIngestor extends IngestProcessor {
             return;
         }
 
-        ProxySchema proxyList = asset.getSchema("proxies", ProxySchema.class);
-        if (proxyList == null) {
-            logger.warn("Cannot find proxy list for {}, skipping Caffe analysis.", asset);
-            return;
-        }
-
         if (asset.contains("caffe") && !asset.isChanged()) {
             logger.debug("{} has already been processed by caffe.", asset);
             return;
+        }
+
+        // Get the source image as an OpenCV Mat
+        Mat source = selectSource(asset);
+
+        // Pass the image matrix to the classifier and get back an array of keywords+confidence
+        final float confidenceThreshold = 0.1f;
+        List<CaffeKeyword> caffeKeywords = caffeClassifier.get().classify(source, 5, confidenceThreshold);
+
+        logger.info("Caffe keywords {}", caffeKeywords);
+        // Add keywords with confidence and as a single block
+        ArrayList<String> keywords = Lists.newArrayListWithCapacity(caffeKeywords.size());
+        for (CaffeKeyword caffeKeyword : caffeKeywords) {
+            keywords.addAll(caffeKeyword.keywords);
+            asset.addKeywords(caffeKeyword.confidence, true /*suggest*/, caffeKeyword.keywords);
+        }
+        asset.setAttr("caffe", "keywords", keywords);
+    }
+
+    private Mat selectSource(AssetBuilder asset) {
+        ProxySchema proxyList = asset.getAttr("proxies");
+        if (proxyList == null) {
+            logger.warn("Cannot find proxy list for {}, skipping Caffe analysis.", asset);
+            return null;
         }
 
         String classifyPath = asset.getFile().getPath();
         for (Proxy proxy : proxyList) {
             if (proxy.getWidth() >= 256 || proxy.getHeight() >= 256) {
                 classifyPath = proxy.getPath();
+//                mat = bufferedImageToMat(proxy.getImage());
                 break;
             }
         }
 
         // Read the image into a 3-channel BGR matrix.
         // Note that ImageIO.read returns a 4-channel ABGR
-        Mat mat = imread(classifyPath);
-
-        // Pass the image matrix to the classifier and get back an array of keywords+confidence
-        CaffeKeyword[] caffeKeywords = caffeClassifier.get().classify(mat);
-
-        // Convert the array of structs into an array of strings until we have a way
-        // to pass the confidence values.
-        ArrayList<String> keywords = Lists.newArrayListWithCapacity(caffeKeywords.length);
-        for (int i = 0; i < caffeKeywords.length; ++i) {
-            // WARNING: Caffe confidence is not an absolute value.
-            //          It is a relative value for the top five keywords for any image.
-            if (caffeKeywords[i].confidence > confidenceThreshold) {
-                keywords.add(caffeKeywords[i].keyword);
-                asset.addKeywords(caffeKeywords[i].confidence, true, caffeKeywords[i].keyword);
-            }
-        }
-        asset.setAttr("caffe", "keywords", keywords);
+        return imread(classifyPath);
     }
 
     @Override

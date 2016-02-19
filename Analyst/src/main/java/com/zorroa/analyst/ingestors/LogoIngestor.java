@@ -4,12 +4,6 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.StringUtil;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Rect;
-import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
-import org.opencv.objdetect.CascadeClassifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
+import static org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 
 
 /**
@@ -88,7 +85,7 @@ public class LogoIngestor extends IngestProcessor {
         // Perform analysis on the full resolution source image. The VISA and other logos tend to be rather small in
         // the frame, and using the proxy misses many logos.
         logger.debug("Starting logo detection on {}", asset.getFilename());
-        Mat image = Highgui.imread(classifyPath);
+        Mat image = imread(classifyPath);
         Size imSize = image.size();
 
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
@@ -99,8 +96,8 @@ public class LogoIngestor extends IngestProcessor {
         // in order to save the rest of the range (up to 1.0) to increase the confidence according to logo size.
         // OPTIMIZE: Use the size of the resulting rectangles to tweak minLogo and maxLogo in order to save the detector a bunch of work
         double confidence = 0;
-        MatOfRect logoDetections = new MatOfRect();
-        MatOfRect newLogoDetections = new MatOfRect();
+        RectVector logoDetections = new RectVector();
+        RectVector newLogoDetections = new RectVector();
 
         class ClassifyOptions {
             public double scaleFactor, detectionThreshold, finalConfidence;
@@ -117,10 +114,10 @@ public class LogoIngestor extends IngestProcessor {
                 new ClassifyOptions(1.005, 40, 0.3),
                 new ClassifyOptions(1.005, 60, 0.5));
 
-        int logoCount = 0;
+        long logoCount = 0;
         for (int i = 0; i < options.size(); i++) {
             cascadeClassifier.get().detectMultiScale(image, newLogoDetections, options.get(i).scaleFactor, (int)options.get(i).detectionThreshold, 0, minLogo, maxLogo);
-            int count = newLogoDetections.toArray().length;
+            long count = newLogoDetections.size();
             if (count > 0) {
                 confidence = options.get(i).finalConfidence;
                 // I want to save Count and logoDetections ONLY if something was detected, so it's not overwritten to empty the last time
@@ -141,22 +138,23 @@ public class LogoIngestor extends IngestProcessor {
         StringBuilder svgVal = new StringBuilder(1024);
         svgVal.append("<svg>");
 
-        for (Rect rect : logoDetections.toArray()) {
+        for (int i = 0; i < logoDetections.size(); ++i) {
+            Rect rect = logoDetections.get(i);
             // Detect points in the area found by the Haar cascade
-            int xmin = rect.x;
+            int xmin = rect.x();
             if (xmin < 0) xmin = 0;
 
-            int xmax = rect.x + rect.width;
-            if (xmax >= imSize.width) xmax = (int)imSize.width-1;
+            int xmax = rect.x() + rect.width();
+            if (xmax >= imSize.width()) xmax = (int)imSize.width() - 1;
 
-            int ymin = rect.y;
+            int ymin = rect.y();
             if (ymin < 0) ymin = 0;
 
-            int ymax = rect.y + rect.height;
-            if (ymax >= imSize.height) ymax = (int)imSize.height-1;
+            int ymax = rect.y() + rect.height();
+            if (ymax >= imSize.height()) ymax = (int)imSize.height() - 1;
 
             // Logo is big if more than 5% of total height
-            double relSize = rect.height / imSize.height;
+            double relSize = rect.height() / imSize.height();
             if (relSize > .05) {
                 confidence += relSize;
                 if (confidence > 1) {
