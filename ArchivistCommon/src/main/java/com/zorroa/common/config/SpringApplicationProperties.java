@@ -107,6 +107,38 @@ public class SpringApplicationProperties implements ApplicationProperties {
         return result;
     }
 
+    public int max(String key, int value) {
+        try {
+            return Math.max(Integer.valueOf(getString(key)), value);
+        } catch (Throwable t) {
+            return value;
+        }
+    }
+
+    public double max(String key, double value) {
+        try {
+            return Math.max(Double.valueOf(getString(key)), value);
+        } catch (Throwable t) {
+            return value;
+        }
+    }
+
+    public int min(String key, int value) {
+        try {
+            return Math.min(Integer.valueOf(getString(key)), value);
+        } catch (Throwable t) {
+            return value;
+        }
+    }
+
+    public double min(String key, double value) {
+        try {
+            return Math.min(Double.valueOf(getString(key)), value);
+        } catch (Throwable t) {
+            return value;
+        }
+    }
+
     private void walkPropertySource(Map<String, Object> result, String prefix, PropertySource<?> propSource) {
 
         if (propSource instanceof CompositePropertySource) {
