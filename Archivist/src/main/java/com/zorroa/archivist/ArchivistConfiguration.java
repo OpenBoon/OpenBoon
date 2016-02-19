@@ -100,7 +100,7 @@ public class ArchivistConfiguration {
                 ImmutableSettings.settingsBuilder()
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
-                .put("script.native.archivistDate.type", "com.zorroa.archivist.ArchivistDateScriptFactory")
+                .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
                 .put("script.indexed", true)
                 .put("script.update", true)
                 .put("script.engine.groovy.indexed.update", true);
