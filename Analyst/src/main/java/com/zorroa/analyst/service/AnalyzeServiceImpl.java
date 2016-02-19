@@ -1,7 +1,6 @@
 package com.zorroa.analyst.service;
 
 import com.google.common.collect.Lists;
-import com.zorroa.analyst.repository.AssetDao;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
@@ -12,6 +11,7 @@ import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.IngestSchema;
+import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
 import org.apache.tika.Tika;
 import org.slf4j.Logger;
@@ -71,13 +71,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
 
             try {
-                /*
-                 * Set the previous version of the asset.
-                 * asset.setPreviousVersion(assetDao.getByPath(asset.getAbsolutePath()));
-                 */
-
+                builder.setPreviousVersion(
+                        assetDao.getByPath(builder.getAbsolutePath()));
                 builder.getSource().setType(tika.detect(builder.getSource().getPath()));
-
 
             } catch (Exception e) {
                 eventLogService.log(req, "Ingest error '{}', could not determine asset type on '{}'",
