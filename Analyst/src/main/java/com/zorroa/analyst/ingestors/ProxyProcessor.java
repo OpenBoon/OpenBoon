@@ -1,15 +1,14 @@
 package com.zorroa.analyst.ingestors;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.domain.Allocation;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.Argument;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
-import com.zorroa.archivist.sdk.util.Json;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.filters.Flip;
 import net.coobird.thumbnailator.filters.ImageFilter;
@@ -30,6 +29,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,9 +37,21 @@ public class ProxyProcessor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
 
-    private String defaultProxyFormat = "jpg";
+    @Argument(name="proxies")
+    private List<ProxyOutput> outputs = new ArrayList<ProxyOutput>(defaultProxyOutputs);
+
+    private static final String defaultProxyFormat = "jpg";
+    private static final List<ProxyOutput> defaultProxyOutputs = ImmutableList.<ProxyOutput>builder()
+            .add(new ProxyOutput(defaultProxyFormat, 1024, 8, 0.9f))
+            .add(new ProxyOutput(defaultProxyFormat, 256, 8, 0.7f))
+            .add(new ProxyOutput(defaultProxyFormat, 128, 8, 0.5f))
+            .build();
 
     public ProxyProcessor() { }
+
+    public List<ProxyOutput> getOutputs() {
+        return outputs;
+    }
 
     @Override
     public void process(AssetBuilder asset) {
@@ -52,18 +64,6 @@ public class ProxyProcessor extends IngestProcessor {
         if (asset.getImage() == null)  {
             logger.debug("There is no image metadata for making a proxy.");
             return;
-        }
-
-        List<ProxyOutput> outputs = Json.Mapper.convertValue(getArgs().get("proxies"),
-                new TypeReference<List<ProxyOutput>>() {});
-
-        if (outputs == null) {
-            String format = defaultProxyFormat;
-            outputs = Lists.newArrayList(
-                    new ProxyOutput(format, 1024, 8, 0.9f),
-                    new ProxyOutput(format, 256, 8, 0.7f),
-                    new ProxyOutput(format, 128, 8, 0.5f)
-            );
         }
 
         ProxySchema result = new ProxySchema();
