@@ -4,12 +4,14 @@
 
 package com.zorroa.analyst.ingestors;
 
+import com.google.common.collect.ImmutableList;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,14 +19,13 @@ public class RetrosheetIngestorTests extends AbstractTest {
 
     @Test
     public void testProcess() throws InterruptedException {
-        IngestProcessor imageProcessor = initIngestProcessor(new ImageIngestor());
-        IngestProcessor retroProcessor = initIngestProcessor(new RetrosheetIngestor());
-        imageProcessor.init();
-        retroProcessor.init();
-        AssetBuilder builder = new AssetBuilder(new File("src/test/resources/images/visa.jpg"));
-        builder.getSource().setType("image/");
-        imageProcessor.process(builder);
-        retroProcessor.process(builder);
-        assertEquals("sunny", builder.getAttr("retrosheet", "sky"));
+        final List<IngestProcessor> pipeline = ImmutableList.<IngestProcessor>builder()
+                .add(initIngestProcessor(new ImageIngestor()))
+                .add(initIngestProcessor(new RetrosheetIngestor()))
+                .build();
+
+        File file = getResourceFile("/images/visa.jpg");
+        AssetBuilder asset = ingestFile(file, pipeline);
+        assertEquals("sunny", asset.getAttr("retrosheet", "sky"));
     }
 }
