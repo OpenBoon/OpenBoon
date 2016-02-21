@@ -9,18 +9,14 @@ import com.google.common.io.Files;
 import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.caffe;
 import org.bytedeco.javacpp.opencv_core;
-import org.bytedeco.javacv.Java2DFrameConverter;
-import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.Arrays;
 
-import org.bytedeco.javacv.Frame;
 import static org.bytedeco.javacpp.caffe.*;
 import static org.bytedeco.javacpp.opencv_core.Mat;
 import static org.bytedeco.javacpp.opencv_core.MatVector;
@@ -46,8 +42,6 @@ public class CaffeClassifier {
     final Size kInputLayerGeometry;
     final Mat kModelMean;
     final List<List<String>> kSynsetLabels;
-    final Java2DFrameConverter java2DFrameConverter = new Java2DFrameConverter();
-    final OpenCVFrameConverter openCVFrameConverter = new OpenCVFrameConverter.ToMat();
 
     private static final Logger logger = LoggerFactory.getLogger(CaffeClassifier.class);
 
@@ -114,11 +108,6 @@ public class CaffeClassifier {
         }
 
         return synsetLabels;
-    }
-
-    public List<CaffeKeyword> classify(BufferedImage bufferedImage, int n, float threshold) {
-        Frame frame = java2DFrameConverter.convert(bufferedImage);
-        return classify(openCVFrameConverter.convertToMat(frame), n, threshold);
     }
 
     public List<CaffeKeyword> classify(Mat image, int n, float threshold) {

@@ -2,22 +2,15 @@ package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Ingest;
-import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.ProxySchema;
+import com.zorroa.archivist.sdk.schema.Argument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import static org.bytedeco.javacpp.opencv_core.Mat;
-import static org.bytedeco.javacpp.opencv_core.Rect;
-import static org.bytedeco.javacpp.opencv_core.RectVector;
-import static org.bytedeco.javacpp.opencv_core.Size;
-import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
+import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 
 
@@ -32,40 +25,16 @@ public class FaceIngestor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(FaceIngestor.class);
 
-    private static String cascadeName = "haarcascade_frontalface_alt.xml";
+    @Argument
+    private String cascadeName = "haarcascade_frontalface_alt.xml";
 
-    // CascadeClassifier is not thread-safe, so give one to each thread
-    private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>(){
-        @Override
-        protected CascadeClassifier initialValue() {
-            Map<String, String> env = System.getenv();
-            String modelPath = env.get("ZORROA_MODEL_PATH");
-            if (modelPath == null) {
-                logger.error("FaceIngestor requires ZORROA_MODEL_PATH");
-                return null;
-            }
-            String haarPath = modelPath + "/face/" + cascadeName;
-            CascadeClassifier classifier = null;
-            try {
-                classifier = new CascadeClassifier(haarPath);
-                if (classifier != null) {
-                    logger.debug("Face classifier initialized");
-                }
-            } catch (Exception e) {
-                logger.error("Face classifier failed to initialize: " + e.toString());
-            } finally {
-                return classifier;
-            }
-        }
-    };
-
-    public FaceIngestor() { }
+    private CascadeClassifier cascadeClassifier;
 
     @Override
     public void init() {
-        String argCascadeName = (String) getArgs().get("CascadeName");
-        if (argCascadeName != null) {
-            cascadeName = argCascadeName;
+        cascadeClassifier = OpenCVUtils.cascadeClassifier("face/" + cascadeName);
+        if (cascadeClassifier == null) {
+            logger.debug("Face classifier failed to initialize");
         }
     }
 
@@ -81,26 +50,9 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
-        ProxySchema proxyList = asset.getSchema("proxies", ProxySchema.class);
-        if (proxyList == null) {
-            logger.warn("Cannot find proxy list for {}, skipping Face analysis.", asset);
-            return;
-        }
-
-        String classifyPath = asset.getFile().getPath();
-        Size minFace = new Size(80, 80);
-        Size maxFace = new Size(1000, 1000);
-        for (Proxy proxy : proxyList) {
-            if (proxy.getWidth() >= 1000 || proxy.getHeight() >= 1000) {
-                classifyPath = proxy.getPath();
-                break;
-            }
-        }
-
         // Perform facial analysis
         logger.debug("Starting facial detection on {} ", asset);
-        Mat image = imread(classifyPath);
-        Size imSize = image.size();
+        Mat image = OpenCVUtils.convert(ProxyUtils.getImage(1000, asset));
 
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
         // in order to estimate a confidence value
@@ -130,7 +82,9 @@ public class FaceIngestor extends IngestProcessor {
 
         long faceCount = 0;
         for (int i = 0; i < options.size(); i++) {
-            cascadeClassifier.get().detectMultiScale(image, newFaceDetections, options.get(i).scaleFactor, (int)options.get(i).detectionThreshold, 0, minFace, maxFace);
+            cascadeClassifier.detectMultiScale(image, newFaceDetections,
+                    options.get(i).scaleFactor, (int)options.get(i).detectionThreshold,
+                    0 /*flags*/, new Size(80, 80) /*min*/, new Size(1000, 1000) /*max*/);
             long count = newFaceDetections.size();
             if (count > 0) {
                 confidence = options.get(i).finalConfidence;
@@ -149,7 +103,7 @@ public class FaceIngestor extends IngestProcessor {
             // Detect faces that are big enough for the 'bigface' label
             for (int i = 0; i < faceDetections.size(); ++i) {
                 Rect rect = faceDetections.get(i);
-                double relSize = rect.height() / imSize.height();
+                double relSize = rect.height() / image.size().height();
                 if (relSize > .1) {
                     confidence += relSize;
                     if (confidence > 1) {

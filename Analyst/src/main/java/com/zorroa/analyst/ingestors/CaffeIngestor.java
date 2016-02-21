@@ -2,9 +2,8 @@ package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.ProxySchema;
+import com.zorroa.archivist.sdk.schema.Argument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,8 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import static org.bytedeco.javacpp.opencv_core.Mat;
 
 /**
  *
@@ -26,39 +25,36 @@ import java.util.Map;
 public class CaffeIngestor extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(CaffeIngestor.class);
 
-    // CaffeClassifier is not thread-safe, so give one to each thread
-    private static final ThreadLocal<CaffeClassifier> caffeClassifier = new ThreadLocal<CaffeClassifier>() {
-        @Override
-        protected CaffeClassifier initialValue() {
-            logger.debug("Loading caffe models...");
-            Map<String, String> env = System.getenv();
-            String modelPath = env.get("ZORROA_MODEL_PATH");
-            if (modelPath == null) {
-                logger.error("CaffeIngestor requires ZORROA_MODEL_PATH");
-                return null;
-            }
-            String resourcePath = modelPath + "/caffe/imagenet/";
-            String[] name = {"deploy.prototxt", "bvlc_reference_caffenet.caffemodel",
-                    "imagenet_mean.binaryproto", "synset_words.txt"};
-            File[] file = new File[4];
-            for (int i = 0; i < 4; ++i) {
-                file[i] = new File(resourcePath + name[i]);
-                if (!file[i].exists()) {
-                    logger.error("CaffeIngestor model file " + file[i].getAbsolutePath() + " does not exist");
-                    return null;
-                }
-            }
-            CaffeClassifier caffeClassifier = null;
-            try {
-                caffeClassifier = new CaffeClassifier(file[0].getAbsolutePath(),
-                        file[1].getAbsolutePath(), file[2].getAbsolutePath(), file[3].getAbsolutePath());
-            } catch (IOException e) {
-                logger.error("Failed to initialize Caffe {}", e);
-            }
+    @Argument
+    private String deployFilename = "deploy.prototxt";
+
+    @Argument
+    private String caffeModelFilename = "bvlc_reference_caffenet.caffemodel";
+
+    @Argument
+    private String imagenetMeanFilename = "imagenet_mean.binaryproto";
+
+    @Argument
+    private String synsetWordFilename = "synset_words.txt";
+
+    @Argument
+    private CaffeClassifier caffeClassifier;
+
+    @Override
+    public void init() {
+        String resourcePath = ModelUtils.modelPath() + "/caffe/imagenet/";
+        logger.debug("Loading caffe models from " + resourcePath);
+        String deployPath = new File(resourcePath + deployFilename).getAbsolutePath();
+        String caffeModelPath = new File(resourcePath + caffeModelFilename).getAbsolutePath();
+        String imagenetMeanPath = new File(resourcePath + imagenetMeanFilename).getAbsolutePath();
+        String synsetWordPath = new File(resourcePath + synsetWordFilename).getAbsolutePath();
+        try {
+            caffeClassifier = new CaffeClassifier(deployPath, caffeModelPath, imagenetMeanPath, synsetWordPath);
             logger.debug("CaffeIngestor created");
-            return caffeClassifier;
+        } catch (IOException e) {
+            logger.error("Failed to initialize Caffe {}", e);
         }
-    };
+    }
 
     @Override
     public void process(AssetBuilder asset) {
@@ -72,11 +68,12 @@ public class CaffeIngestor extends IngestProcessor {
         }
 
         // Get the source image as an OpenCV Mat
-        BufferedImage source = selectSource(asset);
+        BufferedImage image = ProxyUtils.getImage(227, asset);
+        Mat mat = OpenCVUtils.convert(image);
 
         // Pass the image matrix to the classifier and get back an array of keywords+confidence
         final float confidenceThreshold = 0.1f;
-        List<CaffeKeyword> caffeKeywords = caffeClassifier.get().classify(source, 5, confidenceThreshold);
+        List<CaffeKeyword> caffeKeywords = caffeClassifier.classify(mat, 5, confidenceThreshold);
 
         // Add keywords with confidence and as a single block
         ArrayList<String> keywords = Lists.newArrayListWithCapacity(caffeKeywords.size());
@@ -87,26 +84,8 @@ public class CaffeIngestor extends IngestProcessor {
         asset.setAttr("caffe", "keywords", keywords);
     }
 
-    private BufferedImage selectSource(AssetBuilder asset) {
-        ProxySchema proxyList = asset.getAttr("proxies");
-        if (proxyList == null) {
-            logger.warn("Cannot find proxy list for {}, skipping Caffe analysis.", asset);
-            return null;
-        }
-
-        for (Proxy proxy : proxyList) {
-            if (proxy.getWidth() >= 256 || proxy.getHeight() >= 256) {
-                return proxy.getImage();
-            }
-        }
-
-        return asset.getImage();
-    }
-
     @Override
     public void teardown() {
-        caffeClassifier.get().destroy();
-        caffeClassifier.set(null);
-        caffeClassifier.remove();
+        caffeClassifier.destroy();
     }
 }
