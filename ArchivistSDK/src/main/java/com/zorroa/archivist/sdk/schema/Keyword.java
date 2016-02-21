@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface Keyword {
 
-    int confidence() default 5;
+    double confidence() default KeywordsSchema.CONFIDENCE_MAX;
 
 }
