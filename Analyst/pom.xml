@@ -233,6 +233,17 @@
                 <version>1.4.0</version>
 
                 <executions>
+                    <execution>
+                        <id>Remove Local Database</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/bin/rm</executable>
+                            <commandlineArgs>-rf data storage</commandlineArgs>
+                        </configuration>
+                    </execution>
 
                     <execution>
                         <id>Install JAR</id>
