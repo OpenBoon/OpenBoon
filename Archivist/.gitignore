@@ -4,6 +4,7 @@
 .settings
 .springBeans
 .idea
+unittest
 
 # Build directory
 target
