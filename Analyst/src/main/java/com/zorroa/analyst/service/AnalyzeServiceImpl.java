@@ -1,5 +1,9 @@
 package com.zorroa.analyst.service;
 
+import com.google.common.base.Objects;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
@@ -14,6 +18,7 @@ import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
 import org.apache.tika.Tika;
+import org.elasticsearch.indices.IndexMissingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,7 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chambers on 2/8/16.
@@ -63,7 +69,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         List<IngestProcessor> processors;
 
         try {
-            processors = createProcessingPipeline(req);
+            processors = getProcessingPipeline(req);
         } catch (Exception e) {
             throw new IngestException("Failed to initialize ingest pipeline, " + e.getMessage(), e);
         }
@@ -83,15 +89,20 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
 
             try {
-                builder.setPreviousVersion(
-                        assetDao.getByPath(builder.getAbsolutePath()));
                 builder.getSource().setType(tika.detect(builder.getSource().getPath()));
-
             } catch (Exception e) {
                 eventLogService.log(req, "Ingest error '{}', could not determine asset type on '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
                 result.errors++;
                 continue;
+            }
+
+            try {
+                builder.setPreviousVersion(
+                        assetDao.getByPath(builder.getAbsolutePath()));
+            } catch (IndexMissingException e) {
+                eventLogService.log(req, "Ingest error '{}', could not populate previous asset '{}'",
+                        e, e.getMessage(), builder.getAbsolutePath());
             }
 
             try {
@@ -138,25 +149,80 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     /**
+     * Wraps an AnalyzeRequest so we can use it as a cache key.
+     */
+    private static class IngestPipelineCacheKey {
+        private final AnalyzeRequest req;
+        private final long threadId;
+        private int ingestId;
+        private int pipelineId;
+
+        public IngestPipelineCacheKey(AnalyzeRequest req) {
+            this.req = req;
+            this.threadId = Thread.currentThread().getId();
+            this.ingestId = req.getIngestId();
+            this.pipelineId = req.getIngestPipelineId();
+        }
+
+        public int getIngestId() {
+            return ingestId;
+        }
+
+        public int getIngestPipelineId() {
+            return pipelineId;
+        }
+
+        public long getThreadId() {
+            return threadId;
+        }
+
+        public AnalyzeRequest getAnalyzeRequest() {
+            return req;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            IngestPipelineCacheKey that = (IngestPipelineCacheKey) o;
+            return getThreadId() == that.getThreadId() &&
+                    getIngestId() == that.getIngestId() &&
+                    getIngestPipelineId() == that.getIngestPipelineId();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(getThreadId(), getIngestId(), pipelineId);
+        }
+    }
+
+    private final LoadingCache<IngestPipelineCacheKey, List<IngestProcessor>> pipelineCache = CacheBuilder.newBuilder()
+            .expireAfterAccess(1, TimeUnit.HOURS)
+            .build(new CacheLoader<IngestPipelineCacheKey, List<IngestProcessor>>() {
+                public List<IngestProcessor> load(IngestPipelineCacheKey key) throws Exception {
+                    logger.info("initializing pipeline for i{}/p{}/t{}", key.getIngestId(), key.getIngestPipelineId(), key.getThreadId());
+                    List<IngestProcessor> result = Lists.newArrayListWithCapacity(key.getAnalyzeRequest().getProcessors().size());
+                    for (ProcessorFactory<IngestProcessor> factory : key.getAnalyzeRequest().getProcessors()) {
+                        IngestProcessor p = factory.newInstance();
+                        p.setApplicationProperties(applicationProperties);
+                        p.setObjectFileSystem(objectFileSystem);
+                        p.init();
+                        result.add(p);
+                    }
+                    return result;
+                }
+            });
+
+    /**
      *
      * Create the processing pipeline.
-     * TODO: add caching to this.
      *
      * @param req
      * @return
      * @throws Exception
      */
-    private List<IngestProcessor> createProcessingPipeline(AnalyzeRequest req) throws Exception {
-
-        List<IngestProcessor> result = Lists.newArrayListWithCapacity(req.getProcessors().size());
-        for (ProcessorFactory<IngestProcessor> factory : req.getProcessors()) {
-            IngestProcessor p = factory.newInstance();
-            p.setApplicationProperties(applicationProperties);
-            p.setObjectFileSystem(objectFileSystem);
-            p.init();
-            result.add(p);
-        }
-
-        return result;
+    private List<IngestProcessor> getProcessingPipeline(AnalyzeRequest req) throws Exception {
+        logger.info("getting processing pipeline");
+        return pipelineCache.get(new IngestPipelineCacheKey(req));
     }
 }
