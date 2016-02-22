@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class RetrosheetIngestor extends IngestProcessor {
 
@@ -61,13 +60,7 @@ public class RetrosheetIngestor extends IngestProcessor {
     public RetrosheetIngestor() { }
 
     public boolean readModelFiles() {
-        Map<String, String> env = System.getenv();
-        String modelPath = env.get("ZORROA_MODEL_PATH");
-        if (modelPath == null) {
-            logger.error("RetrosheetIngestor requires ZORROA_MODEL_PATH");
-            return false;
-        }
-        File modelFolder = new File(modelPath + "/retrosheet");
+        File modelFolder = new File(ModelUtils.modelPath() + "/retrosheet");
         if (!parseTeamFile(modelFolder)) {
             return false;
         }
