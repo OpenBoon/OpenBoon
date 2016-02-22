@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -49,9 +50,10 @@ public class FileSystemController {
     @Autowired
     ObjectFileSystem objectFileSystem;
 
-    @RequestMapping(value = "/api/v1/fs/{category}/**", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/fs/proxies/**", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<byte[]> getProxy(@PathVariable String category, HttpServletRequest request) throws ExecutionException {
+    public ResponseEntity<byte[]> getProxy(HttpServletRequest request, HttpServletResponse response) throws ExecutionException {
+        response.setHeader("Cache-Control", "public");
 
         String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
