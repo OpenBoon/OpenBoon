@@ -69,7 +69,7 @@
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>java-common</artifactId>
+            <artifactId>archivist-common</artifactId>
             <version>0.17</version>
         </dependency>
 
