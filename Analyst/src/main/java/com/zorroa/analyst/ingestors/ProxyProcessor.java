@@ -3,7 +3,6 @@ package com.zorroa.analyst.ingestors;
 import com.zorroa.archivist.sdk.domain.Allocation;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
-import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.Argument;
@@ -37,19 +36,35 @@ public class ProxyProcessor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
 
+    // Argument option that specifies how to output a single proxy
+    static class Output {
+        public int size;
+        public int bpp;
+        public String format;
+        public float quality;
+
+        public Output() {}  // Required for JSON if we define another ctor (i.e. below)
+        public Output(String format, int size, int bpp, float quality) {
+            this.size = size;
+            this.bpp = bpp;
+            this.format = format;
+            this.quality = quality;
+        }
+    }
+
     @Argument(name="proxies")
-    private List<ProxyOutput> outputs = new ArrayList<ProxyOutput>(defaultProxyOutputs);
+    private List<Output> outputs = new ArrayList<Output>(defaultOutputs);
 
     private static final String defaultProxyFormat = "jpg";
-    private static final List<ProxyOutput> defaultProxyOutputs = ImmutableList.<ProxyOutput>builder()
-            .add(new ProxyOutput(defaultProxyFormat, 1024, 8, 0.9f))
-            .add(new ProxyOutput(defaultProxyFormat, 256, 8, 0.7f))
-            .add(new ProxyOutput(defaultProxyFormat, 128, 8, 0.5f))
+    private static final List<Output> defaultOutputs = ImmutableList.<Output>builder()
+            .add(new Output(defaultProxyFormat, 1024, 8, 0.9f))
+            .add(new Output(defaultProxyFormat, 256, 8, 0.7f))
+            .add(new Output(defaultProxyFormat, 128, 8, 0.5f))
             .build();
 
     public ProxyProcessor() { }
 
-    public List<ProxyOutput> getOutputs() {
+    public List<Output> getOutputs() {
         return outputs;
     }
 
@@ -77,7 +92,7 @@ public class ProxyProcessor extends IngestProcessor {
          * Sort our proxy definitions large to small so we can make subsequent proxies
          * from the largest proxy.
          */
-        Collections.sort(outputs, (o1, o2) -> Integer.compare(o2.getSize(), o1.getSize()));
+        Collections.sort(outputs, (o1, o2) -> Integer.compare(o2.size, o1.size));
 
         /*
          * The first proxy is the large proxy.
@@ -86,8 +101,8 @@ public class ProxyProcessor extends IngestProcessor {
 
         try {
             final int width = asset.getImage().getWidth();
-            for (ProxyOutput spec : outputs) {
-                if (spec.getSize() > width) {
+            for (Output spec : outputs) {
+                if (spec.size > width) {
                     continue;
                 }
                 Proxy proxy = writeProxy(largeProxy != null ? largeProxy : asset.getImage(),
@@ -102,7 +117,7 @@ public class ProxyProcessor extends IngestProcessor {
              * If the source is too small for a proxy, make it a proxy!
              */
             if (result.isEmpty()) {
-                ProxyOutput spec = new ProxyOutput(defaultProxyFormat, width, 8, 0.5f);
+                Output spec = new Output(defaultProxyFormat, width, 8, 0.5f);
                 Proxy proxy = writeProxy(asset.getImage(), spec, allocation, getOrientationFilters(asset));
                 result.add(proxy);
             }
@@ -123,7 +138,7 @@ public class ProxyProcessor extends IngestProcessor {
     }
 
     /**
-     * Write a proxy of the buffered image using the settings found in ProxyOutput
+     * Write a proxy of the buffered image using the settings found in Output
      * to the given Allocation.  Also apply any supplied image filters.
      *
      * @param image
@@ -133,26 +148,26 @@ public class ProxyProcessor extends IngestProcessor {
      * @return
      * @throws IOException
      */
-    private Proxy writeProxy(BufferedImage image, ProxyOutput output, Allocation allocation, List<ImageFilter> filters) throws Exception {
-        int height = Math.round(output.getSize() / (image.getWidth() / (float)image.getHeight()));
-        File path = allocation.getAbsolutePath(output.getFormat(), output.getSize() + "x" + height);
+    private Proxy writeProxy(BufferedImage image, Output output, Allocation allocation, List<ImageFilter> filters) throws Exception {
+        int height = Math.round(output.size / (image.getWidth() / (float)image.getHeight()));
+        File path = allocation.getAbsolutePath(output.format, output.size + "x" + height);
 
         BufferedImage proxyImage = Thumbnails.of(image)
-                .width(output.getSize())
+                .width(output.size)
                 .height(height)
                 .imageType(BufferedImage.TYPE_3BYTE_BGR)
                 .rendering(Rendering.QUALITY)
                 .addFilters(filters)
                 .asBufferedImage();
 
-        ImageWriter writer = ImageIO.getImageWritersByFormatName(output.getFormat()).next();
+        ImageWriter writer = ImageIO.getImageWritersByFormatName(output.format).next();
         /*
          * Doesn't seem to work on PNG.
          */
-        if (output.getFormat().equals("jpg")) {
+        if (output.format.equals("jpg")) {
             ImageWriteParam param = writer.getDefaultWriteParam();
             param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            param.setCompressionQuality(output.getQuality());
+            param.setCompressionQuality(output.quality);
         }
 
         try (ImageOutputStream ios = ImageIO.createImageOutputStream(path)) {
@@ -168,16 +183,16 @@ public class ProxyProcessor extends IngestProcessor {
         url.append(":");
         url.append(applicationProperties.getInt("server.port"));
         url.append("/api/v1/fs/");
-        url.append(allocation.getRelativePath(output.getFormat(), output.getSize() + "x" + height));
+        url.append(allocation.getRelativePath(output.format, output.size + "x" + height));
 
         Proxy result = new Proxy();
         result.setImage(proxyImage);
         result.setPath(path.getAbsolutePath());
         result.setUri(url.toString());
         result.setName(FileUtils.filename(path.getPath()));
-        result.setWidth(output.getSize());
+        result.setWidth(output.size);
         result.setHeight(height);
-        result.setFormat(output.getFormat());
+        result.setFormat(output.format);
         return result;
     }
 

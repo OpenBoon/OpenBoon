@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
-import com.zorroa.archivist.sdk.domain.ProxyOutput;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.junit.Test;
@@ -60,11 +59,11 @@ public class ProxyProcessorTests extends AbstractTest {
         proxyProcessor.init();
 
         // Test to make sure extraction worked
-        List<ProxyOutput> outputs = proxyProcessor.getOutputs();
+        List<ProxyProcessor.Output> outputs = proxyProcessor.getOutputs();
         assertEquals(1, outputs.size());
-        assertEquals("png", outputs.get(0).getFormat());
-        assertEquals(227, outputs.get(0).getSize());
-        assertEquals(8, outputs.get(0).getBpp());
-        assertEquals("quality", 0.5, outputs.get(0).getQuality(), 1e-6);
+        assertEquals("png", outputs.get(0).format);
+        assertEquals(227, outputs.get(0).size);
+        assertEquals(8, outputs.get(0).bpp);
+        assertEquals("quality", 0.5, outputs.get(0).quality, 1e-6);
     }
 }
