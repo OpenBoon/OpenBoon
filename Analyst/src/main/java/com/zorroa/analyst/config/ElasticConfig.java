@@ -1,5 +1,6 @@
 package com.zorroa.analyst.config;
 
+import com.zorroa.analyst.Application;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
@@ -38,8 +39,15 @@ public class ElasticConfig {
                         .put("script.update", true)
                         .put("script.engine.groovy.indexed.update", true);
 
+        if (Application.isUnitTest()) {
+            builder.put("path.data", "unittest/data");
+            builder.put("index.refresh_interval", "1s");
+            builder.put("index.translog.disable_flush", true);
+        }
+
         Node node = nodeBuilder()
                 .data(true)
+                .local(Application.isUnitTest())
                 .settings(builder.build())
                 .node();
 

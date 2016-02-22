@@ -40,6 +40,10 @@ public abstract class AbstractTest {
     @Autowired
     protected ObjectFileSystem objectFileSystem;
 
+    public AbstractTest() {
+        System.setProperty("zorroa.unittest", "true");
+    }
+
     public IngestProcessor initIngestProcessor(IngestProcessor p) {
         p.setObjectFileSystem(objectFileSystem);
         p.setApplicationProperties(applicationProperties);
