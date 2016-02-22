@@ -109,10 +109,12 @@ public class ArchivistConfiguration {
             builder.put("path.data", "unittest/data");
             builder.put("index.refresh_interval", "1s");
             builder.put("index.translog.disable_flush", true);
+
         }
 
         Node node = nodeBuilder()
                 .data(true)
+                .local(unittest)
                 .settings(builder.build())
                 .node();
 
