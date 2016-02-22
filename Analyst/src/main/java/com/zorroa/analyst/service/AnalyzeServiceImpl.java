@@ -154,14 +154,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private static class IngestPipelineCacheKey {
         private final AnalyzeRequest req;
         private final long threadId;
-        private int ingestId;
-        private int pipelineId;
+        private final int ingestId;
+        private final int ingestPipelineId;
 
         public IngestPipelineCacheKey(AnalyzeRequest req) {
             this.req = req;
             this.threadId = Thread.currentThread().getId();
             this.ingestId = req.getIngestId();
-            this.pipelineId = req.getIngestPipelineId();
+            this.ingestPipelineId = req.getIngestPipelineId();
         }
 
         public int getIngestId() {
@@ -169,7 +169,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         public int getIngestPipelineId() {
-            return pipelineId;
+            return ingestPipelineId;
         }
 
         public long getThreadId() {
@@ -192,7 +192,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(getThreadId(), getIngestId(), pipelineId);
+            return Objects.hashCode(getThreadId(), getIngestId(), getIngestPipelineId());
         }
     }
 
