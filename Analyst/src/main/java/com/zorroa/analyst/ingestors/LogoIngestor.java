@@ -3,16 +3,15 @@ package com.zorroa.analyst.ingestors;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.Argument;
 import com.zorroa.archivist.sdk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.bytedeco.javacpp.opencv_core.*;
-import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 import static org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 
 
@@ -27,36 +26,18 @@ public class LogoIngestor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(LogoIngestor.class);
 
-    private static String cascadeName = "visaLogo.xml";
+    @Argument
+    private String cascadeName = "visaLogo.xml";
 
-    // CascadeClassifier is not thread-safe, so give one to each thread
-    private static final ThreadLocal<CascadeClassifier> cascadeClassifier = new ThreadLocal<CascadeClassifier>() {
-        @Override
-        protected CascadeClassifier initialValue() {
-            Map<String, String> env = System.getenv();
-            String modelPath = env.get("ZORROA_MODEL_PATH");
-            if (modelPath == null) {
-                logger.error("LogoIngestor requires ZORROA_MODEL_PATH");
-                return null;
-            }
+    private CascadeClassifier cascadeClassifier;
 
-            String haarPath = modelPath + "/logo/" + cascadeName;
-            logger.debug("Logo processor haarPath path: {}", haarPath);
-            CascadeClassifier classifier = null;
-            try {
-                classifier = new CascadeClassifier(haarPath);
-                if (classifier != null) {
-                    logger.debug("Logo classifier initialized");
-                }
-            } catch (Exception e) {
-                logger.error("Logo classifier failed to initialize: " + e.toString());
-            } finally {
-                return classifier;
-            }
+    @Override
+    public void init() {
+        cascadeClassifier = OpenCVUtils.cascadeClassifier("logo/" + cascadeName);
+        if (cascadeClassifier == null) {
+            logger.debug("Logo classifier failed to initialize");
         }
-    };
-
-    public LogoIngestor() { }
+    }
 
     @Override
     public void process(AssetBuilder asset) {
@@ -70,23 +51,10 @@ public class LogoIngestor extends IngestProcessor {
             return;
         }
 
-        String argCascadeName = (String) getArgs().get("CascadeName");
-        if (argCascadeName != null) {
-            cascadeName = argCascadeName;
-        }
-        if (!asset.getSource().getType().startsWith("image")) {
-            return;
-        }
-
-        String classifyPath = asset.getFile().getPath();
-        Size minLogo = new Size(100, 50);
-        Size maxLogo = new Size(4000, 2000);
-
         // Perform analysis on the full resolution source image. The VISA and other logos tend to be rather small in
         // the frame, and using the proxy misses many logos.
         logger.debug("Starting logo detection on {}", asset.getFilename());
-        Mat image = imread(classifyPath);
-        Size imSize = image.size();
+        Mat image = OpenCVUtils.convert(asset.getImage());
 
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
         // in order to estimate a confidence value.
@@ -115,8 +83,12 @@ public class LogoIngestor extends IngestProcessor {
                 new ClassifyOptions(1.005, 60, 0.5));
 
         long logoCount = 0;
+        Size minLogo = new Size(100, 50);
+        Size maxLogo = new Size(4000, 2000);
         for (int i = 0; i < options.size(); i++) {
-            cascadeClassifier.get().detectMultiScale(image, newLogoDetections, options.get(i).scaleFactor, (int)options.get(i).detectionThreshold, 0, minLogo, maxLogo);
+            cascadeClassifier.detectMultiScale(image, newLogoDetections,
+                    options.get(i).scaleFactor, (int)options.get(i).detectionThreshold,
+                    0 /*flags*/, minLogo, maxLogo);
             long count = newLogoDetections.size();
             if (count > 0) {
                 confidence = options.get(i).finalConfidence;
@@ -138,6 +110,9 @@ public class LogoIngestor extends IngestProcessor {
         StringBuilder svgVal = new StringBuilder(1024);
         svgVal.append("<svg>");
 
+        final int w = image.size().width();
+        final int h = image.size().height();
+
         for (int i = 0; i < logoDetections.size(); ++i) {
             Rect rect = logoDetections.get(i);
             // Detect points in the area found by the Haar cascade
@@ -145,16 +120,16 @@ public class LogoIngestor extends IngestProcessor {
             if (xmin < 0) xmin = 0;
 
             int xmax = rect.x() + rect.width();
-            if (xmax >= imSize.width()) xmax = (int)imSize.width() - 1;
+            if (xmax >= w) xmax = w - 1;
 
             int ymin = rect.y();
             if (ymin < 0) ymin = 0;
 
             int ymax = rect.y() + rect.height();
-            if (ymax >= imSize.height()) ymax = (int)imSize.height() - 1;
+            if (ymax >= h) ymax = h - 1;
 
             // Logo is big if more than 5% of total height
-            double relSize = rect.height() / imSize.height();
+            double relSize = rect.height() / (double)h;
             if (relSize > .05) {
                 confidence += relSize;
                 if (confidence > 1) {

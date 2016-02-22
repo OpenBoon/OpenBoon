@@ -25,9 +25,10 @@ public class LogoIngestorTests extends AbstractTest {
         AssetBuilder asset = ingestFile(file, pipeline);
 
         List<String> keywords = asset.getAttr("Logos", "keywords");
-        assertEquals(2, keywords.size());
+        assertEquals(3, keywords.size());
         assertEquals("visa", keywords.get(0));
-        assertEquals("visa0.5", keywords.get(1));
+        assertEquals("bigvisa", keywords.get(1));
+        assertEquals("visa0.6283255086071987", keywords.get(2));
     }
 
 }
