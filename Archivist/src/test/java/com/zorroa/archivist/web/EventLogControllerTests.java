@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.TestCountResult;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.sdk.domain.EventLogMessage;
@@ -66,5 +67,36 @@ public class EventLogControllerTests extends MockMvcTest {
         TestSearchResult hits = Json.Mapper.readValue(
                 result.getResponse().getContentAsString(), TestSearchResult.class);
         assertEquals(1, hits.getHits().getTotal());
+    }
+
+    @Test
+    public void testCountEmptySearch() throws Exception {
+        long current = eventLogDao.getAll(new EventLogSearch()).getHits().totalHits();
+        MvcResult result = mvc.perform(post("/api/v1/eventlog/_count")
+                .session(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+        TestCountResult hits = Json.Mapper.readValue(
+                result.getResponse().getContentAsString(), TestCountResult.class);
+        assertEquals(10, hits.getCount());
+    }
+
+    @Test
+    public void testCountBySearch() throws Exception {
+
+        EventLogSearch search = new EventLogSearch();
+        search.setTags(Sets.newHashSet("bilbo1"));
+
+        MvcResult result = mvc.perform(post("/api/v1/eventlog/_count")
+                .session(admin())
+                .content(Json.serialize(search))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        TestCountResult hits = Json.Mapper.readValue(
+                result.getResponse().getContentAsString(), TestCountResult.class);
+        assertEquals(1, hits.getCount());
     }
 }
