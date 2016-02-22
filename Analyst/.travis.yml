@@ -5,13 +5,10 @@ jdk:
   - oraclejdk8
 
 install:
-  - ./travis/travis-opencv-install.sh 
   - ./travis/travis-ingestor-files.sh
   - ./travis/travis-install-archivist-sdk.sh
+  - ./travis/travis-install-java-common.sh
   - ./travis/travis-install-archivist.sh
-
-script:
-  - mvn verify
 
 notifications:
   slack: zorroa:U0489fQGuSPls5EZZfSUoGsL

@@ -140,7 +140,7 @@ public class ProxyProcessor extends IngestProcessor {
         BufferedImage proxyImage = Thumbnails.of(image)
                 .width(output.getSize())
                 .height(height)
-                .imageType(BufferedImage.TYPE_INT_RGB)
+                .imageType(BufferedImage.TYPE_3BYTE_BGR)
                 .rendering(Rendering.QUALITY)
                 .addFilters(filters)
                 .asBufferedImage();
@@ -171,7 +171,7 @@ public class ProxyProcessor extends IngestProcessor {
         url.append(allocation.getRelativePath(output.getFormat(), output.getSize() + "x" + height));
 
         Proxy result = new Proxy();
-        result.setImage(image);
+        result.setImage(proxyImage);
         result.setPath(path.getAbsolutePath());
         result.setUri(url.toString());
         result.setName(FileUtils.filename(path.getPath()));
