@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
@@ -37,6 +38,13 @@ public class EventLogDaoImpl implements EventLogDao {
                 .setSize(search.getLimit())
                 .setFrom((search.getPage() -1) * (search.getLimit()))
                 .addSort("timestamp", SortOrder.DESC)
+                .get();
+    }
+
+    @Override
+    public CountResponse getCount(EventLogSearch search) {
+        return client.prepareCount("eventlog")
+                .setQuery(getQuery(search))
                 .get();
     }
 

@@ -1,6 +1,7 @@
 package com.zorroa.archivist;
 
 import com.zorroa.archivist.sdk.util.FileUtils;
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
@@ -38,5 +39,19 @@ public class HttpUtils {
             content.close();
             FileUtils.close(out);
         }
+    }
+
+    public static String countResponse(CountResponse response) {
+        return new StringBuilder(128)
+                .append("{\"count\":")
+                .append(response.getCount())
+                .append(",\"_shards\":{\"total\":")
+                .append(response.getTotalShards())
+                .append(",\"successful\":")
+                .append(response.getSuccessfulShards())
+                .append(",\"failed\":")
+                .append(response.getFailedShards())
+                .append("}}")
+                .toString();
     }
 }

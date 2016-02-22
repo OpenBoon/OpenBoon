@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 
 /**
@@ -17,4 +18,13 @@ public interface EventLogDao {
      * @return
      */
     SearchResponse getAll(EventLogSearch search);
+
+
+    /**
+     * Execute a count query in the event log.
+     *
+     * @param search
+     * @return
+     */
+    CountResponse getCount(EventLogSearch search);
 }

@@ -344,16 +344,22 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public String normalizePath(String path) {
         String result = path;
 
-        URI uri = URI.create(path);
-        /**
-         * If the URI has no scheme, then it must be an absolute file path.
-         */
-        if (uri.getScheme() == null) {
-            if (!path.startsWith("/") || path.contains("../")) {
-                throw new IllegalArgumentException("File path must be absolute.");
+        try {
+            URI uri = URI.create(path);
+
+            /**
+             * If the URI has no scheme, then it must be an absolute file path.
+             */
+            if (uri.getScheme() == null) {
+                if (!path.startsWith("/") || path.contains("../")) {
+                    throw new IllegalArgumentException("File path must be absolute.");
+                }
+                path = "file:" + path;
             }
-            path = "file:" + path;
+        } catch (Exception e) {
+            logger.error("Invalid ingest path URI {}", path, e);
         }
+
         return result;
     }
 
