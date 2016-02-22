@@ -163,8 +163,8 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testCountWithMessageQueryString() {
-        eventLogDao.log(new EventLogMessage(ingest, "test jim bob mary {} {} {}", 1, 2, 3));
-        eventLogDao.log(new EventLogMessage(ingest, "test jesus joseph mary {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage(ingest, "test jim bob mary {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage(ingest, "test jesus joseph mary {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         assertEquals(1, eventLogDao.getCount(new EventLogSearch("jim")).getCount());
