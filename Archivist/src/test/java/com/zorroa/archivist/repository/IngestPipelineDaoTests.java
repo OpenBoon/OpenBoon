@@ -2,8 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.ingestors.ChecksumProcessor;
-import com.zorroa.archivist.ingestors.ProxyProcessor;
+import com.zorroa.archivist.TestIngestor;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
@@ -27,7 +26,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         IngestPipelineBuilder request = new IngestPipelineBuilder();
         request.setName("test");
         request.setDescription("a test pipeline");
-        request.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ChecksumProcessor.class)));
+        request.setProcessors(Lists.newArrayList(new ProcessorFactory<>(TestIngestor.class)));
         pipeline = ingestPipelineDao.create(request);
     }
 
@@ -60,7 +59,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         IngestPipelineUpdateBuilder builder = new IngestPipelineUpdateBuilder();
         builder.setName("foo");
         builder.setDescription("foo");
-        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ProxyProcessor.class)));
+        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(TestIngestor.class)));
 
         assertTrue(ingestPipelineDao.update(pipeline, builder));
         IngestPipeline updated = ingestPipelineDao.get(pipeline.getId());

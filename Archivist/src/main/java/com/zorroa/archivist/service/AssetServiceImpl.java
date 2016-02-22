@@ -1,11 +1,11 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.repository.AssetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

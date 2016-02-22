@@ -2,9 +2,11 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.TestSearchResult;
-import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.domain.Asset;
+import com.zorroa.archivist.sdk.domain.Folder;
+import com.zorroa.archivist.sdk.domain.FolderBuilder;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -251,9 +253,7 @@ public class FolderControllerTests extends MockMvcTest {
     @Test
     public void testAddAsset() throws Exception {
         authenticate();
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
@@ -279,9 +279,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testRemoveAsset() throws Exception {
         authenticate();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
@@ -308,9 +306,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testGetAssets() throws Exception {
         authenticate();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath("standard")));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));

@@ -9,6 +9,7 @@ import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.common.service.EventLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

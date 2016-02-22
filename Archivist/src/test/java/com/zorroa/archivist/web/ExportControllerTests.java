@@ -38,9 +38,7 @@ public class ExportControllerTests extends MockMvcTest {
     public void init() {
         session = admin();
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex(1000);
+        addTestAssets("standard");
 
         ExportOptions options = new ExportOptions();
         options.getImages().setFormat("jpg");

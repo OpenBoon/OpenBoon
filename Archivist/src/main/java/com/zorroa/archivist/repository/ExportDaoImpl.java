@@ -3,10 +3,9 @@ package com.zorroa.archivist.repository;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
-import org.apache.commons.lang3.StringUtils;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -81,7 +80,7 @@ public class ExportDaoImpl extends AbstractDao implements ExportDao {
 
         if (!wheres.isEmpty()) {
             sb.append(" WHERE ");
-            sb.append(StringUtils.join(wheres, " AND "));
+            sb.append(String.join(" AND ", wheres));
         }
 
         // newest first

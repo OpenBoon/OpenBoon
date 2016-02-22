@@ -6,7 +6,7 @@ jdk:
 install:
   - rm -rf db proxies exports unittest
   - ./travis/travis-install-archivist-sdk.sh
-  - ./travis/travis-install-image-drivers.sh
+  - ./travis/travis-install-java-common.sh
 
 notifications:
   slack: zorroa:U0489fQGuSPls5EZZfSUoGsL

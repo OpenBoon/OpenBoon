@@ -4,13 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
-import com.zorroa.archivist.domain.BulkAssetUpsertResult;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
 import com.zorroa.archivist.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.sdk.schema.SourceSchema;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.common.repository.AssetDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -177,7 +177,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
         assetBuilder = new AssetBuilder(getTestImage("new_zealand_wellington_harbour.jpg"));
         assetBuilder.setAttr("foo", "bar", "bing");
-        BulkAssetUpsertResult result = assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
+        AnalyzeResult result = assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
         assertEquals(1, result.created);
         assertEquals(1, result.retries);
 

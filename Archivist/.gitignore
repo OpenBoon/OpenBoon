@@ -8,6 +8,7 @@ unittest
 
 # Build directory
 target
+unittest
 
 # Elastic DB files
 data

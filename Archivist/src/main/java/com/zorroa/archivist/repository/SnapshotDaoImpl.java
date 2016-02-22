@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Snapshot;
 import com.zorroa.archivist.domain.SnapshotBuilder;
 import com.zorroa.archivist.domain.SnapshotRestoreBuilder;
 import com.zorroa.archivist.domain.SnapshotState;
+import com.zorroa.common.elastic.AbstractElasticDao;
 import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotResponse;

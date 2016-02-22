@@ -4,6 +4,8 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.common.repository.AssetDao;
+import com.zorroa.common.service.EventLogService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
     EventLogDao eventLogDao;
 
     @Autowired
+    EventLogService eventLogService;
+
+    @Autowired
     AssetDao assetDao;
 
     Ingest ingest;
@@ -31,7 +36,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
          * So the logging happens right away, otherwise the test exits before the
          * data is applied and we don't see any mapping errors.
          */
-        eventLogDao.setSynchronous(true);
+        eventLogService.setSynchronous(true);
 
         pipeline = ingestService.getIngestPipeline("standard");
         IngestBuilder builder = new IngestBuilder(getStaticImagePath());
@@ -40,7 +45,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
         /**
          * Adding a single log will create the alias.
          */
-        eventLogDao.log(new EventLogMessage("starting event log test"));
+        eventLogService.log(new EventLogMessage("starting event log test"));
         refreshIndex("eventlog", 10);
     }
 
@@ -48,7 +53,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
     @Test
     public void testSimpleLog() {
         long current = eventLogDao.getAll(new EventLogSearch()).getHits().totalHits();
-        eventLogDao.log(new EventLogMessage("testing {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage("testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         logger.info("current:{}", current);
@@ -58,7 +63,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testLogIngest() {
-        eventLogDao.log(new EventLogMessage(ingest, "testing {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage(ingest, "testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         EventLogSearch search = new EventLogSearch();
@@ -77,7 +82,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
         Asset asset = assetDao.upsert(builder);
         refreshIndex();
 
-        eventLogDao.log(new EventLogMessage(asset, "testing {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage(asset, "testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         EventLogSearch search = new EventLogSearch();
@@ -97,7 +102,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
         message.setPath("/foo/bar/bing");
         message.setTags(Sets.newHashSet("foo", "bar"));
         message.setType("Asset");
-        eventLogDao.log(message);
+        eventLogService.log(message);
         refreshIndex("eventlog", 100);
 
         EventLogSearch search = new EventLogSearch();
@@ -110,7 +115,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
         EventLogMessage message = new EventLogMessage();
         message.setMessage("a log message");
         message.setException(new Exception("foo bar!"));
-        eventLogDao.log(message);
+        eventLogService.log(message);
         refreshIndex("eventlog", 100);
 
         String[] stack = Json.Mapper.convertValue(
@@ -121,7 +126,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
     @Test
     public void testGetAllEmptySearch() {
 
-        eventLogDao.log(new EventLogMessage(ingest, "testing {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage(ingest, "testing {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
         assertEquals(2, eventLogDao.getAll(new EventLogSearch()).getHits().totalHits());
     }
@@ -130,7 +135,7 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
     public void testGetAllPaged() {
         long current = eventLogDao.getAll(new EventLogSearch()).getHits().totalHits();
         for (int i=0; i<10; i++) {
-            eventLogDao.log(new EventLogMessage(ingest, "part:{}", i));
+            eventLogService.log(new EventLogMessage(ingest, "part:{}", i));
         }
         refreshIndex("eventlog", 100);
 
@@ -145,8 +150,8 @@ public class EventLogDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void testGetAllWithMessageQueryString() {
-        eventLogDao.log(new EventLogMessage(ingest, "test jim bob mary {} {} {}", 1, 2, 3));
-        eventLogDao.log(new EventLogMessage(ingest, "test jesus joseph mary {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage(ingest, "test jim bob mary {} {} {}", 1, 2, 3));
+        eventLogService.log(new EventLogMessage(ingest, "test jesus joseph mary {} {} {}", 1, 2, 3));
         refreshIndex("eventlog", 100);
 
         assertEquals(1, eventLogDao.getAll(new EventLogSearch("jim")).getHits().totalHits());

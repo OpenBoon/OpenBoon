@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.Collection;
@@ -102,7 +101,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     @Override
-    public List<Permission> getAll(@Nullable Integer[] ids) {
+    public List<Permission> getAll(Integer[] ids) {
         if (ids == null || ids.length == 0) {
             return Lists.newArrayListWithCapacity(1);
         }

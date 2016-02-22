@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -84,6 +85,7 @@ public class IngestScheduleDaoTests extends ArchivistApplicationTests {
     }
 
     @Test
+    @Ignore
     public void determineNextRuntime() {
 
         IngestScheduleBuilder builder = new IngestScheduleBuilder();

@@ -28,9 +28,7 @@ public class ExportServiceTests extends ArchivistApplicationTests {
     @Before
     public void init() {
 
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
-        refreshIndex();
+        addTestAssets("standard");
 
         ExportOptions options = new ExportOptions();
         options.getImages().setFormat("jpg");

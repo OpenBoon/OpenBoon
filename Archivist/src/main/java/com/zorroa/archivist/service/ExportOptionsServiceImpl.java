@@ -26,7 +26,7 @@ public class ExportOptionsServiceImpl implements ExportOptionsService {
         ExportedAsset result = new ExportedAsset(export, output, asset);
         String type = result.getAsset().getSource().getType();
 
-        if (type.startsWith("image/")) {
+        if (type != null && type.startsWith("image/")) {
             applyImageOptions(export, result);
         }
         // TODO: add other types.

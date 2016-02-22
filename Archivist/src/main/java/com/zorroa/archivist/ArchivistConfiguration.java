@@ -100,9 +100,7 @@ public class ArchivistConfiguration {
                 ImmutableSettings.settingsBuilder()
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
-                .put("discovery.zen.ping.multicast.enabled", false)
-                .put("cluster.routing.allocation.disk.threshold_enabled", false)
-                .put("script.native.archivistDate.type", "com.zorroa.archivist.ArchivistDateScriptFactory")
+                .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
                 .put("script.indexed", true)
                 .put("script.update", true)
                 .put("script.engine.groovy.indexed.update", true);
@@ -115,7 +113,6 @@ public class ArchivistConfiguration {
 
         Node node = nodeBuilder()
                 .data(true)
-                .local(true)
                 .settings(builder.build())
                 .node();
 

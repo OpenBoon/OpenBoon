@@ -29,7 +29,7 @@ import java.util.Map;
 @RestController
 public class AssetController {
 
-    @Value("${archivist.index.alias}")
+    @Value("${zorroa.common.index.alias}")
     private String alias;
 
     @Autowired

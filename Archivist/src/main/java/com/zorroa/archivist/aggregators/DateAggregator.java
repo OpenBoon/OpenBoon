@@ -1,15 +1,12 @@
-package com.zorroa.archivist.ingestors;
+package com.zorroa.archivist.aggregators;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -18,9 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class DateAggregator extends IngestProcessor {
-
-    private static final Logger logger = LoggerFactory.getLogger(DateAggregator.class);
+public class DateAggregator extends Aggregator {
 
     @Autowired
     SearchService searchService;
@@ -46,7 +41,7 @@ public class DateAggregator extends IngestProcessor {
     }
 
     @Override
-    public void process(AssetBuilder asset) {
+    public void aggregate() {
 
         // Create an aggregation over all of the years
         AssetAggregateBuilder yearAggBuilder = createYearAggBuilder();
