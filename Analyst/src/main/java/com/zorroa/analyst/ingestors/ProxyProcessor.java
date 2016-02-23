@@ -43,6 +43,7 @@ public class ProxyProcessor extends IngestProcessor {
         public String format;
         public float quality;
 
+        public Output() {}  // Required for JSON mapper due to alternate ctor below
         public Output(String format, int size, int bpp, float quality) {
             this.size = size;
             this.bpp = bpp;
