@@ -11,10 +11,11 @@
     <groupId>com.zorroa</groupId>
     <artifactId>analyst</artifactId>
     <version>0.17.0</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>com.zorroa.analyst.Application</start-class>
         <java.version>1.8</java.version>
         <com.zorroa.appDir>"/Library/Application Support/Zorroa"</com.zorroa.appDir>
         <com.zorroa.extensionDir>${com.zorroa.appDir}/java/extensions</com.zorroa.extensionDir>
@@ -209,6 +210,15 @@
     <build>
 
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>analyst</finalName>
+                </configuration>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
