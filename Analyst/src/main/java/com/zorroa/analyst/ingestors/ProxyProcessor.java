@@ -43,7 +43,6 @@ public class ProxyProcessor extends IngestProcessor {
         public String format;
         public float quality;
 
-        public Output() {}  // Required for JSON if we define another ctor (i.e. below)
         public Output(String format, int size, int bpp, float quality) {
             this.size = size;
             this.bpp = bpp;
@@ -61,8 +60,6 @@ public class ProxyProcessor extends IngestProcessor {
             .add(new Output(defaultProxyFormat, 256, 8, 0.7f))
             .add(new Output(defaultProxyFormat, 128, 8, 0.5f))
             .build();
-
-    public ProxyProcessor() { }
 
     public List<Output> getOutputs() {
         return outputs;
