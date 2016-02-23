@@ -19,17 +19,13 @@ public final class ProxyUtils {
     // Return the smallest proxy, or the source image, larger than the threshold
     public static BufferedImage getImage(int minDim, AssetBuilder asset) {
         ProxySchema proxyList = asset.getAttr("proxies");
-        if (proxyList == null) {
-            logger.warn("Cannot find proxy list for {}, skipping Caffe analysis.", asset);
-            return null;
-        }
-
-        for (Proxy proxy : proxyList) {
-            if (proxy.getWidth() >= minDim || proxy.getHeight() >= minDim) {
-                return proxy.getImage();
+        if (proxyList != null) {
+            for (Proxy proxy : proxyList) {
+                if (proxy.getWidth() >= minDim || proxy.getHeight() >= minDim) {
+                    return proxy.getImage();
+                }
             }
         }
-
         return asset.getImage();
     }
 }
