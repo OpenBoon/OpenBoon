@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 public class Proxy {
     private String name;
-    private String path;
     private String uri;
     private int width;
     private int height;
@@ -22,15 +21,6 @@ public class Proxy {
 
     public void setUri(String uri) {
         this.uri = uri;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public Proxy setPath(String path) {
-        this.path = path;
-        return this;
     }
 
     public int getWidth() {
