@@ -17,6 +17,11 @@ public class AssetSearch {
     private String query;
 
     /**
+     * The fields to include in the result.  An empty or null list means all fields.
+     */
+    private String[] fields;
+
+    /**
      * Filters that are applied to the keyword search results.
      */
     private AssetFilter filter;
@@ -137,4 +142,12 @@ public class AssetSearch {
         return this;
     }
 
+    public String[] getFields() {
+        return fields;
+    }
+
+    public AssetSearch setFields(String[] fields) {
+        this.fields = fields;
+        return this;
+    }
 }
