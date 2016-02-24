@@ -185,7 +185,6 @@ public class ProxyProcessor extends IngestProcessor {
 
         Proxy result = new Proxy();
         result.setImage(proxyImage);
-        result.setPath(path.getAbsolutePath());
         result.setUri(url.toString());
         result.setName(FileUtils.filename(path.getPath()));
         result.setWidth(output.size);
