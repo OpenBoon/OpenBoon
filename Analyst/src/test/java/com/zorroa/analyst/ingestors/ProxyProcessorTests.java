@@ -30,9 +30,13 @@ public class ProxyProcessorTests extends AbstractTest {
 
         File file = getResourceFile("/images/toucan.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
-
-        for (Proxy proxy: asset.getSchema("proxies", ProxySchema.class)) {
-            assertTrue(new File(proxy.getPath()).isFile());
+        ProxySchema proxySchema = asset.getAttr("proxies");
+        for (Proxy proxy: proxySchema) {
+            assertTrue(proxy.getWidth() > 0);
+            assertTrue(proxy.getHeight() > 0);
+            assertEquals(proxy.getWidth(), proxy.getImage().getWidth());
+            assertEquals(proxy.getHeight(), proxy.getImage().getHeight());
+            assertEquals("jpg", proxy.getFormat());
         }
     }
 
