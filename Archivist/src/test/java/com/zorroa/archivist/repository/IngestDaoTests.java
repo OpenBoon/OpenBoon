@@ -53,7 +53,7 @@ public class IngestDaoTests extends ArchivistApplicationTests {
     public void testGet() {
         Ingest ingest01 = ingestDao.get(ingest.getId());
         assertEquals(ingest01.getId(), ingest.getId());
-        assertEquals(ingest01.getPaths(), ingest.getPaths());
+        assertEquals(ingest01.getUris(), ingest.getUris());
         assertEquals(ingest01.getPipelineId(), ingest.getPipelineId());
         assertEquals(ingest01.getState(), ingest.getState());
         assertEquals(ingest01.getAssetWorkerThreads(), ingest.getAssetWorkerThreads());
@@ -134,14 +134,14 @@ public class IngestDaoTests extends ArchivistApplicationTests {
         IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
 
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
-        updateBuilder.addToPaths("/foo");
+        updateBuilder.addToUris("file:///foo");
         updateBuilder.setPipelineId(testPipeline.getId());
         updateBuilder.setAssetWorkerThreads(6);
 
         assertTrue(ingestDao.update(ingest, updateBuilder));
 
         Ingest updatedIngest = ingestDao.get(ingest.getId());
-        assertTrue(updatedIngest.getPaths().contains("/foo"));
+        assertTrue(updatedIngest.getUris().contains("file:///foo"));
         assertEquals(updatedIngest.getAssetWorkerThreads(), 6);
         assertEquals(testPipeline.getId(), updatedIngest.getPipelineId());
     }
