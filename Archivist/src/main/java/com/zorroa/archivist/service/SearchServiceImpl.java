@@ -94,6 +94,10 @@ public class SearchServiceImpl implements SearchService {
                 .setTypes("asset")
                 .setQuery(getQuery(search));
 
+        if (search.getFields() != null) {
+            request.setFetchSource(search.getFields(), new String[]{});
+        }
+
         if (search.getFrom() != null) {
             request.setFrom(search.getFrom());
         }
