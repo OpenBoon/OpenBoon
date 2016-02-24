@@ -180,7 +180,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public Ingest createIngest(IngestBuilder builder) {
-        builder.setPaths(normalizePaths(builder.getPaths()));
+        builder.setUris(normalizePaths(builder.getUris()));
 
         IngestPipeline pipeline;
         if (builder.getPipelineId() == -1) {
@@ -218,7 +218,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
-        builder.setPaths(normalizePaths(builder.getPaths()));
+        builder.setUris(normalizePaths(builder.getUris()));
 
         // Update active ingest thread counts
         if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
@@ -341,7 +341,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         return result;
     }
 
-    public String normalizePath(String path) {
+    private String normalizePath(String path) {
         String result = path;
 
         try {
@@ -357,7 +357,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
                 path = "file:" + path;
             }
         } catch (Exception e) {
-            logger.error("Invalid ingest path URI {}", path, e);
+            logger.error("Invalid ingest URI {}", path, e);
         }
 
         return result;

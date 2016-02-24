@@ -40,8 +40,8 @@ public class IngestPathAggregator extends Aggregator {
                 .addEntry(userService.getPermission("internal::server"), Access.Write, Access.Read)
                 .addEntry(userService.getPermission("group::user"), Access.Read);
 
-        String path = ingest.getPaths().get(0);     // FIXME: Only works with single path!
-        excludePathRoot = ".{1," + Integer.toString(path.length()) + "}";
+        String uri = ingest.getUris().get(0);     // FIXME: Only works with single uri!
+        excludePathRoot = ".{1," + Integer.toString(uri.length()) + "}";
     }
 
     @Override

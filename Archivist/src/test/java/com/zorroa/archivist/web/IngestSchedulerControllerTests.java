@@ -27,7 +27,7 @@ public class IngestSchedulerControllerTests extends MockMvcTest {
 
     public Ingest createIngest() {
         IngestBuilder ib = new IngestBuilder();
-        ib.addToPaths(getStaticImagePath());
+        ib.addToUris(getStaticImagePath());
         return ingestService.createIngest(ib);
     }
 

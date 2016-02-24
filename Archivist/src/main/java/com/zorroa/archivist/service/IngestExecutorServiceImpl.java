@@ -268,7 +268,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                      * threads might still be working so we don't want to jump right into
                      * the lower finally block, but wait until the asset threads are done.
                      */
-                    eventLogService.log(ingest, "Failed to execute ingest on paths {}", e, ingest.getPaths());
+                    eventLogService.log(ingest, "Failed to execute ingest on uris {}", e, ingest.getUris());
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
@@ -393,13 +393,13 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     "file", new FileCrawler(objectFileSystem),
                     "http", new HttpCrawler(objectFileSystem));
 
-            for (String path : ingest.getPaths()) {
+            for (String u : ingest.getUris()) {
 
-                URI uri = URI.create(path);
+                URI uri = URI.create(u);
                 String type = uri.getScheme();
                 if (type == null) {
                     type = "file";
-                    uri = URI.create("file:" + path);
+                    uri = URI.create("file:" + u);
                 }
 
                 AbstractCrawler crawler = crawlers.get(type);

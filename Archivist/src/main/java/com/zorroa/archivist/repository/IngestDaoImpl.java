@@ -27,7 +27,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         result.setPipelineId(rs.getInt("pk_pipeline"));
         result.setName(rs.getString("str_name"));
         result.setState(IngestState.values()[rs.getInt("int_state")]);
-        result.setPaths(Json.deserialize(rs.getString("json_paths"), new TypeReference<List<String>>() {}));
+        result.setUris(Json.deserialize(rs.getString("json_paths"), new TypeReference<List<String>>() {}));
         result.setTimeCreated(rs.getLong("time_created"));
         result.setUserCreated(rs.getInt("user_created"));
         result.setTimeModified(rs.getLong("time_modified"));
@@ -72,8 +72,8 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 connection.prepareStatement(INSERT, new String[]{"pk_ingest"});
             ps.setInt(1, pipeline.getId());
             ps.setInt(2, IngestState.Idle.ordinal());
-            ps.setString(3, builder.getName() != null ? builder.getName() : builder.getPaths().get(0));
-            ps.setObject(4, Json.serializeToString(builder.getPaths()));
+            ps.setString(3, builder.getName() != null ? builder.getName() : builder.getUris().get(0));
+            ps.setObject(4, Json.serializeToString(builder.getUris()));
             ps.setLong(5, time);
             ps.setLong(6, SecurityUtils.getUser().getId());
             ps.setLong(7, time);
@@ -136,9 +136,9 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         List<String> updates = Lists.newArrayList();
         List<Object> values = Lists.newArrayList();
 
-        if (builder.isset("paths"))  {
+        if (builder.isset("uris"))  {
             updates.add("json_paths=?");
-            values.add(Json.serializeToString(builder.getPaths()));
+            values.add(Json.serializeToString(builder.getUris()));
         }
 
         if (builder.isset("pipelineId")) {
