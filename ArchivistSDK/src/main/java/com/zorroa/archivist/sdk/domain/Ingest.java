@@ -10,7 +10,7 @@ public class Ingest implements EventLoggable {
     private int id;
     private int pipelineId;
     private IngestState state;
-    private List<String> paths;
+    private List<String> uris;
     private String name;
     private long timeCreated;
     private int userCreated;
@@ -30,7 +30,7 @@ public class Ingest implements EventLoggable {
                 .add("id", getId())
                 .add("name", getName())
                 .add("state", getState())
-                .add("path", getPaths())
+                .add("uris", getUris())
                 .toString();
     }
 
@@ -79,11 +79,11 @@ public class Ingest implements EventLoggable {
     public void setState(IngestState state) {
         this.state = state;
     }
-    public List<String> getPaths() {
-        return paths;
+    public List<String> getUris() {
+        return uris;
     }
-    public void setPaths(List<String> paths) {
-        this.paths = paths;
+    public void setUris(List<String> uris) {
+        this.uris = uris;
     }
     public long getTimeCreated() {
         return timeCreated;

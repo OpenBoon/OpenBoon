@@ -12,15 +12,15 @@ import java.util.Set;
 public class IngestUpdateBuilder {
 
     private String name;
-    private List<String> paths;
+    private List<String> uris;
     private String pipeline;
     private int pipelineId = -1;
     private int assetWorkerThreads = -1;
 
     private Set<String> isset = Sets.newHashSet();
 
-    public List<String> getPaths() {
-        return paths;
+    public List<String> getUris() {
+        return uris;
     }
 
     public String getName() {
@@ -33,18 +33,18 @@ public class IngestUpdateBuilder {
         return this;
     }
 
-    public IngestUpdateBuilder setPaths(List<String> path) {
-        this.paths = path;
-        isset.add("paths");
+    public IngestUpdateBuilder setUris(List<String> uri) {
+        this.uris = uri;
+        isset.add("uris");
         return this;
     }
 
-    public IngestUpdateBuilder addToPaths(String path) {
-        if (this.paths == null) {
-            this.paths = Lists.newArrayList();
+    public IngestUpdateBuilder addToUris(String uri) {
+        if (this.uris == null) {
+            this.uris = Lists.newArrayList();
         }
-        this.paths.add(path);
-        isset.add("paths");
+        this.uris.add(uri);
+        isset.add("uris");
         return this;
     }
 

@@ -6,30 +6,30 @@ import java.util.List;
 
 public class IngestBuilder {
     private String name;
-    private List<String> paths;
+    private List<String> uris;
     private int pipelineId = -1;
     private int assetWorkerThreads = -1;
 
     public IngestBuilder() { }
 
-    public IngestBuilder(String path) {
-        this.paths = Lists.newArrayList(path);
+    public IngestBuilder(String uri) {
+        this.uris = Lists.newArrayList(uri);
     }
 
-    public List<String> getPaths() {
-        return paths;
+    public List<String> getUris() {
+        return uris;
     }
 
-    public IngestBuilder setPaths(List<String> paths) {
-        this.paths = paths;
+    public IngestBuilder setUris(List<String> uris) {
+        this.uris = uris;
         return this;
     }
 
-    public IngestBuilder addToPaths(String path) {
-        if (paths == null) {
-            paths = Lists.newArrayList();
+    public IngestBuilder addToUris(String uri) {
+        if (uris == null) {
+            uris = Lists.newArrayList();
         }
-        paths.add(path);
+        uris.add(uri);
         return this;
     }
 
