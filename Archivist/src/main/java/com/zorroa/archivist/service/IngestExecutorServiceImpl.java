@@ -10,11 +10,13 @@ import com.zorroa.archivist.aggregators.Aggregator;
 import com.zorroa.archivist.aggregators.DateAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.domain.UnitTestProcessor;
+import com.zorroa.archivist.sdk.client.ClientException;
 import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
 import com.zorroa.archivist.sdk.crawlers.AbstractCrawler;
 import com.zorroa.archivist.sdk.crawlers.FileCrawler;
 import com.zorroa.archivist.sdk.crawlers.HttpCrawler;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.exception.AnalystException;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -229,28 +231,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 return;
             }
 
-            IngestPipeline pipeline;
-
             try {
 
-                try {
-                    /**
-                     * Re-authorize this thread with the same user using InternalAuthentication.  This will add
-                     * the internal::server permission to their list of permissions.
-                     */
-                    SecurityContextHolder.getContext().setAuthentication(
-                            authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
-
-                    pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
-                } catch (Exception e) {
-                    /*
-                     * Something went wrong setting up the ingestor classes.
-                     */
-                    logger.warn("Failed to setup the ingest pipeline, unexpected: {}", e.getMessage(), e);
-                    eventLogService.log(ingest, "Failed to setup the ingest pipeline", e);
-                    messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
-                    return;
-                }
+                SecurityContextHolder.getContext().setAuthentication(
+                        authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
+                IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
 
                 /*
                  * Figure out the skipped paths
@@ -331,14 +316,23 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         ingestService.incrementIngestCounters(ingest,
                                 result.created, result.updated, result.warnings, result.errors);
 
-                    } catch (Exception e) {
+                    } catch (ClientException e) {
                         /**
                          * This catch block is for handling the case where the AnalystClient
                          * cannot find any hosts to contact.  They are either down,  or rejecting
-                         * work for some reason.  A lot of things can happen here...we keep trying
-                         * or eventually cancel the ingest.
+                         * work for some reason.
                          */
-                        logger.warn("Failed to contact analyst for processing ingest,", e);
+                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getPaths().size());
+                        eventLogService.log(ingest, "Failed to contact analyst for processing ingest,", e);
+                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+                    } catch (AnalystException e) {
+                        /**
+                         * This catch block is for handling the case where the Analyst fails
+                         * to init or execute the pipeline.
+                         */
+                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getPaths().size());
+                        eventLogService.log(ingest, "Failed to setup the ingest pipeline", e);
+                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                     }
                 }
             });
