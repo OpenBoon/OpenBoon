@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.exception;
 /**
  * Created by chambers on 12/4/15.
  */
-public class IngestException extends ArchivistException {
+public class IngestException extends AnalystException {
 
     public IngestException() {
         super();
