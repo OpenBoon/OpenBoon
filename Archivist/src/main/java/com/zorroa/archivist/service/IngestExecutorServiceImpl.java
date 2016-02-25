@@ -315,6 +315,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         AnalyzeResult result =  analysts.analyze(req);
                         ingestService.incrementIngestCounters(ingest,
                                 result.created, result.updated, result.warnings, result.errors);
+                        if (result.errors > 0) {
+                            messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+                        }
 
                     } catch (ClientException e) {
                         /**
