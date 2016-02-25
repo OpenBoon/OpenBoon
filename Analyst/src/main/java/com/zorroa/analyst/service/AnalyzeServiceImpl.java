@@ -1,6 +1,7 @@
 package com.zorroa.analyst.service;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -26,6 +27,7 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -57,8 +59,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public AnalyzeResult analyze(AnalyzeRequest req) {
         try {
             return ingestThreadPool.submit(() -> asyncAnalyze(req)).get();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getCause());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            RuntimeException re = (RuntimeException) e.getCause();
+            throw re;
         }
     }
 
@@ -71,7 +76,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         try {
             processors = getProcessingPipeline(req);
         } catch (Exception e) {
-            throw new IngestException("Failed to initialize ingest pipeline, " + e.getMessage(), e);
+            throw new IngestException("Failed to initialize ingest pipeline", e.getCause());
         }
 
         IngestSchema ingestSchema = null;
@@ -158,6 +163,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         private final int ingestPipelineId;
 
         public IngestPipelineCacheKey(AnalyzeRequest req) {
+            Preconditions.checkNotNull(req.getIngestId(), "IngestId cannot be null");
+            Preconditions.checkNotNull(req.getIngestPipelineId(), "IngestPipelineId cannot be null");
+            Preconditions.checkArgument(req.getProcessors().size() > 0, "The ingest pipeline contains no processors");
+
             this.req = req;
             this.threadId = Thread.currentThread().getId();
             this.ingestId = req.getIngestId();
@@ -200,7 +209,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             .expireAfterAccess(1, TimeUnit.HOURS)
             .build(new CacheLoader<IngestPipelineCacheKey, List<IngestProcessor>>() {
                 public List<IngestProcessor> load(IngestPipelineCacheKey key) throws Exception {
-                    logger.info("initializing pipeline for i{}/p{}/t{}", key.getIngestId(), key.getIngestPipelineId(), key.getThreadId());
                     List<IngestProcessor> result = Lists.newArrayListWithCapacity(key.getAnalyzeRequest().getProcessors().size());
                     for (ProcessorFactory<IngestProcessor> factory : key.getAnalyzeRequest().getProcessors()) {
                         IngestProcessor p = factory.newInstance();
@@ -221,8 +229,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      * @return
      * @throws Exception
      */
-    private List<IngestProcessor> getProcessingPipeline(AnalyzeRequest req) throws Exception {
-        logger.info("getting processing pipeline");
+    private List<IngestProcessor> getProcessingPipeline(AnalyzeRequest req) throws ExecutionException {
         return pipelineCache.get(new IngestPipelineCacheKey(req));
     }
 }
