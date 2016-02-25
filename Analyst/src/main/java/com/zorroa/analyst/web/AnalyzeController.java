@@ -18,7 +18,7 @@ public class AnalyzeController {
     @Autowired
     AnalyzeService analyzeService;
 
-    @RequestMapping(value="/api/v1/analyze", method= RequestMethod.POST)
+    @RequestMapping(value="/api/v1/analyze", method=RequestMethod.POST)
     public AnalyzeResult analyze(@RequestBody AnalyzeRequest request) {
         return analyzeService.analyze(request);
     }
