@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Register this process with the archivist.
@@ -43,6 +44,8 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     private String url;
 
+    private AtomicBoolean registered = new AtomicBoolean(false);
+
     @PostConstruct
     public void init() throws UnknownHostException {
         String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
@@ -51,11 +54,29 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     }
 
     @Override
-    protected void runOneIteration() throws Exception {
+    protected void runOneIteration() {
         try {
-            archivistClient.registerAnalyst(getPing());
+            sendPing();
         } catch (Exception e) {
             logger.warn("Failed to register as worker node, ", e);
+            /*
+             * If the analyst hasn't registered at least once, then increase
+             * the rate at which we try to register.
+             */
+            if (!registered.get()) {
+                for (;;) {
+                    try {
+                        Thread.sleep(1000);
+                        sendPing();
+                        return;
+                    } catch (InterruptedException ignore) {
+                        return;
+                    }
+                    catch (Exception ex) {
+                        logger.warn("Failed to register as worker node, ", ex);
+                    }
+                }
+            }
         }
     }
 
@@ -69,10 +90,18 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         }
     }
 
+    /**
+     * Send an analyst ping to the archivist.
+     */
+    private void sendPing() {
+        archivistClient.registerAnalyst(getPing());
+        registered.set(true);
+    }
+
     private Set<String> EXCLUDE_INGESTORS =
             ImmutableSet.of("com.zorroa.archivist.sdk.processor.ingest.IngestProcessor");
 
-    private AnalystPing getPing() throws UnknownHostException {
+    private AnalystPing getPing()  {
 
         List<String> ingestClasses = Lists.newArrayListWithCapacity(30);
         try {
@@ -108,6 +137,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(5, 30, TimeUnit.SECONDS);
+        return Scheduler.newFixedRateSchedule(1, 30, TimeUnit.SECONDS);
     }
 }
