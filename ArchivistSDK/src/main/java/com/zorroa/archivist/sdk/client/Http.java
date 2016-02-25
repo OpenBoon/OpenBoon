@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.sdk.util.Json;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -18,82 +19,92 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.security.KeyStore;
 
 /**
- * An convience class for making HTTP/HTTPS requests with Apache HttpClient.
+ * An convenience class for making HTTP/HTTPS requests with Apache HttpClient.
  */
 public class Http {
 
-    public static <T> T post(HttpClient client, HttpHost host, String url, Object body, Class<T> resultType) {
-        try {
-            HttpPost post = new HttpPost(url);
-            if (body != null) {
-                post.setHeader("Content-Type", "application/json");
-                post.setEntity(new ByteArrayEntity(Json.serialize(body)));
-            }
-            HttpResponse response = client.execute(host, post);
-            return Json.Mapper.readValue(response.getEntity().getContent(), resultType);
-        } catch (Exception e) {
-            ExceptionTranslator.translate(e);
-        }
+    private static final Logger logger = LoggerFactory.getLogger(Http.class);
 
-        return null;
+    public static <T> T post(HttpClient client, HttpHost host, String url, Object body, Class<T> resultType) {
+        HttpPost post = new HttpPost(url);
+        if (body != null) {
+            post.setHeader("Content-Type", "application/json");
+            post.setEntity(new ByteArrayEntity(Json.serialize(body)));
+        }
+        HttpResponse response = checkStatus(client,host, post);
+        return checkResponse(response, resultType);
     }
 
     public static <T> T post(HttpClient client, HttpHost host, String url, Object body, TypeReference<T> type) {
-        try {
-            HttpPost post = new HttpPost(url);
-            if (body != null) {
-                post.setHeader("Content-Type", "application/json");
-                post.setEntity(new ByteArrayEntity(Json.serialize(body)));
-            }
-            HttpResponse response = client.execute(host, post);
-            return Json.Mapper.readValue(response.getEntity().getContent(), type);
-        } catch (Exception e) {
-            ExceptionTranslator.translate(e);
-        }
 
-        return null;
+        HttpPost post = new HttpPost(url);
+        if (body != null) {
+            post.setHeader("Content-Type", "application/json");
+            post.setEntity(new ByteArrayEntity(Json.serialize(body)));
+        }
+        HttpResponse response = checkStatus(client,host, post);
+        return checkResponse(response, type);
     }
 
     public static void post(HttpClient client, HttpHost host, String url, Object body) {
-        try {
-            HttpPost post = new HttpPost(url);
-            if (body != null) {
-                post.setHeader("Content-Type", "application/json");
-                post.setEntity(new ByteArrayEntity(Json.serialize(body)));
-            }
-            HttpResponse response = client.execute(host, post);
-        } catch (Exception e) {
-            ExceptionTranslator.translate(e);
+        HttpPost post = new HttpPost(url);
+        if (body != null) {
+            post.setHeader("Content-Type", "application/json");
+            post.setEntity(new ByteArrayEntity(Json.serialize(body)));
         }
+        checkStatus(client, host, post);
     }
 
     public static <T> T get(HttpClient client, HttpHost host, String url, Class<T> resultType) {
-        try {
-            HttpGet get = new HttpGet(url);
-            HttpResponse response = client.execute(host, get);
-            return Json.Mapper.readValue(response.getEntity().getContent(), resultType);
-        } catch (Exception e) {
-            ExceptionTranslator.translate(e);
-        }
-
-        return null;
+        return checkResponse(checkStatus(client,host, new HttpGet(url)), resultType);
     }
 
     public static <T> T get(HttpClient client, HttpHost host, String url, TypeReference<T> type) {
+        return checkResponse(checkStatus(client,host, new HttpGet(url)), type);
+    }
+
+    public static <T> T checkResponse(HttpResponse response, Class<T> resultType) {
         try {
-            HttpGet get = new HttpGet(url);
-            HttpResponse response = client.execute(host, get);
-            return Json.Mapper.readValue(response.getEntity().getContent(), type);
+            return Json.Mapper.readValue(response.getEntity().getContent(), resultType);
         } catch (Exception e) {
-            ExceptionTranslator.translate(e);
+            throw new ClientException("Failed to deserialize response", e);
+        }
+    }
+
+    public static <T> T checkResponse(HttpResponse response, TypeReference<T> type) {
+        try {
+            return Json.Mapper.readValue(response.getEntity().getContent(), type);
+        }
+        catch (Exception e) {
+            throw new ClientException("Failed to deserialize response", e);
+        }
+    }
+
+    public static HttpResponse checkStatus(HttpClient client, HttpHost host, HttpRequest req) {
+        HttpResponse response;
+        try {
+            response = client.execute(host, req);
+        } catch (Exception e) {
+            /*
+             * This would be some kind of communication error.
+             */
+            throw new ClientException("Failed to execute request: " + req, e);
         }
 
-        return null;
+        if (response.getStatusLine().getStatusCode() != 200) {
+            ClientError error = checkResponse(response, ClientError.class);
+            logger.info("{}", error);
+            error.throwException();
+        }
+
+        return response;
     }
 
     /**
