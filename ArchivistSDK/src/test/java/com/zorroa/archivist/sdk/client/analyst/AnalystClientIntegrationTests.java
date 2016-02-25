@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.client.analyst;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
+import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -22,9 +23,11 @@ public class AnalystClientIntegrationTests {
     AnalystClient analyst = new AnalystClient("https://127.0.0.1:8099");
     String path = new File("src/test/resources/images/beer_kettle_01.jpg").getAbsolutePath();
 
-    @Test
+    @Test(expected=IngestException.class)
     public void testAnalyzeClassNotFound() {
         AnalyzeResult result = analyst.analyze(new AnalyzeRequest()
+                .setIngestId(1)
+                .setIngestPipelineId(1)
                 .setPaths(Lists.newArrayList(path))
                 .setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.foo.bar.Nope"))));
         assertEquals(0, result.tried);
@@ -33,6 +36,8 @@ public class AnalystClientIntegrationTests {
     @Test
     public void testAnalyze() {
         AnalyzeResult result = analyst.analyze(new AnalyzeRequest()
+                .setIngestId(1)
+                .setIngestPipelineId(1)
                 .setPaths(Lists.newArrayList(path))
                 .setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"))));
         assertEquals(1, result.tried);

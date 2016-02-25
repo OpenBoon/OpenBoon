@@ -3,7 +3,6 @@ package com.zorroa.archivist.sdk.processor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.exception.ArchivistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,30 +89,11 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
         this.args = args;
     }
 
-    public void init() {
-
-        /*
-         * Check if its already been initialized.
-         */
-        if (instance != null) {
-            return;
-        }
-
-        if (classLoader == null) {
-            classLoader = getSiteClassLoader();
-        }
-
-        try {
-            Class<?> pclass = classLoader.loadClass(klass);
-            instance = (T) pclass.getConstructor().newInstance();
-            instance.setArgs(args);
-        } catch (Exception e) {
-            throw new ArchivistException("Failed to load class '" + klass + "', " + e, e);
-        }
-    }
-
     @JsonIgnore
     public T getInstance() {
+        if (instance == null) {
+            return newInstance();
+        }
         return instance;
     }
 
@@ -129,7 +109,7 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
             instance.setArgs(args);
             return instance;
         } catch (Exception e) {
-            throw new ArchivistException("Failed to load class '" + klass + "', " + e, e);
+            throw new IllegalArgumentException("Failed to load class '" + klass + "', " + e, e);
         }
     }
 
