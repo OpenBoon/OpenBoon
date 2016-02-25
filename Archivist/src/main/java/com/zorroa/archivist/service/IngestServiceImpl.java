@@ -161,7 +161,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public void incrementIngestCounters(Ingest ingest, int created, int updated, int errors, int warnings) {
+    public void incrementIngestCounters(Ingest ingest, int created, int updated, int warnings, int errors) {
         ingestDao.incrementCounters(ingest, created, updated, errors, warnings);
         broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_UPDATE_COUNTERS);
     }
