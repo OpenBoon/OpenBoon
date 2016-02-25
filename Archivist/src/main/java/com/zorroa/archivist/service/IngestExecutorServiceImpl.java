@@ -316,7 +316,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         ingestService.incrementIngestCounters(ingest,
                                 result.created, result.updated, result.warnings, result.errors);
                         if (result.errors > 0) {
-                            messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+                            messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
+                                    ingestService.getIngest(ingest.getId())));
                         }
 
                     } catch (ClientException e) {
@@ -327,7 +328,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          */
                         ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getPaths().size());
                         eventLogService.log(ingest, "Failed to contact analyst for processing ingest,", e);
-                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
+                                ingestService.getIngest(ingest.getId())));
                     } catch (AnalystException e) {
                         /**
                          * This catch block is for handling the case where the Analyst fails
@@ -335,7 +337,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          */
                         ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getPaths().size());
                         eventLogService.log(ingest, "Failed to setup the ingest pipeline", e);
-                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
+                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
+                                ingestService.getIngest(ingest.getId())));
                     }
                 }
             });
