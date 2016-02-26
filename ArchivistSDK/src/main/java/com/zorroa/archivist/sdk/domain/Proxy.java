@@ -1,11 +1,16 @@
 package com.zorroa.archivist.sdk.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Proxy {
+
     private String name;
     private String uri;
     private int width;
@@ -19,32 +24,36 @@ public class Proxy {
         return uri;
     }
 
-    public void setUri(String uri) {
+    public Proxy setUri(String uri) {
         this.uri = uri;
+        return this;
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public Proxy setWidth(int width) {
         this.width = width;
+        return this;
     }
 
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public Proxy setHeight(int height) {
         this.height = height;
+        return this;
     }
 
     public String getFormat() {
         return format;
     }
 
-    public void setFormat(String format) {
+    public Proxy setFormat(String format) {
         this.format = format;
+        return this;
     }
 
     public String getName() {
@@ -56,11 +65,21 @@ public class Proxy {
         return this;
     }
 
+    public BufferedImage loadImage(ObjectFileSystem fileSystem) throws IOException {
+        if (image != null) {
+            return image;
+        }
+
+        setImage(ImageIO.read(fileSystem.find("proxies", name)));
+        return image;
+    }
+
     @JsonIgnore
     public BufferedImage getImage() {
         return image;
     }
 
+    @JsonProperty("image")
     public Proxy setImage(BufferedImage image) {
         this.image = image;
         return this;
