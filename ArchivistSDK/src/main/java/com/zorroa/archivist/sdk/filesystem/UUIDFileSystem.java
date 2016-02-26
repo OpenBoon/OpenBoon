@@ -3,46 +3,31 @@ package com.zorroa.archivist.sdk.filesystem;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.archivist.sdk.domain.Allocation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Properties;
 import java.util.UUID;
 
 /**
  * A very simple UUID/Object based file system.
  */
-
-public class UUIDFileSystem implements ObjectFileSystem {
-
-    private static final Logger logger = LoggerFactory.getLogger(UUIDFileSystem.class);
+public class UUIDFileSystem extends AbstractFileSystem {
 
     private static final int DEEPNESS = 4;
 
     private static final NameBasedGenerator nameBasedGenerator = Generators.nameBasedGenerator();
 
     private File storageBaseDir;
-    private String location;
 
-    public UUIDFileSystem() {}
-
-    public UUIDFileSystem(String location) {
-        this.location = location;
-        this.init();
+    public UUIDFileSystem(Properties props) {
+        super(props);
     }
 
     @Override
     public void init() {
-        storageBaseDir = new File(location).getAbsoluteFile();
+        storageBaseDir = new File(properties.getProperty("zorroa.filesystem.root")).getAbsoluteFile();
         storageBaseDir.mkdirs();
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-    public String getLocation() {
-        return location;
     }
 
     @Override

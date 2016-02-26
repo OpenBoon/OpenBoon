@@ -12,23 +12,6 @@ import java.io.File;
 public interface ObjectFileSystem {
 
     /**
-     * Must be called to initialize the filesystem.
-     */
-    void init();
-
-    /**
-     * Set the URI location of the file system.
-     *
-     * @param location
-     */
-    void setLocation(String location);
-
-    /**
-     * Get the URI location of the file system;
-     */
-    String getLocation();
-
-    /**
      * Create an allocation for the given category of data.  An allocation
      * is a directory.
      *
