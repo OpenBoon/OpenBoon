@@ -74,7 +74,11 @@ public class Document {
      */
     public <T> T getSchema(String namespace, Class<T> klass) {
         try {
-            return Json.Mapper.convertValue(document.get(namespace), klass);
+            Object value = document.get(namespace);
+            if (value.getClass().equals(klass)) {
+                return (T) value;
+            }
+            return Json.Mapper.convertValue(value, klass);
         } catch (IllegalArgumentException e) {
             return null;
         }
