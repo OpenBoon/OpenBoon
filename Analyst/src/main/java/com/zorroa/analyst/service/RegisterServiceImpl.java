@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.ClassPath;
 import com.google.common.util.concurrent.AbstractScheduledService;
+import com.zorroa.analyst.Application;
 import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;
 import com.zorroa.archivist.sdk.domain.AnalystPing;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
@@ -55,6 +56,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Override
     protected void runOneIteration() {
+        if (Application.isUnitTest()) {
+            return;
+        }
         try {
             sendPing();
         } catch (Exception e) {
