@@ -2,12 +2,13 @@ package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.Argument;
+import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,9 +68,13 @@ public class CaffeIngestor extends IngestProcessor {
             return;
         }
 
-        // Get the source image as an OpenCV Mat
-        BufferedImage image = ProxyUtils.getImage(227, asset);
-        Mat mat = OpenCVUtils.convert(image);
+        Proxy proxy = asset.getSchema("proxies", ProxySchema.class).atLeastThisSize(227);
+        if (proxy == null) {
+            logger.warn("Skipping CaffeIngestor, no proxy of suitable size. (227)");
+            return;
+        }
+
+        Mat mat = OpenCVUtils.convert(proxy.getImage());
 
         // Pass the image matrix to the classifier and get back an array of keywords+confidence
         final float confidenceThreshold = 0.1f;

@@ -2,8 +2,10 @@ package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.Argument;
+import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,9 +52,14 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
-        // Perform facial analysis
+        Proxy proxy = asset.getSchema("proxies", ProxySchema.class).atLeastThisSize(1000);
+        if (proxy == null) {
+            logger.debug("Skipping FaceIngestor, no proxy of suitable size.");
+            return;
+        }
+
         logger.debug("Starting facial detection on {} ", asset);
-        Mat image = OpenCVUtils.convert(ProxyUtils.getImage(1000, asset));
+        Mat image = OpenCVUtils.convert(proxy.getImage());
 
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
         // in order to estimate a confidence value
