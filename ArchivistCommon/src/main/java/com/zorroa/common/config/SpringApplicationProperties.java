@@ -10,6 +10,7 @@ import org.springframework.core.env.PropertySource;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by chambers on 2/12/16.
@@ -104,6 +105,18 @@ public class SpringApplicationProperties implements ApplicationProperties {
         for (PropertySource<?> propertySource: env.getPropertySources()) {
             walkPropertySource(result, prefix, propertySource);
         }
+        return result;
+    }
+
+    public Properties getProperties(String prefix) {
+        Properties result = new Properties();
+        Map<String, Object> map = Maps.newHashMap();
+
+        for (PropertySource<?> propertySource: env.getPropertySources()) {
+            walkPropertySource(map, prefix, propertySource);
+        }
+
+        map.forEach((k,v)->result.put(k, v.toString()));
         return result;
     }
 
