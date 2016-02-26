@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by chambers on 2/17/16.
@@ -21,5 +22,5 @@ public interface ApplicationProperties {
     double max(String key, double value);
     int min(String key, int value);
     double min(String key, double value);
-
+    Properties getProperties(String prefix);
 }
