@@ -1,5 +1,7 @@
 package com.zorroa.archivist;
 
+import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.filesystem.AbstractFileSystem;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.RestControllerAdvice;
@@ -16,7 +18,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -26,6 +27,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Properties;
 import java.util.Random;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
@@ -42,7 +44,8 @@ public class ArchivistConfiguration {
     public static boolean unittest = false;
 
     @Autowired
-    private Environment env;
+    ApplicationProperties properties;
+
 
     @PostConstruct
     public void init() throws UnknownHostException {
@@ -67,9 +70,9 @@ public class ArchivistConfiguration {
     @Bean(initMethod="init")
     public ObjectFileSystem fileSystem() throws Exception {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        Class fileSystemClass = classLoader.loadClass(env.getProperty("archivist.filesystem.class"));
-        ObjectFileSystem fs = (ObjectFileSystem) fileSystemClass.newInstance();
-        fs.setLocation(env.getProperty("archivist.filesystem.location"));
+        Class fileSystemClass = classLoader.loadClass(properties.getString("zorroa.filesystem.class"));
+        AbstractFileSystem fs = (AbstractFileSystem) fileSystemClass.getConstructor(Properties.class).newInstance(
+                properties.getProperties("zorroa.filesystem"));
         return fs;
     }
 
