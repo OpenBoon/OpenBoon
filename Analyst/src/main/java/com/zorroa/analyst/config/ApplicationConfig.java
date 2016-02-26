@@ -2,6 +2,7 @@ package com.zorroa.analyst.config;
 
 import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.filesystem.AbstractFileSystem;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.util.Properties;
 
 /**
  * Created by chambers on 2/12/16.
@@ -53,9 +55,9 @@ public class ApplicationConfig {
     @Bean(initMethod="init")
     public ObjectFileSystem fileSystem() throws Exception {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        Class fileSystemClass = classLoader.loadClass(properties.getString("analyst.filesystem.class"));
-        ObjectFileSystem fs = (ObjectFileSystem) fileSystemClass.newInstance();
-        fs.setLocation(properties.getString("analyst.filesystem.location"));
+        Class fileSystemClass = classLoader.loadClass(properties.getString("zorroa.filesystem.class"));
+        AbstractFileSystem fs = (AbstractFileSystem) fileSystemClass.getConstructor(Properties.class).newInstance(
+                properties.getProperties("zorroa.filesystem"));
         return fs;
     }
 }
