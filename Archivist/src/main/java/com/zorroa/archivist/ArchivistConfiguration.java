@@ -101,6 +101,7 @@ public class ArchivistConfiguration {
 
         org.elasticsearch.common.settings.ImmutableSettings.Builder builder =
                 ImmutableSettings.settingsBuilder()
+                .put("path.data", properties.getString("archivist.path.index"))
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
                 .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
@@ -109,7 +110,6 @@ public class ArchivistConfiguration {
                 .put("script.engine.groovy.indexed.update", true);
 
         if (unittest) {
-            builder.put("path.data", "unittest/data");
             builder.put("index.refresh_interval", "1s");
             builder.put("index.translog.disable_flush", true);
 

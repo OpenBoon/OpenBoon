@@ -4,26 +4,26 @@
 .settings
 .springBeans
 .idea
-unittest
+.DS_store
 
+# These directotes are usually created when the Archivist starts up and
+# are used for applicion data.
+
+# Unit test data
+unittest
 # Build directory
 target
-unittest
-
-# Elastic DB files
-data
-
-# Proxy folder for unit tests
-proxies
-# Export folder for unit tests
+# Default location for elastic index
+index
+# Default location for filesystem
+storage
+# Default location for exports
 exports
-
-.DS_store
+# Default location for snapshots
+snapshots
 
 # Sublime project
 archivist.sublime-project
 archivist.sublime-workspace
 archivist.iml
 
-#Snapshot dir
-snapshots
