@@ -163,7 +163,7 @@ public class SpringApplicationProperties implements ApplicationProperties {
         if (propSource instanceof EnumerablePropertySource<?>) {
             EnumerablePropertySource<?> ps = (EnumerablePropertySource<?>) propSource;
             Arrays.asList(ps.getPropertyNames() ).stream()
-                    .filter(key->key.startsWith(prefix)).forEach(key -> result.put(key, ps.getProperty(key)));
+                    .filter(key->key.startsWith(prefix)).forEach(key -> result.put(key, env.getProperty(key)));
         }
     }
 
