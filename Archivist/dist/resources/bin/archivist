@@ -21,13 +21,13 @@
 # behavior, those variables are:
 #
 #   JAVA_OPTS    -- Additional arguments to the JVM for heap size, etc
-#   ARCHVIST_JAVA_OPTS -- External Java Opts on top of the defaults set
+#   ARCHIVIST_JAVA_OPTS -- External Java Opts on top of the defaults set
 #
 #
 # Optionally, exact memory values can be set using the following values, note,
-# they can still be set using the `ARCHVIST_JAVA_OPTS`. Sample format include "512m", and "10g".
+# they can still be set using the `ARCHIVIST_JAVA_OPTS`. Sample format include "512m", and "10g".
 #
-#   ARCHVIST_HEAP_SIZE -- Sets both the minimum and maximum memory to allocate (recommended)
+#   ARCHIVIST_HEAP_SIZE -- Sets both the minimum and maximum memory to allocate (recommended)
 #
 # As a convenience, a fragment of shell is sourced in order to set one or
 # more of these variables. This so-called `include' can be placed in a
@@ -45,13 +45,13 @@
 # Another option is to specify the full path to the include file in the
 # environment. For example:
 #
-#   $ ARCHVIST_INCLUDE=/path/to/in.sh archivist -p /var/run/es.pid
+#   $ ARCHIVIST_INCLUDE=/path/to/in.sh archivist -p /var/run/es.pid
 #
 # Note: This is particularly handy for running multiple instances on a
 # single installation, or for quick tests.
 #
 # If you would rather configure startup entirely from the environment, you
-# can disable the include by exporting an empty ARCHVIST_INCLUDE, or by
+# can disable the include by exporting an empty ARCHIVIST_INCLUDE, or by
 # ensuring that no include files exist in the aforementioned search list.
 # Be aware that you will be entirely responsible for populating the needed
 # environment variables.
