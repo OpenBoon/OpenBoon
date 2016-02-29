@@ -13,6 +13,8 @@
 unittest
 # Build directory
 target
+# Default location of embedded SQL DB files.
+db
 # Default location for elastic index
 index
 # Default location for filesystem
