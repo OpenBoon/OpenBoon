@@ -10,28 +10,30 @@ import tarfile
 import subprocess
 import shutil
 
+app_name = "archivist"
+
 def main():
-	name = "archivist-%s" % get_version()
-	cleanup(name)
-	shutil.copytree("resources", name)
+	base_dir = "%s-%s" % (app_name, get_version())
+	cleanup(base_dir)
+	shutil.copytree("resources", base_dir)
 
-	os.mkdir("%s/lib" % name)
-	shutil.copy("../target/archivist.jar", "%s/lib" % name)
+	os.mkdir("%s/lib" % base_dir)
+	shutil.copy("../target/%s.jar" % app_name, "%s/lib" % base_dir)
 
-	tar = tarfile.open("%s.tar.gz" % name, "w:gz")
-	tar.add(name)
+	tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
+	tar.add(base_dir)
 	tar.close()
-	cleanup(name)
+	cleanup(base_dir)
 
-def cleanup(name):
+def cleanup(base_dir):
 	try:
-		shutil.rmtree(name)
+		shutil.rmtree(base_dir)
 	except OSError, e:
 		# Just ignore this if its not there
 		pass
 
 def get_version():
-	cmd = ["java", "-cp", "../target/archivist.jar", "com.zorroa.archivist.Version"]
+	cmd = ["java", "-cp", "../target/%s.jar" % app_name, "com.zorroa.%s.Version" % app_name]
 	output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0].strip()
 	return output
 
