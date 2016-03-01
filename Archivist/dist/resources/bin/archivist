@@ -133,19 +133,21 @@ launch_service()
 
     export HOSTNAME=`hostname -s`
 
-    # The es-foreground option will tell archivist not to close stdout/stderr, but it's up to us not to daemonize.
+    # The es-foreground option will tell analyst not to close stdout/stderr, but it's up to us not to daemonize.
     if [ "x$daemonized" = "x" ]; then
-        archivist_parms="$archivist_parms -Darchivist.foreground=yes"
-        exec "$JAVA" -jar $JAVA_OPTS $ARCHIVST_JAVA_OPTS $Darchivist_parms -Darchivist.path.home="$ARCHIVIST_HOME" \
-                -Des.config="$ARCHIVIST_HOME"/config/elasticsearch.yml $props \
+        ARCHIVIST_parms="$ARCHIVIST_parms -Darchivist.foreground=yes"
+        exec "$JAVA" -jar $JAVA_OPTS $ARCHIVIST_JAVA_OPTS $ARCHIVIST_parms $props -Darchivist.path.home="$ARCHIVIST_HOME" \
+                -Des.config="$ARCHIVIST_HOME"/config/elasticsearch.yml \
+                -Dspring.config.location="$ARCHIVIST_HOME"/config/ \
                 "$ARCHIVIST_HOME"/lib/archivist.jar
         # exec without running it in the background, makes it replace this shell, we'll never get here...
         # no need to return something
     else
-        # Startup archivist, background it, and write the pid.
-        exec "$JAVA" -jar $JAVA_OPTS $ARCHIVIST_JAVA_OPTS $archivist_parms -Darchivist.path.home="$ARCHIVIST_HOME"
-                 -Des.config="$ARCHIVIST_HOME"/config/elasticsearch.yml $props \
-                "$ARCHIVIST_HOME"/lib/archivist.jar <&- &
+        exec "$JAVA" -jar $JAVA_OPTS $ARCHIVIST_JAVA_OPTS $ARCHIVIST_parms $props -Darchivist.path.home="$ARCHIVIST_HOME" \
+            -Des.config="$ARCHIVIST_HOME"/config/elasticsearch.yml \
+            -Dspring.config.location="$ARCHIVIST_HOME"/config/ \
+            -Dlogging.config="$ARCHIVIST_HOME"/config/logback.xml \
+            "$ARCHIVIST_HOME"/lib/archivist.jar <&- &
         return $?
     fi
 }
