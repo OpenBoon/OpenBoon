@@ -10,7 +10,8 @@
 
 # Build directory
 target
-data
+index
+storage
 
 .DS_store
 
