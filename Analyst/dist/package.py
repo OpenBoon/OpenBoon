@@ -9,21 +9,35 @@ import os
 import tarfile
 import subprocess
 import shutil
+import argparse
 
 app_name = "analyst"
 
+
+
 def main():
-	base_dir = "%s-%s" % (app_name, get_version())
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--root", help="The base output directory.")
+	parser.add_argument("--compress", help="Compress into a tar.gz file")
+	args = parser.parse_args()
+
+	if args.root:
+		base_dir = args.root
+	else:
+		base_dir = "%s-%s" % (app_name, get_version())
+
 	cleanup(base_dir)
 	shutil.copytree("resources", base_dir)
 
 	os.mkdir("%s/lib" % base_dir)
 	shutil.copy("../target/%s.jar" % app_name, "%s/lib" % base_dir)
 
-	tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
-	tar.add(base_dir)
-	tar.close()
-	cleanup(base_dir)
+	if args.compress:
+		tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
+		tar.add(base_dir)
+		tar.close()
+		cleanup(base_dir)
 
 def cleanup(base_dir):
 	try:
