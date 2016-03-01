@@ -13,8 +13,6 @@ import argparse
 
 app_name = "analyst"
 
-
-
 def main():
 
 	parser = argparse.ArgumentParser()
@@ -28,10 +26,10 @@ def main():
 		base_dir = "%s-%s" % (app_name, get_version())
 
 	cleanup(base_dir)
-	shutil.copytree("resources", base_dir)
+	shutil.copytree("%s/resources" % os.path.dirname(__file__), base_dir)
 
 	os.mkdir("%s/lib" % base_dir)
-	shutil.copy("../target/%s.jar" % app_name, "%s/lib" % base_dir)
+	shutil.copy("%s/../target/%s.jar" % (os.path.dirname(__file__), app_name), "%s/lib" % base_dir)
 
 	if args.compress:
 		tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
