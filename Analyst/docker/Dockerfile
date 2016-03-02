@@ -46,4 +46,5 @@ RUN rm -rf /tmp/ArchivistCommon
 RUN rm -rf /tmp/Analyst
 RUN rm -rf /tmp/apache-maven*
 RUN rm -rf /root/.m2
+RUN rm -rf /root/.ssh
 
