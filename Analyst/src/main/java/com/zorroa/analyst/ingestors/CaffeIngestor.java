@@ -42,8 +42,8 @@ public class CaffeIngestor extends IngestProcessor {
 
     @Override
     public void init() {
-        String resourcePath = ModelUtils.modelPath() + "/caffe/imagenet/";
-        logger.debug("Loading caffe models from " + resourcePath);
+        String resourcePath = applicationProperties.getString("analyst.path.models") + "/caffe/imagenet/";
+        logger.debug("Loading caffe models from {}",resourcePath);
         String deployPath = new File(resourcePath + deployFilename).getAbsolutePath();
         String caffeModelPath = new File(resourcePath + caffeModelFilename).getAbsolutePath();
         String imagenetMeanPath = new File(resourcePath + imagenetMeanFilename).getAbsolutePath();
@@ -52,7 +52,7 @@ public class CaffeIngestor extends IngestProcessor {
             caffeClassifier = new CaffeClassifier(deployPath, caffeModelPath, imagenetMeanPath, synsetWordPath);
             logger.debug("CaffeIngestor created");
         } catch (IOException e) {
-            logger.error("Failed to initialize Caffe {}", e);
+            logger.error("Failed to initialize Caffe", e);
         }
     }
 
