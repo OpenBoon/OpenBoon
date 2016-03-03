@@ -16,8 +16,8 @@ app_name = "analyst"
 def main():
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--root", help="The base output directory.")
-	parser.add_argument("--compress", help="Compress into a tar.gz file")
+	parser.add_argument("--root", help="The base output directory.  Defaults to %s-<version> in the current directory." % app_name)
+	parser.add_argument("--compress", help="Compress into a tar.gz file and remove the root directory")
 	args = parser.parse_args()
 
 	if args.root:
