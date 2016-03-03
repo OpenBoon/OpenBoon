@@ -56,18 +56,16 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     AsyncTaskExecutor ingestThreadPool;
 
     @Override
-    public AnalyzeResult analyze(AnalyzeRequest req) {
+    public AnalyzeResult asyncAnalyze(AnalyzeRequest req) throws ExecutionException {
         try {
             return ingestThreadPool.submit(() -> asyncAnalyze(req)).get();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            RuntimeException re = (RuntimeException) e.getCause();
-            throw re;
+            throw new ExecutionException(e);
         }
     }
 
-    private AnalyzeResult asyncAnalyze(AnalyzeRequest req) {
+    @Override
+    public AnalyzeResult analyze(AnalyzeRequest req) {
 
         AnalyzeResult result = new AnalyzeResult();
         List<AssetBuilder> assets = Lists.newArrayListWithCapacity(req.getPaths().size());
