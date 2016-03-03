@@ -4,6 +4,8 @@ import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import org.elasticsearch.client.Client;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +42,16 @@ public abstract class AbstractTest {
     @Autowired
     protected ObjectFileSystem objectFileSystem;
 
+    @Autowired
+    protected Client client;
+
     public AbstractTest() {
         System.setProperty("zorroa.unittest", "true");
+    }
+
+    @Before
+    public void __init() {
+        client.admin().indices().prepareDelete("_all").get();
     }
 
     public IngestProcessor initIngestProcessor(IngestProcessor p) {
