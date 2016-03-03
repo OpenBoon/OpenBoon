@@ -38,7 +38,6 @@ public class CaffeIngestor extends IngestProcessor {
     @Argument
     private String synsetWordFilename = "synset_words.txt";
 
-    @Argument
     private CaffeClassifier caffeClassifier;
 
     @Override
@@ -86,6 +85,7 @@ public class CaffeIngestor extends IngestProcessor {
             keywords.addAll(caffeKeyword.keywords);
             asset.addKeywords(caffeKeyword.confidence, true /*suggest*/, caffeKeyword.keywords);
         }
+
         asset.setAttr("caffe", "keywords", keywords);
     }
 
