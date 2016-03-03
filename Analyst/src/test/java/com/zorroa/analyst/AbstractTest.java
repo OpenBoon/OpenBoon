@@ -55,7 +55,7 @@ public abstract class AbstractTest {
         URL resourceUrl = getClass().getResource(path);
         try {
             Path resourcePath = Paths.get(resourceUrl.toURI());
-            return new File(resourcePath.toUri());
+            return resourcePath.toFile();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
