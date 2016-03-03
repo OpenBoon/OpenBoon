@@ -57,8 +57,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public AnalyzeResult asyncAnalyze(AnalyzeRequest req) throws ExecutionException {
+        logger.info("Submitting work to ingest thread pool: {}", req);
         try {
-            return ingestThreadPool.submit(() -> asyncAnalyze(req)).get();
+            return ingestThreadPool.submit(() -> analyze(req)).get();
         } catch (InterruptedException e) {
             throw new ExecutionException(e);
         }
