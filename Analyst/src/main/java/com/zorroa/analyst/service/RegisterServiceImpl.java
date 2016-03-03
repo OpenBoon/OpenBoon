@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.*;
-import java.util.Enumeration;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -48,9 +48,11 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     private AtomicBoolean registered = new AtomicBoolean(false);
 
     @PostConstruct
-    public void init() throws SocketException {
+    public void init() throws UnknownHostException {
         String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
-        url = protocol + "://" + getFirstNonLoopbackAddress(true, false) + ":" + properties.getInt("server.port");
+        String addr =  InetAddress.getLocalHost().getHostAddress();
+        url = protocol + "://" + addr + ":" + properties.getInt("server.port");
+        logger.info("External {} interface: {}", protocol, url);
         startAsync();
     }
 
@@ -137,31 +139,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         ping.setData(properties.getBoolean("analyst.index.data"));
         ping.setIngestProcessorClasses(ingestClasses);
         return ping;
-    }
-
-    private static InetAddress getFirstNonLoopbackAddress(boolean preferIpv4, boolean preferIPv6) throws SocketException {
-        Enumeration en = NetworkInterface.getNetworkInterfaces();
-        while (en.hasMoreElements()) {
-            NetworkInterface i = (NetworkInterface) en.nextElement();
-            for (Enumeration en2 = i.getInetAddresses(); en2.hasMoreElements();) {
-                InetAddress addr = (InetAddress) en2.nextElement();
-                if (!addr.isLoopbackAddress()) {
-                    if (addr instanceof Inet4Address) {
-                        if (preferIPv6) {
-                            continue;
-                        }
-                        return addr;
-                    }
-                    if (addr instanceof Inet6Address) {
-                        if (preferIpv4) {
-                            continue;
-                        }
-                        return addr;
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     @Override
