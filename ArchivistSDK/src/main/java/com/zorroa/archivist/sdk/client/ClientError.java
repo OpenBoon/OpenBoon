@@ -45,7 +45,13 @@ public class ClientError {
         RuntimeException e;
         try {
             Class c = Class.forName(exception);
-            e = (RuntimeException) c.getConstructor(String.class).newInstance(message);
+            if (c.isAssignableFrom(RuntimeException.class)) {
+                e = (RuntimeException) c.getConstructor(String.class).newInstance(message);
+            }
+            else {
+                Throwable cause =  (Throwable) c.getConstructor(String.class).newInstance(message);
+                e = new RuntimeException(cause);
+            }
 
         } catch (Exception ex) {
             /*

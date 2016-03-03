@@ -100,7 +100,6 @@ public class Http {
 
         if (response.getStatusLine().getStatusCode() != 200) {
             ClientError error = checkResponse(response, ClientError.class);
-            logger.info("{}", error);
             error.throwException();
         }
 
