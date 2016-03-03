@@ -21,7 +21,7 @@ public class AnalyzeController {
     AnalyzeService analyzeService;
 
     @RequestMapping(value="/api/v1/analyze", method=RequestMethod.POST)
-    public AnalyzeResult analyze(@RequestBody AnalyzeRequest request) throws Exception {
+    public AnalyzeResult analyze(@RequestBody AnalyzeRequest request) throws Throwable {
         try {
             return analyzeService.asyncAnalyze(request);
         } catch (ExecutionException e) {
@@ -29,7 +29,7 @@ public class AnalyzeController {
              * We want the correct exception to be thrown back to the client, not the
              * execution exception which is wrapping the original exception.
              */
-            Exception cause  = (Exception) e.getCause();
+            Throwable cause  = e.getCause();
             throw cause;
         }
     }
