@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletRequest;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -25,7 +27,13 @@ public class AnalystController {
     AnalystService analystService;
 
     @RequestMapping(value="/api/v1/analyst/_register", method=RequestMethod.POST)
-    public void register(@RequestBody AnalystPing ping) {
+    public void register(@RequestBody AnalystPing ping, ServletRequest req) {
+        /*
+         * Override the IP/HOST sent in the ping.
+         */
+        URI uri = URI.create(ping.getUrl());
+        ping.setUrl(uri.getScheme() + "://" + req.getRemoteAddr() + ":" + uri.getPort());
+        
         logger.info("Received ping: {}", ping);
         analystService.register(ping);
     }
