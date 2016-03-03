@@ -52,14 +52,18 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
+        Mat image;
+
         Proxy proxy = asset.getSchema("proxies", ProxySchema.class).atLeastThisSize(1000);
-        if (proxy == null) {
-            logger.debug("Skipping FaceIngestor, no proxy of suitable size.");
-            return;
+        if (proxy != null) {
+            image = OpenCVUtils.convert(proxy.getImage());
+        }
+        else {
+            logger.debug("FaceIngestor cannot no proxy of suitable size, using source");
+            image = OpenCVUtils.convert(asset.getImage());
         }
 
         logger.debug("Starting facial detection on {} ", asset);
-        Mat image = OpenCVUtils.convert(proxy.getImage());
 
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
         // in order to estimate a confidence value
