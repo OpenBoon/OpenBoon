@@ -27,7 +27,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -177,7 +176,7 @@ public class ProxyProcessor extends IngestProcessor {
 
         StringBuilder url = new StringBuilder(128);
         url.append("https://");
-        url.append(InetAddress.getLocalHost().getHostAddress());
+        url.append(System.getProperty("server.address"));
         url.append(":");
         url.append(applicationProperties.getInt("server.port"));
         url.append("/api/v1/fs/");

@@ -1,7 +1,9 @@
 package com.zorroa.analyst.service;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.reflect.ClassPath;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
@@ -18,8 +20,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -48,9 +52,11 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     private AtomicBoolean registered = new AtomicBoolean(false);
 
     @PostConstruct
-    public void init() throws UnknownHostException {
+    public void init() throws IOException {
         String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
-        String addr =  InetAddress.getLocalHost().getHostAddress();
+        String addr =  getIpAddress();
+        System.setProperty("server.address", addr);
+
         url = protocol + "://" + addr + ":" + properties.getInt("server.port");
         logger.info("External {} interface: {}", protocol, url);
         startAsync();
@@ -140,6 +146,46 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         ping.setIngestProcessorClasses(ingestClasses);
         return ping;
     }
+
+    public String getIpAddress() throws IOException {
+
+        String ip = properties.getString("server.address", null);
+        if (ip != null) {
+            return ip;
+        }
+
+        Set<String> allowedDevices = Sets.newHashSet();
+        String deviceString = properties.getString("server.devices", null);
+        if (deviceString != null) {
+            allowedDevices.addAll(Splitter.on(",").trimResults().splitToList(deviceString));
+        }
+
+
+        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        while (networkInterfaces.hasMoreElements()) {
+            NetworkInterface ni = networkInterfaces.nextElement();
+            if (!ni.isUp()) {
+                continue;
+            }
+            if (!allowedDevices.isEmpty()) {
+                if (!allowedDevices.contains(ni.getName())) {
+                    continue;
+                }
+            }
+            Enumeration<InetAddress> nias = ni.getInetAddresses();
+            while (nias.hasMoreElements()) {
+                InetAddress ia = nias.nextElement();
+                if (!ia.isLinkLocalAddress()
+                        && !ia.isLoopbackAddress()
+                        && ia instanceof Inet4Address) {
+                    return ia.getHostAddress().toString();
+                }
+            }
+        }
+
+        return InetAddress.getLocalHost().getHostAddress();
+    }
+
 
     @Override
     protected Scheduler scheduler() {
