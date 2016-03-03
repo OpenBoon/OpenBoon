@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -48,9 +48,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     private AtomicBoolean registered = new AtomicBoolean(false);
 
     @PostConstruct
-    public void init() throws UnknownHostException {
+    public void init() throws SocketException {
         String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
-        url = protocol + "://" + InetAddress.getLocalHost().getHostAddress() + ":" + properties.getInt("server.port");
+        url = protocol + "://" + getFirstNonLoopbackAddress(true, false) + ":" + properties.getInt("server.port");
         startAsync();
     }
 
@@ -139,8 +139,34 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         return ping;
     }
 
+    private static InetAddress getFirstNonLoopbackAddress(boolean preferIpv4, boolean preferIPv6) throws SocketException {
+        Enumeration en = NetworkInterface.getNetworkInterfaces();
+        while (en.hasMoreElements()) {
+            NetworkInterface i = (NetworkInterface) en.nextElement();
+            for (Enumeration en2 = i.getInetAddresses(); en2.hasMoreElements();) {
+                InetAddress addr = (InetAddress) en2.nextElement();
+                if (!addr.isLoopbackAddress()) {
+                    if (addr instanceof Inet4Address) {
+                        if (preferIPv6) {
+                            continue;
+                        }
+                        return addr;
+                    }
+                    if (addr instanceof Inet6Address) {
+                        if (preferIpv4) {
+                            continue;
+                        }
+                        return addr;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     protected Scheduler scheduler() {
         return Scheduler.newFixedRateSchedule(1, 30, TimeUnit.SECONDS);
     }
+
 }
