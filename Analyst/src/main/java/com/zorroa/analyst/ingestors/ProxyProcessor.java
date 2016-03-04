@@ -175,10 +175,7 @@ public class ProxyProcessor extends IngestProcessor {
         }
 
         StringBuilder url = new StringBuilder(128);
-        url.append("https://");
-        url.append(System.getProperty("server.address"));
-        url.append(":");
-        url.append(applicationProperties.getInt("server.port"));
+        url.append(System.getProperty("server.url"));
         url.append("/api/v1/fs/");
         url.append(allocation.getRelativePath(output.format, output.size + "x" + height));
 

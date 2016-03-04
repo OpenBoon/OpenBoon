@@ -37,6 +37,7 @@ public class ProxyProcessorTests extends AbstractTest {
             assertEquals(proxy.getWidth(), proxy.getImage().getWidth());
             assertEquals(proxy.getHeight(), proxy.getImage().getHeight());
             assertEquals("jpg", proxy.getFormat());
+            assertTrue(proxy.getUri().startsWith(System.getProperty("server.url")));
         }
     }
 

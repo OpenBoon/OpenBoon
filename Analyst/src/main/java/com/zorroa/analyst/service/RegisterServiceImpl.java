@@ -55,9 +55,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     public void init() throws IOException {
         String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
         String addr =  getIpAddress();
-        System.setProperty("server.address", addr);
-
         url = protocol + "://" + addr + ":" + properties.getInt("server.port");
+        System.setProperty("server.address", addr);
+        System.setProperty("server.url", url);
         logger.info("External {} interface: {}", protocol, url);
         startAsync();
     }
