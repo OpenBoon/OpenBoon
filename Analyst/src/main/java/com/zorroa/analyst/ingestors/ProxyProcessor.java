@@ -102,12 +102,18 @@ public class ProxyProcessor extends IngestProcessor {
                 if (spec.size > width) {
                     continue;
                 }
-                Proxy proxy = writeProxy(largeProxy != null ? largeProxy : asset.getImage(),
-                        spec, allocation, getOrientationFilters(asset));
-                result.add(proxy);
+
+                Proxy proxy;
                 if (largeProxy == null) {
+                    proxy = writeProxy(asset.getImage(),
+                            spec, allocation, getOrientationFilters(asset));
                     largeProxy = proxy.getImage();
+                } else {
+                    proxy = writeProxy(largeProxy,
+                            spec, allocation, ImmutableList.of());
                 }
+
+                result.add(proxy);
             }
 
             /*
