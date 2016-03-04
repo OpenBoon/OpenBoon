@@ -6,6 +6,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
@@ -16,6 +17,7 @@ import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.IngestSchema;
+import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
 import org.apache.tika.Tika;
@@ -27,6 +29,7 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -70,10 +73,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         AnalyzeResult result = new AnalyzeResult();
         List<AssetBuilder> assets = Lists.newArrayListWithCapacity(req.getPaths().size());
-        List<IngestProcessor> processors;
+        IngestPipelineCacheValue pipeline;
 
         try {
-            processors = getProcessingPipeline(req);
+            pipeline = getProcessingPipeline(req);
         } catch (Exception e) {
             throw new IngestException("Failed to initialize ingest pipeline", e.getCause());
         }
@@ -85,6 +88,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         for (String path: req.getPaths()) {
+
+            if (!pipeline.isSupportedFormat(path)) {
+                logger.debug("The path {} is not a supported format for this pipeline: {}", path,
+                        pipeline.getSupportedFormats());
+                continue;
+            }
+
             logger.info("processing: {}", path);
             result.tried++;
             AssetBuilder builder = new AssetBuilder(path);
@@ -114,7 +124,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 /*
                  * Run the ingest processors
                  */
-                for (IngestProcessor processor : processors) {
+                for (IngestProcessor processor : pipeline.getProcessors()) {
                     try {
                         if (!processor.isSupportedFormat(builder.getExtension())) {
                             continue;
@@ -204,21 +214,46 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
     }
 
-    private final LoadingCache<IngestPipelineCacheKey, List<IngestProcessor>> pipelineCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.HOURS)
-            .build(new CacheLoader<IngestPipelineCacheKey, List<IngestProcessor>>() {
-                public List<IngestProcessor> load(IngestPipelineCacheKey key) throws Exception {
-                    List<IngestProcessor> result = Lists.newArrayListWithCapacity(key.getAnalyzeRequest().getProcessors().size());
-                    for (ProcessorFactory<IngestProcessor> factory : key.getAnalyzeRequest().getProcessors()) {
-                        IngestProcessor p = factory.newInstance();
-                        p.setApplicationProperties(applicationProperties);
-                        p.setObjectFileSystem(objectFileSystem);
-                        p.init();
-                        result.add(p);
-                    }
-                    return result;
+    private static class IngestPipelineCacheValue {
+        private final List<IngestProcessor> processors;
+        private final Set<String> supportedFormats;
+
+        public IngestPipelineCacheValue(List<IngestProcessor> processors, Set<String> supportedFormats) {
+            this.processors = processors;
+            this.supportedFormats = supportedFormats;
+        }
+
+        public Set<String> getSupportedFormats() {
+            return supportedFormats;
+        }
+
+        public List<IngestProcessor> getProcessors() {
+            return processors;
+        }
+
+        public boolean isSupportedFormat(String path) {
+            return supportedFormats.isEmpty() ? true : supportedFormats.contains(FileUtils.extension(path));
+        }
+    }
+
+    private final LoadingCache<IngestPipelineCacheKey, IngestPipelineCacheValue> pipelineCache = CacheBuilder.newBuilder()
+        .expireAfterAccess(1, TimeUnit.HOURS)
+        .build(new CacheLoader<IngestPipelineCacheKey, IngestPipelineCacheValue>() {
+            public IngestPipelineCacheValue load(IngestPipelineCacheKey key) throws Exception {
+                Set<String> supportedFormats = Sets.newHashSet();
+                List<IngestProcessor> result = Lists.newArrayListWithCapacity(key.getAnalyzeRequest().getProcessors().size());
+                for (ProcessorFactory<IngestProcessor> factory : key.getAnalyzeRequest().getProcessors()) {
+                    IngestProcessor p = factory.newInstance();
+                    p.setApplicationProperties(applicationProperties);
+                    p.setObjectFileSystem(objectFileSystem);
+                    p.init();
+                    result.add(p);
+
+                    supportedFormats.addAll(p.supportedFormats());
                 }
-            });
+                return new IngestPipelineCacheValue(result, supportedFormats);
+            }
+        });
 
     /**
      *
@@ -228,7 +263,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      * @return
      * @throws Exception
      */
-    private List<IngestProcessor> getProcessingPipeline(AnalyzeRequest req) throws ExecutionException {
+    private IngestPipelineCacheValue getProcessingPipeline(AnalyzeRequest req) throws ExecutionException {
         return pipelineCache.get(new IngestPipelineCacheKey(req));
     }
 }

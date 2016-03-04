@@ -36,6 +36,21 @@ public class AnalystServiceTests extends AbstractTest {
         assertEquals(result.created, 1);
     }
 
+    @Test
+    public void testIgnoredUnsupportedPaths() {
+        AnalyzeRequest req = new AnalyzeRequest();
+        req.setUser("test");
+        req.setIngestId(new Random().nextInt(9999));
+        req.setIngestPipelineId(new Random().nextInt(9999));
+        req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
+        req.setPaths(Lists.newArrayList(new File("src/test/resources/images/README.md").getAbsolutePath()));
+
+        AnalyzeResult result = analyzeService.analyze(req);
+        assertEquals(result.created, 0);
+        assertEquals(result.updated, 0);
+        assertEquals(result.tried, 0);
+    }
+
     @Test(expected=ExecutionException.class)
     public void testAnalyzeInitFailure() throws ExecutionException {
         AnalyzeRequest req = new AnalyzeRequest();
