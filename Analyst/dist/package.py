@@ -17,8 +17,13 @@ def main():
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--root", help="The base output directory.  Defaults to %s-<version> in the current directory." % app_name)
+	parser.add_argument("--rebuild", action="store_true", help="Rebuild the jar file");
 	parser.add_argument("--compress", help="Compress into a tar.gz file and remove the root directory")
 	args = parser.parse_args()
+
+	jarFile = "%s/../target/%s.jar" % (os.path.dirname(__file__), app_name)
+	if not os.path.exists(jarFile) or args.rebuild:
+		subprocess.call(["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s/../pom.xml" % os.path.dirname(__file__)], shell=False)
 
 	if args.root:
 		base_dir = args.root
@@ -29,7 +34,7 @@ def main():
 	shutil.copytree("%s/resources" % os.path.dirname(__file__), base_dir)
 
 	os.mkdir("%s/lib" % base_dir)
-	shutil.copy("%s/../target/%s.jar" % (os.path.dirname(__file__), app_name), "%s/lib" % base_dir)
+	shutil.copy(jarFile, "%s/lib" % base_dir)
 
 	if args.compress:
 		tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
