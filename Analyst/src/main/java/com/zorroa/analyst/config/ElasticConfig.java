@@ -51,7 +51,7 @@ public class ElasticConfig {
         }
 
         Node node = nodeBuilder()
-                .data(true)
+                .data(properties.getBoolean("analyst.index.data"))
                 .local(Application.isUnitTest())
                 .settings(builder.build())
                 .node();
