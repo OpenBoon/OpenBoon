@@ -5,6 +5,7 @@
 package com.zorroa.analyst.ingestors;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.caffe;
@@ -18,18 +19,8 @@ import java.util.*;
 import java.util.Arrays;
 
 import static org.bytedeco.javacpp.caffe.*;
-import static org.bytedeco.javacpp.opencv_core.Mat;
-import static org.bytedeco.javacpp.opencv_core.MatVector;
-import static org.bytedeco.javacpp.opencv_core.Scalar;
-import static org.bytedeco.javacpp.opencv_core.Size;
-import static org.bytedeco.javacpp.opencv_core.CV_32FC1;
-import static org.bytedeco.javacpp.opencv_core.CV_32FC3;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_GRAY2BGR;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGRA2GRAY;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGRA2BGR;
-import static org.bytedeco.javacpp.opencv_imgproc.cvtColor;
-import static org.bytedeco.javacpp.opencv_imgproc.resize;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
 
 /**
  *
@@ -184,14 +175,13 @@ public class CaffeClassifier {
         return sampleFloat;
     }
 
+    private static final Comparator<CaffeKeyword> MAX_COMPARATOR = (o1, o2) ->
+            Float.compare(o1.confidence, o2.confidence);
+
     private List<CaffeKeyword> findTopKeywords(int n, float threshold) {
         // Use a min-heap priority queue to find the top N entries
-        class MaxComparator implements Comparator<CaffeKeyword> {
-            public int compare(CaffeKeyword a, CaffeKeyword b) {
-                return Float.compare(b.confidence, a.confidence);
-            }
-        }
-        PriorityQueue<CaffeKeyword> queue = new PriorityQueue<>(5, new MaxComparator());
+
+        PriorityQueue<CaffeKeyword> queue = new PriorityQueue<>(5, MAX_COMPARATOR);
         FloatBlob outputLayer = network.output_blobs().get(0);
         FloatPointer outputData = outputLayer.cpu_data();
 
@@ -202,16 +192,11 @@ public class CaffeClassifier {
                 queue.add(keyword);
             }
         }
-
-        List<CaffeKeyword> keywords = new ArrayList<>();
-        for (int i = 0; i < n; ++i) {
-            try {
-                CaffeKeyword keyword = queue.remove();
-                keywords.add(keyword);
-            } catch (NoSuchElementException e) {
-                break;
-            }
+        List<CaffeKeyword> keywords = Lists.newArrayListWithCapacity(queue.size());
+        while(queue.peek() != null) {
+            keywords.add(queue.poll());
         }
+
         return keywords;
     }
 
