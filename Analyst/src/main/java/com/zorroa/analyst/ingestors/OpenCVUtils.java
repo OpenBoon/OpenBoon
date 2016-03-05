@@ -15,14 +15,13 @@ import static org.bytedeco.javacpp.opencv_core.Mat;
  */
 public final class OpenCVUtils {
     private static final Logger logger = LoggerFactory.getLogger(OpenCVUtils.class);
-
-    private static final Java2DFrameConverter java2DFrameConverter = new Java2DFrameConverter();
-    private static final OpenCVFrameConverter openCVFrameConverter = new OpenCVFrameConverter.ToMat();
-
+    
     private OpenCVUtils() {}        // Disallow instantiation
 
     public static Mat convert(BufferedImage bufferedImage) {
+        Java2DFrameConverter java2DFrameConverter = new Java2DFrameConverter();
         Frame frame = java2DFrameConverter.convert(bufferedImage);
+        OpenCVFrameConverter openCVFrameConverter = new OpenCVFrameConverter.ToMat();
         return openCVFrameConverter.convertToMat(frame);
     }
 }
