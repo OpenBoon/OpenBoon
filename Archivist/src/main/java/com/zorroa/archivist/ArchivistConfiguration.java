@@ -107,7 +107,8 @@ public class ArchivistConfiguration {
                 .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
                 .put("script.indexed", true)
                 .put("script.update", true)
-                .put("script.engine.groovy.indexed.update", true);
+                .put("script.engine.groovy.indexed.update", true)
+                .put("discovery.zen.ping.multicast.enabled", false);
 
         if (unittest) {
             builder.put("index.refresh_interval", "1s");
