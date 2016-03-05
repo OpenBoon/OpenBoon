@@ -60,7 +60,8 @@ public class RetrosheetIngestor extends IngestProcessor {
     public RetrosheetIngestor() { }
 
     public boolean readModelFiles() {
-        File modelFolder = new File(ModelUtils.modelPath() + "/retrosheet");
+        String path = applicationProperties.getString("analyst.path.models") + "/retrosheet";
+        File modelFolder = new File(path);
         if (!parseTeamFile(modelFolder)) {
             return false;
         }

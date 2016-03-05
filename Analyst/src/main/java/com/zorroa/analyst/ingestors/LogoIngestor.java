@@ -33,7 +33,8 @@ public class LogoIngestor extends IngestProcessor {
 
     @Override
     public void init() {
-        cascadeClassifier = OpenCVUtils.cascadeClassifier("logo/" + cascadeName);
+        String path = applicationProperties.getString("analyst.path.models") + "/logo/" + cascadeName;
+        cascadeClassifier = new CascadeClassifier(path);
         if (cascadeClassifier == null) {
             logger.debug("Logo classifier failed to initialize");
         }

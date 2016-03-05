@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.awt.image.BufferedImage;
 
 import static org.bytedeco.javacpp.opencv_core.Mat;
-import static org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 
 /**
  * Created by wex on 2/20/16.
@@ -25,10 +24,5 @@ public final class OpenCVUtils {
     public static Mat convert(BufferedImage bufferedImage) {
         Frame frame = java2DFrameConverter.convert(bufferedImage);
         return openCVFrameConverter.convertToMat(frame);
-    }
-
-    public static CascadeClassifier cascadeClassifier(String name) {
-        String haarPath = ModelUtils.modelPath() + "/" + name;
-        return new CascadeClassifier(haarPath);
     }
 }
