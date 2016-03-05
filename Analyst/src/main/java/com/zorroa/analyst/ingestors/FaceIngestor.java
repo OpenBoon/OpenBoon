@@ -34,7 +34,8 @@ public class FaceIngestor extends IngestProcessor {
 
     @Override
     public void init() {
-        cascadeClassifier = OpenCVUtils.cascadeClassifier("face/" + cascadeName);
+        String path = applicationProperties.getString("analyst.path.models") + "/face/" + cascadeName;
+        cascadeClassifier = new CascadeClassifier(path);
         if (cascadeClassifier == null) {
             logger.debug("Face classifier failed to initialize");
         }
