@@ -5,12 +5,15 @@ import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.node.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URI;
 import java.util.Random;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
@@ -20,6 +23,8 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
  */
 @Configuration
 public class ElasticConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(ElasticConfig.class);
 
     @Autowired
     ApplicationProperties properties;
@@ -32,20 +37,25 @@ public class ElasticConfig {
 
         String hostName = InetAddress.getLocalHost().getHostName();
         String nodeName = String.format("%s_%05d", hostName, number);
+        String archivistHost = URI.create(properties.getString("analyst.master.host")).getHost() + "[9300-9400]";
 
         ImmutableSettings.Builder builder =
                 ImmutableSettings.settingsBuilder()
                         .put("cluster.name", "zorroa")
                         .put("path.data", properties.getString("analyst.path.index"))
                         .put("node.name", nodeName)
-                        .put("node.master", true)
+                        .put("node.master", false)
                         .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
                         .put("cluster.routing.allocation.disk.threshold_enabled", false)
                         .put("script.indexed", true)
                         .put("script.update", true)
-                        .put("script.engine.groovy.indexed.update", true);
+                        .put("script.engine.groovy.indexed.update", true)
+                        .put("discovery.zen.no_master_block", "write")
+                        .put("discovery.zen.fd.ping_timeout", 10)
+                        .putArray("discovery.zen.ping.unicast.hosts", archivistHost);
 
         if (Application.isUnitTest()) {
+            builder.put("node.master", true);
             builder.put("index.refresh_interval", "1s");
             builder.put("index.translog.disable_flush", true);
         }
