@@ -41,8 +41,10 @@ public class ApplicationConfig {
     @Bean
     public AsyncTaskExecutor ingestThreadPool() {
 
-        int threads = Math.max(properties.getInt("analyst.executor.threads"),
-                Runtime.getRuntime().availableProcessors());
+        int threads = properties.getInt("analyst.executor.threads");
+        if (threads <= 0) {
+            threads = Runtime.getRuntime().availableProcessors();
+        }
 
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(threads);
