@@ -3,11 +3,14 @@ package com.zorroa.analyst.ingestors;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Calendar;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -35,7 +38,7 @@ public class ExcelIngestorTests extends AbstractTest {
         rowMapping1.matchFilters = Arrays.asList(ExcelIngestor.MatchFilter.toLower);
         rowMapping1.titleRow = 5;
         rowMapping1.matchColumn = "WELL NAME";
-        rowMapping1.outputColumns = Arrays.asList("GA_BASIN", "GA_SUB_BASIN", "OPERATOR");
+        rowMapping1.outputColumns = Arrays.asList("GA_BASIN", "GA_SUB_BASIN", "OPERATOR", "SPUD_DATE", "RIG_RELEASE_DATE");
         rowMapping1.keywordColumns = rowMapping1.outputColumns;
         ExcelIngestor.RowMapping rowMapping2 = new ExcelIngestor.RowMapping();
         rowMapping2.assetField = "petrol.wellName";
@@ -57,6 +60,11 @@ public class ExcelIngestorTests extends AbstractTest {
         excelIngestor.process(asset);
         assertEquals("Apache Northwest Pty Ltd", asset.getAttr("Excel", "OPERATOR"));
         assertEquals("Apache Energy Limited", asset.getAttr("Cuttings", "OPERATOR"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2009, 9, 11);
+        assertTrue(DateUtils.isSameDay(asset.getAttr("Excel", "SPUD_DATE"), calendar.getTime()));
+        calendar.set(2009, 10, 11);
+        assertTrue(DateUtils.isSameDay(asset.getAttr("Excel", "RIG_RELEASE_DATE"), calendar.getTime()));
     }
 
 }

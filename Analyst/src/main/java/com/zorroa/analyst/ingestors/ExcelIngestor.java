@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,11 +47,11 @@ public class ExcelIngestor extends IngestProcessor {
      * Before mapping, string data in the asset field and spreadsheet cells can
      * be filtered using a few methods:
      *
-     *   strings: tolower, spaceToUnderscore, dashToUnderscore, ...
+     *   strings: toLower, spaceToUnderscore, dashToUnderscore, ...
      *
      * The match function can be set to:
      *
-     *   strings: exact, substring
+     *   strings: exact, containsField, fuzzyField
      *   geopoint: nearest (assumes matchColumn is latitude and matchColumn+1 is longitude)
      *
      * After we find the matching row, the columns of that row are added to the
@@ -255,10 +257,28 @@ public class ExcelIngestor extends IngestProcessor {
 
         protected void addAttributesAndKeywords(int r, AssetBuilder asset) {
             Row row = sheet.getRow(r + rowMapping.titleRow);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(1940, 1, 1);
+            final Date firstValidDate = calendar.getTime();
+            final Date currentDate = new Date();
             DataFormatter dataFormatter = new DataFormatter();
             for (String column: rowMapping.outputColumns) {
                 Cell cell = getCell(row, column);
-                asset.setAttr(rowMapping.outputSchema, column, dataFormatter.formatCellValue(cell));
+                switch (cell.getCellType()) {
+                    case Cell.CELL_TYPE_STRING:
+                        asset.setAttr(rowMapping.outputSchema, column, cell.getStringCellValue());
+                        break;
+                    case Cell.CELL_TYPE_NUMERIC:
+                        Object value = null;
+                        Date date = cell.getDateCellValue();
+                        if (date.before(currentDate) && date.after(firstValidDate)) {
+                            value = date;
+                        } else {
+                            value = cell.getNumericCellValue();
+                        }
+                        asset.setAttr(rowMapping.outputSchema, column, value);
+                        break;
+                }
             }
             for (String column: rowMapping.keywordColumns) {
                 Cell cell = getCell(row, column);
