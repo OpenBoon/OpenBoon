@@ -5,6 +5,7 @@ import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.aggregators.Aggregator;
 import com.zorroa.archivist.aggregators.DateAggregator;
+import com.zorroa.archivist.aggregators.FieldAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.domain.UnitTestProcessor;
 import com.zorroa.archivist.sdk.client.ClientException;
@@ -113,6 +114,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         dateAggregator.setDateField("SPUD_DATE");
         dateAggregator.setDateFolderName("SPUD Date");
         aggregators.add(dateAggregator);
+
+        FieldAggregator fieldAggregator = new FieldAggregator();
+        fieldAggregator.setFields(ImmutableList.of("petrol.GA_BASIN.raw", "petrol.GA_SUB_BASIN.raw",
+                "petrol.WELL NAME.raw", "petrol.docType.raw"));
+        aggregators.add(fieldAggregator);
 
         AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
         for (Aggregator aggregator : aggregators) {
