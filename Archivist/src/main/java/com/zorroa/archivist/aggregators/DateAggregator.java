@@ -2,6 +2,7 @@ package com.zorroa.archivist.aggregators;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.schema.Argument;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
@@ -26,15 +27,25 @@ public class DateAggregator extends Aggregator {
     @Autowired
     UserService userService;
 
+    @Argument
+    private String dateFolderName = "Date";
+
+    @Argument
+    private String dateField = "source.date";
+
     private Folder dateFolder;
     private Acl acl;
 
+    public void setDateFolderName(String dateFolderName) {
+        this.dateFolderName = dateFolderName;
+    }
+
+    public void setDateField(String dateField) {
+        this.dateField = dateField;
+    }
+
     @Override
     public void init(Ingest ingest) {
-        /*
-         * Letting this throw if Date is not there...it should be there.
-         */
-        dateFolder =  folderService.get(0, "Date");
         acl = new Acl()
                 .addEntry(userService.getPermission("internal::server"), Access.Write, Access.Read)
                 .addEntry(userService.getPermission("group::user"), Access.Read);
@@ -50,6 +61,14 @@ public class DateAggregator extends Aggregator {
         Terms yearTerms = yearResponse.getAggregations().get("year");
         Collection<Terms.Bucket> yearBuckets = yearTerms.getBuckets();
 
+        if (yearBuckets.size() > 0 && dateFolder == null) {
+            // Default "Date" folder should exist, but create any other top-level folder
+            try {
+                dateFolder = folderService.get(0, dateFolderName);
+            } catch (EmptyResultDataAccessException e) {
+                dateFolder = folderService.create(new FolderBuilder().setAcl(acl).setName(dateFolderName));
+            }
+        }
 
         // Create each year folder and aggregate over each month in the year
         // FIXME: We should use a single multi-level agg for year/month
@@ -90,7 +109,7 @@ public class DateAggregator extends Aggregator {
 
     private AssetScript yearScript(String year) {
         Map<String, Object> yearParams = new HashMap<>();
-        yearParams.put("field", "source.date");
+        yearParams.put("field", dateField);
         yearParams.put("interval", "year");
         if (year != null) {
             ArrayList<String> yearTerms = Lists.newArrayList();
@@ -101,7 +120,7 @@ public class DateAggregator extends Aggregator {
     }
 
     private AssetAggregateBuilder createYearAggBuilder() {
-        AssetFilter dateExistsFilter = new AssetFilter().setExistField("source.date");
+        AssetFilter dateExistsFilter = new AssetFilter().setExistField(dateField);
         AssetSearch dateExistsSearch = new AssetSearch().setFilter(dateExistsFilter);
         return new AssetAggregateBuilder().setName("year").setScript(yearScript(null))
                 .setSearch(dateExistsSearch).setSize(0);
@@ -109,7 +128,7 @@ public class DateAggregator extends Aggregator {
 
     private AssetAggregateBuilder createMonthAggBuilder(AssetSearch yearSearch) {
         Map<String, Object> monthParams = new HashMap<>();
-        monthParams.put("field", "source.date");
+        monthParams.put("field", dateField);
         monthParams.put("interval", "month");
         AssetScript monthScript = new AssetScript().setScript("archivistDate").setParams(monthParams);
         return new AssetAggregateBuilder().setName("month").setScript(monthScript)
@@ -124,7 +143,7 @@ public class DateAggregator extends Aggregator {
             String min = Integer.toString(year) + "-" + Integer.toString(month + 1) + "-01";
             String max = month == 11 ? Integer.toString(year+1) + "-01-01" :
                     Integer.toString(year) + "-" + Integer.toString(month + 2) + "-01";
-            AssetFieldRange fieldRange = new AssetFieldRange().setField("source.date")
+            AssetFieldRange fieldRange = new AssetFieldRange().setField(dateField)
                     .setMin(min).setMax(max);
             AssetFilter monthFilter = new AssetFilter().setFieldRange(fieldRange);
             AssetSearch monthSearch = new AssetSearch().setFilter(monthFilter);
