@@ -54,9 +54,9 @@ public class LogoIngestor extends IngestProcessor {
 
         // Perform analysis on the full resolution source image. The VISA and other logos tend to be rather small in
         // the frame, and using the proxy misses many logos.
-        logger.debug("Starting logo detection on {}", asset.getFilename());
-        Mat image = OpenCVUtils.convert(asset.getImage());
 
+        Mat image = OpenCVUtils.convert(asset.getImage());
+        logger.debug("Starting logo detection on {} mat {}", asset.getFilename(), image);
         // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
         // in order to estimate a confidence value.
         // In the code below, detectMultiScale is called four times, each with a bigger threshold for the number of detections required
@@ -86,76 +86,87 @@ public class LogoIngestor extends IngestProcessor {
         long logoCount = 0;
         Size minLogo = new Size(100, 50);
         Size maxLogo = new Size(4000, 2000);
-        for (int i = 0; i < options.size(); i++) {
-            cascadeClassifier.detectMultiScale(image, newLogoDetections,
-                    options.get(i).scaleFactor, (int)options.get(i).detectionThreshold,
-                    0 /*flags*/, minLogo, maxLogo);
-            long count = newLogoDetections.size();
-            if (count > 0) {
-                confidence = options.get(i).finalConfidence;
-                // I want to save Count and logoDetections ONLY if something was detected, so it's not overwritten to empty the last time
-                logoCount = count;
-                logoDetections = newLogoDetections;
-            } else {
-                break;
-            }
-        }
 
-        if (logoCount < 1) {
-            return;
-        }
+        try {
 
-        logger.debug("LogoIngestor: Haar detected {} potential logos.", logoCount);
-        List<String> keywords = Lists.newArrayList("visa");
+            for (int i = 0; i < options.size(); i++) {
+                cascadeClassifier.detectMultiScale(image, newLogoDetections,
+                        options.get(i).scaleFactor, (int) options.get(i).detectionThreshold,
+                        0 /*flags*/, minLogo, maxLogo);
 
-        StringBuilder svgVal = new StringBuilder(1024);
-        svgVal.append("<svg>");
-
-        final int w = image.size().width();
-        final int h = image.size().height();
-
-        for (int i = 0; i < logoDetections.size(); ++i) {
-            Rect rect = logoDetections.get(i);
-            // Detect points in the area found by the Haar cascade
-            int xmin = rect.x();
-            if (xmin < 0) xmin = 0;
-
-            int xmax = rect.x() + rect.width();
-            if (xmax >= w) xmax = w - 1;
-
-            int ymin = rect.y();
-            if (ymin < 0) ymin = 0;
-
-            int ymax = rect.y() + rect.height();
-            if (ymax >= h) ymax = h - 1;
-
-            // Logo is big if more than 5% of total height
-            double relSize = rect.height() / (double)h;
-            if (relSize > .05) {
-                confidence += relSize;
-                if (confidence > 1) {
-                    confidence = 1;
+                long count = newLogoDetections.size();
+                if (count > 0) {
+                    confidence = options.get(i).finalConfidence;
+                    // I want to save Count and logoDetections ONLY if something was detected, so it's not overwritten to empty the last time
+                    logoCount = count;
+                    logoDetections = newLogoDetections;
+                } else {
+                    break;
                 }
-                keywords.add("bigvisa");
             }
-            svgVal.append("<polygon points=\"");
-            svgVal.append(StringUtil.join(",", xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax));
-            svgVal.append("\" style=\"fill:none;stroke:green;stroke-width:2\" />");
-        }
 
-        logger.debug("LogoIngestor keywords {}", keywords);
-        asset.addKeywords(confidence, true, keywords);
+            if (logoCount < 1) {
+                return;
+            }
 
-        // For debugging purposes, We are adding "visa"+confidence as an attribute, so we can see the actual number in
-        // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,
-        // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
-        // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
-        keywords.add("visa" + confidence);
-        asset.setAttr("Logos", "keywords", keywords);
+            logger.debug("LogoIngestor: Haar detected {} potential logos.", logoCount);
+            List<String> keywords = Lists.newArrayList("visa");
 
-        if (svgVal.length() > "<svg>".length()) {
-            svgVal.append("</svg>");
-            asset.setAttr("SVG", "Logos", svgVal.toString());
+            StringBuilder svgVal = new StringBuilder(1024);
+            svgVal.append("<svg>");
+
+            final int w = image.size().width();
+            final int h = image.size().height();
+
+            for (int i = 0; i < logoDetections.size(); ++i) {
+                Rect rect = logoDetections.get(i);
+                // Detect points in the area found by the Haar cascade
+                int xmin = rect.x();
+                if (xmin < 0) xmin = 0;
+
+                int xmax = rect.x() + rect.width();
+                if (xmax >= w) xmax = w - 1;
+
+                int ymin = rect.y();
+                if (ymin < 0) ymin = 0;
+
+                int ymax = rect.y() + rect.height();
+                if (ymax >= h) ymax = h - 1;
+
+                // Logo is big if more than 5% of total height
+                double relSize = rect.height() / (double) h;
+                if (relSize > .05) {
+                    confidence += relSize;
+                    if (confidence > 1) {
+                        confidence = 1;
+                    }
+                    keywords.add("bigvisa");
+                }
+                svgVal.append("<polygon points=\"");
+                svgVal.append(StringUtil.join(",", xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax));
+                svgVal.append("\" style=\"fill:none;stroke:green;stroke-width:2\" />");
+            }
+
+            logger.debug("LogoIngestor keywords {}", keywords);
+            asset.addKeywords(confidence, true, keywords);
+
+            // For debugging purposes, We are adding "visa"+confidence as an attribute, so we can see the actual number in
+            // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,
+            // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
+            // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
+            keywords.add("visa" + confidence);
+            asset.setAttr("Logos", "keywords", keywords);
+
+            if (svgVal.length() > "<svg>".length()) {
+                svgVal.append("</svg>");
+                asset.setAttr("SVG", "Logos", svgVal.toString());
+            }
+        } finally {
+            try {
+                image.close();
+            } catch (Exception e) {
+                logger.warn("Failed to close OpenCV Mat {}", image, e);
+            }
         }
     }
 }
