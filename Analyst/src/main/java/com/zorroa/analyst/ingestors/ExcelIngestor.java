@@ -86,15 +86,15 @@ public class ExcelIngestor extends IngestProcessor {
     }
 
     public static class RowMapping {
-        String assetField;                  // required
-        MatchFunction matchFunction = MatchFunction.containsField;
-        List<MatchFilter> matchFilters;     // null allowed
-        String sheetName;                   // null == first sheet
-        int titleRow = -1;
-        String matchColumn;                 // null == first column
-        String outputSchema = "Excel";
-        List<String> outputColumns;         // null == all
-        List<String> keywordColumns;        // null == all
+        public String assetField;                  // required
+        public MatchFunction matchFunction = MatchFunction.containsField;
+        public List<MatchFilter> matchFilters;     // null allowed
+        public String sheetName;                   // null == first sheet
+        public int titleRow = -1;
+        public String matchColumn;                 // null == first column
+        public String outputSchema = "Excel";
+        public List<String> outputColumns;         // null == all
+        public List<String> keywordColumns;        // null == all
     }
 
     private XSSFWorkbook workbook;
@@ -102,6 +102,7 @@ public class ExcelIngestor extends IngestProcessor {
 
     @Override
     public void init() {
+        super.init();
         String path = applicationProperties.getString("analyst.path.models") + "/excel/" + fileName;
         try {
             FileInputStream excelFile = new FileInputStream(path);
@@ -169,7 +170,11 @@ public class ExcelIngestor extends IngestProcessor {
         void init(RowMapping rowMapping, XSSFWorkbook workbook) {
             this.rowMapping = rowMapping;
             sheet = rowMapping.sheetName == null ? workbook.getSheetAt(0) : workbook.getSheet(rowMapping.sheetName);
-            titleToColumnIndexMap = getTitleToColumnIndexMap(sheet, rowMapping.titleRow - 1);
+            titleToColumnIndexMap = getTitleToColumnIndexMap(sheet, titleRow());
+        }
+
+        protected int titleRow() {
+            return rowMapping.titleRow < 1 ? 0 : rowMapping.titleRow - 1;
         }
 
         abstract void process(AssetBuilder asset);
@@ -235,7 +240,7 @@ public class ExcelIngestor extends IngestProcessor {
             DataFormatter dataFormatter = new DataFormatter();
             filteredCells = Lists.newArrayListWithCapacity(sheet.getLastRowNum() - sheet.getFirstRowNum());
             for (int r = sheet.getFirstRowNum(); r <= sheet.getLastRowNum(); ++r) {
-                if (r < rowMapping.titleRow) {
+                if (r <= titleRow()) {
                     continue;
                 }
                 Row row = sheet.getRow(r);
@@ -256,7 +261,7 @@ public class ExcelIngestor extends IngestProcessor {
         }
 
         protected void addAttributesAndKeywords(int r, AssetBuilder asset) {
-            Row row = sheet.getRow(r + rowMapping.titleRow);
+            Row row = sheet.getRow(r + titleRow() + 1);
             Calendar calendar = Calendar.getInstance();
             calendar.set(1940, 1, 1);
             final Date firstValidDate = calendar.getTime();
