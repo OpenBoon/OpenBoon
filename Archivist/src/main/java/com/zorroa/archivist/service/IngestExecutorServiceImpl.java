@@ -1,9 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.aggregators.Aggregator;
@@ -107,6 +104,16 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         List<Aggregator> aggregators = Lists.newArrayList();
         aggregators.add(new DateAggregator());
         aggregators.add(new IngestPathAggregator());
+
+        DateAggregator dateAggregator = new DateAggregator();
+        dateAggregator.setDateField("RIG_RELEASE_DATE");
+        dateAggregator.setDateFolderName("Rig Release Date");
+        aggregators.add(dateAggregator);
+        dateAggregator = new DateAggregator();
+        dateAggregator.setDateField("SPUD_DATE");
+        dateAggregator.setDateFolderName("SPUD Date");
+        aggregators.add(dateAggregator);
+
         AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
         for (Aggregator aggregator : aggregators) {
             autowire.autowireBean(aggregator);
