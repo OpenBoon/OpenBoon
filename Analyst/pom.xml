@@ -251,7 +251,7 @@
                         </goals>
                         <configuration>
                             <executable>/bin/rm</executable>
-                            <commandlineArgs>-rf index storage</commandlineArgs>
+                            <commandlineArgs>-rf index storage unittest</commandlineArgs>
                         </configuration>
                     </execution>
 
