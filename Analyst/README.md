@@ -13,9 +13,25 @@ the database and proxy files created by the local Analyst.
 
 Many ingestors require large model files to perform detection or other operations.
 Model files are stored in the model subdirectory and distributed with the platform.
-At runtime, models are accessed through the `ZORROA_MODEL_PATH` environment variable.
-When running the Analyst, make sure to set this environment variable so that the ingestors
-can access their model files.
+At runtime, models are accessed through the `analyst.path.models` configuration variable.
+This value can be overridden using an environment variable `ANALYST_PATH_MODELS`.
+
+
+## Running
+
+Make sure the Archivist is running. Start the Analyst in a shell using either:
+
+    run.sh
+
+Or, from within IntelliJ:
+ 
+1. Right click on the com.zorroa.analyst.Application
+2. Select "Debug" or "Run"
+
+You may also want to set the current working directory to the same location that
+is used when we run the Analyst in single-user mode, which is:
+
+    ${HOME}/Library/Application Support/Zorroa/analyst
 
 
 ## Native Libraries
