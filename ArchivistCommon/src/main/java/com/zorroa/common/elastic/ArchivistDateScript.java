@@ -21,8 +21,12 @@ public class ArchivistDateScript extends AbstractSearchScript {
             calendarField = Calendar.YEAR;
         } else if (intervalParam.equals("month")) {
             calendarField = Calendar.MONTH;
-        } else if (intervalParam.equals("day")) {
+        } else if (intervalParam.equals("day") || intervalParam.equals("dayOfWeek")) {
             calendarField = Calendar.DAY_OF_WEEK;
+        } else if (intervalParam.equals("dayOfMonth")) {
+            calendarField = Calendar.DAY_OF_MONTH;
+        } else if (intervalParam.equals("dayOfYear")) {
+            calendarField = Calendar.DAY_OF_YEAR;
         }
     }
 
