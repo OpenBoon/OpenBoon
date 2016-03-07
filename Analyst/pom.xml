@@ -232,6 +232,13 @@
             <version>master-1.1</version>
         </dependency>
 
+        <!-- Tesseract -->
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>tesseract</artifactId>
+            <version>3.04-1.1</version>
+        </dependency>
+
         <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
