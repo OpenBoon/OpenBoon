@@ -12,10 +12,20 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.sis.geometry.GeneralDirectPosition;
 import org.elasticsearch.common.lang3.StringUtils;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.operation.DefaultCoordinateOperationFactory;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.TransformException;
+import org.opengis.util.FactoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -73,6 +83,7 @@ public class ExcelIngestor extends IngestProcessor {
                 "outputSchema" : "hampton",
                 "outputColumns" : [ "B", "C", "D", "E", "G", "K" ],
                 "keywordColumns" : [ "D", "E", "G", "K" ],
+                "geoColumns" : [ { name : "location", "type" : 0, "geoColumns" : [ "WELL_LAT_DEC_DEGREES", "WELL_LONG_DEC_DEGREES" ] } ],
             } ]
         }
     */
@@ -94,7 +105,25 @@ public class ExcelIngestor extends IngestProcessor {
         public String matchColumn;                 // null == first column
         public String outputSchema = "Excel";
         public List<String> outputColumns;         // null == all
-        public List<String> keywordColumns;        // null == all
+        public List<String> keywordColumns;        // null == outputColumns
+        public List<GeoPointColumns> geoColumns;   // null == none
+    }
+
+    public enum GeoPointType {
+        latitudeLongitude, gdaZoneNorthingEasting, gdaLatitudeLongitude
+    }
+
+    public static class GeoPointColumns {
+        public String name;
+        public GeoPointType type;
+        public List<String> columns;
+
+        public GeoPointColumns() {}
+        public GeoPointColumns(String name, GeoPointType type, List<String> columns) {
+            this.name = name;
+            this.type = type;
+            this.columns = columns;
+        }
     }
 
     private XSSFWorkbook workbook;
@@ -285,10 +314,94 @@ public class ExcelIngestor extends IngestProcessor {
                         break;
                 }
             }
-            for (String column: rowMapping.keywordColumns) {
+            List<String> keywordColumns = rowMapping.keywordColumns == null ? rowMapping.outputColumns : rowMapping.keywordColumns;
+            for (String column: keywordColumns) {
                 Cell cell = getCell(row, column);
                 asset.addKeywords(1, true /*suggest*/, dataFormatter.formatCellValue(cell));
             }
+            for (GeoPointColumns columns: rowMapping.geoColumns) {
+                asset.setAttr(rowMapping.outputSchema, columns.name, getPoint(row, columns));
+            }
+        }
+
+        protected Point2D.Double getPoint(Row row, GeoPointColumns columns) {
+            Point2D.Double p = new Point2D.Double(0, 0);
+            double latitude, longitude;
+            double easting, northing;
+            CRSAuthorityFactory crsFac;
+            switch (columns.type) {
+                case latitudeLongitude:
+                    latitude = getCell(row, columns.columns.get(0)).getNumericCellValue();
+                    longitude = getCell(row, columns.columns.get(1)).getNumericCellValue();
+                    p = new Point2D.Double(latitude, longitude);
+                    break;
+                case gdaLatitudeLongitude:
+                    easting = getCell(row, columns.columns.get(0)).getNumericCellValue();
+                    northing = getCell(row, columns.columns.get(1)).getNumericCellValue();
+
+                    crsFac = ReferencingFactoryFinder
+                            .getCRSAuthorityFactory("EPSG", null);
+
+                    try {
+                        CoordinateReferenceSystem wgs84crs = crsFac
+                                .createCoordinateReferenceSystem("4326");
+                        CoordinateReferenceSystem osgbCrs = crsFac
+                                .createCoordinateReferenceSystem("27700");
+
+                        CoordinateOperation op = new DefaultCoordinateOperationFactory()
+                                .createOperation(osgbCrs, wgs84crs);
+
+                        DirectPosition eastNorth = new GeneralDirectPosition(easting, northing);
+                        DirectPosition latLng = op.getMathTransform().transform(eastNorth,
+                                eastNorth);
+                        latitude = latLng.getOrdinate(0);
+                        longitude = latLng.getOrdinate(1);
+                        p = new Point2D.Double(latitude, longitude);
+                    } catch (FactoryException e) {
+
+                    } catch (org.opengis.referencing.FactoryException e) {
+
+                    } catch (TransformException e) {
+
+                    }
+
+                    break;
+                case gdaZoneNorthingEasting:
+                    easting = getCell(row, columns.columns.get(0)).getNumericCellValue();
+                    northing = getCell(row, columns.columns.get(1)).getNumericCellValue();
+                    int baseCode = 9807;
+                    int zone = (int)getCell(row, columns.columns.get(2)).getNumericCellValue();
+
+                    crsFac = ReferencingFactoryFinder
+                            .getCRSAuthorityFactory("EPSG", null);
+
+                    try {
+                        CoordinateReferenceSystem wgs84crs = crsFac
+                                .createCoordinateReferenceSystem("4326");
+                        String code = Integer.toString(baseCode + zone);
+                        CoordinateReferenceSystem transverseMecatorCrs = crsFac
+                                .createCoordinateReferenceSystem(code);
+
+                        CoordinateOperation op = new DefaultCoordinateOperationFactory()
+                                .createOperation(transverseMecatorCrs, wgs84crs);
+
+                        DirectPosition eastNorth = new GeneralDirectPosition(easting, northing);
+                        DirectPosition latLng = op.getMathTransform().transform(eastNorth,
+                                eastNorth);
+                        latitude = latLng.getOrdinate(0);
+                        longitude = latLng.getOrdinate(1);
+                        p = new Point2D.Double(latitude, longitude);
+                    } catch (FactoryException e) {
+
+                    } catch (org.opengis.referencing.FactoryException e) {
+
+                    } catch (TransformException e) {
+
+                    }
+
+                    break;
+            }
+            return p;
         }
     }
 
