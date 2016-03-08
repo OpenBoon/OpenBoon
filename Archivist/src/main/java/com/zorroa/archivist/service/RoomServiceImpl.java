@@ -1,7 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.repository.RoomDao;
+import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -22,6 +24,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     RoomDao roomDao;
+
+    @Autowired
+    SessionDao sessionDao;
 
     @Autowired
     UserService userService;
@@ -133,6 +138,10 @@ public class RoomServiceImpl implements RoomService {
             return version;
         }
         else {
+            Session session = userService.getActiveSession();
+            SessionAttrs attrs = session.getAttrs();
+            attrs.setSelection(selection);
+            sessionDao.setAttrs(session, attrs);
             messagingService.sendToActiveRoom(new Message(MessageType.ROOM_SELECTION_UPDATE,
                     ImmutableMap.of("version", -1, "selection", selection)));
             return -1;
@@ -149,6 +158,10 @@ public class RoomServiceImpl implements RoomService {
             return version;
         }
         else {
+            Session session = userService.getActiveSession();
+            SessionAttrs attrs = session.getAttrs();
+            attrs.setSearch(search);
+            sessionDao.setAttrs(session, attrs);
             transactionEventManager.afterCommit(() -> {
                 messagingService.sendToActiveRoom(new Message(MessageType.ROOM_SEARCH_UPDATE,
                         ImmutableMap.of("version", -1, "search", search)));
@@ -158,14 +171,39 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public Set<String> getSelection(Room room) {
+        if (room == null) {
+            Set<String> result =  userService.getActiveSession().getAttrs().getSelection();
+            if (result == null) {
+                result = ImmutableSet.of();
+            }
+            return result;
+        }
         return roomDao.getSelection(room);
     }
 
     public AssetSearch getSearch(Room room) {
-        return roomDao.getSearch(room);
+        if (room == null) {
+            AssetSearch result = userService.getActiveSession().getAttrs().getSearch();
+            if (result == null) {
+                result = new AssetSearch();
+            }
+            return result;
+        }
+        else {
+            return roomDao.getSearch(room);
+        }
     }
 
     public SharedRoomState getSharedState(Room room) {
-        return roomDao.getSharedState(room);
+        if (room == null) {
+            Session session = userService.getActiveSession();
+            SharedRoomState state = new SharedRoomState();
+            state.setSearch(session.getAttrs().getSearch());
+            state.setSelection(session.getAttrs().getSelection());
+            state.setVersion(0);
+            return state;
+        } else {
+            return roomDao.getSharedState(room);
+        }
     }
 }

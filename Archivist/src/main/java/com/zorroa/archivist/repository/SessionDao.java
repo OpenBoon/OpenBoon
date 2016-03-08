@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.domain.SessionAttrs;
 import com.zorroa.archivist.sdk.domain.User;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface SessionDao {
     Session get(String cookie);
 
     Session get(long id);
+
+    void setAttrs(Session session, SessionAttrs attrs);
 }

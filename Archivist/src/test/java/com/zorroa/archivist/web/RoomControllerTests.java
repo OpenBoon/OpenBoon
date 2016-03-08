@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.RoomDao;
@@ -234,6 +235,55 @@ public class RoomControllerTests extends MockMvcTest {
 
         Set<String> selected2 = roomDao.getSelection(room1);
         assertEquals(selected1, selected2);
+    }
+
+    @Test
+    public void testGetSelectionNoRoom() throws Exception {
+        MockHttpSession session = admin();
+
+        Set<String> selected =  ImmutableSet.of("a", "b", "c");
+        Session session1 = userService.getSession(session.getId());
+
+        MvcResult result = mvc.perform(put("/api/v1/rooms/current/selection")
+                .session(session)
+                .content(Json.serialize(selected))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        result = mvc.perform(get("/api/v1/rooms/current/selection")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Set<String> selection = Json.Mapper.readValue(result.getResponse().getContentAsByteArray(),
+                new TypeReference<Set<String>>() {});
+        assertEquals(selected, selection);
+    }
+
+    @Test
+    public void testGetSearchNoRoom() throws Exception {
+        MockHttpSession mockSession = admin();
+        Session session1 = userService.getSession(mockSession.getId());
+
+        AssetSearch search = new AssetSearch("bender");
+        MvcResult result = mvc.perform(put("/api/v1/rooms/current/search")
+                .session(mockSession)
+                .content(Json.serialize(search))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        result = mvc.perform(get("/api/v1/rooms/current/search")
+                .session(mockSession)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        AssetSearch searchResult = Json.Mapper.readValue(
+                result.getResponse().getContentAsByteArray(), AssetSearch.class);
+        assertEquals(searchResult.getQuery(), search.getQuery());
     }
 
     @Test

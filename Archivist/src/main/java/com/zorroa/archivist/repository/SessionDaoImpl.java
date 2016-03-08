@@ -3,7 +3,9 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.archivist.sdk.domain.SessionAttrs;
 import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.archivist.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -24,7 +26,8 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
                     "pk_user",
                     "cookie_id",
                     "bool_expired",
-                    "time_last_request");
+                    "time_last_request",
+                    "json_attrs");
 
     @Override
     public Session create(User user, String cookieId) {
@@ -38,6 +41,7 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
             ps.setString(2, cookieId);
             ps.setBoolean(3, false);
             ps.setLong(4, time);
+            ps.setString(5, "{}");
             return ps;
         }, keyHolder);
 
@@ -49,6 +53,7 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
         s.setUsername(user.getUsername());
         s.setRefreshTime(time);
         s.setCookieId(cookieId);
+        s.setAttrs(new SessionAttrs());
         return s;
     }
 
@@ -70,6 +75,7 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
         session.setRefreshTime(rs.getLong("time_last_request"));
         session.setUsername(rs.getString("str_username"));
         session.setUserId(rs.getInt("pk_user"));
+        session.setAttrs(Json.deserialize(rs.getString("json_attrs"), SessionAttrs.class));
         return session;
     };
 
@@ -104,5 +110,11 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
     @Override
     public Session get(long id) {
         return jdbc.queryForObject(GET + " WHERE session.pk_session=?", MAPPER, id);
+    }
+
+    @Override
+    public void setAttrs(Session session, SessionAttrs attrs) {
+        jdbc.update("UPDATE session SET json_attrs=? WHERE pk_session=?",
+                Json.serializeToString(attrs), session.getId());
     }
 }
