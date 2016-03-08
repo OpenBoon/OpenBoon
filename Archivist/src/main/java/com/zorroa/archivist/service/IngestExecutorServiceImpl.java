@@ -117,12 +117,12 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         aggregators.add(dateAggregator);
 
         FieldAggregator fieldAggregator = new FieldAggregator();
-        fieldAggregator.setFields(ImmutableList.of("petrol.Basin.raw", "petrol.SubBasin.raw",
+        fieldAggregator.setFields(ImmutableList.of("petrol.Basin.raw",
                 "petrol.WellName.raw", "petrol.docType.raw"));
         aggregators.add(fieldAggregator);
 
         fieldAggregator = new FieldAggregator();
-        fieldAggregator.setFields(ImmutableList.of("petrol.Operator.raw", "petrol.WellName", "petrol.docType.raw"));
+        fieldAggregator.setFields(ImmutableList.of("petrol.Operator.raw", "petrol.WellName.raw", "petrol.docType.raw"));
         aggregators.add(fieldAggregator);
 
         AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
