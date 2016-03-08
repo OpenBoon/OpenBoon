@@ -141,13 +141,12 @@ public class ImageIngestor extends IngestProcessor {
             .add("Exif.ColorSpace")
             .add("Exif.Make")
             .add("Exif.Model")
+            .add("Exif.Artist")
             .add("IPTC.Keywords")
             .add("IPTC.CopyrightNotice")
-            .add("IPTC.Source")
             .add("IPTC.City")
             .add("IPTC.ProvinceState")
             .add("IPTC.CountryPrimaryLocationName")
-            .add("File.Filename")
             .add("Xmp.Lens")
             .build();
 
@@ -247,7 +246,9 @@ public class ImageIngestor extends IngestProcessor {
                         continue;
                     }
                     asset.setAttr(namespace, key, strValue);
-                    asset.addKeywords(keywordArgs.contains(id) ? KeywordsSchema.CONFIDENCE_MAX : 0, true, strValue);
+                    if (keywordArgs.contains(id)) {
+                        asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, strValue);
+                    }
                 } else if (value instanceof Rational) {
                     Rational rational = (Rational)value;
                     asset.setAttr(namespace, key, rational.doubleValue());
@@ -268,7 +269,9 @@ public class ImageIngestor extends IngestProcessor {
                     if (componentName.equals("java.lang.String")) {
                         String[] strList = (String[]) value;
                         asset.setAttr(namespace, key, value);
-                        asset.addKeywords(keywordArgs.contains(id) ? KeywordsSchema.CONFIDENCE_MAX : 0, true, strList);
+                        if (keywordArgs.contains(id)) {
+                            asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, strList);
+                        }
                     } else if (componentName.equals("com.drew.lang.Rational")) {
                         Rational[] rationals = (Rational[]) value;
                         Double[] doubles = new Double[rationals.length];
