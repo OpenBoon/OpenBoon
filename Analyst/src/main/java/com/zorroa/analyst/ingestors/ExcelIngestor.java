@@ -177,7 +177,7 @@ public class ExcelIngestor extends IngestProcessor {
             return;
         }
 
-        if (isMapped(asset) && !asset.isChanged()) {
+        if (false && isMapped(asset) && !asset.isChanged()) {
             logger.debug("Excel rowMappings already exist for {}", asset);
             return;
         }
@@ -209,6 +209,9 @@ public class ExcelIngestor extends IngestProcessor {
         abstract void process(AssetBuilder asset);
 
         protected String filter(String str, List<MatchFilter> filters) {
+            if (str == null) {
+                return null;
+            }
             for (MatchFilter filter: filters) {
                 switch (filter) {
                     case toLower:
@@ -282,6 +285,9 @@ public class ExcelIngestor extends IngestProcessor {
         @Override
         public void process(AssetBuilder asset) {
             String field = filter(asset.getAttr(rowMapping.assetField), rowMapping.matchFilters);
+            if (field == null) {
+                return;
+            }
             for (int r = 0; r < filteredCells.size(); ++r) {
                 if (field.contains(filteredCells.get(r))) {
                     addAttributesAndKeywords(r, asset);
@@ -296,31 +302,37 @@ public class ExcelIngestor extends IngestProcessor {
             final Date firstValidDate = calendar.getTime();
             final Date currentDate = new Date();
             DataFormatter dataFormatter = new DataFormatter();
-            for (String column: rowMapping.outputColumns) {
-                Cell cell = getCell(row, column);
-                switch (cell.getCellType()) {
-                    case Cell.CELL_TYPE_STRING:
-                        asset.setAttr(rowMapping.outputSchema, column, cell.getStringCellValue());
-                        break;
-                    case Cell.CELL_TYPE_NUMERIC:
-                        Object value = null;
-                        Date date = cell.getDateCellValue();
-                        if (date.before(currentDate) && date.after(firstValidDate)) {
-                            value = date;
-                        } else {
-                            value = cell.getNumericCellValue();
-                        }
-                        asset.setAttr(rowMapping.outputSchema, column, value);
-                        break;
+            if (rowMapping.outputColumns != null) {
+                for (String column : rowMapping.outputColumns) {
+                    Cell cell = getCell(row, column);
+                    switch (cell.getCellType()) {
+                        case Cell.CELL_TYPE_STRING:
+                            asset.setAttr(rowMapping.outputSchema, column, cell.getStringCellValue());
+                            break;
+                        case Cell.CELL_TYPE_NUMERIC:
+                            Object value = null;
+                            Date date = cell.getDateCellValue();
+                            if (date.before(currentDate) && date.after(firstValidDate)) {
+                                value = date;
+                            } else {
+                                value = cell.getNumericCellValue();
+                            }
+                            asset.setAttr(rowMapping.outputSchema, column, value);
+                            break;
+                    }
                 }
             }
             List<String> keywordColumns = rowMapping.keywordColumns == null ? rowMapping.outputColumns : rowMapping.keywordColumns;
-            for (String column: keywordColumns) {
-                Cell cell = getCell(row, column);
-                asset.addKeywords(1, true /*suggest*/, dataFormatter.formatCellValue(cell));
+            if (keywordColumns != null) {
+                for (String column : keywordColumns) {
+                    Cell cell = getCell(row, column);
+                    asset.addKeywords(1, true /*suggest*/, dataFormatter.formatCellValue(cell));
+                }
             }
-            for (GeoPointColumns columns: rowMapping.geoColumns) {
-                asset.setAttr(rowMapping.outputSchema, columns.name, getPoint(row, columns));
+            if (rowMapping.geoColumns != null) {
+                for (GeoPointColumns columns : rowMapping.geoColumns) {
+                    asset.setAttr(rowMapping.outputSchema, columns.name, getPoint(row, columns));
+                }
             }
         }
 
