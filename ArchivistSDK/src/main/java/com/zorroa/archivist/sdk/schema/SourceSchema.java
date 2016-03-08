@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class SourceSchema implements Schema {
 
-    @Keyword
     private String path;
     private String extension;
     private String filename;
@@ -38,7 +37,6 @@ public class SourceSchema implements Schema {
     private String owner;
     private String group;
 
-    @Keyword
     private String type;
 
     public String getChecksum() {
