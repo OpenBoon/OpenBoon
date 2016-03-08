@@ -13,7 +13,7 @@ public class Session {
     private String username;
     private String cookieId;
     private long refreshTime;
-
+    private SessionAttrs attrs;
 
     public long getId() {
         return id;
@@ -55,12 +55,22 @@ public class Session {
         this.userId = userId;
     }
 
+    public SessionAttrs getAttrs() {
+        return attrs;
+    }
+
+    public Session setAttrs(SessionAttrs attrs) {
+        this.attrs = attrs;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(Session.class)
                 .add("id", id)
                 .add("user", username)
                 .add("cookie", cookieId)
+                .add("attrs", attrs)
                 .toString();
     }
 
