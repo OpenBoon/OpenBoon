@@ -43,9 +43,6 @@ public class ExcelIngestor extends IngestProcessor {
     private Logger logger = LoggerFactory.getLogger(ExcelIngestor.class);
 
     @Argument
-    public String fileName = null;
-
-    @Argument
     public List<RowMapping> rowMappings = null;
 
     /**
@@ -72,8 +69,8 @@ public class ExcelIngestor extends IngestProcessor {
      * Example JSON argument string:
 
         {
-            "fileName" : "foo.xlsx",
             "rowMappings" : [ {
+                "fileName" : "foo.xlsx",
                 "assetField" : "hampton.wellName",
                 "matchFunction" : "contains"
                 "matchFilters" : [ "toLower", "spaceToUnderscore", "dashToUnderscore" ],
@@ -97,7 +94,8 @@ public class ExcelIngestor extends IngestProcessor {
     }
 
     public static class RowMapping {
-        public String assetField;                  // required
+        public String fileName;                    // required -- Excel file relative to models
+        public String assetField;                  // required -- E.g. source.filename
         public MatchFunction matchFunction = MatchFunction.containsField;
         public List<MatchFilter> matchFilters;     // null allowed
         public String sheetName;                   // null == first sheet
@@ -126,33 +124,21 @@ public class ExcelIngestor extends IngestProcessor {
         }
     }
 
-    private XSSFWorkbook workbook;
     private List<RowMapper> rowMappers;
 
     @Override
     public void init() {
         super.init();
-        String path = applicationProperties.getString("analyst.path.models") + "/excel/" + fileName;
-        try {
-            FileInputStream excelFile = new FileInputStream(path);
-            workbook = new XSSFWorkbook(excelFile);
-
-            // Convert the mappings into mappers using the factory and initialize
-            RowMapperFactory rowMapperFactory = new RowMapperFactory();
-            rowMappers = Lists.newArrayListWithCapacity(rowMappings.size());
-            for (RowMapping rowMapping : rowMappings) {
-                RowMapper rowMapper = rowMapperFactory.getRowMapper(rowMapping.matchFunction);
-                if (rowMapper != null) {
-                    rowMapper.init(rowMapping, workbook);
-                    rowMappers.add(rowMapper);
-                }
+        String modelPath = applicationProperties.getString("analyst.path.models") + "/excel/";
+        // Convert the mappings into mappers using the factory and initialize
+        RowMapperFactory rowMapperFactory = new RowMapperFactory();
+        rowMappers = Lists.newArrayListWithCapacity(rowMappings.size());
+        for (RowMapping rowMapping : rowMappings) {
+            RowMapper rowMapper = rowMapperFactory.getRowMapper(rowMapping.matchFunction);
+            if (rowMapper != null) {
+                rowMapper.init(rowMapping, modelPath);
+                rowMappers.add(rowMapper);
             }
-        } catch (FileNotFoundException e) {
-            logger.warn("Failed to find Excel file {}", path, e);
-            throw new IngestException(e.getMessage(), e);
-        } catch (IOException e) {
-            logger.warn("Failed to read Excel workbook {}", fileName, e);
-            throw new IngestException(e.getMessage(), e);
         }
     }
 
@@ -173,10 +159,7 @@ public class ExcelIngestor extends IngestProcessor {
 
     @Override
     public void process(AssetBuilder asset) {
-        if (workbook == null) {
-            return;
-        }
-
+        // FIXME: Disable check for already-computed data for now
         if (false && isMapped(asset) && !asset.isChanged()) {
             logger.debug("Excel rowMappings already exist for {}", asset);
             return;
@@ -192,14 +175,32 @@ public class ExcelIngestor extends IngestProcessor {
      * on the current asset, outputting the named data into the asset.
      */
     private abstract static class RowMapper {
+        private XSSFWorkbook workbook;
         protected XSSFSheet sheet;
         private Map<String, Integer> titleToColumnIndexMap;
         RowMapping rowMapping;
 
-        void init(RowMapping rowMapping, XSSFWorkbook workbook) {
+        final Point2D.Double zero = new Point2D.Double(0, 0);
+
+        private Logger logger = LoggerFactory.getLogger(RowMapper.class);
+
+        void init(RowMapping rowMapping, String modelPath) {
             this.rowMapping = rowMapping;
-            sheet = rowMapping.sheetName == null ? workbook.getSheetAt(0) : workbook.getSheet(rowMapping.sheetName);
-            titleToColumnIndexMap = getTitleToColumnIndexMap(sheet, titleRow());
+            String path = modelPath + rowMapping.fileName;
+
+            try {
+                FileInputStream excelFile = new FileInputStream(path);
+                workbook = new XSSFWorkbook(excelFile);
+                sheet = rowMapping.sheetName == null ? workbook.getSheetAt(0) : workbook.getSheet(rowMapping.sheetName);
+                titleToColumnIndexMap = getTitleToColumnIndexMap(sheet, titleRow());
+            } catch (FileNotFoundException e) {
+                logger.warn("Failed to find Excel file {}", path, e);
+                throw new IngestException(e.getMessage(), e);
+            } catch (IOException e) {
+                logger.warn("Failed to read Excel workbook {}", rowMapping.fileName, e);
+                throw new IngestException(e.getMessage(), e);
+            }
+
         }
 
         protected int titleRow() {
@@ -267,8 +268,8 @@ public class ExcelIngestor extends IngestProcessor {
         List<String> filteredCells;
 
         @Override
-        public void init(RowMapping rowMapping, XSSFWorkbook workbook) {
-            super.init(rowMapping, workbook);
+        public void init(RowMapping rowMapping, String modelPath) {
+            super.init(rowMapping, modelPath);
             DataFormatter dataFormatter = new DataFormatter();
             filteredCells = Lists.newArrayListWithCapacity(sheet.getLastRowNum() - sheet.getFirstRowNum());
             for (int r = sheet.getFirstRowNum(); r <= sheet.getLastRowNum(); ++r) {
@@ -305,6 +306,9 @@ public class ExcelIngestor extends IngestProcessor {
             if (rowMapping.outputColumns != null) {
                 for (String column : rowMapping.outputColumns) {
                     Cell cell = getCell(row, column);
+                    if (cell == null) {
+                        continue;
+                    }
                     switch (cell.getCellType()) {
                         case Cell.CELL_TYPE_STRING:
                             asset.setAttr(rowMapping.outputSchema, column, cell.getStringCellValue());
@@ -331,7 +335,10 @@ public class ExcelIngestor extends IngestProcessor {
             }
             if (rowMapping.geoColumns != null) {
                 for (GeoPointColumns columns : rowMapping.geoColumns) {
-                    asset.setAttr(rowMapping.outputSchema, columns.name, getPoint(row, columns));
+                    Point2D.Double p = getPoint(row, columns);
+                    if (!p.equals(zero)) {
+                        asset.setAttr(rowMapping.outputSchema, columns.name, p);
+                    }
                 }
             }
         }

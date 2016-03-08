@@ -25,7 +25,7 @@ public class AspectRatioIngestorTests  extends AbstractTest {
         File file = getResourceFile("/images/faces.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
 
-        String keywords = asset.getAttr("aspectratio", "keywords");
+        String keywords = asset.getAttr("aspect", "keywords");
         assertEquals("landscape", keywords);
     }
 }
