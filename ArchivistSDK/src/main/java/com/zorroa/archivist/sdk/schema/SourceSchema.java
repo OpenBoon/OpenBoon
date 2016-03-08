@@ -20,6 +20,7 @@ public class SourceSchema implements Schema {
 
     private String path;
     private String extension;
+    @Keyword
     private String filename;
     private String basename;
     private String directory;
