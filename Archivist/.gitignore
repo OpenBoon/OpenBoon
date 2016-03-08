@@ -10,19 +10,19 @@
 # are used for applicion data.
 
 # Unit test data
-unittest
+/unittest
 # Build directory
-target
+/target
 # Default location of embedded SQL DB files.
-db
+/db
 # Default location for elastic index
-index
+/index
 # Default location for filesystem
 storage
 # Default location for exports
-exports
+/exports
 # Default location for snapshots
-snapshots
+/snapshots
 
 # Sublime project
 archivist.sublime-project
