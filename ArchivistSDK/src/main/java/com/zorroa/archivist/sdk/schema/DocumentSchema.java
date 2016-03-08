@@ -9,6 +9,7 @@ public class DocumentSchema implements Schema {
 
     @Keyword
     private String title;
+
     @Keyword
     private String author;
 
