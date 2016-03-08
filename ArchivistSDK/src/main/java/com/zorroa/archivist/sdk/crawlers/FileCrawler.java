@@ -26,38 +26,43 @@ public class FileCrawler extends AbstractCrawler {
     public void start(URI uri, Consumer<File> consumer) throws IOException {
         Path start = new File(uri).toPath();
 
-        Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path path, BasicFileAttributes attrs)
-                    throws IOException {
+        try {
+            Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs)
+                        throws IOException {
 
-                final File file = path.toFile();
+                    final File file = path.toFile();
 
-                if (!file.isFile()) {
+                    if (!file.isFile()) {
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    if (path.getFileName().toString().startsWith(".")) {
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    if (!targetFileFormats.contains(FileUtils.extension(path).toLowerCase())
+                            && !targetFileFormats.isEmpty()) {
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    if (ignoredPaths.contains(file.getAbsolutePath())) {
+                        return FileVisitResult.CONTINUE;
+                    }
+                    consumer.accept(file);
                     return FileVisitResult.CONTINUE;
                 }
 
-                if (path.getFileName().toString().startsWith(".")) {
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException e)
+                        throws IOException {
                     return FileVisitResult.CONTINUE;
                 }
-
-                if (!targetFileFormats.contains(FileUtils.extension(path).toLowerCase())
-                        && !targetFileFormats.isEmpty()) {
-                    return FileVisitResult.CONTINUE;
-                }
-
-                if (ignoredPaths.contains(file.getAbsolutePath())) {
-                    return FileVisitResult.CONTINUE;
-                }
-                consumer.accept(file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException e)
-                    throws IOException {
-                return FileVisitResult.CONTINUE;
-            }
-        });
+            });
+        } catch (IOException e) {
+            logger.warn("Failed to walk path: {}", start, e);
+            throw e;
+        }
     }
 }
