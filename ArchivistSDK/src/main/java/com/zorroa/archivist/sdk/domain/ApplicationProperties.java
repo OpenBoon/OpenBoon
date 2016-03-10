@@ -23,4 +23,5 @@ public interface ApplicationProperties {
     int min(String key, int value);
     double min(String key, double value);
     Properties getProperties(String prefix);
+    public Properties getProperties(String prefix, boolean includePrefix);
 }
