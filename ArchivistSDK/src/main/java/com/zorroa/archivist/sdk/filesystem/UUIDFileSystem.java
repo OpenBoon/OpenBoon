@@ -12,7 +12,7 @@ import java.util.Properties;
  */
 public class UUIDFileSystem extends AbstractFileSystem {
 
-    private static final int DEEPNESS = 8;
+    private static final int DEEPNESS = 7;
 
     private static final NameBasedGenerator nameBasedGenerator = Generators.nameBasedGenerator();
 
