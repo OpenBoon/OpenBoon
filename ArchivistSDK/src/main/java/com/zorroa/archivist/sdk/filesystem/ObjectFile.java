@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.filesystem;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.zorroa.archivist.sdk.util.FileUtils;
 
 import java.io.File;
@@ -54,4 +56,24 @@ public class ObjectFile {
         return file.length();
     }
 
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("file", file)
+                .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ObjectFile that = (ObjectFile) o;
+        return Objects.equal(getFile(), that.getFile());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getFile());
+    }
 }
