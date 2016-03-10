@@ -3,11 +3,8 @@ package com.zorroa.archivist.sdk.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Proxy {
 
@@ -63,15 +60,6 @@ public class Proxy {
     public Proxy setName(String name) {
         this.name = name;
         return this;
-    }
-
-    public BufferedImage loadImage(ObjectFileSystem fileSystem) throws IOException {
-        if (image != null) {
-            return image;
-        }
-
-        setImage(ImageIO.read(fileSystem.find("proxies", name)));
-        return image;
     }
 
     @JsonIgnore

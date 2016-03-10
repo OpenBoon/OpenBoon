@@ -2,11 +2,10 @@ package com.zorroa.archivist.sdk.crawlers;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.archivist.sdk.domain.AnalyzeRequestEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
@@ -19,11 +18,6 @@ import java.util.function.Consumer;
 public abstract class AbstractCrawler {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-
-    /**
-     * A place to store any files not local to the archivist.
-     */
-    protected ObjectFileSystem fileSystem;
 
     /**
      * The file formats the crawler should target.
@@ -40,11 +34,9 @@ public abstract class AbstractCrawler {
      *
      * @param uri
      */
-    public abstract void start(URI uri, Consumer<File> consumer) throws IOException;
+    public abstract void start(URI uri, Consumer<AnalyzeRequestEntry> consumer) throws IOException;
 
-    public AbstractCrawler(ObjectFileSystem fileSystem) {
-        this.fileSystem = fileSystem;
-    }
+    public AbstractCrawler() { }
 
     public AbstractCrawler setTargetFileFormats(Collection<String> formats) {
         targetFileFormats = ImmutableSet.copyOf(formats);

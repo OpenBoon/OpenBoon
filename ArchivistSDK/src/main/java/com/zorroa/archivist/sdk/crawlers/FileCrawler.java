@@ -1,6 +1,6 @@
 package com.zorroa.archivist.sdk.crawlers;
 
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.archivist.sdk.domain.AnalyzeRequestEntry;
 import com.zorroa.archivist.sdk.util.FileUtils;
 
 import java.io.File;
@@ -18,12 +18,10 @@ import java.util.function.Consumer;
  */
 public class FileCrawler extends AbstractCrawler {
 
-    public FileCrawler(ObjectFileSystem objectFileSystem) {
-        super(objectFileSystem);
-    }
+    public FileCrawler() {}
 
     @Override
-    public void start(URI uri, Consumer<File> consumer) throws IOException {
+    public void start(URI uri, Consumer<AnalyzeRequestEntry> consumer) throws IOException {
         Path start = new File(uri).toPath();
 
         try {
@@ -50,7 +48,7 @@ public class FileCrawler extends AbstractCrawler {
                     if (ignoredPaths.contains(file.getAbsolutePath())) {
                         return FileVisitResult.CONTINUE;
                     }
-                    consumer.accept(file);
+                    consumer.accept(new AnalyzeRequestEntry(file.toURI()));
                     return FileVisitResult.CONTINUE;
                 }
 

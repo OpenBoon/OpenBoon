@@ -2,17 +2,18 @@ package com.zorroa.archivist.sdk.crawlers;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.sdk.domain.Allocation;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.archivist.sdk.domain.AnalyzeRequestEntry;
 import com.zorroa.archivist.sdk.util.FileUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -56,14 +57,8 @@ public class HttpCrawler extends AbstractCrawler {
      */
     private final AtomicLong assetsDownloaded = new AtomicLong(0);
 
-    /**
-     * Create an HttpCrawler and store matching files using the given
-     * object file system.
-     *
-     * @param fileSystem
-     */
-    public HttpCrawler(ObjectFileSystem fileSystem) {
-        super(fileSystem);
+
+    public HttpCrawler() {
 
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
         cm.setDefaultMaxPerRoute(20);
@@ -75,7 +70,7 @@ public class HttpCrawler extends AbstractCrawler {
     }
 
     @Override
-    public void start(URI uri, Consumer<File> consumer) throws IOException {
+    public void start(URI uri, Consumer<AnalyzeRequestEntry> consumer) throws IOException {
         validDomains.add(uri.getHost());
 
         if (targetFileFormats.isEmpty()) {
@@ -96,7 +91,7 @@ public class HttpCrawler extends AbstractCrawler {
         }
     }
 
-    public void read(URI uri, Consumer<File> consumer) {
+    public void read(URI uri, Consumer<AnalyzeRequestEntry> consumer) {
         if (!visited.add(uri)) {
             return;
         }
@@ -138,8 +133,9 @@ public class HttpCrawler extends AbstractCrawler {
 
         imgLinks.removeIf(f -> !visited.add(f));
         imgLinks.removeIf(f -> !targetFileFormats.contains(FileUtils.extension(f.toString())));
-        if (!imgLinks.isEmpty()) {
-            downloadThreads.execute(()->download(uri, imgLinks, consumer));
+
+        for (URI link: imgLinks) {
+            consumer.accept(new AnalyzeRequestEntry(link));
         }
     }
 
@@ -200,38 +196,5 @@ public class HttpCrawler extends AbstractCrawler {
             }
         }
         return false;
-    }
-
-    public void download(URI page, Set<URI> links, Consumer<File> consumer) {
-
-        Allocation alloc = fileSystem.build(page, "assets");
-        for (URI link : links) {
-
-            String basename = FileUtils.basename(link.getPath());
-            String ext = FileUtils.extension(link.getPath());
-
-            if (alloc.exists(ext, basename)) {
-                continue;
-            }
-
-            HttpGet httpget = new HttpGet(link);
-            HttpResponse response = null;
-            try {
-                response = httpClient.execute(httpget);
-            } catch (IOException e) {
-                continue;
-            }
-
-            HttpEntity entity = response.getEntity();
-            try (InputStream is = entity.getContent()) {
-                File dst = alloc.store(is, ext, basename);
-                consumer.accept(dst);
-                if (assetsDownloaded.incrementAndGet() >= maxAssetDownloads) {
-                    return;
-                }
-            } catch (IOException e) {
-                logger.warn("Failed to download file: '{}'", link, e);
-            }
-        }
     }
 }
