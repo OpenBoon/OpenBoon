@@ -1,8 +1,12 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 
+import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -11,8 +15,8 @@ import java.util.List;
 public class AnalyzeRequest implements EventLoggable {
     private Integer ingestId;
     private Integer ingestPipelineId;
-    private List<String> paths;
     private String user;
+    private List<AnalyzeRequestEntry> assets = Lists.newArrayList();
     private List<ProcessorFactory<IngestProcessor>> processors;
 
     public List<ProcessorFactory<IngestProcessor>> getProcessors() {
@@ -33,13 +37,28 @@ public class AnalyzeRequest implements EventLoggable {
         return this;
     }
 
-    public List<String> getPaths() {
-        return paths;
+    public List<AnalyzeRequestEntry> getAssets() {
+        return assets;
     }
 
-    public AnalyzeRequest setPaths(List<String> paths) {
-        this.paths = paths;
+    public AnalyzeRequest setAssets(List<AnalyzeRequestEntry> assets) {
+        this.assets = assets;
         return this;
+    }
+
+    public AnalyzeRequest addToAssets(String path) {
+        this.assets.add(new AnalyzeRequestEntry(URI.create(path)));
+        return this;
+    }
+
+    public AnalyzeRequest addToAssets(File file) {
+        this.assets.add(new AnalyzeRequestEntry(file.getAbsoluteFile().toURI()));
+        return this;
+    }
+
+    @JsonIgnore
+    public int getAssetCount() {
+        return assets.size();
     }
 
     public Integer getIngestId() {

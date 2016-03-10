@@ -28,7 +28,7 @@ public class AnalystClientIntegrationTests {
         AnalyzeResult result = analyst.analyze(new AnalyzeRequest()
                 .setIngestId(1)
                 .setIngestPipelineId(1)
-                .setPaths(Lists.newArrayList(path))
+                .addToAssets(path)
                 .setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.foo.bar.Nope"))));
         assertEquals(0, result.tried);
     }
@@ -38,7 +38,7 @@ public class AnalystClientIntegrationTests {
         AnalyzeResult result = analyst.analyze(new AnalyzeRequest()
                 .setIngestId(1)
                 .setIngestPipelineId(1)
-                .setPaths(Lists.newArrayList(path))
+                .addToAssets(path)
                 .setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"))));
         assertEquals(1, result.tried);
         assertEquals(1, result.created + result.updated);
