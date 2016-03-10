@@ -146,7 +146,7 @@ public class KeywordsSchema implements Schema {
     }
 
     @JsonAnyGetter
-    public Map<String,Set<String>> any() {
+    public Map<String, Set<String>> any() {
         return fields;
     }
 
