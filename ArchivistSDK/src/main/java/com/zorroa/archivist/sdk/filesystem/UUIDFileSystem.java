@@ -24,7 +24,7 @@ public class UUIDFileSystem extends AbstractFileSystem {
 
     @Override
     public void init() {
-        File directory = new File(properties.getProperty("analyst.filesystem.root"));
+        File directory = new File(properties.getProperty("root"));
         directory.mkdirs();
 
         baseDir = directory.toPath().normalize().toAbsolutePath().toString();
