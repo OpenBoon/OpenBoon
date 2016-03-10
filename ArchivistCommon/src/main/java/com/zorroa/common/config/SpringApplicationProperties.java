@@ -109,6 +109,10 @@ public class SpringApplicationProperties implements ApplicationProperties {
     }
 
     public Properties getProperties(String prefix) {
+        return getProperties(prefix, true);
+    }
+
+    public Properties getProperties(String prefix, boolean includePrefix) {
         Properties result = new Properties();
         Map<String, Object> map = Maps.newHashMap();
 
@@ -116,7 +120,12 @@ public class SpringApplicationProperties implements ApplicationProperties {
             walkPropertySource(map, prefix, propertySource);
         }
 
-        map.forEach((k,v)->result.put(k, v.toString()));
+        if (includePrefix) {
+            map.forEach((k, v) -> result.put(k, v.toString()));
+        }
+        else {
+            map.forEach((k, v) -> result.put(k.substring(prefix.length()), v.toString()));
+        }
         return result;
     }
 

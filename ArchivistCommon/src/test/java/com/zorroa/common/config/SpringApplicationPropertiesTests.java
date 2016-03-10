@@ -8,6 +8,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
@@ -62,7 +63,6 @@ public class SpringApplicationPropertiesTests {
         assertEquals(false, properties.getBoolean("test.prop.bool_foo", false));
     }
 
-
     @Test
     public void getMap() {
         Map<String, Object> map = properties.getMap("test.prop");
@@ -71,5 +71,25 @@ public class SpringApplicationPropertiesTests {
         assertEquals("123", map.get("test.prop.int"));
         assertEquals("3.14159", map.get("test.prop.double"));
         assertEquals("true", map.get("test.prop.bool"));
+    }
+
+    @Test
+    public void getProperties() {
+        Properties props = properties.getProperties("test.prop");
+        assertEquals(4, props.size());
+        assertEquals("abc", props.get("test.prop.string"));
+        assertEquals("123", props.get("test.prop.int"));
+        assertEquals("3.14159", props.get("test.prop.double"));
+        assertEquals("true", props.get("test.prop.bool"));
+    }
+
+    @Test
+    public void getPropertiesNoPrefix() {
+        Properties props = properties.getProperties("test.prop.", false);
+        //assertEquals(4, props.size());
+        assertEquals("abc", props.get("string"));
+        assertEquals("123", props.get("int"));
+        assertEquals("3.14159", props.get("double"));
+        assertEquals("true", props.get("bool"));
     }
 }
