@@ -1,8 +1,6 @@
 package com.zorroa.archivist;
 
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
-import com.zorroa.archivist.sdk.filesystem.AbstractFileSystem;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.RestControllerAdvice;
 import org.elasticsearch.client.Client;
@@ -27,7 +25,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Properties;
 import java.util.Random;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
@@ -65,15 +62,6 @@ public class ArchivistConfiguration {
     @ConfigurationProperties(prefix="archivist.datasource.primary")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
-    }
-
-    @Bean(initMethod="init")
-    public ObjectFileSystem fileSystem() throws Exception {
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        Class fileSystemClass = classLoader.loadClass(properties.getString("zorroa.filesystem.class"));
-        AbstractFileSystem fs = (AbstractFileSystem) fileSystemClass.getConstructor(Properties.class).newInstance(
-                properties.getProperties("zorroa.filesystem"));
-        return fs;
     }
 
     @Bean(name="flyway", initMethod="migrate")

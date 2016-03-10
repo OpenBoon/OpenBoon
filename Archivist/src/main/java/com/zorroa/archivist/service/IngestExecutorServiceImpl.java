@@ -12,10 +12,10 @@ import com.zorroa.archivist.sdk.client.ClientException;
 import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
 import com.zorroa.archivist.sdk.crawlers.AbstractCrawler;
 import com.zorroa.archivist.sdk.crawlers.FileCrawler;
+import com.zorroa.archivist.sdk.crawlers.FlickrCrawler;
 import com.zorroa.archivist.sdk.crawlers.HttpCrawler;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.AnalystException;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
@@ -32,14 +32,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 
@@ -73,13 +69,13 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    ObjectFileSystem objectFileSystem;
-
-    @Autowired
     AnalystService analystService;
 
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
+
+    @Value("${archivist.ingest.batchSize")
+    private int batchSize;
 
     private final ConcurrentMap<Integer, IngestWorker> runningIngests = Maps.newConcurrentMap();
 
@@ -316,8 +312,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             assetExecutor.execute(() -> {
 
                 if (ArchivistConfiguration.unittest) {
-                    for (String path: req.getPaths()) {
-                        AssetBuilder a = new AssetBuilder(path);
+                    for (AnalyzeRequestEntry asset: req.getAssets()) {
+                        AssetBuilder a = new AssetBuilder(asset.getUri());
                         UnitTestProcessor p = new UnitTestProcessor();
                         p.process(a);
                         assetDao.upsert(a);
@@ -344,7 +340,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          * cannot find any hosts to contact.  They are either down,  or rejecting
                          * work for some reason.
                          */
-                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getPaths().size());
+                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getAssetCount());
                         eventLogService.log(ingest, "Failed to contact analyst for processing ingest,", e);
                         messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
                                 ingestService.getIngest(ingest.getId())));
@@ -353,7 +349,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                          * This catch block is for handling the case where the Analyst fails
                          * to init or execute the pipeline.
                          */
-                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getPaths().size());
+                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getAssetCount());
                         eventLogService.log(ingest, "Failed to setup the ingest pipeline", e);
                         messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
                                 ingestService.getIngest(ingest.getId())));
@@ -382,24 +378,32 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 return;
             }
 
-            List<String> paths = Lists.newArrayListWithCapacity(50);
+            BlockingQueue<AnalyzeRequestEntry> queue = Queues.newLinkedBlockingQueue();
 
-            Consumer<File> consumer = file -> {
+            /**
+             * The consumer may call this from multiple threads
+             */
+            Consumer<AnalyzeRequestEntry> consumer = entry -> {
+                if (earlyShutdown) {
+                    throw new RuntimeException("Early ingest shutdown.");
+                }
                 totalAssets.increment();
-                paths.add(file.getAbsolutePath());
+                queue.add(entry);
 
-                if (paths.size() < 10) {
-                    return;
+                synchronized(queue) {
+                    if (queue.size() < batchSize) {
+                        return;
+                    }
                 }
 
-                List<String> copyOfPaths = Lists.newArrayList(paths);
-                paths.clear();
+                List<AnalyzeRequestEntry> batch = Lists.newArrayListWithCapacity(batchSize);
+                queue.drainTo(batch, batchSize);
 
                 analyze(analyst, new AnalyzeRequest()
                         .setUser(user.getUsername())
                         .setIngestId(ingest.getId())
                         .setIngestPipelineId(ingest.getPipelineId())
-                        .setPaths(copyOfPaths)
+                        .setAssets(batch)
                         .setProcessors(pipeline.getProcessors()));
             };
 
@@ -408,8 +412,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
              * for cralwers as well.
              */
             Map<String, AbstractCrawler> crawlers = ImmutableMap.of(
-                    "file", new FileCrawler(objectFileSystem),
-                    "http", new HttpCrawler(objectFileSystem));
+                    "file", new FileCrawler(),
+                    "http", new HttpCrawler(),
+                    "flickr", new FlickrCrawler());
 
             for (String u : ingest.getUris()) {
 
@@ -431,12 +436,18 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 crawler.start(uri, consumer);
             }
 
-            if (!paths.isEmpty()) {
+            /**
+             * If we get here, then the crawler is done.  However, the queue might still have data in it.
+             */
+
+            if (!queue.isEmpty()) {
+                List<AnalyzeRequestEntry> batch = Lists.newArrayListWithCapacity(queue.size());
+                queue.drainTo(batch);
                 analyze(analyst, new AnalyzeRequest()
                         .setUser(user.getUsername())
                         .setIngestId(ingest.getId())
                         .setIngestPipelineId(ingest.getPipelineId())
-                        .setPaths(paths)
+                        .setAssets(batch)
                         .setProcessors(pipeline.getProcessors()));
             }
         }
