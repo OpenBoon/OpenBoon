@@ -123,7 +123,7 @@ launch_service()
     analyst_parms="-Danalyst"
 
     if [ "x$pidpath" != "x" ]; then
-        analyst_parms="$analyst_parms -Dspring.pidfile=$pidpath"
+        export PIDFILE=$pidpath
     fi
 
     # Make sure we dont use any predefined locale, as we check some exception message strings and rely on english language
