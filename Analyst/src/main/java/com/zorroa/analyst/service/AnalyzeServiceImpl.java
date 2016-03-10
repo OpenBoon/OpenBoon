@@ -7,12 +7,10 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
-import com.zorroa.archivist.sdk.domain.AnalyzeResult;
-import com.zorroa.archivist.sdk.domain.ApplicationProperties;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
+import com.zorroa.archivist.sdk.filesystem.ObjectFile;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
@@ -28,7 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -53,6 +54,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     ObjectFileSystem objectFileSystem;
 
     @Autowired
+    TransferService transferService;
+
+    @Autowired
     ApplicationProperties applicationProperties;
 
     @Autowired
@@ -72,9 +76,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public AnalyzeResult analyze(AnalyzeRequest req) {
 
         AnalyzeResult result = new AnalyzeResult();
-        List<AssetBuilder> assets = Lists.newArrayListWithCapacity(req.getPaths().size());
-        IngestPipelineCacheValue pipeline;
+        List<AssetBuilder> assets = Lists.newArrayListWithCapacity(req.getAssetCount());
 
+        IngestPipelineCacheValue pipeline;
         try {
             pipeline = getProcessingPipeline(req);
         } catch (Exception e) {
@@ -87,17 +91,42 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             ingestSchema.addIngest(req);
         }
 
-        for (String path: req.getPaths()) {
+        for (AnalyzeRequestEntry entry: req.getAssets()) {
 
-            if (!pipeline.isSupportedFormat(path)) {
-                logger.debug("The path {} is not a supported format for this pipeline: {}", path,
+            URI uri = URI.create(entry.getUri());
+            if (!pipeline.isSupportedFormat(entry.getUri())) {
+                logger.debug("The path {} is not a supported format for this pipeline: {}", uri,
                         pipeline.getSupportedFormats());
                 continue;
             }
 
-            logger.info("processing: {}", path);
+            /**
+             * If its a remote entry, we check to see if it exists locally.  If not, use the
+             * transferService to download it.
+             */
+
             result.tried++;
-            AssetBuilder builder = new AssetBuilder(path);
+            File file = null;
+            try {
+                if (entry.isRemote()) {
+                    ObjectFile obj = objectFileSystem.get("assets", entry.getUri(), FileUtils.extension(entry.getUri()));
+                    if (!obj.exists()) {
+                        transferService.transfer(entry.getUri(), obj);
+                    }
+                    file = obj.getFile();
+                }
+                else {
+                    file = new File(uri);
+                }
+            } catch (Exception e) {
+                eventLogService.log(req, "Ingest error '{}', could not transfer '{}'", e, e.getMessage(), uri);
+                result.errors++;
+                continue;
+            }
+
+            logger.info("processing: {}", file);
+            AssetBuilder builder = new AssetBuilder(file);
+
             if (ingestSchema != null) {
                 builder.addSchema(ingestSchema);
             }

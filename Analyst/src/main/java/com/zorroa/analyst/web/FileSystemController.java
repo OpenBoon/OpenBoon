@@ -4,20 +4,26 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.ByteStreams;
+import com.zorroa.archivist.sdk.filesystem.ObjectFile;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.concurrent.ExecutionException;
@@ -50,10 +56,45 @@ public class FileSystemController {
     @Autowired
     ObjectFileSystem objectFileSystem;
 
+    /**
+     * The proxies URL is broken out rather than using the general purpose getFile method because
+     * proxies are handled differently due to caching.
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws ExecutionException
+     */
     @RequestMapping(value = "/api/v1/fs/proxies/**", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<byte[]> getProxy(HttpServletRequest request, HttpServletResponse response) throws ExecutionException {
+    public ResponseEntity<byte[]> getProxy(HttpServletRequest request, HttpServletResponse response) throws ExecutionException, FileNotFoundException {
         response.setHeader("Cache-Control", "public");
+
+        String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+
+        AntPathMatcher apm = new AntPathMatcher();
+        String finalPath = "proxies/" + apm.extractPathWithinPattern(bestMatchPattern, path);
+
+        ProxyImage image = proxyCache.get(finalPath);
+        return ResponseEntity.ok()
+                .contentLength(image.size)
+                .contentType(image.type)
+                .body(image.content);
+    }
+
+    /**
+     * This endpoint can stream any type of data in the Analyst's object storage.
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws ExecutionException
+     * @throws FileNotFoundException
+     */
+    @RequestMapping(value = "/api/v1/fs/**", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<FileSystemResource> getFile(HttpServletRequest request, HttpServletResponse response) throws ExecutionException, FileNotFoundException {
 
         String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
@@ -61,11 +102,10 @@ public class FileSystemController {
         AntPathMatcher apm = new AntPathMatcher();
         String finalPath = apm.extractPathWithinPattern(bestMatchPattern, path);
 
-        ProxyImage image = proxyCache.get(finalPath);
+        ObjectFile file = objectFileSystem.get(finalPath);
         return ResponseEntity.ok()
-                .contentLength(image.size)
-                .contentType(image.type)
-                .body(image.content);
+                .contentLength(file.size())
+                .body(new FileSystemResource(file.getFile()));
     }
 
     @ExceptionHandler(ExecutionException.class)
@@ -79,7 +119,7 @@ public class FileSystemController {
     }
 
     private ProxyImage loadProxyImage(String path) throws IOException {
-        return ProxyImage.load(objectFileSystem.get("proxies", path));
+        return ProxyImage.load(objectFileSystem.get(path).getFile());
     }
 
     private static class ProxyImage {

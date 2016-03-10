@@ -30,7 +30,7 @@ public class AnalystServiceTests extends AbstractTest {
         req.setIngestId(new Random().nextInt(9999));
         req.setIngestPipelineId(new Random().nextInt(9999));
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
-        req.setPaths(Lists.newArrayList(new File("src/test/resources/images/toucan.jpg").getAbsolutePath()));
+        req.addToAssets(new File("src/test/resources/images/toucan.jpg"));
 
         AnalyzeResult result = analyzeService.analyze(req);
         assertEquals(result.created, 1);
@@ -43,7 +43,7 @@ public class AnalystServiceTests extends AbstractTest {
         req.setIngestId(new Random().nextInt(9999));
         req.setIngestPipelineId(new Random().nextInt(9999));
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
-        req.setPaths(Lists.newArrayList(new File("src/test/resources/images/README.md").getAbsolutePath()));
+        req.addToAssets(new File("src/test/resources/images/README.md"));
 
         AnalyzeResult result = analyzeService.analyze(req);
         assertEquals(result.created, 0);
@@ -58,7 +58,7 @@ public class AnalystServiceTests extends AbstractTest {
         req.setIngestId(new Random().nextInt(9999));
         req.setIngestPipelineId(new Random().nextInt(9999));
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.foo.Bar")));
-        req.setPaths(Lists.newArrayList(new File("src/test/resources/images/toucan.jpg").getAbsolutePath()));
+        req.addToAssets(new File("src/test/resources/images/toucan.jpg"));
 
         AnalyzeResult result = analyzeService.asyncAnalyze(req);
         assertEquals(result.created, 1);

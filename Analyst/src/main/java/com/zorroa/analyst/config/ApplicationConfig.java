@@ -57,9 +57,9 @@ public class ApplicationConfig {
     @Bean(initMethod="init")
     public ObjectFileSystem fileSystem() throws Exception {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        Class fileSystemClass = classLoader.loadClass(properties.getString("zorroa.filesystem.class"));
+        Class fileSystemClass = classLoader.loadClass(properties.getString("analyst.filesystem.class"));
         AbstractFileSystem fs = (AbstractFileSystem) fileSystemClass.getConstructor(Properties.class).newInstance(
-                properties.getProperties("zorroa.filesystem"));
+                properties.getProperties("analyst.filesystem.", false));
         return fs;
     }
 }
