@@ -40,12 +40,12 @@ public class FileSystemController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileSystemController.class);
 
-    private static final int CACHE_MAX_SIZE = 5000;
-    private static final int CACHE_TIMEOUT_MINUTES = 5;
+    private static final int CACHE_MAX_SIZE = 100;
+    private static final int CACHE_TIMEOUT_MINUTES = 1;
 
     private final LoadingCache<String, ProxyImage> proxyCache = CacheBuilder.newBuilder()
         .maximumSize(CACHE_MAX_SIZE)
-        .concurrencyLevel(20)
+        .concurrencyLevel(4)
         .expireAfterWrite(CACHE_TIMEOUT_MINUTES, TimeUnit.MINUTES)
         .build(new CacheLoader<String, ProxyImage>() {
          public ProxyImage load(String key) throws Exception {
