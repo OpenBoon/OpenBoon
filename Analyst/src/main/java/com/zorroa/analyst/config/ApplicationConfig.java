@@ -48,6 +48,7 @@ public class ApplicationConfig {
             threads = Runtime.getRuntime().availableProcessors() / 2;
         }
 
+        logger.info("Starting analyst with {} analyze threads", threads);
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(threads);
         executor.setMaxPoolSize(threads);
