@@ -180,6 +180,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
             finally {
                 builder.close();
+                try {
+                    if (entry.isRemote()) {
+                        builder.getFile().delete();
+                    }
+                } catch (Exception e ) {
+                    logger.warn("Failed to delete file {}", builder.getAbsolutePath());
+                }
             }
         }
 
