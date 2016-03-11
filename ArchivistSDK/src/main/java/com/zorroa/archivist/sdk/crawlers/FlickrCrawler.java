@@ -36,8 +36,8 @@ public class FlickrCrawler extends AbstractCrawler
     /**
      * Note: these are tied to Matt's personal yahoo account.  We'll probably have to register a business app.
      */
-    private static final String API_KEY = "61f4be23621bcdbf581d564cbd8b1b10";
-    private static final String API_SECRET = "ad654bb1bf48097f";
+    private static final String API_KEY = "3fff2cec0a1829e38501e3e9dccd0ac0";
+    private static final String API_SECRET = "5ee1c9a6fb559059";
     private static final String BASE_URL = "https://api.flickr.com/services/rest/?api_key=" + API_KEY +"&method=";
 
     private final CloseableHttpClient httpClient;
