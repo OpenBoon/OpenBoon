@@ -105,7 +105,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
              */
 
             result.tried++;
-            File file = null;
+            File file;
             try {
                 if (entry.isRemote()) {
                     ObjectFile obj = objectFileSystem.get("assets", entry.getUri(), FileUtils.extension(entry.getUri()));
@@ -177,6 +177,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 eventLogService.log(req, "Unrecoverable ingest error '{}', processing pipeline failed: '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
                 result.errors++;
+            }
+            finally {
+                builder.close();
             }
         }
 
