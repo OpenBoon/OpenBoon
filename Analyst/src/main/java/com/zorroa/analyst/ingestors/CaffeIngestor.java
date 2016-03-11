@@ -3,6 +3,7 @@ package com.zorroa.analyst.ingestors;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.Argument;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
@@ -44,12 +45,29 @@ public class CaffeIngestor extends IngestProcessor {
     public void init() {
         String resourcePath = applicationProperties.getString("analyst.path.models") + "/caffe/imagenet/";
         logger.debug("Loading caffe models from {}",resourcePath);
-        String deployPath = new File(resourcePath + deployFilename).getAbsolutePath();
-        String caffeModelPath = new File(resourcePath + caffeModelFilename).getAbsolutePath();
-        String imagenetMeanPath = new File(resourcePath + imagenetMeanFilename).getAbsolutePath();
-        String synsetWordPath = new File(resourcePath + synsetWordFilename).getAbsolutePath();
+        File deployFile = new File(resourcePath + deployFilename);
+        if (!deployFile.exists() || !deployFile.canRead()) {
+            logger.error("Cannot load caffe model {}", deployFile);
+            throw new IngestException("Cannot load caffe model " + deployFile);
+        }
+        File caffeModelFile = new File(resourcePath + caffeModelFilename);
+        if (!caffeModelFile.exists() || !caffeModelFile.canRead()) {
+            logger.error("Cannot load caffe model {}", caffeModelFile);
+            throw new IngestException("Cannot load caffe model " + caffeModelFile);
+        }
+        File imagenetMeanFile = new File(resourcePath + imagenetMeanFilename);
+        if (!imagenetMeanFile.exists() || !imagenetMeanFile.canRead()) {
+            logger.error("Cannot load caffe model {}", imagenetMeanFile);
+            throw new IngestException("Cannot load caffe model " + imagenetMeanFilename);
+        }
+        File synsetWordFile = new File(resourcePath + synsetWordFilename);
+        if (!synsetWordFile.exists() || !synsetWordFile.canRead()) {
+            logger.error("Cannot load caffe model {}", synsetWordFile);
+            throw new IngestException("Cannot load caffe model " + synsetWordFilename);
+        }
         try {
-            caffeClassifier = new CaffeClassifier(deployPath, caffeModelPath, imagenetMeanPath, synsetWordPath);
+            caffeClassifier = new CaffeClassifier(deployFile.getAbsolutePath(),caffeModelFile.getAbsolutePath(),
+                    imagenetMeanFile.getAbsolutePath(), synsetWordFile.getAbsolutePath());
             logger.debug("CaffeIngestor created");
         } catch (IOException e) {
             logger.error("Failed to initialize Caffe", e);

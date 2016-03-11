@@ -31,8 +31,8 @@ public class ExcelIngestorTests extends AbstractTest {
 
     void testTwoMappings(ExcelIngestor.MatchFunction matchFunction, String fieldValue) {
         ExcelIngestor excelIngestor = new ExcelIngestor();
-        excelIngestor.fileName = "Data_Listing-Caswell.xlsx";
         ExcelIngestor.RowMapping rowMapping1 = new ExcelIngestor.RowMapping();
+        rowMapping1.fileName = "Data_Listing-Caswell.xlsx";
         rowMapping1.assetField = "petrol.wellName";
         rowMapping1.sheetName = "WCR - Data Listing";
         rowMapping1.matchFunction = matchFunction;
@@ -42,6 +42,7 @@ public class ExcelIngestorTests extends AbstractTest {
         rowMapping1.outputColumns = Arrays.asList("GA_BASIN", "GA_SUB_BASIN", "OPERATOR", "SPUD_DATE", "RIG_RELEASE_DATE");
         rowMapping1.keywordColumns = rowMapping1.outputColumns;
         ExcelIngestor.RowMapping rowMapping2 = new ExcelIngestor.RowMapping();
+        rowMapping2.fileName = "Data_Listing-Caswell.xlsx";
         rowMapping2.assetField = "petrol.wellName";
         rowMapping2.sheetName = "Core & Cuttings at GA";
         rowMapping2.matchFunction = matchFunction;
@@ -71,8 +72,8 @@ public class ExcelIngestorTests extends AbstractTest {
     @Test
     public void testGeoPoints() {
         ExcelIngestor excelIngestor = new ExcelIngestor();
-        excelIngestor.fileName = "Data_Listing-Caswell.xlsx";
         ExcelIngestor.RowMapping rowMapping1 = new ExcelIngestor.RowMapping();
+        rowMapping1.fileName = "Data_Listing-Caswell.xlsx";
         rowMapping1.assetField = "petrol.wellName";
         rowMapping1.sheetName = "WCR - Data Listing";
         rowMapping1.matchFunction = ExcelIngestor.MatchFunction.containsField;
