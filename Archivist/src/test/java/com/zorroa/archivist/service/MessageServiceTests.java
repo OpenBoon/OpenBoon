@@ -4,6 +4,9 @@ import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.TestMessagingClient;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +27,9 @@ public class MessageServiceTests extends ArchivistApplicationTests {
     @Autowired
     SessionRegistry sessionRegistry;
 
+    @Autowired
+    ApplicationProperties applicationProperties;
+
     @Value("${archivist.events.port}")
     private int port;
 
@@ -32,7 +38,14 @@ public class MessageServiceTests extends ArchivistApplicationTests {
 
     @Before
     public void init() throws Exception {
-        client = new TestMessagingClient(port);
+
+        SslContext sslContext = null;
+        if (applicationProperties.getBoolean("archivist.events.ssl")) {
+            sslContext = SslContextBuilder.forClient()
+                    .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+        }
+
+        client = new TestMessagingClient(port, sslContext);
         room = roomService.create(new RoomBuilder("test"));
 
         MockHttpServletRequest request = new MockHttpServletRequest();

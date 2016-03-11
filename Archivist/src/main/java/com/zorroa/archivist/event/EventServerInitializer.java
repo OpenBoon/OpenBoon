@@ -8,6 +8,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.ssl.SslContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class EventServerInitializer extends ChannelInitializer<SocketChannel> {
@@ -22,15 +23,21 @@ public class EventServerInitializer extends ChannelInitializer<SocketChannel> {
         };
     }
 
-    public EventServerInitializer() { }
+    private final SslContext sslCtx;
+
+    public EventServerInitializer(SslContext sslCtx) {
+        this.sslCtx = sslCtx;
+    }
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
-         ChannelPipeline pipeline = ch.pipeline();
-
-         pipeline.addLast(new DelimiterBasedFrameDecoder(8192, delimiter()));
-         pipeline.addLast(new StringDecoder());
-         pipeline.addLast(new StringEncoder());
-         pipeline.addLast(eventServerHandler);
+        ChannelPipeline pipeline = ch.pipeline();
+        if (sslCtx != null) {
+            pipeline.addLast(sslCtx.newHandler(ch.alloc()));
+        }
+        pipeline.addLast(new DelimiterBasedFrameDecoder(8192, delimiter()));
+        pipeline.addLast(new StringDecoder());
+        pipeline.addLast(new StringEncoder());
+        pipeline.addLast(eventServerHandler);
     }
 }
