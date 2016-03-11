@@ -6,7 +6,7 @@ fi
 if [ "x$ANALYST_MAX_MEM" = "x" ]; then
     ANALYST_MAX_MEM=1g
 fi
-if [ "x$EARCHIVISTHEAP_SIZE" != "x" ]; then
+if [ "x$ANALYST_HEAP_SIZE" != "x" ]; then
     ANALYST_MIN_MEM=$ANALYST_HEAP_SIZE
     ANALYST_MAX_MEM=$ANALYST_HEAP_SIZE
 fi
