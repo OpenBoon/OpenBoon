@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.base.MoreObjects;
 import com.zorroa.archivist.sdk.schema.*;
 import org.slf4j.Logger;
@@ -13,10 +15,15 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 public class AssetBuilder extends Document {
 
     private static final Logger logger = LoggerFactory.getLogger(AssetBuilder.class);
+
+    private static final NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
+
+    private final UUID id;
 
     /**
      * The file.
@@ -79,6 +86,7 @@ public class AssetBuilder extends Document {
         }
 
         this.file = file;
+        this.id = uuidGenerator.generate(file.getAbsolutePath());
 
         /*
          * Add the standard schemas.
@@ -291,6 +299,11 @@ public class AssetBuilder extends Document {
     public AssetBuilder setChanged(boolean changed) {
         this.changed = changed;
         return this;
+    }
+
+
+    public UUID getId() {
+        return id;
     }
 
     public void close() {
