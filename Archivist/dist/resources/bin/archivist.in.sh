@@ -4,9 +4,9 @@ if [ "x$ARCHIVIST_MIN_MEM" = "x" ]; then
     ARCHIVIST_MIN_MEM=256m
 fi
 if [ "x$ARCHIVIST_MAX_MEM" = "x" ]; then
-    ARCHIVIST_MAX_MEM=1g
+    ARCHIVIST_MAX_MEM=3g
 fi
-if [ "x$EARCHIVISTHEAP_SIZE" != "x" ]; then
+if [ "x$ARCHIVIST_HEAP_SIZE" != "x" ]; then
     ARCHIVIST_MIN_MEM=$ARCHIVIST_HEAP_SIZE
     ARCHIVIST_MAX_MEM=$ARCHIVIST_HEAP_SIZE
 fi
