@@ -71,8 +71,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     @Autowired
     AnalystService analystService;
 
-    @Value("${archivist.ingest.ingestWorkers}")
-    private int ingestWorkerCount;
+    @Value("${archivist.ingest.maxRunningIngests}")
+    private int maxRunningIngests;
+
+    @Value("${archivist.ingest.defaultWorkerThreads}")
+    private int defaultWorkerThreads;
 
     @Value("${archivist.ingest.batchSize}")
     private int batchSize;
@@ -83,7 +86,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @PostConstruct
     public void init() {
-        ingestExecutor = Executors.newFixedThreadPool(ingestWorkerCount);
+        ingestExecutor = Executors.newFixedThreadPool(maxRunningIngests);
     }
 
     @Override
@@ -205,7 +208,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             this.ingest = ingest;
             this.user = user;
             this.assetExecutor = new AssetExecutor(
-                    applicationProperties.max("archivist.ingest.defaultAssetWorkers", ingest.getAssetWorkerThreads()));
+                    ingest.getAssetWorkerThreads() > 0 ? ingest.getAssetWorkerThreads() : defaultWorkerThreads);
             aggregators = getAggregators(ingest);
             startAggregators();
 
