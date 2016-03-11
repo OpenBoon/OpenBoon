@@ -74,7 +74,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     @Value("${archivist.ingest.ingestWorkers}")
     private int ingestWorkerCount;
 
-    @Value("${archivist.ingest.batchSize")
+    @Value("${archivist.ingest.batchSize}")
     private int batchSize;
 
     private final ConcurrentMap<Integer, IngestWorker> runningIngests = Maps.newConcurrentMap();
