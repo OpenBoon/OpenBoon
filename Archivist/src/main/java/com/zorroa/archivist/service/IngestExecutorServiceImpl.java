@@ -15,7 +15,6 @@ import com.zorroa.archivist.sdk.crawlers.FileCrawler;
 import com.zorroa.archivist.sdk.crawlers.FlickrCrawler;
 import com.zorroa.archivist.sdk.crawlers.HttpCrawler;
 import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.exception.AnalystException;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
@@ -347,7 +346,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         eventLogService.log(ingest, "Failed to contact analyst for processing ingest,", e);
                         messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
                                 ingestService.getIngest(ingest.getId())));
-                    } catch (AnalystException e) {
+                    } catch (Exception e) {
                         /**
                          * This catch block is for handling the case where the Analyst fails
                          * to init or execute the pipeline.
@@ -402,6 +401,10 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 List<AnalyzeRequestEntry> batch = Lists.newArrayListWithCapacity(batchSize);
                 queue.drainTo(batch, batchSize);
 
+                /*
+                 * This function returns immediately, leaving the crawler to continue
+                 * working.
+                 */
                 analyze(analyst, new AnalyzeRequest()
                         .setUser(user.getUsername())
                         .setIngestId(ingest.getId())
