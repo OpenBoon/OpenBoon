@@ -25,7 +25,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Random;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
@@ -46,11 +45,8 @@ public class ArchivistConfiguration {
 
     @PostConstruct
     public void init() throws UnknownHostException {
-        Random rand = new Random(System.nanoTime());
-        int number = rand.nextInt(99999);
-
         hostName = InetAddress.getLocalHost().getHostName();
-        nodeName = String.format("%s_%05d", hostName, number);
+        nodeName = String.format("%s_master", hostName);
     }
 
     @Bean
@@ -95,8 +91,12 @@ public class ArchivistConfiguration {
                 .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
                 .put("script.indexed", true)
                 .put("script.update", true)
+                .put("client.transport.sniff", true)
+                .put("transport.tcp.port", properties.getInt("zorroa.common.index.port"))
                 .put("script.engine.groovy.indexed.update", true)
-                .put("discovery.zen.ping.multicast.enabled", false);
+                .put("discovery.zen.ping.multicast.enabled", false)
+                .put("discovery.zen.fd.ping_timeout", "3s")
+                .put("discovery.zen.fd.ping_retries", 10);
 
         if (unittest) {
             builder.put("index.refresh_interval", "1s");
