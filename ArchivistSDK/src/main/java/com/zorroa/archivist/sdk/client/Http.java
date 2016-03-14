@@ -130,6 +130,7 @@ public class Http {
 
         return HttpClients.custom()
                 .setConnectionManager(cm)
+                .setConnectionManagerShared(true)
                 .build();
     }
 }
