@@ -37,8 +37,10 @@ public class ElasticConfig {
 
         String hostName = InetAddress.getLocalHost().getHostName();
         String nodeName = String.format("%s_%05d", hostName, number);
-        String archivistHost = URI.create(properties.getString("analyst.master.host")).getHost() + "[9300-9400]";
-
+        String archivistHost = String.format("%s:%d",
+                URI.create(properties.getString("analyst.master.host")).getHost(),
+                properties.getInt("zorroa.common.index.port"));
+        logger.info("Connecting to elastic master: {}", archivistHost);
         ImmutableSettings.Builder builder =
                 ImmutableSettings.settingsBuilder()
                         .put("cluster.name", "zorroa")
@@ -50,8 +52,10 @@ public class ElasticConfig {
                         .put("script.indexed", true)
                         .put("script.update", true)
                         .put("script.engine.groovy.indexed.update", true)
+                        .put("http.enabled", "false")
                         .put("discovery.zen.no_master_block", "write")
-                        .put("discovery.zen.fd.ping_timeout", 10)
+                        .put("discovery.zen.fd.ping_timeout", "3s")
+                        .put("discovery.zen.fd.ping_retries", 10)
                         .putArray("discovery.zen.ping.unicast.hosts", archivistHost);
 
         if (Application.isUnitTest()) {
