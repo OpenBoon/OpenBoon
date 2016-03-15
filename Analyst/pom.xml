@@ -10,7 +10,7 @@
 
     <groupId>com.zorroa</groupId>
     <artifactId>analyst</artifactId>
-    <version>0.17.0</version>
+    <version>0.18.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -83,13 +83,13 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>archivist-sdk</artifactId>
-            <version>0.17.0</version>
+            <version>0.18.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>archivist-common</artifactId>
-            <version>0.17</version>
+            <version>0.18</version>
         </dependency>
 
         <dependency>
