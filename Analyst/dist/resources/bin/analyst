@@ -119,11 +119,11 @@ usage=`echo $* | egrep -- '(^-h |-h$| -h |--help$|--help )'`
 if [ "x$usage" != "x" ]; then
     echo "Usage: $0 [-dh] [-p pidfile] [--prop=value]"
     echo "Start analyst."
-    echo "    -d            daemonize (run in background)"
-    echo "    -p pidfile    write PID to <pidfile>"
+    echo "    -d                    daemonize (run in background)"
+    echo "    --pidfile=path        write PID file to <path>"
     echo "    -h"
-    echo "    --help        print command line options"
-    echo "   --prop=val     set analyst configurtion property"
+    echo "    --help                print command line options"
+    echo "   --prop=val             set analyst configurtion property"
     echo
     exit 0;
 fi
@@ -133,12 +133,14 @@ analyst_parms="-Danalyst"
 
 if [ "x$daemonized" = "x" ]; then
     analyst_parms="$analyst_parms -Danalyst.foreground=yes"
-    exec "$JAVA" -jar $JAVA_OPTS $ANALYST_JAVA_OPTS $analyst_parms -Danalyst.path.home="$ANALYST_HOME" \
+    exec "$JAVA" -jar $JAVA_OPTS $ANALYST_JAVA_OPTS $analyst_parms \
+            -Danalyst.path.home="$ANALYST_HOME" \
             -Des.config="$ANALYST_HOME"/config/elasticsearch.yml \
             -Dspring.config.location="$ANALYST_HOME"/config/ \
             "$ANALYST_HOME"/lib/analyst.jar "$@"
 else
-    exec "$JAVA" -jar $JAVA_OPTS $ANALYST_JAVA_OPTS $analyst_parms -Danalyst.path.home="$ANALYST_HOME" \
+    exec "$JAVA" -jar $JAVA_OPTS $ANALYST_JAVA_OPTS $analyst_parms \
+        -Danalyst.path.home="$ANALYST_HOME" \
         -Des.config="$ANALYST_HOME"/config/elasticsearch.yml \
         -Dspring.config.location="$ANALYST_HOME"/config/ \
         -Dlogging.config="$ANALYST_HOME"/config/logback.xml \

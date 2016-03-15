@@ -26,8 +26,8 @@ public class Application {
         SpringApplication app =
                 new SpringApplication(Application.class);
 
-        if (ps.getProperty("p") != null) {
-            app.addListeners(new ApplicationPidFileWriter((String) ps.getProperty("p")));
+        if (ps.getProperty("pidfile") != null) {
+            app.addListeners(new ApplicationPidFileWriter((String) ps.getProperty("pidfile")));
         }
         app.run(args);
     }
