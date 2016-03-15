@@ -116,6 +116,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.VideoIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.PdfIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyProcessor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.CaffeIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.FaceIngestor"));
             ingestService.createIngestPipeline(builder);
         }
     }
