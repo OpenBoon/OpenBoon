@@ -56,6 +56,7 @@ public class ElasticConfig {
                         .put("discovery.zen.no_master_block", "write")
                         .put("discovery.zen.fd.ping_timeout", "3s")
                         .put("discovery.zen.fd.ping_retries", 10)
+                        .put("discovery.zen.ping.multicast.enabled", false)
                         .putArray("discovery.zen.ping.unicast.hosts", archivistHost);
 
         if (Application.isUnitTest()) {
