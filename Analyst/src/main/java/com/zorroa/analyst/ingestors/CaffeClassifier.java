@@ -7,9 +7,7 @@ package com.zorroa.analyst.ingestors;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import org.bytedeco.javacpp.FloatPointer;
-import org.bytedeco.javacpp.caffe;
-import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +35,15 @@ public class CaffeClassifier {
     private static final Logger logger = LoggerFactory.getLogger(CaffeClassifier.class);
 
     public CaffeClassifier(String deployPath, String modelPath, String binaryProtoPath, String wordPath) throws IOException {
+        this(deployPath, modelPath, binaryProtoPath, wordPath, 2 /*errors*/);
+    }
+    
+    public CaffeClassifier(String deployPath, String modelPath, String binaryProtoPath, String wordPath, int logLevel) throws IOException {
         Caffe.set_mode(Caffe.CPU);
+        // Change the default logging level using GLOG command line options for argc,argv
+        String opt = "--minloglevel=" + Integer.toString(logLevel);
+        PointerPointer argv = new PointerPointer(1).put(new PointerPointer(new PointerPointer(new String[]{opt})));
+        GlobalInit(new IntPointer(new int[]{1}), argv);
         network = new FloatNet(deployPath, TEST);
         network.CopyTrainedLayersFrom(modelPath);
         assert network.num_inputs() == 1;
