@@ -117,7 +117,7 @@ esac
 
 usage=`echo $* | egrep -- '(^-h |-h$| -h |--help$|--help )'`
 if [ "x$usage" != "x" ]; then
-    echo "Usage: $0 [-dh] [-p pidfile] [--prop=value]"
+    echo "Usage: $0 [-dh] [--pidfile pidfile] [--prop=value]"
     echo "Start archivist."
     echo "    -d                    daemonize (run in background)"
     echo "    --pidfile=path        write PID file to <path>"

@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.domain.Note;
 import com.zorroa.archivist.sdk.domain.AssetAggregateBuilder;
 import com.zorroa.archivist.sdk.domain.AssetSearch;
 import com.zorroa.archivist.sdk.domain.AssetSuggestBuilder;
@@ -10,6 +11,7 @@ import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
+import com.zorroa.archivist.service.NoteService;
 import com.zorroa.archivist.service.SearchService;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,6 +43,9 @@ public class AssetController {
 
     @Autowired
     FolderService folderService;
+
+    @Autowired
+    NoteService noteService;
 
     @Autowired
     SearchService searchService;
@@ -95,6 +101,11 @@ public class AssetController {
     public void get(@PathVariable String id, HttpServletResponse httpResponse) throws IOException {
         GetResponse response = client.prepareGet(alias, "asset", id).get();
         HttpUtils.writeElasticResponse(response, httpResponse);
+    }
+
+    @RequestMapping(value="/api/v1/assets/{id}/notes", method=RequestMethod.GET)
+    public List<Note> getAllNotes(@PathVariable String id) throws IOException {
+        return noteService.getAll(id);
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
