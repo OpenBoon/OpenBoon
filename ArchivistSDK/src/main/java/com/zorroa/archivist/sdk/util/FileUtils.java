@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.util;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,10 +9,31 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class FileUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
+    private static final Pattern URI_PATTERN = Pattern.compile("^\\w+://");
+
+    public static boolean isURI(String path) {
+        return URI_PATTERN.matcher(path).find();
+    }
+
+    public static List<String> superSplit(String path) {
+        List<String> result = Lists.newArrayList();
+        StringBuilder builder = new StringBuilder(path.length());
+        builder.append("/");
+
+        for (String e: Splitter.on("/").trimResults().omitEmptyStrings().split(path)) {
+            builder.append(e);
+            result.add(builder.toString());
+            builder.append("/");
+        }
+        return result;
+    }
 
     public static String extension(String path) {
         try {
