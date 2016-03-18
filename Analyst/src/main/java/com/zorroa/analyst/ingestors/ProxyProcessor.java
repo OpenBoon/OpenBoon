@@ -5,7 +5,7 @@ import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.filesystem.ObjectFile;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.Argument;
+import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import net.coobird.thumbnailator.Thumbnails;

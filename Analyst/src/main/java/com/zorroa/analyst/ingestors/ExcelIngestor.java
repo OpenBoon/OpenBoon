@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.Argument;
+import com.zorroa.archivist.sdk.processor.Argument;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;

@@ -3,7 +3,7 @@ package com.zorroa.analyst.ingestors;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.Argument;
+import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

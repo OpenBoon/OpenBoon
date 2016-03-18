@@ -3,7 +3,7 @@ package com.zorroa.analyst.ingestors;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.geocode.GeoName;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.Argument;
+import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.sdk.util.GeoUtils;
 

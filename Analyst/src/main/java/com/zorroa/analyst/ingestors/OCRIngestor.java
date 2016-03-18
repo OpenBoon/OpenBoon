@@ -6,7 +6,7 @@ import com.google.common.io.Files;
 import com.google.common.io.LineProcessor;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.Argument;
+import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.util.StringUtil;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.lept;
