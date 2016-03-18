@@ -119,7 +119,7 @@ public class ProcessorFactory<T extends Processor> implements Serializable {
 
         String sitePath = System.getenv("ZORROA_SITE_PATH");
         if (sitePath == null) {
-            logger.warn("ZORROA_SITE_PATH is not set.");
+            logger.debug("ZORROA_SITE_PATH is not set.");
             return ProcessorFactory.class.getClassLoader();
         }
 
