@@ -2,6 +2,7 @@ package com.zorroa.archivist.aggregators;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.Aggregator;
 import com.zorroa.archivist.sdk.schema.Argument;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
