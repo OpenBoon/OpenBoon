@@ -21,7 +21,7 @@ public abstract class IngestProcessor extends Processor {
 
     public void init() {
         setArguments();
-    };
+    }
 
     public abstract void process(AssetBuilder asset);
 

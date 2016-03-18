@@ -11,7 +11,10 @@ public abstract class Aggregator extends Processor {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void init(Ingest ingest) { }
+    public void init(Ingest ingest) {
+        setArguments();
+    }
+
     public void teardown() { }
 
     public abstract void aggregate();
