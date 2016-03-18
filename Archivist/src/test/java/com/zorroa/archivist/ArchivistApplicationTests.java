@@ -2,9 +2,10 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.aggregators.Aggregator;
 import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.Aggregator;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
@@ -23,7 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -95,6 +98,9 @@ public abstract class ArchivistApplicationTests {
 
     @Autowired
     protected EventLogService eventLogSerivce;
+
+    @Autowired
+    ApplicationContext applicationContext;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -262,10 +268,14 @@ public abstract class ArchivistApplicationTests {
         }
         refreshIndex();
 
-        for (Aggregator a: ingestExecutorService.getAggregators(i)) {
-            a.aggregate();
+        AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+        IngestPipeline pipeline = ingestService.getIngestPipeline(i.getPipelineId());
+        for (ProcessorFactory<Aggregator> factory: pipeline.getAggregators()) {
+            Aggregator agg = factory.newInstance();
+            autowire.autowireBean(agg);
+            agg.init(i);
+            agg.aggregate();
         }
-
         return i;
     }
 

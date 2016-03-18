@@ -3,10 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.*;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
-import com.zorroa.archivist.aggregators.Aggregator;
-import com.zorroa.archivist.aggregators.DateAggregator;
-import com.zorroa.archivist.aggregators.FieldAggregator;
-import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.domain.UnitTestProcessor;
 import com.zorroa.archivist.sdk.client.ClientException;
 import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
@@ -15,6 +11,8 @@ import com.zorroa.archivist.sdk.crawlers.FileCrawler;
 import com.zorroa.archivist.sdk.crawlers.FlickrCrawler;
 import com.zorroa.archivist.sdk.crawlers.HttpCrawler;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.processor.Aggregator;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
@@ -98,39 +96,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         return start(ingest, false /*don't reset counters*/);
     }
 
-    @Override
-    public List<Aggregator> getAggregators(Ingest ingest) {
-        List<Aggregator> aggregators = Lists.newArrayList();
-        aggregators.add(new DateAggregator());
-        aggregators.add(new IngestPathAggregator());
-
-        DateAggregator dateAggregator = new DateAggregator();
-        dateAggregator.setDateField("RigReleaseDate");
-        dateAggregator.setDateFolderName("Rig Release Date");
-        aggregators.add(dateAggregator);
-
-        dateAggregator = new DateAggregator();
-        dateAggregator.setDateField("SPUDDate");
-        dateAggregator.setDateFolderName("SPUD Date");
-        aggregators.add(dateAggregator);
-
-        FieldAggregator fieldAggregator = new FieldAggregator();
-        fieldAggregator.setFields(ImmutableList.of("petrol.Basin.raw",
-                "petrol.WellName.raw", "petrol.docType.raw"));
-        aggregators.add(fieldAggregator);
-
-        fieldAggregator = new FieldAggregator();
-        fieldAggregator.setFields(ImmutableList.of("petrol.Operator.raw", "petrol.WellName.raw", "petrol.docType.raw"));
-        aggregators.add(fieldAggregator);
-
-        AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
-        for (Aggregator aggregator : aggregators) {
-            autowire.autowireBean(aggregator);
-            aggregator.init(ingest);
-        }
-        return aggregators;
-    }
-
     protected boolean start(Ingest ingest, boolean firstStart) {
         IngestWorker worker = new IngestWorker(ingest, SecurityUtils.getUser());
 
@@ -208,7 +173,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             this.user = user;
             this.assetExecutor = new AssetExecutor(
                     ingest.getAssetWorkerThreads() > 0 ? ingest.getAssetWorkerThreads() : defaultWorkerThreads);
-            aggregators = getAggregators(ingest);
             startAggregators();
 
         }
@@ -217,7 +181,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             earlyShutdown = true;           // Force cleanup at end of ingest
             assetExecutor.shutdownNow();
             try {
-                while (!assetExecutor.awaitTermination(10, TimeUnit.SECONDS)) {
+                while (!assetExecutor.awaitTermination(1, TimeUnit.SECONDS)) {
                     Thread.sleep(250);
                 }
             } catch (InterruptedException e) {
@@ -225,16 +189,25 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             }
         }
 
+        public void initAggregators(IngestPipeline pipeline) {
+            ImmutableList.Builder<Aggregator> builder = ImmutableList.builder();
+            AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+
+            for (ProcessorFactory<Aggregator> factory: pipeline.getAggregators()) {
+                Aggregator agg = factory.newInstance();
+                autowire.autowireBean(agg);
+                agg.init(ingest);
+                builder.add(agg);
+            }
+            aggregators = builder.build();
+        }
+
         public void startAggregators() {
             aggregationTimer = new Timer(true);
             aggregationTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!runningIngests.isEmpty()) {
-                        for (Aggregator aggregator : aggregators) {
-                            aggregator.aggregate();
-                        }
-                    }
+                    aggregators.forEach(Aggregator::aggregate);
                 }
             }, 10000, 10000);
         }
@@ -252,6 +225,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 SecurityContextHolder.getContext().setAuthentication(
                         authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
+                initAggregators(pipeline);
 
                 /*
                  * Figure out the skipped paths
@@ -282,11 +256,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  * Force a refresh so the tear downs can see any recently added data.
                  */
                 assetDao.refresh();
-                if (aggregators != null) {
-                    for (Aggregator aggregator : aggregators) {
-                        aggregator.aggregate();
-                    }
-                }
+
+                /*
+                 * Do a final aggregation.
+                 */
+                aggregators.forEach(Aggregator::aggregate);
 
                 /*
                  * Remove the current ingest from running ingests.

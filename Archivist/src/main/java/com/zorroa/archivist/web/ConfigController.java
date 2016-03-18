@@ -1,7 +1,12 @@
 package com.zorroa.archivist.web;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.reflect.ClassPath;
 import com.zorroa.archivist.sdk.domain.Analyst;
+import com.zorroa.archivist.sdk.processor.Aggregator;
+import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.util.IngestUtils;
 import com.zorroa.archivist.service.AnalystService;
 import org.slf4j.Logger;
@@ -11,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,6 +33,31 @@ public class ConfigController {
     @Autowired
     AnalystService analystService;
 
+    private List<String> aggregators = Lists.newArrayList();
+
+    @PostConstruct
+    public void init() {
+        try {
+            ClassLoader classLoader = new ProcessorFactory<>().getSiteClassLoader();
+            ClassPath classPath = ClassPath.from(classLoader);
+            for (ClassPath.ClassInfo info: classPath.getTopLevelClassesRecursive("com.zorroa")) {
+                try {
+                    Class<?> clazz = classLoader.loadClass(info.getName());
+                    if (Aggregator.class.isAssignableFrom(clazz) && !EXCLUDE_INGESTORS.contains(info.getName())) {
+                        aggregators.add(info.getName());
+                    }
+                } catch (NoClassDefFoundError | ClassNotFoundException ignore) {
+                    /*
+                     * This fails for dynamically loaded classes that inherit from an
+                     * external base class.
+                     */
+                }
+            }
+        } catch (IOException e) {
+            logger.warn("Failed to load aggregators, ", e);
+        }
+    }
+
     @RequestMapping(value = "/api/v1/config/supported_formats", method = RequestMethod.GET)
     public Object supportedFormats() {
         return IngestUtils.SUPPORTED_FORMATS;
@@ -37,5 +70,13 @@ public class ConfigController {
             ingestorClasses.addAll(a.getIngestProcessorClasses());
         }
         return ingestorClasses;
+    }
+
+    private Set<String> EXCLUDE_INGESTORS =
+            ImmutableSet.of("com.zorroa.archivist.sdk.processor.Aggregator");
+
+    @RequestMapping(value="/api/v1/plugins/aggregator", method= RequestMethod.GET)
+    public Collection<String> aggregators() throws Exception {
+        return aggregators;
     }
 }

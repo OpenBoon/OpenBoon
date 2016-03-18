@@ -1,6 +1,8 @@
 package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.aggregators.DateAggregator;
+import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestState;
@@ -118,6 +120,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyProcessor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.CaffeIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.FaceIngestor"));
+            builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
+            builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
             ingestService.createIngestPipeline(builder);
         }
     }

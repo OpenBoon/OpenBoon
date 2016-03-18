@@ -2,13 +2,14 @@ package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.sdk.util.Json;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.archivist.sdk.processor.Aggregator;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,6 +34,8 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
         result.setUserModified(rs.getInt("user_modified"));
         result.setProcessors(Json.deserialize(rs.getString("json_processors"),
                 new TypeReference<List<ProcessorFactory<IngestProcessor>>>() {}));
+        result.setAggregators(Json.deserialize(rs.getString("json_aggregators"),
+                new TypeReference<List<ProcessorFactory<Aggregator>>>() {}));
         return result;
     };
 
@@ -46,9 +49,10 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
                     "time_created,"+
                     "user_modified, "+
                     "time_modified, "+
-                    "json_processors " +
+                    "json_processors, " +
+                    "json_aggregators " +
             ") "+
-            "VALUES (?,?,?,?,?,?,?)";
+            "VALUES (?,?,?,?,?,?,?,?)";
 
     @Override
     public IngestPipeline create(IngestPipelineBuilder builder) {
@@ -63,7 +67,8 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
             ps.setLong(4, time);
             ps.setInt(5, SecurityUtils.getUser().getId());
             ps.setLong(6, time);
-            ps.setObject(7, Json.serializeToString(builder.getProcessors()));
+            ps.setString(7, Json.serializeToString(builder.getProcessors(), "[]"));
+            ps.setString(8, Json.serializeToString(builder.getAggregators(), "[]"));
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
