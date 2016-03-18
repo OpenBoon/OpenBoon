@@ -2,7 +2,7 @@
  * Copyright (c) 2016 by Zorroa
  */
 
-package com.zorroa.archivist.sdk.schema;
+package com.zorroa.archivist.sdk.processor;
 
 /**
  * Created by wex on 2/19/16.

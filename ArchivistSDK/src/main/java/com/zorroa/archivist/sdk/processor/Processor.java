@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
-import com.zorroa.archivist.sdk.schema.Argument;
 import com.zorroa.archivist.sdk.util.Json;
 
 import java.lang.reflect.Field;
