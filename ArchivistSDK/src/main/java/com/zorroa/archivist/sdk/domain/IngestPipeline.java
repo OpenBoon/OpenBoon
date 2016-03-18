@@ -1,5 +1,6 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.zorroa.archivist.sdk.processor.Aggregator;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 
@@ -16,6 +17,7 @@ public class IngestPipeline implements EventLoggable {
     private long timeModified;
     private int userModified;
     private List<ProcessorFactory<IngestProcessor>> processors;
+    private List<ProcessorFactory<Aggregator>> aggregators;
 
     public IngestPipeline() { }
 
@@ -81,6 +83,15 @@ public class IngestPipeline implements EventLoggable {
 
     public void setProcessors(List<ProcessorFactory<IngestProcessor>> processors) {
         this.processors = processors;
+    }
+
+    public List<ProcessorFactory<Aggregator>> getAggregators() {
+        return aggregators;
+    }
+
+    public IngestPipeline setAggregators(List<ProcessorFactory<Aggregator>> aggregators) {
+        this.aggregators = aggregators;
+        return this;
     }
 
     @Override
