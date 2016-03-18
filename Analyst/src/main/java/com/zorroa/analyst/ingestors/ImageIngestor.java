@@ -322,8 +322,12 @@ public class ImageIngestor extends IngestProcessor {
         return d;
     }
 
-    private static double dmsToDegrees(int d, int m, int s) {
-        return Math.signum(d) * (abs(d) + (m / 60.0) + (s / 3600.0));
+    private static double dmsToDegrees(int d, int m, int s, boolean isNegative) {
+        double decimal = Math.signum(d) * (abs(d) + (m / 60.0) + (s / 3600.0));
+        if (isNegative)
+            decimal *= -1;
+
+        return decimal;
     }
 
     private void extractExifLocation(AssetBuilder asset, Metadata metadata) {
@@ -332,8 +336,9 @@ public class ImageIngestor extends IngestProcessor {
             int[] latitude = exifDirectory.getIntArray(GpsDirectory.TAG_LATITUDE);
             int[] longitude = exifDirectory.getIntArray(GpsDirectory.TAG_LONGITUDE);
             if (latitude != null && longitude != null) {
-                double lat = dmsToDegrees(latitude[0], latitude[1], latitude[2]);
-                double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2]);
+                double lat = dmsToDegrees(latitude[0], latitude[1], latitude[2], exifDirectory.getString(GpsDirectory.TAG_LATITUDE_REF).equalsIgnoreCase("S"));
+                double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2], exifDirectory.getString(GpsDirectory.TAG_LONGITUDE_REF).equalsIgnoreCase("W"));
+
                 Point2D.Double location = new Point2D.Double(lat, lon);
                 asset.getSchema("image", ImageSchema.class).setLocation(location);
             }
