@@ -11,6 +11,7 @@ import java.util.List;
 public class IngestPipelineUpdateBuilder {
 
     private List<ProcessorFactory<IngestProcessor>> processors;
+    private List<ProcessorFactory<IngestProcessor>> aggregators;
     private String name;
     private String description;
 
@@ -20,6 +21,14 @@ public class IngestPipelineUpdateBuilder {
 
     public void setProcessors(List<ProcessorFactory<IngestProcessor>> processors) {
         this.processors = processors;
+    }
+
+    public List<ProcessorFactory<IngestProcessor>> getAggregators() {
+        return aggregators;
+    }
+
+    public void setAggregators(List<ProcessorFactory<IngestProcessor>> aggregators) {
+        this.aggregators = aggregators;
     }
 
     public String getName() {
