@@ -173,8 +173,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             this.user = user;
             this.assetExecutor = new AssetExecutor(
                     ingest.getAssetWorkerThreads() > 0 ? ingest.getAssetWorkerThreads() : defaultWorkerThreads);
-            startAggregators();
-
         }
 
         public void shutdown() {
@@ -220,6 +218,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 return;
             }
 
+            startAggregators();
+
             try {
 
                 SecurityContextHolder.getContext().setAuthentication(
@@ -252,6 +252,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             } finally {
 
                 aggregationTimer.cancel();
+
                 /*
                  * Force a refresh so the tear downs can see any recently added data.
                  */
