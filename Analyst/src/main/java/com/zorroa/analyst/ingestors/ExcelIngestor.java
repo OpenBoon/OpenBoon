@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.exception.IngestException;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.processor.Argument;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -33,6 +33,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
+
 
 /**
  * A simple excel ingestor based on Apache POI.  This particular processor handles .xlsx files.
@@ -150,7 +153,7 @@ public class ExcelIngestor extends IngestProcessor {
      */
     private boolean isMapped(AssetBuilder asset) {
         for (RowMapping rowMapping : rowMappings) {
-            if (!asset.contains(rowMapping.outputSchema)) {
+            if (!asset.attrExists(rowMapping.outputSchema)) {
                 return false;
             }
         }
@@ -311,7 +314,7 @@ public class ExcelIngestor extends IngestProcessor {
                     }
                     switch (cell.getCellType()) {
                         case Cell.CELL_TYPE_STRING:
-                            asset.setAttr(rowMapping.outputSchema, column, cell.getStringCellValue());
+                            asset.setAttr(attr(rowMapping.outputSchema, column), cell.getStringCellValue());
                             break;
                         case Cell.CELL_TYPE_NUMERIC:
                             Object value = null;
@@ -321,7 +324,7 @@ public class ExcelIngestor extends IngestProcessor {
                             } else {
                                 value = cell.getNumericCellValue();
                             }
-                            asset.setAttr(rowMapping.outputSchema, column, value);
+                            asset.setAttr(attr(rowMapping.outputSchema, column), value);
                             break;
                     }
                 }
@@ -337,7 +340,7 @@ public class ExcelIngestor extends IngestProcessor {
                 for (GeoPointColumns columns : rowMapping.geoColumns) {
                     Point2D.Double p = getPoint(row, columns);
                     if (!p.equals(zero)) {
-                        asset.setAttr(rowMapping.outputSchema, columns.name, p);
+                        asset.setAttr(attr(rowMapping.outputSchema, columns.name), p);
                     }
                 }
             }

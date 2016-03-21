@@ -67,7 +67,7 @@ public class ProxyProcessor extends IngestProcessor {
     @Override
     public void process(AssetBuilder asset) {
 
-        if (asset.contains("proxies") && !asset.isChanged()) {
+        if (asset.attrExists("proxies") && !asset.isChanged()) {
             logger.debug("Proxy images already exist for {}", asset);
             return;
         }
@@ -124,8 +124,8 @@ public class ProxyProcessor extends IngestProcessor {
             Collections.sort(result, (o1, o2) ->
                     Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight()));
 
-            asset.getDocument().put("tinyProxy", makeTinyProxy(result.get(0)));
-            asset.addSchema(result);
+            asset.setAttr("tinyProxy", makeTinyProxy(result.get(0)));
+            asset.setAttr("proxies", result);
 
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException("Failed to make proxy of:" + asset.getAbsolutePath(),

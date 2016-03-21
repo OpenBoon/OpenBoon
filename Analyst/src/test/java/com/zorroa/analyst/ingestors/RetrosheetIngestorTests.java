@@ -26,6 +26,6 @@ public class RetrosheetIngestorTests extends AbstractTest {
 
         File file = getResourceFile("/images/visa.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
-        assertEquals("sunny", asset.getAttr("retrosheet", "sky"));
+        assertEquals("sunny", asset.getAttr("retrosheet:sky"));
     }
 }

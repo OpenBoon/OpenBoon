@@ -1,16 +1,17 @@
 package com.zorroa.analyst.ingestors;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.processor.Argument;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
@@ -48,14 +49,15 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
-        if (asset.contains("face") && !asset.isChanged()) {
+        if (asset.attrExists("face") && !asset.isChanged()) {
             logger.debug("{} has already been processed by FaceIngestor.", asset);
             return;
         }
 
         Mat image;
 
-        Proxy proxy = asset.getSchema("proxies", ProxySchema.class).atLeastThisSize(1000);
+        ProxySchema schema = asset.getAttr("proxies");
+        Proxy proxy = schema.atLeastThisSize(1000);
         if (proxy != null) {
             image = OpenCVUtils.convert(proxy.getImage());
         }
@@ -112,7 +114,7 @@ public class FaceIngestor extends IngestProcessor {
 
             logger.debug("Detected '{}' faces in {}", faceCount, asset);
             if (faceCount > 0) {
-                List<String> keywords = Lists.newArrayList("face", "face" + faceCount);
+                Set<String> keywords = Sets.newHashSet("face", "face" + faceCount);
 
                 // Detect faces that are big enough for the 'bigface' label
                 for (int i = 0; i < faceDetections.size(); ++i) {
@@ -133,7 +135,7 @@ public class FaceIngestor extends IngestProcessor {
                 // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
                 // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
                 keywords.add("face" + confidence);
-                asset.setAttr("face", "keywords", keywords);
+                asset.setAttr("keywords:face", keywords);
             }
         } finally {
             try {

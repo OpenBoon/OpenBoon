@@ -8,8 +8,10 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CaffeIngestorTests extends AbstractTest {
 
@@ -24,9 +26,9 @@ public class CaffeIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/faces.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
 
-        List<String> keywords = asset.getAttr("caffe", "keywords");
+        Set<String> keywords = asset.getAttr("keywords:caffe");
         assertEquals(2, keywords.size());
-        assertEquals("soccer ball", keywords.get(0));
-        assertEquals("swing", keywords.get(1));
+        assertTrue(keywords.contains("soccer ball"));
+        assertTrue(keywords.contains("swing"));
     }
 }

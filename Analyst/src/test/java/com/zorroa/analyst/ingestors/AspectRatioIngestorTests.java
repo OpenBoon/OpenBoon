@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jbuhler on 2/16/16.
@@ -24,9 +24,7 @@ public class AspectRatioIngestorTests  extends AbstractTest {
 
         File file = getResourceFile("/images/faces.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
-
-        String keywords = asset.getAttr("aspect", "keywords");
-        assertEquals("landscape", keywords);
+        assertTrue(asset.getKeywords().getAll().contains("landscape"));
     }
 }
 

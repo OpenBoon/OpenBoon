@@ -43,7 +43,7 @@ public class OCRIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/BHP_SWC_PHOTOGRAPHY.TIF");
         AssetBuilder asset = ingestFile(file, pipeline);
 
-        String wellName = asset.getAttr("petrol", "wellName");
+        String wellName = asset.getAttr("petrol:wellName");
         assertEquals("THEBE -1CH  ", wellName);
 
     }

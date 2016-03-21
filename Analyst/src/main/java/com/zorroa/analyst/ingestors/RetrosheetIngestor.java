@@ -18,6 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
+
 public class RetrosheetIngestor extends IngestProcessor {
 
     private class Team {
@@ -227,7 +229,7 @@ public class RetrosheetIngestor extends IngestProcessor {
         if (value == null)
             return;
         asset.addKeywords(0.8, true, value);
-        asset.setAttr("retrosheet", key, value);
+        asset.setAttr(attr("retrosheet", key), value);
     }
 
     public boolean dateWithoutTime(Date date) {

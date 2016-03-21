@@ -1,11 +1,11 @@
-package com.zorroa.petrol;
+package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.processor.Argument;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.StringUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
 
 /**
  * The Map ingestor handles data in the "Maps" directory.  There is no OCR on the image because I wasn't able
@@ -55,13 +57,13 @@ public class GISMapIngestor extends IngestProcessor {
         try {
             List<String> lines = Files.readLines(new File(tfwFile), Charset.forName("UTF-8"));
             for (int i=0; i<TFW_FIELDS.length; i++) {
-                assetBuilder.setAttr(namespace, TFW_FIELDS[i], Double.valueOf(lines.get(i).trim()));
+                assetBuilder.setAttr(attr(namespace, TFW_FIELDS[i]), Double.valueOf(lines.get(i).trim()));
             }
             assetBuilder.getSource().addToRelatedPaths(tfwFile);
 
             if (lines.size() > 5 && lines.get(4) != null && lines.get(5) != null) {
                 Point2D.Double location = new Point2D.Double(Double.valueOf(lines.get(4).trim()), Double.valueOf(lines.get(5).trim()));
-                assetBuilder.setAttr(namespace, "location", location);
+                assetBuilder.setAttr(attr(namespace, "location"), location);
             }
         } catch (IOException e) {
             logger.warn("Failed to open TFW file: {}", tfwFile, e);
@@ -85,7 +87,7 @@ public class GISMapIngestor extends IngestProcessor {
             NodeList nodes = document.getElementsByTagName("Process");
 
             List<Map<String, Object>> lineage = Lists.newArrayList();
-            assetBuilder.setAttr(namespace, "lineage", lineage);
+            assetBuilder.setAttr(attr(namespace, "lineage"), lineage);
 
             for (int i=0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);

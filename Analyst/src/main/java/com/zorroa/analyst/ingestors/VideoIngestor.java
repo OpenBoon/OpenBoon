@@ -27,7 +27,7 @@ public class VideoIngestor extends IngestProcessor {
     @Override
     public void process(AssetBuilder assetBuilder) {
 
-        if (assetBuilder.contains("video") && !assetBuilder.isChanged()) {
+        if (assetBuilder.attrExists("video") && !assetBuilder.isChanged()) {
             logger.debug("'video' schema already exists, skipping: {}", assetBuilder);
             return;
         }
@@ -48,7 +48,7 @@ public class VideoIngestor extends IngestProcessor {
             video.setWidth(Integer.parseInt(metadata.get("tiff:ImageWidth")));
             video.setAudioSampleRate(Integer.parseInt(metadata.get("xmpDM:audioSampleRate")));
             video.setDuration(Double.parseDouble(metadata.get("xmpDM:duration")));
-            assetBuilder.addSchema("video", video);
+            assetBuilder.setAttr("video", video);
 
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
@@ -67,7 +67,7 @@ public class VideoIngestor extends IngestProcessor {
             /*
              * This metadata seems to get only get populated if we start playback.
              */
-            VideoSchema video = assetBuilder.getSchema("video", VideoSchema.class);
+            VideoSchema video = assetBuilder.getAttr("video", VideoSchema.class);
             video.setFrames(grabber.getLengthInFrames());
             video.setAspectRatio(grabber.getAspectRatio());
             video.setAudioChannels(grabber.getAudioChannels());

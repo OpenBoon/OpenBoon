@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.Json;
@@ -21,6 +20,8 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
 
 /**
  * A simple excel ingestor based on Apache POI.  This particular processor handles .xlsx files.
@@ -85,18 +86,19 @@ public class SimpleExcelIngestor extends IngestProcessor {
                 Cell cell = row.getCell(CellReference.convertColStringToIndex(column));
 
                 if (field.getAttr() != null) {
+                    String attr = attr(field.getNamespace(), field.getField());
                     switch (field.getType()) {
                         case integer:
-                            assetBuilder.setAttr(field.getNamespace(), field.getField(), new Double(cell.getNumericCellValue()).intValue());
+                            assetBuilder.setAttr(attr, new Double(cell.getNumericCellValue()).intValue());
                             break;
                         case decimal:
-                            assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getNumericCellValue());
+                            assetBuilder.setAttr(attr, cell.getNumericCellValue());
                             break;
                         case bool:
-                            assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getBooleanCellValue());
+                            assetBuilder.setAttr(attr, cell.getBooleanCellValue());
                             break;
                         default:
-                            assetBuilder.setAttr(field.getNamespace(), field.getField(), cell.getStringCellValue());
+                            assetBuilder.setAttr(attr, cell.getStringCellValue());
                             break;
                     }
                 }
@@ -161,7 +163,7 @@ public class SimpleExcelIngestor extends IngestProcessor {
             expression = (String) filter.getValue();
             if (expression.startsWith("${")) {
                 String[] parts = expression.substring(2, expression.length() - 1).split("\\.");
-                value = assetBuilder.getAttr(parts[0], parts[1]);
+                value = assetBuilder.getAttr(attr(parts[0], parts[1]));
             }
             else {
                 value = filter.getValue();

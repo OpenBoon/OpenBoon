@@ -1,16 +1,18 @@
 package com.zorroa.analyst.ingestors;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.processor.Argument;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 
@@ -47,7 +49,7 @@ public class LogoIngestor extends IngestProcessor {
             return;
         }
 
-        if (asset.contains("Logos")) {
+        if (asset.attrExists("Logos")) {
             logger.debug("{} has already been processed by LogoIngestor.", asset);
             return;
         }
@@ -110,7 +112,7 @@ public class LogoIngestor extends IngestProcessor {
             }
 
             logger.debug("LogoIngestor: Haar detected {} potential logos.", logoCount);
-            List<String> keywords = Lists.newArrayList("visa");
+            Set<String> keywords = Sets.newHashSet("visa");
 
             StringBuilder svgVal = new StringBuilder(1024);
             svgVal.append("<svg>");
@@ -155,11 +157,11 @@ public class LogoIngestor extends IngestProcessor {
             // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
             // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
             keywords.add("visa" + confidence);
-            asset.setAttr("Logos", "keywords", keywords);
+            asset.setAttr("keywords:logos", keywords);
 
             if (svgVal.length() > "<svg>".length()) {
                 svgVal.append("</svg>");
-                asset.setAttr("SVG", "Logos", svgVal.toString());
+                asset.setAttr(attr("SVG", "Logos"), svgVal.toString());
             }
         } finally {
             try {

@@ -127,7 +127,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             AssetBuilder builder = new AssetBuilder(file);
 
             if (ingestSchema != null) {
-                builder.addSchema(ingestSchema);
+                builder.setAttr("imports", ingestSchema);
             }
 
             try {

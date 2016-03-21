@@ -25,7 +25,7 @@ public class PdfIngestor extends IngestProcessor {
     @Override
     public void process(AssetBuilder assetBuilder) {
 
-        if (assetBuilder.contains("document") && !assetBuilder.isChanged()) {
+        if (assetBuilder.attrExists("document") && !assetBuilder.isChanged()) {
             logger.debug("'document' schema already exists, skipping: {}", assetBuilder);
         }
 
@@ -47,7 +47,7 @@ public class PdfIngestor extends IngestProcessor {
             schema.setPages(Integer.valueOf(metadata.get("xmpTPg:NPages")));
             assetBuilder.getSource().setDate(metadata.getDate(Property.get("Last-Save-Date")));
             */
-            assetBuilder.addSchema(schema);
+            assetBuilder.setAttr("document", schema);
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
                     "Unable to extract PDF metadata from " + assetBuilder.getAbsolutePath(), e, getClass());

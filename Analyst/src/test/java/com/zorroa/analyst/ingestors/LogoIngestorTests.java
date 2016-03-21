@@ -8,8 +8,10 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class LogoIngestorTests extends AbstractTest {
 
@@ -24,11 +26,11 @@ public class LogoIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/visa12.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
 
-        List<String> keywords = asset.getAttr("Logos", "keywords");
+        Set<String> keywords = asset.getAttr("keywords:logos");
         assertEquals(3, keywords.size());
-        assertEquals("visa", keywords.get(0));
-        assertEquals("bigvisa", keywords.get(1));
-        assertEquals("visa0.6283255086071987", keywords.get(2));
+        assertTrue(keywords.contains("visa"));
+        assertTrue(keywords.contains("bigvisa"));
+        assertTrue(keywords.contains("visa0.6283255086071987"));
     }
 
 }

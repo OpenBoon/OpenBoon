@@ -1,14 +1,16 @@
 package com.zorroa.analyst.ingestors;
 
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.processor.Argument;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
 import org.elasticsearch.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
 
 public class AspectRatioIngestor  extends IngestProcessor {
     private static final Logger logger = LoggerFactory.getLogger(AspectRatioIngestor.class);
@@ -26,8 +28,6 @@ public class AspectRatioIngestor  extends IngestProcessor {
             this.minAspect = minAspect;
             this.maxAspect = maxAspect;
             this.keyword = keyword;
-            this.field = field;
-            this.isKeyword = isKeyword;
         }
     }
 
@@ -43,17 +43,16 @@ public class AspectRatioIngestor  extends IngestProcessor {
     @Override
     public void process(AssetBuilder asset) {
 
-        if (!asset.isSuperType("image")) {
+        ImageSchema imageSchema = asset.getAttr("image");
+        if (imageSchema == null) {
             return;
         }
-
-        ImageSchema imageSchema = asset.getSchema("image", ImageSchema.class);
 
         final double aspect = (double) imageSchema.getWidth() / (double) imageSchema.getHeight();
 
         for (Aspect a : aspects) {
             if (aspect > a.minAspect && aspect < a.maxAspect) {
-                asset.setAttr(namespace, a.field, a.keyword);
+                asset.setAttr(attr(namespace, a.field), a.keyword);
                 if (a.isKeyword) {
                     asset.addKeywords(1, true, a.keyword);
                 }

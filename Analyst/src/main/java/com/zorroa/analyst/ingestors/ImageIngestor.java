@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
 import static java.lang.Math.abs;
 
 /**
@@ -54,9 +55,9 @@ public class ImageIngestor extends IngestProcessor {
         /*
          * Extract the standard image metadata, like width/height.
          */
-        if (!asset.contains("image")) {
+        if (!asset.attrExists("image")) {
 
-            asset.addSchema(new ImageSchema());
+            asset.setAttr("image", new ImageSchema());
             extractExifMetadata(asset);
             extractImageMetadata(asset, asset.getInputStream());
             /**
@@ -66,7 +67,7 @@ public class ImageIngestor extends IngestProcessor {
                 if (!asset.isUpdate()) {
                     Number rating = asset.getAttr("Xmp.Rating");
                     if (rating != null) {
-                        asset.setAttr("user", "rating", rating.intValue());
+                        asset.setAttr(attr("user", "rating"), rating.intValue());
                     }
                 }
             } catch (Exception e) {
@@ -115,7 +116,7 @@ public class ImageIngestor extends IngestProcessor {
             int w = image.getWidth();
             int h = image.getHeight();
             try {
-                if ((Integer)asset.getAttr("Exif.Orientation") > 4) {
+                if ((Integer)asset.getAttr("image:Exif:Orientation") > 4) {
                     int tmp = w;
                     w = h;
                     h = tmp;
@@ -123,10 +124,9 @@ public class ImageIngestor extends IngestProcessor {
             } catch (NullPointerException e) {
                 // No orientation field, no need to flip dimensions
             }
-            ImageSchema schema = asset.getSchema("image", ImageSchema.class);
+            ImageSchema schema = asset.getAttr("image", ImageSchema.class);
             schema.setWidth(w);
             schema.setHeight(h);
-            asset.addSchema(schema);
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
                     "Unable to determine image dimensions" + asset.getAbsolutePath(), e, getClass());
@@ -245,30 +245,30 @@ public class ImageIngestor extends IngestProcessor {
                     if (strValue.length() >= 256) {
                         continue;
                     }
-                    asset.setAttr(namespace, key, strValue);
+                    asset.setAttr(attr("image", namespace, key), strValue);
                     if (keywordArgs.contains(id)) {
                         asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, strValue);
                     }
                 } else if (value instanceof Rational) {
                     Rational rational = (Rational)value;
-                    asset.setAttr(namespace, key, rational.doubleValue());
+                    asset.setAttr(attr("image", namespace, key), rational.doubleValue());
                     if (description != null) {
-                        asset.setAttr(namespace, descriptionKey, description);
+                        asset.setAttr(attr("image", namespace, descriptionKey), description);
                     }
                 } else if (value instanceof Number) {
                     if (value instanceof Double) {
                         Double num = (Double) value;
                         value = new Double(clampToNSDecimalRange(num.doubleValue()));
                     }
-                    asset.setAttr(namespace, key, value);
+                    asset.setAttr(attr("image", namespace, key), value);
                     if (description != null) {
-                        asset.setAttr(namespace, descriptionKey, description);
+                        asset.setAttr(attr("image", namespace, descriptionKey), description);
                     }
                 } else if (value.getClass().isArray()) {
                     String componentName = value.getClass().getComponentType().getName();
                     if (componentName.equals("java.lang.String")) {
                         String[] strList = (String[]) value;
-                        asset.setAttr(namespace, key, value);
+                        asset.setAttr(attr("image", namespace, key), value);
                         if (keywordArgs.contains(id)) {
                             asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, strList);
                         }
@@ -278,7 +278,7 @@ public class ImageIngestor extends IngestProcessor {
                         for (int i = 0; i < rationals.length; i++) {
                             doubles[i] = rationals[i].doubleValue();
                         }
-                        asset.setAttr(namespace, key, doubles);
+                        asset.setAttr(attr("image", namespace, key), doubles);
                     } else if (componentName.equals("double")) {
                         double[] doubles = (double[]) value;
                         for (int i = 0; i < doubles.length; i++) {
@@ -286,9 +286,9 @@ public class ImageIngestor extends IngestProcessor {
                         }
                     } else if (value.getClass().getComponentType().isPrimitive()) {
                         if (Array.getLength(value) <= 16) {
-                            asset.setAttr(namespace, key, value);
+                            asset.setAttr(attr("image", namespace, key), value);
                             if (description != null) {
-                                asset.setAttr(namespace, descriptionKey, description);
+                                asset.setAttr(attr("image", namespace, descriptionKey), description);
                             }
                         }
                     }
@@ -340,7 +340,7 @@ public class ImageIngestor extends IngestProcessor {
                 double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2], exifDirectory.getString(GpsDirectory.TAG_LONGITUDE_REF).equalsIgnoreCase("W"));
 
                 Point2D.Double location = new Point2D.Double(lat, lon);
-                asset.getSchema("image", ImageSchema.class).setLocation(location);
+                asset.getAttr("image", ImageSchema.class).setLocation(location);
             }
         }
     }

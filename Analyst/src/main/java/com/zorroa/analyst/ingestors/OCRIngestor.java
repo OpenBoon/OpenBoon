@@ -5,8 +5,9 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.io.LineProcessor;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.domain.Attr;
 import com.zorroa.archivist.sdk.processor.Argument;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.StringUtil;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.lept;
@@ -20,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Set;
 
+import static com.zorroa.archivist.sdk.domain.Attr.attr;
 import static org.bytedeco.javacpp.lept.pixDestroy;
 import static org.bytedeco.javacpp.lept.pixRead;
 
@@ -154,12 +156,13 @@ public class OCRIngestor extends IngestProcessor {
             return false;
         }
 
-        asset.setAttr(docType.namespace, docType.key, docType.value);
+        asset.setAttr(attr(docType.namespace, docType.key), docType.value);
         asset.addKeywords(1, true, docType.value);
 
         for (Box ocrBox: docType.boxes) {
             String text = getText(api, image, ocrBox.boxArea.get(0), ocrBox.boxArea.get(1), ocrBox.boxArea.get(2), ocrBox.boxArea.get(3));
-            asset.setAttr(ocrBox.namespace, ocrBox.key, text);
+            asset.setAttr(attr(ocrBox.namespace, ocrBox.key), text);
+            asset.setAttr(attr(ocrBox.namespace, ocrBox.key), text);
             if (ocrBox.isKeyword) {
                 asset.addKeywords(1, true, text);
             }

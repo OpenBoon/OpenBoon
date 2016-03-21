@@ -37,13 +37,13 @@ public class CaffeClassifier {
     public CaffeClassifier(String deployPath, String modelPath, String binaryProtoPath, String wordPath) throws IOException {
         this(deployPath, modelPath, binaryProtoPath, wordPath, 2 /*errors*/);
     }
-    
+
     public CaffeClassifier(String deployPath, String modelPath, String binaryProtoPath, String wordPath, int logLevel) throws IOException {
         Caffe.set_mode(Caffe.CPU);
         // Change the default logging level using GLOG command line options for argc,argv
-        String opt = "--minloglevel=" + Integer.toString(logLevel);
-        PointerPointer argv = new PointerPointer(1).put(new PointerPointer(new PointerPointer(new String[]{opt})));
-        GlobalInit(new IntPointer(new int[]{1}), argv);
+        //String opt = "--minloglevel=" + Integer.toString(logLevel);
+        //PointerPointer argv = new PointerPointer(1).put(new PointerPointer(new PointerPointer(new String[]{opt})));
+        //GlobalInit(new IntPointer(new int[]{1}), argv);
         network = new FloatNet(deployPath, TEST);
         network.CopyTrainedLayersFrom(modelPath);
         assert network.num_inputs() == 1;
