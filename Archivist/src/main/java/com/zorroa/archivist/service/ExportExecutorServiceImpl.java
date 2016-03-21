@@ -148,7 +148,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
              */
             for (Asset asset : searchService.scanAndScroll(export.getSearch())) {
 
-                PermissionSchema perms = asset.getSchema("permissions", PermissionSchema.class);
+                PermissionSchema perms = asset.getAttr("permissions", PermissionSchema.class);
                 if (!SecurityUtils.hasPermission(perms.getExport())) {
                     eventLogService.log(export, "User '{}' does not have permission to export {}, skipping",
                             SecurityUtils.getUsername(), asset);

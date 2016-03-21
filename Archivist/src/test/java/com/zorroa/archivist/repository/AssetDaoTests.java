@@ -38,7 +38,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         refreshIndex();
 
         Asset asset2 = assetDao.get(asset1.getId());
-        SourceSchema source = asset2.getSchema("source", SourceSchema.class);
+        SourceSchema source = asset2.getAttr("source", SourceSchema.class);
         assertEquals("jpg", source.getExtension());
         assertEquals("/tmp", source.getDirectory());
         assertEquals(filepath, source.getPath());
@@ -73,7 +73,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
         assetDao.update(asset.getId(), updateBuilder);
         Asset updatedAsset = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), updatedAsset.getAttr("user.rating"));
+        assertEquals(new Integer(3), updatedAsset.getAttr("user:rating"));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
         assetDao.update(asset.getId(), updateBuilder);
         Asset updatedAsset = assetDao.get(asset.getId());
 
-        PermissionSchema updatedPermissions = updatedAsset.getSchema("permissions", PermissionSchema.class);
+        PermissionSchema updatedPermissions = updatedAsset.getAttr("permissions", PermissionSchema.class);
         assertEquals(Sets.newHashSet(1,2), updatedPermissions.getWrite());
         assertEquals(Sets.newHashSet(3,4), updatedPermissions.getSearch());
         assertEquals(Sets.newHashSet(5), updatedPermissions.getExport());
@@ -138,6 +138,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     public void testAddAssetToExport() {
 
         AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        assetBuilder.getKeywords().addKeywords(1, true, assetBuilder.getFilename());
         Asset asset = assetDao.upsert(assetBuilder);
 
         refreshIndex(100);
@@ -171,15 +172,14 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     @Test
     public void testBulkUpsertErrorRecovery() {
         AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        assetBuilder.setAttr("foo", "bar", 1.0);
+        assetBuilder.setAttr("foo:bar", 1.0);
         assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
         refreshIndex();
 
         assetBuilder = new AssetBuilder(getTestImage("new_zealand_wellington_harbour.jpg"));
-        assetBuilder.setAttr("foo", "bar", "bing");
+        assetBuilder.setAttr("foo:bar", "bing");
         AnalyzeResult result = assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
-        assertEquals(1, result.created);
         assertEquals(1, result.retries);
-
+        assertEquals(1, result.created);
     }
 }

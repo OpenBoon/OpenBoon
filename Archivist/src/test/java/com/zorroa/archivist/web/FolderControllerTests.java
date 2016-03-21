@@ -270,7 +270,7 @@ public class FolderControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll();
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getSchema("folders", Json.SET_OF_INTS);
+            Set<Integer> folderIds = asset.getAttr("folders", Json.SET_OF_INTS);
             assertTrue(folderIds.contains(folder1.getId()));
         }
     }
@@ -297,7 +297,7 @@ public class FolderControllerTests extends MockMvcTest {
         refreshIndex();
         assets = assetDao.getAll();
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getSchema("folders", Json.SET_OF_INTS);
+            Set<Integer> folderIds = asset.getAttr("folders", Json.SET_OF_INTS);
             assertFalse(folderIds.contains(folder1.getId()));
         }
     }

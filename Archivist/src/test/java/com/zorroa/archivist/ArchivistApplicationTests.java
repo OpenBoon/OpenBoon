@@ -232,8 +232,10 @@ public abstract class ArchivistApplicationTests {
             if (f.isFile()) {
                 if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
                     AssetBuilder b = new AssetBuilder(f);
-                    b.setAttr("user", "rating", 4);
-                    b.setAttr("test", "path", resource.getFile().getAbsolutePath());
+                    b.setAttr("user:rating", 4);
+                    b.setAttr("test:path", resource.getFile().getAbsolutePath());
+                    b.getKeywords().addKeywords(1, true, b.getFilename());
+                    logger.info("{}", b.getDocument());
                     result.add(b);
                 }
             }
@@ -245,6 +247,8 @@ public abstract class ArchivistApplicationTests {
             }
         }
 
+        logger.info("{}", result);
+
         return result;
     }
 
@@ -254,8 +258,8 @@ public abstract class ArchivistApplicationTests {
 
     public Ingest addTestAssets(List<AssetBuilder> builders) {
 
-        logger.info("testPath: {}", (String) builders.get(0).getAttr("test.path"));
-        String path = builders.get(0).getAttr("test.path");
+        logger.info("testPath: {}", (String) builders.get(0).getAttr("test:path"));
+        String path = builders.get(0).getAttr("test:path");
         Ingest i = ingestService.createIngest(
                 new IngestBuilder().setName("foo").addToUris(path));
 
@@ -263,7 +267,8 @@ public abstract class ArchivistApplicationTests {
         schema.addIngest(i);
         for (AssetBuilder builder: builders) {
             logger.info("Adding test asset: {}", builder.getAbsolutePath());
-            builder.addSchema(schema);
+            builder.setAttr("imports", schema);
+            builder.addKeywords(1, true, builder.getFilename());
             assetService.upsert(builder);
         }
         refreshIndex();

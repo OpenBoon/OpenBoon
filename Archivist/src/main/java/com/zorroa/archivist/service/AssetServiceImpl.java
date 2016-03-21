@@ -67,7 +67,7 @@ public class AssetServiceImpl implements AssetService {
     public long update(String assetId, AssetUpdateBuilder builder) {
 
         Asset asset = assetDao.get(assetId);
-        PermissionSchema permissions = asset.getSchema("permissions", PermissionSchema.class);
+        PermissionSchema permissions = asset.getAttr("permissions", PermissionSchema.class);
 
         if (!SecurityUtils.hasPermission(permissions.getWrite())) {
             throw new AccessDeniedException("You cannot make changes to this asset.");

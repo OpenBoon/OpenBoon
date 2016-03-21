@@ -66,7 +66,7 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> counts = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
         int count = (int)counts.get("count");
-        assertTrue(count == 1);
+        assertEquals(1, count);
     }
 
     @Test
@@ -214,7 +214,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         Asset updated = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), updated.getAttr("user.rating"));
+        assertEquals(new Integer(3), updated.getAttr("user:rating"));
     }
 
 
@@ -246,7 +246,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         Asset updated = assetDao.get(asset.getId());
-        PermissionSchema updatedPermissions = updated.getSchema("permissions", PermissionSchema.class);
+        PermissionSchema updatedPermissions = updated.getAttr("permissions", PermissionSchema.class);
         assertEquals(Sets.newHashSet(1), updatedPermissions.getSearch());
     }
 
@@ -275,7 +275,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll();
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getSchema("folders", new TypeReference<Set<Integer>>() {});
+            Set<Integer> folderIds = asset.getAttr("folders", new TypeReference<Set<Integer>>() {});
             assertTrue(folderIds.contains(folder1.getId()));
             assertTrue(folderIds.contains(folder2.getId()));
         }

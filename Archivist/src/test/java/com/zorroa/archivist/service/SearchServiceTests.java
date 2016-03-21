@@ -49,7 +49,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder builder = new AssetBuilder(filepath);
-
+        builder.addKeywords(1, true, builder.getFilename());
         /*
          * Add a permission from the current user to the asset.
          */
@@ -73,6 +73,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
+        assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
@@ -130,6 +131,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
+        assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
@@ -157,6 +159,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
+        assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex();
 
@@ -169,8 +172,10 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     public void testGetTotalFileSize() {
 
         AssetBuilder assetBuilder1 = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder1.addKeywords(1, true, assetBuilder1.getFilename());
         assetBuilder1.getSource().setFileSize(1000);
         AssetBuilder assetBuilder2 = new AssetBuilder(getStaticImagePath() + "/new_zealand_wellington_harbour.jpg");
+        assetBuilder2.addKeywords(1, true, assetBuilder2.getFilename());
         assetBuilder2.getSource().setFileSize(1000);
 
         assetDao.upsert(assetBuilder1);
