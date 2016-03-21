@@ -24,6 +24,11 @@ public class MapSchema {
         this.delegate = Maps.newHashMap();
     }
 
+    @JsonAnyRemover
+    public boolean remove(String key) {
+        return delegate.remove(key) != null;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> any() {
         return delegate;

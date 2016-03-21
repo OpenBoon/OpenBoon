@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Maps;
+import com.zorroa.archivist.sdk.schema.JsonAnyRemover;
 import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +87,6 @@ public class Document {
              */
             new PropertyDescriptor(key,
                     current.getClass()).getWriteMethod().invoke(current, value);
-            logger.info("setter was called for key {}", key);
         } catch (Exception e) {
 
             /*
@@ -108,6 +108,48 @@ public class Document {
              */
             try {
                 ((Map<String, Object>) current).put(key, value);
+            } catch (ClassCastException ex) {
+                throw new IllegalArgumentException("Invalid attribute: " + attr);
+            }
+        }
+    }
+
+    /**
+     * Remove an attribute.  If the attr cannot be remove it is set to null.
+     *
+     * @param attr
+     */
+    public boolean removeAttr(String attr) {
+        Object current = getContainer(attr, true);
+        String key = Attr.name(attr);
+
+        try {
+            /*
+             * Try to use an exposed setter method.
+             */
+
+            new PropertyDescriptor(key,
+                    current.getClass()).getWriteMethod().invoke(current, new Object[] { null });
+            return true;
+        } catch (Exception e) {
+            /*
+             * If the setter doesn't exist, try to use the any setter.
+             */
+            for (Method m : current.getClass().getMethods()) {
+                if (m.isAnnotationPresent(JsonAnyRemover.class)) {
+                    try {
+                        return (Boolean) m.invoke(current, key);
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("Invalid any remove call: " + attr + "," + e, e);
+                    }
+                }
+            }
+
+            /*
+             * Finally, just try treating it like a map.
+             */
+            try {
+                return ((Map<String, Object>) current).remove(key) != null;
             } catch (ClassCastException ex) {
                 throw new IllegalArgumentException("Invalid attribute: " + attr);
             }

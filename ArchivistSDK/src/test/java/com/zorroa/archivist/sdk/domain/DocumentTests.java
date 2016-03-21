@@ -104,6 +104,29 @@ public class DocumentTests {
         assertNull(bean);
     }
 
+    @Test
+    public void testRemovePropertyWithSetter() {
+        Bean b = new Bean();
+        b.setName("foo");
+        Document d = new Document();
+        d.setAttr("a:bean", b);
+        d.removeAttr("a:bean:name");
+        assertNull(b.getName());
+    }
+
+    @Test
+    public void testRemoveArbitraryAttr() {
+        BeanMap b = new BeanMap();
+        b.setName("foo");
+        Document d = new Document();
+        d.setAttr("a:bean", b);
+        d.setAttr("a:bean:bing", "bar");
+
+        assertEquals("bar", b.any().get("bing"));
+        d.removeAttr("a:bean:bing");
+        assertNull(b.any().get("bing"));
+    }
+
     public static class Bean {
         private String name;
         private int count;
