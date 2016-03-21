@@ -187,7 +187,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             }
         }
 
-        public void initAggregators(IngestPipeline pipeline) {
+        public void startAggregators(IngestPipeline pipeline) {
             ImmutableList.Builder<Aggregator> builder = ImmutableList.builder();
             AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
 
@@ -198,9 +198,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 builder.add(agg);
             }
             aggregators = builder.build();
-        }
 
-        public void startAggregators() {
             aggregationTimer = new Timer(true);
             aggregationTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -224,17 +222,16 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             assetExecutor = new AssetExecutor(
                     ingest.getAssetWorkerThreads() > 0 ? ingest.getAssetWorkerThreads() : defaultWorkerThreads);
 
-            /*
-             * Start up the aggregators.
-             */
-            startAggregators();
-
             try {
 
                 SecurityContextHolder.getContext().setAuthentication(
                         authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
-                initAggregators(pipeline);
+
+                /*
+                 * Start up the aggregators.
+                 */
+                startAggregators(pipeline);
 
                 /*
                  * Figure out the skipped paths
