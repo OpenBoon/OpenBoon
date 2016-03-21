@@ -16,11 +16,10 @@ import java.util.List;
  * Every asset should at least have a valid source schema.
  *
  */
-public class SourceSchema implements Schema {
+public class SourceSchema {
 
     private String path;
     private String extension;
-    @Keyword
     private String filename;
     private String basename;
     private String directory;
@@ -195,12 +194,6 @@ public class SourceSchema implements Schema {
     public SourceSchema setGroup(String group) {
         this.group = group;
         return this;
-    }
-
-    @JsonIgnore
-    @Override
-    public String getNamespace() {
-        return "source";
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.schema;
 /**
  * User editable fields.
  */
-public class UserSchema implements Schema {
+public class UserSchema extends MapSchema {
 
     private Integer rating = null;
 
@@ -15,8 +15,4 @@ public class UserSchema implements Schema {
         this.rating = rating;
     }
 
-    @Override
-    public String getNamespace() {
-        return "user";
-    }
 }

@@ -1,13 +1,13 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
+import com.zorroa.archivist.sdk.schema.MapSchema;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 1/1/16.
@@ -15,51 +15,135 @@ import static org.junit.Assert.assertTrue;
 public class DocumentTests {
 
     @Test
-    public void testGetAttrSimple() {
+    public void testSetAndGetNestedPrimitveAttr() {
         Document d = new Document();
-        assertEquals("bing", d.setAttr("foo", "bar", "bing").getAttr("foo.bar"));
+        d.setAttr("a:b:c:str", "bizzle");
+        d.setAttr("a:b:c:int", 10);
+        d.setAttr("a:b:c:float", 3.2f);
 
-        String[] value = new String[] { "a", "b", "c"};
-        assertTrue(Arrays.equals(value,  d.setAttr("foo", "bar", value).getAttr("foo.bar")));
+        String s = d.getAttr("a:b:c:str");
+        int i = d.getAttr("a:b:c:int");
+        float f = d.getAttr("a:b:c:float");
+
+        assertEquals("bizzle", s);
+        assertEquals(10, i);
+        assertEquals(3.2, f, 0.01);
     }
 
     @Test
-    public void testGetAttr() {
-        Document d = new Document();
-        assertEquals("bing", d.setAttr("foo", "bar", "bing").getAttr("foo","bar"));
+    public void testSetJavaBean() {
+        Bean b = new Bean();
+        b.setCount(100);
+        b.setName("gandalf");
 
-        String[] value = new String[] { "a", "b", "c"};
-        assertTrue(Arrays.equals(value,  d.setAttr("foo", "bar", value).getAttr("foo","bar")));
+        Document d = new Document();
+        d.setAttr("a:b:c", b);
+
+        Bean bean1 = d.getAttr("a:b:c");
+        Bean bean2 = d.getAttr("a:b:c", Bean.class);
+
+        assertEquals(bean1.count, bean2.count);
+        assertEquals(bean1.name, bean2.name);
+        assertEquals("gandalf", bean2.name);
+        assertEquals(100, bean2.count);
     }
 
     @Test
-    public void testGetEnumAttr() {
+    public void testSetJavaBeanProperty() {
+        Bean b = new Bean();
+        b.setCount(100);
+        b.setName("gandalf");
+
         Document d = new Document();
-        d.setAttr("foo", "bar", AssetType.Image);
-        assertEquals(AssetType.Image, d.getAttr("foo.bar"));
+        d.setAttr("a:b:c", b);
+        d.setAttr("a:b:c:name", "hank");
+
+        Bean bean = d.getAttr("a:b:c");
+        assertEquals("hank", bean.getName());
     }
 
     @Test
-    public void testGetSchema() {
+    public void testSetArbitraryProperty() {
+        BeanMap k = new BeanMap();
         Document d = new Document();
+        d.setAttr("a:b:bean", k);
+        d.setAttr("a:b:bean:words", Sets.newHashSet("word"));
 
-        KeywordsSchema keywords = new KeywordsSchema();
-        keywords.addKeywords(1.0, false, "foosball");
-        d.addSchema(keywords);
-
-        KeywordsSchema keywords2 = d.getSchema("keywords", KeywordsSchema.class);
-        assertEquals(keywords.getAll(), keywords2.getAll());
+        Set<String> words = d.getAttr("a:b:bean:words");
+        assertTrue(words.contains("word"));
     }
 
     @Test
-    public void testSetSchemaWithGetAttr() {
+    public void testSetMapBeanPropertyWithSetter() {
+        Set<String> words = Sets.newHashSet();
+        words.add("foo");
+        words.add("bingle");
+
+        KeywordsSchema k = new KeywordsSchema();
         Document d = new Document();
+        d.setAttr("a:b:keywords", k);
+        d.setAttr("a:b:keywords:all", words);
 
-        KeywordsSchema keywords = new KeywordsSchema();
-        keywords.addKeywords(1.0, false, "foosball");
-        d.addSchema(keywords);
+        Set<String> words2 = d.getAttr("a:b:keywords:all");
+        assertEquals(words, words2);
+    }
 
-        Set<String> all = d.getAttr("keywords.all");
-        assertTrue(all.contains("foosball"));
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetMapSchemaPropertyFailure() {
+        BeanMap map = new BeanMap();
+        Document d = new Document();
+        d.setAttr("a:b:bean", map);
+        // Cannot set this because foo is a string.
+        d.setAttr("a:b:bean:foo", 1234);
+    }
+
+    @Test
+    public void testGetNullValue() {
+        Document d = new Document();
+        Bean bean = d.getAttr("a:b:c");
+        assertNull(bean);
+    }
+
+    public static class Bean {
+        private String name;
+        private int count;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+    }
+
+    public static class BeanMap extends MapSchema {
+        private String name;
+        private int count;
+        private String foo;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
     }
 }

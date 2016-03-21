@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class Processor {
 
-    protected Map<String, Object> args;
+    private Map<String, Object> args;
     protected ApplicationProperties applicationProperties;
 
     public Processor() {

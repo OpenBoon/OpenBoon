@@ -5,7 +5,7 @@ import com.zorroa.archivist.sdk.util.Json;
 /**
  * Created by chambers on 1/3/16.
  */
-public class DocumentSchema implements Schema {
+public class DocumentSchema extends MapSchema {
 
     @Keyword
     private String title;
@@ -51,11 +51,6 @@ public class DocumentSchema implements Schema {
     public DocumentSchema setBody(String body) {
         this.body = body;
         return this;
-    }
-
-    @Override
-    public String getNamespace() {
-        return "document";
     }
 
     public String toString() {

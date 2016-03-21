@@ -9,9 +9,9 @@ import java.util.Set;
 /**
  * Created by chambers on 2/3/16.
  */
-public abstract class SetSchema<E> extends ForwardingSet<E> implements Schema {
+public abstract class SetSchema<E> extends ForwardingSet<E> {
 
-    final Set<E> delegate;
+    private final Set<E> delegate;
 
     public SetSchema() {
         delegate = Sets.newHashSet();

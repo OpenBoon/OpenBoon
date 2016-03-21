@@ -1,21 +1,20 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.schema.AttrSchema;
-import com.zorroa.archivist.sdk.schema.Schema;
 import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * A Document is wrapper around a Map<String, Object> which is used for building and interrogating
- * JSON style data.   The document is structured using Schema objects, each one stored
- * in a different namespace.
+ * A Document is a wrapper around a Map<String,Object> which provides a convenience interface
+ * to the underlying structure.
  */
 public class Document {
 
@@ -32,264 +31,173 @@ public class Document {
     }
 
     /**
-     * Add a new schema to the document
+     * Get an attribute value  by its fully qualified name.
      *
-     * @param schema
+     * @param attr
+     * @param <T>
      * @return
      */
-    public Document addSchema(Schema schema) {
-        this.document.put(schema.getNamespace(), schema);
-        return this;
+    public <T> T getAttr(String attr) {
+        Object current = getContainer(attr, false);
+        return (T) getChild(current, Attr.name(attr));
     }
 
     /**
-     * Add a new schema to the document with the given namespace.
+     * Get an attribute value by its fully qualified name.  Uses a JSON mapper
+     * to map the data into the specified class.
      *
-     * @param namespace
-     * @param schema
+     * @param attr
+     * @param type
+     * @param <T>
      * @return
      */
-    public Document addSchema(String namespace, Schema schema) {
-        this.document.put(namespace, schema);
-        return this;
+    public <T> T getAttr(String attr, Class<T> type) {
+        Object current = getContainer(attr, false);
+        return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type);
+    }
+
+    /**
+     * Get an attibute value by its fully qualified name.  Uses a JSON mapper
+     * to map the data into the specified TypeReference.
+     *
+     * @param attr
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public <T> T getAttr(String attr, TypeReference<T> type) {
+        Object current = getContainer(attr, false);
+        return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type);
+    }
+
+    /**
+     * Set an attribute value.
+     *
+     * @param attr
+     * @param value
+     */
+    public void setAttr(String attr, Object value) {
+        Object current = getContainer(attr, true);
+        String key = Attr.name(attr);
+
+        try {
+            /*
+             * Try to use an exposed setter method.
+             */
+            new PropertyDescriptor(key,
+                    current.getClass()).getWriteMethod().invoke(current, value);
+            logger.info("setter was called for key {}", key);
+        } catch (Exception e) {
+
+            /*
+             * If the setter doesn't exist, try to use the any setter.
+             */
+            for (Method m : current.getClass().getMethods()) {
+                if (m.isAnnotationPresent(JsonAnySetter.class)) {
+                    try {
+                        m.invoke(current, key, value);
+                        return;
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("Invalid any setter call: " + attr + " value: " + value, e);
+                    }
+                }
+            }
+
+            /*
+             * Finally, try treating it like a map.
+             */
+            try {
+                ((Map<String, Object>) current).put(key, value);
+            } catch (ClassCastException ex) {
+                throw new IllegalArgumentException("Invalid attribute: " + attr);
+            }
+        }
     }
 
     /**
      * Return true if the document has the given namespace.
-     * @param namespace
+     * @param attr
      * @return
      */
-    public boolean contains(String namespace) {
-        return document.containsKey(namespace);
+    public boolean attrExists(String attr) {
+        Object container = getContainer(attr, false);
+        return getChild(container, Attr.name(attr)) != null;
     }
 
-    /**
-     * Get a Schema object out of the document.  A Schema is a collection of typed
-     * attributes.
-     *
-     * @param namespace
-     * @param klass
-     * @param <T>
-     * @return
-     */
-    public <T> T getSchema(String namespace, Class<T> klass) {
-        try {
-            Object value = document.get(namespace);
-            if (value.getClass().equals(klass)) {
-                return (T) value;
-            }
-            return Json.Mapper.convertValue(value, klass);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Get a Schema object out of the document. A Schema is a collection of typed
-     * attributes.
-     *
-     * @param namespace
-     * @param typeRef
-     * @param <T>
-     * @return
-     */
-    public <T> T getSchema(String namespace, TypeReference<T> typeRef) {
-        try {
-            return Json.Mapper.convertValue(document.get(namespace), typeRef);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Retrieve an value off an internal schema.
-     *
-     * @param namespace
-     * @param key
-     * @param <T>
-     * @return
-     */
-    public <T> T getAttr(String namespace, String key) {
-        try {
-            return (T) new PropertyDescriptor(key,
-                    document.get(namespace).getClass()).getReadMethod().invoke(document.get(namespace));
-        } catch (Exception e) {
-            try {
-                Map<String,Object> schema = (Map<String,Object>) document.get(namespace);
-                return (T) schema.get(key);
-            }
-            catch (ClassCastException ex) {
-                return null;
-            }
-        }
-    }
-
-    /**
-     * Retrieve a value of an internal schema using dot notation style, for example:
-     * String path = doc.get("source.path")
-     *
-     * This method can return null.
-     *
-     * @param key
-     * @param <T>
-     * @return
-     */
-    public <T> T getAttr(String key) {
-        if (key.contains(".")) {
-            Object current = document;
-            for (String e: Splitter.on('.').split(key.substring(0, key.lastIndexOf('.')))) {
-                current = getObject(current, e);
-                if (current == null) {
+    private Object getContainer(String attr, boolean forceExpand) {
+        String[] parts = attr.split(Attr.DELIMITER);
+        Object current = document;
+        for (int i=0; i<parts.length-1; i++) {
+            Object child = getChild(current, parts[i]);
+            if (child == null) {
+                if (forceExpand) {
+                    child = createChild(current, parts[i]);
+                }
+                else {
                     return null;
                 }
             }
-            return (T) getObject(current, key.substring(key.lastIndexOf('.')+1));
+            current = child;
         }
-        else {
-            return (T) document.get(key);
-        }
+        return current;
     }
 
-    /**
-     * Retrieve a value of an internal schema using dot notation style, for example:
-     * String path = doc.get("source.path").  If the value does not exist return
-     * the supplied default value.
-     *
-     * @param key
-     * @param <T>
-     * @return
-     */
-    public <T> T getAttrOrDefault(String key, T def) {
-        if (key.contains(".")) {
-            Object current = document;
-            for (String e: Splitter.on('.').split(key.substring(0, key.lastIndexOf('.')))) {
-                current = getObject(current, e);
-                if (current == null) {
-                    return def;
-                }
-            }
-            return (T) getObject(current, key.substring(key.lastIndexOf('.')+1));
-        }
-        else {
-            return (T) document.getOrDefault(key, def);
-        }
-    }
-
-    /**
-     * Set an attribute.
-     *
-     * @param namespace
-     * @param key
-     * @param values
-     */
-    public Document setAttr(String namespace, String key, Object[] values) {
-        Object schema = this.document.get(namespace);
-        if (schema == null) {
-            addSchema(new AttrSchema(namespace).setAttr(key, values));
-            return this;
-        }
-
-        try {
-            new PropertyDescriptor(key, schema.getClass()).getWriteMethod().invoke(schema, values);
-        } catch (Exception e1) {
-            Map<String, Object> _schema = (Map<String, Object>) schema;
-            _schema.put(key, values);
-        }
-        return this;
-    }
-
-    /**
-     * Set an attribute.
-     *
-     * @param namespace
-     * @param key
-     * @param value
-     * @return
-     */
-    public Document setAttr(String namespace, String key, Object value) {
-        Object schema = this.document.get(namespace);
-        if (schema == null) {
-            addSchema(new AttrSchema(namespace).setAttr(key, value));
-            return this;
-        }
-
-        try {
-            new PropertyDescriptor(key, schema.getClass()).getWriteMethod().invoke(schema, value);
-        } catch (Exception e1) {
-            Map<String, Object> _schema = (Map<String, Object>) schema;
-            _schema.put(key, value);
-        }
-        return this;
-    }
-
-    /**
-     * Remove an attribute. This only works on arbitrary attributes, not
-     * on actual schemed attributes.
-     *
-     * @param namespace
-     * @param key
-     * @return
-     */
-    public boolean removeAttr(String namespace, String key) {
-        Object schema = this.document.get(namespace);
-        if (schema == null) {
-          return false;
-        }
-
-        try {
-            Map<String, Object> _schema = (Map<String, Object>) schema;
-            return _schema.remove(key) != null;
-        } catch (Exception ignore) {
-
-        }
-        return false;
-    }
-
-    /**
-     * Remove an attribute. This only works on arbitrary attributes, not
-     * on actual schemed attributes.
-     *
-     * @param name
-     * @return
-     */
-    public boolean removeAttr(String name) {
-        if (name.contains(".")) {
-            Object current = document;
-            for (String e: Splitter.on('.').split(name.substring(0, name.lastIndexOf('.')))) {
-                current = getObject(current, e);
-                if (current == null) {
-                    return false;
-                }
-            }
-
-            try {
-                Map<String, Object> _schema = (Map<String, Object>) current;
-                return _schema.remove(name.substring(name.lastIndexOf('.')+1)) != null;
-            } catch (Exception ignore) {
-
-            }
-            return false;
-        }
-        else {
-            return document.remove(name) != null;
-        }
-    }
-
-
-    private <T> T getObject(Object object, String key) {
+    private Object getChild(Object object, String key) {
         if (object == null) {
             return null;
         }
         try {
-            return (T) new PropertyDescriptor(key,
+
+            return new PropertyDescriptor(key,
                     object.getClass()).getReadMethod().invoke(object);
         } catch (Exception e) {
-            try {
-                return (T) ((Map<String,Object>)object).get(key);
+            /*
+             * If the setter doesn't exist, try to use the any setter.
+             */
+            for (Method m : object.getClass().getMethods()) {
+                if (m.isAnnotationPresent(JsonAnyGetter.class)) {
+                    try {
+                        return ((Map)m.invoke(object)).get(key);
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("Invalid any getter call: " + key);
+                    }
+                }
             }
-            catch (ClassCastException ex) {
+
+            try {
+                return ((Map<String, Object>) object).get(key);
+            } catch (ClassCastException ex) {
                 return null;
             }
         }
     }
+
+    private Object createChild(Object parent, String key) {
+        Map<String, Object> result = Maps.newHashMap();
+        try {
+            new PropertyDescriptor(key,
+                    parent.getClass()).getWriteMethod().invoke(parent, result);
+        } catch (Exception e) {
+
+            for (Method m : parent.getClass().getMethods()) {
+                if (m.isAnnotationPresent(JsonAnySetter.class)) {
+                    try {
+                        m.invoke(parent, key, result);
+                        // early return
+                        return result;
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("Invalid attribute: " + key + " parent: " + parent);
+                    }
+                }
+            }
+
+            try {
+                ((Map<String, Object>) parent).put(key, result);
+            } catch (ClassCastException ex) {
+                throw new IllegalArgumentException("Invalid attribute: " + key + " parent: " + parent);
+            }
+        }
+        return result;
+    }
 }
+

@@ -8,12 +8,6 @@ import com.zorroa.archivist.sdk.domain.Proxy;
  */
 public class ProxySchema extends ListSchema<Proxy> {
 
-    @Override
-    @JsonIgnore
-    public String getNamespace() {
-        return "proxies";
-    }
-
     /**
      * Return the largest proxy.
      *

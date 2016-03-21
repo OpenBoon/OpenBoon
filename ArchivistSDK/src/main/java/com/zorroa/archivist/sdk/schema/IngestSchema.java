@@ -7,12 +7,7 @@ import com.zorroa.archivist.sdk.domain.Ingest;
 /**
  * The ingest schema contains all the information related to the ingest that brought in the asset.
  */
-public class IngestSchema extends SetSchema<IngestSchema.IngestProperties> implements Schema {
-
-    @Override
-    public String getNamespace() {
-        return "imports";
-    }
+public class IngestSchema extends SetSchema<IngestSchema.IngestProperties> {
 
     public void addIngest(Ingest ingest) {
         add(new IngestProperties(ingest));

@@ -7,16 +7,11 @@ import java.util.Set;
 /**
  * The PermissionSchema contains the permissions needed to access the asset.
  */
-public class PermissionSchema implements Schema {
+public class PermissionSchema {
 
     Set<Integer> search = Sets.newHashSet();
     Set<Integer> export = Sets.newHashSet();
     Set<Integer> write = Sets.newHashSet();
-
-    @Override
-    public String getNamespace() {
-        return "permissions";
-    }
 
     public Set<Integer> getSearch() {
         return search;

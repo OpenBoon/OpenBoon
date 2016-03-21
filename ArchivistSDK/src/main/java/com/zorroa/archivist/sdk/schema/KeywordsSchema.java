@@ -1,17 +1,16 @@
 package com.zorroa.archivist.sdk.schema;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * A Schema class for managing keywords.
  */
-public class KeywordsSchema implements Schema {
+public class KeywordsSchema extends MapSchema {
 
     /**
      * The maximum confidence value a keyword can have.
@@ -23,7 +22,6 @@ public class KeywordsSchema implements Schema {
      */
     public static final int BUCKET_COUNT = 5;
 
-    private Map<String, Set<String>> fields = Maps.newHashMap();
     private Set<String> all = Sets.newHashSet();
     private Set<String> suggest = Sets.newHashSet();
 
@@ -47,10 +45,10 @@ public class KeywordsSchema implements Schema {
      * @param keywords
      */
     public void addKeywords(String type,  Iterable<String> keywords) {
-        Set<String> words = fields.get("type");
+        Set<String> words = getAttr(type);
         if (words == null) {
             words = Sets.newHashSet();
-            fields.put(type, words);
+            setAttr(type, words);
         }
         addKeywords(1, true, keywords);
     }
@@ -90,11 +88,11 @@ public class KeywordsSchema implements Schema {
         }
 
         String field = String.format("level%d", getBucket(Math.min(confidence, CONFIDENCE_MAX)));
-        Set<String> bucket = fields.get(field);
+        Set<String> bucket = getAttr(field);
 
         if (bucket == null) {
             bucket = Sets.newHashSet();
-            fields.put(field, bucket);
+            setAttr(field, bucket);
         }
 
         for (String word: keywords) {
@@ -138,21 +136,6 @@ public class KeywordsSchema implements Schema {
 
     public Set<String> getSuggest() {
         return ImmutableSet.copyOf(suggest);
-    }
-
-    @Override
-    public String getNamespace() {
-        return "keywords";
-    }
-
-    @JsonAnyGetter
-    public Map<String, Set<String>> any() {
-        return fields;
-    }
-
-    @JsonAnySetter
-    public void set(String name,  Set<String> value) {
-        fields.put(name, value);
     }
 
     public static long getBucket(double confidence) {

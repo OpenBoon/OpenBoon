@@ -113,14 +113,14 @@ public class AssetBuilder extends Document {
             source.setFileSize(0);
         }
 
-        addSchema(source);
-        addSchema(new UserSchema());
+        setAttr("source", source);
+        setAttr("user", new UserSchema());
 
         keywords = new KeywordsSchema();
-        addSchema(keywords);
+        setAttr("keywords", keywords);
 
         permissions = new PermissionSchema();
-        addSchema(permissions);
+        setAttr("permissions", permissions);
     }
 
     public AssetBuilder(String file) {
@@ -181,7 +181,7 @@ public class AssetBuilder extends Document {
             return;
         }
 
-        SourceSchema currentSource = asset.getSchema("source", SourceSchema.class);
+        SourceSchema currentSource = asset.getAttr("source", SourceSchema.class);
         if (currentSource.getTimeModified() == source.getTimeModified() ||
                 currentSource.getFileSize() == source.getFileSize()) {
             setChanged(false);

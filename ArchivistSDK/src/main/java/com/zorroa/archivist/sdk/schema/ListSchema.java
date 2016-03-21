@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * Created by chambers on 12/11/15.
  */
-public abstract class ListSchema<E> extends ForwardingList<E> implements Schema {
+public abstract class ListSchema<E> extends ForwardingList<E> {
 
-    final List<E> delegate;
+    private final List<E> delegate;
 
     public ListSchema() {
         delegate = Lists.newArrayList();

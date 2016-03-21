@@ -65,7 +65,7 @@ public class ZipFileExport extends ExportProcessor {
          * Setting this to an empty strin
          *
          */
-        zipEntryPath = (String) args.getOrDefault("zipEntryPath", FileUtils.basename(output.getFileName()));
+        zipEntryPath = (String) getArgs().getOrDefault("zipEntryPath", FileUtils.basename(output.getFileName()));
         zipFile = new ZipOutputStream(new FileOutputStream(output.getPath()));
     }
 

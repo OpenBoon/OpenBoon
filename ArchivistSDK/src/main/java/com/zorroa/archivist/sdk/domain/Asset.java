@@ -26,7 +26,7 @@ public class Asset extends Document implements EventLoggable {
     }
 
     public SourceSchema getSource() {
-        return getSchema("source", SourceSchema.class);
+        return getAttr("source", SourceSchema.class);
     }
 
     @Override

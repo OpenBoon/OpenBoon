@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Image Schema contains options that only pertain to Image assets.
  */
-public class ImageSchema implements Schema {
+public class ImageSchema extends MapSchema  {
 
     private Point2D.Double location;
     private Integer width;
@@ -34,10 +34,4 @@ public class ImageSchema implements Schema {
     public void setWidth(Integer width) {
         this.width = width;
     }
-
-    @Override
-    public String getNamespace() {
-        return "image";
-    }
-
 }

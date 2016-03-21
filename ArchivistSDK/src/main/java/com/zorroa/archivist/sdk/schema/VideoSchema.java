@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.schema;
 /**
  * Created by chambers on 1/2/16.
  */
-public class VideoSchema implements Schema {
+public class VideoSchema extends MapSchema {
 
     private int width;
     private int height;
@@ -15,11 +15,6 @@ public class VideoSchema implements Schema {
     private int audioChannels;
     private String format;
     private double frameRate;
-
-    @Override
-    public String getNamespace() {
-        return "video";
-    }
 
     public int getWidth() {
         return width;
