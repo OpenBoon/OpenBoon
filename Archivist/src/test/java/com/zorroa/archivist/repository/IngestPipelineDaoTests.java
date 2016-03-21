@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.TestAggregator;
 import com.zorroa.archivist.TestIngestor;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
@@ -60,12 +61,13 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
         builder.setName("foo");
         builder.setDescription("foo");
         builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(TestIngestor.class)));
-
+        builder.setAggregators(Lists.newArrayList(new ProcessorFactory<>(TestAggregator.class)));
         assertTrue(ingestPipelineDao.update(pipeline, builder));
         IngestPipeline updated = ingestPipelineDao.get(pipeline.getId());
         assertEquals(builder.getDescription(), updated.getDescription());
         assertEquals(builder.getName(), updated.getName());
         assertEquals(builder.getProcessors(), updated.getProcessors());
+        assertEquals(builder.getAggregators(), updated.getAggregators());
         assertNotEquals(pipeline.getTimeModified(), updated.getTimeModified());
     }
 
