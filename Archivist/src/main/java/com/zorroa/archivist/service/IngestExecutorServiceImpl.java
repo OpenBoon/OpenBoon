@@ -171,19 +171,19 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         public IngestWorker(Ingest ingest, User user) {
             this.ingest = ingest;
             this.user = user;
-            this.assetExecutor = new AssetExecutor(
-                    ingest.getAssetWorkerThreads() > 0 ? ingest.getAssetWorkerThreads() : defaultWorkerThreads);
         }
 
         public void shutdown() {
-            earlyShutdown = true;           // Force cleanup at end of ingest
-            assetExecutor.shutdownNow();
-            try {
-                while (!assetExecutor.awaitTermination(1, TimeUnit.SECONDS)) {
-                    Thread.sleep(250);
+            earlyShutdown = true;
+            if (assetExecutor != null) {
+                assetExecutor.shutdownNow();
+                try {
+                    while (!assetExecutor.awaitTermination(1, TimeUnit.SECONDS)) {
+                        Thread.sleep(250);
+                    }
+                } catch (InterruptedException e) {
+                    logger.warn("Asset processing termination interrupted: " + e.getMessage());
                 }
-            } catch (InterruptedException e) {
-                logger.warn("Asset processing termination interrupted: " + e.getMessage());
             }
         }
 
@@ -218,6 +218,15 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 return;
             }
 
+            /*
+             * Create the asset processing thread pool.
+             */
+            assetExecutor = new AssetExecutor(
+                    ingest.getAssetWorkerThreads() > 0 ? ingest.getAssetWorkerThreads() : defaultWorkerThreads);
+
+            /*
+             * Start up the aggregators.
+             */
             startAggregators();
 
             try {
