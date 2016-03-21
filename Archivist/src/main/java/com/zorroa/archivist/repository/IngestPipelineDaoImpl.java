@@ -126,6 +126,11 @@ public class IngestPipelineDaoImpl extends AbstractDao implements IngestPipeline
             values.add(Json.serializeToString(builder.getProcessors()));
         }
 
+        if (builder.getAggregators() != null) {
+            updates.add("json_aggregators=?");
+            values.add(Json.serializeToString(builder.getAggregators()));
+        }
+
         if (updates.isEmpty()) {
             return false;
         }
