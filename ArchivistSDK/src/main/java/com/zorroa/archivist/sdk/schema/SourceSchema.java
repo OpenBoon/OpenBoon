@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The source schema contains everything that can be cleaned from the file path
@@ -39,6 +38,15 @@ public class SourceSchema extends MapSchema {
     private String owner;
     private String group;
 
+    /**
+     * The remote source URI represents where the original asset was obtained from.
+     */
+    private String remoteSourceUri;
+
+    /**
+     * The local source URI is where the asset can be streamed from.
+     */
+    private String objectStorageHost;
 
     public String getChecksum() {
         return checksum;
@@ -194,6 +202,24 @@ public class SourceSchema extends MapSchema {
 
     public SourceSchema setGroup(String group) {
         this.group = group;
+        return this;
+    }
+
+    public String getRemoteSourceUri() {
+        return remoteSourceUri;
+    }
+
+    public SourceSchema setRemoteSourceUri(String remoteSourceUri) {
+        this.remoteSourceUri = remoteSourceUri;
+        return this;
+    }
+
+    public String getObjectStorageHost() {
+        return objectStorageHost;
+    }
+
+    public SourceSchema setObjectStorageHost(String objectStorageHost) {
+        this.objectStorageHost = objectStorageHost;
         return this;
     }
 
