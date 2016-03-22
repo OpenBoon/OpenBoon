@@ -4,8 +4,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.ByteStreams;
-import com.zorroa.archivist.sdk.filesystem.ObjectFile;
+import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.common.repository.AssetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +52,9 @@ public class FileSystemController {
     });
 
     @Autowired
+    AssetDao assetDao;
+
+    @Autowired
     ObjectFileSystem objectFileSystem;
 
     /**
@@ -84,28 +85,26 @@ public class FileSystemController {
     }
 
     /**
-     * This endpoint can stream any type of data in the Analyst's object storage.
+     * Stream the given asset ID.
      *
-     * @param request
      * @param response
      * @return
      * @throws ExecutionException
      * @throws FileNotFoundException
      */
-    @RequestMapping(value = "/api/v1/fs/**", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<FileSystemResource> getFile(HttpServletRequest request, HttpServletResponse response) throws ExecutionException, FileNotFoundException {
+    public ResponseEntity<FileSystemResource> streamAsset(@PathVariable String id, HttpServletResponse response) throws ExecutionException, IOException {
+        Asset asset = assetDao.get(id);
+        if (!new File(asset.getSource().getPath()).exists()) {
+            response.sendRedirect(asset.getAttr("source:remoteSourceUri"));
+            return null;
+        }
 
-        String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-
-        AntPathMatcher apm = new AntPathMatcher();
-        String finalPath = apm.extractPathWithinPattern(bestMatchPattern, path);
-
-        ObjectFile file = objectFileSystem.get(finalPath);
         return ResponseEntity.ok()
-                .contentLength(file.size())
-                .body(new FileSystemResource(file.getFile()));
+                .contentType(MediaType.valueOf(asset.getSource().getType()))
+                .contentLength(asset.getSource().getFileSize())
+                .body(new FileSystemResource(asset.getSource().getPath()));
     }
 
     @ExceptionHandler(ExecutionException.class)
