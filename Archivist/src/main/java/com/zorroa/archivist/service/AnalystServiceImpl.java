@@ -50,6 +50,11 @@ public class AnalystServiceImpl implements AnalystService {
     }
 
     @Override
+    public List<Analyst> getActive() {
+        return analystDao.getActive();
+    }
+
+    @Override
     public List<Analyst> getAll() {
         return analystDao.getAll();
     }

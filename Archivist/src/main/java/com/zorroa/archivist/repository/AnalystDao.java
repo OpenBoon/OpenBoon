@@ -24,4 +24,6 @@ public interface AnalystDao {
     boolean setState(String host, AnalystState newState, AnalystState oldState);
 
     boolean setState(String host, AnalystState newState);
+
+    List<Analyst> getActive();
 }

@@ -110,6 +110,11 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
     }
 
     @Override
+    public List<Analyst> getActive() {
+        return jdbc.query("SELECT * FROM analyst WHERE int_state=?" , MAPPER, AnalystState.UP.ordinal());
+    }
+
+    @Override
     public List<Analyst> getAll(AnalystState state) {
         return jdbc.query("SELECT * FROM analyst WHERE int_state=?", MAPPER, state.ordinal());
     }

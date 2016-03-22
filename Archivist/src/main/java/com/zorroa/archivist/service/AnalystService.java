@@ -17,4 +17,6 @@ public interface AnalystService {
     List<Analyst> getAll();
 
     AnalystClient getAnalystClient() throws Exception;
+
+    List<Analyst> getActive();
 }
