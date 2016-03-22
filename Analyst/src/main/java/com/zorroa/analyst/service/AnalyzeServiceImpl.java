@@ -106,9 +106,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
             result.tried++;
             File file;
+            ObjectFile obj = null;
             try {
                 if (entry.isRemote()) {
-                    ObjectFile obj = objectFileSystem.get("assets", entry.getUri(), FileUtils.extension(entry.getUri()));
+                    obj = objectFileSystem.get("assets", entry.getUri(), FileUtils.extension(entry.getUri()));
                     if (!obj.exists()) {
                         transferService.transfer(entry.getUri(), obj);
                     }
@@ -123,8 +124,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 continue;
             }
 
-            logger.info("processing: {}", file);
             AssetBuilder builder = new AssetBuilder(file);
+            if (obj != null) {
+                builder.getSource().setRemoteSourceUri(entry.getUri());
+                builder.getSource().setObjectStorageHost(System.getProperty("server.url"));
+            }
 
             if (ingestSchema != null) {
                 builder.setAttr("imports", ingestSchema);
