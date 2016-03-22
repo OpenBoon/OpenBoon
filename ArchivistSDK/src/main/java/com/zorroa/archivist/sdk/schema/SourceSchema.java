@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The source schema contains everything that can be cleaned from the file path
@@ -16,8 +17,9 @@ import java.util.List;
  * Every asset should at least have a valid source schema.
  *
  */
-public class SourceSchema {
+public class SourceSchema extends MapSchema {
 
+    private String type;
     private String path;
     private String extension;
     private String filename;
@@ -37,7 +39,6 @@ public class SourceSchema {
     private String owner;
     private String group;
 
-    private String type;
 
     public String getChecksum() {
         return checksum;
