@@ -87,8 +87,14 @@ public class FlickrCrawler extends AbstractCrawler
                         continue;
                     }
                     consumer.accept(new AnalyzeRequestEntry(URI.create(photo.url_o))
-                            .set("reference.ingestUri", ingestUri.toString())
-                            .set("reference.sourceUri", photo.url_o));
+                            .set("reference:search", request)
+                            .set("reference:title", photo.title)
+                            .set("reference:tags", photo.tags)
+                            .set("reference:machineTags", photo.machine_tags)
+                            .set("reference:owner", photo.owner)
+                            .set("reference:source", "flickr")
+                            .set("reference:id", photo.id)
+                            .set("keywords:reference", photo.tags));
                 }
 
                 if (page == 1) {
