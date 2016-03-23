@@ -36,7 +36,7 @@ public class IngestPathAggregator extends Aggregator {
     private Folder ingestFolder;
     private Map<String, Folder> pathMap = Maps.newHashMap();
     private Acl acl;
-    private AssetAggregateBuilder pathAggBuilder;
+    private AssetAggregateBuilder pathAggBuilder = null;
 
     @Override
     public void init(Ingest ingest) {
@@ -61,15 +61,20 @@ public class IngestPathAggregator extends Aggregator {
             }
         }
 
-        ingestFolder = ingestService.getFolder(ingest);
-        pathAggBuilder = new AssetAggregateBuilder().setName("path")
-                .setField("source.directory.dir").setSearch(ingestFolder.getSearch())
-                .setExclude(String.join("|", excludedPaths));
-
+        if (!excludedPaths.isEmpty()) {
+            ingestFolder = ingestService.getFolder(ingest);
+            pathAggBuilder = new AssetAggregateBuilder().setName("path")
+                    .setField("source.directory.dir").setSearch(ingestFolder.getSearch())
+                    .setExclude(String.join("|", excludedPaths));
+        }
     }
 
     @Override
     public void aggregate() {
+
+        if (pathAggBuilder == null) {
+            return;
+        }
 
         // Aggregate over the pathIndexed source.directory.dir field to get each path component
         SearchResponse pathReponse = searchService.aggregate(pathAggBuilder);
