@@ -6,10 +6,7 @@ import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.domain.UnitTestProcessor;
 import com.zorroa.archivist.sdk.client.ClientException;
 import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
-import com.zorroa.archivist.sdk.crawlers.AbstractCrawler;
-import com.zorroa.archivist.sdk.crawlers.FileCrawler;
-import com.zorroa.archivist.sdk.crawlers.FlickrCrawler;
-import com.zorroa.archivist.sdk.crawlers.HttpCrawler;
+import com.zorroa.archivist.sdk.crawlers.*;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.Aggregator;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
@@ -401,7 +398,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             Map<String, AbstractCrawler> crawlers = ImmutableMap.of(
                     "file", new FileCrawler(),
                     "http", new HttpCrawler(),
-                    "flickr", new FlickrCrawler());
+                    "flickr", new FlickrCrawler(),
+                    "shotgun", new ShotgunCrawler());
 
             for (String u : ingest.getUris()) {
 
