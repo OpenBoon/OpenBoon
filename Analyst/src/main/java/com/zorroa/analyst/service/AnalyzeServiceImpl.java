@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -128,6 +129,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             if (obj != null) {
                 builder.getSource().setRemoteSourceUri(entry.getUri());
                 builder.getSource().setObjectStorageHost(System.getProperty("server.url"));
+            }
+
+            /*
+             * Translate the attrs sent from the crawler to AssetBuilder
+             */
+            if (entry.getAttrs() !=  null) {
+                for(Map.Entry<String, Object> attr: entry.getAttrs().entrySet()) {
+                    builder.setAttr(attr.getKey(), attr.getValue());
+                }
             }
 
             if (ingestSchema != null) {
