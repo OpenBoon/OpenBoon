@@ -113,7 +113,7 @@ public class ProxyProcessor extends IngestProcessor {
              * If the source is too small for a proxy, make it a proxy!
              */
             if (result.isEmpty()) {
-                Output spec = new Output(defaultProxyFormat, width, 8, 0.5f);
+                Output spec = new Output(defaultProxyFormat, width, 8, 1.0f);
                 Proxy proxy = writeProxy(asset, asset.getImage(), spec, getOrientationFilters(asset));
                 result.add(proxy);
             }
