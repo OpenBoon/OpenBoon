@@ -93,8 +93,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         for (AnalyzeRequestEntry entry: req.getAssets()) {
 
+            logger.info("Analayzing: {}", entry.getUri());
+
             URI uri = URI.create(entry.getUri());
-            if (!pipeline.isSupportedFormat(entry.getUri())) {
+            if (!pipeline.isSupportedFormat(uri.getPath())) {
                 logger.debug("The path {} is not a supported format for this pipeline: {}", uri,
                         pipeline.getSupportedFormats());
                 continue;
@@ -110,7 +112,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             ObjectFile obj = null;
             try {
                 if (entry.isRemote()) {
-                    obj = objectFileSystem.get("assets", entry.getUri(), FileUtils.extension(entry.getUri()));
+                    obj = objectFileSystem.get("assets", entry.getUri(), FileUtils.extension(uri.getPath()));
                     if (!obj.exists()) {
                         transferService.transfer(entry.getUri(), obj);
                     }
