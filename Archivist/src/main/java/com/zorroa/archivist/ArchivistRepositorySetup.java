@@ -1,5 +1,6 @@
 package com.zorroa.archivist;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.aggregators.DateAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
@@ -120,6 +121,20 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyProcessor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.CaffeIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.FaceIngestor"));
+            builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
+            builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
+            ingestService.createIngestPipeline(builder);
+        }
+
+        if (!ingestService.ingestPipelineExists("production")) {
+            IngestPipelineBuilder builder = new IngestPipelineBuilder();
+            builder.setName("production");
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.FilePathIngestor",
+                    ImmutableMap.of("representations", ImmutableList.of(ImmutableMap.of("primary", "blend")))));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.BlenderIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.VideoIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyProcessor"));
             builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
             builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
             ingestService.createIngestPipeline(builder);
