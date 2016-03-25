@@ -2,10 +2,17 @@ package com.zorroa.archivist.sdk.schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.Lists;
+import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.sdk.util.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * The source schema contains everything that can be cleaned from the file path
@@ -26,12 +33,12 @@ public class SourceSchema extends MapSchema {
     private String directory;
     private Date date = new Date();
     private String checksum;
-    private List<String> relatedPaths;
+    private Set<SourceSchema> representations;
 
     /**
      * File stat() values.
      */
-    private long fileSize;
+    private Long fileSize;
     private Date timeCreated;
     private Date timeModified;
     private Date timeAccessed;
@@ -47,6 +54,32 @@ public class SourceSchema extends MapSchema {
      * The local source URI is where the asset can be streamed from.
      */
     private String objectStorageHost;
+
+    public SourceSchema() {
+
+    }
+
+    public SourceSchema(File file) {
+        setPath(file.getPath());
+        setBasename(FileUtils.basename(getPath()));
+        setDirectory(FileUtils.dirname(getPath()));
+        setExtension(FileUtils.extension(getPath()));
+        setFilename(FileUtils.filename(getPath()));
+
+        try {
+            PosixFileAttributes attrs = Files.getFileAttributeView(
+                    file.toPath(), PosixFileAttributeView.class).readAttributes();
+
+            setFileSize(attrs.size());
+            setTimeAccessed(new Date(attrs.lastAccessTime().toMillis()));
+            setTimeModified(new Date(attrs.lastModifiedTime().toMillis()));
+            setTimeCreated(new Date(attrs.creationTime().toMillis()));
+            setOwner(attrs.owner().getName());
+            setGroup(attrs.group().getName());
+        } catch (IOException e) {
+            logger.warn("Failed to stat file '{}'", getPath(), e);
+        }
+    }
 
     public String getChecksum() {
         return checksum;
@@ -104,11 +137,11 @@ public class SourceSchema extends MapSchema {
         this.date = date;
     }
 
-    public long getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(long fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 
@@ -143,21 +176,6 @@ public class SourceSchema extends MapSchema {
             return false;
         }
         return this.type.equals(type);
-    }
-
-    public void setRelatedPaths(List<String> relatedPaths) {
-        this.relatedPaths = relatedPaths;
-    }
-
-    public List<String> getRelatedPaths() {
-        return relatedPaths;
-    }
-
-    public void addToRelatedPaths(String path) {
-        if (relatedPaths == null) {
-            relatedPaths = Lists.newArrayList();
-        }
-        this.relatedPaths.add(path);
     }
 
     public Date getTimeCreated() {
@@ -223,6 +241,23 @@ public class SourceSchema extends MapSchema {
         return this;
     }
 
+    public Set<SourceSchema> getRepresentations() {
+        return representations;
+    }
+
+    public SourceSchema setRepresentations(Set<SourceSchema> representations) {
+        this.representations = representations;
+        return this;
+    }
+
+    public SourceSchema addRepresentation(SourceSchema source) {
+        if (this.representations == null) {
+            this.representations = Sets.newHashSet();
+        }
+        this.representations.add(source);
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(SourceSchema.class)
@@ -232,5 +267,18 @@ public class SourceSchema extends MapSchema {
                 .add("filename", filename)
                 .add("basename", basename)
                 .add("dirname", directory).toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SourceSchema that = (SourceSchema) o;
+        return Objects.equal(getPath(), that.getPath());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getPath());
     }
 }

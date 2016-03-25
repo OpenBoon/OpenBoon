@@ -10,11 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFileAttributes;
 import java.util.Collection;
-import java.util.Date;
 import java.util.UUID;
 
 public class AssetBuilder extends Document {
@@ -92,27 +88,7 @@ public class AssetBuilder extends Document {
          * Add the standard schemas.
          */
 
-        source = new SourceSchema();
-        source.setBasename(getBasename());
-        source.setDirectory(getDirectory());
-        source.setExtension(getExtension());
-        source.setPath(getAbsolutePath());
-        source.setExtension(getExtension());
-        source.setFilename(getFilename());
-
-        try {
-            PosixFileAttributes attrs = Files.getFileAttributeView(
-                    file.toPath(), PosixFileAttributeView.class).readAttributes();
-            source.setFileSize(attrs.size());
-            source.setTimeAccessed(new Date(attrs.lastAccessTime().toMillis()));
-            source.setTimeModified(new Date(attrs.lastModifiedTime().toMillis()));
-            source.setTimeCreated(new Date(attrs.creationTime().toMillis()));
-            source.setOwner(attrs.owner().getName());
-            source.setGroup(attrs.group().getName());
-        } catch (IOException e) {
-            source.setFileSize(0);
-        }
-
+        source = new SourceSchema(file);
         setAttr("source", source);
         setAttr("user", new UserSchema());
 
