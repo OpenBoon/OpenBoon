@@ -4,9 +4,10 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.filesystem.ObjectFile;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.processor.Argument;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
+import com.zorroa.archivist.sdk.schema.SourceSchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.filters.Flip;
@@ -25,6 +26,7 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,8 +75,26 @@ public class ProxyProcessor extends IngestProcessor {
         }
 
         if (asset.getImage() == null)  {
-            logger.debug("There is no image metadata for making a proxy.");
-            return;
+            /*
+             * If no image as set by the the ingestor, look for an image represenation
+             * we can use to make a proxy.
+             */
+            if (asset.getSource().getRepresentations() != null) {
+                for(SourceSchema source: asset.getSource().getRepresentations()) {
+                    if (source.getType().startsWith("image/")) {
+                        try {
+                            asset.setImage(ImageIO.read(new File(source.getPath())));
+                        } catch (IOException e) {
+                            logger.warn("Failed to open file for proxy: {}", source.getPath());
+                        }
+                        break;
+                    }
+                }
+            }
+            if (asset.getImage() == null) {
+                logger.debug("There is no image metadata for making a proxy of '{}'", asset);
+                return;
+            }
         }
 
         ProxySchema result = new ProxySchema();
