@@ -2,6 +2,7 @@ package com.zorroa.analyst.service;
 
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
+import org.apache.tika.Tika;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,4 +15,5 @@ public interface AnalyzeService {
 
     AnalyzeResult analyze(AnalyzeRequest req);
 
+    Tika Tika = new Tika();
 }
