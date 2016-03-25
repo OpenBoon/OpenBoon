@@ -1,5 +1,6 @@
 package com.zorroa.analyst;
 
+import com.zorroa.analyst.service.AnalyzeService;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -95,7 +97,12 @@ public abstract class AbstractTest {
 
     protected AssetBuilder ingestFile(File file, List<IngestProcessor> pipeline) {
         AssetBuilder asset = new AssetBuilder(file.getAbsolutePath());
-        asset.getSource().setType("image/" + asset.getExtension());
+        try {
+            asset.getSource().setType(AnalyzeService.Tika.detect(asset.getFile()));
+        } catch (IOException e) {
+            logger.warn("Failed to detect type: {}", e);
+        }
+
         for (IngestProcessor processor: pipeline) {
             processor.process(asset);
         }

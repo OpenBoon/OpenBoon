@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.IngestException;
+import com.zorroa.archivist.sdk.exception.SkipIngestException;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.filesystem.ObjectFile;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
@@ -18,7 +19,6 @@ import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
-import org.apache.tika.Tika;
 import org.elasticsearch.indices.IndexMissingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +42,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     private static final Logger logger = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
 
-    private static final Tika tika = new Tika();
-
     @Autowired
     AssetDao assetDao;
 
@@ -64,7 +62,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
     @Override
     public AnalyzeResult asyncAnalyze(AnalyzeRequest req) throws ExecutionException {
-        logger.info("Submitting work to ingest thread pool: {}", req);
         try {
             return ingestThreadPool.submit(() -> analyze(req)).get();
         } catch (InterruptedException e) {
@@ -147,7 +144,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
 
             try {
-                builder.getSource().setType(tika.detect(builder.getSource().getPath()));
+                builder.getSource().setType(Tika.detect(builder.getSource().getPath()));
             } catch (Exception e) {
                 eventLogService.log(req, "Ingest error '{}', could not determine asset type on '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
@@ -168,12 +165,18 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 /*
                  * Run the ingest processors
                  */
+                boolean skip = false;
                 for (IngestProcessor processor : pipeline.getProcessors()) {
                     try {
                         if (!processor.isSupportedFormat(builder.getExtension())) {
                             continue;
                         }
                         processor.process(builder);
+                    } catch (SkipIngestException skipped) {
+                        logger.warn("Skipping: {}", skipped.getMessage());
+                        skip = true;
+                        break;
+
                     } catch (UnrecoverableIngestProcessorException e) {
                         /*
                          * This exception short circuits the processor. This is handle in outside
@@ -187,7 +190,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                     }
                 }
 
-                assets.add(builder);
+                if (!skip) {
+                    assets.add(builder);
+                }
 
             } catch (UnrecoverableIngestProcessorException e) {
                 eventLogService.log(req, "Unrecoverable ingest error '{}', processing pipeline failed: '{}'",
