@@ -11,12 +11,12 @@ import org.junit.Test;
 import java.io.File;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by chambers on 3/25/16.
  */
-public class BlenderIngestorTests extends AbstractTest {
+public class ShotgunIngestorTests extends AbstractTest {
 
     @Test
     public void testProcess() {
@@ -27,6 +27,7 @@ public class BlenderIngestorTests extends AbstractTest {
         final List<IngestProcessor> pipeline = ImmutableList.<IngestProcessor>builder()
                 .add(initIngestProcessor(new FilePathIngestor().setOpts(opts)))
                 .add(initIngestProcessor(new BlenderIngestor()))
+                .add(initIngestProcessor(new ShotgunIngestor()))
                 .add(initIngestProcessor(new ProxyProcessor()))
                 .build();
 
@@ -38,10 +39,7 @@ public class BlenderIngestorTests extends AbstractTest {
                 // ignore
             }
         }
-
-        // There is only 1 asset since the JPG is a secondary representation
-        assertEquals(1, assets.size());
-        assertEquals(1, assets.get(0).getSource().getRepresentations().size());
-        assertEquals("application/blender", assets.get(0).getSource().getType());
+        assertNotNull(assets.get(0).getAttr("shotgun"));
     }
+
 }
