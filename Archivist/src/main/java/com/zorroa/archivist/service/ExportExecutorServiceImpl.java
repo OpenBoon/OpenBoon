@@ -155,7 +155,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
                     continue;
                 }
 
-                logger.info("processing asset {}", (String) asset.getAttr("source.path"));
+                logger.info("processing asset {}", asset.getSource().getPath());
                 assetCount++;
 
                 for (Map.Entry<ExportOutput, ExportProcessor> entry : outputs.entrySet()) {
