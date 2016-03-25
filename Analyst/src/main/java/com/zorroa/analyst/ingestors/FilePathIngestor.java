@@ -1,11 +1,15 @@
 package com.zorroa.analyst.ingestors;
 
-import com.google.common.collect.Lists;
+import com.zorroa.analyst.service.AnalyzeService;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.exception.SkipIngestException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.SourceSchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.sdk.util.Json;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,10 +19,16 @@ import java.util.regex.Pattern;
  *
  * Example options supplied in JSON which match a filename with metadata.
  * {
- *     "match": [
+ *     "matchers": [
  *          {
  *              "regex": "^.+/(\w+)_(\w+)_(\w+)_(\w+)_(\d+)\\.mov$",
  *              "attrs": ["project", "scene", "shot", "task", "version"]
+ *          }
+ *     ],
+ *     "representations": [
+ *          {
+ *              "primary": "blend",
+ *              "secondary": [ ]
  *          }
  *     ]
  * }
@@ -30,23 +40,91 @@ public class FilePathIngestor extends IngestProcessor {
 
     @Override
     public void init() {
-        opts = Json.Mapper.convertValue(getArgs(), Options.class);
+        if (opts == null) {
+            opts = Json.Mapper.convertValue(getArgs(), Options.class);
+            if (opts == null) {
+                opts = new Options();
+            }
+        }
     }
 
     @Override
     public void process(AssetBuilder assetBuilder) {
+        processPathMatches(assetBuilder);
+        processRepresentations(assetBuilder);
+    }
+
+    /**
+     * The processRepresentations function collapses files that represent a single asset
+     * into a single asset with multiple representations.
+     *
+     * @param assetBuilder
+     */
+    private void processRepresentations(AssetBuilder assetBuilder) {
+        /**
+         * Check for files with the same name but different extension.
+         */
+        if (opts.representations == null || opts.representations.isEmpty()) {
+            return;
+        }
+
+        /**
+         * Need to do 2 checks here.
+         *
+         * If the extension matches a defined "primary" extension, then search for
+         * and add secondary representations.
+         *
+         * If the file is not the primary but has a name that matches the primary then
+         * a SkipIngestException is thrown, which causes the file to be skipped.
+         *
+         */
+        for (RepresentationMatcher repr: opts.representations) {
+            if (assetBuilder.getExtension().equals(repr.primary)) {
+
+                for (File file : new File(assetBuilder.getDirectory()).listFiles()) {
+                    // ignore self
+                    if (file.equals(assetBuilder.getFile())) {
+                        continue;
+                    }
+
+                    String prefix = assetBuilder.getBasename() + ".";
+                    if (file.getName().startsWith(prefix)) {
+                        if (repr.isSecondary(file)) {
+                            logger.info("Adding secondary representation {}", file);
+                            SourceSchema secSource = new SourceSchema(file);
+                            try {
+                                secSource.setType(AnalyzeService.Tika.detect(file));
+                            } catch (IOException e) {
+                                logger.warn("unable to determine source type: {}", file, e);
+                            }
+                            assetBuilder.getSource().addRepresentation(secSource);
+                        }
+                    }
+                }
+            }
+            else {
+                // check if the primary exists in the same dir, otherwise we are primary.
+                String primary = assetBuilder.getBasename() + "." + repr.primary;
+                if (new File(assetBuilder.getDirectory() + "/" + primary).exists()) {
+                    throw new SkipIngestException("Path is a secondary source, skipping " + assetBuilder.getAbsolutePath());
+                }
+            }
+        }
+    }
+
+    private void processPathMatches(AssetBuilder assetBuilder) {
 
         /*
          * If they add this ingestor with no options just add the file name
          * which was the old default, and the directory the file is in.
          */
-        if (opts.match.isEmpty()) {
+        if (opts.matchers == null || opts.matchers.isEmpty()) {
             assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
             assetBuilder.addKeywords(1, true, FileUtils.filename(assetBuilder.getDirectory()));
             return;
         }
 
-        for (FilePathMatcher matcher: opts.match) {
+        for (FilePathMatcher matcher: opts.matchers) {
             Matcher m = matcher.getPattern().matcher(assetBuilder.getAbsolutePath());
             if (m.find()) {
 
@@ -71,6 +149,45 @@ public class FilePathIngestor extends IngestProcessor {
         }
     }
 
+    public Options getOpts() {
+        return opts;
+    }
+
+    public FilePathIngestor setOpts(Options opts) {
+        this.opts = opts;
+        return this;
+    }
+
+    public static class RepresentationMatcher {
+        public String primary;
+        public List<String> secondaries;
+
+        public RepresentationMatcher() {
+
+        }
+
+        public RepresentationMatcher(String primary) {
+            this.primary = primary;
+        }
+
+        public boolean isPrimary(File file) {
+            return file.getName().endsWith(primary);
+        }
+
+        public boolean isSecondary(File file) {
+            if (secondaries == null || secondaries.isEmpty()) {
+                return true;
+            }
+            String path = file.getAbsolutePath();
+            for (String suffix: secondaries) {
+                if (path.endsWith(suffix)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     public static class FilePathMatcher {
         public String regex;
         public List<String> attrs;
@@ -86,7 +203,9 @@ public class FilePathIngestor extends IngestProcessor {
         }
     }
 
+
     public static class Options {
-        public List<FilePathMatcher> match = Lists.newArrayList();
+        public List<FilePathMatcher> matchers;
+        public List<RepresentationMatcher> representations;
     }
 }
