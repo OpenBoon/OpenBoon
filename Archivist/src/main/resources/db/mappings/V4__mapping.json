@@ -90,36 +90,6 @@
         }
       }
     },
-    "link": {
-      "_all": {
-        "enabled": false
-      },
-      "dynamic": false,
-      "properties": {
-        "_id": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "direction": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "assetId": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "path": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "attrs": {
-          "dynamic": true,
-          "properties": {
-
-          }
-        }
-      }
-    },
     "asset": {
       "_all": {
         "enabled": false
@@ -152,6 +122,20 @@
                   "index": "not_analyzed"
                 }
               }
+            }
+          }
+        },
+        "links": {
+          "properties": {
+            "inputs": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          },
+          "properties": {
+            "outputs": {
+              "type": "string",
+              "index": "not_analyzed"
             }
           }
         },
