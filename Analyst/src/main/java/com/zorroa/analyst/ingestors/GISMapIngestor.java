@@ -59,7 +59,6 @@ public class GISMapIngestor extends IngestProcessor {
             for (int i=0; i<TFW_FIELDS.length; i++) {
                 assetBuilder.setAttr(attr(namespace, TFW_FIELDS[i]), Double.valueOf(lines.get(i).trim()));
             }
-            assetBuilder.getSource().addToRelatedPaths(tfwFile);
 
             if (lines.size() > 5 && lines.get(4) != null && lines.get(5) != null) {
                 Point2D.Double location = new Point2D.Double(Double.valueOf(lines.get(4).trim()), Double.valueOf(lines.get(5).trim()));
@@ -126,8 +125,6 @@ public class GISMapIngestor extends IngestProcessor {
                     }
                 }
             }
-
-            assetBuilder.getSource().addToRelatedPaths(xmlFile);
 
         } catch (Exception e) {
             logger.warn("Failed to open ArcGIS format file: {}", xmlFile, e);
