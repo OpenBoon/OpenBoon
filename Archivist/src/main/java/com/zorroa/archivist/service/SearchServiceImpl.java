@@ -334,7 +334,7 @@ public class SearchServiceImpl implements SearchService {
                 }
                 fields.add(String.join("", fieldName, key));
             } else {
-                getList(result, String.join(fieldName, key, "."), item);
+                getList(result, String.join("", fieldName, key, "."), item);
             }
         }
     }
