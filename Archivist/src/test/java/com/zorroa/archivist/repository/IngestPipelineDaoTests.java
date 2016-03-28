@@ -40,6 +40,8 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
 
     @Test
     public void getAll() {
+        int count = ingestPipelineDao.getAll().size();
+
         for (int i = 0; i <= 10; i++) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("default_" + i);
@@ -48,7 +50,7 @@ public class IngestPipelineDaoTests extends ArchivistApplicationTests {
                             Maps.newHashMap()));
             ingestPipelineDao.create(builder);
         }
-        assertEquals(13, ingestPipelineDao.getAll().size());
+        assertEquals(count + 11, ingestPipelineDao.getAll().size());
     }
 
     @Test
