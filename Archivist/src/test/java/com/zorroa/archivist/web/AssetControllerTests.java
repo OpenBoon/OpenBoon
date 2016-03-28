@@ -30,6 +30,26 @@ public class AssetControllerTests extends MockMvcTest {
     @Autowired
     AssetDao assetDao;
 
+
+    @Test
+    public void testGetFields() throws Exception {
+
+        MockHttpSession session = admin();
+        addTestAssets("standard");
+
+        MvcResult result = mvc.perform(get("/api/v1/assets/_fields")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Set<String>> fields = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Set<String>>>() {});
+        assertTrue(fields.get("date").size() > 0);
+        assertTrue(fields.get("string").size() > 0);
+        assertTrue(fields.get("integer").size() > 0);
+    }
+
     @Test
     public void testSearchV2() throws Exception {
 

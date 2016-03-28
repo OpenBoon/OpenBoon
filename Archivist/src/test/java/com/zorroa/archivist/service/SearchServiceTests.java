@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 10/30/15.
@@ -173,10 +176,10 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         AssetBuilder assetBuilder1 = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
         assetBuilder1.addKeywords(1, true, assetBuilder1.getFilename());
-        assetBuilder1.getSource().setFileSize(1000);
+        assetBuilder1.getSource().setFileSize(1000L);
         AssetBuilder assetBuilder2 = new AssetBuilder(getStaticImagePath() + "/new_zealand_wellington_harbour.jpg");
         assetBuilder2.addKeywords(1, true, assetBuilder2.getFilename());
-        assetBuilder2.getSource().setFileSize(1000);
+        assetBuilder2.getSource().setFileSize(1000L);
 
         assetDao.upsert(assetBuilder1);
         assetDao.upsert(assetBuilder2);
@@ -261,5 +264,13 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
         assertEquals(1, searchService.search(
                 new AssetSearch("zoolandar", 0.0).setFuzzy(true)).getHits().getTotalHits());
+    }
+
+    @Test
+    public void getFields() {
+        Map<String, Set<String>> fields = searchService.getFields();
+        assertTrue(fields.get("date").size() > 0);
+        assertTrue(fields.get("string").size() > 0);
+        assertTrue(fields.get("integer").size() > 0);
     }
 }

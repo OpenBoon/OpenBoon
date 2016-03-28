@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
@@ -92,6 +93,11 @@ public class AssetController {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchResponse response = searchService.search(search);
         HttpUtils.writeElasticResponse(response, httpResponse);
+    }
+
+    @RequestMapping(value="/api/v1/assets/_fields", method=RequestMethod.GET)
+    public Map<String, Set<String>> getFields() throws IOException {
+        return searchService.getFields();
     }
 
     @RequestMapping(value="/api/v2/assets/_aggregate", method=RequestMethod.POST)

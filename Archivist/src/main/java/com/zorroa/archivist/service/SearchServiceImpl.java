@@ -1,9 +1,11 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.exception.ArchivistException;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
@@ -14,6 +16,9 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.cluster.ClusterState;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
@@ -26,7 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by chambers on 9/25/15.
@@ -295,5 +303,39 @@ public class SearchServiceImpl implements SearchService {
         }
 
         return filter;
+    }
+
+    @Override
+    public Map<String, Set<String>> getFields() {
+        Map<String, Set<String>> result = Maps.newHashMapWithExpectedSize(16);
+        ClusterState cs = client.admin().cluster().prepareState().setIndices(alias).execute().actionGet().getState();
+        for (String index: cs.getMetaData().concreteAllOpenIndices()) {
+            IndexMetaData imd = cs.getMetaData().index(index);
+            MappingMetaData mdd = imd.mapping("asset");
+            try {
+                getList(result, "", mdd.getSourceAsMap());
+            } catch (IOException e) {
+                throw new ArchivistException(e);
+            }
+        }
+        return result;
+    }
+
+    private static void getList(Map<String, Set<String>> result, String fieldName, Map<String, Object> mapProperties) {
+        Map<String, Object> map = (Map<String, Object>) mapProperties.get("properties");
+        for (String key : map.keySet()) {
+            Map<String, Object> item = (Map<String, Object>) map.get(key);
+            if (item.containsKey("type")) {
+                String type = (String) item.get("type");
+                Set<String> fields = result.get(type);
+                if (fields == null) {
+                    fields = new TreeSet<>();
+                    result.put(type, fields);
+                }
+                fields.add(String.join("", fieldName, key));
+            } else {
+                getList(result, String.join(fieldName, key, "."), item);
+            }
+        }
     }
 }
