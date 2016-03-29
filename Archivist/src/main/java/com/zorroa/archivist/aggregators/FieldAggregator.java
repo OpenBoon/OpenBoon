@@ -82,10 +82,12 @@ public class FieldAggregator extends Aggregator {
             try {
                 parentFolder = folderService.get(0, fields.get(0));
             } catch (EmptyResultDataAccessException e) {
-                String name = fields.get(0).replaceAll(".raw", "");
-                int lastDotIdx = name.lastIndexOf(".");
-                if (lastDotIdx > 0) {
-                    name = name.substring(lastDotIdx + 1);
+                if (name == null) {
+                    name = fields.get(0).replaceAll(".raw", "");
+                    int lastDotIdx = name.lastIndexOf(".");
+                    if (lastDotIdx > 0) {
+                        name = name.substring(lastDotIdx + 1);
+                    }
                 }
                 parentFolder = folderService.create(new FolderBuilder()
                         .setAcl(acl)
