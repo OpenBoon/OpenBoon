@@ -82,6 +82,8 @@ public class FieldAggregator extends Aggregator {
             try {
                 parentFolder = folderService.get(0, fields.get(0));
             } catch (EmptyResultDataAccessException e) {
+                // If name is null, we are either at the top of the aggregation or the name argument was not provided
+                // In this case we use the field name as name for parentFolder.
                 if (name == null) {
                     name = fields.get(0).replaceAll(".raw", "");
                     int lastDotIdx = name.lastIndexOf(".");
