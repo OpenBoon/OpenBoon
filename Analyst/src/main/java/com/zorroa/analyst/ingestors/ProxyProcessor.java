@@ -1,5 +1,8 @@
 package com.zorroa.analyst.ingestors;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Ints;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
@@ -13,9 +16,6 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.filters.Flip;
 import net.coobird.thumbnailator.filters.ImageFilter;
 import net.coobird.thumbnailator.resizers.configurations.Rendering;
-import org.elasticsearch.common.collect.ImmutableList;
-import org.elasticsearch.common.collect.Lists;
-import org.elasticsearch.common.primitives.Ints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

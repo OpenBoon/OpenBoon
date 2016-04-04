@@ -19,7 +19,6 @@ import com.zorroa.archivist.sdk.schema.IngestSchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
-import org.elasticsearch.indices.IndexMissingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,13 +151,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 continue;
             }
 
-            try {
-                builder.setPreviousVersion(
-                        assetDao.getByPath(builder.getAbsolutePath()));
-            } catch (IndexMissingException e) {
-                eventLogService.log(req, "Ingest error '{}', could not populate previous asset '{}'",
-                        e, e.getMessage(), builder.getAbsolutePath());
-            }
+            /*
+             * Populate the previous version.
+             */
+            builder.setPreviousVersion(
+                    assetDao.getByPath(builder.getAbsolutePath()));
 
             try {
 

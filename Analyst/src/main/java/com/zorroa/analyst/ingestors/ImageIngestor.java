@@ -97,7 +97,8 @@ public class ImageIngestor extends IngestProcessor {
             extractExifLocation(asset, metadata);   // Find the best location value and promote to top-level
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
-                    "Unable to extract EXIF metadata from " + asset.getAbsolutePath(), e, getClass());
+                    "Unable to extract EXIF metadata from "
+                            + asset.getAbsolutePath() + "," + e.getMessage(), e, getClass());
         }
     }
     /**
@@ -225,7 +226,7 @@ public class ImageIngestor extends IngestProcessor {
                 // Always save the original format, and also save a description if it
                 // has some useful additional information for searching & display.
                 String description = tag.getDescription();
-                String descriptionKey = key + ".description";
+                String descriptionKey = key + "_description";
                 if (description != null && description.equals(directory.getString(tag.getTagType()))) {
                     description = null;
                 }

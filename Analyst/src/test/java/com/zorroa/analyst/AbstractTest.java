@@ -5,6 +5,7 @@ import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import org.apache.commons.io.FileUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -52,8 +53,15 @@ public abstract class AbstractTest {
     }
 
     @Before
-    public void __init() {
+    public void __init() throws IOException {
         client.admin().indices().prepareDelete("_all").get();
+        client.admin().indices().prepareCreate("archivist").get();
+
+        /*
+         * Remove the storage directory
+         */
+        File file = new File(applicationProperties.getString("analyst.filesystem.root"));
+        FileUtils.deleteDirectory(file);
     }
 
     public IngestProcessor initIngestProcessor(IngestProcessor p) {

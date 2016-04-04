@@ -33,7 +33,7 @@ public class AnalystServiceTests extends AbstractTest {
         req.addToAssets(new File("src/test/resources/images/toucan.jpg"));
 
         AnalyzeResult result = analyzeService.analyze(req);
-        assertEquals(result.created, 1);
+        assertEquals(1, result.created);
     }
 
     @Test
