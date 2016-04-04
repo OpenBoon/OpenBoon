@@ -95,7 +95,7 @@ public class FieldAggregator extends Aggregator {
 
         // Create each folder and aggregate over the next level
         for (Terms.Bucket fieldBucket: fieldBuckets) {
-            String name = fieldBucket.getKey();
+            String name = (String) fieldBucket.getKey();
             List<Object> childTerms = new ArrayList<Object>(parentTerms);
             childTerms.add(name);
             Folder fieldFolder = null;

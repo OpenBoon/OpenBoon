@@ -97,7 +97,7 @@ public class DateAggregator extends Aggregator {
             Collection<Terms.Bucket> monthBuckets = monthTerms.getBuckets();
             for (Terms.Bucket monthBucket: monthBuckets) {
                 try {
-                    Date date = new SimpleDateFormat("MMMM").parse(monthBucket.getKey());
+                    Date date = new SimpleDateFormat("MMMM").parse((String)monthBucket.getKey());
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     int month = cal.get(Calendar.MONTH);
@@ -142,9 +142,17 @@ public class DateAggregator extends Aggregator {
         try {
             folderService.get(parentFolder.getId(), name);
         } catch (EmptyResultDataAccessException e) {
-            String min = Integer.toString(year) + "-" + Integer.toString(month + 1) + "-01";
-            String max = month == 11 ? Integer.toString(year+1) + "-01-01" :
-                    Integer.toString(year) + "-" + Integer.toString(month + 2) + "-01";
+
+            String min = String.format("%d-%02d-01", year, month+1);
+            String max;
+
+            if (month == 11) {
+                max = String.format("%d-01-01", year +1);
+            }
+            else {
+                max = String.format("%d-%02d-01", year, month + 2);
+            }
+
             AssetFieldRange fieldRange = new AssetFieldRange().setField(dateField)
                     .setMin(min).setMax(max);
             AssetFilter monthFilter = new AssetFilter().setFieldRange(fieldRange);

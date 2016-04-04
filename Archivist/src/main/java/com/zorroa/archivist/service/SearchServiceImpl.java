@@ -22,6 +22,8 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
@@ -142,6 +144,7 @@ public class SearchServiceImpl implements SearchService {
         SearchRequestBuilder aggregation = client.prepareSearch(alias)
                 .setTypes("asset")
                 .setQuery(getQuery(builder.getSearch()))
+
                 .setAggregations(builder.getAggregations())
                 .setSearchType(SearchType.COUNT);
         return aggregation;
@@ -159,9 +162,11 @@ public class SearchServiceImpl implements SearchService {
         }
 
         AssetFilter filter = search.getFilter();
-        query.must(folderQuery(filter));
-
-        return QueryBuilders.filteredQuery(query, getFilter(filter));
+        if (filter.getFolderIds() != null) {
+            query.must(folderQuery(filter));
+        }
+        query.filter(getFilter(filter));
+        return query;
     }
 
     // Combine the folder search and filter using SHOULD.
@@ -242,8 +247,8 @@ public class SearchServiceImpl implements SearchService {
      * @param builder
      * @return
      */
-    private FilterBuilder getFilter(AssetFilter builder) {
-        AndFilterBuilder filter = FilterBuilders.andFilter();
+    private QueryBuilder getFilter(AssetFilter builder) {
+        AndQueryBuilder filter =  QueryBuilders.andQuery();
         filter.add(SecurityUtils.getPermissionsFilter());
 
         if (builder == null) {
@@ -251,7 +256,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (builder.getAssetIds() != null) {
-            FilterBuilder assetsFilterBuilder = FilterBuilders.termsFilter("_id", builder.getAssetIds());
+            QueryBuilder assetsFilterBuilder = QueryBuilders.termsQuery("_id", builder.getAssetIds());
             filter.add(assetsFilterBuilder);
         }
 
@@ -261,32 +266,32 @@ public class SearchServiceImpl implements SearchService {
              * the first ingest ID along with the pipeline, so the value is an embedded object.  Thus, how
              * they are queried is not the same.
              */
-            FilterBuilder ingestsFilterBuilder = FilterBuilders.termsFilter("imports.id", builder.getIngestIds());
+            QueryBuilder ingestsFilterBuilder = QueryBuilders.termsQuery("imports.id", builder.getIngestIds());
             filter.add(ingestsFilterBuilder);
         }
 
         if (builder.getExportIds() != null) {
-            FilterBuilder exportsFilterBuilder = FilterBuilders.termsFilter("exports", builder.getExportIds());
+            QueryBuilder exportsFilterBuilder = QueryBuilders.termsQuery("exports", builder.getExportIds());
             filter.add(exportsFilterBuilder);
         }
 
         if (builder.getExistFields() != null) {
             for (String term : builder.getExistFields()) {
-                FilterBuilder existsFilterBuilder = FilterBuilders.existsFilter(term);
+                QueryBuilder existsFilterBuilder = QueryBuilders.existsQuery(term);
                 filter.add(existsFilterBuilder);
             }
         }
 
         if (builder.getFieldTerms() != null) {
             for (AssetFieldTerms fieldTerms : builder.getFieldTerms()) {
-                FilterBuilder termsFilterBuilder = FilterBuilders.termsFilter(fieldTerms.getField(), fieldTerms.getTerms());
+                QueryBuilder termsFilterBuilder = QueryBuilders.termsQuery(fieldTerms.getField(), fieldTerms.getTerms());
                 filter.add(termsFilterBuilder);
             }
         }
 
         if (builder.getFieldRanges() != null) {
             for (AssetFieldRange fieldRange : builder.getFieldRanges()) {
-                FilterBuilder rangeFilterBuilder = FilterBuilders.rangeFilter(fieldRange.getField())
+                QueryBuilder rangeFilterBuilder = QueryBuilders.rangeQuery(fieldRange.getField())
                         .gte(fieldRange.getMin())
                         .lt(fieldRange.getMax());
                 filter.add(rangeFilterBuilder);
@@ -295,9 +300,8 @@ public class SearchServiceImpl implements SearchService {
 
         if (builder.getScripts() != null) {
             for (AssetScript script : builder.getScripts()) {
-                FilterBuilder scriptFilterBuilder = FilterBuilders.scriptFilter(script.getScript())
-                        .lang("native")
-                        .params(script.getParams());
+                QueryBuilder scriptFilterBuilder = QueryBuilders.scriptQuery(new Script(
+                        script.getScript(), ScriptService.ScriptType.INLINE, "native", script.getParams()));
                 filter.add(scriptFilterBuilder);
             }
         }

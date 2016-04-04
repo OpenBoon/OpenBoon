@@ -54,7 +54,7 @@
         },
         "message": {
           "type": "string",
-          "index_analyzer": "standard",
+          "analyzer": "standard",
           "search_analyzer": "simple"
         },
         "path": {

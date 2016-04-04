@@ -1,13 +1,13 @@
 package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.common.Preconditions;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

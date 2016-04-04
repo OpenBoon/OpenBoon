@@ -95,10 +95,10 @@ public class SecurityUtils {
         return result;
     }
 
-    public static FilterBuilder getPermissionsFilter() {
-        OrFilterBuilder result = FilterBuilders.orFilter();
-        MissingFilterBuilder part1 = FilterBuilders.missingFilter("permissions.search");
-        TermsFilterBuilder part2 = FilterBuilders.termsFilter("permissions.search",
+    public static QueryBuilder getPermissionsFilter() {
+        OrQueryBuilder result = QueryBuilders.orQuery();
+        MissingQueryBuilder part1 = QueryBuilders.missingQuery("permissions.search");
+        TermsQueryBuilder part2 = QueryBuilders.termsQuery("permissions.search",
                 SecurityUtils.getPermissionIds());
 
         result.add(part1);

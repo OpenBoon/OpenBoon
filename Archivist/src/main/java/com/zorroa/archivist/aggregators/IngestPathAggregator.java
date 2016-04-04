@@ -82,7 +82,7 @@ public class IngestPathAggregator extends Aggregator {
         Collection<Terms.Bucket> pathBuckets = pathTerms.getBuckets();
         for (Terms.Bucket pathBucket: pathBuckets) {
 
-            String folderPath = pathBucket.getKey();
+            String folderPath = (String) pathBucket.getKey();
 
             /*
              * If the path is null, that means its before the aggregation path.

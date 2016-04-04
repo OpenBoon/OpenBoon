@@ -1,11 +1,11 @@
 package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.sdk.domain.Session;
 import com.zorroa.archivist.sdk.domain.User;
-import org.elasticsearch.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

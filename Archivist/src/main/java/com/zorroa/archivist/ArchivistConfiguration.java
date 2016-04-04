@@ -1,11 +1,14 @@
 package com.zorroa.archivist;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.RestControllerAdvice;
+import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
+import com.zorroa.common.elastic.ZorroaNode;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.collect.Lists;
-import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
@@ -25,8 +28,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass=true)
@@ -83,33 +84,28 @@ public class ArchivistConfiguration {
     @Bean
     public Client elastic() throws IOException {
 
-        org.elasticsearch.common.settings.ImmutableSettings.Builder builder =
-                ImmutableSettings.settingsBuilder()
+        org.elasticsearch.common.settings.Settings.Builder builder =
+                Settings.settingsBuilder()
                 .put("path.data", properties.getString("archivist.path.index"))
+                .put("path.home", properties.getString("archivist.path.home"))
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
-                .put("script.native.archivistDate.type", "com.zorroa.common.elastic.ArchivistDateScriptFactory")
-                .put("script.indexed", true)
-                .put("script.update", true)
                 .put("client.transport.sniff", true)
                 .put("transport.tcp.port", properties.getInt("zorroa.common.index.port"))
-                .put("script.engine.groovy.indexed.update", true)
                 .put("discovery.zen.ping.multicast.enabled", false)
                 .put("discovery.zen.fd.ping_timeout", "3s")
-                .put("discovery.zen.fd.ping_retries", 10);
+                .put("discovery.zen.fd.ping_retries", 10)
+                .put("script.engine.groovy.indexed.update", true)
+                .put("node.data", true);
 
         if (unittest) {
             builder.put("index.refresh_interval", "1s");
             builder.put("index.translog.disable_flush", true);
-
+            builder.put("node.local", true);
         }
 
-        Node node = nodeBuilder()
-                .data(true)
-                .local(unittest)
-                .settings(builder.build())
-                .node();
-
+        Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
+        node.start();
         return node.client();
     }
 

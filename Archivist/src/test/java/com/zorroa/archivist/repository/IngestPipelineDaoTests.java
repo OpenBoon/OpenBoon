@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.TestAggregator;
 import com.zorroa.archivist.TestIngestor;
@@ -8,7 +9,6 @@ import com.zorroa.archivist.sdk.domain.IngestPipeline;
 import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import org.elasticsearch.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -16,7 +16,6 @@ import com.zorroa.common.service.EventLogService;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.snapshots.SnapshotInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -135,9 +134,9 @@ public abstract class ArchivistApplicationTests {
         this.jdbc = new JdbcTemplate(dataSource);
     }
 
-    private ImmutableList<SnapshotInfo> getSnapshotInfos() {
+    private List<SnapshotInfo> getSnapshotInfos() {
         GetSnapshotsRequestBuilder builder =
-                new GetSnapshotsRequestBuilder(client.admin().cluster());
+            client.admin().cluster().prepareGetSnapshots(snapshotRepoName);
         builder.setRepository(snapshotRepoName);
         GetSnapshotsResponse getSnapshotsResponse = builder.execute().actionGet();
         return getSnapshotsResponse.getSnapshots();

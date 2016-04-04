@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.collect.Lists;
 import com.zorroa.archivist.sdk.domain.EventLogSearch;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -11,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * The event log is a temporary/rotating log of events which are time sensitive.
@@ -61,27 +58,27 @@ public class EventLogDaoImpl implements EventLogDao {
         return QueryBuilders.filteredQuery(query, getFilter(search));
     }
 
-    public FilterBuilder getFilter(EventLogSearch search) {
-        List<FilterBuilder> filters = Lists.newArrayList();
+    public QueryBuilder getFilter(EventLogSearch search) {
+        AndQueryBuilder result = QueryBuilders.andQuery();
 
         if (search.getIds() != null) {
-            filters.add(FilterBuilders.termsFilter("id", search.getIds()));
+            result.add(QueryBuilders.termsQuery("id", search.getIds()));
         }
 
         if (search.getPath() != null) {
-            filters.add(FilterBuilders.termFilter("path", search.getPath()));
+            result.add(QueryBuilders.termQuery("path", search.getPath()));
         }
 
         if (search.getTags() != null) {
-            filters.add(FilterBuilders.termsFilter("tags", search.getTags()));
+            result.add(QueryBuilders.termsQuery("tags", search.getTags()));
         }
 
         if (search.getTypes() != null) {
-            filters.add(FilterBuilders.termsFilter("type", search.getTypes()));
+            result.add(QueryBuilders.termsQuery("type", search.getTypes()));
         }
 
         if (search.getAfterTime() > -1 || search.getBeforeTime() > -1) {
-            RangeFilterBuilder range = FilterBuilders.rangeFilter("timestamp");
+            RangeQueryBuilder range = QueryBuilders.rangeQuery("timestamp");
             if (search.getAfterTime() > -1) {
                 range.gte(search.getAfterTime());
             }
@@ -89,9 +86,9 @@ public class EventLogDaoImpl implements EventLogDao {
             if (search.getBeforeTime() > -1) {
                 range.lt(search.getBeforeTime());
             }
-            filters.add(range);
+            result.add(range);
         }
 
-        return FilterBuilders.andFilter(filters.toArray(new FilterBuilder[] {}));
+        return result;
     }
 }

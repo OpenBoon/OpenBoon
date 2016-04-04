@@ -50,7 +50,7 @@
   },
   "mappings": {
     "note": {
-      "dynamic": false,
+      "dynamic": true,
       "_all": {
         "enabled": true
       },
@@ -100,7 +100,6 @@
       },
       "properties": {
         "_id": {
-          "store": true,
           "index": "not_analyzed",
           "type": "string"
         },
@@ -109,7 +108,7 @@
           "properties": {
             "suggest": {
               "type": "completion",
-              "index_analyzer": "simple",
+              "analyzer": "simple",
               "search_analyzer": "simple",
               "payloads": false
             },
@@ -145,6 +144,10 @@
         },
         "source": {
           "properties": {
+            "date": {
+              "type": "date",
+              "index": "not_analyzed"
+            },
             "directory": {
               "type": "string",
               "index": "analyzed",
@@ -155,7 +158,7 @@
                 },
                 "dir": {
                   "type": "string",
-                  "index_analyzer": "path_analyzer"
+                  "analyzer": "path_analyzer"
                 }
               }
             },
@@ -169,7 +172,7 @@
                 },
                 "dir": {
                   "type": "string",
-                  "index_analyzer": "path_analyzer"
+                  "analyzer": "path_analyzer"
                 }
               }
             }

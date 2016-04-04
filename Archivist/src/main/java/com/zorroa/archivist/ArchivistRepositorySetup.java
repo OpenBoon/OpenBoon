@@ -2,6 +2,7 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.ByteStreams;
 import com.zorroa.archivist.aggregators.DateAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.sdk.domain.Ingest;
@@ -14,8 +15,6 @@ import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.MigrationService;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.io.ByteStreams;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,7 +147,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         Map<String, Object> script1 = ImmutableMap.of(
             "script", "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } " +
                         "else { ctx._source.exports += exportId; ctx._source.exports = ctx._source.exports.unique(); }",
-            "params", "exportId");
+            "params", ImmutableMap.of("exportId", "exportId"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
@@ -159,7 +158,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         Map<String, Object> script2 = ImmutableMap.of(
                 "script", "if (ctx._source.folders == null ) { ctx._source.folders = [folderId] } else " +
                         "{ ctx._source.folders += folderId; ctx._source.folders = ctx._source.folders.unique(); }",
-                "params", "folderId");
+                "params", ImmutableMap.of("folderId", "folderId"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
@@ -169,7 +168,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
         Map<String, Object> script3 = ImmutableMap.of(
                 "script", "if (ctx._source.folders != null ) { ctx._source.folders.removeIf( {f -> f == folderId} )}",
-                "params", "folderId");
+                "params", ImmutableMap.of("folderId", "folderId"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
@@ -181,16 +180,15 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     private void createSnapshotRepository() {
         logger.info("Creating snapshot repository \"" + snapshotRepoName + "\" in \"" + snapshotPath + "\"");
         // Later we can add support for S3 buckets or HDFS backups
-        Settings settings = ImmutableSettings.builder()
+        Settings settings = Settings.builder()
                 .put("location", snapshotPath)
                 .put("compress", true)
                 .put("max_snapshot_bytes_per_sec", "50mb")
                 .put("max_restore_bytes_per_sec", "50mb")
                 .build();
         PutRepositoryRequestBuilder builder =
-                new PutRepositoryRequestBuilder(client.admin().cluster());
-        builder.setName(snapshotRepoName)
-                .setType("fs")
+                client.admin().cluster().preparePutRepository(snapshotRepoName);
+        builder.setType("fs")
                 .setSettings(settings)
                 .execute().actionGet();
     }

@@ -32,8 +32,7 @@ public class SnapshotDaoImpl extends AbstractElasticDao implements SnapshotDao {
 
     private Boolean snapshotExists(String name) {
         GetSnapshotsRequestBuilder builder =
-                new GetSnapshotsRequestBuilder(client.admin().cluster());
-        builder.setRepository(snapshotRepoName);
+                client.admin().cluster().prepareGetSnapshots(snapshotRepoName);
         GetSnapshotsResponse getSnapshotsResponse = builder.execute().actionGet();
         List<SnapshotInfo> snapshots = getSnapshotsResponse.getSnapshots();
         for (SnapshotInfo snapshot : snapshots) {
@@ -61,9 +60,8 @@ public class SnapshotDaoImpl extends AbstractElasticDao implements SnapshotDao {
             return null;
         }
 
-        CreateSnapshotRequestBuilder requestBuilder = new CreateSnapshotRequestBuilder(client.admin().cluster());
-        requestBuilder.setRepository(snapshotRepoName)
-                .setSnapshot(name);
+        CreateSnapshotRequestBuilder requestBuilder =
+                client.admin().cluster().prepareCreateSnapshot(snapshotRepoName, name);
         requestBuilder.execute().actionGet();
         Snapshot snapshot = get(name);
         return snapshot;
@@ -82,8 +80,7 @@ public class SnapshotDaoImpl extends AbstractElasticDao implements SnapshotDao {
 
     private List<SnapshotInfo> getAllSnapshotInfos() {
         GetSnapshotsRequestBuilder builder =
-                new GetSnapshotsRequestBuilder(client.admin().cluster());
-        builder.setRepository(snapshotRepoName);
+                client.admin().cluster().prepareGetSnapshots(snapshotRepoName);
         GetSnapshotsResponse getSnapshotsResponse = builder.execute().actionGet();
         return getSnapshotsResponse.getSnapshots();
     }
@@ -123,9 +120,8 @@ public class SnapshotDaoImpl extends AbstractElasticDao implements SnapshotDao {
 
     @Override
     public boolean restore(Snapshot snapshot, SnapshotRestoreBuilder restore) {
-        RestoreSnapshotRequestBuilder builder = new RestoreSnapshotRequestBuilder(client.admin().cluster());
-        builder.setRepository(snapshotRepoName)
-                .setSnapshot(snapshot.getName());
+        RestoreSnapshotRequestBuilder builder =
+                client.admin().cluster().prepareRestoreSnapshot(snapshotRepoName, snapshot.getName());
         if (restore.getIndices() != null) {
             builder.setIndices(restore.getIndices());
         }
@@ -141,8 +137,8 @@ public class SnapshotDaoImpl extends AbstractElasticDao implements SnapshotDao {
 
     @Override
     public boolean delete(Snapshot snapshot) {
-        DeleteSnapshotRequestBuilder builder = new DeleteSnapshotRequestBuilder(client.admin().cluster());
-        builder.setRepository(snapshotRepoName).setSnapshot(snapshot.getName());
+        DeleteSnapshotRequestBuilder builder =
+                client.admin().cluster().prepareDeleteSnapshot(snapshotRepoName, snapshot.getName());
         DeleteSnapshotResponse response = builder.get();
         return response.isAcknowledged();
     }
