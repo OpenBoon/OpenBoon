@@ -11,4 +11,9 @@ public class ArchivistDateScriptFactory implements NativeScriptFactory {
     public ExecutableScript newScript(@Nullable Map<String, Object> params) {
         return new ArchivistDateScript(params);
     }
+
+    @Override
+    public boolean needsScores() {
+        return false;
+    }
 }

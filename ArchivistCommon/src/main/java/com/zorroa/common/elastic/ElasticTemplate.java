@@ -53,7 +53,7 @@ public class ElasticTemplate {
     }
 
     public <T> List<T> query(JsonRowMapper<T> mapper) {
-        final SearchResponse r = new SearchRequestBuilder(client)
+        final SearchResponse r = client.prepareSearch(index)
             .setQuery(QueryBuilders.matchAllQuery())
             .setTypes(type)
             .setIndices(index)

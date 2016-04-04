@@ -3,6 +3,7 @@ package com.zorroa.common.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.*;
@@ -15,8 +16,8 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 
 import java.util.List;
@@ -143,9 +144,9 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public void addToExport(Asset asset, Export export) {
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setScript("asset_append_export",
-                ScriptService.ScriptType.INDEXED);
-        updateBuilder.addScriptParam("exportId", export.getId());
+        updateBuilder.setScript(new Script("asset_append_export",
+                ScriptService.ScriptType.INDEXED, "groovy",
+                ImmutableMap.of("exportId", export.getId())));
         updateBuilder.setRefresh(true).get();
     }
 
@@ -156,9 +157,9 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assetIds) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
-            updateBuilder.setScript("asset_append_folder",
-                    ScriptService.ScriptType.INDEXED);
-            updateBuilder.addScriptParam("folderId", folder.getId());
+            updateBuilder.setScript(new Script("asset_append_folder",
+                    ScriptService.ScriptType.INDEXED, "groovy",
+                    ImmutableMap.of("folderId", folder.getId())));
             bulkRequest.add(updateBuilder);
         }
 
@@ -173,15 +174,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public int removeFromFolder(Folder folder, List<String> assetIds) {
-
         int result = 0;
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assetIds) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
-            updateBuilder.setScript("asset_remove_folder",
-                    ScriptService.ScriptType.INDEXED);
-            updateBuilder.addScriptParam("folderId", folder.getId());
+            updateBuilder.setScript(new Script("asset_remove_folder",
+                    ScriptService.ScriptType.INDEXED, "groovy",
+                    ImmutableMap.of("folderId", folder.getId())));
             bulkRequest.add(updateBuilder);
         }
 
@@ -249,7 +249,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         long count = client.prepareCount(alias)
                 .setQuery(QueryBuilders.filteredQuery(
                         QueryBuilders.termQuery("source.path.raw", path),
-                        FilterBuilders.rangeFilter("_timestamp").gt(afterTime)))
+                        QueryBuilders.rangeQuery("_timestamp").gt(afterTime)))
                 .get()
                 .getCount();
         return count > 0;
