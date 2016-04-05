@@ -43,6 +43,11 @@ public class AssetBuilder extends Document {
     private PermissionSchema permissions;
 
     /**
+     * Describes relationships between assets.
+     */
+    private LinkSchema links;
+
+    /**
      * An fileinput stream that can be reset.  Much of the Java image manipulation or
      * metadata APIs take an InputStream as an argument, but in general you can't go
      * backwards with InputStreams.
@@ -97,6 +102,9 @@ public class AssetBuilder extends Document {
 
         permissions = new PermissionSchema();
         setAttr("permissions", permissions);
+
+        links = new LinkSchema();
+        setAttr("links", links);
     }
 
     public AssetBuilder(String file) {
@@ -119,6 +127,10 @@ public class AssetBuilder extends Document {
 
     public KeywordsSchema getKeywords() {
         return keywords;
+    }
+
+    public LinkSchema getLinks() {
+        return links;
     }
 
     /**

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sun.xml.internal.ws.util.StringUtils;
 import com.zorroa.archivist.sdk.schema.JsonAnyRemover;
 import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.archivist.sdk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,7 +91,7 @@ public class Document {
         String key = Attr.name(attr);
 
         try {
-            current.getClass().getMethod("addTo"+ StringUtils.capitalize(key), value.getClass()).invoke(current, value);
+            current.getClass().getMethod("addTo"+ StringUtil.capitalize(key), value.getClass()).invoke(current, value);
         }
         catch (Exception e) {
             /**
