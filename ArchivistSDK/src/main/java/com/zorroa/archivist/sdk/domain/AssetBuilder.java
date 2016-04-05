@@ -302,7 +302,10 @@ public class AssetBuilder extends Document {
             catch (Exception ignore) {
 
             }
+            inputStream = null;
         }
+
+        this.image = null;
     }
 
     @Override
