@@ -26,7 +26,7 @@ public class FaceIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/faces.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
 
-        Set<String> keywords = asset.getAttr("keywords:face");
+        Set<String> keywords = asset.getAttr("keywords.face");
         assertEquals(3, keywords.size());
         assertTrue(keywords.contains("face"));
         assertTrue(keywords.contains("face1"));

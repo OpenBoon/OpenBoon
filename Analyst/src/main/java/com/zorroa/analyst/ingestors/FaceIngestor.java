@@ -135,7 +135,7 @@ public class FaceIngestor extends IngestProcessor {
                 // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
                 // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
                 keywords.add("face" + confidence);
-                asset.setAttr("keywords:face", keywords);
+                asset.setAttr("keywords.face", keywords);
             }
         } finally {
             try {

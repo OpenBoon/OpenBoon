@@ -157,7 +157,7 @@ public class LogoIngestor extends IngestProcessor {
             // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
             // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
             keywords.add("visa" + confidence);
-            asset.setAttr("keywords:logos", keywords);
+            asset.setAttr("keywords.logos", keywords);
 
             if (svgVal.length() > "<svg>".length()) {
                 svgVal.append("</svg>");

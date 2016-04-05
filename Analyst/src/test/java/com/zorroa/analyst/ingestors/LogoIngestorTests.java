@@ -26,7 +26,7 @@ public class LogoIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/visa12.jpg");
         AssetBuilder asset = ingestFile(file, pipeline);
 
-        Set<String> keywords = asset.getAttr("keywords:logos");
+        Set<String> keywords = asset.getAttr("keywords.logos");
         assertEquals(3, keywords.size());
         assertTrue(keywords.contains("visa"));
         assertTrue(keywords.contains("bigvisa"));

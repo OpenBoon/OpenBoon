@@ -93,7 +93,6 @@ public class CaffeIngestor extends IngestProcessor {
             return;
         }
 
-        logger.info("proxy: {}", proxy.getImage());
         Mat mat = OpenCVUtils.convert(proxy.getImage());
 
         // Pass the image matrix to the classifier and get back an array of keywords+confidence
@@ -106,7 +105,7 @@ public class CaffeIngestor extends IngestProcessor {
             keywords.addAll(caffeKeyword.keywords);
             asset.addKeywords(caffeKeyword.confidence, true /*suggest*/, caffeKeyword.keywords);
         }
-        asset.setAttr("keywords:caffe", keywords);
+        asset.setAttr("keywords.caffe", keywords);
     }
 
     @Override

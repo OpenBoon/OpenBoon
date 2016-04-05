@@ -287,7 +287,7 @@ public class RetrosheetIngestor extends IngestProcessor {
                 game.home.nickname,  game.visitor.nickname, date);
 
         if (game.home != null) {
-            putField(asset, "home", game.home.nickname);
+            putField(asset, "home.nickname", game.home.nickname);
             putField(asset, "home.city", game.home.city);
             putField(asset, "home.state", game.home.state);
             if (!game.home.league.equals("NL")) {
@@ -295,7 +295,7 @@ public class RetrosheetIngestor extends IngestProcessor {
             }
         }
         if (game.visitor != null) {
-            putField(asset, "visitor", game.visitor.nickname);
+            putField(asset, "visitor.nickname", game.visitor.nickname);
             putField(asset, "visitor.city", game.visitor.city);
             putField(asset, "visitor.state", game.visitor.state);
             if (!game.visitor.league.equals("NL")) {

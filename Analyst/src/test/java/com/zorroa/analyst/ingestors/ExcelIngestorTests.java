@@ -33,7 +33,7 @@ public class ExcelIngestorTests extends AbstractTest {
         ExcelIngestor excelIngestor = new ExcelIngestor();
         ExcelIngestor.RowMapping rowMapping1 = new ExcelIngestor.RowMapping();
         rowMapping1.fileName = "Data_Listing-Caswell.xlsx";
-        rowMapping1.assetField = "petrol:wellName";
+        rowMapping1.assetField = "petrol.wellName";
         rowMapping1.sheetName = "WCR - Data Listing";
         rowMapping1.matchFunction = matchFunction;
         rowMapping1.matchFilters = Arrays.asList(ExcelIngestor.MatchFilter.toLower);
@@ -43,7 +43,7 @@ public class ExcelIngestorTests extends AbstractTest {
         rowMapping1.keywordColumns = rowMapping1.outputColumns;
         ExcelIngestor.RowMapping rowMapping2 = new ExcelIngestor.RowMapping();
         rowMapping2.fileName = "Data_Listing-Caswell.xlsx";
-        rowMapping2.assetField = "petrol:wellName";
+        rowMapping2.assetField = "petrol.wellName";
         rowMapping2.sheetName = "Core & Cuttings at GA";
         rowMapping2.matchFunction = matchFunction;
         rowMapping2.matchFilters = Arrays.asList(ExcelIngestor.MatchFilter.toLower);
@@ -58,15 +58,15 @@ public class ExcelIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/toucan.jpg");
         AssetBuilder asset = new AssetBuilder(file.getAbsolutePath());
         asset.getSource().setType("image/" + asset.getExtension());
-        asset.setAttr("petrol:wellName", fieldValue);
+        asset.setAttr("petrol.wellName", fieldValue);
         excelIngestor.process(asset);
-        assertEquals("Apache Northwest Pty Ltd", asset.getAttr("Excel:OPERATOR"));
-        assertEquals("Apache Energy Limited", asset.getAttr("Cuttings:OPERATOR"));
+        assertEquals("Apache Northwest Pty Ltd", asset.getAttr("Excel.OPERATOR"));
+        assertEquals("Apache Energy Limited", asset.getAttr("Cuttings.OPERATOR"));
         Calendar calendar = Calendar.getInstance();
         calendar.set(2009, 9, 11);
-        assertTrue(DateUtils.isSameDay(asset.getAttr("Excel:SPUD_DATE"), calendar.getTime()));
+        assertTrue(DateUtils.isSameDay(asset.getAttr("Excel.SPUD_DATE"), calendar.getTime()));
         calendar.set(2009, 10, 11);
-        assertTrue(DateUtils.isSameDay(asset.getAttr("Excel:RIG_RELEASE_DATE"), calendar.getTime()));
+        assertTrue(DateUtils.isSameDay(asset.getAttr("Excel.RIG_RELEASE_DATE"), calendar.getTime()));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ExcelIngestorTests extends AbstractTest {
         ExcelIngestor excelIngestor = new ExcelIngestor();
         ExcelIngestor.RowMapping rowMapping1 = new ExcelIngestor.RowMapping();
         rowMapping1.fileName = "Data_Listing-Caswell.xlsx";
-        rowMapping1.assetField = "petrol:wellName";
+        rowMapping1.assetField = "petrol.wellName";
         rowMapping1.sheetName = "WCR - Data Listing";
         rowMapping1.matchFunction = ExcelIngestor.MatchFunction.containsField;
         rowMapping1.matchFilters = Arrays.asList(ExcelIngestor.MatchFilter.toLower);
@@ -90,9 +90,9 @@ public class ExcelIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/toucan.jpg");
         AssetBuilder asset = new AssetBuilder(file.getAbsolutePath());
         asset.getSource().setType("image/" + asset.getExtension());
-        asset.setAttr("petrol:wellName", "Arlo 1");
+        asset.setAttr("petrol.wellName", "Arlo 1");
         excelIngestor.process(asset);
-        Point2D.Double p = asset.getAttr("Excel:Location");
+        Point2D.Double p = asset.getAttr("Excel.Location");
         Point2D.Double q = new Point2D.Double(-12.97785444, 123.78593278);
         assertEquals(p, q);
     }
