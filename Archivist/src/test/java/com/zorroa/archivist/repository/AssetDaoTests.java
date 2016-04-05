@@ -73,7 +73,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
 
         assetDao.update(asset.getId(), updateBuilder);
         Asset updatedAsset = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), updatedAsset.getAttr("user:rating"));
+        assertEquals(new Integer(3), updatedAsset.getAttr("user.rating"));
     }
 
     @Test

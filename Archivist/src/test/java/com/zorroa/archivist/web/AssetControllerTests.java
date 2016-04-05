@@ -234,7 +234,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         Asset updated = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), updated.getAttr("user:rating"));
+        assertEquals(new Integer(3), updated.getAttr("user.rating"));
     }
 
 
