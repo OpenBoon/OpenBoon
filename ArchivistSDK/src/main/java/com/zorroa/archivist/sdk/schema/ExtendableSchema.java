@@ -2,6 +2,7 @@ package com.zorroa.archivist.sdk.schema;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ public  class ExtendableSchema<K, V> {
      *
      * @return
      */
+    @JsonIgnore
     public V getDefaultValue() {
         return null;
     }
