@@ -14,12 +14,16 @@ public class AnalyzeRequestEntry {
 
     public AnalyzeRequestEntry() { }
 
-    public AnalyzeRequestEntry(URI uri) {
-        this.uri = uri.toString();
+    public AnalyzeRequestEntry(String uri) {
+        this.uri = uri;
         this.attrs = Maps.newHashMap();
     }
 
-    public AnalyzeRequestEntry set(String key, Object value) {
+    public AnalyzeRequestEntry(URI uri) {
+        this(uri.toString());
+    }
+
+    public AnalyzeRequestEntry setAttr(String key, Object value) {
         if (value == null) {
             return this;
         }
@@ -27,7 +31,18 @@ public class AnalyzeRequestEntry {
         return this;
     }
 
+    public AnalyzeRequestEntry addToAttr(String key, Object value) {
+        if (value == null) {
+            return this;
+        }
+        this.attrs.put("@"+ key, value);
+        return this;
+    }
+
     public boolean isRemote() {
+        if (uri.startsWith("/")) {
+            return false;
+        }
         return !uri.startsWith("file:");
     }
 
