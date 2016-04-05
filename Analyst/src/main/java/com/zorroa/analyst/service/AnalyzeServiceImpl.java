@@ -29,8 +29,10 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -87,11 +89,14 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             ingestSchema.addIngest(req);
         }
 
-        for (AnalyzeRequestEntry entry: req.getAssets()) {
+        Queue<AnalyzeRequestEntry> queue = new LinkedBlockingQueue<>();
+        queue.addAll(req.getAssets());
 
-            logger.info("Analayzing: {}", entry.getUri());
+        while (!queue.isEmpty()) {
+            AnalyzeRequestEntry entry = queue.poll();
+            logger.info("analyzing : {}", entry.getUri());
 
-            URI uri = URI.create(entry.getUri());
+            URI uri = FileUtils.toUri(entry.getUri());
             if (!pipeline.isSupportedFormat(uri.getPath())) {
                 logger.debug("The path {} is not a supported format for this pipeline: {}", uri,
                         pipeline.getSupportedFormats());
@@ -134,7 +139,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
              */
             if (entry.getAttrs() !=  null) {
                 for(Map.Entry<String, Object> attr: entry.getAttrs().entrySet()) {
-                    builder.setAttr(attr.getKey(), attr.getValue());
+                    if (attr.getKey().startsWith("@")) {
+                        builder.addToAttr(attr.getKey().substring(1), attr.getValue());
+                    }
+                    else {
+                        builder.setAttr(attr.getKey(), attr.getValue());
+                    }
                 }
             }
 
@@ -189,8 +199,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
                 if (!skip) {
                     assets.add(builder);
-                }
 
+                    Set<String> derived = builder.getLinks().getDerived();
+                    if (derived != null) {
+                        for (String derivedPath: derived) {
+                            AnalyzeRequestEntry childEntry = new AnalyzeRequestEntry(derivedPath);
+                            childEntry.addToAttr("links:parents", builder.getId().toString());
+                            queue.add(childEntry);
+                        }
+
+                        // clear it out.
+                        builder.getLinks().setDerived(null);
+                    }
+                }
             } catch (UnrecoverableIngestProcessorException e) {
                 eventLogService.log(req, "Unrecoverable ingest error '{}', processing pipeline failed: '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
