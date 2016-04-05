@@ -150,7 +150,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     public String getIpAddress() throws IOException {
 
         String ip = properties.getString("server.address", null);
-        if (ip != null) {
+        if (ip != null && !ip.isEmpty()) {
             return ip;
         }
 
