@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -18,6 +19,14 @@ public class FileUtils {
 
     private static final Pattern URI_PATTERN = Pattern.compile("^\\w+://");
 
+    public static URI toUri(String path) {
+        if (!path.startsWith("/")) {
+            return URI.create(path);
+        }
+        else {
+            return new File(path).toURI();
+        }
+    }
     public static boolean isURI(String path) {
         return URI_PATTERN.matcher(path).find();
     }
