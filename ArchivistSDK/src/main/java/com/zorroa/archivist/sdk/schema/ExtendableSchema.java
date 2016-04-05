@@ -14,7 +14,7 @@ import java.util.Map;
  * are not defined in the subclass.  This allows you to add new fields at will, without recompiling,
  * but without compile time type safety protections.
  */
-public class ExtendableSchema<K, V> {
+public  class ExtendableSchema<K, V> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -22,6 +22,17 @@ public class ExtendableSchema<K, V> {
 
     public ExtendableSchema() {
         this.delegate = Maps.newHashMap();
+    }
+
+    /**
+     * Called by Document class when a new instance of V is necessary to
+     * dynamically build the docuument.  This is usually only needed if
+     * V a type of Collection or Map.
+     *
+     * @return
+     */
+    public V getDefaultValue() {
+        return null;
     }
 
     @JsonAnyRemover

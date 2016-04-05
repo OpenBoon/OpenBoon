@@ -3,7 +3,9 @@ package com.zorroa.archivist.sdk.domain;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.sun.xml.internal.ws.util.StringUtils;
 import com.zorroa.archivist.sdk.schema.JsonAnyRemover;
 import com.zorroa.archivist.sdk.util.Json;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -29,6 +32,11 @@ public class Document {
 
     public void setDocument(Map<String, Object> data) {
         this.document = data;
+    }
+
+    @Override
+    public String toString() {
+        return Json.serializeToString(document);
     }
 
     /**
@@ -69,6 +77,71 @@ public class Document {
     public <T> T getAttr(String attr, TypeReference<T> type) {
         Object current = getContainer(attr, false);
         return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type);
+    }
+
+    /**
+     * Assumes the target attribute is a collection of some sort and tries to add
+     * the given value.
+     *
+     * @param attr
+     * @param value
+     */
+    public void addToAttr(String attr, Object value) {
+        Object current = getContainer(attr, true);
+        String key = Attr.name(attr);
+
+        try {
+            current.getClass().getMethod("addTo"+ StringUtils.capitalize(key), value.getClass()).invoke(current, value);
+        }
+        catch (Exception e) {
+            /**
+             * Handle the JsonAnyGetter case.
+             */
+            for (Method m : current.getClass().getMethods()) {
+                if (m.isAnnotationPresent(JsonAnyGetter.class)) {
+                    try {
+                        Map map = (Map) m.invoke(current);
+                        Collection collection = (Collection)map.get(key);
+                        if (collection == null) {
+                            collection = (Collection) current.getClass().getMethod("getDefaultValue").invoke(current);
+                            map.put(key, collection);
+                        }
+
+                        if (value instanceof Collection) {
+                            collection.addAll((Collection) value);
+                        }
+                        else {
+                            collection.add(value);
+                        }
+                        return;
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("Invalid any getter call: " + key + "," + ex, ex);
+                    }
+                }
+            }
+
+            /**
+             * Handle the case where the object is a standard map.
+             */
+            try {
+                Map map = ((Map) current);
+                Collection collection = (Collection)map.get(key);
+                if (collection == null) {
+                    collection = Lists.newArrayList();
+                    map.put(key, collection);
+                }
+                if (value instanceof Collection) {
+                    collection.addAll((Collection) value);
+                }
+                else {
+                    collection.add(value);
+                }
+            } catch (ClassCastException ex) {
+                logger.info("what", ex);
+                throw new IllegalArgumentException(
+                        "The attribute is not a Collection, " + current.getClass().getName());
+            }
+        }
     }
 
     /**
@@ -194,7 +267,7 @@ public class Document {
                     object.getClass()).getReadMethod().invoke(object);
         } catch (Exception e) {
             /*
-             * If the setter doesn't exist, try to use the any setter.
+             * If the setter doesn't exist, try to use the any getter.
              */
             for (Method m : object.getClass().getMethods()) {
                 if (m.isAnnotationPresent(JsonAnyGetter.class)) {

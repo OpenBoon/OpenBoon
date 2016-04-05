@@ -25,6 +25,10 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
     private Set<String> all = Sets.newHashSet();
     private Set<String> suggest = Sets.newHashSet();
 
+    @Override
+    public Set<String> getDefaultValue() {
+        return Sets.newHashSet();
+    }
 
     /**
      * Add an array of keywords to the highest confidence and suggestion words
@@ -105,38 +109,57 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
     }
 
     /**
-     * A given keywords to suggestion keywords field.
+     * Add given keywords to suggestion keywords.
      *
      * @param keywords
      */
-    public void addSuggestKeywords(String ... keywords) {
+    public void addToSuggest(String ... keywords) {
         suggest.addAll(Arrays.asList(keywords));
     }
 
     /**
-     * A given keywords to suggestion keywords field.
+     * Add given keywords to suggestion keywords.
      *
      * @param keywords
      */
-    public void addSuggest(Collection<String> keywords) {
+    public void addToSuggest(Collection<String> keywords) {
         suggest.addAll(keywords);
-    }
-
-    public void setAll(Set<String> allKeywords) {
-        this.all = allKeywords;
     }
 
     public void setSuggest(Set<String> suggestKeywords) {
         this.suggest = suggestKeywords;
     }
 
+    public Set<String> getSuggest() {
+        return ImmutableSet.copyOf(suggest);
+    }
+
+    public void setAll(Set<String> allKeywords) {
+        this.all = allKeywords;
+    }
+
     public Set<String> getAll() {
         return ImmutableSet.copyOf(all);
     }
 
-    public Set<String> getSuggest() {
-        return ImmutableSet.copyOf(suggest);
+    /**
+     * Add given keywords to all keywords.
+     *
+     * @param keywords
+     */
+    public void addToAll(String ... keywords) {
+        suggest.addAll(Arrays.asList(keywords));
     }
+
+    /**
+     * Add given keywords to all keywords.
+     *
+     * @param keywords
+     */
+    public void addToAll(Collection<String> keywords) {
+        suggest.addAll(keywords);
+    }
+
 
     public static long getBucket(double confidence) {
         return Math.max(1, Math.round(BUCKET_COUNT * (confidence / CONFIDENCE_MAX)));

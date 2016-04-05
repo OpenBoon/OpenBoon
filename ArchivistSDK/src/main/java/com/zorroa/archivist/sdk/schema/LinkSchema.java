@@ -7,35 +7,29 @@ import java.util.Set;
 /**
  * Created by chambers on 3/25/16.
  */
-public class LinkSchema {
+public class LinkSchema extends ExtendableSchema<String, Set<String>> {
 
-    private Set<String> inputs;
-    private Set<String> outputs;
+    private Set<String> parents;
 
-    public LinkSchema() { }
+    @Override
+    public Set<String> getDefaultValue() {
+        return Sets.newHashSet();
+    }
 
-    public LinkSchema(boolean allocate) {
-        if (allocate) {
-            inputs = Sets.newHashSet();
-            outputs = Sets.newHashSet();
+    public LinkSchema addToParents(String parent) {
+        if (parents == null) {
+            parents = Sets.newHashSet();
         }
-    }
-
-    public Set<String> getInputs() {
-        return inputs;
-    }
-
-    public LinkSchema setInputs(Set<String> inputs) {
-        this.inputs = inputs;
+        parents.add(parent);
         return this;
     }
 
-    public Set<String> getOutputs() {
-        return outputs;
+    public Set<String> getParents() {
+        return parents;
     }
 
-    public LinkSchema setOutputs(Set<String> outputs) {
-        this.outputs = outputs;
+    public LinkSchema setParents(Set<String> parents) {
+        this.parents = parents;
         return this;
     }
 }
