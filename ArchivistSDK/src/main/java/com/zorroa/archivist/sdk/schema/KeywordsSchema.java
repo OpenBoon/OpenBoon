@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * A Schema class for managing keywords.
  */
-public class KeywordsSchema extends ExtendableSchema {
+public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
 
     /**
      * The maximum confidence value a keyword can have.

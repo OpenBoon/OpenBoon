@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.schema;
 /**
  * Created by chambers on 1/2/16.
  */
-public class VideoSchema extends ExtendableSchema {
+public class VideoSchema extends ExtendableSchema<String, Object> {
 
     private int width;
     private int height;

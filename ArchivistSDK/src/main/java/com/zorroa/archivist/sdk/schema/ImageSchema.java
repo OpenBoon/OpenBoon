@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Image Schema contains options that only pertain to Image assets.
  */
-public class ImageSchema extends ExtendableSchema {
+public class ImageSchema extends ExtendableSchema<String, Object> {
 
     private Point2D.Double location;
     private Integer width;

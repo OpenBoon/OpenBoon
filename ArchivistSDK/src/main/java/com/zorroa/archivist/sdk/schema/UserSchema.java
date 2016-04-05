@@ -3,7 +3,7 @@ package com.zorroa.archivist.sdk.schema;
 /**
  * User editable fields.
  */
-public class UserSchema extends ExtendableSchema {
+public class UserSchema extends ExtendableSchema<String, Object> {
 
     private Integer rating = null;
 

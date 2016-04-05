@@ -23,7 +23,7 @@ import java.util.Set;
  * Every asset should at least have a valid source schema.
  *
  */
-public class SourceSchema extends ExtendableSchema {
+public class SourceSchema extends ExtendableSchema<String, Object> {
 
     private String type;
     private String path;
