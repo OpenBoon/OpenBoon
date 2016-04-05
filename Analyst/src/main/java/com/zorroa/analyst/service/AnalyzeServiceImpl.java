@@ -204,7 +204,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                     if (derived != null) {
                         for (String derivedPath: derived) {
                             AnalyzeRequestEntry childEntry = new AnalyzeRequestEntry(derivedPath);
-                            childEntry.addToAttr("links:parents", builder.getId().toString());
+                            childEntry.addToAttr("links.parents", builder.getId().toString());
                             queue.add(childEntry);
                         }
 
