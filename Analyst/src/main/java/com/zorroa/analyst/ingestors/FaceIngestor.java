@@ -66,7 +66,7 @@ public class FaceIngestor extends IngestProcessor {
             image = OpenCVUtils.convert(asset.getImage());
         }
 
-        logger.info("Starting facial detection on mat: {}", image);
+        logger.debug("Starting facial detection on mat: {}", image);
 
         try {
             // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
