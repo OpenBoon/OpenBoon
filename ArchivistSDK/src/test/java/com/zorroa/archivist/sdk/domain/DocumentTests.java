@@ -2,7 +2,7 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
-import com.zorroa.archivist.sdk.schema.MapSchema;
+import com.zorroa.archivist.sdk.schema.ExtendableSchema;
 import org.junit.Test;
 
 import java.util.Set;
@@ -148,7 +148,7 @@ public class DocumentTests {
         }
     }
 
-    public static class BeanMap extends MapSchema {
+    public static class BeanMap extends ExtendableSchema {
         private String name;
         private int count;
         private String foo;

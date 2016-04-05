@@ -14,13 +14,13 @@ import java.util.Map;
  * are not defined in the subclass.  This allows you to add new fields at will, without recompiling,
  * but without compile time type safety protections.
  */
-public class MapSchema {
+public class ExtendableSchema {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected final Map<String, Object> delegate;
 
-    public MapSchema() {
+    public ExtendableSchema() {
         this.delegate = Maps.newHashMap();
     }
 

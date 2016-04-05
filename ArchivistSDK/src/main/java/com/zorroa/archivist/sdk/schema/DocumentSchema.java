@@ -5,7 +5,7 @@ import com.zorroa.archivist.sdk.util.Json;
 /**
  * Created by chambers on 1/3/16.
  */
-public class DocumentSchema extends MapSchema {
+public class DocumentSchema extends ExtendableSchema {
 
     @Keyword
     private String title;
