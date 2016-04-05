@@ -44,13 +44,13 @@ public class ShotgunCrawler extends AbstractCrawler {
 
             for (Map<String, Object> row: result) {
                 AnalyzeRequestEntry entry = new AnalyzeRequestEntry(URI.create((String) row.get("image")))
-                        .setAttr("reference:server", server)
-                        .setAttr("reference:source", "shotgun");
+                        .setAttr("reference.server", server)
+                        .setAttr("reference.source", "shotgun");
                 /*
                  * Add all the fields we selected.
                  */
                 for (Map.Entry<String, Object> col: row.entrySet()) {
-                    entry.setAttr("shotgun:" + col.getKey(), col.getValue());
+                    entry.setAttr("shotgun." + col.getKey(), col.getValue());
                 }
                 consumer.accept(entry);
             }

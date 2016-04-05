@@ -25,7 +25,7 @@ public class DocumentTests {
     public void testAddToAttrWithAddToMethod() {
         Document d = new Document();
         d.setAttr("links", new LinkSchema());
-        d.addToAttr("links:parents", "abc123");
+        d.addToAttr("links.parents", "abc123");
         assertTrue(((LinkSchema) d.getAttr("links")).getParents().contains("abc123"));
     }
 
@@ -33,37 +33,37 @@ public class DocumentTests {
     public void testAddToAttrWithAnyGetter() {
         Document d = new Document();
         d.setAttr("links", new LinkSchema());
-        d.addToAttr("links:inputs", "bilbo");
+        d.addToAttr("links.inputs", "bilbo");
         assertTrue(((LinkSchema) d.getAttr("links")).any().get("inputs").contains("bilbo"));
     }
 
     @Test
     public void testAddToAttrToMap() {
         Document d = new Document();
-        d.setAttr("a:b:c:d", 1);
-        d.setAttr("a:b:i", Lists.newArrayList());
-        d.addToAttr("a:b:i", "100");
-        assertTrue(((Collection)d.getAttr("a:b:i")).contains("100"));
+        d.setAttr("a.b.c.d", 1);
+        d.setAttr("a.b.i", Lists.newArrayList());
+        d.addToAttr("a.b.i", "100");
+        assertTrue(((Collection)d.getAttr("a.b.i")).contains("100"));
     }
 
     @Test
     public void testAddToAttrToMapCreateList() {
         Document d = new Document();
-        d.setAttr("a:b:c:d", 1);
-        d.addToAttr("a:b:i", "100");
-        assertTrue(((Collection)d.getAttr("a:b:i")).contains("100"));
+        d.setAttr("a.b.c.d", 1);
+        d.addToAttr("a.b.i", "100");
+        assertTrue(((Collection)d.getAttr("a.b.i")).contains("100"));
     }
 
     @Test
     public void testSetAndGetNestedPrimitveAttr() {
         Document d = new Document();
-        d.setAttr("a:b:c:str", "bizzle");
-        d.setAttr("a:b:c:int", 10);
-        d.setAttr("a:b:c:float", 3.2f);
+        d.setAttr("a.b.c.str", "bizzle");
+        d.setAttr("a.b.c.int", 10);
+        d.setAttr("a.b.c.float", 3.2f);
 
-        String s = d.getAttr("a:b:c:str");
-        int i = d.getAttr("a:b:c:int");
-        float f = d.getAttr("a:b:c:float");
+        String s = d.getAttr("a.b.c.str");
+        int i = d.getAttr("a.b.c.int");
+        float f = d.getAttr("a.b.c.float");
 
         assertEquals("bizzle", s);
         assertEquals(10, i);
@@ -77,10 +77,10 @@ public class DocumentTests {
         b.setName("gandalf");
 
         Document d = new Document();
-        d.setAttr("a:b:c", b);
+        d.setAttr("a.b.c", b);
 
-        Bean bean1 = d.getAttr("a:b:c");
-        Bean bean2 = d.getAttr("a:b:c", Bean.class);
+        Bean bean1 = d.getAttr("a.b.c");
+        Bean bean2 = d.getAttr("a.b.c", Bean.class);
 
         assertEquals(bean1.count, bean2.count);
         assertEquals(bean1.name, bean2.name);
@@ -95,10 +95,11 @@ public class DocumentTests {
         b.setName("gandalf");
 
         Document d = new Document();
-        d.setAttr("a:b:c", b);
-        d.setAttr("a:b:c:name", "hank");
+        d.setAttr("a.b.c", b);
+        logger.info("{}", d);
+        d.setAttr("a.b.c.name", "hank");
 
-        Bean bean = d.getAttr("a:b:c");
+        Bean bean = d.getAttr("a.b.c");
         assertEquals("hank", bean.getName());
     }
 
@@ -106,10 +107,10 @@ public class DocumentTests {
     public void testSetArbitraryProperty() {
         BeanMap k = new BeanMap();
         Document d = new Document();
-        d.setAttr("a:b:bean", k);
-        d.setAttr("a:b:bean:words", Sets.newHashSet("word"));
+        d.setAttr("a.b.bean", k);
+        d.setAttr("a.b.bean.words", Sets.newHashSet("word"));
 
-        Set<String> words = d.getAttr("a:b:bean:words");
+        Set<String> words = d.getAttr("a.b.bean.words");
         assertTrue(words.contains("word"));
     }
 
@@ -121,10 +122,10 @@ public class DocumentTests {
 
         KeywordsSchema k = new KeywordsSchema();
         Document d = new Document();
-        d.setAttr("a:b:keywords", k);
-        d.setAttr("a:b:keywords:all", words);
+        d.setAttr("a.b.keywords", k);
+        d.setAttr("a.b.keywords.all", words);
 
-        Set<String> words2 = d.getAttr("a:b:keywords:all");
+        Set<String> words2 = d.getAttr("a.b.keywords.all");
         assertEquals(words, words2);
     }
 
@@ -132,15 +133,15 @@ public class DocumentTests {
     public void testSetMapSchemaPropertyFailure() {
         BeanMap map = new BeanMap();
         Document d = new Document();
-        d.setAttr("a:b:bean", map);
+        d.setAttr("a.b.bean", map);
         // Cannot set this because foo is a string.
-        d.setAttr("a:b:bean:foo", 1234);
+        d.setAttr("a.b.bean.foo", 1234);
     }
 
     @Test
     public void testGetNullValue() {
         Document d = new Document();
-        Bean bean = d.getAttr("a:b:c");
+        Bean bean = d.getAttr("a.b.c");
         assertNull(bean);
     }
 
@@ -149,8 +150,8 @@ public class DocumentTests {
         Bean b = new Bean();
         b.setName("foo");
         Document d = new Document();
-        d.setAttr("a:bean", b);
-        d.removeAttr("a:bean:name");
+        d.setAttr("a.bean", b);
+        d.removeAttr("a.bean.name");
         assertNull(b.getName());
     }
 
@@ -159,11 +160,11 @@ public class DocumentTests {
         BeanMap b = new BeanMap();
         b.setName("foo");
         Document d = new Document();
-        d.setAttr("a:bean", b);
-        d.setAttr("a:bean:bing", "bar");
+        d.setAttr("a.bean", b);
+        d.setAttr("a.bean.bing", "bar");
 
         assertEquals("bar", b.any().get("bing"));
-        d.removeAttr("a:bean:bing");
+        d.removeAttr("a.bean.bing");
         assertNull(b.any().get("bing"));
     }
 
@@ -186,6 +187,10 @@ public class DocumentTests {
         public void setCount(int count) {
             this.count = count;
         }
+
+        public String toString() {
+            return String.format("<Bean %s %d>", name, count);
+        }
     }
 
     public static class BeanMap extends ExtendableSchema {
@@ -207,6 +212,10 @@ public class DocumentTests {
 
         public void setCount(int count) {
             this.count = count;
+        }
+
+        public String toString() {
+            return String.format("<Bean %s %d %s>", name, count, foo);
         }
     }
 }

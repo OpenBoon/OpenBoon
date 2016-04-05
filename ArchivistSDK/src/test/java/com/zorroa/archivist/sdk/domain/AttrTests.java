@@ -11,16 +11,16 @@ public class AttrTests {
 
     @Test
     public void testAttr() {
-        assertEquals("a:b:c:d", Attr.attr("a","b","c","d"));
+        assertEquals("a.b.c.d", Attr.attr("a","b","c","d"));
     }
 
     @Test
     public void testName() {
-        assertEquals("d", Attr.name("a:b:c:d"));
+        assertEquals("d", Attr.name("a.b.c.d"));
     }
 
     @Test
     public void testNamespace() {
-        assertEquals("a:b:c", Attr.namespace("a:b:c:d"));
+        assertEquals("a.b.c", Attr.namespace("a.b.c.d"));
     }
 }

@@ -15,6 +15,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * A Document is a wrapper around a Map<String,Object> which provides a convenience interface
@@ -239,10 +240,14 @@ public class Document {
         return getChild(container, Attr.name(attr)) != null;
     }
 
+    private static final Pattern PATTERN_ATTR = Pattern.compile(Attr.DELIMITER, Pattern.LITERAL);
+
     private Object getContainer(String attr, boolean forceExpand) {
-        String[] parts = attr.split(Attr.DELIMITER);
+        String[] parts = PATTERN_ATTR.split(attr);
+
         Object current = document;
         for (int i=0; i<parts.length-1; i++) {
+
             Object child = getChild(current, parts[i]);
             if (child == null) {
                 if (forceExpand) {

@@ -26,7 +26,7 @@ public class StringUtil {
         StringBuilder sb = new StringBuilder(512);
         for (String s: array) {
             sb.append(s);
-            sb.append(",");
+            sb.append(delimiter);
         }
         sb.deleteCharAt(sb.length()-1);
         return sb.toString();
@@ -43,7 +43,7 @@ public class StringUtil {
         StringBuilder sb = new StringBuilder(512);
         for (int v: values) {
             sb.append(v);
-            sb.append(",");
+            sb.append(delimiter);
         }
         sb.deleteCharAt(sb.length()-1);
         return sb.toString();

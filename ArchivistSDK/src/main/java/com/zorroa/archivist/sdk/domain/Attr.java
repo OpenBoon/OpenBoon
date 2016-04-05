@@ -5,7 +5,7 @@ package com.zorroa.archivist.sdk.domain;
  */
 public class Attr {
 
-    public static final String DELIMITER = ":";
+    public static final String DELIMITER = ".";
 
     /**
      * A convenience method which takes a variable list of strings and
