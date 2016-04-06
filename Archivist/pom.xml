@@ -21,8 +21,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <start-class>com.zorroa.archivist.Application</start-class>
     <java.version>1.8</java.version>
-    <com.zorroa.appDir>"/Library/Application Support/Zorroa"</com.zorroa.appDir>
-    <com.zorroa.javaDir>${com.zorroa.appDir}/java</com.zorroa.javaDir>
   </properties>
   <dependencies>
     <dependency>
@@ -183,8 +181,8 @@
             <phase>install</phase>
             <goals><goal>exec</goal></goals>
             <configuration>
-              <executable>/usr/bin/sudo</executable>
-              <commandlineArgs>cp ${project.basedir}/target/${project.artifactId}.jar ${com.zorroa.javaDir}</commandlineArgs>
+              <executable>/bin/cp</executable>
+              <commandlineArgs>${project.basedir}/target/${project.artifactId}.jar "${user.home}/Library/Application Support/Zorroa/${project.artifactId}/lib"</commandlineArgs>
             </configuration>
           </execution>
 
