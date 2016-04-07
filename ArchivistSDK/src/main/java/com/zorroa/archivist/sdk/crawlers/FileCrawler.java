@@ -101,6 +101,9 @@ public class FileCrawler extends AbstractCrawler {
                             req.setAttr("sequence.range", Fileseq.framesToFrameRange(frames, fileseq.getZfill()));
                             req.setAttr("sequence.zfill", fileseq.getZfill());
                             req.setAttr("sequence.padding", fileseq.getPadding());
+                            req.setAttr("sequence.start", frames.first());
+                            req.setAttr("sequence.end", frames.last());
+                            req.setAttr("sequence.size", frames.size());
                         }
 
                         consumer.accept(req);
