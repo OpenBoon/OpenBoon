@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.filesystem;
 
+import java.io.IOException;
+
 /**
  * The object file system interface is for storing files of all types, including proxies,
  * assets, spreadsheets, models, and any other type of file the analyst may need to its
@@ -11,6 +13,19 @@ package com.zorroa.archivist.sdk.filesystem;
  *
  */
 public interface ObjectFileSystem {
+
+    /**
+     * Get a file based on a category, the ID of the object, the type, and variable
+     * argument list of variant.  The file may or may not exist already.  The
+     * parent directory is automatically created.
+     *
+     * @param category
+     * @param id
+     * @param type
+     * @param variant
+     * @return
+     */
+    ObjectFile prepare(String category, Object id, String type, String ... variant) throws IOException;
 
     /**
      * Get a file based on a category, the ID of the object, the type, and variable

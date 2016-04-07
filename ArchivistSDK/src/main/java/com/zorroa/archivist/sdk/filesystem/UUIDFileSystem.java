@@ -4,6 +4,7 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Properties;
 
@@ -29,6 +30,13 @@ public class UUIDFileSystem extends AbstractFileSystem {
 
         baseDir = directory.toPath().normalize().toAbsolutePath().toString();
         logger.info("Filesystem initialized: {}", baseDir);
+    }
+
+    @Override
+    public ObjectFile prepare(String category, Object id, String type, String ... variant) throws IOException {
+        ObjectFile file = get(category, id, type, variant);
+        file.mkdirs();
+        return file;
     }
 
     @Override
