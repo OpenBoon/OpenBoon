@@ -56,6 +56,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.zorroa.fileseq</groupId>
+            <artifactId>fileseq</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
