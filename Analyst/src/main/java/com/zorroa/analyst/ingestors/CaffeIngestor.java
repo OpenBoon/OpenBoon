@@ -85,7 +85,7 @@ public class CaffeIngestor extends IngestProcessor {
             return;
         }
 
-        ProxySchema proxies = asset.getAttr("proxies");
+        ProxySchema proxies = asset.getAttr("proxies", ProxySchema.class);
         Proxy proxy = proxies.atLeastThisSize(227);
 
         if (proxy == null || proxy.getImage() == null) {

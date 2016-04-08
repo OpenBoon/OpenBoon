@@ -49,24 +49,37 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
-        if (asset.attrExists("face") && !asset.isChanged()) {
+        /**
+         * TODO?
+         * Simply because face doesn't exist doesn't mean that the face ingestor
+         * didnt' run.  There just might have ben no faces.  This can be fixed
+         * by keeping an actual record of the ingestors run on an asset.
+         */
+        if (asset.attrExists("face") || !asset.isChanged()) {
             logger.debug("{} has already been processed by FaceIngestor.", asset);
             return;
         }
 
-        Mat image;
-
-        ProxySchema schema = asset.getAttr("proxies");
+        Mat image = null;
+        ProxySchema schema = asset.getAttr("proxies", ProxySchema.class);
         Proxy proxy = schema.atLeastThisSize(1000);
         if (proxy != null) {
             image = OpenCVUtils.convert(proxy.getImage());
         }
         else {
-            logger.debug("FaceIngestor cannot no proxy of suitable size, using source");
             image = OpenCVUtils.convert(asset.getImage());
         }
 
-        logger.debug("Starting facial detection on mat: {}", image);
+        /**
+         * TODO?
+         * Currently upon re-ingest, neither proxy data nor the source image can
+         * be loaded because image ingestor was skipped.
+         */
+        if (image == null) {
+            return;
+        }
+
+        logger.info("Starting facial detection on mat: {}", image);
 
         try {
             // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
