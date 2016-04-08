@@ -22,6 +22,8 @@ public class VideoIngestor extends IngestProcessor {
         supportedFormats.add("mov");
         supportedFormats.add("avi");
         supportedFormats.add("mp4");
+        supportedFormats.add("m4v");
+        supportedFormats.add("m2v");
     }
 
     @Override
@@ -44,10 +46,6 @@ public class VideoIngestor extends IngestProcessor {
         try {
             parser.parse(assetBuilder.getInputStream(), handler, metadata);
             VideoSchema video = new VideoSchema();
-            video.setHeight(Integer.parseInt(metadata.get("tiff:ImageLength")));
-            video.setWidth(Integer.parseInt(metadata.get("tiff:ImageWidth")));
-            video.setAudioSampleRate(Integer.parseInt(metadata.get("xmpDM:audioSampleRate")));
-            video.setDuration(Double.parseDouble(metadata.get("xmpDM:duration")));
             assetBuilder.setAttr("video", video);
 
         } catch (Exception e) {
@@ -74,8 +72,14 @@ public class VideoIngestor extends IngestProcessor {
             video.setFormat(grabber.getFormat());
             video.setFrameRate(grabber.getFrameRate());
             video.setSampleRate(grabber.getSampleRate());
-
+            video.setWidth(grabber.getImageWidth());
+            video.setHeight(grabber.getImageHeight());
+            video.setFrames(grabber.getLengthInFrames());
+            video.setAspectRatio(grabber.getAspectRatio());
+            
+            grabber.setFrameNumber(grabber.getLengthInFrames() / 2);
             Frame frame = grabber.grabImage();
+
             BufferedImage image = converter.convert(frame);
             assetBuilder.setImage(image);
             grabber.stop();
