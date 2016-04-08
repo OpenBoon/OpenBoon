@@ -30,6 +30,25 @@ public class DocumentTests {
     }
 
     @Test
+    public void testAttrContains() {
+        KeywordsSchema s = new KeywordsSchema();
+        s.addKeywords(1, true, "foo");
+
+        Document d = new Document();
+        d.setAttr("keywords", s);
+        d.setAttr("a.b.c", "some value");
+
+        assertTrue(d.attrContains("keywords.all", "foo"));
+        assertTrue(d.attrContains("keywords.suggest", "foo"));
+        assertFalse(d.attrContains("keywords.all", "jim"));
+        assertFalse(d.attrContains("keywords.all", 1));
+
+        assertTrue(d.attrContains("a.b.c", "some"));
+        assertTrue(d.attrContains("a.b.c", "value"));
+        assertFalse(d.attrContains("a.b.c", "professor"));
+    }
+
+    @Test
     public void testAddToAttrWithAnyGetter() {
         Document d = new Document();
         d.setAttr("links", new LinkSchema());

@@ -240,6 +240,25 @@ public class Document {
         return getChild(container, Attr.name(attr)) != null;
     }
 
+    /**
+     * Return true if the value of an attribute contains the given value.
+     *
+     * @param attr
+     * @return
+     */
+    public boolean attrContains(String attr, Object value) {
+        Object parent = getContainer(attr, false);
+        Object child = getChild(parent, Attr.name(attr));
+
+        if (child instanceof Collection) {
+            return ((Collection) child).contains(value);
+        }
+        else if (child instanceof String) {
+            return ((String) child).contains(value.toString());
+        }
+        return false;
+    }
+
     private static final Pattern PATTERN_ATTR = Pattern.compile(Attr.DELIMITER, Pattern.LITERAL);
 
     private Object getContainer(String attr, boolean forceExpand) {
