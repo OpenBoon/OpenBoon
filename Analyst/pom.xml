@@ -18,8 +18,6 @@
         <start-class>com.zorroa.analyst.Application</start-class>
         <java.version>1.8</java.version>
         <geotools.version>13.2</geotools.version>
-        <com.zorroa.appDir>"/Library/Application Support/Zorroa"</com.zorroa.appDir>
-        <com.zorroa.extensionDir>${com.zorroa.appDir}/java/extensions</com.zorroa.extensionDir>
     </properties>
 
     <repositories>
@@ -308,8 +306,8 @@
                         <phase>install</phase>
                         <goals><goal>exec</goal></goals>
                         <configuration>
-                            <executable>/usr/bin/sudo</executable>
-                            <commandlineArgs>cp ${project.build.directory}/${project.artifactId}.jar ${com.zorroa.extensionDir}</commandlineArgs>
+                            <executable>/bin/cp</executable>
+                            <commandlineArgs>${project.build.directory}/${project.artifactId}.jar "${user.home}/Library/Application Support/Zorroa/${project.artifactId}/lib"</commandlineArgs>
                         </configuration>
                     </execution>
 
