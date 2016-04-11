@@ -50,10 +50,10 @@
   },
   "mappings": {
     "note": {
-      "dynamic": false,
       "_all": {
         "enabled": true
       },
+      "dynamic": true,
       "_timestamp": {
         "enabled": false
       },
@@ -62,31 +62,18 @@
           "index": "not_analyzed",
           "type": "string"
         },
-        "assets": {
+        "asset": {
           "index": "not_analyzed",
           "type": "string"
         },
         "text": {
-          "type": "string",
-          "index": "analyzed"
-        },
-        "tags": {
-          "type": "string",
-          "index": "not_analyzed"
-        },
-        "email": {
-          "index": "not_analyzed",
+          "index": "analyzed",
           "type": "string"
         },
-        "author": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "createdTime": {
-          "type": "date"
-        },
-        "modifiedTime": {
-          "type": "date"
+        "annotations": {
+          "type": "geo_shape",
+          "tree": "quadtree",
+          "tree_levels": 1
         }
       }
     },
@@ -100,7 +87,6 @@
       },
       "properties": {
         "_id": {
-          "store": true,
           "index": "not_analyzed",
           "type": "string"
         },
@@ -109,7 +95,7 @@
           "properties": {
             "suggest": {
               "type": "completion",
-              "index_analyzer": "simple",
+              "analyzer": "simple",
               "search_analyzer": "simple",
               "payloads": false
             },
@@ -125,12 +111,30 @@
             }
           }
         },
+        "links": {
+          "properties": {
+            "inputs": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          },
+          "properties": {
+            "outputs": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
         "folders": {
           "type": "integer",
           "index": "not_analyzed"
         },
         "source": {
           "properties": {
+            "date": {
+              "type": "date",
+              "index": "not_analyzed"
+            },
             "directory": {
               "type": "string",
               "index": "analyzed",
@@ -141,7 +145,7 @@
                 },
                 "dir": {
                   "type": "string",
-                  "index_analyzer": "path_analyzer"
+                  "analyzer": "path_analyzer"
                 }
               }
             },
@@ -155,7 +159,7 @@
                 },
                 "dir": {
                   "type": "string",
-                  "index_analyzer": "path_analyzer"
+                  "analyzer": "path_analyzer"
                 }
               }
             }
@@ -192,10 +196,18 @@
       "dynamic_templates": [
         {
           "time_template": {
-            "match": "^time[A-Z]{1}.*?$",
+            "match": ".+Time$",
             "match_mapping_type": "string",
             "mapping": {
               "type": "date"
+            }
+          }
+        },
+        {
+          "location_template": {
+            "match": ".+Location$|^location$",
+            "mapping": {
+              "type": "geo_shape"
             }
           }
         },

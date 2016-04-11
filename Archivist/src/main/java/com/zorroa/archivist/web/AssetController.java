@@ -6,10 +6,7 @@ import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.archivist.service.AnalystService;
-import com.zorroa.archivist.service.AssetService;
-import com.zorroa.archivist.service.FolderService;
-import com.zorroa.archivist.service.SearchService;
+import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.web.exceptions.ClusterStateException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -44,6 +41,9 @@ public class AssetController {
 
     @Autowired
     FolderService folderService;
+
+    @Autowired
+    NoteService noteService;
 
     @Autowired
     SearchService searchService;
@@ -86,6 +86,11 @@ public class AssetController {
 
         String uri = sb.toString();
         response.sendRedirect(uri);
+    }
+
+    @RequestMapping(value="/api/v1/assets/{id}/notes", method=RequestMethod.GET)
+    public List<Note> getAllNotes(@PathVariable String id) throws IOException {
+        return noteService.getAll(id);
     }
 
     @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)

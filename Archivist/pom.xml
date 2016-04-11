@@ -120,10 +120,18 @@
       <version>2.1.2</version>
     </dependency>
 
+    <!-- Elastic is faster with this library -->
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
       <version>4.2.2</version>
+    </dependency>
+
+    <!-- Necessary for Elastic geometric types -->
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+      <version>1.13</version>
     </dependency>
 
     <dependency>
