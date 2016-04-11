@@ -9,6 +9,10 @@ import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -60,26 +64,29 @@ public class FaceIngestor extends IngestProcessor {
             return;
         }
 
-        Mat image = null;
+        BufferedImage image  = null;
         ProxySchema schema = asset.getAttr("proxies", ProxySchema.class);
         Proxy proxy = schema.atLeastThisSize(1000);
+
         if (proxy != null) {
-            image = OpenCVUtils.convert(proxy.getImage());
-        }
-        else {
-            image = OpenCVUtils.convert(asset.getImage());
+            try {
+                image = ImageIO.read(objectFileSystem.transfer(
+                        URI.create(proxy.getUri()), objectFileSystem.get(proxy.getName())).getFile());
+            } catch (IOException e) {
+                logger.warn("Failed to find/transfer proxy image on this node.");
+            }
         }
 
-        /**
-         * TODO?
-         * Currently upon re-ingest, neither proxy data nor the source image can
-         * be loaded because image ingestor was skipped.
-         */
         if (image == null) {
-            return;
+            image = asset.getImage();
+            if (image == null ) {
+                logger.warn("Skipping FaceIngestor, no proxy or source of suitable size. (1000)");
+                return;
+            }
         }
 
-        logger.info("Starting facial detection on mat: {}", image);
+        Mat mat = OpenCVUtils.convert(image);
+        logger.debug("Starting face ingestion on {}", mat);
 
         try {
             // The OpenCV levelWeights thing doesn't seem to work. We'll do a few calls to the detector with different thresholds
@@ -110,7 +117,7 @@ public class FaceIngestor extends IngestProcessor {
 
             long faceCount = 0;
             for (int i = 0; i < options.size(); i++) {
-                cascadeClassifier.detectMultiScale(image, newFaceDetections,
+                cascadeClassifier.detectMultiScale(mat, newFaceDetections,
                         options.get(i).scaleFactor, (int) options.get(i).detectionThreshold,
                         0 /*flags*/, new Size(80, 80) /*min*/, new Size(1000, 1000) /*max*/);
 
@@ -132,7 +139,7 @@ public class FaceIngestor extends IngestProcessor {
                 // Detect faces that are big enough for the 'bigface' label
                 for (int i = 0; i < faceDetections.size(); ++i) {
                     Rect rect = faceDetections.get(i);
-                    double relSize = rect.height() / image.size().height();
+                    double relSize = rect.height() / mat.size().height();
                     if (relSize > .1) {
                         confidence += relSize;
                         if (confidence > 1) {
@@ -152,7 +159,7 @@ public class FaceIngestor extends IngestProcessor {
             }
         } finally {
             try {
-                image.close();
+                mat.close();
             } catch (Exception e) {
                 logger.warn("Failed to close OpenCV Mat {}", image, e);
             }

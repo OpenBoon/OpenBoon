@@ -27,7 +27,7 @@ public class CaffeIngestorTests extends AbstractTest {
         AssetBuilder asset = ingestFile(file, pipeline);
 
         Set<String> keywords = asset.getAttr("keywords.caffe");
-        assertEquals(2, keywords.size());
+        assertEquals(3, keywords.size());
         assertTrue(keywords.contains("soccer ball"));
         assertTrue(keywords.contains("swing"));
     }

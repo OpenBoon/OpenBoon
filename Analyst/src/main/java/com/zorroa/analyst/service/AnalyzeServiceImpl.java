@@ -113,7 +113,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             ObjectFile obj = null;
             try {
                 if (entry.isRemote()) {
-                    obj = objectFileSystem.get("assets", entry.getUri(), FileUtils.extension(uri.getPath()));
+                    obj = objectFileSystem.prepare("assets", entry.getUri(), FileUtils.extension(uri.getPath()));
                     if (!obj.exists()) {
                         transferService.transfer(entry.getUri(), obj);
                     }

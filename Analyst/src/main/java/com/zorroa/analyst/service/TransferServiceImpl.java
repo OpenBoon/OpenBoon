@@ -34,6 +34,7 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public void transfer(URI uri, ObjectFile dst) throws IOException {
+        logger.debug("transfering {} to {}", uri, dst);
         HttpGet httpget = new HttpGet(uri);
         HttpResponse response = httpClient.execute(httpget);
 

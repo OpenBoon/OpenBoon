@@ -89,7 +89,7 @@ public class PdfIngestor extends IngestProcessor {
                          * Grab an object file for what are basically new source
                          * images.
                          */
-                        ObjectFile file = objectFileSystem.get(
+                        ObjectFile file = objectFileSystem.prepare(
                                 "assets", assetBuilder.getId(), image.getSuffix(), key);
                         if (file.exists()) {
                             /*
@@ -99,7 +99,6 @@ public class PdfIngestor extends IngestProcessor {
                             logger.debug("file exists {} {}", key, image.getSuffix());
                             continue;
                         }
-                        file.mkdirs();
                         assetBuilder.getLinks().addToDerived(file.getFile().getAbsolutePath());
                         image.write2file(file.getFile());
                     }

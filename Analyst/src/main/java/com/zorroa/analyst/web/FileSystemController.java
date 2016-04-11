@@ -6,6 +6,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.io.ByteStreams;
 import com.zorroa.archivist.sdk.domain.Asset;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.common.repository.AssetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +76,7 @@ public class FileSystemController {
         String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
 
         AntPathMatcher apm = new AntPathMatcher();
-        String finalPath = "proxies/" + apm.extractPathWithinPattern(bestMatchPattern, path);
+        String finalPath = "proxies/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path));
 
         ProxyImage image = proxyCache.get(finalPath);
         return ResponseEntity.ok()

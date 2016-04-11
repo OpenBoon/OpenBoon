@@ -10,8 +10,11 @@ import com.zorroa.archivist.sdk.schema.ProxySchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
@@ -87,13 +90,27 @@ public class CaffeIngestor extends IngestProcessor {
 
         ProxySchema proxies = asset.getAttr("proxies", ProxySchema.class);
         Proxy proxy = proxies.atLeastThisSize(227);
+        BufferedImage img = null;
 
-        if (proxy == null || proxy.getImage() == null) {
-            logger.warn("Skipping CaffeIngestor, no proxy of suitable size. (227)");
-            return;
+        if (proxy != null) {
+            try {
+                img = ImageIO.read(objectFileSystem.transfer(
+                    URI.create(proxy.getUri()), objectFileSystem.get(proxy.getName())).getFile());
+            } catch (IOException e) {
+                logger.warn("Failed to find/transfer proxy image on this node.");
+            }
         }
 
-        Mat mat = OpenCVUtils.convert(proxy.getImage());
+        if (img == null) {
+            img = asset.getImage();
+            if (img == null ) {
+                logger.warn("Skipping CaffeIngestor, no proxy or source of suitable size. (227)");
+                return;
+            }
+        }
+
+        Mat mat = OpenCVUtils.convert(img);
+        logger.debug("Starting caffe ingestion on {}", mat);
 
         // Pass the image matrix to the classifier and get back an array of keywords+confidence
         final float confidenceThreshold = 0.1f;

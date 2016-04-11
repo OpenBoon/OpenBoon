@@ -2,16 +2,15 @@ package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.domain.Tuple;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.filesystem.ObjectFile;
 import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
 import com.zorroa.archivist.sdk.schema.SourceSchema;
-import com.zorroa.archivist.sdk.util.FileUtils;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.filters.Flip;
 import net.coobird.thumbnailator.filters.ImageFilter;
@@ -31,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class ProxyProcessor extends IngestProcessor {
 
@@ -49,6 +49,22 @@ public class ProxyProcessor extends IngestProcessor {
             this.bpp = bpp;
             this.format = format;
             this.quality = quality;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Output output = (Output) o;
+            return size == output.size &&
+                    bpp == output.bpp &&
+                    Float.compare(output.quality, quality) == 0 &&
+                    Objects.equals(format, output.format);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(size, bpp, format, quality);
         }
     }
 
@@ -105,28 +121,19 @@ public class ProxyProcessor extends IngestProcessor {
          */
         Collections.sort(outputs, (o1, o2) -> Integer.compare(o2.size, o1.size));
 
-        /*
-         * The first proxy is the large proxy.
-         */
-        BufferedImage largeProxy = null;
-
         try {
             final int width = asset.getImage().getWidth();
             for (Output spec : outputs) {
                 if (spec.size > width) {
                     continue;
                 }
-
-                Proxy proxy;
-                if (largeProxy == null) {
-                    proxy = writeProxy(asset, asset.getImage(),
+                Tuple<BufferedImage, Proxy> tuple = writeProxy(asset, asset.getImage(),
                             spec, getOrientationFilters(asset));
-                    largeProxy = proxy.getImage();
-                } else {
-                    proxy = writeProxy(asset, largeProxy, spec, ImmutableList.of());
-                }
+                result.add(tuple.getRight());
 
-                result.add(proxy);
+                if (spec.equals(outputs.get(outputs.size()-1))) {
+                    asset.setAttr("tinyProxy", makeTinyProxy(tuple.getLeft()));
+                }
             }
 
             /*
@@ -134,17 +141,11 @@ public class ProxyProcessor extends IngestProcessor {
              */
             if (result.isEmpty()) {
                 Output spec = new Output(defaultProxyFormat, width, 8, 1.0f);
-                Proxy proxy = writeProxy(asset, asset.getImage(), spec, getOrientationFilters(asset));
-                result.add(proxy);
+                Tuple<BufferedImage, Proxy> tuple = writeProxy(asset, asset.getImage(), spec, getOrientationFilters(asset));
+                result.add(tuple.getRight());
+                asset.setAttr("tinyProxy", makeTinyProxy(tuple.getLeft()));
             }
 
-            /*
-             * Resort the outputs so the smallest proxy is first.
-             */
-            Collections.sort(result, (o1, o2) ->
-                    Ints.compare(o1.getWidth() * o1.getHeight(), o2.getWidth() * o2.getHeight()));
-
-            asset.setAttr("tinyProxy", makeTinyProxy(result.get(0)));
             asset.setAttr("proxies", result);
 
         } catch (Exception e) {
@@ -163,9 +164,9 @@ public class ProxyProcessor extends IngestProcessor {
      * @return
      * @throws IOException
      */
-    private Proxy writeProxy(AssetBuilder asset,  BufferedImage image, Output output, List<ImageFilter> filters) throws Exception {
+    private Tuple<BufferedImage, Proxy> writeProxy(AssetBuilder asset, BufferedImage image, Output output, List<ImageFilter> filters) throws Exception {
         int height = Math.round(output.size / (image.getWidth() / (float)image.getHeight()));
-        ObjectFile path = objectFileSystem.get("proxies", asset.getAbsolutePath(), output.format,
+        ObjectFile path = objectFileSystem.prepare("proxies", asset.getAbsolutePath(), output.format,
                 String.format("%dx%d", height, image.getWidth()));
 
         BufferedImage proxyImage = Thumbnails.of(image)
@@ -186,7 +187,6 @@ public class ProxyProcessor extends IngestProcessor {
             param.setCompressionQuality(output.quality);
         }
 
-        path.mkdirs();
         try (ImageOutputStream ios = ImageIO.createImageOutputStream(path.getFile())) {
             writer.setOutput(ios);
             writer.write(proxyImage);
@@ -195,13 +195,13 @@ public class ProxyProcessor extends IngestProcessor {
         }
 
         Proxy result = new Proxy();
-        result.setImage(proxyImage);
         result.setUri(objectFileSystem.getUrl(path));
-        result.setName(FileUtils.filename(path.getFile().getAbsolutePath()));
+        result.setName(path.getId());
         result.setWidth(output.size);
         result.setHeight(height);
         result.setFormat(output.format);
-        return result;
+
+        return new Tuple(image, result);
     }
 
     private static final List<String> NO_TINY_PROXY = ImmutableList.of(
@@ -214,15 +214,14 @@ public class ProxyProcessor extends IngestProcessor {
      * to an 11x11 image, ignoring the outer frame, and taking the
      * center pixel of each 3x3 block.
      *
-     * @param proxy
+     * @param image
      * @return
      */
-    private List<String> makeTinyProxy(Proxy proxy) {
-        BufferedImage source = proxy.getImage();
+    private List<String> makeTinyProxy(BufferedImage image) {
         BufferedImage tinyImage = new BufferedImage(11, 11, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = tinyImage.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        g2.drawImage(source, 0, 0, 11, 11, null);
+        g2.drawImage(image, 0, 0, 11, 11, null);
         g2.dispose();
 
         List<String> colors = Lists.newArrayListWithCapacity(9);
