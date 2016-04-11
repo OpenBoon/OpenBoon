@@ -20,7 +20,8 @@ public class AssetAggregateBuilder {
     private AssetScript script;
     private String exclude;
     private String include;
-    private boolean orderByTerm = true;
+    private boolean orderByTerm = false;
+    private Integer minDocCount;
 
     public AssetSearch getSearch() {
         return search;
@@ -46,6 +47,10 @@ public class AssetAggregateBuilder {
 
         if (orderByTerm == true) {
             terms.put("order", ImmutableMap.of("_term", "asc"));
+        }
+
+        if (minDocCount != null) {
+            terms.put("min_doc_count", minDocCount);
         }
 
         Map<String, Object> names = new HashMap<>();
@@ -120,6 +125,15 @@ public class AssetAggregateBuilder {
 
     public AssetAggregateBuilder setOrderByTerm(boolean orderByTerm) {
         this.orderByTerm = orderByTerm;
+        return this;
+    }
+
+    public Integer getMinDocCount() {
+        return minDocCount;
+    }
+
+    public AssetAggregateBuilder setMinDocCount(Integer minDocCount) {
+        this.minDocCount = minDocCount;
         return this;
     }
 }
