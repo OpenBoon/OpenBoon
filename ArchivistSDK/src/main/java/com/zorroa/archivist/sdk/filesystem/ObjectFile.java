@@ -2,6 +2,7 @@ package com.zorroa.archivist.sdk.filesystem;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.zorroa.archivist.sdk.exception.FileSystemException;
 import com.zorroa.archivist.sdk.util.FileUtils;
 
 import java.io.File;
@@ -15,25 +16,31 @@ import java.io.InputStream;
 public class ObjectFile {
 
     private final File file;
+    private final String category;
 
-    public ObjectFile(File file) {
+    public ObjectFile(String category, File file) {
+        this.category = category;
         this.file = file;
     }
 
-    public ObjectFile(String file) {
-        this.file = new File(file);
+    public ObjectFile(String category, String file) {
+        this(category, new File(file));
     }
 
-    public void store(InputStream src) throws IOException {
+    public void store(InputStream src) {
         mkdirs();
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            int inByte;
-            while ((inByte = src.read()) != -1)
-                fos.write(inByte);
+        try {
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                int inByte;
+                while ((inByte = src.read()) != -1)
+                    fos.write(inByte);
+            }
+        } catch (IOException e) {
+            throw new FileSystemException(e);
         }
     }
 
-    public void mkdirs() throws IOException {
+    public void mkdirs() {
         File dir = file.getParentFile();
         if (!dir.exists()) {
             dir.mkdirs();
@@ -56,6 +63,13 @@ public class ObjectFile {
         return file.length();
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public String getId() {
+        return String.format("%s/%s", category, FileUtils.filename(file.getAbsolutePath()));
+    }
 
     @Override
     public String toString() {

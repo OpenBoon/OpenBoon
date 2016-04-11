@@ -1,6 +1,6 @@
 package com.zorroa.archivist.sdk.filesystem;
 
-import java.io.IOException;
+import java.net.URI;
 
 /**
  * The object file system interface is for storing files of all types, including proxies,
@@ -14,57 +14,30 @@ import java.io.IOException;
  */
 public interface ObjectFileSystem {
 
+
+    ObjectFile transfer(URI src, ObjectFile dst);
+
     /**
      * Get a file based on a category, the ID of the object, the type, and variable
      * argument list of variant.  The file may or may not exist already.  The
      * parent directory is automatically created.
      *
      * @param category
-     * @param id
+     * @param hashable
      * @param type
      * @param variant
      * @return
      */
-    ObjectFile prepare(String category, Object id, String type, String ... variant) throws IOException;
+    ObjectFile prepare(String category, Object hashable, String type, String ... variant);
 
     /**
-     * Get a file based on a category, the ID of the object, the type, and variable
-     * argument list of variant.  The file may or may not exist already.
+     * Get a file based its unique ID, which is formatted as category/id_[variant].ext
      *
-     * @param category
-     * @param id
-     * @param type
-     * @param variant
      * @return
      */
-    ObjectFile get(String category, Object id, String type, String ... variant);
+    ObjectFile get(String id);
 
-    /**
-     * Get a file based its path into the object file system.
-     *
-     * @param relativePath
-     * @return
-     */
-    ObjectFile get(String relativePath);
-
-    /**
-     * Return true if an object that hashes to a specific key exists in the filesystem.
-     *
-     * @param category
-     * @param id
-     * @return
-     */
-    boolean exists(String category, Object id, String type, String ... variant);
-
-    /**
-     * Return true if a relative path within the file system.  Non realtive paths
-     * will be treated as relative to the filesystem room.
-     *
-     * @param relativePath
-     * @return
-     */
-    boolean exists(String relativePath);
-
+    ObjectFile get(String category, String name);
     /**
      * Get a URL that can be used to download this file from the server.
      *
@@ -72,4 +45,5 @@ public interface ObjectFileSystem {
      * @return
      */
     String getUrl(ObjectFile file);
+
 }
