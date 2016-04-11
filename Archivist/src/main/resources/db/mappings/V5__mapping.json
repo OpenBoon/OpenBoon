@@ -205,7 +205,7 @@
         },
         {
           "location_template": {
-            "match": ".+Location$|^location$",
+            "match": ".+Location$|^location$|^shape$",
             "mapping": {
               "type": "geo_shape"
             }
