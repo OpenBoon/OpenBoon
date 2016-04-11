@@ -9,10 +9,12 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Shape;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
+import com.zorroa.archivist.sdk.schema.LocationSchema;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -20,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -340,8 +341,8 @@ public class ImageIngestor extends IngestProcessor {
                 double lat = dmsToDegrees(latitude[0], latitude[1], latitude[2], exifDirectory.getString(GpsDirectory.TAG_LATITUDE_REF).equalsIgnoreCase("S"));
                 double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2], exifDirectory.getString(GpsDirectory.TAG_LONGITUDE_REF).equalsIgnoreCase("W"));
 
-                Point2D.Double location = new Point2D.Double(lat, lon);
-                asset.getAttr("image", ImageSchema.class).setLocation(location);
+                LocationSchema location = new LocationSchema(Shape.newPoint(lon, lat));
+                asset.setAttr("gps", location);
             }
         }
     }
