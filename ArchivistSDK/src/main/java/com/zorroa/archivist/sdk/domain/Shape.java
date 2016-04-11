@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,10 @@ public class Shape {
      * we've left it as a generic List<Object>.
      */
     private List<Object> coordinates;
+
+    public static final Shape newPoint(double x, double y) {
+        return new Shape("point", ImmutableList.of(x, y));
+    }
 
     public Shape() { }
 
