@@ -4,6 +4,8 @@
 
 package com.zorroa.archivist.sdk.domain;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ public class AssetAggregateBuilder {
     private AssetScript script;
     private String exclude;
     private String include;
+    private boolean orderByTerm = true;
 
     public AssetSearch getSearch() {
         return search;
@@ -40,6 +43,11 @@ public class AssetAggregateBuilder {
         if (include != null) {
             terms.put("include", include);
         }
+
+        if (orderByTerm == true) {
+            terms.put("order", ImmutableMap.of("_term", "asc"));
+        }
+
         Map<String, Object> names = new HashMap<>();
         names.put("terms", terms);
         Map<String, Object> aggs = new HashMap<>();
@@ -103,6 +111,15 @@ public class AssetAggregateBuilder {
 
     public AssetAggregateBuilder setInclude(String include) {
         this.include = include;
+        return this;
+    }
+
+    public boolean isOrderByTerm() {
+        return orderByTerm;
+    }
+
+    public AssetAggregateBuilder setOrderByTerm(boolean orderByTerm) {
+        this.orderByTerm = orderByTerm;
         return this;
     }
 }
