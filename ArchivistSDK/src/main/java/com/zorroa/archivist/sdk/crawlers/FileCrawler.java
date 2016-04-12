@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.crawlers;
 
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Ints;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequestEntry;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.fileseq.FileSequence;
@@ -58,15 +59,17 @@ public class FileCrawler extends AbstractCrawler {
                         return FileVisitResult.CONTINUE;
                     }
 
-                    FileSequence fs = new FileSequence(file.getAbsolutePath());
-                    if (fs.isValid()) {
-                        String frame = fs.getRange();
-                        fs.setRange("");
-                        sequenceManager.addFrame(fs,
-                                Integer.valueOf(frame),fs.getZfill());
-                    }
-                    else {
-                        consumer.accept(new AnalyzeRequestEntry(file.toURI()));
+                    try {
+                        FileSequence fs = new FileSequence(file.getAbsolutePath());
+                        String range = fs.getRange();
+                        if (fs.isValid() && Ints.tryParse(range) != null) {
+                            fs.setRange("");
+                            sequenceManager.addFrame(fs, Integer.valueOf(range), fs.getZfill());
+                        } else {
+                            consumer.accept(new AnalyzeRequestEntry(file.toURI()));
+                        }
+                    } catch (Exception e) {
+                        logger.warn("Failed to handle file: {}", path, e);
                     }
 
                     return FileVisitResult.CONTINUE;
