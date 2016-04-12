@@ -1,13 +1,11 @@
 package com.zorroa.archivist.sdk.schema;
 
-import com.zorroa.archivist.sdk.domain.Shape;
-
 /**
  * Created by chambers on 4/11/16.
  */
 public class LocationSchema {
 
-    private Shape location;
+    private double[] point;
     private Integer altitude;
     private Long time;
     private String city;
@@ -15,16 +13,16 @@ public class LocationSchema {
 
     public LocationSchema() { }
 
-    public LocationSchema(Shape location) {
-        this.location = location;
+    public LocationSchema(double[] point) {
+        this.point = point;
     }
 
-    public Shape getLocation() {
-        return location;
+    public double[] getPoint() {
+        return point;
     }
 
-    public LocationSchema setLocation(Shape location) {
-        this.location = location;
+    public LocationSchema setPoint(double[] point) {
+        this.point = point;
         return this;
     }
 
