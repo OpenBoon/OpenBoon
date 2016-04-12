@@ -1,4 +1,4 @@
-package com.zorroa.ingestors;
+package com.zorroa.analyst.ingestors;
 
 /**
  * Created by barbara on 1/9/16.

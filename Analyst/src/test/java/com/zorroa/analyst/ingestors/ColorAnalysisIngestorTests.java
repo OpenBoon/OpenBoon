@@ -1,11 +1,11 @@
-package com.zorroa.ingestors;
+package com.zorroa.analyst.ingestors;
 
+import com.zorroa.analyst.ingestors.ColorAnalysisIngestor;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
 import static org.junit.Assert.assertNotEquals;
 
