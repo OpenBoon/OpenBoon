@@ -19,6 +19,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 
 /**
@@ -28,10 +29,16 @@ public class FileCrawler extends AbstractCrawler {
 
     final static Logger logger = LoggerFactory.getLogger(FileCrawler.class);
 
+    /**
+     * Minimum number of frames for a set of files to be considered a sequence.
+     */
+    public final int MIN_SEQUENCE_FRAMES = 2;
+
     private final SequenceManager sequenceManager = new SequenceManager();
 
     @Override
     public void start(URI uri, Consumer<AnalyzeRequestEntry> consumer) throws IOException {
+        final LongAdder total = new LongAdder();
         Path start = new File(uri).toPath();
 
         try {
@@ -68,6 +75,7 @@ public class FileCrawler extends AbstractCrawler {
                         } else {
                             consumer.accept(new AnalyzeRequestEntry(file.toURI()));
                         }
+                        total.increment();
                     } catch (Exception e) {
                         logger.warn("Failed to handle file: {}", path, e);
                     }
@@ -87,6 +95,7 @@ public class FileCrawler extends AbstractCrawler {
 
                     sequenceManager.remove(path);
                     for (Map.Entry<FileSequence, TreeSet<Integer>> entry: sequences.entrySet()) {
+
                         FileSequence fileseq = entry.getKey();
                         TreeSet<Integer> frames = entry.getValue();
 
@@ -99,7 +108,7 @@ public class FileCrawler extends AbstractCrawler {
                         /*
                          * We have to have more than 1 frame to be considered a sequence.
                          */
-                        if (frames.size() > 1) {
+                        if (frames.size() >= MIN_SEQUENCE_FRAMES) {
                             req.setAttr("sequence.spec", fileseq.getFileSpec());
                             req.setAttr("sequence.range", Fileseq.framesToFrameRange(frames, fileseq.getZfill()));
                             req.setAttr("sequence.zfill", fileseq.getZfill());
@@ -107,9 +116,13 @@ public class FileCrawler extends AbstractCrawler {
                             req.setAttr("sequence.start", frames.first());
                             req.setAttr("sequence.end", frames.last());
                             req.setAttr("sequence.size", frames.size());
+                            consumer.accept(req);
                         }
-
-                        consumer.accept(req);
+                        else {
+                            for (int frame: frames) {
+                                consumer.accept(new AnalyzeRequestEntry(fileseq.getFrame(frame)));
+                            }
+                        }
                     }
                     return FileVisitResult.CONTINUE;
                 }
@@ -119,6 +132,8 @@ public class FileCrawler extends AbstractCrawler {
             logger.warn("Failed to walk path: {}", start, e);
             throw e;
         }
+
+        logger.info("Total files submitted: {}", total.longValue());
     }
 
     /**
