@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.ArchivistApplicationTests;
 import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.archivist.sdk.schema.LocationSchema;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
 import org.junit.Test;
@@ -268,9 +269,16 @@ public class SearchServiceTests extends ArchivistApplicationTests {
 
     @Test
     public void getFields() {
+
+        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
+        assetDao.upsert(assetBuilder);
+        refreshIndex();
+
         Map<String, Set<String>> fields = searchService.getFields();
         assertTrue(fields.get("date").size() > 0);
         assertTrue(fields.get("string").size() > 0);
         assertTrue(fields.get("integer").size() > 0);
+        assertTrue(fields.get("point").size() > 0);
     }
 }

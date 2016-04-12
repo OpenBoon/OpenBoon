@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
@@ -325,12 +326,18 @@ public class SearchServiceImpl implements SearchService {
         return result;
     }
 
+    private static final Set<String> NAME_TYPE_OVERRRIDES = ImmutableSet.of("point");
+
     private static void getList(Map<String, Set<String>> result, String fieldName, Map<String, Object> mapProperties) {
         Map<String, Object> map = (Map<String, Object>) mapProperties.get("properties");
         for (String key : map.keySet()) {
             Map<String, Object> item = (Map<String, Object>) map.get(key);
+
             if (item.containsKey("type")) {
                 String type = (String) item.get("type");
+                if (NAME_TYPE_OVERRRIDES.contains(key)) {
+                    type = key;
+                }
                 Set<String> fields = result.get(type);
                 if (fields == null) {
                     fields = new TreeSet<>();
