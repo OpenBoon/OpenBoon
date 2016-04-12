@@ -225,8 +225,7 @@
               "fields": {
                 "raw": {
                   "type": "string",
-                  "index": "not_analyzed",
-                  "analyzer": "trim_analyzer"
+                  "index": "not_analyzed"
                 }
               }
             }
