@@ -226,7 +226,7 @@ public class ImageIngestor extends IngestProcessor {
                 // Descriptions are human-readable forms of the metadata.
                 // Always save the original format, and also save a description if it
                 // has some useful additional information for searching & display.
-                String description = tag.getDescription();
+                String description = tag.getDescription().trim();
                 String descriptionKey = key + "_description";
                 if (description != null && description.equals(directory.getString(tag.getTagType()))) {
                     description = null;
@@ -243,7 +243,7 @@ public class ImageIngestor extends IngestProcessor {
                  */
                 if (value instanceof String) {
 
-                    String strValue = (String) value;
+                    String strValue = ((String) value).trim();
                     if (strValue.length() >= 256) {
                         continue;
                     }
