@@ -9,7 +9,6 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Shape;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
@@ -341,8 +340,8 @@ public class ImageIngestor extends IngestProcessor {
                 double lat = dmsToDegrees(latitude[0], latitude[1], latitude[2], exifDirectory.getString(GpsDirectory.TAG_LATITUDE_REF).equalsIgnoreCase("S"));
                 double lon = dmsToDegrees(longitude[0], longitude[1], longitude[2], exifDirectory.getString(GpsDirectory.TAG_LONGITUDE_REF).equalsIgnoreCase("W"));
 
-                LocationSchema location = new LocationSchema(Shape.newPoint(lon, lat));
-                asset.setAttr("gps", location);
+                LocationSchema location = new LocationSchema(new double[] {lon, lat});
+                asset.setAttr("location", location);
             }
         }
     }
