@@ -2,8 +2,6 @@ package com.zorroa.archivist.sdk.domain;
 
 import com.google.common.base.MoreObjects;
 
-import java.awt.image.BufferedImage;
-
 public class Proxy {
 
     private String name;
@@ -11,7 +9,6 @@ public class Proxy {
     private int width;
     private int height;
     private String format;
-    private BufferedImage image;
 
     public Proxy() { }
 
