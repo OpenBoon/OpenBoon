@@ -63,7 +63,7 @@ public class AssetController {
          * a matter of picking one and forwarding it.
          */
         StringBuilder sb = new StringBuilder(128);
-        String host = asset.getAttr("source:objectStorageHost");
+        String host = asset.getAttr("source.objectStorageHost");
         if (host == null) {
 
             /**
