@@ -117,7 +117,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.VideoIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.PdfIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyProcessor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.CaffeIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.FaceIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ColorAnalysisIngestor"));
@@ -135,7 +135,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.VideoIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ShotgunIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyProcessor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ColorAnalysisIngestor"));
             builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
             builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
