@@ -69,6 +69,35 @@ public class ExcelIngestorTests extends AbstractTest {
         assertTrue(DateUtils.isSameDay(asset.getAttr("Excel.RIG_RELEASE_DATE"), calendar.getTime()));
     }
 
+
+    @Test
+    public void testKeywords() {
+        String fieldValue = "Arlo 1";
+        ExcelIngestor excelIngestor = new ExcelIngestor();
+        ExcelIngestor.RowMapping rowMapping1 = new ExcelIngestor.RowMapping();
+        rowMapping1.fileName = "Data_Listing-Caswell.xlsx";
+        rowMapping1.assetField = "keywords.all";
+        rowMapping1.sheetName = "WCR - Data Listing";
+        rowMapping1.matchFunction = ExcelIngestor.MatchFunction.containsField;
+        rowMapping1.matchFilters = Arrays.asList(ExcelIngestor.MatchFilter.toLower);
+        rowMapping1.titleRow = 5;
+        rowMapping1.matchColumn = "WELL NAME";
+        rowMapping1.outputColumns = Arrays.asList("GA_BASIN", "GA_SUB_BASIN", "OPERATOR", "SPUD_DATE", "RIG_RELEASE_DATE");
+        rowMapping1.keywordColumns = rowMapping1.outputColumns;
+
+        excelIngestor.rowMappings = ImmutableList.of(rowMapping1);
+        initIngestProcessor(excelIngestor);
+        File file = getResourceFile("/images/toucan.jpg");
+        AssetBuilder asset = new AssetBuilder(file.getAbsolutePath());
+        asset.getSource().setType("image/" + asset.getExtension());
+        asset.addKeywords(1, true, "a", "b", fieldValue, "c");
+        asset.setAttr("petrol.wellName", fieldValue);
+        excelIngestor.process(asset);
+        assertEquals("Apache Northwest Pty Ltd", asset.getAttr("Excel.OPERATOR"));
+
+    }
+
+
     @Test
     public void testGeoPoints() {
         ExcelIngestor excelIngestor = new ExcelIngestor();
