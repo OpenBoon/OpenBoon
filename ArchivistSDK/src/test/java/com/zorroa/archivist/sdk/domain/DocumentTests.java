@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.schema.ExtendableSchema;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
-import com.zorroa.archivist.sdk.schema.KeywordsSchemaTests;
 import com.zorroa.archivist.sdk.schema.LinkSchema;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -33,7 +32,7 @@ public class DocumentTests {
     @Test
     public void testAttrContains() {
         KeywordsSchema s = new KeywordsSchema();
-        s.addKeywords("test", "foo");
+        s.addSuggestKeywords("test", "foo");
 
         Document d = new Document();
         d.setAttr("keywords", s);
@@ -116,7 +115,6 @@ public class DocumentTests {
 
         Document d = new Document();
         d.setAttr("a.b.c", b);
-        logger.info("{}", d);
         d.setAttr("a.b.c.name", "hank");
 
         Bean bean = d.getAttr("a.b.c");
@@ -140,12 +138,12 @@ public class DocumentTests {
         words.add("foo");
         words.add("bingle");
 
-        KeywordsSchemaTests k = new KeywordsSchemaTests();
+        KeywordsSchema k = new KeywordsSchema();
         Document d = new Document();
         d.setAttr("a.b.keywords", k);
-        d.setAttr("a.b.keywords.all", words);
+        d.setAttr("a.b.keywords.test", words);
 
-        Set<String> words2 = d.getAttr("a.b.keywords.all");
+        Set<String> words2 = d.getAttr("a.b.keywords.test");
         assertEquals(words, words2);
     }
 

@@ -62,7 +62,7 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
     }
 
     /**
-     * Add the given array of keywords as a particular type of keyword
+     * Add the given collection of keywords as a particular type of keyword
      * as well as suggestion keywords.
      *
      * @param type
@@ -71,6 +71,10 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
     public void addSuggestKeywords(String type, String ... keywords) {
         addKeywords(type, keywords);
         suggest.addAll(Arrays.asList(keywords));
+    }
+
+    public void addToSuggest(Set<String> keywords) {
+        this.suggest.addAll(keywords);
     }
 
     public void setSuggest(Set<String> suggestKeywords) {

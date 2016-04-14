@@ -11,7 +11,6 @@ import com.zorroa.archivist.sdk.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
@@ -159,8 +158,8 @@ public class Document {
             /*
              * Try to use an exposed setter method.
              */
-            new PropertyDescriptor(key,
-                    current.getClass()).getWriteMethod().invoke(current, value);
+            writeMethod(current, key).invoke(current, value);
+            return;
         } catch (Exception e) {
 
             /*
@@ -168,6 +167,7 @@ public class Document {
              */
             for (Method m : current.getClass().getMethods()) {
                 if (m.isAnnotationPresent(JsonAnySetter.class)) {
+
                     try {
                         m.invoke(current, key, value);
                         return;
@@ -183,7 +183,7 @@ public class Document {
             try {
                 ((Map<String, Object>) current).put(key, value);
             } catch (ClassCastException ex) {
-                throw new IllegalArgumentException("Invalid attribute: " + attr);
+                throw new IllegalArgumentException("Invalid attribute: " + attr, ex);
             }
         }
     }
@@ -198,12 +198,7 @@ public class Document {
         String key = Attr.name(attr);
 
         try {
-            /*
-             * Try to use an exposed setter method.
-             */
-
-            new PropertyDescriptor(key,
-                    current.getClass()).getWriteMethod().invoke(current, new Object[] { null });
+            writeMethod(current, key).invoke(current, new Object[] { null });
             return true;
         } catch (Exception e) {
             /*
@@ -286,9 +281,7 @@ public class Document {
             return null;
         }
         try {
-
-            return new PropertyDescriptor(key,
-                    object.getClass()).getReadMethod().invoke(object);
+            return readMethod(object, key).invoke(object);
         } catch (Exception e) {
             /*
              * If the setter doesn't exist, try to use the any getter.
@@ -314,8 +307,7 @@ public class Document {
     private Object createChild(Object parent, String key) {
         Map<String, Object> result = Maps.newHashMap();
         try {
-            new PropertyDescriptor(key,
-                    parent.getClass()).getWriteMethod().invoke(parent, result);
+            writeMethod(parent, key).invoke(parent, result);
         } catch (Exception e) {
 
             for (Method m : parent.getClass().getMethods()) {
@@ -337,6 +329,50 @@ public class Document {
             }
         }
         return result;
+    }
+
+    /**
+     * Obtain the read method for the given function name.  Note that, java.beans.PropertyDescriptor
+     * does not work when the class has setter functions that return 'this'.  (fluent programming)
+     * So the implementation here is less than ideal.
+     *
+     * @param bean
+     * @param name
+     * @return
+     * @throws NoSuchMethodException
+     */
+    private static final Method readMethod(Object bean, String name) throws NoSuchMethodException {
+        final String capName =StringUtil.capitalize(name);
+        for (String methodName: new String[]{
+                String.join("", "get", capName),
+                String.join("", "is", capName)}) {
+            try {
+                return bean.getClass().getMethod(methodName);
+            } catch (NoSuchMethodException e) {
+                continue;
+            }
+        }
+        throw new NoSuchMethodException("Failed to find getter method for '" +
+                name + "' on " + bean);
+    }
+
+    /**
+     * Obtain the write method for the given function name.Note that, java.beans.PropertyDescriptor
+     * does not work when the class has setter functions that return 'this'.  (fluent programming)
+     * So the implementation here is less than ideal.
+     *
+     * @param bean
+     * @param name
+     * @return
+     * @throws NoSuchMethodException
+     */
+    private static final Method writeMethod(Object bean, String name) throws NoSuchMethodException {
+        for (Method method: bean.getClass().getMethods()) {
+            if (method.getName().equals(String.join("", "set", StringUtil.capitalize(name)))) {
+                return method;
+            }
+        }
+        throw new NoSuchMethodException("Failed to find set" + name + " on " + bean.getClass().getName());
     }
 }
 
