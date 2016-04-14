@@ -1,6 +1,7 @@
 package com.zorroa.archivist.sdk.schema;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,13 @@ public class KeywordsSchemaTests {
         KeywordsSchema schema = new KeywordsSchema();
         schema.addKeywords("foo", "testing", "one", "two");
         assertTrue(schema.any().get("foo").contains("testing"));
+    }
+
+    @Test
+    public void testEmptyKeywords() {
+        KeywordsSchema schema = new KeywordsSchema();
+        schema.addKeywords("foo", Sets.newHashSet());
+        assertFalse(schema.any().containsKey("foo"));
     }
 
 }

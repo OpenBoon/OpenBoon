@@ -29,6 +29,9 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
      * @param keywords
      */
     public void addKeywords(String type, Collection<String> keywords) {
+        if (keywords.isEmpty()) {
+            return;
+        }
         Set<String> words = delegate.get(type);
         if (words == null) {
             words = Sets.newHashSet(keywords);
