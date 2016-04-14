@@ -148,14 +148,13 @@ public class FaceIngestor extends IngestProcessor {
                         keywords.add("bigface");
                     }
                 }
-                asset.addKeywords(confidence, true, keywords);
+                keywords.add("face" + confidence);
+                asset.addKeywords("face", keywords);
 
                 // For debugging purposes, We are adding "face"+confidence as an attribute, so we can see the actual number in
                 // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,
                 // and possibly tweak the confidence values we're assigning. Expect this to go away once we learn the values!
                 // Note we didn't add this value to the keywords above, in order to avoid having the clumsy keyword used for search.
-                keywords.add("face" + confidence);
-                asset.setAttr("keywords.face", keywords);
             }
         } finally {
             try {

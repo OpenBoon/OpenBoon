@@ -112,7 +112,7 @@ public class GISMapIngestor extends IngestProcessor {
                     if (value == null) {
                         process.put(type, key);
                         if (!StringUtil.isNumeric(key)) {
-                            assetBuilder.addKeywords(1, true, key);
+                            assetBuilder.addKeywords("gis", key);
                         }
                     }
                     else {

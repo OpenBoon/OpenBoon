@@ -228,7 +228,7 @@ public class RetrosheetIngestor extends IngestProcessor {
     public void putField(AssetBuilder asset, String key, String value) {
         if (value == null)
             return;
-        asset.addKeywords(0.8, true, value);
+        asset.addKeywords("baseball", value);
         asset.setAttr(attr("retrosheet", key), value);
     }
 

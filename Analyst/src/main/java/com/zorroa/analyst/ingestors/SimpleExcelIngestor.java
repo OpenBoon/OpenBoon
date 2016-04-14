@@ -107,10 +107,10 @@ public class SimpleExcelIngestor extends IngestProcessor {
                     switch (field.getType()) {
                         case csv:
                             String[] values = cell.getStringCellValue().trim().split(",");
-                            assetBuilder.getKeywords().addKeywords(1, false, values);
+                            assetBuilder.addKeywords("excel", values);
                             break;
                         default:
-                            assetBuilder.getKeywords().addKeywords(1, false, cell.getStringCellValue());
+                            assetBuilder.addKeywords("excel", cell.getStringCellValue());
                             break;
                     }
                 }

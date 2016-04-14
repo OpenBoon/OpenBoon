@@ -4,7 +4,6 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.geocode.GeoName;
 import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.sdk.util.GeoUtils;
 
 import java.awt.geom.Point2D;
@@ -39,13 +38,13 @@ public class ReverseGeocodeIngestor extends IngestProcessor {
         if (place.name != null) {
             asset.setAttr(attr(namespace, "name"), place.name);
             if (isKeyword) {
-                asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, place.name);
+                asset.addSuggestKeywords("gis", place.name);
             }
         }
         if (place.country != null) {
             asset.setAttr(attr(namespace, "country"), place.country);
             if (isKeyword) {
-                asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, place.country);
+                asset.addSuggestKeywords("gis", place.country);
             }
         }
     }

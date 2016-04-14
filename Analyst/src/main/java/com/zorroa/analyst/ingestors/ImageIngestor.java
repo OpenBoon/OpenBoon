@@ -12,7 +12,6 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
-import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.sdk.schema.LocationSchema;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -248,7 +247,7 @@ public class ImageIngestor extends IngestProcessor {
                     }
                     asset.setAttr(attr("image", namespace, key), strValue);
                     if (keywordArgs.contains(id)) {
-                        asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, strValue);
+                        asset.addKeywords("exif", strValue);
                     }
                 } else if (value instanceof Rational) {
                     Rational rational = (Rational)value;
@@ -271,7 +270,7 @@ public class ImageIngestor extends IngestProcessor {
                         String[] strList = (String[]) value;
                         asset.setAttr(attr("image", namespace, key), value);
                         if (keywordArgs.contains(id)) {
-                            asset.addKeywords(KeywordsSchema.CONFIDENCE_MAX, true, strList);
+                            asset.addKeywords("exif", strList);
                         }
                     } else if (componentName.equals("com.drew.lang.Rational")) {
                         Rational[] rationals = (Rational[]) value;

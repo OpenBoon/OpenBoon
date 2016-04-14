@@ -90,9 +90,11 @@ public class ExcelIngestorTests extends AbstractTest {
         File file = getResourceFile("/images/toucan.jpg");
         AssetBuilder asset = new AssetBuilder(file.getAbsolutePath());
         asset.getSource().setType("image/" + asset.getExtension());
-        asset.addKeywords(1, true, "a", "b", fieldValue, "c");
+        asset.addSuggestKeywords("excel", "a", "b", fieldValue, "c");
         asset.setAttr("petrol.wellName", fieldValue);
         excelIngestor.process(asset);
+
+        // TODO: not sure why this is failing.
         assertEquals("Apache Northwest Pty Ltd", asset.getAttr("Excel.OPERATOR"));
 
     }

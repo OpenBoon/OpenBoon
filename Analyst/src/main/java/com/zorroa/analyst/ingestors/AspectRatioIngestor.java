@@ -54,7 +54,7 @@ public class AspectRatioIngestor  extends IngestProcessor {
             if (aspect > a.minAspect && aspect < a.maxAspect) {
                 asset.setAttr(attr(namespace, a.field), a.keyword);
                 if (a.isKeyword) {
-                    asset.addKeywords(1, true, a.keyword);
+                    asset.addSuggestKeywords("aspect", a.keyword);
                 }
             }
         }

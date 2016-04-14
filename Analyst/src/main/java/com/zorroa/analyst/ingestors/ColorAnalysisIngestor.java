@@ -27,103 +27,144 @@ package com.zorroa.analyst.ingestors;
 // to re-structure classes to take advantage of common functionality
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.primitives.Floats;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Color;
 import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.exception.IngestException;
+import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ProxySchema;
-import org.bytedeco.javacpp.indexer.*;
+import com.zorroa.archivist.sdk.util.Json;
+import org.bytedeco.javacpp.indexer.DoubleIndexer;
+import org.bytedeco.javacpp.indexer.FloatBufferIndexer;
+import org.bytedeco.javacpp.indexer.FloatIndexer;
+import org.bytedeco.javacpp.indexer.IntBufferIndexer;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.bytedeco.javacpp.opencv_imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class ColorAnalysisIngestor extends IngestProcessor {
 
-// Smooth + downscale: smooth out small details + artifacts etc + increase speed
+    private static final Logger logger = LoggerFactory.getLogger(ColorAnalysisIngestor.class);
 
-    //! Color space used
-    //! Default: HSV
+    @Argument
     String colorSpace = "Lab";
 
-    //! Logger
-    private static final Logger logger = LoggerFactory.getLogger(ColorAnalysisIngestor.class);
+    @Argument
+    Integer numClusters = 8;
+
+    private Map<int[], Color> colorPalette;
+
+    @Override
+    public  void init() {
+        try {
+            colorPalette = loadColorPalette();
+        } catch (IOException e) {
+            logger.warn("Failed to load color palette", e);
+            throw new IngestException("Failed to load color palette");
+        }
+    }
+
+    private HashMap<int[], Color> loadColorPalette() throws IOException {
+        List<Color> colors = Json.Mapper.readValue(new File("models/color/colors.json"),
+                new TypeReference<List<Color>>() {});
+        HashMap<int[], Color> colorPalette = Maps.newHashMapWithExpectedSize(colors.size());
+
+        final boolean isLab = colorSpace.equals("Lab");
+
+        for (Color color: colors) {
+            int[] colorValues = new int[]{
+                    color.getBlue(),
+                    color.getGreen(),
+                    color.getRed()
+
+            };
+
+            if (isLab) {
+                opencv_core.Mat rgbColors = new opencv_core.Mat(1, 1, opencv_core.CV_32FC3);
+                opencv_core.Mat labColors = new opencv_core.Mat(1, 1, opencv_core.CV_32FC3);
+                FloatBufferIndexer labColorsIndexer = labColors.createIndexer();
+                FloatIndexer rgbColorsIndexer = rgbColors.createIndexer();
+
+                float[] fpaletteColor = {(float) (colorValues[0] / 255.0f), (float) (colorValues[1] / 255.0f), (float) (colorValues[2] / 255.0f)};
+                rgbColorsIndexer.put(0, 0, fpaletteColor);
+                opencv_imgproc.cvtColor(rgbColors, labColors, opencv_imgproc.COLOR_BGR2Lab);
+                colorValues[0] = (int) labColorsIndexer.get(0, 0, 0) * 255 / 100;
+                colorValues[1] = (int) labColorsIndexer.get(0, 0, 1) + 128;
+                colorValues[2] = (int) labColorsIndexer.get(0, 0, 2) + 128;
+            }
+
+            colorPalette.put(colorValues, color);
+        }
+
+        return colorPalette;
+    }
 
     /**
      * Identifies dominant colors through Vector Quantization.
      * Currently uses K-means clustering technique to take advantage as it is readily available
      * with OpenCV. However, another VQ technique could be used.
      */
-    Map<int[], Float> performVQAnalysis(opencv_core.Mat imgToAnalyze){
+    private Map<int[], Float> performVQAnalysis(opencv_core.Mat imgToAnalyze) {
 
-        /*
-            Identify clusters.
-         */
-
-        opencv_core.Mat samples = new opencv_core.Mat(imgToAnalyze.rows() * imgToAnalyze.cols(), 1, opencv_core.CV_8UC3);
-        UByteBufferIndexer samplesIndexor = samples.createIndexer();
-        UByteBufferIndexer imgToAnalyzeIndexor = imgToAnalyze.createIndexer();
-
-        for (int i = 0; i < imgToAnalyze.rows(); i++) {
-            for (int j = 0; j < imgToAnalyze.cols(); j++) {
-                samplesIndexor.put((i * imgToAnalyze.rows() + j), 0, imgToAnalyzeIndexor.get(i, j));
-            }
-        }
+        opencv_core.Mat samples = imgToAnalyze.reshape(1, imgToAnalyze.cols() * imgToAnalyze.rows());
+        samples.convertTo(samples, opencv_core.CV_32F);
 
         opencv_core.Mat labels = new opencv_core.Mat();
-
-        opencv_core.TermCriteria criteria = new opencv_core.TermCriteria(opencv_core.TermCriteria.COUNT, 100, 1);
-        opencv_core.Mat samples32f = new opencv_core.Mat();
-        samples.convertTo(samples32f, opencv_core.CV_32F, 1.0, 1.0);
         opencv_core.Mat centers = new opencv_core.Mat();
-        int nClusters = 8;
-        opencv_core.kmeans(samples32f, nClusters, labels, criteria, 1, opencv_core.KMEANS_PP_CENTERS, centers);
-        logger.info("Completed k-means clustering.");
-        logger.info("==== Initial Clusters =====");
+
+        opencv_core.TermCriteria criteria = new opencv_core.TermCriteria(
+                opencv_core.TermCriteria.EPS + opencv_core.TermCriteria.MAX_ITER, 10, 1.0);
+
+        opencv_core.kmeans(samples, numClusters, labels, criteria, 1,
+                opencv_core.KMEANS_RANDOM_CENTERS, centers);
 
         FloatBufferIndexer centersIndexer = centers.createIndexer();
-        for (int i = 0; i < nClusters; i++) {
-            logger.info("Cluster: {}, {}, {} ", centersIndexer.get(i, 0), centersIndexer.get(i, 1), centersIndexer.get(i, 2));
+        for (int i = 0; i < numClusters; i++) {
+            logger.debug("Cluster: {}, {}, {} ", centersIndexer.get(i, 0), centersIndexer.get(i, 1), centersIndexer.get(i, 2));
         }
 
-        // Merge clusters whose centers are very close to one another:
-        // 1. Compute distances between cluster centers -
-        // 2. if less than heuristic, replace centers by average of the two and reassign labels
-        // 3. stop when no distances pass the heuristic
-        // For now simple coding for rapid dvp / base testing purposes - optimize later
-        //normalize(labels, labelsIndexer, nClusters, centersIndexer);
-
+        /**
+         * Merge clusters whose centers are very close to one another.
+         * 1. Compute distances between cluster centers
+         * 2. if less than heuristic, replace centers by average of the two and reassign labels
+         * 3. stop when no distances pass the heuristic
+         * For now simple coding for rapid dvp / base testing purposes - optimize later
+         *
+         */
 
         IntBufferIndexer labelsIndexer = labels.createIndexer();
 
+        /**
+         * This is currently broken, not sure how to fix it.
+         */
+        //normalize(labels, labelsIndexer, numClusters, centersIndexer);
+
+        /**
+         * TODO: At some point, replace with different structure than mat further up because there
+         * does not seem to be efficient mechanism to iterate Mat on Java side
+         */
         HashMap<int[], Float> analysisResult = new HashMap<>();
         float[] tempHolder = new float[centers.rows()];
-        // TBD: At some point, replace with different structure than mat further up because there
-        // does not seem to be efficient mechanism to iterate Mat on Java side
-        for (int i = 0; i < centers.rows(); i++) {
-            tempHolder[i] = 0;
-        }
+        Arrays.fill(tempHolder, 0);
+
         for (int i = 0; i < labels.rows(); i++) {
-            int index = (int) labelsIndexer.get(i,0);
-            tempHolder[ index ] += 1.0 / labels.rows();
+            int index = labelsIndexer.get(i,0);
+            tempHolder[index] += 1.0 / labels.rows();
         }
 
-        logger.info("==== Final VQ Analysis Results ===== {}");
         for (int i = 0; i < centers.rows(); i++) {
             int[] center = new int[3];
             center[0] = (int) centersIndexer.get(i,0);
@@ -131,13 +172,21 @@ public class ColorAnalysisIngestor extends IngestProcessor {
             center[2] = (int) centersIndexer.get(i,2);
             if (center[0] != -1 && center[1] != -1 && center[2] != -1) {
                 analysisResult.put(center, new Float(tempHolder[i]));
-                //ogger.info("Center: {}, {}, {} - coverage: {}", center[0], center[1], center[2], tempHolder[i] * 100);
             }
         }
 
         return analysisResult;
     }
 
+    /**
+     * This method is broken.
+     * error: (-215) mask.empty() || mask.type() == CV_8U in function norm
+     *
+     * @param labels
+     * @param labelsIndexer
+     * @param nClusters
+     * @param centersIndexer
+     */
     private void normalize(opencv_core.Mat labels, IntBufferIndexer labelsIndexer, int nClusters, FloatBufferIndexer centersIndexer) {
         float mergeHeuristic = 5;
         while (true ) {
@@ -197,7 +246,7 @@ public class ColorAnalysisIngestor extends IngestProcessor {
      * @param  nBins  number of bins desired along each dimension
      * @return 3D histogram stored as a map between non-zero histogram bins and count (normalized to be between 0 & 1)
      */
-    Map<int[], Float> performUniformQuantizationAnalysis(opencv_core.Mat imgToAnalyze, int[] ranges, int[] nBins){
+    private Map<int[], Float> performUniformQuantizationAnalysis(opencv_core.Mat imgToAnalyze, int[] ranges, int[] nBins){
 
         float[][][] threedHist = new float[nBins[0]][nBins[1]][nBins[2]];
         for (int i = 0; i < nBins[0]; i++) {
@@ -241,176 +290,104 @@ public class ColorAnalysisIngestor extends IngestProcessor {
         return colorAnalysisResults;
     }
 
-
-    /** Loads the color palette from supplied xml file.
-     * Will convert the palette to the color space specified for analysis
-     * @param colorPaletteFile The file to read from
-     */
-    // XXX: This will need to be moved elsewhere so the palette is loaded before the analysis
-    // XXX: and passed with the builder
-    // XXX: Also right now assuming palette is in RGB.
-    Map<int[], String> loadColorPaletteFromXmlFile(File colorPaletteFile) {
-
-        HashMap<int[], String> colorPalette = new HashMap<int[], String>();
-
-        // Basic loading for now.
-        // TBD: expand in case the xml file stores several possible palettes.
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            // Load the input XML document, parse it and return an instance of the
-            // Document class.
-            Document document = builder.parse(colorPaletteFile);
-            NodeList nodeList = document.getElementsByTagName("color");
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                Element elem = (Element) node;
-                String name = elem.getElementsByTagName("name").item(0).getChildNodes().item(0).getNodeValue();
-                int[] colorValues = new int[3];
-                colorValues[2] = Integer.parseInt(elem.getElementsByTagName("rvalue").item(0).getChildNodes().item(0).getNodeValue());
-                colorValues[1] = Integer.parseInt(elem.getElementsByTagName("gvalue").item(0).getChildNodes().item(0).getNodeValue());
-                colorValues[0] = Integer.parseInt(elem.getElementsByTagName("bvalue").item(0).getChildNodes().item(0).getNodeValue());
-                if (colorSpace.compareTo("Lab") == 0) {
-                    opencv_core.Mat rgbColors = new opencv_core.Mat(1, 1, opencv_core.CV_32FC3);
-                    opencv_core.Mat labColors = new opencv_core.Mat(1, 1, opencv_core.CV_32FC3);
-                    FloatBufferIndexer labColorsIndexer = labColors.createIndexer();
-                    FloatIndexer rgbColorsIndexer = rgbColors.createIndexer();
-
-                    float[] fpaletteColor = {(float) (colorValues[0]/255.0f), (float) (colorValues[1]/255.0f), (float) (colorValues[2]/255.0f)};
-                    rgbColorsIndexer.put(0, 0, fpaletteColor);
-                    opencv_imgproc.cvtColor(rgbColors, labColors, opencv_imgproc.COLOR_BGR2Lab);
-                    colorValues[0] = (int) labColorsIndexer.get(0,0, 0) * 255 / 100;
-                    colorValues[1] = (int) labColorsIndexer.get(0,0, 1) + 128;
-                    colorValues[2] = (int) labColorsIndexer.get(0,0, 2) + 128;
-                    //logger.info("Lab palette color {}: Lab: {}, {}, {}", name, colorValues[0], colorValues[1], colorValues[2]);
-                }
-                colorPalette.put(colorValues, name);
-            }
-        }
-        catch(IOException | ParserConfigurationException | SAXException e){
-            logger.warn("error loading color palette file: {}", colorPaletteFile, e);
-            return null;
-        }
-        // TBD: Catch exceptions
-        return colorPalette;
-
-    }
-
     /**
      * Maps color cluster centers (coordinates in chosen color space) to color names based on a supplied color palette.
      * This is currently performed by finding the nearest palette color (based on pre-defined distance at this time).
      * @param clusters The set of colors to assign names to
-     * @param colorPalette The color palette that will be used to map color coordinates to color name
      */
-    Map<int[], String> performColorMapping(Map<int[], Float> clusters, Map<int[], String> colorPalette) {
-
-        HashMap<int[], String> colorMappingResults = new HashMap<int[], String>();
+    private List<Color> getMappedColors(Map<int[], Float> clusters) {
+        Map<String, Color> result = Maps.newHashMapWithExpectedSize(numClusters);
         Set<int[]> paletteColors = colorPalette.keySet();
-        for (int[] cluster : clusters.keySet()) {
+
+        for (Map.Entry<int[], Float> entry : clusters.entrySet()) {
+            int[] cluster = entry.getKey();
+            float coverage = entry.getValue() * 100;
             double minDist = Double.MAX_VALUE;
-
-            String colorName = "";
-
+            Color color = null;
             for (int[] paletteColor : paletteColors) {
-
                 double d1 = (double)( cluster[0] - paletteColor[0] );
                 double d2 = (double)( cluster[1] - paletteColor[1] );
                 double d3 = (double)( cluster[2] - paletteColor[2] );
-
-                //double d = Math.sqrt( d1*d1 + d2*d2 + d3*d3);
-                double d = Math.abs(d1) + Math.abs(d2) + Math.abs(d3);
-                if ( d < minDist ) {
+                double d = Math.sqrt((d1*d1) + (d2*d2) + (d3*d3));
+                if (d < minDist) {
                     minDist = d;
-                    colorName = colorPalette.get(paletteColor);
+                    color = colorPalette.get(paletteColor);
                 }
             }
-            colorMappingResults.put(cluster, colorName);
-            float coverage = ((Float) clusters.get(cluster)).floatValue() * 100;
-            logger.info("Dominant color: {}, {}, {} -> {} w. coverage: {}", cluster[0], cluster[1], cluster[2], colorName, Float.toString(coverage));
+
+            if (color != null) {
+                color.setCoverage(coverage);
+                if (result.containsKey(color.getName())) {
+                    Color existingColor = result.get(color.getName());
+                    existingColor.setCoverage(
+                            existingColor.getCoverage() + color.getCoverage());
+                }
+                else {
+                    result.put(color.getName(), color);
+                }
+            }
         }
-        return colorMappingResults;
+
+        List<Color> values = Lists.newArrayList(result.values());
+        Collections.sort(values, (o1, o2) -> Floats.compare(o2.getCoverage(), o1.getCoverage()));
+
+        for (Color color: values) {
+            logger.debug("Mapped {} coverage: {}", color, color.getCoverage());
+        }
+
+        return values;
     }
 
+    private List<Color> getColors(Map<int[], Float> clusters) {
+        List<Color> result = Lists.newArrayListWithCapacity(clusters.size());
+        for (Map.Entry<int[], Float> entry: clusters.entrySet()) {
+                Color color = new Color();
+                color.setBlue(entry.getKey()[0]);
+                color.setGreen(entry.getKey()[1]);
+                color.setRed(entry.getKey()[2]);
+                color.setHex(String.format("#%02x%02x%02x",
+                        color.getRed(), color.getGreen(), color.getBlue()));
 
-    /** Performs the color analysis on the supplied asset
-     @param asset The asset to analyse
-     */
+                color.setCoverage(entry.getValue() * 100);
+                result.add(color);
+        }
+
+        Collections.sort(result, (o1, o2) -> Floats.compare(o2.getCoverage(), o1.getCoverage()));
+        for (Color color: result) {
+            logger.debug("Original {} coverage: {}", color, color.getCoverage());
+        }
+        return result;
+    }
+
+    Map<String, Integer> COLORSPACES = ImmutableMap.of(
+            "Lab", opencv_imgproc.COLOR_BGR2Lab,
+            "HSV", opencv_imgproc.COLOR_BGR2HSV);
+
     @Override
     public void process(AssetBuilder asset) {
-
-        // Check that the asset is indeed an image and load the image file
-        // By default, we load the image as a BGR image
-
-        if (!asset.isSuperType("image")) {
-            logger.info("Asset is not an image -> Color Analysis not performed.");
-            return;     // Only process images
-        }
 
         ProxySchema proxies = asset.getAttr("proxies", ProxySchema.class);
         Proxy proxy = proxies.atLeastThisSize(128);
 
-        // Open files to perform analysis on. If proxies are available, use the smallest one
-        // up to 128x128. If none is available, throw exception (as per convo with Dan).
+        if (proxy == null) {
+            logger.debug("skipping color analysis, no proxy of suitable size");
+        }
+
         String filePath = objectFileSystem.get(proxy.getName()).getFile().getAbsolutePath();
-        logger.info("Starting color analysis for: {} ", filePath);
         opencv_core.Mat imgToAnalyze =  opencv_imgcodecs.imread(filePath);
 
-
-        String resourcePath = "models/color/";
-        File colorPaletteFile = new File(resourcePath + "ColorPalettes.xml"); // XXX TBD: Don't hard code filename here
-        Map<int[], String> colorPalette = loadColorPaletteFromXmlFile(colorPaletteFile);
-        if (colorPalette == null) {
-            logger.error("Color Palette could not be loaded.");
+        if (COLORSPACES.containsKey(colorSpace)) {
+            opencv_imgproc.cvtColor(imgToAnalyze, imgToAnalyze, COLORSPACES.get(colorSpace));
         }
 
-        // Read parameters
-        if (getArgs().get("ColorSpace") != null) {
-            String argColorSpace = (String) getArgs().get("ColorSpace");
-            if (argColorSpace.compareTo("HSV")!= 0 && argColorSpace.compareTo("Lab") != 0 && argColorSpace.compareTo("BGR") != 0) {
-                logger.info("{} is not a recognized color space. Switching to default BGR", argColorSpace);
-            }
-            else {
-                colorSpace = argColorSpace;
-            }
-        }
-        else {
-            logger.info("No color space specified, using default color space: {}", colorSpace);
-        }
-
-        /*
-         If required, convert image to the desired color space
-         Use OpenCV
-          */
-
-        if (colorSpace.compareTo("Lab") == 0) {
-            opencv_imgproc.cvtColor(imgToAnalyze, imgToAnalyze, opencv_imgproc.COLOR_BGR2Lab);
-        }
-        else if (colorSpace.compareTo("HSV") == 0) {
-            opencv_imgproc.cvtColor(imgToAnalyze, imgToAnalyze, opencv_imgproc.COLOR_BGR2HSV);
-        }
-
-        /*
-        int[] ranges = {256, 256, 256};
-        int[] nBins = {4, 4, 4};
-        HashMap<int[], Float> uniQAnalysisResults = performUniformQuantizationAnalysis(imgToAnalyze, ranges, nBins);
-        logger.info("==== Uniform quantization analysis results: ====");
-        Set<Map.Entry<int[],Float>> resultsSet = uniQAnalysisResults.entrySet();
-        for (Iterator it = resultsSet.iterator(); it.hasNext();) {
-            Map.Entry<int[],Float> entry = (Map.Entry<int[],Float>)it.next();
-            int[] bin = entry.getKey();
-            Float value = entry.getValue();
-            float percentage = value.floatValue() * 100;
-            logger.info("Bin: " + bin[0] + "," + bin[1] + "," + bin[2] + " - " + Float.toString(percentage));
-        }
-        */
-
-        logger.info("=== Color Analysis results ===");
         Map<int[], Float> colorAnalysisResults = performVQAnalysis(imgToAnalyze);
-        Map<int[], String> colorMappingResults = performColorMapping(colorAnalysisResults, colorPalette);
+        List<Color> mappedColors = getMappedColors(colorAnalysisResults);
+        List<Color> originalColors = getColors(colorAnalysisResults);
 
-        // Finalize outputs passed via assets
-        asset.setAttr("color.clusters", colorAnalysisResults);
-        asset.setAttr("color.mapping", colorMappingResults);
+        /**
+         * TODO: Not 100% sure we need both here but we'll leave it as is.
+         */
+        asset.setAttr("colors.original", originalColors);
+        asset.setAttr("colors.mapped", mappedColors);
     }
-
 }

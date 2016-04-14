@@ -150,7 +150,7 @@ public class LogoIngestor extends IngestProcessor {
             }
 
             logger.debug("LogoIngestor keywords {}", keywords);
-            asset.addKeywords(confidence, true, keywords);
+            asset.addSuggestKeywords("logo", keywords);
 
             // For debugging purposes, We are adding "visa"+confidence as an attribute, so we can see the actual number in
             // Curator and see how the sorting is working, what the bad outliers (false positives, false negatives) are,

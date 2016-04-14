@@ -1,6 +1,5 @@
 package com.zorroa.analyst.ingestors;
 
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Proxy;
 import com.zorroa.archivist.sdk.exception.IngestException;
@@ -16,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
 
 import static org.bytedeco.javacpp.opencv_core.Mat;
 
@@ -116,13 +114,22 @@ public class CaffeIngestor extends IngestProcessor {
         final float confidenceThreshold = 0.1f;
         List<CaffeKeyword> caffeKeywords = caffeClassifier.classify(mat, 5, confidenceThreshold);
 
-        // Add keywords with confidence and as a single block
-        Set<String> keywords = Sets.newHashSetWithExpectedSize(caffeKeywords.size());
         for (CaffeKeyword caffeKeyword : caffeKeywords) {
-            keywords.addAll(caffeKeyword.keywords);
-            asset.addKeywords(caffeKeyword.confidence, true /*suggest*/, caffeKeyword.keywords);
+            /**
+             * TODO: I've never seen a caffe confidence over 0.1
+             * they are basically all the same confidence.
+             *
+             */
+            if (caffeKeyword.confidence > 0.1f) {
+                asset.addSuggestKeywords("caffe_high", caffeKeyword.keywords);
+                asset.addKeywords("caffe", caffeKeyword.keywords);
+            }
+            else {
+                asset.addSuggestKeywords("caffe_low", caffeKeyword.keywords);
+                asset.addKeywords("caffe", caffeKeyword.keywords);
+            }
+
         }
-        asset.setAttr("keywords.caffe", keywords);
     }
 
     @Override

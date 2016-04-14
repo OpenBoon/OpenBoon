@@ -119,8 +119,8 @@ public class FilePathIngestor extends IngestProcessor {
          * which was the old default, and the directory the file is in.
          */
         if (opts.matchers == null || opts.matchers.isEmpty()) {
-            assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
-            assetBuilder.addKeywords(1, true, FileUtils.filename(assetBuilder.getDirectory()));
+            assetBuilder.addSuggestKeywords("source", assetBuilder.getFilename());
+            assetBuilder.addSuggestKeywords("source", FileUtils.filename(assetBuilder.getDirectory()));
             return;
         }
 
@@ -142,7 +142,7 @@ public class FilePathIngestor extends IngestProcessor {
                 for (int i = 0; i < matcher.attrs.size(); i++) {
                     assetBuilder.setAttr(matcher.attrs.get(i), m.group(i+1));
                     if (matcher.keywords) {
-                        assetBuilder.addKeywords(1, matcher.suggest, m.group(i+1));
+                        assetBuilder.addSuggestKeywords("source", m.group(i+1));
                     }
                 }
             }

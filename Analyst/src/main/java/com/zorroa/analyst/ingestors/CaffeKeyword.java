@@ -14,10 +14,8 @@ import java.util.List;
  *
  */
 public class CaffeKeyword {
-    List<String> keywords;
-    float confidence;
-
-    CaffeKeyword() {}
+    public final List<String> keywords;
+    public final float confidence;
 
     CaffeKeyword(List<String> keywords, float confidence) {
         this.keywords = keywords;

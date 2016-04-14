@@ -344,7 +344,7 @@ public class ExcelIngestor extends IngestProcessor {
             if (keywordColumns != null) {
                 for (String column : keywordColumns) {
                     Cell cell = getCell(row, column);
-                    asset.addKeywords(1, true /*suggest*/, dataFormatter.formatCellValue(cell));
+                    asset.addSuggestKeywords("excel", dataFormatter.formatCellValue(cell));
                 }
             }
             if (rowMapping.geoColumns != null) {

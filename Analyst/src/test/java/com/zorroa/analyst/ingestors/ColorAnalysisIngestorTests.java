@@ -3,12 +3,14 @@ package com.zorroa.analyst.ingestors;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Color;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.util.Json;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertNotEquals;
 
@@ -25,11 +27,16 @@ public class ColorAnalysisIngestorTests extends AbstractTest {
                 .add(initIngestProcessor(new ColorAnalysisIngestor()))
                 .build();
 
-        File file = getResourceFile("/images/faces.jpg");
-        AssetBuilder asset = ingestFile(file, pipeline);
-        Map<int[], Float> analysisResults = asset.getAttr("color.clusters");
-        Map<int[], String> colorMapping = asset.getAttr("color.mapping");
-        assertNotEquals(analysisResults, null);
-        assertNotEquals(colorMapping, null);
+        AssetBuilder asset = ingestFile(new File("src/test/resources/images/faces.jpg"), pipeline);
+        List<Color> originalColor = asset.getAttr("colors.original");
+        List<Color> mappedColor = asset.getAttr("colors.mapped");
+        assertNotEquals(originalColor, null);
+        assertNotEquals(mappedColor, null);
+
+        logger.info("{}", (Collection) asset.getKeywords().getAll());
+
+        logger.info(Json.serializeToString(asset.getKeywords()));
+
+
     }
 }

@@ -157,14 +157,14 @@ public class OCRIngestor extends IngestProcessor {
         }
 
         asset.setAttr(attr(docType.namespace, docType.key), docType.value);
-        asset.addKeywords(1, true, docType.value);
+        asset.addSuggestKeywords("ocr", docType.value);
 
         for (Box ocrBox: docType.boxes) {
             String text = getText(api, image, ocrBox.boxArea.get(0), ocrBox.boxArea.get(1), ocrBox.boxArea.get(2), ocrBox.boxArea.get(3));
             asset.setAttr(attr(ocrBox.namespace, ocrBox.key), text);
             asset.setAttr(attr(ocrBox.namespace, ocrBox.key), text);
             if (ocrBox.isKeyword) {
-                asset.addKeywords(1, true, text);
+                asset.addKeywords("ocr", text);
             }
 
         }
