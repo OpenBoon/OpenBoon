@@ -11,6 +11,6 @@ public class GeoUtilsTests {
 
     @Test
     public void testNearestPlace() {
-        assertEquals("Newman", GeoUtils.nearestPlace(-23.456, 123.456));
+        assertEquals("Newman", GeoUtils.nearestPlace(-23.456, 123.456).name);
     }
 }
