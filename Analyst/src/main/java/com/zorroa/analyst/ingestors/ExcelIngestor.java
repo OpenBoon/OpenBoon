@@ -1,5 +1,6 @@
 package com.zorroa.analyst.ingestors;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
@@ -29,10 +30,7 @@ import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.zorroa.archivist.sdk.domain.Attr.attr;
 
@@ -288,10 +286,23 @@ public class ExcelIngestor extends IngestProcessor {
 
         @Override
         public void process(AssetBuilder asset) {
-            String field = filter(asset.getAttr(rowMapping.assetField), rowMapping.matchFilters);
+            Object attr = asset.getAttr(rowMapping.assetField);
+
+            if (attr instanceof Collection) {
+                for (Object value : (Collection) attr) {
+                    compareAndAdd((String) value, asset);
+                }
+            } else if (attr instanceof String){
+                compareAndAdd((String) attr, asset);
+            }
+        }
+
+        protected void compareAndAdd(String value, AssetBuilder asset) {
+            String field = filter(value, rowMapping.matchFilters);
             if (field == null) {
                 return;
             }
+
             for (int r = 0; r < filteredCells.size(); ++r) {
                 if (field.contains(filteredCells.get(r))) {
                     addAttributesAndKeywords(r, asset);
