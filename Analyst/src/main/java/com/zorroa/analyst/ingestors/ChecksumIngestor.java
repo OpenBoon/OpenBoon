@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class ChecksumProcessor extends IngestProcessor {
+public class ChecksumIngestor extends IngestProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChecksumProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChecksumIngestor.class);
 
     @Override
     public void process(AssetBuilder asset) {

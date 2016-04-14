@@ -25,7 +25,7 @@ public class ProxyProcessorTests extends AbstractTest {
     public void testProcess() {
         final List<IngestProcessor> pipeline = ImmutableList.<IngestProcessor>builder()
                 .add(initIngestProcessor(new ImageIngestor()))
-                .add(initIngestProcessor(new ProxyProcessor()))
+                .add(initIngestProcessor(new ProxyIngestor()))
                 .build();
 
         File file = getResourceFile("/images/toucan.jpg");
@@ -41,7 +41,7 @@ public class ProxyProcessorTests extends AbstractTest {
 
     @Test
     public void testArgs() {
-        ProxyProcessor proxyProcessor = new ProxyProcessor();
+        ProxyIngestor proxyProcessor = new ProxyIngestor();
 
         // Construct a map with the parsed JSON test data
         Map<String, Object> proxyOutput = ImmutableMap.<String, Object>builder()
@@ -62,7 +62,7 @@ public class ProxyProcessorTests extends AbstractTest {
         proxyProcessor.init();
 
         // Test to make sure extraction worked
-        List<ProxyProcessor.Output> outputs = proxyProcessor.getOutputs();
+        List<ProxyIngestor.Output> outputs = proxyProcessor.getOutputs();
         assertEquals(1, outputs.size());
         assertEquals("png", outputs.get(0).format);
         assertEquals(227, outputs.get(0).size);

@@ -28,7 +28,7 @@ public class ShotgunIngestorTests extends AbstractTest {
                 .add(initIngestProcessor(new FilePathIngestor().setOpts(opts)))
                 .add(initIngestProcessor(new BlenderIngestor()))
                 .add(initIngestProcessor(new ShotgunIngestor()))
-                .add(initIngestProcessor(new ProxyProcessor()))
+                .add(initIngestProcessor(new ProxyIngestor()))
                 .build();
 
         List<AssetBuilder> assets = Lists.newArrayList();

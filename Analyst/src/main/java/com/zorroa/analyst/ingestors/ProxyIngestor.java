@@ -32,9 +32,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class ProxyProcessor extends IngestProcessor {
+public class ProxyIngestor extends IngestProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProxyProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProxyIngestor.class);
 
     // Argument option that specifies how to output a single proxy
     static class Output {

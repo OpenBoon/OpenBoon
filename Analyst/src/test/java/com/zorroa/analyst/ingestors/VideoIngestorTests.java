@@ -22,7 +22,7 @@ public class VideoIngestorTests extends AbstractTest {
 
         final List<IngestProcessor> pipeline = ImmutableList.<IngestProcessor>builder()
                 .add(initIngestProcessor(new VideoIngestor()))
-                .add(initIngestProcessor(new ProxyProcessor()))
+                .add(initIngestProcessor(new ProxyIngestor()))
                 .build();
 
         List<AssetBuilder> assets = Lists.newArrayList();

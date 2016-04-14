@@ -19,7 +19,7 @@ public class CaffeIngestorTests extends AbstractTest {
     public void testProcess() {
         final List<IngestProcessor> pipeline = ImmutableList.<IngestProcessor>builder()
                 .add(initIngestProcessor(new ImageIngestor()))
-                .add(initIngestProcessor(new ProxyProcessor()))
+                .add(initIngestProcessor(new ProxyIngestor()))
                 .add(initIngestProcessor(new CaffeIngestor()))
                 .build();
 

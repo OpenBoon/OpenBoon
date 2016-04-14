@@ -27,7 +27,7 @@ public class BlenderIngestorTests extends AbstractTest {
         final List<IngestProcessor> pipeline = ImmutableList.<IngestProcessor>builder()
                 .add(initIngestProcessor(new FilePathIngestor().setOpts(opts)))
                 .add(initIngestProcessor(new BlenderIngestor()))
-                .add(initIngestProcessor(new ProxyProcessor()))
+                .add(initIngestProcessor(new ProxyIngestor()))
                 .build();
 
         List<AssetBuilder> assets = Lists.newArrayList();
