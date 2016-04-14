@@ -13,16 +13,8 @@ import java.util.Set;
 public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
 
     /**
-     * The maximum confidence value a keyword can have.
+     * Contains all the suggestion keywords.
      */
-    public static final double CONFIDENCE_MAX = 1.0;
-
-    /**
-     * The number of buckets the keywords are put into.
-     */
-    public static final int BUCKET_COUNT = 5;
-
-    private Set<String> all = Sets.newHashSet();
     private Set<String> suggest = Sets.newHashSet();
 
     @Override
@@ -31,99 +23,54 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
     }
 
     /**
-     * Add an array of keywords to the highest confidence and suggestion words
-     * with the given type.
+     * Add the given collection of keywords as a particular type of keywords.
      *
      * @param type
      * @param keywords
      */
-    public void addKeywords(String type,  String ... keywords) {
+    public void addKeywords(String type, Collection<String> keywords) {
+        Set<String> words = delegate.get(type);
+        if (words == null) {
+            words = Sets.newHashSet(keywords);
+            delegate.put(type, words);
+        }
+        else {
+            words.addAll(keywords);
+        }
+    }
+
+    /**
+     * Add the given array of keywords as a particular type of keywords.
+     *
+     * @param type
+     * @param keywords
+     */
+    public void addKeywords(String type, String ... keywords) {
         addKeywords(type, Arrays.asList(keywords));
     }
 
     /**
-     * Add an array of keywords to the highest confidence and suggestion words
-     * with the given type.
+     * Add the given collection of keywords as a particular type of keyword
+     * as well as suggestion keywords.
      *
      * @param type
      * @param keywords
      */
-    public void addKeywords(String type,  Iterable<String> keywords) {
-        Set<String> words = getAttr(type);
-        if (words == null) {
-            words = Sets.newHashSet();
-            setAttr(type, words);
-        }
-        addKeywords(1, true, keywords);
-    }
-
-    /**
-     * Add a new keyword with the given confidence.  Keywords with a confidence
-     * value les than or equal to 0 are ignored.
-     *
-     * Optionally adds valid keywords to suggestion keywords as well, however
-     * the confidence value should still be greater than 0 for this to happen.
-     *
-     * @param confidence
-     * @param suggestion
-     * @param keywords
-     */
-    public void addKeywords(double confidence, boolean suggestion, String... keywords) {
-        if (confidence <= 0) {
-            return;
-        }
-        addKeywords(confidence, suggestion, Arrays.asList(keywords));
-    }
-
-    /**
-     * Add a new keyword with the given confidence.  Keywords with a confidence
-     * value les than or equal to 0 are ignored.
-     *
-     * Optionally adds valid keywords to suggestion keywords as well, however
-     * the confidence value should still be greater than 0 for this to happen.
-     *
-     * @param confidence
-     * @param suggestion
-     * @param keywords
-     */
-    public void addKeywords(double confidence, boolean suggestion, Iterable<String> keywords) {
-        if (confidence <= 0) {
-            return;
-        }
-
-        String field = String.format("level%d", getBucket(Math.min(confidence, CONFIDENCE_MAX)));
-        Set<String> bucket = getAttr(field);
-
-        if (bucket == null) {
-            bucket = Sets.newHashSet();
-            setAttr(field, bucket);
-        }
-
-        for (String word: keywords) {
-            bucket.add(word);
-            all.add(word);
-            if (suggestion) {
-                suggest.add(word);
-            }
-        }
-    }
-
-    /**
-     * Add given keywords to suggestion keywords.
-     *
-     * @param keywords
-     */
-    public void addToSuggest(String ... keywords) {
-        suggest.addAll(Arrays.asList(keywords));
-    }
-
-    /**
-     * Add given keywords to suggestion keywords.
-     *
-     * @param keywords
-     */
-    public void addToSuggest(Collection<String> keywords) {
+    public void addSuggestKeywords(String type, Collection<String> keywords) {
+        addKeywords(type, keywords);
         suggest.addAll(keywords);
+    }
+
+    /**
+     * Add the given array of keywords as a particular type of keyword
+     * as well as suggestion keywords.
+     *
+     * @param type
+     * @param keywords
+     */
+    public void addSuggestKeywords(String type, String ... keywords) {
+        addKeywords(type, keywords);
+        suggest.addAll(Arrays.asList(keywords));
     }
 
     public void setSuggest(Set<String> suggestKeywords) {
@@ -134,34 +81,9 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
         return ImmutableSet.copyOf(suggest);
     }
 
-    public void setAll(Set<String> allKeywords) {
-        this.all = allKeywords;
-    }
-
     public Set<String> getAll() {
-        return ImmutableSet.copyOf(all);
-    }
-
-    /**
-     * Add given keywords to all keywords.
-     *
-     * @param keywords
-     */
-    public void addToAll(String ... keywords) {
-        suggest.addAll(Arrays.asList(keywords));
-    }
-
-    /**
-     * Add given keywords to all keywords.
-     *
-     * @param keywords
-     */
-    public void addToAll(Collection<String> keywords) {
-        suggest.addAll(keywords);
-    }
-
-
-    public static long getBucket(double confidence) {
-        return Math.max(1, Math.round(BUCKET_COUNT * (confidence / CONFIDENCE_MAX)));
+        Set<String> result = Sets.newHashSet(suggest);
+        delegate.values().forEach(result::addAll);
+        return result;
     }
 }

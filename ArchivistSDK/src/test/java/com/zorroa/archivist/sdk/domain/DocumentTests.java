@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.sdk.schema.ExtendableSchema;
 import com.zorroa.archivist.sdk.schema.KeywordsSchema;
+import com.zorroa.archivist.sdk.schema.KeywordsSchemaTests;
 import com.zorroa.archivist.sdk.schema.LinkSchema;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class DocumentTests {
     @Test
     public void testAttrContains() {
         KeywordsSchema s = new KeywordsSchema();
-        s.addKeywords(1, true, "foo");
+        s.addKeywords("test", "foo");
 
         Document d = new Document();
         d.setAttr("keywords", s);
@@ -139,7 +140,7 @@ public class DocumentTests {
         words.add("foo");
         words.add("bingle");
 
-        KeywordsSchema k = new KeywordsSchema();
+        KeywordsSchemaTests k = new KeywordsSchemaTests();
         Document d = new Document();
         d.setAttr("a.b.keywords", k);
         d.setAttr("a.b.keywords.all", words);

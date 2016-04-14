@@ -13,6 +13,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface Keyword {
 
-    double confidence() default KeywordsSchema.CONFIDENCE_MAX;
-
 }

@@ -3,6 +3,7 @@ package com.zorroa.archivist.sdk.domain;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.sdk.schema.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,15 +112,26 @@ public class AssetBuilder extends Document {
         this(new File(file));
     }
 
-    public AssetBuilder addKeywords(double confidence, boolean suggest, String ... words) {
-        keywords.addKeywords(confidence, suggest, words);
+    public AssetBuilder addSuggestKeywords(String type, Collection<String> words) {
+        keywords.addSuggestKeywords(type, words);
         return this;
     }
 
-    public AssetBuilder addKeywords(double confidence, boolean suggest, Iterable<String> words) {
-        keywords.addKeywords(confidence, suggest, words);
+    public AssetBuilder addSuggestKeywords(String type, String ... words) {
+        keywords.addSuggestKeywords(type, words);
         return this;
     }
+
+    public AssetBuilder addKeywords(String type, Collection<String> words) {
+        keywords.addKeywords(type, words);
+        return this;
+    }
+
+    public AssetBuilder addKeywords(String type, String ... words) {
+        keywords.addKeywords(type, words);
+        return this;
+    }
+
 
     public SourceSchema getSource() {
         return source;
@@ -151,7 +163,7 @@ public class AssetBuilder extends Document {
                     if (field.get(s) == null) {
                         continue;
                     }
-                    keywords.addKeywords(annotation.confidence(), false, field.get(s).toString());
+                    keywords.addKeywords(s.getClass().getName(), ImmutableList.of(field.get(s).toString()));
                 } catch (Exception e) {
                     logger.warn("Failed to access field '{}' on class '{}' marked with @Keyword, on asset {} ",
                             field.getName(), s.getClass().getCanonicalName(), source.getPath());
