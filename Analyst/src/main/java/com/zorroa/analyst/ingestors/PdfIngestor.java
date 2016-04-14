@@ -45,12 +45,6 @@ public class PdfIngestor extends IngestProcessor {
         try {
             parser.parse(assetBuilder.getInputStream(), handler, metadata);
             DocumentSchema schema = new DocumentSchema();
-            /*
-            schema.setAuthor(metadata.get("Author"));
-            schema.setTitle(metadata.get("title"));
-            schema.setPages(Integer.valueOf(metadata.get("xmpTPg:NPages")));
-            assetBuilder.getSource().setDate(metadata.getDate(Property.get("Last-Save-Date")));
-            */
             assetBuilder.setAttr("document", schema);
         } catch (Exception e) {
             throw new UnrecoverableIngestProcessorException(
