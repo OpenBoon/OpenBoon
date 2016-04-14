@@ -108,7 +108,6 @@
               "type": "string",
               "fields": {
                 "raw": {
-                  "store": true,
                   "type": "string",
                   "index": "not_analyzed"
                 }
@@ -196,6 +195,22 @@
             "pipeline": {"type": "integer"},
             "timestamp": {"type": "date" }
           }
+        },
+        "color": {
+            "properties": {
+              "mapping": {
+                "type": "nested",
+                "properties": {
+                  "red": { "type": "integer" },
+                  "green": { "type": "integer"},
+                  "blue": {"type": "integer"},
+                  "hue": {"type": "float"},
+                  "saturation": {"type": "float"},
+                  "brightness": {"type": "float"},
+                  "coverage": {"type": "float"}
+                }
+              }
+            }
         }
       },
       "dynamic_templates": [
@@ -222,6 +237,14 @@
             "match_mapping_type": "double",
             "mapping": {
               "type": "geo_point"
+            }
+          }
+        },
+        {
+          "color_template": {
+            "path_match": ".*colors.+$",
+            "mapping": {
+              "type": "nested"
             }
           }
         },
