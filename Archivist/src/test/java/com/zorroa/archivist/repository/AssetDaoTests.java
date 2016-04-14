@@ -138,7 +138,7 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     public void testAddAssetToExport() {
 
         AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        assetBuilder.getKeywords().addKeywords(1, true, assetBuilder.getFilename());
+        assetBuilder.addKeywords("source", assetBuilder.getFilename());
         Asset asset = assetDao.upsert(assetBuilder);
 
         refreshIndex(100);
@@ -172,14 +172,17 @@ public class AssetDaoTests extends ArchivistApplicationTests {
     @Test
     public void testBulkUpsertErrorRecovery() {
         AssetBuilder assetBuilder = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        assetBuilder.setAttr("foo:bar", 1.0);
+        assetBuilder.setAttr("foo.bomb", 1.0);
         assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
         refreshIndex();
 
         assetBuilder = new AssetBuilder(getTestImage("new_zealand_wellington_harbour.jpg"));
-        assetBuilder.setAttr("foo:bar", "bing");
+        assetBuilder.setAttr("foo.bomb", "bing");
+
         AnalyzeResult result = assetDao.bulkUpsert(Lists.newArrayList(assetBuilder));
-        assertEquals(1, result.retries);
+        logger.info("{}", result);
+        logger.info("{}", result.logs);
         assertEquals(1, result.created);
+        assertEquals(1, result.retries);
     }
 }

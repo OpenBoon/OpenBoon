@@ -53,7 +53,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder builder = new AssetBuilder(filepath);
-        builder.addKeywords(1, true, builder.getFilename());
+        builder.addKeywords("source", builder.getFilename());
         /*
          * Add a permission from the current user to the asset.
          */
@@ -77,7 +77,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
-        assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
+        assetBuilder.addKeywords("source", assetBuilder.getFilename());
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
@@ -135,7 +135,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
-        assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
+        assetBuilder.addKeywords("source", assetBuilder.getFilename());
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex(100);
 
@@ -163,7 +163,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
         Files.touch(new File(filepath));
 
         AssetBuilder assetBuilder = new AssetBuilder(filepath);
-        assetBuilder.addKeywords(1, true, assetBuilder.getFilename());
+        assetBuilder.addKeywords("source", assetBuilder.getFilename());
         Asset asset1 = assetDao.upsert(assetBuilder);
         refreshIndex();
 
@@ -176,10 +176,10 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     public void testGetTotalFileSize() {
 
         AssetBuilder assetBuilder1 = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder1.addKeywords(1, true, assetBuilder1.getFilename());
+        assetBuilder1.addKeywords("source", assetBuilder1.getFilename());
         assetBuilder1.getSource().setFileSize(1000L);
         AssetBuilder assetBuilder2 = new AssetBuilder(getStaticImagePath() + "/new_zealand_wellington_harbour.jpg");
-        assetBuilder2.addKeywords(1, true, assetBuilder2.getFilename());
+        assetBuilder2.addKeywords("source", assetBuilder1.getFilename());
         assetBuilder2.getSource().setFileSize(1000L);
 
         assetDao.upsert(assetBuilder1);
@@ -194,7 +194,7 @@ public class SearchServiceTests extends ArchivistApplicationTests {
     public void testHighConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords(1, false, "zipzoom");
+        assetBuilder.addKeywords("source", "zipzoom");
         assetDao.upsert(assetBuilder);
         refreshIndex();
 
@@ -202,55 +202,35 @@ public class SearchServiceTests extends ArchivistApplicationTests {
          * High confidence words are found at every level.
          */
         assertEquals(1, searchService.search(
-                new AssetSearch("zipzoom", 1.0)).getHits().getTotalHits());
+                new AssetSearch("zipzoom")).getHits().getTotalHits());
         assertEquals(1, searchService.search(
-                new AssetSearch("zipzoom", 0.5)).getHits().getTotalHits());
+                new AssetSearch("zipzoom")).getHits().getTotalHits());
         assertEquals(1, searchService.search(
-                new AssetSearch("zipzoom", 0.01)).getHits().getTotalHits());
-    }
-
-    @Test
-    public void testLowConfidenceSearch() throws IOException {
-
-        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords(0.1, false, "zipzoom");
-        assetDao.upsert(assetBuilder);
-        refreshIndex();
-
-        /*
-         * High confidence words are found at every level.
-         */
-        assertEquals(0, searchService.search(
-                new AssetSearch("zipzoom", 1.0)).getHits().getTotalHits());
-        assertEquals(0, searchService.search(
-                new AssetSearch("zipzoom", 0.5)).getHits().getTotalHits());
-        assertEquals(1, searchService.search(
-                new AssetSearch("zipzoom", 0.01)).getHits().getTotalHits());
+                new AssetSearch("zipzoom")).getHits().getTotalHits());
     }
 
     @Test
     public void testNoConfidenceSearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords(0.1, false, "zipzoom");
+        assetBuilder.addKeywords("source","zipzoom");
         assetDao.upsert(assetBuilder);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zipzoom", 0.0)).getHits().getTotalHits());
-
+                new AssetSearch("zipzoom")).getHits().getTotalHits());
     }
 
     @Test
     public void testFuzzySearch() throws IOException {
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords(0.1, false, "zoolander");
+        assetBuilder.addKeywords("source", "zoolander");
         assetDao.upsert(assetBuilder);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar", 0.0).setFuzzy(true)).getHits().getTotalHits());
+                new AssetSearch("zoolandar").setFuzzy(true)).getHits().getTotalHits());
     }
 
     @Test
@@ -259,12 +239,12 @@ public class SearchServiceTests extends ArchivistApplicationTests {
          * Handles the case where the client specified ~
          */
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords(0.1, false, "zoolander~");
+        assetBuilder.addKeywords("source", "zoolander~");
         assetDao.upsert(assetBuilder);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar", 0.0).setFuzzy(true)).getHits().getTotalHits());
+                new AssetSearch("zoolandar").setFuzzy(true)).getHits().getTotalHits());
     }
 
     @Test

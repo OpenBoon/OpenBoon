@@ -391,7 +391,7 @@ public class RoomControllerTests extends MockMvcTest {
         MockHttpSession session = user();
 
         AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords(1.0, false, "bender");
+        assetBuilder.addKeywords("source", "bender");
         assetDao.upsert(assetBuilder);
         refreshIndex();
 

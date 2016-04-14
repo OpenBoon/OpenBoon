@@ -138,7 +138,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         List<AssetBuilder> builders = getTestAssets("canyon");
         for (AssetBuilder builder: builders) {
-            builder.addKeywords(1, true, "reflection");
+            builder.addSuggestKeywords("source", "reflection");
         }
         addTestAssets(builders);
 
@@ -165,7 +165,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         List<AssetBuilder> builders = getTestAssets("canyon");
         for (AssetBuilder builder: builders) {
-            builder.addKeywords(1, true, "reflection");
+            builder.addSuggestKeywords("source", "reflection");
         }
         addTestAssets(builders);
 

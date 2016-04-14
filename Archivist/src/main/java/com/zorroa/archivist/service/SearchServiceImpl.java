@@ -7,7 +7,6 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.ArchivistException;
-import com.zorroa.archivist.sdk.schema.KeywordsSchema;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -211,6 +210,7 @@ public class SearchServiceImpl implements SearchService {
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
 
+
         /*
          * Note: the default boost is 1
          *
@@ -226,15 +226,9 @@ public class SearchServiceImpl implements SearchService {
          * TODO: switch to BigDecmial to deal with rounding errors.
          * TODO: function score query is another option
          */
-        long highBucket = KeywordsSchema.getBucket(search.getConfidence());
-        for (long i=highBucket; i<=KeywordsSchema.BUCKET_COUNT; i++) {
-            float boost = Math.max(0.1f, (i - 1) * 0.5f);
-            qstring.field(String.format("keywords.level%d.raw", i), boost);
-            qstring.field(String.format("keywords.level%d", i), boost * 0.5f);
-        }
-        /*
-         * leading wildcards can cause load issues.
-         */
+
+        qstring.field("keywords.all");
+        qstring.field("keywords.all.raw", 2);
         qstring.allowLeadingWildcard(false);
         qstring.lenient(true);
         qstring.fuzziness(Fuzziness.AUTO);

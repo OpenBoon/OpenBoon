@@ -233,7 +233,7 @@ public abstract class ArchivistApplicationTests {
                     AssetBuilder b = new AssetBuilder(f);
                     b.setAttr("user.rating", 4);
                     b.setAttr("test.path", resource.getFile().getAbsolutePath());
-                    b.getKeywords().addKeywords(1, true, b.getFilename());
+                    b.getKeywords().addKeywords("source", b.getFilename());
                     result.add(b);
                 }
             }
@@ -266,7 +266,7 @@ public abstract class ArchivistApplicationTests {
         for (AssetBuilder builder: builders) {
             logger.info("Adding test asset: {}", builder.getAbsolutePath());
             builder.setAttr("imports", schema);
-            builder.addKeywords(1, true, builder.getFilename());
+            builder.addKeywords("source", builder.getFilename());
             assetService.upsert(builder);
         }
         refreshIndex();
