@@ -1,16 +1,9 @@
 package com.zorroa.archivist.sdk.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -120,62 +113,6 @@ public class Color {
         return this;
     }
 
-    private static final Map<Range<Integer>, String[]> COLOR_RANGES = ImmutableMap.<Range<Integer>, String[]>builder()
-            .put(Range.closed(0, 80), new String[] {"red", "red"})
-            .put(Range.closed(9, 20), new String[] {"red", "orange"})
-            .put(Range.closed(21, 39), new String[] {"orange", "brown"})
-            .put(Range.closed(40, 51), new String[] {"orange", "yellow"})
-            .put(Range.closed(52, 60), new String[] {"yellow", "yellow"})
-            .put(Range.closed(61, 80), new String[] {"yellow", "green"})
-            .put(Range.closed(81, 123), new String[] {"green", "green"})
-            .put(Range.closed(124, 168), new String[] {"green", "cyan"})
-            .put(Range.closed(169, 200), new String[] {"cyan", "cyan"})
-            .put(Range.closed(201, 219), new String[] {"cyan", "blue"})
-            .put(Range.closed(220, 245), new String[] {"blue", "blue"})
-            .put(Range.closed(246, 275), new String[] {"blue", "purple"})
-            .put(Range.closed(276, 311), new String[] {"purple", "purple"})
-            .put(Range.closed(312, 340), new String[] {"purple", "pink"})
-            .put(Range.closed(341, 350), new String[] {"pink", "pink"})
-            .put(Range.closed(342, 357), new String[] {"pink", "red"})
-            .put(Range.closed(358, 360), new String[] {"red", "red"})
-            .build();
-
-    @JsonIgnore
-    public String getKeywords() {
-        List<String> result = Lists.newArrayList();
-        if (hue == null) {
-            calculateHSV();
-        }
-
-        if (this.getLightness() > 98) {
-            return "white";
-        }
-
-        if (this.getLightness() <= 10) {
-            return "black";
-        }
-
-        double a = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255.0;
-        if (a <= 0.4) {
-            result.add("bright");
-        }
-        else if (a >= 0.7) {
-            result.add("dark");
-        }
-
-        if (this.getSaturation() <= 10) {
-            result.add("grey");
-        }
-
-        for (Map.Entry<Range<Integer>, String[]> entry: COLOR_RANGES.entrySet()) {
-            if (entry.getKey().contains(hue.intValue())) {
-                result.addAll(Arrays.asList(entry.getValue()));
-                break;
-            }
-        }
-        return String.join(" ", result);
-    }
-
     private void calculateHSV() {
         float r = red / 255.0f;
         float g = green / 255.0f;
@@ -231,6 +168,4 @@ public class Color {
                 .add("blue", blue)
                 .toString();
     }
-
-
 }
