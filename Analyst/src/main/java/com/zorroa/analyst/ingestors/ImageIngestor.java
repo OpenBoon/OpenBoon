@@ -66,7 +66,7 @@ public class ImageIngestor extends IngestProcessor {
              */
             try {
                 if (!asset.isUpdate()) {
-                    Number rating = asset.getAttr("Xmp.Rating");
+                    Number rating = asset.getAttr("image.Xmp.Rating");
                     if (rating != null) {
                         asset.setAttr(attr("user", "rating"), rating.intValue());
                     }
