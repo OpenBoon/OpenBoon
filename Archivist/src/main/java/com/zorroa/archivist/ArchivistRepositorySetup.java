@@ -13,6 +13,7 @@ import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.MigrationService;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
@@ -92,8 +93,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     public void setupDataSources() throws IOException {
         logger.info("Setting up data sources");
-        createIndexedScripts();
-        createEventLogTemplate();
+        ElasticClientUtils.createIndexedScripts(client);
+        ElasticClientUtils.createEventLogTemplate(client);
         createDefaultIngestPipeline();
         refreshIndex();
     }

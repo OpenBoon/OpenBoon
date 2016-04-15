@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.Aggregator;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.schema.IngestSchema;
+import com.zorroa.archivist.sdk.schema.ImportSchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.UnitTestAuthentication;
@@ -261,7 +261,7 @@ public abstract class ArchivistApplicationTests {
         Ingest i = ingestService.createIngest(
                 new IngestBuilder().setName("foo").addToUris(path));
 
-        IngestSchema schema = new IngestSchema();
+        ImportSchema schema = new ImportSchema();
         schema.addIngest(i);
         for (AssetBuilder builder: builders) {
             logger.info("Adding test asset: {}", builder.getAbsolutePath());
