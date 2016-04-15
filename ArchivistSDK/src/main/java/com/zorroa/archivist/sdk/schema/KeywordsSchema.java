@@ -50,7 +50,7 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
      */
     public void addKeywords(String type, String ... keywords) {
         if (keywords == null || keywords.length == 0) {
-            return
+            return;
         }
         addKeywords(type, Arrays.asList(keywords));
     }
