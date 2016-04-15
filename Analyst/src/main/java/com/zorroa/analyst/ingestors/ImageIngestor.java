@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.exception.UnrecoverableIngestProcessorException;
+import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.ImageSchema;
 import com.zorroa.archivist.sdk.schema.LocationSchema;
@@ -27,6 +28,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.zorroa.archivist.sdk.domain.Attr.attr;
 import static java.lang.Math.abs;
@@ -42,10 +45,21 @@ public class ImageIngestor extends IngestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(ImageIngestor.class);
 
+    @Argument
+    private List<String> excludedTags = ImmutableList.of(
+            "^Unknowntag0x", "^UnknownCameraSetting");
+    private List<Pattern> excludedPatterns;
+
     public ImageIngestor() {
         for (String format: ImageIO.getReaderFormatNames()) {
             supportedFormats.add(format);
         }
+    }
+
+    @Override
+    public void init() {
+        excludedPatterns = excludedTags.stream().map(
+                p->Pattern.compile(p)).collect(Collectors.toList());
     }
 
     @Override
@@ -185,7 +199,10 @@ public class ImageIngestor extends IngestProcessor {
                 }
 
                 String key = tag.getTagName().replaceAll("[^A-Za-z0-9]", "");
-                String id = namespace + "." + key;
+                if (isMetadataExcluded(key)) {
+                    continue;
+                }
+                String id = String.join(".", namespace, key);
 
                 //logger.info("{}= {}", id, value);
                 /*
@@ -347,5 +364,9 @@ public class ImageIngestor extends IngestProcessor {
                 asset.setAttr("location", location);
             }
         }
+    }
+
+    private boolean isMetadataExcluded(String key) {
+        return excludedPatterns.stream().anyMatch(p->p.matcher(key).find());
     }
 }
