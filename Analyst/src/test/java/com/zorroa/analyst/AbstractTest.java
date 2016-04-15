@@ -5,6 +5,7 @@ import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import org.apache.commons.io.FileUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
@@ -52,10 +53,16 @@ public abstract class AbstractTest {
         System.setProperty("zorroa.unittest", "true");
     }
 
+    private String index = "archivist";
+
     @Before
     public void __init() throws IOException {
-        client.admin().indices().prepareDelete("_all").get();
-        client.admin().indices().prepareCreate("archivist").get();
+        /**
+         * For analyst, this is only done for unit tests.  In production, the
+         * archivist handles creatig the index and the mapping.
+         */
+        ElasticClientUtils.deleteAllIndexes(client);
+        ElasticClientUtils.createLatestMapping(client, index);
 
         /*
          * Remove the storage directory
@@ -115,5 +122,9 @@ public abstract class AbstractTest {
             processor.process(asset);
         }
         return asset;
+    }
+
+    public void refreshIndex() {
+        ElasticClientUtils.refreshIndex(client);
     }
 }

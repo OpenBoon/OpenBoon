@@ -1,13 +1,10 @@
 package com.zorroa.analyst.config;
 
-import com.google.common.collect.ImmutableSet;
 import com.zorroa.analyst.Application;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
-import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
-import com.zorroa.common.elastic.ZorroaNode;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +38,7 @@ public class ElasticConfig {
         String archivistHost = String.format("%s:%d",
                 URI.create(properties.getString("analyst.master.host")).getHost(),
                 properties.getInt("zorroa.common.index.port"));
-        logger.info("Connecting to elastic master: {}", archivistHost);
+
         Settings.Builder builder =
                 Settings.settingsBuilder()
                         .put("cluster.name", "zorroa")
@@ -59,14 +56,16 @@ public class ElasticConfig {
                         .put("node.data", properties.getBoolean("analyst.index.data"));
 
         if (Application.isUnitTest()) {
+            logger.info("Elastic in unit test mode");
             builder.put("node.master", true);
             builder.put("index.refresh_interval", "1s");
-            builder.put("index.translog.disable_flush", true);
+            builder.put("index.translog.disable_flush", false);
             builder.put("node.local", true);
         }
+        else {
+            logger.info("Connecting to elastic master: {}", archivistHost);
+        }
 
-        Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
-        node.start();
-        return node.client();
+        return ElasticClientUtils.initializeClient(builder);
     }
 }
