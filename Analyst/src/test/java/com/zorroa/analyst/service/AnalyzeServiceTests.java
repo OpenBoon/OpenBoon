@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Note: we currently only create the mapping in Archivist.
  */
-public class AnalystServiceTests extends AbstractTest {
+public class AnalyzeServiceTests extends AbstractTest {
 
     @Autowired
     AnalyzeService analyzeService;
