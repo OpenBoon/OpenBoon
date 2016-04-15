@@ -29,7 +29,7 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
      * @param keywords
      */
     public void addKeywords(String type, Collection<String> keywords) {
-        if (keywords.isEmpty()) {
+        if (keywords == null || keywords.isEmpty()) {
             return;
         }
         Set<String> words = delegate.get(type);
@@ -49,6 +49,9 @@ public class KeywordsSchema extends ExtendableSchema<String, Set<String>> {
      * @param keywords
      */
     public void addKeywords(String type, String ... keywords) {
+        if (keywords == null || keywords.length == 0) {
+            return
+        }
         addKeywords(type, Arrays.asList(keywords));
     }
 
