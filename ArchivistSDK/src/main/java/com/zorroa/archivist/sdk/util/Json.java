@@ -36,6 +36,15 @@ public class Json {
         Mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    public static String prettyString(Object object) {
+        try {
+            return Mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new MalformedDataException(
+                    "Failed to serialize object, unexpected: " + e, e);
+        }
+    }
+
     public static String serializeToString(Object object) {
         try {
             return Json.Mapper.writeValueAsString(object);
