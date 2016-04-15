@@ -1,5 +1,7 @@
 package com.zorroa.archivist.sdk.schema;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created by chambers on 1/2/16.
  */
@@ -15,6 +17,36 @@ public class VideoSchema extends ExtendableSchema<String, Object> {
     private int audioChannels;
     private String format;
     private double frameRate;
+    private String synopsis;
+    private String description;
+    private String title;
+
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public VideoSchema setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public VideoSchema setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public VideoSchema setTitle(String title) {
+        this.title = title;
+        return this;
+    }
 
     public int getWidth() {
         return width;
@@ -105,5 +137,24 @@ public class VideoSchema extends ExtendableSchema<String, Object> {
     public VideoSchema setSampleRate(int sampleRate) {
         this.sampleRate = sampleRate;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("width", width)
+                .add("height", height)
+                .add("audioSampleRate", audioSampleRate)
+                .add("sampleRate", sampleRate)
+                .add("duration", duration)
+                .add("aspectRatio", aspectRatio)
+                .add("frames", frames)
+                .add("audioChannels", audioChannels)
+                .add("format", format)
+                .add("frameRate", frameRate)
+                .add("synopsis", synopsis)
+                .add("description", description)
+                .add("title", title)
+                .toString();
     }
 }
