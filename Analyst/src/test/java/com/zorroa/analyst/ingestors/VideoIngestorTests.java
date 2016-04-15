@@ -1,15 +1,16 @@
 package com.zorroa.analyst.ingestors;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.exception.SkipIngestException;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 4/8/16.
@@ -25,13 +26,17 @@ public class VideoIngestorTests extends AbstractTest {
                 .add(initIngestProcessor(new ProxyIngestor()))
                 .build();
 
-        List<AssetBuilder> assets = Lists.newArrayList();
-        for (File f : new File("src/test/resources/video").listFiles()) {
-            try {
-                assets.add(ingestFile(f, pipeline));
-            } catch (SkipIngestException e) {
-                // ignore
-            }
-        }
+        AssetBuilder asset = ingestFile(new File("src/test/resources/video/sample_ipad.m4v"), pipeline);
+        assertEquals(640, (int) asset.getAttr("video.width"));
+        assertEquals(360, (int) asset.getAttr("video.height"));
+        assertEquals("Luke crashes sled", asset.getAttr("video.title"));
+        assertEquals("A long description of luke sledding in winter.",
+                asset.getAttr("video.synopsis"));
+        assertEquals("A short description of luke sledding in winter.",
+                asset.getAttr("video.description"));
+
+        assertTrue(asset.attrContains("keywords.video", asset.getAttr("video.title")));
+        assertTrue(asset.attrContains("keywords.video", asset.getAttr("video.description")));
+        assertTrue(asset.attrContains("keywords.video", asset.getAttr("video.synopsis")));
     }
 }
