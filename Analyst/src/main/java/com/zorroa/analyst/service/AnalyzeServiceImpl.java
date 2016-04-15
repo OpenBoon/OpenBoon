@@ -15,7 +15,7 @@ import com.zorroa.archivist.sdk.filesystem.ObjectFile;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.schema.IngestSchema;
+import com.zorroa.archivist.sdk.schema.ImportSchema;
 import com.zorroa.archivist.sdk.util.FileUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
@@ -83,12 +83,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             throw new IngestException("Failed to initialize ingest pipeline", e.getCause());
         }
 
-        IngestSchema ingestSchema = null;
-        if (req.getIngestId() != null) {
-            ingestSchema = new IngestSchema();
-            ingestSchema.addIngest(req);
-        }
-
         Queue<AnalyzeRequestEntry> queue = new LinkedBlockingQueue<>();
         queue.addAll(req.getAssets());
 
@@ -148,10 +142,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 }
             }
 
-            if (ingestSchema != null) {
-                builder.setAttr("imports", ingestSchema);
-            }
-
             try {
                 builder.getSource().setType(Tika.detect(builder.getSource().getPath()));
             } catch (Exception e) {
@@ -167,6 +157,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             builder.setPreviousVersion(
                     assetDao.getByPath(builder.getAbsolutePath()));
 
+            ImportSchema importSchema = builder.getAttr("imports", ImportSchema.class);
+            if (importSchema == null) {
+                importSchema = new ImportSchema();
+            }
+            ImportSchema.IngestProperties ingestProperties = importSchema.addIngest(req);
+            builder.setAttr("imports", importSchema);
+
             try {
 
                 /*
@@ -179,6 +176,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                             continue;
                         }
                         processor.process(builder);
+                        ingestProperties.addToIngestProcessors(processor.getClass().getName());
                     } catch (SkipIngestException skipped) {
                         logger.warn("Skipping: {}", skipped.getMessage());
                         skip = true;
@@ -229,6 +227,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
         }
 
+        logger.debug("Bulk upserting {} assets", assets.size());
         result = assetDao.bulkUpsert(assets).add(result);
         if (!result.logs.isEmpty()) {
             for (String log: result.logs) {
