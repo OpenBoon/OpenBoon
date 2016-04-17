@@ -24,6 +24,8 @@ public class AspectRatioIngestor  extends IngestProcessor {
         public String field = "keywords";
         public boolean isKeyword = true;
 
+        public Aspect() {}
+
         public Aspect(float minAspect, float maxAspect, String keyword) {
             this.minAspect = minAspect;
             this.maxAspect = maxAspect;
