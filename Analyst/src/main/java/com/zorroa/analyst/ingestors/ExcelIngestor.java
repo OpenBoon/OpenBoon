@@ -1,12 +1,12 @@
 package com.zorroa.analyst.ingestors;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.LocationSchema;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
@@ -351,7 +351,8 @@ public class ExcelIngestor extends IngestProcessor {
                 for (GeoPointColumns columns : rowMapping.geoColumns) {
                     Point2D.Double p = getPoint(row, columns);
                     if (!p.equals(zero)) {
-                        asset.setAttr(attr(rowMapping.outputSchema, columns.name), p);
+                        LocationSchema locationSchema = new LocationSchema(new double[] {p.y, p.x});
+                        asset.setAttr(attr(rowMapping.outputSchema, columns.name), locationSchema);
                     }
                 }
             }
