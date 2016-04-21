@@ -16,7 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -122,4 +125,20 @@ public class SnapshotControllerTests extends MockMvcTest {
 
     }
 
+    @Test
+    public void testDbBackup() throws Exception {
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(post("/api/v1/db/_backup")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> data = Json.deserialize(result.getResponse().getContentAsString(), Json.GENERIC_MAP);
+        assertTrue(data.containsKey("path"));
+
+        File file = new File((String) data.get("path"));
+        assertTrue(file.exists());
+        Files.deleteIfExists(file.toPath());
+    }
 }
