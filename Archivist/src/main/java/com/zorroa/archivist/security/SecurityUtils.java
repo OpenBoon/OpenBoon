@@ -62,7 +62,7 @@ public class SecurityUtils {
      * @return
      */
     public static boolean hasPermission(String field, Asset asset) {
-        Set<Integer> perms = asset.getAttr("permissions:"+ field, Json.SET_OF_INTS);
+        Set<Integer> perms = asset.getAttr("permissions."+ field, Json.SET_OF_INTS);
         return hasPermission(perms);
     }
 
@@ -80,7 +80,7 @@ public class SecurityUtils {
     }
 
     public static boolean hasPermission(Set<Integer> permIds) {
-        if (permIds.isEmpty()) {
+        if (permIds == null || permIds.isEmpty()) {
             return true;
         }
         return !Sets.intersection(permIds, SecurityUtils.getPermissionIds()).isEmpty();

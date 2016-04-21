@@ -52,7 +52,7 @@ public class AssetController {
     AnalystService analystService;
 
     @RequestMapping(value="/api/v1/assets/{id}/_stream", method=RequestMethod.GET)
-    public void export(@PathVariable String id, HttpServletResponse response) throws IOException {
+    public void stream(@PathVariable String id, HttpServletResponse response) throws IOException {
         Asset asset = assetService.get(id);
         if (!SecurityUtils.hasPermission("export", asset)) {
             throw new AccessDeniedException("export access denied");
