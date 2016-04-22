@@ -31,6 +31,11 @@ public class ElasticClientUtils {
      * @return
      */
     public static Client initializeClient(Settings.Builder builder) {
+        /*
+         * Make sure groovy indexed scripts are always enabled.
+         */
+        builder.put("script.engine.groovy.indexed.update", true);
+
         Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
         node.start();
         return node.client();
@@ -157,7 +162,7 @@ public class ElasticClientUtils {
                 .setSource(ByteStreams.toByteArray(mapping.getInputStream()))
                 .get();
     }
-    
+
     /**
      * Get the latest version of the mapping found at the given path.
      *
