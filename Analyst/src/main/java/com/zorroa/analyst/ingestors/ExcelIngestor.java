@@ -361,7 +361,7 @@ public class ExcelIngestor extends IngestProcessor {
             Point2D.Double p = new Point2D.Double(0, 0);
             double latitude, longitude;
             double easting, northing;
-            CRSAuthorityFactory crsFac;
+
             switch (columns.type) {
                 case latitudeLongitude:
                     latitude = getCell(row, columns.columns.get(0)).getNumericCellValue();
@@ -372,11 +372,6 @@ public class ExcelIngestor extends IngestProcessor {
                     easting = getCell(row, columns.columns.get(0)).getNumericCellValue();
                     northing = getCell(row, columns.columns.get(1)).getNumericCellValue();
 
-                    /**
-                     * TODO: GIS library confusion
-                     *
-                     *
-                     */
                     try {
                         CoordinateReferenceSystem wgs84crs = CRS.forCode("EPSG:4326");
                         CoordinateReferenceSystem osgbCrs = CRS.forCode("EPSG:27700");
