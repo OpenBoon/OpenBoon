@@ -4,6 +4,7 @@
 .settings
 .springBeans
 .idea
+.iml
 
 # Build directory
 target
