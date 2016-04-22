@@ -149,7 +149,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
         Map<String, Object> script1 = ImmutableMap.of(
             "script", "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } " +
-                        "else { ctx._source.exports += exportId; ctx._source.exports = ctx._source.exports.unique(); }");
+                        "else { ctx._source.exports += exportId; ctx._source.exports = ctx._source.exports.unique(); }",
+            "params", ImmutableMap.of("exportId", "exportId"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
@@ -159,7 +160,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
         Map<String, Object> script2 = ImmutableMap.of(
                 "script", "if (ctx._source.folders == null ) { ctx._source.folders = [folderId] } else " +
-                        "{ ctx._source.folders += folderId; ctx._source.folders = ctx._source.folders.unique(); }");
+                        "{ ctx._source.folders += folderId; ctx._source.folders = ctx._source.folders.unique(); }",
+                "params", ImmutableMap.of("folderId", "folderId"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
@@ -168,7 +170,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 .get();
 
         Map<String, Object> script3 = ImmutableMap.of(
-                "script", "if (ctx._source.folders != null ) { ctx._source.folders.removeIf( {f -> f == folderId} )}");
+                "script", "if (ctx._source.folders != null ) { ctx._source.folders.removeIf( {f -> f == folderId} )}",
+                "params", ImmutableMap.of("folderId", "folderId"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
