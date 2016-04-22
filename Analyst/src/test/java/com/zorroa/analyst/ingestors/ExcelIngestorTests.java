@@ -3,7 +3,8 @@ package com.zorroa.analyst.ingestors;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import org.apache.commons.lang.time.DateUtils;
+import com.zorroa.archivist.sdk.schema.LocationSchema;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
 import java.awt.geom.Point2D;
@@ -99,7 +100,6 @@ public class ExcelIngestorTests extends AbstractTest {
 
     }
 
-
     @Test
     public void testGeoPoints() {
         ExcelIngestor excelIngestor = new ExcelIngestor();
@@ -123,8 +123,8 @@ public class ExcelIngestorTests extends AbstractTest {
         asset.getSource().setType("image/" + asset.getExtension());
         asset.setAttr("petrol.wellName", "Arlo 1");
         excelIngestor.process(asset);
-        Point2D.Double p = asset.getAttr("Excel.Location");
+        LocationSchema l = asset.getAttr("Excel.Location");
         Point2D.Double q = new Point2D.Double(-12.97785444, 123.78593278);
-        assertEquals(p, q);
+        assertEquals(new  Point2D.Double(l.getPoint()[1], l.getPoint()[0]), q);
     }
 }

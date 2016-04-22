@@ -6,7 +6,6 @@ import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import org.apache.commons.io.FileUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -19,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -56,7 +56,7 @@ public abstract class AbstractTest {
     private String index = "archivist";
 
     @Before
-    public void __init() throws IOException {
+    public void __init() throws IOException, ClassNotFoundException {
         /**
          * For analyst, this is only done for unit tests.  In production, the
          * archivist handles creatig the index and the mapping.
@@ -68,7 +68,7 @@ public abstract class AbstractTest {
          * Remove the storage directory
          */
         File file = new File(applicationProperties.getString("analyst.filesystem.root"));
-        FileUtils.deleteDirectory(file);
+        deleteRecursive(file);
     }
 
     public IngestProcessor initIngestProcessor(IngestProcessor p) {
@@ -126,5 +126,18 @@ public abstract class AbstractTest {
 
     public void refreshIndex() {
         ElasticClientUtils.refreshIndex(client);
+    }
+
+    public static boolean deleteRecursive(File path) throws FileNotFoundException {
+        if (!path.exists()) {
+            return true;
+        }
+        boolean ret = true;
+        if (path.isDirectory()){
+            for (File f : path.listFiles()){
+                ret = ret && deleteRecursive(f);
+            }
+        }
+        return ret && path.delete();
     }
 }

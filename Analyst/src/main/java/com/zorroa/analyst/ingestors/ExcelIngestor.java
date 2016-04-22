@@ -7,7 +7,7 @@ import com.zorroa.archivist.sdk.exception.IngestException;
 import com.zorroa.archivist.sdk.processor.Argument;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.schema.LocationSchema;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -15,8 +15,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.sis.geometry.GeneralDirectPosition;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.operation.DefaultCoordinateOperationFactory;
+import org.apache.sis.referencing.CRS;
+import org.apache.sis.referencing.operation.DefaultCoordinateOperationFactory;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -34,14 +34,13 @@ import java.util.*;
 
 import static com.zorroa.archivist.sdk.domain.Attr.attr;
 
-
 /**
  * A simple excel ingestor based on Apache POI.  This particular processor handles .xlsx files.
  **
  */
 public class ExcelIngestor extends IngestProcessor {
 
-    private Logger logger = LoggerFactory.getLogger(ExcelIngestor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExcelIngestor.class);
 
     @Argument
     public List<RowMapping> rowMappings = null;
@@ -373,14 +372,14 @@ public class ExcelIngestor extends IngestProcessor {
                     easting = getCell(row, columns.columns.get(0)).getNumericCellValue();
                     northing = getCell(row, columns.columns.get(1)).getNumericCellValue();
 
-                    crsFac = ReferencingFactoryFinder
-                            .getCRSAuthorityFactory("EPSG", null);
-
+                    /**
+                     * TODO: GIS library confusion
+                     *
+                     *
+                     */
                     try {
-                        CoordinateReferenceSystem wgs84crs = crsFac
-                                .createCoordinateReferenceSystem("4326");
-                        CoordinateReferenceSystem osgbCrs = crsFac
-                                .createCoordinateReferenceSystem("27700");
+                        CoordinateReferenceSystem wgs84crs = CRS.forCode("EPSG:4326");
+                        CoordinateReferenceSystem osgbCrs = CRS.forCode("EPSG:27700");
 
                         CoordinateOperation op = new DefaultCoordinateOperationFactory()
                                 .createOperation(osgbCrs, wgs84crs);
@@ -391,12 +390,11 @@ public class ExcelIngestor extends IngestProcessor {
                         latitude = latLng.getOrdinate(0);
                         longitude = latLng.getOrdinate(1);
                         p = new Point2D.Double(latitude, longitude);
+
                     } catch (FactoryException e) {
-
-                    } catch (org.opengis.referencing.FactoryException e) {
-
+                        logger.warn("Failed to find CoordinateReferenceSystem, ", e);
                     } catch (TransformException e) {
-
+                        logger.warn("Failed to transform points, ", e);
                     }
 
                     break;
@@ -406,15 +404,11 @@ public class ExcelIngestor extends IngestProcessor {
                     int baseCode = 9807;
                     int zone = (int)getCell(row, columns.columns.get(2)).getNumericCellValue();
 
-                    crsFac = ReferencingFactoryFinder
-                            .getCRSAuthorityFactory("EPSG", null);
-
                     try {
-                        CoordinateReferenceSystem wgs84crs = crsFac
-                                .createCoordinateReferenceSystem("4326");
+                        CoordinateReferenceSystem wgs84crs = CRS.forCode("EPSG:4326");
+
                         String code = Integer.toString(baseCode + zone);
-                        CoordinateReferenceSystem transverseMecatorCrs = crsFac
-                                .createCoordinateReferenceSystem(code);
+                        CoordinateReferenceSystem transverseMecatorCrs = CRS.forCode(code);
 
                         CoordinateOperation op = new DefaultCoordinateOperationFactory()
                                 .createOperation(transverseMecatorCrs, wgs84crs);
@@ -425,14 +419,12 @@ public class ExcelIngestor extends IngestProcessor {
                         latitude = latLng.getOrdinate(0);
                         longitude = latLng.getOrdinate(1);
                         p = new Point2D.Double(latitude, longitude);
+
                     } catch (FactoryException e) {
-
-                    } catch (org.opengis.referencing.FactoryException e) {
-
+                        logger.warn("Failed to find CoordinateReferenceSystem, ", e);
                     } catch (TransformException e) {
-
+                        logger.warn("Failed to transform points, ", e);
                     }
-
                     break;
             }
             return p;
