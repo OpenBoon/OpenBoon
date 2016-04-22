@@ -29,7 +29,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class ArchivistRepositorySetup implements ApplicationListener<ContextRefreshedEvent> {
@@ -142,42 +141,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
             ingestService.createIngestPipeline(builder);
         }
-    }
-
-    public void createIndexedScripts() {
-        logger.info("Creating indexed scripts");
-
-        Map<String, Object> script1 = ImmutableMap.of(
-            "script", "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } " +
-                        "else { ctx._source.exports += exportId; ctx._source.exports = ctx._source.exports.unique(); }",
-            "params", ImmutableMap.of("exportId", "exportId"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("asset_append_export")
-                .setSource(script1)
-                .get();
-
-        Map<String, Object> script2 = ImmutableMap.of(
-                "script", "if (ctx._source.folders == null ) { ctx._source.folders = [folderId] } else " +
-                        "{ ctx._source.folders += folderId; ctx._source.folders = ctx._source.folders.unique(); }",
-                "params", ImmutableMap.of("folderId", "folderId"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("asset_append_folder")
-                .setSource(script2)
-                .get();
-
-        Map<String, Object> script3 = ImmutableMap.of(
-                "script", "if (ctx._source.folders != null ) { ctx._source.folders.removeIf( {f -> f == folderId} )}",
-                "params", ImmutableMap.of("folderId", "folderId"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("asset_remove_folder")
-                .setSource(script3)
-                .get();
     }
 
     private void createSnapshotRepository() {
