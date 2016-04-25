@@ -1,0 +1,22 @@
+# STS project files
+.classpath
+.project
+.settings
+.springBeans
+.idea
+.iml
+
+# Build directory
+target
+
+# Elastic DB files
+data
+
+# Proxy folder for unit tests
+proxies
+
+.DS_store
+
+# Sublime project
+archivist.sublime-project
+archivist.sublime-workspace
