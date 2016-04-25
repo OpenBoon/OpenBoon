@@ -19,12 +19,12 @@
         <java.version>1.8</java.version>
     </properties>
 
-  <parent>
-      <relativePath>../pom.xml</relativePath>
-      <groupId>com.zorroa</groupId>
-      <artifactId>zorroa-server</artifactId>
-      <version>0.19.0</version>
-  </parent>
+    <parent>
+        <relativePath>../pom.xml</relativePath>
+        <groupId>com.zorroa</groupId>
+        <artifactId>zorroa-server</artifactId>
+        <version>0.19.0</version>
+    </parent>
 
     <dependencies>
 
@@ -42,14 +42,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -229,15 +232,15 @@
     <build>
 
         <plugins>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>${spring-boot.version}</version>
-            <configuration>
-                <mainClass>${start-class}</mainClass>
-                <finalName>archivist</finalName>
-            </configuration>
-          </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                    <finalName>archivist</finalName>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -277,10 +280,14 @@
                     <execution>
                         <id>Install JAR</id>
                         <phase>install</phase>
-                        <goals><goal>exec</goal></goals>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
                         <configuration>
                             <executable>/bin/cp</executable>
-                            <commandlineArgs>${project.build.directory}/${project.artifactId}.jar "${user.home}/Library/Application Support/Zorroa/${project.artifactId}/lib"</commandlineArgs>
+                            <commandlineArgs>${project.build.directory}/${project.artifactId}.jar
+                                "${user.home}/Library/Application Support/Zorroa/${project.artifactId}/lib"
+                            </commandlineArgs>
                         </configuration>
                     </execution>
 
@@ -295,7 +302,9 @@
                     <includes>
                         <include>**/*Tests.java</include>
                     </includes>
-                    <argLine>-Djava.class.path=${project.basedir}/lib/face -Djava.library.path=${project.build.directory}/jni</argLine>
+                    <argLine>-Djava.class.path=${project.basedir}/lib/face
+                        -Djava.library.path=${project.build.directory}/jni
+                    </argLine>
                     <environmentVariables>
                         <ZORROA_MODEL_PATH>${project.basedir}/models</ZORROA_MODEL_PATH>
                     </environmentVariables>

@@ -7,10 +7,10 @@
     <artifactId>common</artifactId>
 
     <parent>
-      <relativePath>../pom.xml</relativePath>
-      <groupId>com.zorroa</groupId>
-      <artifactId>zorroa-server</artifactId>
-      <version>0.19.0</version>
+        <relativePath>../pom.xml</relativePath>
+        <groupId>com.zorroa</groupId>
+        <artifactId>zorroa-server</artifactId>
+        <version>0.19.0</version>
     </parent>
 
     <dependencies>
