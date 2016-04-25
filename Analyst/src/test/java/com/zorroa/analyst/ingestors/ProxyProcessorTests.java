@@ -1,0 +1,72 @@
+package com.zorroa.analyst.ingestors;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.zorroa.analyst.AbstractTest;
+import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.sdk.domain.Proxy;
+import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.schema.ProxySchema;
+import org.junit.Test;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+/**
+ * Created by chambers on 2/17/16.
+ */
+public class ProxyProcessorTests extends AbstractTest {
+
+    @Test
+    public void testProcess() {
+        final List<IngestProcessor> pipeline = ImmutableList.<IngestProcessor>builder()
+                .add(initIngestProcessor(new ImageIngestor()))
+                .add(initIngestProcessor(new ProxyIngestor()))
+                .build();
+
+        File file = getResourceFile("/images/toucan.jpg");
+        AssetBuilder asset = ingestFile(file, pipeline);
+        ProxySchema proxySchema = asset.getAttr("proxies");
+        for (Proxy proxy: proxySchema) {
+            assertTrue(proxy.getWidth() > 0);
+            assertTrue(proxy.getHeight() > 0);
+            assertEquals("jpg", proxy.getFormat());
+            assertTrue(proxy.getUri().startsWith(System.getProperty("server.url")));
+        }
+    }
+
+    @Test
+    public void testArgs() {
+        ProxyIngestor proxyProcessor = new ProxyIngestor();
+
+        // Construct a map with the parsed JSON test data
+        Map<String, Object> proxyOutput = ImmutableMap.<String, Object>builder()
+                .put("size", 227)
+                .put("bpp", 8)
+                .put("format", "png")
+                .put("quality", 0.5)
+                .build();
+        List<Map<String, Object>> proxyOutputs = ImmutableList.<Map<String, Object>>builder()
+                .add(proxyOutput)
+                .build();
+        Map<String, Object> args = ImmutableMap.<String, Object>builder()
+                .put("proxies", proxyOutputs)
+                .build();
+
+        // Set the arguments and call init to extract arguments into instance
+        proxyProcessor.setArgs(args);
+        proxyProcessor.init();
+
+        // Test to make sure extraction worked
+        List<ProxyIngestor.Output> outputs = proxyProcessor.getOutputs();
+        assertEquals(1, outputs.size());
+        assertEquals("png", outputs.get(0).format);
+        assertEquals(227, outputs.get(0).size);
+        assertEquals(8, outputs.get(0).bpp);
+        assertEquals("quality", 0.5, outputs.get(0).quality, 1e-6);
+    }
+}

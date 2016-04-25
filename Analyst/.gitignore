@@ -1,0 +1,17 @@
+# IDEA files
+*.iml
+
+# STS project files
+.classpath
+.project
+.settings
+.springBeans
+.idea
+
+# Build directory
+target
+index
+storage
+
+.DS_store
+
