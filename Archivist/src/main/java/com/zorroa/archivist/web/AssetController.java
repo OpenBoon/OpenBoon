@@ -40,9 +40,6 @@ public class AssetController {
     AssetService assetService;
 
     @Autowired
-    FolderService folderService;
-
-    @Autowired
     NoteService noteService;
 
     @Autowired
