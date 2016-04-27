@@ -12,6 +12,7 @@
 target
 index
 storage
+plugins/*
 
 .DS_store
 

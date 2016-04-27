@@ -35,6 +35,7 @@ public class ElasticClientUtils {
          * Make sure groovy indexed scripts are always enabled.
          */
         builder.put("script.engine.groovy.indexed.update", true);
+        builder.put("path.plugins", "{path.home}/es-plugins");
 
         Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
         node.start();

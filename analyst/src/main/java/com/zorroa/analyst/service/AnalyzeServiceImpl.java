@@ -44,6 +44,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private static final Logger logger = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
 
     @Autowired
+    PluginService pluginService;
+
+    @Autowired
     AssetDao assetDao;
 
     @Autowired
@@ -319,7 +322,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 Set<String> supportedFormats = Sets.newHashSet();
                 List<IngestProcessor> result = Lists.newArrayListWithCapacity(key.getAnalyzeRequest().getProcessors().size());
                 for (ProcessorFactory<IngestProcessor> factory : key.getAnalyzeRequest().getProcessors()) {
-                    IngestProcessor p = factory.newInstance();
+                    IngestProcessor p = pluginService.getIngestProcessor(factory.getKlass());
+                    p.setArgs(factory.getArgs());
                     p.setApplicationProperties(applicationProperties);
                     p.setObjectFileSystem(objectFileSystem);
                     p.init();

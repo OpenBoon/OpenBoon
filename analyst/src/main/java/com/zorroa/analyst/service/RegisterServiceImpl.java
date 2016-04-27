@@ -4,13 +4,14 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.common.reflect.ClassPath;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
+import com.zorroa.analyst.domain.PluginProperties;
 import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;
 import com.zorroa.archivist.sdk.domain.AnalystPing;
 import com.zorroa.archivist.sdk.domain.ApplicationProperties;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.sdk.domain.Tuple;
+import com.zorroa.archivist.sdk.plugins.Plugin;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class RegisterServiceImpl extends AbstractScheduledService implements RegisterService {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
+
+    @Autowired
+    PluginService pluginService;
 
     @Autowired
     ArchivistClient archivistClient;
@@ -116,24 +120,10 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     private AnalystPing getPing()  {
 
         List<String> ingestClasses = Lists.newArrayListWithCapacity(30);
-        try {
-            ClassLoader classLoader = new ProcessorFactory<>().getSiteClassLoader();
-            ClassPath classPath = ClassPath.from(classLoader);
-            for (ClassPath.ClassInfo info: classPath.getTopLevelClassesRecursive("com.zorroa")) {
-                try {
-                    Class<?> clazz = classLoader.loadClass(info.getName());
-                    if (IngestProcessor.class.isAssignableFrom(clazz) && !EXCLUDE_INGESTORS.contains(info.getName())) {
-                        ingestClasses.add(info.getName());
-                    }
-                } catch (NoClassDefFoundError | ClassNotFoundException ignore) {
-                    /*
-                     * This fails for dynamically loaded classes that inherit from an
-                     * external base class.
-                     */
-                }
+        for (Tuple<PluginProperties, Plugin> tuple: pluginService.getLoadedPlugins()) {
+            for (Class<? extends IngestProcessor> proc: tuple.getRight().getProcessors()) {
+                ingestClasses.add(proc.getCanonicalName());
             }
-        } catch (IOException e) {
-            logger.warn("Failed to load ingestors, ", e);
         }
 
         ThreadPoolTaskExecutor e = (ThreadPoolTaskExecutor) ingestThreadPool;

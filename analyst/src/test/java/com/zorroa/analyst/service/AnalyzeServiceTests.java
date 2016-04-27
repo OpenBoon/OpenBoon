@@ -2,8 +2,6 @@ package com.zorroa.analyst.service;
 
 import com.google.common.collect.Lists;
 import com.zorroa.analyst.AbstractTest;
-import com.zorroa.analyst.ingestors.ImageIngestor;
-import com.zorroa.analyst.ingestors.ProxyIngestor;
 import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
 import com.zorroa.archivist.sdk.domain.AnalyzeResult;
 import com.zorroa.archivist.sdk.domain.Asset;
@@ -36,7 +34,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setUser("test");
         req.setIngestId(new Random().nextInt(9999));
         req.setIngestPipelineId(new Random().nextInt(9999));
-        req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
+        //req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
         req.addToAssets(new File("src/test/resources/images/toucan.jpg"));
 
         AnalyzeResult result = analyzeService.analyze(req);
@@ -52,7 +50,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setUser("test");
         req.setIngestId(new Random().nextInt(9999));
         req.setIngestPipelineId(new Random().nextInt(9999));
-        req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
+        //req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
         req.addToAssets(path);
 
         AnalyzeResult result = analyzeService.analyze(req);
@@ -64,7 +62,7 @@ public class AnalyzeServiceTests extends AbstractTest {
 
         ImportSchema schema = asset.getAttr("imports", ImportSchema.class);
         for (ImportSchema.IngestProperties prop: schema) {
-            assertTrue(prop.getIngestProcessors().contains(ImageIngestor.class.getName()));
+            //assertTrue(prop.getIngestProcessors().contains(ImageIngestor.class.getName()));
             assertEquals((int)req.getIngestId(), prop.getId());
         }
     }
@@ -77,7 +75,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setUser("test");
         req.setIngestId(1000);
         req.setIngestPipelineId(1000);
-        req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
+        //req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
         req.addToAssets(path);
 
         analyzeService.analyze(req);
@@ -86,9 +84,9 @@ public class AnalyzeServiceTests extends AbstractTest {
         req = new AnalyzeRequest();
         req.setIngestId(2000);
         req.setIngestPipelineId(2000);
-        req.setProcessors(Lists.newArrayList(
-                new ProcessorFactory<>(ImageIngestor.class),
-                new ProcessorFactory<>(ProxyIngestor.class)));
+        //req.setProcessors(Lists.newArrayList(
+        //        new ProcessorFactory<>(ImageIngestor.class),
+        //        new ProcessorFactory<>(ProxyIngestor.class)));
         req.addToAssets(path);
 
         AnalyzeResult result = analyzeService.analyze(req);
@@ -108,7 +106,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setUser("test");
         req.setIngestId(new Random().nextInt(9999));
         req.setIngestPipelineId(new Random().nextInt(9999));
-        req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
+        //req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(ImageIngestor.class)));
         req.addToAssets(new File("src/test/resources/images/README.md"));
 
         AnalyzeResult result = analyzeService.analyze(req);

@@ -114,13 +114,13 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         if (!ingestService.ingestPipelineExists("standard")) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("standard");
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.VideoIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.PdfIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.CaffeIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.FaceIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ColorAnalysisIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.VideoIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.PdfIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ProxyIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.CaffeIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FaceIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ColorAnalysisIngestor"));
             builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
             builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
             ingestService.createIngestPipeline(builder);
@@ -129,14 +129,14 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         if (!ingestService.ingestPipelineExists("production")) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("production");
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.FilePathIngestor",
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FilePathIngestor",
                     ImmutableMap.of("representations", ImmutableList.of(ImmutableMap.of("primary", "blend")))));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.BlenderIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ImageIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.VideoIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ShotgunIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ProxyIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ColorAnalysisIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.BlenderIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.VideoIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ShotgunIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ProxyIngestor"));
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ColorAnalysisIngestor"));
             builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
             builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
             ingestService.createIngestPipeline(builder);
