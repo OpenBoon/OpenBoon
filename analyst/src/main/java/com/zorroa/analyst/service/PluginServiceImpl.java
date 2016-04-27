@@ -6,6 +6,7 @@ import com.zorroa.archivist.sdk.domain.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.Tuple;
 import com.zorroa.archivist.sdk.plugins.Plugin;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.archivist.sdk.util.FileUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.bootstrap.JarHell;
 import org.elasticsearch.common.io.FileSystemUtils;
@@ -15,16 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Responsible for loading user supplied plugins.
@@ -48,10 +52,12 @@ public class PluginServiceImpl implements PluginService {
         pluginsDirectory = Paths.get(properties.getString("analyst.path.plugins"));
         // Bail out if no location exists for plugins
         if (!pluginsDirectory.toFile().exists()) {
+            logger.warn("Plugin directory does not exist: {}", pluginsDirectory);
             return;
         }
 
         try {
+            expandPluginBundles(pluginsDirectory);
             List<PluginBundle> bundles = getPluginBundles(pluginsDirectory);
             List<Tuple<PluginProperties, Plugin>> loaded = loadBundles(bundles);
             loadedPlugins = Collections.unmodifiableList(loaded);
@@ -65,19 +71,82 @@ public class PluginServiceImpl implements PluginService {
         }
     }
 
+    @Override
     public IngestProcessor getIngestProcessor(String name) throws Exception {
         return Class.forName(name, false, pluginClassLoader).asSubclass(IngestProcessor.class).newInstance();
     }
 
-    public List<PluginBundle> getPluginBundles(Path pluginsDirectory) throws IOException {
-
-        List<PluginBundle> bundles = new ArrayList<>();
-
+    /**
+     * Check the pluginsDirectory for plugin zip files and decompess them.  If the directory
+     * for the plugin alrady exists, skip over it. This decision might be reversed later on
+     * and we'll allow overwriting of plugins.
+     *
+     * @param pluginsDirectory
+     * @throws IOException
+     */
+    private void expandPluginBundles(Path pluginsDirectory) throws IOException {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(pluginsDirectory)) {
+            for (Path path : stream) {
+                if (Files.isDirectory(path)) {
+                    continue;
+                }
+                // Note: plugins have to end with -plugin.zip
+                if (!path.toString().endsWith("-plugin.zip")) {
+                    continue;
+                }
 
+                String basename = FileUtils.basename(path.toFile().getName()).replace("-plugin", "");
+                File folder = new File(path.getParent().toString() +"/" + basename);
+
+                if (folder.exists()) {
+                    logger.warn("Skipping plugin install, file already exists: {}", basename);
+                    continue;
+                }
+
+                logger.info("Expanding plugin bundle: {}", path);
+                unzip(path.toString(), pluginsDirectory);
+            }
+        }
+
+    }
+
+    public void unzip(String zipFilePath, Path destDir) throws IOException {
+        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+        ZipEntry entry = zipIn.getNextEntry();
+        while (entry != null) {
+            String filePath = destDir.toString() + File.separator + entry.getName();
+            if (!entry.isDirectory()) {
+                extractFile(zipIn, filePath);
+            } else {
+                File dir = new File(filePath);
+                dir.mkdir();
+            }
+            zipIn.closeEntry();
+            entry = zipIn.getNextEntry();
+        }
+        zipIn.close();
+    }
+
+    private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        byte[] bytesIn = new byte[4096];
+        int read = 0;
+        while ((read = zipIn.read(bytesIn)) != -1) {
+            bos.write(bytesIn, 0, read);
+        }
+        bos.close();
+    }
+
+    private List<PluginBundle> getPluginBundles(Path pluginsDirectory) throws IOException {
+        List<PluginBundle> bundles = new ArrayList<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(pluginsDirectory)) {
             for (Path plugin : stream) {
                 if (FileSystemUtils.isHidden(plugin)) {
                     logger.debug("--- skip hidden plugin file[{}]", plugin.toAbsolutePath());
+                    continue;
+                }
+
+                if (!Files.isDirectory(plugin)) {
                     continue;
                 }
 
@@ -93,16 +162,6 @@ public class PluginServiceImpl implements PluginService {
                 List<URL> urls = new ArrayList<>();
                 try (DirectoryStream<Path> jarStream = Files.newDirectoryStream(plugin, "*.jar")) {
                     for (Path jar : jarStream) {
-                        JarFile file = new JarFile(jar.toFile());
-                        Enumeration<JarEntry> entries = file.entries();
-
-                        while(entries.hasMoreElements()) {
-                            JarEntry entry = entries.nextElement();
-                            if (entry.getName().matches(".*\\.dylib$")) {
-                                logger.info("{}", entry.getName());
-                            }
-                        }
-
                         // normalize with toRealPath to get symlinks out of our hair
                         urls.add(jar.toRealPath().toUri().toURL());
                     }
