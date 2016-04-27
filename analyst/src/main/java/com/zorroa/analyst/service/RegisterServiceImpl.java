@@ -121,7 +121,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
         List<String> ingestClasses = Lists.newArrayListWithCapacity(30);
         for (Tuple<PluginProperties, Plugin> tuple: pluginService.getLoadedPlugins()) {
-            for (Class<? extends IngestProcessor> proc: tuple.getRight().getProcessors()) {
+            for (Class<? extends IngestProcessor> proc: tuple.getRight().getIngestProcessors()) {
                 ingestClasses.add(proc.getCanonicalName());
             }
         }

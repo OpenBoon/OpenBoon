@@ -57,7 +57,7 @@ public class PluginServiceImpl implements PluginService {
             loadedPlugins = Collections.unmodifiableList(loaded);
 
             for (Tuple<PluginProperties, Plugin> pair: loaded) {
-                logger.info("processors {}", pair.getRight().getProcessors());
+                logger.info("processors {}", pair.getRight().getIngestProcessors());
             }
 
         } catch (IOException ex) {
