@@ -6,7 +6,6 @@ import com.google.common.collect.Sets;
 import com.google.common.reflect.ClassPath;
 import com.zorroa.archivist.sdk.domain.Analyst;
 import com.zorroa.archivist.sdk.processor.Aggregator;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.util.IngestUtils;
 import com.zorroa.archivist.service.AnalystService;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public class ConfigController {
     @PostConstruct
     public void init() {
         try {
-            ClassLoader classLoader = new ProcessorFactory<>().getSiteClassLoader();
+            ClassLoader classLoader = ConfigController.class.getClassLoader();
             ClassPath classPath = ClassPath.from(classLoader);
             for (ClassPath.ClassInfo info: classPath.getTopLevelClassesRecursive("com.zorroa")) {
                 try {

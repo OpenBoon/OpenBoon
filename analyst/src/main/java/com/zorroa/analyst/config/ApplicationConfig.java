@@ -1,7 +1,6 @@
 package com.zorroa.analyst.config;
 
-import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;
-import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import com.zorroa.archivist.sdk.filesystem.AbstractFileSystem;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;

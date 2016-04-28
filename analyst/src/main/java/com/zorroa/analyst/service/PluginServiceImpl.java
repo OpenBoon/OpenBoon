@@ -2,8 +2,9 @@ package com.zorroa.analyst.service;
 
 
 import com.zorroa.analyst.domain.PluginProperties;
-import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.Tuple;
+import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.plugins.Plugin;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.archivist.sdk.util.FileUtils;
@@ -41,6 +42,9 @@ public class PluginServiceImpl implements PluginService {
     @Autowired
     ApplicationProperties properties;
 
+    @Autowired
+    ObjectFileSystem fileSystem;
+
     Path pluginsDirectory;
 
     List<Tuple<PluginProperties, Plugin>> loadedPlugins;
@@ -73,11 +77,15 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public IngestProcessor getIngestProcessor(String name) throws Exception {
-        return Class.forName(name, false, pluginClassLoader).asSubclass(IngestProcessor.class).newInstance();
+        IngestProcessor result = Class.forName(name, false, pluginClassLoader)
+                .asSubclass(IngestProcessor.class).newInstance();
+        result.setObjectFileSystem(fileSystem);
+        result.setApplicationProperties(properties);
+        return result;
     }
 
     /**
-     * Check the pluginsDirectory for plugin zip files and decompess them.  If the directory
+     * Check the pluginsDirectory for plugin zip files and decompress them.  If the directory
      * for the plugin alrady exists, skip over it. This decision might be reversed later on
      * and we'll allow overwriting of plugins.
      *
@@ -156,7 +164,7 @@ public class PluginServiceImpl implements PluginService {
                     pluginProps = PluginProperties.readFromProperties(plugin);
                 } catch (IOException e) {
                     throw new IllegalStateException("Could not load plugin descriptor for existing plugin ["
-                            + plugin.getFileName() + "]. Was the plugin built before 2.0?", e);
+                            + plugin.getFileName() + "]", e);
                 }
 
                 List<URL> urls = new ArrayList<>();

@@ -51,9 +51,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     ApplicationContext applicationContext;
 
     @Autowired
-    ApplicationProperties applicationProperties;
-
-    @Autowired
     EventLogService eventLogService;
 
     @Autowired

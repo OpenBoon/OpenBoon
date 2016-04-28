@@ -1,7 +1,7 @@
 package com.zorroa.analyst;
 
 import com.zorroa.analyst.service.AnalyzeService;
-import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;

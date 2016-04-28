@@ -2,7 +2,7 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.RestControllerAdvice;
 import com.zorroa.common.elastic.ArchivistDateScriptPlugin;

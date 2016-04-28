@@ -1,7 +1,7 @@
 package com.zorroa.common.config;
 
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.ApplicationProperties;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
