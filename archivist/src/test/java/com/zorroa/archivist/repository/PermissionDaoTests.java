@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.Permission;
 import com.zorroa.archivist.sdk.domain.PermissionBuilder;
 import com.zorroa.archivist.sdk.domain.User;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 /**
  * Created by chambers on 10/28/15.
  */
-public class PermissionDaoTests extends ArchivistApplicationTests {
+public class PermissionDaoTests extends AbstractTest {
 
     @Autowired
     PermissionDao permissionDao;

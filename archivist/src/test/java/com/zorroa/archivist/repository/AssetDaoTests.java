@@ -3,7 +3,7 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class AssetDaoTests extends ArchivistApplicationTests {
+public class AssetDaoTests extends AbstractTest {
 
     @Autowired
     AssetDao assetDao;

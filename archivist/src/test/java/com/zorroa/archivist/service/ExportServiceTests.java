@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.ArchivistException;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotEquals;
 /**
  * Created by chambers on 12/2/15.
  */
-public class ExportServiceTests extends ArchivistApplicationTests {
+public class ExportServiceTests extends AbstractTest {
 
     Export export;
 

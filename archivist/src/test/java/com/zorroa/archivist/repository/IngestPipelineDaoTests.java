@@ -2,7 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestAggregator;
 import com.zorroa.archivist.TestIngestor;
 import com.zorroa.archivist.sdk.domain.IngestPipeline;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 
-public class IngestPipelineDaoTests extends ArchivistApplicationTests {
+public class IngestPipelineDaoTests extends AbstractTest {
 
     @Autowired
     IngestPipelineDao ingestPipelineDao;

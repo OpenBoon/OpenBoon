@@ -1,6 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 4/21/16.
  */
-public class MaintenanceDaoTests extends ArchivistApplicationTests {
+public class MaintenanceDaoTests extends AbstractTest {
 
     @Autowired
     MaintenanceDao maintenanceDao;

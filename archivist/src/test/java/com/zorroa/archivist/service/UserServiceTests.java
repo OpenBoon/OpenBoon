@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Created by chambers on 12/23/15.
  */
-public class UserServiceTests extends ArchivistApplicationTests {
+public class UserServiceTests extends AbstractTest {
 
     @Test
     public void createUser() {

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.AssetBuilder;
 import com.zorroa.archivist.sdk.domain.Note;
 import com.zorroa.archivist.sdk.domain.NoteBuilder;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 3/17/16.
  */
-public class NoteServiceTests extends ArchivistApplicationTests {
+public class NoteServiceTests extends AbstractTest {
 
     @Autowired
     NoteService noteService;

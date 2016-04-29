@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import org.elasticsearch.action.count.CountResponse;
 import org.junit.Ignore;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 /**
  * Created by chambers on 7/31/15.
  */
-public class IngestExecutorServiceTests extends ArchivistApplicationTests {
+public class IngestExecutorServiceTests extends AbstractTest {
 
     @Test
     public void testPauseAndResume() {

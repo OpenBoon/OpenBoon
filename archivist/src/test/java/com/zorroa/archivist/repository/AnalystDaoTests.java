@@ -1,6 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.Analyst;
 import com.zorroa.archivist.sdk.domain.AnalystPing;
 import org.junit.Before;
@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 /**
  * Created by chambers on 2/10/16.
  */
-public class AnalystDaoTests extends ArchivistApplicationTests {
+public class AnalystDaoTests extends AbstractTest {
 
     @Autowired
     AnalystDao analystDao;

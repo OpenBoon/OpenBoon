@@ -52,7 +52,7 @@ import java.util.Set;
 @TestPropertySource("/test.properties")
 @WebAppConfiguration
 @Transactional
-public abstract class ArchivistApplicationTests {
+public abstract class AbstractTest {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -125,7 +125,7 @@ public abstract class ArchivistApplicationTests {
 
     public static final String TEST_DATA_PATH = new File("src/test/resources/static").getAbsolutePath();
 
-    public ArchivistApplicationTests() {
+    public AbstractTest() {
         ArchivistConfiguration.unittest = true;
     }
 

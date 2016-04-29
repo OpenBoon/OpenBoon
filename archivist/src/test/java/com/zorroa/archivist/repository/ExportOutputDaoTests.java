@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 11/12/15.
  */
-public class ExportOutputDaoTests extends ArchivistApplicationTests {
+public class ExportOutputDaoTests extends AbstractTest {
 
     @Autowired
     ExportDao exportDao;

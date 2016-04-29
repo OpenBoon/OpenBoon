@@ -1,6 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Migration;
 import com.zorroa.archivist.domain.MigrationType;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 2/3/16.
  */
-public class MigrationDaoTests extends ArchivistApplicationTests {
+public class MigrationDaoTests extends AbstractTest {
 
     @Autowired
     MigrationDao migrationDao;

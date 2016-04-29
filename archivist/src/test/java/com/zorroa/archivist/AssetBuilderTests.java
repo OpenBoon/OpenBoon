@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class AssetBuilderTests extends ArchivistApplicationTests {
+public class AssetBuilderTests extends AbstractTest {
 
     @Test
     public void testCreate() {

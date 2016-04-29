@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.util.Json;
 import com.zorroa.common.repository.AssetDao;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Each test is also testing the getAll function.
  */
-public class EventLogDaoTests extends ArchivistApplicationTests {
+public class EventLogDaoTests extends AbstractTest {
 
     @Autowired
     EventLogDao eventLogDao;

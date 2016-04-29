@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class FolderDaoTests extends ArchivistApplicationTests {
+public class FolderDaoTests extends AbstractTest {
 
     @Autowired
     FolderDao folderDao;

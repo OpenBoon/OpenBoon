@@ -2,7 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 3/17/16.
  */
-public class NoteDaoTests extends ArchivistApplicationTests {
+public class NoteDaoTests extends AbstractTest {
 
     @Autowired
     NoteDao noteDao;

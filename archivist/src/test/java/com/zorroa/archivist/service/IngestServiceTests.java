@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestIngestor;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.processor.ProcessorFactory;
@@ -10,7 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class IngestServiceTests extends ArchivistApplicationTests {
+public class IngestServiceTests extends AbstractTest {
 
     @Test
     public void testUpdateIngest() throws InterruptedException {

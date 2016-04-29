@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.Room;
 import com.zorroa.archivist.sdk.domain.RoomBuilder;
 import com.zorroa.archivist.sdk.domain.Session;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * Created by chambers on 7/16/15.
  */
-public class SessionDaoTests extends ArchivistApplicationTests {
+public class SessionDaoTests extends AbstractTest {
 
     @Autowired
     SessionDao sessionDao;

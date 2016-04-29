@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import org.junit.Test;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class FolderServiceTests extends ArchivistApplicationTests {
+public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testSetAcl() {

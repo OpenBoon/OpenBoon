@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 4/21/16.
  */
-public class MaintenanceServiceTests extends ArchivistApplicationTests {
+public class MaintenanceServiceTests extends AbstractTest {
 
     @Autowired
     MaintenanceService maintenanceService;

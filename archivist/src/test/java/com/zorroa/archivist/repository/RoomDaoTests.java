@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class RoomDaoTests extends ArchivistApplicationTests {
+public class RoomDaoTests extends AbstractTest {
 
     @Autowired
     RoomDao roomDao;

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestIngestor;
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class IngestDaoTests extends ArchivistApplicationTests {
+public class IngestDaoTests extends AbstractTest {
 
     @Autowired
     IngestDao ingestDao;

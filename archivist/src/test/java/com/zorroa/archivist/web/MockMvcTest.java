@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.User;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import org.junit.Before;
@@ -16,7 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 
-public abstract class MockMvcTest extends ArchivistApplicationTests {
+public abstract class MockMvcTest extends AbstractTest {
 
     @Autowired
     protected WebApplicationContext wac;

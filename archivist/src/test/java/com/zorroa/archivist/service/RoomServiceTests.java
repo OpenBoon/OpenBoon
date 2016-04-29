@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.exception.MalformedDataException;
@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 /**
  * Created by chambers on 7/14/15.
  */
-public class RoomServiceTests extends ArchivistApplicationTests {
+public class RoomServiceTests extends AbstractTest {
 
     @Autowired
     RoomService roomService;

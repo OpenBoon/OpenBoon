@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.sdk.domain.*;
 import com.zorroa.archivist.sdk.schema.LocationSchema;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by chambers on 10/30/15.
  */
-public class SearchServiceTests extends ArchivistApplicationTests {
+public class SearchServiceTests extends AbstractTest {
 
     @Autowired
     AssetDao assetDao;

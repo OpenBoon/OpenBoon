@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestMessagingClient;
 import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import com.zorroa.archivist.sdk.domain.*;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by chambers on 12/14/15.
  */
-public class MessageServiceTests extends ArchivistApplicationTests {
+public class MessageServiceTests extends AbstractTest {
 
     @Autowired
     SessionRegistry sessionRegistry;

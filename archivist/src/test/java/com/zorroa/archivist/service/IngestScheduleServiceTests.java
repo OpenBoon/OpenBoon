@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.ArchivistApplicationTests;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
 import com.zorroa.archivist.sdk.domain.Ingest;
 import com.zorroa.archivist.sdk.domain.IngestBuilder;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by chambers on 9/18/15.
  */
-public class IngestScheduleServiceTests extends ArchivistApplicationTests {
+public class IngestScheduleServiceTests extends AbstractTest {
 
     @Test
     public void executeReady() throws InterruptedException {
