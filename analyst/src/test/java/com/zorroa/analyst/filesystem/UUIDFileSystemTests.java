@@ -1,5 +1,6 @@
 package com.zorroa.analyst.filesystem;
 
+import com.zorroa.sdk.filesystem.ObjectFile;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -7,6 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 import java.util.UUID;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UUIDFileSystemTests {
 
@@ -28,5 +32,12 @@ public class UUIDFileSystemTests {
         String name2  = String.format("%s.png", UUID.randomUUID());
         fs.get("proxies", name1);
         fs.get("proxies", name2);
+    }
+
+    @Test
+    public void testPrepare() {
+        ObjectFile file = fs.prepare("test", "hello", "txt");
+        assertFalse(file.exists());
+        assertTrue(file.getFile().getParentFile().exists());
     }
 }
