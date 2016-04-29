@@ -148,16 +148,6 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                     }
                 }
             }
-
-            try {
-                builder.getSource().setType(Tika.detect(builder.getSource().getPath()));
-            } catch (Exception e) {
-                eventLogService.log(req, "Ingest error '{}', could not determine asset type on '{}'",
-                        e, e.getMessage(), builder.getAbsolutePath());
-                result.errors++;
-                continue;
-            }
-
             /*
              * Populate the previous version.
              */

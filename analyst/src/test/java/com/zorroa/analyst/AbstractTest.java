@@ -1,11 +1,10 @@
 package com.zorroa.analyst;
 
-import com.zorroa.analyst.service.AnalyzeService;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.AssetBuilder;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -112,12 +111,6 @@ public abstract class AbstractTest {
 
     protected AssetBuilder ingestFile(File file, List<IngestProcessor> pipeline) {
         AssetBuilder asset = new AssetBuilder(file.getAbsolutePath());
-        try {
-            asset.getSource().setType(AnalyzeService.Tika.detect(asset.getFile()));
-        } catch (IOException e) {
-            logger.warn("Failed to detect type: {}", e);
-        }
-
         for (IngestProcessor processor: pipeline) {
             processor.process(asset);
         }

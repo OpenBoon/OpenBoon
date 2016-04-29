@@ -2,7 +2,6 @@ package com.zorroa.analyst.service;
 
 import com.zorroa.sdk.domain.AnalyzeRequest;
 import com.zorroa.sdk.domain.AnalyzeResult;
-import org.apache.tika.Tika;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +13,4 @@ public interface AnalyzeService {
     AnalyzeResult asyncAnalyze(AnalyzeRequest req) throws ExecutionException;
 
     AnalyzeResult analyze(AnalyzeRequest req);
-
-    Tika Tika = new Tika();
 }
