@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.schema.SourceSchema;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.archivist.security.ExportOptionsService;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;

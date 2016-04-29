@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.Note;
-import com.zorroa.archivist.sdk.domain.NoteBuilder;
-import com.zorroa.archivist.sdk.domain.NoteSearch;
+import com.zorroa.sdk.domain.Note;
+import com.zorroa.sdk.domain.NoteBuilder;
+import com.zorroa.sdk.domain.NoteSearch;
 
 import java.util.List;
 

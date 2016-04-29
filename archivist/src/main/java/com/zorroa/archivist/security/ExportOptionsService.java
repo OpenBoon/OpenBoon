@@ -1,9 +1,9 @@
 package com.zorroa.archivist.security;
 
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.Export;
-import com.zorroa.archivist.sdk.domain.ExportOutput;
-import com.zorroa.archivist.sdk.domain.ExportedAsset;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Export;
+import com.zorroa.sdk.domain.ExportOutput;
+import com.zorroa.sdk.domain.ExportedAsset;
 
 /**
  * Created by chambers on 11/23/15.

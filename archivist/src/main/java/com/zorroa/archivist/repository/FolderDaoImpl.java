@@ -2,8 +2,8 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;

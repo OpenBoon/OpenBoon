@@ -4,12 +4,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.schema.PermissionSchema;
-import com.zorroa.archivist.sdk.schema.SourceSchema;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.ProcessorFactory;
+import com.zorroa.sdk.processor.export.ExportProcessor;
+import com.zorroa.sdk.schema.PermissionSchema;
+import com.zorroa.sdk.schema.SourceSchema;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.common.repository.AssetDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +151,7 @@ public class AssetDaoTests extends AbstractTest {
         search.setQuery("beer");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
 
         ExportBuilder builder = new ExportBuilder();
         builder.setNote("An export for Bob");

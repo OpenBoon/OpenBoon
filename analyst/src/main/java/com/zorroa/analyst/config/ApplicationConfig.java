@@ -1,8 +1,8 @@
 package com.zorroa.analyst.config;
 
-import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;import com.zorroa.archivist.sdk.config.ApplicationProperties;
-import com.zorroa.archivist.sdk.filesystem.AbstractFileSystem;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.sdk.client.archivist.ArchivistClient;import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.filesystem.AbstractFileSystem;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

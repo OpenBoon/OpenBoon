@@ -1,7 +1,7 @@
 package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableList;
-import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.sdk.domain.User;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 

@@ -2,10 +2,10 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.sdk.domain.Room;
-import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.domain.UserBuilder;
-import com.zorroa.archivist.sdk.domain.UserUpdateBuilder;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.User;
+import com.zorroa.sdk.domain.UserBuilder;
+import com.zorroa.sdk.domain.UserUpdateBuilder;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;

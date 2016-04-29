@@ -1,6 +1,6 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.archivist.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Asset;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.search.SearchHit;

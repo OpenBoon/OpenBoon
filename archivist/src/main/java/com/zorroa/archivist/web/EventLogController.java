@@ -2,7 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.repository.EventLogDao;
-import com.zorroa.archivist.sdk.domain.EventLogSearch;
+import com.zorroa.sdk.domain.EventLogSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;

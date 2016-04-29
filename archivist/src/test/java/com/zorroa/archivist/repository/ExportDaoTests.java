@@ -2,7 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import org.junit.Before;
 import org.junit.Test;

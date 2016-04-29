@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 import org.elasticsearch.action.count.CountResponse;
 import org.junit.Ignore;
 import org.junit.Test;

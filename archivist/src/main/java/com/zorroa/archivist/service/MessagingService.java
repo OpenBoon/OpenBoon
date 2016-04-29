@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.sdk.domain.Message;
-import com.zorroa.archivist.sdk.domain.Room;
-import com.zorroa.archivist.sdk.domain.Session;
-import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.Session;
+import com.zorroa.sdk.domain.User;
 
 /**
  * MessagingService is used to send Asynchronous messages to clients

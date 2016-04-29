@@ -1,10 +1,10 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.repository.AnalystDao;
-import com.zorroa.archivist.sdk.client.analyst.AnalystClient;
-import com.zorroa.archivist.sdk.domain.Analyst;
-import com.zorroa.archivist.sdk.domain.AnalystPing;
-import com.zorroa.archivist.sdk.domain.AnalystState;
+import com.zorroa.sdk.client.analyst.AnalystClient;
+import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.AnalystState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;

@@ -2,10 +2,10 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.TestSearchResult;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.Folder;
-import com.zorroa.archivist.sdk.domain.FolderBuilder;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Folder;
+import com.zorroa.sdk.domain.FolderBuilder;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;
 import org.junit.Test;

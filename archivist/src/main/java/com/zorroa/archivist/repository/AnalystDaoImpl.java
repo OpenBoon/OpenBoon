@@ -1,10 +1,10 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.sdk.domain.Analyst;
-import com.zorroa.archivist.sdk.domain.AnalystPing;
-import com.zorroa.archivist.sdk.domain.AnalystState;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.AnalystState;
+import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;

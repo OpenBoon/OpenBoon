@@ -1,6 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.EventLogSearch;
+import com.zorroa.sdk.domain.EventLogSearch;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 

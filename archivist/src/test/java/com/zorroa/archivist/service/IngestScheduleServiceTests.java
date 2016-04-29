@@ -3,8 +3,8 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;
-import com.zorroa.archivist.sdk.domain.Ingest;
-import com.zorroa.archivist.sdk.domain.IngestBuilder;
+import com.zorroa.sdk.domain.Ingest;
+import com.zorroa.sdk.domain.IngestBuilder;
 import org.junit.Test;
 
 import java.time.LocalTime;

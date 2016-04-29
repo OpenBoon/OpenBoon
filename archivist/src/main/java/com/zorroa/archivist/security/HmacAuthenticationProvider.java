@@ -3,7 +3,7 @@ package com.zorroa.archivist.security;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.sdk.domain.User;
 import com.zorroa.archivist.service.UserService;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;

@@ -1,10 +1,10 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.sdk.domain.Permission;
-import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.domain.UserUpdateBuilder;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.Permission;
+import com.zorroa.sdk.domain.User;
+import com.zorroa.sdk.domain.UserUpdateBuilder;
+import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

@@ -1,9 +1,9 @@
 package com.zorroa.common.service;
 
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.sdk.domain.EventLogMessage;
-import com.zorroa.archivist.sdk.domain.EventLoggable;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.EventLogMessage;
+import com.zorroa.sdk.domain.EventLoggable;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexRequestBuilder;

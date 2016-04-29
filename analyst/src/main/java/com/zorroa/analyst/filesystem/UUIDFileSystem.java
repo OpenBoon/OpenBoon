@@ -3,9 +3,9 @@ package com.zorroa.analyst.filesystem;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.zorroa.analyst.service.TransferService;
-import com.zorroa.archivist.sdk.exception.FileSystemException;
-import com.zorroa.archivist.sdk.filesystem.AbstractFileSystem;
-import com.zorroa.archivist.sdk.filesystem.ObjectFile;
+import com.zorroa.sdk.exception.FileSystemException;
+import com.zorroa.sdk.filesystem.AbstractFileSystem;
+import com.zorroa.sdk.filesystem.ObjectFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;

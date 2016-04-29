@@ -1,6 +1,6 @@
 package com.zorroa.analyst.service;
 
-import com.zorroa.archivist.sdk.filesystem.ObjectFile;
+import com.zorroa.sdk.filesystem.ObjectFile;
 
 import java.io.IOException;
 import java.net.URI;

@@ -1,7 +1,7 @@
 package com.zorroa.common.service;
 
-import com.zorroa.archivist.sdk.domain.EventLogMessage;
-import com.zorroa.archivist.sdk.domain.EventLoggable;
+import com.zorroa.sdk.domain.EventLogMessage;
+import com.zorroa.sdk.domain.EventLoggable;
 
 /**
  * Created by chambers on 12/29/15.

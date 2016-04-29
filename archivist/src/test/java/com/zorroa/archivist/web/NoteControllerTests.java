@@ -2,11 +2,11 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Note;
-import com.zorroa.archivist.sdk.domain.NoteBuilder;
-import com.zorroa.archivist.sdk.domain.NoteSearch;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.AssetBuilder;
+import com.zorroa.sdk.domain.Note;
+import com.zorroa.sdk.domain.NoteBuilder;
+import com.zorroa.sdk.domain.NoteSearch;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.archivist.service.NoteService;
 import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;

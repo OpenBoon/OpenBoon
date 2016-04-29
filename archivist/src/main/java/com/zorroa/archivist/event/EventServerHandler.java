@@ -2,9 +2,9 @@ package com.zorroa.archivist.event;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.zorroa.archivist.sdk.domain.Message;
-import com.zorroa.archivist.sdk.domain.MessageType;
-import com.zorroa.archivist.sdk.domain.Session;
+import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.domain.MessageType;
+import com.zorroa.sdk.domain.Session;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

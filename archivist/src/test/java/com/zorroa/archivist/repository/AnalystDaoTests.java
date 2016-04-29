@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.Analyst;
-import com.zorroa.archivist.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.domain.AnalystPing;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

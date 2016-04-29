@@ -1,10 +1,10 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.ProcessorFactory;
+import com.zorroa.sdk.processor.export.ExportProcessor;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -38,7 +38,7 @@ public class ExportOutputControllerTests extends MockMvcTest {
         AssetSearch search = new AssetSearch().setQuery("beer");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
 
         builder = new ExportBuilder();
         builder.setNote("An export for Bob");

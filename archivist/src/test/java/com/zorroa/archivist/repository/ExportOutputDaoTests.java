@@ -2,9 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.ProcessorFactory;
+import com.zorroa.sdk.processor.export.ExportProcessor;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class ExportOutputDaoTests extends AbstractTest {
         search.setQuery("foo");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
 
         ExportBuilder builder = new ExportBuilder();
         builder.setNote("An export for Bob");

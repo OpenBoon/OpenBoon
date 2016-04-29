@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.sdk.domain.Acl;
-import com.zorroa.archivist.sdk.domain.Folder;
-import com.zorroa.archivist.sdk.domain.FolderBuilder;
-import com.zorroa.archivist.sdk.domain.FolderUpdateBuilder;
+import com.zorroa.sdk.domain.Acl;
+import com.zorroa.sdk.domain.Folder;
+import com.zorroa.sdk.domain.FolderBuilder;
+import com.zorroa.sdk.domain.FolderUpdateBuilder;
 
 import java.util.Collection;
 import java.util.List;

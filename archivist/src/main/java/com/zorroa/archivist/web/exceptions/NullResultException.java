@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web.exceptions;
 
-import com.zorroa.archivist.sdk.exception.ArchivistException;
+import com.zorroa.sdk.exception.ArchivistException;
 
 /**
  * Created by chambers on 12/18/15.

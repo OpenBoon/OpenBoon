@@ -7,12 +7,12 @@ import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.domain.PluginProperties;
-import com.zorroa.archivist.sdk.client.archivist.ArchivistClient;
-import com.zorroa.archivist.sdk.config.ApplicationProperties;
-import com.zorroa.archivist.sdk.domain.AnalystPing;
-import com.zorroa.archivist.sdk.domain.Tuple;
-import com.zorroa.archivist.sdk.plugins.Plugin;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.client.archivist.ArchivistClient;
+import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.Tuple;
+import com.zorroa.sdk.plugins.Plugin;
+import com.zorroa.sdk.processor.ingest.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +115,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     }
 
     private Set<String> EXCLUDE_INGESTORS =
-            ImmutableSet.of("com.zorroa.archivist.sdk.processor.ingest.IngestProcessor");
+            ImmutableSet.of("com.zorroa.sdk.processor.ingest.IngestProcessor");
 
     private AnalystPing getPing()  {
 

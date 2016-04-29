@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.AssetUpdateBuilder;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetBuilder;
+import com.zorroa.sdk.domain.AssetUpdateBuilder;
 
 import java.util.List;
 

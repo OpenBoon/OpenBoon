@@ -1,7 +1,7 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.sdk.domain.Analyst;
-import com.zorroa.archivist.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.domain.AnalystPing;
 import com.zorroa.archivist.service.AnalystService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class AnalystController {
          */
         URI uri = URI.create(ping.getUrl());
         ping.setUrl(uri.getScheme() + "://" + req.getRemoteAddr() + ":" + uri.getPort());
-        
+
         logger.info("Received ping: {}", ping);
         analystService.register(ping);
     }

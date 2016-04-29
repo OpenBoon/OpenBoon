@@ -2,12 +2,12 @@ package com.zorroa.analyst.service;
 
 
 import com.zorroa.analyst.domain.PluginProperties;
-import com.zorroa.archivist.sdk.config.ApplicationProperties;
-import com.zorroa.archivist.sdk.domain.Tuple;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
-import com.zorroa.archivist.sdk.plugins.Plugin;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
-import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.domain.Tuple;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.sdk.plugins.Plugin;
+import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.bootstrap.JarHell;
 import org.elasticsearch.common.io.FileSystemUtils;

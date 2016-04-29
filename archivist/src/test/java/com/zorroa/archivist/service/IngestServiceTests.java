@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestIngestor;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.ProcessorFactory;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 

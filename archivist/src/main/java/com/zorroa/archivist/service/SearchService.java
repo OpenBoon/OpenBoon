@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.AssetAggregateBuilder;
-import com.zorroa.archivist.sdk.domain.AssetSearch;
-import com.zorroa.archivist.sdk.domain.AssetSuggestBuilder;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetAggregateBuilder;
+import com.zorroa.sdk.domain.AssetSearch;
+import com.zorroa.sdk.domain.AssetSuggestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;

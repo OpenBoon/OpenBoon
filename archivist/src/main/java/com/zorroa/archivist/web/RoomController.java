@@ -2,7 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.SearchService;

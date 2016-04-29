@@ -2,10 +2,10 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.Permission;
-import com.zorroa.archivist.sdk.domain.PermissionBuilder;
-import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.domain.UserBuilder;
+import com.zorroa.sdk.domain.Permission;
+import com.zorroa.sdk.domain.PermissionBuilder;
+import com.zorroa.sdk.domain.User;
+import com.zorroa.sdk.domain.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

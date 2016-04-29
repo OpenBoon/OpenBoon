@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;

@@ -1,8 +1,8 @@
 package com.zorroa.analyst.web;
 
 import com.zorroa.analyst.service.AnalyzeService;
-import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
-import com.zorroa.archivist.sdk.domain.AnalyzeResult;
+import com.zorroa.sdk.domain.AnalyzeRequest;
+import com.zorroa.sdk.domain.AnalyzeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

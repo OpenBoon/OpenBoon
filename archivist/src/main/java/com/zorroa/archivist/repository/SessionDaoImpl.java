@@ -1,11 +1,11 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.sdk.domain.Room;
-import com.zorroa.archivist.sdk.domain.Session;
-import com.zorroa.archivist.sdk.domain.SessionAttrs;
-import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.Session;
+import com.zorroa.sdk.domain.SessionAttrs;
+import com.zorroa.sdk.domain.User;
+import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

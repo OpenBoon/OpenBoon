@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 import org.junit.Test;
 
 import java.util.List;

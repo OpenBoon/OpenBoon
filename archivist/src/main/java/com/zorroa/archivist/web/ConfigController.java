@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.ClassPath;
-import com.zorroa.archivist.sdk.domain.Analyst;
-import com.zorroa.archivist.sdk.processor.Aggregator;
-import com.zorroa.archivist.sdk.util.IngestUtils;
+import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.processor.Aggregator;
+import com.zorroa.sdk.util.IngestUtils;
 import com.zorroa.archivist.service.AnalystService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +72,7 @@ public class ConfigController {
     }
 
     private Set<String> EXCLUDE_INGESTORS =
-            ImmutableSet.of("com.zorroa.archivist.sdk.processor.Aggregator");
+            ImmutableSet.of("com.zorroa.sdk.processor.Aggregator");
 
     @RequestMapping(value="/api/v1/plugins/aggregator", method= RequestMethod.GET)
     public Collection<String> aggregators() throws Exception {

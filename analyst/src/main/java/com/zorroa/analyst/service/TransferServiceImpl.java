@@ -1,7 +1,7 @@
 package com.zorroa.analyst.service;
 
-import com.zorroa.archivist.sdk.filesystem.ObjectFile;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.sdk.filesystem.ObjectFile;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;

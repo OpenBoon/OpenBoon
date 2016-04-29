@@ -1,6 +1,6 @@
 package com.zorroa.archivist;
 
-import com.zorroa.archivist.sdk.processor.Aggregator;
+import com.zorroa.sdk.processor.Aggregator;
 
 /**
  * Created by wex on 3/20/16.

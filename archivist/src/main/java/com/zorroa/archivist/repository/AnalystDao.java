@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.Analyst;
-import com.zorroa.archivist.sdk.domain.AnalystPing;
-import com.zorroa.archivist.sdk.domain.AnalystState;
+import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.AnalystState;
 
 import java.util.List;
 

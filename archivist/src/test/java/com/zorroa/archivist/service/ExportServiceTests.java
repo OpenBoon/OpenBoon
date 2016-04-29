@@ -3,11 +3,11 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.exception.ArchivistException;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.exception.ArchivistException;
+import com.zorroa.sdk.processor.ProcessorFactory;
+import com.zorroa.sdk.processor.export.ExportProcessor;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class ExportServiceTests extends AbstractTest {
         search.setQuery("beer");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
         outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
 
         ExportBuilder builder = new ExportBuilder();
@@ -53,7 +53,7 @@ public class ExportServiceTests extends AbstractTest {
     @Test(expected=ArchivistException.class)
     public void testExceedMaxAssetCount() {
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
         outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
 
         ExportBuilder builder = new ExportBuilder();
@@ -67,7 +67,7 @@ public class ExportServiceTests extends AbstractTest {
     @Test(expected=ArchivistException.class)
     public void testZeroAssetExport() {
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
         outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
 
         ExportBuilder builder = new ExportBuilder();

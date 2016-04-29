@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.repository.PermissionDao;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.schema.PermissionSchema;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
 import org.slf4j.Logger;

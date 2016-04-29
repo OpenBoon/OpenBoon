@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.Permission;
-import com.zorroa.archivist.sdk.domain.PermissionBuilder;
-import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.sdk.domain.Permission;
+import com.zorroa.sdk.domain.PermissionBuilder;
+import com.zorroa.sdk.domain.User;
 
 import java.util.Collection;
 import java.util.List;

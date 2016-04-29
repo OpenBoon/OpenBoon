@@ -2,9 +2,9 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.domain.Note;
-import com.zorroa.archivist.sdk.domain.NoteBuilder;
+import com.zorroa.sdk.domain.AssetBuilder;
+import com.zorroa.sdk.domain.Note;
+import com.zorroa.sdk.domain.NoteBuilder;
 import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;
 import org.junit.Test;

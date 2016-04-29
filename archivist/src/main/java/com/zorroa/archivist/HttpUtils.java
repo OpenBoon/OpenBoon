@@ -1,6 +1,6 @@
 package com.zorroa.archivist;
 
-import com.zorroa.archivist.sdk.util.FileUtils;
+import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;

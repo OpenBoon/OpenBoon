@@ -1,8 +1,8 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.sdk.domain.IngestPipeline;
-import com.zorroa.archivist.sdk.domain.IngestPipelineBuilder;
-import com.zorroa.archivist.sdk.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.sdk.domain.IngestPipeline;
+import com.zorroa.sdk.domain.IngestPipelineBuilder;
+import com.zorroa.sdk.domain.IngestPipelineUpdateBuilder;
 
 import java.util.List;
 

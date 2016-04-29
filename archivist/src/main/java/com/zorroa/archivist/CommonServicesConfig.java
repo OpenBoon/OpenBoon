@@ -1,6 +1,6 @@
 package com.zorroa.archivist;
 
-import com.zorroa.archivist.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.repository.AssetDaoImpl;
 import com.zorroa.common.service.EventLogService;

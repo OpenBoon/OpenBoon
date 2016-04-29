@@ -1,9 +1,9 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.sdk.domain.Analyst;
-import com.zorroa.archivist.sdk.domain.AnalystPing;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.archivist.service.AnalystService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

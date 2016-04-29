@@ -1,6 +1,6 @@
 package com.zorroa.common.repository;
 
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
 import org.junit.Before;

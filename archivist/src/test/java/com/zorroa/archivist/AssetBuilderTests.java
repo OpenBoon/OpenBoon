@@ -1,6 +1,6 @@
 package com.zorroa.archivist;
 
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
+import com.zorroa.sdk.domain.AssetBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

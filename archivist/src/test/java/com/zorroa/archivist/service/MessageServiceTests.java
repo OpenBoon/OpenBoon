@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestMessagingClient;
-import com.zorroa.archivist.sdk.config.ApplicationProperties;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;

@@ -3,9 +3,9 @@ package com.zorroa.archivist.service;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.repository.NoteDao;
-import com.zorroa.archivist.sdk.domain.Note;
-import com.zorroa.archivist.sdk.domain.NoteBuilder;
-import com.zorroa.archivist.sdk.domain.NoteSearch;
+import com.zorroa.sdk.domain.Note;
+import com.zorroa.sdk.domain.NoteBuilder;
+import com.zorroa.sdk.domain.NoteSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

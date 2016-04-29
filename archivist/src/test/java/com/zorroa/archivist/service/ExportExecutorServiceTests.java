@@ -3,9 +3,9 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
-import com.zorroa.archivist.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.sdk.processor.export.ExportProcessor;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.ProcessorFactory;
+import com.zorroa.sdk.processor.export.ExportProcessor;
 import org.elasticsearch.action.count.CountResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class ExportExecutorServiceTests extends AbstractTest {
         search.setQuery("beer");
 
         ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.archivist.sdk.processor.export.ZipFileExport");
+        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
         outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
 
         ExportBuilder builder = new ExportBuilder();

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.MessagingService;

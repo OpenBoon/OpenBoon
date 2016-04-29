@@ -2,10 +2,10 @@ package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.sdk.domain.Asset;
-import com.zorroa.archivist.sdk.domain.Permission;
-import com.zorroa.archivist.sdk.domain.User;
-import com.zorroa.archivist.sdk.util.Json;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Permission;
+import com.zorroa.sdk.domain.User;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

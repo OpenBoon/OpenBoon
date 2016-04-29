@@ -1,7 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.User;
+import com.zorroa.sdk.domain.User;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.zorroa.analyst.service;
 
-import com.zorroa.archivist.sdk.domain.AnalyzeRequest;
-import com.zorroa.archivist.sdk.domain.AnalyzeResult;
+import com.zorroa.sdk.domain.AnalyzeRequest;
+import com.zorroa.sdk.domain.AnalyzeResult;
 import org.apache.tika.Tika;
 
 import java.util.concurrent.ExecutionException;

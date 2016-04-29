@@ -3,7 +3,7 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.sdk.domain.*;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;
 import org.junit.Test;

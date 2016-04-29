@@ -1,10 +1,10 @@
 package com.zorroa.analyst;
 
 import com.zorroa.analyst.service.AnalyzeService;
-import com.zorroa.archivist.sdk.config.ApplicationProperties;
-import com.zorroa.archivist.sdk.domain.AssetBuilder;
-import com.zorroa.archivist.sdk.filesystem.ObjectFileSystem;
-import com.zorroa.archivist.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.domain.AssetBuilder;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
