@@ -172,9 +172,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.4.0</version>
-
                 <executions>
-
                     <execution>
                         <id>Remove Local Database</id>
                         <phase>clean</phase>
@@ -186,21 +184,6 @@
                             <commandlineArgs>-rf index db/archivist.mv.db exports unittest</commandlineArgs>
                         </configuration>
                     </execution>
-
-                    <execution>
-                        <id>Install JAR</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>/bin/cp</executable>
-                            <commandlineArgs>${project.basedir}/target/${project.artifactId}.jar
-                                "${user.home}/Library/Application Support/Zorroa/${project.artifactId}/lib"
-                            </commandlineArgs>
-                        </configuration>
-                    </execution>
-
                 </executions>
             </plugin>
 
