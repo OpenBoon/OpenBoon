@@ -71,15 +71,12 @@ public class AnalyzeServiceTests extends AbstractTest {
     }
     @Test
     public void testImportSchemaUpdated() {
-
-        String path = new File("src/test/resources/toucan.jpg").getAbsolutePath();
-
         AnalyzeRequest req = new AnalyzeRequest();
         req.setUser("test");
         req.setIngestId(1000);
         req.setIngestPipelineId(1000);
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(UnitTestIngestor.class)));
-        req.addToAssets(path);
+        req.addToAssets(testFile);
 
         analyzeService.analyze(req);
         refreshIndex();
@@ -89,13 +86,13 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setIngestPipelineId(2000);
         req.setProcessors(Lists.newArrayList(
                 new ProcessorFactory<>(UnitTestIngestor.class)));
-        req.addToAssets(path);
+        req.addToAssets(testFile);
 
         AnalyzeResult result = analyzeService.analyze(req);
         assertEquals(1, result.updated);
         refreshIndex();
 
-        Asset asset = assetDao.getByPath(path);
+        Asset asset = assetDao.getByPath(testFile.getAbsolutePath());
         assertNotNull(asset);
 
         ImportSchema schema = asset.getAttr("imports", ImportSchema.class);
@@ -125,7 +122,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setIngestId(new Random().nextInt(9999));
         req.setIngestPipelineId(new Random().nextInt(9999));
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.foo.Bar")));
-        req.addToAssets(new File("src/test/resources/images/toucan.jpg"));
+        req.addToAssets(testFile);
 
         AnalyzeResult result = analyzeService.asyncAnalyze(req);
         assertEquals(result.created, 1);
