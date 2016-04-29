@@ -166,15 +166,15 @@
                     <mainClass>${start-class}</mainClass>
                     <finalName>archivist</finalName>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>2.6</version>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.artifactId}</finalName>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
