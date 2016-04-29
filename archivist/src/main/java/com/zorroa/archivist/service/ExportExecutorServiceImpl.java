@@ -12,7 +12,7 @@ import com.zorroa.sdk.processor.export.ExportProcessor;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.util.StringUtil;
+import com.zorroa.sdk.util.StringUtils;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.ExportOptionsService;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -263,7 +263,7 @@ public class ExportExecutorServiceImpl extends AbstractScheduledService implemen
          * Check for expired outputs.
          */
         for (ExportOutput output: exportOutputDao.getAllExpired(
-                StringUtil.durationToMillis(expireTime))) {
+                StringUtils.durationToMillis(expireTime))) {
             exportService.offline(output);
         }
     }
