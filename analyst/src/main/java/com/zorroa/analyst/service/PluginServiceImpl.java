@@ -1,6 +1,7 @@
 package com.zorroa.analyst.service;
 
 
+import com.google.common.collect.ImmutableList;
 import com.zorroa.analyst.domain.PluginProperties;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Tuple;
@@ -53,6 +54,18 @@ public class PluginServiceImpl implements PluginService {
 
     @PostConstruct
     public void init() {
+
+        if (!properties.getBoolean("analyst.plugins.enabled")) {
+            logger.info("Plugins have been disabled via analyst configuration.");
+            loadedPlugins = ImmutableList.of();
+            return;
+        }
+
+        loadPlugins();
+    }
+
+    public void loadPlugins() {
+
         pluginsDirectory = Paths.get(properties.getString("analyst.path.plugins"));
         // Bail out if no location exists for plugins
         if (!pluginsDirectory.toFile().exists()) {
@@ -71,7 +84,7 @@ public class PluginServiceImpl implements PluginService {
             }
 
         } catch (IOException ex) {
-            throw new IllegalStateException("Unable to initialize plugins", ex);
+            throw new IllegalStateException("Unable to load plugins", ex);
         }
     }
 
