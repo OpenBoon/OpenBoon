@@ -1,3 +1,4 @@
 #!/bin/bash
-mvn  package spring-boot:run -Dmaven.test.skip=true
+mvn  package -Dmaven.test.skip=true
+java -jar target/analyst.jar
 

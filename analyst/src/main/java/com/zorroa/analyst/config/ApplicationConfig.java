@@ -1,11 +1,13 @@
 package com.zorroa.analyst.config;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.sdk.client.archivist.ArchivistClient;import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.AbstractFileSystem;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -14,6 +16,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -35,6 +39,21 @@ public class ApplicationConfig {
 
         ArchivistClient client =  new ArchivistClient(trustStore, properties.getString("analyst.master.host"));
         return client;
+    }
+
+    @Bean
+    public InfoEndpoint infoEndpoint() {
+        final Map<String, Object> map = new LinkedHashMap<>();
+        map.put("description", "Zorroa Analyst Server");
+        map.put("project", "zorroa-analyst");
+        Properties props = new Properties();
+        try {
+            props.load(new ClassPathResource("META-INF/maven/com.zorroa/analyst/pom.properties").getInputStream());
+            map.put("version", props.getProperty("version"));
+        } catch (Exception e) {
+            logger.warn("Failed to load version info,", e);
+        }
+        return new InfoEndpoint(ImmutableMap.of("build", map));
     }
 
     @Bean
