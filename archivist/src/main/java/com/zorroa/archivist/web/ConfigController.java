@@ -74,7 +74,7 @@ public class ConfigController {
     private Set<String> EXCLUDE_INGESTORS =
             ImmutableSet.of("com.zorroa.sdk.processor.Aggregator");
 
-    @RequestMapping(value="/api/v1/plugins/aggregator", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/plugins/aggregator", method=RequestMethod.GET)
     public Collection<String> aggregators() throws Exception {
         return aggregators;
     }
