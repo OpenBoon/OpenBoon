@@ -311,6 +311,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                                     ingestService.getIngest(ingest.getId())));
                         }
 
+                        /**
+                         * TODO: these exceptions from remove the analyst from the load
+                         * balancer.  Once all analysts are removed the ingest
+                         * should exit early.
+                         */
                     } catch (ClientException e) {
                         /**
                          * This catch block is for handling the case where the AnalystClient
@@ -324,10 +329,10 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     } catch (Exception e) {
                         /**
                          * This catch block is for handling the case where the Analyst fails
-                         * to init or execute the pipeline.
+                         * to init or execute the pipeline.  This error is already logged
+                         * by the analyst.
                          */
                         ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getAssetCount());
-                        eventLogService.log(ingest, "Failed to setup the ingest pipeline", e);
                         messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
                                 ingestService.getIngest(ingest.getId())));
                     }
