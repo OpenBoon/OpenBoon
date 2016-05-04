@@ -1,10 +1,12 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.TestHealthIndicator;
 import com.zorroa.sdk.domain.*;
 import org.elasticsearch.action.count.CountResponse;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.List;
@@ -17,6 +19,21 @@ import static org.junit.Assert.*;
  * Created by chambers on 7/31/15.
  */
 public class IngestExecutorServiceTests extends AbstractTest {
+
+    @Autowired
+    TestHealthIndicator testHealthIndicator;
+
+    @Test
+    public void testUnhealthyIngestExecute() {
+        IngestPipelineBuilder builder = new IngestPipelineBuilder();
+        builder.setName("default");
+        IngestPipeline pipeline = ingestService.createIngestPipeline(builder);
+        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()).setPipelineId(pipeline.getId()));
+
+        assertTrue(ingestExecutorService.executeIngest(ingest));
+        testHealthIndicator.setHealthy(false);
+        assertFalse(ingestExecutorService.executeIngest(ingest));
+    }
 
     @Test
     public void testPauseAndResume() {

@@ -4,6 +4,10 @@ import com.google.common.collect.*;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
 import com.zorroa.archivist.domain.UnitTestProcessor;
+import com.zorroa.archivist.security.BackgroundTaskAuthentication;
+import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.repository.AssetDao;
+import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.client.ClientException;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.crawlers.*;
@@ -11,16 +15,14 @@ import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.AbortCrawlerException;
 import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.ProcessorFactory;
-import com.zorroa.archivist.security.BackgroundTaskAuthentication;
-import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.repository.AssetDao;
-import com.zorroa.common.service.EventLogService;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.actuate.endpoint.HealthEndpoint;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,6 +65,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     @Autowired
     AnalystService analystService;
 
+    @Autowired
+    HealthEndpoint healthEndPoint;
+
     @Value("${archivist.ingest.maxRunningIngests}")
     private int maxRunningIngests;
 
@@ -92,8 +97,12 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     }
 
     protected boolean start(Ingest ingest, boolean firstStart) {
-        IngestWorker worker = new IngestWorker(ingest, SecurityUtils.getUser());
+        if (!isHealthy()) {
+            eventLogService.log(ingest, "Could not start ingest {}, Zorroa cluster healthy.", ingest);
+            return false;
+        }
 
+        IngestWorker worker = new IngestWorker(ingest, SecurityUtils.getUser());
         if (runningIngests.putIfAbsent(ingest.getId(), worker) == null) {
 
             if (firstStart) {
@@ -105,8 +114,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             if (ArchivistConfiguration.unittest) {
                 worker.run();
             } else {
-                if (!ingestService.setIngestQueued(ingest))
+                if (!ingestService.setIngestQueued(ingest)) {
                     return false;
+                }
                 ingestExecutor.execute(worker);
             }
         } else {
@@ -141,6 +151,10 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         }
         worker.shutdown();
         return true;
+    }
+
+    private boolean isHealthy() {
+        return healthEndPoint.invoke().getStatus() == Status.UP;
     }
 
     public class IngestWorker implements Runnable {
