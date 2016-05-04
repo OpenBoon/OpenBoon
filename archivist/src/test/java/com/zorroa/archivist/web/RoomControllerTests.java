@@ -5,9 +5,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.RoomDao;
+import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.common.repository.AssetDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 import java.util.Set;
 
+import static com.zorroa.sdk.util.Json.deserialize;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,7 +47,7 @@ public class RoomControllerTests extends MockMvcTest {
                  .andExpect(status().isOk())
                  .andReturn();
 
-        Room room = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room room = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
         assertEquals(bld.getName(), room.getName());
     }
 
@@ -69,7 +70,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Room updatedRoom = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room updatedRoom = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
         assertEquals(update.getName(), updatedRoom.getName());
         assertTrue(BCrypt.checkpw("test123", roomDao.getPassword(room.getId())));
     }
@@ -88,7 +89,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        boolean isDeleted = Json.deserialize(result.getResponse().getContentAsByteArray(), Boolean.class);
+        boolean isDeleted = deserialize(result.getResponse().getContentAsByteArray(), Boolean.class);
         assertTrue(isDeleted);
     }
 
@@ -165,7 +166,6 @@ public class RoomControllerTests extends MockMvcTest {
         assertNull(roomService.getActiveRoom(session));
     }
 
-
     @Test
     public void testGet() throws Exception {
 
@@ -180,7 +180,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Room room2 = Json.deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room room2 = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
         assertEquals(room1.getName(), room2.getName());
     }
 
