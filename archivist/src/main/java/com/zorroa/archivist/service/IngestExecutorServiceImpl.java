@@ -8,6 +8,7 @@ import com.zorroa.sdk.client.ClientException;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.crawlers.*;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.exception.AbortCrawlerException;
 import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
@@ -367,8 +368,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
              */
             Consumer<AnalyzeRequestEntry> consumer = entry -> {
                 if (earlyShutdown) {
-                    throw new RuntimeException("Early ingest shutdown.");
+                    throw new AbortCrawlerException("Early ingest shutdown.");
                 }
+
                 totalAssets.increment();
                 queue.add(entry);
 
@@ -427,7 +429,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
              * If we get here, then the crawler is done.  However, the queue might still have data in it.
              */
 
-            if (!queue.isEmpty()) {
+            if (!queue.isEmpty() && !earlyShutdown) {
                 List<AnalyzeRequestEntry> batch = Lists.newArrayListWithCapacity(queue.size());
                 queue.drainTo(batch);
                 analyze(analyst, new AnalyzeRequest()
@@ -436,6 +438,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         .setIngestPipelineId(ingest.getPipelineId())
                         .setAssets(batch)
                         .setProcessors(pipeline.getProcessors()));
+            }
+            else {
+                queue.clear();
             }
         }
     }
