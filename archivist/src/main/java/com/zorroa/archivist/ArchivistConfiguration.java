@@ -112,7 +112,8 @@ public class ArchivistConfiguration {
                 .put("discovery.zen.fd.ping_timeout", "3s")
                 .put("discovery.zen.fd.ping_retries", 10)
                 .put("script.engine.groovy.indexed.update", true)
-                .put("node.data", true);
+                .put("node.data", properties.getBoolean("zorroa.common.index.data"))
+                .put("node.master", properties.getBoolean("zorroa.common.index.master"));
 
         if (unittest) {
             builder.put("index.refresh_interval", "1s");
