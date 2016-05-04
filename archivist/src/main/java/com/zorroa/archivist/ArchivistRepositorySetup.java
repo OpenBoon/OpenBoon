@@ -5,15 +5,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.io.ByteStreams;
 import com.zorroa.archivist.aggregators.DateAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
-import com.zorroa.sdk.domain.Ingest;
-import com.zorroa.sdk.domain.IngestPipelineBuilder;
-import com.zorroa.sdk.domain.IngestState;
-import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.common.elastic.ElasticClientUtils;
+import com.zorroa.sdk.domain.IngestPipelineBuilder;
+import com.zorroa.sdk.processor.ProcessorFactory;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
@@ -86,7 +84,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
              *
              * createSnapshotRepository();
              */
-            restartRunningIngests();
+            ingestService.resetRunningIngests();
         }
     }
 
@@ -157,24 +155,5 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         builder.setType("fs")
                 .setSettings(settings)
                 .execute().actionGet();
-    }
-
-    private void restartRunningIngests() {
-        // Start running ingests first so they get the active threads
-        for (Ingest ingest : ingestService.getAllIngests()) {
-            if (ingest.getState() == IngestState.Running) {
-                ingestService.setIngestPaused(ingest);      // Set paused to avoid resume error checks
-                ingestExecutorService.resume(ingest);
-                logger.info("Restarting ingest " + ingest.getId());
-            }
-        }
-
-        // Start queued ingests after all running ingests
-        for (Ingest ingest : ingestService.getAllIngests()) {
-            if (ingest.getState() == IngestState.Queued) {
-                ingestExecutorService.executeIngest(ingest);
-                logger.info("Re-executing queued ingest " + ingest.getId());
-            }
-        }
     }
 }

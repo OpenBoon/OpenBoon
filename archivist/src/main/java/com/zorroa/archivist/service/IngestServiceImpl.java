@@ -27,9 +27,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -328,6 +330,17 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         }
 
         return ingestDao.getSkippedPaths(ingest);
+    }
+
+    private static final Set<IngestState> RESET_INGEST_STATES = EnumSet.of(
+            IngestState.Running, IngestState.Queued, IngestState.Paused);
+
+    @Override
+    public long resetRunningIngests() {
+        return getAllIngests().stream()
+                .filter(i->!RESET_INGEST_STATES.contains(i.getState()))
+                .map(i->setIngestIdle(i))
+                .count();
     }
 
     public List<String> normalizePaths(Collection<String> paths) {

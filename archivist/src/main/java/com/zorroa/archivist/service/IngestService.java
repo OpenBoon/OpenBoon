@@ -70,4 +70,6 @@ public interface IngestService {
      * @return
      */
     Folder getFolder(Ingest ingest);
+
+    long resetRunningIngests();
 }
