@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.zorroa.sdk.util.Json.deserialize;
@@ -164,6 +165,20 @@ public class RoomControllerTests extends MockMvcTest {
                 .andReturn();
 
         assertNull(roomService.getActiveRoom(session));
+    }
+
+    @Test
+    public void testLeaveWithoutActiveRoom() throws Exception {
+        MockHttpSession httpSession = admin();
+        MvcResult result = mvc.perform(put("/api/v1/rooms/current/_leave")
+                .session(httpSession)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> map = Json.deserialize(
+                result.getResponse().getContentAsByteArray(), Map.class);
+        assertEquals(-1, map.get("roomId"));
     }
 
     @Test
