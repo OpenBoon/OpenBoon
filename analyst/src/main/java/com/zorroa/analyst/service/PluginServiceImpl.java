@@ -48,7 +48,7 @@ public class PluginServiceImpl implements PluginService {
 
     Path pluginsDirectory;
 
-    List<Tuple<PluginProperties, Plugin>> loadedPlugins;
+    List<Tuple<PluginProperties, Plugin>> loadedPlugins = ImmutableList.of();
 
     URLClassLoader pluginClassLoader;
 
@@ -57,7 +57,6 @@ public class PluginServiceImpl implements PluginService {
 
         if (!properties.getBoolean("analyst.plugins.enabled")) {
             logger.info("Plugins have been disabled via analyst configuration.");
-            loadedPlugins = ImmutableList.of();
             return;
         }
 
