@@ -142,17 +142,17 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     private static final String GET_ALL_BY_ROOM =
-            "SELECT " +
+        "SELECT " +
             "user.* " +
-            "FROM " +
+        "FROM " +
             "user,session,map_session_to_room m " +
-            "WHERE " +
+        "WHERE " +
             "session.pk_session = m.pk_session " +
-            "AND " +
+        "AND " +
             "m.pk_room = ? " +
-            "AND " +
+        "AND " +
             "session.pk_user = user.pk_user " +
-            "ORDER BY "+
+        "ORDER BY "+
             "user.str_username ASC";
 
     @Override
