@@ -50,10 +50,17 @@ public class PluginServiceImpl implements PluginService {
 
     List<Tuple<PluginProperties, Plugin>> loadedPlugins = ImmutableList.of();
 
-    URLClassLoader pluginClassLoader;
+    ClassLoader pluginClassLoader;
 
     @PostConstruct
     public void init() {
+
+        /**
+         * Initially set class loader to our own class loader.  This will allow us
+         * to load unit test processors.  If the plugin system is active, a new
+         * pluginClassLoader is created for loading classes from the plugin jars.
+         */
+        pluginClassLoader = getClass().getClassLoader();
 
         if (!properties.getBoolean("analyst.plugins.enabled")) {
             logger.info("Plugins have been disabled via analyst configuration.");
