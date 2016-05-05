@@ -176,7 +176,7 @@ public class SearchServiceImpl implements SearchService {
         if (filter.getFolderIds() != null) {
             Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(64);
             for (Folder folder : folderService.getAllDescendants(
-                    folderService.getAll(filter.getFolderIds()), true)) {
+                    folderService.getAll(filter.getFolderIds()), true, true)) {
                 if (folder.getSearch() != null) {
                     query.should(getQuery(folder.getSearch()));
                 }

@@ -7,7 +7,6 @@ import com.zorroa.sdk.domain.FolderUpdateBuilder;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public interface FolderService {
 
@@ -30,22 +29,23 @@ public interface FolderService {
     List<Folder> getChildren(Folder folder);
 
     /**
-     * Return a Set of all descendant folders starting from the given start folders.  If
+     * Return a List of all descendant folders starting from the given start folders.  If
      * includeStartFolders is set to true, the starting folders are included in the result.
      *
      * @param startFolders
      * @param includeStartFolders
      * @return
      */
-    Set<Folder> getAllDescendants(Collection<Folder> startFolders, boolean includeStartFolders);
+    List<Folder> getAllDescendants(Collection<Folder> startFolders, boolean includeStartFolders, boolean forSearch);
 
     /**
      * Return a recursive list of all descendant folders from the current folder.
      *
      * @param folder
+     * @param forSearch
      * @return
      */
-    Set<Folder> getAllDescendants(Folder folder);
+    List<Folder> getAllDescendants(Folder folder, boolean forSearch);
 
     Folder create(FolderBuilder builder);
 

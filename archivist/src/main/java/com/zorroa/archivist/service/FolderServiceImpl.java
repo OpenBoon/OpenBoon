@@ -7,13 +7,12 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
-import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -191,6 +189,19 @@ public class FolderServiceImpl implements FolderService {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
+        /**
+         * Delete all children in reverse order.
+         */
+        List<Folder> children = getAllDescendants(folder, false);
+        for (int i=children.size(); --i >= 0;) {
+            if (folderDao.delete(children.get(i))) {
+                transactionEventManager.afterCommitSync(() -> {
+                    invalidate(folder);
+                    messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
+                });
+            }
+        }
+
         boolean result = folderDao.delete(folder);
         if (result) {
             transactionEventManager.afterCommitSync(() -> {
@@ -234,13 +245,13 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public Set<Folder> getAllDescendants(Folder folder) {
-        return getAllDescendants(Lists.newArrayList(folder), false);
+    public List<Folder> getAllDescendants(Folder folder, boolean forSearch) {
+        return getAllDescendants(Lists.newArrayList(folder), false, forSearch);
     }
 
     @Override
-    public Set<Folder> getAllDescendants(Collection<Folder> startFolders, boolean includeStartFolders) {
-        Set<Folder> result = Sets.newHashSetWithExpectedSize(25);
+    public List<Folder> getAllDescendants(Collection<Folder> startFolders, boolean includeStartFolders, boolean forSearch) {
+        List<Folder> result = Lists.newArrayListWithCapacity(32);
         Queue<Folder> queue = Queues.newLinkedBlockingQueue();
 
         if (includeStartFolders) {
@@ -248,7 +259,7 @@ public class FolderServiceImpl implements FolderService {
         }
 
         queue.addAll(startFolders);
-        getChildFoldersRecursive(result, queue);
+        getChildFoldersRecursive(result, queue, forSearch);
         return result;
     }
 
@@ -268,7 +279,7 @@ public class FolderServiceImpl implements FolderService {
      * @param result
      * @param toQuery
      */
-    private void getChildFoldersRecursive(Set<Folder> result, Queue<Folder> toQuery) {
+    private void getChildFoldersRecursive(List<Folder> result, Queue<Folder> toQuery, boolean forSearch) {
 
         while(true) {
             Folder current = toQuery.poll();
@@ -285,7 +296,7 @@ public class FolderServiceImpl implements FolderService {
              * for all assets that have an export ID, then there is no need to traverse all the sub
              * folders.
              */
-            if (current.isRecursive()) {
+            if (current.isRecursive() && forSearch) {
                 logger.info("Folder is not recursive, skipping: {}", current);
                 continue;
             }

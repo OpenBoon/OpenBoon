@@ -182,6 +182,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public boolean delete(Folder folder) {
+        logger.debug("Deleting folder: {}", folder);
         return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) ==1;
     }
 

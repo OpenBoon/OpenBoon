@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.domain.*;
@@ -8,7 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -43,7 +43,7 @@ public class FolderServiceTests extends AbstractTest {
         Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
         folderService.create(new FolderBuilder("child", dad.getId()));
         folderService.create(new FolderBuilder("cousin", uncle.getId()));
-        Set<Folder> descendents = folderService.getAllDescendants(grandpa);
+        List<Folder> descendents = folderService.getAllDescendants(grandpa, false);
         assertEquals(4, descendents.size());
     }
 
@@ -54,13 +54,16 @@ public class FolderServiceTests extends AbstractTest {
         Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
         folderService.create(new FolderBuilder("child", dad.getId()));
         folderService.create(new FolderBuilder("cousin", uncle.getId()));
-        assertEquals(5, folderService.getAllDescendants(Lists.newArrayList(grandpa), true).size());
-        assertEquals(4, folderService.getAllDescendants(Lists.newArrayList(grandpa), false).size());
+        assertEquals(5, folderService.getAllDescendants(Lists.newArrayList(grandpa), true, true).size());
+        assertEquals(4, folderService.getAllDescendants(Lists.newArrayList(grandpa), false, true).size());
 
-        assertEquals(5, folderService.getAllDescendants(
-                Lists.newArrayList(grandpa, dad, uncle), true).size());
-        assertEquals(4, folderService.getAllDescendants(
-                Lists.newArrayList(grandpa, dad, uncle), false).size());
+        logger.info("{}", folderService.getAllDescendants(
+                Lists.newArrayList(grandpa, dad, uncle), true, true));
+
+        assertEquals(5, ImmutableSet.copyOf(folderService.getAllDescendants(
+                Lists.newArrayList(grandpa, dad, uncle), true, true)).size());
+        assertEquals(4, ImmutableSet.copyOf(folderService.getAllDescendants(
+                Lists.newArrayList(grandpa, dad, uncle), false, true)).size());
     }
 
     @Test
@@ -128,10 +131,10 @@ public class FolderServiceTests extends AbstractTest {
         Folder revised = folderService.get(folder2.getId());
         assertEquals(folder1.getId(), revised.getParentId().intValue());
 
-        Set<Folder> folders = folderService.getAllDescendants(Lists.newArrayList(folder1), false);
+        List<Folder> folders = folderService.getAllDescendants(Lists.newArrayList(folder1), false, false);
         assertTrue(folders.contains(folder2));
 
-        folders = folderService.getAllDescendants(Lists.newArrayList(folder2), false);
+        folders = folderService.getAllDescendants(Lists.newArrayList(folder2), false, false);
         assertTrue(folders.isEmpty());
     }
 
@@ -156,5 +159,17 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder2 = folderService.create(builder);
         assertEquals(folder2.getParentId().intValue(), folder1.getId());
         folderService.create(builder);
+    }
+
+    @Test
+    public void testDelete() {
+        FolderBuilder builder = new FolderBuilder("shizzle");
+        Folder start = folderService.create(builder);
+        Folder root = start;
+        for (int i=0; i<10; i++) {
+            builder = new FolderBuilder("shizzle"+i, start);
+            start = folderService.create(builder);
+        }
+        assertTrue(folderService.delete(root));
     }
 }
