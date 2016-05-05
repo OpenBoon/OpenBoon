@@ -49,7 +49,7 @@ public class UserServiceTests extends AbstractTest {
     }
 
     @Test
-    public void deleteUser() {
+    public void testDisable() {
         UserBuilder builder = new UserBuilder();
         builder.setUsername("test");
         builder.setPassword("123password");
@@ -60,10 +60,8 @@ public class UserServiceTests extends AbstractTest {
                 userService.getPermission("group::user"));
         User user = userService.create(builder);
 
-        assertTrue(userService.delete(user));
+        assertTrue(userService.disable(user));
         assertFalse(folderService.exists("/Users/test"));
-
-        userService.create(builder);
     }
 
     @Test

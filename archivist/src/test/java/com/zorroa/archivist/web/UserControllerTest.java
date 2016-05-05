@@ -7,7 +7,6 @@ import com.zorroa.sdk.domain.UserUpdateBuilder;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -67,12 +67,8 @@ public class UserControllerTest extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        try {
-            userService.get("user");
-            throw new RuntimeException("The user was deleted but he is still there!");
-        } catch(EmptyResultDataAccessException e) {
-            // all good
-        }
+        user = userService.get("user");
+        assertFalse(user.getEnabled());
     }
 
     @Test(expected=BadCredentialsException.class)

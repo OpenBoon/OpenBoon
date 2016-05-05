@@ -40,9 +40,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         return jdbc.queryForObject("SELECT * FROM user WHERE str_username=?", MAPPER, username);
     }
 
+    private static final String GET_ALL =
+            "SELECT * FROM user WHERE bool_enabled=? ORDER BY str_username";
+
     @Override
     public List<User> getAll() {
-        return jdbc.query("SELECT * FROM user ORDER BY str_username", MAPPER);
+        return jdbc.query(GET_ALL, MAPPER, true);
     }
 
     private static final String INSERT =
@@ -80,8 +83,10 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public boolean delete(User user) {
-        return jdbc.update("DELETE FROM user WHERE pk_user=?", user.getId()) == 1;
+    public boolean setEnabled(User user, boolean value) {
+        return jdbc.update(
+                "UPDATE user SET bool_enabled=? WHERE pk_user=? AND bool_enabled=?",
+                value, user.getId(), !value) == 1;
     }
 
     @Override

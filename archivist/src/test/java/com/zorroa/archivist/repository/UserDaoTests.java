@@ -85,9 +85,9 @@ public class UserDaoTests extends AbstractTest {
     }
 
     @Test
-    public void testDelete() {
-        assertTrue(userDao.delete(user));
-        assertFalse(userDao.delete(user));
+    public void testSetEnabled() {
+        assertTrue(userDao.setEnabled(user, false));
+        assertFalse(userDao.setEnabled(user, false));
     }
 
 

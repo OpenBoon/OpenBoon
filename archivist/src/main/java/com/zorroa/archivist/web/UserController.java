@@ -65,9 +65,9 @@ public class UserController  {
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
-    public void delete(@PathVariable int id) {
+    public void disable(@PathVariable int id) {
         User user = userService.get(id);
-        userService.delete(user);
+        userService.disable(user);
     }
 
     /**

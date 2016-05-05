@@ -23,7 +23,7 @@ public interface UserService {
 
     boolean update(User user, UserUpdateBuilder builder);
 
-    boolean delete(User user);
+    boolean disable(User user);
 
     List<User> getAll(Room room);
 
