@@ -3,11 +3,10 @@ package com.zorroa.analyst.web;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.io.ByteStreams;
+import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;
-import com.zorroa.common.repository.AssetDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,16 +108,6 @@ public class FileSystemController {
                 .contentType(MediaType.valueOf(asset.getSource().getType()))
                 .contentLength(asset.getSource().getFileSize())
                 .body(new FileSystemResource(asset.getSource().getPath()));
-    }
-
-    @ExceptionHandler(ExecutionException.class)
-    public ResponseEntity<byte[]> brokenImage() throws IOException {
-        byte[] bytes = ByteStreams.toByteArray(
-                getClass().getResourceAsStream("/broken128.png"));
-        return ResponseEntity.ok()
-                .contentLength(bytes.length)
-                .contentType(MediaType.IMAGE_PNG)
-                .body(bytes);
     }
 
     private ProxyImage loadProxyImage(String path) throws IOException {
