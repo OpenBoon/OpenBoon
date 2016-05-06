@@ -158,4 +158,34 @@ public class PermissionDaoTests extends AbstractTest {
         assertTrue(permissionDao.delete(user));
         assertFalse(permissionDao.delete(user));
     }
+
+    @Test
+    public void testUpdate() {
+        PermissionBuilder b = new PermissionBuilder("group", "test").setDescription("foo");
+        Permission p = permissionDao.create(b, false);
+        assertEquals("group", p.getType());
+        assertEquals("test", p.getName());
+        assertEquals("foo", p.getDescription());
+
+        p.setType("foo");
+        p.setName("bar");
+        p.setDescription("bing");
+
+        p = permissionDao.update(p);
+        assertEquals("foo", p.getType());
+        assertEquals("bar", p.getName());
+        assertEquals("bing", p.getDescription());
+    }
+
+    @Test
+    public void testAttemptUpdateImmutable() {
+        Permission p = permissionDao.get("user", "test");
+        p.setType("foo");
+        p.setName("bar");
+        p.setDescription("bing");
+
+        p = permissionDao.update(p);
+        assertEquals("user", p.getType());
+        assertEquals("test", p.getName());
+    }
 }

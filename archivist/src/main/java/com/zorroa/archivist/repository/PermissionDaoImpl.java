@@ -46,8 +46,8 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public Permission update(Permission permission) {
-        jdbc.update("UPDATE permission SET str_name=?,str_description=? WHERE pk_permission=?",
-                permission.getName(), permission.getDescription(), permission.getId());
+        jdbc.update("UPDATE permission SET str_type=?, str_name=?,str_description=? WHERE pk_permission=? AND bool_immutable=?",
+                permission.getType(), permission.getName(), permission.getDescription(), permission.getId(), false);
         return get(permission.getId());
     }
 
