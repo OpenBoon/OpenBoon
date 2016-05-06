@@ -36,6 +36,7 @@ public class ElasticClientUtils {
          */
         builder.put("script.engine.groovy.indexed.update", true);
         builder.put("path.plugins", "{path.home}/es-plugins");
+        builder.put("index.unassigned.node_left.delayed_timeout", "5m");
 
         Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
         node.start();

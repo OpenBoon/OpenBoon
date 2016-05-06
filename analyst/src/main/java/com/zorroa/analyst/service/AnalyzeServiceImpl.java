@@ -1,17 +1,18 @@
 package com.zorroa.analyst.service;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.zorroa.common.repository.AssetDao;
+import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.config.ApplicationProperties;
-import com.zorroa.sdk.domain.AnalyzeRequest;
-import com.zorroa.sdk.domain.AnalyzeRequestEntry;
-import com.zorroa.sdk.domain.AnalyzeResult;
-import com.zorroa.sdk.domain.AssetBuilder;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.IngestException;
 import com.zorroa.sdk.exception.SkipIngestException;
 import com.zorroa.sdk.exception.UnrecoverableIngestProcessorException;
@@ -21,20 +22,16 @@ import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.sdk.schema.ImportSchema;
 import com.zorroa.sdk.util.FileUtils;
-import com.zorroa.common.repository.AssetDao;
-import com.zorroa.common.service.EventLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +65,21 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     @Autowired
     AsyncTaskExecutor ingestThreadPool;
 
+    /**
+     * Handles evicting old data from the IngestPipelineCache.
+     */
+    private final Timer cacheEvictionTimer = new Timer();
+
+    @PostConstruct
+    public void init() {
+        cacheEvictionTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                pipelineCache.cleanUp();
+            }
+        }, 60 * 1000, 60 * 1000);
+    }
+
     @Override
     public AnalyzeResult asyncAnalyze(AnalyzeRequest req) throws ExecutionException {
         try {
@@ -86,8 +98,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         IngestPipelineCacheValue pipeline;
         try {
             pipeline = getProcessingPipeline(req);
-        } catch (Exception e) {
-            throw new IngestException("Failed to initialize ingest pipeline", e.getCause());
+        } catch (ExecutionException e) {
+            logger.warn("Failed to initialize pipeline, ", e);
+            throw new IngestException("Failed to initialize ingest pipeline, " + e.getMessage(), e);
         }
 
         Queue<AnalyzeRequestEntry> queue = new LinkedBlockingQueue<>();
@@ -175,7 +188,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                         processor.process(builder);
                         ingestProperties.addToIngestProcessors(processor.getClass().getName());
                     } catch (SkipIngestException skipped) {
-                        logger.warn("Skipping: {}", skipped.getMessage());
+                        logger.warn("{} Skipping: {}",  processor.getClass().getName(), skipped.getMessage());
                         skip = true;
                         break;
 
@@ -186,8 +199,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                          */
                         throw e;
                     } catch (Exception e) {
-                        eventLogService.log(req, "Ingest warning '{}', processing pipeline failed: '{}'",
-                                e, e.getMessage(), builder.getAbsolutePath());
+                        eventLogService.log(req, "Ingest warning '{}', processor '{}' failed: '{}'",
+                                e, e.getMessage(), processor.getClass().getName(), builder.getAbsolutePath());
                         result.warnings++;
                     }
                 }
@@ -238,7 +251,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     /**
      * Wraps an AnalyzeRequest so we can use it as a cache key.
      */
-    private static class IngestPipelineCacheKey {
+    private static class IngestPipelineCacheKey implements EventLoggable {
         private final AnalyzeRequest req;
         private final long threadId;
         private final int ingestId;
@@ -282,8 +295,28 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
 
         @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("req", req)
+                    .add("threadId", threadId)
+                    .add("ingestId", ingestId)
+                    .add("ingestPipelineId", ingestPipelineId)
+                    .toString();
+        }
+
+        @Override
         public int hashCode() {
             return Objects.hashCode(getThreadId(), getIngestId(), getIngestPipelineId());
+        }
+
+        @Override
+        public Object getLogId() {
+            return ingestId;
+        }
+
+        @Override
+        public String getLogType() {
+            return "Ingest";
         }
     }
 
@@ -310,7 +343,18 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     private final LoadingCache<IngestPipelineCacheKey, IngestPipelineCacheValue> pipelineCache = CacheBuilder.newBuilder()
-        .expireAfterAccess(1, TimeUnit.HOURS)
+        .expireAfterAccess(10, TimeUnit.MINUTES)
+        .removalListener((RemovalListener<IngestPipelineCacheKey, IngestPipelineCacheValue>) r -> {
+            logger.info("Tearing down pipeline cache: {}", r.getKey());
+            IngestPipelineCacheValue pipeline = r.getValue();
+            for (IngestProcessor p: pipeline.getProcessors()) {
+                try {
+                    p.teardown();
+                } catch (Exception e) {
+                    logger.warn("Failed to run teardown on {}", p.getClass().getName(), e);
+                }
+            }
+        })
         .build(new CacheLoader<IngestPipelineCacheKey, IngestPipelineCacheValue>() {
             public IngestPipelineCacheValue load(IngestPipelineCacheKey key) throws Exception {
                 Set<String> supportedFormats = Sets.newHashSet();
@@ -320,9 +364,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                     p.setArgs(factory.getArgs());
                     p.setApplicationProperties(applicationProperties);
                     p.setObjectFileSystem(objectFileSystem);
-                    p.init();
+                    try {
+                        p.init();
+                    } catch (Exception e) {
+                        eventLogService.log(key, "Failed to initialize pipeline, {} failed, unexpected {}",
+                                e, factory.getKlass(), e.getMessage());
+                        throw new IngestException("Failed to initialize pipeline, " +
+                                factory.getKlass() + "failed, unexpected " + e.getMessage(), e);
+                    }
                     result.add(p);
-
                     supportedFormats.addAll(p.supportedFormats());
                 }
                 return new IngestPipelineCacheValue(result, supportedFormats);

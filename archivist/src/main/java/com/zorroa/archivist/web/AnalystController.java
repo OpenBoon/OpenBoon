@@ -34,7 +34,7 @@ public class AnalystController {
         URI uri = URI.create(ping.getUrl());
         ping.setUrl(uri.getScheme() + "://" + req.getRemoteAddr() + ":" + uri.getPort());
 
-        logger.info("Received ping: {}", ping);
+        logger.debug("Received ping: {}", ping);
         analystService.register(ping);
     }
 

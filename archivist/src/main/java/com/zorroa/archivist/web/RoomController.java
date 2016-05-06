@@ -47,7 +47,12 @@ public class RoomController {
     @RequestMapping(value="/api/v1/rooms/current/_leave", method=RequestMethod.PUT)
     public Object leave(HttpSession httpSession) {
         Room room = roomService.getActiveRoom();
-        return ImmutableMap.of("roomId", room.getId(), "result", roomService.leave(room));
+        if (room != null) {
+            return ImmutableMap.of("roomId", room.getId(), "result", roomService.leave(room));
+        }
+        else {
+            return ImmutableMap.of("roomId", -1, "result", true);
+        }
     }
 
     /**

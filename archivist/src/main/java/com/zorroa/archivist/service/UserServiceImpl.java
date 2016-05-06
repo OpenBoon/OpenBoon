@@ -133,33 +133,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean delete(User user) {
-        boolean result =  userDao.delete(user);
-        /*
-         * Delete the user's permission
-         */
-        try {
-            permissionDao.delete(user);
-        }
-        catch (EmptyResultDataAccessException e) {
-            logger.warn(String.format("The user %s has no user permission."));
-        }
+    public boolean disable(User user) {
 
-        /*
-         * Delete the user's folder
-         */
-        try {
-            Folder userFolder = folderService.get("/Users/" + user.getUsername());
-            folderService.delete(userFolder);
-        }
-        catch (EmptyResultDataAccessException e) {
-            logger.warn(String.format("The user %s has no user folder."));
-        }
+        boolean result =  userDao.setEnabled(user, false);
 
         if (result) {
-            transactionEventManager.afterCommitSync(() -> {
-                messagingService.broadcast(new Message("USER_DELETE", user));
-            });
+            /*
+             * Delete the user's folder
+             */
+            try {
+                Folder userFolder = folderService.get("/Users/" + user.getUsername());
+                folderService.delete(userFolder);
+            } catch (EmptyResultDataAccessException e) {
+                logger.warn(String.format("The user %s has no user folder."));
+            }
+
+            if (result) {
+                transactionEventManager.afterCommitSync(() -> {
+                    messagingService.broadcast(new Message("USER_DISABLED", user));
+                });
+            }
         }
 
         return result;

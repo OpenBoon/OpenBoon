@@ -1,6 +1,7 @@
 package com.zorroa.analyst.service;
 
 
+import com.google.common.collect.ImmutableList;
 import com.zorroa.analyst.domain.PluginProperties;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Tuple;
@@ -47,12 +48,30 @@ public class PluginServiceImpl implements PluginService {
 
     Path pluginsDirectory;
 
-    List<Tuple<PluginProperties, Plugin>> loadedPlugins;
+    List<Tuple<PluginProperties, Plugin>> loadedPlugins = ImmutableList.of();
 
-    URLClassLoader pluginClassLoader;
+    ClassLoader pluginClassLoader;
 
     @PostConstruct
     public void init() {
+
+        /**
+         * Initially set class loader to our own class loader.  This will allow us
+         * to load unit test processors.  If the plugin system is active, a new
+         * pluginClassLoader is created for loading classes from the plugin jars.
+         */
+        pluginClassLoader = getClass().getClassLoader();
+
+        if (!properties.getBoolean("analyst.plugins.enabled")) {
+            logger.info("Plugins have been disabled via analyst configuration.");
+            return;
+        }
+
+        loadPlugins();
+    }
+
+    public void loadPlugins() {
+
         pluginsDirectory = Paths.get(properties.getString("analyst.path.plugins"));
         // Bail out if no location exists for plugins
         if (!pluginsDirectory.toFile().exists()) {
@@ -71,7 +90,7 @@ public class PluginServiceImpl implements PluginService {
             }
 
         } catch (IOException ex) {
-            throw new IllegalStateException("Unable to initialize plugins", ex);
+            throw new IllegalStateException("Unable to load plugins", ex);
         }
     }
 

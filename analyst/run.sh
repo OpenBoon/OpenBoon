@@ -1,3 +1,4 @@
 #!/bin/bash
-mvn  package spring-boot:run -Dmaven.test.skip=true
+mvn  package -Dmaven.test.skip=true
+java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -jar target/analyst.jar
 
