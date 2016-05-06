@@ -65,38 +65,57 @@ public class UserServiceTests extends AbstractTest {
     }
 
     @Test
-    public void updateUser() {
+    public void updateUserName() {
         UserBuilder builder = new UserBuilder();
-        builder.setUsername("updatetest");
+        builder.setUsername("bilbob");
         builder.setPassword("123password");
         builder.setEmail("test@test.com");
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
-        builder.setPermissions(
-                userService.getPermission("group::user"));
+        User user = userService.create(builder);
+        assertTrue(userService.hasPermission(user, userService.getPermission("user::bilbob")));
+
+        UserUpdateBuilder update = new UserUpdateBuilder().setUsername("frodo");
+        userService.update(user, update);
+
+        assertTrue(userService.hasPermission(user, userService.getPermission("user::frodo")));
+        assertTrue(userService.hasPermission(user, "user", "frodo"));
+        assertFalse(userService.hasPermission(user, "user", "bilbob"));
+    }
+
+    @Test
+    public void updatePermissions() {
+        UserBuilder builder = new UserBuilder();
+        builder.setUsername("bilbob");
+        builder.setPassword("123password");
+        builder.setEmail("test@test.com");
+        builder.setFirstName("Bilbo");
+        builder.setLastName("Baggings");
+        builder.setPermissions(userService.getPermission("group::user"));
         User user = userService.create(builder);
 
-        List<Permission> permissions = userService.getPermissions(user);
-        for (Permission permission : permissions) {
-            assertFalse(permission.getName().equals("manager"));
-        }
+        assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
+        assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
+
         Integer[] permissionIds = { userService.getPermission("group::manager").getId() };
-        UserUpdateBuilder update = new UserUpdateBuilder().setLastName("Sackville-Baggins")
-                .setPermissionIds(permissionIds);
+        UserUpdateBuilder update = new UserUpdateBuilder().setPermissionIds(permissionIds);
         userService.update(user, update);
-        user = userService.get(user.getId());
-        assertTrue(user.getLastName().equals("Sackville-Baggins"));
-        permissions = userService.getPermissions(user);
 
-        boolean foundManager = false;
+        assertFalse(userService.hasPermission(user, userService.getPermission("group::user")));
+        assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
+    }
 
-        for (Permission permission : permissions) {
-            if (permission.getName().equals("manager")) {
-                foundManager = true;
-                break;
-            }
-        }
-        assertTrue(foundManager);
+    @Test
+    public void updateUser() {
+        UserBuilder builder = new UserBuilder();
+        builder.setUsername("bilbob");
+        builder.setPassword("123password");
+        builder.setEmail("test@test.com");
+        builder.setFirstName("Bilbo");
+        builder.setLastName("Baggings");
+        User user = userService.create(builder);
+
+
     }
 
 

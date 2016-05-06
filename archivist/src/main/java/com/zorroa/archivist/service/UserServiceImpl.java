@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
          * Create a permission for this specific user.
          */
         Permission userPerm = permissionDao.create(
-                new PermissionBuilder("user", builder.getUsername(), true));
+                new PermissionBuilder("user", builder.getUsername()), true);
 
         /*
          * Get the permissions specified with the builder and add our
@@ -114,9 +114,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean update(User user, UserUpdateBuilder builder) {
-        // TODO: the permission for this user should be renamed or we
-        // shouldn't allow people to change usernames.
-        assert builder.getUsername() == null || user.getUsername() == builder.getUsername();
 
         if (builder.getPermissionIds() != null) {
             List<Permission> perms = permissionDao.getAll(builder.getPermissionIds());
@@ -124,7 +121,16 @@ public class UserServiceImpl implements UserService {
         }
 
         boolean result = userDao.update(user, builder);
-        if (result) {
+
+        if (result && builder.getUsername()!= null &&
+                !user.getUsername().equals(builder.getUsername())) {
+            if (!permissionDao.updateUserPermission(user.getUsername(), builder.getUsername())) {
+                logger.warn("Failed to update user permission from {} to {}",
+                        user.getUsername(), builder.getUsername());
+            }
+        }
+
+        if (result || builder.getPermissionIds() != null) {
             transactionEventManager.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
             });
@@ -210,11 +216,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Permission createPermission(PermissionBuilder builder) {
-        Permission perm = permissionDao.create(builder);
+        Permission perm = permissionDao.create(builder, false);
         transactionEventManager.afterCommitSync(() -> {
             messagingService.broadcast(new Message("PERMISSION_CREATE", builder));
         });
         return perm;
+    }
+
+    @Override
+    public boolean hasPermission(User user, String type, String name) {
+        return permissionDao.hasPermission(user, type, name);
     }
 
     @Override

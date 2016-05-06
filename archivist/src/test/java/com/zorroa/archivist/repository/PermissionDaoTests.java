@@ -30,7 +30,7 @@ public class PermissionDaoTests extends AbstractTest {
     public void init() {
         PermissionBuilder b = new PermissionBuilder("project", "avatar");
         b.setDescription("Access to the Avatar project");
-        perm = permissionDao.create(b);
+        perm = permissionDao.create(b, false);
 
         UserBuilder ub = new UserBuilder();
         ub.setUsername("test");
@@ -47,9 +47,44 @@ public class PermissionDaoTests extends AbstractTest {
         PermissionBuilder b = new PermissionBuilder("group", "test");
         b.setDescription("test");
 
-        Permission p = permissionDao.create(b);
+        Permission p = permissionDao.create(b, false);
         assertEquals(p.getName(), b.getName());
         assertEquals(p.getDescription(), b.getDescription());
+    }
+
+    @Test
+    public void testCreateImmutable() {
+        PermissionBuilder b = new PermissionBuilder("foo", "bar");
+        b.setDescription("foo bar");
+        Permission p = permissionDao.create(b, true);
+        assertTrue(p.isImmutable());
+    }
+
+    @Test
+    public void testUpdateUserPermission() {
+        assertTrue(permissionDao.updateUserPermission("test", "rambo"));
+        assertFalse(permissionDao.hasPermission(user, "user", "test"));
+        assertTrue(permissionDao.hasPermission(user, "user", "rambo"));
+    }
+
+    @Test
+    public void testHasPermissionUningNames() {
+        assertTrue(permissionDao.hasPermission(user, "user", "test"));
+        assertFalse(permissionDao.hasPermission(user, "a", "b"));
+    }
+
+    @Test
+    public void testHasPermission() {
+        assertTrue(permissionDao.hasPermission(user, permissionDao.get("user", "test")));
+        assertFalse(permissionDao.hasPermission(user, permissionDao.get("group", "manager")));
+    }
+
+    @Test
+    public void testGetByNameAndType() {
+        Permission p = permissionDao.get("user", "test");
+        assertTrue(p.isImmutable());
+        assertEquals("user", p.getType());
+        assertEquals("test", p.getName());
     }
 
     @Test

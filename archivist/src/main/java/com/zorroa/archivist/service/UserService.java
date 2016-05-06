@@ -47,6 +47,8 @@ public interface UserService {
 
     Permission getPermission(String name);
 
+    boolean hasPermission(User user, String type, String name);
+
     boolean hasPermission(User user, Permission permission);
 
     boolean deletePermission(Permission permission);

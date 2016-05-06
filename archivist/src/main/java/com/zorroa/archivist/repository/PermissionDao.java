@@ -11,9 +11,11 @@ import java.util.List;
  * Created by chambers on 10/27/15.
  */
 public interface PermissionDao {
-    Permission create(PermissionBuilder builder);
+    Permission create(PermissionBuilder builder, boolean immutable);
 
     Permission update(Permission permission);
+
+    boolean updateUserPermission(String oldName, String newName);
 
     Permission get(int id);
 
@@ -24,6 +26,8 @@ public interface PermissionDao {
     List<Permission> getAll(User user);
 
     List<Permission> getAll(String type);
+
+    Permission get(String type, String name);
 
     List<Permission> getAll(Integer[] ids);
 
@@ -38,4 +42,6 @@ public interface PermissionDao {
     boolean delete(User user);
 
     boolean hasPermission(User user, Permission permission);
+
+    boolean hasPermission(User user, String type, String name);
 }

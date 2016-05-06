@@ -26,7 +26,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
             JdbcUtils.insert("permission", "str_name", "str_type", "str_description", "bool_immutable");
 
     @Override
-    public Permission create(PermissionBuilder builder) {
+    public Permission create(PermissionBuilder builder, boolean immutable) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
@@ -36,7 +36,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
             ps.setString(2, builder.getType());
             ps.setString(3, builder.getDescription() == null
                     ? String.format("%s permission", builder.getName()) : builder.getDescription());
-            ps.setBoolean(4, builder.isImmutable());
+            ps.setBoolean(4, immutable);
             return ps;
         }, keyHolder);
 
@@ -51,12 +51,19 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
         return get(permission.getId());
     }
 
+    @Override
+    public boolean updateUserPermission(String oldName, String newName) {
+        return jdbc.update("UPDATE permission SET str_name=? WHERE str_type='user' AND str_name=? AND bool_immutable=?",
+                newName, oldName, true) == 1;
+    }
+
     private static final RowMapper<Permission> MAPPER = (rs, row) -> {
         InternalPermission p = new InternalPermission();
         p.setId(rs.getInt("pk_permission"));
         p.setName(rs.getString("str_name"));
         p.setType(rs.getString("str_type"));
         p.setDescription(rs.getString("str_description"));
+        p.setImmutable(rs.getBoolean("bool_immutable"));
         return p;
     };
 
@@ -98,6 +105,11 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     @Override
     public List<Permission> getAll(String type) {
         return jdbc.query("SELECT * FROM permission WHERE str_type=?", MAPPER, type);
+    }
+
+    @Override
+    public Permission get(String type, String name) {
+        return jdbc.queryForObject("SELECT * FROM permission WHERE str_name=? AND str_type=?", MAPPER, name, type);
     }
 
     @Override
@@ -162,5 +174,25 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     public boolean hasPermission(User user, Permission permission) {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",
                 Integer.class, user.getId(), permission.getId()) == 1;
+    }
+
+    private static final String HAS_PERM =
+            "SELECT " +
+                "COUNT(1) " +
+            "FROM " +
+                "permission p,"+
+                "user_permission up " +
+            "WHERE " +
+                "p.pk_permission = up.pk_permission " +
+            "AND " +
+                "up.pk_user = ? " +
+            "AND " +
+                "p.str_name = ? " +
+            "AND " +
+                "p.str_type = ?";
+
+    @Override
+    public boolean hasPermission(User user, String type, String name) {
+        return jdbc.queryForObject(HAS_PERM, Integer.class, user.getId(), name, type) == 1;
     }
 }
