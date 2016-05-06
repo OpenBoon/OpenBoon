@@ -13,6 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.util.NestedServletException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class UserControllerTest extends MockMvcTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDisable() throws Exception {
         User user = userService.get("user");
         MockHttpSession session = admin();
         mvc.perform(delete("/api/v1/users/" + user.getId())
@@ -69,6 +70,15 @@ public class UserControllerTest extends MockMvcTest {
 
         user = userService.get("user");
         assertFalse(user.getEnabled());
+    }
+
+    @Test(expected = NestedServletException.class)
+    public void testDisableSelf() throws Exception {
+        MockHttpSession session = admin();
+        mvc.perform(delete("/api/v1/users/1")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
     }
 
     @Test(expected=BadCredentialsException.class)

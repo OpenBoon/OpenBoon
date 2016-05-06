@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.sdk.exception.ArchivistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,9 @@ public class UserController  {
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
     public void disable(@PathVariable int id) {
         User user = userService.get(id);
+        if (user.getId() == userService.getActiveSession().getUserId()) {
+            throw new ArchivistException("You cannot disable your own user.");
+        }
         userService.disable(user);
     }
 
