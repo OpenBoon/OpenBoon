@@ -123,11 +123,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             values.add(builder.getLastName());
         }
 
-        if (builder.getEnabled() != null) {
-            updates.add("bool_enabled=?");
-            values.add(builder.getEnabled());
-        }
-
         if (values.isEmpty()) {
             return false;
         }
