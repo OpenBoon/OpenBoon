@@ -136,7 +136,9 @@ public class ArchivistConfiguration {
             props.load(new ClassPathResource("META-INF/maven/com.zorroa/archivist/pom.properties").getInputStream());
             map.put("version", props.getProperty("version"));
         } catch (Exception e) {
-            logger.warn("Failed to load version info,", e);
+            if (!ArchivistConfiguration.unittest) {
+                logger.warn("Failed to load version info,", e);
+            }
         }
         return new InfoEndpoint(ImmutableMap.of("build", map));
     }
