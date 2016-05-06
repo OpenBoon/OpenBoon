@@ -10,9 +10,11 @@ import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
+import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +43,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 @Controller
+@Component
 public class FileSystemController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileSystemController.class);
@@ -60,6 +67,27 @@ public class FileSystemController {
     @Autowired
     ObjectFileSystem objectFileSystem;
 
+    @Value("${analyst.watermark.enabled:false}")
+    private Boolean watermarkEnabled;
+
+    @Value("${analyst.watermark.min-proxy-width:384}")
+    private int watermarkMinProxyWidth;
+
+    @Value("${analyst.watermark.template}")
+    private String watermarkTemplate;
+
+    @Value("${analyst.watermark.font-size:6}")
+    private int watermarkFontSize;
+
+    @Value("${analyst.watermark.font-name:Arial Black}")
+    private String watermarkFontName;
+    private Font watermarkFont;
+
+    @PostConstruct
+    public void init() {
+        watermarkFont = new Font(watermarkFontName, Font.PLAIN, watermarkFontSize);
+    }
+
     /**
      * The proxies URL is broken out rather than using the general purpose getFile method because
      * proxies are handled differently due to caching.
@@ -69,9 +97,9 @@ public class FileSystemController {
      * @return
      * @throws ExecutionException
      */
-    @RequestMapping(value = "/api/v1/fs/proxies/**", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/fs/proxies/**", method = RequestMethod.GET, produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE })
     @ResponseBody
-    public ResponseEntity<byte[]> getProxy(HttpServletRequest request, HttpServletResponse response) throws ExecutionException, FileNotFoundException {
+    public byte[] getProxy(HttpServletRequest request, HttpServletResponse response) throws ExecutionException, IOException {
         response.setHeader("Cache-Control", "public");
 
         String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
@@ -81,10 +109,10 @@ public class FileSystemController {
         String finalPath = "proxies/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path));
 
         ProxyImage image = proxyCache.get(finalPath);
-        return ResponseEntity.ok()
-                .contentLength(image.size)
-                .contentType(image.type)
-                .body(image.content);
+        String ext = FileUtils.extension(path);
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        ImageIO.write(watermark(image.image), ext, bao);
+        return bao.toByteArray();
     }
 
     /**
@@ -115,22 +143,40 @@ public class FileSystemController {
     }
 
     private static class ProxyImage {
-        public byte[] content;
-        public long size;
-        public MediaType type;
+        public BufferedImage image;
 
         public static final ProxyImage load(File file) throws IOException {
-            RandomAccessFile f = new RandomAccessFile(file, "r");
-            try {
-                ProxyImage result = new ProxyImage();
-                result.content = new byte[(int)f.length()];
-                f.readFully(result.content);
-                result.size = f.length();
-                result.type = MediaType.IMAGE_JPEG;
-                return result;
-            } finally {
-                f.close();
-            }
+            ProxyImage result = new ProxyImage();
+            result.image = ImageIO.read(file);
+            return result;
         }
     }
+
+    private BufferedImage watermark(BufferedImage src) {
+        if (!watermarkEnabled) {
+            return src;
+        }
+
+        if (src.getWidth() <= watermarkMinProxyWidth) {
+            return src;
+        }
+
+        // Replace variables in the watermarkTemplte once we have session & asset
+        String text = watermarkTemplate;
+
+        // Draw AA text composited on top of the image
+        // FIXME: Wrap strings that are too long
+        Graphics2D g2d = src.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+        g2d.setComposite(c);
+        g2d.setPaint(Color.white);
+        g2d.setFont(watermarkFont);
+        float x = (src.getWidth() - g2d.getFontMetrics(watermarkFont).stringWidth(text)) / 2;
+        float y = 1.1f * g2d.getFontMetrics(watermarkFont).getHeight();
+        g2d.drawString(text, x, y);
+
+        return src;
+    }
+
 }
