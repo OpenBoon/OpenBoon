@@ -92,7 +92,6 @@ public class ArchivistConfiguration {
     }
 
     @Bean
-    @Autowired
     public TransactionEventManager transactionEventManager() {
         return new TransactionEventManager();
     }
