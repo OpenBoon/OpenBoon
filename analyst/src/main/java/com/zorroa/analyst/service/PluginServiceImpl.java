@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -45,6 +46,8 @@ public class PluginServiceImpl implements PluginService {
 
     @Autowired
     ObjectFileSystem fileSystem;
+
+    AtomicBoolean pluginsLoaded = new AtomicBoolean(false);
 
     Path pluginsDirectory;
 
@@ -70,7 +73,13 @@ public class PluginServiceImpl implements PluginService {
         loadPlugins();
     }
 
+    @Override
     public void loadPlugins() {
+
+        if (!pluginsLoaded.compareAndSet(false, true)) {
+            logger.warn("PluginService.loadPlugins called but plugins are already loaded.");
+            return;
+        }
 
         pluginsDirectory = Paths.get(properties.getString("analyst.path.plugins"));
         // Bail out if no location exists for plugins
@@ -177,7 +186,7 @@ public class PluginServiceImpl implements PluginService {
                     continue;
                 }
 
-                logger.debug("--- adding plugin [{}]", plugin.toAbsolutePath());
+                logger.debug("loading plugin [{}]", plugin.toAbsolutePath());
                 final PluginProperties pluginProps;
                 try {
                     pluginProps = PluginProperties.readFromProperties(plugin);

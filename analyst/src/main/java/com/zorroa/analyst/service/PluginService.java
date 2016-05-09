@@ -16,4 +16,6 @@ public interface PluginService {
 
     IngestProcessor getIngestProcessor(String name) throws Exception;
 
+    void loadPlugins();
+
 }
