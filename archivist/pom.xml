@@ -191,6 +191,18 @@
                             <commandlineArgs>-rf index db/archivist.mv.db exports unittest</commandlineArgs>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>Install Archivist</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>/bin/cp</executable>
+                            <commandlineArgs>${project.build.directory}/${project.artifactId}.jar "${user.home}/Library/Application Support/Zorroa/${project.artifactId}/lib"</commandlineArgs>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
