@@ -1,6 +1,7 @@
 package com.zorroa.analyst.config;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.analyst.Application;
 import com.zorroa.sdk.client.archivist.ArchivistClient;import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.AbstractFileSystem;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
@@ -51,7 +52,10 @@ public class ApplicationConfig {
             props.load(new ClassPathResource("META-INF/maven/com.zorroa/analyst/pom.properties").getInputStream());
             map.put("version", props.getProperty("version"));
         } catch (Exception e) {
-            logger.warn("Failed to load version info,", e);
+            map.put("version", "test");
+            if (!Application.isUnitTest()) {
+                logger.warn("Failed to load version info,", e);
+            }
         }
         return new InfoEndpoint(ImmutableMap.of("build", map));
     }
