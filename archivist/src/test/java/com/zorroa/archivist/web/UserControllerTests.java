@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @WebAppConfiguration
-public class UserControllerTest extends MockMvcTest {
+public class UserControllerTests extends MockMvcTest {
 
     @Autowired
     UserController userController;
