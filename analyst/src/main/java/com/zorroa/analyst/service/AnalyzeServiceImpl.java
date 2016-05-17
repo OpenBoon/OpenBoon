@@ -35,6 +35,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 2/8/16.
@@ -98,7 +99,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         IngestPipelineCacheValue pipeline;
         try {
             pipeline = getProcessingPipeline(req);
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             logger.warn("Failed to initialize pipeline, ", e);
             throw new IngestException("Failed to initialize ingest pipeline, " + e.getMessage(), e);
         }
@@ -237,14 +238,25 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
         }
 
-        logger.debug("Bulk upserting {} assets", assets.size());
-        result = assetDao.bulkUpsert(assets).add(result);
-        if (!result.logs.isEmpty()) {
-            for (String log: result.logs) {
-                eventLogService.log(req, log);
+        if (!req.isDryRun()) {
+            logger.debug("Bulk upserting {} assets", assets.size());
+            result = assetDao.bulkUpsert(assets).add(result);
+            if (!result.logs.isEmpty()) {
+                for (String log : result.logs) {
+                    eventLogService.log(req, log);
+                }
+                result.logs.clear();
             }
-            result.logs.clear();
         }
+
+        if (req.isReturnAssets()) {
+            List<Asset> returnAssets = Lists.newArrayList();
+            returnAssets.addAll(assets.stream()
+                    .map(builder -> new Asset(builder.getId().toString(), builder.getDocument()))
+                    .collect(Collectors.toList()));
+            result.setAssets(returnAssets);
+        }
+
         return result;
     }
 
@@ -357,37 +369,45 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         })
         .build(new CacheLoader<IngestPipelineCacheKey, IngestPipelineCacheValue>() {
             public IngestPipelineCacheValue load(IngestPipelineCacheKey key) throws Exception {
-                Set<String> supportedFormats = Sets.newHashSet();
-                List<IngestProcessor> result = Lists.newArrayListWithCapacity(key.getAnalyzeRequest().getProcessors().size());
-                for (ProcessorFactory<IngestProcessor> factory : key.getAnalyzeRequest().getProcessors()) {
-                    IngestProcessor p = pluginService.getIngestProcessor(factory.getKlass());
-                    p.setArgs(factory.getArgs());
-                    p.setApplicationProperties(applicationProperties);
-                    p.setObjectFileSystem(objectFileSystem);
-                    try {
-                        p.init();
-                    } catch (Exception e) {
-                        eventLogService.log(key, "Failed to initialize pipeline, {} failed, unexpected {}",
-                                e, factory.getKlass(), e.getMessage());
-                        throw new IngestException("Failed to initialize pipeline, " +
-                                factory.getKlass() + "failed, unexpected " + e.getMessage(), e);
-                    }
-                    result.add(p);
-                    supportedFormats.addAll(p.supportedFormats());
-                }
-                return new IngestPipelineCacheValue(result, supportedFormats);
+                return initializeIngestPipeline(key.getAnalyzeRequest());
             }
         });
 
     /**
-     *
-     * Create the processing pipeline.
+     * Get the processing pipeline for the give AnalyzeRequest.
      *
      * @param req
      * @return
      * @throws Exception
      */
-    private IngestPipelineCacheValue getProcessingPipeline(AnalyzeRequest req) throws ExecutionException {
-        return pipelineCache.get(new IngestPipelineCacheKey(req));
+    private IngestPipelineCacheValue getProcessingPipeline(AnalyzeRequest req) throws Exception {
+        if (req.getIngestId() == null || req.getIngestPipelineId() == null) {
+            return initializeIngestPipeline(req);
+        }
+        else {
+            return pipelineCache.get(new IngestPipelineCacheKey(req));
+        }
+    }
+
+    public IngestPipelineCacheValue initializeIngestPipeline(AnalyzeRequest req) throws Exception {
+        Set<String> supportedFormats = Sets.newHashSet();
+        List<IngestProcessor> result = Lists.newArrayListWithCapacity(req.getProcessors().size());
+        for (ProcessorFactory<IngestProcessor> factory : req.getProcessors()) {
+            IngestProcessor p = pluginService.getIngestProcessor(factory.getKlass());
+            p.setArgs(factory.getArgs());
+            p.setApplicationProperties(applicationProperties);
+            p.setObjectFileSystem(objectFileSystem);
+            try {
+                p.init();
+            } catch (Exception e) {
+                eventLogService.log(req, "Failed to initialize pipeline, {} failed, unexpected {}",
+                        e, factory.getKlass(), e.getMessage());
+                throw new IngestException("Failed to initialize pipeline, " +
+                        factory.getKlass() + "failed, unexpected " + e.getMessage(), e);
+            }
+            result.add(p);
+            supportedFormats.addAll(p.supportedFormats());
+        }
+        return new IngestPipelineCacheValue(result, supportedFormats);
     }
 }

@@ -157,4 +157,8 @@ public class AssetController {
                 "source", builder);
     }
 
+    @RequestMapping(value="/api/v1/assets/_analyze", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+    public AnalyzeResult analyze(@RequestBody AnalyzeRequest request) throws Exception {
+        return analystService.getAnalystClient().analyze(request);
+    }
 }
