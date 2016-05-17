@@ -119,6 +119,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     "str_name",
                     "user_created",
                     "time_created",
+                    "bool_recursive",
                     "user_modified",
                     "time_modified",
                     "json_search");
@@ -136,9 +137,10 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             ps.setString(2, builder.getName());
             ps.setInt(3, user);
             ps.setLong(4, time);
-            ps.setInt(5, user);
-            ps.setLong(6, time);
-            ps.setString(7, Json.serializeToString(builder.getSearch(), null));
+            ps.setBoolean(5, builder.isRecursive());
+            ps.setInt(6, user);
+            ps.setLong(7, time);
+            ps.setString(8, Json.serializeToString(builder.getSearch(), null));
             return ps;
         }, keyHolder);
 
