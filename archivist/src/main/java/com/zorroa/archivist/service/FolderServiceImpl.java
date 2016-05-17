@@ -124,10 +124,9 @@ public class FolderServiceImpl implements FolderService {
     public synchronized Folder create(FolderBuilder builder) {
 
         Folder parent = folderDao.get(builder.getParentId());
-        if (!parent.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
+        if (!SecurityUtils.hasPermission(parent.getAcl(),  Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
-
         /*
           * The current transaction (if any) is suspended by calling the FolderService.create() function.
           * Using transaction template, we create a new transaction, add the folder, and commit it.
@@ -167,7 +166,7 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public boolean update(Folder folder, FolderUpdateBuilder builder) {
 
-        if(!folder.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
+        if (!SecurityUtils.hasPermission(folder.getAcl(),  Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
@@ -185,7 +184,7 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public boolean delete(Folder folder) {
 
-        if(!folder.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Write)) {
+        if (!SecurityUtils.hasPermission(folder.getAcl(),  Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
@@ -304,7 +303,7 @@ public class FolderServiceImpl implements FolderService {
 
                 List<Folder> children = childCache.get(current.getId())
                         .stream()
-                        .filter(f-> f.getAcl().hasAccess(SecurityUtils.getPermissionIds(), Access.Read))
+                        .filter(f-> SecurityUtils.hasPermission(f.getAcl(), Access.Read))
                         .collect(Collectors.toList());
 
                 if (children == null || children.isEmpty()) {
