@@ -42,7 +42,7 @@ public class IngestPathAggregator extends Aggregator {
     public void init(Ingest ingest) {
         super.init(ingest);
         acl = new Acl()
-                .addEntry(userService.getPermission("internal::server"), Access.Write, Access.Read)
+                .addEntry(userService.getPermission("group::superuser"), Access.Write, Access.Read)
                 .addEntry(userService.getPermission("group::user"), Access.Read);
 
         /*
