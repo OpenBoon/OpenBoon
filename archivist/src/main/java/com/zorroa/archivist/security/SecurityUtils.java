@@ -95,7 +95,6 @@ public class SecurityUtils {
      */
     public static boolean hasPermission(Acl acl, Access access) {
         if (hasPermission("group::superuser")) {
-            logger.info("user does not have permission");
             return true;
         }
         return acl.hasAccess(getPermissionIds(), access);
