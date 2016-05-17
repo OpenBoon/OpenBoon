@@ -2,9 +2,7 @@ package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.User;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
@@ -84,6 +82,23 @@ public class SecurityUtils {
             return true;
         }
         return !Sets.intersection(permIds, SecurityUtils.getPermissionIds()).isEmpty();
+    }
+
+    /**
+     * Test that the current logged in user has the given access
+     * with a particular access control list.  Users with group::superuser
+     * will always have access.
+     *
+     * @param acl
+     * @param access
+     * @return
+     */
+    public static boolean hasPermission(Acl acl, Access access) {
+        if (hasPermission("group::superuser")) {
+            logger.info("user does not have permission");
+            return true;
+        }
+        return acl.hasAccess(getPermissionIds(), access);
     }
 
     public static Set<Integer> getPermissionIds() {
