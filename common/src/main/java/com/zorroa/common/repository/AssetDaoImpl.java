@@ -5,11 +5,10 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.util.Json;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -196,24 +195,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public long update(String assetId, AssetUpdateBuilder builder) {
-
-        Map<String, Object> document = Maps.newHashMap();
-
-        if (builder.isset("permissions")) {
-            document.put("permissions", builder.getPermissions());
-        }
-
-        Map<String, Object> user = Maps.newHashMap();
-        if (builder.isset("rating")) {
-            user.put("rating", builder.getRating());
-        }
-
-        if (!user.isEmpty()) {
-            document.put("user", user);
+        Asset asset = get(assetId);
+        for (Map.Entry<String,Object> entry: builder.entrySet()) {
+            asset.setAttr(entry.getKey(), entry.getValue());
         }
 
         UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), assetId)
-            .setDoc(Json.serializeToString(document))
+            .setDoc(Json.serializeToString(asset.getDocument()))
             .setRefresh(true);
 
         UpdateResponse response = updateBuilder.get();
