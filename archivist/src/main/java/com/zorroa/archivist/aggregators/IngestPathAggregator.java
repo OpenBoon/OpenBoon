@@ -117,6 +117,7 @@ public class IngestPathAggregator extends Aggregator {
                 FolderBuilder pathBuilder = new FolderBuilder().setName(title)
                         .setParentId(parentFolder.getId())
                         .setSearch(new AssetSearch().setFilter(pathFilter))
+                        .setRecursive(false)
                         .setAcl(acl);
                 pathFolder = folderService.create(pathBuilder);
             }

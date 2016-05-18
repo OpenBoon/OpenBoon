@@ -295,7 +295,7 @@ public class FolderServiceImpl implements FolderService {
              * for all assets that have an export ID, then there is no need to traverse all the sub
              * folders.
              */
-            if (current.isRecursive() && forSearch) {
+            if (!current.isRecursive() && forSearch) {
                 logger.info("Folder is not recursive, skipping: {}", current);
                 continue;
             }
