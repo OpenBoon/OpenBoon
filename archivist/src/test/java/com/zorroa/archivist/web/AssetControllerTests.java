@@ -2,12 +2,10 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.TestSearchResult;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.schema.PermissionSchema;
-import com.zorroa.sdk.util.Json;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.util.Json;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,70 +202,6 @@ public class AssetControllerTests extends MockMvcTest {
                     new TypeReference<Map<String, Object>>() {});
             assertEquals(asset.getId(), json.get("_id"));
         }
-    }
-
-    @Test
-    public void testUpdateRating() throws Exception {
-
-        MockHttpSession session = admin();
-
-        addTestAssets("canyon");
-
-        List<Asset> assets = assetDao.getAll();
-        Asset asset = assets.get(0);
-        MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        assertEquals(asset.getId(), json.get("_id"));
-
-        AssetUpdateBuilder update = new AssetUpdateBuilder();
-        update.setRating(3);
-
-        mvc.perform(put("/api/v1/assets/" + asset.getId())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(update)))
-                .andExpect(status().isOk())
-                .andReturn();
-        Asset updated = assetDao.get(asset.getId());
-        assertEquals(new Integer(3), updated.getAttr("user.rating"));
-    }
-
-
-    @Test
-    public void testUpdatePermissions() throws Exception {
-
-        MockHttpSession session = admin();
-
-        addTestAssets("canyon");
-
-        List<Asset> assets = assetDao.getAll();
-        Asset asset = assets.get(0);
-        MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        assertEquals(asset.getId(), json.get("_id"));
-
-        AssetUpdateBuilder update = new AssetUpdateBuilder();
-        update.setPermissions(new PermissionSchema().setSearch(Sets.newHashSet(1)));
-
-        mvc.perform(put("/api/v1/assets/" + asset.getId())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(update)))
-                .andExpect(status().isOk())
-                .andReturn();
-        Asset updated = assetDao.get(asset.getId());
-        PermissionSchema updatedPermissions = updated.getAttr("permissions", PermissionSchema.class);
-        assertEquals(Sets.newHashSet(1), updatedPermissions.getSearch());
     }
 
     @Test
