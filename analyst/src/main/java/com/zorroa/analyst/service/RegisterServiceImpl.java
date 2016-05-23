@@ -1,17 +1,19 @@
 package com.zorroa.analyst.service;
 
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
-import com.zorroa.analyst.domain.PluginProperties;
+import com.zorroa.analyst.domain.ArgumentScanner;
 import com.zorroa.sdk.client.archivist.ArchivistClient;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.AnalystPing;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.plugins.Plugin;
+import com.zorroa.sdk.plugins.PluginProperties;
+import com.zorroa.sdk.processor.ProcessorProperties;
+import com.zorroa.sdk.processor.ProcessorType;
 import com.zorroa.sdk.processor.ingest.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,17 +116,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         registered.set(true);
     }
 
-    private Set<String> EXCLUDE_INGESTORS =
-            ImmutableSet.of("com.zorroa.sdk.processor.ingest.IngestProcessor");
-
-    private AnalystPing getPing()  {
-
-        List<String> ingestClasses = Lists.newArrayListWithCapacity(30);
-        for (Tuple<PluginProperties, Plugin> tuple: pluginService.getLoadedPlugins()) {
-            for (Class<? extends IngestProcessor> proc: tuple.getRight().getIngestProcessors()) {
-                ingestClasses.add(proc.getCanonicalName());
-            }
-        }
+    public AnalystPing getPing()  {
 
         ThreadPoolTaskExecutor e = (ThreadPoolTaskExecutor) ingestThreadPool;
         AnalystPing ping = new AnalystPing();
@@ -133,9 +125,34 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         ping.setThreadsActive(e.getActiveCount());
         ping.setThreadsTotal(e.getPoolSize());
         ping.setData(properties.getBoolean("analyst.index.data"));
-        ping.setIngestProcessorClasses(ingestClasses);
+
+        /**
+         * We only need to do this on the first ping.
+         */
+        if (!registered.get()) {
+            ping.setPlugins(getPlugins());
+        }
+
         return ping;
     }
+
+    public List<PluginProperties> getPlugins() {
+        List<PluginProperties> result = Lists.newArrayList();
+        ArgumentScanner scanner = new ArgumentScanner();
+        for (Tuple<PluginProperties, Plugin> tuple : pluginService.getLoadedPlugins()) {
+            PluginProperties plugin = tuple.getLeft();
+            List<ProcessorProperties> processors = Lists.newArrayList();
+            for (Class<? extends IngestProcessor> proc : tuple.getRight().getIngestProcessors()) {
+                processors.add(new ProcessorProperties(proc.getName(), ProcessorType.Ingest,
+                        scanner.scan(proc)));
+            }
+            plugin.setProcessors(processors);
+            result.add(plugin);
+        }
+        return result;
+    }
+
+
 
     public String getIpAddress() throws IOException {
 
@@ -149,7 +166,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         if (deviceString != null) {
             allowedDevices.addAll(Splitter.on(",").trimResults().splitToList(deviceString));
         }
-
 
         Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
         while (networkInterfaces.hasMoreElements()) {

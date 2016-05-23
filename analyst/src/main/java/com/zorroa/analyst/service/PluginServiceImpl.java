@@ -2,11 +2,11 @@ package com.zorroa.analyst.service;
 
 
 import com.google.common.collect.ImmutableList;
-import com.zorroa.analyst.domain.PluginProperties;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.plugins.Plugin;
+import com.zorroa.sdk.plugins.PluginProperties;
 import com.zorroa.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.ElasticsearchException;
@@ -25,10 +25,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -189,7 +186,7 @@ public class PluginServiceImpl implements PluginService {
                 logger.debug("loading plugin [{}]", plugin.toAbsolutePath());
                 final PluginProperties pluginProps;
                 try {
-                    pluginProps = PluginProperties.readFromProperties(plugin);
+                    pluginProps = readFromProperties(plugin);
                 } catch (IOException e) {
                     throw new IllegalStateException("Could not load plugin descriptor for existing plugin ["
                             + plugin.getFileName() + "]", e);
@@ -212,6 +209,39 @@ public class PluginServiceImpl implements PluginService {
 
         return bundles;
     }
+
+    public static PluginProperties readFromProperties(Path dir) throws IOException {
+        Path descriptor = dir.resolve("plugin.properties");
+        Properties props = new Properties();
+        try (InputStream stream = Files.newInputStream(descriptor)) {
+            props.load(stream);
+        }
+        String name = props.getProperty("name");
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Property [name] is missing in [" + descriptor + "]");
+        }
+        String description = props.getProperty("description");
+        if (description == null) {
+            throw new IllegalArgumentException("Property [description] is missing for plugin [" + name + "]");
+        }
+        String version = props.getProperty("version");
+        if (version == null) {
+            throw new IllegalArgumentException("Property [version] is missing for plugin [" + name + "]");
+        }
+
+        String esVersionString = props.getProperty("zorroa.version");
+        if (esVersionString == null) {
+            throw new IllegalArgumentException("Property [zorroa.version] is missing for plugin [" + name + "]");
+        }
+
+        String classname = props.getProperty("className");
+        if (classname == null) {
+            throw new IllegalArgumentException("Property [className] is missing for plugin [" + name + "]");
+        }
+
+        return new PluginProperties(name, description, version, classname);
+    }
+
 
     private List<Tuple<PluginProperties,Plugin>> loadBundles(List<PluginBundle> bundles) {
         List<Tuple<PluginProperties, Plugin>> plugins = new ArrayList<>();
