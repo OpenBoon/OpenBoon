@@ -89,7 +89,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testAggregationV2() throws Exception {
-
+        authenticate("admin", true);
         MockHttpSession session = admin();
         addTestAssets("agg");
 
@@ -109,6 +109,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testAggregationScriptV2() throws Exception {
+        authenticate("admin", true);
         MockHttpSession session = admin();
         addTestAssets("agg");
 

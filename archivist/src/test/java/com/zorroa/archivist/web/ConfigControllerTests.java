@@ -67,7 +67,7 @@ public class ConfigControllerTests extends MockMvcTest {
 
         List<ProcessorProperties> data = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<ProcessorProperties>>() {});
-        assertEquals(4, data.size());
+        assertEquals(3, data.size());
     }
 
     @Test

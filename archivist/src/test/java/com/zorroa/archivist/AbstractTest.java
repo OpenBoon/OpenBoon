@@ -296,10 +296,19 @@ public abstract class AbstractTest {
     }
 
     public void authenticate(String username) {
+        authenticate(username, false);
+    }
+
+    public void authenticate(String username, boolean superUser) {
         User user = userService.get(username);
+        List<Permission> perms = userService.getPermissions(user);
+        if (superUser) {
+            perms.add(userService.getPermission("group::superuser"));
+        }
+
         SecurityContextHolder.getContext().setAuthentication(
                 authenticationManager.authenticate(new UnitTestAuthentication(user,
-                        userService.getPermissions(user))));
+                        perms)));
     }
 
     public void logout() {

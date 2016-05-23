@@ -97,6 +97,7 @@ public class IngestExecutorServiceTests extends AbstractTest {
     @Test
     public void testIngestAggregators() throws InterruptedException {
 
+        authenticate("admin", true);
         Ingest ingest = addTestAssets("agg");
         String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         String month = monthName[Calendar.getInstance().get(Calendar.MONTH)];
