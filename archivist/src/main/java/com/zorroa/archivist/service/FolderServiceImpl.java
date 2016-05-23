@@ -296,7 +296,6 @@ public class FolderServiceImpl implements FolderService {
              * folders.
              */
             if (!current.isRecursive() && forSearch) {
-                logger.info("Folder is not recursive, skipping: {}", current);
                 continue;
             }
             try {
