@@ -167,6 +167,11 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             values.add(builder.getParentId());
         }
 
+        if (builder.isset("recursive")) {
+            sets.add("bool_recursive=?");
+            values.add(builder.getRecursive());
+        }
+
         if (builder.isset("search")) {
             sets.add("json_search=?");
             values.add(Json.serializeToString(builder.getSearch(), null));

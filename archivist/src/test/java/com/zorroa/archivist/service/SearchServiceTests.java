@@ -118,6 +118,43 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testNonRecursiveFolderSearch() throws IOException {
+
+        FolderBuilder builder = new FolderBuilder("Avengers");
+        Folder folder1 = folderService.create(builder);
+
+        builder = new FolderBuilder("Age Of Ultron", folder1).setRecursive(false);
+        Folder folder2 = folderService.create(builder);
+
+        builder = new FolderBuilder("Characters", folder2);
+        Folder folder3 = folderService.create(builder);
+
+        String filename = "captain_america.jpg";
+        String filepath = "/tmp/" + filename;
+        Files.touch(new File(filepath));
+
+        AssetBuilder assetBuilder = new AssetBuilder(filepath);
+        Asset asset1 = assetDao.upsert(assetBuilder);
+
+        filename = "wonder_woman.jpg";
+        filepath = "/tmp/" + filename;
+        Files.touch(new File(filepath));
+
+        assetBuilder = new AssetBuilder(filepath);
+        Asset asset2 = assetDao.upsert(assetBuilder);
+
+        refreshIndex(100);
+
+        folderService.addAssets(folder2, Lists.newArrayList(asset2.getId()));
+        folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
+        refreshIndex(100);
+
+        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
     public void testSmartFolderSearch() throws IOException {
 
         FolderBuilder builder = new FolderBuilder("Avengers");
