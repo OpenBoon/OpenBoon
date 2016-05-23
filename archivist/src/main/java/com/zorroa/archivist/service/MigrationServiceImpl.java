@@ -7,6 +7,7 @@ import com.zorroa.archivist.repository.MigrationDao;
 import com.zorroa.sdk.exception.ArchivistException;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequestBuilder;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -159,94 +160,79 @@ public class MigrationServiceImpl implements MigrationService {
                 .get();
 
         /**
-         * Note that, we're flipping the alias first.
-         *
-         * First we try to remove
-         * the old alias.  The index we're removing it from might not exist
-         * for some reason.
+         * If there is an old index and the new index is a different name than
+         * the old index, AND the new index props say we must reindex, then
+         * do a reindex.
          */
-        logger.info("Removing alias from: {}", oldIndex);
+        if (oldIndexExists && !oldIndex.equals(newIndex) && props.isReindex()) {
+            /**
+             * Setup a bulk processor
+             */
+            BulkProcessor bulkProcessor = BulkProcessor.builder(
+                    client,
+                    new BulkProcessor.Listener() {
+                        @Override
+                        public void beforeBulk(long executionId,
+                                               BulkRequest request) {
+                            logger.info("Executing {} bulk index requests", request.numberOfActions());
+                        }
+
+                        @Override
+                        public void afterBulk(long executionId,
+                                              BulkRequest request,
+                                              BulkResponse response) {
+                        }
+
+                        @Override
+                        public void afterBulk(long executionId,
+                                              BulkRequest request,
+                                              Throwable failure) {
+                            logger.warn("Bulk index failure, ", failure);
+                        }
+                    })
+                    .setBulkActions(500)
+                    .setBulkSize(new ByteSizeValue(500, ByteSizeUnit.MB))
+                    .setFlushInterval(TimeValue.timeValueSeconds(10))
+                    .setConcurrentRequests(1)
+                    .build();
+
+            /**
+             * Now scan/scroll over everything and copy from new to old.
+             */
+            SearchResponse scrollResp = client.prepareSearch(oldIndex)
+                    .setSearchType(SearchType.SCAN)
+                    .setScroll(new TimeValue(60000))
+                    .setQuery(QueryBuilders.matchAllQuery())
+                    .setSize(100).execute().actionGet();
+
+            while (true) {
+                for (SearchHit hit : scrollResp.getHits().getHits()) {
+                    bulkProcessor.add(client.prepareIndex(
+                            newIndex, hit.getType(), hit.getId()).setSource(hit.source()).request());
+                }
+
+                scrollResp = client.prepareSearchScroll(scrollResp.getScrollId()).setScroll(
+                        new TimeValue(60000)).execute().actionGet();
+                if (scrollResp.getHits().getHits().length == 0) {
+                    break;
+                }
+            }
+        }
+        /**
+         * Flip the alias.
+         *
+         * The index we're removing it from might not exist for some reason.
+         */
         try {
-            client.admin().indices().prepareAliases()
-                    .removeAlias(oldIndex, alias)
-                    .execute().actionGet();
+            IndicesAliasesRequestBuilder req = client.admin().indices().prepareAliases();
+            if (oldIndexExists) {
+                logger.info("Removing alias from: {}", oldIndex);
+                req.removeAlias(oldIndex, alias);
+            }
+            logger.info("Adding alias to: {}", newIndex);
+            req.addAlias(newIndex, alias).execute().actionGet();
         } catch (ElasticsearchException e) {
             logger.warn("Could not remove alias from {}, error was: '{}'. (this is ok)", oldIndex, e.getMessage());
-        }
-
-        /**
-         * Now add the alias to the new index.  If this fails then we have
-         * a critical error.
-         */
-        logger.info("Adding alias to: {}", newIndex);
-        try {
-            client.admin().indices().prepareAliases()
-                    .addAlias(newIndex, alias)
-                    .execute().actionGet();
-        } catch (ElasticsearchException e) {
-            logger.error("Failed to add alias to {}", newIndex, e);
-            throw e;
-        }
-
-        /**
-         * If there is no old index or the index versions are the same, then just
-         * return.
-         */
-        if ((!oldIndexExists || oldIndex == newIndex) && props.isReindex())  {
-            return;
-        }
-
-        /**
-         * Setup a bulk processor
-         */
-        BulkProcessor bulkProcessor = BulkProcessor.builder(
-                client,
-                new BulkProcessor.Listener() {
-                    @Override
-                    public void beforeBulk(long executionId,
-                                           BulkRequest request) {
-                        logger.info("Executing {} bulk index requests", request.numberOfActions());
-                    }
-
-                    @Override
-                    public void afterBulk(long executionId,
-                                          BulkRequest request,
-                                          BulkResponse response) {
-                    }
-
-                    @Override
-                    public void afterBulk(long executionId,
-                                          BulkRequest request,
-                                          Throwable failure) {
-                        logger.warn("Bulk index failure, ", failure);
-                    }
-                })
-                .setBulkActions(500)
-                .setBulkSize(new ByteSizeValue(500, ByteSizeUnit.MB))
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
-                .setConcurrentRequests(1)
-                .build();
-
-        /**
-         * Now scan/scroll over everything and copy from new to old.
-         */
-        SearchResponse scrollResp = client.prepareSearch(oldIndex)
-                .setSearchType(SearchType.SCAN)
-                .setScroll(new TimeValue(60000))
-                .setQuery(QueryBuilders.matchAllQuery())
-                .setSize(100).execute().actionGet();
-
-        while (true) {
-            for (SearchHit hit : scrollResp.getHits().getHits()) {
-                bulkProcessor.add(client.prepareIndex(
-                        newIndex, hit.getType(), hit.getId()).setSource(hit.source()).request());
-            }
-
-            scrollResp = client.prepareSearchScroll(scrollResp.getScrollId()).setScroll(
-                    new TimeValue(60000)).execute().actionGet();
-            if (scrollResp.getHits().getHits().length == 0) {
-                break;
-            }
         }
 
         /**
