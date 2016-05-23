@@ -50,6 +50,12 @@ public class AnalystDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testGetByUrl() {
+        Analyst a2 = analystDao.get(analyst.getUrl());
+        assertEquals(analyst, a2);
+    }
+
+    @Test
     public void testGetAll() {
         int currentCount = jdbc.queryForObject("SELECT COUNT(1) FROM analyst", Integer.class);
         for (int i=0; i<10; i++) {

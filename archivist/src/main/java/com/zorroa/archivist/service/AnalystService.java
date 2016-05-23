@@ -3,6 +3,8 @@ package com.zorroa.archivist.service;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.processor.ProcessorProperties;
+import com.zorroa.sdk.processor.ProcessorType;
 
 import java.util.List;
 
@@ -18,5 +20,11 @@ public interface AnalystService {
 
     AnalystClient getAnalystClient() throws Exception;
 
+    Analyst get(String url);
+
     List<Analyst> getActive();
+
+    List<ProcessorProperties> getProcessors(ProcessorType type);
+
+    List<ProcessorProperties> getProcessors();
 }

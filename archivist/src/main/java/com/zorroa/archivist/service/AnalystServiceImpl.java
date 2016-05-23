@@ -1,13 +1,18 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.repository.AnalystDao;
+import com.zorroa.archivist.repository.PluginDao;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystPing;
 import com.zorroa.sdk.domain.AnalystState;
+import com.zorroa.sdk.plugins.PluginProperties;
+import com.zorroa.sdk.processor.ProcessorProperties;
+import com.zorroa.sdk.processor.ProcessorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
@@ -24,8 +29,13 @@ public class AnalystServiceImpl implements AnalystService {
     @Autowired
     AnalystDao analystDao;
 
+    @Autowired
+    PluginDao pluginDao;
+
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void register(AnalystPing ping) {
+
         if (!analystDao.update(ping)) {
             analystDao.create(ping);
         }
@@ -37,6 +47,19 @@ public class AnalystServiceImpl implements AnalystService {
              */
             analystDao.setState(ping.getUrl(), AnalystState.UP);
         }
+
+        /*
+         * A plugin list has been sent. Add it to the DB so we have a record
+         * of all installed plugins.
+         */
+        if (ping.getPlugins() != null) {
+            for (PluginProperties plugin: ping.getPlugins()) {
+                int id = pluginDao.create(plugin);
+                for (ProcessorProperties processor: plugin.getProcessors()) {
+                    pluginDao.addProcessor(id, processor);
+                }
+            }
+        }
     }
 
     @Override
@@ -47,6 +70,11 @@ public class AnalystServiceImpl implements AnalystService {
         if (analystDao.update(ping)) {
             analystDao.setState(ping.getUrl(), AnalystState.SHUTDOWN, AnalystState.UP);
         }
+    }
+
+    @Override
+    public Analyst get(String url) {
+        return analystDao.get(url);
     }
 
     @Override
@@ -71,5 +99,15 @@ public class AnalystServiceImpl implements AnalystService {
             client.getLoadBalancer().addHost(a.getUrl());
         }
         return client;
+    }
+
+    @Override
+    public List<ProcessorProperties> getProcessors(ProcessorType type) {
+        return pluginDao.getProcessors(type);
+    }
+
+    @Override
+    public List<ProcessorProperties> getProcessors() {
+        return pluginDao.getProcessors();
     }
 }

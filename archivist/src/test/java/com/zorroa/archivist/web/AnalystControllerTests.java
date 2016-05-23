@@ -1,10 +1,10 @@
 package com.zorroa.archivist.web;
 
-import com.google.common.collect.Lists;
+import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystPing;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.archivist.service.AnalystService;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,19 +24,16 @@ public class AnalystControllerTests extends MockMvcTest {
     @Autowired
     AnalystService analystService;
 
+    AnalystPing ping;
+
+    @Before
+    public void init() {
+        ping = getAnalystPing();
+        analystService.register(ping);
+    }
+
     @Test
     public void testRegister() throws Exception {
-
-        AnalystPing ping = new AnalystPing();
-        ping.setUrl("https://192.168.100.100:8080");
-        ping.setData(false);
-        ping.setThreadsTotal(1);
-        ping.setProcessFailed(0);
-        ping.setProcessSuccess(1);
-        ping.setQueueSize(1);
-        ping.setThreadsActive(0);
-        ping.setIngestProcessorClasses(Lists.newArrayList());
-
         MvcResult result = mvc.perform(post("/api/v1/analyst/_register")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(ping)))
@@ -44,7 +41,6 @@ public class AnalystControllerTests extends MockMvcTest {
                 .andReturn();
 
         List<Analyst> all = analystService.getAll();
-        assertEquals("https://127.0.0.1:8080", all.get(0).getUrl());
+        assertEquals("https://192.168.100.100:8080", all.get(0).getUrl());
     }
-
 }

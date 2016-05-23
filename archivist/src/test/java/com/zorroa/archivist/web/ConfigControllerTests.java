@@ -1,9 +1,13 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.zorroa.archivist.service.AnalystService;
+import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.processor.ProcessorProperties;
 import com.zorroa.sdk.util.Json;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
@@ -20,6 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by chambers on 12/22/15.
  */
 public class ConfigControllerTests extends MockMvcTest {
+
+    @Autowired
+    AnalystService analystService;
 
     /**
      * Not sure this is even necessary.
@@ -46,29 +53,54 @@ public class ConfigControllerTests extends MockMvcTest {
         assertTrue(json.containsKey("jpg"));
     }
 
-    /**
-     * Need to rethink this test since the plugins will actually be on the Analyst.
-     * @throws Exception
-     */
     @Test
-    @Ignore
-    public void testGetAll() throws Exception {
-        MockHttpSession session = admin();
+    public void testGetProcessors() throws Exception {
+        AnalystPing ping = getAnalystPing();
+        analystService.register(ping);
 
-        MvcResult result = mvc.perform(get("/api/v1/plugins/ingest")
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(get("/api/v1/plugins/processors")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<String> ingestors = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<String>>() {});
-        assertEquals(6, ingestors.size());
-        assertTrue(ingestors.contains("com.zorroa.archivist.TestIngestor"));
-        assertTrue(ingestors.contains("com.zorroa.archivist.aggregators.AggregatorIngestor"));
-        assertTrue(ingestors.contains("com.zorroa.archivist.aggregators.DateAggregator"));
-        assertTrue(ingestors.contains("com.zorroa.archivist.aggregators.IngestPathAggregator"));
-        assertTrue(ingestors.contains("com.zorroa.archivist.aggregators.RatingAggregator"));
-        assertTrue(ingestors.contains("com.zorroa.archivist.ingestors.PermissionIngestor"));
+        List<ProcessorProperties> data = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<ProcessorProperties>>() {});
+        assertEquals(4, data.size());
+    }
+
+    @Test
+    public void testGetProcessorsByType() throws Exception {
+        AnalystPing ping = getAnalystPing();
+        analystService.register(ping);
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(get("/api/v1/plugins/processors/0")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<ProcessorProperties> data = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<ProcessorProperties>>() {});
+        assertEquals(1, data.size());
+    }
+
+    @Test
+    public void testGetProcessorsByTypeName() throws Exception {
+        AnalystPing ping = getAnalystPing();
+        analystService.register(ping);
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(get("/api/v1/plugins/processors/ingest")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<ProcessorProperties> data = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<ProcessorProperties>>() {});
+        assertEquals(1, data.size());
     }
 }

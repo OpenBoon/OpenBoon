@@ -2,15 +2,17 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.primitives.Ints;
 import com.google.common.reflect.ClassPath;
-import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.processor.Aggregator;
-import com.zorroa.sdk.util.IngestUtils;
 import com.zorroa.archivist.service.AnalystService;
+import com.zorroa.sdk.processor.Aggregator;
+import com.zorroa.sdk.processor.ProcessorType;
+import com.zorroa.sdk.util.IngestUtils;
+import com.zorroa.sdk.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,13 +64,20 @@ public class ConfigController {
         return IngestUtils.SUPPORTED_FORMATS;
     }
 
-    @RequestMapping(value="/api/v1/plugins/ingest", method= RequestMethod.GET)
-    public Collection<String> ingest() throws Exception {
-        Set<String> ingestorClasses = Sets.newHashSet();
-        for (Analyst a: analystService.getAll()) {
-            ingestorClasses.addAll(a.getIngestProcessorClasses());
+    @RequestMapping(value="/api/v1/plugins/processors", method= RequestMethod.GET)
+    public Object getProcessors() throws Exception {
+        return analystService.getProcessors();
+    }
+
+    @RequestMapping(value="/api/v1/plugins/processors/{type}", method= RequestMethod.GET)
+    public Object getProcessorsByType(@PathVariable String type) throws Exception {
+        Integer ival = Ints.tryParse(type);
+        if (ival != null) {
+            return analystService.getProcessors(ProcessorType.values()[ival.intValue()]);
         }
-        return ingestorClasses;
+        else {
+            return analystService.getProcessors(ProcessorType.valueOf(StringUtils.capitalize(type)));
+        }
     }
 
     private Set<String> EXCLUDE_INGESTORS =

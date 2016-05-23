@@ -4,7 +4,6 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystPing;
 import com.zorroa.sdk.domain.AnalystState;
-import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -28,8 +27,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
             "int_queue_size",
             "time_created",
             "time_updated",
-            "bool_data",
-            "json_ingestor_classes");
+            "bool_data");
 
     @Override
     public Analyst create(AnalystPing ping) {
@@ -47,7 +45,6 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
             ps.setLong(7, time);
             ps.setLong(8, time);
             ps.setBoolean(9, ping.isData());
-            ps.setString(10, Json.serializeToString(ping.getIngestProcessorClasses()));
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -64,8 +61,7 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
                 "int_process_failed=?,"+
                 "int_queue_size=?,"+
                 "bool_data=?, " +
-                "time_updated=?, "+
-                "json_ingestor_classes=? " +
+                "time_updated=? "+
             "WHERE " +
                 "str_url=?";
 
@@ -80,7 +76,6 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
                 ping.getQueueSize(),
                 ping.isData(),
                 time,
-                Json.serializeToString(ping.getIngestProcessorClasses()),
                 ping.getUrl()) == 1;
     }
 
@@ -95,7 +90,6 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
         a.setState(AnalystState.values()[rs.getInt("int_state")]);
         a.setThreadsActive(rs.getInt("int_threads_active"));
         a.setThreadsTotal(rs.getInt("int_threads_total"));
-        a.setIngestProcessorClasses(Json.deserialize(rs.getString("json_ingestor_classes"), Json.LIST_OF_STRINGS));
         return a;
     };
 
@@ -103,6 +97,12 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
     public Analyst get(int id) {
         return jdbc.queryForObject("SELECT * FROM analyst WHERE pk_analyst=?", MAPPER, id);
     }
+
+    @Override
+    public Analyst get(String url) {
+        return jdbc.queryForObject("SELECT * FROM analyst WHERE str_url=?", MAPPER, url);
+    }
+
 
     @Override
     public List<Analyst> getAll() {
