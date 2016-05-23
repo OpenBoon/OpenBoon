@@ -138,6 +138,16 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(folders.isEmpty());
     }
 
+    @Test
+    public void testUpdateRecursive() {
+        Folder folder = folderService.create(new FolderBuilder("orig"));
+        assertTrue(folder.isRecursive());
+        boolean ok = folderService.update(folder, new FolderUpdateBuilder().setRecursive(Boolean.FALSE));
+        assertTrue(ok);
+        Folder revised = folderService.get(folder.getId());
+        assertFalse(revised.isRecursive());
+    }
+
     @Test(expected=DataIntegrityViolationException.class)
     public void testCreateFailureInRoot() {
         FolderBuilder builder = new FolderBuilder("shizzle");
