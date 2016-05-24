@@ -397,6 +397,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             p.setArgs(factory.getArgs());
             p.setApplicationProperties(applicationProperties);
             p.setObjectFileSystem(objectFileSystem);
+            p.setArguments();
             try {
                 p.init();
             } catch (Exception e) {
