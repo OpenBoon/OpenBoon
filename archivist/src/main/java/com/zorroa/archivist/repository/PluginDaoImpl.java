@@ -56,21 +56,38 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
                     "int_type",
                     "json_display");
 
+    private static final String UPDATE_PROCESSOR =
+            "UPDATE " +
+                "processor " +
+            "SET " +
+                "json_display=? " +
+            "WHERE " +
+                "pk_plugin=? " +
+            "AND " +
+                "str_name=? ";
+
     @Override
     public void addProcessor(int pluginId, ProcessorProperties processor) {
         Preconditions.checkNotNull(processor.getType(), "The processor type cannot be null");
-        try {
-            jdbc.update(connection -> {
-                PreparedStatement ps =
-                        connection.prepareStatement(INSERT_PROCESSOR);
-                ps.setInt(1, pluginId);
-                ps.setString(2, processor.getClassName());
-                ps.setInt(3, processor.getType().ordinal());
-                ps.setString(4, Json.serializeToString(processor.getDisplay()));
-                return ps;
-            });
-        } catch (DuplicateKeyException e) {
-            // already added
+
+        logger.info("adding processor: {} {} {}", pluginId, processor.getClassName(), processor.getDisplay());
+        if (jdbc.update(UPDATE_PROCESSOR,
+                Json.serializeToString(processor.getDisplay()),
+                pluginId,
+                processor.getClassName()) == 0) {
+            try {
+                jdbc.update(connection -> {
+                    PreparedStatement ps =
+                            connection.prepareStatement(INSERT_PROCESSOR);
+                    ps.setInt(1, pluginId);
+                    ps.setString(2, processor.getClassName());
+                    ps.setInt(3, processor.getType().ordinal());
+                    ps.setString(4, Json.serializeToString(processor.getDisplay()));
+                    return ps;
+                });
+            } catch (DuplicateKeyException e) {
+                logger.warn("", e);
+            }
         }
     }
 

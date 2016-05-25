@@ -1,7 +1,9 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.plugins.PluginProperties;
+import com.zorroa.sdk.processor.DisplayProperties;
 import com.zorroa.sdk.processor.ProcessorType;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +50,15 @@ public class PluginDaoTests extends AbstractTest {
         assertEquals(0, pluginDao.getProcessors().size());
         sendAnalystPing();
         assertEquals(3, pluginDao.getProcessors().size());
+    }
+
+    @Test
+    public void updateProcessor() {
+        sendAnalystPing();
+        int pid = this.jdbc.queryForObject("SELECT pk_plugin FROM plugin WHERE str_name=?", Integer.class, "FooBar");
+        pluginDao.addProcessor(pid, pluginDao.getProcessors(ProcessorType.Ingest).get(0)
+                .setDisplay(Lists.newArrayList(new DisplayProperties().setName("rambo"))));
+        assertEquals("rambo", pluginDao.getProcessors(ProcessorType.Ingest).get(0).getDisplay().get(0).getName());
     }
 
     @Test
