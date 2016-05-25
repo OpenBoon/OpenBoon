@@ -375,19 +375,19 @@ public abstract class AbstractTest {
                                                 .setClassName("foo.bar.FooIngestor")
                                                 .setType(ProcessorType.Ingest)
                                                 .setDisplay(ImmutableList.of(new DisplayProperties()
-                                                        .setTitle("field")
+                                                        .setName("field")
                                                         .setWidget("text"))),
                                         new ProcessorProperties()
                                                 .setClassName("foo.bar.FooAggregator")
                                                 .setType(ProcessorType.Aggregation)
                                                 .setDisplay(ImmutableList.of(new DisplayProperties()
-                                                        .setTitle("field")
+                                                        .setName("field")
                                                         .setWidget("text"))),
                                         new ProcessorProperties()
                                                 .setClassName("foo.bar.FooExporter")
                                                 .setType(ProcessorType.Export)
                                                 .setDisplay(ImmutableList.of(new DisplayProperties()
-                                                        .setTitle("field")
+                                                        .setName("field")
                                                         .setWidget("text")))))));
         return ping;
     }

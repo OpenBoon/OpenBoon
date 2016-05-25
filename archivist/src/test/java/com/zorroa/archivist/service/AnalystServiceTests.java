@@ -48,7 +48,7 @@ public class AnalystServiceTests extends AbstractTest {
         assertEquals("foo.bar.FooIngestor", p.getClassName());
         assertEquals(ProcessorType.Ingest, p.getType());
         for (DisplayProperties d: p.getDisplay()) {
-            assertEquals("field", d.getTitle());
+            assertEquals("field", d.getName());
             assertEquals("text", d.getWidget());
         }
     }
