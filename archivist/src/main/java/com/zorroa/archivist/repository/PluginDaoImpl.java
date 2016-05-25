@@ -69,8 +69,6 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
     @Override
     public void addProcessor(int pluginId, ProcessorProperties processor) {
         Preconditions.checkNotNull(processor.getType(), "The processor type cannot be null");
-
-        logger.info("adding processor: {} {} {}", pluginId, processor.getClassName(), processor.getDisplay());
         if (jdbc.update(UPDATE_PROCESSOR,
                 Json.serializeToString(processor.getDisplay()),
                 pluginId,
