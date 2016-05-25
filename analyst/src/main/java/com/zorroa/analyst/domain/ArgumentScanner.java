@@ -21,12 +21,12 @@ public class ArgumentScanner {
     public List<DisplayProperties> scan(Class<?> klass) {
         List<DisplayProperties> fields = Lists.newArrayList();
         for (Field childField: klass.getDeclaredFields()) {
-            Annotation annotation = childField.getAnnotation(Argument.class);
+            Argument annotation = childField.getAnnotation(Argument.class);
             if (annotation == null) {
                 continue;
             }
 
-            DisplayProperties d = new DisplayProperties(childField, (Argument) annotation);
+            DisplayProperties d = new DisplayProperties(childField, annotation);
             fields.add(d);
             walkField(childField, annotation, d);
         }
@@ -36,12 +36,12 @@ public class ArgumentScanner {
     private void walkField(Field field, Annotation annotation, DisplayProperties d) {
 
         Class type = field.getType();
-        if (type.isPrimitive() || type.isArray() || type.isAssignableFrom(String.class)) {
+        if (type.isPrimitive() || type.isArray()) {
             return;
         }
 
         for (Field childField: type.getDeclaredFields()) {
-            Annotation childAnnotation = childField.getAnnotation(Argument.class);
+            Argument childAnnotation = childField.getAnnotation(Argument.class);
             if (childAnnotation == null) {
                 continue;
             }
@@ -49,7 +49,7 @@ public class ArgumentScanner {
                 continue;
             }
 
-            DisplayProperties childDisplay = new DisplayProperties(childField, (Argument) childAnnotation);
+            DisplayProperties childDisplay = new DisplayProperties(childField, childAnnotation);
             d.addToChildren(childDisplay);
             walkField(childField, childAnnotation, childDisplay);
         }
