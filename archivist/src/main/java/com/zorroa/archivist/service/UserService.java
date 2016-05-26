@@ -21,6 +21,8 @@ public interface UserService {
 
     String getPassword(String username);
 
+    String getHmacKey(String username);
+
     boolean update(User user, UserUpdateBuilder builder);
 
     boolean disable(User user);

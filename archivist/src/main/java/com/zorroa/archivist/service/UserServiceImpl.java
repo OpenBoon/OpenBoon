@@ -113,6 +113,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getHmacKey(String username) {
+        try {
+            return userDao.getHmacKey(username);
+        } catch (DataAccessException e) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+    }
+
+    @Override
     public boolean update(User user, UserUpdateBuilder builder) {
 
         if (builder.getPermissionIds() != null) {

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.repository.SessionDao;
+import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.sdk.domain.Session;
 import com.zorroa.sdk.domain.User;
 import org.slf4j.Logger;
@@ -35,6 +36,9 @@ public class JdbcSessionRegistry implements SessionRegistry {
 
     @Autowired
     SessionDao sessionDao;
+
+    @Autowired
+    UserDao userDao;
 
     private Map<Object, Set<String>> principals = Maps.newHashMap();
     private Map<String, SessionInformation> sessionIds = Maps.newHashMap();
@@ -104,13 +108,17 @@ public class JdbcSessionRegistry implements SessionRegistry {
             removeSessionInformation(sessionId);
         }
 
+        if (!(principal instanceof User)) {
+            principal = userDao.get(principal.toString());
+        }
+
         Session session = sessionDao.create((User)principal, sessionId);
         sessionIds.put(session.getCookieId(),
                 new SessionInformation(principal, sessionId, new Date()));
 
         Set<String> sessionsUsedByPrincipal = principals.get(principal);
         if (sessionsUsedByPrincipal == null) {
-            sessionsUsedByPrincipal = new CopyOnWriteArraySet<String>();
+            sessionsUsedByPrincipal = new CopyOnWriteArraySet<>();
             Set<String> prevSessionsUsedByPrincipal = principals.putIfAbsent(principal,
                     sessionsUsedByPrincipal);
             if (prevSessionsUsedByPrincipal != null) {

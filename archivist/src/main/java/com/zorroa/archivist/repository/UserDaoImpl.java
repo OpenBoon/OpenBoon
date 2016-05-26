@@ -141,6 +141,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             String.class, username, true);
     }
 
+    @Override
+    public String getHmacKey(String username) {
+        return jdbc.queryForObject("SELECT hmac_key FROM user WHERE str_username=? AND bool_enabled=?",
+                String.class, username, true);
+    }
+
     private static final String GET_ALL_BY_ROOM =
         "SELECT " +
             "user.* " +

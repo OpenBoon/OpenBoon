@@ -13,6 +13,9 @@ public interface UserDao {
     User get(String username);
 
     List<User> getAll();
+
+    String getHmacKey(String username);
+
     List<User> getAll(Room room);
 
     String getPassword(String username);

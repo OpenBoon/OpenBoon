@@ -1,15 +1,12 @@
 package com.zorroa.archivist.security;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.sdk.domain.User;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.sdk.domain.User;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -27,9 +23,6 @@ import java.io.IOException;
 public class HmacAuthenticationProvider implements AuthenticationProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(HmacAuthenticationProvider.class);
-
-    @Value("${archivist.security.hmacStore}")
-    String hmacStore;
 
     @Autowired
     UserService userService;
@@ -63,7 +56,8 @@ public class HmacAuthenticationProvider implements AuthenticationProvider {
     }
 
     public String getKey(String user) throws IOException {
-        return Files.readFirstLine(new File(hmacStore + "/" + user + ".key"), Charsets.UTF_8);
+        String key =  userService.getHmacKey(user);
+        return key;
     }
 
     @Override
