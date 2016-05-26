@@ -143,6 +143,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 continue;
             }
 
+            if (!file.exists()) {
+                eventLogService.log(req, "Ingest error, file does not exist '{}'", file);
+                result.errors++;
+                continue;
+            }
+
             AssetBuilder builder = new AssetBuilder(file);
             if (obj != null) {
                 builder.getSource().setRemoteSourceUri(entry.getUri());
