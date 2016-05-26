@@ -29,7 +29,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
@@ -122,29 +124,37 @@ public class MigrationServiceImpl implements MigrationService {
         final boolean newIndexExists = client.admin().indices().prepareExists(newIndex).get().isExists();
 
         /**
+         * If we alread have the current version then return.
+         */
+        if (props.getVersion() == m.getVersion() && newIndexExists) {
+            logger.info("'{}' mapping V{} is the current version", m.getName(), m.getVersion());
+            return;
+        }
+
+        /**
          * If neither index exists then its the first time the index has been created.
          */
         if (!oldIndexExists && !newIndexExists) {
             logger.info("No indexes exist, {} will be created", newIndex);
         }
-        else {
 
-            if (props.getVersion() == m.getVersion()) {
-                logger.info("'{}' mapping V{} is the current version", m.getName(), m.getVersion());
-                return;
+        /**
+         * For unit tests, suspend the unit test transaction and execute the update
+         * in a separate transaction, that we're not starting at V1 every time.
+         */
+        TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(Propagation.REQUIRES_NEW.ordinal());
+        boolean updated = tt.execute(new TransactionCallback<Boolean>() {
+            @Override
+            public Boolean doInTransaction(TransactionStatus transactionStatus) {
+                boolean result = migrationDao.setVersion(m, props.getVersion());
+                return result;
             }
+        });
 
-            /**
-             * For unit tests, suspend the unit test transaction and execute the update
-             * in a separate transaction, that we're not starting at V1 every time.
-             */
-            TransactionTemplate tt = new TransactionTemplate(transactionManager);
-            tt.setPropagationBehavior(Propagation.REQUIRES_NEW.ordinal());
-            logger.info("Updating version to {}", props.getVersion());
-            if (!tt.execute(
-                    transactionStatus -> migrationDao.setVersion(m, props.getVersion()))) {
-                return;
-            }
+        if (!updated) {
+            logger.warn("Could not update migration record to version: " + props.getVersion() +
+                    ", already set to that version.");
         }
 
         if (newIndexExists) {
@@ -225,11 +235,10 @@ public class MigrationServiceImpl implements MigrationService {
          */
         try {
             IndicesAliasesRequestBuilder req = client.admin().indices().prepareAliases();
+            logger.info("old index: {} exists: {}, removing alias.", oldIndex, oldIndexExists);
             if (oldIndexExists) {
-                logger.info("Removing alias from: {}", oldIndex);
                 req.removeAlias(oldIndex, alias);
             }
-            logger.info("Adding alias to: {}", newIndex);
             req.addAlias(newIndex, alias).execute().actionGet();
         } catch (ElasticsearchException e) {
             logger.warn("Could not remove alias from {}, error was: '{}'. (this is ok)", oldIndex, e.getMessage());
