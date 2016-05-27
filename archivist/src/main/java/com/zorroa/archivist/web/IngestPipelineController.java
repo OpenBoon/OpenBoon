@@ -36,6 +36,11 @@ public class IngestPipelineController {
         return ingestService.getIngestPipelines();
     }
 
+    @RequestMapping(value="/api/v1/pipelines/_by_name/{name}", method=RequestMethod.GET)
+    public IngestPipeline get(@PathVariable String name) {
+        return ingestService.getIngestPipeline(name);
+    }
+
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/pipelines/{id}/_ingest", method=RequestMethod.POST)
     public Ingest ingest(@RequestBody IngestBuilder builder, @PathVariable Integer id) {
