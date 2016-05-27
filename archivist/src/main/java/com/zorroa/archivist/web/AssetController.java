@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.sdk.domain.*;
@@ -159,6 +160,9 @@ public class AssetController {
 
     @RequestMapping(value="/api/v1/assets/_analyze", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     public AnalyzeResult analyze(@RequestBody AnalyzeRequest request) throws Exception {
+        Preconditions.checkNotNull(request.getAssets(), "The assets to analyze cannot be null");
+        Preconditions.checkNotNull(request.getProcessors(), "The processors cannot be null");
+        request.setUser(SecurityUtils.getUser().getUsername());
         return analystService.getAnalystClient().analyze(request);
     }
 }
