@@ -34,7 +34,7 @@ public class IngestPipelineControllerTests extends MockMvcTest {
         IngestPipelineBuilder builder = new IngestPipelineBuilder();
         builder.setName("test");
         builder.setDescription("a test pipeline");
-        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.zorroa.analyst.ingestors.ChecksumProcessor")));
+        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor")));
         pipeline = ingestService.createIngestPipeline(builder);
     }
 

@@ -1,13 +1,17 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.repository.IngestPipelineDao;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.util.Json;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.exception.ArchivistException;
+import com.zorroa.sdk.processor.Processor;
+import com.zorroa.sdk.processor.ProcessorFactory;
+import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -31,7 +35,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -71,6 +74,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
+        validateProcessors("ingest", builder.getProcessors());
+        validateProcessors("aggregator", builder.getAggregators());
         return ingestPipelineDao.create(builder);
     }
 
@@ -96,6 +101,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder) {
+        validateProcessors("ingest", builder.getProcessors());
+        validateProcessors("aggregator", builder.getAggregators());
         return ingestPipelineDao.update(pipeline, builder);
     }
 
@@ -392,5 +399,24 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
                 .append(".archivist").toString();
     }
 
+    /**
+     * Validate list of processor factories to make sure the klass variable is set.
+     *
+     * @param processors
+     */
+    private void validateProcessors(String type, List<? extends ProcessorFactory<? extends Processor>> processors) {
+        if (processors == null) {
+            // Null processors are handled as empty lists later on.
+            return;
+        }
+        try {
+            for (ProcessorFactory<?> processor : processors) {
+                Preconditions.checkNotNull(processor.getKlass(),
+                        "Invalid '" + type + "' processor definition, cannot have null class");
+            }
+        } catch (Exception e) {
+            throw new ArchivistException(e.getMessage(), e);
+        }
+    }
 }
 
