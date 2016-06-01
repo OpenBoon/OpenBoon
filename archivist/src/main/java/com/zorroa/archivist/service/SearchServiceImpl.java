@@ -1,13 +1,14 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.ArchivistException;
-import com.zorroa.archivist.security.SecurityUtils;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -165,7 +166,29 @@ public class SearchServiceImpl implements SearchService {
         if (filter.getFolderIds() != null) {
             query.must(folderQuery(filter));
         }
-        query.filter(getFilter(filter));
+        if (filter.getColors() != null) {
+            for (ColorFilter color: filter.getColors()) {
+                Preconditions.checkNotNull(color.getField(), "The ColorFilter.field was not set.");
+                BoolQueryBuilder colorFilter = QueryBuilders.boolQuery();
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".ratio"))
+                        .gte(color.getMinRatio()).lte(color.getMaxRatio()));
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".hue"))
+                        .gte(color.getHue() - color.getHueRange())
+                        .lte(color.getHue() + color.getHueRange()));
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".saturation"))
+                        .gte(color.getSaturation() - color.getSaturationRange())
+                        .lte(color.getSaturation() + color.getSaturationRange()));
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".brightness"))
+                        .gte(color.getBrightness() - color.getBrightnessRange())
+                        .lte(color.getBrightness() + color.getBrightnessRange()));
+
+                QueryBuilder colorFilterBuilder = QueryBuilders.nestedQuery(color.getField(),
+                        colorFilter);
+                query.must(colorFilterBuilder);
+            }
+        }
+        QueryBuilder filterBuilder = getFilter(filter);
+        query.filter(filterBuilder);
         return query;
     }
 
@@ -187,6 +210,7 @@ public class SearchServiceImpl implements SearchService {
                 query.should(QueryBuilders.termsQuery("folders", folderIds));
             }
         }
+
         return query;
     }
 

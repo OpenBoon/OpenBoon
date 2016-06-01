@@ -192,9 +192,9 @@
             "timestamp": {"type": "date" }
           }
         },
-        "color": {
+        "colors": {
             "properties": {
-              "mapping": {
+              "original": {
                 "type": "nested",
                 "properties": {
                   "red": { "type": "integer" },
@@ -203,7 +203,19 @@
                   "hue": {"type": "float"},
                   "saturation": {"type": "float"},
                   "brightness": {"type": "float"},
-                  "coverage": {"type": "float"}
+                  "ratio": {"type": "float"}
+                }
+              },
+              "mapped": {
+                "type": "nested",
+                "properties": {
+                  "red": { "type": "integer" },
+                  "green": { "type": "integer"},
+                  "blue": {"type": "integer"},
+                  "hue": {"type": "float"},
+                  "saturation": {"type": "float"},
+                  "brightness": {"type": "float"},
+                  "ratio": {"type": "float"}
                 }
               }
             }

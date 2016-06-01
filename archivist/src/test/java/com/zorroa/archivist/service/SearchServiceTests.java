@@ -1,12 +1,13 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.schema.LocationSchema;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -297,5 +298,26 @@ public class SearchServiceTests extends AbstractTest {
         assertTrue(fields.get("string").size() > 0);
         assertTrue(fields.get("integer").size() > 0);
         assertTrue(fields.get("point").size() > 0);
+    }
+
+
+    @Test
+    public void testColorSearch() {
+        Color color = new Color(255, 10, 10).setRatio(50f);
+
+        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
+        assetBuilder.setAttr("colors.original", ImmutableList.of(color));
+        assetDao.upsert(assetBuilder);
+        refreshIndex();
+
+        assertEquals(1, searchService.search(
+                new AssetSearch().setFilter(new AssetFilter().addToColors(
+                        new ColorFilter()
+                        .setField("colors.original")
+                        .setMinRatio(45)
+                        .setMaxRatio(55)
+                        .setHueAndRange(0, 5)
+                        .setSaturationAndRange(100, 5)
+                        .setBrightnessAndRange(50, 5)))).getHits().getTotalHits());
     }
 }

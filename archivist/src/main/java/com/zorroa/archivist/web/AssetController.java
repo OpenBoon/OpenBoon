@@ -15,6 +15,8 @@ import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -30,6 +32,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 public class AssetController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AssetController.class);
 
     @Value("${zorroa.common.index.alias}")
     private String alias;
