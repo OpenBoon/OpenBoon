@@ -129,7 +129,7 @@ public class ArchivistConfiguration {
     public InfoEndpoint infoEndpoint() {
         final Map<String, Object> map = new LinkedHashMap<>();
         map.put("description", "Zorroa Archivist Server");
-        map.put("project", "zorroa-archivst");
+        map.put("project", "zorroa-archivist");
         Properties props = new Properties();
         try {
             props.load(new ClassPathResource("META-INF/maven/com.zorroa/archivist/pom.properties").getInputStream());
