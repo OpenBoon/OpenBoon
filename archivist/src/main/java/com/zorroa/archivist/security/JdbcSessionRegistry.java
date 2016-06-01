@@ -10,6 +10,7 @@ import com.zorroa.sdk.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.session.SessionDestroyedEvent;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -109,7 +110,11 @@ public class JdbcSessionRegistry implements SessionRegistry {
         }
 
         if (!(principal instanceof User)) {
-            principal = userDao.get(principal.toString());
+            try {
+                principal = userDao.get(principal.toString());
+            } catch (Exception e) {
+                throw new BadCredentialsException("Invalid username or password");
+            }
         }
 
         Session session = sessionDao.create((User)principal, sessionId);

@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.IngestPipeline;
 import com.zorroa.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.sdk.domain.IngestPipelineUpdateBuilder;
@@ -9,7 +10,6 @@ import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.sdk.processor.ingest.IngestProcessor;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.archivist.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
