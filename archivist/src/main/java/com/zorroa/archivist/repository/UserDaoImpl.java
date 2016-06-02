@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class UserDaoImpl extends AbstractDao implements UserDao {
@@ -145,6 +146,15 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     public String getHmacKey(String username) {
         return jdbc.queryForObject("SELECT hmac_key FROM user WHERE str_username=? AND bool_enabled=?",
                 String.class, username, true);
+    }
+
+    @Override
+    public boolean generateHmacKey(String username) {
+        UUID key = UUID.randomUUID();
+        logger.info("generated key {} for {}", key, username);
+        boolean result = jdbc.update("UPDATE user SET hmac_key=? WHERE str_username=? AND bool_enabled=?",
+                key, username, true) == 1;
+        return result;
     }
 
     private static final String GET_ALL_BY_ROOM =

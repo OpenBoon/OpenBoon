@@ -23,6 +23,11 @@ public class UserController  {
     @Autowired
     UserService userService;
 
+    @RequestMapping(value="/api/v1/generate_api_key", method=RequestMethod.POST)
+    public String generate_api_key() {
+        return userService.generateHmacKey(SecurityUtils.getUsername());
+    }
+
     @RequestMapping(value="/api/v1/login", method=RequestMethod.POST)
     public User login() {
         return userService.login();

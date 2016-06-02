@@ -23,6 +23,8 @@ public interface UserService {
 
     String getHmacKey(String username);
 
+    String generateHmacKey(String username);
+
     boolean update(User user, UserUpdateBuilder builder);
 
     boolean disable(User user);
