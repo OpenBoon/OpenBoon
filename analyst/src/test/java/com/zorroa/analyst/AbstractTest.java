@@ -4,7 +4,7 @@ import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.AssetBuilder;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;

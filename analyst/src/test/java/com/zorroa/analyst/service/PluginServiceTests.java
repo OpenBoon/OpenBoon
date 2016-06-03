@@ -1,7 +1,7 @@
 package com.zorroa.analyst.service;
 
 import com.zorroa.analyst.AbstractTest;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

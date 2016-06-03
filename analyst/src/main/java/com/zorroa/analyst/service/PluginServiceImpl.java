@@ -7,7 +7,7 @@ import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.plugins.Plugin;
 import com.zorroa.sdk.plugins.PluginProperties;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.bootstrap.JarHell;

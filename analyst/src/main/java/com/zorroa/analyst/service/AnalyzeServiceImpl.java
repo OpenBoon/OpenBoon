@@ -19,7 +19,7 @@ import com.zorroa.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.processor.ProcessorFactory;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 import com.zorroa.sdk.schema.ImportSchema;
 import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 package com.zorroa.analyst;
 
 import com.zorroa.sdk.domain.AssetBuilder;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 
 /**
  * Created by chambers on 4/28/16.

@@ -14,7 +14,7 @@ import com.zorroa.sdk.plugins.PluginProperties;
 import com.zorroa.sdk.processor.ArgumentScanner;
 import com.zorroa.sdk.processor.ProcessorProperties;
 import com.zorroa.sdk.processor.ProcessorType;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

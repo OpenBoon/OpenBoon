@@ -3,6 +3,9 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.*;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AssetExecutor;
+import com.zorroa.archivist.crawlers.FileCrawler;
+import com.zorroa.archivist.crawlers.FlickrCrawler;
+import com.zorroa.archivist.crawlers.HttpCrawler;
 import com.zorroa.archivist.domain.UnitTestProcessor;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -10,10 +13,10 @@ import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.client.ClientException;
 import com.zorroa.sdk.client.analyst.AnalystClient;
-import com.zorroa.sdk.crawlers.*;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.AbortCrawlerException;
 import com.zorroa.sdk.processor.Aggregator;
+import com.zorroa.sdk.processor.Crawler;
 import com.zorroa.sdk.processor.ProcessorFactory;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
@@ -413,11 +416,10 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
              * For now this is a hard coded list, but we'll need to support plugins
              * for cralwers as well.
              */
-            Map<String, AbstractCrawler> crawlers = ImmutableMap.of(
+            Map<String, Crawler> crawlers = ImmutableMap.of(
                     "file", new FileCrawler(),
                     "http", new HttpCrawler(),
-                    "flickr", new FlickrCrawler(),
-                    "shotgun", new ShotgunCrawler());
+                    "flickr", new FlickrCrawler());
 
             for (String u : ingest.getUris()) {
 
@@ -428,7 +430,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     uri = URI.create("file:" + u);
                 }
 
-                AbstractCrawler crawler = crawlers.get(type);
+                Crawler crawler = crawlers.get(type);
                 if (crawler == null) {
                     eventLogService.log("No crawler class for type: '{}'", type);
                     continue;

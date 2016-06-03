@@ -3,7 +3,7 @@ package com.zorroa.analyst.service;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.plugins.Plugin;
 import com.zorroa.sdk.plugins.PluginProperties;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 
 import java.util.List;
 

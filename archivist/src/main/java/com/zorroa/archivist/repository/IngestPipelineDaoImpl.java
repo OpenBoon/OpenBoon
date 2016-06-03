@@ -8,7 +8,7 @@ import com.zorroa.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.sdk.domain.IngestPipelineUpdateBuilder;
 import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.ProcessorFactory;
-import com.zorroa.sdk.processor.ingest.IngestProcessor;
+import com.zorroa.sdk.processor.IngestProcessor;
 import com.zorroa.sdk.util.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
