@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 /**
  * Created by chambers on 10/28/15.

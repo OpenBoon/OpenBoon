@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.Snapshot;

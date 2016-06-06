@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.domain.IngestSchedule;
 import com.zorroa.archivist.domain.IngestScheduleBuilder;

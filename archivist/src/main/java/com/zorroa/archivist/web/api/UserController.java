@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;

@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.repository.EventLogDao;

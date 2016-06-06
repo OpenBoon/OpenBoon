@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.web.exceptions.DuplicateException;

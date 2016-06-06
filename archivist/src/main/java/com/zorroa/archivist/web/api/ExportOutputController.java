@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.zorroa.sdk.domain.ExportOutput;
 import com.zorroa.archivist.service.ExportService;

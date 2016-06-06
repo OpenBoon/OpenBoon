@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;

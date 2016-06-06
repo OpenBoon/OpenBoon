@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web;
+package com.zorroa.archivist.web.api;
 
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystPing;
