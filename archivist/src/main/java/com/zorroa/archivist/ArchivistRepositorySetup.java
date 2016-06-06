@@ -98,7 +98,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     public void refreshIndex() {
         logger.info("Refreshing index: '{}'", alias);
-        client.admin().indices().prepareRefresh(alias).get();
+        client.admin().indices().prepareRefresh(alias).execute();
     }
 
     public void createEventLogTemplate() throws IOException {
