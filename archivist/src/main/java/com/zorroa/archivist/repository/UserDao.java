@@ -27,4 +27,6 @@ public interface UserDao {
     boolean update(User user, UserUpdateBuilder builder);
 
     User create(UserBuilder builder);
+
+    int getCount();
 }

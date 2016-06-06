@@ -41,6 +41,18 @@ public class UserDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testGetCount() {
+        int count = userDao.getCount();
+        assertEquals(count, userDao.getCount());
+        UserBuilder builder = new UserBuilder();
+        builder.setUsername("test2");
+        builder.setPassword("test2");
+        builder.setEmail("test@test.com");
+        user = userDao.create(builder);
+        assertEquals(++count, userDao.getCount());
+    }
+
+    @Test
     public void testAll() {
         assertEquals(3, userDao.getAll().size());
 

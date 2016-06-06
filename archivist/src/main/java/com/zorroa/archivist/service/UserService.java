@@ -19,6 +19,8 @@ public interface UserService {
 
     List<User> getAll();
 
+    int getCount();
+
     String getPassword(String username);
 
     String getHmacKey(String username);

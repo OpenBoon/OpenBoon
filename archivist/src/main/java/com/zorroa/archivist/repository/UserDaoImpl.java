@@ -176,4 +176,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         return jdbc.query(GET_ALL_BY_ROOM, MAPPER, room.getId());
     }
 
+    @Override
+    public int getCount() {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM user", Integer.class);
+    }
+
 }

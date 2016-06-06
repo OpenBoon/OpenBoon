@@ -104,6 +104,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getCount() { return userDao.getCount(); }
+
+    @Override
     public String getPassword(String username) {
         try {
             return userDao.getPassword(username);
