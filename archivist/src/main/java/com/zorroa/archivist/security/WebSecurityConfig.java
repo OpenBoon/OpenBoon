@@ -6,12 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,7 +20,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -29,14 +30,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .addFilterBefore(hmacAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatcher("/api/**")
+                .authorizeRequests()
                 .antMatchers("/health/**").permitAll()
                 .antMatchers("/api/v1/analyst/_register").permitAll()
                 .antMatchers("/api/v1/analyst/_shutdown").permitAll()
                 .antMatchers("/console/**").hasAuthority("user::admin")
                 .anyRequest().authenticated()
-            .and()
+                .and()
                 .httpBasic()
             .and().headers().frameOptions().disable()
             .and()
