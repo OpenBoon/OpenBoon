@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.archivist.web.RestControllerAdvice;
+import com.zorroa.archivist.web.api.RestControllerAdvice;
 import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
 import com.zorroa.common.elastic.ZorroaNode;
 import com.zorroa.sdk.config.ApplicationProperties;
@@ -36,8 +36,6 @@ import java.net.UnknownHostException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import static sun.net.www.protocol.http.AuthCacheValue.Type.Server;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass=true)
