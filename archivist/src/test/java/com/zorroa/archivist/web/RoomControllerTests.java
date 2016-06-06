@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.repository.RoomDao;
+import com.zorroa.archivist.web.api.RoomController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.util.Json;

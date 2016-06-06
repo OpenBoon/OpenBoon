@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.common.repository.AssetDao;

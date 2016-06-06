@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.zorroa.archivist.web.api.UserController;
 import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.User;
 import com.zorroa.sdk.domain.UserUpdateBuilder;

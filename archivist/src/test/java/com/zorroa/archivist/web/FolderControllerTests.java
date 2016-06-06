@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.TestSearchResult;
+import com.zorroa.archivist.web.api.FolderController;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Folder;
 import com.zorroa.sdk.domain.FolderBuilder;
