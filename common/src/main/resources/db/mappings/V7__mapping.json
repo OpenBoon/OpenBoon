@@ -83,6 +83,12 @@
         "enabled": false
       },
       "dynamic": true,
+      "dynamic_date_formats": [
+        "yyyy/MM/dd HH:mm:ss Z",
+        "yyyy/MM/dd Z",
+        "yyyy/MM/dd HH:mm:ss",
+        "yyyy/MM/dd"
+      ],
       "_timestamp": {
         "enabled": true
       },
