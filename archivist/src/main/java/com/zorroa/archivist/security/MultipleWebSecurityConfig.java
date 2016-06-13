@@ -13,23 +13,35 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration
-@Order(Ordered.HIGHEST_PRECEDENCE)
-@EnableGlobalMethodSecurity(prePostEnabled=true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+/**
+ * Created by chambers on 6/9/16.
+ */
+@EnableWebSecurity
+public class MultipleWebSecurityConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @EnableGlobalMethodSecurity(prePostEnabled=true)
+    public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .addFilterBefore(hmacAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
+
+        @Autowired
+        SessionRegistry sessionRegistry;
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .antMatcher("/api/**")
                 .authorizeRequests()
                 .antMatchers("/health/**").permitAll()
@@ -39,25 +51,61 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
-            .and().headers().frameOptions().disable()
-            .and()
-                .sessionManagement()
-                    .maximumSessions(10)
-                    .sessionRegistry(sessionRegistry())
+                .and().headers().frameOptions().disable()
                 .and()
-            .and()
-               .csrf().disable();
+                .sessionManagement()
+                .maximumSessions(10)
+                .sessionRegistry(sessionRegistry)
+                .and()
+                .and()
+                .csrf().disable();
 
+            }
+    }
+
+    @Configuration
+    public static class FormSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        SessionRegistry sessionRegistry;
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .authorizeRequests()
+                    .antMatchers("/gui/**")
+                    .hasAuthority("group::user")
+                .and()
+                .formLogin()
+                    .loginPage("/gui/login")
+                    .failureUrl("/gui/login?error")
+                    .defaultSuccessUrl("/gui")
+                    .permitAll()
+                .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/gui/login")
+                .and().headers().frameOptions().disable()
+                .and()
+                    .sessionManagement()
+                    .invalidSessionUrl("/gui/login")
+                    .maximumSessions(10)
+                    .sessionRegistry(sessionRegistry)
+                    .and()
+                .and()
+                    .csrf().disable()
+                .logout().logoutRequestMatcher(
+                new AntPathRequestMatcher("/gui/logout")).logoutSuccessUrl("/gui/login?logout").permitAll();
+        }
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .authenticationProvider(authenticationProvider())
-            .authenticationProvider(hmacAuthenticationProvider())
-            .authenticationProvider(backgroundTaskAuthenticationProvider())
-            .authenticationProvider(internalAuthenticationProvider())
-            .authenticationEventPublisher(authenticationEventPublisher());
+                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(hmacAuthenticationProvider())
+                .authenticationProvider(backgroundTaskAuthenticationProvider())
+                .authenticationProvider(internalAuthenticationProvider())
+                .authenticationEventPublisher(authenticationEventPublisher());
 
         /**
          * If its a unit test we add our rubber stamp authenticator.
@@ -71,23 +119,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationEventPublisher authenticationEventPublisher() {
         return new AuthenticationEventPublisher() {
 
+            private final Logger logger = LoggerFactory.getLogger(FormSecurityConfig.class);
+
             @Override
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
+                logger.info("authenticate success: {}", authentication);
             }
 
             @Override
             public void publishAuthenticationFailure(
                     AuthenticationException exception,
                     Authentication authentication) {
+                logger.info("Failed to authenticate: {}", authentication, exception);
             }
         };
-    }
-
-    @Bean
-    public HmacSecurityFilter hmacAuthenticationFilter() {
-        HmacSecurityFilter filter = new HmacSecurityFilter();
-        return filter;
     }
 
     @Bean
