@@ -1,8 +1,10 @@
 package com.zorroa.archivist.security;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.sdk.domain.Session;
@@ -18,9 +20,7 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Copied from the standard SessionRegistryImpl except with JDBC support.  Eventually
@@ -41,46 +41,65 @@ public class JdbcSessionRegistry implements SessionRegistry {
     @Autowired
     UserDao userDao;
 
-    private Map<Object, Set<String>> principals = Maps.newHashMap();
-    private Map<String, SessionInformation> sessionIds = Maps.newHashMap();
+    private final LoadingCache<String, SessionInformation> sessionCache = CacheBuilder.newBuilder()
+            .maximumSize(250)
+            .concurrencyLevel(4)
+            .expireAfterWrite(60, TimeUnit.MINUTES)
+            .build(new CacheLoader<String, SessionInformation>() {
+                public SessionInformation load(String key) throws Exception {
+                    Session s = sessionDao.get(key);
+                    SessionInformation info;
+                    if (s == null) {
+                        info = new SessionInformation("anonymous", key,
+                                new Date(s.getRefreshTime()));
+                    }
+                    else {
+                        info = new SessionInformation(
+                                userDao.get(s.getUserId()), key, new Date(s.getRefreshTime()));
+                    }
+                    return info;
+                }
+            });
 
+    /**
+     * Get list of unique users with a session. I don't know why this is needed.
+     * @return
+     */
     @Override
     public List<Object> getAllPrincipals() {
-        return ImmutableList.copyOf(principals.keySet());
+        return ImmutableList.copyOf(userDao.getAllWithSession());
     }
 
+    /**
+     * Get all sessions for a given user.  I don't know why this is needed.
+     *
+     * @param principal
+     * @param includeExpiredSessions
+     * @return
+     */
     @Override
     public List<SessionInformation> getAllSessions(Object principal,
                                                    boolean includeExpiredSessions) {
+        User user = getUser(principal);
+        List<Session> sessions = sessionDao.getAll(user);
+        List<SessionInformation> result = Lists.newArrayListWithCapacity(sessions.size());
 
-        final Set<String> sessionsUsedByPrincipal = principals.get(principal);
-
-        if (sessionsUsedByPrincipal == null) {
-            return ImmutableList.of();
+        for (Session s: sessions) {
+            result.add(new SessionInformation(
+                    user, s.getCookieId(), new Date(s.getRefreshTime())));
         }
-
-        List<SessionInformation> list = Lists.newArrayListWithExpectedSize(
-                sessionsUsedByPrincipal.size());
-
-        for (String sessionId : sessionsUsedByPrincipal) {
-            SessionInformation sessionInformation = getSessionInformation(sessionId);
-
-            if (sessionInformation == null) {
-                continue;
-            }
-
-            if (includeExpiredSessions || !sessionInformation.isExpired()) {
-                list.add(sessionInformation);
-            }
-        }
-
-        return list;
+        return result;
     }
 
     @Override
     public SessionInformation getSessionInformation(String sessionId) {
         Assert.hasText(sessionId, "SessionId required as per interface contract");
-        return sessionIds.get(sessionId);
+
+        try {
+            return sessionCache.get(sessionId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -100,49 +119,24 @@ public class JdbcSessionRegistry implements SessionRegistry {
         Assert.hasText(sessionId, "SessionId required as per interface contract");
         Assert.notNull(principal, "Principal required as per interface contract");
 
+        logger.info("Registering session " + sessionId + ", for principal "
+                + principal);
         if (logger.isDebugEnabled()) {
             logger.debug("Registering session " + sessionId + ", for principal "
                     + principal);
         }
 
-        if (getSessionInformation(sessionId) != null) {
-            removeSessionInformation(sessionId);
-        }
-
-        if (!(principal instanceof User)) {
-            try {
-                principal = userDao.get(principal.toString());
-            } catch (Exception e) {
-                throw new BadCredentialsException("Invalid username or password");
-            }
-        }
+        principal = getUser(principal);
 
         Session session = sessionDao.create((User)principal, sessionId);
-        sessionIds.put(session.getCookieId(),
+        logger.info("caching session id: {}", sessionId);
+        sessionCache.put(sessionId,
                 new SessionInformation(principal, sessionId, new Date()));
-
-        Set<String> sessionsUsedByPrincipal = principals.get(principal);
-        if (sessionsUsedByPrincipal == null) {
-            sessionsUsedByPrincipal = new CopyOnWriteArraySet<>();
-            Set<String> prevSessionsUsedByPrincipal = principals.putIfAbsent(principal,
-                    sessionsUsedByPrincipal);
-            if (prevSessionsUsedByPrincipal != null) {
-                sessionsUsedByPrincipal = prevSessionsUsedByPrincipal;
-            }
-        }
-
-        sessionsUsedByPrincipal.add(sessionId);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Sessions used by '" + principal + "' : "
-                    + sessionsUsedByPrincipal);
-        }
     }
 
     @Override
     public void removeSessionInformation(String sessionId) {
         Assert.hasText(sessionId, "SessionId required as per interface contract");
-
         SessionInformation info = getSessionInformation(sessionId);
 
         if (info == null) {
@@ -154,40 +148,25 @@ public class JdbcSessionRegistry implements SessionRegistry {
                     + " from set of registered sessions");
         }
 
-        sessionIds.remove(sessionId);
         sessionDao.delete(sessionId);
-
-        Set<String> sessionsUsedByPrincipal = principals.get(info.getPrincipal());
-
-        if (sessionsUsedByPrincipal == null) {
-            return;
-        }
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Removing session " + sessionId
-                    + " from principal's set of registered sessions");
-        }
-
-        sessionsUsedByPrincipal.remove(sessionId);
-
-        if (sessionsUsedByPrincipal.isEmpty()) {
-            // No need to keep object in principals Map anymore
-            if (logger.isDebugEnabled()) {
-                logger.debug("Removing principal " + info.getPrincipal()
-                        + " from registry");
-            }
-            principals.remove(info.getPrincipal());
-        }
-
-        if (logger.isTraceEnabled()) {
-            logger.trace("Sessions used by '" + info.getPrincipal() + "' : "
-                    + sessionsUsedByPrincipal);
-        }
-
+        sessionCache.invalidate(sessionId);
     }
 
     public void onApplicationEvent(SessionDestroyedEvent event) {
         String sessionId = event.getId();
         removeSessionInformation(sessionId);
+    }
+
+    public User getUser(Object principal) {
+        if (!(principal instanceof User)) {
+            try {
+                return userDao.get(principal.toString());
+            } catch (Exception e) {
+                throw new BadCredentialsException("Invalid username or password");
+            }
+        }
+        else {
+            return (User) principal;
+        }
     }
 }
