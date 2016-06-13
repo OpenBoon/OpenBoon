@@ -3,6 +3,7 @@ package com.zorroa.archivist;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.security.JdbcSessionRegistry;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.archivist.web.api.RestControllerAdvice;
 import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
@@ -26,6 +27,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import javax.annotation.PostConstruct;
@@ -155,5 +157,10 @@ public class ArchivistConfiguration {
                 new MappingJackson2HttpMessageConverter()
         ));
         return adapter;
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new JdbcSessionRegistry();
     }
 }

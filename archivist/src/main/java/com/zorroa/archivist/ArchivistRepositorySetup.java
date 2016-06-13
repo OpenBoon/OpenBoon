@@ -112,6 +112,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         if (!ingestService.ingestPipelineExists("standard")) {
             IngestPipelineBuilder builder = new IngestPipelineBuilder();
             builder.setName("standard");
+            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FilePathIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.VideoIngestor"));
             builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.PdfIngestor"));
