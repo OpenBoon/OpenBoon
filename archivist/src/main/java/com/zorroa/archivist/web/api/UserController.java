@@ -1,18 +1,21 @@
 package com.zorroa.archivist.web.api;
 
-import com.zorroa.sdk.domain.*;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,6 +25,9 @@ public class UserController  {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    Validator validator;
 
     @RequestMapping(value="/api/v1/generate_api_key", method=RequestMethod.POST)
     public String generate_api_key() {
@@ -33,11 +39,6 @@ public class UserController  {
         return userService.login();
     }
 
-    @RequestMapping(value="/api/v1/logout", method=RequestMethod.POST)
-    public void logout(HttpServletRequest req) throws ServletException {
-        req.logout();
-    }
-
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users")
     public List<User> getAll() {
@@ -46,13 +47,21 @@ public class UserController  {
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users", method=RequestMethod.POST)
-    public User create(@RequestBody UserBuilder builder) {
+    public User create(@Valid @RequestBody UserBuilder builder, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new RuntimeException("Failed to add user");
+        }
         return userService.create(builder);
     }
 
     @RequestMapping(value="/api/v1/users/{id}")
     public User get(@PathVariable int id) {
         return userService.get(id);
+    }
+
+    @RequestMapping(value="/api/v1/users/{username}/_exists")
+    public Map get(@PathVariable String username) {
+        return ImmutableMap.of("result", userService.exists(username));
     }
 
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.PUT)
@@ -73,6 +82,8 @@ public class UserController  {
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
     public void disable(@PathVariable int id) {
         User user = userService.get(id);
+        logger.info("active session: {}", userService.getActiveSession());
+        logger.info("user {}", user);
         if (user.getId() == userService.getActiveSession().getUserId()) {
             throw new ArchivistException("You cannot disable your own user.");
         }

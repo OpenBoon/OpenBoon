@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <p>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Permissions</h1>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="perm: ${allPermissions}">
+                <td th:text="${perm.id}"></td>
+                <td th:text="${perm.name}"></td>
+                <td th:text="${perm.type}"></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </p>
+</section>
+
+</body>
+</html>
+

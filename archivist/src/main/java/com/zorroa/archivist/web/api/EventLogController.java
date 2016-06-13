@@ -30,6 +30,15 @@ public class EventLogController {
         HttpUtils.writeElasticResponse(eventLogDao.getAll(search), httpResponse);
     }
 
+    @RequestMapping(value="/api/v2/eventlog/_search", method= RequestMethod.POST)
+    public void getAll_v2(@RequestBody(required=false) EventLogSearch search, HttpServletResponse httpResponse) throws IOException {
+        if (search == null) {
+            search = new EventLogSearch();
+        }
+        HttpUtils.writeElasticResponse(eventLogDao.getAll(search), httpResponse);
+    }
+
+
     @RequestMapping(value="/api/v1/eventlog/_count", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
     public String getCount(@RequestBody(required=false) EventLogSearch search) throws IOException {
         if (search == null) {

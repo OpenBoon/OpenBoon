@@ -78,6 +78,11 @@ public class AnalystServiceImpl implements AnalystService {
     }
 
     @Override
+    public int getCount() {
+        return analystDao.count();
+    }
+
+    @Override
     public List<Analyst> getActive() {
         return analystDao.getActive();
     }
@@ -99,6 +104,11 @@ public class AnalystServiceImpl implements AnalystService {
             client.getLoadBalancer().addHost(a.getUrl());
         }
         return client;
+    }
+
+    @Override
+    public List<PluginProperties> getPlugins() {
+        return pluginDao.getPlugins();
     }
 
     @Override

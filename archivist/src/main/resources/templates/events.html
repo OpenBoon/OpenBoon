@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <p>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Events</h1>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="event: ${events}">
+                <td th:text="${event.type}"></td>
+                <td th:text="${event.message}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </p>
+</section>
+
+</body>
+</html>

@@ -105,6 +105,11 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public int getCount() {
+        return folderDao.count();
+    }
+
+    @Override
     public List<Folder> getAll() {
         return folderDao.getChildren(Folder.ROOT_ID);
     }

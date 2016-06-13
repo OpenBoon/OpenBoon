@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <p>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Ingests</h1>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Paths</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Errors</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ingest: ${ingests}">
+                <td th:text="${ingest.name}"></td>
+                <td th:text="${ingest.uris}"></td>
+                <td th:text="${ingest.createdCount}"></td>
+                <td th:text="${ingest.updatedCount}"></td>
+                <td th:text="${ingest.errorCount}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </p>
+</section>
+
+</body>
+</html>

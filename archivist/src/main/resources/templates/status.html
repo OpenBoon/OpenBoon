@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <p>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Status</h1>
+        </div>
+    </div>
+
+    <div class="alert" role="alert"
+         th:each="h: ${health}"
+         th:classappend="${#strings.startsWith(h.value,'UP')} ? alert-success : alert-danger">
+
+        <span th:if="${#strings.startsWith(h.value,'UP')}" class="glyphicon glyphicon-ok" aria-hidden="true" th:text="${'  ' + h.key}"></span>
+        <span th:if="${!#strings.startsWith(h.value,'UP')}" class="glyphicon glyphicon-alert" aria-hidden="true" th:text="${'  ' + h.key}"></span>
+        <p th:text="${h.value}"></p>
+    </div>
+    </p>
+</section>
+
+</body>
+</html>

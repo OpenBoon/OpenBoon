@@ -16,6 +16,8 @@ public interface FolderService {
 
     boolean exists(String path);
 
+    int getCount();
+
     List<Folder> getAll();
 
     /**

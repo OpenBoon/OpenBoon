@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+<section layout:fragment="content">
+    <p>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Analysts</h1>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Url</th>
+                <th>State</th>
+                <th>Data</th>
+                <th>Last Update</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="an: ${analysts}">
+                <td th:text="${an.url}"></td>
+                <td th:class="${an.state.name()} == 'UP' ? success : danger" th:text="${an.state.name()}"></td>
+                <td th:text="${an.data}"></td>
+                <td th:text="${#dates.format(an.timeUpdated, 'dd MMM yyyy HH:mm:ss')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </p>
+</section>
+
+</body>
+</html>
