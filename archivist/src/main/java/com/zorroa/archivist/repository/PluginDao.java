@@ -17,6 +17,8 @@ public interface PluginDao {
 
     List<PluginProperties> getPlugins();
 
+    List<ProcessorProperties> getProcessors(int plugin);
+
     List<ProcessorProperties> getProcessors(ProcessorType type);
 
     List<ProcessorProperties> getProcessors();

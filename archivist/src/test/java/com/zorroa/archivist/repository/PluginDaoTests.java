@@ -53,6 +53,13 @@ public class PluginDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testGetProcessorsByPlugin() {
+        assertEquals(0, pluginDao.getProcessors(id).size());
+        sendAnalystPing();
+        assertEquals(3, pluginDao.getProcessors().size());
+    }
+
+    @Test
     public void updateProcessor() {
         sendAnalystPing();
         int pid = this.jdbc.queryForObject("SELECT pk_plugin FROM plugin WHERE str_name=?", Integer.class, "FooBar");

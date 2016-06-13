@@ -109,6 +109,11 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
+    public int count() {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM folder", Integer.class);
+    }
+
+    @Override
     public boolean exists(Folder parent, String name) {
         return exists(parent.getId(), name);
     }

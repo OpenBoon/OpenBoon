@@ -89,11 +89,12 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
         }
     }
 
-    private static final RowMapper<PluginProperties> MAPPER_PLUGIN = (rs, row) -> {
+    private final RowMapper<PluginProperties> MAPPER_PLUGIN = (rs, row) -> {
         PluginProperties d = new PluginProperties();
         d.setName(rs.getString("str_name"));
         d.setVersion(rs.getString("str_version"));
         d.setDescription(rs.getString("str_description"));
+        d.setProcessors(getProcessors(rs.getInt("pk_plugin")));
         return d;
     };
 
@@ -115,9 +116,15 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
     };
 
     @Override
+    public List<ProcessorProperties> getProcessors(int plugin) {
+        return jdbc.query(GET_PROCS + " WHERE pk_plugin=? ORDER BY int_type, str_name", MAPPER_PROC, plugin);
+    }
+
+    @Override
     public List<ProcessorProperties> getProcessors(ProcessorType type) {
         return jdbc.query(GET_PROCS + " WHERE int_type=?", MAPPER_PROC, type.ordinal());
     }
+
 
     @Override
     public List<ProcessorProperties> getProcessors() {

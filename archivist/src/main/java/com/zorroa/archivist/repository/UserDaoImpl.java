@@ -42,11 +42,19 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     private static final String GET_ALL =
-            "SELECT * FROM user WHERE bool_enabled=? ORDER BY str_username";
+            "SELECT * FROM user ORDER BY str_username";
 
     @Override
     public List<User> getAll() {
-        return jdbc.query(GET_ALL, MAPPER, true);
+        return jdbc.query(GET_ALL, MAPPER);
+    }
+
+    @Override
+    public List<User> getAll(int size, int offset) {
+        StringBuilder sb = new StringBuilder(GET_ALL.length()+32)
+                .append(GET_ALL)
+                .append(" LIMIT ? OFFSET ?");
+        return jdbc.query(sb.toString(), MAPPER, size, offset);
     }
 
     private static final String INSERT =
@@ -81,6 +89,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
         return get(id);
+    }
+
+    @Override
+    public boolean exists(String name) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM user WHERE str_username=?", Boolean.class, name);
     }
 
     @Override
@@ -122,6 +135,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         if (builder.getLastName() != null) {
             updates.add("str_lastname=?");
             values.add(builder.getLastName());
+        }
+
+        if (builder.getEnabled() != null) {
+            updates.add("bool_enabled=?");
+            values.add(builder.getEnabled());
         }
 
         if (values.isEmpty()) {
@@ -174,6 +192,19 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public List<User> getAll(Room room) {
         return jdbc.query(GET_ALL_BY_ROOM, MAPPER, room.getId());
+    }
+
+    private static final String GET_ALL_WITH_SESSION =
+            "SELECT " +
+                "DITINCT user.* " +
+            "FROM " +
+                "user,session " +
+            "WHERE " +
+                "session.pk_user = user.pk_user ";
+
+    @Override
+    public List<User> getAllWithSession() {
+        return jdbc.query(GET_ALL_WITH_SESSION, MAPPER);
     }
 
     @Override

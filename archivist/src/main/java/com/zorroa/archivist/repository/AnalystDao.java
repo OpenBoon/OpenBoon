@@ -19,6 +19,8 @@ public interface AnalystDao {
 
     Analyst get(String url);
 
+    int count();
+
     List<Analyst> getAll();
 
     List<Analyst> getAll(AnalystState state);

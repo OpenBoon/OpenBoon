@@ -65,6 +65,12 @@ public class UserDaoTests extends AbstractTest {
         assertEquals(4, userDao.getAll().size());
     }
 
+    @Test
+    public void testAllPageable() {
+        assertEquals(1, userDao.getAll(1, 0).size());
+        assertEquals(0, userDao.getAll(1, 4).size());
+    }
+
     @Test(expected=EmptyResultDataAccessException.class)
     public void testGetFailed() {
         userDao.get("blah");
@@ -102,6 +108,11 @@ public class UserDaoTests extends AbstractTest {
         assertFalse(userDao.setEnabled(user, false));
     }
 
+    @Test
+    public void testExists() {
+        assertTrue(userDao.exists(user.getUsername()));
+        assertFalse(userDao.exists("sibawitzawis"));
+    }
 
     @Test
     public void testGetUsers() {

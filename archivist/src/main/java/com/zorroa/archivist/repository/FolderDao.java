@@ -23,6 +23,8 @@ public interface FolderDao {
 
     boolean exists(int parentId, String name);
 
+    int count();
+
     boolean exists(Folder parent, String name);
 
     Folder create(FolderBuilder builder);

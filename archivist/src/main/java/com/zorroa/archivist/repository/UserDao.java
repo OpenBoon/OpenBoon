@@ -22,11 +22,17 @@ public interface UserDao {
 
     String getPassword(String username);
 
+    boolean exists(String name);
+
     boolean setEnabled(User user, boolean value);
 
     boolean update(User user, UserUpdateBuilder builder);
 
+    List<User> getAll(int size, int offset);
+
     User create(UserBuilder builder);
+
+    List<User> getAllWithSession();
 
     int getCount();
 }

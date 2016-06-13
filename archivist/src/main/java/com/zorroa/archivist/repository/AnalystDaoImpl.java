@@ -90,6 +90,8 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
         a.setState(AnalystState.values()[rs.getInt("int_state")]);
         a.setThreadsActive(rs.getInt("int_threads_active"));
         a.setThreadsTotal(rs.getInt("int_threads_total"));
+        a.setTimeCreated(rs.getLong("time_created"));
+        a.setTimeUpdated(rs.getLong("time_updated"));
         return a;
     };
 
@@ -103,6 +105,10 @@ public class AnalystDaoImpl extends AbstractDao implements AnalystDao {
         return jdbc.queryForObject("SELECT * FROM analyst WHERE str_url=?", MAPPER, url);
     }
 
+    @Override
+    public int count() {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM analyst", Integer.class);
+    }
 
     @Override
     public List<Analyst> getAll() {

@@ -44,6 +44,16 @@ public class AnalystDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testCount() {
+        assertEquals(1, analystDao.count());
+
+        AnalystPing p = new AnalystPing();
+        p.setUrl("https://10.0.0.1:8099");
+        assertEquals("https://10.0.0.1:8099", analystDao.create(p).getUrl());
+        assertEquals(2, analystDao.count());
+    }
+
+    @Test
     public void testGet() {
         Analyst a2 = analystDao.get(analyst.getId());
         assertEquals(analyst, a2);

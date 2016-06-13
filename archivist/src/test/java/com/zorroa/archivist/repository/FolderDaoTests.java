@@ -136,6 +136,13 @@ public class FolderDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testCount() {
+        int count = folderDao.count();
+        Folder f = folderDao.create(new FolderBuilder("test"));
+        assertEquals(count+1, folderDao.count());
+    }
+
+    @Test
     public void testExists() {
         FolderBuilder builder = new FolderBuilder("foo");
         Folder folder1 = folderDao.create(builder);
