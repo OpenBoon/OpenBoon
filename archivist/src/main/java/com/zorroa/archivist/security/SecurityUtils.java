@@ -94,6 +94,9 @@ public class SecurityUtils {
      * @return
      */
     public static boolean hasPermission(Acl acl, Access access) {
+        if (acl == null) {
+            return true;
+        }
         if (hasPermission("group::superuser")) {
             return true;
         }
