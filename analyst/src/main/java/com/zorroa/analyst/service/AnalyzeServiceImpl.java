@@ -18,8 +18,8 @@ import com.zorroa.sdk.exception.SkipIngestException;
 import com.zorroa.sdk.exception.UnrecoverableIngestProcessorException;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
-import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.sdk.processor.IngestProcessor;
+import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.sdk.schema.ImportSchema;
 import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;
@@ -140,12 +140,18 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             } catch (Exception e) {
                 eventLogService.log(req, "Ingest error '{}', could not transfer '{}'", e, e.getMessage(), uri);
                 result.errors++;
+                if (req.getIngestId() == null) {
+                    result.addToLogs("Ingest error '{}', could not transfer '{}'", e, e.getMessage(), uri);
+                }
                 continue;
             }
 
             if (!file.exists()) {
                 eventLogService.log(req, "Ingest error, file does not exist '{}'", file);
                 result.errors++;
+                if (req.getIngestId() == null) {
+                    result.addToLogs("Ingest error, file does not exist '{}'", file);
+                }
                 continue;
             }
 
@@ -209,6 +215,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                         eventLogService.log(req, "Ingest warning '{}', processor '{}' failed: '{}'",
                                 e, e.getMessage(), processor.getClass().getName(), builder.getAbsolutePath());
                         result.warnings++;
+                        if (req.getIngestId() == null) {
+                            result.addToLogs("Ingest warning '{}', processor '{}' failed: '{}'",
+                                    e, e.getMessage(), processor.getClass().getName(), builder.getAbsolutePath());
+                        }
                     }
                 }
 
@@ -230,6 +240,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             } catch (UnrecoverableIngestProcessorException e) {
                 eventLogService.log(req, "Unrecoverable ingest error '{}', processing pipeline failed: '{}'",
                         e, e.getMessage(), builder.getAbsolutePath());
+                if (req.getIngestId() == null) {
+                    result.addToLogs("Unrecoverable ingest error '{}', processing pipeline failed: '{}'",
+                            e, e.getMessage(), builder.getAbsolutePath());
+                }
                 result.errors++;
             }
             finally {
@@ -247,11 +261,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         if (!req.isDryRun()) {
             logger.debug("Bulk upserting {} assets", assets.size());
             result = assetDao.bulkUpsert(assets).add(result);
-            if (!result.logs.isEmpty()) {
-                for (String log : result.logs) {
-                    eventLogService.log(req, log);
-                }
-                result.logs.clear();
+            for (String log : result.logs) {
+                eventLogService.log(req, log);
             }
         }
 
