@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,8 +98,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean exists(String username) {
+        return userDao.exists(username);
+    }
+
+    @Override
     public List<User> getAll() {
         return userDao.getAll();
+    }
+
+    @Override
+    public List<User> getAll(int size, int offset) {
+        return userDao.getAll(size, offset);
     }
 
     @Override
@@ -162,20 +171,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean disable(User user) {
-
         boolean result =  userDao.setEnabled(user, false);
-
         if (result) {
-            /*
-             * Delete the user's folder
-             */
-            try {
-                Folder userFolder = folderService.get("/Users/" + user.getUsername());
-                folderService.delete(userFolder);
-            } catch (EmptyResultDataAccessException e) {
-                logger.warn(String.format("The user %s has no user folder."));
-            }
-
             if (result) {
                 transactionEventManager.afterCommitSync(() -> {
                     messagingService.broadcast(new Message("USER_DISABLED", user));

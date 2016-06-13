@@ -17,7 +17,11 @@ public interface UserService {
 
     User get(int id);
 
+    boolean exists(String username);
+
     List<User> getAll();
+
+    List<User> getAll(int size, int offset);
 
     int getCount();
 

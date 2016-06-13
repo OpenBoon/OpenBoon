@@ -61,7 +61,6 @@ public class UserServiceTests extends AbstractTest {
         User user = userService.create(builder);
 
         assertTrue(userService.disable(user));
-        assertFalse(folderService.exists("/Users/test"));
     }
 
     @Test
