@@ -56,6 +56,11 @@ public class IndexController {
     @Autowired
     Validator validator;
 
+    @RequestMapping("/")
+    public String index() {
+        return "redirect:/gui";
+    }
+
     @RequestMapping("/gui")
     public String index(Model model) {
         standardModel(model);
