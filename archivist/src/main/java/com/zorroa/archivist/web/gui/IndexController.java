@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
+import com.zorroa.common.elastic.SerializableElasticResult;
 import com.zorroa.sdk.domain.*;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
@@ -231,6 +232,7 @@ public class IndexController {
 
     @RequestMapping("/gui/status")
     public String status(Model model) {
+        standardModel(model);
         Health health = healthEndpoint.invoke();
         model.addAttribute("health", health.getDetails());
         model.addAttribute("status", health.getDetails());
@@ -243,21 +245,22 @@ public class IndexController {
 
         EventLogSearch search = new EventLogSearch();
         model.addAttribute("search", search);
-
         SearchResponse rsp =  eventLogDao.getAll(search);
-        List<Map<String, Object>> events = Lists.newArrayListWithCapacity(
-                Math.toIntExact(rsp.getHits().getTotalHits()));
-
-        for (SearchHit hit: rsp.getHits().getHits()) {
-            events.add(hit.getSource());
-        }
-        model.addAttribute("events", events);
-
+        model.addAttribute("events", new SerializableElasticResult(rsp));
         return "events";
     }
 
+    /**
+     * Supports the data necessary for the overall template. (layout.html)
+     * @param model
+     */
     private void standardModel(Model model) {
-        model.addAttribute("stdEvents", eventLogDao.getAll(new EventLogSearch().setLimit(5)));
+        SerializableElasticResult result = new SerializableElasticResult(
+                eventLogDao.getAll(new EventLogSearch()
+                        .setLimit(0)
+                        .setAfterTime(System.currentTimeMillis() - (86400 * 1000))));
+
+        model.addAttribute("stdEvents", result);
         model.addAttribute("stdIngests", ingestService.getAllIngests(IngestState.Running, 10));
     }
 }

@@ -22,7 +22,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="event: ${events}">
+            <tr th:each="event: ${events.hits}">
                 <td th:text="${event.type}"></td>
                 <td th:text="${event.message}"></td>
             </tr>

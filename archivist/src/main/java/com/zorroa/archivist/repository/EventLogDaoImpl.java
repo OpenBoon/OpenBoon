@@ -5,6 +5,7 @@ import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class EventLogDaoImpl implements EventLogDao {
                 .setSize(search.getLimit())
                 .setFrom((search.getPage() -1) * (search.getLimit()))
                 .addSort("timestamp", SortOrder.DESC)
+                .addAggregation(AggregationBuilders.terms("type").field("type"))
                 .get();
     }
 
