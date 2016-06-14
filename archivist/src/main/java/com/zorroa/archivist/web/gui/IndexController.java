@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.gui;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -240,10 +241,17 @@ public class IndexController {
     }
 
     @RequestMapping("/gui/events")
-    public String events(Model model) {
+    public String events(Model model,
+                         @RequestParam(value="type", required=false) String type) {
         standardModel(model);
-
+        /**
+         * TODO: need to handle multiple types.
+         */
         EventLogSearch search = new EventLogSearch();
+        if (type != null) {
+            search.setTypes(ImmutableSet.of(type));
+        }
+
         model.addAttribute("search", search);
         SearchResponse rsp =  eventLogDao.getAll(search);
         model.addAttribute("events", new SerializableElasticResult(rsp));

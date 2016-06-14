@@ -13,21 +13,35 @@
             <h1 class="page-header">Events</h1>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Type</th>
-                <th>Message</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="event: ${events.hits}">
-                <td th:text="${event.type}"></td>
-                <td th:text="${event.message}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <ul class="nav nav-pills" role="tablist">
+            <th:block th:each="type: ${events.aggregations.type}">
+                <li role="presentation"><a th:href="${'/gui/events?type='+type.key}"><th:block th:text="${type.key}"/>
+                    <span class="badge" th:text="${type.value}">0</span></a></li>
+            </th:block>
+            </ul>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th>Message</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="event: ${events.hits}">
+                        <td th:text="${#dates.format(event.timestamp, 'dd-MMM-yyyy hh:mm:ss')}"></td>
+                        <td th:text="${event.type}"></td>
+                        <td th:text="${event.message}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     </p>
 </section>
