@@ -30,8 +30,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user: ${allUsers}">
-                    <td th:class="${user.enabled} ? success : danger"><a th:text="${user.username}" th:href="@{/gui/users/__${user.id}__}"></a></td>
+                <tr th:class="${!user.enabled} ? danger : default" th:each="user: ${allUsers}">
+                    <td><a th:text="${user.username}" th:href="@{/gui/users/__${user.id}__}"></a></td>
                     <td th:text="${user.email}"></td>
                     <td th:text="${user.lastName}"></td>
                     <td th:text="${user.firstName}"></td>
