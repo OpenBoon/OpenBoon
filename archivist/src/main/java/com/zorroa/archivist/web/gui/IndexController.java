@@ -258,6 +258,6 @@ public class IndexController {
 
     private void standardModel(Model model) {
         model.addAttribute("stdEvents", eventLogDao.getAll(new EventLogSearch().setLimit(5)));
-        model.addAttribute("stdIngests", ingestService.getAllIngests());
+        model.addAttribute("stdIngests", ingestService.getAllIngests(IngestState.Running, 10));
     }
 }
