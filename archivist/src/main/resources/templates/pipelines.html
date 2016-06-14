@@ -23,7 +23,7 @@
                     <dt>Created By</dt>
                     <dd th:text="${pipeline.userCreated}"></dd>
                     <dt>Created At</dt>
-                    <dd th:text="${pipeline.timeCreated}"></dd>
+                    <dd th:text="${#dates.format(pipeline.timeCreated, 'dd-MMM-yyyy hh:mm:ss')}"></dd>
                 </dl>
             </div>
             <table class="table table-striped">
