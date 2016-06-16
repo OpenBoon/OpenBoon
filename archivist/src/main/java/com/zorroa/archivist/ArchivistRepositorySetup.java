@@ -10,6 +10,7 @@ import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.common.elastic.ElasticClientUtils;
+import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.sdk.processor.ProcessorFactory;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
@@ -48,6 +49,9 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     @Autowired
     MigrationService migrationService;
 
+    @Autowired
+    EventLogService eventLogService;
+
     @Value("${zorroa.common.index.alias}")
     private String alias;
 
@@ -85,6 +89,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
              * createSnapshotRepository();
              */
             ingestService.resetRunningIngests();
+
+            eventLogService.log("Archivist Started");
         }
     }
 
