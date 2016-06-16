@@ -359,6 +359,7 @@ public abstract class AbstractTest {
     public AnalystBuilder sendAnalystPing() {
         AnalystBuilder ab = getAnalystBuilder();
         analystDao.register(ab);
+        refreshIndex();
         return ab;
     }
 
