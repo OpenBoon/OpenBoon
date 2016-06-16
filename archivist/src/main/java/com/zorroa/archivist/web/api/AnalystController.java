@@ -24,7 +24,7 @@ public class AnalystController {
     @Autowired
     AnalystService analystService;
 
-    @RequestMapping(value="/api/v1/analyst", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/analysts", method=RequestMethod.GET)
     public List<Analyst> getAll(
             @RequestParam(value="page", required=false) Integer page,
             @RequestParam(value="count", required=false) Integer count) {

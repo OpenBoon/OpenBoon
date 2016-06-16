@@ -22,10 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.MetricsEndpoint;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -43,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  * Register this process with the archivist.
  */
 @Component
-public class RegisterServiceImpl extends AbstractScheduledService implements RegisterService {
+public class RegisterServiceImpl extends AbstractScheduledService implements RegisterService, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
 
@@ -68,10 +69,16 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     private boolean registered = false;
 
-    @PostConstruct
-    public void init() throws IOException {
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)  {
         String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
-        String addr =  getIpAddress();
+        String addr = "127.0.0.1";
+
+        try {
+            addr = getIpAddress();
+        } catch (IOException e) {
+            logger.warn("Failure determining local IP address", e);
+        }
         url = protocol + "://" + addr + ":" + properties.getInt("server.port");
         System.setProperty("server.address", addr);
         System.setProperty("server.url", url);
@@ -95,7 +102,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             if (!registered) {
                 for (;;) {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                         register();
                         return;
                     } catch (InterruptedException ignore) {
@@ -218,5 +225,4 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     protected Scheduler scheduler() {
         return Scheduler.newFixedRateSchedule(1, 15, TimeUnit.SECONDS);
     }
-
 }

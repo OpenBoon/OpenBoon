@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
@@ -8,12 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -32,14 +34,18 @@ public class AnalystControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testRegister() throws Exception {
-        MvcResult result = mvc.perform(post("/api/v1/analyst/_register")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(ping)))
+    public void testGetAnalysts() throws Exception {
+
+        MockHttpSession session = admin();
+
+        MvcResult result = mvc.perform(get("/api/v1/analysts")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Analyst> all = analystService.getAll();
-        assertEquals("https://192.168.100.100:8080", all.get(0).getUrl());
+        List<Analyst> analysts = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<Analyst>>() {});
+        assertEquals(1, analysts.size());
     }
 }

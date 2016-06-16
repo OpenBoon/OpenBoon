@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.repository.PluginDao;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.analyst.AnalystClient;
@@ -24,9 +25,6 @@ public class AnalystServiceImpl implements AnalystService {
 
     @Autowired
     AnalystDao analystDao;
-
-    @Autowired
-    PluginDao pluginDao;
 
     @Override
     public Analyst get(String url) {
@@ -55,17 +53,46 @@ public class AnalystServiceImpl implements AnalystService {
 
     @Override
     public List<PluginProperties> getPlugins() {
-        return pluginDao.getPlugins();
+        try {
+            Analyst a = analystDao.getActive(new Paging(1, 1)).get(0);
+            return a.getPlugins();
+        } catch (IndexOutOfBoundsException e) {
+            return ImmutableList.of();
+        }
     }
 
     @Override
     public List<ProcessorProperties> getProcessors(ProcessorType type) {
-        return pluginDao.getProcessors(type);
+        try {
+            Analyst a = analystDao.getActive(new Paging(1, 1)).get(0);
+            List<ProcessorProperties> result = Lists.newArrayList();
+            for (PluginProperties plugin: a.getPlugins()) {
+                for (ProcessorProperties pr: plugin.getProcessors()) {
+                    if (pr.getType().equals(type)) {
+                        result.add(pr);
+                    }
+                }
+            }
+            return result;
+        } catch (IndexOutOfBoundsException e) {
+            //ignore
+        }
+        return ImmutableList.of();
     }
 
     @Override
     public List<ProcessorProperties> getProcessors() {
-        return pluginDao.getProcessors();
+        try {
+            Analyst a = analystDao.getActive(new Paging(1, 1)).get(0);
+            List<ProcessorProperties> result = Lists.newArrayList();
+            for (PluginProperties plugin: a.getPlugins()) {
+               result.addAll(plugin.getProcessors());
+            }
+            return result;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            //ignore
+        }
+        return ImmutableList.of();
     }
 
     @Override
