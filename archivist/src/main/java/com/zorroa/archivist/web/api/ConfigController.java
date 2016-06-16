@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.google.common.reflect.ClassPath;
 import com.zorroa.archivist.service.AnalystService;
+import com.zorroa.sdk.plugins.PluginProperties;
 import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.ProcessorType;
 import com.zorroa.sdk.util.IngestUtils;
@@ -64,13 +65,18 @@ public class ConfigController {
         return IngestUtils.SUPPORTED_FORMATS;
     }
 
+    @RequestMapping(value="/api/v1/plugins", method= RequestMethod.GET)
+    public List<PluginProperties> getPlugins() {
+        return analystService.getPlugins();
+    }
+
     @RequestMapping(value="/api/v1/plugins/processors", method= RequestMethod.GET)
-    public Object getProcessors() throws Exception {
+    public Object getProcessors() {
         return analystService.getProcessors();
     }
 
     @RequestMapping(value="/api/v1/plugins/processors/{type}", method= RequestMethod.GET)
-    public Object getProcessorsByType(@PathVariable String type) throws Exception {
+    public Object getProcessorsByType(@PathVariable String type) {
         Integer ival = Ints.tryParse(type);
         if (ival != null) {
             return analystService.getProcessors(ProcessorType.values()[ival.intValue()]);
@@ -84,7 +90,7 @@ public class ConfigController {
             ImmutableSet.of("com.zorroa.sdk.processor.Aggregator");
 
     @RequestMapping(value="/api/v1/plugins/aggregator", method=RequestMethod.GET)
-    public Collection<String> aggregators() throws Exception {
+    public Collection<String> aggregators() {
         return aggregators;
     }
 }
