@@ -69,6 +69,7 @@ public class ApplicationConfig {
         else if (threads < 0) {
             threads = Runtime.getRuntime().availableProcessors() / 2;
         }
+        System.setProperty("analyst.executor.threads", String.valueOf(threads));
 
         logger.info("Starting analyst with {} analyze threads", threads);
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
