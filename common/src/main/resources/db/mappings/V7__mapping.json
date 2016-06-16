@@ -78,6 +78,43 @@
         }
       }
     },
+    "analyst": {
+      "_all": {
+        "enabled": false
+      },
+      "dynamic": true,
+      "dynamic_date_formats": [
+        "yyyy/MM/dd HH:mm:ss Z",
+        "yyyy/MM/dd Z",
+        "yyyy/MM/dd HH:mm:ss",
+        "yyyy/MM/dd"
+      ],
+      "_timestamp": {
+        "enabled": true
+      },
+      "properties": {
+        "_id": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "url": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "updatedTime": {
+          "index": "not_analyzed",
+          "type": "date"
+        },
+        "createdTime": {
+          "index": "not_analyzed",
+          "type": "date"
+        },
+        "state": {
+          "index": "not_analyzed",
+          "type": "integer"
+        }
+      }
+    },
     "asset": {
       "_all": {
         "enabled": false

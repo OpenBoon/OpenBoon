@@ -1,18 +1,16 @@
 package com.zorroa.archivist.web.api;
 
-import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.domain.AnalystPing;
 import com.zorroa.archivist.service.AnalystService;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Analyst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletRequest;
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -26,26 +24,10 @@ public class AnalystController {
     @Autowired
     AnalystService analystService;
 
-    @RequestMapping(value="/api/v1/analyst/_register", method=RequestMethod.POST)
-    public void register(@RequestBody AnalystPing ping, ServletRequest req) {
-        /*
-         * Override the IP/HOST sent in the ping.
-         */
-        URI uri = URI.create(ping.getUrl());
-        ping.setUrl(uri.getScheme() + "://" + req.getRemoteAddr() + ":" + uri.getPort());
-
-        logger.debug("Received ping: {}", ping);
-        analystService.register(ping);
-    }
-
-    @RequestMapping(value="/api/v1/analyst/_shutdown", method=RequestMethod.POST)
-    public void shutdown(@RequestBody AnalystPing ping) {
-        logger.info("Received shutdown ping: {}", ping);
-        analystService.shutdown(ping);
-    }
-
     @RequestMapping(value="/api/v1/analyst", method=RequestMethod.GET)
-    public List<Analyst> getAll() {
-        return analystService.getAll();
+    public List<Analyst> getAll(
+            @RequestParam(value="page", required=false) Integer page,
+            @RequestParam(value="count", required=false) Integer count) {
+        return analystService.getAll(new Paging(page, count));
     }
 }

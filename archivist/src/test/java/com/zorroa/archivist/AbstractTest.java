@@ -4,16 +4,17 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.MigrationType;
+import com.zorroa.archivist.security.BackgroundTaskAuthentication;
+import com.zorroa.archivist.security.UnitTestAuthentication;
+import com.zorroa.archivist.service.*;
+import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.plugins.PluginProperties;
 import com.zorroa.sdk.processor.*;
 import com.zorroa.sdk.schema.ImportSchema;
 import com.zorroa.sdk.util.FileUtils;
-import com.zorroa.archivist.security.BackgroundTaskAuthentication;
-import com.zorroa.archivist.security.UnitTestAuthentication;
-import com.zorroa.archivist.service.*;
-import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.service.EventLogService;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
 import org.elasticsearch.client.Client;
@@ -116,6 +117,9 @@ public abstract class AbstractTest {
 
     @Autowired
     ArchivistRepositorySetup archivistRepositorySetup;
+
+    @Autowired
+    AnalystDao analystDao;
 
     @Value("${zorroa.common.index.alias}")
     protected String alias;
@@ -352,18 +356,21 @@ public abstract class AbstractTest {
         }
     }
 
-    public void sendAnalystPing() {
-        analystService.register(getAnalystPing());
+    public AnalystBuilder sendAnalystPing() {
+        AnalystBuilder ab = getAnalystBuilder();
+        analystDao.register(ab);
+        return ab;
     }
-    public AnalystPing getAnalystPing() {
-        AnalystPing ping = new AnalystPing();
+
+    public AnalystBuilder getAnalystBuilder() {
+        AnalystBuilder ping = new AnalystBuilder();
         ping.setUrl("https://192.168.100.100:8080");
         ping.setData(false);
-        ping.setThreadsTotal(1);
-        ping.setProcessFailed(0);
-        ping.setProcessSuccess(1);
-        ping.setQueueSize(1);
-        ping.setThreadsActive(0);
+        ping.setState(AnalystState.UP);
+        ping.setStartedTime(System.currentTimeMillis());
+        ping.setOs("test");
+        ping.setArch("test_x86-64");
+        ping.setThreadCount(2);
         ping.setPlugins(
                 ImmutableList.of(new PluginProperties()
                         .setDescription("A foo plugin")

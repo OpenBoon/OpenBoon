@@ -66,6 +66,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     @Override
     public long count() {
         return elastic.count(client.prepareSearch(alias)
+                .setTypes(getType())
                 .setQuery(QueryBuilders.matchAllQuery()));
     }
 

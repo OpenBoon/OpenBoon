@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.processor.DisplayProperties;
 import com.zorroa.sdk.processor.ProcessorProperties;
 import com.zorroa.sdk.processor.ProcessorType;
@@ -16,12 +16,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class AnalystServiceTests extends AbstractTest {
 
-    AnalystPing ping;
+    AnalystBuilder ping;
 
     @Before
     public void init() {
-        ping = getAnalystPing();
-        analystService.register(ping);
+        ping = sendAnalystPing();
     }
 
     @Test

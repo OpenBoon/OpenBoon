@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by chambers on 6/14/16.
+ * Wraps an elastic result into a simpler json serializable object.  Includes
+ * the search result and aggregations.
  */
 public class SerializableElasticResult implements Serializable {
 

@@ -1,5 +1,7 @@
 package com.zorroa.archivist;
 
+import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.common.repository.AnalystDaoImpl;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.repository.AssetDaoImpl;
@@ -26,5 +28,10 @@ public class CommonServicesConfig {
     @Bean
     public AssetDao assetDao() {
         return new AssetDaoImpl(applicationProperties.getString("zorroa.common.index.alias"));
+    }
+
+    @Bean
+    public AnalystDao analystDao() {
+        return new AnalystDaoImpl(applicationProperties.getString("zorroa.common.index.alias"));
     }
 }

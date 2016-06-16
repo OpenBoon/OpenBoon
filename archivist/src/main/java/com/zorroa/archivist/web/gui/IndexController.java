@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.SerializableElasticResult;
 import com.zorroa.sdk.domain.*;
 import org.elasticsearch.action.search.SearchResponse;
@@ -211,9 +212,11 @@ public class IndexController {
     }
 
     @RequestMapping("/gui/analysts")
-    public String analysts(Model model) {
+    public String analysts(Model model,
+                           @RequestParam(value="page", required=false) Integer page,
+                           @RequestParam(value="count", required=false) Integer count) {
         standardModel(model);
-        model.addAttribute("analysts", analystService.getAll());
+        model.addAttribute("analysts", analystService.getAll(new Paging(page, count)));
         return "analysts";
     }
 

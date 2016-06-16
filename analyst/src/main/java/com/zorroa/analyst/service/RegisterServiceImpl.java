@@ -2,36 +2,42 @@ package com.zorroa.analyst.service;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
-import com.zorroa.sdk.client.archivist.ArchivistClient;
+import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.config.ApplicationProperties;
-import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.AnalystBuilder;
+import com.zorroa.sdk.domain.AnalystState;
+import com.zorroa.sdk.domain.AnalystUpdateBuilder;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.plugins.Plugin;
 import com.zorroa.sdk.plugins.PluginProperties;
 import com.zorroa.sdk.processor.ArgumentScanner;
+import com.zorroa.sdk.processor.IngestProcessor;
 import com.zorroa.sdk.processor.ProcessorProperties;
 import com.zorroa.sdk.processor.ProcessorType;
-import com.zorroa.sdk.processor.IngestProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.MetricsEndpoint;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Register this process with the archivist.
@@ -45,17 +51,22 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     PluginService pluginService;
 
     @Autowired
-    ArchivistClient archivistClient;
+    AnalystDao analystDao;
 
     @Autowired
     ApplicationProperties properties;
 
     @Autowired
+    MetricsEndpoint metrics;
+
+    @Autowired
     Executor ingestThreadPool;
 
     private String url;
+    private String id;
+    private List<Float> load = Lists.newArrayList();
 
-    private AtomicBoolean registered = new AtomicBoolean(false);
+    private boolean registered = false;
 
     @PostConstruct
     public void init() throws IOException {
@@ -74,18 +85,18 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             return;
         }
         try {
-            sendPing();
+            register();
         } catch (Exception e) {
             logger.warn("Failed to register as worker node, ", e);
             /*
              * If the analyst hasn't registered at least once, then increase
              * the rate at which we try to register.
              */
-            if (!registered.get()) {
+            if (!registered) {
                 for (;;) {
                     try {
                         Thread.sleep(1000);
-                        sendPing();
+                        register();
                         return;
                     } catch (InterruptedException ignore) {
                         return;
@@ -100,40 +111,52 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Override
     protected void shutDown() throws Exception {
-        try {
-            logger.info("Sending shutdown ping");
-            archivistClient.shutdownAnalyst(getPing());
-        } catch (Exception e) {
-            logger.warn("Failed to un-register as worker node, ", e);
-        }
+        // TODO: set the state of the analyst to shutdown
     }
 
     /**
      * Send an analyst ping to the archivist.
      */
-    private void sendPing() {
-        archivistClient.registerAnalyst(getPing());
-        registered.set(true);
-    }
+    public String register() {
 
-    public AnalystPing getPing()  {
-
+        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
         ThreadPoolTaskExecutor e = (ThreadPoolTaskExecutor) ingestThreadPool;
-        AnalystPing ping = new AnalystPing();
-        ping.setUrl(url);
-        ping.setQueueSize(e.getThreadPoolExecutor().getQueue().size());
-        ping.setThreadsActive(e.getActiveCount());
-        ping.setThreadsTotal(e.getPoolSize());
-        ping.setData(properties.getBoolean("analyst.index.data"));
 
-        /**
-         * We only need to do this on the first ping.
-         */
-        if (!registered.get()) {
-            ping.setPlugins(getPlugins());
+        Map<String, Object> mdata = metrics.invoke();
+        Map<String, Object> fixedMdata = Maps.newHashMapWithExpectedSize(mdata.size());
+        metrics.invoke().forEach((k,v)-> fixedMdata.put(k.replace('.', '_'), v));
+
+        if (!registered) {
+            AnalystBuilder builder = new AnalystBuilder();
+            builder.setState(AnalystState.UP);
+            builder.setStartedTime(System.currentTimeMillis());
+            builder.setOs(String.format("%s-%s", osBean.getName(), osBean.getVersion()));
+            builder.setThreadCount(properties.getInt("analyst.executor.threads"));
+            builder.setArch(osBean.getArch());
+            builder.setData(properties.getBoolean("analyst.index.data"));
+            builder.setUrl(url);
+            builder.setPlugins(getPlugins());
+            builder.setUpdatedTime(System.currentTimeMillis());
+            builder.setState(AnalystState.UP);
+            builder.setLoad(load);
+            builder.setQueueSize(e.getThreadPoolExecutor().getQueue().size());
+            builder.setThreadsUsed(e.getActiveCount());
+            builder.setMetrics(fixedMdata);
+            id = analystDao.register(builder);
+            registered = true;
+        }
+        else if (id != null) {
+            AnalystUpdateBuilder update = new AnalystUpdateBuilder();
+            update.setUpdatedTime(System.currentTimeMillis());
+            update.setState(AnalystState.UP);
+            update.setLoad(load);
+            update.setQueueSize(e.getThreadPoolExecutor().getQueue().size());
+            update.setThreadsUsed(e.getActiveCount());
+            update.setMetrics(fixedMdata);
+            analystDao.update(id, update);
         }
 
-        return ping;
+        return id;
     }
 
     public List<PluginProperties> getPlugins() {
@@ -151,8 +174,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         }
         return result;
     }
-
-
 
     public String getIpAddress() throws IOException {
 
@@ -195,7 +216,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(1, 30, TimeUnit.SECONDS);
+        return Scheduler.newFixedRateSchedule(1, 15, TimeUnit.SECONDS);
     }
 
 }

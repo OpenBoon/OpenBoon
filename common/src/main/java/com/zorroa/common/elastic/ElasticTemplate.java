@@ -3,6 +3,7 @@ package com.zorroa.common.elastic;
 import com.google.common.collect.Lists;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -82,5 +83,26 @@ public class ElasticTemplate {
             }
         }
         return result;
+    }
+
+    /**
+     * Return the count for the given search.
+     *
+     * @param builder
+     * @return
+     */
+    public long count(SearchRequestBuilder builder) {
+        builder.setSize(0);
+        final SearchResponse r = builder.get();
+        return r.getHits().getTotalHits();
+    }
+
+    /**
+     * Index the given IndexRequestBuilder and return the document id.
+     * @param builder
+     * @return
+     */
+    public String index(IndexRequestBuilder builder) {
+        return builder.get().getId();
     }
 }

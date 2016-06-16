@@ -2,7 +2,8 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.service.AnalystService;
-import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.processor.ProcessorProperties;
 import com.zorroa.sdk.util.Json;
 import org.junit.Ignore;
@@ -27,6 +28,9 @@ public class ConfigControllerTests extends MockMvcTest {
 
     @Autowired
     AnalystService analystService;
+
+    @Autowired
+    AnalystDao analystDao;
 
     /**
      * Not sure this is even necessary.
@@ -55,8 +59,7 @@ public class ConfigControllerTests extends MockMvcTest {
 
     @Test
     public void testGetProcessors() throws Exception {
-        AnalystPing ping = getAnalystPing();
-        analystService.register(ping);
+        AnalystBuilder ping = sendAnalystPing();
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/plugins/processors")
@@ -72,9 +75,7 @@ public class ConfigControllerTests extends MockMvcTest {
 
     @Test
     public void testGetProcessorsByType() throws Exception {
-        AnalystPing ping = getAnalystPing();
-        analystService.register(ping);
-
+        AnalystBuilder ping = sendAnalystPing();
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/plugins/processors/0")
                 .session(session)
@@ -89,8 +90,7 @@ public class ConfigControllerTests extends MockMvcTest {
 
     @Test
     public void testGetProcessorsByTypeName() throws Exception {
-        AnalystPing ping = getAnalystPing();
-        analystService.register(ping);
+        AnalystBuilder ping = sendAnalystPing();
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/plugins/processors/ingest")

@@ -2,7 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.domain.AnalystPing;
+import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,12 +24,11 @@ public class AnalystControllerTests extends MockMvcTest {
     @Autowired
     AnalystService analystService;
 
-    AnalystPing ping;
+    AnalystBuilder ping;
 
     @Before
     public void init() {
-        ping = getAnalystPing();
-        analystService.register(ping);
+        ping = sendAnalystPing();
     }
 
     @Test
