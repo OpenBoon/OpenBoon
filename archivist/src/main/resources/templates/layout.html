@@ -67,14 +67,14 @@
                                     <div th:if="${ingest.errorCount != 0}">
                                         <div class="progress progress-striped active">
                                             <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                <th:block th:text="${ingest.errorCount + ' errors'}"></th:block>
+                                                <th:block th:text="${ingest.createdCount + ' created - ' + ingest.errorCount + ' errors'}"></th:block>
                                             </div>
                                         </div>
                                     </div>
                                     <div th:if="${ingest.errorCount == 0}">
                                         <div class="progress progress-striped active">
                                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                <th:block th:text="${ingest.errorCount + ' errors'}"></th:block>
+                                                <th:block th:text="${ingest.createdCount + ' created - ' + ingest.errorCount + ' errors'}"></th:block>
                                             </div>
                                         </div>
                                     </div>
@@ -175,10 +175,10 @@
                         <a href="#"><i class="fa fa-cloud fa-fw"></i> Cluster<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/gui/status"><i class="fa fa-exclamation-triangle fa-fw"/> Status</a>
+                                <a href="/gui/status"><i class="fa fa-exclamation-triangle fa-fw"/>Status</a>
                             </li>
                             <li>
-                                <a href="/gui/analysts"><i class="fa fa-server fa-fw"/> Analysts</a>
+                                <a href="/gui/analysts"><i class="fa fa-server fa-fw"/>Analysts</a>
                             </li>
                             <li>
                                 <a href="/gui/plugins"><i class="fa fa-plug fa-fw"/>Plugins</a>
