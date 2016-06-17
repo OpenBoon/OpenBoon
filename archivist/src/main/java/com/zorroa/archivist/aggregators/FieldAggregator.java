@@ -1,16 +1,18 @@
 package com.zorroa.archivist.aggregators;
 
 import com.google.common.collect.Lists;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Aggregator;
-import com.zorroa.sdk.processor.Argument;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Aggregator;
+import com.zorroa.sdk.processor.Argument;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +21,8 @@ import java.util.List;
 /**
  * Created by wex on 3/5/16.
  */
+@Component
+@Scope("prototype")
 public class FieldAggregator extends Aggregator {
 
     @Autowired

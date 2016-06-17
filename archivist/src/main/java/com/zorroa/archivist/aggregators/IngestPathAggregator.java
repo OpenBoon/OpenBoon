@@ -2,23 +2,27 @@ package com.zorroa.archivist.aggregators;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Aggregator;
-import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Aggregator;
+import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@Component
+@Scope("prototype")
 public class IngestPathAggregator extends Aggregator {
 
     @Autowired

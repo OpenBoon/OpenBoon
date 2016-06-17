@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.actuate.endpoint.HealthEndpoint;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.context.ApplicationContext;
@@ -200,18 +199,14 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         }
 
         public void startAggregators(IngestPipeline pipeline) {
-            ImmutableList.Builder<Aggregator> builder = ImmutableList.builder();
-            AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
+            aggregationTimer = new Timer(true);
+            aggregators = Lists.newArrayListWithCapacity(pipeline.getAggregators().size());
 
             for (ProcessorFactory<Aggregator> factory: pipeline.getAggregators()) {
-                Aggregator agg = factory.newInstance();
-                autowire.autowireBean(agg);
+                Aggregator agg = (Aggregator) applicationContext.getBean(factory.getProcessorClass());
                 agg.init(ingest);
-                builder.add(agg);
+                aggregators.add(agg);
             }
-            aggregators = builder.build();
-
-            aggregationTimer = new Timer(true);
             aggregationTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
@@ -227,6 +222,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 logger.warn("Unable to set ingest {} to the running state.", ingest);
                 return;
             }
+
+            eventLogService.log(ingest, "Ingest started.");
 
             /*
              * Create the asset processing thread pool.
@@ -268,18 +265,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 assetExecutor.waitForCompletion();
 
             } finally {
-
-                aggregationTimer.cancel();
-
                 /*
-                 * Force a refresh so the tear downs can see any recently added data.
+                 * Note: a runtime exception may mean some of these variables
+                 * are not initialized, so check for null. However, take care to
+                 * initialize them to a sane default if possible.
                  */
-                assetDao.refresh();
-
-                /*
-                 * Do a final aggregation.
-                 */
-                aggregators.forEach(Aggregator::aggregate);
 
                 /*
                  * Remove the current ingest from running ingests.
@@ -290,15 +280,32 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  * Pull a new copy of the ingest with all updated fields.
                  */
                 Ingest finishedIngest = ingestService.getIngest(ingest.getId());
-
                 if (!earlyShutdown) {
                     ingestService.setIngestIdle(finishedIngest);
 
-                    eventLogService.log(finishedIngest, "ingest finished , created {}, updated: {}, errors: {}",
+                    eventLogService.log(finishedIngest, "Ingest finished , created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 } else {
-                    eventLogService.log(finishedIngest, "ingest was manually shut down, created {}, updated: {}, errors: {}",
+                    eventLogService.log(finishedIngest, "Ingest was manually shut down, created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
+                }
+
+                try {
+                    if (aggregationTimer != null) {
+                        aggregationTimer.cancel();
+
+                        /*
+                         * Force a refresh so the tear downs can see any recently added data.
+                         */
+                        assetDao.refresh();
+
+                        /*
+                         * Do a final aggregation.
+                         */
+                        aggregators.forEach(Aggregator::aggregate);
+                    }
+                } catch (RuntimeException e) {
+                    logger.warn("Failed to perform final aggregation on ingest {}, ", finishedIngest, e);
                 }
             }
         }
