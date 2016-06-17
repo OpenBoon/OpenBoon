@@ -5,6 +5,7 @@ import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
+import com.zorroa.sdk.domain.AnalystState;
 import com.zorroa.sdk.domain.AnalystUpdateBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -92,6 +93,27 @@ public class AnalystDaoTests extends AbstractTest {
         refreshIndex();
 
         List<Analyst> all = analystDao.getAll(Paging.first());
+        assertEquals(2, all.size());
+    }
+
+    @Test
+    public void testGetActive() {
+        AnalystBuilder p = new AnalystBuilder();
+        p.setUrl("https://10.0.0.2:8099");
+        p.setState(AnalystState.UP);
+        analystDao.register(p);
+        refreshIndex();
+
+        List<Analyst> all = analystDao.getActive(Paging.first());
+        assertEquals(2, all.size());
+
+        p = new AnalystBuilder();
+        p.setUrl("https://10.0.0.3:8099");
+        p.setState(AnalystState.DOWN);
+        analystDao.register(p);
+        refreshIndex();
+
+        all = analystDao.getActive(Paging.first());
         assertEquals(2, all.size());
     }
 }

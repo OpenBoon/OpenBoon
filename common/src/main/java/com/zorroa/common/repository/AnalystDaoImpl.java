@@ -7,10 +7,14 @@ import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
+import com.zorroa.sdk.domain.AnalystState;
 import com.zorroa.sdk.domain.AnalystUpdateBuilder;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.sort.SortOrder;
 
 import java.util.List;
@@ -86,6 +90,6 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 .setSize(paging.getCount())
                 .setFrom(paging.getFrom())
                 .addSort("queueSize", SortOrder.ASC)
-                .setQuery(QueryBuilders.matchAllQuery()), MAPPER);
+                .setQuery(QueryBuilders.termQuery("state", AnalystState.UP.ordinal())), MAPPER);
     }
 }
