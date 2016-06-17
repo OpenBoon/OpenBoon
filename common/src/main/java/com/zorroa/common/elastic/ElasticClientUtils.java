@@ -38,6 +38,11 @@ public class ElasticClientUtils {
         builder.put("path.plugins", "{path.home}/es-plugins");
         builder.put("index.unassigned.node_left.delayed_timeout", "5m");
 
+        /**
+         * Don't allow clients to create the archivist index.
+         */
+        builder.put("action.auto_create_index", "-archivist*");
+
         Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
         node.start();
         return node.client();
