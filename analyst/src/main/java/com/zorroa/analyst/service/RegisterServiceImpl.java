@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.MetricsEndpoint;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -38,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -61,7 +61,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     MetricsEndpoint metrics;
 
     @Autowired
-    Executor ingestThreadPool;
+    Executor analyzeThreadPool;
 
     private String url;
     private String id;
@@ -102,7 +102,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             if (!registered) {
                 for (;;) {
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                         register();
                         return;
                     } catch (InterruptedException ignore) {
@@ -121,13 +121,10 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         // TODO: set the state of the analyst to shutdown
     }
 
-    /**
-     * Send an analyst ping to the archivist.
-     */
     public String register() {
 
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-        ThreadPoolTaskExecutor e = (ThreadPoolTaskExecutor) ingestThreadPool;
+        ThreadPoolExecutor e = (ThreadPoolExecutor) analyzeThreadPool;
 
         Map<String, Object> mdata = metrics.invoke();
         Map<String, Object> fixedMdata = Maps.newHashMapWithExpectedSize(mdata.size());
@@ -146,7 +143,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setUpdatedTime(System.currentTimeMillis());
             builder.setState(AnalystState.UP);
             builder.setLoad(load);
-            builder.setQueueSize(e.getThreadPoolExecutor().getQueue().size());
+            builder.setQueueSize(e.getQueue().size());
             builder.setThreadsUsed(e.getActiveCount());
             builder.setMetrics(fixedMdata);
             id = analystDao.register(builder);
@@ -157,7 +154,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             update.setUpdatedTime(System.currentTimeMillis());
             update.setState(AnalystState.UP);
             update.setLoad(load);
-            update.setQueueSize(e.getThreadPoolExecutor().getQueue().size());
+            update.setQueueSize(e.getQueue().size());
             update.setThreadsUsed(e.getActiveCount());
             update.setMetrics(fixedMdata);
             analystDao.update(id, update);

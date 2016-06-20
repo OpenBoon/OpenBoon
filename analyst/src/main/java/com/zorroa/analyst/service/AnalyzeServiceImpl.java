@@ -9,10 +9,16 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
+import com.zorroa.sdk.client.archivist.ArchivistClient;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.exception.AnalyzeException;
 import com.zorroa.sdk.exception.IngestException;
 import com.zorroa.sdk.exception.SkipIngestException;
 import com.zorroa.sdk.exception.UnrecoverableIngestProcessorException;
@@ -25,7 +31,6 @@ import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -64,8 +69,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     ApplicationProperties applicationProperties;
 
     @Autowired
-    AsyncTaskExecutor ingestThreadPool;
+    ListeningExecutorService analyzeExecutor;
 
+    @Autowired
+    ArchivistClient archivistClient;
+
+    @Autowired
+    RegisterService registerService;
     /**
      * Handles evicting old data from the IngestPipelineCache.
      */
@@ -82,16 +92,42 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     }
 
     @Override
-    public AnalyzeResult asyncAnalyze(AnalyzeRequest req) throws ExecutionException {
+    public void asyncAnalyze(AnalyzeRequest req) {
+        ListenableFuture<AnalyzeResult> result =
+                analyzeExecutor.submit(() -> inlineAnalyze(req));
+
+        Futures.addCallback(result, new FutureCallback<AnalyzeResult>() {
+            public void onSuccess(AnalyzeResult result) {
+                archivistClient.asyncAnalyzeBatchComplete(req, result);
+            }
+            public void onFailure(Throwable thrown) {
+                AnalyzeResult result = new AnalyzeResult();
+                result.addToLogs(thrown.getMessage());
+                result.created = 0;
+                result.errors = req.getAssetCount();
+                result.updated = 0;
+                result.retries = 0;
+                archivistClient.asyncAnalyzeBatchComplete(req, result);
+            }
+        });
+
+        /**
+         * Update our runtime stats.
+         */
+        registerService.register();
+    }
+
+    @Override
+    public AnalyzeResult analyze(AnalyzeRequest req)  {
         try {
-            return ingestThreadPool.submit(() -> analyze(req)).get();
-        } catch (InterruptedException e) {
-            throw new ExecutionException(e);
+            return analyzeExecutor.submit(() -> inlineAnalyze(req)).get();
+        } catch (Exception e) {
+            throw new AnalyzeException(e.getCause());
         }
     }
 
     @Override
-    public AnalyzeResult analyze(AnalyzeRequest req) {
+    public AnalyzeResult inlineAnalyze(AnalyzeRequest req) {
 
         AnalyzeResult result = new AnalyzeResult();
         List<AssetBuilder> assets = Lists.newArrayListWithCapacity(req.getAssetCount());

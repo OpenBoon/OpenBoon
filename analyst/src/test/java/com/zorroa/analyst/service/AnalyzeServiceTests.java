@@ -3,22 +3,20 @@ package com.zorroa.analyst.service;
 import com.google.common.collect.Lists;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.analyst.UnitTestIngestor;
+import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.AnalyzeRequest;
 import com.zorroa.sdk.domain.AnalyzeResult;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.exception.IngestException;
 import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.sdk.schema.ImportSchema;
-import com.zorroa.common.repository.AssetDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Note: we currently only create the mapping in Archivist.
@@ -42,7 +40,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(UnitTestIngestor.class)));
         req.addToAssets(testFile);
 
-        AnalyzeResult result = analyzeService.analyze(req);
+        AnalyzeResult result = analyzeService.inlineAnalyze(req);
         assertEquals(1, result.created);
     }
 
@@ -56,7 +54,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(UnitTestIngestor.class)));
         req.addToAssets(testFile);
 
-        AnalyzeResult result = analyzeService.analyze(req);
+        AnalyzeResult result = analyzeService.inlineAnalyze(req);
         assertEquals(1, result.created);
         refreshIndex();
 
@@ -78,7 +76,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(UnitTestIngestor.class)));
         req.addToAssets(testFile);
 
-        analyzeService.analyze(req);
+        analyzeService.inlineAnalyze(req);
         refreshIndex();
 
         req = new AnalyzeRequest();
@@ -88,7 +86,7 @@ public class AnalyzeServiceTests extends AbstractTest {
                 new ProcessorFactory<>(UnitTestIngestor.class)));
         req.addToAssets(testFile);
 
-        AnalyzeResult result = analyzeService.analyze(req);
+        AnalyzeResult result = analyzeService.inlineAnalyze(req);
         assertEquals(1, result.updated);
         refreshIndex();
 
@@ -109,14 +107,14 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>(UnitTestIngestor.class)));
         req.addToAssets(new File("src/test/resources/test.properties"));
 
-        AnalyzeResult result = analyzeService.analyze(req);
+        AnalyzeResult result = analyzeService.inlineAnalyze(req);
         assertEquals(0, result.created);
         assertEquals(0, result.updated);
         assertEquals(0, result.tried);
     }
 
-    @Test(expected=ExecutionException.class)
-    public void testAnalyzeInitFailure() throws ExecutionException {
+    @Test(expected=IngestException.class)
+    public void testAnalyzeInitFailure() {
         AnalyzeRequest req = new AnalyzeRequest();
         req.setUser("test");
         req.setIngestId(new Random().nextInt(9999));
@@ -124,7 +122,7 @@ public class AnalyzeServiceTests extends AbstractTest {
         req.setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.foo.Bar")));
         req.addToAssets(testFile);
 
-        AnalyzeResult result = analyzeService.asyncAnalyze(req);
-        assertEquals(result.created, 1);
+        AnalyzeResult result = analyzeService.inlineAnalyze(req);
+
     }
 }

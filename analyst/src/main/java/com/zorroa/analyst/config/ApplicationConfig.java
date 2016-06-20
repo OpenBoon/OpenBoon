@@ -1,8 +1,11 @@
 package com.zorroa.analyst.config;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.zorroa.analyst.Application;
-import com.zorroa.sdk.client.archivist.ArchivistClient;import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.client.archivist.ArchivistClient;
+import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.AbstractFileSystem;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
@@ -12,14 +15,14 @@ import org.springframework.boot.actuate.endpoint.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.task.AsyncTaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by chambers on 2/12/16.
@@ -61,7 +64,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AsyncTaskExecutor ingestThreadPool() {
+    public ThreadPoolExecutor analyzeThreadPool() {
         int threads = properties.getInt("analyst.executor.threads");
         if (threads == 0) {
             threads = Runtime.getRuntime().availableProcessors();
@@ -72,12 +75,13 @@ public class ApplicationConfig {
         System.setProperty("analyst.executor.threads", String.valueOf(threads));
 
         logger.info("Starting analyst with {} analyze threads", threads);
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(threads);
-        executor.setMaxPoolSize(threads);
-        executor.setThreadNamePrefix("Ingest");
-        executor.setQueueCapacity(100);
-        return executor;
+        return (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
+    }
+
+    @Bean
+    @Autowired
+    public ListeningExecutorService analyzeExecutor(ThreadPoolExecutor analyzeThreadPool) {
+        return MoreExecutors.listeningDecorator(analyzeThreadPool);
     }
 
     @Bean(initMethod="init")
