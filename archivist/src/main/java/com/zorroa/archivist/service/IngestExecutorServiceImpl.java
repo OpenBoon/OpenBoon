@@ -261,25 +261,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
+
                 if (analyzeExecutor.size() != 0) {
                     analyzeExecutor.waitForCompletion();
-                    for (; ; ) {
-
-                        if (earlyShutdown.get()) {
-                            break;
-                        }
-
-                        Ingest rIngest = ingestService.getIngest(ingest.getId());
-                        if (rIngest.getPendingCount() == 0) {
-                            break;
-                        }
-
-                        try {
-                            Thread.sleep(5000L);
-                        } catch (InterruptedException e) {
-                            break;
-                        }
-                    }
                 }
 
             } finally {
