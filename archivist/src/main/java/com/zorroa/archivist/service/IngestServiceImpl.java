@@ -235,10 +235,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
         builder.setUris(normalizePaths(builder.getUris()));
 
-        if (builder.getPipeline() != null) {
-            builder.setPipelineId(ingestPipelineDao.get(builder.getPipelineId()).getId());
-        }
-
         boolean ok = ingestDao.update(ingest, builder);
         broadcast(ingest, MessageType.INGEST_UPDATE);
         return ok;

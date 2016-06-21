@@ -20,7 +20,21 @@ package com.zorroa.archivist;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collection;
+
 public class JdbcUtils {
+
+    public static boolean isValid(Collection<?> collection) {
+        return collection == null ? false : !collection.isEmpty();
+    }
+
+    public static boolean isValid(String str) {
+        return str == null ? false : !str.isEmpty();
+    }
+
+    public static boolean isValid(Object obj) {
+        return obj == null ? false : true;
+    }
 
     public static String insert(String table, String ... cols) {
         final StringBuilder sb = new StringBuilder(1024);
