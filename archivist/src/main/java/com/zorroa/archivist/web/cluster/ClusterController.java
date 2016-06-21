@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.cluster;
 
+import com.zorroa.archivist.service.AggregationService;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.sdk.domain.AnalyzeResult;
 import com.zorroa.sdk.domain.Ingest;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ClusterController {
 
+    @Autowired
+    AggregationService aggregationService;
 
     @Autowired
     IngestService ingestService;
@@ -28,5 +31,7 @@ public class ClusterController {
         Ingest ingest = ingestService.getIngest(id);
         ingestService.incrementIngestCounters(ingest,
                 result.created, result.updated, result.warnings, result.errors);
+        // Should probably be in a service call somewhere.
+        aggregationService.aggregate(ingest);
     }
 }

@@ -15,9 +15,7 @@ import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.AbortCrawlerException;
 import com.zorroa.sdk.exception.ArchivistException;
-import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.Crawler;
-import com.zorroa.sdk.processor.ProcessorFactory;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +31,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
@@ -73,6 +73,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Autowired
     HealthEndpoint healthEndPoint;
+
+    @Autowired
+    AggregationService aggregationService;
 
     @Value("${archivist.ingest.maxRunningIngests}")
     private int maxRunningIngests;
@@ -137,6 +140,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         if (ingestService.setIngestPaused(ingest, false)) {
             IngestWorker worker = runningIngests.get(ingest.getId());
             if (worker != null) {
+                aggregationService.invalidate(ingest);
                 worker.pause(false);
                 synchronized (worker) {
                     worker.notify();
@@ -186,10 +190,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
         private Set<String> supportedFormats = Sets.newHashSet();
 
-        private Timer aggregationTimer;
-
-        private List<Aggregator> aggregators;
-
         private BlockingQueue<AnalyzeRequestEntry> fileQueue = Queues.newLinkedBlockingQueue();
 
         private AnalyzeExecutor analyzeExecutor = new AnalyzeExecutor(1);
@@ -227,23 +227,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             }
         }
 
-        public void startAggregators(IngestPipeline pipeline) {
-            aggregationTimer = new Timer(true);
-            aggregators = Lists.newArrayListWithCapacity(pipeline.getAggregators().size());
-
-            for (ProcessorFactory<Aggregator> factory: pipeline.getAggregators()) {
-                Aggregator agg = (Aggregator) applicationContext.getBean(factory.getKlassName());
-                agg.init(ingest);
-                aggregators.add(agg);
-            }
-            aggregationTimer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    aggregators.forEach(Aggregator::aggregate);
-                }
-            }, 10000, 10000);
-        }
-
         @Override
         public void run() {
 
@@ -261,7 +244,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
 
                 try {
-                    startAggregators(pipeline);
+                    aggregationService.invalidate(ingest);
                     walkIngestPaths(ingest, pipeline);
                     eventLogService.log(ingest, "Total assets detected {}, batches remaining {}",
                             totalAssets.longValue(), analyzeExecutor.size());
@@ -327,24 +310,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 } else {
                     eventLogService.log(finishedIngest, "Ingest was manually shut down, created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
-                }
-
-                try {
-                    if (aggregationTimer != null) {
-                        aggregationTimer.cancel();
-
-                        /*
-                         * Force a refresh so the tear downs can see any recently added data.
-                         */
-                        assetDao.refresh();
-
-                        /*
-                         * Do a final aggregation.
-                         */
-                        aggregators.forEach(Aggregator::aggregate);
-                    }
-                } catch (RuntimeException e) {
-                    logger.warn("Failed to perform final aggregation on ingest {}, ", finishedIngest, e);
                 }
             }
         }
