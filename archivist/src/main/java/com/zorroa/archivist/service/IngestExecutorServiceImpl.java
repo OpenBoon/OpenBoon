@@ -278,7 +278,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
-                if (!ArchivistConfiguration.unittest) {
+                if (analyzeExecutor.size() != 0) {
                     analyzeExecutor.waitForCompletion();
                     for (; ; ) {
 
@@ -298,6 +298,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         }
                     }
                 }
+
             } finally {
                 /*
                  * Note: a runtime exception may mean some of these variables
