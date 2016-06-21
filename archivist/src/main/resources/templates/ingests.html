@@ -52,7 +52,7 @@
                             </div>
                         </td>
 
-                        <td th:text="${ingest.name}"></td>
+                        <td><a th:text="${ingest.name}" th:href="@{/gui/ingests/__${ingest.id}__}"></a></td>
                         <td th:text="${ingest.createdCount}"></td>
                         <td th:text="${ingest.updatedCount}"></td>
                         <td th:text="${ingest.errorCount}"></td>

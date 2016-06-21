@@ -247,6 +247,32 @@ public class IndexController {
         return "redirect:/gui/ingests";
     }
 
+    @RequestMapping(value="/gui/ingests/{id}", method=RequestMethod.POST)
+    public String updateIngest(Model model, @PathVariable int id,
+                             @Valid @ModelAttribute("ingestUpdateBuilder") IngestUpdateBuilder ingestUpdateBuilder,
+                             BindingResult bindingResult) {
+        standardModel(model);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("ingest", ingestService.getIngest(id));
+            model.addAttribute("errors", true);
+            return "ingest";
+        }
+        else {
+            ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
+        }
+
+        model.addAttribute("ingest", ingestService.getIngest(id));
+        model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
+        return "ingest";
+    }
+
+    @RequestMapping("/gui/ingests/{id}")
+    public String ingest(Model model, @PathVariable int id) {
+        standardModel(model);
+        model.addAttribute("ingest", ingestService.getIngest(id));
+        model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
+        return "ingest";
+    }
 
     @RequestMapping("/gui/pipelines")
     public String pipelines(Model model) {
