@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.*;
-import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.AnalyzeExecutor;
+import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.crawlers.FileCrawler;
 import com.zorroa.archivist.crawlers.FlickrCrawler;
 import com.zorroa.archivist.crawlers.HttpCrawler;
@@ -232,7 +232,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             aggregators = Lists.newArrayListWithCapacity(pipeline.getAggregators().size());
 
             for (ProcessorFactory<Aggregator> factory: pipeline.getAggregators()) {
-                Aggregator agg = (Aggregator) applicationContext.getBean(factory.getProcessorClass());
+                Aggregator agg = applicationContext.getBean(factory.getProcessorClass());
                 agg.init(ingest);
                 aggregators.add(agg);
             }
@@ -260,23 +260,21 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                         authenticationManager.authenticate(new BackgroundTaskAuthentication(user)));
                 IngestPipeline pipeline = ingestService.getIngestPipeline(ingest.getPipelineId());
 
-                /*
-                 * Start up the aggregators.
-                 */
-                startAggregators(pipeline);
-
                 try {
+                    startAggregators(pipeline);
                     walkIngestPaths(ingest, pipeline);
                     eventLogService.log(ingest, "Total assets detected {}, batches remaining {}",
                             totalAssets.longValue(), analyzeExecutor.size());
                     ingestService.setTotalAssetCount(ingest, totalAssets.longValue());
 
                 } catch (Exception e) {
+                    earlyShutdown.set(true);
+
                     /**
                      * If a crawler failure occurs, log it and then process the rest
                      * of the analyze queue.
                      */
-                    eventLogService.log(ingest, "Crawler failure", e, ingest.getUris());
+                    eventLogService.log(ingest, "Ingest init failure {}", e, e.getMessage());
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
@@ -480,13 +478,15 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     "flickr", new FlickrCrawler());
 
             for (String u : ingest.getUris()) {
-
+                u = u.replaceAll(" ", "%20");
                 URI uri = URI.create(u);
                 String type = uri.getScheme();
                 if (type == null) {
                     type = "file";
                     uri = URI.create("file:" + u);
                 }
+
+                logger.info("URI: {}", uri);
 
                 Crawler crawler = crawlers.get(type);
                 if (crawler == null) {
