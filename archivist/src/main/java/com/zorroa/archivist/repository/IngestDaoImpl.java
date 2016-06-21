@@ -27,6 +27,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         result.setPipelineId(rs.getInt("pk_pipeline"));
         result.setName(rs.getString("str_name"));
         result.setState(IngestState.values()[rs.getInt("int_state")]);
+        result.setPaused(rs.getBoolean("bool_paused"));
         result.setUris(Json.deserialize(rs.getString("json_paths"), new TypeReference<List<String>>() {}));
         result.setTimeCreated(rs.getLong("time_created"));
         result.setUserCreated(rs.getInt("user_created"));
@@ -38,7 +39,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         result.setErrorCount(rs.getInt("int_error_count"));
         result.setUpdatedCount(rs.getInt("int_updated_count"));
         result.setWarningCount(rs.getInt("int_warning_count"));
-        result.setAssetWorkerThreads(rs.getInt("int_asset_worker_threads"));
+        result.setTotalAssetCount(rs.getInt("int_total_asset_count"));
         return result;
     };
 
@@ -58,10 +59,9 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                 "time_created,"+
                 "user_created,"+
                 "time_modified, "+
-                "user_modified, "+
-                "int_asset_worker_threads" +
+                "user_modified "+
             ") " +
-            "VALUES (" + StringUtils.repeat("?", ",", 9) + ")";
+            "VALUES (" + StringUtils.repeat("?", ",", 8) + ")";
 
     @Override
     public Ingest create(IngestPipeline pipeline, IngestBuilder builder) {
@@ -78,7 +78,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             ps.setLong(6, SecurityUtils.getUser().getId());
             ps.setLong(7, time);
             ps.setLong(8, SecurityUtils.getUser().getId());
-            ps.setInt(9, builder.getAssetWorkerThreads());
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -151,11 +150,6 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
             values.add(builder.getName());
         }
 
-        if (builder.isset("assetWorkerThreads") && builder.getAssetWorkerThreads() > 0) {
-            updates.add("int_asset_worker_threads=?");
-            values.add(builder.getAssetWorkerThreads());
-        }
-
         if (updates.isEmpty()) {
             return false;
         }
@@ -193,9 +187,17 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     }
 
     @Override
+    public boolean setPaused(Ingest ingest, boolean value) {
+        return jdbc.update("UPDATE ingest SET bool_paused=? WHERE pk_ingest=? AND bool_paused != ?",
+                value, ingest.getId(), value) == 1;
+    }
+
+    @Override
     public void resetCounters(Ingest ingest) {
         jdbc.update("UPDATE ingest SET " +
-                        "int_created_count=0, int_updated_count=0, int_error_count=0, int_warning_count=0 WHERE pk_ingest=?",
+                        "int_created_count=0, int_updated_count=0, " +
+                        "int_error_count=0, int_warning_count=0, int_total_asset_count=0 " +
+                        "WHERE pk_ingest=?",
                 ingest.getId());
     }
 
@@ -213,6 +215,11 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     @Override
     public void incrementCounters(Ingest ingest, int created, int updated, int errors, int warnings) {
         jdbc.update(INCREMENT_COUNTERS, created, updated, errors, warnings, ingest.getId());
+    }
+
+    @Override
+    public void setTotalAssetCount(Ingest ingest, long count) {
+        jdbc.update("UPDATE ingest SET int_total_asset_count=? WHERE pk_ingest=?", count, ingest.getId());
     }
 
     @Override

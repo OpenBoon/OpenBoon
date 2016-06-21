@@ -89,7 +89,13 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
              *
              * createSnapshotRepository();
              */
-            ingestService.resetRunningIngests();
+
+            /**
+             * Reset all ingests to the idle state.
+             */
+            ingestService.getAllIngests().stream()
+                    .map(i->ingestService.setIngestIdle(i))
+                    .count();
             eventLogService.log(new EventLogMessage("Archivist Started").setType("Archivist Started"));
         }
     }

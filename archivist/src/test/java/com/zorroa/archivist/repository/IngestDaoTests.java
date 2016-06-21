@@ -56,7 +56,6 @@ public class IngestDaoTests extends AbstractTest {
         assertEquals(ingest01.getUris(), ingest.getUris());
         assertEquals(ingest01.getPipelineId(), ingest.getPipelineId());
         assertEquals(ingest01.getState(), ingest.getState());
-        assertEquals(ingest01.getAssetWorkerThreads(), ingest.getAssetWorkerThreads());
         assertEquals(ingest01.getTimeCreated(), ingest.getTimeCreated());
         assertEquals(ingest01.getTimeModified(), ingest.getTimeModified());
         assertEquals(ingest01.getTimeStarted(), ingest.getTimeStarted());
@@ -136,15 +135,29 @@ public class IngestDaoTests extends AbstractTest {
         IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
         updateBuilder.addToUris("file:///foo");
         updateBuilder.setPipelineId(testPipeline.getId());
-        updateBuilder.setAssetWorkerThreads(6);
 
         assertTrue(ingestDao.update(ingest, updateBuilder));
 
         Ingest updatedIngest = ingestDao.get(ingest.getId());
         assertTrue(updatedIngest.getUris().contains("file:///foo"));
-        assertEquals(updatedIngest.getAssetWorkerThreads(), 6);
         assertEquals(testPipeline.getId(), updatedIngest.getPipelineId());
     }
+
+    @Test
+    public void testSetPaused() {
+        assertTrue(ingestDao.setPaused(ingest, true));
+        assertFalse(ingestDao.setPaused(ingest, true));
+        assertTrue(ingestDao.setPaused(ingest, false));
+        assertFalse(ingestDao.setPaused(ingest, false));
+    }
+
+    @Test
+    public void testSetTotalAssetCount() {
+        ingestDao.setTotalAssetCount(ingest ,1000);
+        Ingest _ingest = ingestDao.get(ingest.getId());
+        assertEquals(1000, _ingest.getTotalAssetCount());
+    }
+
 
     @Test
     public void testIncrementCounters() {

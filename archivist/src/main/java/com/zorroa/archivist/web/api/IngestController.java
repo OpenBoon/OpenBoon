@@ -1,9 +1,9 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
+import com.zorroa.sdk.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +45,19 @@ public class IngestController {
         return ingestService.getIngests(filter);
     }
 
+    @Deprecated
     @RequestMapping(value="/api/v1/ingests/{id}/_execute", method=RequestMethod.POST)
-    public Ingest ingest(@PathVariable int id) {
+    public Ingest execute(@PathVariable int id) {
+        // alias for start for backwards compat
         Ingest ingest = ingestService.getIngest(id);
-        ingestExecutorService.executeIngest(ingest);
+        ingestExecutorService.start(ingest);
         return ingest;
     }
 
-    @RequestMapping(value="/api/v1/ingests/{id}/_pause", method=RequestMethod.PUT)
-    public Ingest pause(@PathVariable int id) {
+    @RequestMapping(value="/api/v1/ingests/{id}/_start", method=RequestMethod.PUT)
+    public Ingest start(@PathVariable int id) {
         Ingest ingest = ingestService.getIngest(id);
-        ingestExecutorService.pause(ingest);
+        ingestExecutorService.start(ingest);
         return ingest;
     }
 
@@ -63,6 +65,13 @@ public class IngestController {
     public Ingest stop(@PathVariable int id) {
         Ingest ingest = ingestService.getIngest(id);
         ingestExecutorService.stop(ingest);
+        return ingest;
+    }
+
+    @RequestMapping(value="/api/v1/ingests/{id}/_pause", method=RequestMethod.PUT)
+    public Ingest pause(@PathVariable int id) {
+        Ingest ingest = ingestService.getIngest(id);
+        ingestExecutorService.pause(ingest);
         return ingest;
     }
 
@@ -84,20 +93,11 @@ public class IngestController {
     public Map<String, Object> delete(@PathVariable int id) {
         Ingest ingest = ingestService.getIngest(id);
 
-        try {
-
-            if (!ingest.getState().equals(IngestState.Idle)) {
-                throw new IllegalStateException("Ingest must be idle to be deleted.");
-            }
-            return ImmutableMap.<String, Object>builder()
-                    .put("status", ingestService.deleteIngest(ingest))
-                    .build();
-
-        } catch (Exception e) {
-            return ImmutableMap.<String, Object>builder()
-                    .put("false", ingestService.deleteIngest(ingest))
-                    .put("message", e.getMessage())
-                    .build();
+        if (!ingest.getState().equals(IngestState.Idle)) {
+            throw new IllegalStateException("Ingest must be idle to be deleted.");
         }
+        return ImmutableMap.<String, Object>builder()
+                .put("status", ingestService.deleteIngest(ingest))
+                .build();
     }
 }

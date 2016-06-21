@@ -31,7 +31,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -145,12 +144,8 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public boolean setIngestPaused(Ingest ingest) {
-        if (ingestDao.setState(ingest, IngestState.Paused)) {
-            broadcast(ingest, MessageType.INGEST_UPDATE);
-            return true;
-        }
-        return false;
+    public boolean setIngestPaused(Ingest ingest, boolean value) {
+        return ingestDao.setPaused(ingest, value);
     }
 
     private void broadcast(Ingest ingest, MessageType messageType) {
@@ -167,6 +162,11 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         transactionEventManager.afterCommit(() -> {
             eventServerHandler.broadcast(new Message(messageType, json));
         });
+    }
+
+    @Override
+    public void setTotalAssetCount(Ingest ingest, long count) {
+        ingestDao.setTotalAssetCount(ingest, count);
     }
 
     @Override
@@ -228,17 +228,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     @Override
     public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
         builder.setUris(normalizePaths(builder.getUris()));
-
-        // Update active ingest thread counts
-        if (ingest.getState() == IngestState.Running && builder.getAssetWorkerThreads() > 0 &&
-                ingest.getAssetWorkerThreads() != builder.getAssetWorkerThreads()) {
-
-            synchronized(ingest) {
-                ingest.setAssetWorkerThreads(builder.getAssetWorkerThreads());
-                ingestExecutorService.pause(ingest);
-                ingestExecutorService.resume(ingest);
-            }
-        }
 
         if (builder.getPipeline() != null) {
             builder.setPipelineId(ingestPipelineDao.get(builder.getPipelineId()).getId());
@@ -337,17 +326,6 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         }
 
         return ingestDao.getSkippedPaths(ingest);
-    }
-
-    private static final Set<IngestState> RESET_INGEST_STATES = EnumSet.of(
-            IngestState.Running, IngestState.Queued, IngestState.Paused);
-
-    @Override
-    public long resetRunningIngests() {
-        return getAllIngests().stream()
-                .filter(i->!RESET_INGEST_STATES.contains(i.getState()))
-                .map(i->setIngestIdle(i))
-                .count();
     }
 
     public List<String> normalizePaths(Collection<String> paths) {

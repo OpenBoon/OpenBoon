@@ -112,6 +112,10 @@
         "state": {
           "index": "not_analyzed",
           "type": "integer"
+        },
+        "queueSize": {
+          "index": "not_analyzed",
+          "type": "integer"
         }
       }
     },

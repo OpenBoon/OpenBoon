@@ -10,11 +10,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class AssetExecutor extends ThreadPoolExecutor {
+public class AnalyzeExecutor extends ThreadPoolExecutor {
 
-    public AssetExecutor(int threads) {
+    public AnalyzeExecutor(int threads) {
         super(threads, threads, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
-        this.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("ASSET_WORKER-%d").build());
+        this.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("ANALYZE-WORKER-%d").build());
     }
 
     public void waitForCompletion() {
@@ -24,5 +24,13 @@ public class AssetExecutor extends ThreadPoolExecutor {
         } catch (InterruptedException ignore) {
             // most likely means the server is being shutdown, can ignore
         }
+    }
+
+    public void clear() {
+        this.getQueue().clear();
+    }
+
+    public int size() {
+        return this.getQueue().size();
     }
 }

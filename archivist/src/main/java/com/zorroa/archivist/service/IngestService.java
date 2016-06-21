@@ -45,6 +45,8 @@ public interface IngestService {
 
     boolean deleteIngestPipeline(IngestPipeline pipeline);
 
+    void setTotalAssetCount(Ingest ingest, long count);
+
     void incrementIngestCounters(Ingest ingest, int created, int updated, int errors, int warnings);
 
     boolean setIngestRunning(Ingest ingest);
@@ -55,7 +57,7 @@ public interface IngestService {
 
     boolean setIngestQueued(Ingest ingest);
 
-    boolean setIngestPaused(Ingest ingest);
+    boolean setIngestPaused(Ingest ingest, boolean value);
 
     void beginWorkOnPath(Ingest ingest, String path);
 
@@ -70,6 +72,4 @@ public interface IngestService {
      * @return
      */
     Folder getFolder(Ingest ingest);
-
-    long resetRunningIngests();
 }

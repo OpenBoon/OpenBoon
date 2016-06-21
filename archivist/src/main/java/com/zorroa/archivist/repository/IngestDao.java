@@ -26,9 +26,13 @@ public interface IngestDao {
 
     boolean setState(Ingest ingest, IngestState newState);
 
+    boolean setPaused(Ingest ingest, boolean value);
+
     void resetCounters(Ingest ingest);
 
     void incrementCounters(Ingest ingest, int created, int updated, int errors, int warnings);
+
+    void setTotalAssetCount(Ingest ingest, long count);
 
     boolean updateStartTime(Ingest ingest, long time);
 

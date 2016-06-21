@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestIngestor;
 import com.zorroa.sdk.domain.*;
@@ -9,8 +8,6 @@ import com.zorroa.sdk.exception.ArchivistException;
 import com.zorroa.sdk.processor.ProcessorFactory;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -66,21 +63,6 @@ public class IngestServiceTests extends AbstractTest {
         builder.setDescription("test");
         builder.setProcessors(ImmutableList.of(new ProcessorFactory<>()));
         ingestService.createIngestPipeline(builder);
-    }
-
-    @Test
-    public void testResetRunningIngests() throws InterruptedException {
-        List<Ingest> ingests = Lists.newArrayList();
-        for (int i=0; i<6; i++)  {
-            ingests.add(ingestService.createIngest(new IngestBuilder(getStaticImagePath())));
-        }
-
-        assertTrue(ingestService.setIngestPaused(ingests.get(0)));
-        assertTrue(ingestService.setIngestQueued(ingests.get(1)));
-        assertTrue(ingestService.setIngestRunning(ingests.get(2)));
-
-        long resets = ingestService.resetRunningIngests();
-        assertEquals(3, resets);
     }
 
     @Test
