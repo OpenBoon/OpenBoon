@@ -19,6 +19,7 @@
                 <th>Url</th>
                 <th>State</th>
                 <th>Threads</th>
+                <th>Queue</th>
                 <th>Free RAM</th>
                 <th>Last Update</th>
             </tr>
@@ -28,6 +29,7 @@
                 <td th:text="${an.url}"></td>
                 <td th:class="${an.state.name()} == 'UP' ? success : danger" th:text="${an.state.name()}"></td>
                 <td th:text="${an.threadCount}"></td>
+                <td th:text="${an.queueSize}"></td>
                 <td th:text="${an.metrics.heap - an.metrics.heap_used}"></td>
                 <td th:text="${#dates.format(an.updatedTime, 'dd MMM yyyy HH:mm:ss')}"></td>
             </tr>
