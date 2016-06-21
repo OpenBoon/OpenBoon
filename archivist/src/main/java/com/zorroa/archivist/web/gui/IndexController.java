@@ -212,7 +212,6 @@ public class IndexController {
         }
         Collections.reverse(path);
         model.addAttribute("path", path);
-        logger.info("elements: {}", path.size());
         return "folders";
     }
 
@@ -270,7 +269,6 @@ public class IndexController {
             return "ingest";
         }
         else {
-            logger.info("uris: {}", ingestUpdateBuilder.getUris());
             ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
         }
 
