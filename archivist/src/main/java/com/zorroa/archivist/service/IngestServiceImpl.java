@@ -145,6 +145,7 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
 
     @Override
     public boolean setIngestPaused(Ingest ingest, boolean value) {
+
         return ingestDao.setPaused(ingest, value);
     }
 
@@ -165,13 +166,18 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
     }
 
     @Override
-    public void setTotalAssetCount(Ingest ingest, long count) {
+    public void setTotalAssetCount(
+            Ingest ingest, long count) {
         ingestDao.setTotalAssetCount(ingest, count);
+        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_PROGRESS);
     }
 
     @Override
     public void incrementIngestCounters(Ingest ingest, int created, int updated, int warnings, int errors) {
         ingestDao.incrementCounters(ingest, created, updated, errors, warnings);
+        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_PROGRESS);
+
+        //TODO: can remoe this one, its deprecated
         broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_UPDATE_COUNTERS);
     }
 
