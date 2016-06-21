@@ -135,17 +135,17 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         List<String> updates = Lists.newArrayList();
         List<Object> values = Lists.newArrayList();
 
-        if (builder.isset("uris"))  {
+        if (JdbcUtils.isValid(builder.getUris()))  {
             updates.add("json_paths=?");
             values.add(Json.serializeToString(builder.getUris()));
         }
 
-        if (builder.isset("pipelineId")) {
+        if (JdbcUtils.isValid(builder.getPipelineId())) {
             updates.add("pk_pipeline=?");
             values.add(builder.getPipelineId());
         }
 
-        if (builder.isset("name")) {
+        if (JdbcUtils.isValid(builder.getName())) {
             updates.add("str_name=?");
             values.add(builder.getName());
         }
