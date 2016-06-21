@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by wex on 3/5/16.
  */
-@Component
+@Component("FieldDateAggregator")
 @Scope("prototype")
 public class FieldAggregator extends Aggregator {
 

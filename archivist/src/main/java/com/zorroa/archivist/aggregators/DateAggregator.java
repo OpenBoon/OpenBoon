@@ -19,7 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Component
+@Component("DateAggregator")
 @Scope("prototype")
 public class DateAggregator extends Aggregator {
 

@@ -232,7 +232,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
             aggregators = Lists.newArrayListWithCapacity(pipeline.getAggregators().size());
 
             for (ProcessorFactory<Aggregator> factory: pipeline.getAggregators()) {
-                Aggregator agg = applicationContext.getBean(factory.getProcessorClass());
+                Aggregator agg = (Aggregator) applicationContext.getBean(factory.getKlassName());
                 agg.init(ingest);
                 aggregators.add(agg);
             }
