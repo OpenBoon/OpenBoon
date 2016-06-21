@@ -11,10 +11,8 @@ import com.zorroa.sdk.domain.AnalystState;
 import com.zorroa.sdk.domain.AnalystUpdateBuilder;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.sort.SortOrder;
 
 import java.util.List;
@@ -49,6 +47,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
         byte[] doc = Json.serialize(builder);
         client.prepareUpdate(alias, getType(), id)
                 .setDoc(doc)
+                .setRefresh(true)
                 .get();
     }
 
@@ -83,13 +82,33 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 .setQuery(QueryBuilders.matchAllQuery()), MAPPER);
     }
 
+
     @Override
     public List<Analyst> getActive(Paging paging) {
+        QueryBuilder query =
+                QueryBuilders.boolQuery()
+                        .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()));
+
         return elastic.query(client.prepareSearch(alias)
                 .setTypes(getType())
                 .setSize(paging.getCount())
                 .setFrom(paging.getFrom())
                 .addSort("queueSize", SortOrder.ASC)
-                .setQuery(QueryBuilders.termQuery("state", AnalystState.UP.ordinal())), MAPPER);
+                .setQuery(query), MAPPER);
+    }
+
+    @Override
+    public List<Analyst> getActive(Paging paging, int maxQueueSize) {
+        QueryBuilder query =
+                QueryBuilders.boolQuery()
+                        .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()))
+                        .must(QueryBuilders.rangeQuery("queueSize").lt(maxQueueSize));
+
+        return elastic.query(client.prepareSearch(alias)
+                .setTypes(getType())
+                .setSize(paging.getCount())
+                .setFrom(paging.getFrom())
+                .addSort("queueSize", SortOrder.ASC)
+                .setQuery(query), MAPPER);
     }
 }
