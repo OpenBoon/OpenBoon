@@ -63,10 +63,6 @@ public class FileCrawler extends Crawler {
                         return FileVisitResult.CONTINUE;
                     }
 
-                    if (ignoredPaths.contains(file.getAbsolutePath())) {
-                        return FileVisitResult.CONTINUE;
-                    }
-
                     FileSequence fs = new FileSequence(file.getAbsolutePath());
                     String range = fs.getRange();
                     if (fs.isValid() && Ints.tryParse(range) != null) {
