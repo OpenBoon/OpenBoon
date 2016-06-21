@@ -35,19 +35,19 @@
                     <tr th:class="${ingest.paused} ? primary : default" th:each="ingest: ${ingests}" >
                         <td>
                             <div class="btn-group">
-                                <button th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Running}" type="button" class="btn btn-default btn-xs">
+                                <button name="stopButton" th:value="${ingest.id}" th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Running}" type="button" class="btn btn-default btn-xs">
                                     <span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
                                 </button>
-                                <button th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Idle}" type="button" class="btn btn-default btn-xs">
+                                <button name="startButton" th:value="${ingest.id}" th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Idle}" type="button" class="btn btn-default btn-xs">
                                     <span class="glyphicon glyphicon-start" aria-hidden="true"></span> Start
                                 </button>
 
-                                <button th:if="${ingest.paused == true}" type="button" class="btn btn-default btn-xs">
+                                <button name="resumeButton" th:value="${ingest.id}" th:if="${ingest.paused == true}" type="button" class="btn btn-default btn-xs">
                                     <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Resume
                                 </button>
 
-                                <button th:if="${ingest.paused != true}" type="button" class="btn btn-default btn-xs">
-                                    <span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pause
+                                <button name="pauseButton" th:value="${ingest.id}" th:if="${ingest.paused != true}" type="button" class="btn btn-default btn-xs">
+                                    <span  class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pause
                                 </button>
                             </div>
                         </td>
@@ -103,6 +103,28 @@
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function(e) {
+            $('[name="startButton"]').click(function() {
+                console.log("clicked");
+                var value = $(this).val();
+                $.ajax( {
+                    url: '/api/v1/ingests/' + value + '/_start',
+                    method: 'put',
+                    dataType: 'json',
+                    success: function(data) {
+                        window.location.reload(true);
+                    },
+                    error: function(err) {
+                        alert(err);
+                    }
+                });
+            });
+        });
+        //]]>
+    </script>
     </p>
 </section>
 

@@ -229,6 +229,25 @@ public class IndexController {
         return "ingests";
     }
 
+    @RequestMapping(value="/gui/ingests",  method=RequestMethod.POST)
+    public String createIngest(Model model,
+                               @Valid @ModelAttribute("ingestBuilder") IngestBuilder ingestBuilder,
+                               BindingResult bindingResult) {
+        standardModel(model);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", true);
+            return "ingests";
+        }
+
+        model.addAttribute("pipelines", ingestService.getIngestPipelines());
+        model.addAttribute("ingests", ingestService.getAllIngests());
+        model.addAttribute("builder", new IngestBuilder());
+        ingestService.createIngest(ingestBuilder);
+        return "redirect:/gui/ingests";
+    }
+
+
     @RequestMapping("/gui/pipelines")
     public String pipelines(Model model) {
         standardModel(model);
