@@ -10,7 +10,7 @@
 
     <groupId>com.zorroa</groupId>
     <artifactId>analyst</artifactId>
-    <version>0.20.0</version>
+    <version>0.21.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -23,7 +23,7 @@
         <relativePath>../pom.xml</relativePath>
         <groupId>com.zorroa</groupId>
         <artifactId>zorroa-server</artifactId>
-        <version>0.20.0</version>
+        <version>0.21.0</version>
     </parent>
 
     <dependencies>
