@@ -8,29 +8,36 @@
 
 <section layout:fragment="content">
     <p>
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Permissions</h1>
+    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
+        <div class="container-fluid">
+            <div class="navbar-header navbar-brand">
+                <span class="fa fa-lock" aria-hidden="true"></span>
+                Permissions
+            </div>
+        </div>
+    </nav>
+    <div class="panel panel-default" style="border-width: 0px;">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="perm: ${allPermissions}">
+                    <td th:text="${perm.id}"></td>
+                    <td th:text="${perm.name}"></td>
+                    <td th:text="${perm.type}"></td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Type</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="perm: ${allPermissions}">
-                <td th:text="${perm.id}"></td>
-                <td th:text="${perm.name}"></td>
-                <td th:text="${perm.type}"></td>
-            </tr>
-            </tbody>
-        </table>
-        </div>
     </p>
 </section>
 

@@ -8,12 +8,15 @@
 
 <section layout:fragment="content">
     <p>
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Status</h1>
+    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
+        <div class="container-fluid">
+            <div class="navbar-header navbar-brand">
+                <span class="fa fa-exclamation-triangle" aria-hidden="true"></span>
+                Status
+            </div>
         </div>
-    </div>
-
+    </nav>
+    <div class="container">
     <div class="alert" role="alert"
          th:each="h: ${health}"
          th:classappend="${#strings.startsWith(h.value,'UP')} ? alert-success : alert-danger">
@@ -21,6 +24,7 @@
         <span th:if="${#strings.startsWith(h.value,'UP')}" class="glyphicon glyphicon-ok" aria-hidden="true" th:text="${'  ' + h.key}"></span>
         <span th:if="${!#strings.startsWith(h.value,'UP')}" class="glyphicon glyphicon-alert" aria-hidden="true" th:text="${'  ' + h.key}"></span>
         <p th:text="${h.value}"></p>
+    </div>
     </div>
     </p>
 </section>

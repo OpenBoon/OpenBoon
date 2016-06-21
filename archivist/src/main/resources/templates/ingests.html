@@ -8,17 +8,21 @@
 
 <section layout:fragment="content">
     <p>
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Ingests</h1>
+    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
+        <div class="container-fluid">
+            <div class="navbar-header navbar-brand">
+                <span class="fa fa-archive" aria-hidden="true"></span>
+                Ingests
+            </div>
+            <div class="nav navbar-nav navbar-right" style="padding-right: 15px">
+                <button onclick="$('#modalForm').modal({'backdrop': 'static'});" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+
+            </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <button onclick="$('#modalForm').modal({'backdrop': 'static'});" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus"></span>
-            </button>
-        </div>
+    </nav>
+    <div class="panel panel-default" style="border-width: 0px;">
         <div class="panel-body">
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -35,11 +39,14 @@
                     <tr th:class="${ingest.paused} ? primary : default" th:each="ingest: ${ingests}" >
                         <td>
                             <div class="btn-group">
+                                <button name="deleteButton" th:value="${ingest.id}" type="button" class="btn btn-default btn-xs">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                                </button>
                                 <button name="stopButton" th:value="${ingest.id}" th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Running}" type="button" class="btn btn-default btn-xs">
                                     <span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
                                 </button>
                                 <button name="startButton" th:value="${ingest.id}" th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Idle}" type="button" class="btn btn-default btn-xs">
-                                    <span class="glyphicon glyphicon-start" aria-hidden="true"></span> Start
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
                                 </button>
 
                                 <button name="resumeButton" th:value="${ingest.id}" th:if="${ingest.paused == true}" type="button" class="btn btn-default btn-xs">
@@ -108,7 +115,6 @@
         //<![CDATA[
         $(document).ready(function(e) {
             $('[name="startButton"]').click(function() {
-                console.log("clicked");
                 var value = $(this).val();
                 $.ajax( {
                     url: '/api/v1/ingests/' + value + '/_start',
@@ -121,6 +127,23 @@
                         alert(err);
                     }
                 });
+            });
+
+            $('[name="deleteButton"]').click(function() {
+                var value = $(this).val();
+                if (confirm("Delete?")) {
+                    $.ajax({
+                        url: '/api/v1/ingests/' + value,
+                        method: 'delete',
+                        dataType: 'json',
+                        success: function (data) {
+                            window.location.reload(true);
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
+                }
             });
         });
         //]]>

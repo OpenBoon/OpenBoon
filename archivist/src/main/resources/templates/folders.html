@@ -8,56 +8,27 @@
 
 <section layout:fragment="content">
     <p>
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Folders</h1>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
+        <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
             <div class="container-fluid">
-                <button onclick="window.history.back();" type="button" class="btn btn-default" th:if="${parent != null}">
-                    <span class="glyphicon glyphicon-triangle-left"></span>
-                </button>
-                <button disabled="true" type="button" class="btn btn-default" th:if="${parent == null}">
-                    <span class="glyphicon glyphicon-triangle-left"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-            </div>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <blockquote>
-                <h4 th:text="${folder.name}"></h4>
-                </blockquote>
-            </div>
-            <div th:each="data, row: ${children}" th:with="numList=${ {3,2,1,0} }" th:if="${row.count % 4 == 0 or row.last}" class="row">
-                <!-- Show all rows except the leftovers -->
-
-                <div class="col-md-3" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.count % 4 == 0}">
-                    <h4>
-                        <a th:href="'/gui/folders/' + ${children[dataIndex].id}">
-                        <span class="glyphicon glyphicon-folder-close" aria-hidden="true"/>
-                        <span th:text="${children[dataIndex].name}"></span>
-                        </a>
-                    </h4>
-                </div>
-                <!-- Show the remainders (eg, if there are 9 items, the last row will have one item in it) -->
-                <div class="col-md-3" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.last} and ${row.count % 4 != 0} and ${num &lt; row.count % 4}">
-                    <h4>
-                    <a th:href="'/gui/folders/' + ${children[dataIndex].id}">
-                        <span class="glyphicon glyphicon-folder-close" aria-hidden="true"/>
-                        <span th:text="${children[dataIndex].name}"></span>
-                    </a>
-                    </h4>
-
+                <div class="navbar-header navbar-brand">
+                    <span class="fa fa-folder" aria-hidden="true"></span>
+                    Folders
+                    <a class="btn btn-default" href="/gui/folders">/</a>
+                    <th:block th:each="folder: ${path}">
+                        <a th:if="${folder.id &gt; 0}" class="btn btn-default" th:href="${'/gui/folders/' + folder.id}"
+                           th:text="${folder.name}"></a>
+                    </th:block>
                 </div>
             </div>
-        </div>
-    </div>
+        </nav>
 
+        <div class="container-fluid">
+            <th:block th:each="child: ${children}">
+                <a th:href="${'/gui/folders/' + child.id}" class="btn btn-default" style="margin: 5px;">
+                    <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span> <th:block th:text="${child.name}"></th:block>
+                </a>
+            </th:block>
+        </div>
     </p>
 </section>
 </body>
