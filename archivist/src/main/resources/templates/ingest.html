@@ -22,12 +22,17 @@
             </div>
 
             <div class="form-group">
-                <label for="uris">URIs:</label>
-                <select id="uris" name="uris[]" multiple="true">
-                    <option th:each="uri: ${ingest.uris}" th:text="${uri}"></option>
-                </select>
+                <label>URIs:</label>
+                <div class="list-group">
+                    <li class="list-group-item" th:each="uri: ${ingest.uris}">
+                    <th:block th:text="${uri}"></th:block>
+                        <a href="#" style="float: right">
+                            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                </div>
                 <div class="alert alert-danger" th:if="${#fields.hasErrors('uris')}" th:errors="*{email}"></div>
-            </div>s
+            </div>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-default">

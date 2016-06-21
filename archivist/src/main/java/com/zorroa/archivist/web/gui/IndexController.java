@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -188,6 +189,7 @@ public class IndexController {
         standardModel(model);
         Folder folder = new Folder();
         folder.setName("/");
+        model.addAttribute("path", Lists.newArrayList(folder));
         model.addAttribute("folder", folder);
         model.addAttribute("parent", null);
         model.addAttribute("children", folderService.getAll());
@@ -201,6 +203,16 @@ public class IndexController {
         model.addAttribute("folder", folder);
         model.addAttribute("parent", folderService.get(folder.getParentId()));
         model.addAttribute("children", folderService.getChildren(folder));
+
+        List<Folder> path = Lists.newArrayList(folder);
+        Folder parent = folderService.get(folder.getParentId());
+        while (parent.getParentId() != null) {
+            path.add(parent);
+            parent = folderService.get(parent.getParentId());
+        }
+        Collections.reverse(path);
+        model.addAttribute("path", path);
+        logger.info("elements: {}", path.size());
         return "folders";
     }
 
@@ -258,6 +270,7 @@ public class IndexController {
             return "ingest";
         }
         else {
+            logger.info("uris: {}", ingestUpdateBuilder.getUris());
             ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
         }
 
