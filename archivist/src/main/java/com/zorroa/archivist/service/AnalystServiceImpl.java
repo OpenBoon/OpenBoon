@@ -6,10 +6,12 @@ import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.exception.ArchivistException;
 import com.zorroa.sdk.plugins.PluginProperties;
 import com.zorroa.sdk.processor.ProcessorProperties;
 import com.zorroa.sdk.processor.ProcessorType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,9 @@ public class AnalystServiceImpl implements AnalystService {
 
     @Autowired
     AnalystDao analystDao;
+
+    @Value("${archivist.ingest.maxQueueSize}")
+    private int maxQueueSize;
 
     @Override
     public Analyst get(String url) {
@@ -96,13 +101,18 @@ public class AnalystServiceImpl implements AnalystService {
     }
 
     @Override
-    public AnalystClient getAnalystClient() throws Exception {
-        KeyStore trustStore = KeyStore.getInstance("PKCS12");
-        InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
-        trustStore.load(trustStoreInput, "zorroa".toCharArray());
+    public AnalystClient getAnalystClient() {
+        KeyStore trustStore = null;
+        try {
+            trustStore = KeyStore.getInstance("PKCS12");
+            InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
+            trustStore.load(trustStoreInput, "zorroa".toCharArray());
+        } catch (Exception e) {
+            throw new ArchivistException("Failed to acquire SSL client");
+        }
 
         AnalystClient client = new AnalystClient(trustStore);
-        for (Analyst a : analystDao.getActive(new Paging(1, 25))) {
+        for (Analyst a : analystDao.getActive(new Paging(1, 5), maxQueueSize)) {
             client.getLoadBalancer().addHost(a.getUrl());
         }
         return client;

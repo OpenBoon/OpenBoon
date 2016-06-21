@@ -36,7 +36,7 @@ public class SnapshotControllerTests extends MockMvcTest {
          */
         // Start by ingesting the standard test assets
         Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.executeIngest(ingest);
+        ingestExecutorService.start(ingest);
         refreshIndex();
 
         MockHttpSession session = admin();

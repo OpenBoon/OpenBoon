@@ -223,7 +223,9 @@ public class IndexController {
     @RequestMapping("/gui/ingests")
     public String ingests(Model model) {
         standardModel(model);
+        model.addAttribute("pipelines", ingestService.getIngestPipelines());
         model.addAttribute("ingests", ingestService.getAllIngests());
+        model.addAttribute("builder", new IngestBuilder());
         return "ingests";
     }
 

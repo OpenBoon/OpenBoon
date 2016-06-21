@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.*;
 import com.zorroa.archivist.ArchivistConfiguration;
-import com.zorroa.archivist.AssetExecutor;
+import com.zorroa.archivist.AnalyzeExecutor;
 import com.zorroa.archivist.crawlers.FileCrawler;
 import com.zorroa.archivist.crawlers.FlickrCrawler;
 import com.zorroa.archivist.crawlers.HttpCrawler;
@@ -11,10 +11,10 @@ import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
-import com.zorroa.sdk.client.ClientException;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.AbortCrawlerException;
+import com.zorroa.sdk.exception.ArchivistException;
 import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.Crawler;
 import com.zorroa.sdk.processor.ProcessorFactory;
@@ -34,7 +34,11 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 
@@ -89,16 +93,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     }
 
     @Override
-    public boolean executeIngest(Ingest ingest) {
-        return start(ingest, true /* reset counters */);
-    }
-
-    @Override
-    public boolean resume(Ingest ingest) {
-        return start(ingest, false /*don't reset counters*/);
-    }
-
-    protected boolean start(Ingest ingest, boolean firstStart) {
+    public boolean start(Ingest ingest) {
         if (!isHealthy()) {
             eventLogService.log(ingest, "Could not start ingest {}, Zorroa cluster healthy.", ingest);
             return false;
@@ -106,12 +101,8 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
         IngestWorker worker = new IngestWorker(ingest, SecurityUtils.getUser());
         if (runningIngests.putIfAbsent(ingest.getId(), worker) == null) {
-
-            if (firstStart) {
-                // Reset counters and start time only on first execute, not restart
                 ingestService.resetIngestCounters(ingest);
                 ingestService.updateIngestStartTime(ingest, System.currentTimeMillis());
-            }
 
             if (ArchivistConfiguration.unittest) {
                 worker.run();
@@ -130,29 +121,51 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     @Override
     public boolean pause(Ingest ingest) {
-        if (!shutdown(ingest)) {
-            return false;
+        if (ingestService.setIngestPaused(ingest, true)) {
+            IngestWorker worker = runningIngests.get(ingest.getId());
+            if (worker != null) {
+                worker.pause(true);
+            }
+            eventLogService.log(ingest, "Ingest '{}' paused.", ingest.getName());
+            return true;
         }
-        ingestService.setIngestPaused(ingest);
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean resume(Ingest ingest) {
+        if (ingestService.setIngestPaused(ingest, false)) {
+            IngestWorker worker = runningIngests.get(ingest.getId());
+            if (worker != null) {
+                worker.pause(false);
+                synchronized (worker) {
+                    worker.notify();
+                }
+            }
+
+            eventLogService.log(ingest, "Ingest '{}' resumed.", ingest.getName());
+        }
+
+        return false;
     }
 
     @Override
     public boolean stop(Ingest ingest) {
-        if (!shutdown(ingest)) {
-            return false;
-        }
-        ingestService.setIngestIdle(ingest);
-        return true;
-    }
+        if (ingestService.setIngestIdle(ingest)) {
+            IngestWorker worker = runningIngests.get(ingest.getId());
+            if (worker == null) {
+                return false;
+            }
+            worker.shutdown();
+            synchronized(worker) {
+                worker.notify();
+            }
 
-    protected boolean shutdown(Ingest ingest) {
-        IngestWorker worker = runningIngests.get(ingest.getId());
-        if (worker == null) {
-            return false;
+            eventLogService.log(ingest, "Ingest '{}' stopped.", ingest.getName());
+            return true;
         }
-        worker.shutdown();
-        return true;
+
+        return false;
     }
 
     private boolean isHealthy() {
@@ -161,39 +174,55 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
 
     public class IngestWorker implements Runnable {
 
-        private AssetExecutor assetExecutor;
-
         private LongAdder totalAssets = new LongAdder();
 
         private final Ingest ingest;
 
         private final User user;
 
-        private boolean earlyShutdown = false;
+        private AtomicBoolean earlyShutdown = new AtomicBoolean(false);
+
+        private AtomicBoolean paused = new AtomicBoolean(false);
 
         private Set<String> supportedFormats = Sets.newHashSet();
-
-        private Set<String> skippedPaths;
 
         private Timer aggregationTimer;
 
         private List<Aggregator> aggregators;
+
+        private BlockingQueue<AnalyzeRequestEntry> fileQueue = Queues.newLinkedBlockingQueue();
+
+        private AnalyzeExecutor analyzeExecutor = new AnalyzeExecutor(1);
 
         public IngestWorker(Ingest ingest, User user) {
             this.ingest = ingest;
             this.user = user;
         }
 
-        public void shutdown() {
-            earlyShutdown = true;
-            if (assetExecutor != null) {
-                assetExecutor.shutdownNow();
+        public boolean shutdown() {
+            boolean stateChanged =  earlyShutdown.compareAndSet(false, true);
+            if (stateChanged) {
+                analyzeExecutor.shutdownNow();
+            }
+            return stateChanged;
+        }
+
+        public boolean pause(boolean value) {
+            return paused.compareAndSet(!value, value);
+        }
+
+        public void checkStateChange() {
+            if (earlyShutdown.get()) {
+                throw new AbortCrawlerException("Early ingest shutdown.");
+            }
+
+            if (paused.get()) {
                 try {
-                    while (!assetExecutor.awaitTermination(1, TimeUnit.SECONDS)) {
-                        Thread.sleep(250);
+                    synchronized(this) {
+                        this.wait();
                     }
                 } catch (InterruptedException e) {
-                    logger.warn("Asset processing termination interrupted: " + e.getMessage());
+                    logger.warn("Paused crawler thread interrupted");
                 }
             }
         }
@@ -223,13 +252,7 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 return;
             }
 
-            eventLogService.log(ingest, "Ingest started.");
-
-            /*
-             * Create the asset processing thread pool.
-             */
-            assetExecutor = new AssetExecutor(
-                    ingest.getAssetWorkerThreads() > 0 ? ingest.getAssetWorkerThreads() : defaultWorkerThreads);
+            eventLogService.log(ingest, "Ingest '{}' started.", ingest.getName());
 
             try {
 
@@ -242,28 +265,41 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  */
                 startAggregators(pipeline);
 
-                /*
-                 * Figure out the skipped paths
-                 */
-                skippedPaths = ingestService.getSkippedPaths(ingest);
-                for (String path : skippedPaths) {
-                    eventLogService.log(ingest, "Skipping path due to previous failure: {}", path);
-                }
-
                 try {
                     walkIngestPaths(ingest, pipeline);
+                    eventLogService.log(ingest, "Total assets detected {}, batches remaining {}",
+                            totalAssets.longValue(), analyzeExecutor.size());
+                    ingestService.setTotalAssetCount(ingest, totalAssets.longValue());
+
                 } catch (Exception e) {
-                    /*
-                     * Something went wrong while walking the file system, however the asset
-                     * threads might still be working so we don't want to jump right into
-                     * the lower finally block, but wait until the asset threads are done.
+                    /**
+                     * If a crawler failure occurs, log it and then process the rest
+                     * of the analyze queue.
                      */
-                    eventLogService.log(ingest, "Failed to execute ingest on uris {}", e, ingest.getUris());
+                    eventLogService.log(ingest, "Crawler failure", e, ingest.getUris());
                     messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION, ingest));
                 }
 
-                assetExecutor.waitForCompletion();
+                if (!ArchivistConfiguration.unittest) {
+                    analyzeExecutor.waitForCompletion();
+                    for (; ; ) {
 
+                        if (earlyShutdown.get()) {
+                            break;
+                        }
+
+                        Ingest rIngest = ingestService.getIngest(ingest.getId());
+                        if (rIngest.getPendingCount() == 0) {
+                            break;
+                        }
+
+                        try {
+                            Thread.sleep(5000L);
+                        } catch (InterruptedException e) {
+                            break;
+                        }
+                    }
+                }
             } finally {
                 /*
                  * Note: a runtime exception may mean some of these variables
@@ -280,9 +316,13 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  * Pull a new copy of the ingest with all updated fields.
                  */
                 Ingest finishedIngest = ingestService.getIngest(ingest.getId());
-                if (!earlyShutdown) {
-                    ingestService.setIngestIdle(finishedIngest);
+                ingestService.setIngestIdle(finishedIngest);
 
+                /**
+                 * These can be inaccurate during manual shutdown now, probably need it
+                 * iterate all analysts and cancel requests for the ingest.
+                 */
+                if (!earlyShutdown.get()) {
                     eventLogService.log(finishedIngest, "Ingest finished , created {}, updated: {}, errors: {}",
                             finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
                 } else {
@@ -311,61 +351,101 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
         }
 
         private void analyze(AnalystClient analysts, AnalyzeRequest req) {
-            assetExecutor.execute(() -> {
 
-                if (ArchivistConfiguration.unittest) {
-                    for (AnalyzeRequestEntry asset: req.getAssets()) {
-                        AssetBuilder a = new AssetBuilder(asset.getUri());
-                        UnitTestProcessor p = new UnitTestProcessor();
-                        p.process(a);
-                        assetDao.upsert(a);
-                    }
+            if (ArchivistConfiguration.unittest) {
+                for (AnalyzeRequestEntry asset: req.getAssets()) {
+                    AssetBuilder a = new AssetBuilder(asset.getUri());
+                    UnitTestProcessor p = new UnitTestProcessor();
+                    p.process(a);
+                    assetDao.upsert(a);
                 }
-                else {
+            }
+            else {
+                for(;;) {
                     try {
                         /**
-                         * This call is synchronous...otherwise we can't really
-                         * keep track of when the ingest is done.  However, the
-                         * data might not be in elastic when this returns.
+                         * Check for paused or stopped.
                          */
-                        AnalyzeResult result =  analysts.analyze(req);
-                        ingestService.incrementIngestCounters(ingest,
-                                result.created, result.updated, result.warnings, result.errors);
-                        if (result.errors > 0) {
-                            messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
-                                    ingestService.getIngest(ingest.getId())));
-                        }
+                        checkStateChange();
 
                         /**
-                         * TODO: these exceptions from remove the analyst from the load
-                         * balancer.  Once all analysts are removed the ingest
-                         * should exit early.
+                         * Does not return a result.  If this throws, its only via
+                         * a communication error and we'll try to recover from it.
                          */
-                    } catch (ClientException e) {
-                        /**
-                         * This catch block is for handling the case where the AnalystClient
-                         * cannot find any hosts to contact.  They are either down,  or rejecting
-                         * work for some reason.
-                         */
-                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getAssetCount());
-                        eventLogService.log(ingest, "Failed to contact analyst for processing ingest,", e);
-                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
-                                ingestService.getIngest(ingest.getId())));
+                        analysts.analyzeAsync(req);
+                        return;
+
+                    } catch(AbortCrawlerException abort) {
+                        // logged elsewhere
+                        return;
+
                     } catch (Exception e) {
                         /**
-                         * This catch block is for handling the case where the Analyst fails
-                         * to init or execute the pipeline.  This error is already logged
-                         * by the analyst.
+                         * This catch block is for handling the case where communication to
+                         * the analysts fail.
                          */
-                        ingestService.incrementIngestCounters(ingest, 0, 0, 0, req.getAssetCount());
-                        messagingService.broadcast(new Message(MessageType.INGEST_EXCEPTION,
-                                ingestService.getIngest(ingest.getId())));
+                        eventLogService.log(ingest, "Failed to contact analyst for processing ingest,", e);
                     }
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        //ignore
+                    }
+                }
+            }
+        }
+
+        public void submitBatch(IngestPipeline pipeline) {
+
+            List<AnalyzeRequestEntry> batch = Lists.newArrayListWithCapacity(batchSize);
+            fileQueue.drainTo(batch, batchSize);
+
+            analyzeExecutor.execute(() -> {
+                checkStateChange();
+
+                AnalystClient analysts = null;
+                try {
+                    for (; ; ) {
+                        analysts = analystService.getAnalystClient();
+                        if (analysts.getLoadBalancer().hasHosts()) {
+                            // break out of loop when hosts appear.
+                            break;
+                        } else {
+                            try {
+                                /**
+                                 * No idle analysts were available, waiting.
+                                 */
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                return;
+                            }
+                        }
+                    }
+                } catch (ArchivistException e) {
+                    eventLogService.log(ingest, "Failed to obtain secure SSL connection to analysts, check SSL cert,", e);
+                    shutdown();
+                }
+
+                if (analysts == null) {
+                    logger.warn("Unable to initialize analyst client");
+                    return;
+                }
+
+                try {
+                    analyze(analysts, new AnalyzeRequest()
+                            .setUser(user.getUsername())
+                            .setIngestId(ingest.getId())
+                            .setIngestPipelineId(ingest.getPipelineId())
+                            .setAssets(batch)
+                            .setProcessors(pipeline.getProcessors()));
+
+                } catch(AbortCrawlerException abort) {
+                    // logged elsewhere
+                    return;
                 }
             });
         }
-
-
         /**
          * Walks the file paths specified on an ingest. When a valid asset is found its handed
          * to the asset processor threads.
@@ -376,47 +456,18 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
          */
         private void walkIngestPaths(Ingest ingest, IngestPipeline pipeline) throws IOException {
 
-            AnalystClient analyst;
-            try {
-                analyst = analystService.getAnalystClient();
-            }
-            catch (Exception e) {
-                eventLogService.log(ingest, "Failed to find available analysts.");
-                return;
-            }
-
-            BlockingQueue<AnalyzeRequestEntry> queue = Queues.newLinkedBlockingQueue();
-
             /**
              * The consumer may call this from multiple threads
              */
             Consumer<AnalyzeRequestEntry> consumer = entry -> {
-                if (earlyShutdown) {
-                    throw new AbortCrawlerException("Early ingest shutdown.");
-                }
+                checkStateChange();
 
                 totalAssets.increment();
-                queue.add(entry);
+                fileQueue.add(entry);
 
-                synchronized(queue) {
-                    if (queue.size() < batchSize) {
-                        return;
-                    }
+                if (fileQueue.size() >= batchSize) {
+                    submitBatch(pipeline);
                 }
-
-                List<AnalyzeRequestEntry> batch = Lists.newArrayListWithCapacity(batchSize);
-                queue.drainTo(batch, batchSize);
-
-                /*
-                 * This function returns immediately, leaving the crawler to continue
-                 * working.
-                 */
-                analyze(analyst, new AnalyzeRequest()
-                        .setUser(user.getUsername())
-                        .setIngestId(ingest.getId())
-                        .setIngestPipelineId(ingest.getPipelineId())
-                        .setAssets(batch)
-                        .setProcessors(pipeline.getProcessors()));
             };
 
             /**
@@ -444,27 +495,11 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                 }
 
                 crawler.setTargetFileFormats(supportedFormats);
-                crawler.setIgnoredPaths(skippedPaths);
                 crawler.start(uri, consumer);
             }
 
-            /**
-             * If we get here, then the crawler is done.  However, the queue might still have data in it.
-             */
-
-            if (!queue.isEmpty() && !earlyShutdown) {
-                List<AnalyzeRequestEntry> batch = Lists.newArrayListWithCapacity(queue.size());
-                queue.drainTo(batch);
-                analyze(analyst, new AnalyzeRequest()
-                        .setUser(user.getUsername())
-                        .setIngestId(ingest.getId())
-                        .setIngestPipelineId(ingest.getPipelineId())
-                        .setAssets(batch)
-                        .setProcessors(pipeline.getProcessors()));
-            }
-            else {
-                queue.clear();
-            }
+            // The final batch
+            submitBatch(pipeline);
         }
     }
 }

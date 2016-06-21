@@ -29,5 +29,5 @@ public interface AnalystService {
 
     List<ProcessorProperties> getProcessors();
 
-    AnalystClient getAnalystClient() throws Exception;
+    AnalystClient getAnalystClient();
 }

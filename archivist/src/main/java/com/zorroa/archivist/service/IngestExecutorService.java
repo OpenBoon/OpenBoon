@@ -4,7 +4,7 @@ import com.zorroa.sdk.domain.Ingest;
 
 public interface IngestExecutorService {
 
-    boolean executeIngest(Ingest ingest);
+    boolean start(Ingest ingest);
 
     boolean resume(Ingest ingest);
 

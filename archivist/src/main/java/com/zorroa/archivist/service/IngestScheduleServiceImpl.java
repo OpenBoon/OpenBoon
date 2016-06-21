@@ -65,7 +65,7 @@ public class IngestScheduleServiceImpl extends AbstractScheduledService implemen
         int result = 0;
         for (IngestSchedule schedule: getAllReady()) {
             ingestScheduleDao.started(schedule);
-            ingestDao.getAll(schedule).forEach(i -> ingestExecutorService.executeIngest(i));
+            ingestDao.getAll(schedule).forEach(i -> ingestExecutorService.start(i));
             result += schedule.getIngestIds().size();
         }
         return result;
