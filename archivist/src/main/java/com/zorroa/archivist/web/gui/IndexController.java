@@ -212,7 +212,6 @@ public class IndexController {
         }
         Collections.reverse(path);
         model.addAttribute("path", path);
-        logger.info("elements: {}", path.size());
         return "folders";
     }
 
@@ -270,8 +269,12 @@ public class IndexController {
             return "ingest";
         }
         else {
-            logger.info("uris: {}", ingestUpdateBuilder.getUris());
-            ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
+            try {
+                ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
+            } catch (Exception e) {
+                model.addAttribute("errors", true);
+                bindingResult.reject(e.getMessage());
+            }
         }
 
         model.addAttribute("ingest", ingestService.getIngest(id));
