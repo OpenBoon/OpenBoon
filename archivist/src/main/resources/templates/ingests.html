@@ -28,15 +28,21 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>State</th>
                         <th>Name</th>
+                        <th>Uris</th>
                         <th>Created</th>
                         <th>Updated</th>
                         <th>Errors</th>
+                        <th>State</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:class="${ingest.paused} ? primary : default" th:each="ingest: ${ingests}" >
+                    <tr th:each="ingest: ${ingests}" >
+                        <td><a th:text="${ingest.name}" th:href="@{/gui/ingests/__${ingest.id}__}"></a></td>
+                        <td th:text="${ingest.uris.size()}"></td>
+                        <td th:text="${ingest.createdCount}"></td>
+                        <td th:text="${ingest.updatedCount}"></td>
+                        <td th:text="${ingest.errorCount}"></td>
                         <td>
                             <div class="btn-group">
                                 <button name="deleteButton" th:value="${ingest.id}" type="button" class="btn btn-default btn-xs">
@@ -59,10 +65,6 @@
                             </div>
                         </td>
 
-                        <td><a th:text="${ingest.name}" th:href="@{/gui/ingests/__${ingest.id}__}"></a></td>
-                        <td th:text="${ingest.createdCount}"></td>
-                        <td th:text="${ingest.updatedCount}"></td>
-                        <td th:text="${ingest.errorCount}"></td>
                     </tr>
                     </tbody>
                 </table>
