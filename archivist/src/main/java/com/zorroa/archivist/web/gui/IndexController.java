@@ -269,7 +269,12 @@ public class IndexController {
             return "ingest";
         }
         else {
-            ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
+            try {
+                ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
+            } catch (Exception e) {
+                model.addAttribute("errors", true);
+                bindingResult.reject(e.getMessage());
+            }
         }
 
         model.addAttribute("ingest", ingestService.getIngest(id));
