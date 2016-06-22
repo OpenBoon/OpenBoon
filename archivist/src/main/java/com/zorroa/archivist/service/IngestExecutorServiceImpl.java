@@ -289,11 +289,9 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                  * iterate all analysts and cancel requests for the ingest.
                  */
                 if (!earlyShutdown.get()) {
-                    eventLogService.log(finishedIngest, "Ingest finished , created {}, updated: {}, errors: {}",
-                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
+                    eventLogService.log(finishedIngest, "Ingest crawler '{}' finished", ingest.getName());
                 } else {
-                    eventLogService.log(finishedIngest, "Ingest was manually shut down, created {}, updated: {}, errors: {}",
-                            finishedIngest.getCreatedCount(), finishedIngest.getUpdatedCount(), finishedIngest.getErrorCount());
+                    eventLogService.log(finishedIngest, "Ingest '{} was manually shut down", ingest.getName());
                 }
             }
         }
@@ -435,8 +433,6 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
                     type = "file";
                     uri = URI.create("file:" + u);
                 }
-
-                logger.info("URI: {}", uri);
 
                 Crawler crawler = crawlers.get(type);
                 if (crawler == null) {
