@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by wex on 3/5/16.
  */
-@Component("FieldDateAggregator")
+@Component("FieldAggregator")
 @Scope("prototype")
 public class FieldAggregator extends Aggregator {
 
@@ -39,6 +39,10 @@ public class FieldAggregator extends Aggregator {
 
     @Argument
     private List<String> fields;
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setFields(List<String> fields) {
         this.fields = fields;
