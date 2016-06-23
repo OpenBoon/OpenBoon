@@ -57,6 +57,8 @@ public class AggregationServiceImpl implements AggregationService {
                     List<Aggregator> result = Lists.newArrayList();
                     for (ProcessorFactory<Aggregator> factory : pipeline.getAggregators()) {
                         Aggregator agg = (Aggregator) applicationContext.getBean(factory.getKlassName());
+                        agg.setArgs(factory.getArgs());
+                        agg.setArguments();
                         agg.init(ingest);
                         result.add(agg);
                     }
@@ -86,6 +88,8 @@ public class AggregationServiceImpl implements AggregationService {
                     messagingService.broadcast(new Message(MessageType.INGEST_AGGREGATE, ingest));
                 } catch (ExecutionException e) {
                     logger.warn("aggregation failed: {}", e.getMessage(), e);
+                } catch (Exception e) {
+                    logger.warn("aggregation error: {}", e.getMessage(), e);
                 }
                 finally {
                     aggregating.remove(ingest.getId());
