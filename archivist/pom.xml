@@ -5,7 +5,7 @@
 
     <groupId>com.zorroa</groupId>
     <artifactId>archivist</artifactId>
-    <version>0.20.0</version>
+    <version>0.30.0</version>
     <packaging>jar</packaging>
 
     <name>archivist</name>
@@ -15,7 +15,7 @@
         <relativePath>../pom.xml</relativePath>
         <groupId>com.zorroa</groupId>
         <artifactId>zorroa-server</artifactId>
-        <version>0.20.0</version>
+        <version>0.30.0</version>
     </parent>
 
     <properties>
@@ -89,12 +89,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zorroa.fileseq</groupId>
-            <artifactId>fileseq</artifactId>
-            <version>0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
@@ -124,12 +118,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
-            <version>0.4.8</version>
         </dependency>
 
         <dependency>
