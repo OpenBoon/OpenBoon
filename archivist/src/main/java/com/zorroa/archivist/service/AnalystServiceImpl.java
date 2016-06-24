@@ -1,15 +1,10 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.exception.ArchivistException;
-import com.zorroa.sdk.plugins.PluginProperties;
-import com.zorroa.sdk.processor.ProcessorProperties;
-import com.zorroa.sdk.processor.ProcessorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -54,50 +49,6 @@ public class AnalystServiceImpl implements AnalystService {
     @Override
     public List<Analyst> getAll() {
         return analystDao.getAll(new Paging(1, 100));
-    }
-
-    @Override
-    public List<PluginProperties> getPlugins() {
-        try {
-            Analyst a = analystDao.getActive(new Paging(1, 1)).get(0);
-            return a.getPlugins();
-        } catch (IndexOutOfBoundsException e) {
-            return ImmutableList.of();
-        }
-    }
-
-    @Override
-    public List<ProcessorProperties> getProcessors(ProcessorType type) {
-        try {
-            Analyst a = analystDao.getActive(new Paging(1, 1)).get(0);
-            List<ProcessorProperties> result = Lists.newArrayList();
-            for (PluginProperties plugin: a.getPlugins()) {
-                for (ProcessorProperties pr: plugin.getProcessors()) {
-                    if (pr.getType().equals(type)) {
-                        result.add(pr);
-                    }
-                }
-            }
-            return result;
-        } catch (IndexOutOfBoundsException e) {
-            //ignore
-        }
-        return ImmutableList.of();
-    }
-
-    @Override
-    public List<ProcessorProperties> getProcessors() {
-        try {
-            Analyst a = analystDao.getActive(new Paging(1, 1)).get(0);
-            List<ProcessorProperties> result = Lists.newArrayList();
-            for (PluginProperties plugin: a.getPlugins()) {
-               result.addAll(plugin.getProcessors());
-            }
-            return result;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            //ignore
-        }
-        return ImmutableList.of();
     }
 
     @Override

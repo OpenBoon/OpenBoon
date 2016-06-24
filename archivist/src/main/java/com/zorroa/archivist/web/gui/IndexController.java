@@ -215,13 +215,6 @@ public class IndexController {
         return "folders";
     }
 
-    @RequestMapping("/gui/plugins")
-    public String plugins(Model model) {
-        standardModel(model);
-        model.addAttribute("plugins", analystService.getPlugins());
-        return "plugins";
-    }
-
     @RequestMapping("/gui/analysts")
     public String analysts(Model model,
                            @RequestParam(value="page", required=false) Integer page,

@@ -11,13 +11,6 @@ import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.domain.AnalystState;
 import com.zorroa.sdk.domain.AnalystUpdateBuilder;
-import com.zorroa.sdk.domain.Tuple;
-import com.zorroa.sdk.plugins.Plugin;
-import com.zorroa.sdk.plugins.PluginProperties;
-import com.zorroa.sdk.processor.ArgumentScanner;
-import com.zorroa.sdk.processor.IngestProcessor;
-import com.zorroa.sdk.processor.ProcessorProperties;
-import com.zorroa.sdk.processor.ProcessorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +132,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setArch(osBean.getArch());
             builder.setData(properties.getBoolean("analyst.index.data"));
             builder.setUrl(url);
-            builder.setPlugins(getPlugins());
             builder.setUpdatedTime(System.currentTimeMillis());
             builder.setState(AnalystState.UP);
             builder.setLoad(load);
@@ -161,22 +153,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         }
 
         return id;
-    }
-
-    public List<PluginProperties> getPlugins() {
-        List<PluginProperties> result = Lists.newArrayList();
-        ArgumentScanner scanner = new ArgumentScanner();
-        for (Tuple<PluginProperties, Plugin> tuple : pluginService.getLoadedPlugins()) {
-            PluginProperties plugin = tuple.getLeft();
-            List<ProcessorProperties> processors = Lists.newArrayList();
-            for (Class<? extends IngestProcessor> proc : tuple.getRight().getIngestProcessors()) {
-                processors.add(new ProcessorProperties(proc.getName(), ProcessorType.Ingest,
-                        scanner.scan(proc)));
-            }
-            plugin.setProcessors(processors);
-            result.add(plugin);
-        }
-        return result;
     }
 
     public String getIpAddress() throws IOException {
