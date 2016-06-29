@@ -1,6 +1,5 @@
 package com.zorroa.archivist;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.MigrationType;
@@ -11,8 +10,8 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.plugins.PluginProperties;
-import com.zorroa.sdk.processor.*;
+import com.zorroa.sdk.processor.Aggregator;
+import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.sdk.schema.ImportSchema;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
@@ -372,31 +371,6 @@ public abstract class AbstractTest {
         ping.setOs("test");
         ping.setArch("test_x86-64");
         ping.setThreadCount(2);
-        ping.setPlugins(
-                ImmutableList.of(new PluginProperties()
-                        .setDescription("A foo plugin")
-                        .setName("FooBar")
-                        .setVersion("1.0-beta2-rumblepack")
-                        .setProcessors(
-                                ImmutableList.of(
-                                        new ProcessorProperties()
-                                                .setClassName("foo.bar.FooIngestor")
-                                                .setType(ProcessorType.Ingest)
-                                                .setDisplay(ImmutableList.of(new DisplayProperties()
-                                                        .setName("field")
-                                                        .setWidget("text"))),
-                                        new ProcessorProperties()
-                                                .setClassName("foo.bar.FooAggregator")
-                                                .setType(ProcessorType.Aggregation)
-                                                .setDisplay(ImmutableList.of(new DisplayProperties()
-                                                        .setName("field")
-                                                        .setWidget("text"))),
-                                        new ProcessorProperties()
-                                                .setClassName("foo.bar.FooExporter")
-                                                .setType(ProcessorType.Export)
-                                                .setDisplay(ImmutableList.of(new DisplayProperties()
-                                                        .setName("field")
-                                                        .setWidget("text")))))));
         return ping;
     }
 }
