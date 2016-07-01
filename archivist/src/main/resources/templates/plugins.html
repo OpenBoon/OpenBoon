@@ -11,11 +11,52 @@
     <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
         <div class="container-fluid">
             <div class="navbar-header navbar-brand">
-                <span class="fa fa-lock" aria-hidden="true"></span>
-                Plugins
+                <i class="fa fa-plug fa-fw"/>Plugins
+            </div>
+            <div class="nav navbar-nav navbar-right">
+                <button onclick="$('#modalForm').modal({'backdrop': 'static'});" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
             </div>
         </div>
     </nav>
+
+    <div class="panel panel-default" style="border-width: 0px;">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Version</th>
+                        <th>Publisher</th>
+                        <th>Description</th>
+                        <th>Language</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="plugin: ${plugins.list}">
+                        <td><a th:text="${plugin.name}" th:href="@{/gui/plugins/__${plugin.name}__}"></a></td>
+                        <td th:text="${plugin.version}"></td>
+                        <td th:text="${plugin.publisher}"></td>
+                        <td th:text="${plugin.description}"></td>
+                        <td th:text="${plugin.language}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="container-fluid">
+                <ul class="pagination pull-right" style="margin: 0;">
+                    <li class="previous disabled"><a href="#"><span aria-hidden="true" th:text="${plugins.page.display}"></span></a></li>
+                    <li><a th:href="@{/gui/users(page=${plugins.page.prev})}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a></li>
+                    <li><a th:href="@{/gui/users(page=${plugins.page.next})}"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     </p>
 </section>
 

@@ -1,6 +1,8 @@
 package com.zorroa.common.elastic;
 
 import com.google.common.collect.Lists;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -83,6 +85,22 @@ public class ElasticTemplate {
             }
         }
         return result;
+    }
+
+    public <T> PagedList<List<T>> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
+        builder.setSize(paging.getCount()).setFrom(paging.getFrom());
+        final SearchResponse r = builder.get();
+        List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
+
+        for (SearchHit hit: r.getHits()) {
+            try {
+                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+            } catch (Exception e) {
+                throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
+            }
+        }
+        paging.setTotalCount(r.getHits().getTotalHits());
+        return new PagedList(paging, result);
     }
 
     /**

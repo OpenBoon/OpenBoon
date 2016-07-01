@@ -40,6 +40,9 @@ public class IndexController {
     AnalystService analystService;
 
     @Autowired
+    PluginService pluginService;
+
+    @Autowired
     FolderService folderService;
 
     @Autowired
@@ -288,6 +291,30 @@ public class IndexController {
         standardModel(model);
         model.addAttribute("pipelines", ingestService.getIngestPipelines());
         return "pipelines";
+    }
+
+    @RequestMapping("/gui/plugins")
+    public String plugins(Model model, @RequestParam(value="page", required=false) Integer page) {
+        standardModel(model);
+        model.addAttribute("plugins", pluginService.getPlugins(new Paging(page)));
+        return "plugins";
+    }
+
+    @RequestMapping("/gui/plugins/{name}")
+    public String plugins(Model model, @PathVariable String name) {
+        standardModel(model);
+        model.addAttribute("plugin", pluginService.get(name));
+        model.addAttribute("ingests", pluginService.getModules(name, "ingest"));
+        model.addAttribute("generators", pluginService.getModules(name, "generator"));
+        return "plugin";
+    }
+
+    @RequestMapping("/gui/plugins/{name}/module/{module}")
+    public String plugins(Model model, @PathVariable String name, @PathVariable String module) {
+        standardModel(model);
+        model.addAttribute("plugin", pluginService.get(name));
+        model.addAttribute("module", pluginService.getModule(name, module));
+        return "module";
     }
 
     @RequestMapping("/gui/status")

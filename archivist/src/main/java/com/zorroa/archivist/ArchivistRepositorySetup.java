@@ -9,6 +9,7 @@ import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.IngestExecutorService;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.MigrationService;
+import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.domain.EventLogMessage;
@@ -34,6 +35,9 @@ import java.io.IOException;
 public class ArchivistRepositorySetup implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(ArchivistRepositorySetup.class);
+
+    @Autowired
+    PluginService pluginService;
 
     @Autowired
     IngestService ingestService;
@@ -84,11 +88,11 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 logger.error("Failed to setup datasources, ", e);
                 throw new RuntimeException(e);
             }
+
             /**
-             * TODO: get the snapshot repository working with elastic 1.7
-             *
-             * createSnapshotRepository();
+             * Register plugins.
              */
+            pluginService.registerAllPlugins();
 
             /**
              * Reset all ingests to the idle state.
@@ -96,7 +100,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             ingestService.getAllIngests().stream()
                     .map(i->ingestService.setIngestIdle(i))
                     .count();
-            eventLogService.log(new EventLogMessage("Archivist Started").setType("Archivist Started"));
+            eventLogService.log(new EventLogMessage("Archivist Started")
+                    .setType("Archivist Started"));
         }
     }
 

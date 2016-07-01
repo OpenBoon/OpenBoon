@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <p>
+        <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
+            <div class="container-fluid">
+                <div class="navbar-header navbar-brand">
+                    <i class="fa fa-plug fa-fw"/>Plugin Module
+                </div>
+            </div>
+        </nav>
+    <div class="container">
+        <dl class="dl-horizontal">
+            <dt>Name:</dt>
+            <dd th:text="${module.name}"></dd>
+            <dt>Class:</dt>
+            <dd th:text="${module.className}"></dd>
+            <dt>Type:</dt>
+            <dd th:text="${module.type}"></dd>
+            <dt>Plugin:</dt>
+            <dd th:text="${module.plugin}"></dd>
+            <dt>Version:</dt>
+            <dd th:text="${module.version}"></dd>
+        </dl>
+    </div>
+
+    <div th:fragment="display_props">
+        <ul>
+            <div th:with="displays = ${module.display}"
+                 th:include="fragments/display_props :: display_props"/>
+        </ul>
+    </div>
+
+    </p>
+</section>
+
+</body>
+</html>

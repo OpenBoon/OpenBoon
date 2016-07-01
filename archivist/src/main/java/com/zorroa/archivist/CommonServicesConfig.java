@@ -1,13 +1,11 @@
 package com.zorroa.archivist;
 
-import com.zorroa.common.repository.AnalystDao;
-import com.zorroa.common.repository.AnalystDaoImpl;
-import com.zorroa.sdk.config.ApplicationProperties;
-import com.zorroa.common.repository.AssetDao;
-import com.zorroa.common.repository.AssetDaoImpl;
+import com.zorroa.common.repository.*;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.common.service.EventLogServiceImpl;
+import com.zorroa.sdk.config.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +18,9 @@ public class CommonServicesConfig {
     @Autowired
     ApplicationProperties applicationProperties;
 
+    @Value("${zorroa.common.index.alias}")
+    private String alias;
+
     @Bean
     public EventLogService eventLogService() {
         return new EventLogServiceImpl();
@@ -27,11 +28,21 @@ public class CommonServicesConfig {
 
     @Bean
     public AssetDao assetDao() {
-        return new AssetDaoImpl(applicationProperties.getString("zorroa.common.index.alias"));
+        return new AssetDaoImpl(alias);
     }
 
     @Bean
     public AnalystDao analystDao() {
-        return new AnalystDaoImpl(applicationProperties.getString("zorroa.common.index.alias"));
+        return new AnalystDaoImpl(alias);
+    }
+
+    @Bean
+    public PluginDao pluginDao() {
+        return new PluginDaoImpl(alias);
+    }
+
+    @Bean
+    public ModuleDao moduleDao() {
+        return new ModuleDaoImpl(alias);
     }
 }

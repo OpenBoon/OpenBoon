@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="display_props">
+<div class="container-fluid">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <th:block th:each="display: ${displays}">
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <i th:if="${#strings.startsWith(display.type, 'list[')}" class="fa fa-list"></i>
+                        <i th:if="${display.type == 'boolean'}" class="fa fa-toggle-on"></i>
+                        <i th:if="${display.type == 'string'}" class="fa fa-font"></i>
+                        <i th:if="${display.type == 'int'}" class="fa fa-italic"></i>
+                        <i th:if="${display.type == 'file'}" class="fa fa-file-text-o"></i>
+                        <a th:text="${display.label}" role="button" data-toggle="collapse" data-parent="#accordion" th:href="${'#' + display.name}" aria-expanded="false" th:aria-controls="${display.name}">
+                        </a>
+                    </h4>
+                </div>
+                <div th:id="${display.name}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <dl class="dl-vertical">
+                            <dt>Property:</dt>
+                            <dd th:text="${display.name}"></dd>
+                            <dt>Label:</dt>
+                            <dd th:text="${display.label}"></dd>
+                            <dt>Type:</dt>
+                            <dd th:text="${display.type}"></dd>
+                            <dt>Widget:</dt>
+                            <dd th:text="${display.widget}"></dd>
+                            <dt>Default:</dt>
+                            <dd th:text="${display.value}"></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div th:fragment="display_props">
+                <div th:if="${not #lists.isEmpty(display.children)}"
+                     th:with="displays = ${display.children}"
+                     th:include="fragments/display_props :: display_props"/>
+            </div>
+        </th:block>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
