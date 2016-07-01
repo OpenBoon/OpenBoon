@@ -2,7 +2,7 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.ByteStreams;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.aggregators.DateAggregator;
 import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.security.InternalAuthentication;
@@ -12,24 +12,26 @@ import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.common.service.EventLogService;
+import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.EventLogMessage;
 import com.zorroa.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.sdk.processor.ProcessorFactory;
-import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.File;
+import java.util.Map;
+
 
 @Component
 public class ArchivistRepositorySetup implements ApplicationListener<ContextRefreshedEvent> {
@@ -57,14 +59,11 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     @Autowired
     EventLogService eventLogService;
 
-    @Value("${zorroa.common.index.alias}")
+    @Autowired
+    ApplicationProperties properties;
+
+    @Value("${zorroa.cluster.index.alias}")
     private String alias;
-
-    @Value("${archivist.snapshot.basePath}")
-    private String snapshotPath;
-
-    @Value("${archivist.snapshot.repoName}")
-    private String snapshotRepoName;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -94,12 +93,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
              */
             pluginService.registerAllPlugins();
 
-            /**
-             * Reset all ingests to the idle state.
-             */
-            ingestService.getAllIngests().stream()
-                    .map(i->ingestService.setIngestIdle(i))
-                    .count();
             eventLogService.log(new EventLogMessage("Archivist Started")
                     .setType("Archivist Started"));
         }
@@ -110,7 +103,28 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         ElasticClientUtils.createIndexedScripts(client);
         ElasticClientUtils.createEventLogTemplate(client);
         createDefaultIngestPipeline();
+        createSharedPaths();
+        writeClusterConfiguration();
         refreshIndex();
+    }
+
+    public void createSharedPaths() {
+        properties.getMap("zorroa.cluster.").forEach((k,v)-> {
+            if (k.contains(".path.")) {
+                File dir = new File((String)v);
+                boolean result = dir.mkdirs();
+                if (!result) {
+                    try {
+                        dir.setLastModified(System.currentTimeMillis());
+                    } catch (Exception e) {
+                    }
+                    if (!dir.exists()) {
+                        throw new RuntimeException("Failed to setup shared storage directory '" +
+                                dir + "', could not make directory and it does not exist.");
+                    }
+                }
+            }
+        });
     }
 
     public void refreshIndex() {
@@ -118,11 +132,24 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         client.admin().indices().prepareRefresh(alias).execute();
     }
 
-    public void createEventLogTemplate() throws IOException {
-        logger.info("Creating event log template");
-        ClassPathResource resource = new ClassPathResource("eventlog-template.json");
-        byte[] source = ByteStreams.toByteArray(resource.getInputStream());
-        client.admin().indices().preparePutTemplate("eventlog").setSource(source).get();
+    public void writeClusterConfiguration() {
+        // Remove the periods.
+        Map<String, Object> source = Maps.newHashMap();
+        properties.getMap("zorroa.cluster.").forEach((k,v)-> {
+            if (k.contains(".path.")) {
+                try {
+                    v = new File((String)v).getAbsoluteFile().getCanonicalPath();
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to resolve relative external config path: " + v);
+                }
+            }
+            source.put(k.replace('.', '_'), v);
+        });
+
+        client.prepareIndex(alias, "config", "current")
+                .setOpType(IndexRequest.OpType.INDEX)
+                .setSource(source)
+                .get();
     }
 
     private void createDefaultIngestPipeline() {
@@ -157,21 +184,5 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
             ingestService.createIngestPipeline(builder);
         }
-    }
-
-    private void createSnapshotRepository() {
-        logger.info("Creating snapshot repository \"" + snapshotRepoName + "\" in \"" + snapshotPath + "\"");
-        // Later we can add support for S3 buckets or HDFS backups
-        Settings settings = Settings.builder()
-                .put("location", snapshotPath)
-                .put("compress", true)
-                .put("max_snapshot_bytes_per_sec", "50mb")
-                .put("max_restore_bytes_per_sec", "50mb")
-                .build();
-        PutRepositoryRequestBuilder builder =
-                client.admin().cluster().preparePutRepository(snapshotRepoName);
-        builder.setType("fs")
-                .setSettings(settings)
-                .execute().actionGet();
     }
 }

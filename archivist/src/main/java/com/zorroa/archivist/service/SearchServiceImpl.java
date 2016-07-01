@@ -50,7 +50,7 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     FolderService folderService;
 
-    @Value("${zorroa.common.index.alias}")
+    @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
     @Autowired

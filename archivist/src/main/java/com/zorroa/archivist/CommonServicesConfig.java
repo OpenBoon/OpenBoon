@@ -18,7 +18,7 @@ public class CommonServicesConfig {
     @Autowired
     ApplicationProperties applicationProperties;
 
-    @Value("${zorroa.common.index.alias}")
+    @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
     @Bean

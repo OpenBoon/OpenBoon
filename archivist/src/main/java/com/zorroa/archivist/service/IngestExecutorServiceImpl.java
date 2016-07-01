@@ -74,13 +74,10 @@ public class IngestExecutorServiceImpl implements IngestExecutorService {
     @Autowired
     AggregationService aggregationService;
 
-    @Value("${archivist.ingest.maxRunningIngests}")
+    @Value("${archivist.scheduler.maxRunningJobs}")
     private int maxRunningIngests;
 
-    @Value("${archivist.ingest.defaultWorkerThreads}")
-    private int defaultWorkerThreads;
-
-    @Value("${archivist.ingest.batchSize}")
+    @Value("${archivist.scheduler.maxBatchSize}")
     private int batchSize;
 
     private final ConcurrentMap<Integer, IngestWorker> runningIngests = Maps.newConcurrentMap();

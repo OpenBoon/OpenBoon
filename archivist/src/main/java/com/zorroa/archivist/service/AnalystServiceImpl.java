@@ -23,7 +23,7 @@ public class AnalystServiceImpl implements AnalystService {
     @Autowired
     AnalystDao analystDao;
 
-    @Value("${archivist.ingest.maxQueueSize}")
+    @Value("${archivist.scheduler.maxQueueSize}")
     private int maxQueueSize;
 
     @Override

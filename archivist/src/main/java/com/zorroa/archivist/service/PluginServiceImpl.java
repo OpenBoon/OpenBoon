@@ -48,7 +48,7 @@ public class PluginServiceImpl implements PluginService {
     @Autowired
     Client client;
 
-    @Value("${zorroa.common.index.alias}")
+    @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
     PluginLoader pluginLoader;
@@ -165,7 +165,6 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public void registerAllPlugins() {
-        logger.info("Registering all plugins");
         pluginLoader.registerPlugins();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
@@ -186,6 +185,10 @@ public class PluginServiceImpl implements PluginService {
             }
         }
 
+        logger.info("Registering {} plugins", bulkRequest.numberOfActions());
+        if (bulkRequest.numberOfActions() == 0) {
+            return;
+        }
         BulkResponse bulk = bulkRequest.get();
         if (bulk.hasFailures()) {
             throw new PluginException("Unable to register plugin with database, " +

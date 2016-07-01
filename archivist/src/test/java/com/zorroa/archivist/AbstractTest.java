@@ -14,10 +14,7 @@ import com.zorroa.sdk.processor.Aggregator;
 import com.zorroa.sdk.processor.ProcessorFactory;
 import com.zorroa.sdk.schema.ImportSchema;
 import com.zorroa.sdk.util.FileUtils;
-import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequestBuilder;
-import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.snapshots.SnapshotInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -120,11 +117,8 @@ public abstract class AbstractTest {
     @Autowired
     AnalystDao analystDao;
 
-    @Value("${zorroa.common.index.alias}")
+    @Value("${zorroa.cluster.index.alias}")
     protected String alias;
-
-    @Value("${archivist.snapshot.repoName}")
-    private String snapshotRepoName;
 
     protected JdbcTemplate jdbc;
 
@@ -139,14 +133,6 @@ public abstract class AbstractTest {
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbc = new JdbcTemplate(dataSource);
-    }
-
-    private List<SnapshotInfo> getSnapshotInfos() {
-        GetSnapshotsRequestBuilder builder =
-            client.admin().cluster().prepareGetSnapshots(snapshotRepoName);
-        builder.setRepository(snapshotRepoName);
-        GetSnapshotsResponse getSnapshotsResponse = builder.execute().actionGet();
-        return getSnapshotsResponse.getSnapshots();
     }
 
     @Before

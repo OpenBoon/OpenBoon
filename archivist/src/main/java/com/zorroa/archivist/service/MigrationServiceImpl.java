@@ -48,7 +48,7 @@ public class MigrationServiceImpl implements MigrationService {
 
     private static final Logger logger = LoggerFactory.getLogger(MigrationServiceImpl.class);
 
-    @Value("${zorroa.common.index.alias}")
+    @Value("${zorroa.cluster.index.alias}")
     String alias;
 
     @Autowired

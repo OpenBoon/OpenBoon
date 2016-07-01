@@ -35,7 +35,7 @@ public class AssetController {
 
     private static final Logger logger = LoggerFactory.getLogger(AssetController.class);
 
-    @Value("${zorroa.common.index.alias}")
+    @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
     @Autowired

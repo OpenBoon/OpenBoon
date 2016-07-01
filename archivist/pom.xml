@@ -242,7 +242,7 @@
                         </goals>
                         <configuration>
                             <executable>/bin/rm</executable>
-                            <commandlineArgs>-rf index db/archivist.mv.db exports unittest</commandlineArgs>
+                            <commandlineArgs>-rf index db shared unittest</commandlineArgs>
                         </configuration>
                     </execution>
                     <execution>
