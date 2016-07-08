@@ -72,7 +72,7 @@ public class PluginServiceImpl implements PluginService {
             Path dst = pluginPath.resolve(file.getOriginalFilename());
             try {
                 Files.copy(file.getInputStream(), dst);
-                Path pluginPath = pluginLoader.expandPluginPackage(dst);
+                Path pluginPath = pluginLoader.unpackPluginPackage(dst);
                 Plugin plugin = pluginLoader.loadPlugin(pluginPath);
                 registerPlugin(plugin);
                 return plugin;
@@ -93,7 +93,7 @@ public class PluginServiceImpl implements PluginService {
             Path dst = pluginPath.resolve(FileUtils.filename(zipFilePath));
             try {
                 Files.copy(zipFilePath, dst);
-                Path pluginPath = pluginLoader.expandPluginPackage(dst);
+                Path pluginPath = pluginLoader.unpackPluginPackage(dst);
                 Plugin plugin = pluginLoader.loadPlugin(pluginPath);
                 registerPlugin(plugin);
                 return plugin;
@@ -165,7 +165,7 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public void registerAllPlugins() {
-        pluginLoader.registerPlugins();
+        pluginLoader.unpackAndLoadAllPlugins();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (Plugin p: pluginLoader.getPlugins()) {
