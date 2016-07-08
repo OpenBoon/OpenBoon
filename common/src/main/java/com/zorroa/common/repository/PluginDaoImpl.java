@@ -16,10 +16,6 @@ import java.util.List;
  */
 public class PluginDaoImpl extends AbstractElasticDao implements PluginDao {
 
-    public PluginDaoImpl(String alias) {
-        this.alias = alias;
-    }
-
     @Override
     public String getType() {
         return "plugin";

@@ -3,7 +3,6 @@ package com.zorroa.common.config;
 import com.zorroa.common.repository.*;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.common.service.EventLogServiceImpl;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CommonBeanConfig {
 
-    @Value("${zorroa.cluster.index.alias}")
-    private String alias;
-
     @Bean
     public EventLogService eventLogService() {
         return new EventLogServiceImpl();
@@ -23,21 +19,27 @@ public class CommonBeanConfig {
 
     @Bean
     public AssetDao assetDao() {
-        return new AssetDaoImpl(alias);
+        return new AssetDaoImpl();
     }
 
     @Bean
     public AnalystDao analystDao() {
-        return new AnalystDaoImpl(alias);
+        return new AnalystDaoImpl();
     }
 
     @Bean
     public PluginDao pluginDao() {
-        return new PluginDaoImpl(alias);
+        return new PluginDaoImpl();
     }
 
     @Bean
     public ModuleDao moduleDao() {
-        return new ModuleDaoImpl(alias);
+        return new ModuleDaoImpl();
     }
+
+    @Bean
+    public ClusterConfigDao clusterConfigDao() { return new ClusterConfigDaoImpl(); }
+
+    @Bean
+    public TaskDao taskDao() { return new TaskDaoImpl(); }
 }

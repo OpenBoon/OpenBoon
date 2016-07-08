@@ -17,10 +17,6 @@ import java.util.List;
  */
 public class ModuleDaoImpl extends AbstractElasticDao implements ModuleDao {
 
-    public ModuleDaoImpl(String alias) {
-        this.alias = alias;
-    }
-
     @Override
     public String getType() {
         return "module";

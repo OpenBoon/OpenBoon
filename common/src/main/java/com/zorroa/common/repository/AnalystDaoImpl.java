@@ -24,10 +24,6 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
 
     private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
 
-    public AnalystDaoImpl(String alias) {
-        this.alias = alias;
-    }
-
     @Override
     public String getType() {
         return "analyst";

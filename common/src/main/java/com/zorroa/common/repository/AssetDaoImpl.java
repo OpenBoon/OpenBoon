@@ -26,10 +26,6 @@ import java.util.regex.Pattern;
 
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
-    public AssetDaoImpl(String alias) {
-        this.alias = alias;
-    }
-
     @Override
     public String getType() {
         return "asset";
