@@ -44,7 +44,7 @@ public class MultipleWebSecurityConfig {
                 .antMatcher("/api/**")
                 .authorizeRequests()
                 .antMatchers("/health/**").permitAll()
-                .antMatchers("/cluster/**").permitAll()
+                .antMatchers("/api/v1/analysts/_config").permitAll()
                 .antMatchers("/console/**").hasAuthority("user::admin")
                 .anyRequest().authenticated()
                 .and()
