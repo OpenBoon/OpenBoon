@@ -3,8 +3,9 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.*;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Source;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class NoteDaoTests extends AbstractTest {
 
     @Before
     public void init() {
-        AssetBuilder ab = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Source ab = new Source(getTestImagePath("standard/beer_kettle_01.jpg"));
         assetId = assetDao.upsert(ab).getId();
     }
 

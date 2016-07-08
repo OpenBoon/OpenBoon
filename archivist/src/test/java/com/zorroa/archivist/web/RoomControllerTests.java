@@ -8,6 +8,8 @@ import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.web.api.RoomController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -406,9 +409,9 @@ public class RoomControllerTests extends MockMvcTest {
     public void testGetAssets() throws Exception {
         MockHttpSession session = user();
 
-        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords("source", "bender");
-        assetDao.upsert(assetBuilder);
+        Source source = new Source(new File(getTestImagePath() + "/beer_kettle_01.jpg"));
+        AssetUtils.addKeywords(source, "source", "bender");
+        assetDao.upsert(source);
         refreshIndex();
 
         RoomBuilder builder = new RoomBuilder();

@@ -2,13 +2,13 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
-import com.zorroa.sdk.domain.AssetBuilder;
+import com.zorroa.archivist.service.NoteService;
+import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Note;
 import com.zorroa.sdk.domain.NoteBuilder;
 import com.zorroa.sdk.domain.NoteSearch;
+import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.archivist.service.NoteService;
-import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -38,7 +38,7 @@ public class NoteControllerTests extends MockMvcTest {
 
     @Before
     public void init() {
-        AssetBuilder ab = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
+        Source ab = new Source(getTestImagePath("standard/beer_kettle_01.jpg"));
         assetId = assetDao.upsert(ab).getId();
     }
 

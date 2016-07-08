@@ -10,9 +10,8 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Aggregator;
-import com.zorroa.sdk.processor.ProcessorFactory;
-import com.zorroa.sdk.schema.ImportSchema;
+import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
@@ -21,10 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +39,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -67,19 +66,13 @@ public abstract class AbstractTest {
     protected FolderService folderService;
 
     @Autowired
-    protected IngestExecutorService ingestExecutorService;
-
-    @Autowired
-    protected IngestScheduleService ingestScheduleService;
-
-    @Autowired
-    protected ExportExecutorService exportExecutorService;
+    protected JobScheduleService ingestScheduleService;
 
     @Autowired
     protected ExportService exportService;
 
     @Autowired
-    protected IngestService ingestService;
+    protected PipelineService pipelineService;
 
     @Autowired
     protected SearchService searchService;
@@ -123,8 +116,6 @@ public abstract class AbstractTest {
     protected JdbcTemplate jdbc;
 
     protected Set<String> testImages;
-
-    public static final String TEST_DATA_PATH = new File("src/test/resources/static").getAbsolutePath();
 
     public AbstractTest() {
         ArchivistConfiguration.unittest = true;
@@ -213,70 +204,8 @@ public abstract class AbstractTest {
         userService.create(userBuilder);
     }
 
-    private static final Set<String> SUPPORTED_FORMATS = ImmutableSet.of(
-            "jpg", "pdf", "mov", "gif", "tif");
-
-    public List<AssetBuilder> getTestAssets(String subdir) {
-        List<AssetBuilder> result = Lists.newArrayList();
-        FileSystemResource resource = new FileSystemResource(TEST_DATA_PATH + "/images/" + subdir);
-        for (File f: resource.getFile().listFiles()) {
-
-            if (f.isFile()) {
-                if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
-                    AssetBuilder b = new AssetBuilder(f);
-                    b.setAttr("user.rating", 4);
-                    b.setAttr("test.path", resource.getFile().getAbsolutePath());
-                    b.getKeywords().addKeywords("source", b.getFilename());
-                    result.add(b);
-                }
-            }
-        }
-
-        for (File f: resource.getFile().listFiles()) {
-            if (f.isDirectory()) {
-                result.addAll(getTestAssets(subdir + "/" + f.getName()));
-            }
-        }
-
-        logger.info("{}", result);
-
-        return result;
-    }
-
-    public Ingest addTestAssets(String subdir) {
-        return addTestAssets(getTestAssets(subdir));
-    }
-
-    public Ingest addTestAssets(List<AssetBuilder> builders) {
-
-        logger.info("testPath: {}", (String) builders.get(0).getAttr("test.path"));
-        String path = builders.get(0).getAttr("test.path");
-        Ingest i = ingestService.createIngest(
-                new IngestBuilder().setName("foo").addToUris(path));
-
-        ImportSchema schema = new ImportSchema();
-        schema.addIngest(i);
-        for (AssetBuilder builder: builders) {
-            logger.info("Adding test asset: {}", builder.getAbsolutePath());
-            builder.setAttr("imports", schema);
-            builder.addKeywords("source", builder.getFilename());
-            assetService.upsert(builder);
-        }
-        refreshIndex();
-
-        AutowireCapableBeanFactory autowire = applicationContext.getAutowireCapableBeanFactory();
-        IngestPipeline pipeline = ingestService.getIngestPipeline(i.getPipelineId());
-        for (ProcessorFactory<Aggregator> factory: pipeline.getAggregators()) {
-            Aggregator agg = factory.newInstance();
-            autowire.autowireBean(agg);
-            agg.init(i);
-            agg.aggregate();
-        }
-        return i;
-    }
-
     /**
-     * Athenticates a user as admin but with all permissions, including internal ones.
+     * Authenticates a user as admin but with all permissions, including internal ones.
      */
     public void authenticate() {
         Authentication auth = new BackgroundTaskAuthentication(userService.get("admin"));
@@ -304,21 +233,53 @@ public abstract class AbstractTest {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
-    /*
-     * TODO: We can refactor these to go away eventually.  See addTestAssets()
-     */
-    public String getStaticImagePath(String subdir) {
-        FileSystemResource resource = new FileSystemResource(TEST_DATA_PATH + "/images");
-        String path = resource.getFile().getAbsolutePath() + "/" + subdir;
-        return path;
+    public Path getTestImagePath(String subdir) {
+        return Paths.get("../unittest/resources/images").resolve(subdir).toAbsolutePath();
     }
 
-    public String getStaticImagePath() {
-        return getStaticImagePath("standard");
+    public Path getTestImagePath() {
+        return getTestImagePath("standard");
     }
 
-    public File getTestImage(String name) {
-        return new File(getStaticImagePath() + "/" + name);
+    private static final Set<String> SUPPORTED_FORMATS = ImmutableSet.of(
+        "jpg", "pdf", "mov", "gif", "tif");
+
+    public List<Source> getTestAssets(String subdir) {
+        List<Source> result = Lists.newArrayList();
+        for (File f: getTestImagePath(subdir).toFile().listFiles()) {
+
+            if (f.isFile()) {
+                if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
+                    Source b = new Source(f);
+                    b.setAttr("user.rating", 4);
+                    b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
+                    AssetUtils.addKeywords(b, "source", b.getAttr("source.filename", String.class));
+                    result.add(b);
+                }
+            }
+        }
+
+        for (File f: getTestImagePath(subdir).toFile().listFiles()) {
+            if (f.isDirectory()) {
+                result.addAll(getTestAssets(subdir + "/" + f.getName()));
+            }
+        }
+
+        logger.info("{}", result);
+        return result;
+    }
+
+    public void addTestAssets(String subdir) {
+        addTestAssets(getTestAssets(subdir));
+    }
+
+    public void addTestAssets(List<Source> builders) {
+        for (Source builder: builders) {
+            logger.info("Adding test asset: {}", builder.getPath());
+            AssetUtils.addKeywords(builder, "source", builder.getAttr("source.filename", String.class));
+            assetService.upsert(builder);
+        }
+        refreshIndex();
     }
 
     public void refreshIndex() {

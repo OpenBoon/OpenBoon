@@ -2,7 +2,6 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.TestIngestor;
 import com.zorroa.sdk.domain.IngestPipeline;
 import com.zorroa.sdk.domain.IngestPipelineBuilder;
 import com.zorroa.sdk.domain.IngestPipelineUpdateBuilder;
@@ -35,7 +34,7 @@ public class IngestPipelineControllerTests extends MockMvcTest {
         builder.setName("test");
         builder.setDescription("a test pipeline");
         builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor")));
-        pipeline = ingestService.createIngestPipeline(builder);
+        pipeline = pipelineService.createIngestPipeline(builder);
     }
 
     @Test
@@ -59,7 +58,6 @@ public class IngestPipelineControllerTests extends MockMvcTest {
         IngestPipelineUpdateBuilder builder = new IngestPipelineUpdateBuilder();
         builder.setName("foo");
         builder.setDescription("Foo and Bar");
-        builder.setProcessors(Lists.newArrayList(new ProcessorFactory<>(TestIngestor.class)));
 
         String v = Json.Mapper.writeValueAsString(builder);
         IngestPipelineUpdateBuilder b = Json.Mapper.readValue(v, IngestPipelineUpdateBuilder.class);

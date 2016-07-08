@@ -6,6 +6,8 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -136,9 +138,9 @@ public class AssetControllerTests extends MockMvcTest {
     public void testSuggest() throws Exception {
 
         MockHttpSession session = admin();
-        List<AssetBuilder> builders = getTestAssets("canyon");
-        for (AssetBuilder builder: builders) {
-            builder.addSuggestKeywords("source", "reflection");
+        List<Source> builders = getTestAssets("canyon");
+        for (Source builder: builders) {
+            AssetUtils.addSuggestKeywords(builder, "source", "reflection");
         }
         addTestAssets(builders);
 
@@ -163,11 +165,11 @@ public class AssetControllerTests extends MockMvcTest {
     public void testSuggestV2() throws Exception {
 
         MockHttpSession session = admin();
-        List<AssetBuilder> builders = getTestAssets("canyon");
-        for (AssetBuilder builder: builders) {
-            builder.addSuggestKeywords("source", "reflection");
+        List<Source> sources = getTestAssets("canyon");
+        for (Source source: sources) {
+            AssetUtils.addSuggestKeywords(source, "source", "reflection");
         }
-        addTestAssets(builders);
+        addTestAssets(sources);
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_suggest")
                 .session(session)
@@ -466,27 +468,6 @@ public class AssetControllerTests extends MockMvcTest {
         assertEquals(2, count);     // Total count is 2, even though we only get 1 asset in array below
         ArrayList<Object> assets = (ArrayList<Object>) hits.get("hits");
         assertEquals(1, assets.size());
-    }
-
-    @Test
-    public void testFilterIngest() throws Exception {
-        MockHttpSession session = user();
-
-        Ingest ingest = addTestAssets("canyon");
-
-        AssetSearch search = new AssetSearch(new AssetFilter().setIngestId(ingest.getId()));
-        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
     }
 
     @Test
