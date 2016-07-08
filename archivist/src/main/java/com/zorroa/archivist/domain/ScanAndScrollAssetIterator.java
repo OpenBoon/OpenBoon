@@ -46,7 +46,6 @@ public class ScanAndScrollAssetIterator implements Iterable<Asset> {
                 SearchHit hit = hits[index++];
 
                 asset.setDocument(hit.getSource());
-                asset.setVersion(hit.getVersion());
                 asset.setId(hit.getId());
 
                 return asset;
