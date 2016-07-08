@@ -1,8 +1,8 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.archivist.service.IngestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,55 +13,49 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class IngestPipelineController {
+public class PipelineController {
 
-    private static final Logger logger = LoggerFactory.getLogger(IngestPipelineController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PipelineController.class);
 
     @Autowired
-    IngestService ingestService;
+    PipelineService pipelineService;
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.POST)
     public IngestPipeline create(@RequestBody IngestPipelineBuilder builder) {
-        return ingestService.createIngestPipeline(builder);
+        return pipelineService.createIngestPipeline(builder);
     }
 
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.GET)
     public IngestPipeline get(@PathVariable Integer id) {
-        return ingestService.getIngestPipeline(id);
+        return pipelineService.getIngestPipeline(id);
     }
 
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.GET)
     public List<IngestPipeline> getAll() {
-        return ingestService.getIngestPipelines();
+        return pipelineService.getIngestPipelines();
     }
 
     @RequestMapping(value="/api/v1/pipelines/_by_name/{name}", method=RequestMethod.GET)
     public IngestPipeline get(@PathVariable String name) {
-        return ingestService.getIngestPipeline(name);
-    }
-
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
-    @RequestMapping(value="/api/v1/pipelines/{id}/_ingest", method=RequestMethod.POST)
-    public Ingest ingest(@RequestBody IngestBuilder builder, @PathVariable Integer id) {
-        return ingestService.createIngest(builder);
+        return pipelineService.getIngestPipeline(name);
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.PUT)
     public IngestPipeline update(@RequestBody IngestPipelineUpdateBuilder builder, @PathVariable Integer id) {
-        IngestPipeline pipeline = ingestService.getIngestPipeline(id);
-        ingestService.updateIngestPipeline(pipeline, builder);
-        return ingestService.getIngestPipeline(id);
+        IngestPipeline pipeline = pipelineService.getIngestPipeline(id);
+        pipelineService.updateIngestPipeline(pipeline, builder);
+        return pipelineService.getIngestPipeline(id);
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable Integer id) {
-        IngestPipeline pipeline = ingestService.getIngestPipeline(id);
+        IngestPipeline pipeline = pipelineService.getIngestPipeline(id);
         try {
             return ImmutableMap.<String, Object>builder()
-                    .put("status", ingestService.deleteIngestPipeline(pipeline))
+                    .put("status", pipelineService.deleteIngestPipeline(pipeline))
                     .build();
         } catch (Exception e) {
             return ImmutableMap.<String, Object>builder()
