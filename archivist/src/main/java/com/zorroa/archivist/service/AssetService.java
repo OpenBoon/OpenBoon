@@ -1,18 +1,19 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.AssetBuilder;
-import com.zorroa.sdk.domain.AssetUpdateBuilder;
+import com.zorroa.sdk.processor.Source;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public interface AssetService {
 
-    Asset upsert(AssetBuilder builder);
-
-    String upsertAsync(AssetBuilder builder);
+    Asset upsert(Source source);
 
     Asset get(String id);
+
+    Asset get(Path path);
 
     /**
      * Fetch the first page of assets.
@@ -21,18 +22,15 @@ public interface AssetService {
      */
     List<Asset> getAll();
 
-    boolean assetExistsByPath(String path);
-
-    boolean assetExistsByPathAfter(String path, long afterTime);
-
+    boolean exists(Path path);
 
     /**
-     * Update the given assetId with the supplied AssetUpdateBuilder.  Return
+     * Update the given assetId with the supplied Map of attributes.  Return
      * the new version number of the asset.
      *
-     * @param assetId
-     * @param builder
+     * @param id
+     * @param attrs
      * @return
      */
-    long update(String assetId, AssetUpdateBuilder builder);
+    long update(String id, Map<String, Object> attrs);
 }
