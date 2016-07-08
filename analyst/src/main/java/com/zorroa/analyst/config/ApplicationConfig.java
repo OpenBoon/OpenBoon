@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.zorroa.analyst.Application;
-import com.zorroa.common.repository.ClusterConfigDao;
+import com.zorroa.common.repository.ClusterSettingsDao;
 import com.zorroa.sdk.client.archivist.ArchivistClient;
 import com.zorroa.sdk.config.ApplicationProperties;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class ApplicationConfig {
             logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
             Map<String, String> settings = client.getAnalystSettings();
             settings.forEach((k, v) -> {
-                k = k.replace(ClusterConfigDao.DELIMITER, ".");
+                k = k.replace(ClusterSettingsDao.DELIMITER, ".");
                 System.setProperty(k, v);
                 logger.info("setting property: {}={}", k, v);
             });

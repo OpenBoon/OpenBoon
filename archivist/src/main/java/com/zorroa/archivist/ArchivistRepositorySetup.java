@@ -4,7 +4,7 @@ import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.common.repository.ClusterConfigDao;
+import com.zorroa.common.repository.ClusterSettingsDao;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.EventLogMessage;
@@ -44,7 +44,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     EventLogService eventLogService;
 
     @Autowired
-    ClusterConfigDao clusterConfigDao;
+    ClusterSettingsDao clusterSettingsDao;
 
     @Autowired
     ApplicationProperties properties;
@@ -119,6 +119,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     }
 
     public void writeClusterConfiguration() {
-        clusterConfigDao.save(properties);
+        clusterSettingsDao.save(properties);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by chambers on 7/8/16.
  */
-public interface ClusterConfigDao {
+public interface ClusterSettingsDao {
 
     String DELIMITER = "_%_";
 

@@ -37,6 +37,9 @@ public class IndexController {
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
+    PipelineService pipelineService;
+
+    @Autowired
     AnalystService analystService;
 
     @Autowired
@@ -50,9 +53,6 @@ public class IndexController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    IngestService ingestService;
 
     @Autowired
     HealthEndpoint healthEndpoint;
@@ -228,16 +228,16 @@ public class IndexController {
     }
 
     @RequestMapping("/gui/ingests")
-    public String ingests(Model model) {
+    public String imports(Model model) {
         standardModel(model);
-        model.addAttribute("pipelines", ingestService.getIngestPipelines());
-        model.addAttribute("ingests", ingestService.getAllIngests());
-        model.addAttribute("builder", new IngestBuilder());
+        //model.addAttribute("pipelines", ingestService.getIngestPipelines());
+        //model.addAttribute("ingests", ingestService.getAllIngests());
+        //model.addAttribute("builder", new IngestBuilder());
         return "ingests";
     }
 
     @RequestMapping(value="/gui/ingests",  method=RequestMethod.POST)
-    public String createIngest(Model model,
+    public String createImport(Model model,
                                @Valid @ModelAttribute("ingestBuilder") IngestBuilder ingestBuilder,
                                BindingResult bindingResult) {
         standardModel(model);
@@ -247,49 +247,25 @@ public class IndexController {
             return "ingests";
         }
 
-        model.addAttribute("pipelines", ingestService.getIngestPipelines());
-        model.addAttribute("ingests", ingestService.getAllIngests());
-        model.addAttribute("builder", new IngestBuilder());
-        ingestService.createIngest(ingestBuilder);
+        //model.addAttribute("pipelines", ingestService.getIngestPipelines());
+        //model.addAttribute("ingests", ingestService.getAllIngests());
+        //model.addAttribute("builder", new IngestBuilder());
+        //ingestService.createIngest(ingestBuilder);
         return "redirect:/gui/ingests";
     }
 
-    @RequestMapping(value="/gui/ingests/{id}", method=RequestMethod.POST)
-    public String updateIngest(Model model, @PathVariable int id,
-                             @Valid @ModelAttribute("ingestUpdateBuilder") IngestUpdateBuilder ingestUpdateBuilder,
-                             BindingResult bindingResult) {
-        standardModel(model);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("ingest", ingestService.getIngest(id));
-            model.addAttribute("errors", true);
-            return "ingest";
-        }
-        else {
-            try {
-                ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
-            } catch (Exception e) {
-                model.addAttribute("errors", true);
-                bindingResult.reject(e.getMessage());
-            }
-        }
-
-        model.addAttribute("ingest", ingestService.getIngest(id));
-        model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
-        return "ingest";
-    }
-
-    @RequestMapping("/gui/ingests/{id}")
+    @RequestMapping("/gui/import/{id}")
     public String ingest(Model model, @PathVariable int id) {
         standardModel(model);
-        model.addAttribute("ingest", ingestService.getIngest(id));
-        model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
+        //model.addAttribute("ingest", ingestService.getIngest(id));
+        //model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
         return "ingest";
     }
 
     @RequestMapping("/gui/pipelines")
     public String pipelines(Model model) {
         standardModel(model);
-        model.addAttribute("pipelines", ingestService.getIngestPipelines());
+        model.addAttribute("pipelines", pipelineService.getIngestPipelines());
         return "pipelines";
     }
 
@@ -355,6 +331,6 @@ public class IndexController {
                         .setAfterTime(System.currentTimeMillis() - (86400 * 1000))));
 
         model.addAttribute("stdEvents", result);
-        model.addAttribute("stdIngests", ingestService.getAllIngests(IngestState.Running, 10));
+        //model.addAttribute("stdJobs", ingestService.getAllIngests(IngestState.Running, 10));
     }
 }

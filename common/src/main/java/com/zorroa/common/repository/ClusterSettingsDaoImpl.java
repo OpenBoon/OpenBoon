@@ -13,16 +13,16 @@ import java.util.Map;
 /**
  * Created by chambers on 7/8/16.
  */
-public class ClusterConfigDaoImpl extends AbstractElasticDao implements ClusterConfigDao {
+public class ClusterSettingsDaoImpl extends AbstractElasticDao implements ClusterSettingsDao {
 
     @Override
     public String getType() {
-        return "config";
+        return "cluster";
     }
 
     @Override
     public Map<String, Object> get() {
-        Map<String,Object> config = client.prepareGet(alias, getType(), "current")
+        Map<String,Object> config = client.prepareGet(alias, getType(), "settings")
                 .get(TimeValue.timeValueSeconds(10))
                 .getSourceAsMap();
         Map<String,Object> result = Maps.newHashMapWithExpectedSize(config.size());
@@ -34,7 +34,7 @@ public class ClusterConfigDaoImpl extends AbstractElasticDao implements ClusterC
 
     @Override
     public void load() {
-        Map<String, Object> config = client.prepareGet(alias, getType(), "current")
+        Map<String, Object> config = client.prepareGet(alias, getType(), "settings")
                 .get(TimeValue.timeValueSeconds(10))
                 .getSourceAsMap();
         config.forEach((k,v)-> {
