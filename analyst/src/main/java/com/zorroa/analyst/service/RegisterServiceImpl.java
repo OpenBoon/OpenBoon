@@ -42,9 +42,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     private static final Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
 
     @Autowired
-    PluginService pluginService;
-
-    @Autowired
     AnalystDao analystDao;
 
     @Autowired
