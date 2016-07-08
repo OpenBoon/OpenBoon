@@ -4,16 +4,17 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.zorroa.analyst.Application;
+import com.zorroa.common.repository.ClusterConfigDao;
 import com.zorroa.sdk.client.archivist.ArchivistClient;
 import com.zorroa.sdk.config.ApplicationProperties;
-import com.zorroa.sdk.filesystem.AbstractFileSystem;
-import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
@@ -28,6 +29,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Created by chambers on 2/12/16.
  */
 @Configuration
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApplicationConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
@@ -40,8 +42,20 @@ public class ApplicationConfig {
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
         InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
         trustStore.load(trustStoreInput, "zorroa".toCharArray());
+        ArchivistClient client =  new ArchivistClient(trustStore,
+                properties.getString("analyst.master.host"));
 
-        ArchivistClient client =  new ArchivistClient(trustStore, properties.getString("analyst.master.host"));
+        logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
+        if (!Application.isUnitTest()) {
+            logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
+            Map<String, String> settings = client.getAnalystSettings();
+            settings.forEach((k, v) -> {
+                k = k.replace(ClusterConfigDao.DELIMITER, ".");
+                System.setProperty(k, v);
+                logger.info("setting property: {}={}", k, v);
+            });
+        }
+
         return client;
     }
 
@@ -82,14 +96,5 @@ public class ApplicationConfig {
     @Autowired
     public ListeningExecutorService analyzeExecutor(ThreadPoolExecutor analyzeThreadPool) {
         return MoreExecutors.listeningDecorator(analyzeThreadPool);
-    }
-
-    @Bean(initMethod="init")
-    public ObjectFileSystem fileSystem() throws Exception {
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        Class fileSystemClass = classLoader.loadClass(properties.getString("analyst.filesystem.class"));
-        AbstractFileSystem fs = (AbstractFileSystem) fileSystemClass.getConstructor(Properties.class).newInstance(
-                properties.getProperties("analyst.filesystem.", false));
-        return fs;
     }
 }

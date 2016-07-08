@@ -1,6 +1,7 @@
 package com.zorroa.analyst.config;
 
 import com.zorroa.analyst.Application;
+import com.zorroa.sdk.client.archivist.ArchivistClient;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;
@@ -28,16 +29,18 @@ public class ElasticConfig {
     ApplicationProperties properties;
 
     @Bean
-    public Client elastic() throws IOException {
+    @Autowired
+    public Client elastic(ArchivistClient archivist) throws IOException {
 
         Random rand = new Random(System.nanoTime());
         int number = rand.nextInt(99999);
 
         String hostName = InetAddress.getLocalHost().getHostName();
+
         String nodeName = String.format("%s_%05d", hostName, number);
         String archivistHost = String.format("%s:%d",
                 URI.create(properties.getString("analyst.master.host")).getHost(),
-                properties.getInt("zorroa.common.index.port"));
+                properties.getInt("zorroa.cluster.index.port"));
 
         Settings.Builder builder =
                 Settings.settingsBuilder()
