@@ -1,34 +1,31 @@
 package com.zorroa.common.repository;
 
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.BatchAssetUpsertResult;
+import com.zorroa.sdk.domain.Folder;
+import com.zorroa.sdk.processor.Source;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public interface AssetDao {
-
-    Asset upsert(AssetBuilder builder);
-
-    String upsertAsync(AssetBuilder builder);
 
     Asset get(String id);
 
     List<Asset> getAll();
 
-    boolean existsByPath(String path);
+    boolean exists(Path path);
 
-    Asset getByPath(String path);
+    Asset get(Path path);
 
-    boolean existsByPathAfter(String path, long afterTime);
+    long update(String assetId, Map<String, Object> attrs);
+
+    Asset upsert(Source source);
+
+    BatchAssetUpsertResult upsert(List<Source> sources);
 
     int addToFolder(Folder folder, List<String> assetIds);
 
     int removeFromFolder(Folder folder, List<String> assetIds);
-
-    long update(String assetId, AssetUpdateBuilder builder);
-
-    AnalyzeResult bulkUpsert(List<AssetBuilder> builders);
-
-    void addToExport(Asset asset, Export export);
-
-    void refresh();
 }

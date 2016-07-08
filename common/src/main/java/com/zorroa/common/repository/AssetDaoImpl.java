@@ -1,13 +1,12 @@
 package com.zorroa.common.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -19,14 +18,13 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
-
-    private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
 
     public AssetDaoImpl(String alias) {
         this.alias = alias;
@@ -41,40 +39,31 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         Map<String, Object> data = Json.deserialize(source, new TypeReference<Map<String, Object>>() {});
         Asset result = new Asset();
         result.setId(id);
-        result.setVersion(version);
         result.setDocument(data);
         return result;
     };
 
     @Override
-    public Asset upsert(AssetBuilder builder) {
-        String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
-        UpdateRequestBuilder upsert = prepareUpsert(builder, id);
+    public Asset upsert(Source source) {
+        String id = source.getId();
+        UpdateRequestBuilder upsert = prepareUpsert(source, id);
         upsert.setRefresh(true);
         upsert.get();
         return get(id);
     }
 
     @Override
-    public String upsertAsync(AssetBuilder builder) {
-        String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
-        UpdateRequestBuilder upsert = prepareUpsert(builder, id);
-        upsert.execute();
-        return id;
-    }
-
-    @Override
-    public AnalyzeResult bulkUpsert(List<AssetBuilder> builders) {
-        AnalyzeResult result = new AnalyzeResult();
-        if (builders.isEmpty()) {
+    public BatchAssetUpsertResult upsert(List<Source> sources) {
+        BatchAssetUpsertResult result = new BatchAssetUpsertResult();
+        if (sources.isEmpty()) {
             return result;
         }
-        List<AssetBuilder> retries = Lists.newArrayList();
+        List<Source> retries = Lists.newArrayList();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (AssetBuilder builder : builders) {
-            String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
-            bulkRequest.add(prepareUpsert(builder, id));
+        for (Source source : sources) {
+            String id = source.getId();
+            bulkRequest.add(prepareUpsert(source, id));
         }
 
         BulkResponse bulk = bulkRequest.get();
@@ -84,13 +73,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             UpdateResponse update = response.getResponse();
             if (response.isFailed()) {
                 String message = response.getFailure().getMessage();
-                AssetBuilder asset = builders.get(index);
+                Source asset = sources.get(index);
                 if (removeBrokenField(asset, message)) {
                     result.warnings++;
-                    retries.add(builders.get(index));
+                    retries.add(sources.get(index));
                 } else {
                     result.logs.add(new StringBuilder(1024).append(
-                            message).append(",").append(asset.getAbsolutePath()).toString());
+                            message).append(",").append(asset.getPath()).toString());
                     result.errors++;
                 }
             } else if (update.isCreated()) {
@@ -106,19 +95,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
          */
         if (!retries.isEmpty()) {
             result.retries++;
-            result.add(bulkUpsert(retries));
+            result.add(upsert(retries));
         }
         return result;
     }
 
-    private UpdateRequestBuilder prepareUpsert(AssetBuilder builder, String id) {
-        /**
-         * Close the AssetBuilder which has an open file handle to the asset itself.
-         */
-        builder.close();
-        builder.buildKeywords();
-
-        byte[] doc = Json.serialize(builder.getDocument());
+    private UpdateRequestBuilder prepareUpsert(Source source, String id) {
+        byte[] doc = Json.serialize(source.getDocument());
         return client.prepareUpdate(alias, "asset", id)
                 .setDoc(doc)
                 .setId(id)
@@ -130,7 +113,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             Pattern.compile("\"term in field=\"(.*?)\"\"")
     };
 
-    private boolean removeBrokenField(AssetBuilder asset, String error) {
+    private boolean removeBrokenField(Source asset, String error) {
         for (Pattern pattern: RECOVERABLE_BULK_ERRORS) {
             Matcher matcher = pattern.matcher(error);
             if (matcher.find()) {
@@ -138,15 +121,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             }
         }
         return false;
-    }
-
-    @Override
-    public void addToExport(Asset asset, Export export) {
-        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setScript(new Script("asset_append_export",
-                ScriptService.ScriptType.INDEXED, "groovy",
-                ImmutableMap.of("exportId", export.getId())));
-        updateBuilder.setRefresh(true).get();
     }
 
     @Override
@@ -194,9 +168,9 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public long update(String assetId, AssetUpdateBuilder builder) {
+    public long update(String assetId, Map<String, Object> values) {
         Asset asset = get(assetId);
-        for (Map.Entry<String,Object> entry: builder.entrySet()) {
+        for (Map.Entry<String,Object> entry: values.entrySet()) {
             asset.setAttr(entry.getKey(), entry.getValue());
         }
 
@@ -214,33 +188,24 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public boolean existsByPath(String path) {
-        long count = client.prepareCount(alias)
-                .setQuery(QueryBuilders.termQuery("source.path.raw", path))
-                .get()
-                .getCount();
-        return count > 0;
+    public boolean exists(Path path) {
+        return client.prepareSearch(alias)
+                .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString()))
+                .setSize(0)
+                .get().getHits().getTotalHits() > 0;
     }
 
     @Override
-    public Asset getByPath(String path) {
-        List<Asset> assets = elastic.query(client.prepareSearch(alias).setTypes("asset").setQuery(
-                QueryBuilders.termQuery("source.path.raw", path)), MAPPER);
+    public Asset get(Path path) {
+        List<Asset> assets = elastic.query(client.prepareSearch(alias)
+                .setTypes(getType())
+                .setSize(1)
+                .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString())), MAPPER);
+
         if (assets.isEmpty()) {
             return null;
         }
         return assets.get(0);
-    }
-
-    @Override
-    public boolean existsByPathAfter(String path, long afterTime) {
-        long count = client.prepareCount(alias)
-                .setQuery(QueryBuilders.filteredQuery(
-                        QueryBuilders.termQuery("source.path.raw", path),
-                        QueryBuilders.rangeQuery("_timestamp").gt(afterTime)))
-                .get()
-                .getCount();
-        return count > 0;
     }
 
     @Override
@@ -251,10 +216,5 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), MAPPER);
 
-    }
-
-    @Override
-    public void refresh() {
-        client.admin().indices().prepareRefresh(alias).get();
     }
 }
