@@ -1,22 +1,13 @@
 package com.zorroa.archivist;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import com.zorroa.archivist.aggregators.DateAggregator;
-import com.zorroa.archivist.aggregators.IngestPathAggregator;
 import com.zorroa.archivist.security.InternalAuthentication;
-import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.elastic.ElasticClientUtils;
+import com.zorroa.common.repository.ClusterConfigDao;
 import com.zorroa.common.service.EventLogService;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.EventLogMessage;
-import com.zorroa.sdk.domain.IngestPipelineBuilder;
-import com.zorroa.sdk.processor.ProcessorFactory;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +19,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.io.File;
-import java.util.Map;
+import java.io.IOException;
 
 
 @Component
@@ -40,12 +30,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     @Autowired
     PluginService pluginService;
-
-    @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
 
     @Autowired
     Client client;
@@ -58,6 +42,9 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     @Autowired
     EventLogService eventLogService;
+
+    @Autowired
+    ClusterConfigDao clusterConfigDao;
 
     @Autowired
     ApplicationProperties properties;
@@ -102,7 +89,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         logger.info("Setting up data sources");
         ElasticClientUtils.createIndexedScripts(client);
         ElasticClientUtils.createEventLogTemplate(client);
-        createDefaultIngestPipeline();
         createSharedPaths();
         writeClusterConfiguration();
         refreshIndex();
@@ -133,56 +119,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     }
 
     public void writeClusterConfiguration() {
-        // Remove the periods.
-        Map<String, Object> source = Maps.newHashMap();
-        properties.getMap("zorroa.cluster.").forEach((k,v)-> {
-            if (k.contains(".path.")) {
-                try {
-                    v = new File((String)v).getAbsoluteFile().getCanonicalPath();
-                } catch (IOException e) {
-                    throw new RuntimeException("Failed to resolve relative external config path: " + v);
-                }
-            }
-            source.put(k.replace('.', '_'), v);
-        });
-
-        client.prepareIndex(alias, "config", "current")
-                .setOpType(IndexRequest.OpType.INDEX)
-                .setSource(source)
-                .get();
-    }
-
-    private void createDefaultIngestPipeline() {
-        if (!ingestService.ingestPipelineExists("standard")) {
-            IngestPipelineBuilder builder = new IngestPipelineBuilder();
-            builder.setName("standard");
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FilePathIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.VideoIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.PdfIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ProxyIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.CaffeIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FaceIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ColorAnalysisIngestor"));
-            builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
-            builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
-            ingestService.createIngestPipeline(builder);
-        }
-
-        if (!ingestService.ingestPipelineExists("production")) {
-            IngestPipelineBuilder builder = new IngestPipelineBuilder();
-            builder.setName("production");
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FilePathIngestor",
-                    ImmutableMap.of("representations", ImmutableList.of(ImmutableMap.of("primary", "blend")))));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.BlenderIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.VideoIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ShotgunIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ProxyIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ColorAnalysisIngestor"));
-            builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
-            builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
-            ingestService.createIngestPipeline(builder);
-        }
+        clusterConfigDao.save(properties);
     }
 }
