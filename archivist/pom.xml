@@ -242,7 +242,7 @@
                         </goals>
                         <configuration>
                             <executable>/bin/rm</executable>
-                            <commandlineArgs>-rf index db shared unittest</commandlineArgs>
+                            <commandlineArgs>-rf db</commandlineArgs>
                         </configuration>
                     </execution>
                     <execution>
