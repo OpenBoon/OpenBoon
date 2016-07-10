@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Preconditions;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpec;
@@ -39,6 +40,10 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
 
     @Override
     public Pipeline create(PipelineSpec spec) {
+        Preconditions.checkNotNull(spec.getName());
+        Preconditions.checkNotNull(spec.getType());
+        Preconditions.checkNotNull(spec.getProcessors());
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
