@@ -1,12 +1,14 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.collect.Lists;
-import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.sdk.domain.Pipeline;
-import com.zorroa.sdk.domain.PipelineBuilder;
-import com.zorroa.sdk.domain.PipelineUpdateBuilder;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.Pipeline;
+import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.processor.ProcessorSpec;
 import com.zorroa.sdk.util.Json;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -23,41 +25,27 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
         Pipeline result = new Pipeline();
         result.setId(rs.getInt("pk_pipeline"));
         result.setName(rs.getString("str_name"));
-        result.setDescription(rs.getString("str_description"));
-        result.setTimeCreated(rs.getLong("time_created"));
-        result.setTimeModified(rs.getLong("time_modified"));
+        result.setProcessors(Json.deserialize(rs.getString("json_processors"),
+                new TypeReference<List<ProcessorSpec>>() {}));
+        result.setType(PipelineType.values()[rs.getInt("int_type")]);
         return result;
     };
 
     private static final String INSERT =
-            "INSERT INTO " +
-                    "pipeline " +
-            "(" +
-                    "str_name,"+
-                    "str_description,"+
-                    "user_created,"+
-                    "time_created,"+
-                    "user_modified, "+
-                    "time_modified, "+
-                    "json_processors, " +
-                    "json_aggregators " +
-            ") "+
-            "VALUES (?,?,?,?,?,?,?,?)";
+            JdbcUtils.insert("pipeline",
+                    "str_name",
+                    "int_type",
+                    "json_processors");
 
     @Override
-    public Pipeline create(PipelineBuilder builder) {
-        long time = System.currentTimeMillis();
+    public Pipeline create(PipelineSpec spec) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
                 connection.prepareStatement(INSERT, new String[]{"pk_pipeline"});
-            ps.setString(1, builder.getName());
-            ps.setString(2, builder.getDescription());
-            ps.setInt(3, SecurityUtils.getUser().getId());
-            ps.setLong(4, time);
-            ps.setInt(5, SecurityUtils.getUser().getId());
-            ps.setLong(6, time);
-            ps.setString(7, Json.serializeToString(builder.getProcessors(), "[]"));
+            ps.setString(1, spec.getName());
+            ps.setInt(2, spec.getType().ordinal());
+            ps.setString(3, Json.serializeToString(spec.getProcessors(), "[]"));
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -83,6 +71,11 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
     }
 
     @Override
+    public Pipeline refresh(Pipeline p) {
+        return get(p.getId());
+    }
+
+    @Override
     public boolean exists(String name) {
         return jdbc.queryForObject("SELECT COUNT(1) FROM pipeline WHERE str_name=?", Integer.class, name) == 1;
     }
@@ -93,48 +86,32 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
     }
 
     @Override
-    public boolean update(Pipeline pipeline, PipelineUpdateBuilder builder) {
-        StringBuilder sb = new StringBuilder(512);
-        sb.append("UPDATE pipeline SET ");
+    public PagedList<Pipeline> getAll(Paging page) {
+        return new PagedList<>(
+                page.setTotalCount(count()),
+                    jdbc.query("SELECT * FROM pipeline ORDER BY pk_pipeline LIMIT ? OFFSET ?", MAPPER,
+                    page.getSize(), page.getFrom()));
+    }
 
-        List<String> updates = Lists.newArrayList();
-        List<Object> values = Lists.newArrayList();
+    private static final String UPDATE =
+            JdbcUtils.update("pipeline", "pk_pipeline",
+                    "str_name",
+                    "int_type",
+                    "json_processors");
 
-        if (builder.getDescription() != null) {
-            updates.add("str_description=?");
-            values.add(builder.getDescription());
-        }
-
-        if (builder.getName() != null) {
-            updates.add("str_name=?");
-            values.add(builder.getName());
-        }
-
-        if (builder.getProcessors() != null) {
-            updates.add("json_processors=?");
-            values.add(Json.serializeToString(builder.getProcessors()));
-        }
-
-        if (updates.isEmpty()) {
-            return false;
-        }
-
-        updates.add("user_modified=?");
-        values.add(SecurityUtils.getUser().getId());
-
-        updates.add("time_modified=?");
-        values.add(System.currentTimeMillis());
-
-        sb.append(StringUtils.join(updates, ", "));
-        sb.append(" WHERE pk_pipeline=?");
-        values.add(pipeline.getId());
-
-        logger.debug("{} {}", sb.toString(), values);
-        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    @Override
+    public boolean update(int id, PipelineSpec spec) {
+        return jdbc.update(UPDATE, spec.getName(), spec.getType().ordinal(),
+                Json.serializeToString(spec.getProcessors()), id) == 1;
     }
 
     @Override
-    public boolean delete(Pipeline pipeline) {
-        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=?", pipeline.getId()) == 1;
+    public boolean delete(int id) {
+        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=?", id) == 1;
+    }
+
+    @Override
+    public long count() {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM pipeline", Long.class);
     }
 }

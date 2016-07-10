@@ -73,7 +73,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     public List<Analyst> getAll(Paging paging) {
         return elastic.query(client.prepareSearch(alias)
                 .setTypes(getType())
-                .setSize(paging.getCount())
+                .setSize(paging.getSize())
                 .setFrom(paging.getFrom())
                 .setQuery(QueryBuilders.matchAllQuery()), MAPPER);
     }
@@ -87,7 +87,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
 
         return elastic.query(client.prepareSearch(alias)
                 .setTypes(getType())
-                .setSize(paging.getCount())
+                .setSize(paging.getSize())
                 .setFrom(paging.getFrom())
                 .addSort("queueSize", SortOrder.ASC)
                 .setQuery(query), MAPPER);
@@ -102,7 +102,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
 
         return elastic.query(client.prepareSearch(alias)
                 .setTypes(getType())
-                .setSize(paging.getCount())
+                .setSize(paging.getSize())
                 .setFrom(paging.getFrom())
                 .addSort("queueSize", SortOrder.ASC)
                 .setQuery(query), MAPPER);

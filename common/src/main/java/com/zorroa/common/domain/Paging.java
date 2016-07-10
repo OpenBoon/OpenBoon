@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Paging {
 
     private final int number;
-    private final int count;
+    private final int size;
 
     private Long totalCount;
     private int totalPages;
@@ -16,27 +16,30 @@ public class Paging {
     private int prev;
     private String display;
 
-    private static final int DEFAULT_COUNT = 10;
+    private static final int DEFAULT_SIZE = 10;
 
     public static Paging first() {
-        return new Paging(1, DEFAULT_COUNT);
+        return new Paging(1, DEFAULT_SIZE);
+    }
+
+    public static Paging first(int size) { return new Paging(1, size);
     }
 
     public Paging() {
         this.number = 1;
-        this.count = DEFAULT_COUNT;
+        this.size = DEFAULT_SIZE;
     }
     public Paging (Integer page) {
         this.number = page == null ? 1 : page;
-        this.count = DEFAULT_COUNT;
+        this.size = DEFAULT_SIZE;
     }
 
     public Paging (Integer page, Integer count) {
         this.number = page == null ? 1 : page;
-        this.count = count == null ? DEFAULT_COUNT : count;
+        this.size = count == null ? DEFAULT_SIZE : count;
     }
-    public int getCount() {
-        return count;
+    public int getSize() {
+        return size;
     }
 
     public int getNumber() {
@@ -45,7 +48,7 @@ public class Paging {
 
     @JsonIgnore
     public int getFrom() {
-        return (number -1) * count;
+        return (number -1) * size;
     }
 
     public Long getTotalCount() {
@@ -54,7 +57,7 @@ public class Paging {
 
     public Paging setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
-        totalPages = Math.toIntExact(totalCount / getCount()) +1;
+        totalPages = Math.toIntExact(totalCount / getSize()) +1;
         prev = Math.max(1, number-1);
         next = Math.min(totalPages, number+1);
         display = String.format("%d of %d", number, totalPages);

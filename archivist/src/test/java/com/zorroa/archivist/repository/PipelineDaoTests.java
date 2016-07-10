@@ -1,0 +1,96 @@
+package com.zorroa.archivist.repository;
+
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.Pipeline;
+import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.processor.ProcessorSpec;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.*;
+
+/**
+ * Created by chambers on 7/9/16.
+ */
+public class PipelineDaoTests extends AbstractTest {
+
+    @Autowired
+    PipelineDao pipelineDao;
+
+    Pipeline pipeline;
+    PipelineSpec spec;
+
+    @Before
+    public void init() {
+        spec = new PipelineSpec();
+        spec.setType(PipelineType.Import);
+        spec.setProcessors(Lists.newArrayList());
+        spec.setName("Zorroa Test");
+        pipeline = pipelineDao.create(spec);
+    }
+
+    @Test
+    public void testCreate() {
+        assertEquals(spec.getType(), pipeline.getType());
+        assertEquals(spec.getProcessors(), pipeline.getProcessors());
+        assertEquals(spec.getName(), pipeline.getName());
+    }
+
+    @Test
+    public void testDelete() {
+        assertTrue(pipelineService.delete(pipeline.getId()));
+        assertFalse(pipelineService.delete(pipeline.getId()));
+    }
+
+    @Test
+    public void testUpdate() {
+        PipelineSpec update = new PipelineSpec();
+        update.setName("foo");
+        update.setType(PipelineType.Train);
+        update.setProcessors(Lists.newArrayList(new ProcessorSpec().setClassName("bar.Bing")));
+        assertTrue(pipelineDao.update(pipeline.getId(), update));
+
+        pipeline = pipelineDao.refresh(pipeline);
+        assertEquals(update.getType(), pipeline.getType());
+        assertEquals(update.getProcessors(), pipeline.getProcessors());
+        assertEquals(update.getName(), pipeline.getName());
+    }
+
+    @Test
+    public void testGet() {
+        assertEquals(pipeline, pipelineDao.get(pipeline.getId()));
+        assertEquals(pipeline, pipelineDao.get(pipeline.getName()));
+    }
+
+    @Test
+    public void testGetAllPaged() {
+        for (int i=0; i<10; i++) {
+            spec.setName("Pipeline" + i);
+            pipelineDao.create(spec);
+        }
+        PagedList<Pipeline> list = pipelineDao.getAll(Paging.first(5));
+
+        assertEquals(5, list.getList().size());
+        assertEquals(11L, (long) list.getPage().getTotalCount());
+        assertEquals(3, list.getPage().getTotalPages());
+    }
+
+    @Test
+    public void testGetAll() {
+        for (int i=0; i<10; i++) {
+            spec.setName("Pipeline" + i);
+            pipelineDao.create(spec);
+        }
+        assertEquals(11, pipelineDao.getAll().size());
+    }
+
+    @Test
+    public void testRefresh() {
+        assertEquals(pipeline, pipelineDao.refresh(pipeline));
+    }
+}

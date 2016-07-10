@@ -39,7 +39,4 @@ public class CommonBeanConfig {
 
     @Bean
     public ClusterSettingsDao clusterConfigDao() { return new ClusterSettingsDaoImpl(); }
-
-    @Bean
-    public TaskDao taskDao() { return new TaskDaoImpl(); }
 }

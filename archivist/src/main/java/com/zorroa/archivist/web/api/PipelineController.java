@@ -1,16 +1,20 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.domain.Pipeline;
+import com.zorroa.archivist.domain.PipelineSpec;
 import com.zorroa.archivist.service.PipelineService;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.web.InvalidObjectException;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import javax.validation.Valid;
 
 @RestController
 public class PipelineController {
@@ -20,48 +24,46 @@ public class PipelineController {
     @Autowired
     PipelineService pipelineService;
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.POST)
-    public IngestPipeline create(@RequestBody IngestPipelineBuilder builder) {
-        return pipelineService.createIngestPipeline(builder);
+    public Pipeline create(@Valid @RequestBody PipelineSpec spec, BindingResult valid) {
+        if (valid.hasErrors()) {
+            throw new InvalidObjectException("Failed to create pipeline", valid);
+        }
+        return pipelineService.create(spec);
     }
 
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.GET)
-    public IngestPipeline get(@PathVariable Integer id) {
-        return pipelineService.getIngestPipeline(id);
+    public Pipeline get(@PathVariable String id) {
+        if (StringUtils.isNumeric(id)) {
+            return pipelineService.get(Integer.parseInt(id));
+        }
+        else {
+            return pipelineService.get(id);
+        }
     }
 
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.GET)
-    public List<IngestPipeline> getAll() {
-        return pipelineService.getIngestPipelines();
+    public PagedList<Pipeline> getPaged(@RequestParam(value="page", required=false) Integer page,
+                                      @RequestParam(value="count", required=false) Integer count) {
+        return pipelineService.getAll(new Paging(page, count));
     }
 
-    @RequestMapping(value="/api/v1/pipelines/_by_name/{name}", method=RequestMethod.GET)
-    public IngestPipeline get(@PathVariable String name) {
-        return pipelineService.getIngestPipeline(name);
-    }
-
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.PUT)
-    public IngestPipeline update(@RequestBody IngestPipelineUpdateBuilder builder, @PathVariable Integer id) {
-        IngestPipeline pipeline = pipelineService.getIngestPipeline(id);
-        pipelineService.updateIngestPipeline(pipeline, builder);
-        return pipelineService.getIngestPipeline(id);
+    public Object update(@PathVariable Integer id, @Valid @RequestBody PipelineSpec spec, BindingResult valid) {
+        checkValid(valid);
+        boolean result = pipelineService.update(id, spec);
+        return ImmutableMap.of("result", result, "object", pipelineService.get(id));
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.DELETE)
-    public Map<String, Object> delete(@PathVariable Integer id) {
-        IngestPipeline pipeline = pipelineService.getIngestPipeline(id);
-        try {
-            return ImmutableMap.<String, Object>builder()
-                    .put("status", pipelineService.deleteIngestPipeline(pipeline))
-                    .build();
-        } catch (Exception e) {
-            return ImmutableMap.<String, Object>builder()
-                    .put("status", false)
-                    .put("message", e.getMessage())
-                    .build();
+    public Object delete(@PathVariable Integer id) {
+        boolean result = pipelineService.delete(id);
+        return ImmutableMap.of("result", result);
+    }
+
+    public static void checkValid(BindingResult valid) {
+        if (valid.hasErrors()) {
+            throw new InvalidObjectException("Failed to create pipeline", valid);
         }
     }
 }

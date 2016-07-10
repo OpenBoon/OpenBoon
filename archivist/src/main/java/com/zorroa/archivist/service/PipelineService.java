@@ -1,8 +1,9 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.sdk.domain.IngestPipeline;
-import com.zorroa.sdk.domain.IngestPipelineBuilder;
-import com.zorroa.sdk.domain.IngestPipelineUpdateBuilder;
+import com.zorroa.archivist.domain.Pipeline;
+import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 
 import java.util.List;
 
@@ -10,17 +11,19 @@ import java.util.List;
  * Created by chambers on 7/7/16.
  */
 public interface PipelineService {
-    IngestPipeline createIngestPipeline(IngestPipelineBuilder builder);
+    Pipeline create(PipelineSpec spec);
 
-    IngestPipeline getIngestPipeline(int id);
+    Pipeline get(int id);
 
-    IngestPipeline getIngestPipeline(String s);
+    Pipeline get(String name);
 
-    boolean ingestPipelineExists(String s);
+    boolean exists(String s);
 
-    List<IngestPipeline> getIngestPipelines();
+    List<Pipeline> getAll();
 
-    boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder);
+    PagedList<Pipeline> getAll(Paging page);
 
-    boolean deleteIngestPipeline(IngestPipeline pipeline);
+    boolean update(int id, PipelineSpec spec);
+
+    boolean delete(int id);
 }
