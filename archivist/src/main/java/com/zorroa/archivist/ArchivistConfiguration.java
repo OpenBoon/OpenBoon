@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.security.JdbcSessionRegistry;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.archivist.web.api.RestControllerAdvice;
 import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
 import com.zorroa.common.elastic.ZorroaNode;
 import com.zorroa.sdk.config.ApplicationProperties;
@@ -64,11 +63,6 @@ public class ArchivistConfiguration {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
         registrationBean.addUrlMappings("/console/*");
         return registrationBean;
-    }
-
-    @Bean
-    public RestControllerAdvice restControllerAspect() {
-        return new RestControllerAdvice();
     }
 
     @Bean
