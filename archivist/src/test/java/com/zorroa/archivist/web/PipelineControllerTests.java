@@ -36,6 +36,7 @@ public class PipelineControllerTests extends MockMvcTest {
         spec = new PipelineSpec();
         spec.setType(PipelineType.Import);
         spec.setProcessors(Lists.newArrayList());
+        spec.setDescription("A test pipeline");
         spec.setName("Zorroa Test");
     }
 
@@ -89,6 +90,7 @@ public class PipelineControllerTests extends MockMvcTest {
         spec2.setType(PipelineType.Update);
         spec2.setProcessors(Lists.newArrayList());
         spec2.setName("Rocky IV");
+        spec2.setDescription("a movie");
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(put("/api/v1/pipelines/" + pl.getId())

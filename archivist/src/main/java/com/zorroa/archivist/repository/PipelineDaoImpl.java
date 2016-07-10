@@ -29,6 +29,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
         result.setProcessors(Json.deserialize(rs.getString("json_processors"),
                 new TypeReference<List<ProcessorSpec>>() {}));
         result.setType(PipelineType.values()[rs.getInt("int_type")]);
+        result.setDescription(rs.getString("str_description"));
         return result;
     };
 
@@ -36,13 +37,15 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
             JdbcUtils.insert("pipeline",
                     "str_name",
                     "int_type",
-                    "json_processors");
+                    "json_processors",
+                    "str_description");
 
     @Override
     public Pipeline create(PipelineSpec spec) {
         Preconditions.checkNotNull(spec.getName());
         Preconditions.checkNotNull(spec.getType());
         Preconditions.checkNotNull(spec.getProcessors());
+        Preconditions.checkNotNull(spec.getDescription());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
@@ -51,6 +54,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
             ps.setString(1, spec.getName());
             ps.setInt(2, spec.getType().ordinal());
             ps.setString(3, Json.serializeToString(spec.getProcessors(), "[]"));
+            ps.setString(4, spec.getDescription());
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -102,12 +106,13 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
             JdbcUtils.update("pipeline", "pk_pipeline",
                     "str_name",
                     "int_type",
-                    "json_processors");
+                    "json_processors",
+                    "str_description");
 
     @Override
     public boolean update(int id, PipelineSpec spec) {
         return jdbc.update(UPDATE, spec.getName(), spec.getType().ordinal(),
-                Json.serializeToString(spec.getProcessors()), id) == 1;
+                Json.serializeToString(spec.getProcessors()), spec.getDescription(), id) == 1;
     }
 
     @Override

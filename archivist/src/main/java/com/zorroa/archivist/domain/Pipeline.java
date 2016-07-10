@@ -12,6 +12,7 @@ public class Pipeline implements EventLoggable {
     private int id;
     private PipelineType type;
     private String name;
+    private String description;
     private List<ProcessorSpec> processors;
 
     public int getId() {
@@ -75,5 +76,14 @@ public class Pipeline implements EventLoggable {
                 .add("type", type)
                 .add("name", name)
                 .toString();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Pipeline setDescription(String description) {
+        this.description = description;
+        return this;
     }
 }

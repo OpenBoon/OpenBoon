@@ -6,7 +6,8 @@ DROP TABLE pipeline;
 CREATE TABLE pipeline (
   pk_pipeline INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
   int_type SMALLINT NOT NULL,
-  str_name VARCHAR(255) NOT NULL,
+  str_name VARCHAR(32) NOT NULL,
+  str_description VARCHAR(255) NOT NULL,
   json_processors TEXT NOT NULL
 );
 

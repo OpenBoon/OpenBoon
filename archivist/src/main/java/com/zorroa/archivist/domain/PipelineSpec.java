@@ -20,6 +20,9 @@ public class PipelineSpec {
     @Pattern(regexp="^[a-z].*$", flags={Pattern.Flag.CASE_INSENSITIVE})
     private String name;
 
+    @NotEmpty
+    private String description;
+
     public List<ProcessorSpec> getProcessors() {
         return processors;
     }
@@ -44,6 +47,15 @@ public class PipelineSpec {
 
     public PipelineSpec setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public PipelineSpec setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

@@ -31,6 +31,7 @@ public class PipelineDaoTests extends AbstractTest {
         spec.setType(PipelineType.Import);
         spec.setProcessors(Lists.newArrayList());
         spec.setName("Zorroa Test");
+        spec.setDescription("A test pipeline");
         pipeline = pipelineDao.create(spec);
     }
 
@@ -51,6 +52,7 @@ public class PipelineDaoTests extends AbstractTest {
     public void testUpdate() {
         PipelineSpec update = new PipelineSpec();
         update.setName("foo");
+        update.setDescription("foo bar");
         update.setType(PipelineType.Train);
         update.setProcessors(Lists.newArrayList(new ProcessorSpec().setClassName("bar.Bing")));
         assertTrue(pipelineDao.update(pipeline.getId(), update));
