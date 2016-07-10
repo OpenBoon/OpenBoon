@@ -48,7 +48,7 @@ public class ApplicationConfig {
         logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
         if (!Application.isUnitTest()) {
             logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
-            Map<String, String> settings = client.getAnalystSettings();
+            Map<String, String> settings = client.getClusterSettings();
             settings.forEach((k, v) -> {
                 k = k.replace(ClusterSettingsDao.DELIMITER, ".");
                 System.setProperty(k, v);
