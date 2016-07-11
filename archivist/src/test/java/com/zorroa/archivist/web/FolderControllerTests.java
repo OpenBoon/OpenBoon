@@ -254,7 +254,7 @@ public class FolderControllerTests extends MockMvcTest {
     @Test
     public void testAddAsset() throws Exception {
         authenticate();
-        addTestAssets("standard");
+        addTestAssets("set04/standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
@@ -280,7 +280,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testRemoveAsset() throws Exception {
         authenticate();
 
-        addTestAssets("standard");
+        addTestAssets("set04/standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));
@@ -307,7 +307,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testGetAssets() throws Exception {
         authenticate();
 
-        addTestAssets("standard");
+        addTestAssets("set04/standard");
         List<Asset> assets = assetDao.getAll();
 
         Folder folder1 = folderService.create(new FolderBuilder("foo"));

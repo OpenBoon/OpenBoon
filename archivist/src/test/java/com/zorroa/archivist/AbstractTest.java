@@ -11,6 +11,7 @@ import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.common.service.EventLogService;
+import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.domain.AnalystState;
 import com.zorroa.sdk.domain.Permission;
@@ -92,6 +93,9 @@ public abstract class AbstractTest {
 
     @Autowired
     protected EventLogService eventLogSerivce;
+
+    @Autowired
+    protected ApplicationProperties properties;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -239,7 +243,7 @@ public abstract class AbstractTest {
     }
 
     public Path getTestImagePath() {
-        return getTestImagePath("standard");
+        return getTestImagePath("standard/set04");
     }
 
     private static final Set<String> SUPPORTED_FORMATS = ImmutableSet.of(
@@ -247,6 +251,9 @@ public abstract class AbstractTest {
 
     public List<Source> getTestAssets(String subdir) {
         List<Source> result = Lists.newArrayList();
+        logger.info("{}", getTestImagePath(subdir));
+        logger.info("{}", getTestImagePath(subdir).toFile());
+        logger.info("{}", getTestImagePath(subdir).toFile().listFiles());
         for (File f: getTestImagePath(subdir).toFile().listFiles()) {
 
             if (f.isFile()) {
