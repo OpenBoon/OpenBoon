@@ -242,7 +242,7 @@
                         </goals>
                         <configuration>
                             <executable>/bin/rm</executable>
-                            <commandlineArgs>-rf db</commandlineArgs>
+                            <commandlineArgs>-rf db unittest</commandlineArgs>
                         </configuration>
                     </execution>
                     <execution>
