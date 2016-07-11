@@ -1,7 +1,11 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.sdk.domain.Folder;
+import com.zorroa.sdk.domain.Permission;
 import org.junit.Test;
 
 import java.util.List;
@@ -15,7 +19,7 @@ public class UserServiceTests extends AbstractTest {
 
     @Test
     public void createUser() {
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("test");
         builder.setPassword("123password");
         builder.setEmail("test@test.com");
@@ -50,7 +54,7 @@ public class UserServiceTests extends AbstractTest {
 
     @Test
     public void testDisable() {
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("test");
         builder.setPassword("123password");
         builder.setEmail("test@test.com");
@@ -64,27 +68,8 @@ public class UserServiceTests extends AbstractTest {
     }
 
     @Test
-    public void updateUserName() {
-        UserBuilder builder = new UserBuilder();
-        builder.setUsername("bilbob");
-        builder.setPassword("123password");
-        builder.setEmail("test@test.com");
-        builder.setFirstName("Bilbo");
-        builder.setLastName("Baggings");
-        User user = userService.create(builder);
-        assertTrue(userService.hasPermission(user, userService.getPermission("user::bilbob")));
-
-        UserUpdateBuilder update = new UserUpdateBuilder().setUsername("frodo");
-        userService.update(user, update);
-
-        assertTrue(userService.hasPermission(user, userService.getPermission("user::frodo")));
-        assertTrue(userService.hasPermission(user, "user", "frodo"));
-        assertFalse(userService.hasPermission(user, "user", "bilbob"));
-    }
-
-    @Test
     public void updatePermissions() {
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("bilbob");
         builder.setPassword("123password");
         builder.setEmail("test@test.com");
@@ -96,9 +81,7 @@ public class UserServiceTests extends AbstractTest {
         assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
         assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
 
-        Integer[] permissionIds = { userService.getPermission("group::manager").getId() };
-        UserUpdateBuilder update = new UserUpdateBuilder().setPermissionIds(permissionIds);
-        userService.update(user, update);
+        userService.setPermissions(user, userService.getPermission("group::manager"));
 
         assertFalse(userService.hasPermission(user, userService.getPermission("group::user")));
         assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
@@ -106,7 +89,7 @@ public class UserServiceTests extends AbstractTest {
 
     @Test
     public void updateUser() {
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("bilbob");
         builder.setPassword("123password");
         builder.setEmail("test@test.com");
@@ -114,20 +97,26 @@ public class UserServiceTests extends AbstractTest {
         builder.setLastName("Baggings");
         User user = userService.create(builder);
 
+        UserUpdate update = new UserUpdate();
+        update.setFirstName("foo");
+        update.setLastName("bar");
+        update.setEmail("test@test.com");
 
+        assertTrue(userService.update(user, update));
+        User updated = userService.get(user.getId());
+        assertEquals(update.getEmail(), updated.getEmail());
+        assertEquals(update.getFirstName(), updated.getFirstName());
+        assertEquals(update.getLastName(), updated.getLastName());
     }
-
 
     @Test
     public void testImmutablePermissions() {
-        UserUpdateBuilder builder = new UserUpdateBuilder();
+        UserSpec builder = new UserSpec();
         builder.setPermissionIds(new Integer[]{
                 userService.getPermission("group::superuser").getId()});
 
         User admin = userService.get("admin");
-        userService.update(admin, builder);
-
-        logger.info("{}", userService.getPermissions(admin));
+        userService.setPermissions(admin, userService.getPermission("group::superuser"));
 
         for (Permission p: userService.getPermissions(admin)) {
             logger.info("{}", p);

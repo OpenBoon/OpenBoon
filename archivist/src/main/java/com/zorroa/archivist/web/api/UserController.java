@@ -1,9 +1,13 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Permission;
+import com.zorroa.sdk.domain.Session;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +51,7 @@ public class UserController  {
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users", method=RequestMethod.POST)
-    public User create(@Valid @RequestBody UserBuilder builder, BindingResult bindingResult) {
+    public User create(@Valid @RequestBody UserSpec builder, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("Failed to add user");
         }
@@ -65,7 +69,7 @@ public class UserController  {
     }
 
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.PUT)
-    public User update(@RequestBody UserUpdateBuilder builder, @PathVariable int id) {
+    public User update(@RequestBody UserUpdate builder, @PathVariable int id) {
         Session session = userService.getActiveSession();
 
         if (session.getUserId() == id || SecurityUtils.hasPermission("group::manager", "group::systems")) {

@@ -1,7 +1,12 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.RoomBuilder;
+import com.zorroa.sdk.domain.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +32,7 @@ public class UserDaoTests extends AbstractTest {
 
     @Before
     public void init() {
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("test");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
@@ -44,7 +49,7 @@ public class UserDaoTests extends AbstractTest {
     public void testGetCount() {
         int count = userDao.getCount();
         assertEquals(count, userDao.getCount());
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("test2");
         builder.setPassword("test2");
         builder.setEmail("test@test.com");
@@ -56,7 +61,7 @@ public class UserDaoTests extends AbstractTest {
     public void testAll() {
         assertEquals(3, userDao.getAll().size());
 
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("foo");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
@@ -88,18 +93,24 @@ public class UserDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testResetPassword() {
+        assertTrue(userDao.setPassword(user, "fiddlesticks"));
+        assertTrue(BCrypt.checkpw("fiddlesticks", userDao.getPassword(user.getUsername())));
+        assertFalse(BCrypt.checkpw("smeagol", userDao.getPassword(user.getUsername())));
+    }
+
+    @Test
     public void testUpdate() {
-        UserUpdateBuilder builder = new UserUpdateBuilder();
-        builder.setUsername("foo");
-        builder.setPassword("bar");
+        UserUpdate builder = new UserUpdate();
+        builder.setFirstName("foo");
+        builder.setLastName("bar");
         builder.setEmail("test@test.com");
 
         assertTrue(userDao.update(user, builder));
         User updated = userDao.get(user.getId());
         assertEquals(builder.getEmail(), updated.getEmail());
-        assertEquals(builder.getUsername(), updated.getUsername());
-
-        assertTrue(BCrypt.checkpw("bar", userDao.getPassword("foo")));
+        assertEquals(builder.getFirstName(), updated.getFirstName());
+        assertEquals(builder.getLastName(), updated.getLastName());
     }
 
     @Test

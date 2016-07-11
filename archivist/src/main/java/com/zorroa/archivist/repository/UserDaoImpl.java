@@ -1,13 +1,12 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.zorroa.sdk.domain.Room;
-import com.zorroa.sdk.domain.User;
-import com.zorroa.sdk.domain.UserBuilder;
-import com.zorroa.sdk.domain.UserUpdateBuilder;
+import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.archivist.security.SecurityUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.zorroa.sdk.domain.Room;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -70,7 +69,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ") VALUES (?,?,?,?,?,?)";
 
     @Override
-    public User create(UserBuilder builder) {
+    public User create(UserSpec builder) {
         Preconditions.checkNotNull(builder.getUsername(), "The Username cannot be null");
         Preconditions.checkNotNull(builder.getPassword(), "The Password cannot be null");
         builder.setPassword(SecurityUtils.createPasswordHash(builder.getPassword()));
@@ -97,61 +96,29 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
+    public boolean setPassword(User user, String password) {
+        return jdbc.update(
+                "UPDATE user SET str_password=? WHERE pk_user=?",
+                SecurityUtils.createPasswordHash(password), user.getId()) == 1;
+    }
+
+    @Override
     public boolean setEnabled(User user, boolean value) {
         return jdbc.update(
                 "UPDATE user SET bool_enabled=? WHERE pk_user=? AND bool_enabled=?",
                 value, user.getId(), !value) == 1;
     }
 
+    private static final String UPDATE = JdbcUtils.update("user", "pk_user",
+            "str_email",
+            "str_firstname",
+            "str_lastname");
+
     @Override
-    public boolean update(User user, UserUpdateBuilder builder) {
-
-        List<String> updates = Lists.newArrayList();
-        List<Object> values = Lists.newArrayList();
-
-        StringBuilder sb = new StringBuilder(512);
-        sb.append("UPDATE user SET ");
-
-        if (builder.getUsername() != null) {
-            updates.add("str_username=?");
-            values.add(builder.getUsername());
-        }
-
-        if (builder.getPassword() != null) {
-            updates.add("str_password=?");
-            values.add(SecurityUtils.createPasswordHash(builder.getPassword()));
-        }
-
-        if (builder.getEmail() != null) {
-            updates.add("str_email=?");
-            values.add(builder.getEmail());
-        }
-
-        if (builder.getFirstName() != null) {
-            updates.add("str_firstname=?");
-            values.add(builder.getFirstName());
-        }
-
-        if (builder.getLastName() != null) {
-            updates.add("str_lastname=?");
-            values.add(builder.getLastName());
-        }
-
-        if (builder.getEnabled() != null) {
-            updates.add("bool_enabled=?");
-            values.add(builder.getEnabled());
-        }
-
-        if (values.isEmpty()) {
-            return false;
-        }
-
-        sb.append(StringUtils.join(updates, ", "));
-        sb.append(" WHERE pk_user=?");
-        values.add(user.getId());
-
-        logger.debug("updating user '{}', {}", sb.toString(), values);
-        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    public boolean update(User user, UserUpdate builder) {
+        logger.info("{}", builder.getEmail());
+        return jdbc.update(UPDATE, builder.getEmail(), builder.getFirstName(),
+                builder.getLastName(), user.getId()) == 1;
     }
 
     @Override

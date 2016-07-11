@@ -3,13 +3,17 @@ package com.zorroa.archivist;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.MigrationType;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.common.service.EventLogService;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.AnalystBuilder;
+import com.zorroa.sdk.domain.AnalystState;
+import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.FileUtils;
@@ -64,9 +68,6 @@ public abstract class AbstractTest {
 
     @Autowired
     protected FolderService folderService;
-
-    @Autowired
-    protected JobScheduleService ingestScheduleService;
 
     @Autowired
     protected ExportService exportService;
@@ -195,7 +196,7 @@ public abstract class AbstractTest {
         /**
          * Adds in a test, non privileged user.
          */
-        UserBuilder userBuilder = new UserBuilder();
+        UserSpec userBuilder = new UserSpec();
         userBuilder.setEmail("user@zorroa.com");
         userBuilder.setFirstName("Bob");
         userBuilder.setLastName("User");

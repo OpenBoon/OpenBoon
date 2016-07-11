@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.TestSearchResult;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.web.api.RoomController;
 import com.zorroa.common.repository.AssetDao;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.zorroa.sdk.util.Json.deserialize;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,7 +52,7 @@ public class RoomControllerTests extends MockMvcTest {
                  .andExpect(status().isOk())
                  .andReturn();
 
-        Room room = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room room = deserialize(result, Room.class);
         assertEquals(bld.getName(), room.getName());
     }
 
@@ -75,7 +75,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Room updatedRoom = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room updatedRoom = deserialize(result, Room.class);
         assertEquals(update.getName(), updatedRoom.getName());
         assertTrue(BCrypt.checkpw("test123", roomDao.getPassword(room.getId())));
     }
@@ -94,7 +94,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        boolean isDeleted = deserialize(result.getResponse().getContentAsByteArray(), Boolean.class);
+        boolean isDeleted = deserialize(result, Boolean.class);
         assertTrue(isDeleted);
     }
 
@@ -199,7 +199,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Room room2 = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room room2 = deserialize(result, Room.class);
         assertEquals(room1.getName(), room2.getName());
     }
 

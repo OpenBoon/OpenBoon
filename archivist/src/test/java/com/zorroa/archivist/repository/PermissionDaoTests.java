@@ -2,10 +2,10 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.PermissionBuilder;
-import com.zorroa.sdk.domain.User;
-import com.zorroa.sdk.domain.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class PermissionDaoTests extends AbstractTest {
         b.setDescription("Access to the Avatar project");
         perm = permissionDao.create(b, false);
 
-        UserBuilder ub = new UserBuilder();
+        UserSpec ub = new UserSpec();
         ub.setUsername("test");
         ub.setPassword("test");
         ub.setFirstName("mr");

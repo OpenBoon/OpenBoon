@@ -1,5 +1,8 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(UserBuilder builder) {
+    public User create(UserSpec builder) {
         User user = userDao.create(builder);
 
         /*
@@ -116,6 +119,11 @@ public class UserServiceImpl implements UserService {
     public int getCount() { return userDao.getCount(); }
 
     @Override
+    public boolean setPassword(User user, String password) {
+        return userDao.setPassword(user, password);
+    }
+
+    @Override
     public String getPassword(String username) {
         try {
             return userDao.getPassword(username);
@@ -144,24 +152,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(User user, UserUpdateBuilder builder) {
-
-        if (builder.getPermissionIds() != null) {
-            List<Permission> perms = permissionDao.getAll(builder.getPermissionIds());
-            permissionDao.setOnUser(user, perms);
-        }
-
+    public boolean update(User user, UserUpdate builder) {
         boolean result = userDao.update(user, builder);
-
-        if (result && builder.getUsername()!= null &&
-                !user.getUsername().equals(builder.getUsername())) {
-            if (!permissionDao.updateUserPermission(user.getUsername(), builder.getUsername())) {
-                logger.warn("Failed to update user permission from {} to {}",
-                        user.getUsername(), builder.getUsername());
-            }
-        }
-
-        if (result || builder.getPermissionIds() != null) {
+        if (result) {
             transactionEventManager.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
             });

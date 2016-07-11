@@ -1,6 +1,12 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.sdk.domain.Permission;
+import com.zorroa.sdk.domain.PermissionBuilder;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.Session;
 
 import java.util.List;
 
@@ -11,7 +17,7 @@ public interface UserService {
 
     User login();
 
-    User create(UserBuilder builder);
+    User create(UserSpec builder);
 
     User get(String username);
 
@@ -27,11 +33,13 @@ public interface UserService {
 
     String getPassword(String username);
 
+    boolean setPassword(User user, String password);
+
     String getHmacKey(String username);
 
     String generateHmacKey(String username);
 
-    boolean update(User user, UserUpdateBuilder builder);
+    boolean update(User user, UserUpdate builder);
 
     boolean disable(User user);
 

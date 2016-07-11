@@ -1,8 +1,8 @@
 package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.domain.InternalPermission;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.User;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 import java.util.List;
