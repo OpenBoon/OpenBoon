@@ -30,7 +30,7 @@ public class PluginControllerTests  extends MockMvcTest {
 
         MockMultipartFile plugin =
                 new MockMultipartFile("file", "zorroa-test-plugin.zip", "application/zip",
-                        new FileInputStream(new File("src/test/resources/plugins/zorroa-test-plugin.zip.bak")));
+                        new FileInputStream(new File("../unittest/shared/plugins/zorroa-test-plugin.zip")));
 
         MockHttpSession session = admin();
 

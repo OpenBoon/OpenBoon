@@ -243,7 +243,7 @@ public abstract class AbstractTest {
     }
 
     public Path getTestImagePath() {
-        return getTestImagePath("standard/set04");
+        return getTestImagePath("set04/standard");
     }
 
     private static final Set<String> SUPPORTED_FORMATS = ImmutableSet.of(
@@ -251,9 +251,6 @@ public abstract class AbstractTest {
 
     public List<Source> getTestAssets(String subdir) {
         List<Source> result = Lists.newArrayList();
-        logger.info("{}", getTestImagePath(subdir));
-        logger.info("{}", getTestImagePath(subdir).toFile());
-        logger.info("{}", getTestImagePath(subdir).toFile().listFiles());
         for (File f: getTestImagePath(subdir).toFile().listFiles()) {
 
             if (f.isFile()) {
