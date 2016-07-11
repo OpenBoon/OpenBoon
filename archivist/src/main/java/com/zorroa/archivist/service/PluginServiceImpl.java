@@ -74,19 +74,22 @@ public class PluginServiceImpl implements PluginService {
             throw new RuntimeException("Cannot specify multiple plugin paths.");
         }
         pluginPath = Paths.get(_path).toAbsolutePath().normalize();
-        pluginLoader = new PluginLoader(pluginPath.toString());
         logger.info("Loading plugins from: {}", pluginPath);
+        if (pluginPath.toFile().mkdirs()) {
+            logger.info("Plugin path did not exist: {}", pluginPath);
+        }
+        pluginLoader = new PluginLoader(pluginPath.toString());
     }
 
     @Override
-    public Plugin registerPlugin(MultipartFile file) {
+    public Plugin installPlugin(MultipartFile file) {
         synchronized(pluginLoader) {
             Path dst = pluginPath.resolve(file.getOriginalFilename());
             try {
                 Files.copy(file.getInputStream(), dst);
                 Path pluginPath = pluginLoader.unpackPluginPackage(dst);
                 Plugin plugin = pluginLoader.loadPlugin(pluginPath);
-                registerPlugin(plugin);
+                installPlugin(plugin);
                 return plugin;
 
             } catch (Exception e) {
@@ -96,7 +99,7 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public Plugin registerPlugin(Path zipFilePath) {
+    public Plugin installPlugin(Path zipFilePath) {
         synchronized(pluginLoader) {
             if (zipFilePath.startsWith(pluginPath)) {
                 throw new PluginException("Plugin '" + zipFilePath + "' is already installed.");
@@ -107,7 +110,7 @@ public class PluginServiceImpl implements PluginService {
                 Files.copy(zipFilePath, dst);
                 Path pluginPath = pluginLoader.unpackPluginPackage(dst);
                 Plugin plugin = pluginLoader.loadPlugin(pluginPath);
-                registerPlugin(plugin);
+                installPlugin(plugin);
                 return plugin;
             } catch (Exception e) {
                 throw new PluginException("Failed to install plugin, " + e.getMessage(), e);
@@ -115,7 +118,7 @@ public class PluginServiceImpl implements PluginService {
         }
     }
 
-    private void registerPlugin(Plugin p) {
+    private void installPlugin(Plugin p) {
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         Map<String, Object> pluginDoc = getPluginRecord(p);

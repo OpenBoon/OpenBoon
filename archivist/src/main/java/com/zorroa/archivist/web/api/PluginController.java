@@ -32,7 +32,7 @@ public class PluginController {
             if (!file.getOriginalFilename().endsWith("-plugin.zip")) {
                 throw new RuntimeException("The plugin package name must end with -plugin.zip");
             }
-            Plugin p = pluginService.registerPlugin(file);
+            Plugin p = pluginService.installPlugin(file);
             return ImmutableMap.of(
                     "name",p.getName(),
                     "description", p.getDescription(),

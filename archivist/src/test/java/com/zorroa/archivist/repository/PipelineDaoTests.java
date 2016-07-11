@@ -71,6 +71,7 @@ public class PipelineDaoTests extends AbstractTest {
 
     @Test
     public void testGetAllPaged() {
+        long count = pipelineDao.count();
         for (int i=0; i<10; i++) {
             spec.setName("Pipeline" + i);
             pipelineDao.create(spec);
@@ -78,17 +79,18 @@ public class PipelineDaoTests extends AbstractTest {
         PagedList<Pipeline> list = pipelineDao.getAll(Paging.first(5));
 
         assertEquals(5, list.getList().size());
-        assertEquals(11L, (long) list.getPage().getTotalCount());
+        assertEquals(count + 10, (long) list.getPage().getTotalCount());
         assertEquals(3, list.getPage().getTotalPages());
     }
 
     @Test
     public void testGetAll() {
+        long count = pipelineDao.count();
         for (int i=0; i<10; i++) {
             spec.setName("Pipeline" + i);
             pipelineDao.create(spec);
         }
-        assertEquals(11, pipelineDao.getAll().size());
+        assertEquals(count+10, pipelineDao.getAll().size());
     }
 
     @Test

@@ -14,9 +14,9 @@ import java.util.List;
  */
 public interface PluginService {
 
-    Plugin registerPlugin(MultipartFile file);
+    Plugin installPlugin(MultipartFile file);
 
-    Plugin registerPlugin(Path zipFilePath);
+    Plugin installPlugin(Path zipFilePath);
 
     PagedList<List<Plugin>> getPlugins(Paging page);
 
