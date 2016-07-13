@@ -1,7 +1,7 @@
 package com.zorroa.common.repository;
 
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.BatchAssetUpsertResult;
+import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.Folder;
 import com.zorroa.sdk.processor.Source;
 
@@ -21,9 +21,11 @@ public interface AssetDao {
 
     long update(String assetId, Map<String, Object> attrs);
 
-    Asset upsert(Source source);
+    Asset index(Source source);
 
-    BatchAssetUpsertResult upsert(List<Source> sources);
+    AssetIndexResult index(List<Source> sources);
+
+    AssetIndexResult index(String type, List<Source> sources);
 
     int addToFolder(Folder folder, List<String> assetIds);
 

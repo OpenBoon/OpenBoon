@@ -5,7 +5,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.domain.Folder;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -40,17 +42,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     @Override
-    public Asset upsert(Source source) {
+    public Asset index(Source source) {
         String id = source.getId();
         UpdateRequestBuilder upsert = prepareUpsert(source, id);
-        upsert.setRefresh(true);
-        upsert.get();
-        return get(id);
+        return new Asset(upsert.get().getId(), source.getDocument());
     }
 
     @Override
-    public BatchAssetUpsertResult upsert(List<Source> sources) {
-        BatchAssetUpsertResult result = new BatchAssetUpsertResult();
+    public AssetIndexResult index(String type, List<Source> sources) {
+        AssetIndexResult result = new AssetIndexResult();
         if (sources.isEmpty()) {
             return result;
         }
@@ -91,9 +91,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
          */
         if (!retries.isEmpty()) {
             result.retries++;
-            result.add(upsert(retries));
+            result.add(index(retries));
         }
         return result;
+    }
+
+    @Override
+    public AssetIndexResult index(List<Source> sources) {
+        return index("asset", sources);
     }
 
     private UpdateRequestBuilder prepareUpsert(Source source, String id) {
@@ -103,6 +108,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setId(id)
                 .setUpsert(doc);
     }
+
+    private UpdateRequestBuilder prepareUpsert(Source source, String id, String type) {
+        byte[] doc = Json.serialize(source.getDocument());
+        return client.prepareUpdate(alias, type, id)
+                .setDoc(doc)
+                .setId(id)
+                .setUpsert(doc);
+    }
+
 
     private static final Pattern[] RECOVERABLE_BULK_ERRORS = new Pattern[] {
             Pattern.compile("^MapperParsingException\\[failed to parse \\[(.*?)\\]\\];"),

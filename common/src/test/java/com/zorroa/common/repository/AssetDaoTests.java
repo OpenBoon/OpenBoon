@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.BatchAssetUpsertResult;
+import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.Folder;
 import com.zorroa.sdk.processor.Source;
 import org.junit.Before;
@@ -26,8 +26,8 @@ public class AssetDaoTests extends AbstractTest {
 
     @Before
     public void init() {
-        Source builder = new Source(getTestImagePath("standard/beer_kettle_01.jpg"));
-        asset1 = assetDao.upsert(builder);
+        Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        asset1 = assetDao.index(builder);
         refreshIndex();
     }
 
@@ -39,14 +39,14 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetByPath() {
-        Path p = getTestImagePath("standard/beer_kettle_01.jpg");
+        Path p = getTestImagePath("set04/standard/beer_kettle_01.jpg");
         Asset asset2 = assetDao.get(p);
         assertNotNull(asset2);
     }
 
     @Test
     public void testExistsByPath() {
-        Path p = getTestImagePath("standard/beer_kettle_01.jpg");
+        Path p = getTestImagePath("set04/standard/beer_kettle_01.jpg");
         assertTrue(assetDao.exists(p));
     }
 
@@ -58,10 +58,10 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testBatchUpsert() {
-        Source source1 = new Source(getTestImagePath("standard/beer_kettle_01.jpg"));
-        Source source2 = new Source(getTestImagePath("standard/new_zealand_wellington_harbour.jpg"));
+        Source source1 = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        Source source2 = new Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"));
 
-        BatchAssetUpsertResult result = assetDao.upsert(ImmutableList.of(source1, source2));
+        AssetIndexResult result = assetDao.index(ImmutableList.of(source1, source2));
         refreshIndex();
         assertEquals(1, result.created);
         assertEquals(1, result.updated);

@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface AssetService {
 
-    Asset upsert(Source source);
+    Asset index(Source source);
 
     Asset get(String id);
 

@@ -54,8 +54,8 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public Asset upsert(Source source) {
-        return assetDao.upsert(source);
+    public Asset index(Source source) {
+        return assetDao.index(source);
     }
 
     @Override
@@ -81,4 +81,8 @@ public class AssetServiceImpl implements AssetService {
                         "source", attrs)));
         return version;
     }
+
+
+
+
 }
