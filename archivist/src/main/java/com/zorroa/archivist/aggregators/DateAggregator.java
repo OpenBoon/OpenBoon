@@ -49,9 +49,8 @@ public class DateAggregator extends Aggregator {
         this.dateField = dateField;
     }
 
-    @Override
-    public void init(Ingest ingest) {
-        super.init(ingest);
+
+    public void init() {
         acl = new Acl()
                 .addEntry(userService.getPermission("internal::server"), Access.Write, Access.Read)
                 .addEntry(userService.getPermission("group::user"), Access.Read);

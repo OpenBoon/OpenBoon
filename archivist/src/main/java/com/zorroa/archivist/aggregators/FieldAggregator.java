@@ -1,6 +1,7 @@
 package com.zorroa.archivist.aggregators;
 
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
@@ -46,9 +47,7 @@ public class FieldAggregator extends Aggregator {
 
     private Acl acl;
 
-    @Override
-    public void init(Ingest ingest) {
-        super.init(ingest);
+    public void init() {
         acl = new Acl()
                 .addEntry(userService.getPermission("internal::server"), Access.Write, Access.Read)
                 .addEntry(userService.getPermission("group::user"), Access.Read);
