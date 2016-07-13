@@ -2,9 +2,13 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.service.EventLogService;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.EventLogMessage;
+import com.zorroa.sdk.domain.EventLogSearch;
+import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
@@ -29,7 +33,7 @@ public class EventLogDaoTests extends AbstractTest {
     AssetDao assetDao;
 
     Ingest ingest;
-    IngestPipeline pipeline;
+    Pipeline pipeline;
 
     @Before
     public void init() {
@@ -78,7 +82,7 @@ public class EventLogDaoTests extends AbstractTest {
     public void testLogAsset() {
 
         Source source = new Source(getTestImagePath("standard/beer_kettle_01.jpg"));
-        Asset asset = assetDao.upsert(source);
+        Asset asset = assetDao.index(source);
         refreshIndex();
 
         eventLogService.log(new EventLogMessage(asset, "testing {} {} {}", 1, 2, 3));

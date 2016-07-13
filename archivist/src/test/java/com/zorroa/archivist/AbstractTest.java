@@ -282,7 +282,7 @@ public abstract class AbstractTest {
         for (Source builder: builders) {
             logger.info("Adding test asset: {}", builder.getPath());
             AssetUtils.addKeywords(builder, "source", builder.getAttr("source.filename", String.class));
-            assetService.upsert(builder);
+            assetService.index(builder);
         }
         refreshIndex();
     }

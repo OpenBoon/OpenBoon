@@ -39,7 +39,8 @@ public class NoteControllerTests extends MockMvcTest {
     @Before
     public void init() {
         Source ab = new Source(getTestImagePath("standard/beer_kettle_01.jpg"));
-        assetId = assetDao.upsert(ab).getId();
+        assetId = assetDao.index(ab).getId();
+        refreshIndex();
     }
 
     @Test
