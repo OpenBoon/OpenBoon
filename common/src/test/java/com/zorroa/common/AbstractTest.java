@@ -57,7 +57,7 @@ public abstract class AbstractTest {
     }
 
     public Path getTestImagePath() {
-        return getTestImagePath("standard");
+        return getTestImagePath("set04/standard");
     }
 
     private static final Set<String> SUPPORTED_FORMATS = ImmutableSet.of(
