@@ -21,6 +21,7 @@ package com.zorroa.archivist;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
+import java.util.List;
 
 public class JdbcUtils {
 
@@ -35,6 +36,9 @@ public class JdbcUtils {
     public static boolean isValid(Object obj) {
         return obj == null ? false : true;
     }
+
+    public static boolean isValid(List<?> obj) { return obj == null ? false : !obj.isEmpty(); }
+
 
     public static String insert(String table, String ... cols) {
         final StringBuilder sb = new StringBuilder(1024);

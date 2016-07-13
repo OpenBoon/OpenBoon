@@ -17,4 +17,9 @@ public class AbstractDao {
     public void setDatasource(DataSource dataSource) {
         this.jdbc = new JdbcTemplate(dataSource);
     }
+
+    protected String resolveUser(int id) {
+        return jdbc.queryForObject("SELECT str_email FROM user WHERE pk_user=?", String.class, id);
+    }
+
 }

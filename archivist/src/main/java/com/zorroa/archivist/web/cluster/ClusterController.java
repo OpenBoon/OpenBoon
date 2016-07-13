@@ -1,7 +1,16 @@
 package com.zorroa.archivist.web.cluster;
 
+import com.zorroa.archivist.domain.TaskState;
+import com.zorroa.archivist.service.JobExecutorService;
+import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.repository.ClusterSettingsDao;
+import com.zorroa.sdk.util.Json;
+import com.zorroa.sdk.zps.ZpsReaction;
+import com.zorroa.sdk.zps.ZpsResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,28 +23,52 @@ import java.util.Map;
 @RestController
 public class ClusterController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ClusterController.class);
+
     @Autowired
     ClusterSettingsDao clusterSettingsDao;
+
+    @Autowired
+    JobExecutorService jobExecutorService;
+
+    @Autowired
+    JobService jobService;
 
     @RequestMapping(value="/cluster/v1/settings", method= RequestMethod.GET)
     public Map<String, Object> getConfig() {
         return clusterSettingsDao.get();
     }
 
-    @RequestMapping(value="/cluster/v1/task/{id}/_update", method= RequestMethod.PUT)
-    public Object updateTask() {
-        return null;
+    /**
+     * Process a reaction.
+     *
+     * @return
+     */
+    @RequestMapping(value="/cluster/v1/task/_react", method=RequestMethod.POST)
+    public void react(@RequestBody ZpsReaction react) {
+        logger.info("react: {}", Json.prettyString(react));
+        jobExecutorService.react(react);
     }
 
-    @RequestMapping(value="/cluster/v1/job/{id}/_expand", method= RequestMethod.PUT)
-    public Object expandJob() {
-        return null;
+    /**
+     * Task was started.
+     *
+     * @return
+     */
+    @RequestMapping(value="/cluster/v1/task/_running", method=RequestMethod.POST)
+    public void running(@RequestBody ZpsReaction task) {
+        jobService.setTaskState(task, TaskState.Running, TaskState.Queued);
     }
 
-    @RequestMapping(value="/cluster/v1/job/{id}/_reduce", method= RequestMethod.PUT)
-    public Map<String, Object> reduceJob() {
-        return null;
+    /**
+     * Task was completed.
+     *
+     * @return
+     */
+    @RequestMapping(value="/cluster/v1/task/_completed", method=RequestMethod.POST)
+    public void completed(@RequestBody ZpsResult result) {
+        logger.info("Result: {}", Json.prettyString(result));
+        jobService.setTaskCompleted(result, result.getExitStatus());
     }
-
 
 }

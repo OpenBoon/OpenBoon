@@ -1,0 +1,142 @@
+package com.zorroa.archivist.repository;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.TaskState;
+import com.zorroa.sdk.util.Json;
+import com.zorroa.sdk.zps.ZpsScript;
+import com.zorroa.sdk.zps.ZpsTask;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by chambers on 7/11/16.
+ */
+@Repository
+public class TaskDaoImpl extends AbstractDao implements TaskDao {
+
+    private static final String INSERT =
+            JdbcUtils.insert("task",
+                "pk_job",
+                "pk_parent",
+                "int_state",
+                "json_script",
+                "int_order",
+                "str_execute");
+
+
+    private static final Map<String, Integer> ORDER = ImmutableMap.of(
+            "generate", 0,
+            "pipeline", 100);
+
+    @Override
+    public ZpsScript create(ZpsScript script) {
+        Integer parent = script.getTaskId();
+
+        /**
+         * TODO: because we insert to get the ID, the ID stored on the script
+         * is inaccurate.  Currently we just handle this in the mapper
+         * but we could manually query the sequence
+         */
+        Preconditions.checkNotNull(script.getJobId());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbc.update(connection -> {
+            PreparedStatement ps =
+                    connection.prepareStatement(INSERT, new String[]{"pk_task"});
+            ps.setInt(1, script.getJobId());
+            ps.setObject(2, parent);
+            ps.setInt(3, TaskState.Waiting.ordinal());
+            ps.setString(4, Json.serializeToString(script));
+            ps.setInt(5, ORDER.getOrDefault(script.getExecute(), 10000));
+            ps.setString(6, script.getExecute());
+            return ps;
+        }, keyHolder);
+        int id = keyHolder.getKey().intValue();
+        /**
+         * Replace the task ID with the new task ID before returning.
+         */
+        script.setTaskId(id);
+        return script;
+    }
+
+    @Override
+    public void setHost(ZpsTask task, String host) {
+        jdbc.update("UPDATE task SET str_host=? WHERE pk_task=?", host, task.getTaskId());
+    }
+
+    @Override
+    public void setExitStatus(ZpsTask task, int exitStatus) {
+        jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.getTaskId());
+    }
+
+    @Override
+    public boolean setState(ZpsTask task, TaskState value, TaskState expect) {
+        logger.info("setting task: {} from {} to {}", task.getTaskId(), expect, value);
+        List<Object> values = Lists.newArrayListWithCapacity(4);
+        List<String> fields = Lists.newArrayListWithCapacity(4);
+
+        fields.add("int_state=?");
+        values.add(value.ordinal());
+
+        if (STOPPERS.contains(value)) {
+            fields.add("time_stopped=?");
+            values.add(System.currentTimeMillis());
+        }
+        else if (STARTERS.contains(value)) {
+            fields.add("time_stopped=-1");
+            fields.add("time_started=?");
+            values.add(System.currentTimeMillis());
+        }
+        else if (RESET.contains(value)) {
+            fields.add("time_stopped=-1");
+            fields.add("time_started=-1");
+        }
+
+        values.add(task.getTaskId());
+
+        StringBuilder sb = new StringBuilder(256);
+        sb.append("UPDATE task SET ");
+        sb.append(String.join(",", fields));
+        sb.append(" WHERE pk_task=? ");
+        if (expect != null) {
+            values.add(expect.ordinal());
+            sb.append(" AND int_state=?");
+        }
+
+        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    }
+
+    private static final RowMapper<ZpsScript> ZPS_MAPPER = (rs, row) ->
+            Json.deserialize(rs.getString(1), ZpsScript.class)
+                .setTaskId(rs.getInt(2))
+                .setJobId(rs.getInt(3));
+
+    private static final String GET_WAITING =
+            "SELECT " +
+                "task.json_script,"+
+                "task.pk_task,"+
+                "task.pk_job " +
+            "FROM " +
+                "task,"+
+                "job " +
+            "WHERE " +
+                "task.pk_job = job.pk_job " +
+            "AND " +
+                "job.int_state = 0 " +
+            "AND " +
+                "task.int_state = 0 " +
+            "ORDER BY " +
+                "task.int_order ASC LIMIT ? ";
+    @Override
+    public List<ZpsScript> getWaiting(int limit) {
+        return jdbc.query(GET_WAITING, ZPS_MAPPER, limit);
+    }
+}
