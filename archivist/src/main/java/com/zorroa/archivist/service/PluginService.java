@@ -28,7 +28,7 @@ public interface PluginService {
 
     List<Module> getModules(String plugin, String type);
 
-    Module getModule(String plugin, String name);
+    Module getModule(String id);
 
     List<Module> getModules();
 

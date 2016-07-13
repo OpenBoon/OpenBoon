@@ -70,7 +70,7 @@ public class ModuleDaoImpl extends AbstractElasticDao implements ModuleDao {
     }
 
     @Override
-    public Module get(String plugin, String name) {
-        return elastic.queryForObject(plugin.concat(":").concat(name), MAPPER);
+    public Module get(String id) {
+        return elastic.queryForObject(id, MAPPER);
     }
 }

@@ -130,9 +130,9 @@ public class PluginServiceImpl implements PluginService {
 
         for (Module module: p.getModules()) {
             Map<String, Object> procDoc = getModuleRecord(p, module);
-            String id = p.getName().concat(":").concat(module.getClassName());
+            String id = moduleId(module.getType(), p.getName(), module.getName());
             bulkRequest.add(
-                    client.prepareUpdate(alias, "processor", id)
+                    client.prepareUpdate(alias, "module", id)
                             .setDoc(procDoc).setUpsert(procDoc));
         }
 
@@ -190,10 +190,9 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public Module getModule(String plugin, String name) {
-        return moduleDao.get(plugin, name);
+    public Module getModule(String id) {
+        return moduleDao.get(id);
     }
-
     @Override
     public List<Module> getModules() {
         return moduleDao.getAll();
@@ -213,8 +212,7 @@ public class PluginServiceImpl implements PluginService {
 
             for (Module module: p.getModules()) {
                 Map<String, Object> procDoc = getModuleRecord(p, module);
-
-                String id = p.getName().concat(":").concat(module.getClassName());
+                String id = moduleId(module.getType(), p.getName(), module.getName());
                 bulkRequest.add(
                         client.prepareUpdate(alias, "module", id)
                                 .setDoc(procDoc).setUpsert(procDoc));
@@ -232,6 +230,10 @@ public class PluginServiceImpl implements PluginService {
             throw new PluginException("Unable to register plugin with database, " +
                     bulk.buildFailureMessage());
         }
+    }
+
+    private static String moduleId(String t, String p, String n) {
+        return String.join(":", t, p, n).replace(" ", "");
     }
 
     private Map<String, Object> getModuleRecord(Plugin p, Module module) {
