@@ -5,7 +5,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.ArchivistException;

@@ -1,4 +1,4 @@
-package com.zorroa.archivist.domain;
+package com.zorroa.archivist.service;
 
 import com.zorroa.sdk.domain.Asset;
 import org.elasticsearch.action.search.SearchResponse;
