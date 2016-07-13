@@ -45,15 +45,22 @@ public class ApplicationConfig {
         ArchivistClient client =  new ArchivistClient(trustStore,
                 properties.getString("analyst.master.host"));
 
-        logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
         if (!Application.isUnitTest()) {
             logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
-            Map<String, String> settings = client.getClusterSettings();
-            settings.forEach((k, v) -> {
-                k = k.replace(ClusterSettingsDao.DELIMITER, ".");
-                System.setProperty(k, v);
-                logger.info("setting property: {}={}", k, v);
-            });
+            while(true) {
+                try {
+                    Map<String, String> settings = client.getClusterSettings();
+                    settings.forEach((k, v) -> {
+                        k = k.replace(ClusterSettingsDao.DELIMITER, ".");
+                        System.setProperty(k, v);
+                        logger.info("setting property: {}={}", k, v);
+                    });
+                    break;
+                } catch (Exception e) {
+                    logger.warn("Waiting for archivist to start....");
+                    Thread.sleep(1000);
+                }
+            }
         }
 
         return client;
