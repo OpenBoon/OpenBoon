@@ -158,7 +158,7 @@
                         </goals>
                         <configuration>
                             <executable>/bin/rm</executable>
-                            <commandlineArgs>-rf index storage unittest</commandlineArgs>
+                            <commandlineArgs>-rf db unittest</commandlineArgs>
                         </configuration>
                     </execution>
                     <execution>
