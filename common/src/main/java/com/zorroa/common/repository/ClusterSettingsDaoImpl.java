@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public class ClusterSettingsDaoImpl extends AbstractElasticDao implements ClusterSettingsDao {
 
+    private static final String ID = "settings";
+
     @Override
     public String getType() {
         return "cluster";
@@ -22,7 +24,7 @@ public class ClusterSettingsDaoImpl extends AbstractElasticDao implements Cluste
 
     @Override
     public Map<String, Object> get() {
-        Map<String,Object> config = client.prepareGet(alias, getType(), "settings")
+        Map<String,Object> config = client.prepareGet(alias, getType(), ID)
                 .get(TimeValue.timeValueSeconds(10))
                 .getSourceAsMap();
         Map<String,Object> result = Maps.newHashMapWithExpectedSize(config.size());
@@ -34,7 +36,7 @@ public class ClusterSettingsDaoImpl extends AbstractElasticDao implements Cluste
 
     @Override
     public void load() {
-        Map<String, Object> config = client.prepareGet(alias, getType(), "settings")
+        Map<String, Object> config = client.prepareGet(alias, getType(), ID)
                 .get(TimeValue.timeValueSeconds(10))
                 .getSourceAsMap();
         config.forEach((k,v)-> {
@@ -54,9 +56,10 @@ public class ClusterSettingsDaoImpl extends AbstractElasticDao implements Cluste
             source.put(k.replace(".", DELIMITER), v);
         });
 
-        client.prepareIndex(alias, getType(), "current")
+        client.prepareIndex(alias, getType(), ID)
                 .setOpType(IndexRequest.OpType.INDEX)
                 .setSource(source)
+                .setRefresh(true)
                 .get(TimeValue.timeValueSeconds(10));
     }
 
