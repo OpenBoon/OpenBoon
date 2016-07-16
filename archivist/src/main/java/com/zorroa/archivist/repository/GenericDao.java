@@ -6,19 +6,15 @@ import com.zorroa.common.domain.Paging;
 import java.util.List;
 
 /**
- * Created by chambers on 7/9/16.
+ * Created by chambers on 7/15/16.
  */
 public interface GenericDao<T, S> {
 
     T create(S spec);
 
-    T get(String name);
-
     T get(int id);
 
     T refresh(T object);
-
-    boolean exists(String name);
 
     List<T> getAll();
 

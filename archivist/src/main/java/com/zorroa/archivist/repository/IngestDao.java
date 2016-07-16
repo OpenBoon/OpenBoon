@@ -6,6 +6,6 @@ import com.zorroa.archivist.domain.Ingest;
 /**
  * Created by chambers on 7/9/16.
  */
-public interface IngestDao extends GenericDao<Ingest, IngestSpec> {
+public interface IngestDao extends GenericNamedDao<Ingest, IngestSpec> {
 
 }
