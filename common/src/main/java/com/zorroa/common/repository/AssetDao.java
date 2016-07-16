@@ -2,7 +2,6 @@ package com.zorroa.common.repository;
 
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Folder;
 import com.zorroa.sdk.processor.Source;
 
 import java.nio.file.Path;
@@ -27,7 +26,7 @@ public interface AssetDao {
 
     AssetIndexResult index(String type, List<Source> sources);
 
-    int addToFolder(Folder folder, List<String> assetIds);
+    int addToFolder(int folder, List<String> assetIds);
 
-    int removeFromFolder(Folder folder, List<String> assetIds);
+    int removeFromFolder(int folder, List<String> assetIds);
 }

@@ -71,15 +71,15 @@ public class AssetDaoTests extends AbstractTest {
     public void testAddToFolder() {
         Folder f = new Folder();
         f.setId(100);
-        assertEquals(1, assetDao.addToFolder(f, ImmutableList.of(asset1.getId())));
+        assertEquals(1, assetDao.addToFolder(f.getId(), ImmutableList.of(asset1.getId())));
     }
 
     @Test
     public void testRemoveFromFolder() {
         Folder f = new Folder();
         f.setId(100);
-        assertEquals(1, assetDao.addToFolder(f, ImmutableList.of(asset1.getId())));
-        assertEquals(1, assetDao.removeFromFolder(f, ImmutableList.of(asset1.getId())));
+        assertEquals(1, assetDao.addToFolder(f.getId(), ImmutableList.of(asset1.getId())));
+        assertEquals(1, assetDao.removeFromFolder(f.getId(), ImmutableList.of(asset1.getId())));
     }
 
     @Test

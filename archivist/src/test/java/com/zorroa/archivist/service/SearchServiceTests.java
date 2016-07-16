@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
@@ -65,7 +67,7 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testFolderSearch() throws IOException {
 
-        FolderBuilder builder = new FolderBuilder("Avengers");
+        FolderSpec builder = new FolderSpec("Avengers");
         Folder folder1 = folderService.create(builder);
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
@@ -84,13 +86,13 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testRecursiveFolderSearch() throws IOException {
 
-        FolderBuilder builder = new FolderBuilder("Avengers");
+        FolderSpec builder = new FolderSpec("Avengers");
         Folder folder1 = folderService.create(builder);
 
-        builder = new FolderBuilder("Age Of Ultron", folder1);
+        builder = new FolderSpec("Age Of Ultron", folder1);
         Folder folder2 = folderService.create(builder);
 
-        builder = new FolderBuilder("Characters", folder2);
+        builder = new FolderSpec("Characters", folder2);
         Folder folder3 = folderService.create(builder);
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
@@ -108,13 +110,13 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testNonRecursiveFolderSearch() throws IOException {
 
-        FolderBuilder builder = new FolderBuilder("Avengers");
+        FolderSpec builder = new FolderSpec("Avengers");
         Folder folder1 = folderService.create(builder);
 
-        builder = new FolderBuilder("Age Of Ultron", folder1).setRecursive(false);
+        builder = new FolderSpec("Age Of Ultron", folder1).setRecursive(false);
         Folder folder2 = folderService.create(builder);
 
-        builder = new FolderBuilder("Characters", folder2);
+        builder = new FolderSpec("Characters", folder2);
         Folder folder3 = folderService.create(builder);
 
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
@@ -140,13 +142,13 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testSmartFolderSearch() throws IOException {
 
-        FolderBuilder builder = new FolderBuilder("Avengers");
+        FolderSpec builder = new FolderSpec("Avengers");
         Folder folder1 = folderService.create(builder);
 
-        builder = new FolderBuilder("Age Of Ultron", folder1);
+        builder = new FolderSpec("Age Of Ultron", folder1);
         Folder folder2 = folderService.create(builder);
 
-        builder = new FolderBuilder("Characters", folder2);
+        builder = new FolderSpec("Characters", folder2);
         builder.setSearch(new AssetSearch("captain america"));
         Folder folder3 = folderService.create(builder);
 
@@ -168,11 +170,11 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testLotsOfSmartFolders() throws IOException {
 
-        FolderBuilder builder = new FolderBuilder("people");
+        FolderSpec builder = new FolderSpec("people");
         Folder folder1 = folderService.create(builder);
 
         for (int i=0; i<100; i++) {
-            builder = new FolderBuilder("person" + i, folder1);
+            builder = new FolderSpec("person" + i, folder1);
             builder.setSearch(new AssetSearch("captain america"));
             folderService.create(builder);
         }

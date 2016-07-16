@@ -1,6 +1,9 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.sdk.domain.Access;
+import com.zorroa.sdk.domain.Acl;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,9 +30,9 @@ public interface FolderDao {
 
     boolean exists(Folder parent, String name);
 
-    Folder create(FolderBuilder builder);
+    Folder create(FolderSpec builder);
 
-    boolean update(Folder folder, FolderUpdateBuilder builder);
+    boolean update(Folder folder, FolderSpec builder);
 
     boolean delete(Folder folder);
 

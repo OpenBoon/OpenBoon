@@ -3,9 +3,11 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.sdk.domain.Access;
+import com.zorroa.sdk.domain.Acl;
 import org.junit.Test;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class FolderServiceTests extends AbstractTest {
     public void testSetAcl() {
         authenticate("admin");
 
-        FolderBuilder builder = new FolderBuilder("Folder");
+        FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
 
@@ -29,7 +31,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testCreateAndGet() {
-        FolderBuilder builder = new FolderBuilder("Da Kind Assets");
+        FolderSpec builder = new FolderSpec("Da Kind Assets");
         Folder folder1 = folderService.create(builder);
 
         Folder folder2 = folderService.get(folder1.getId());
@@ -38,22 +40,22 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testDescendants() {
-        Folder grandpa = folderService.create(new FolderBuilder("grandpa"));
-        Folder dad = folderService.create(new FolderBuilder("dad", grandpa.getId()));
-        Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
-        folderService.create(new FolderBuilder("child", dad.getId()));
-        folderService.create(new FolderBuilder("cousin", uncle.getId()));
+        Folder grandpa = folderService.create(new FolderSpec("grandpa"));
+        Folder dad = folderService.create(new FolderSpec("dad", grandpa.getId()));
+        Folder uncle = folderService.create(new FolderSpec("uncle", grandpa.getId()));
+        folderService.create(new FolderSpec("child", dad.getId()));
+        folderService.create(new FolderSpec("cousin", uncle.getId()));
         List<Folder> descendents = folderService.getAllDescendants(grandpa, false);
         assertEquals(4, descendents.size());
     }
 
     @Test
     public void testGetAllDescendants() {
-        Folder grandpa = folderService.create(new FolderBuilder("grandpa"));
-        Folder dad = folderService.create(new FolderBuilder("dad", grandpa.getId()));
-        Folder uncle = folderService.create(new FolderBuilder("uncle", grandpa.getId()));
-        folderService.create(new FolderBuilder("child", dad.getId()));
-        folderService.create(new FolderBuilder("cousin", uncle.getId()));
+        Folder grandpa = folderService.create(new FolderSpec("grandpa"));
+        Folder dad = folderService.create(new FolderSpec("dad", grandpa.getId()));
+        Folder uncle = folderService.create(new FolderSpec("uncle", grandpa.getId()));
+        folderService.create(new FolderSpec("child", dad.getId()));
+        folderService.create(new FolderSpec("cousin", uncle.getId()));
         assertEquals(5, folderService.getAllDescendants(Lists.newArrayList(grandpa), true, true).size());
         assertEquals(4, folderService.getAllDescendants(Lists.newArrayList(grandpa), false, true).size());
 
@@ -68,10 +70,10 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testGetChildren() {
-        Folder folder1 = folderService.create(new FolderBuilder("test1"));
-        Folder folder1a = folderService.create(new FolderBuilder("test1a", folder1));
-        Folder folder1b = folderService.create(new FolderBuilder("test1b", folder1));
-        Folder folder1c = folderService.create(new FolderBuilder("test1c", folder1));
+        Folder folder1 = folderService.create(new FolderSpec("test1"));
+        Folder folder1a = folderService.create(new FolderSpec("test1a", folder1));
+        Folder folder1b = folderService.create(new FolderSpec("test1b", folder1));
+        Folder folder1c = folderService.create(new FolderSpec("test1c", folder1));
 
         List<Folder> children = folderService.getChildren(folder1);
         assertEquals(3, children.size());
@@ -83,10 +85,10 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testGetByPath() {
-        Folder folder1 = folderService.create(new FolderBuilder("test1"));
-        Folder folder1a = folderService.create(new FolderBuilder("test1a", folder1));
-        Folder folder1b = folderService.create(new FolderBuilder("test1b", folder1a));
-        Folder folder1c = folderService.create(new FolderBuilder("test1c", folder1b));
+        Folder folder1 = folderService.create(new FolderSpec("test1"));
+        Folder folder1a = folderService.create(new FolderSpec("test1a", folder1));
+        Folder folder1b = folderService.create(new FolderSpec("test1b", folder1a));
+        Folder folder1c = folderService.create(new FolderSpec("test1c", folder1b));
 
         Folder folder = folderService.get("/test1/test1a/test1b/test1c");
         assertEquals(folder1b.getId(), folder.getParentId().intValue());
@@ -101,10 +103,10 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testExistsByPath() {
-        Folder folder1 = folderService.create(new FolderBuilder("test1"));
-        Folder folder1a = folderService.create(new FolderBuilder("test1a", folder1));
-        Folder folder1b = folderService.create(new FolderBuilder("test1b", folder1a));
-        Folder folder1c = folderService.create(new FolderBuilder("test1c", folder1b));
+        Folder folder1 = folderService.create(new FolderSpec("test1"));
+        Folder folder1a = folderService.create(new FolderSpec("test1a", folder1));
+        Folder folder1b = folderService.create(new FolderSpec("test1b", folder1a));
+        Folder folder1c = folderService.create(new FolderSpec("test1c", folder1b));
 
         assertTrue(folderService.exists("/test1/test1a/test1b/test1c"));
         assertTrue(folderService.exists("/test1/test1a"));
@@ -114,8 +116,8 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        Folder folder = folderService.create(new FolderBuilder("orig"));
-        boolean ok = folderService.update(folder, new FolderUpdateBuilder().setName("new"));
+        Folder folder = folderService.create(new FolderSpec("orig"));
+        boolean ok = folderService.update(folder, new FolderSpec().setName("new"));
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
         assertEquals("new", revised.getName());
@@ -123,9 +125,9 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testUpdateWithNewParent() {
-        Folder folder1 = folderService.create(new FolderBuilder("orig"));
-        Folder folder2 = folderService.create(new FolderBuilder("unorig"));
-        boolean ok = folderService.update(folder2, new FolderUpdateBuilder().setParentId(folder1.getId()));
+        Folder folder1 = folderService.create(new FolderSpec("orig"));
+        Folder folder2 = folderService.create(new FolderSpec("unorig"));
+        boolean ok = folderService.update(folder2, new FolderSpec().setParentId(folder1.getId()));
         assertTrue(ok);
 
         Folder revised = folderService.get(folder2.getId());
@@ -140,44 +142,21 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testUpdateRecursive() {
-        Folder folder = folderService.create(new FolderBuilder("orig"));
+        Folder folder = folderService.create(new FolderSpec("orig"));
         assertTrue(folder.isRecursive());
-        boolean ok = folderService.update(folder, new FolderUpdateBuilder().setRecursive(Boolean.FALSE));
+        boolean ok = folderService.update(folder, new FolderSpec().setRecursive(Boolean.FALSE));
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
         assertFalse(revised.isRecursive());
     }
 
-    @Test(expected=DataIntegrityViolationException.class)
-    public void testCreateFailureInRoot() {
-        FolderBuilder builder = new FolderBuilder("shizzle");
-        builder.setExpectCreate(true);
-        Folder folder1 = folderService.create(builder);
-        folderService.create(builder);
-    }
-
-    @Test(expected=DataIntegrityViolationException.class)
-    public void testDeepCreateFailure() {
-        FolderBuilder builder = new FolderBuilder("shizzle");
-        Folder folder1 = folderService.create(builder);
-        assertEquals(Folder.ROOT_ID, folder1.getParentId());
-
-        builder = new FolderBuilder("shizzle");
-        builder.setParentId(folder1.getId());
-        builder.setExpectCreate(true);
-
-        Folder folder2 = folderService.create(builder);
-        assertEquals(folder2.getParentId().intValue(), folder1.getId());
-        folderService.create(builder);
-    }
-
     @Test
     public void testDelete() {
-        FolderBuilder builder = new FolderBuilder("shizzle");
+        FolderSpec builder = new FolderSpec("shizzle");
         Folder start = folderService.create(builder);
         Folder root = start;
         for (int i=0; i<10; i++) {
-            builder = new FolderBuilder("shizzle"+i, start);
+            builder = new FolderSpec("shizzle"+i, start);
             start = folderService.create(builder);
         }
         assertTrue(folderService.delete(root));

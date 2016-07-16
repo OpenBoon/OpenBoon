@@ -1,10 +1,16 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.sdk.domain.Access;
+import com.zorroa.sdk.domain.Acl;
+import com.zorroa.sdk.domain.AclEntry;
+import com.zorroa.sdk.domain.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,8 +28,8 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         Folder folder = new Folder();
         folder.setId(rs.getInt("pk_folder"));
         folder.setName(rs.getString("str_name"));
-        folder.setUserCreated(rs.getInt("user_created"));
-        folder.setUserModified(rs.getInt("user_modified"));
+        folder.setUserCreated(resolveUser(rs.getInt("user_created")));
+        folder.setUserModified(resolveUser(rs.getInt("user_modified")));
         folder.setRecursive(rs.getBoolean("bool_recursive"));
         folder.setTimeCreated(rs.getLong("time_created"));
         folder.setTimeModified(rs.getLong("time_modified"));
@@ -130,7 +136,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     "json_search");
 
     @Override
-    public Folder create(FolderBuilder builder) {
+    public Folder create(FolderSpec builder) {
         long time = System.currentTimeMillis();
         int user = SecurityUtils.getUser().getId();
 
@@ -152,49 +158,26 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         return get(keyHolder.getKey().intValue());
     }
 
+    private static final String UPDATE = JdbcUtils.update("folder", "pk_folder",
+            "time_modified",
+            "user_modified",
+            "pk_parent",
+            "str_name",
+            "json_search");
+
     @Override
-    public boolean update(Folder folder, FolderUpdateBuilder builder) {
-
-        if (builder.isset("acl")) {
-            setAcl(folder, builder.getAcl());
-        }
-
-        List<Object> values = Lists.newArrayList();
-        List<String> sets = Lists.newArrayList();
-
-        if (builder.isset("name")) {
-            sets.add("str_name=?");
-            values.add(builder.getName());
-        }
-
-        if (builder.isset("parentId")) {
-            sets.add("pk_parent=?");
-            values.add(builder.getParentId());
-        }
-
-        if (builder.isset("recursive")) {
-            sets.add("bool_recursive=?");
-            values.add(builder.getRecursive());
-        }
-
-        if (builder.isset("search")) {
-            sets.add("json_search=?");
-            values.add(Json.serializeToString(builder.getSearch(), null));
-        }
-
-        values.add(folder.getId());
-
-        StringBuilder sb = new StringBuilder(512);
-        sb.append("UPDATE folder SET ");
-        sb.append(String.join(",", sets));
-        sb.append(" WHERE pk_folder=? ");
-
-        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    public boolean update(Folder folder, FolderSpec spec) {
+        Preconditions.checkNotNull(spec.getParentId(), "Parent folder cannot be null");
+        return jdbc.update(UPDATE,
+                System.currentTimeMillis(),
+                SecurityUtils.getUser().getId(),
+                spec.getParentId(),
+                spec.isRecursive(),
+                Json.serializeToString(spec.getSearch(), null)) == 1;
     }
 
     @Override
     public boolean delete(Folder folder) {
-        logger.debug("Deleting folder: {}", folder);
         return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) ==1;
     }
 
@@ -219,7 +202,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public Acl getAcl(Folder folder) {
         Acl result = new Acl();
-        jdbc.query("SELECT * FROM  folder_acl WHERE pk_folder=?", rs -> {
+        jdbc.query("SELECT * FROM folder_acl WHERE pk_folder=?", rs -> {
             result.add(new AclEntry(rs.getInt("pk_permission"), rs.getInt("int_access")));
         }, folder.getId());
         return result;

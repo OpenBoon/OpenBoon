@@ -7,7 +7,6 @@ import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Folder;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -134,7 +133,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public int addToFolder(Folder folder, List<String> assetIds) {
+    public int addToFolder(int folder, List<String> assetIds) {
         int result = 0;
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
@@ -142,7 +141,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
             updateBuilder.setScript(new Script("asset_append_folder",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("folderId", folder.getId())));
+                    ImmutableMap.of("folderId", folder)));
             bulkRequest.add(updateBuilder);
         }
 
@@ -156,7 +155,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public int removeFromFolder(Folder folder, List<String> assetIds) {
+    public int removeFromFolder(int folder, List<String> assetIds) {
         int result = 0;
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
@@ -164,7 +163,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
             updateBuilder.setScript(new Script("asset_remove_folder",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("folderId", folder.getId())));
+                    ImmutableMap.of("folderId", folder)));
             bulkRequest.add(updateBuilder);
         }
 

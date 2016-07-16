@@ -3,6 +3,8 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.TestSearchResult;
+import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
@@ -215,8 +217,8 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("canyon");
         List<Asset> assets = assetDao.getAll();
 
-        Folder folder1 = folderService.create(new FolderBuilder("foo"));
-        Folder folder2 = folderService.create(new FolderBuilder("bar"));
+        Folder folder1 = folderService.create(new FolderSpec("foo"));
+        Folder folder2 = folderService.create(new FolderSpec("bar"));
         mvc.perform(post("/api/v1/folders/" + folder1.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

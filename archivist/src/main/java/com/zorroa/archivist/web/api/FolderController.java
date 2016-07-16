@@ -1,18 +1,20 @@
 package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.MessagingService;
 import com.zorroa.archivist.service.SearchService;
+import com.zorroa.sdk.domain.AssetFilter;
+import com.zorroa.sdk.domain.AssetSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,8 +34,8 @@ public class FolderController {
     MessagingService messagingService;
 
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.POST)
-    public Folder create(@RequestBody FolderBuilder builder, HttpSession httpSession) {
-        return folderService.create(builder);
+    public Folder create(@RequestBody FolderSpec spec) {
+        return folderService.create(spec, false);
     }
 
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.GET)
@@ -64,7 +66,7 @@ public class FolderController {
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.PUT)
-    public Folder update(@RequestBody FolderUpdateBuilder builder, @PathVariable int id) {
+    public Folder update(@RequestBody FolderSpec builder, @PathVariable int id) {
         Folder folder = folderService.get(id);
         folderService.update(folder, builder);
         return folderService.get(folder.getId());

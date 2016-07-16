@@ -7,27 +7,34 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AssetDao;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Access;
+import com.zorroa.sdk.domain.Acl;
+import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.domain.MessageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -75,37 +82,28 @@ public class FolderServiceImpl implements FolderService {
     public Folder get(String path) {
         int parentId = Folder.ROOT_ID;
         Folder current = null;
-        try {
-            for (String name : Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
-                current = folderDao.get(parentId, name);
-                parentId = current.getId();
-            }
-            return current;
-        } catch (EmptyResultDataAccessException e) {
-            logger.warn("Cannot get folder at " + path + e);
-            return null;
-        } catch (Exception e) {
-            throw e;
+
+        // Just throw the exception to the caller,don't return null
+        // as none of the other 'get' functions do.
+        for (String name : Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
+            current = folderDao.get(parentId, name);
+            parentId = current.getId();
         }
+        return current;
     }
 
     @Override
     public boolean exists(String path) {
-        int parentId = Folder.ROOT_ID;
-        Folder current = null;
-        for (String name: Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
-            try {
-                current = folderDao.get(parentId, name);
-                parentId = current.getId();
-            } catch (EmptyResultDataAccessException e) {
-                return false;
-            }
+        try {
+            get(path);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return true;
     }
 
     @Override
-    public int getCount() {
+    public int count() {
         return folderDao.count();
     }
 
@@ -125,60 +123,18 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    @Transactional(propagation=Propagation.NOT_SUPPORTED)
-    public synchronized Folder create(FolderBuilder builder) {
-
-        Folder parent = folderDao.get(builder.getParentId());
-        if (!SecurityUtils.hasPermission(parent.getAcl(),  Access.Write)) {
-            throw new AccessDeniedException("You cannot make changes to this folder");
-        }
-        /*
-          * The current transaction (if any) is suspended by calling the FolderService.create() function.
-          * Using transaction template, we create a new transaction, add the folder, and commit it.
-         */
-        TransactionTemplate tmpl = new TransactionTemplate(transactionManager);
-        Folder result = tmpl.execute(transactionStatus -> {
-            try {
-                Folder folder = folderDao.create(builder);
-                folderDao.setAcl(folder, builder.getAcl());
-                transactionEventManager.afterCommitSync(() -> {
-                    invalidate(parent);
-                    messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folderDao.get(folder.getId())));
-                });
-                return folder;
-            } catch (DataIntegrityViolationException e) {
-               return null;
-            }
-        });
-
-        /*
-          * If null is returned from our new transaction then there was an error creating
-          * the folder.  If we expected the folder to be created, an exception is thrown.
-          * Otherwise, we return the existing folder.
-         */
-        if (result == null) {
-            if (builder.isExpectCreate()) {
-                throw new DataIntegrityViolationException("Folder '" + builder.getName() + "' already exists");
-            }
-            else {
-                result = folderDao.get(builder.getParentId(), builder.getName());
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public boolean update(Folder folder, FolderUpdateBuilder builder) {
+    public boolean update(Folder folder, FolderSpec spec) {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(),  Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
-        boolean result = folderDao.update(folder, builder);
+        boolean result = folderDao.update(folder, spec);
         if (result) {
+            setAcl(folder, spec.getAcl());
+
             transactionEventManager.afterCommitSync(() -> {
-                invalidate(folder, builder.getParentId());
+                invalidate(folder, spec.getParentId());
                 messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
                         get(folder.getId())));
             });
@@ -218,7 +174,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public void addAssets(Folder folder, List<String> assetIds) {
-        int result = assetDao.addToFolder(folder, assetIds);
+        int result = assetDao.addToFolder(folder.getId(), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
                 ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
@@ -226,7 +182,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public void removeAssets(Folder folder, List<String> assetIds) {
-        int result = assetDao.removeFromFolder(folder, assetIds);
+        int result = assetDao.removeFromFolder(folder.getId(), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
                 ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));
@@ -321,5 +277,54 @@ public class FolderServiceImpl implements FolderService {
                 logger.warn("Failed to obtain child folders for {}", current, e);
             }
         }
+    }
+
+    private ExecutorService folderExecutor = Executors.newSingleThreadExecutor();
+
+    @Override
+    public Future<Folder> submitCreate(FolderSpec spec, boolean mightExist) {
+        return folderExecutor.submit(() -> create(spec, mightExist));
+    }
+
+    @Override
+    public Future<Folder> submitCreate(Folder parent, FolderSpec spec, boolean mightExist) {
+        return folderExecutor.submit(() -> create(parent, spec, mightExist));
+    }
+
+    @Override
+    public Folder create(Folder parent, FolderSpec spec, boolean mightExist) {
+
+        if (!SecurityUtils.hasPermission(parent.getAcl(),  Access.Write)) {
+            throw new AccessDeniedException("You cannot make changes to this folder");
+        }
+        Folder result;
+        if (mightExist) {
+            try {
+                result = get(spec.getParentId(), spec.getName());
+            } catch (EmptyResultDataAccessException e) {
+                result = folderDao.create(spec);
+            }
+        }
+        else {
+            try {
+                result = folderDao.create(spec);
+            }
+            catch (DuplicateKeyException e) {
+                result = get(spec.getParentId(), spec.getName());
+            }
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public Folder create(FolderSpec spec, boolean mightExist) {
+        return create(folderDao.get(spec.getParentId()), spec, mightExist);
+    }
+
+    @Override
+    public Folder create(FolderSpec spec) {
+        return create(folderDao.get(spec.getParentId()), spec, false);
     }
 }

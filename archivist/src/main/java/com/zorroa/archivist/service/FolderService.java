@@ -1,12 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.sdk.domain.Acl;
-import com.zorroa.sdk.domain.Folder;
-import com.zorroa.sdk.domain.FolderBuilder;
-import com.zorroa.sdk.domain.FolderUpdateBuilder;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public interface FolderService {
 
@@ -16,7 +16,7 @@ public interface FolderService {
 
     boolean exists(String path);
 
-    int getCount();
+    int count();
 
     List<Folder> getAll();
 
@@ -49,9 +49,7 @@ public interface FolderService {
      */
     List<Folder> getAllDescendants(Folder folder, boolean forSearch);
 
-    Folder create(FolderBuilder builder);
-
-    boolean update(Folder folder, FolderUpdateBuilder builder);
+    boolean update(Folder folder, FolderSpec spec);
 
     boolean delete(Folder folder);
 
@@ -62,4 +60,19 @@ public interface FolderService {
     void addAssets(Folder folder, List<String> assetIds);
 
     void removeAssets(Folder folder, List<String> assetIds);
+
+    /**
+     * Asynchronously creata a new folder.  Return a future in case
+     * you eventually need the result.
+     *
+     * @param spec
+     * @param mightExist
+     * @return
+     */
+    Future<Folder> submitCreate(Folder parent, FolderSpec spec, boolean mightExist);
+    Future<Folder> submitCreate(FolderSpec spec, boolean mightExist);
+
+    Folder create(FolderSpec spec);
+    Folder create(FolderSpec spec, boolean mightExist);
+    Folder create(Folder parent, FolderSpec spec, boolean mightExist);
 }

@@ -1,8 +1,7 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
@@ -78,10 +77,10 @@ public class UserServiceImpl implements UserService {
          * Add the user's home folder
          */
         Folder userRoot = folderService.get(Folder.ROOT_ID, "Users");
-        folderService.create(new FolderBuilder()
+        folderService.create(new FolderSpec()
                 .setName(user.getUsername())
                 .setParentId(userRoot.getId())
-                .setAcl(new Acl().addEntry(userPerm, Access.Read, Access.Write)));
+                .setAcl(new Acl().addEntry(userPerm, Access.Read, Access.Write)), false);
 
         transactionEventManager.afterCommitSync(() -> {
             messagingService.broadcast(new Message("USER_CREATE", user));

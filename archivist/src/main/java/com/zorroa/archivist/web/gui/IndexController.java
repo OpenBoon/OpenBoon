@@ -2,12 +2,18 @@ package com.zorroa.archivist.web.gui;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.SerializableElasticResult;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.AssetSearch;
+import com.zorroa.sdk.domain.EventLogSearch;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
@@ -38,6 +44,12 @@ public class IndexController {
 
     @Autowired
     PipelineService pipelineService;
+
+    @Autowired
+    IngestService ingestService;
+
+    @Autowired
+    ImportService importService;
 
     @Autowired
     AnalystService analystService;
@@ -73,7 +85,7 @@ public class IndexController {
         standardModel(model);
         model.addAttribute("assetCount", searchService.count(new AssetSearch()).getCount());
         model.addAttribute("userCount", userService.getCount());
-        model.addAttribute("folderCount", folderService.getCount());
+        model.addAttribute("folderCount", folderService.count());
         model.addAttribute("analystCount", analystService.getCount());
         model.addAttribute("user", SecurityUtils.getUser());
         return "overview";
@@ -113,7 +125,7 @@ public class IndexController {
         model.addAttribute("nextPage", Math.min(maxPages, page+1));
         model.addAttribute("pageDisplay", String.format("%d of %d", page, maxPages));
         model.addAttribute("allUsers", userService.getAll(limit, offset));
-        model.addAttribute("userBuilder", new UserBuilder());
+        model.addAttribute("userBuilder", new UserSpec());
         return "users";
     }
 
@@ -121,13 +133,13 @@ public class IndexController {
     public String user(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("user", userService.get(id));
-        model.addAttribute("userUpdateBuilder", new UserUpdateBuilder());
+        model.addAttribute("userUpdateBuilder", new UserSpec());
         return "user";
     }
 
     @RequestMapping(value="/gui/users/{id}", method=RequestMethod.POST)
     public String updateUser(Model model, @PathVariable int id,
-                             @Valid @ModelAttribute("userUpdateBuilder") UserUpdateBuilder userUpdateBuilder,
+                             @Valid @ModelAttribute("userUpdateBuilder") UserUpdate userUpdateBuilder,
                              BindingResult bindingResult) {
         standardModel(model);
         if (bindingResult.hasErrors()) {
@@ -140,13 +152,13 @@ public class IndexController {
         }
 
         model.addAttribute("user", userService.get(id));
-        model.addAttribute("userUpdateBuilder", new UserUpdateBuilder());
+        model.addAttribute("userUpdateBuilder", new UserUpdate());
         return "user";
     }
 
     @RequestMapping(value="/gui/users", method=RequestMethod.POST)
     public String createUser(Model model,
-                             @Valid @ModelAttribute("userBuilder") UserBuilder userBuilder,
+                             @Valid @ModelAttribute("userBuilder") UserSpec userBuilder,
                              BindingResult bindingResult) {
         standardModel(model);
         if (bindingResult.hasErrors()) {
@@ -230,16 +242,18 @@ public class IndexController {
     @RequestMapping("/gui/ingests")
     public String imports(Model model) {
         standardModel(model);
-        //model.addAttribute("pipelines", ingestService.getIngestPipelines());
-        //model.addAttribute("ingests", ingestService.getAllIngests());
-        //model.addAttribute("builder", new IngestBuilder());
+        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("ingests", ingestService.getAll());
+        model.addAttribute("generators", pluginService.getModules(null, "generator"));
+        model.addAttribute("spec", new IngestSpec());
         return "ingests";
     }
 
     @RequestMapping(value="/gui/ingests",  method=RequestMethod.POST)
-    public String createImport(Model model,
-                               @Valid @ModelAttribute("ingestBuilder") IngestBuilder ingestBuilder,
+    public String createIngest(Model model,
+                               @Valid @ModelAttribute("ingestSpec") IngestSpec spec,
                                BindingResult bindingResult) {
+        logger.info("{}", spec);
         standardModel(model);
 
         if (bindingResult.hasErrors()) {
@@ -247,14 +261,13 @@ public class IndexController {
             return "ingests";
         }
 
-        //model.addAttribute("pipelines", ingestService.getIngestPipelines());
-        //model.addAttribute("ingests", ingestService.getAllIngests());
-        //model.addAttribute("builder", new IngestBuilder());
-        //ingestService.createIngest(ingestBuilder);
+        model.addAttribute("ingests", ingestService.getAll());
+        model.addAttribute("spec", new IngestSpec());
+        ingestService.create(spec);
         return "redirect:/gui/ingests";
     }
 
-    @RequestMapping("/gui/import/{id}")
+    @RequestMapping("/gui/imports/{id}")
     public String ingest(Model model, @PathVariable int id) {
         standardModel(model);
         //model.addAttribute("ingest", ingestService.getIngest(id));
@@ -262,10 +275,17 @@ public class IndexController {
         return "ingest";
     }
 
+    @RequestMapping("/gui/imports")
+    public String imports(Model model, @RequestParam(value="page", required=false) Integer page) {
+        standardModel(model);
+        model.addAttribute("imports", importService.getAll(new Paging(page)));
+        return "imports";
+    }
+
     @RequestMapping("/gui/pipelines")
     public String pipelines(Model model) {
         standardModel(model);
-        model.addAttribute("pipelines", pipelineService.getIngestPipelines());
+        model.addAttribute("pipelines", pipelineService.getAll());
         return "pipelines";
     }
 
@@ -280,16 +300,16 @@ public class IndexController {
     public String plugins(Model model, @PathVariable String name) {
         standardModel(model);
         model.addAttribute("plugin", pluginService.get(name));
-        model.addAttribute("ingests", pluginService.getModules(name, "ingest"));
+        model.addAttribute("importors", pluginService.getModules(name, "import"));
         model.addAttribute("generators", pluginService.getModules(name, "generator"));
         return "plugin";
     }
 
-    @RequestMapping("/gui/plugins/{name}/module/{module}")
-    public String plugins(Model model, @PathVariable String name, @PathVariable String module) {
+    @RequestMapping("/gui/plugins/{name}/module/{id}")
+    public String plugins(Model model, @PathVariable String name, @PathVariable String id) {
         standardModel(model);
         model.addAttribute("plugin", pluginService.get(name));
-        model.addAttribute("module", pluginService.getModule(name, module));
+        model.addAttribute("module", pluginService.getModule(id));
         return "module";
     }
 

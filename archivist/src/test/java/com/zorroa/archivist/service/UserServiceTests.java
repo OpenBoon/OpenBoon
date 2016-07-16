@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.domain.UserUpdate;
-import com.zorroa.sdk.domain.Folder;
+import com.zorroa.archivist.domain.Folder;
 import com.zorroa.sdk.domain.Permission;
 import org.junit.Test;
 

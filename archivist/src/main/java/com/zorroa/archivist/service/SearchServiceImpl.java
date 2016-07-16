@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.Folder;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -197,6 +198,7 @@ public class SearchServiceImpl implements SearchService {
         BoolQueryBuilder query = QueryBuilders.boolQuery();
         if (filter.getFolderIds() != null) {
             Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(64);
+
             for (Folder folder : folderService.getAllDescendants(
                     folderService.getAll(filter.getFolderIds()), true, true)) {
                 if (folder.getSearch() != null) {
@@ -232,24 +234,6 @@ public class SearchServiceImpl implements SearchService {
         }
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
-
-
-        /*
-         * Note: the default boost is 1
-         *
-         * With 5 keyword buckets, the boosts work out to:
-         * 1 = 0.1
-         * 2 = 0.5
-         * 3 = 1.0 (DEFAULT)
-         * 4 = 1.5
-         * 5 = 2.0
-         *
-         * The indexed fields get 1/2 as much boost.
-         *
-         * TODO: switch to BigDecmial to deal with rounding errors.
-         * TODO: function score query is another option
-         */
-
         qstring.field("keywords.all");
         qstring.field("keywords.all.raw", 2);
         qstring.allowLeadingWildcard(false);
