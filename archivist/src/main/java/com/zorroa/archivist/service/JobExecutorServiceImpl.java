@@ -4,7 +4,6 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.repository.TaskDao;
-import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.processor.Source;
@@ -48,7 +47,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
     TaskDao taskDao;
 
     @Autowired
-    AssetDao assetDao;
+    AssetService assetService;
 
     @Autowired
     JobService jobService;
@@ -103,7 +102,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
 
         if (react.getIndex() != null) {
             for (Map.Entry<String, List<Source>> entry: react.getIndex().entrySet()) {
-                AssetIndexResult result = assetDao.index(entry.getKey(), entry.getValue());
+                AssetIndexResult result = assetService.index(entry.getKey(), entry.getValue());
                 jobService.updateStats(
                         react.getJobId(), result.created, result.updated, result.errors, result.warnings);
             }
