@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.processor.Source;
 
 import java.nio.file.Path;
@@ -21,6 +22,10 @@ public interface AssetService {
      * @return
      */
     List<Asset> getAll();
+
+    AssetIndexResult index(String index, List<Source> sources);
+
+    AssetIndexResult index(List<Source> sources);
 
     boolean exists(Path path);
 

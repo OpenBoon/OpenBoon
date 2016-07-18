@@ -5,6 +5,7 @@ import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.MessageType;
 import com.zorroa.sdk.processor.Source;
@@ -38,6 +39,9 @@ public class AssetServiceImpl implements AssetService {
     @Autowired
     MessagingService messagingService;
 
+    @Autowired
+    DyHierarchyService dyHierarchyService;
+
     @Override
     public Asset get(String id) {
         return assetDao.get(id);
@@ -56,6 +60,24 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Asset index(Source source) {
         return assetDao.index(source);
+    }
+
+    @Override
+    public AssetIndexResult index(String index, List<Source> sources) {
+        AssetIndexResult result =  assetDao.index(index, sources);
+        if (result.created + result.updated > 0) {
+            dyHierarchyService.submitGenerateAll(false);
+        }
+        return result;
+    }
+
+    @Override
+    public AssetIndexResult index(List<Source> sources) {
+        AssetIndexResult result =  assetDao.index(sources);
+        if (result.created + result.updated > 0) {
+            dyHierarchyService.submitGenerateAll(false);
+        }
+        return result;
     }
 
     @Override
