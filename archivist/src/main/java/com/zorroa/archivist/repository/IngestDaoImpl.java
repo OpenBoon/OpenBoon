@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.Schedule;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.plugins.ModuleRef;
 import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,8 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
-
-import static com.zorroa.sdk.util.Json.LIST_OF_PROCESSOR_SPECS;
 
 /**
  * Created by chambers on 7/9/16.
@@ -30,7 +29,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
         i.setName(rs.getString("str_name"));
         i.setAutomatic(rs.getBoolean("bool_automatic"));
         i.setSchedule(new Schedule(rs.getString("crond_trigger")));
-        i.setGenerators(Json.deserialize(rs.getString("json_generators"), LIST_OF_PROCESSOR_SPECS));
+        i.setGenerators(Json.deserialize(rs.getString("json_generators"), ModuleRef.LIST_TYPE_REF));
         i.setTimeCreated(rs.getLong("time_created"));
         i.setTimeExecuted(rs.getLong("time_executed"));
         i.setUserCreated(rs.getInt("int_user_created"));
@@ -42,7 +41,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
 
         Object pipeline = rs.getString("json_pipeline");
         if (pipeline != null) {
-            i.setPipeline(Json.deserialize(pipeline.toString(), LIST_OF_PROCESSOR_SPECS));
+            i.setPipeline(Json.deserialize(pipeline.toString(), ModuleRef.LIST_TYPE_REF));
         }
 
         Object pipelineId = rs.getObject("pk_pipeline");

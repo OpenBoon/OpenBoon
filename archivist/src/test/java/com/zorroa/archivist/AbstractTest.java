@@ -238,6 +238,10 @@ public abstract class AbstractTest {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
+    public Path getTestPath(String subdir) {
+        return Paths.get("../unittest/resources").resolve(subdir).toAbsolutePath();
+    }
+
     public Path getTestImagePath(String subdir) {
         return Paths.get("../unittest/resources/images").resolve(subdir).toAbsolutePath();
     }

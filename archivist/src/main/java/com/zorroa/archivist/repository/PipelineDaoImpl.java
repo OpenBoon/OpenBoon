@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Preconditions;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Pipeline;
@@ -8,7 +7,7 @@ import com.zorroa.archivist.domain.PipelineSpec;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.plugins.ModuleRef;
 import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,8 +25,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
         Pipeline result = new Pipeline();
         result.setId(rs.getInt("pk_pipeline"));
         result.setName(rs.getString("str_name"));
-        result.setProcessors(Json.deserialize(rs.getString("json_processors"),
-                new TypeReference<List<ProcessorSpec>>() {}));
+        result.setProcessors(Json.deserialize(rs.getString("json_processors"), ModuleRef.LIST_TYPE_REF));
         result.setType(PipelineType.values()[rs.getInt("int_type")]);
         result.setDescription(rs.getString("str_description"));
         return result;

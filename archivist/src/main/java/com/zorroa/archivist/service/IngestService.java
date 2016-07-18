@@ -13,6 +13,8 @@ import java.util.List;
 public interface IngestService {
     Ingest create(IngestSpec spec);
 
+    void spawnImportJob(Ingest ingest);
+
     boolean update(int id, IngestSpec spec);
 
     boolean delete(int id);

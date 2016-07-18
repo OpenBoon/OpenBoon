@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.domain.EventLoggable;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.plugins.ModuleRef;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,12 +62,12 @@ public class Ingest implements EventLoggable {
      * If a pipeline is not set then the Ingest can have its own set of
      * processors.
      */
-    private List<ProcessorSpec> pipeline;
+    private List<ModuleRef> pipeline;
 
     /**
      * An array of Generator classes for finding files.
      */
-    private List<ProcessorSpec> generators;
+    private List<ModuleRef> generators;
 
     public int getId() {
         return id;
@@ -123,24 +123,6 @@ public class Ingest implements EventLoggable {
         return this;
     }
 
-    public List<ProcessorSpec> getPipeline() {
-        return pipeline;
-    }
-
-    public Ingest setPipeline(List<ProcessorSpec> pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    public List<ProcessorSpec> getGenerators() {
-        return generators;
-    }
-
-    public Ingest setGenerators(List<ProcessorSpec> generators) {
-        this.generators = generators;
-        return this;
-    }
-
     public long getTimeCreated() {
         return timeCreated;
     }
@@ -165,6 +147,24 @@ public class Ingest implements EventLoggable {
 
     public Ingest setUserCreated(int userCreated) {
         this.userCreated = userCreated;
+        return this;
+    }
+
+    public List<ModuleRef> getPipeline() {
+        return pipeline;
+    }
+
+    public Ingest setPipeline(List<ModuleRef> pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    public List<ModuleRef> getGenerators() {
+        return generators;
+    }
+
+    public Ingest setGenerators(List<ModuleRef> generators) {
+        this.generators = generators;
         return this;
     }
 

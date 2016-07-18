@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.repository.IngestDao;
@@ -34,13 +35,33 @@ public class IngestServiceImpl implements IngestService {
     @Autowired
     TransactionEventManager event;
 
+    @Autowired
+    ImportService importService;
+
     @Override
     public Ingest create(IngestSpec spec) {
         Ingest i = ingestDao.create(spec);
         event.afterCommit(()->
                 message.broadcast(new Message("INGEST_CREATE",
                         ImmutableMap.of("id", i.getId()))));
+
+        if (spec.isRunNow()) {
+            event.afterCommit(() -> {
+                spawnImportJob(i);
+            });
+        }
+
         return i;
+    }
+
+    @Override
+    public void spawnImportJob(Ingest ingest) {
+        ImportSpec spec = new ImportSpec();
+        spec.setPipelineId(ingest.getPipelineId());
+        spec.setPipeline(ingest.getPipeline());
+        spec.setGenerators(ingest.getGenerators());
+        spec.setName("ingest-" + ingest.getName());
+        importService.create(spec);
     }
 
     @Override

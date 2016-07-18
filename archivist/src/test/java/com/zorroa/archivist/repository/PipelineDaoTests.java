@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.PipelineSpec;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.plugins.ModuleRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class PipelineDaoTests extends AbstractTest {
         update.setName("foo");
         update.setDescription("foo bar");
         update.setType(PipelineType.Train);
-        update.setProcessors(Lists.newArrayList(new ProcessorSpec().setClassName("bar.Bing")));
+        update.setProcessors(Lists.newArrayList(new ModuleRef().setName("bar.Bing")));
         assertTrue(pipelineDao.update(pipeline.getId(), update));
 
         pipeline = pipelineDao.refresh(pipeline);

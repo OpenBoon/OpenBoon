@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.domain.EventLoggable;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.plugins.ModuleRef;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +13,7 @@ public class Pipeline implements EventLoggable {
     private PipelineType type;
     private String name;
     private String description;
-    private List<ProcessorSpec> processors;
+    private List<ModuleRef> processors;
 
     public int getId() {
         return id;
@@ -42,11 +42,11 @@ public class Pipeline implements EventLoggable {
         return this;
     }
 
-    public List<ProcessorSpec> getProcessors() {
+    public List<ModuleRef> getProcessors() {
         return processors;
     }
 
-    public Pipeline setProcessors(List<ProcessorSpec> processors) {
+    public Pipeline setProcessors(List<ModuleRef> processors) {
         this.processors = processors;
         return this;
     }

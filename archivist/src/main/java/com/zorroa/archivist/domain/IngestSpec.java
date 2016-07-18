@@ -4,7 +4,8 @@ package com.zorroa.archivist.domain;
  * Created by chambers on 7/9/16.
  */
 
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.google.common.collect.Lists;
+import com.zorroa.sdk.plugins.ModuleRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ public class IngestSpec {
     private Integer folderId;
 
     /**
-     * An optional pipelineID to utilize.
+     * An optional pipeline ID to utilize.
      */
     private Integer pipelineId;
 
@@ -40,24 +41,24 @@ public class IngestSpec {
     /**
      * Ingest should run automatically on given schedule.
      */
-    private boolean automatic = false;
+    private boolean automatic = true;
 
     /**
      * Create and Import job immediately.
      */
-    private boolean runNow = false;
+    private boolean runNow = true;
 
     /**
      * If a pipeline is not set then the Ingest can have its own set of
      * processors.
      */
-    private List<ProcessorSpec> pipeline;
+    private List<ModuleRef> pipeline;
 
     /**
      * An array of Generator classes for finding files.
      */
     @NotNull
-    private List<ProcessorSpec> generators;
+    private List<ModuleRef> generators;
 
     public Integer getFolderId() {
         return folderId;
@@ -113,21 +114,29 @@ public class IngestSpec {
         return this;
     }
 
-    public List<ProcessorSpec> getPipeline() {
+    public List<ModuleRef> getPipeline() {
         return pipeline;
     }
 
-    public IngestSpec setPipeline(List<ProcessorSpec> pipeline) {
+    public IngestSpec setPipeline(List<ModuleRef> pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
-    public List<ProcessorSpec> getGenerators() {
+    public List<ModuleRef> getGenerators() {
         return generators;
     }
 
-    public IngestSpec setGenerators(List<ProcessorSpec> generators) {
+    public IngestSpec setGenerators(List<ModuleRef> generators) {
         this.generators = generators;
+        return this;
+    }
+
+    public IngestSpec addToGenerators(ModuleRef generator) {
+        if (this.generators == null) {
+            this.generators = Lists.newArrayList();
+        }
+        this.generators.add(generator);
         return this;
     }
 }
