@@ -7,6 +7,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import com.zorroa.archivist.domain.DyHierarchy;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.repository.FolderDao;
@@ -23,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -59,8 +59,10 @@ public class FolderServiceImpl implements FolderService {
     @Autowired
     TransactionEventManager transactionEventManager;
 
-    @Autowired
-    DataSourceTransactionManager transactionManager;
+    @Override
+    public boolean setDyHierarchyRoot(Folder folder, boolean value) {
+        return folderDao.setDyHierarchyRoot(folder, value);
+    }
 
     @Override
     public void setAcl(Folder folder, Acl acl) {
@@ -108,6 +110,11 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public int count(DyHierarchy dh) {
+        return folderDao.count(dh);
+    }
+
+    @Override
     public List<Folder> getAll() {
         return folderDao.getChildren(Folder.ROOT_ID);
     }
@@ -140,6 +147,11 @@ public class FolderServiceImpl implements FolderService {
             });
         }
         return result;
+    }
+
+    @Override
+    public int deleteAll(DyHierarchy dyhi) {
+        return folderDao.deleteAll(dyhi);
     }
 
     @Override

@@ -37,6 +37,7 @@ public class Folder implements EventLoggable {
     private long timeCreated;
     private long timeModified;
     private boolean recursive;
+    private boolean dyhiRoot;
 
     private Acl acl;
 
@@ -114,6 +115,24 @@ public class Folder implements EventLoggable {
 
     public void setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
+    }
+
+    public Integer getDyhiId() {
+        return dyhiId;
+    }
+
+    public Folder setDyhiId(Integer dyhiId) {
+        this.dyhiId = dyhiId;
+        return this;
+    }
+
+    public boolean isDyhiRoot() {
+        return dyhiRoot;
+    }
+
+    public Folder setDyhiRoot(boolean dyhiRoot) {
+        this.dyhiRoot = dyhiRoot;
+        return this;
     }
 
     public Acl getAcl() {

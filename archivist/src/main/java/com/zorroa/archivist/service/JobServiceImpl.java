@@ -2,10 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobFilter;
-import com.zorroa.archivist.domain.PipelineType;
-import com.zorroa.archivist.domain.TaskState;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -18,11 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A service for creating and manipulating jobs.
  */
 @Service
+@Transactional
 public class JobServiceImpl implements JobService {
 
     private static final Logger logger = LoggerFactory.getLogger(JobExecutorServiceImpl.class);
@@ -35,6 +34,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     MessagingService message;
+
+    @Autowired
+    DyHierarchyService dyHierarchyService;
 
     @Autowired
     TransactionEventManager event;
@@ -82,7 +84,9 @@ public class JobServiceImpl implements JobService {
         Preconditions.checkNotNull(task.getJobId());
 
         if (taskDao.setState(task, newState, expect)) {
-            jobDao.updateTaskStateCounts(task, newState, expect);
+            if (jobDao.updateTaskStateCounts(task, newState, expect).equals(JobState.Finished)) {
+                dyHierarchyService.submitGenerateAll(true);
+            }
             return true;
         }
         return false;

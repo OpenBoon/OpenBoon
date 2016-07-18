@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.DyHierarchy;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.sdk.domain.Acl;
@@ -17,6 +18,8 @@ public interface FolderService {
     boolean exists(String path);
 
     int count();
+
+    int count(DyHierarchy dy);
 
     List<Folder> getAll();
 
@@ -53,7 +56,11 @@ public interface FolderService {
 
     boolean delete(Folder folder);
 
+    int deleteAll(DyHierarchy dyhi);
+
     Folder get(String path);
+
+    boolean setDyHierarchyRoot(Folder folder, boolean value);
 
     void setAcl(Folder folder, Acl acl);
 

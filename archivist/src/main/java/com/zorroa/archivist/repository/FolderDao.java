@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.DyHierarchy;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.sdk.domain.Access;
@@ -28,15 +29,21 @@ public interface FolderDao {
 
     int count();
 
+    int count(DyHierarchy d);
+
     boolean exists(Folder parent, String name);
 
     Folder create(FolderSpec builder);
 
     boolean update(Folder folder, FolderSpec builder);
 
+    int deleteAll(DyHierarchy dyhi);
+
     boolean delete(Folder folder);
 
     boolean hasAccess(Folder folder, Access access);
+
+    boolean setDyHierarchyRoot(Folder folder, boolean value);
 
     void setAcl(Folder folder, Acl acl);
 
