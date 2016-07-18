@@ -9,6 +9,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.util.Json;
+import com.zorroa.sdk.zps.ZpsJob;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 import org.springframework.jdbc.core.RowMapper;
@@ -84,7 +85,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         t.setTasksWaiting(rs.getInt("int_task_state_waiting_count"));
         t.setTasksQueued(rs.getInt("int_task_state_queued_count"));
         t.setTasksRunning(rs.getInt("int_task_state_running_count"));
-        t.setTasksSucess(rs.getInt("int_task_state_success_count"));
+        t.setTasksSuccess(rs.getInt("int_task_state_success_count"));
         t.setTasksFailure(rs.getInt("int_task_state_failure_count"));
         job.setCounts(t);
 
@@ -183,7 +184,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
-    public boolean setState(ZpsTask job, JobState newState, JobState expect) {
+    public boolean setState(ZpsJob job, JobState newState, JobState expect) {
         List<Object> values = Lists.newArrayListWithCapacity(4);
         List<String> fields = Lists.newArrayListWithCapacity(4);
 

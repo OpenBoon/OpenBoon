@@ -1,13 +1,16 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
+import com.zorroa.sdk.zps.ZpsJob;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Created by chambers on 7/12/16.
  */
-public class Job {
+public class Job implements ZpsJob {
 
     private int id;
     private String name;
@@ -102,6 +105,24 @@ public class Job {
         return this;
     }
 
+    public Map<String,Float> getProgress() {
+        if (counts.getTasksTotal() == 0) {
+            return ImmutableMap.of(
+                    "running", 0f,
+                    "success", 0f,
+                    "waiting", 0f,
+                    "failed", 0f);
+        }
+        else {
+            float t = (float) counts.getTasksTotal();
+            return ImmutableMap.of(
+                    "running", (counts.getTasksRunning() / t) * 100,
+                    "success", (counts.getTasksSuccess() / t) * 100,
+                    "failed", (counts.getTasksFailure() / t) * 100,
+                    "waiting", ((counts.getTasksWaiting() + counts.getTasksQueued()) / t) * 100);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -124,6 +145,11 @@ public class Job {
                 .toString();
     }
 
+    @Override
+    public Integer getJobId() {
+        return id;
+    }
+
     /**
      * Counts related to the job's tasks.
      */
@@ -133,7 +159,7 @@ public class Job {
         private int tasksWaiting;
         private int tasksQueued;
         private int tasksRunning;
-        private int tasksSucess;
+        private int tasksSuccess;
         private int tasksFailure;
 
         public int getTasksCompleted() {
@@ -181,12 +207,12 @@ public class Job {
             return this;
         }
 
-        public int getTasksSucess() {
-            return tasksSucess;
+        public int getTasksSuccess() {
+            return tasksSuccess;
         }
 
-        public Counts setTasksSucess(int tasksSucess) {
-            this.tasksSucess = tasksSucess;
+        public Counts setTasksSuccess(int tasksSuccess) {
+            this.tasksSuccess = tasksSuccess;
             return this;
         }
 

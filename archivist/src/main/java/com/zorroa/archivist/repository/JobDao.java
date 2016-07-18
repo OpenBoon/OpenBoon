@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.zps.ZpsJob;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 
@@ -27,7 +28,7 @@ public interface JobDao {
 
     void incrementWaitingTaskCount(ZpsTask task);
 
-    boolean setState(ZpsTask job, JobState newState, JobState expect);
+    boolean setState(ZpsJob job, JobState newState, JobState expect);
 
     JobState updateTaskStateCounts(ZpsTask task, TaskState value, TaskState expect);
 }
