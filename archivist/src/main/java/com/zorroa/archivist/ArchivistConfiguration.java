@@ -8,6 +8,8 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
 import com.zorroa.common.elastic.ZorroaNode;
 import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.sdk.filesystem.UUIDFileSystem;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
@@ -31,6 +33,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -157,5 +160,12 @@ public class ArchivistConfiguration {
     @Bean
     public SessionRegistry sessionRegistry() {
         return new JdbcSessionRegistry();
+    }
+
+    @Bean
+    public ObjectFileSystem ofs() {
+        UUIDFileSystem ufs = new UUIDFileSystem(new File(properties.getString("archivist.path.storage")));
+        ufs.init();
+        return ufs;
     }
 }
