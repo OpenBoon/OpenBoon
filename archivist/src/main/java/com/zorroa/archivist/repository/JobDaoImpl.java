@@ -208,7 +208,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
-    public void updateTaskStateCounts(ZpsTask task, TaskState newState, TaskState expect) {
+    public JobState updateTaskStateCounts(ZpsTask task, TaskState newState, TaskState expect) {
         /**
          * TODO: implement as a trigger!
          */
@@ -235,12 +235,16 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                         "SELECT int_task_total_count - int_task_completed_count FROM job_count WHERE pk_job=?",
                         Integer.class, task.getJobId());
                 if (pt == 0) {
-                    setState(task, JobState.Finished, JobState.Active);
+                    if (setState(task, JobState.Finished, JobState.Active)) {
+                        return JobState.Finished;
+                    }
                 }
             }
         }
         else {
             logger.warn("Failed to update task counts for job {}, '{}' '{}'",  task.getJobId(), p, m);
         }
+
+        return JobState.Active;
     }
 }

@@ -11,7 +11,6 @@ import com.zorroa.sdk.zps.ZpsTask;
  */
 public interface JobDao {
 
-
     ZpsScript create(ZpsScript job, PipelineType type);
 
     Job get(int id);
@@ -30,5 +29,5 @@ public interface JobDao {
 
     boolean setState(ZpsTask job, JobState newState, JobState expect);
 
-    void updateTaskStateCounts(ZpsTask task, TaskState value, TaskState expect);
+    JobState updateTaskStateCounts(ZpsTask task, TaskState value, TaskState expect);
 }
