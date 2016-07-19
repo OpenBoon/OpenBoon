@@ -10,6 +10,7 @@ import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsReaction;
 import com.zorroa.sdk.zps.ZpsScript;
+import com.zorroa.sdk.zps.ZpsTask;
 import org.apache.http.HttpHost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
     @Override
     protected void runOneIteration() throws Exception {
         schedule();
+        checkForExpired();
     }
 
     @Override
@@ -157,7 +159,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
     }
 
     /**
-     *
+     * Called by unit tests.
      */
     public void unittestSchedule() {
         for (ZpsScript task: taskDao.getWaiting(10)) {
@@ -173,6 +175,21 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
                 logger.warn("Failed to set task running: {}", task);
                 throw new RuntimeException("Failed to run task");
             }
+        }
+    }
+
+    /**
+     * Look for tasks that have been queued or running for 30 minutes and reset them
+     * back to waiting.
+     *
+     * TODO: may need to verify with analyst that its still around.
+     */
+    public void checkForExpired() {
+        List<ZpsTask> expired = taskDao.getOrphanTasks(10, 30, TimeUnit.MINUTES);
+        logger.warn("Found {} expired tasks!", expired.size());
+        for (ZpsTask task: expired) {
+            logger.warn("resetting task {} to Waiting", task.getTaskId());
+            jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued);
         }
     }
 

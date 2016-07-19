@@ -8,6 +8,7 @@ import com.zorroa.sdk.zps.ZpsTask;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chambers on 7/11/16.
@@ -15,9 +16,9 @@ import java.util.Set;
 public interface TaskDao {
     ZpsScript create(ZpsScript script);
 
-    void setHost(ZpsTask task, String host);
+    boolean setHost(ZpsTask task, String host);
 
-    void setExitStatus(ZpsTask task, int exitStatus);
+    boolean setExitStatus(ZpsTask task, int exitStatus);
 
     boolean setState(ZpsTask script, TaskState value, TaskState expect);
 
@@ -32,4 +33,6 @@ public interface TaskDao {
     Set<TaskState> RESET = Sets.newEnumSet(ImmutableList.of(
             TaskState.Waiting), TaskState.class);
 
+
+    List<ZpsTask> getOrphanTasks(int limit, long duration, TimeUnit unit);
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chambers on 7/11/16.
@@ -30,7 +31,9 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "int_state",
                 "json_script",
                 "int_order",
-                "str_execute");
+                "str_execute",
+                "time_created",
+                "time_state_change");
 
 
     private static final Map<String, Integer> ORDER = ImmutableMap.of(
@@ -40,7 +43,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     @Override
     public ZpsScript create(ZpsScript script) {
         Integer parent = script.getTaskId();
-
+        long time = System.currentTimeMillis();
         /**
          * TODO: because we insert to get the ID, the ID stored on the script
          * is inaccurate.  Currently we just handle this in the mapper
@@ -57,6 +60,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             ps.setString(4, Json.serializeToString(script));
             ps.setInt(5, ORDER.getOrDefault(script.getExecute(), 10000));
             ps.setString(6, script.getExecute());
+            ps.setLong(7, time);
+            ps.setLong(8, time);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -68,32 +73,36 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     }
 
     @Override
-    public void setHost(ZpsTask task, String host) {
-        jdbc.update("UPDATE task SET str_host=? WHERE pk_task=?", host, task.getTaskId());
+    public boolean setHost(ZpsTask task, String host) {
+        return jdbc.update("UPDATE task SET str_host=? WHERE pk_task=?", host, task.getTaskId()) == 1;
     }
 
     @Override
-    public void setExitStatus(ZpsTask task, int exitStatus) {
-        jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.getTaskId());
+    public boolean setExitStatus(ZpsTask task, int exitStatus) {
+        return jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?",
+                exitStatus, task.getTaskId()) == 1;
     }
 
     @Override
     public boolean setState(ZpsTask task, TaskState value, TaskState expect) {
-        logger.info("setting task: {} from {} to {}", task.getTaskId(), expect, value);
+        logger.debug("setting task: {} from {} to {}", task.getTaskId(), expect, value);
         List<Object> values = Lists.newArrayListWithCapacity(4);
         List<String> fields = Lists.newArrayListWithCapacity(4);
+        long time = System.currentTimeMillis();
 
         fields.add("int_state=?");
         values.add(value.ordinal());
+        fields.add("time_state_change=?");
+        values.add(time);
 
         if (STOPPERS.contains(value)) {
             fields.add("time_stopped=?");
-            values.add(System.currentTimeMillis());
+            values.add(time);
         }
         else if (STARTERS.contains(value)) {
             fields.add("time_stopped=-1");
             fields.add("time_started=?");
-            values.add(System.currentTimeMillis());
+            values.add(time);
         }
         else if (RESET.contains(value)) {
             fields.add("time_stopped=-1");
@@ -113,6 +122,15 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
         return jdbc.update(sb.toString(), values.toArray()) == 1;
     }
+
+    private static final RowMapper<ZpsTask> TASK_MAPPER = (rs, row) -> {
+        final int taskId = rs.getInt(1);
+        final int jobId = rs.getInt(2);
+        return new ZpsTask() {
+            public Integer getJobId() { return jobId; }
+            public Integer getTaskId() { return taskId; }
+        };
+    };
 
     private static final RowMapper<ZpsScript> ZPS_MAPPER = (rs, row) ->
             Json.deserialize(rs.getString(1), ZpsScript.class)
@@ -138,5 +156,26 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     @Override
     public List<ZpsScript> getWaiting(int limit) {
         return jdbc.query(GET_WAITING, ZPS_MAPPER, limit);
+    }
+
+    private static final String GET_QUEUED =
+            "SELECT " +
+                "task.pk_task,"+
+                "task.pk_job " +
+            "FROM " +
+                "task,"+
+                "job " +
+            "WHERE " +
+                "task.pk_job = job.pk_job " +
+            "AND " +
+                "task.int_state IN (1, 2) " +
+            "AND " +
+                "task.time_state_change > ? " +
+            "LIMIT ? ";
+
+    @Override
+    public List<ZpsTask> getOrphanTasks(int limit, long duration, TimeUnit unit) {
+        return jdbc.query(GET_QUEUED, TASK_MAPPER,
+                System.currentTimeMillis() - unit.toMillis(duration), limit);
     }
 }

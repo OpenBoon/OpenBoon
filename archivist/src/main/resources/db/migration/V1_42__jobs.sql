@@ -41,6 +41,8 @@ CREATE TABLE task (
   int_state TINYINT NOT NULL DEFAULT 0,
   time_started BIGINT NOT NULL DEFAULT -1,
   time_stopped BIGINT NOT NULL DEFAULT -1,
+  time_created BIGINT NOT NULL,
+  time_state_change BIGINT NOT NULL,
   json_script TEXT NOT NULL,
   int_order SMALLINT NOT NULL DEFAULT 0,
   str_execute VARCHAR(16) NOT NULL,
