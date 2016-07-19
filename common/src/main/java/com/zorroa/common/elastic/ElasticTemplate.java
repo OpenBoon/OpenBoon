@@ -87,7 +87,7 @@ public class ElasticTemplate {
         return result;
     }
 
-    public <T> PagedList<List<T>> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
+    public <T> PagedList<T> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
         final SearchResponse r = builder.get();
         List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());

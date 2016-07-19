@@ -62,7 +62,7 @@ public class ModuleDaoImpl extends AbstractElasticDao implements ModuleDao {
     }
 
     @Override
-    public PagedList<List<Module>> getPaged(String plugin, Paging paging) {
+    public PagedList<Module> getPaged(String plugin, Paging paging) {
         return elastic.page(client.prepareSearch(alias)
                 .setTypes(getType())
                 .addSort("className", SortOrder.ASC)

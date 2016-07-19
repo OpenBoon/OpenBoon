@@ -17,7 +17,7 @@ public interface ModuleDao {
 
     List<Module> getAll();
 
-    PagedList<List<Module>> getPaged(String plugin, Paging paging);
+    PagedList<Module> getPaged(String plugin, Paging paging);
 
     Module get(String id);
 }

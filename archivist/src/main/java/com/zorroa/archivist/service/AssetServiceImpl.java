@@ -3,6 +3,8 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
@@ -53,8 +55,8 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public List<Asset> getAll() {
-        return assetDao.getAll();
+    public PagedList<Asset> getAll(Paging page) {
+        return assetDao.getAll(page);
     }
 
     @Override

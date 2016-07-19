@@ -3,6 +3,8 @@ package com.zorroa.common.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.Asset;
@@ -218,12 +220,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public List<Asset> getAll() {
-        return elastic.query(client.prepareSearch(alias)
+    public PagedList<Asset> getAll(Paging page) {
+        return elastic.page(client.prepareSearch(alias)
                 .setTypes(getType())
+                .setFrom(page.getFrom())
+                .setSize(page.getSize())
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.matchAllQuery())
-                .setVersion(true), MAPPER);
+                .setVersion(true), page, MAPPER);
 
     }
 }

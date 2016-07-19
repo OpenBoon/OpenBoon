@@ -3,6 +3,8 @@ package com.zorroa.common.repository;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.Folder;
@@ -12,7 +14,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -52,8 +53,8 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        List<Asset> assets = assetDao.getAll();
-        assertEquals(1, assets.size());
+        PagedList<Asset> assets = assetDao.getAll(Paging.first(10));
+        assertEquals(1, assets.getList().size());
     }
 
     @Test

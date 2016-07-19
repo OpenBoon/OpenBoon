@@ -12,7 +12,7 @@ import java.util.List;
 public interface PluginDao {
     List<Plugin> getAll();
 
-    PagedList<List<Plugin>> getAll(Paging paging);
+    PagedList<Plugin> getAll(Paging paging);
 
     Plugin get(String id);
 }

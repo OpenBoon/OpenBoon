@@ -1,5 +1,7 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.processor.Source;
@@ -21,7 +23,7 @@ public interface AssetService {
      *
      * @return
      */
-    List<Asset> getAll();
+    PagedList<Asset> getAll(Paging page);
 
     AssetIndexResult index(String index, List<Source> sources);
 

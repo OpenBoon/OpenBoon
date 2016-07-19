@@ -165,7 +165,7 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public PagedList<List<Plugin>> getPlugins(Paging page) {
+    public PagedList<Plugin> getPlugins(Paging page) {
         return pluginDao.getAll(page);
     }
 

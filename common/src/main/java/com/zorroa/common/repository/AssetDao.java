@@ -1,5 +1,7 @@
 package com.zorroa.common.repository;
 
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.processor.Source;
@@ -12,7 +14,7 @@ public interface AssetDao {
 
     Asset get(String id);
 
-    List<Asset> getAll();
+    PagedList<Asset> getAll(Paging page);
 
     boolean exists(Path path);
 

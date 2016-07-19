@@ -6,6 +6,7 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.web.api.AssetController;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
@@ -196,7 +197,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         addTestAssets("set04/standard");
 
-        List<Asset> assets = assetDao.getAll();
+        List<Asset> assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
 
             MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
@@ -215,7 +216,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         addTestAssets("canyon");
-        List<Asset> assets = assetDao.getAll();
+        List<Asset> assets = assetDao.getAll(Paging.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         Folder folder2 = folderService.create(new FolderSpec("bar"));
@@ -233,7 +234,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assets = assetDao.getAll();
+        assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
             Set<Integer> folderIds = asset.getAttr("folders", new TypeReference<Set<Integer>>() {});
             assertTrue(folderIds.contains(folder1.getId()));
@@ -280,7 +281,7 @@ public class AssetControllerTests extends MockMvcTest {
         Folder folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        List<Asset> assets = assetDao.getAll();
+        List<Asset> assets = assetDao.getAll(Paging.first());
 
         Asset asset = assets.get(0);
         mvc.perform(post("/api/v1/folders/" + folder.getId() + "/assets")
@@ -333,7 +334,7 @@ public class AssetControllerTests extends MockMvcTest {
         assertNotEquals(child.getId(), parent.getId());
 
         // Put a single asset into each folder
-        List<Asset> assets = assetDao.getAll();
+        List<Asset> assets = assetDao.getAll(Paging.first());
 
         Asset asset = assets.get(0);
         mvc.perform(post("/api/v1/folders/" + parent.getId() + "/assets")
@@ -562,7 +563,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
 
         ArrayList<String> assetIds = new ArrayList<>();
-        List<Asset> assets = assetDao.getAll();
+        List<Asset> assets = assetDao.getAll(Paging.first());
         Asset asset = assets.get(0);
         assetIds.add(asset.getId());
         AssetSearch asb = new AssetSearch(new AssetFilter().setAssetIds(assetIds));

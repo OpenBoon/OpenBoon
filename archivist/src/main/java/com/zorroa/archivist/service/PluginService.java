@@ -18,7 +18,7 @@ public interface PluginService {
 
     Plugin installPlugin(Path zipFilePath);
 
-    PagedList<List<Plugin>> getPlugins(Paging page);
+    PagedList<Plugin> getPlugins(Paging page);
 
     List<Plugin> getPlugins();
 

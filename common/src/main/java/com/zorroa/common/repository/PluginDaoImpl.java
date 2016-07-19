@@ -35,7 +35,7 @@ public class PluginDaoImpl extends AbstractElasticDao implements PluginDao {
     }
 
     @Override
-    public PagedList<List<Plugin>> getAll(Paging paging) {
+    public PagedList<Plugin> getAll(Paging paging) {
         return elastic.page(client.prepareSearch(alias)
                 .setTypes(getType())
                 .setQuery(QueryBuilders.matchAllQuery()), paging, MAPPER);
