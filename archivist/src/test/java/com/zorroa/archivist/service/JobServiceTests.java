@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -52,5 +53,13 @@ public class JobServiceTests extends AbstractTest {
         assertTrue(jobService.setTaskState(script, TaskState.Running, TaskState.Queued));
         assertTrue(jobService.setTaskCompleted(script, 1));
         assertEquals(JobState.Finished, jobService.get(script.getJobId()).getState());
+    }
+
+    @Test
+    public void cancelAndRestart() {
+        assertTrue(jobService.cancel(script));
+        assertFalse(jobService.cancel(script));
+        assertTrue(jobService.restart(script));
+        assertFalse(jobService.restart(script));
     }
 }

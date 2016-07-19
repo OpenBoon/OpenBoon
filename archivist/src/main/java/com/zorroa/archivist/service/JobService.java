@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.zps.ZpsJob;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 
@@ -23,6 +24,22 @@ public interface JobService {
      * @return
      */
     ZpsScript launch(ZpsScript script, PipelineType type);
+
+    /**
+     * Cancel the given job.  The job can be restarted.
+     *
+     * @param job
+     * @return
+     */
+    boolean cancel(ZpsJob job);
+
+    /**
+     * Restart a canceled job.
+     *
+     * @param job
+     * @return
+     */
+    boolean restart(ZpsJob job);
 
     /**
      * Create a new task.

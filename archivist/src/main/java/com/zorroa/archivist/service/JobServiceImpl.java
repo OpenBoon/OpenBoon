@@ -9,6 +9,7 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.zps.ZpsJob;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 import org.slf4j.Logger;
@@ -52,9 +53,6 @@ public class JobServiceImpl implements JobService {
      */
     @Override
     public ZpsScript launch(ZpsScript job, PipelineType type) {
-        /**
-         * Create a record for the job.
-         */
         job = jobDao.create(job, type);
         job = createTask(job);
         final int id = job.getJobId();
@@ -62,6 +60,28 @@ public class JobServiceImpl implements JobService {
                 message.broadcast(new Message("JOB_CREATE",
                         ImmutableMap.of("type", type, "id", id))));
         return job;
+    }
+
+    @Override
+    public boolean cancel(ZpsJob job) {
+        if (jobDao.setState(job, JobState.Cancelled, JobState.Active)) {
+            event.afterCommit(()->
+                    message.broadcast(new Message("JOB_CANCELED",
+                            ImmutableMap.of("id", job.getJobId()))));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean restart(ZpsJob job) {
+        if (jobDao.setState(job, JobState.Active, JobState.Cancelled)) {
+            event.afterCommit(()->
+                    message.broadcast(new Message("JOB_RESTARTED",
+                            ImmutableMap.of("id", job.getJobId()))));
+            return true;
+        }
+        return false;
     }
 
     public ZpsScript createTask(ZpsScript script) {

@@ -111,11 +111,13 @@ public class Job implements ZpsJob {
                     "running", 0f,
                     "success", 0f,
                     "waiting", 0f,
-                    "failed", 0f);
+                    "failed", 0f,
+                    "total", 0f);
         }
         else {
             float t = (float) counts.getTasksTotal();
             return ImmutableMap.of(
+                    "total", (counts.getTasksCompleted() / t) * 100,
                     "running", (counts.getTasksRunning() / t) * 100,
                     "success", (counts.getTasksSuccess() / t) * 100,
                     "failed", (counts.getTasksFailure() / t) * 100,

@@ -12,9 +12,9 @@ public enum JobState {
     Active,
 
     /**
-     * The job is paused.
+     * The job was cancelled, but could be restarted.
      */
-    Paused,
+    Cancelled,
 
     /**
      * The job is finished.
