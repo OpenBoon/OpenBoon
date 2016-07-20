@@ -186,10 +186,12 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
      */
     public void checkForExpired() {
         List<ZpsTask> expired = taskDao.getOrphanTasks(10, 30, TimeUnit.MINUTES);
-        logger.warn("Found {} expired tasks!", expired.size());
-        for (ZpsTask task: expired) {
-            logger.warn("resetting task {} to Waiting", task.getTaskId());
-            jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued);
+        if (!expired.isEmpty()) {
+            logger.warn("Found {} expired tasks!", expired.size());
+            for (ZpsTask task : expired) {
+                logger.warn("resetting task {} to Waiting", task.getTaskId());
+                jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued);
+            }
         }
     }
 

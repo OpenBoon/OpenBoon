@@ -168,9 +168,11 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "WHERE " +
                 "task.pk_job = job.pk_job " +
             "AND " +
+                "job.int_state = 0 " +
+            "AND " +
                 "task.int_state IN (1, 2) " +
             "AND " +
-                "task.time_state_change > ? " +
+                "task.time_state_change < ? " +
             "LIMIT ? ";
 
     @Override

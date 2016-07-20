@@ -65,19 +65,19 @@ public class TaskDaoTests extends AbstractTest {
         assertEquals(0, tasks.size());
 
         updateState(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(20), TaskState.Queued);
-        tasks = taskDao.getOrphanTasks(100, 21, TimeUnit.MINUTES);
+        tasks = taskDao.getOrphanTasks(100, 19, TimeUnit.MINUTES);
         assertEquals(1, tasks.size());
 
         updateState(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(20), TaskState.Running);
-        tasks = taskDao.getOrphanTasks(100, 21, TimeUnit.MINUTES);
+        tasks = taskDao.getOrphanTasks(100, 19, TimeUnit.MINUTES);
         assertEquals(1, tasks.size());
 
         updateState(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(20), TaskState.Failure);
-        tasks = taskDao.getOrphanTasks(100, 21, TimeUnit.MINUTES);
+        tasks = taskDao.getOrphanTasks(100, 10, TimeUnit.MINUTES);
         assertEquals(0, tasks.size());
 
         updateState(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(20), TaskState.Queued);
-        tasks = taskDao.getOrphanTasks(100, 19, TimeUnit.MINUTES);
+        tasks = taskDao.getOrphanTasks(100, 21, TimeUnit.MINUTES);
         assertEquals(0, tasks.size());
     }
 
