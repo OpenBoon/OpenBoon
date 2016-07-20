@@ -5,6 +5,7 @@ import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.processor.Source;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.Map;
 public interface AssetDao {
 
     Asset get(String id);
+
+    PagedList<Asset> getAll(Paging page, SearchRequestBuilder search);
 
     PagedList<Asset> getAll(Paging page);
 

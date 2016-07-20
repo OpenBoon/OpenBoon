@@ -1,5 +1,7 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetAggregateBuilder;
 import com.zorroa.sdk.domain.AssetSearch;
@@ -28,6 +30,8 @@ public interface SearchService {
      * @return
      */
     long getTotalFileSize(AssetSearch builder);
+
+    PagedList<Asset> getAll(Paging page, AssetSearch search);
 
     Map<String, Set<String>> getFields();
 }

@@ -5,9 +5,12 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.sdk.domain.*;
 import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
@@ -46,6 +49,9 @@ import java.util.TreeSet;
 public class SearchServiceImpl implements SearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
+
+    @Autowired
+    AssetDao assetDao;
 
     @Autowired
     FolderService folderService;
@@ -97,6 +103,11 @@ public class SearchServiceImpl implements SearchService {
                 .setSize(100).execute().actionGet();
 
         return new ScanAndScrollAssetIterator(client, rsp);
+    }
+
+    @Override
+    public PagedList<Asset> getAll(Paging page, AssetSearch search) {
+        return assetDao.getAll(page, buildSearch(search));
     }
 
     private SearchRequestBuilder buildSearch(AssetSearch search) {

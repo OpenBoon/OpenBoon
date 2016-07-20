@@ -14,6 +14,7 @@ import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
@@ -217,6 +218,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             return null;
         }
         return assets.get(0);
+    }
+
+    @Override
+    public PagedList<Asset> getAll(Paging page, SearchRequestBuilder search) {
+        return elastic.page(search
+                .setFrom(page.getFrom())
+                .setSize(page.getSize()), page, MAPPER);
     }
 
     @Override
