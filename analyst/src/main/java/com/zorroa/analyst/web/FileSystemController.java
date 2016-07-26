@@ -133,7 +133,7 @@ public class FileSystemController {
         }
 
         return ResponseEntity.ok()
-                .contentType(MediaType.valueOf(asset.getSource().getType()))
+                .contentType(MediaType.valueOf(asset.getSource().getMediaType()))
                 .contentLength(asset.getSource().getFileSize())
                 .body(new FileSystemResource(asset.getSource().getPath()));
     }
