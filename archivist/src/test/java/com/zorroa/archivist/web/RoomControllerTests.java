@@ -10,6 +10,7 @@ import com.zorroa.archivist.web.api.RoomController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;

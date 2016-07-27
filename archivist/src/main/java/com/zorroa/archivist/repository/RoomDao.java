@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.List;
 import java.util.Set;

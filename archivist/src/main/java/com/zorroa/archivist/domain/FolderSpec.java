@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.domain.Acl;
-import com.zorroa.sdk.domain.AssetSearch;
+import com.zorroa.sdk.search.AssetSearch;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;

@@ -10,8 +10,15 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetAggregateBuilder;
+import com.zorroa.sdk.domain.AssetSuggestBuilder;
+import com.zorroa.sdk.domain.ColorFilter;
 import com.zorroa.sdk.exception.ArchivistException;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetScript;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.search.RangeQuery;
 import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -38,6 +45,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -131,7 +141,6 @@ public class SearchServiceImpl implements SearchService {
         /*
          * TODO: alternative sorting and paging here.
          */
-
         return request;
     }
 
@@ -174,7 +183,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         AssetFilter filter = search.getFilter();
-        if (filter.getFolderIds() != null) {
+        if (filter.getFolders() != null) {
             query.must(folderQuery(filter));
         }
         if (filter.getColors() != null) {
@@ -207,14 +216,17 @@ public class SearchServiceImpl implements SearchService {
     // Merged into the main query as a MUST above.
     private QueryBuilder folderQuery(AssetFilter filter) {
         BoolQueryBuilder query = QueryBuilders.boolQuery();
-        if (filter.getFolderIds() != null) {
-            Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(64);
+
+        if (filter.getFolders() != null) {
+            Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(32);
 
             for (Folder folder : folderService.getAllDescendants(
-                    folderService.getAll(filter.getFolderIds()), true, true)) {
+                    folderService.getAll(filter.getFolders()), true, true)) {
+
                 if (folder.getSearch() != null) {
                     query.should(getQuery(folder.getSearch()));
                 }
+
                 folderIds.add(folder.getId());
             }
 
@@ -268,53 +280,55 @@ public class SearchServiceImpl implements SearchService {
             return filter;
         }
 
-        if (builder.getAssetIds() != null) {
-            QueryBuilder assetsFilterBuilder = QueryBuilders.termsQuery("_id", builder.getAssetIds());
-            filter.add(assetsFilterBuilder);
-        }
-
-        if (builder.getIngestIds() != null) {
-            /**
-             * An asset can be exported N times so the "exports" field is an array.  For ingest, we record
-             * the first ingest ID along with the pipeline, so the value is an embedded object.  Thus, how
-             * they are queried is not the same.
-             */
-            QueryBuilder ingestsFilterBuilder = QueryBuilders.termsQuery("imports.id", builder.getIngestIds());
-            filter.add(ingestsFilterBuilder);
-        }
-
-        if (builder.getExportIds() != null) {
-            QueryBuilder exportsFilterBuilder = QueryBuilders.termsQuery("exports", builder.getExportIds());
-            filter.add(exportsFilterBuilder);
-        }
-
-        if (builder.getExistFields() != null) {
-            for (String term : builder.getExistFields()) {
-                QueryBuilder existsFilterBuilder = QueryBuilders.existsQuery(term);
-                filter.add(existsFilterBuilder);
+        if (builder.getExists() != null) {
+            for (String term : builder.getExists()) {
+                QueryBuilder existsFilter= QueryBuilders.existsQuery(term);
+                filter.add(existsFilter);
             }
         }
 
-        if (builder.getFieldTerms() != null) {
-            for (AssetFieldTerms fieldTerms : builder.getFieldTerms()) {
-                QueryBuilder termsFilterBuilder = QueryBuilders.termsQuery(fieldTerms.getField(), fieldTerms.getTerms());
-                filter.add(termsFilterBuilder);
+
+        if (builder.getMissing() != null) {
+            for (String term : builder.getMissing()) {
+                QueryBuilder missingFilter = QueryBuilders.missingQuery(term);
+                filter.add(missingFilter);
             }
         }
 
-        if (builder.getFieldRanges() != null) {
-            for (AssetFieldRange fieldRange : builder.getFieldRanges()) {
-                QueryBuilder rangeFilterBuilder = QueryBuilders.rangeQuery(fieldRange.getField())
-                        .gte(fieldRange.getMin())
-                        .lt(fieldRange.getMax());
-                filter.add(rangeFilterBuilder);
+        if (builder.getTerms()!= null) {
+            for (Map.Entry<String, List<Object>> term : builder.getTerms().entrySet()) {
+                QueryBuilder termsQuery = QueryBuilders.termsQuery(term.getKey(), term.getValue());
+                filter.add(termsQuery);
+            }
+        }
+
+        if (builder.getRange() != null) {
+            for (Map.Entry<String, RangeQuery> entry: builder.getRange().entrySet()) {
+                String field = entry.getKey();
+                RangeQuery rq = entry.getValue();
+                RangeQueryBuilder rqb = new RangeQueryBuilder(field);
+
+                for (Field f: RangeQuery.class.getDeclaredFields()) {
+                    try {
+                        Method m = RangeQueryBuilder.class.getMethod(f.getName(), f.getType());
+                        Object v = f.get(rq);
+                        if (v == null) {
+                            continue;
+                        }
+                        m.invoke(rqb, v);
+                    } catch (Exception e) {
+                        throw new IllegalArgumentException(
+                                "RangeQueryBuilder has no '" + f.getName() + "' method");
+                    }
+                }
+                filter.add(rqb);
             }
         }
 
         if (builder.getScripts() != null) {
             for (AssetScript script : builder.getScripts()) {
                 QueryBuilder scriptFilterBuilder = QueryBuilders.scriptQuery(new Script(
-                        script.getScript(), ScriptService.ScriptType.INLINE, "native", script.getParams()));
+                        script.getScript(), ScriptService.ScriptType.INLINE, script.getType(), script.getParams()));
                 filter.add(scriptFilterBuilder);
             }
         }

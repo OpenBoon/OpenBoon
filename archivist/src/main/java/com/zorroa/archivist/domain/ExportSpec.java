@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.sdk.domain.AssetSearch;
 import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.search.AssetSearch;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;

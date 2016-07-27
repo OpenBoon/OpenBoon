@@ -3,13 +3,19 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.TestSearchResult;
-import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetAggregateBuilder;
+import com.zorroa.sdk.domain.FolderBuilder;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetScript;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.search.RangeQuery;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
 import org.joda.time.DateTime;
@@ -503,13 +509,11 @@ public class AssetControllerTests extends MockMvcTest {
         DateTime dateTime = new DateTime();
         int year = dateTime.getYear();
 
-        AssetFieldRange range = new AssetFieldRange()
-                .setField("source.date")
-                .setMin(String.format("%d-01-01", year-1)).setMax(String.format("%d-01-01", year+1));
-        ArrayList<AssetFieldRange> ranges = new ArrayList<>();
-        ranges.add(range);
+        RangeQuery range = new RangeQuery();
+        range.setFrom(String.format("%d-01-01", year-1));
+        range.setTo(String.format("%d-01-01", year+1));
 
-        AssetSearch search = new AssetSearch(new AssetFilter().setFieldRanges(ranges));
+        AssetSearch search = new AssetSearch(new AssetFilter().addRange("source.date", range));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

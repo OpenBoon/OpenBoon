@@ -12,6 +12,8 @@ import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.AssetUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

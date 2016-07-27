@@ -10,7 +10,7 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Acl;
 import com.zorroa.sdk.domain.AclEntry;
-import com.zorroa.sdk.domain.AssetSearch;
+import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
