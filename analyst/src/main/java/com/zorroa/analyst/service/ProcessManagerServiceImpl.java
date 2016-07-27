@@ -98,7 +98,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
                 .add("-shared-path", properties.getString("zorroa.cluster.path.shared"))
                 .add("-plugin-path", properties.getString("zorroa.cluster.path.plugins"))
                 .add("-model-path", properties.getString("zorroa.cluster.path.models"))
-                .add("-storage-path", properties.getString("zorroa.cluster.path.storage"))
+                .add("-ofs-path", properties.getString("zorroa.cluster.path.ofs"))
                 .add("-export-path", properties.getString("zorroa.cluster.path.exports"))
                 .add("-script", writeScript(script).toString());
 
