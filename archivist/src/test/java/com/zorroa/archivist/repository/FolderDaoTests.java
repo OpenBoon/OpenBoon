@@ -123,7 +123,7 @@ public class FolderDaoTests extends AbstractTest {
     public void testUpdate() {
         FolderSpec spec = new FolderSpec("v1", Folder.ROOT_ID);
         Folder v1 = folderDao.create(spec);
-        folderDao.update(v1, spec.setName("v2"));
+        folderDao.update(v1.getId(), v1.setName("v2"));
         Folder v2 = folderDao.get(v1.getId());
         assertEquals("v2", v2.getName());
         assertEquals(null, v2.getSearch());

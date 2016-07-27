@@ -95,7 +95,7 @@ public class FolderServiceTests extends AbstractTest {
         assertEquals(folder1c.getName(), folder.getName());
     }
 
-    @Test
+    @Test(expected=EmptyResultDataAccessException.class)
     public void testGetByPathFail() {
         Folder folder = folderService.get("/foo/bar/bam");
         assertEquals(null, folder);
@@ -117,7 +117,7 @@ public class FolderServiceTests extends AbstractTest {
     @Test
     public void testUpdate() {
         Folder folder = folderService.create(new FolderSpec("orig"));
-        boolean ok = folderService.update(folder, new FolderSpec().setName("new"));
+        boolean ok = folderService.update(folder.getId(), folder.setName("new"));
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
         assertEquals("new", revised.getName());
@@ -125,9 +125,13 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test
     public void testUpdateWithNewParent() {
-        Folder folder1 = folderService.create(new FolderSpec("orig"));
-        Folder folder2 = folderService.create(new FolderSpec("unorig"));
-        boolean ok = folderService.update(folder2, new FolderSpec().setParentId(folder1.getId()));
+
+        FolderSpec fs1 = new FolderSpec("orig");
+        FolderSpec fs2 = new FolderSpec("unorig");
+
+        Folder folder1 = folderService.create(fs1);
+        Folder folder2 = folderService.create(fs2);
+        boolean ok = folderService.update(folder2.getId(), folder2.setParentId(folder1.getId()));
         assertTrue(ok);
 
         Folder revised = folderService.get(folder2.getId());
@@ -144,7 +148,7 @@ public class FolderServiceTests extends AbstractTest {
     public void testUpdateRecursive() {
         Folder folder = folderService.create(new FolderSpec("orig"));
         assertTrue(folder.isRecursive());
-        boolean ok = folderService.update(folder, new FolderSpec().setRecursive(Boolean.FALSE));
+        boolean ok = folderService.update(folder.getId(), folder.setRecursive(false));
         assertTrue(ok);
         Folder revised = folderService.get(folder.getId());
         assertFalse(revised.isRecursive());

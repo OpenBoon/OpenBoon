@@ -130,18 +130,19 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public boolean update(Folder folder, FolderSpec spec) {
+    public boolean update(int id, Folder folder) {
 
-        if (!SecurityUtils.hasPermission(folder.getAcl(),  Access.Write)) {
+        Folder current = folderDao.get(id);
+        if (!SecurityUtils.hasPermission(current.getAcl(),  Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
-        boolean result = folderDao.update(folder, spec);
+        boolean result = folderDao.update(id, folder);
         if (result) {
-            setAcl(folder, spec.getAcl());
+            setAcl(folder, folder.getAcl());
 
             transactionEventManager.afterCommitSync(() -> {
-                invalidate(folder, spec.getParentId());
+                invalidate(current, current.getParentId());
                 messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
                         get(folder.getId())));
             });

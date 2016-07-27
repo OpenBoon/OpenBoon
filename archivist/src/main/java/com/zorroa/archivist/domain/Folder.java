@@ -49,72 +49,81 @@ public class Folder implements EventLoggable {
         return id;
     }
 
-    public void setId(int id) {
+    public Folder setId(int id) {
         this.id = id;
+        return this;
     }
 
     public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public Folder setParentId(Integer parentId) {
         this.parentId = parentId;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Folder setName(String name) {
         this.name = name;
-    }
-
-    public AssetSearch getSearch() {
-        return search;
-    }
-
-    public void setSearch(AssetSearch search) {
-        this.search = search;
+        return this;
     }
 
     public String getUserCreated() {
         return userCreated;
     }
 
-    public void setUserCreated(String userCreated) {
+    public Folder setUserCreated(String userCreated) {
         this.userCreated = userCreated;
+        return this;
     }
 
     public String getUserModified() {
         return userModified;
     }
 
-    public void setUserModified(String userModified) {
+    public Folder setUserModified(String userModified) {
         this.userModified = userModified;
-    }
-
-    public boolean isRecursive() {
-        return recursive;
-    }
-
-    public void setRecursive(boolean recursive) {
-        this.recursive = recursive;
-    }
-
-    public long getTimeModified() {
-        return timeModified;
-    }
-
-    public void setTimeModified(long timeModified) {
-        this.timeModified = timeModified;
+        return this;
     }
 
     public long getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(long timeCreated) {
+    public Folder setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
+        return this;
+    }
+
+    public long getTimeModified() {
+        return timeModified;
+    }
+
+    public Folder setTimeModified(long timeModified) {
+        this.timeModified = timeModified;
+        return this;
+    }
+
+    public boolean isRecursive() {
+        return recursive;
+    }
+
+    public Folder setRecursive(boolean recursive) {
+        this.recursive = recursive;
+        return this;
+    }
+
+    public AssetSearch getSearch() {
+        return search;
+    }
+
+    public Folder setSearch(AssetSearch search) {
+        this.search = search;
+        return this;
     }
 
     public Integer getDyhiId() {

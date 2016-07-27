@@ -35,7 +35,7 @@ public interface FolderDao {
 
     Folder create(FolderSpec builder);
 
-    boolean update(Folder folder, FolderSpec builder);
+    boolean update(int id, Folder folder);
 
     int deleteAll(DyHierarchy dyhi);
 

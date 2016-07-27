@@ -52,7 +52,7 @@ public interface FolderService {
      */
     List<Folder> getAllDescendants(Folder folder, boolean forSearch);
 
-    boolean update(Folder folder, FolderSpec spec);
+    boolean update(int id, Folder folder);
 
     boolean delete(Folder folder);
 

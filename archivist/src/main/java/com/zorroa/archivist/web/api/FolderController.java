@@ -66,9 +66,8 @@ public class FolderController {
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.PUT)
-    public Folder update(@RequestBody FolderSpec builder, @PathVariable int id) {
-        Folder folder = folderService.get(id);
-        folderService.update(folder, builder);
+    public Folder update(@RequestBody Folder folder, @PathVariable int id) {
+        folderService.update(id, folder);
         return folderService.get(folder.getId());
     }
 
@@ -90,7 +89,7 @@ public class FolderController {
     @RequestMapping(value="/api/v1/folders/{id}/assets", method=RequestMethod.GET)
     public void getAssets(@PathVariable int id, HttpServletResponse httpResponse) throws IOException {
         HttpUtils.writeElasticResponse(searchService.search(
-                new AssetSearch().setFilter(new AssetFilter().addToFolderIds(id))), httpResponse);
+                new AssetSearch().setFilter(new AssetFilter().addToFolders(id))), httpResponse);
     }
 
     /**

@@ -181,15 +181,15 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             "json_search");
 
     @Override
-    public boolean update(Folder folder, FolderSpec spec) {
-        Preconditions.checkNotNull(spec.getParentId(), "Parent folder cannot be null");
+    public boolean update(int id, Folder folder) {
+        Preconditions.checkNotNull(folder.getParentId(), "Parent folder cannot be null");
         return jdbc.update(UPDATE,
                 System.currentTimeMillis(),
                 SecurityUtils.getUser().getId(),
-                spec.getParentId(),
-                spec.getName(),
-                spec.isRecursive(),
-                Json.serializeToString(spec.getSearch(), null),
+                folder.getParentId(),
+                folder.getName(),
+                folder.isRecursive(),
+                Json.serializeToString(folder.getSearch(), null),
                 folder.getId()) == 1;
     }
 
