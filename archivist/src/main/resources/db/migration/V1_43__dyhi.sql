@@ -22,3 +22,4 @@ ALTER TABLE folder ADD bool_dyhi_root BOOLEAN NOT NULL DEFAULT 0;
 
 -- Never used
 ALTER TABLE folder DROP COLUMN json_permissions;
+

@@ -28,9 +28,7 @@ public class DyHierarchyDaoTests extends AbstractTest {
         spec.setFolderId(folder.getId());
         spec.setLevels(
                 ImmutableList.of(
-                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Date)
-                                .setOption("interval", "1m")
-                                .setOption("format", "E"),
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Year),
                         new DyHierarchyLevel("source.type.raw"),
                         new DyHierarchyLevel("source.extension.raw"),
                         new DyHierarchyLevel("source.filename.raw")));

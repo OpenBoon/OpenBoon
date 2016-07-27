@@ -105,7 +105,7 @@ public class DyHeirarchyDaoImpl extends AbstractDao implements DyHierarchyDao {
             "json_levels");
 
     @Override
-    public boolean update(int id, DyHierarchySpec spec) {
+    public boolean update(int id, DyHierarchy spec) {
         return jdbc.update(UPDATE, spec.getFolderId(), spec.getLevels().size(),
                 Json.serializeToString(spec.getLevels(), "[]")) == 1;
     }

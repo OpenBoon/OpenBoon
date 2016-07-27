@@ -2,7 +2,9 @@ package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +21,8 @@ public class DyHierarchy {
     /**
      * The folder the agg is on.
      */
-    private int folderId;
+    @NotNull
+    private Integer folderId;
 
     /**
      * The user that created the aggregation.
@@ -31,6 +34,7 @@ public class DyHierarchy {
      */
     private long timeCreated;
 
+    @NotEmpty
     private List<DyHierarchyLevel> levels;
 
     private boolean working;

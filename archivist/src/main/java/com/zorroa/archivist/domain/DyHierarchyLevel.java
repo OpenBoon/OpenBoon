@@ -1,7 +1,11 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.Maps;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
@@ -9,15 +13,20 @@ import java.util.Map;
  */
 public class DyHierarchyLevel {
 
+    private static final Logger logger = LoggerFactory.getLogger(DyHierarchyLevel.class);
+
+
     /**
      * The field to be used in an aggregation.
      */
+    @NotEmpty
     private String field;
 
     /**
      * The type of aggregation.
      */
-    private DyHierarchyLevelType type = DyHierarchyLevelType.Term;
+    @NotNull
+    private DyHierarchyLevelType type = DyHierarchyLevelType.Attr;
 
     /**
      * Options which can modify the behavior of the DyHierarchy generator.
@@ -65,5 +74,9 @@ public class DyHierarchyLevel {
     public DyHierarchyLevel setOption(String name, Object val) {
         this.options.put(name, val);
         return this;
+    }
+
+    public Object getOption(String name) {
+        return this.options.get(name);
     }
 }

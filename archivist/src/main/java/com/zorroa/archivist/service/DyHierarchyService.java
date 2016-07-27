@@ -10,7 +10,9 @@ import java.util.concurrent.Future;
  */
 public interface DyHierarchyService {
 
-    boolean update(DyHierarchy dyhi, DyHierarchySpec spec);
+    boolean update(int id, DyHierarchy spec);
+
+    boolean delete(DyHierarchy dyhi);
 
     /**
      * Create a dynamic hierarchy generator.

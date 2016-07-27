@@ -1,16 +1,17 @@
 package com.zorroa.archivist.service;
 
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.DyHierarchyDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.sdk.domain.AssetFieldRange;
-import com.zorroa.sdk.domain.AssetFieldTerms;
-import com.zorroa.sdk.domain.AssetSearch;
 import com.zorroa.sdk.domain.Tuple;
+import com.zorroa.sdk.search.AssetScript;
+import com.zorroa.sdk.search.AssetSearch;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -32,9 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -59,42 +58,68 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
     private final AtomicLong runAllTimer = new AtomicLong(System.currentTimeMillis());
 
-    private final ExecutorService dyhiExecute = Executors.newFixedThreadPool(2);
+    /**
+     * Only a single thread can be generating hierarchies currently.
+     */
+    private final ExecutorService dyhiExecute = Executors.newFixedThreadPool(1);
 
     @Override
     @Transactional
-    public boolean update(DyHierarchy dyhi, DyHierarchySpec spec) {
-        Folder folder = folderService.get(spec.getFolderId());
-        if (!dyHierarchyDao.update(dyhi.getId(), spec)) {
+    public boolean update(int id, DyHierarchy spec) {
+        DyHierarchy current = dyHierarchyDao.get(id);
+        if (!dyHierarchyDao.update(id, spec)) {
             return false;
         }
 
-        if (dyHierarchyDao.setWorking(dyhi, false)) {
-            logger.warn("An existing DyHierarchy {} was running, stopping");
+        DyHierarchy updated = dyHierarchyDao.get(id);
+
+        /*
+         * Folder ID change
+         */
+        Folder folderOld = folderService.get(current.getFolderId());
+        Folder folderNew = folderService.get(updated.getFolderId());
+        if (folderOld != folderNew ) {
+            folderService.setDyHierarchyRoot(folderOld, false);
+            folderService.setDyHierarchyRoot(folderNew, true);
         }
 
-        /**
-         * Queue up an event where after this transaction commits
-         * we wait until any old folders are cleared out, then
-         * the new folders are generated.
+        /*
+         * If this returns true, the dyhi was working, it should stop
+         * pretty quickly.  Other transactions should be blocked at
+         * the update() call, but there might be some races in here.
+         */
+        if (dyHierarchyDao.setWorking(updated, false)) {
+            logger.info("DyHi {} was running, will wait on folders to be removed.");
+        }
+
+        /*
+         * Queue up an event where after this transaction commits.  Only 1 thread
+         * is running at a time, so
          */
         transactionEventManager.afterCommitSync(() -> {
-            try {
-                while(true) {
-                    int count = folderService.count(dyhi);
-                    if (count == 0) {
-                        submitGenerate(dyhi);
-                        return;
-                    }
-                    Thread.sleep(2500);
-                }
-
-            } catch (InterruptedException e) {
-                return;
-            }
+            folderService.deleteAll(current);
+            submitGenerate(dyHierarchyDao.get(current.getId()));
         });
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean delete(DyHierarchy dyhi) {
+
+        if (dyHierarchyDao.delete(dyhi.getId())) {
+            Folder folder = folderService.get(dyhi.getFolderId());
+            folderService.setDyHierarchyRoot(folder, false);
+
+            if (dyHierarchyDao.setWorking(dyhi, false)) {
+                logger.info("DyHi {} was running, will wait on folders to be removed.");
+            } else {
+                folderService.deleteAll(dyhi);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -108,6 +133,10 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             generate(dyhi);
         }
         else {
+            /*
+             * Generate the hierarchy in another thread
+             * after this method returns.
+             */
             transactionEventManager.afterCommitSync(()
                     -> submitGenerate(dyhi));
         }
@@ -188,7 +217,6 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             return folders.count;
         }
         finally {
-
             if (!dyHierarchyDao.isWorking(dyhi)) {
                 /*
                  * If we get here and the dyhi is set to not working,then
@@ -204,27 +232,38 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
         }
     }
 
-    public AggregationBuilder elasticAggregationBuilder(DyHierarchyLevel level, int idx) {
+    private AggregationBuilder elasticAggregationBuilder(DyHierarchyLevel level, int idx) {
 
         switch(level.getType()) {
-            case Term:
+            case Attr:
                 TermsBuilder terms = AggregationBuilders.terms(String.valueOf(idx));
                 terms.field(level.getField());
                 return terms;
-            case Date:
-                DateHistogramBuilder date = AggregationBuilders.dateHistogram(String.valueOf(idx));
-                date.field(level.getField());
-                date.interval(new DateHistogramInterval((String) level.getOptions().getOrDefault("interval", "1y")));
-                date.format((String) level.getOptions().getOrDefault("format", "y"));
-                return date;
+            case Year:
+                DateHistogramBuilder year = AggregationBuilders.dateHistogram(String.valueOf(idx));
+                year.field(level.getField());
+                year.interval(new DateHistogramInterval("1y"));
+                year.format("yyyy");
+                return year;
+            case Month:
+                DateHistogramBuilder month = AggregationBuilders.dateHistogram(String.valueOf(idx));
+                month.field(level.getField());
+                month.interval(new DateHistogramInterval("1M"));
+                month.format("M");
+                return month;
+            case Day:
+                DateHistogramBuilder day = AggregationBuilders.dateHistogram(String.valueOf(idx));
+                day.field(level.getField());
+                day.interval(new DateHistogramInterval("1d"));
+                day.format("d");
+                return day;
         }
 
         return null;
     }
 
     /**
-     * Breadth first walk of aggregations result which builds
-     * a tree structure which we'll use create folders.
+     * Breadth first walk of aggregations which builds the folder structure as it walks.
      *
      * @param queue
      */
@@ -257,17 +296,18 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 return;
             }
 
-            String value = null;
+            String value;
             switch (level.getType()) {
-                case Term:
+                case Attr:
                     value = bucket.getKeyAsString();
                     value = value.replace('/', '_');
                     break;
-                case Date:
+                default:
                     value = bucket.getKeyAsString();
                     break;
             }
             folders.push(value, level);
+
             Aggregations child = bucket.getAggregations();
             if (child.asList().size() > 0) {
                 queue.add(new Tuple(child, depth + 1));
@@ -288,37 +328,92 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             this.stack.push(root);
         }
 
+        public void pop() {
+            stack.pop();
+        }
+
+        /**
+         * Create a folder at a given level and pushes the result
+         * onto the stack.
+         *
+         * @param value
+         * @param level
+         * @return
+         */
         public Folder push(String value, DyHierarchyLevel level) {
             Folder parent = stack.peek();
+            AssetSearch search = getSearch(value, level);
+
+            /*
+             * The parent search is merged into the current folder's search.
+             */
+            if (parent.getSearch() != null) {
+                search.getFilter().merge(parent.getSearch().getFilter());
+            }
+
+            /*
+             * Create a non-recursive
+             */
             Folder folder = folderService.create(new FolderSpec()
-                    .setName(value)
+                    .setName(getFolderName(value, level))
                     .setParentId(parent.getId())
                     .setRecursive(false)
                     .setDyhiId(dyhi.getId())
-                    .setSearch(getSearch(value, level)), true);
+                    .setSearch(search), true);
             count++;
             stack.push(folder);
             return folder;
         }
 
-        public void pop() {
-            stack.pop();
+        /**
+         * Take a value and a level and return the proper folder name.  This
+         * will eventually support more formatting options.
+         *
+         * @param value
+         * @param level
+         * @return
+         */
+        public String getFolderName(String value, DyHierarchyLevel level) {
+            switch(level.getType()) {
+                case Attr:
+                case Year:
+                case Day:
+                    return value;
+                case Month:
+                    return new java.text.DateFormatSymbols().getMonths()[Integer.parseInt(value) - 1];
+                default:
+                    return value;
+            }
         }
 
+        /**
+         * Build a search from the given folder name and level.
+         *
+         * @param value
+         * @param level
+         * @return
+         */
         public AssetSearch getSearch(String value, DyHierarchyLevel level) {
             AssetSearch search = new AssetSearch();
             switch (level.getType()) {
-                case Term:
-                    search.getFilter().addToFieldTerms(
-                            new AssetFieldTerms(level.getField(), value));
+                case Attr:
+                    search.getFilter().addToTerms(level.getField(), Lists.newArrayList(value));
                     break;
-                case Date:
-                    search.getFilter().setFieldRange(new AssetFieldRange()
-                            .setField(level.getField())
-                            .setMin(value)
-                            .setMax(value)
-                            .setFormat((String) level.getOptions().get("format")));
-
+                case Year:
+                    search.getFilter().addToScripts(new AssetScript(
+                            String.format("doc['%s'].getYear() == value", level.getField()),
+                            ImmutableMap.of("value", Integer.valueOf(value))));
+                    break;
+                case Month:
+                    search.getFilter().addToScripts(new AssetScript(
+                            String.format("doc['%s'].getMonth() == value", level.getField()),
+                            ImmutableMap.of("value", Integer.valueOf(value) - 1)));
+                    break;
+                case Day:
+                    search.getFilter().addToScripts(new AssetScript(
+                            String.format("doc['%s'].getDayOfMonth() == value", level.getField()),
+                            ImmutableMap.of("value", Integer.valueOf(value))));
+                    break;
             }
             return search;
         }
