@@ -10,7 +10,7 @@ import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AnalystDao;
-import com.zorroa.common.service.EventLogService;
+import com.zorroa.common.repository.EventLogDao;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.domain.AnalystState;
@@ -92,7 +92,7 @@ public abstract class AbstractTest {
     protected MessagingService messagingService;
 
     @Autowired
-    protected EventLogService eventLogSerivce;
+    protected EventLogDao eventLogDao;
 
     @Autowired
     protected ApplicationProperties properties;

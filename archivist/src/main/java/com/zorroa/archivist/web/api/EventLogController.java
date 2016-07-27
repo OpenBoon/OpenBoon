@@ -1,16 +1,13 @@
 package com.zorroa.archivist.web.api;
 
-import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.repository.EventLogDao;
-import com.zorroa.sdk.domain.EventLogSearch;
+import com.google.common.collect.ImmutableMap;
+import com.zorroa.common.domain.EventSearch;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.common.repository.EventLogDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -23,27 +20,28 @@ public class EventLogController {
     EventLogDao eventLogDao;
 
     @RequestMapping(value="/api/v1/eventlog/_search", method= RequestMethod.POST)
-    public void getAll(@RequestBody(required=false) EventLogSearch search, HttpServletResponse httpResponse) throws IOException {
+    public Object getAll(@RequestBody(required=false) EventSearch search,
+                         @RequestParam(value="page", required=false) Integer page) throws IOException {
         if (search == null) {
-            search = new EventLogSearch();
+            search = new EventSearch();
         }
-        HttpUtils.writeElasticResponse(eventLogDao.getAll(search), httpResponse);
+        return eventLogDao.getAll(search, new Paging(page));
     }
 
     @RequestMapping(value="/api/v2/eventlog/_search", method= RequestMethod.POST)
-    public void getAll_v2(@RequestBody(required=false) EventLogSearch search, HttpServletResponse httpResponse) throws IOException {
+    public Object getAll_v2(@RequestBody(required=false) EventSearch search,
+                            @RequestParam(value="page", required=false) Integer page) throws IOException {
         if (search == null) {
-            search = new EventLogSearch();
+            search = new EventSearch();
         }
-        HttpUtils.writeElasticResponse(eventLogDao.getAll(search), httpResponse);
+        return eventLogDao.getAll(search, new Paging(page));
     }
 
-
     @RequestMapping(value="/api/v1/eventlog/_count", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
-    public String getCount(@RequestBody(required=false) EventLogSearch search) throws IOException {
+    public Object getCount(@RequestBody(required=false) EventSearch search) throws IOException {
         if (search == null) {
-            search = new EventLogSearch();
+            search = new EventSearch();
         }
-        return HttpUtils.countResponse(eventLogDao.getCount(search));
+        return ImmutableMap.of("count", eventLogDao.count(search));
     }
 }

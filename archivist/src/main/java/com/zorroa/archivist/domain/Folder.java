@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import com.zorroa.common.domain.EventLoggable;
 import com.zorroa.sdk.domain.Acl;
-import com.zorroa.sdk.domain.EventLoggable;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.Objects;
@@ -174,7 +174,7 @@ public class Folder implements EventLoggable {
     }
 
     @Override
-    public Object getLogId() {
-        return id;
+    public String getEventLogId() {
+        return String.valueOf(id);
     }
 }

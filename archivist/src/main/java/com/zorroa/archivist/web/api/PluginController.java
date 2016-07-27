@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.api;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.sdk.config.ApplicationProperties;
@@ -49,19 +48,8 @@ public class PluginController {
     public List<Module> modules(@PathVariable String plugin, @PathVariable String type) {
         if (plugin.equals("_all")) {
             return pluginService.getModules(null, type);
-        }
-        else {
+        } else {
             return pluginService.getModules(plugin, type);
         }
-    }
-
-    private static final List<String> Aggregators = ImmutableList.of(
-            "com.zorroa.archivist.aggregators.DateAggregator",
-            "com.zorroa.archivist.aggregators.FieldAggregator",
-            "com.zorroa.archivist.aggregators.IngestPathAggregator");
-
-    @RequestMapping(value="/api/v1/plugins/aggregators", method=RequestMethod.GET)
-    public List<String> aggregators() {
-        return Aggregators;
     }
 }

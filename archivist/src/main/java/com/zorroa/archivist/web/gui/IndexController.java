@@ -3,15 +3,13 @@ package com.zorroa.archivist.web.gui;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
+import com.zorroa.common.domain.EventSearch;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.SerializableElasticResult;
-import com.zorroa.sdk.domain.EventLogSearch;
+import com.zorroa.common.repository.EventLogDao;
 import com.zorroa.sdk.plugins.ModuleRef;
 import com.zorroa.sdk.search.AssetSearch;
-import org.elasticsearch.action.search.SearchResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -352,19 +350,18 @@ public class IndexController {
 
     @RequestMapping("/gui/events")
     public String events(Model model,
-                         @RequestParam(value="type", required=false) String type) {
+                         @RequestParam(value="type", required=false) String type,
+                         @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         /**
          * TODO: need to handle multiple types.
          */
-        EventLogSearch search = new EventLogSearch();
+        EventSearch search = new EventSearch();
         if (type != null) {
-            search.setTypes(ImmutableSet.of(type));
+            search.setObjectTypes(ImmutableSet.of(type));
         }
-
         model.addAttribute("search", search);
-        SearchResponse rsp =  eventLogDao.getAll(search);
-        model.addAttribute("events", new SerializableElasticResult(rsp));
+        model.addAttribute("events", eventLogDao.getAll(search, new Paging(page)));
         return "events";
     }
 
@@ -373,12 +370,6 @@ public class IndexController {
      * @param model
      */
     private void standardModel(Model model) {
-        SerializableElasticResult result = new SerializableElasticResult(
-                eventLogDao.getAll(new EventLogSearch()
-                        .setLimit(0)
-                        .setAfterTime(System.currentTimeMillis() - (86400 * 1000))));
-
-        model.addAttribute("stdEvents", result);
         //model.addAttribute("stdJobs", ingestService.getAllIngests(IngestState.Running, 10));
     }
 }

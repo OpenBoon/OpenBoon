@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.sdk.domain.EventLoggable;
+import com.zorroa.common.domain.EventLoggable;
 import com.zorroa.sdk.plugins.ModuleRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -196,12 +196,9 @@ public class Ingest implements EventLoggable {
     }
 
     @Override
-    public Object getLogId() {
-        return id;
+    public String getEventLogId() {
+        return String.valueOf(id);
     }
 
-    @Override
-    public String getLogType() {
-        return "Ingest";
-    }
+
 }

@@ -1,8 +1,6 @@
 package com.zorroa.common.config;
 
 import com.zorroa.common.repository.*;
-import com.zorroa.common.service.EventLogService;
-import com.zorroa.common.service.EventLogServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class CommonBeanConfig {
 
     @Bean
-    public EventLogService eventLogService() {
-        return new EventLogServiceImpl();
+    public EventLogDao eventLogDao() {
+        return new EventLogDaoImpl();
     }
 
     @Bean

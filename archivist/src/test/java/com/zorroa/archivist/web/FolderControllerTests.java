@@ -5,6 +5,7 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.web.api.FolderController;
+import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
@@ -256,7 +257,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testAddAsset() throws Exception {
         authenticate();
         addTestAssets("set04/standard");
-        List<Asset> assets = assetDao.getAll(Paging.first());
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
 
@@ -282,7 +283,7 @@ public class FolderControllerTests extends MockMvcTest {
         authenticate();
 
         addTestAssets("set04/standard");
-        List<Asset> assets = assetDao.getAll(Paging.first());
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
@@ -309,7 +310,7 @@ public class FolderControllerTests extends MockMvcTest {
         authenticate();
 
         addTestAssets("set04/standard");
-        List<Asset> assets = assetDao.getAll(Paging.first());
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));

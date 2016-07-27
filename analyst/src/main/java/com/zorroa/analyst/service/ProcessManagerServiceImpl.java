@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.zorroa.common.repository.AssetDao;
-import com.zorroa.common.service.EventLogService;
+import com.zorroa.common.repository.EventLogDao;
 import com.zorroa.sdk.client.archivist.ArchivistClient;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.util.Json;
@@ -39,7 +39,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     ArchivistClient archivistClient;
 
     @Autowired
-    EventLogService eventLogService;
+    EventLogDao eventLogDao;
 
     @Autowired
     ApplicationProperties properties;

@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.hash.HashCode;
-import com.zorroa.sdk.domain.EventLoggable;
+import com.zorroa.common.domain.EventLoggable;
 
 import java.io.Serializable;
 
@@ -93,7 +93,7 @@ public class User implements EventLoggable, Serializable {
     }
 
     @Override
-    public Object getLogId() {
-        return id;
+    public String getEventLogId() {
+        return String.valueOf(id);
     }
 }
