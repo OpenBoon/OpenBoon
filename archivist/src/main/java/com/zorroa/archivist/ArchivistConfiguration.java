@@ -164,7 +164,7 @@ public class ArchivistConfiguration {
 
     @Bean
     public ObjectFileSystem ofs() {
-        UUIDFileSystem ufs = new UUIDFileSystem(new File(properties.getString("archivist.path.storage")));
+        UUIDFileSystem ufs = new UUIDFileSystem(new File(properties.getString("archivist.path.ofs")));
         ufs.init();
         return ufs;
     }
