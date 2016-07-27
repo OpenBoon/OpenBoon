@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<style>
+<!--
+
+-->
+</style>
+
+<div th:fragment="import_modal">
+
+<div class="modal fade" id="modalCreate" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a href="#upload" data-toggle="tab">Upload</a></li>
+                    <li><a href="#server" data-toggle="tab">Server Drive</a></li>
+                    <li><a href="#url" data-toggle="tab">URL</a></li>
+                </ul>
+                <div id="my-tab-content" class="tab-content">
+                    <div class="tab-pane active" id="upload">
+                        <div class="container-fluid">
+                            <form class="form-horizontal" id="importForm" action="#" method="post">
+                                <div class="dropzone-preview" id="importDropzone">
+                                    <div class="dz-default dz-message text-center" data-dz-message="">
+                                        <br/><br/><br/><br/>
+                                        <h3><span id="clickable" class="label label-info">Click or Drag to Upload</span></h3>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="folderId">Add To Folder:</label>
+                                    <button id="folderId" type="button" class="btn btn-default">...</button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notes">Notes:</label>
+                                    <textarea class="form-control" rows="3" id="notes"></textarea>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <button type="reset" class="btn btn-default">Reset</button>
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="server">
+                        <h1>SERVER</h1>
+                        <p>orange orange orange orange orange</p>
+                    </div>
+                    <div class="tab-pane" id="url">
+                        <h1>URL</h1>
+                        <p>orange orange orange orange orange</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript" type="text/javascript">
+        Dropzone.autoDiscover = false;
+        var importDropzone = new Dropzone("div#importDropzone", {
+            url: "#",
+            previewsContainer: "#importDropzone",
+            clickable: "#clickable",
+            autoProcessQueue: false
+        });
+
+        jQuery(document).ready(function ($) {
+            $('#tabs').tab();
+        });
+
+    </script>
+</div>
+</body>
+</html>

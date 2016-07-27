@@ -7,29 +7,80 @@
 <body>
 
 <section layout:fragment="content">
-    <p>
-        <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-            <div class="container-fluid">
-                <div class="navbar-header navbar-brand">
-                    <span class="fa fa-folder" aria-hidden="true"></span>
-                    Folders
-                    <a class="btn btn-default" href="/gui/folders">/</a>
-                    <th:block th:each="folder: ${path}">
-                        <a th:if="${folder.id &gt; 0}" class="btn btn-default" th:href="${'/gui/folders/' + folder.id}"
-                           th:text="${folder.name}"></a>
-                    </th:block>
+    <div th:include="fragments/folder_menu :: folder_menu"/>
+    <div class="wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div id="leftContent" class="col-md-12" style="padding:0px">
+                <table id="t" class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Owner</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="clickable-row" th:attr="data-href=${'/gui/folders/' + child.id}" th:each="child: ${children}">
+                        <td width="1"><i class="fa fa-folder fa-fw fa-lg" style="color: #666"/></td>
+                        <td class="vert-align col-xs-6" th:text="${child.name}"/>
+                        <td class="vert-align" th:text="${child.userCreated}"></td>
+                        <td class="vert-align" th:text="${#dates.format(child.timeCreated, 'dd MMM yyyy')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="rightContent" class="hidden" style="padding-left: 15px; padding-right: 0px;">
+                <br/>
+                <div class="panel">
+                    <div class="panel-header"><h4>Folder</h4></div>
+                    <div class="panel-body">
+
+                    </div>
                 </div>
             </div>
-        </nav>
-
-        <div class="container-fluid">
-            <th:block th:each="child: ${children}">
-                <a th:href="${'/gui/folders/' + child.id}" class="btn btn-default" style="margin: 5px;">
-                    <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span> <th:block th:text="${child.name}"></th:block>
-                </a>
-            </th:block>
         </div>
-    </p>
+    </div>
+    </div>
+    <div th:include="fragments/folder_modal :: create_modal"/>
+    <script th:inline="javascript" type="text/javascript">
+        $(document).ready(function(e) {
+
+            var panel = $('#rightContent');
+            var table = $('#leftContent');
+
+            function open() {
+                panel.removeClass('hidden').addClass('col-md-3');
+                table.removeClass('col-md-12').addClass("col-md-9");
+            }
+
+            function close() {
+                panel.addClass('hidden').removeClass('col-md-3');
+                table.removeClass('col-md-9').addClass("col-md-12")
+            }
+
+            $('#t').on('click', '.clickable-row', function(event) {
+                $(this).addClass('success').siblings().removeClass('success');
+            });
+
+            $(".table-hover > tbody > tr").dblclick(function() {
+                console.log($(this).data("href"));
+                window.document.location = $(this).data("href");
+            });
+
+            $('#opener').on('click', function() {
+                if (panel.hasClass("hidden")) {
+                    open();
+                } else {
+                    close();
+                }
+                return false;
+            });
+        });
+
+    </script>
 </section>
 </body>
 </html>

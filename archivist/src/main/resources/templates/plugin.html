@@ -7,65 +7,27 @@
 <body>
 
 <section layout:fragment="content">
-    <p>
-    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-        <div class="container-fluid">
-            <div class="navbar-header navbar-brand">
-                <i class="fa fa-plug fa-fw"/>Plugin
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-
-        <dl class="dl-horizontal">
-            <dt>Name:</dt>
-            <dd th:text="${plugin.name}"></dd>
-            <dt>Description:</dt>
-            <dd th:text="${plugin.description}"></dd>
-            <dt>Publisher:</dt>
-            <dd th:text="${plugin.publisher}"></dd>
-            <dt>Version</dt>
-            <dd th:text="${plugin.version}"></dd>
-            <dt>Lang</dt>
-            <dd th:text="${plugin.language}"></dd>
-        </dl>
+    <div th:include="fragments/plugin_menu :: plugin_menu"/>
+    <div class="wrapper">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>File Types</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="module: ${modules}">
+                <td th:text="${module.type}"></td>
+                <td><a th:text="${module.name}" th:href="@{/gui/plugins/__${plugin.name}__/module/__${module.name}__}"></a></td>
+                <td th:text="${module.supportedExtensions}"></td>
+                <td th:text="${module.toolTip}"></td>
+            </tr>
+        </tbody>
+    </table>
     </div>
-
-    <div class="container">
-        <ul class="nav nav-pills">
-            <li class="active"><a href="#tab1" data-toggle="tab">Ingest<span class="badge" th:text="${#lists.size(ingests)}">0</span></a></li>
-            <li><a href="#tab2" data-toggle="tab">Generator<span class="badge" th:text="${#lists.size(generators)}">0</span></a></li>
-            <li><a href="#tab3" data-toggle="tab">Export</a></li>
-            <li><a href="#tab4" data-toggle="tab">Schema</a></li>
-            <li><a href="#tab5" data-toggle="tab">Macros</a></li>
-        </ul>
-    </div>
-
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
-            <div class="container-fluid">
-                <th:block th:each="proc: ${ingests}">
-                    <a th:href="${'/gui/plugins/' + plugin.name + '/module/' + proc.className + '.class'}" class="btn btn-default" style="margin: 5px;">
-                        <span class="fa fa-download" aria-hidden="true"></span>
-                        <th:block th:text="${proc.name}"></th:block>
-                    </a>
-                </th:block>
-            </div>
-        </div>
-        <div class="tab-pane" id="tab2">
-            <div class="container-fluid">
-                <th:block th:each="proc: ${generators}">
-                    <a th:href="${'/gui/plugins/' + plugin.name + '/module/' + proc.className + '.class'}" class="btn btn-default" style="margin: 5px;">
-                        <span class="fa fa-spinner" aria-hidden="true"></span> <th:block th:text="${proc.name}"></th:block>
-                    </a>
-                </th:block>
-            </div>
-        </div>
-        <div class="tab-pane" id="tab3">
-
-        </div>
-    </div>
-    </p>
 </section>
 
 </body>

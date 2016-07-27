@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="folder_menu">
+    <nav class="navbar navbar-default navbar-shadow navbar-fixed-top secondnavbar" role="navigation" style="z-index: 999; border-width:0px; border-bottom-width: 1px">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="navbar navbar-header">
+                    <a class="navbar-brand" href="/gui/folders"><i class="fa fa-folder fa-fw fa-lg"/>Folders</a>
+                    <th:block th:if="${folder != null &amp;&amp; folder.id &gt; 0}">
+                        <p class="navbar-section navbar-text">
+                        <th:block th:each="folder: ${path}">
+                            <a th:if="${folder.id &gt; 0}" class="navbar-link" th:href="${'/gui/folders/' + folder.id}"
+                               th:text="${folder.name}"></a>&nbsp;/
+                        </th:block>
+                        </p>
+                    </th:block>
+                </div>
+
+                <div class="navbar-collapse collapse">
+                    <div class="navbar navbar-right">
+                        <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
+                                type="button" class="btn btn-danger navbar-btn"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
+
+                        <button id="opener" type="button" class="btn btn-default navbar-btn"><i class="fa fa-info fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-sort fa-lg fa-fw" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

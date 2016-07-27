@@ -7,149 +7,26 @@
 <body>
 
 <section layout:fragment="content">
-    <p>
-    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-        <div class="container-fluid">
-            <div class="navbar-header navbar-brand">
-                <span class="fa fa-archive" aria-hidden="true"></span>
-                Ingests
-            </div>
-            <div class="nav navbar-nav navbar-right" style="padding-right: 15px">
-                <button onclick="$('#modalForm').modal({'backdrop': 'static'});" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-
-            </div>
-        </div>
-    </nav>
-    <div class="panel panel-default" style="border-width: 0px;">
-        <div class="panel-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Uris</th>
-                        <th>Created</th>
-                        <th>Updated</th>
-                        <th>Errors</th>
-                        <th>State</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="ingest: ${ingests}" >
-                        <td><a th:text="${ingest.name}" th:href="@{/gui/ingests/__${ingest.id}__}"></a></td>
-                        <td th:text="${ingest.uris.size()}"></td>
-                        <td th:text="${ingest.createdCount}"></td>
-                        <td th:text="${ingest.updatedCount}"></td>
-                        <td th:text="${ingest.errorCount}"></td>
-                        <td>
-                            <div class="btn-group">
-                                <button name="deleteButton" th:value="${ingest.id}" type="button" class="btn btn-default btn-xs">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-                                </button>
-                                <button name="stopButton" th:value="${ingest.id}" th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Running}" type="button" class="btn btn-default btn-xs">
-                                    <span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
-                                </button>
-                                <button name="startButton" th:value="${ingest.id}" th:if="${ingest.state == T(com.zorroa.sdk.domain.IngestState).Idle}" type="button" class="btn btn-default btn-xs">
-                                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
-                                </button>
-
-                                <button name="resumeButton" th:value="${ingest.id}" th:if="${ingest.paused == true}" type="button" class="btn btn-default btn-xs">
-                                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Resume
-                                </button>
-
-                                <button name="pauseButton" th:value="${ingest.id}" th:if="${ingest.paused != true}" type="button" class="btn btn-default btn-xs">
-                                    <span  class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pause
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-         </div>
+    <div th:include="fragments/ingest_menu :: ingest_menu"/>
+    <div class="wrapper">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Owner</th>
+            <th>Schedule</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ingest: ${ingests}" >
+            <td><a th:text="${ingest.name}" th:href="@{/gui/ingests/__${ingest.id}__}"></a></td>
+            <td th:text="${ingest.userCreated}"></td>
+            <td th:text="${ingest.schedule.description}"></td>
+        </tr>
+        </tbody>
+    </table>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="modalForm" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close">&times;</button>
-                    <h4 class="modal-title">Create Ingest</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="createUserForm" autocomplete="off" action="#" role="form" th:action="@{/gui/ingests}" th:object="${builder}" method="post">
-                        <div class="form-group">
-                            <label for="username">Name</label>
-                            <input type="text" th:field="*{name}" class="form-control" id="username" required="true" describedby="name-success"/>
-                            <span id="name-valid" aria-hidden="true"></span>
-                            <span id="name-success" class="sr-only">(success)</span>
-                            <span id="name-help" class="help-block"></span>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="uris">Path</label>
-                            <input type="text" th:field="*{uris}" class="form-control" id="uris" required="true"/>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('uris')}" th:errors="*{uris}"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="pipelineId">Pipeline</label>
-                            <select  id="pipelineId" th:field="*{pipelineId}">
-                                <option th:each="pipe: ${pipelines}" th:value="${pipe.id}" th:text="${pipe.name}"></option>
-                            </select>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('pipelineId')}" th:errors="*{pipelineId}"></div>
-                        </div>
-                        <button type="submit" class="btn btn-default">Create</button>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script th:inline="javascript" type="text/javascript">
-        //<![CDATA[
-        $(document).ready(function(e) {
-            $('[name="startButton"]').click(function() {
-                var value = $(this).val();
-                $.ajax( {
-                    url: '/api/v1/ingests/' + value + '/_start',
-                    method: 'put',
-                    dataType: 'json',
-                    success: function(data) {
-                        window.location.reload(true);
-                    },
-                    error: function(err) {
-                        alert(err);
-                    }
-                });
-            });
-
-            $('[name="deleteButton"]').click(function() {
-                var value = $(this).val();
-                if (confirm("Delete?")) {
-                    $.ajax({
-                        url: '/api/v1/ingests/' + value,
-                        method: 'delete',
-                        dataType: 'json',
-                        success: function (data) {
-                            window.location.reload(true);
-                        },
-                        error: function (err) {
-                            alert(err);
-                        }
-                    });
-                }
-            });
-        });
-        //]]>
-    </script>
-    </p>
+    <div th:include="fragments/ingest_modal :: ingest_modal"/>
 </section>
 
 </body>

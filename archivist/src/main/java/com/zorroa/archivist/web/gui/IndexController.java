@@ -2,20 +2,16 @@ package com.zorroa.archivist.web.gui;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.IngestSpec;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.SerializableElasticResult;
-import com.zorroa.sdk.domain.AssetSearch;
 import com.zorroa.sdk.domain.EventLogSearch;
+import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.search.AssetSearch;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by chambers on 6/3/16.
@@ -49,6 +44,9 @@ public class IndexController {
     IngestService ingestService;
 
     @Autowired
+    JobService jobService;
+
+    @Autowired
     ImportService importService;
 
     @Autowired
@@ -62,6 +60,9 @@ public class IndexController {
 
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    AssetService assetService;
 
     @Autowired
     UserService userService;
@@ -172,23 +173,13 @@ public class IndexController {
     }
 
     @RequestMapping("/gui/assets")
-    public String assets(Model model) {
+    public String assets(Model model,
+                         @RequestParam(value="page", required=false) Integer page,
+                         @RequestParam(value="count", required=false) Integer count, @RequestParam(value="query", required=false) String query) {
+
         standardModel(model);
-        model.addAttribute("search", new AssetSearch());
-        return "assets";
-    }
-
-    @RequestMapping(value="/gui/assets", method=RequestMethod.POST)
-    public String assetsSearch(@ModelAttribute AssetSearch search, Model model) {
-        standardModel(model);
-        model.addAttribute("search", new AssetSearch());
-
-        List<Map<String, Object>> result = Lists.newArrayList();
-        for (SearchHit hit: searchService.search(search).getHits().getHits()) {
-            result.add(hit.sourceAsMap());
-        }
-
-        model.addAttribute("result", result);
+        model.addAttribute("assets", searchService.getAll(new Paging(page, count),
+                new AssetSearch(query)));
         return "assets";
     }
 
@@ -201,33 +192,55 @@ public class IndexController {
 
     @RequestMapping("/gui/folders")
     public String folders(Model model) {
-        standardModel(model);
-        Folder folder = new Folder();
-        folder.setName("/");
-        model.addAttribute("path", Lists.newArrayList(folder));
-        model.addAttribute("folder", folder);
-        model.addAttribute("parent", null);
-        model.addAttribute("children", folderService.getAll());
-        return "folders";
+        return "redirect:/gui/folders/"+ Folder.ROOT_ID;
     }
 
     @RequestMapping("/gui/folders/{id}")
     public String folders(Model model, @PathVariable int id) {
         standardModel(model);
-        Folder folder = folderService.get(id);
+        folderModel(model, folderService.get(id));
+        model.addAttribute("folderSpec", new FolderSpec());
+        return "folders";
+    }
+
+    @RequestMapping(value="/gui/folders/{id}", method=RequestMethod.POST)
+    public String createFolder(Model model, @PathVariable int id,
+                          @Valid @ModelAttribute("folderSpec") FolderSpec folderSpec,
+                          BindingResult bindingResult) {
+        standardModel(model);
+        folderModel(model, folderService.get(id));
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", true);
+            logger.warn("errors: {}", bindingResult.getAllErrors());
+            return "folders";
+        }
+        else {
+            logger.info("creating folder");
+            folderService.create(folderSpec);
+            return "redirect:/gui/folders/" + id;
+        }
+    }
+
+    private void folderModel(Model model, Folder folder) {
         model.addAttribute("folder", folder);
-        model.addAttribute("parent", folderService.get(folder.getParentId()));
         model.addAttribute("children", folderService.getChildren(folder));
 
-        List<Folder> path = Lists.newArrayList(folder);
-        Folder parent = folderService.get(folder.getParentId());
-        while (parent.getParentId() != null) {
-            path.add(parent);
-            parent = folderService.get(parent.getParentId());
+        if (folder.getParentId() == null) {
+            model.addAttribute("parent", null);
         }
-        Collections.reverse(path);
-        model.addAttribute("path", path);
-        return "folders";
+        else {
+            model.addAttribute("parent", folderService.get(folder.getParentId()));
+            List<Folder> path = Lists.newArrayList(folder);
+            Folder parent = folderService.get(folder.getParentId());
+            while (parent.getParentId() != null) {
+                path.add(parent);
+                parent = folderService.get(parent.getParentId());
+            }
+            Collections.reverse(path);
+            model.addAttribute("path", path);
+        }
+
     }
 
     @RequestMapping("/gui/analysts")
@@ -244,35 +257,51 @@ public class IndexController {
         standardModel(model);
         model.addAttribute("pipelines", pipelineService.getAll());
         model.addAttribute("ingests", ingestService.getAll());
-        model.addAttribute("generators", pluginService.getModules(null, "generator"));
-        model.addAttribute("spec", new IngestSpec());
+        model.addAttribute("ingestForm", new NewIngestForm());
         return "ingests";
     }
 
-    @RequestMapping(value="/gui/ingests",  method=RequestMethod.POST)
+    @RequestMapping(value="/gui/ingests", method=RequestMethod.POST)
     public String createIngest(Model model,
-                               @Valid @ModelAttribute("ingestSpec") IngestSpec spec,
+                               @Valid @ModelAttribute("ingestForm") NewIngestForm ingestForm,
                                BindingResult bindingResult) {
-        logger.info("{}", spec);
         standardModel(model);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", true);
+            model.addAttribute("pipelines", pipelineService.getAll());
             return "ingests";
         }
 
         model.addAttribute("ingests", ingestService.getAll());
-        model.addAttribute("spec", new IngestSpec());
+        model.addAttribute("ingestForm", new NewIngestForm());
+
+        IngestSpec spec = new IngestSpec();
+        spec.setName(ingestForm.getName());
+        spec.setSchedule(ingestForm.getSchedule());
+        spec.setRunNow(ingestForm.isRunNow());
+        spec.setAutomatic(ingestForm.isAutomatic());
+        spec.setFolderId(ingestForm.getFolderId());
+        spec.setPipelineId(ingestForm.getPipelineId());
+
+        for (String path: ingestForm.getPaths()) {
+            ModuleRef gen = new ModuleRef("generator:zorroa-core:SharedVolume");
+            gen.setArg("path", path);
+            spec.addToGenerators(gen);
+        }
+
         ingestService.create(spec);
+
         return "redirect:/gui/ingests";
     }
 
     @RequestMapping("/gui/imports/{id}")
-    public String ingest(Model model, @PathVariable int id) {
+    public String ingest(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
-        //model.addAttribute("ingest", ingestService.getIngest(id));
+        model.addAttribute("imp", jobService.get(id));
+        model.addAttribute("assets", assetService.getAll(new Paging(page)));
         //model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
-        return "ingest";
+        return "import";
     }
 
     @RequestMapping("/gui/imports")
@@ -300,8 +329,7 @@ public class IndexController {
     public String plugins(Model model, @PathVariable String name) {
         standardModel(model);
         model.addAttribute("plugin", pluginService.get(name));
-        model.addAttribute("importors", pluginService.getModules(name, "import"));
-        model.addAttribute("generators", pluginService.getModules(name, "generator"));
+        model.addAttribute("modules", pluginService.getModules(name));
         return "plugin";
     }
 

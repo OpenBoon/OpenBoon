@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="plugin_menu">
+    <nav class="navbar navbar-default navbar-shadow navbar-fixed-top secondnavbar" role="navigation" style="z-index: 999; border-width:0px; border-bottom-width: 1px">
+        <div class="navbar-inner">
+        <div class="container-fluid">
+            <div class="navbar navbar-header">
+                <a class="navbar-brand" href="/gui/plugins"><i class="fa fa-plug fa-fw fa-lg"/>Plugins</a>
+                <p th:if="${plugin != null}" class="navbar-text navbar-section" th:text="${plugin.name + ' v' + plugin.version}">...</p>
+            </div>
+
+            <div class="navbar-collapse collapse">
+            <div class="navbar navbar-right">
+                <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-sort fa-lg fa-fw" aria-hidden="true"></i></button>
+            </div>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+    <div class="navbar navbar-default navbar-fixed-left">
+        <br/>
+        <br/>
+        <br/>
+        <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
+                type="button" class="btn btn-danger center-block"
+                style="width:100px;">&nbsp;&nbsp;New&nbsp;&nbsp;</button>
+        <br/>
+    </div>
+</div>
+</body>
+</html>
