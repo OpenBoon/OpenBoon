@@ -126,12 +126,6 @@
         "enabled": false
       },
       "dynamic": true,
-      "dynamic_date_formats": [
-        "yyyy/MM/dd HH:mm:ss Z",
-        "yyyy/MM/dd Z",
-        "yyyy/MM/dd HH:mm:ss",
-        "yyyy/MM/dd"
-      ],
       "_timestamp": {
         "enabled": true
       },
@@ -167,7 +161,13 @@
         "yyyy/MM/dd HH:mm:ss Z",
         "yyyy/MM/dd Z",
         "yyyy/MM/dd HH:mm:ss",
-        "yyyy/MM/dd"
+        "yyyy/MM/dd",
+        "yyyy-MM-dd HH:mm:ss Z",
+        "yyyy-MM-dd Z",
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-dd",
+        "MM/dd/yyyy",
+        "MM-dd-yyyy"
       ],
       "_timestamp": {
         "enabled": true
@@ -304,15 +304,6 @@
         }
       },
       "dynamic_templates": [
-        {
-          "time_template": {
-            "match": ".+Time$",
-            "match_mapping_type": "string",
-            "mapping": {
-              "type": "date"
-            }
-          }
-        },
         {
           "shape_template": {
             "match": "^.+Shape$|^shape$",
