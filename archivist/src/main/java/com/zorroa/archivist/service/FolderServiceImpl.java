@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -333,6 +334,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public Folder create(FolderSpec spec, boolean mightExist) {
+        Preconditions.checkNotNull(spec.getParentId(), "Parent cannot be null");
         return create(folderDao.get(spec.getParentId()), spec, mightExist);
     }
 

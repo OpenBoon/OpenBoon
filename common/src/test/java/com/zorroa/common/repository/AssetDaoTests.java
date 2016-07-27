@@ -7,7 +7,6 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Folder;
 import com.zorroa.sdk.processor.Source;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,17 +69,13 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testAddToFolder() {
-        Folder f = new Folder();
-        f.setId(100);
-        assertEquals(1, assetDao.addToFolder(f.getId(), ImmutableList.of(asset1.getId())));
+        assertEquals(1, assetDao.addToFolder(100, ImmutableList.of(asset1.getId())));
     }
 
     @Test
     public void testRemoveFromFolder() {
-        Folder f = new Folder();
-        f.setId(100);
-        assertEquals(1, assetDao.addToFolder(f.getId(), ImmutableList.of(asset1.getId())));
-        assertEquals(1, assetDao.removeFromFolder(f.getId(), ImmutableList.of(asset1.getId())));
+        assertEquals(1, assetDao.addToFolder(100, ImmutableList.of(asset1.getId())));
+        assertEquals(1, assetDao.removeFromFolder(100, ImmutableList.of(asset1.getId())));
     }
 
     @Test
