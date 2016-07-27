@@ -80,7 +80,7 @@ public class SearchServiceTests extends AbstractTest {
         folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
-        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -104,7 +104,7 @@ public class SearchServiceTests extends AbstractTest {
         folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
-        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -136,7 +136,7 @@ public class SearchServiceTests extends AbstractTest {
         folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
-        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -164,7 +164,7 @@ public class SearchServiceTests extends AbstractTest {
         assetDao.index(source);
         refreshIndex(100);
 
-        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -189,7 +189,7 @@ public class SearchServiceTests extends AbstractTest {
         assetDao.index(source);
         refreshIndex();
 
-        AssetFilter filter = new AssetFilter().setFolderIds(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }

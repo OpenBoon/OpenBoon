@@ -254,7 +254,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         addTestAssets("set04/standard");
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addToFieldTerms("source.filename.raw", "beer_kettle_01.jpg"));
+        AssetSearch search = new AssetSearch(new AssetFilter().addToTerms("source.filename.raw", "beer_kettle_01.jpg"));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -297,7 +297,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addToFolderIds(folder.getId()));
+        AssetSearch search = new AssetSearch(new AssetFilter().addToFolders(folder.getId()));
 
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
@@ -358,7 +358,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addToFolderIds(child.getId()));
+        AssetSearch search = new AssetSearch(new AssetFilter().addToFolders(child.getId()));
 
         // Searching the child should return a single hit
         result = mvc.perform(post("/api/v2/assets/_search")
@@ -390,7 +390,7 @@ public class AssetControllerTests extends MockMvcTest {
         count = (int)hits.get("total");
         assertEquals(2, count);
 
-        search = new AssetSearch(new AssetFilter().addToFolderIds(parent.getId()));
+        search = new AssetSearch(new AssetFilter().addToFolders(parent.getId()));
 
         // Searching the parent folder should return two hits as well
         result = mvc.perform(post("/api/v2/assets/_search")
@@ -418,7 +418,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Folder>() {});
         assertNotEquals(child.getParentId().intValue(), parent.getId());
 
-        search = new AssetSearch(new AssetFilter().addToFolderIds(parent.getId()));
+        search = new AssetSearch(new AssetFilter().addToFolders(parent.getId()));
 
         // Searching the parent should now return a single hit
         result = mvc.perform(post("/api/v2/assets/_search")
@@ -484,7 +484,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = user();
         addTestAssets("canyon");
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addToExistFields("source.path"));
+        AssetSearch search = new AssetSearch(new AssetFilter().addToExists("source.path"));
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
@@ -570,7 +570,7 @@ public class AssetControllerTests extends MockMvcTest {
         List<Asset> assets = assetDao.getAll(Paging.first());
         Asset asset = assets.get(0);
         assetIds.add(asset.getId());
-        AssetSearch asb = new AssetSearch(new AssetFilter().setAssetIds(assetIds));
+        AssetSearch asb = new AssetSearch(new AssetFilter().addToTerms("_id", assetIds));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

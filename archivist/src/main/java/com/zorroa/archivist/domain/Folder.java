@@ -155,7 +155,7 @@ public class Folder implements EventLoggable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        com.zorroa.sdk.domain.Folder other = (com.zorroa.sdk.domain.Folder) o;
+        Folder other = (Folder) o;
         return id == other.getId();
     }
 
