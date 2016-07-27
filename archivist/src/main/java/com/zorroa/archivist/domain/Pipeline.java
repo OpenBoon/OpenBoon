@@ -3,16 +3,28 @@ package com.zorroa.archivist.domain;
 import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.domain.EventLoggable;
 import com.zorroa.sdk.plugins.ModuleRef;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Objects;
 
 
 public class Pipeline implements EventLoggable {
     private int id;
+
+    @NotNull
     private PipelineType type;
+
+    @NotEmpty
+    @Pattern(regexp="^[a-z].*$", flags={Pattern.Flag.CASE_INSENSITIVE})
     private String name;
+
+    @NotNull
     private String description;
+
+    @NotNull
     private List<ModuleRef> processors;
 
     public int getId() {

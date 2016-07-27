@@ -108,7 +108,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
                     "str_description");
 
     @Override
-    public boolean update(int id, PipelineSpec spec) {
+    public boolean update(int id, Pipeline spec) {
         return jdbc.update(UPDATE, spec.getName(), spec.getType().ordinal(),
                 Json.serializeToString(spec.getProcessors()), spec.getDescription(), id) == 1;
     }

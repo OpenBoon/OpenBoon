@@ -50,7 +50,7 @@ public class PipelineDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        PipelineSpec update = new PipelineSpec();
+        Pipeline update = new Pipeline();
         update.setName("foo");
         update.setDescription("foo bar");
         update.setType(PipelineType.Train);

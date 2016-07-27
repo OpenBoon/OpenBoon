@@ -283,7 +283,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec().setName("TestSearchFolder"))))
+                .content(Json.serialize(new FolderSpec("TestSearchFolder"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -324,7 +324,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec().setName("ParentSearchFolder"))))
+                .content(Json.serialize(new FolderSpec("ParentSearchFolder"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -334,7 +334,7 @@ public class AssetControllerTests extends MockMvcTest {
         result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec().setName("ChildSearchFolder").setParentId(parent.getId()))))
+                .content(Json.serialize(new FolderSpec("ChildSearchFolder").setParentId(parent.getId()))))
                 .andExpect(status().isOk())
                 .andReturn();
 

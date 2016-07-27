@@ -48,7 +48,7 @@ public class IngestDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate () {
-        IngestSpec spec2 = new IngestSpec();
+        Ingest spec2 = new Ingest();
         spec2.setPipeline(Lists.newArrayList(
                 new ModuleRef("foo.Bar")));
         spec2.setGenerators(Lists.newArrayList(
@@ -57,7 +57,6 @@ public class IngestDaoTests extends AbstractTest {
         spec2.setPipelineId(null);
         spec2.setName("Test");
         spec2.setAutomatic(true);
-        spec2.setRunNow(false);
         spec2.setSchedule(new Schedule());
 
         assertTrue(ingestDao.update(ingest.getId(), spec2));
@@ -127,10 +126,9 @@ public class IngestDaoTests extends AbstractTest {
         assertEquals(should.getName(), is.getName());
         assertEquals(should.isAutomatic(), is.isAutomatic());
         assertEquals(should.getSchedule(), is.getSchedule());
-        assertEquals(should.getId(), is.getId());
     }
 
-    public static void validate( IngestSpec should, Ingest is) {
+    public static void validate(IngestSpec should, Ingest is) {
         assertEquals(should.getPipeline(), is.getPipeline());
         assertEquals(should.getGenerators(), is.getGenerators());
         assertEquals(should.getFolderId(), is.getFolderId());

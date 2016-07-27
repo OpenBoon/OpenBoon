@@ -135,7 +135,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
                     "json_pipeline");
 
     @Override
-    public boolean update(int id, IngestSpec spec) {
+    public boolean update(int id, Ingest spec) {
         return jdbc.update(UPDATE,
                 spec.getPipelineId(),
                 spec.getFolderId(),

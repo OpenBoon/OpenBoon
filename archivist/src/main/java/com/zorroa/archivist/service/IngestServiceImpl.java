@@ -65,7 +65,7 @@ public class IngestServiceImpl implements IngestService {
     }
 
     @Override
-    public boolean update(int id, IngestSpec spec) {
+    public boolean update(int id, Ingest spec) {
         boolean result = ingestDao.update(id, spec);
         if (result) {
             event.afterCommit(() ->

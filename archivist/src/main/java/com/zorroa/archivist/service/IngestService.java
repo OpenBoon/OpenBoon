@@ -15,7 +15,7 @@ public interface IngestService {
 
     void spawnImportJob(Ingest ingest);
 
-    boolean update(int id, IngestSpec spec);
+    boolean update(int id, Ingest spec);
 
     boolean delete(int id);
 

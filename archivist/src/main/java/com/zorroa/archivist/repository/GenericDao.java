@@ -20,7 +20,7 @@ public interface GenericDao<T, S> {
 
     PagedList<T> getAll(Paging paging);
 
-    boolean update(int id, S spec);
+    boolean update(int id, T spec);
 
     boolean delete(int id);
 

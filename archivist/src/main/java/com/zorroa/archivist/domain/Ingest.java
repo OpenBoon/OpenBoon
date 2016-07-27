@@ -3,7 +3,10 @@ package com.zorroa.archivist.domain;
 import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.domain.EventLoggable;
 import com.zorroa.sdk.plugins.ModuleRef;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,12 +48,15 @@ public class Ingest implements EventLoggable {
     /**
      * A handy label for the ingest.
      */
+    @NotEmpty
+    @Pattern(regexp="^[a-z].*$", flags={Pattern.Flag.CASE_INSENSITIVE})
     private String name;
 
     /**
      * Import jobs will be created according to this schedule, assuming a job
      * isn't already running for this Ingest.
      */
+    @NotNull
     private Schedule schedule;
 
     /**

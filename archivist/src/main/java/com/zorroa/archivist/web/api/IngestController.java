@@ -52,7 +52,7 @@ public class IngestController {
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.PUT)
-    public Object update(@PathVariable Integer id, @Valid @RequestBody IngestSpec spec, BindingResult valid) {
+    public Object update(@PathVariable Integer id, @Valid @RequestBody Ingest spec, BindingResult valid) {
         checkValid(valid);
         boolean result = ingestService.update(id, spec);
         return ImmutableMap.of("result", result, "object", ingestService.get(id));

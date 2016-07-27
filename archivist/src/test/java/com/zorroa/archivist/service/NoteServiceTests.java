@@ -28,7 +28,7 @@ public class NoteServiceTests extends AbstractTest {
 
     @Before
     public void init() {
-        Source ab = new Source(getTestImagePath("standard/beer_kettle_01.jpg"));
+        Source ab = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
         assetId = assetDao.index(ab).getId();
     }
 

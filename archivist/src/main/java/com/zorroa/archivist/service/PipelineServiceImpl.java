@@ -74,7 +74,7 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public boolean update(int id, PipelineSpec spec) {
+    public boolean update(int id, Pipeline spec) {
         boolean result = pipelineDao.update(id, spec);
         if (result) {
             event.afterCommit(() ->

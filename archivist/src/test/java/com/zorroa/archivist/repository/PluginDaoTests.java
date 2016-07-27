@@ -31,12 +31,15 @@ public class PluginDaoTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        assertEquals(1, pluginDao.getAll().size());
+        /*
+         * This is 4, assuming all standard plugins are loaded.
+         */
+        assertEquals(4, pluginDao.getAll().size());
     }
 
     @Test
     public void testGetAllWithPaging() {
-        assertEquals(1, (long) pluginDao.getAll(new Paging(1)).getPage().getTotalCount());
+        assertEquals(4, (long) pluginDao.getAll(new Paging(1)).getPage().getTotalCount());
         assertEquals(1, (long) pluginDao.getAll(new Paging(1)).getPage().getTotalPages());
         assertEquals(1, (long) pluginDao.getAll(new Paging(1)).getPage().getNumber());
     }

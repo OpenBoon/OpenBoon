@@ -23,7 +23,7 @@ public interface PipelineService {
 
     PagedList<Pipeline> getAll(Paging page);
 
-    boolean update(int id, PipelineSpec spec);
+    boolean update(int id, Pipeline spec);
 
     boolean delete(int id);
 }

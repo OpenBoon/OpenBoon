@@ -49,7 +49,7 @@ public class PipelineController {
     }
 
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.PUT)
-    public Object update(@PathVariable Integer id, @Valid @RequestBody PipelineSpec spec, BindingResult valid) {
+    public Object update(@PathVariable Integer id, @Valid @RequestBody Pipeline spec, BindingResult valid) {
         checkValid(valid);
         boolean result = pipelineService.update(id, spec);
         return ImmutableMap.of("result", result, "object", pipelineService.get(id));
