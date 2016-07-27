@@ -35,8 +35,6 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,18 +88,6 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchResponse aggregate(AssetAggregateBuilder builder) {
         return buildAggregate(builder).get();
-    }
-
-    @Override
-    public long getTotalFileSize(AssetSearch search) {
-        Sum sum = client.prepareSearch(alias)
-                .setTypes("asset")
-                .setQuery(getQuery(search))
-                .addAggregation(AggregationBuilders.sum("totalFileSize").field("source.fileSize"))
-                .setSearchType(SearchType.COUNT)
-                .get().getAggregations().get("totalFileSize");
-
-        return (long) sum.getValue();
     }
 
     public Iterable<Asset> scanAndScroll(AssetSearch search) {
@@ -286,7 +272,6 @@ public class SearchServiceImpl implements SearchService {
                 filter.add(existsFilter);
             }
         }
-
 
         if (builder.getMissing() != null) {
             for (String term : builder.getMissing()) {

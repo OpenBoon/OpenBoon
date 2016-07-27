@@ -54,7 +54,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Permission perm = userService.createPermission(new PermissionBuilder("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-
+        source.addKeywords("source", "captain");
         /*
          * Add a permission from the current user to the asset.
          */
@@ -73,7 +73,7 @@ public class SearchServiceTests extends AbstractTest {
         Folder folder1 = folderService.create(builder);
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", source.getAttr("source.filename"));
+        source.addKeywords("source", source.getAttr("source.filename", String.class));
         Asset asset1 = assetDao.index(source);
         refreshIndex(100);
 
@@ -159,10 +159,10 @@ public class SearchServiceTests extends AbstractTest {
         Files.touch(new File(filepath));
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", source.getAttr("source", SourceSchema.class).getFilename());
+        source.addKeywords("source", "captain");
 
         assetDao.index(source);
-        refreshIndex(100);
+        refreshIndex();
 
         AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
@@ -177,7 +177,7 @@ public class SearchServiceTests extends AbstractTest {
 
         for (int i=0; i<100; i++) {
             builder = new FolderSpec("person" + i, folder1);
-            builder.setSearch(new AssetSearch("captain america"));
+            builder.setSearch(new AssetSearch("beer"));
             folderService.create(builder);
         }
 
@@ -192,25 +192,6 @@ public class SearchServiceTests extends AbstractTest {
         AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
-    }
-
-    @Test
-    public void testGetTotalFileSize() {
-
-        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source1.addKeywords("source", source1.getAttr("source", SourceSchema.class).getFilename());
-        source1.getAttr("source", SourceSchema.class).setFileSize(1000L);
-
-        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
-        source2.addKeywords("source", source2.getAttr("source", SourceSchema.class).getFilename());
-        source2.getAttr("source", SourceSchema.class).setFileSize(1000L);
-
-        assetDao.index(source2);
-        assetDao.index(source2);
-        refreshIndex();
-
-        long size = searchService.getTotalFileSize(new AssetSearch());
-        assertEquals(2000, size);
     }
 
     @Test

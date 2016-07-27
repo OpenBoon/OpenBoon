@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
@@ -10,7 +11,6 @@ import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetAggregateBuilder;
-import com.zorroa.sdk.domain.FolderBuilder;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetScript;
@@ -103,7 +103,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testAggregationV2() throws Exception {
         authenticate("admin", true);
         MockHttpSession session = admin();
-        addTestAssets("agg");
+        addTestAssets("set04/agg");
 
         MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
                 .session(session)
@@ -123,7 +123,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testAggregationScriptV2() throws Exception {
         authenticate("admin", true);
         MockHttpSession session = admin();
-        addTestAssets("agg");
+        addTestAssets("set04/agg");
 
         Map<String, Object> scriptParams = new HashMap<>();
         scriptParams.put("field", "source.date");
@@ -147,7 +147,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testSuggest() throws Exception {
 
         MockHttpSession session = admin();
-        List<Source> builders = getTestAssets("canyon");
+        List<Source> builders = getTestAssets("set04/canyon");
         for (Source builder: builders) {
             AssetUtils.addSuggestKeywords(builder, "source", "reflection");
         }
@@ -174,7 +174,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testSuggestV2() throws Exception {
 
         MockHttpSession session = admin();
-        List<Source> sources = getTestAssets("canyon");
+        List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
             AssetUtils.addSuggestKeywords(source, "source", "reflection");
         }
@@ -202,10 +202,10 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
         addTestAssets("set04/standard");
+        refreshIndex();
 
         List<Asset> assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-
             MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
                     .session(session)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -213,6 +213,9 @@ public class AssetControllerTests extends MockMvcTest {
                     .andReturn();
             Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                     new TypeReference<Map<String, Object>>() {});
+
+
+            logger.info("{}", json);
             assertEquals(asset.getId(), json.get("_id"));
         }
     }
@@ -221,7 +224,7 @@ public class AssetControllerTests extends MockMvcTest {
     public void testFolderAssign() throws Exception {
         MockHttpSession session = admin();
 
-        addTestAssets("canyon");
+        addTestAssets("set04/canyon");
         List<Asset> assets = assetDao.getAll(Paging.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
@@ -280,7 +283,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder().setName("TestSearchFolder"))))
+                .content(Json.serialize(new FolderSpec().setName("TestSearchFolder"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -321,7 +324,7 @@ public class AssetControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder().setName("ParentSearchFolder"))))
+                .content(Json.serialize(new FolderSpec().setName("ParentSearchFolder"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -331,7 +334,7 @@ public class AssetControllerTests extends MockMvcTest {
         result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder().setName("ChildSearchFolder").setParentId(parent.getId()))))
+                .content(Json.serialize(new FolderSpec().setName("ChildSearchFolder").setParentId(parent.getId()))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -407,16 +410,11 @@ public class AssetControllerTests extends MockMvcTest {
         assertEquals(2, count);
 
         // Remove the child from the parent folder
-        result = mvc.perform(put("/api/v1/folders/" + child.getId())
+        result = mvc.perform(delete("/api/v1/folders/" + child.getId())
                 .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder())))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
-
-        child = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Folder>() {});
-        assertNotEquals(child.getParentId().intValue(), parent.getId());
 
         search = new AssetSearch(new AssetFilter().addToFolders(parent.getId()));
 
@@ -482,10 +480,30 @@ public class AssetControllerTests extends MockMvcTest {
     @Test
     public void testFilterExists() throws Exception {
         MockHttpSession session = user();
-        addTestAssets("canyon");
+        addTestAssets("set04/canyon");
 
         AssetSearch search = new AssetSearch(new AssetFilter().addToExists("source.path"));
 
+        MvcResult result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(search)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
+        int count = (int)hits.get("total");
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testFilterMissing() throws Exception {
+        MockHttpSession session = user();
+        addTestAssets("set04/canyon");
+
+        AssetSearch search = new AssetSearch(new AssetFilter().addToMissing("unknown"));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -531,18 +549,12 @@ public class AssetControllerTests extends MockMvcTest {
     @Test
     public void testFilterScript() throws Exception {
         MockHttpSession session = user();
-        addTestAssets("set04/standard");
+        addTestAssets("set01");
 
-        DateTime dateTime = new DateTime();
-        int year = dateTime.getYear();
+        String text = "doc['source.fileSize'].value == size";
+        AssetScript script = new AssetScript(text,
+                ImmutableMap.of("size", 113333));
 
-        Map<String, Object> scriptParams = new HashMap<>();
-        scriptParams.put("field", "source.date");
-        scriptParams.put("interval", "year");
-        List<String> terms = new ArrayList<>();
-        terms.add(String.valueOf(year));
-        scriptParams.put("terms", terms);
-        AssetScript script = new AssetScript().setScript("archivistDate").setParams(scriptParams);
         List<AssetScript> scripts = new ArrayList<>();
         scripts.add(script);
         AssetSearch asb = new AssetSearch(new AssetFilter().setScripts(scripts));
@@ -557,7 +569,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
-        assertEquals(2, count);
+        assertEquals(1, count);
     }
 
     @Test
