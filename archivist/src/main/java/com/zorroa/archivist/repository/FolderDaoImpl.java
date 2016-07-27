@@ -177,6 +177,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             "user_modified",
             "pk_parent",
             "str_name",
+            "bool_recursive",
             "json_search");
 
     @Override
@@ -186,8 +187,10 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                 System.currentTimeMillis(),
                 SecurityUtils.getUser().getId(),
                 spec.getParentId(),
+                spec.getName(),
                 spec.isRecursive(),
-                Json.serializeToString(spec.getSearch(), null)) == 1;
+                Json.serializeToString(spec.getSearch(), null),
+                folder.getId()) == 1;
     }
 
     @Override

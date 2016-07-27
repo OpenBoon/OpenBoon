@@ -121,8 +121,9 @@ public class FolderDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        Folder v1 = folderDao.create(new FolderSpec("v1", Folder.ROOT_ID));
-        folderDao.update(v1, new FolderSpec().setName("v2"));
+        FolderSpec spec = new FolderSpec("v1", Folder.ROOT_ID);
+        Folder v1 = folderDao.create(spec);
+        folderDao.update(v1, spec.setName("v2"));
         Folder v2 = folderDao.get(v1.getId());
         assertEquals("v2", v2.getName());
         assertEquals(null, v2.getSearch());
