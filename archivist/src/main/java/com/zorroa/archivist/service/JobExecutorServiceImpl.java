@@ -105,6 +105,9 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
         if (react.getIndex() != null) {
             for (Map.Entry<String, List<Source>> entry: react.getIndex().entrySet()) {
                 AssetIndexResult result = assetService.index(entry.getKey(), entry.getValue());
+                /**
+                 * TODO: add individual task counters as well.
+                 */
                 jobService.updateStats(
                         react.getJobId(), result.created, result.updated, result.errors, result.warnings);
             }
@@ -190,7 +193,9 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
             logger.warn("Found {} expired tasks!", expired.size());
             for (ZpsTask task : expired) {
                 logger.warn("resetting task {} to Waiting", task.getTaskId());
-                jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued);
+                if (!jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued)) {
+                    jobService.setTaskState(task, TaskState.Waiting, TaskState.Running);
+                }
             }
         }
     }
