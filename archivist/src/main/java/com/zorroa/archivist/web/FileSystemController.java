@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
@@ -9,11 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.imageio.ImageIO;
@@ -21,7 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Provides endpoints for downloading proxy images.
@@ -29,7 +29,7 @@ import java.io.IOException;
  * @author chambers
  *
  */
-@Controller
+@RestController
 @Component
 public class FileSystemController {
 
@@ -67,5 +67,17 @@ public class FileSystemController {
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         ImageIO.write(imageService.watermark(image), ext, bao);
         return bao.toByteArray();
+    }
+
+    @RequestMapping(value="/ofs/_exists", method = RequestMethod.POST)
+    public Object fileExists(@RequestBody Map<String, String> path) throws IOException {
+        String file = path.get("path");
+        if (file == null) {
+            return ImmutableMap.of("result", false);
+        }
+        else {
+            File f = new File(FileUtils.normalize(file));
+            return ImmutableMap.of("result", f.exists());
+        }
     }
 }
