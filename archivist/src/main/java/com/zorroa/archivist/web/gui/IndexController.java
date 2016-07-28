@@ -111,19 +111,9 @@ public class IndexController {
     @RequestMapping("/gui/users")
     public String users(Model model, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
-        /**
-         * TODO: generalize table paging so more types can use it.
-         */
-        page = Math.max(1, page == null ? 1: page);
-        int limit = 10;
-        int offset = (page - 1) * limit;
-        int count = userService.getCount();
-        int maxPages = (count / limit) + 1;
-
-        model.addAttribute("prevPage", Math.max(1, page-1));
-        model.addAttribute("nextPage", Math.min(maxPages, page+1));
-        model.addAttribute("pageDisplay", String.format("%d of %d", page, maxPages));
-        model.addAttribute("allUsers", userService.getAll(limit, offset));
+        Paging paging = new Paging(page);
+        model.addAttribute("page", paging);
+        model.addAttribute("allUsers", userService.getAll(paging));
         model.addAttribute("userBuilder", new UserSpec());
         return "users";
     }
@@ -176,7 +166,9 @@ public class IndexController {
                          @RequestParam(value="count", required=false) Integer count, @RequestParam(value="query", required=false) String query) {
 
         standardModel(model);
-        model.addAttribute("assets", searchService.getAll(new Paging(page, count),
+        Paging paging = new Paging(page, count);
+        model.addAttribute("page", paging);
+        model.addAttribute("assets", searchService.getAll(paging,
                 new AssetSearch(query)));
         return "assets";
     }
@@ -246,12 +238,14 @@ public class IndexController {
                            @RequestParam(value="page", required=false) Integer page,
                            @RequestParam(value="count", required=false) Integer count) {
         standardModel(model);
-        model.addAttribute("analysts", analystService.getAll(new Paging(page, count)));
+        Paging paging = new Paging(page, count);
+        model.addAttribute("page", paging);
+        model.addAttribute("analysts", analystService.getAll(paging));
         return "analysts";
     }
 
     @RequestMapping("/gui/ingests")
-    public String imports(Model model) {
+    public String getIngests(Model model) {
         standardModel(model);
         model.addAttribute("pipelines", pipelineService.getAll());
         model.addAttribute("ingests", ingestService.getAll());
@@ -291,22 +285,6 @@ public class IndexController {
         ingestService.create(spec);
 
         return "redirect:/gui/ingests";
-    }
-
-    @RequestMapping("/gui/imports/{id}")
-    public String ingest(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
-        standardModel(model);
-        model.addAttribute("imp", jobService.get(id));
-        model.addAttribute("assets", assetService.getAll(new Paging(page)));
-        //model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
-        return "import";
-    }
-
-    @RequestMapping("/gui/imports")
-    public String imports(Model model, @RequestParam(value="page", required=false) Integer page) {
-        standardModel(model);
-        model.addAttribute("imports", importService.getAll(new Paging(page)));
-        return "imports";
     }
 
     @RequestMapping("/gui/pipelines")

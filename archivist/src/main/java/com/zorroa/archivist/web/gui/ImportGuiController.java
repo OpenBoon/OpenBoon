@@ -62,9 +62,13 @@ public class ImportGuiController {
     }
 
     @RequestMapping(value="/gui/imports/server",  method= RequestMethod.POST)
-    public String createImport(Model model, @Valid @ModelAttribute("serverImportForm") NewServerImportForm serverImportForm, BindingResult bindingResult) {
+    public String createImport(Model model,
+                               @Valid @ModelAttribute("serverImportForm") NewServerImportForm serverImportForm, BindingResult bindingResult) {
+
         standardModel(model);
-        model.addAttribute("imports", importService.getAll(new Paging(1)));
+        Paging paging = new Paging(1);
+        model.addAttribute("page", paging);
+        model.addAttribute("imports", importService.getAll(paging));
         model.addAttribute("pipelines", pipelineService.getAll());
 
         if (bindingResult.hasErrors()) {
