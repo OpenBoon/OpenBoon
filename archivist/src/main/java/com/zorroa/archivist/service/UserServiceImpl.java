@@ -1,12 +1,13 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,12 +111,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll(int size, int offset) {
-        return userDao.getAll(size, offset);
+    public PagedList<User> getAll(Paging page) {
+        return userDao.getAll(page);
     }
 
     @Override
-    public int getCount() { return userDao.getCount(); }
+    public long getCount() { return userDao.getCount(); }
 
     @Override
     public boolean setPassword(User user, String password) {

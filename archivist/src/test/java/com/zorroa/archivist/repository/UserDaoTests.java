@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.RoomBuilder;
 import com.zorroa.sdk.domain.Session;
@@ -47,7 +48,7 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testGetCount() {
-        int count = userDao.getCount();
+        long count = userDao.getCount();
         assertEquals(count, userDao.getCount());
         UserSpec builder = new UserSpec();
         builder.setUsername("test2");
@@ -72,8 +73,8 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testAllPageable() {
-        assertEquals(1, userDao.getAll(1, 0).size());
-        assertEquals(0, userDao.getAll(1, 4).size());
+        assertEquals(1, userDao.getAll(Paging.first()).size());
+        assertEquals(0, userDao.getAll(new Paging(1, 4)).size());
     }
 
     @Test(expected=EmptyResultDataAccessException.class)

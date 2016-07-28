@@ -6,6 +6,8 @@ import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Room;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -49,11 +51,10 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public List<User> getAll(int size, int offset) {
-        StringBuilder sb = new StringBuilder(GET_ALL.length()+32)
-                .append(GET_ALL)
-                .append(" LIMIT ? OFFSET ?");
-        return jdbc.query(sb.toString(), MAPPER, size, offset);
+    public PagedList<User> getAll(Paging page) {
+        return new PagedList(page.setTotalCount(getCount()),
+                jdbc.query(GET_ALL.concat(" LIMIT ? OFFSET ?"),
+                        MAPPER, page.getSize(), page.getFrom()));
     }
 
     private static final String INSERT =
@@ -175,7 +176,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public int getCount() {
+    public long getCount() {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user", Integer.class);
     }
 

@@ -3,6 +3,8 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.PermissionBuilder;
 import com.zorroa.sdk.domain.Room;
@@ -27,9 +29,9 @@ public interface UserService {
 
     List<User> getAll();
 
-    List<User> getAll(int size, int offset);
+    PagedList<User> getAll(Paging page);
 
-    int getCount();
+    long getCount();
 
     String getPassword(String username);
 

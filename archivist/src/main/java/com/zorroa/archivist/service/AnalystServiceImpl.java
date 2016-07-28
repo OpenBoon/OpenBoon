@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.analyst.AnalystClient;
@@ -42,13 +43,8 @@ public class AnalystServiceImpl implements AnalystService {
     }
 
     @Override
-    public List<Analyst> getAll(Paging paging) {
-        return analystDao.getAll(new Paging(1, 100));
-    }
-
-    @Override
-    public List<Analyst> getAll() {
-        return analystDao.getAll(new Paging(1, 100));
+    public PagedList<Analyst> getAll(Paging paging) {
+        return analystDao.getAll(paging);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.zorroa.common.repository;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
@@ -70,14 +71,13 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public List<Analyst> getAll(Paging paging) {
-        return elastic.query(client.prepareSearch(alias)
+    public PagedList<Analyst> getAll(Paging page) {
+        return elastic.page(client.prepareSearch(alias)
                 .setTypes(getType())
-                .setSize(paging.getSize())
-                .setFrom(paging.getFrom())
-                .setQuery(QueryBuilders.matchAllQuery()), MAPPER);
+                .setSize(page.getSize())
+                .setFrom(page.getFrom())
+                .setQuery(QueryBuilders.matchAllQuery()), page, MAPPER);
     }
-
 
     @Override
     public List<Analyst> getActive(Paging paging) {
