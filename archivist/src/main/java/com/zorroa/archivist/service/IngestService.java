@@ -2,6 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.Job;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface IngestService {
     Ingest create(IngestSpec spec);
 
-    void spawnImportJob(Ingest ingest);
+    Job spawnImportJob(Ingest ingest);
 
     boolean update(int id, Ingest spec);
 
