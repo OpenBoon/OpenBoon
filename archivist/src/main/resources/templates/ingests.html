@@ -7,7 +7,7 @@
 <body>
 
 <section layout:fragment="content">
-    <div th:include="fragments/ingest_menu :: ingest_menu"/>
+    <div th:include="fragments/ingests :: menu"/>
     <div class="wrapper">
     <table class="table table-striped">
         <thead>
@@ -26,7 +26,7 @@
         </tbody>
     </table>
     </div>
-    <div th:include="fragments/ingest_modal :: ingest_modal"/>
+    <div th:include="fragments/ingests :: modal_create"/>
 </section>
 
 </body>

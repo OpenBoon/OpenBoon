@@ -3,7 +3,7 @@
       layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
 <head></head>
 <body>
-<div th:fragment="plugin_menu">
+<div th:fragment="menu">
     <nav class="navbar navbar-default navbar-shadow navbar-fixed-top secondnavbar" role="navigation" style="z-index: 999; border-width:0px; border-bottom-width: 1px">
         <div class="navbar-inner">
         <div class="container-fluid">
@@ -22,16 +22,6 @@
         </div>
         </div>
     </nav>
-
-    <div class="navbar navbar-default navbar-fixed-left">
-        <br/>
-        <br/>
-        <br/>
-        <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
-                type="button" class="btn btn-danger center-block"
-                style="width:100px;">&nbsp;&nbsp;New&nbsp;&nbsp;</button>
-        <br/>
-    </div>
 </div>
 </body>
 </html>

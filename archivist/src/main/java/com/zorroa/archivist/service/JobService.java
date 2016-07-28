@@ -1,9 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobFilter;
-import com.zorroa.archivist.domain.PipelineType;
-import com.zorroa.archivist.domain.TaskState;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.zps.ZpsJob;
@@ -113,4 +110,5 @@ public interface JobService {
      */
     PagedList<Job> getAll(Paging page, JobFilter filter);
 
+    PagedList<Task> getAllTasks(int job, Paging page);
 }

@@ -2,8 +2,11 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 import org.junit.Before;
@@ -93,6 +96,11 @@ public class TaskDaoTests extends AbstractTest {
         assertEquals("abc123", jdbc.queryForObject("SELECT str_host FROM task", String.class));
     }
 
+    @Test
+    public void getTasks() {
+        PagedList<Task> tasks = taskDao.getAll(script.getJobId(), Paging.first());
+        assertEquals(1, tasks.size());
+    }
     private void updateState(final long time, TaskState state) {
         jdbc.update(connection -> {
             PreparedStatement ps =

@@ -2,7 +2,10 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskState;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 
@@ -33,6 +36,11 @@ public interface TaskDao {
     Set<TaskState> RESET = Sets.newEnumSet(ImmutableList.of(
             TaskState.Waiting), TaskState.class);
 
-
     List<ZpsTask> getOrphanTasks(int limit, long duration, TimeUnit unit);
+
+    PagedList<Task> getAll(int job, Paging page);
+
+    Task get(int id);
+
+    long countByJob(int job);
 }

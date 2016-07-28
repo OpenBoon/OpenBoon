@@ -3,20 +3,18 @@
       layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
 <head></head>
 <body>
-<div th:fragment="import_menu">
+
+<div th:fragment="menu">
     <nav class="navbar navbar-default navbar-shadow navbar-fixed-top secondnavbar" role="navigation" style="z-index: 999; border-width:0px; border-bottom-width: 1px">
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="navbar navbar-header">
-                    <a class="navbar-brand" href="/gui/imports"><i class="fa fa-upload fa-fw fa-lg"/>Imports</a>
+                    <a class="navbar-brand" href="/gui/permissions"><i class="fa fa-lock fa-fw fa-lg"/>Permissions</a>
+                    <p th:if="${permission != null}" class="navbar-text navbar-section" th:text="${permission.name}">...</p>
                 </div>
 
                 <div class="navbar-collapse collapse">
                     <div class="navbar navbar-right">
-                        <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
-                                type="button" class="btn btn-danger navbar-btn"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
-
-                        <button id="opener" type="button" class="btn btn-default navbar-btn"><i class="fa fa-info fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-sort fa-lg fa-fw" aria-hidden="true"></i></button>
@@ -26,5 +24,6 @@
         </div>
     </nav>
 </div>
+
 </body>
 </html>

@@ -8,9 +8,9 @@
 <body>
 
 <section layout:fragment="content">
-    <div th:include="fragments/import_menu :: import_menu"/>
+    <div th:include="fragments/imports :: menu"/>
     <div class="wrapper">
-        <table class="table table-striped table-condensed table-hover">
+        <table id="table" class="table table-striped table-condensed table-hover">
             <thead>
             <tr>
                 <th>Status</th>
@@ -25,12 +25,7 @@
             <tr th:each="imp: ${imports.list}" th:attr="data-href=${'/gui/imports/' + imp.id}">
 
                 <td class="vert-align">
-                    <!-- Running -->
-                    <a th:if="${imp.state.name()} eq 'Active'" class="btn" th:href="@{/gui/imports/__${imp.id}__}" th:classappend="${imp.stats.assetErrored == 0} ? btn-success : btn-danger">
-                        <i class="fa fa-gears fa-lg fa-fw"></i></a>
-
-                    <a th:if="${imp.state.name()} eq 'Finished'" class="btn" th:href="@{/gui/imports/__${imp.id}__}" th:classappend="${imp.stats.assetErrored == 0} ? btn-success : btn-danger">
-                        <i class="fa fa-stop-circle-o fa-lg fa-fw"></i></a>
+                    <div th:include="fragments/imports :: state_label"/>
                 </td>
 
                 <td class="vert-align" th:text="${imp.name}"></td>
@@ -38,70 +33,18 @@
                 <td class="vert-align" th:text="${#dates.format(imp.timeStarted, 'dd MMM yyyy HH:mm')}"></td>
                 <td class="vert-align" th:text="${imp.stats.assetCreated}"></td>
                 <td class="col-md-4 vert-align">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success" th:style="${'width: '+ imp.progress.success + '%'}">
-                            <span class="sr-only"></span>
-                        </div>
-                        <div class="progress-bar progress-bar-warning" th:style="${'width: '+ imp.progress.running + '%'}">
-                            <span class="sr-only"></span>
-                        </div>
-                        <div class="progress-bar progress-bar-info" th:style="${'width: '+ imp.progress.waiting + '%'}">
-                            <span class="sr-only"></span>
-                        </div>
-                        <div class="progress-bar progress-bar-danger" th:style="${'width: '+ imp.progress.failed + '%'}">
-                            <span class="sr-only"></span>
-                        </div>
-                    </div>
+                    <div th:include="fragments/imports :: progress"/>
                 </td>
             </tr>
             </tbody>
         </table>
+        <div class="container-fluid">
+            <div th:include="fragments/table :: pager"/>
+        </div>
     </div>
-    <div th:include="fragments/import_modal :: import_modal"/>
 
-
-    <script th:inline="javascript" type="text/javascript">
-        //<![CDATA[
-
-        $(".table-hover > tbody > tr").dblclick(function() {
-            console.log($(this).data("href"));
-            window.document.location = $(this).data("href");
-        });
-        $(document).ready(function(e) {
-            $('[name="startButton"]').click(function() {
-                var value = $(this).val();
-                $.ajax( {
-                    url: '/api/v1/ingests/' + value + '/_start',
-                    method: 'put',
-                    dataType: 'json',
-                    success: function(data) {
-                        window.location.reload(true);
-                    },
-                    error: function(err) {
-                        alert(err);
-                    }
-                });
-            });
-
-            $('[name="deleteButton"]').click(function() {
-                var value = $(this).val();
-                if (confirm("Delete?")) {
-                    $.ajax({
-                        url: '/api/v1/ingests/' + value,
-                        method: 'delete',
-                        dataType: 'json',
-                        success: function (data) {
-                            window.location.reload(true);
-                        },
-                        error: function (err) {
-                            alert(err);
-                        }
-                    });
-                }
-            });
-        });
-        //]]>
-    </script>
+    <div th:include="fragments/imports :: modal_create"/>
+    <div th:include="fragments/table :: clickable"/>
 </section>
 
 </body>

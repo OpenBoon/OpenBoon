@@ -4,7 +4,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskState;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
@@ -179,5 +182,56 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     public List<ZpsTask> getOrphanTasks(int limit, long duration, TimeUnit unit) {
         return jdbc.query(GET_QUEUED, TASK_MAPPER,
                 System.currentTimeMillis() - unit.toMillis(duration), limit);
+    }
+
+    private static final RowMapper<Task> MAPPER = (rs, row) -> {
+        Task task = new Task();
+        task.setTaskId(rs.getInt("pk_task"));
+        task.setJobId(rs.getInt("pk_job"));
+        task.setParentId(rs.getInt("pk_parent"));
+        task.setExitStatus(rs.getInt("int_exit_status"));
+        task.setExecute(rs.getString("str_execute"));
+        task.setHost(rs.getString("str_host"));
+        task.setScript(rs.getString("json_script"));
+        task.setState(TaskState.values()[rs.getInt("int_state")]);
+        task.setTimeCreated(rs.getLong("time_created"));
+        task.setTimeStarted(rs.getLong("time_started"));
+        task.setTimeStopped(rs.getLong("time_stopped"));
+        task.setTimeStateChange(rs.getLong("time_state_change"));
+        return task;
+    };
+
+    private static final String GET_TASKS =
+        "SELECT " +
+            "task.pk_task,"+
+            "task.pk_parent,"+
+            "task.pk_job,"+
+            "task.int_state,"+
+            "task.time_started,"+
+            "task.time_stopped,"+
+            "task.time_created,"+
+            "task.time_state_change,"+
+            "task.json_script,"+
+            "task.str_execute,"+
+            "task.int_exit_status,"+
+            "task.str_host " +
+        "FROM " +
+            "task ";
+
+    @Override
+    public PagedList<Task> getAll(int job, Paging page) {
+        return new PagedList(page.setTotalCount(countByJob(job)),
+                jdbc.query(GET_TASKS.concat("WHERE task.pk_job=? ORDER BY pk_task LIMIT ? OFFSET ?"),
+                        MAPPER, job, page.getSize(), page.getFrom()));
+    }
+
+    @Override
+    public Task get(int id) {
+        return jdbc.queryForObject(GET_TASKS.concat("WHERE task.pk_task=?"), MAPPER, id);
+    }
+
+    @Override
+    public long countByJob(int job) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE task.pk_job=?", Long.class, job);
     }
 }

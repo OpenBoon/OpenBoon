@@ -7,12 +7,12 @@
 <body>
 
 <section layout:fragment="content">
-    <div th:include="fragments/folder_menu :: folder_menu"/>
+    <div th:include="fragments/folders :: menu"/>
     <div class="wrapper">
     <div class="container-fluid">
         <div class="row">
             <div id="leftContent" class="col-md-12" style="padding:0px">
-                <table id="t" class="table table-striped table-hover">
+                <table id="table" class="table table-striped table-hover">
                     <thead>
                     <tr>
                         <th></th>
@@ -44,7 +44,7 @@
         </div>
     </div>
     </div>
-    <div th:include="fragments/folder_modal :: create_modal"/>
+    <div th:include="fragments/folders :: create_modal"/>
     <script th:inline="javascript" type="text/javascript">
         $(document).ready(function(e) {
 
@@ -61,15 +61,6 @@
                 table.removeClass('col-md-9').addClass("col-md-12")
             }
 
-            $('#t').on('click', '.clickable-row', function(event) {
-                $(this).addClass('success').siblings().removeClass('success');
-            });
-
-            $(".table-hover > tbody > tr").dblclick(function() {
-                console.log($(this).data("href"));
-                window.document.location = $(this).data("href");
-            });
-
             $('#opener').on('click', function() {
                 if (panel.hasClass("hidden")) {
                     open();
@@ -77,6 +68,15 @@
                     close();
                 }
                 return false;
+            });
+
+            $('#t').on('click', '.clickable-row', function(event) {
+                $(this).addClass('success').siblings().removeClass('success');
+            });
+
+            $(".table-hover > tbody > tr").dblclick(function() {
+                console.log($(this).data("href"));
+                window.document.location = $(this).data("href");
             });
         });
 

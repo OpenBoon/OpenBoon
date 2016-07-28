@@ -125,9 +125,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public boolean setTaskCompleted(ZpsTask script, int exitStatus) {
         TaskState newState = exitStatus == 0 ? TaskState.Success : TaskState.Failure;
-        logger.info("Task {} completed, new state {}", script.getTaskId(), newState);
         if (setTaskState(script, newState, TaskState.Running)) {
-            logger.info("Setting exist status: {}", exitStatus);
             taskDao.setExitStatus(script, exitStatus);
             return true;
         }
@@ -142,5 +140,10 @@ public class JobServiceImpl implements JobService {
     @Override
     public PagedList<Job> getAll(Paging page, JobFilter filter) {
         return jobDao.getAll(page, filter);
+    }
+
+    @Override
+    public PagedList<Task> getAllTasks(int job,Paging page) {
+        return taskDao.getAll(job, page);
     }
 }
