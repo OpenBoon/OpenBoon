@@ -7,15 +7,10 @@
 <body>
 
 <section layout:fragment="content">
-    <p>
-        <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-            <div class="container-fluid">
-                <div class="navbar-header navbar-brand">
-                    <i class="fa fa-plug fa-fw"/>Plugin Module
-                </div>
-            </div>
-        </nav>
+    <div th:include="fragments/plugins :: menu"/>
+    <div class="wrapper">
     <div class="container">
+        <br/>
         <dl class="dl-horizontal">
             <dt>Name:</dt>
             <dd th:text="${module.name}"></dd>
@@ -36,8 +31,7 @@
                  th:include="fragments/display_props :: display_props"/>
         </ul>
     </div>
-
-    </p>
+    </div>
 </section>
 
 </body>

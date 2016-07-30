@@ -9,7 +9,10 @@
         <div class="container-fluid">
             <div class="navbar navbar-header">
                 <a class="navbar-brand" href="/gui/plugins"><i class="fa fa-plug fa-fw fa-lg"/>Plugins</a>
-                <p th:if="${plugin != null}" class="navbar-text navbar-section" th:text="${plugin.name + ' v' + plugin.version}">...</p>
+                <p class="navbar-section navbar-text">
+                <a th:href="${'/gui/plugins/' + plugin.name}" th:if="${plugin != null}" class="navbar-link" th:text="${plugin.name + ' v' + plugin.version}">...</a>
+                <a href="#" th:if="${module != null}" class="navbar-link" th:text="${' / ' + module.name}">...</a>
+                </p>
             </div>
 
             <div class="navbar-collapse collapse">

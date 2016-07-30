@@ -21,6 +21,14 @@
         window.document.location = $(this).data("href");
     });
 </script>
+</div>
+
+<div th:fragment="clickable_view_modal">
+    <script th:inline="javascript" type="text/javascript">
+        $('#table').on('click', '.clickable-row', function(event) {
+            $(this).addClass('success').siblings().removeClass('success');
+        });
+</script>
 
 </div>
 </body>

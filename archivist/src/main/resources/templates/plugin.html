@@ -21,7 +21,7 @@
         <tbody>
             <tr th:each="module: ${modules}">
                 <td th:text="${module.type}"></td>
-                <td><a th:text="${module.name}" th:href="@{/gui/plugins/__${plugin.name}__/module/__${module.name}__}"></a></td>
+                <td><a th:text="${module.name}" th:href="@{/gui/plugins/__${plugin.name}__/module/__${module.type + ':' + module.plugin +':'+ module.name}__}"></a></td>
                 <td th:text="${module.supportedExtensions}"></td>
                 <td th:text="${module.toolTip}"></td>
             </tr>

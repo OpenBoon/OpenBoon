@@ -4,19 +4,46 @@
 <head></head>
 <body>
 
+<div th:fragment="view_modal">
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Task</h4>
+            </div>
+            <div class="modal-body">
+                <p id="taskDetails">Some Details</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript" type="text/javascript">
+$(function(){
+    $('#viewModal').modal({
+    backdrop: "static"});
+
+}).on('show', function(){ //subscribe to show method
+    var getIdFromRow = $(event.target).closest('tr').data('id'); //get the id from tr
+    //make your ajax call populate items or what even you need
+    $(this).find('#taskDetails').html($('Task ' + getIdFromRow))
+    });
+});
+</script>
+</div>
 
 <div th:fragment="state_label">
-    <th:block th:if="${imp.state.name()} eq 'Waiting'">
+    <th:block th:if="${task.state.name()} eq 'Waiting'">
         <span class="label label-primary">Waiting</span>
     </th:block>
-    <th:block th:if="${imp.state.name()} eq 'Queued'">
+    <th:block th:if="${task.state.name()} eq 'Queued'">
         <span class="label label-primary">Queued</span>
     </th:block>
-    <th:block th:if="${imp.state.name()} eq 'Success'">
+    <th:block th:if="${task.state.name()} eq 'Success'">
         <span class="label label-success">Success</span>
     </th:block>
-    <th:block th:if="${imp.state.name()} eq 'Failure'">
-        <span class="label label-danger">Cancelled</span>
+    <th:block th:if="${task.state.name()} eq 'Failure'">
+        <span class="label label-danger">Failure</span>
     </th:block>
 </div>
 
@@ -32,10 +59,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="clickable-row" th:attr="data-href=${'/gui/imports/' + task.jobId + '/tasks/' + task.taskId}" th:each="task: ${tasks}">
+        <tr class="clickable-row" th:attr="data-id=${task.taskId}" data-toggle="modal" data-target="#viewModal" th:each="task: ${tasks}">
             <td class="vert-align" th:text="${task.taskId}"></td>
             <td class="vert-align" th:text="${task.execute}"></td>
-            <td class="vert-align" th:text="${task.state.name()}">
+            <td class="vert-align">
                 <div th:include="fragments/tasks :: state_label"/>
             </td>
             <td class="vert-align" th:text="${task.duration()}"></td>
@@ -46,8 +73,10 @@
     <div class="container-fluid">
         <div th:include="fragments/table :: pager"/>
     </div>
-    <div th:include="fragments/table :: clickable"/>
+    <div th:include="fragments/tasks :: view_modal"/>
+    <div th:include="fragments/table :: clickable_view_modal"/>
 </div>
+
 
 
 </body>
