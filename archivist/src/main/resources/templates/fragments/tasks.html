@@ -33,6 +33,9 @@ $(function(){
 </div>
 
 <div th:fragment="state_label">
+    <th:block th:if="${task.state.name()} eq 'Running'">
+        <span class="label label-warning">Running</span>
+    </th:block>
     <th:block th:if="${task.state.name()} eq 'Waiting'">
         <span class="label label-primary">Waiting</span>
     </th:block>
