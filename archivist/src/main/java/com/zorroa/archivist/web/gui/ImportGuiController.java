@@ -85,13 +85,13 @@ public class ImportGuiController {
          * Make a bunch of generators based on the type of file.
          */
         List<String> filePaths = Lists.newArrayList();
-        ModuleRef fileGen = new ModuleRef("generator:zorroa-core:ListOfFiles");
+        ModuleRef fileGen = new ModuleRef("generator:zorroa-core:FileSet");
         fileGen.setArg("paths", filePaths);
 
         for (String path: serverImportForm.getPaths()) {
             File file = new File(path);
             if (file.isDirectory()) {
-                ModuleRef vol = new ModuleRef("generator:zorroa-core:SharedVolume");
+                ModuleRef vol = new ModuleRef("generator:zorroa-core:DiskCrawler");
                 vol.setArg("path", FileUtils.normalize(path));
                 generators.add(vol);
             }
