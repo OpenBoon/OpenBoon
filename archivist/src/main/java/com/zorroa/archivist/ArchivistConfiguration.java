@@ -10,6 +10,7 @@ import com.zorroa.common.elastic.ZorroaNode;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.filesystem.UUIDFileSystem;
+import com.zorroa.sdk.processor.SharedData;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
@@ -168,4 +169,14 @@ public class ArchivistConfiguration {
         ufs.init();
         return ufs;
     }
+
+    @Bean
+    public SharedData sharedData() {
+        return SharedData.builder().setRootPath(properties.getString("archivist.path.shared"))
+                .setModelPath(properties.getString("archivist.path.models"))
+                .setOfsPath(properties.getString("archivist.path.ofs"))
+                .setPluginPath(properties.getString("archivist.path.plugins"))
+                .build();
+    }
+
 }
