@@ -10,10 +10,8 @@ import com.zorroa.common.repository.ModuleDao;
 import com.zorroa.common.repository.PluginDao;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.exception.PluginException;
-import com.zorroa.sdk.plugins.Module;
-import com.zorroa.sdk.plugins.Pipeline;
-import com.zorroa.sdk.plugins.Plugin;
-import com.zorroa.sdk.plugins.PluginLoader;
+import com.zorroa.sdk.plugins.*;
+import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -57,15 +55,25 @@ public class PluginServiceImpl implements PluginService {
     @Autowired
     PipelineDao pipelineDao;
 
+
     @Autowired
     Client client;
+
+    @Autowired
+    SharedData sharedData;
 
     @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
+    @Value("${archivist.path.models}")
+    private String modelPathStr;
+
+    PluginInstaller pluginInstaller;
+
     PluginLoader pluginLoader;
 
     Path pluginPath;
+    Path modelPath;
 
     @PostConstruct
     public void init() {
@@ -73,21 +81,25 @@ public class PluginServiceImpl implements PluginService {
         if (_path.contains(":")) {
             throw new RuntimeException("Cannot specify multiple plugin paths.");
         }
-        pluginPath = Paths.get(_path).toAbsolutePath().normalize();
+        pluginPath =  FileUtils.normalize(Paths.get(_path));
+        modelPath = FileUtils.normalize(Paths.get(modelPathStr));
+
         logger.info("Loading plugins from: {}", pluginPath);
         if (pluginPath.toFile().mkdirs()) {
             logger.info("Plugin path did not exist: {}", pluginPath);
         }
-        pluginLoader = new PluginLoader(pluginPath.toString());
+
+        pluginInstaller = new PluginInstaller(sharedData);
+        pluginLoader = new PluginLoader(sharedData.getPluginPath());
     }
 
     @Override
     public Plugin installPlugin(MultipartFile file) {
-        synchronized(pluginLoader) {
+        synchronized(pluginInstaller) {
             Path dst = pluginPath.resolve(file.getOriginalFilename());
             try {
                 Files.copy(file.getInputStream(), dst);
-                Path pluginPath = pluginLoader.unpackPluginPackage(dst);
+                Path pluginPath = pluginInstaller.unpackPluginPackage(dst);
                 Plugin plugin = pluginLoader.loadPlugin(pluginPath);
                 installPlugin(plugin);
                 return plugin;
@@ -108,7 +120,7 @@ public class PluginServiceImpl implements PluginService {
             Path dst = pluginPath.resolve(FileUtils.filename(zipFilePath));
             try {
                 Files.copy(zipFilePath, dst);
-                Path pluginPath = pluginLoader.unpackPluginPackage(dst);
+                Path pluginPath = pluginInstaller.unpackPluginPackage(dst);
                 Plugin plugin = pluginLoader.loadPlugin(pluginPath);
                 installPlugin(plugin);
                 return plugin;
@@ -200,7 +212,9 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public void registerAllPlugins() {
-        pluginLoader.unpackAndLoadAllPlugins();
+
+        pluginInstaller.installAllPlugins(
+                properties.getString("archivist.path.pluginSearchPath").split(":"));
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (Plugin p: pluginLoader.getPlugins()) {
