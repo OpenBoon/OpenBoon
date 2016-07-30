@@ -97,6 +97,8 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public PagedList<Asset> getAll(Paging page, AssetSearch search) {
+        search.setSize(page.getSize());
+        search.setFrom(search.getFrom());
         return assetDao.getAll(page, buildSearch(search));
     }
 
@@ -189,6 +191,7 @@ public class SearchServiceImpl implements SearchService {
         }
         QueryBuilder filterBuilder = getFilter(filter);
         query.filter(filterBuilder);
+
         return query;
     }
 
