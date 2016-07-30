@@ -73,8 +73,8 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testAllPageable() {
-        assertEquals(1, userDao.getAll(Paging.first()).size());
-        assertEquals(0, userDao.getAll(new Paging(1, 4)).size());
+        assertEquals(3, userDao.getAll(Paging.first()).size());
+        assertEquals(0, userDao.getAll(new Paging(2, 4)).size());
     }
 
     @Test(expected=EmptyResultDataAccessException.class)

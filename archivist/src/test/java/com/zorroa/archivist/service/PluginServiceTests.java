@@ -28,7 +28,7 @@ public class PluginServiceTests extends AbstractTest {
 
         assertEquals(0, pluginService.getPlugins().size());
 
-        pluginService.installPlugin(Paths.get("../unittest/shared/plugins/zorroa-test-plugin.zip"));
+        pluginService.installPlugin(Paths.get("../unittest/resources/plugins/zorroa-test-plugin.zip"));
         refreshIndex();
 
         assertEquals(1, pluginService.getPlugins().size());

@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.service.AnalystService;
+import com.zorroa.common.domain.PagedList;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.util.Json;
@@ -11,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,8 +43,8 @@ public class AnalystControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Analyst> analysts = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Analyst>>() {});
+        PagedList<Analyst> analysts = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<PagedList<Analyst>>() {});
         assertEquals(1, analysts.size());
     }
 }
