@@ -102,14 +102,16 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
             }
         }
 
-        if (react.getIndex() != null) {
-            for (Map.Entry<String, List<Source>> entry: react.getIndex().entrySet()) {
-                AssetIndexResult result = assetService.index(entry.getKey(), entry.getValue());
-                /**
-                 * TODO: add individual task counters as well.
-                 */
-                jobService.updateStats(
-                        react.getJobId(), result.created, result.updated, result.errors, result.warnings);
+        if (react.getResult() != null) {
+            for (Map.Entry<String, List<Source>> entry: react.getResult().entrySet()) {
+                if (entry.getKey().equals("import")) {
+                    AssetIndexResult result = assetService.index(entry.getKey(), entry.getValue());
+                    /**
+                     * TODO: add individual task counters as well.
+                     */
+                    jobService.updateStats(
+                            react.getJobId(), result.created, result.updated, result.errors, result.warnings);
+                }
             }
         }
     }

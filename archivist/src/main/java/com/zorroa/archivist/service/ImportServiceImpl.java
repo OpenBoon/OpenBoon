@@ -1,7 +1,5 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
@@ -52,11 +50,13 @@ public class ImportServiceImpl implements ImportService {
     public Job create(ImportSpec spec) {
 
         ZpsScript script = new ZpsScript();
+        script.setType("import");
+
         if (spec.getName() == null) {
-            script.setName(String.format("import-by-%s", SecurityUtils.getUsername()));
+            script.setName(String.format("import by %s", SecurityUtils.getUsername()));
         }
         else {
-            script.setName(String.format("import-by-%s", spec.getName()));
+            script.setName(String.format("import ", spec.getName()));
         }
 
         List<ProcessorSpec> pipeline = Lists.newArrayList();
@@ -78,16 +78,6 @@ public class ImportServiceImpl implements ImportService {
         }
         script.setGenerate(generators);
 
-        /**
-         * Add an index reaction. Reactions happen for each batch run though a pipeline.
-         * The index reaction will add the assets to elastic.
-         *
-         * TODO: for a dryrun, we would leave this out, and add a special reaction
-         * to deliver to a waiting client.
-         */
-        script.setReactions(ImmutableList.of(
-                pluginService.getModule("reaction:zorroa-core:IndexReaction")
-                .getProcessorSpec(ImmutableMap.of())));
 
         jobService.launch(script, Import);
         Job job = jobService.get(script.getJobId());
