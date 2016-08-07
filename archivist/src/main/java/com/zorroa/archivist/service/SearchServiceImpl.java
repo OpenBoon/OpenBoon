@@ -27,6 +27,7 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
+import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,9 +118,12 @@ public class SearchServiceImpl implements SearchService {
             request.setSize(search.getSize());
         }
 
-        /*
-         * TODO: alternative sorting and paging here.
-         */
+        if (search.getOrder() != null) {
+            for (AssetSearchOrder searchOrder : search.getOrder()) {
+                SortOrder sortOrder = searchOrder.getAscending() ? SortOrder.ASC : SortOrder.DESC;
+                request.addSort(searchOrder.getField(), sortOrder);
+            }
+        }
 
         return request;
     }
@@ -145,7 +149,6 @@ public class SearchServiceImpl implements SearchService {
         SearchRequestBuilder aggregation = client.prepareSearch(alias)
                 .setTypes("asset")
                 .setQuery(getQuery(builder.getSearch()))
-
                 .setAggregations(builder.getAggregations())
                 .setSearchType(SearchType.COUNT);
         return aggregation;
