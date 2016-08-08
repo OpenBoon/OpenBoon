@@ -25,5 +25,16 @@
     </nav>
 </div>
 
+<div th:fragment="side_menu">
+    <div class="navbar navbar-default navbar-fixed-left">
+        <nav class="nav-sidebar">
+            <div class="list-group">
+                <a th:href="${'/gui/permissions/' + perm.id}" class="list-group-item">Properties</a>
+                <a th:href="${'/gui/permissions/' + perm.id + '/auto'}" class="list-group-item">Auto Assignment</a>
+            </div>
+        </nav>
+    </div>
+</div>
+
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
@@ -8,7 +9,10 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Access;
+import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +35,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    final static Set<String> PERMANENT_TYPES = ImmutableSet.of("user", "internal");
 
     @Autowired
     UserDao userDao;
@@ -206,6 +213,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public PagedList<Permission> getPermissions(Paging page) {
+        return permissionDao.getPaged(page);
+    }
+
+    @Override
+    public PagedList<Permission> getPermissions(Paging page, PermissionFilter filter) {
+        return permissionDao.getPaged(page, filter);
+    }
+
+    @Override
+    public PagedList<Permission> getUserAssignablePermissions(Paging page) {
+        return permissionDao.getPaged(page,
+                new PermissionFilter()
+                        .setAssignableToUser(true)
+                        .setOrderBy("str_group, str_type"));
+    }
+
+    @Override
+    public PagedList<Permission> getObjAssignablePermissions(Paging page) {
+        return permissionDao.getPaged(page,
+                new PermissionFilter()
+                        .setAssignableToObj(true)
+                        .setOrderBy("str_group, str_type"));
+    }
+
+    @Override
     public List<Permission> getPermissions(User user) {
         return permissionDao.getAll(user);
     }
@@ -232,14 +265,14 @@ public class UserServiceImpl implements UserService {
          * be added or removed via the external API.
          */
         List<Permission> filtered = perms.stream().filter(
-                p->!PermissionDao.PERMANENT_TYPES.contains(p.getType())).collect(Collectors.toList());
+                p->!PERMANENT_TYPES.contains(p.getType())).collect(Collectors.toList());
         userDao.setPermissions(user, filtered);
     }
 
     @Override
     public void addPermissions(User user, Collection<Permission> perms) {
         for (Permission p: perms) {
-            if (PermissionDao.PERMANENT_TYPES.contains(p.getType())) {
+            if (PERMANENT_TYPES.contains(p.getType())) {
                 continue;
             }
             userDao.addPermission(user, p, false);
@@ -250,7 +283,7 @@ public class UserServiceImpl implements UserService {
     public void removePermissions(User user, Collection<Permission> perms) {
         for (Permission p: perms) {
             // Don't allow removal of user permission.
-            if (PermissionDao.PERMANENT_TYPES.contains(p.getType())) {
+            if (PERMANENT_TYPES.contains(p.getType())) {
                 continue;
             }
             userDao.removePermission(user, p);

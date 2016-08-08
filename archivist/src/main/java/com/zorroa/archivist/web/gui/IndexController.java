@@ -104,10 +104,29 @@ public class IndexController {
     }
 
     @RequestMapping("/gui/permissions")
-    public String permissions(Model model) {
+    public String permissions(Model model,
+                              @RequestParam(value="page", required=false) Integer page,
+                              @RequestParam(value="count", required=false) Integer count) {
+
+        Paging paging = new Paging(page, count);
         standardModel(model);
-        model.addAttribute("allPermissions", userService.getPermissions());
+        model.addAttribute("page", paging);
+        model.addAttribute("perms", userService.getPermissions(paging));
         return "permissions";
+    }
+
+    @RequestMapping("/gui/permissions/{id}")
+    public String getPermission(Model model, @PathVariable int id) {
+        standardModel(model);
+        model.addAttribute("perm", userService.getPermission(id));
+        return "permission";
+    }
+
+    @RequestMapping("/gui/permissions/{id}/auto")
+    public String getPermissionAuto(Model model, @PathVariable int id) {
+        standardModel(model);
+        model.addAttribute("perm", userService.getPermission(id));
+        return "permission_auto";
     }
 
     @RequestMapping("/gui/assets")
@@ -152,11 +171,9 @@ public class IndexController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", true);
-            logger.warn("errors: {}", bindingResult.getAllErrors());
             return "folders";
         }
         else {
-            logger.info("creating folder");
             folderService.create(folderSpec);
             return "redirect:/gui/folders/" + id;
         }

@@ -1,22 +1,18 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.collect.ImmutableSet;
+import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by chambers on 10/27/15.
  */
 public interface PermissionDao {
-
-    /**
-     * Types of permissions users cannot manipulate directly.
-     */
-    Set<String> PERMANENT_TYPES = ImmutableSet.of("user", "internal");
 
     Permission create(PermissionSpec builder, boolean immutable);
 
@@ -29,6 +25,14 @@ public interface PermissionDao {
     Permission get(String authority);
 
     List<Permission> getAll();
+
+    PagedList<Permission> getPaged(Paging page, Filter filter);
+
+    PagedList<Permission> getPaged(Paging page);
+
+    long count();
+
+    long count(Filter filter);
 
     List<Permission> getAll(User user);
 

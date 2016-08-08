@@ -2,11 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.PermissionSpec;
-import com.zorroa.archivist.domain.User;
-import org.apache.commons.lang3.StringUtils;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -23,9 +21,6 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     private static final String INSERT =
             JdbcUtils.insert("permission", "str_name", "str_type", "str_description", "bool_immutable");
-
-    private static final String PERM_FILTER =
-            "(" + StringUtils.repeat("?", ",", PermissionDao.PERMANENT_TYPES.size()) + ")";
 
     @Override
     public Permission create(PermissionSpec builder, boolean immutable) {
@@ -81,12 +76,35 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     public static String GET_ALL =
-            "SELECT * FROM permission WHERE str_type NOT IN " + PERM_FILTER;
+            "SELECT * FROM permission ";
 
     @Override
     public List<Permission> getAll() {
-        return jdbc.query(GET_ALL, MAPPER,
-                PermissionDao.PERMANENT_TYPES.toArray());
+        return jdbc.query(GET_ALL, MAPPER);
+    }
+
+    @Override
+    public PagedList<Permission> getPaged(Paging page) {
+        return getPaged(page, new PermissionFilter());
+    }
+
+    @Override
+    public PagedList<Permission> getPaged(Paging page, Filter filter) {
+        return new PagedList(page.setTotalCount(count(filter)),
+                jdbc.query(filter.getQuery(
+                        GET_ALL.concat(" ORDER BY str_type, str_name"), page),
+                        MAPPER, filter.getValues(page)));
+    }
+
+    @Override
+    public long count() {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM permission", Long.class);
+    }
+
+    @Override
+    public long count(Filter filter) {
+        return jdbc.queryForObject(filter.getCountQuery(GET_ALL),
+                Long.class, filter.getValues());
     }
 
     private static final String GET_BY_USER =

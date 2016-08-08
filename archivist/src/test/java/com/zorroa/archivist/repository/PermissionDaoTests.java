@@ -1,10 +1,10 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.PermissionSpec;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +78,26 @@ public class PermissionDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testCount() {
+        long count = permissionDao.count();
+        PermissionSpec b = new PermissionSpec("foo", "bar").setDescription("bing");
+        permissionDao.create(b, true);
+        assertEquals(count+1, permissionDao.count());
+    }
+
+    @Test
+    public void testCountWithFilter() {
+        long count = permissionDao.count(new PermissionFilter().setTypes(Sets.newHashSet("user")));
+        assertTrue(count > 0);
+
+        PermissionSpec b = new PermissionSpec("foo", "bar").setDescription("bing");
+        permissionDao.create(b, true);
+
+        long newCount = permissionDao.count(new PermissionFilter().setTypes(Sets.newHashSet("user")));
+        assertEquals(count, newCount);
+    }
+
+    @Test
     public void testGet() {
         Permission p = permissionDao.get(perm.getId());
         assertEquals(perm.getName(), p.getName());
@@ -88,6 +108,32 @@ public class PermissionDaoTests extends AbstractTest {
     public void testGetAll() {
         List<Permission> perms = permissionDao.getAll();
         assertTrue(perms.size() > 0);
+    }
+
+    @Test
+    public void testGetPagedEmptyFilter() {
+        PagedList<Permission> perms = permissionDao.getPaged(Paging.first(), new PermissionFilter());
+        assertTrue(perms.size() > 0);
+    }
+
+    @Test
+    public void testGetPagedFiltered() {
+        PermissionSpec b = new PermissionSpec("test1", "test2");
+        b.setDescription("test");
+        permissionDao.create(b, false);
+
+        PagedList<Permission> perms = permissionDao.getPaged(Paging.first(),
+                new PermissionFilter().setTypes(Sets.newHashSet("test1")));
+        assertEquals(1, perms.size());
+
+        perms = permissionDao.getPaged(Paging.first(),
+                new PermissionFilter().setNames(Sets.newHashSet("test2")));
+        assertEquals(1, perms.size());
+
+        perms = permissionDao.getPaged(Paging.first(),
+                new PermissionFilter().setNames(Sets.newHashSet("test2"))
+                        .setTypes(Sets.newHashSet("test1")));
+        assertEquals(1, perms.size());
     }
 
     @Test

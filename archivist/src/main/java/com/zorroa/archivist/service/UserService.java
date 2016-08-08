@@ -52,6 +52,14 @@ public interface UserService {
 
     List<Permission> getPermissions();
 
+    PagedList<Permission> getPermissions(Paging page, PermissionFilter filter);
+
+    PagedList<Permission> getPermissions(Paging page);
+
+    PagedList<Permission> getUserAssignablePermissions(Paging page);
+
+    PagedList<Permission> getObjAssignablePermissions(Paging page);
+
     List<Permission> getPermissions(User user);
 
     void setPermissions(User user, Collection<Permission> perms);

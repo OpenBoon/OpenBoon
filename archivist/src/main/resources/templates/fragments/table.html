@@ -5,7 +5,7 @@
 <body>
 <div th:fragment="pager">
 <ul class="pagination pull-right" style="margin: 0;">
-    <li class="previous"><a th:href="@{__${#httpServletRequest.requestURI}__(page=1)}"><span aria-hidden="true" th:text="${page.display}"></span></a></li>
+    <li data-toggle="tooltip" data-placement="top" th:title="${'Total:' + page.totalCount}" class="previous"><a th:href="@{__${#httpServletRequest.requestURI}__(page=1)}"><span aria-hidden="true" th:text="${page.display}"></span></a></li>
     <li><a th:href="@{__${#httpServletRequest.requestURI}__(page=${page.prev})}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span></a></li>
     <li><a th:href="@{__${#httpServletRequest.requestURI}__(page=${page.next})}"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></li>
 </ul>

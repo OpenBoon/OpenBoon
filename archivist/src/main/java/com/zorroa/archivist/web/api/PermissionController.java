@@ -22,9 +22,9 @@ public class PermissionController {
     UserService userService;
 
     /**
-     * Get a paritcular permission record.
+     * Get a particular permission record.
      */
-    @RequestMapping(value="/api/v1/permissions/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.GET)
     public Permission get(@PathVariable String id) {
         return userService.getPermission(id);
     }
@@ -32,7 +32,7 @@ public class PermissionController {
     /**
      * Return all available permissions.
      */
-    @RequestMapping(value="/api/v1/permissions", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/permissions", method = RequestMethod.GET)
     public List<Permission> getAll() {
         return userService.getPermissions();
     }
@@ -40,7 +40,7 @@ public class PermissionController {
     /**
      * Return all available permissions.
      */
-    @RequestMapping(value="/api/v1/permissions/_names", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/permissions/_names", method = RequestMethod.GET)
     public List<String> getAllNames() {
         return userService.getPermissionNames();
     }
@@ -48,7 +48,7 @@ public class PermissionController {
     /**
      * Create a new permission.
      */
-    @RequestMapping(value="/api/v1/permissions", method= RequestMethod.POST)
+    @RequestMapping(value="/api/v1/permissions", method = RequestMethod.POST)
     public Permission create(@RequestBody PermissionSpec builder) {
         return userService.createPermission(builder);
     }
@@ -56,7 +56,7 @@ public class PermissionController {
     /**
      * Delete a  permission.
      */
-    @RequestMapping(value="/api/v1/permissions/{id}", method= RequestMethod.DELETE)
+    @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable String id) {
         Permission p = userService.getPermission(id);
         return ImmutableMap.of("success", userService.deletePermission(p));
