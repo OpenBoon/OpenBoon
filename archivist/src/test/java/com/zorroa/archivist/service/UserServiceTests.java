@@ -1,10 +1,11 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
+import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.sdk.domain.Permission;
 import org.junit.Test;
 
@@ -53,7 +54,7 @@ public class UserServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testDisable() {
+    public void testSetEnabled() {
         UserSpec builder = new UserSpec();
         builder.setUsername("test");
         builder.setPassword("123password");
@@ -64,7 +65,7 @@ public class UserServiceTests extends AbstractTest {
                 userService.getPermission("group::user"));
         User user = userService.create(builder);
 
-        assertTrue(userService.disable(user));
+        assertTrue(userService.setEnabled(user, false));
     }
 
     @Test
@@ -78,13 +79,14 @@ public class UserServiceTests extends AbstractTest {
         builder.setPermissions(userService.getPermission("group::user"));
         User user = userService.create(builder);
 
+        Permission mgr = userService.getPermission("group::manager");
         assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
-        assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
+        assertFalse(userService.hasPermission(user, mgr));
 
-        userService.setPermissions(user, userService.getPermission("group::manager"));
+        userService.setPermissions(user, Lists.newArrayList(mgr));
 
         assertFalse(userService.hasPermission(user, userService.getPermission("group::user")));
-        assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
+        assertTrue(userService.hasPermission(user, mgr));
     }
 
     @Test
@@ -97,7 +99,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setLastName("Baggings");
         User user = userService.create(builder);
 
-        UserUpdate update = new UserUpdate();
+        UserProfileUpdate update = new UserProfileUpdate();
         update.setFirstName("foo");
         update.setLastName("bar");
         update.setEmail("test@test.com");
@@ -115,8 +117,10 @@ public class UserServiceTests extends AbstractTest {
         builder.setPermissionIds(new Integer[]{
                 userService.getPermission("group::superuser").getId()});
 
+        Permission sup = userService.getPermission("group::superuser");
+
         User admin = userService.get("admin");
-        userService.setPermissions(admin, userService.getPermission("group::superuser"));
+        userService.setPermissions(admin, Lists.newArrayList(sup));
 
         for (Permission p: userService.getPermissions(admin)) {
             logger.info("{}", p);

@@ -2,7 +2,9 @@ package com.zorroa.archivist.web.gui;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.EventSearch;
@@ -82,7 +84,7 @@ public class IndexController {
     @RequestMapping("/gui")
     public String index(Model model) {
         standardModel(model);
-        model.addAttribute("assetCount", searchService.count(new AssetSearch()).getCount());
+        model.addAttribute("assetCount", searchService.count(new AssetSearch()));
         model.addAttribute("userCount", userService.getCount());
         model.addAttribute("folderCount", folderService.count());
         model.addAttribute("analystCount", analystService.getCount());
@@ -106,58 +108,6 @@ public class IndexController {
         standardModel(model);
         model.addAttribute("allPermissions", userService.getPermissions());
         return "permissions";
-    }
-
-    @RequestMapping("/gui/users")
-    public String users(Model model, @RequestParam(value="page", required=false) Integer page) {
-        standardModel(model);
-        Paging paging = new Paging(page);
-        model.addAttribute("page", paging);
-        model.addAttribute("allUsers", userService.getAll(paging));
-        model.addAttribute("userBuilder", new UserSpec());
-        return "users";
-    }
-
-    @RequestMapping("/gui/users/{id}")
-    public String user(Model model, @PathVariable int id) {
-        standardModel(model);
-        model.addAttribute("user", userService.get(id));
-        model.addAttribute("userUpdateBuilder", new UserSpec());
-        return "user";
-    }
-
-    @RequestMapping(value="/gui/users/{id}", method=RequestMethod.POST)
-    public String updateUser(Model model, @PathVariable int id,
-                             @Valid @ModelAttribute("userUpdateBuilder") UserUpdate userUpdateBuilder,
-                             BindingResult bindingResult) {
-        standardModel(model);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", userService.get(id));
-            model.addAttribute("errors", true);
-            return "user";
-        }
-        else {
-            userService.update(userService.get(id), userUpdateBuilder);
-        }
-
-        model.addAttribute("user", userService.get(id));
-        model.addAttribute("userUpdateBuilder", new UserUpdate());
-        return "user";
-    }
-
-    @RequestMapping(value="/gui/users", method=RequestMethod.POST)
-    public String createUser(Model model,
-                             @Valid @ModelAttribute("userBuilder") UserSpec userBuilder,
-                             BindingResult bindingResult) {
-        standardModel(model);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", true);
-            return "users";
-        }
-
-        model.addAttribute("allUsers", userService.getAll());
-        User user = userService.create(userBuilder);
-        return "redirect:/gui/users/"+ user.getId();
     }
 
     @RequestMapping("/gui/assets")

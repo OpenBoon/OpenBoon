@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 7/13/15.
@@ -67,12 +69,12 @@ public class UserServiceImpl implements UserService {
          * user permission to the list.
          */
         List<Permission> perms = permissionDao.getAll(builder.getPermissionIds());
-        permissionDao.setOnUser(user, perms);
+        setPermissions(user, perms);
 
         /*
          * Add the user's permission as an immutable permission.
          */
-        permissionDao.assign(user, userPerm, true);
+        userDao.addPermission(user, userPerm, true);
 
         /*
          * Add the user's home folder
@@ -152,8 +154,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(User user, UserUpdate builder) {
-        boolean result = userDao.update(user, builder);
+    public boolean update(User user, UserProfileUpdate form) {
+        boolean result = userDao.update(user, form);
         if (result) {
             transactionEventManager.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
@@ -163,12 +165,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean disable(User user) {
-        boolean result =  userDao.setEnabled(user, false);
+    public boolean setEnabled(User user, boolean value) {
+        boolean result =  userDao.setEnabled(user, value);
+
         if (result) {
             if (result) {
+                Message msg = new Message(value ? "USER_ENABLED": "USER_DISABLED", user);
                 transactionEventManager.afterCommitSync(() -> {
-                    messagingService.broadcast(new Message("USER_DISABLED", user));
+                    messagingService.broadcast(msg);
                 });
             }
         }
@@ -207,18 +211,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Permission getPermission(String name) {
-        return permissionDao.get(name);
+    public List<String> getPermissionNames() {
+        return permissionDao.getAll().stream().map(p->p.getFullName()).collect(Collectors.toList());
     }
 
     @Override
-    public void setPermissions(User user, List<Permission> perms) {
-        permissionDao.setOnUser(user, perms);
+    public Permission getPermission(String id) {
+        if (id.contains(Permission.JOIN)) {
+            return permissionDao.get(id);
+        }
+        else {
+            return permissionDao.get(Integer.valueOf(id));
+        }
     }
 
     @Override
-    public void setPermissions(User user, Permission ... perms) {
-        permissionDao.setOnUser(user, perms);
+    public void setPermissions(User user, Collection<Permission> perms) {
+        /*
+         * Don't let setPermissions set immutable permission types which can never
+         * be added or removed via the external API.
+         */
+        List<Permission> filtered = perms.stream().filter(
+                p->!PermissionDao.PERMANENT_TYPES.contains(p.getType())).collect(Collectors.toList());
+        userDao.setPermissions(user, filtered);
+    }
+
+    @Override
+    public void addPermissions(User user, Collection<Permission> perms) {
+        for (Permission p: perms) {
+            if (PermissionDao.PERMANENT_TYPES.contains(p.getType())) {
+                continue;
+            }
+            userDao.addPermission(user, p, false);
+        }
+    }
+
+    @Override
+    public void removePermissions(User user, Collection<Permission> perms) {
+        for (Permission p: perms) {
+            // Don't allow removal of user permission.
+            if (PermissionDao.PERMANENT_TYPES.contains(p.getType())) {
+                continue;
+            }
+            userDao.removePermission(user, p);
+        }
     }
 
     @Override
@@ -237,12 +273,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasPermission(User user, String type, String name) {
-        return permissionDao.hasPermission(user, type, name);
+        return userDao.hasPermission(user, type, name);
     }
 
     @Override
     public boolean hasPermission(User user, Permission permission) {
-        return permissionDao.hasPermission(user, permission);
+        return userDao.hasPermission(user, permission);
     }
 
     @Override

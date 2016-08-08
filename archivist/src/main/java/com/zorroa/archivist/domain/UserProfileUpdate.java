@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -7,20 +8,21 @@ import org.hibernate.validator.constraints.NotEmpty;
  * not counting their password which is handled specially.  An entire
  * filled out object must be pushed to server.
  */
-public class UserUpdate {
+public class UserProfileUpdate {
 
     private String firstName;
 
     private String lastName;
 
     @NotEmpty
+    @Email
     private String email;
 
     public String getFirstName() {
         return firstName;
     }
 
-    public UserUpdate setFirstName(String firstName) {
+    public UserProfileUpdate setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -29,7 +31,7 @@ public class UserUpdate {
         return lastName;
     }
 
-    public UserUpdate setLastName(String lastName) {
+    public UserProfileUpdate setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -38,7 +40,7 @@ public class UserUpdate {
         return email;
     }
 
-    public UserUpdate setEmail(String email) {
+    public UserProfileUpdate setEmail(String email) {
         this.email = email;
         return this;
     }

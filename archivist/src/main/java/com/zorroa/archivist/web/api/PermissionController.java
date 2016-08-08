@@ -26,7 +26,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions/{id}", method= RequestMethod.GET)
     public Permission get(@PathVariable String id) {
-        return getPermission(id);
+        return userService.getPermission(id);
     }
 
     /**
@@ -35,6 +35,14 @@ public class PermissionController {
     @RequestMapping(value="/api/v1/permissions", method= RequestMethod.GET)
     public List<Permission> getAll() {
         return userService.getPermissions();
+    }
+
+    /**
+     * Return all available permissions.
+     */
+    @RequestMapping(value="/api/v1/permissions/_names", method= RequestMethod.GET)
+    public List<String> getAllNames() {
+        return userService.getPermissionNames();
     }
 
     /**
@@ -50,17 +58,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions/{id}", method= RequestMethod.DELETE)
     public Object delete(@PathVariable String id) {
-        Permission p = getPermission(id);
+        Permission p = userService.getPermission(id);
         return ImmutableMap.of("success", userService.deletePermission(p));
     }
-
-    private Permission getPermission(String id) {
-        if (id.contains("::")) {
-            return userService.getPermission(id);
-        }
-        else {
-            return userService.getPermission(Integer.valueOf(id));
-        }
-    }
-
 }

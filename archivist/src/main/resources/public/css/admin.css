@@ -32,22 +32,23 @@
     position: fixed;
     border-radius: 0;
     height: 100%;
+    background-color: transparent;
+    border-color: transparent;
+    margin-top: 119px;
+    margin-left: 15px;
+    padding-right: 15px;
 }
 
-.navbar-fixed-left .navbar-nav > li {
-    float: none;  /* Cancel default li float: left */
-    width: 149px;
+.list-group-item.active {
+    background-color: transparent;
+    border-radius: 0;
+    border-color: #ddd;
+    border-left: 3px solid cornflowerblue;
+    color: #555;
 }
 
 .navbar-fixed-left + .container {
     padding-left: 20px;
-}
-
-.navbar-divider-vertical {
-    height: 50px;
-    margin: 0 9px;
-    border-left: 1px solid #F2F2F2;
-    border-right: 1px solid #FFF;
 }
 
 .secondnavbar
@@ -58,20 +59,14 @@
 /*
 * Page Wrappers
 */
-.full-wrapper {
+.wrapper_side_menu {
     margin-top: 100px;
-    width: 100%;
+    margin-left: 199px;
 }
 
 .wrapper {
     margin-top: 100px;
     width: 100%;
-}
-
-/* On using dropdown menu (To right shift popuped) */
-.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
-    margin-top: -50px;
-    margin-left: 140px;
 }
 
 /*
@@ -160,56 +155,6 @@
 .panel-yellow a:hover {
     color: #df8a13;
 }
-
-.x_panel {
-    position: relative;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px 17px;
-    display: inline-block;
-    background: #fff;
-    border: 1px solid #E6E9ED;
-    -webkit-column-break-inside: avoid;
-    -moz-column-break-inside: avoid;
-    column-break-inside: avoid;
-    opacity: 1;
-    transition: all .2s ease;
-}
-
-.x_title {
-    border-bottom: 2px solid #E6E9ED;
-    padding: 1px 5px 6px;
-    margin-bottom: 10px; }
-
-.x_title .filter {
-    width: 40%;
-    float: right; }
-
-.x_title h2 {
-    margin: 5px 0 6px;
-    float: left;
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap; }
-
-.x_title h2 small {
-    margin-left: 10px; }
-
-.x_title span {
-    color: #BDBDBD; }
-
-.x_content {
-    padding: 0 5px 6px;
-    position: relative;
-    width: 100%;
-    float: left;
-    clear: both;
-    margin-top: 5px; }
-
-.x_content h4 {
-    font-size: 16px;
-    font-weight: 500; }
 
 .dropzone-preview {
     width:100%;
@@ -526,3 +471,18 @@
 }
 
 .hidden{display:none;}
+
+.list-group-item-cust {
+    padding-left: 0px;
+}
+
+.list-group-addon {
+    padding: 10px 10px;
+    font-size: 15px;
+    display:inline;
+    font-weight: normal;
+    line-height: 1;
+    color: #555555;
+    text-align: center;
+    background-color: transparent;
+}

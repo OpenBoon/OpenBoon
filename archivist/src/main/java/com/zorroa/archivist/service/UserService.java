@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Permission;
@@ -10,6 +10,7 @@ import com.zorroa.sdk.domain.PermissionBuilder;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.Session;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,9 +42,9 @@ public interface UserService {
 
     String generateHmacKey(String username);
 
-    boolean update(User user, UserUpdate builder);
+    boolean update(User user, UserProfileUpdate builder);
 
-    boolean disable(User user);
+    boolean setEnabled(User user, boolean value);
 
     List<User> getAll(Room room);
 
@@ -57,13 +58,17 @@ public interface UserService {
 
     List<Permission> getPermissions(User user);
 
-    void setPermissions(User user, List<Permission> perms);
+    void setPermissions(User user, Collection<Permission> perms);
 
-    void setPermissions(User user, Permission... perms);
+    void addPermissions(User user, Collection<Permission> perms);
+
+    void removePermissions(User user, Collection<Permission> perms);
 
     Permission getPermission(int id);
 
     Permission createPermission(PermissionBuilder builder);
+
+    List<String> getPermissionNames();
 
     Permission getPermission(String name);
 

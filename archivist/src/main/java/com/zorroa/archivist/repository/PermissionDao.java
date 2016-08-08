@@ -1,16 +1,23 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.PermissionBuilder;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by chambers on 10/27/15.
  */
 public interface PermissionDao {
+
+    /**
+     * Types of permissions users cannot manipulate directly.
+     */
+    Set<String> PERMANENT_TYPES = ImmutableSet.of("user", "internal");
+
     Permission create(PermissionBuilder builder, boolean immutable);
 
     Permission update(Permission permission);
@@ -31,17 +38,7 @@ public interface PermissionDao {
 
     List<Permission> getAll(Integer[] ids);
 
-    void setOnUser(User user, Collection<? extends Permission> perms);
-
-    void setOnUser(User user, Permission... perms);
-
-    boolean assign(User user, Permission perm, boolean immutable);
-
     boolean delete(Permission perm);
 
     boolean delete(User user);
-
-    boolean hasPermission(User user, Permission permission);
-
-    boolean hasPermission(User user, String type, String name);
 }

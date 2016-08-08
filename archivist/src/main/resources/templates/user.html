@@ -8,92 +8,54 @@
 
 <section layout:fragment="content">
     <div th:include="fragments/users :: menu"/>
-    <div class="wrapper">
-    <div class="container-fluid">
+    <div th:include="fragments/users :: side_menu"/>
     <br/>
-    <form id="updateUserForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__}" th:object="${userUpdateBuilder}" method="post">
-        <div class="form-group">
-            <span class="glyphicon glyphicon-user" aria-hidden="true" th:text="${user.username}"/>
-        </div>
+    <div class="wrapper_side_menu">
 
-        <div class="form-group">
-            <label for="email">Email address:</label>
-            <input id="email" type="email" class="form-control" th:value="${user.email}" th:name="email" th:id="email"/>
-            <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-        </div>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">User Profile</h3>
+            </div>
+            <div class="panel-body">
 
-        <div class="form-group">
-            <label for="enabled">Enabled:</label>
-            <input id="enabled" type="checkbox" th:checked="${user.enabled}" th:name="enabled" th:id="enabled"/>
-            <input type="hidden" value="0" name="enabled"/>
-        </div>
+                <div th:if="${success}" class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Profile Updated</strong>
+                </div>
 
-        <div class="form-group">
-            <input type="checkbox" id="password-reset"/>
-            <label for="password-reset">Reset Password</label>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input disabled="true" type="password" th:field="*{password}" class="form-control" id="password" required="true"/>
-            <div id="password-help" class="help-block"></div>
-            <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-        </div>
-        <div class="form-group">
-            <label for="password-verify">Verify Password:</label>
-            <input disabled="true" type="password" class="form-control" id="password-verify" required="true"/>
-        </div>
+                <form id="userProfileForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__}" th:object="${userProfileForm}" method="post">
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-default">
-                <span class="glyphicon glyphicon-save"></span> Save
-            </button>
-            <a href="/gui/users" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-left"></span> Cancel
-            </a>
-        </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name:</label>
+                        <input  id="firstName" type="text" class="form-control" th:value="${user.firstName}" th:name="firstName"/>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                    </div>
 
-    </form>
+                    <div class="form-group">
+                        <label for="lastName">Last Name:</label>
+                        <input id="lastName" type="text" class="form-control" th:value="${user.lastName}" th:name="lastName"/>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email address:</label>
+                        <input id="email" type="text" class="form-control" th:value="${user.email}" th:name="email"/>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-save"></span> Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
     </div>
-    <script th:inline="javascript" type="text/javascript">
-        //<![CDATA[
-        $(document).ready(function(e) {
-
-            $('#password, #password-verify').keyup(function()  {
-
-                if ($("#password-reset").is(":checked")) {
-
-                    var password = $('#password').val();
-                    var verify = $('#password-verify').val();
-
-                    if (password.length < 8) {
-                        $('#password-help').text("Password must be 8 or more characters.")
-                                .attr("class", "help-block alert-danger")
-                    }
-                    else if (password != verify) {
-                        $('#password-help').text("Passwords do not match.")
-                                .attr("class", "help-block alert-danger");
-                    }
-                    else {
-                        $('#password-help').text("Password Ok")
-                                .attr("class", "help-block alert-success")
-                    }
-                }
-            });
-
-            $("#password-reset").change(function() {
-                if(this.checked) {
-                    $("#password").removeAttr("disabled");
-                    $("#password-verify").removeAttr("disabled");
-                }
-                else {
-                    $("#password").attr("disabled", "true");
-                    $("#password-verify").attr("disabled", "true");
-                }
-            });
-        });
-        //]]>
-        </script>
+    <div th:include="fragments/users :: modal_create"/>
 </section>
 
 </body>

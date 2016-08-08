@@ -8,21 +8,26 @@
 <section layout:fragment="content">
     <div th:include="fragments/users :: menu"/>
     <div class="wrapper">
-    <table class="table table-striped">
+    <table id="table" class="table table-striped table-hover">
         <thead>
         <tr>
             <th>Username</th>
+            <th>Status</th>
             <th>Email</th>
             <th>Last</th>
             <th>First</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:class="${!user.enabled} ? danger : default" th:each="user: ${allUsers}">
-            <td><a th:text="${user.username}" th:href="@{/gui/users/__${user.id}__}"></a></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.firstName}"></td>
+        <tr class="clickable-row" th:attr="data-href=${'/gui/users/' + user.id}"  th:each="user: ${allUsers}">
+            <td th:text="${user.username}"/>
+            <td>
+                <i th:if="${!user.enabled}" class="fa fa-toggle-off text-danger" aria-hidden="true"> Disabled</i>
+                <i th:if="${user.enabled}" class="fa fa-toggle-on text-success" aria-hidden="true"> Enabled</i>
+            </td>
+            <td th:text="${user.email}"/>
+            <td th:text="${user.lastName}"/>
+            <td th:text="${user.firstName}"/>
         </tr>
         </tbody>
     </table>
@@ -31,6 +36,7 @@
         </div>
     </div>
     <div th:include="fragments/users :: modal_create"/>
+    <div th:include="fragments/table :: clickable"/>
 </section>
 </body>
 </html>

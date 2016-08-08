@@ -1,8 +1,9 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserUpdate;
+import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.web.api.UserController;
 import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.util.Json;
@@ -33,17 +34,17 @@ public class UserControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdateProfile() throws Exception {
 
         User user = userService.get("user");
 
-        UserUpdate builder = new UserUpdate();
+        UserProfileUpdate builder = new UserProfileUpdate();
         builder.setEmail("test@test.com");
         builder.setFirstName("test123");
         builder.setLastName("456test");
 
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId())
+        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId() + "/_profile")
                 .session(session)
                 .content(Json.serialize(builder))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -107,7 +108,7 @@ public class UserControllerTests extends MockMvcTest {
         List<Permission> perms = userService.getPermissions(user);
         assertTrue(perms.size() > 0);
 
-        userService.setPermissions(user, userService.getPermission("group::superuser"));
+        userService.setPermissions(user, Lists.newArrayList(userService.getPermission("group::superuser")));
         perms.add(userService.getPermission("group::superuser"));
 
         MockHttpSession session = admin();

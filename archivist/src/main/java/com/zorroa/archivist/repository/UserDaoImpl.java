@@ -3,11 +3,12 @@ package com.zorroa.archivist.repository;
 import com.google.common.base.Preconditions;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.Room;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,6 +16,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -116,8 +118,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             "str_lastname");
 
     @Override
-    public boolean update(User user, UserUpdate builder) {
-        logger.info("{}", builder.getEmail());
+    public boolean update(User user, UserProfileUpdate builder) {
+        logger.info("updating user");
         return jdbc.update(UPDATE, builder.getEmail(), builder.getFirstName(),
                 builder.getLastName(), user.getId()) == 1;
     }
@@ -180,4 +182,71 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user", Integer.class);
     }
 
+
+    @Override
+    public boolean hasPermission(User user, Permission permission) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",
+                Integer.class, user.getId(), permission.getId()) == 1;
+    }
+
+    private static final String HAS_PERM =
+            "SELECT " +
+                "COUNT(1) " +
+            "FROM " +
+                "permission p,"+
+                "user_permission up " +
+            "WHERE " +
+                "p.pk_permission = up.pk_permission " +
+            "AND " +
+                "up.pk_user = ? " +
+            "AND " +
+                "p.str_name = ? " +
+            "AND " +
+                "p.str_type = ?";
+
+    @Override
+    public boolean hasPermission(User user, String type, String name) {
+        return jdbc.queryForObject(HAS_PERM, Integer.class, user.getId(), name, type) == 1;
+    }
+
+    private void clearPermissions(User user) {
+        /*
+         * Ensure the user's immutable permissions cannot be removed.
+         */
+        jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=0", user.getId());
+    }
+
+    @Override
+    public int setPermissions(User user, Collection<? extends Permission> perms) {
+        /*
+         * Does not remove immutable permissions.
+         */
+        clearPermissions(user);
+
+        int result = 0;
+        for (Permission p: perms) {
+            if (hasPermission(user, p)) {
+                continue;
+            }
+            jdbc.update("INSERT INTO user_permission (pk_permission, pk_user) VALUES (?,?)",
+                    p.getId(), user.getId());
+            result++;
+        }
+        return result;
+    }
+
+    @Override
+    public boolean addPermission(User user, Permission perm, boolean immutable) {
+        if (hasPermission(user, perm)) {
+            return false;
+        }
+        return jdbc.update("INSERT INTO user_permission (pk_permission, pk_user, bool_immutable) VALUES (?,?,?)",
+                perm.getId(), user.getId(), immutable) == 1;
+    }
+
+    @Override
+    public boolean removePermission(User user, Permission perm) {
+        return jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND pk_permission=? AND bool_immutable=0",
+                user.getId(), perm.getId()) == 1;
+    }
 }

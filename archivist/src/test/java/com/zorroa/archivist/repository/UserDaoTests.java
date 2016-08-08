@@ -1,10 +1,12 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.domain.UserUpdate;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.RoomBuilder;
 import com.zorroa.sdk.domain.Session;
@@ -22,6 +24,9 @@ public class UserDaoTests extends AbstractTest {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    PermissionDao permissionDao;
 
     @Autowired
     RoomDao roomDao;
@@ -102,7 +107,7 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        UserUpdate builder = new UserUpdate();
+        UserProfileUpdate builder = new UserProfileUpdate();
         builder.setFirstName("foo");
         builder.setLastName("bar");
         builder.setEmail("test@test.com");
@@ -141,4 +146,36 @@ public class UserDaoTests extends AbstractTest {
         assertEquals(1, users.size());
         assertTrue(users.contains(userDao.get(1)));
     }
+
+    @Test
+    public void testHasPermissionUningNames() {
+        assertFalse(userDao.hasPermission(user, "group", "manager"));
+        userDao.addPermission(user, permissionDao.get("group::manager"), false);
+        assertTrue(userDao.hasPermission(user, "group", "manager"));
+        assertFalse(userDao.hasPermission(user, "a", "b"));
+    }
+
+    @Test
+    public void testHasPermission() {
+        assertFalse(userDao.hasPermission(user, "group", "manager"));
+        userDao.addPermission(user, permissionDao.get("group::manager"), false);
+        assertTrue(userDao.hasPermission(user, permissionDao.get("group", "manager")));
+        assertFalse(userDao.hasPermission(user, permissionDao.get("group", "superuser")));
+    }
+
+    @Test
+    public void testAddPermission() {
+        userDao.addPermission(user, permissionDao.get("group::manager"), false);
+        List<Permission> perms = permissionDao.getAll(user);
+        assertTrue(perms.contains(permissionDao.get("group::manager")));
+    }
+
+    @Test
+    public void testSetPermissions() {
+        Permission p = permissionDao.get("group::manager");
+        assertEquals(1, userDao.setPermissions(user, Lists.newArrayList(p)));
+        List<Permission> perms = permissionDao.getAll(user);
+        assertTrue(perms.contains(p));
+    }
+
 }
