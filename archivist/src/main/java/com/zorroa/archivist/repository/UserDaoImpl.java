@@ -2,13 +2,13 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.Room;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

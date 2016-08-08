@@ -1,7 +1,6 @@
 package com.zorroa.archivist.domain;
 
 import com.zorroa.common.domain.EventLoggable;
-import com.zorroa.sdk.domain.Acl;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.Objects;

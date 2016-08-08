@@ -6,19 +6,18 @@ import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Color;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.ColorFilter;
-import com.zorroa.sdk.util.AssetUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,10 +40,10 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testSearchPermissionsMiss() throws IOException {
 
-        Permission perm = userService.createPermission(new PermissionBuilder("group", "test"));
+        Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
 
-        AssetUtils.setReadPermissions(source, Lists.newArrayList(perm));
+        SecurityUtils.setReadPermissions(source, Lists.newArrayList(perm));
         Asset asset1 = assetDao.index(source);
         refreshIndex(100);
 
@@ -56,13 +55,13 @@ public class SearchServiceTests extends AbstractTest {
     public void testSearchPermissionsHit() throws IOException {
         authenticate("admin");
 
-        Permission perm = userService.createPermission(new PermissionBuilder("group", "test"));
+        Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
         /*
          * Add a permission from the current user to the asset.
          */
-        AssetUtils.setReadPermissions(source, Lists.newArrayList(userService.getPermissions(SecurityUtils.getUser()).get(0)));
+        SecurityUtils.setReadPermissions(source, Lists.newArrayList(userService.getPermissions(SecurityUtils.getUser()).get(0)));
         Asset asset1 = assetDao.index(source);
         refreshIndex(100);
 

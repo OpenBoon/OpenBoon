@@ -2,12 +2,12 @@ package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
-import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.Session;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.slf4j.Logger;

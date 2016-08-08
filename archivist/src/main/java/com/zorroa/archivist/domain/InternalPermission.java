@@ -1,6 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.sdk.domain.Permission;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;

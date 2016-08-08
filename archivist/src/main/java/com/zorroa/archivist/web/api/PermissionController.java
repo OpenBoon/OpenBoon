@@ -5,8 +5,8 @@ package com.zorroa.archivist.web.api;
  */
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,7 +49,7 @@ public class PermissionController {
      * Create a new permission.
      */
     @RequestMapping(value="/api/v1/permissions", method= RequestMethod.POST)
-    public Permission create(@RequestBody PermissionBuilder builder) {
+    public Permission create(@RequestBody PermissionSpec builder) {
         return userService.createPermission(builder);
     }
 

@@ -2,11 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserProfileUpdate;
-import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.sdk.domain.Permission;
+import com.zorroa.archivist.domain.*;
 import org.junit.Test;
 
 import java.util.List;

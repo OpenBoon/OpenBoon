@@ -1,9 +1,9 @@
 package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.domain.InternalPermission;
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.service.UserService;
-import com.zorroa.sdk.domain.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;

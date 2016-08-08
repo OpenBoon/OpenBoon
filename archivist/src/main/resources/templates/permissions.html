@@ -9,20 +9,23 @@
 <section layout:fragment="content">
     <div th:include="fragments/permissions :: menu"/>
     <div class="wrapper">
-    <table id="table" class="table table-striped">
+    <table id="table" class="table table-striped table-hover">
         <thead>
         <tr>
-            <th>Name</th>
+            <th>ID</th>
             <th>Type</th>
+            <th>Name</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="perm: ${allPermissions}">
-            <td th:text="${perm.name}"></td>
+        <tr class="clickable-row" th:attr="data-href=${'/gui/permissions/' + perm.id}" th:each="perm: ${allPermissions}">
+            <td th:text="${perm.fullName}"></td>
             <td th:text="${perm.type}"></td>
+            <td th:text="${perm.name}"></td>
         </tr>
         </tbody>
     </table>
+    <div th:include="fragments/table :: clickable"/>
 </div>
 </section>
 

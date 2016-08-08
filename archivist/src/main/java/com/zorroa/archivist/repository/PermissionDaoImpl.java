@@ -3,9 +3,9 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.InternalPermission;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -28,7 +28,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
             "(" + StringUtils.repeat("?", ",", PermissionDao.PERMANENT_TYPES.size()) + ")";
 
     @Override
-    public Permission create(PermissionBuilder builder, boolean immutable) {
+    public Permission create(PermissionSpec builder, boolean immutable) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
@@ -80,9 +80,12 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
         return jdbc.queryForObject("SELECT * FROM permission WHERE str_type=? AND str_name=?", MAPPER, parts);
     }
 
+    public static String GET_ALL =
+            "SELECT * FROM permission WHERE str_type NOT IN " + PERM_FILTER;
+
     @Override
     public List<Permission> getAll() {
-        return jdbc.query("SELECT * FROM permission WHERE str_type NOT IN " + PERM_FILTER, MAPPER,
+        return jdbc.query(GET_ALL, MAPPER,
                 PermissionDao.PERMANENT_TYPES.toArray());
     }
 

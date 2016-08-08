@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
          * Create a permission for this specific user.
          */
         Permission userPerm = permissionDao.create(
-                new PermissionBuilder("user", builder.getUsername()), true);
+                new PermissionSpec("user", builder.getUsername()), true);
 
         /*
          * Get the permissions specified with the builder and add our
@@ -263,7 +263,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Permission createPermission(PermissionBuilder builder) {
+    public Permission createPermission(PermissionSpec builder) {
         Permission perm = permissionDao.create(builder, false);
         transactionEventManager.afterCommitSync(() -> {
             messagingService.broadcast(new Message("PERMISSION_CREATE", builder));

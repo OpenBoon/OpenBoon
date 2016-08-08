@@ -1,10 +1,10 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Before
     public void init() {
-        PermissionBuilder b = new PermissionBuilder("project", "avatar");
+        PermissionSpec b = new PermissionSpec("project", "avatar");
         b.setDescription("Access to the Avatar project");
         perm = permissionDao.create(b, false);
 
@@ -46,7 +46,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testCreate() {
-        PermissionBuilder b = new PermissionBuilder("group", "test");
+        PermissionSpec b = new PermissionSpec("group", "test");
         b.setDescription("test");
 
         Permission p = permissionDao.create(b, false);
@@ -56,7 +56,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testCreateImmutable() {
-        PermissionBuilder b = new PermissionBuilder("foo", "bar");
+        PermissionSpec b = new PermissionSpec("foo", "bar");
         b.setDescription("foo bar");
         Permission p = permissionDao.create(b, true);
         assertTrue(p.isImmutable());
@@ -130,7 +130,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        PermissionBuilder b = new PermissionBuilder("group", "test").setDescription("foo");
+        PermissionSpec b = new PermissionSpec("group", "test").setDescription("foo");
         Permission p = permissionDao.create(b, false);
         assertEquals("group", p.getType());
         assertEquals("test", p.getName());

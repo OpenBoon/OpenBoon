@@ -3,10 +3,10 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.sdk.domain.Access;
-import com.zorroa.sdk.domain.Acl;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 

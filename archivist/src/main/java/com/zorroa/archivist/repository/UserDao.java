@@ -1,11 +1,11 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.Permission;
 import com.zorroa.sdk.domain.Room;
 
 import java.util.Collection;

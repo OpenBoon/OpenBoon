@@ -2,10 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Access;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -99,7 +98,7 @@ public class FolderDaoTests extends AbstractTest {
         Folder folder1 = folderDao.create(builder);
         assertTrue(folderDao.hasAccess(folder1, Access.Read));
 
-        Permission p = userService.createPermission(new PermissionBuilder("group", "foo"));
+        Permission p = userService.createPermission(new PermissionSpec("group", "foo"));
         Acl acl = new Acl();
         acl.addEntry(p, Access.Read);
         folderDao.setAcl(folder1, acl);
@@ -112,7 +111,7 @@ public class FolderDaoTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("test");
         Folder folder1 = folderDao.create(builder);
 
-        Permission p = userService.createPermission(new PermissionBuilder("group","foo"));
+        Permission p = userService.createPermission(new PermissionSpec("group","foo"));
         folderDao.setAcl(folder1, new Acl().addEntry(p, Access.Read));
 
         Acl acl = folderDao.getAcl(folder1);

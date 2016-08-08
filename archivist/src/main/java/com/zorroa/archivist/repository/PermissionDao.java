@@ -1,9 +1,9 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableSet;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
 
 import java.util.List;
 import java.util.Set;
@@ -18,7 +18,7 @@ public interface PermissionDao {
      */
     Set<String> PERMANENT_TYPES = ImmutableSet.of("user", "internal");
 
-    Permission create(PermissionBuilder builder, boolean immutable);
+    Permission create(PermissionSpec builder, boolean immutable);
 
     Permission update(Permission permission);
 

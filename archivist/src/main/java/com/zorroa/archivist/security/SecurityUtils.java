@@ -2,11 +2,13 @@ package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.Acl;
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.sdk.domain.Access;
-import com.zorroa.sdk.domain.Acl;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.Permission;
+import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
@@ -126,4 +128,29 @@ public class SecurityUtils {
         result.add(part2);
         return result;
     }
+
+    public static void setWritePermissions(Source source, Collection<Permission> perms) {
+        PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
+        ps.getWrite().clear();
+        for (Permission p : perms) {
+            ps.getWrite().add(p.getId());
+        }
+    }
+
+    public static void setReadPermissions(Source source, Collection<Permission> perms) {
+        PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
+        ps.getRead().clear();
+        for (Permission p : perms) {
+            ps.getRead().add(p.getId());
+        }
+    }
+
+    public static void setExportPermissions(Source source, Collection<Permission> perms) {
+        PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
+        ps.getExport().clear();
+        for (Permission p : perms) {
+            ps.getExport().add(p.getId());
+        }
+    }
+
 }
