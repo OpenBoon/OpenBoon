@@ -6,7 +6,6 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
-import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;
 
@@ -18,7 +17,7 @@ import java.util.Set;
  */
 public interface SearchService {
     SearchResponse search(AssetSearch builder);
-    CountResponse count(AssetSearch builder);
+    long count(AssetSearch builder);
     SuggestResponse suggest(AssetSuggestBuilder builder);
     SearchResponse aggregate(AssetAggregateBuilder builder);
     Iterable<Asset> scanAndScroll(AssetSearch search);

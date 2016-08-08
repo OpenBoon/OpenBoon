@@ -115,8 +115,8 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v2/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String count(@RequestBody AssetSearch search) throws IOException {
-        return HttpUtils.countResponse(searchService.count(search));
+    public Object count(@RequestBody AssetSearch search) throws IOException {
+        return ImmutableMap.of("count", searchService.count(search));
     }
 
     @RequestMapping(value="/api/v2/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)

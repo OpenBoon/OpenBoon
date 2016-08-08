@@ -14,7 +14,6 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.exception.ArchivistException;
 import com.zorroa.sdk.search.*;
 import org.elasticsearch.action.count.CountRequestBuilder;
-import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -70,8 +69,8 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public CountResponse count(AssetSearch builder) {
-        return buildCount(builder).get();
+    public long count(AssetSearch builder) {
+        return buildCount(builder).get().getCount();
     }
 
     @Override
