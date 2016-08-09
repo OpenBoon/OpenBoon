@@ -127,7 +127,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private static final Pattern[] RECOVERABLE_BULK_ERRORS = new Pattern[] {
             Pattern.compile("^MapperParsingException\\[failed to parse \\[(.*?)\\]\\];"),
-            Pattern.compile("\"term in field=\"(.*?)\"\"")
+            Pattern.compile("\"term in field=\"(.*?)\"\""),
+            Pattern.compile("mapper \\[(.*?)\\] of different type")
     };
 
     private boolean removeBrokenField(AssetBuilder asset, String error) {
