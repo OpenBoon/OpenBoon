@@ -79,10 +79,14 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
         Folder folderOld = folderService.get(current.getFolderId());
         Folder folderNew = folderService.get(updated.getFolderId());
         if (folderOld != folderNew ) {
-            folderService.setDyHierarchyRoot(folderOld, false);
-            folderService.setDyHierarchyRoot(folderNew, true);
+            folderService.removeDyHierarchyRoot(folderOld, current.getLevel(0).getField());
         }
 
+        /*
+         * Even if the folder didn't change, we reset so the smart query
+         * gets updated.
+         */
+        folderService.setDyHierarchyRoot(folderNew, updated.getLevel(0).getField());
         /*
          * If this returns true, the dyhi was working, it should stop
          * pretty quickly.  Other transactions should be blocked at
@@ -110,7 +114,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
         if (dyHierarchyDao.delete(dyhi.getId())) {
             Folder folder = folderService.get(dyhi.getFolderId());
-            folderService.setDyHierarchyRoot(folder, false);
+            folderService.removeDyHierarchyRoot(folder, dyhi.getLevel(0).getField());
 
             if (dyHierarchyDao.setWorking(dyhi, false)) {
                 logger.info("DyHi {} was running, will wait on folders to be removed.");
@@ -125,9 +129,10 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     @Override
     @Transactional
     public DyHierarchy create(DyHierarchySpec spec) {
+
         Folder folder = folderService.get(spec.getFolderId());
         DyHierarchy dyhi = dyHierarchyDao.create(spec);
-        folderService.setDyHierarchyRoot(folder, true);
+        folderService.setDyHierarchyRoot(folder, spec.getLevels().get(0).getField());
 
         if (ArchivistConfiguration.unittest) {
             generate(dyhi);

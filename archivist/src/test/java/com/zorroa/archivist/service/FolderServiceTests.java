@@ -165,4 +165,28 @@ public class FolderServiceTests extends AbstractTest {
         }
         assertTrue(folderService.delete(root));
     }
+
+    @Test
+    public void setDyHierarchyTest() {
+        Folder folder = folderService.create(new FolderSpec("root"));
+        folderService.setDyHierarchyRoot(folder, "source.file");
+
+        folder = folderService.get(folder.getId());
+        assertTrue(folder.getSearch().getFilter().getExists().contains("source.file"));
+        assertTrue(folder.isDyhiRoot());
+    }
+
+    @Test
+    public void removeDyHierarchyTest() {
+        Folder folder = folderService.create(new FolderSpec("root"));
+        folderService.setDyHierarchyRoot(folder, "source.file");
+
+        folder = folderService.get(folder.getId());
+        assertTrue(folder.getSearch().getFilter().getExists().contains("source.file"));
+
+        folderService.removeDyHierarchyRoot(folder, "source.file");
+        folder = folderService.get(folder.getId());
+        assertFalse(folder.getSearch().getFilter().getExists().contains("source.file"));
+        assertFalse(folder.isDyhiRoot());
+    }
 }

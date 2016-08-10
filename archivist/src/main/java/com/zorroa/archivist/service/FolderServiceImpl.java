@@ -8,18 +8,15 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
-import com.zorroa.archivist.domain.Acl;
-import com.zorroa.archivist.domain.DyHierarchy;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AssetDao;
-import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.MessageType;
+import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +57,40 @@ public class FolderServiceImpl implements FolderService {
     @Autowired
     TransactionEventManager transactionEventManager;
 
+
     @Override
-    public boolean setDyHierarchyRoot(Folder folder, boolean value) {
-        return folderDao.setDyHierarchyRoot(folder, value);
+    public boolean removeDyHierarchyRoot(Folder folder, String attribute) {
+        // remove the old attribute.
+        AssetSearch search = folder.getSearch();
+        if (search != null) {
+            List<String> exists = search.getFilter().getExists();
+            if (exists != null) {
+                exists.remove(attribute);
+            }
+            folder.setSearch(search);
+            folderDao.update(folder.getId(), folder);
+        }
+        return folderDao.setDyHierarchyRoot(folder, false);
+    }
+
+    @Override
+    public boolean setDyHierarchyRoot(Folder folder, String attribute) {
+        /**
+         * Adds the first attribute to the exists query.  This augments the existing
+         * smart query on the folder.
+         */
+
+        AssetSearch search = folder.getSearch();
+        if (search == null) {
+            search = new AssetSearch();
+        }
+        List<String> exists = search.getFilter().getExists();
+        if (exists == null || !exists.contains(attribute)) {
+            search.getFilter().addToExists(attribute);
+        }
+        folder.setSearch(search);
+        folderDao.update(folder.getId(), folder);
+        return folderDao.setDyHierarchyRoot(folder, true);
     }
 
     @Override

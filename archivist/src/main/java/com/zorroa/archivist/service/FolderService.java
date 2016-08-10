@@ -60,7 +60,9 @@ public interface FolderService {
 
     Folder get(String path);
 
-    boolean setDyHierarchyRoot(Folder folder, boolean value);
+    boolean removeDyHierarchyRoot(Folder folder, String attribute);
+
+    boolean setDyHierarchyRoot(Folder folder, String attribute);
 
     void setAcl(Folder folder, Acl acl);
 

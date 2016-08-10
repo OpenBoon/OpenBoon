@@ -206,7 +206,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public boolean setDyHierarchyRoot(Folder folder, boolean value) {
-        return jdbc.update("UPDATE pk_folder SET bool_dyhi_root=? WHERE pk_folder=?", value, folder.getId()) == 1;
+        return jdbc.update("UPDATE folder SET bool_dyhi_root=? WHERE pk_folder=?", value, folder.getId()) == 1;
     }
 
     @Override
