@@ -35,6 +35,7 @@ def main():
 	shutil.copytree("%s/resources/config" % (os.path.dirname(__file__)), base_dir + "/config")
 	shutil.copytree("%s/resources/bin" % os.path.dirname(__file__), base_dir + "/bin")
 
+	os.mkdir("%s/plugins" % base_dir)
 	os.mkdir("%s/lib" % base_dir)
 	shutil.copy(jarFile, "%s/lib" % base_dir)
 
