@@ -83,8 +83,12 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         System.setProperty("server.address", addr);
 
         String existingUrl = properties.getString("server.url", null);
-        if (existingUrl == null) {
+        if (existingUrl != null) {
+            System.setProperty("server.url", existingUrl);
+        }
+        else {
             System.setProperty("server.url", url);
+
         }
         logger.info("External {} interface: {}", protocol, url);
         startAsync();
