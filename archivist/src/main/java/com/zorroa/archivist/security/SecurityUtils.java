@@ -2,10 +2,10 @@ package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.Access;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;

@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;

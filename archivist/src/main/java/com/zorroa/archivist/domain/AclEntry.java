@@ -1,7 +1,6 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.sdk.domain.Access;
 
 /**
  * An AclEntry define a permission and the access type for the permission.
