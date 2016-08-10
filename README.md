@@ -19,7 +19,7 @@ mvn clean install
 ### Server Build
 
 ```
-git@github.com:Zorroa/zorroa-server.git
+git clone git@github.com:Zorroa/zorroa-server.git
 cd zorroa-server
 git checkout plugin-refactor
 mvn clean install
