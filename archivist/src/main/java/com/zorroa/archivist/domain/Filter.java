@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import java.util.Objects;
+
 /**
  * Created by chambers on 8/9/16.
  */
@@ -44,5 +46,18 @@ public class Filter {
     public Filter setMatchAll(boolean matchAll) {
         this.matchAll = matchAll;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Filter filter = (Filter) o;
+        return getId() == filter.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

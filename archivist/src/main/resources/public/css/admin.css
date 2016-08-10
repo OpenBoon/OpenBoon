@@ -486,3 +486,13 @@
     text-align: center;
     background-color: transparent;
 }
+
+#contextMenu {
+    position: absolute;
+    display:none;
+}
+
+.panel-heading-sm{
+    height: 28px;
+    padding: 4px 10px;
+}

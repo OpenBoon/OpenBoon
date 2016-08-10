@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div th:include="fragments/filter :: menu"/>
+    <br/>
+    <div class="wrapper">
+        <div class="container-fluid">
+
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title">Create Filter</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Automatically update assets that match the given criterion.</p>
+                </div>
+                <div class="container-fluid">
+                    <form id="newFilter" class="form-horizontal" autocomplete="off" action="#" role="form" th:action="@{/gui/filters/new}" th:object="${newFilterForm}" method="post">
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('global')}">
+                            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10" style="vertical-align: middle;">
+                                <label for="description">Description:</label>
+                                <input type="text" th:field="*{description}" class="form-control" id="description" name="description" required="true"/>
+                                <div class="alert alert-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading-sm">
+                                <h5>Match Following Attributes
+                                    <button id="btn-plus-attr" type="button" class="btn btn-default btn-xs pull-right">
+                                        <span class="glyphicon glyphicon-plus"></span>Add Attribute</button>
+                                </h5>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="attr-list" class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-sm-10" style="vertical-align: middle;">
+                                        <label for="description">Match All</label>
+                                        <input type="checkbox" th:field="*{matchAll}" id="matchAll" name="matchAll" required="true" checked="true" value="1"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1">Attribute:</label>
+                                    <div class="col-sm-3">
+                                        <input name="attribute[0]" type="text" class="form-control"/>
+                                    </div>
+                                    <label class="col-sm-1">Op:</label>
+                                    <div class="col-sm-2">
+                                        <select name="op[0]" class="form-control">
+                                            <option value="equals">equals</option>
+                                            <option value="not equals">not equals</option>
+                                            <option value="exists">exists</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-1">Value:</label>
+                                    <div class="col-sm-3">
+                                        <input name="value[0]" type="text" class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading-sm">
+                                <h5> Apply Following Permissions
+                                    <button id="btn-plus-perm" type="button" class="btn btn-default btn-xs pull-right">
+                                        <span class="glyphicon glyphicon-plus"></span> Add Permission</button>
+                                </h5>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="perm-list" class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <select class="perm-select" th:field="*{perm}">
+                                            <option value="0">Select Permission</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <label class="checkbox-inline"><input id="read[0]" name="read" type="checkbox" value="1" checked="true"/>Read</label>
+                                        <label class="checkbox-inline"><input id="write[0]" name="write" type="checkbox" value="1"/>Modify</label>
+                                        <label class="checkbox-inline"><input id="export[0]" name="export" type="checkbox" value="1"/>Export</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-2">
+                            <button type="submit" class="btn btn-success">
+                                <span class="glyphicon glyphicon-save"></span> Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function() {
+
+            $('body').on('focus', '.perm-select', function() {
+                // If the select list is empty:
+                var select = $(this);
+                if ($(this).find("option").size() == 1) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/v1/permissions/_names',
+                        dataType: 'json',
+                        contentType: "application/json",
+                        success: function(result) {
+                            select.empty();
+                            $.each(result, function(i, item) {
+                                select.append("<option value=" + item + ">" + item + "</option>");
+                            });
+                            select.unbind('focus');
+                        },
+                        async: false
+                    });
+                }
+            });
+
+            $.getJSON("/api/v1/permissions/_names", function(result) {
+                $.each(result, function(item) {
+                    console.log(result[item]);
+                });
+            });
+
+            var ac = 0;
+            $(document).on('click','#btn-plus-attr',function() {
+                ac=ac+1;
+                $("#attr-list").append("<div class=\"form-group\">" +
+                        "<label class=\"col-sm-1\" for=\"attribute[" + ac + "]\">Attribute:</label> " +
+                        "<div class=\"col-sm-3\"><input name=\"attribute["  + ac + "]\" type=\"text\" class=\"form-control\"/>" +
+                        "</div>" +
+                        "<label class=\"col-sm-1\">Op:</label>"+
+                        "<div class=\"col-sm-2\">"+
+                        "<select name=\"op[" + ac + "]\" class=\"form-control\">"+
+                        "<option value=\"equals\">equals</option>"+
+                        "<option value=\"not equals\">not equals</option>"+
+                        "<option value=\"exists\">exists</option>"+
+                        "</select></div>"+
+                        "<label class=\"col-sm-1\" for=\"value[" + ac + "]\">Value:</label>" +
+                        "<div class=\"col-sm-3\">" +
+                        "<input name=\"value[" + ac + "]\" type=\"text\" class=\"form-control\"/>" +
+                        "</div></div>");
+            });
+
+            var pc = 0;
+            $(document).on('click','#btn-plus-perm',function() {
+                pc=pc+1;
+                $("#perm-list").append(
+                        "<div class=\"form-group\">"+
+                        "<div class=\"col-sm-2\">"+
+                        "<select class=\"perm-select\" name=\"perm[" + pc + "]\">"+
+                        "<option value=\"0\">Select Permission</option>"+
+                        "</select>"+
+                        "</div>"+
+                        "<div class=\"col-sm-10\">"+
+                        "<label class=\"checkbox-inline\"><input id=\"read[" + pc + "]\" name=\"read[" + pc + "]\" type=\"checkbox\" value=\"1\" checked=\"true\"/>Read</label>"+
+                        "<label class=\"checkbox-inline\"><input id=\"write[" + pc + "]\" name=\"write[" + pc + "]\" type=\"checkbox\" value=\"1\"/>Modify</label>"+
+                        "<label class=\"checkbox-inline\"><input id=\"export[" + pc + "]\" name=\"export[" + pc + "]\" type=\"checkbox\" value=\"1\"/>Export</label>"+
+                        "</div></div>"
+                );
+            });
+        });
+        //]]>
+    </script>
+
+</section>
+
+</body>
+</html>
