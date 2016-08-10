@@ -82,7 +82,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         url = protocol + "://" + addr + ":" + properties.getInt("server.port");
         System.setProperty("server.address", addr);
 
-        String existingUrl = System.getProperty("server.url");
+        String existingUrl = properties.getString("server.url", null);
         if (existingUrl == null) {
             System.setProperty("server.url", url);
         }
