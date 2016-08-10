@@ -33,7 +33,24 @@
             event.preventDefault();
         });
 </script>
-
 </div>
+
+<div th:fragment="context_menu">
+    <script th:inline="javascript" type="text/javascript">
+        var $contextMenu = $("#contextMenu");
+        $("body").on("contextmenu", "table tr", function(e) {
+            $contextMenu.css({
+                display: "block",
+                left: e.pageX,
+                top: e.pageY
+            });
+            return false;
+        });
+        $("body").on("click", function() {
+            $contextMenu.hide();
+        });
+    </script>
+</div>
+
 </body>
 </html>

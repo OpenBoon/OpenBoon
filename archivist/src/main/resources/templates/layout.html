@@ -46,29 +46,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span class="fa fa-bars fa-lg fa-fw" aria-hidden="true"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/gui"><i class="fa fa-dashboard fa-fw"> Overview</i></a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/gui/imports"><i class="fa fa-upload fa-fw"> Imports</i></a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/gui/ingests"><i class="fa fa-archive fa-fw"> Ingests</i></a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/gui/assets"><i class="fa fa-file-image-o fa-fw"> Assets</i></a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/gui/folders"><i class="fa fa-folder fa-fw"> Folders</i></a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/gui/plugins"><i class="fa fa-plug fa-fw"/> Plugins</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/gui/users"><i class="fa fa-user fa-fw"/> Users</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/gui/permissions"><i class="fa fa-lock fa-fw"/> Permissions</a></li>
-                        </ul>
-                    </li>
-                </ul>
                 <a class="navbar-brand" href="/gui" style="padding-left: 1px">Archivist</a>
             </div>
             <form class="navbar-form navbar-right" method="GET" action="/gui/assets" role="search">
@@ -77,6 +54,32 @@
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-gears fa-fw"/> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/gui/users"><i class="fa fa-user fa-fw"/> Users</a></li>
+                        <li><a href="/gui/permissions"><i class="fa fa-lock fa-fw"/> Permissions</a></li>
+                        <li><a href="/gui/filters"><i class="fa fa-filter fa-fw"/> Filters</a></li>
+                        <li><a href="/gui/plugins"><i class="fa fa-plug fa-fw"/> Plugins</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-image-o fa-fw"/> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/gui/assets"><i class="fa fa-file-image-o fa-fw"> Assets</i></a></li>
+                        <li><a href="/gui/folders"><i class="fa fa-folder fa-fw"></i> Folders</a></li>
+                        <li><a href="/gui/imports"><i class="fa fa-upload fa-fw"> Import</i></a></li>
+                        <li><a href="/gui/ingests"><i class="fa fa-archive fa-fw"> Ingest</i></a></li>
+                        <li><a href="/gui/exports"><i class="fa fa-download fa-fw"> Export</i></a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/gui"><i class="fa fa-dashboard fa-fw"></i></a></li>
+            </ul>
         </div>
         </div>
     </nav>
