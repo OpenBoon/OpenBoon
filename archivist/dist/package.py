@@ -19,7 +19,6 @@ def main():
 	parser.add_argument("--root", help="The base output directory.  Defaults to %s-<version> in the current directory." % app_name)
 	parser.add_argument("--rebuild", action="store_true", help="Rebuild the jar file");
 	parser.add_argument("--compress", action="store_true", help="Compress into a tar.gz file and remove the root directory")
-	parser.add_argument("--config", default="local", help="The default configuration set, 'local' or 'enterprise')");
 
 	args = parser.parse_args()
 
@@ -30,10 +29,10 @@ def main():
 	if args.root:
 		base_dir = args.root
 	else:
-		base_dir = "%s_%s-%s" % (app_name, args.config, get_version())
+		base_dir = "%s-%s" % (app_name, get_version())
 
 	cleanup(base_dir)
-	shutil.copytree("%s/resources/config-%s" % (os.path.dirname(__file__), args.config), base_dir + "/config")
+	shutil.copytree("%s/resources/config" % (os.path.dirname(__file__)), base_dir + "/config")
 	shutil.copytree("%s/resources/bin" % os.path.dirname(__file__), base_dir + "/bin")
 
 	os.mkdir("%s/lib" % base_dir)
