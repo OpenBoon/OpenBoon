@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import com.zorroa.archivist.repository.filters.Filter;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -90,9 +91,10 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public PagedList<Permission> getPaged(Paging page, Filter filter) {
+        filter.setOrderBy("str_type,str_name");
         return new PagedList(page.setTotalCount(count(filter)),
                 jdbc.query(filter.getQuery(
-                        GET_ALL.concat(" ORDER BY str_type, str_name"), page),
+                        GET_ALL, page),
                         MAPPER, filter.getValues(page)));
     }
 

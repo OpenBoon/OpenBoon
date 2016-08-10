@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.repository.filters.Filter;
 
 import java.util.Set;
 

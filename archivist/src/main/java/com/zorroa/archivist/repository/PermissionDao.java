@@ -1,9 +1,9 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.repository.filters.Filter;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 

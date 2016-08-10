@@ -2,9 +2,7 @@ package com.zorroa.archivist.web.gui;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.EventSearch;
@@ -112,21 +110,30 @@ public class IndexController {
         standardModel(model);
         model.addAttribute("page", paging);
         model.addAttribute("perms", userService.getPermissions(paging));
+        model.addAttribute("permSpec", new PermissionSpec());
         return "permissions";
+    }
+
+    @RequestMapping(value="/gui/permissions", method=RequestMethod.POST)
+    public String permissions(Model model, @ModelAttribute("permSpec") PermissionSpec permSpec,
+                              BindingResult bindingResult) {
+        standardModel(model);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", true);
+            return "permissions";
+        }
+        else {
+            userService.createPermission(permSpec);
+            return "redirect:/gui/permissions";
+        }
     }
 
     @RequestMapping("/gui/permissions/{id}")
     public String getPermission(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("perm", userService.getPermission(id));
+        model.addAttribute("permSpec", new PermissionSpec());
         return "permission";
-    }
-
-    @RequestMapping("/gui/permissions/{id}/auto")
-    public String getPermissionAuto(Model model, @PathVariable int id) {
-        standardModel(model);
-        model.addAttribute("perm", userService.getPermission(id));
-        return "permission_auto";
     }
 
     @RequestMapping("/gui/assets")

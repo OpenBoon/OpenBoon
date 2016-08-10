@@ -9,7 +9,6 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.Access;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.Session;

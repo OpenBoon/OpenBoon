@@ -1,95 +1,48 @@
 package com.zorroa.archivist.domain;
 
-import com.google.common.collect.Lists;
-import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.common.domain.Paging;
+/**
+ * Created by chambers on 8/9/16.
+ */
+public class Filter {
 
-import java.util.Arrays;
-import java.util.List;
+    private int id;
+    private boolean enabled;
+    private boolean matchAll;
+    private String description;
 
-public abstract class Filter {
-
-    private boolean built = false;
-    private String orderBy;
-    private String whereClause;
-
-    protected List<String> where = Lists.newArrayList();
-    protected List<Object> values = Lists.newArrayList();
-
-    public Filter() { }
-
-    public abstract void build();
-
-    public String getQuery(String base, Paging page) {
-        __build();
-        StringBuilder sb = new StringBuilder(1024);
-        sb.append(base);
-        sb.append(" ");
-        if (JdbcUtils.isValid(whereClause)) {
-            if (!base.contains("WHERE")) {
-                sb.append(" WHERE ");
-            }
-            sb.append(whereClause);
-        }
-
-        if (orderBy!=null) {
-            sb.append(" ORDER BY ");
-            sb.append(orderBy);
-        }
-
-        if (page != null) {
-            sb.append(" LIMIT ? OFFSET ?");
-        }
-
-        return sb.toString();
+    public int getId() {
+        return id;
     }
 
-    public String getCountQuery(String base) {
-        __build();
-
-        StringBuilder sb = new StringBuilder(1024);
-        sb.append("SELECT COUNT(1) FROM ");
-        sb.append(base.substring(base.indexOf("FROM") + 5));
-        if (JdbcUtils.isValid(whereClause)) {
-            if (!base.contains("WHERE")) {
-                sb.append(" WHERE ");
-            }
-            sb.append(whereClause);
-        }
-        return sb.toString();
+    public Filter setId(int id) {
+        this.id = id;
+        return this;
     }
 
-    public Object[] getValues() {
-        __build();
-        return values.toArray();
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public Object[] getValues(Paging page) {
-        __build();
-        Object[] result = Arrays.copyOf(values.toArray(), values.size()+2);
-        result[values.size()]= page.getSize();
-        result[values.size()+1]= page.getFrom();
-        return result;
+    public Filter setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 
-    public void __build() {
-        if (!built) {
-            build();
-            built = true;
-
-            if (JdbcUtils.isValid(where)) {
-                whereClause = String.join(" AND ", where);
-            }
-            where.clear();
-        }
+    public String getDescription() {
+        return description;
     }
 
-    public String getOrderBy() {
-        return orderBy;
+    public Filter setDescription(String description) {
+        this.description = description;
+        return this;
     }
 
-    public Filter setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
+    public boolean isMatchAll() {
+        return matchAll;
+    }
+
+    public Filter setMatchAll(boolean matchAll) {
+        this.matchAll = matchAll;
         return this;
     }
 }
