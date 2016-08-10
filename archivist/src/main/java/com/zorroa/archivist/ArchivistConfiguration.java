@@ -1,19 +1,13 @@
 package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.security.JdbcSessionRegistry;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
-import com.zorroa.common.elastic.ZorroaNode;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.filesystem.UUIDFileSystem;
 import com.zorroa.sdk.processor.SharedData;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.node.Node;
 import org.flywaydb.core.Flyway;
 import org.h2.server.web.WebServlet;
 import org.slf4j.Logger;
@@ -32,12 +26,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -48,19 +38,11 @@ public class ArchivistConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ArchivistConfiguration.class);
 
-    private String nodeName;
-    private String hostName;
-
     public static boolean unittest = false;
 
     @Autowired
     ApplicationProperties properties;
 
-    @PostConstruct
-    public void init() throws UnknownHostException {
-        hostName = InetAddress.getLocalHost().getHostName();
-        nodeName = String.format("%s_master", hostName);
-    }
 
     @Bean
     public ServletRegistrationBean h2servletRegistration() {
@@ -95,36 +77,6 @@ public class ArchivistConfiguration {
     }
 
     @Bean
-    public Client elastic() throws IOException {
-
-        org.elasticsearch.common.settings.Settings.Builder builder =
-                Settings.settingsBuilder()
-                .put("path.data", properties.getString("archivist.path.index"))
-                .put("path.home", properties.getString("archivist.path.home"))
-                .put("cluster.name", "zorroa")
-                .put("node.name", nodeName)
-                .put("client.transport.sniff", true)
-                .put("transport.tcp.port", properties.getInt("zorroa.cluster.index.port"))
-                .put("discovery.zen.ping.multicast.enabled", false)
-                .put("discovery.zen.fd.ping_timeout", "3s")
-                .put("discovery.zen.fd.ping_retries", 10)
-                .put("script.engine.groovy.indexed.update", true)
-                .put("node.data", properties.getBoolean("zorroa.cluster.index.data"))
-                .put("node.master", properties.getBoolean("zorroa.cluster.index.master"))
-                .put("path.plugins", "{path.home}/es-plugins");
-
-        if (unittest) {
-            builder.put("index.refresh_interval", "1s");
-            builder.put("index.translog.disable_flush", true);
-            builder.put("node.local", true);
-        }
-
-        Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
-        node.start();
-        return node.client();
-    }
-
-    @Bean
     public InfoEndpoint infoEndpoint() {
         final Map<String, Object> map = new LinkedHashMap<>();
         map.put("description", "Zorroa Archivist Server");
@@ -139,14 +91,6 @@ public class ArchivistConfiguration {
             }
         }
         return new InfoEndpoint(ImmutableMap.of("build", map));
-    }
-
-    public String getName() {
-        return nodeName;
-    }
-
-    public String getHostName() {
-        return hostName;
     }
 
     @Bean

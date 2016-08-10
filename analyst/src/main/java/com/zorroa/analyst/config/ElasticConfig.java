@@ -51,6 +51,7 @@ public class ElasticConfig {
                         .put("node.master", false)
                         .put("cluster.routing.allocation.disk.threshold_enabled", false)
                         .put("http.enabled", "false")
+                        .put("network.host", "0.0.0.0")
                         .put("discovery.zen.no_master_block", "write")
                         .put("discovery.zen.fd.ping_timeout", "3s")
                         .put("discovery.zen.fd.ping_retries", 10)
