@@ -79,17 +79,18 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         } catch (IOException e) {
             logger.warn("Failure determining local IP address", e);
         }
-        url = protocol + "://" + addr + ":" + properties.getInt("server.port");
-        System.setProperty("server.address", addr);
 
         String existingUrl = properties.getString("server.url", null);
         if (existingUrl != null) {
-            System.setProperty("server.url", existingUrl);
+            url = existingUrl;
         }
         else {
-            System.setProperty("server.url", url);
-
+            url = protocol + "://" + addr + ":" + properties.getInt("server.port");
         }
+
+        System.setProperty("server.url", url);
+        System.setProperty("server.address", addr);
+
         logger.info("External {} interface: {}", protocol, url);
         startAsync();
     }
