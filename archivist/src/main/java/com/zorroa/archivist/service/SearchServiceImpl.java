@@ -74,6 +74,20 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
+    public long count(Folder folder) {
+        AssetSearch search = folder.getSearch();
+        if (search != null && search.isValid()) {
+            search.getFilter().addToFolders(folder.getId());
+            return count(search);
+        }
+        else {
+            search = new AssetSearch();
+            search.getFilter().addToFolders(folder.getId());
+            return count(search);
+        }
+    }
+
+    @Override
     public SuggestResponse suggest(AssetSuggestBuilder builder) {
         return buildSuggest(builder).get();
     }

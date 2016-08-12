@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.api;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
@@ -46,6 +47,11 @@ public class FolderController {
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.GET)
     public Folder get(@PathVariable int id) {
         return folderService.get(id);
+    }
+
+    @RequestMapping(value="/api/v1/folders/{id}/_assetCount", method=RequestMethod.GET)
+    public Object countAssets(@PathVariable int id) {
+        return ImmutableMap.of("count", searchService.count(folderService.get(id)));
     }
 
     @RequestMapping(value="/api/v1/folders/_/**", method=RequestMethod.GET)

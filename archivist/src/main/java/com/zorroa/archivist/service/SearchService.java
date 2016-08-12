@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.Folder;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
@@ -18,6 +19,9 @@ import java.util.Set;
 public interface SearchService {
     SearchResponse search(AssetSearch builder);
     long count(AssetSearch builder);
+
+    long count(Folder folder);
+
     SuggestResponse suggest(AssetSuggestBuilder builder);
     SearchResponse aggregate(AssetAggregateBuilder builder);
     Iterable<Asset> scanAndScroll(AssetSearch search);
