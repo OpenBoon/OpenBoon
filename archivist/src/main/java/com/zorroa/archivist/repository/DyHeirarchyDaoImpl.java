@@ -6,6 +6,7 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.DyHierarchy;
 import com.zorroa.archivist.domain.DyHierarchyLevel;
 import com.zorroa.archivist.domain.DyHierarchySpec;
+import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
@@ -83,6 +84,11 @@ public class DyHeirarchyDaoImpl extends AbstractDao implements DyHierarchyDao {
     }
 
     @Override
+    public DyHierarchy get(Folder folder) {
+        return jdbc.queryForObject(GET.concat(" WHERE pk_folder=?"), MAPPER, folder.getId());
+    }
+
+    @Override
     public DyHierarchy refresh(DyHierarchy object) {
         return get(object.getId());
     }
@@ -107,7 +113,7 @@ public class DyHeirarchyDaoImpl extends AbstractDao implements DyHierarchyDao {
     @Override
     public boolean update(int id, DyHierarchy spec) {
         return jdbc.update(UPDATE, spec.getFolderId(), spec.getLevels().size(),
-                Json.serializeToString(spec.getLevels(), "[]")) == 1;
+                Json.serializeToString(spec.getLevels(), "[]"), id) == 1;
     }
 
     @Override
@@ -117,7 +123,7 @@ public class DyHeirarchyDaoImpl extends AbstractDao implements DyHierarchyDao {
 
     @Override
     public long count() {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM dyhi", Integer.class);
+        return jdbc.queryForObject("SELECT COUNT(1) FROM dyhi", Long.class);
     }
 
     @Override
