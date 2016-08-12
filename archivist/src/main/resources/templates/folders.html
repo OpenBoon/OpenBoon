@@ -19,14 +19,21 @@
                         <th>Name</th>
                         <th>Owner</th>
                         <th>Date</th>
+                        <th>Assets</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="clickable-row" th:attr="data-href=${'/gui/folders/' + child.id}" th:each="child: ${children}">
-                        <td width="1"><i class="fa fa-folder fa-fw fa-lg" style="color: #666"/></td>
+                    <tr th:id="${'row-' + child.id}" class="clickable-row" th:attr="data-href=${'/gui/folders/' + child.id}" th:each="child: ${children}">
+                        <td width="1">
+                            <i th:if="${child.dyhiRoot == false &amp;&amp; child.dyhiId == null}" class="fa fa-folder fa-fw fa-lg" style="color: #666"/>
+                            <i th:if="${child.dyhiRoot == false &amp;&amp; child.dyhiId != null}" class="fa fa-folder fa-fw fa-lg text-danger"/>
+                            <i th:if="${child.dyhiRoot} == true" class="fa fa-flash fa-fw fa-lg" style="color: #333"/>
+
+                        </td>
                         <td class="vert-align col-xs-6" th:text="${child.name}"/>
                         <td class="vert-align" th:text="${child.userCreated}"></td>
                         <td class="vert-align" th:text="${#dates.format(child.timeCreated, 'dd MMM yyyy')}"></td>
+                        <td class="td-asset-count"><i class="fa fa-spinner fa-spin fa-fw"></i></td>
                     </tr>
                     </tbody>
                 </table>
@@ -46,7 +53,7 @@
     </div>
     <div id="contextMenu" class="dropdown clearfix">
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
-            <li><a tabindex="-1" href="#">Action</a></li>
+            <li><a tabindex="-1" href="#">First action</a></li>
             <li><a tabindex="-1" href="#">Another action</a></li>
             <li><a tabindex="-1" href="#">Something else here</a></li>
             <li class="divider"></li>
@@ -54,11 +61,29 @@
         </ul>
     </div>
 
+    <div th:include="fragments/dyhi :: modal_create"/>
     <div th:include="fragments/folders :: modal_create"/>
     <div th:include="fragments/table :: clickable"/>
     <div th:include="fragments/table :: context_menu"/>
     <script th:inline="javascript" type="text/javascript">
-        $(document).ready(function(e) {
+        //<![CDATA[
+        $(function() {
+
+            $(".td-asset-count").each(function(index) {
+                var folderId = $(this).parent().attr("id").split("-")[1];
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/v1/folders/' + folderId + "/_assetCount",
+                    dataType: 'json',
+                    contentType: "application/json",
+                    column: $(this),
+                    success: function(result) {
+                        console.log(result["count"]);
+                        this.column.text(result["count"]);
+                    }
+                });
+            });
+
 
             var panel = $('#rightContent');
             var table = $('#leftContent');
@@ -82,7 +107,7 @@
                 return false;
             });
         });
-
+        //]]>
     </script>
 </section>
 </body>

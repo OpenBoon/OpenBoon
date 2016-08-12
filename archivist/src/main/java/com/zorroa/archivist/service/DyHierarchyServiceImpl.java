@@ -7,6 +7,7 @@ import com.google.common.collect.Queues;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.DyHierarchyDao;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.domain.Tuple;
@@ -37,7 +38,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * DyHierarchyServiceImpl is repsonsible for the generation of dynamic hierarchies.
+ * DyHierarchyServiceImpl is responsible for the generation of dynamic hierarchies.
  */
 @Service
 public class DyHierarchyServiceImpl implements DyHierarchyService {
@@ -86,7 +87,8 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
          * Even if the folder didn't change, we reset so the smart query
          * gets updated.
          */
-        folderService.setDyHierarchyRoot(folderNew, updated.getLevel(0).getField());
+        String field = updated.getLevel(0).getField();
+        folderService.setDyHierarchyRoot(folderNew, field);
         /*
          * If this returns true, the dyhi was working, it should stop
          * pretty quickly.  Other transactions should be blocked at
@@ -146,6 +148,16 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                     -> submitGenerate(dyhi));
         }
         return dyhi;
+    }
+
+    @Override
+    public DyHierarchy get(int id) {
+        return dyHierarchyDao.get(id);
+    }
+
+    @Override
+    public DyHierarchy get(Folder folder) {
+        return dyHierarchyDao.get(folder);
     }
 
     @Override
@@ -218,7 +230,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             queue.add(new Tuple(srb.get().getAggregations(), 0));
             createDynamicHierarchy(queue, folders);
 
-            logger.info("{} created {} folders", dyhi, folders.count);
+            logger.info("{} created by {}, {} folders", dyhi, SecurityUtils.getUsername(), folders.count);
             return folders.count;
         }
         finally {
@@ -243,6 +255,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             case Attr:
                 TermsBuilder terms = AggregationBuilders.terms(String.valueOf(idx));
                 terms.field(level.getField());
+                terms.size(1024);
                 return terms;
             case Year:
                 DateHistogramBuilder year = AggregationBuilders.dateHistogram(String.valueOf(idx));

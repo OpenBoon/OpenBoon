@@ -39,6 +39,7 @@
     <script th:inline="javascript" type="text/javascript">
         var $contextMenu = $("#contextMenu");
         $("body").on("contextmenu", "table tr", function(e) {
+            $contextMenu.data("selected", $(this).attr("id"));
             $contextMenu.css({
                 display: "block",
                 left: e.pageX,

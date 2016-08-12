@@ -1,8 +1,8 @@
 package com.zorroa.archivist.web.gui;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.EventSearch;
@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by chambers on 6/3/16.
@@ -156,56 +154,6 @@ public class IndexController {
         return "fields";
     }
 
-    @RequestMapping("/gui/folders")
-    public String folders(Model model) {
-        return "redirect:/gui/folders/"+ Folder.ROOT_ID;
-    }
-
-    @RequestMapping("/gui/folders/{id}")
-    public String folders(Model model, @PathVariable int id) {
-        standardModel(model);
-        folderModel(model, folderService.get(id));
-        model.addAttribute("folderSpec", new FolderSpec());
-        return "folders";
-    }
-
-    @RequestMapping(value="/gui/folders/{id}", method=RequestMethod.POST)
-    public String createFolder(Model model, @PathVariable int id,
-                          @Valid @ModelAttribute("folderSpec") FolderSpec folderSpec,
-                          BindingResult bindingResult) {
-        standardModel(model);
-        folderModel(model, folderService.get(id));
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", true);
-            return "folders";
-        }
-        else {
-            folderService.create(folderSpec);
-            return "redirect:/gui/folders/" + id;
-        }
-    }
-
-    private void folderModel(Model model, Folder folder) {
-        model.addAttribute("folder", folder);
-        model.addAttribute("children", folderService.getChildren(folder));
-
-        if (folder.getParentId() == null) {
-            model.addAttribute("parent", null);
-        }
-        else {
-            model.addAttribute("parent", folderService.get(folder.getParentId()));
-            List<Folder> path = Lists.newArrayList(folder);
-            Folder parent = folderService.get(folder.getParentId());
-            while (parent.getParentId() != null) {
-                path.add(parent);
-                parent = folderService.get(parent.getParentId());
-            }
-            Collections.reverse(path);
-            model.addAttribute("path", path);
-        }
-
-    }
 
     @RequestMapping("/gui/analysts")
     public String analysts(Model model,

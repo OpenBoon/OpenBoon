@@ -2,6 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.DyHierarchy;
 import com.zorroa.archivist.domain.DyHierarchySpec;
+import com.zorroa.archivist.domain.Folder;
 
 import java.util.concurrent.Future;
 
@@ -27,6 +28,10 @@ public interface DyHierarchyService {
      * @param agg
      */
     int generate(DyHierarchy agg);
+
+    DyHierarchy get(int id);
+
+    DyHierarchy get(Folder folder);
 
     /**
      * Generate all hierarchies.

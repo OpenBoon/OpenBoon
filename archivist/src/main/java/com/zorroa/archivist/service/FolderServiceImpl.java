@@ -60,16 +60,12 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder, String attribute) {
-        // remove the old attribute.
-        AssetSearch search = folder.getSearch();
-        if (search != null) {
-            List<String> exists = search.getFilter().getExists();
-            if (exists != null) {
-                exists.remove(attribute);
-            }
-            folder.setSearch(search);
-            folderDao.update(folder.getId(), folder);
-        }
+        /**
+         * TODO: blow away entire search until we have a way to
+         * save original search.
+         */
+        folder.setSearch(null);
+        folderDao.update(folder.getId(), folder);
         return folderDao.setDyHierarchyRoot(folder, false);
     }
 
@@ -88,6 +84,7 @@ public class FolderServiceImpl implements FolderService {
         if (exists == null || !exists.contains(attribute)) {
             search.getFilter().addToExists(attribute);
         }
+
         folder.setSearch(search);
         folderDao.update(folder.getId(), folder);
         return folderDao.setDyHierarchyRoot(folder, true);
