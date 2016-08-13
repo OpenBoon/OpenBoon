@@ -63,6 +63,12 @@
             <artifactId>elasticsearch</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.6</version>
+        </dependency>
+
         <!--
             The JTS Topology Suite is an API for modelling and manipulating 2-dimensional
             linear geometry. It provides numerous geometric predicates and functions.
