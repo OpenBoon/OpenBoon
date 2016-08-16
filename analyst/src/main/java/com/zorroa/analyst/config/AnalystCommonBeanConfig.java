@@ -1,7 +1,7 @@
 package com.zorroa.analyst.config;
 
+import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.CommonBeanConfig;
-import com.zorroa.sdk.client.archivist.ArchivistClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

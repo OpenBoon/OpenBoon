@@ -1,14 +1,14 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
+import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.repository.TaskDao;
-import com.zorroa.sdk.client.analyst.AnalystClient;
-import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.processor.Source;
+import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsReaction;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 import org.apache.http.HttpHost;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -53,6 +52,15 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
     @Autowired
     JobService jobService;
 
+    @Autowired
+    ApplicationProperties properties;
+
+    @Autowired
+    SharedData sharedData;
+
+    @Autowired
+    UserDao userDao;
+
     /**
      * Will be true if the scheduler is working.
      */
@@ -84,35 +92,15 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
     }
 
     @Override
-    public void react(ZpsReaction react) {
+    public void expand(ZpsScript script) {
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Reacting: {}", Json.prettyString(react));
+            logger.debug("Expanding: {}", Json.prettyString(script));
         }
 
-        if (react.getExpand() != null) {
-            for (ZpsScript script: react.getExpand()) {
-                jobService.createTask(script);
-            }
-            /*
-             * Queue a schedule, don't actually schedule.
-             */
-            if (!beingScheduled.get()) {
-                scheduleNow.execute(() -> schedule());
-            }
-        }
-
-        if (react.getResult() != null) {
-            for (Map.Entry<String, List<Source>> entry: react.getResult().entrySet()) {
-                if (entry.getKey().equals("import")) {
-                    AssetIndexResult result = assetService.index(entry.getKey(), entry.getValue());
-                    /**
-                     * TODO: add individual task counters as well.
-                     */
-                    jobService.updateStats(
-                            react.getJobId(), result.created, result.updated, result.errors, result.warnings);
-                }
-            }
+        jobService.createTask(script);
+        if (!beingScheduled.get()) {
+            scheduleNow.execute(() -> schedule());
         }
     }
 

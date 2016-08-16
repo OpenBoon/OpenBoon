@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.AnalystClient;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AnalystDao;
-import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.springframework.beans.factory.annotation.Autowired;

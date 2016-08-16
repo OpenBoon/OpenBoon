@@ -3,13 +3,12 @@ package com.zorroa.analyst.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.repository.EventLogDao;
-import com.zorroa.sdk.client.archivist.ArchivistClient;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsExecutor;
-import com.zorroa.sdk.zps.ZpsReaction;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +58,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
     @Override
     public void execute(ZpsScript script, Map<String,Object> args) {
+        script.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
 
         archivistClient.reportTaskRunning(script);
 
@@ -76,7 +76,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             logger.debug("running script with language: {}", lang);
             String[] command = createCommand(script, lang);
             logger.info("running command: {}", String.join(" ", command));
-            exit = runProcess(command);
+            exit = runProcess(command, script);
 
         } catch (Exception e) {
             // don't throw anything, just log
@@ -117,28 +117,29 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     }
 
     public String determineLanguagePlugin(ZpsScript script) {
-        /**
-         * TODO: support generators/reducers with multiple languages.
-         */
-
-        switch (script.getExecute()) {
-            case "generate":
-                return script.getGenerate().get(0).getLanguage();
-            case "pipeline":
-                if (script.getPipeline() == null || script.getPipeline().isEmpty()) {
-                    return "java";
-                }
-                else {
-                    return script.getPipeline().get(0).getLanguage();
-                }
-            default:
-                throw new RuntimeException("Invalid script execution: " + script.getExecute());
+        if (script.getExecute() != null && !script.getExecute().isEmpty()) {
+            return script.getExecute().get(0).getLanguage();
+        }
+        else {
+            return "java";
         }
     }
 
-    public int runProcess(String[] command) throws IOException {
+    public int runProcess(String[] command, ZpsScript script) throws IOException {
 
         ProcessBuilder builder = new ProcessBuilder(command);
+        /**
+         * Dump STDERR or the process to this log.
+         */
+        builder.redirectError(ProcessBuilder.Redirect.INHERIT);
+
+        if (script.getEnv() != null) {
+            Map<String,String> env = builder.environment();
+            for (Map.Entry<String, String> e: script.getEnv().entrySet()) {
+                env.put(e.getKey(), e.getValue());
+            }
+        }
+
         Process process = builder.start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
@@ -154,7 +155,6 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             }
             else if (buffer) {
                 sb.append(line);
-
             }
             else if (line.startsWith(ZpsExecutor.PREFIX)) {
                 buffer = true;
@@ -173,10 +173,10 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     }
 
     public void processBuffer(StringBuilder sb) {
-        ZpsReaction reaction = Json.deserialize(sb.toString(), ZpsReaction.class);
+        ZpsScript expand = Json.deserialize(sb.toString(), ZpsScript.class);
         if (logger.isDebugEnabled()) {
-            logger.debug("Reaction: {}", Json.prettyString(reaction));
+            logger.debug("Reaction: {}", Json.prettyString(expand));
         }
-        archivistClient.react(reaction);
+        archivistClient.expand(expand);
     }
 }
