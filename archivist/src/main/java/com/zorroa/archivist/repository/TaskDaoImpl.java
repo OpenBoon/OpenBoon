@@ -34,7 +34,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "int_state",
                 "json_script",
                 "int_order",
-                "str_execute",
                 "time_created",
                 "time_state_change");
 
@@ -62,9 +61,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             ps.setInt(3, TaskState.Waiting.ordinal());
             ps.setString(4, Json.serializeToString(script));
             ps.setInt(5, ORDER.getOrDefault(script.getExecute(), 10000));
-            ps.setString(6, "execute");
+            ps.setLong(6, time);
             ps.setLong(7, time);
-            ps.setLong(8, time);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -190,7 +188,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         task.setJobId(rs.getInt("pk_job"));
         task.setParentId(rs.getInt("pk_parent"));
         task.setExitStatus(rs.getInt("int_exit_status"));
-        task.setExecute(rs.getString("str_execute"));
         task.setHost(rs.getString("str_host"));
         task.setScript(rs.getString("json_script"));
         task.setState(TaskState.values()[rs.getInt("int_state")]);
@@ -212,7 +209,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "task.time_created,"+
             "task.time_state_change,"+
             "task.json_script,"+
-            "task.str_execute,"+
             "task.int_exit_status,"+
             "task.str_host " +
         "FROM " +
