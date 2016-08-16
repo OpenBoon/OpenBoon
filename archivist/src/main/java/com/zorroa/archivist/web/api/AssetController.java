@@ -9,7 +9,9 @@ import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.NoteService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.Note;
+import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
@@ -160,5 +162,10 @@ public class AssetController {
                 "assetId", id,
                 "version", version,
                 "source", attrs);
+    }
+
+    @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+    public AssetIndexResult index(@RequestBody List<Source> source) throws IOException {
+        return assetService.index(source);
     }
 }
