@@ -13,8 +13,6 @@ import com.zorroa.sdk.zps.ZpsJob;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -30,6 +28,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
 
     private static final String INSERT =
             JdbcUtils.insert("job",
+                    "pk_job",
                     "str_name",
                     "int_type",
                     "int_user_created",
@@ -41,24 +40,31 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         Preconditions.checkNotNull(script);
         Preconditions.checkNotNull(script.getName());
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        if (script.getJobId() == null) {
+            script.setJobId(nextId());
+        }
+
         jdbc.update(connection -> {
             PreparedStatement ps =
-                    connection.prepareStatement(INSERT, new String[]{"pk_job"});
-            ps.setString(1, script.getName());
-            ps.setInt(2, type.ordinal());
-            ps.setInt(3, SecurityUtils.getUser().getId());
-            ps.setLong(4, System.currentTimeMillis());
-            ps.setString(5, Json.serializeToString(script));
+                    connection.prepareStatement(INSERT);
+            ps.setInt(1, script.getJobId());
+            ps.setString(2, script.getName());
+            ps.setInt(3, type.ordinal());
+            ps.setInt(4, SecurityUtils.getUser().getId());
+            ps.setLong(5, System.currentTimeMillis());
+            ps.setString(6, Json.serializeToString(script));
             return ps;
-        }, keyHolder);
-        int id = keyHolder.getKey().intValue();
-        script.setJobId(id);
+        });
 
         // insert supporting tables.
-        jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", id);
-        jdbc.update("INSERT INTO job_count (pk_job) VALUES (?)", id);
+        jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", script.getJobId());
+        jdbc.update("INSERT INTO job_count (pk_job) VALUES (?)", script.getJobId());
         return script;
+    }
+
+    @Override
+    public int nextId() {
+        return jdbc.queryForObject("SELECT JOB_SEQ.nextval FROM dual", Integer.class);
     }
 
     private final RowMapper<Job> MAPPER = (rs, row) -> {

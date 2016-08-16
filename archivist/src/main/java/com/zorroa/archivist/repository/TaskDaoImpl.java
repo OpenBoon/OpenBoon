@@ -62,7 +62,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             ps.setInt(3, TaskState.Waiting.ordinal());
             ps.setString(4, Json.serializeToString(script));
             ps.setInt(5, ORDER.getOrDefault(script.getExecute(), 10000));
-            ps.setString(6, script.getExecute());
+            ps.setString(6, "execute");
             ps.setLong(7, time);
             ps.setLong(8, time);
             return ps;

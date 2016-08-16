@@ -12,6 +12,8 @@ import com.zorroa.sdk.zps.ZpsTask;
  */
 public interface JobDao {
 
+    int nextId();
+
     ZpsScript create(ZpsScript job, PipelineType type);
 
     Job get(int id);

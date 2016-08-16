@@ -1,10 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobFilter;
 import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
@@ -36,6 +38,9 @@ public class ImportServiceImpl implements ImportService {
     JobService jobService;
 
     @Autowired
+    JobDao jobDao;
+
+    @Autowired
     PipelineService pipelineService;
 
     @Autowired
@@ -50,7 +55,7 @@ public class ImportServiceImpl implements ImportService {
     public Job create(ImportSpec spec) {
 
         ZpsScript script = new ZpsScript();
-        script.setType("import");
+        script.setJobId(jobDao.nextId());
 
         if (spec.getName() == null) {
             script.setName(String.format("import by %s", SecurityUtils.getUsername()));
@@ -59,25 +64,38 @@ public class ImportServiceImpl implements ImportService {
             script.setName(String.format("import ", spec.getName()));
         }
 
+        /*
+         * Validate the processors
+         */
         List<ProcessorSpec> pipeline = Lists.newArrayList();
         if (spec.getPipelineId() != null) {
             for (ModuleRef m: pipelineService.get(spec.getPipelineId()).getProcessors()) {
                 Module module = pluginService.getModule(m.getName());
                 pipeline.add(module.getProcessorSpec(m.getArgs()));
             }
-            script.setPipeline(pipeline);
         }
+        pipeline.add(
+                new ProcessorSpec()
+                        .setClassName("com.zorroa.sdk.processor.builtin.IndexSource")
+                        .setLanguage("java")
+                        .setPlugin("builtin")
+                        .setArgs(ImmutableMap.of("importId", script.getJobId())));
 
         /**
-         * Look up the unresolved module from the plugin system.
+         * The pipeline is attached to the generator.
          */
         List<ProcessorSpec> generators = Lists.newArrayListWithCapacity(spec.getGenerators().size());
         for (ModuleRef m: spec.getGenerators()) {
             Module module = pluginService.getModule(m.getName());
+            ProcessorSpec generator = module.getProcessorSpec(m.getArgs());
+            generator.getArgs().put("pipeline", pipeline);
             generators.add(module.getProcessorSpec(m.getArgs()));
         }
-        script.setGenerate(generators);
 
+        /**
+         * The execute property holds the current processors to be executed.
+         */
+        script.setExecute(generators);
 
         jobService.launch(script, Import);
         Job job = jobService.get(script.getJobId());
