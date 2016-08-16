@@ -5,7 +5,6 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.sdk.processor.ProcessorSpec;
-import com.zorroa.sdk.zps.ZpsReaction;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,19 +40,18 @@ public class JobExecutorServiceTests extends AbstractTest {
         assertEquals(0, job.getCounts().getTasksQueued());
         assertEquals(0, job.getCounts().getTasksWaiting());
 
-        ZpsReaction react = ZpsReaction.react(script);
-        react.expand(new ZpsScript().setPipeline(ImmutableList.of(new ProcessorSpec()
+        ZpsScript expand = ZpsScript.copy(script);
+        expand.setExecute(ImmutableList.of(new ProcessorSpec()
                 .setClassName("foo")
                 .setLanguage("java")
-                .setPlugin("zorroa-core"))));
+                .setPlugin("zorroa-core")));
 
-        jobExecutorService.react(react);
+        jobExecutorService.expand(expand);
         job = jobService.get(zps.getJobId());
         assertEquals(1, job.getCounts().getTasksRunning());
         assertEquals(0, job.getCounts().getTasksQueued());
         assertEquals(1, job.getCounts().getTasksWaiting());
         assertEquals(2, job.getCounts().getTasksTotal());
         assertEquals(0, job.getCounts().getTasksCompleted());
-
     }
 }
