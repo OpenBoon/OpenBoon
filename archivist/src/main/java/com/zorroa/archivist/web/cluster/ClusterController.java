@@ -5,8 +5,8 @@ import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.repository.ClusterSettingsDao;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsReaction;
 import com.zorroa.sdk.zps.ZpsResult;
+import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +44,9 @@ public class ClusterController {
      *
      * @return
      */
-    @RequestMapping(value="/cluster/v1/task/_react", method=RequestMethod.POST)
-    public void react(@RequestBody ZpsReaction react) {
-        logger.info("react: {}", Json.prettyString(react));
-        jobExecutorService.react(react);
+    @RequestMapping(value="/cluster/v1/task/_expand", method=RequestMethod.POST)
+    public void expand(@RequestBody ZpsScript script) {
+        jobExecutorService.expand(script);
     }
 
     /**
@@ -56,7 +55,7 @@ public class ClusterController {
      * @return
      */
     @RequestMapping(value="/cluster/v1/task/_running", method=RequestMethod.POST)
-    public void running(@RequestBody ZpsReaction task) {
+    public void running(@RequestBody ZpsScript task) {
         jobService.setTaskState(task, TaskState.Running, TaskState.Queued);
     }
 
