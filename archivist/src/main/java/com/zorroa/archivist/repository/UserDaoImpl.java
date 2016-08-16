@@ -68,8 +68,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
                 "str_email, "+
                 "str_firstname, " +
                 "str_lastname, " +
-                "bool_enabled " +
-            ") VALUES (?,?,?,?,?,?)";
+                "bool_enabled, " +
+                "hmac_key " +
+            ") VALUES (?,?,?,?,?,?,?)";
 
     @Override
     public User create(UserSpec builder) {
@@ -87,6 +88,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setString(4, builder.getFirstName());
             ps.setString(5, builder.getLastName());
             ps.setBoolean(6, true);
+            ps.setObject(7, UUID.randomUUID());
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();

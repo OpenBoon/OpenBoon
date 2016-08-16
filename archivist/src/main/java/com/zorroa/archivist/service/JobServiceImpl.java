@@ -2,13 +2,17 @@ package com.zorroa.archivist.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.TaskDao;
+import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.zps.ZpsJob;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
@@ -17,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 /**
  * A service for creating and manipulating jobs.
@@ -42,6 +48,12 @@ public class JobServiceImpl implements JobService {
     @Autowired
     TransactionEventManager event;
 
+    @Autowired
+    SharedData sharedData;
+
+    @Autowired
+    UserDao userDao;
+
     /**
      * Creating a job creates both a job record and the initial task.
      *
@@ -53,6 +65,20 @@ public class JobServiceImpl implements JobService {
      */
     @Override
     public ZpsScript launch(ZpsScript job, PipelineType type) {
+        /**
+         * These environment varibles will be set on each task.
+         */
+        Map<String,String> env = Maps.newHashMap();
+
+        /**
+         * The path to the SSL cert needed for tasks to communicate back to archivist.
+         */
+        env.put("ZORROA_CERT_PATH",
+                sharedData.getRootPath().resolve("certs/truststore.p12").toString());
+        env.put("ZORROA_USER", SecurityUtils.getUsername());
+        env.put("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
+        job.setEnv(env);
+
         job = jobDao.create(job, type);
         job = createTask(job);
         final int id = job.getJobId();
