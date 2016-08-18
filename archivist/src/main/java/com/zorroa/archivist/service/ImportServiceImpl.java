@@ -61,8 +61,8 @@ public class ImportServiceImpl implements ImportService {
 
         List<ProcessorRef> pipeline = Lists.newArrayList();
         if (spec.getPipelineId() != null) {
-            for (ProcessorRef m: pipelineService.get(spec.getPipelineId()).getProcessors()) {
-                pipeline.add(m);
+            for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
+                pipeline.add(pluginService.getProcessorRef(ref));
             }
         }
         /**
@@ -80,7 +80,9 @@ public class ImportServiceImpl implements ImportService {
          */
         List<ProcessorRef> generators = Lists.newArrayListWithCapacity(spec.getGenerators().size());
         for (ProcessorRef m: spec.getGenerators()) {
-            generators.add(pluginService.getProcessorRef(m));
+            ProcessorRef gen = pluginService.getProcessorRef(m);
+            gen.setArg("pipeline", pipeline);
+            generators.add(gen);
         }
 
         /**
