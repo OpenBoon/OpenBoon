@@ -1,5 +1,9 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.base.MoreObjects;
+
+import java.util.Objects;
+
 /**
  * Created by chambers on 8/16/16.
  */
@@ -64,5 +68,27 @@ public class Plugin {
     public Plugin setLanguage(String language) {
         this.language = language;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Plugin plugin = (Plugin) o;
+        return getId() == plugin.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("name", name)
+                .add("version", version)
+                .toString();
     }
 }

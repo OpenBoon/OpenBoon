@@ -12,22 +12,24 @@
     <div class="container">
         <br/>
         <dl class="dl-horizontal">
-            <dt>Name:</dt>
-            <dd th:text="${module.name}"></dd>
             <dt>Class:</dt>
-            <dd th:text="${module.className}"></dd>
+            <dd th:text="${processor.name}"></dd>
+            <dt>Description:</dt>
+            <dd th:text="${processor.description}"></dd>
             <dt>Type:</dt>
-            <dd th:text="${module.type}"></dd>
+            <dd th:text="${processor.type}"></dd>
             <dt>Plugin:</dt>
-            <dd th:text="${module.plugin}"></dd>
+            <dd th:text="${processor.pluginName}"></dd>
             <dt>Version:</dt>
-            <dd th:text="${module.version}"></dd>
+            <dd th:text="${processor.pluginVersion}"></dd>
+            <dt>Language:</dt>
+            <dd th:text="${processor.pluginLanguage}"></dd>
         </dl>
     </div>
 
     <div th:fragment="display_props">
         <ul>
-            <div th:with="displays = ${module.display}"
+            <div th:with="displays = ${processor.display}"
                  th:include="fragments/display_props :: display_props"/>
         </ul>
     </div>

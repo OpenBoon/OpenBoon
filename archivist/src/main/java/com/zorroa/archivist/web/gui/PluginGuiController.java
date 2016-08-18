@@ -42,7 +42,7 @@ public class PluginGuiController {
 
         model.addAttribute("plugin", plugin);
         model.addAttribute("processor", pluginService.getProcessor(id));
-        return "module";
+        return "processor";
     }
 
     /**
