@@ -1,4 +1,4 @@
-package com.zorroa.archivist.repository.filters;
+package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
@@ -7,7 +7,7 @@ import com.zorroa.common.domain.Paging;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Filter {
+public abstract class DaoFilter {
 
     private boolean built = false;
     private String orderBy;
@@ -16,7 +16,7 @@ public abstract class Filter {
     protected List<String> where = Lists.newArrayList();
     protected List<Object> values = Lists.newArrayList();
 
-    public Filter() { }
+    public DaoFilter() { }
 
     public abstract void build();
 
@@ -88,7 +88,7 @@ public abstract class Filter {
         return orderBy;
     }
 
-    public Filter setOrderBy(String orderBy) {
+    public DaoFilter setOrderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
     }

@@ -1,14 +1,14 @@
 package com.zorroa.archivist.domain;
 
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.repository.filters.Filter;
+import com.zorroa.archivist.repository.DaoFilter;
 
 import java.util.Set;
 
 /**
  * Created by chambers on 8/8/16.
  */
-public class PermissionFilter extends Filter {
+public class PermissionFilter extends DaoFilter {
 
     public Boolean assignableToUser;
     public Boolean assignableToObj;
