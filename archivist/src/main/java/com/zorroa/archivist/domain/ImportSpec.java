@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class ImportSpec {
     private String name;
 
     @NotEmpty
-    private List<ModuleRef> generators;
+    private List<ProcessorRef> generators;
 
     /**
      * Attributes to manually assign.
@@ -30,7 +30,7 @@ public class ImportSpec {
     /**
      * A custom pipeline to run the assets through. Can be null.
      */
-    public List<ModuleRef> pipeline;
+    public List<ProcessorRef> pipeline;
 
     /**
      * Utilize a pre-existing pipline.
@@ -47,11 +47,11 @@ public class ImportSpec {
         return this;
     }
 
-    public List<ModuleRef> getPipeline() {
+    public List<ProcessorRef> getPipeline() {
         return pipeline;
     }
 
-    public ImportSpec setPipeline(List<ModuleRef> pipeline) {
+    public ImportSpec setPipeline(List<ProcessorRef> pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -83,11 +83,11 @@ public class ImportSpec {
         return this;
     }
 
-    public List<ModuleRef> getGenerators() {
+    public List<ProcessorRef> getGenerators() {
         return generators;
     }
 
-    public ImportSpec setGenerators(List<ModuleRef> generators) {
+    public ImportSpec setGenerators(List<ProcessorRef> generators) {
         this.generators = generators;
         return this;
     }

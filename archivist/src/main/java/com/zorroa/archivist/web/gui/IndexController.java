@@ -8,7 +8,7 @@ import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.EventSearch;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.EventLogDao;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -199,9 +199,9 @@ public class IndexController {
         spec.setPipelineId(ingestForm.getPipelineId());
 
         for (String path: ingestForm.getPaths()) {
-            ModuleRef gen = new ModuleRef("generator:zorroa-core:SharedVolume");
-            gen.setArg("path", path);
-            spec.addToGenerators(gen);
+            ProcessorRef ref = pluginService.getProcessorRef("com.zorroa.core.generator.FileSystemGenerator");
+            ref.setArg("path", path);
+            spec.addToGenerators(ref);
         }
 
         ingestService.create(spec);
@@ -214,29 +214,6 @@ public class IndexController {
         standardModel(model);
         model.addAttribute("pipelines", pipelineService.getAll());
         return "pipelines";
-    }
-
-    @RequestMapping("/gui/plugins")
-    public String plugins(Model model, @RequestParam(value="page", required=false) Integer page) {
-        standardModel(model);
-        model.addAttribute("plugins", pluginService.getPlugins(new Paging(page)));
-        return "plugins";
-    }
-
-    @RequestMapping("/gui/plugins/{name}")
-    public String plugins(Model model, @PathVariable String name) {
-        standardModel(model);
-        model.addAttribute("plugin", pluginService.get(name));
-        model.addAttribute("modules", pluginService.getModules(name));
-        return "plugin";
-    }
-
-    @RequestMapping("/gui/plugins/{name}/module/{id}")
-    public String plugins(Model model, @PathVariable String name, @PathVariable String id) {
-        standardModel(model);
-        model.addAttribute("plugin", pluginService.get(name));
-        model.addAttribute("module", pluginService.getModule(id));
-        return "module";
     }
 
     @RequestMapping("/gui/status")

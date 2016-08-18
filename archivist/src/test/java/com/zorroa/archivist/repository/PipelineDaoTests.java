@@ -3,11 +3,11 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Pipeline;
-import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class PipelineDaoTests extends AbstractTest {
     PipelineDao pipelineDao;
 
     Pipeline pipeline;
-    PipelineSpec spec;
+    PipelineSpecV spec;
 
     @Before
     public void init() {
-        spec = new PipelineSpec();
+        spec = new PipelineSpecV();
         spec.setType(PipelineType.Import);
         spec.setProcessors(Lists.newArrayList());
         spec.setName("Zorroa Test");
@@ -54,7 +54,7 @@ public class PipelineDaoTests extends AbstractTest {
         update.setName("foo");
         update.setDescription("foo bar");
         update.setType(PipelineType.Train);
-        update.setProcessors(Lists.newArrayList(new ModuleRef().setName("bar.Bing")));
+        update.setProcessors(Lists.newArrayList(new ProcessorRef().setClassName("bar.Bing")));
         assertTrue(pipelineDao.update(pipeline.getId(), update));
 
         pipeline = pipelineDao.refresh(pipeline);

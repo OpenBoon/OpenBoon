@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.Pipeline;
-import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.archivist.web.InvalidObjectException;
 import com.zorroa.common.domain.PagedList;
@@ -25,7 +25,7 @@ public class PipelineController {
     PipelineService pipelineService;
 
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.POST)
-    public Pipeline create(@Valid @RequestBody PipelineSpec spec, BindingResult valid) {
+    public Pipeline create(@Valid @RequestBody PipelineSpecV spec, BindingResult valid) {
         if (valid.hasErrors()) {
             throw new InvalidObjectException("Failed to create pipeline", valid);
         }

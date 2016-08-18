@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.domain.Schedule;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +50,9 @@ public class IngestDaoTests extends AbstractTest {
     public void testUpdate () {
         Ingest spec2 = new Ingest();
         spec2.setPipeline(Lists.newArrayList(
-                new ModuleRef("foo.Bar")));
+                new ProcessorRef("foo.Bar")));
         spec2.setGenerators(Lists.newArrayList(
-                new ModuleRef("bing.Bang")));
+                new ProcessorRef("bing.Bang")));
         spec2.setFolderId(1);
         spec2.setPipelineId(null);
         spec2.setName("Test");

@@ -2,17 +2,12 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.ImportSpec;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobFilter;
-import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.plugins.Module;
-import com.zorroa.sdk.plugins.ModuleRef;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,32 +59,28 @@ public class ImportServiceImpl implements ImportService {
             script.setName(String.format("import ", spec.getName()));
         }
 
-        /*
-         * Validate the processors
-         */
-        List<ProcessorSpec> pipeline = Lists.newArrayList();
+        List<ProcessorRef> pipeline = Lists.newArrayList();
         if (spec.getPipelineId() != null) {
-            for (ModuleRef m: pipelineService.get(spec.getPipelineId()).getProcessors()) {
-                Module module = pluginService.getModule(m.getName());
-                pipeline.add(module.getProcessorSpec(m.getArgs()));
+            for (ProcessorRef m: pipelineService.get(spec.getPipelineId()).getProcessors()) {
+                pipeline.add(m);
             }
         }
+        /**
+         * At the end we add an IndexSource processor.
+         */
         pipeline.add(
-                new ProcessorSpec()
+                new SdkProcessorRef()
                         .setClassName("com.zorroa.sdk.processor.builtin.IndexSource")
                         .setLanguage("java")
-                        .setPlugin("builtin")
                         .setArgs(ImmutableMap.of("importId", script.getJobId())));
 
         /**
-         * The pipeline is attached to the generator.
+         * Now attach the pipeline to each generator, be sure to validate each processor
+         * since they are coming from the user.
          */
-        List<ProcessorSpec> generators = Lists.newArrayListWithCapacity(spec.getGenerators().size());
-        for (ModuleRef m: spec.getGenerators()) {
-            Module module = pluginService.getModule(m.getName());
-            ProcessorSpec generator = module.getProcessorSpec(m.getArgs());
-            generator.getArgs().put("pipeline", pipeline);
-            generators.add(module.getProcessorSpec(m.getArgs()));
+        List<ProcessorRef> generators = Lists.newArrayListWithCapacity(spec.getGenerators().size());
+        for (ProcessorRef m: spec.getGenerators()) {
+            generators.add(pluginService.getProcessorRef(m));
         }
 
         /**

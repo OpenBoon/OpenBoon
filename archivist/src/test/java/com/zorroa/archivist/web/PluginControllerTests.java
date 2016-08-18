@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.sdk.plugins.Plugin;
+import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

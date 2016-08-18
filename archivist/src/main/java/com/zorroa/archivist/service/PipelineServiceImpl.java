@@ -1,13 +1,15 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Pipeline;
-import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class PipelineServiceImpl implements PipelineService {
     private static final Logger logger = LoggerFactory.getLogger(PipelineServiceImpl.class);
 
     @Autowired
+    PluginService pluginService;
+
+    @Autowired
     PipelineDao pipelineDao;
 
     @Autowired
@@ -40,7 +45,16 @@ public class PipelineServiceImpl implements PipelineService {
     TransactionEventManager event;
 
     @Override
-    public Pipeline create(PipelineSpec spec) {
+    public Pipeline create(PipelineSpecV spec) {
+        /**
+         * Each processor needs to be validated.
+         */
+        List<ProcessorRef> validated = Lists.newArrayList();
+        for (ProcessorRef ref: spec.getProcessors()) {
+            validated.add(pluginService.getProcessorRef(ref));
+        }
+        spec.setProcessors(validated);
+
         Pipeline p = pipelineDao.create(spec);
         event.afterCommit(()->
                 message.broadcast(new Message("PIPELINE_CREATE",

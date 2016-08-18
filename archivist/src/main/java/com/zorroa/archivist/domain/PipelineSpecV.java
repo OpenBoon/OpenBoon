@@ -1,17 +1,17 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.ImmutableList;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
-public class PipelineSpec {
+public class PipelineSpecV {
 
     @NotNull
-    private List<ModuleRef> processors = ImmutableList.of();
+    private List<ProcessorRef> processors = ImmutableList.of();
 
     @NotNull
     private PipelineType type;
@@ -23,11 +23,11 @@ public class PipelineSpec {
     @NotEmpty
     private String description;
 
-    public List<ModuleRef> getProcessors() {
+    public List<ProcessorRef> getProcessors() {
         return processors;
     }
 
-    public PipelineSpec setProcessors(List<ModuleRef> processors) {
+    public PipelineSpecV setProcessors(List<ProcessorRef> processors) {
         this.processors = processors;
         return this;
     }
@@ -36,7 +36,7 @@ public class PipelineSpec {
         return type;
     }
 
-    public PipelineSpec setType(PipelineType type) {
+    public PipelineSpecV setType(PipelineType type) {
         this.type = type;
         return this;
     }
@@ -45,7 +45,7 @@ public class PipelineSpec {
         return name;
     }
 
-    public PipelineSpec setName(String name) {
+    public PipelineSpecV setName(String name) {
         this.name = name;
         return this;
     }
@@ -54,7 +54,7 @@ public class PipelineSpec {
         return description;
     }
 
-    public PipelineSpec setDescription(String description) {
+    public PipelineSpecV setDescription(String description) {
         this.description = description;
         return this;
     }

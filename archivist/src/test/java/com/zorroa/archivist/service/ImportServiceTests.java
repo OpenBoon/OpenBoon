@@ -6,7 +6,8 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.PipelineType;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.archivist.domain.SdkProcessorRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +34,15 @@ public class ImportServiceTests extends AbstractTest {
     public void init() {
         pluginService.registerAllPlugins();
         ImportSpec spec = new ImportSpec();
-        spec.setGenerators(ImmutableList.of(new ModuleRef("generator:zorroa-test:TestGenerator",
-                ImmutableMap.of())));
+        spec.setGenerators(ImmutableList.of(
+                new SdkProcessorRef("com.zorroa.sdk.processors.builtin.NoOpProcessor")));
         job = importService.create(spec);
     }
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testCreateFailure() {
         ImportSpec spec = new ImportSpec();
-        spec.setGenerators(ImmutableList.of(new ModuleRef("foo-bar",
+        spec.setGenerators(ImmutableList.of(new ProcessorRef("foo-bar", "java",
                 ImmutableMap.of("paths", ImmutableList.of("/tmp/foo.jpg")))));
         job = importService.create(spec);
     }

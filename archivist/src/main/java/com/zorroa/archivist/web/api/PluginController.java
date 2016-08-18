@@ -1,11 +1,12 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.domain.Plugin;
+import com.zorroa.archivist.domain.Processor;
+import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.exception.PluginException;
-import com.zorroa.sdk.plugins.Module;
-import com.zorroa.sdk.plugins.Plugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,12 +45,13 @@ public class PluginController {
         }
     }
 
-    @RequestMapping(value="/api/v1/plugins/{plugin}/module/{type}", method=RequestMethod.GET)
-    public List<Module> modules(@PathVariable String plugin, @PathVariable String type) {
-        if (plugin.equals("_all")) {
-            return pluginService.getModules(null, type);
-        } else {
-            return pluginService.getModules(plugin, type);
+    @RequestMapping(value="/api/v1/processors", method=RequestMethod.GET)
+    public List<Processor> processors(@RequestBody(required = false) ProcessorFilter filter) {
+        if (filter == null) {
+            return pluginService.getAllProcessors();
+        }
+        else {
+            return pluginService.getAllProcessors(filter);
         }
     }
 }

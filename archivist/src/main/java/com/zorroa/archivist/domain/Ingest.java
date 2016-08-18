@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.zorroa.common.domain.EventLoggable;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -68,12 +68,12 @@ public class Ingest implements EventLoggable {
      * If a pipeline is not set then the Ingest can have its own set of
      * processors.
      */
-    private List<ModuleRef> pipeline;
+    private List<ProcessorRef> pipeline;
 
     /**
      * An array of Generator classes for finding files.
      */
-    private List<ModuleRef> generators;
+    private List<ProcessorRef> generators;
 
     public int getId() {
         return id;
@@ -156,20 +156,20 @@ public class Ingest implements EventLoggable {
         return this;
     }
 
-    public List<ModuleRef> getPipeline() {
+    public List<ProcessorRef> getPipeline() {
         return pipeline;
     }
 
-    public Ingest setPipeline(List<ModuleRef> pipeline) {
+    public Ingest setPipeline(List<ProcessorRef> pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
-    public List<ModuleRef> getGenerators() {
+    public List<ProcessorRef> getGenerators() {
         return generators;
     }
 
-    public Ingest setGenerators(List<ModuleRef> generators) {
+    public Ingest setGenerators(List<ProcessorRef> generators) {
         this.generators = generators;
         return this;
     }

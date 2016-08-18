@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,19 +17,10 @@ public class PluginServiceTests extends AbstractTest {
     @Autowired
     PluginService pluginService;
 
-    @Before
-    public void init() {
-
-    }
-
     @Test
     public void testInstallPlugin() throws IOException {
-
-        assertEquals(0, pluginService.getPlugins().size());
-
+        assertEquals(0, pluginService.getAllPlugins().size());
         pluginService.installPlugin(Paths.get("../unittest/resources/plugins/zorroa-test-plugin.zip"));
-        refreshIndex();
-
-        assertEquals(1, pluginService.getPlugins().size());
+        assertEquals(1, pluginService.getAllPlugins().size());
     }
 }

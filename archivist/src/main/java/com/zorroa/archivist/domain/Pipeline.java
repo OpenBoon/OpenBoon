@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.zorroa.common.domain.EventLoggable;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -25,7 +25,7 @@ public class Pipeline implements EventLoggable {
     private String description;
 
     @NotNull
-    private List<ModuleRef> processors;
+    private List<ProcessorRef> processors;
 
     public int getId() {
         return id;
@@ -54,11 +54,11 @@ public class Pipeline implements EventLoggable {
         return this;
     }
 
-    public List<ModuleRef> getProcessors() {
+    public List<ProcessorRef> getProcessors() {
         return processors;
     }
 
-    public Pipeline setProcessors(List<ModuleRef> processors) {
+    public Pipeline setProcessors(List<ProcessorRef> processors) {
         this.processors = processors;
         return this;
     }

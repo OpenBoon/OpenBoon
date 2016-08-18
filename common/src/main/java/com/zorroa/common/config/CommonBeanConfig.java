@@ -26,15 +26,5 @@ public class CommonBeanConfig {
     }
 
     @Bean
-    public PluginDao pluginDao() {
-        return new PluginDaoImpl();
-    }
-
-    @Bean
-    public ModuleDao moduleDao() {
-        return new ModuleDaoImpl();
-    }
-
-    @Bean
     public ClusterSettingsDao clusterConfigDao() { return new ClusterSettingsDaoImpl(); }
 }

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Pipeline;
-import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * Created by chambers on 7/7/16.
  */
 public interface PipelineService {
-    Pipeline create(PipelineSpec spec);
+    Pipeline create(PipelineSpecV spec);
 
     Pipeline get(int id);
 

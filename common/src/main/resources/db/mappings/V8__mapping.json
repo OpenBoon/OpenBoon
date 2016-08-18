@@ -89,38 +89,6 @@
         }
       }
     },
-    "module": {
-      "_all": {
-        "enabled": true
-      },
-      "dynamic": true,
-      "properties": {
-        "name": {
-          "type": "string",
-          "analyzer": "case_sensitive"
-        },
-        "className": {
-          "type": "string",
-          "analyzer": "package_analyzer"
-        },
-        "plugin": {
-          "type": "string",
-          "analyzer": "case_sensitive"
-        },
-        "language": {
-          "type": "string",
-          "analyzer": "case_sensitive"
-        },
-        "version": {
-          "type": "string",
-          "analyzer": "case_sensitive"
-        },
-        "type": {
-          "type": "string",
-          "analyzer": "case_sensitive"
-        }
-      }
-    },
     "analyst": {
       "_all": {
         "enabled": false

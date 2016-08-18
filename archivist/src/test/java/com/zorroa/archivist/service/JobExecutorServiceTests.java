@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.PipelineType;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +41,9 @@ public class JobExecutorServiceTests extends AbstractTest {
         assertEquals(0, job.getCounts().getTasksWaiting());
 
         ZpsScript expand = ZpsScript.copy(script);
-        expand.setExecute(ImmutableList.of(new ProcessorSpec()
+        expand.setExecute(ImmutableList.of(new ProcessorRef()
                 .setClassName("foo")
-                .setLanguage("java")
-                .setPlugin("zorroa-core")));
+                .setLanguage("java")));
 
         jobExecutorService.expand(expand);
         job = jobService.get(zps.getJobId());

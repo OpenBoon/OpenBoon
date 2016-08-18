@@ -2,7 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Pipeline;
-import com.zorroa.archivist.domain.PipelineSpec;
+import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.sdk.util.Json;
@@ -29,11 +29,11 @@ public class PipelineControllerTests extends MockMvcTest {
     PipelineDao pipelineDao;
 
     Pipeline pl;
-    PipelineSpec spec;
+    PipelineSpecV spec;
 
     @Before
     public void init() {
-        spec = new PipelineSpec();
+        spec = new PipelineSpecV();
         spec.setType(PipelineType.Import);
         spec.setProcessors(Lists.newArrayList());
         spec.setDescription("A test pipeline");
@@ -86,7 +86,7 @@ public class PipelineControllerTests extends MockMvcTest {
     public void testUpdate() throws Exception {
         pl = pipelineService.create(spec);
 
-        PipelineSpec spec2 = new PipelineSpec();
+        PipelineSpecV spec2 = new PipelineSpecV();
         spec2.setType(PipelineType.Update);
         spec2.setProcessors(Lists.newArrayList());
         spec2.setName("Rocky IV");

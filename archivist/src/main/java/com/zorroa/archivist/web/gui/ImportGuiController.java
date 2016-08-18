@@ -6,8 +6,9 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.ImportService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.archivist.service.PipelineService;
+import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,9 @@ public class ImportGuiController {
 
     @Autowired
     ImportService importService;
+
+    @Autowired
+    PluginService pluginService;
 
     @Autowired
     Validator validator;
@@ -79,19 +83,19 @@ public class ImportGuiController {
         ImportSpec spec = new ImportSpec();
         spec.setName("server import by " + SecurityUtils.getUsername());
         spec.setPipelineId(serverImportForm.getPipelineId());
-        List<ModuleRef> generators = Lists.newArrayList();
+        List<ProcessorRef> generators = Lists.newArrayList();
 
         /**
          * Make a bunch of generators based on the type of file.
          */
         List<String> filePaths = Lists.newArrayList();
-        ModuleRef fileGen = new ModuleRef("generator:zorroa-core:FileSet");
+        ProcessorRef fileGen = pluginService.getProcessorRef("com.zorroa.core.generator.FileListGenerator");
         fileGen.setArg("paths", filePaths);
 
         for (String path: serverImportForm.getPaths()) {
             File file = new File(path);
             if (file.isDirectory()) {
-                ModuleRef vol = new ModuleRef("generator:zorroa-core:DiskCrawler");
+                ProcessorRef vol = pluginService.getProcessorRef("com.zorroa.core.generator.FileSystemGenerator");
                 vol.setArg("path", FileUtils.normalize(path));
                 generators.add(vol);
             }
@@ -99,6 +103,7 @@ public class ImportGuiController {
                 filePaths.add(FileUtils.normalize(path));
             }
         }
+
         if (!filePaths.isEmpty()) {
             generators.add(fileGen);
         }

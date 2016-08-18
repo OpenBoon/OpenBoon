@@ -1,29 +1,26 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.domain.PipelineSpec;
-import com.zorroa.archivist.domain.PipelineType;
+import com.google.common.collect.Maps;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PipelineDao;
+import com.zorroa.archivist.repository.PluginDao;
+import com.zorroa.archivist.repository.ProcessorDao;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.common.repository.ModuleDao;
-import com.zorroa.common.repository.PluginDao;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.exception.PluginException;
 import com.zorroa.sdk.plugins.*;
+import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.StringUtils;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +35,7 @@ import java.util.Map;
  * Responsible for installing and registering plugins with elastic.
  */
 @Service
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@Transactional
 public class PluginServiceImpl implements PluginService {
 
     private static final Logger logger = LoggerFactory.getLogger(PluginServiceImpl.class);
@@ -50,11 +47,10 @@ public class PluginServiceImpl implements PluginService {
     PluginDao pluginDao;
 
     @Autowired
-    ModuleDao moduleDao;
+    ProcessorDao processorDao;
 
     @Autowired
     PipelineDao pipelineDao;
-
 
     @Autowired
     Client client;
@@ -100,9 +96,9 @@ public class PluginServiceImpl implements PluginService {
             try {
                 Files.copy(file.getInputStream(), dst);
                 Path pluginPath = pluginInstaller.unpackPluginPackage(dst);
-                Plugin plugin = pluginLoader.loadPlugin(pluginPath);
+                PluginSpec plugin = pluginLoader.loadPlugin(pluginPath);
                 installPlugin(plugin);
-                return plugin;
+                return pluginDao.get(plugin.getName());
 
             } catch (Exception e) {
                 throw new PluginException("Failed to install plugin, " + e.getMessage(), e);
@@ -121,93 +117,66 @@ public class PluginServiceImpl implements PluginService {
             try {
                 Files.copy(zipFilePath, dst);
                 Path pluginPath = pluginInstaller.unpackPluginPackage(dst);
-                Plugin plugin = pluginLoader.loadPlugin(pluginPath);
+                PluginSpec plugin = pluginLoader.loadPlugin(pluginPath);
                 installPlugin(plugin);
-                return plugin;
+                return pluginDao.get(plugin.getName());
             } catch (Exception e) {
                 throw new PluginException("Failed to install plugin, " + e.getMessage(), e);
             }
         }
     }
 
-    private void installPlugin(Plugin p) {
+    private void installPlugin(PluginSpec spec) {
+        boolean newOrChanged = false;
 
-        BulkRequestBuilder bulkRequest = client.prepareBulk();
-        Map<String, Object> pluginDoc = getPluginRecord(p);
-
-        bulkRequest.add(
-                client.prepareUpdate(alias, "plugin", p.getName())
-                        .setDoc(pluginDoc)
-                        .setUpsert(pluginDoc));
-
-        for (Module module: p.getModules()) {
-            Map<String, Object> procDoc = getModuleRecord(p, module);
-            String id = moduleId(module.getType(), p.getName(), module.getName());
-            bulkRequest.add(
-                    client.prepareUpdate(alias, "module", id)
-                            .setDoc(procDoc).setUpsert(procDoc));
+        Plugin plugin;
+        try {
+            plugin = pluginDao.get(spec.getName());
+            if (!plugin.getVersion().equals(spec.getVersion())) {
+                newOrChanged = true;
+                pluginDao.update(plugin.getId(), spec);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            newOrChanged = true;
+            plugin = pluginDao.create(spec);
         }
 
-        BulkResponse bulk = bulkRequest.get();
-        if (bulk.hasFailures()) {
-            throw new PluginException("Unable to register plugin with database, " +
-                    bulk.buildFailureMessage());
+        /**
+         * If the plugin is a new version or just a new plugin then we register
+         * the other stuff.
+         *
+         * READ: On version up, existing entities created by a plugin are DELETED.
+         * TODO: Save old entities as .old?
+         */
+        if (newOrChanged) {
+            registerProcessors(plugin, spec);
+            registerPipelines(plugin, spec);
         }
-
-        // Register other data.
-        registerPipelines(p);
     }
 
-    public void registerPipelines(Plugin p) {
-        if (p.getPipelines() == null) {
+    public void registerPipelines(Plugin p, PluginSpec spec) {
+        if (spec.getPipelines() == null) {
             return;
         }
-        for (Pipeline pl: p.getPipelines()) {
+
+        for (PipelineSpec pl: spec.getPipelines()) {
+            Pipeline pipeline;
             try {
-                pipelineDao.create(new PipelineSpec()
-                        .setName(pl.getName())
-                        .setDescription(pl.getDescription())
-                        .setProcessors(pl.getProcessors())
-                        .setType(PipelineType.valueOf(StringUtils.capitalize(pl.getType()))));
-                logger.info("registering pipeline: {}", pl.getName());
-            } catch (DuplicateKeyException e) {
-                // catch the duplicates
+                // remove the old one
+                pipeline = pipelineDao.get(pl.getName());
+                pipelineDao.delete(pipeline.getId());
             }
+            catch (EmptyResultDataAccessException e) {
+                // ignore
+            }
+
+            pipelineDao.create(new PipelineSpecV()
+                    .setName(pl.getName())
+                    .setDescription(pl.getDescription())
+                    .setProcessors(pl.getProcessors())
+                    .setType(PipelineType.valueOf(StringUtils.capitalize(pl.getType()))));
+            logger.info("registering pipeline: {}", pl.getName());
         }
-    }
-
-    @Override
-    public PagedList<Plugin> getPlugins(Paging page) {
-        return pluginDao.getAll(page);
-    }
-
-    @Override
-    public List<Plugin> getPlugins() {
-        return pluginDao.getAll();
-    }
-
-    @Override
-    public Plugin get(String name) {
-        return pluginDao.get(name);
-    }
-
-    @Override
-    public List<Module> getModules(String plugin) {
-        return moduleDao.getAll(plugin);
-    }
-
-    @Override
-    public List<Module> getModules(String plugin, String type) {
-        return moduleDao.getAll(plugin, type);
-    }
-
-    @Override
-    public Module getModule(String id) {
-        return moduleDao.get(id);
-    }
-    @Override
-    public List<Module> getModules() {
-        return moduleDao.getAll();
     }
 
     @Override
@@ -216,57 +185,106 @@ public class PluginServiceImpl implements PluginService {
         pluginInstaller.installAllPlugins(
                 properties.getString("archivist.path.pluginSearchPath").split(":"));
 
-        BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (Plugin p: pluginLoader.getPlugins()) {
-            Map<String, Object> pluginDoc = getPluginRecord(p);
-            bulkRequest.add(
-                    client.prepareUpdate(alias, "plugin", p.getName())
-                            .setDoc(pluginDoc)
-                            .setUpsert(pluginDoc));
-
-            for (Module module: p.getModules()) {
-                Map<String, Object> procDoc = getModuleRecord(p, module);
-                String id = moduleId(module.getType(), p.getName(), module.getName());
-                bulkRequest.add(
-                        client.prepareUpdate(alias, "module", id)
-                                .setDoc(procDoc).setUpsert(procDoc));
-            }
-
-            registerPipelines(p);
+        for (PluginSpec spec: pluginLoader.getPlugins()) {
+            installPlugin(spec);
         }
+    }
 
-        logger.info("Registering {} plugin modules", bulkRequest.numberOfActions());
-        if (bulkRequest.numberOfActions() == 0) {
+    public void registerProcessors(Plugin plugin, PluginSpec pspec) {
+        if (pspec.getProcessors() == null || pspec.getProcessors().isEmpty()) {
             return;
         }
-        BulkResponse bulk = bulkRequest.get();
-        if (bulk.hasFailures()) {
-            throw new PluginException("Unable to register plugin with database, " +
-                    bulk.buildFailureMessage());
+        for (ProcessorSpec spec: pspec.getProcessors()) {
+
+            Processor proc;
+            try {
+                proc = processorDao.get(pspec.getName());
+                processorDao.delete(proc.getId());
+            }
+            catch (EmptyResultDataAccessException e) {
+                // ignore
+            }
+
+            processorDao.create(plugin, spec);
         }
     }
 
-    private static String moduleId(String t, String p, String n) {
-        return String.join(":", t, p, n).replace(" ", "");
+    /*
+     * -------------------------------------------------------------------------------------------
+     */
+
+    @Override
+    public PagedList<Plugin> getAllPlugins(Paging page) {
+        return pluginDao.getAll(page);
     }
 
-    private Map<String, Object> getModuleRecord(Plugin p, Module module) {
-        return ImmutableMap.<String,Object>builder()
-                .put("plugin", p.getName())
-                .put("language", p.getLanguage())
-                .put("version",p.getVersion())
-                .put("className", module.getClassName())
-                .put("name", module.getName())
-                .put("type", module.getType())
-                .put("display", module.getDisplay()).build();
+    @Override
+    public List<Plugin> getAllPlugins() {
+        return pluginDao.getAll();
     }
 
-    private Map<String, Object> getPluginRecord(Plugin p) {
-        return ImmutableMap.of(
-                "name", p.getName(),
-                "language", p.getLanguage(),
-                "version",p.getVersion(),
-                "description",p.getDescription(),
-                "publisher",p.getPublisher());
+    @Override
+    public Plugin getPlugin(String name) {
+        return pluginDao.get(name);
+    }
+
+    @Override
+    public Plugin getPlugin(int id) {
+        return pluginDao.get(id);
+    }
+
+    @Override
+    public List<Processor> getAllProcessors(Plugin plugin) {
+        return processorDao.getAll(plugin);
+    }
+
+    @Override
+    public Processor getProcessor(int id) {
+        return processorDao.get(id);
+    }
+
+    private static final String BUILT_IN_PACKAGE =
+            "com.zorroa.sdk.processors.builtin.";
+
+    @Override
+    public ProcessorRef getProcessorRef(String name, Map<String, Object> args) {
+        if (name.startsWith(BUILT_IN_PACKAGE)) {
+            return new SdkProcessorRef(name, args);
+        }
+        return processorDao.getRef(name).setArgs(args);
+    }
+
+    @Override
+    public ProcessorRef getProcessorRef(String name) {
+        if (name.startsWith(BUILT_IN_PACKAGE)) {
+            return new SdkProcessorRef(name);
+        }
+        return processorDao.getRef(name).setArgs(Maps.newHashMap());
+    }
+
+    @Override
+    public ProcessorRef getProcessorRef(ProcessorRef ref) {
+        if (ref.getClassName().startsWith(BUILT_IN_PACKAGE)) {
+            return new SdkProcessorRef(ref.getClassName(), ref.getArgs());
+        }
+        if (SdkProcessorRef.class.isAssignableFrom(ref.getClass())) {
+            return ref;
+        }
+        return processorDao.getRef(ref.getClassName()).setArgs(ref.getArgs());
+    }
+
+    @Override
+    public List<Processor> getAllProcessors(ProcessorFilter filter) {
+        return processorDao.getAll(filter);
+    }
+
+    @Override
+    public Processor getProcessor(String name) {
+        return processorDao.get(name);
+    }
+
+    @Override
+    public List<Processor> getAllProcessors() {
+        return processorDao.getAll();
     }
 }

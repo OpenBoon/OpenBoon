@@ -5,7 +5,7 @@ package com.zorroa.archivist.domain;
  */
 
 import com.google.common.collect.Lists;
-import com.zorroa.sdk.plugins.ModuleRef;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -52,13 +52,13 @@ public class IngestSpec {
      * If a pipeline is not set then the Ingest can have its own set of
      * processors.
      */
-    private List<ModuleRef> pipeline;
+    private List<ProcessorRef> pipeline;
 
     /**
      * An array of Generator classes for finding files.
      */
     @NotNull
-    private List<ModuleRef> generators;
+    private List<ProcessorRef> generators;
 
     public Integer getFolderId() {
         return folderId;
@@ -114,25 +114,25 @@ public class IngestSpec {
         return this;
     }
 
-    public List<ModuleRef> getPipeline() {
+    public List<ProcessorRef> getPipeline() {
         return pipeline;
     }
 
-    public IngestSpec setPipeline(List<ModuleRef> pipeline) {
+    public IngestSpec setPipeline(List<ProcessorRef> pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
-    public List<ModuleRef> getGenerators() {
+    public List<ProcessorRef> getGenerators() {
         return generators;
     }
 
-    public IngestSpec setGenerators(List<ModuleRef> generators) {
+    public IngestSpec setGenerators(List<ProcessorRef> generators) {
         this.generators = generators;
         return this;
     }
 
-    public IngestSpec addToGenerators(ModuleRef generator) {
+    public IngestSpec addToGenerators(ProcessorRef generator) {
         if (this.generators == null) {
             this.generators = Lists.newArrayList();
         }
