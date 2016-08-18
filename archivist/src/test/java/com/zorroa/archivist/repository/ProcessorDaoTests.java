@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.sdk.plugins.PluginSpec;
 import com.zorroa.sdk.plugins.ProcessorSpec;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,6 @@ public class ProcessorDaoTests extends AbstractTest {
         spec.setName("test");
         spec.setVersion("1.0");
         spec.setPublisher("Zorroa Corp 2016");
-
-        logger.info("plugin: {}", pluginDao);
         plugin = pluginDao.create(spec);
 
         pspec = new ProcessorSpec();
@@ -52,6 +51,7 @@ public class ProcessorDaoTests extends AbstractTest {
 
         proc = processorDao.create(plugin, pspec);
     }
+
 
     public void validate(ProcessorSpec spec, Processor pr) {
 
@@ -66,6 +66,13 @@ public class ProcessorDaoTests extends AbstractTest {
         assertEquals(plugin.getName(), pr.getPluginName());
         assertEquals(plugin.getVersion(), pr.getPluginVersion());
         assertEquals(plugin.getLanguage(), pr.getPluginLanguage());
+    }
+
+    @Test
+    public void testGetRef() {
+        ProcessorRef ref = processorDao.getRef("com.foo.Bar");
+        assertEquals("java", ref.getLanguage());
+        assertEquals("com.foo.Bar", ref.getClassName());
     }
 
     @Test

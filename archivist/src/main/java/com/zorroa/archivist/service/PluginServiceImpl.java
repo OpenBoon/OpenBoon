@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Responsible for installing and registering plugins with elastic.
@@ -170,10 +171,14 @@ public class PluginServiceImpl implements PluginService {
                 // ignore
             }
 
+            /**
+             * Update the pipeline and validate the processors.
+             */
             pipelineDao.create(new PipelineSpecV()
                     .setName(pl.getName())
                     .setDescription(pl.getDescription())
-                    .setProcessors(pl.getProcessors())
+                    .setProcessors(pl.getProcessors().stream().map(
+                            ref->getProcessorRef(ref)).collect(Collectors.toList()))
                     .setType(PipelineType.valueOf(StringUtils.capitalize(pl.getType()))));
         }
     }

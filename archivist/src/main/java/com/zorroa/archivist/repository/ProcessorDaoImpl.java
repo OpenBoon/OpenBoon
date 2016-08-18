@@ -167,7 +167,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
     private static final RowMapper<ProcessorRef> REF_MAPPER = (rs, row) -> {
         ProcessorRef ref = new ProcessorRef();
         ref.setClassName(rs.getString("str_name"));
-        ref.setLanguage(rs.getString("str_lang"));
+        ref.setLanguage(rs.getString("plugin_lang"));
         return ref;
     };
 
