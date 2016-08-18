@@ -67,7 +67,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             ps.setString(3, shortName);
             ps.setString(4, module);
             ps.setString(5, spec.getType());
-            ps.setString(6, spec.getDescription());
+            ps.setString(6, spec.getDescription() == null ? shortName : spec.getDescription());
             ps.setString(7, Json.serializeToString(spec.getDisplay(), "[]"));
             ps.setString(8, Json.serializeToString(spec.getSupportedExtensions(), "[]"));
             ps.setLong(9, time);
@@ -112,12 +112,12 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public Processor get(String name) {
-        return jdbc.queryForObject(GET.concat(" WHERE str_name=?"), MAPPER, name);
+        return jdbc.queryForObject(GET.concat(" WHERE processor.str_name=?"), MAPPER, name);
     }
 
     @Override
     public Processor get(int id) {
-        return jdbc.queryForObject(GET.concat(" WHERE pk_processor=?"), MAPPER, id);
+        return jdbc.queryForObject(GET.concat(" WHERE processor.pk_processor=?"), MAPPER, id);
     }
 
     @Override
@@ -138,14 +138,14 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public List<Processor> getAll(Plugin plugin) {
-        return jdbc.query(GET.concat(" WHERE pk_plugin=?"), MAPPER, plugin.getId());
+        return jdbc.query(GET.concat(" WHERE plugin.pk_plugin=?"), MAPPER, plugin.getId());
     }
 
     @Override
     public PagedList<Processor> getAll(Paging page) {
         return new PagedList<>(
                 page.setTotalCount(count()),
-                jdbc.query(GET.concat("ORDER BY str_name LIMIT ? OFFSET ?"), MAPPER,
+                jdbc.query(GET.concat("ORDER BY processor.str_name LIMIT ? OFFSET ?"), MAPPER,
                         page.getSize(), page.getFrom()));
     }
 
@@ -156,7 +156,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public boolean delete(int id) {
-        return jdbc.update("DELETE FROM processor WHERE pk_processor=?", id) > 0;
+        return jdbc.update("DELETE FROM processor WHERE processor.pk_processor=?", id) > 0;
     }
 
     @Override

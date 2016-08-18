@@ -175,7 +175,6 @@ public class PluginServiceImpl implements PluginService {
                     .setDescription(pl.getDescription())
                     .setProcessors(pl.getProcessors())
                     .setType(PipelineType.valueOf(StringUtils.capitalize(pl.getType()))));
-            logger.info("registering pipeline: {}", pl.getName());
         }
     }
 
@@ -192,6 +191,7 @@ public class PluginServiceImpl implements PluginService {
 
     public void registerProcessors(Plugin plugin, PluginSpec pspec) {
         if (pspec.getProcessors() == null || pspec.getProcessors().isEmpty()) {
+            logger.warn("Plugin {} contains no processors", plugin);
             return;
         }
         for (ProcessorSpec spec: pspec.getProcessors()) {
