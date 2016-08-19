@@ -1,1 +1,1 @@
-UPDATE user SET hmac_key=RANDOM_UUID() WHERE str_username='admin';
+UPDATE user SET hmac_key='00000000-0000-0000-0000-000000000000' WHERE str_username='admin';
