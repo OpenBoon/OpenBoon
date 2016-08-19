@@ -163,21 +163,35 @@
         },
         "links": {
           "properties": {
-            "inputs": {
+            "input": {
               "type": "string",
               "index": "not_analyzed"
-            }
-          },
-          "properties": {
-            "outputs": {
+            },
+            "output": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "folder": {
+              "type": "long",
+              "index": "not_analyzed"
+            },
+            "import": {
+              "type": "long",
+              "index": "not_analyzed"
+            },
+            "export": {
+              "type": "long",
+              "index": "not_analyzed"
+            },
+            "parent": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "children": {
               "type": "string",
               "index": "not_analyzed"
             }
           }
-        },
-        "folders": {
-          "type": "integer",
-          "index": "not_analyzed"
         },
         "source": {
           "properties": {

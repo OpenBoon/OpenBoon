@@ -3,6 +3,7 @@ package com.zorroa.common.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
@@ -136,48 +137,59 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public int addToFolder(int folder, List<String> assetIds) {
-        int result = 0;
+    public Map<String, Boolean> removeLink(String attr, Object value, List<String> assets) {
+        if (attr.contains(".")) {
+            throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
+        }
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (String id: assetIds) {
+        for (String id: assets) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
-            updateBuilder.setScript(new Script("asset_append_folder",
+            updateBuilder.setScript(new Script("remove_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("folderId", folder)));
+                    ImmutableMap.of("attrKey", attr, "attrValue", value)));
             bulkRequest.add(updateBuilder);
         }
 
+        Map<String, Boolean> result = Maps.newHashMapWithExpectedSize(assets.size());
         BulkResponse bulk = bulkRequest.setRefresh(true).get();
         for (BulkItemResponse rsp:  bulk.getItems()) {
-            if (!rsp.isFailed()) {
-                result++;
+            result.put(rsp.getId(), !rsp.isFailed());
+            if (rsp.isFailed()) {
+                logger.warn("Failed to unlink asset: {}",
+                        rsp.getFailureMessage(), rsp.getFailure().getCause());
             }
         }
         return result;
     }
 
     @Override
-    public int removeFromFolder(int folder, List<String> assetIds) {
-        int result = 0;
+    public Map<String, Boolean> appendLink(String attr, Object value, List<String> assets) {
+        if (attr.contains(".")) {
+            throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
+        }
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (String id: assetIds) {
+        for (String id: assets) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
-            updateBuilder.setScript(new Script("asset_remove_folder",
+            updateBuilder.setScript(new Script("append_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("folderId", folder)));
+                    ImmutableMap.of("attrKey", attr, "attrValue", value)));
             bulkRequest.add(updateBuilder);
         }
 
+        Map<String, Boolean> result = Maps.newHashMapWithExpectedSize(assets.size());
         BulkResponse bulk = bulkRequest.setRefresh(true).get();
         for (BulkItemResponse rsp:  bulk.getItems()) {
-            if (!rsp.isFailed()) {
-                result++;
+            result.put(rsp.getId(), !rsp.isFailed());
+            if (rsp.isFailed()) {
+                logger.warn("Failed to link asset: {}",
+                        rsp.getFailureMessage(), rsp.getFailure().getCause());
             }
         }
         return result;
     }
+
 
     @Override
     public long update(String assetId, Map<String, Object> values) {

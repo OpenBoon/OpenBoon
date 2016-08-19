@@ -23,6 +23,10 @@ public interface AssetDao {
 
     Asset get(Path path);
 
+    Map<String, Boolean> removeLink(String attr, Object value, List<String> assets);
+
+    Map<String, Boolean>  appendLink(String attr, Object value, List<String> assets);
+
     long update(String assetId, Map<String, Object> attrs);
 
     Asset index(Source source);
@@ -31,7 +35,4 @@ public interface AssetDao {
 
     AssetIndexResult index(String type, List<Source> sources);
 
-    int addToFolder(int folder, List<String> assetIds);
-
-    int removeFromFolder(int folder, List<String> assetIds);
 }
