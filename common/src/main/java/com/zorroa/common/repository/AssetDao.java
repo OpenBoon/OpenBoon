@@ -23,9 +23,9 @@ public interface AssetDao {
 
     Asset get(Path path);
 
-    Map<String, Boolean> removeLink(String attr, Object value, List<String> assets);
+    Map<String, Boolean> removeLink(String type, String value, List<String> assets);
 
-    Map<String, Boolean>  appendLink(String attr, Object value, List<String> assets);
+    Map<String, Boolean>  appendLink(String type, String value, List<String> assets);
 
     long update(String assetId, Map<String, Object> attrs);
 

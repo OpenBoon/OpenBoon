@@ -137,17 +137,18 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Map<String, Boolean> removeLink(String attr, Object value, List<String> assets) {
-        if (attr.contains(".")) {
+    public Map<String, Boolean> removeLink(String type, String value, List<String> assets) {
+        if (type.contains(".")) {
             throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
         }
 
+        Map<String,Object> link = ImmutableMap.of("type", type, "id", value);
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assets) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
             updateBuilder.setScript(new Script("remove_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("attrKey", attr, "attrValue", value)));
+                    ImmutableMap.of("link", link)));
             bulkRequest.add(updateBuilder);
         }
 
@@ -164,17 +165,21 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Map<String, Boolean> appendLink(String attr, Object value, List<String> assets) {
-        if (attr.contains(".")) {
+    public Map<String, Boolean> appendLink(String type, String value, List<String> assets) {
+        if (type.contains(".")) {
             throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
         }
+
+        Map<String,Object> link = ImmutableMap.of("type", type, "id", value, "date", System.currentTimeMillis());
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assets) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
+
             updateBuilder.setScript(new Script("append_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("attrKey", attr, "attrValue", value)));
+                    ImmutableMap.of("link", link)));
+
             bulkRequest.add(updateBuilder);
         }
 
@@ -189,7 +194,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
         return result;
     }
-
 
     @Override
     public long update(String assetId, Map<String, Object> values) {

@@ -70,6 +70,39 @@ public class ElasticClientUtils {
         createAppendLinkScript(client);
     }
 
+    private static final String REMOVE_SCRIPT =
+            "if (ctx._source.links != null) {"+
+            "ctx._source.links.removeIf( {l -> l.id == link.id && l.type == link.type} ) }";
+
+    public static void createRemoveLinkScript(Client client) {
+        Map<String, Object> script = ImmutableMap.of(
+                "script", REMOVE_SCRIPT,
+                "params", ImmutableMap.of("link", "link"));
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("remove_link")
+                .setSource(script)
+                .get();
+    }
+
+    private static final String APPEND_SCRIPT =
+            "if (ctx._source.links == null) { ctx._source.links = []; }; "+
+            "ctx._source.links += link;";
+
+    public static void createAppendLinkScript(Client client) {
+        Map<String, Object> script = ImmutableMap.of(
+                "script", APPEND_SCRIPT,
+                "params", ImmutableMap.of("link", "link"));
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("append_link")
+                .setSource(script)
+                .get();
+    }
+
+    /*
     public static void createRemoveLinkScript(Client client) {
         Map<String, Object> script = ImmutableMap.of(
                 "script", "if (ctx._source.links == null) { return ; }; if (ctx._source.links[attrKey] != null) { ctx._source.links[attrKey].removeIf( {f -> f == attrValue} )}",
@@ -94,6 +127,7 @@ public class ElasticClientUtils {
                 .setSource(script)
                 .get();
     }
+    */
     /**
      * Delete all indexes.
      *

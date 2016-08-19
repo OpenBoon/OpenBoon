@@ -162,32 +162,21 @@
           }
         },
         "links": {
+          "type": "nested",
           "properties": {
-            "input": {
+            "type": {
               "type": "string",
               "index": "not_analyzed"
             },
-            "output": {
+            "id": {
               "type": "string",
               "index": "not_analyzed"
             },
-            "folder": {
-              "type": "long",
+            "date": {
+              "type": "date",
               "index": "not_analyzed"
             },
-            "import": {
-              "type": "long",
-              "index": "not_analyzed"
-            },
-            "export": {
-              "type": "long",
-              "index": "not_analyzed"
-            },
-            "parent": {
-              "type": "string",
-              "index": "not_analyzed"
-            },
-            "children": {
+            "search": {
               "type": "string",
               "index": "not_analyzed"
             }
