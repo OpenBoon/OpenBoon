@@ -11,6 +11,7 @@ import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -182,6 +183,10 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public ProcessorRef getRef(String name) {
-        return jdbc.queryForObject(GET_REF, REF_MAPPER, name);
+        try {
+            return jdbc.queryForObject(GET_REF, REF_MAPPER, name);
+        } catch(EmptyResultDataAccessException e) {
+            throw new EmptyResultDataAccessException("Failed to find Processor '" + name + "'", 1, e);
+        }
     }
 }
