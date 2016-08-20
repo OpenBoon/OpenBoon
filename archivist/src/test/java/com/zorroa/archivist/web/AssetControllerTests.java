@@ -11,6 +11,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Link;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.*;
 import com.zorroa.sdk.util.AssetUtils;
@@ -242,9 +243,11 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getAttr("folders", new TypeReference<Set<Integer>>() {});
-            assertTrue(folderIds.contains(folder1.getId()));
-            assertTrue(folderIds.contains(folder2.getId()));
+            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
+            assertEquals(2, links.size());
+            assertTrue(
+                    links.get(0).getId().equals(String.valueOf(folder1.getId())) ||
+                    links.get(1).getId().equals(String.valueOf(folder1.getId())));
         }
     }
 
@@ -297,7 +300,7 @@ public class AssetControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addToFolders(folder.getId()));
+        AssetSearch search = new AssetSearch(new AssetFilter().addToLinks("folder", folder.getId()));
 
         result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
@@ -309,125 +312,6 @@ public class AssetControllerTests extends MockMvcTest {
         TestSearchResult searchResult = Json.Mapper.readValue(
                 result.getResponse().getContentAsString(), TestSearchResult.class);
         assertEquals(1, searchResult.getHits().getTotal());
-    }
-
-    @Test
-    public void testFolderChildrenSearchFilter() throws Exception {
-        MockHttpSession session = user();
-
-        addTestAssets("set04/standard");
-
-        // Create two folders, a parent and its child
-        MvcResult result = mvc.perform(post("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec("ParentSearchFolder"))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Folder parent = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Folder>() {});
-
-        result = mvc.perform(post("/api/v1/folders")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec("ChildSearchFolder").setParentId(parent.getId()))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Folder child = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Folder>() {});
-        assertNotEquals(child.getId(), parent.getId());
-
-        // Put a single asset into each folder
-        PagedList<Asset> assets = assetDao.getAll(Paging.first());
-
-        Asset asset = assets.get(0);
-        mvc.perform(post("/api/v1/folders/" + parent.getId() + "/assets")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(ImmutableList.of(asset.getId()))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        asset = assets.get(1);
-        mvc.perform(post("/api/v1/folders/" + child.getId() + "/assets")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(ImmutableList.of(asset.getId()))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        AssetSearch search = new AssetSearch(new AssetFilter().addToFolders(child.getId()));
-
-        // Searching the child should return a single hit
-        result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> hits = (Map<String, Object>) json.get("hits");
-        int count = (int)hits.get("total");
-        assertEquals(1, count);
-
-        search = new AssetSearch();
-        // Searching without folders returns all hits, which is only two
-        result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        hits = (Map<String, Object>) json.get("hits");
-        logger.info(result.getResponse().getContentAsString());
-        count = (int)hits.get("total");
-        assertEquals(2, count);
-
-        search = new AssetSearch(new AssetFilter().addToFolders(parent.getId()));
-
-        // Searching the parent folder should return two hits as well
-        result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        hits = (Map<String, Object>) json.get("hits");
-        count = (int)hits.get("total");
-        assertEquals(2, count);
-
-        // Remove the child from the parent folder
-        result = mvc.perform(delete("/api/v1/folders/" + child.getId())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        search = new AssetSearch(new AssetFilter().addToFolders(parent.getId()));
-
-        // Searching the parent should now return a single hit
-        result = mvc.perform(post("/api/v2/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(search)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        hits = (Map<String, Object>) json.get("hits");
-        count = (int)hits.get("total");
-        assertEquals(1, count);
     }
 
     @Test

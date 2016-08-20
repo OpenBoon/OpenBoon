@@ -95,7 +95,7 @@ public class FolderController {
     @RequestMapping(value="/api/v1/folders/{id}/assets", method=RequestMethod.GET)
     public void getAssets(@PathVariable int id, HttpServletResponse httpResponse) throws IOException {
         HttpUtils.writeElasticResponse(searchService.search(
-                new AssetSearch().setFilter(new AssetFilter().addToFolders(id))), httpResponse);
+                new AssetSearch().setFilter(new AssetFilter().addToLinks("folder", id))), httpResponse);
     }
 
     /**

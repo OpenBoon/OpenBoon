@@ -9,6 +9,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Link;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -273,8 +274,8 @@ public class FolderControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getAttr("folders", Json.SET_OF_INTS);
-            assertTrue(folderIds.contains(folder1.getId()));
+            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
+            assertEquals(links.get(0).getId(), String.valueOf(folder1.getId()));
         }
     }
 
@@ -300,8 +301,8 @@ public class FolderControllerTests extends MockMvcTest {
         refreshIndex();
         assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getAttr("folders", Json.SET_OF_INTS);
-            assertFalse(folderIds.contains(folder1.getId()));
+            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
+            assertEquals(0, links.size());
         }
     }
 
