@@ -174,12 +174,16 @@ public class PluginServiceImpl implements PluginService {
             /**
              * Update the pipeline and validate the processors.
              */
-            pipelineDao.create(new PipelineSpecV()
-                    .setName(pl.getName())
-                    .setDescription(pl.getDescription())
-                    .setProcessors(pl.getProcessors().stream().map(
-                            ref->getProcessorRef(ref)).collect(Collectors.toList()))
-                    .setType(PipelineType.valueOf(StringUtils.capitalize(pl.getType()))));
+            try {
+                pipelineDao.create(new PipelineSpecV()
+                        .setName(pl.getName())
+                        .setDescription(pl.getDescription())
+                        .setProcessors(pl.getProcessors().stream().map(
+                                ref -> getProcessorRef(ref)).collect(Collectors.toList()))
+                        .setType(PipelineType.valueOf(StringUtils.capitalize(pl.getType()))));
+            } catch (EmptyResultDataAccessException e) {
+                logger.warn("Failed to register pipeline: {}", pl);
+            }
         }
     }
 
@@ -249,7 +253,7 @@ public class PluginServiceImpl implements PluginService {
     }
 
     private static final String BUILT_IN_PACKAGE =
-            "com.zorroa.sdk.processors.builtin.";
+            "com.zorroa.sdk.processor.builtin.";
 
     @Override
     public ProcessorRef getProcessorRef(String name, Map<String, Object> args) {
