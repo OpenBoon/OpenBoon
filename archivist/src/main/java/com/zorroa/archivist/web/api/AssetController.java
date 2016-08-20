@@ -8,6 +8,7 @@ import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.NoteService;
 import com.zorroa.archivist.service.SearchService;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.Note;
@@ -102,6 +103,11 @@ public class AssetController {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchResponse response = searchService.search(search);
         HttpUtils.writeElasticResponse(response, httpResponse);
+    }
+
+    @RequestMapping(value="/api/v3/assets/_search", method=RequestMethod.POST)
+    public Object searchV3(@RequestBody AssetSearch search) throws IOException {
+        return searchService.search(new Paging(search.getPage(), search.getSize()), search);
     }
 
     @RequestMapping(value="/api/v1/assets/_fields", method=RequestMethod.GET)
