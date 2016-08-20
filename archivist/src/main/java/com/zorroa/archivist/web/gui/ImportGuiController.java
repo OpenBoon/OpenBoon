@@ -47,7 +47,7 @@ public class ImportGuiController {
         standardModel(model);
         Paging paging = new Paging(page);
         model.addAttribute("page", paging);
-        model.addAttribute("imp", jobService.get(id));
+        model.addAttribute("job", jobService.get(id));
         model.addAttribute("tasks", jobService.getAllTasks(id, paging));
         model.addAttribute("serverImportForm", new NewServerImportForm());
         model.addAttribute("pipelines", pipelineService.getAll());

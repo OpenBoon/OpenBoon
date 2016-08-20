@@ -142,7 +142,7 @@ public class IndexController {
         standardModel(model);
         Paging paging = new Paging(page, count);
         model.addAttribute("page", paging);
-        model.addAttribute("assets", searchService.getAll(paging,
+        model.addAttribute("assets", searchService.search(paging,
                 new AssetSearch(query)));
         return "assets";
     }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+
+<div th:fragment="state_label">
+    <th:block th:if="${job.state.name()} eq 'Active'">
+        <span class="label label-warning">Running</span>
+    </th:block>
+    <th:block th:if="${job.state.name()} eq 'Finished'">
+        <span class="label label-success">Finished</span>
+    </th:block>
+    <th:block th:if="${job.state.name()} eq 'Cancelled'">
+        <span class="label label-danger">Cancelled</span>
+    </th:block>
+</div>
+
+<div th:fragment="progress">
+    <div class="progress" style="margin-bottom: 2px; margin-top: 2px">
+        <div class="progress-bar progress-bar-success" th:style="${'width: '+ job.progress.success + '%'}">
+            <span class="sr-only"></span>
+        </div>
+        <div class="progress-bar progress-bar-warning" th:style="${'width: '+ job.progress.running + '%'}">
+            <span class="sr-only"></span>
+        </div>
+        <div class="progress-bar progress-bar-info" th:style="${'width: '+ job.progress.waiting + '%'}">
+            <span class="sr-only"></span>
+        </div>
+        <div class="progress-bar progress-bar-danger" th:style="${'width: '+ job.progress.failed + '%'}">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

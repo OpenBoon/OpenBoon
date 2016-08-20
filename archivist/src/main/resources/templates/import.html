@@ -14,12 +14,12 @@
             <tbody>
             <tr>
                 <td class="vert-align">
-                    <div th:include="fragments/imports :: state_label"/>
+                    <div th:include="fragments/job :: state_label"/>
                 </td>
 
-                <td class="vert-align" th:text="${imp.name}"></td>
-                <td class="vert-align" th:text="${imp.userCreated}"></td>
-                <td class="vert-align" th:text="${#dates.format(imp.timeStarted, 'dd MMM yyyy HH:mm')}"></td>
+                <td class="vert-align" th:text="${job.name}"></td>
+                <td class="vert-align" th:text="${job.userCreated}"></td>
+                <td class="vert-align" th:text="${#dates.format(job.timeStarted, 'dd MMM yyyy HH:mm')}"></td>
                 <td class="col-md-4 vert-align">
                     <div th:include="fragments/imports :: progress"/>
                 </td>
@@ -51,11 +51,11 @@
                         <div class="panel-body">
                             <table class="table table-striped table-condensed no-margin">
                                 <tbody>
-                                <tr><td>Total</td><td th:text="${imp.counts.tasksTotal}"></td></tr>
-                                <tr><td>Success</td><td th:text="${imp.counts.tasksSuccess}"></td></tr>
-                                <tr><td>Failure</td><td th:text="${imp.counts.tasksFailure}"></td></tr>
-                                <tr><td>Waiting</td><td th:text="${imp.counts.tasksWaiting}"></td></tr>
-                                <tr><td>Queued</td><td th:text="${imp.counts.tasksQueued}"></td></tr>
+                                <tr><td>Total</td><td th:text="${job.counts.tasksTotal}"></td></tr>
+                                <tr><td>Success</td><td th:text="${job.counts.tasksSuccess}"></td></tr>
+                                <tr><td>Failure</td><td th:text="${job.counts.tasksFailure}"></td></tr>
+                                <tr><td>Waiting</td><td th:text="${job.counts.tasksWaiting}"></td></tr>
+                                <tr><td>Queued</td><td th:text="${job.counts.tasksQueued}"></td></tr>
                                 </tbody>
                             </table>
                         </div>
