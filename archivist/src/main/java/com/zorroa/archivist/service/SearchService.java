@@ -24,7 +24,7 @@ public interface SearchService {
 
     SuggestResponse suggest(AssetSuggestBuilder builder);
     SearchResponse aggregate(AssetAggregateBuilder builder);
-    Iterable<Asset> scanAndScroll(AssetSearch search);
-    PagedList<Asset> getAll(Paging page, AssetSearch search);
+    Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults);
+    PagedList<Asset> search(Paging page, AssetSearch search);
     Map<String, Set<String>> getFields();
 }

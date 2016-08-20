@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -83,10 +84,28 @@ public class SearchServiceTests extends AbstractTest {
         folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
-        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
+
+    @Test
+    public void testFolderCount() throws IOException {
+
+        FolderSpec builder = new FolderSpec("Beer");
+        Folder folder1 = folderService.create(builder);
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addKeywords("source", source.getAttr("source.filename", String.class));
+        Asset asset1 = assetDao.index(source);
+        refreshIndex(100);
+
+        folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
+        refreshIndex(100);
+
+        assertEquals(1, searchService.count(folder1));
+    }
+
 
     @Test
     public void testRecursiveFolderSearch() throws IOException {
@@ -107,7 +126,7 @@ public class SearchServiceTests extends AbstractTest {
         folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
-        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -132,15 +151,15 @@ public class SearchServiceTests extends AbstractTest {
 
         Asset asset1 = assetDao.index(source1);
         Asset asset2 = assetDao.index(source2);
-
-        refreshIndex(100);
+        refreshIndex();
 
         folderService.addAssets(folder2, Lists.newArrayList(asset2.getId()));
         folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
         refreshIndex(100);
 
-        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
         AssetSearch search = new AssetSearch().setFilter(filter);
+
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
@@ -164,12 +183,44 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
 
-        assetDao.index(source);
+        Asset a = assetDao.index(source);
         refreshIndex();
 
-        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
+        logger.info("{}", (List) a.getAttr("links"));
+
+        AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testSmartFolderAndStaticFolderMixture() throws IOException {
+
+        FolderSpec builder = new FolderSpec("Avengers");
+        Folder folder1 = folderService.create(builder);
+
+        builder = new FolderSpec("Age Of Ultron", folder1);
+        Folder folder2 = folderService.create(builder);
+
+        builder = new FolderSpec("Characters", folder2);
+        builder.setSearch(new AssetSearch("captain america"));
+        Folder folder3 = folderService.create(builder);
+
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.addKeywords("source", "captain");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.addKeywords("source", source2.getAttr("source", SourceSchema.class).getFilename());
+
+        assetDao.index(source1);
+        assetDao.index(source2);
+        refreshIndex();
+
+        assetDao.appendLink("folder", String.valueOf(folder2.getId()), ImmutableList.of(source2.getId()));
+
+        AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        assertEquals(2, searchService.search(search).getHits().getTotalHits());
     }
 
     @Test
@@ -192,7 +243,7 @@ public class SearchServiceTests extends AbstractTest {
         assetDao.index(source);
         refreshIndex();
 
-        AssetFilter filter = new AssetFilter().setFolders(Lists.newArrayList(folder1.getId()));
+        AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
