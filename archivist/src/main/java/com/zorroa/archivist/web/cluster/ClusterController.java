@@ -46,7 +46,8 @@ public class ClusterController {
      */
     @RequestMapping(value="/cluster/v1/task/_expand", method=RequestMethod.POST)
     public void expand(@RequestBody ZpsScript script) {
-        jobExecutorService.expand(script);
+        jobService.expand(script);
+        jobExecutorService.queueSchedule();
     }
 
     /**

@@ -13,6 +13,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.processor.SharedData;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsJob;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
@@ -31,7 +32,7 @@ import java.util.Map;
 @Transactional
 public class JobServiceImpl implements JobService {
 
-    private static final Logger logger = LoggerFactory.getLogger(JobExecutorServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(JobServiceImpl.class);
 
     @Autowired
     JobDao jobDao;
@@ -74,7 +75,7 @@ public class JobServiceImpl implements JobService {
          * The path to the SSL cert needed for tasks to communicate back to archivist.
          */
         env.put("ZORROA_CERT_PATH",
-                sharedData.getRootPath().resolve("certs/truststore.p12").toString());
+                sharedData.getRootPath().resolve("certs/archivist.p12").toString());
         env.put("ZORROA_USER", SecurityUtils.getUsername());
         env.put("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
         job.setEnv(env);
@@ -110,13 +111,30 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
+    @Override
+    public boolean createParentDepend(ZpsTask task) {
+        return taskDao.createParentDepend(task);
+    }
+
+    @Override
+    public void expand(ZpsScript script) {
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Expanding: {}", Json.prettyString(script));
+        }
+
+        ZpsTask task = createTask(script);
+    }
+
     public ZpsScript createTask(ZpsScript script) {
         /**
          * Create the first task which is just the script itself.
          */
-        taskDao.create(script);
+
+        ZpsScript newScript = taskDao.create(script);
         jobDao.incrementWaitingTaskCount(script);
-        return script;
+        taskDao.incrementDependCount(script);
+        return newScript;
     }
 
     @Override
@@ -149,10 +167,15 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean setTaskCompleted(ZpsTask script, int exitStatus) {
+    public boolean setTaskCompleted(ZpsTask task, int exitStatus) {
         TaskState newState = exitStatus == 0 ? TaskState.Success : TaskState.Failure;
-        if (setTaskState(script, newState, TaskState.Running)) {
-            taskDao.setExitStatus(script, exitStatus);
+        if (setTaskState(task, newState, TaskState.Running)) {
+
+            if (newState.equals(TaskState.Success)) {
+                logger.info("decremented {} depend counts" , taskDao.decrementDependCount(task));
+            }
+
+            taskDao.setExitStatus(task, exitStatus);
             return true;
         }
         return false;

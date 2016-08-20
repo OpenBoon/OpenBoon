@@ -25,6 +25,12 @@ public interface TaskDao {
 
     boolean setState(ZpsTask script, TaskState value, TaskState expect);
 
+    int decrementDependCount(ZpsTask task);
+
+    int incrementDependCount(ZpsTask task);
+
+    boolean createParentDepend(ZpsTask child);
+
     List<ZpsScript> getWaiting(int limit);
 
     Set<TaskState> STOPPERS = Sets.newEnumSet(ImmutableList.of(

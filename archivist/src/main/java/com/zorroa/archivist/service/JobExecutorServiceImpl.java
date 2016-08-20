@@ -92,13 +92,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
     }
 
     @Override
-    public void expand(ZpsScript script) {
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Expanding: {}", Json.prettyString(script));
-        }
-
-        jobService.createTask(script);
+    public void queueSchedule() {
         if (!beingScheduled.get()) {
             scheduleNow.execute(() -> schedule());
         }

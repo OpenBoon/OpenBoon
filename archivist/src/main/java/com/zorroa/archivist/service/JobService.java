@@ -38,6 +38,10 @@ public interface JobService {
      */
     boolean restart(ZpsJob job);
 
+    boolean createParentDepend(ZpsTask task);
+
+    void expand(ZpsScript script);
+
     /**
      * Create a new task.
      *

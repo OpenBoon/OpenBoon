@@ -28,6 +28,11 @@ public class Task implements ZpsTask {
     }
 
     @Override
+    public Integer getParentTaskId() {
+        return parentId;
+    }
+
+    @Override
     public Integer getJobId() {
         return jobId;
     }
