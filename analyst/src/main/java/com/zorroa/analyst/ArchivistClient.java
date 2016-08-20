@@ -84,7 +84,8 @@ public class ArchivistClient extends AbstractClient {
                 ImmutableMap.of(
                     "taskId", script.getTaskId(),
                     "jobId", script.getJobId(),
-                    "exitStatus" , exitStatus));
+                    "exitStatus" , exitStatus,
+                    "parentTaskId", script.getParentTaskId()));
 
     }
 }
