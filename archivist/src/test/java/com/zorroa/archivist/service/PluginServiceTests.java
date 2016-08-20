@@ -60,9 +60,9 @@ public class PluginServiceTests extends AbstractTest {
 
     @Test
     public void testInstallPlugin() throws IOException {
-        assertEquals(0, pluginService.getAllPlugins().size());
+        int size = pluginService.getAllPlugins().size();
         pluginService.installPlugin(Paths.get("../unittest/resources/plugins/zorroa-test-plugin.zip"));
-        assertEquals(1, pluginService.getAllPlugins().size());
+        assertEquals(size+1, pluginService.getAllPlugins().size());
     }
 
     @Test
