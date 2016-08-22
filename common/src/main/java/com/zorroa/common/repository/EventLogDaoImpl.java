@@ -171,7 +171,7 @@ public class EventLogDaoImpl extends AbstractElasticDao implements EventLogDao {
         source.put("stack", getStackTrace(event.getException()));
         source.put("host", hostname);
 
-        String date = new SimpleDateFormat("yyyy_MM_dd").format(new Date(event.getTimestamp()));
+        String date = new SimpleDateFormat("yyyy").format(new Date(event.getTimestamp()));
         String str = Json.serializeToString(source);
 
         IndexRequestBuilder builder = client.prepareIndex("eventlog_" + date, "event")
