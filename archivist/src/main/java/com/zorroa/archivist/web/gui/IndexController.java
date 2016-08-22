@@ -88,15 +88,15 @@ public class IndexController {
         return "overview";
     }
 
-    @RequestMapping("/gui/login")
+    @RequestMapping("/login")
     public String login(){
         return "login";
     }
 
-    @RequestMapping("/gui/logout")
+    @RequestMapping("/logout")
     public String logout(HttpServletRequest req) throws ServletException {
         req.logout();
-        return "login?logout";
+        return "redirect:/login?logout";
     }
 
     @RequestMapping("/gui/permissions")
