@@ -1,6 +1,5 @@
 package com.zorroa.archivist;
 
-import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.domain.EventSpec;
@@ -59,12 +58,10 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
          * for a unit test.
          */
         if (!ArchivistConfiguration.unittest) {
-            /*
-             * Authorize the startup thread as an admin.
+            /**
+             * Have async threads inherit the current authorization.
              */
             SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-            SecurityContextHolder.getContext().setAuthentication(
-                    authenticationManager.authenticate(new InternalAuthentication()));
 
             migrationService.processAll();
 
