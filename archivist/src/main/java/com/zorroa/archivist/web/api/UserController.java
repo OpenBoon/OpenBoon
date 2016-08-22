@@ -18,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +42,26 @@ public class UserController  {
         return userService.generateHmacKey(SecurityUtils.getUsername());
     }
 
+    /**
+     * An HTTP auth based login endpoint.
+     *
+     * @return
+     */
     @RequestMapping(value="/api/v1/login", method=RequestMethod.POST)
     public User login() {
-        return userService.login();
+        return userService.get(SecurityUtils.getUser().getId());
     }
+
+    /**
+     * An HTTP auth based logout endpoint.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/logout", method=RequestMethod.POST)
+    public void logout(HttpServletRequest req) throws ServletException {
+        req.logout();
+    }
+
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users")

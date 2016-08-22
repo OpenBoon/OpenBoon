@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
@@ -54,11 +53,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     MessagingService messagingService;
-
-    @Override
-    public User login() {
-        return userDao.get(SecurityUtils.getUsername());
-    }
 
     @Override
     public User create(UserSpec builder) {
