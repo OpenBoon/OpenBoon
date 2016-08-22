@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class AbstractDao {
@@ -30,7 +29,7 @@ public class AbstractDao {
             .build(new CacheLoader<Integer, String>() {
                 @Override
                 public String load(Integer key) throws Exception {
-                    return jdbc.queryForObject("SELECT str_email FROM user WHERE pk_user=?", String.class, key);
+                    return jdbc.queryForObject("SELECT str_username FROM user WHERE pk_user=?", String.class, key);
                 }
             });
 
