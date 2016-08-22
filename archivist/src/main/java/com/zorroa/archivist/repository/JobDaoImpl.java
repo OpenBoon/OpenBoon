@@ -33,7 +33,8 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                     "int_type",
                     "int_user_created",
                     "time_started",
-                    "json_script");
+                    "json_script",
+                    "json_args");
 
     @Override
     public ZpsScript create(ZpsScript script, PipelineType type) {
@@ -53,6 +54,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
             ps.setInt(4, SecurityUtils.getUser().getId());
             ps.setLong(5, System.currentTimeMillis());
             ps.setString(6, Json.serializeToString(script));
+            ps.setString(7, Json.serializeToString(script.getArgs()));
             return ps;
         });
 
@@ -76,6 +78,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         job.setTimeStopped(rs.getLong("time_stopped"));
         job.setType(PipelineType.values()[rs.getInt("int_type")]);
         job.setUserCreated(resolveUser(rs.getInt("int_user_created")));
+        job.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
 
         Job.Stats a = new Job.Stats();
         a.setAssetTotal(rs.getInt("int_asset_total_count"));
@@ -106,6 +109,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "job.time_started,"+
                 "job.time_stopped,"+
                 "job.int_type,"+
+                "job.json_args,"+
                 "job.int_user_created,"+
                 "job_stat.int_asset_total_count,"+
                 "job_stat.int_asset_create_count," +

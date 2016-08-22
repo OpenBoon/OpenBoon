@@ -17,6 +17,7 @@ public class Job implements ZpsJob {
     private PipelineType type;
     private String userCreated;
     private JobState state;
+    private Map<String, Object> args;
 
     private long timeStarted;
     private long timeStopped;
@@ -102,6 +103,15 @@ public class Job implements ZpsJob {
 
     public Job setState(JobState state) {
         this.state = state;
+        return this;
+    }
+
+    public Map<String, Object> getArgs() {
+        return args;
+    }
+
+    public Job setArgs(Map<String, Object> args) {
+        this.args = args;
         return this;
     }
 

@@ -1,0 +1,1 @@
+ALTER TABLE job ADD json_args TEXT NOT NULL DEFAULT '{}';
