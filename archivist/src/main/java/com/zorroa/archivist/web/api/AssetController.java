@@ -77,16 +77,12 @@ public class AssetController {
     @ResponseBody
     public ResponseEntity<FileSystemResource> streamAsset(@PathVariable String id, HttpServletResponse response) throws ExecutionException, IOException {
         Asset asset = assetService.get(id);
+
         if (!SecurityUtils.hasPermission("export", asset)) {
             throw new AccessDeniedException("export access denied");
         }
 
         File path = new File(asset.getAttr("source.path", String.class));
-        if (!path.exists()) {
-            response.sendRedirect(asset.getAttr("source:remoteSourceUri"));
-            return null;
-        }
-
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(asset.getAttr("source.type", String.class)))
                 .contentLength(asset.getAttr("source.fileSize", Long.class))

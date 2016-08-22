@@ -2,6 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.service.ImageService;
+import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;
@@ -24,7 +25,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Provides endpoints for downloading proxy images.
+ * Provides all endpoints for downloading binary data like proxies, assets, export
  *
  * @author chambers
  *
@@ -44,15 +45,22 @@ public class FileSystemController {
     @Autowired
     ObjectFileSystem objectFileSystem;
 
-    /**
-     * A special endpoint for streaming proxies from OFS.
-     *
-     * @param request
-     * @param response
-     * @return
-     * @throws IOException
-     */
-    @RequestMapping(value = "/ofs/proxy/**", method = RequestMethod.GET, produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE })
+    @Autowired
+    JobService jobService;
+
+    @RequestMapping(value="/api/v1/ofs/_exists", method = RequestMethod.POST)
+    public Object fileExists(@RequestBody Map<String, String> path) throws IOException {
+        String file = path.get("path");
+        if (file == null) {
+            return ImmutableMap.of("result", false);
+        }
+        else {
+            File f = new File(FileUtils.normalize(file));
+            return ImmutableMap.of("result", f.exists());
+        }
+    }
+
+    @RequestMapping(value = "/api/v1/ofs/proxy/**", method = RequestMethod.GET, produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE })
     @ResponseBody
     public byte[] getProxy(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Cache-Control", "public");
@@ -67,17 +75,5 @@ public class FileSystemController {
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         ImageIO.write(imageService.watermark(image), ext, bao);
         return bao.toByteArray();
-    }
-
-    @RequestMapping(value="/ofs/_exists", method = RequestMethod.POST)
-    public Object fileExists(@RequestBody Map<String, String> path) throws IOException {
-        String file = path.get("path");
-        if (file == null) {
-            return ImmutableMap.of("result", false);
-        }
-        else {
-            File f = new File(FileUtils.normalize(file));
-            return ImmutableMap.of("result", f.exists());
-        }
     }
 }

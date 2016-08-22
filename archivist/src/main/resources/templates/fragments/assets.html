@@ -39,7 +39,7 @@
         <tr th:each="asset: ${assets}">
             <td class="vert-align">
                 <a th:href="@{/ofs/__${asset.proxies.largest.id}__}" class="pop">
-                    <img height="50" th:src="@{/ofs/__${asset.proxies.smallest.id}__}"/></a>
+                    <img height="50" th:src="@{/api/v1/ofs/__${asset.proxies.smallest.id}__}"/></a>
             </td>
             <td class="vert-align" th:text="${asset.getAttr('source.filename')}"></td>
             <td class="vert-align" th:text="${#strings.substring(asset.getAttr('source.date'), 0, 10)}"></td>
