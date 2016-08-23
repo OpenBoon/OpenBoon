@@ -89,6 +89,7 @@ public class MultipleWebSecurityConfig {
                     .invalidSessionUrl("/login")
                     .maximumSessions(10)
                     .sessionRegistry(sessionRegistry)
+                    .expiredUrl("/login")
                     .and()
                 .and()
                     .csrf().disable()
