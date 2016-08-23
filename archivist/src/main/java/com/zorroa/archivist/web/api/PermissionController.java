@@ -5,8 +5,8 @@ package com.zorroa.archivist.web.api;
  */
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,45 +22,43 @@ public class PermissionController {
     UserService userService;
 
     /**
-     * Get a paritcular permission record.
+     * Get a particular permission record.
      */
-    @RequestMapping(value="/api/v1/permissions/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.GET)
     public Permission get(@PathVariable String id) {
-        return getPermission(id);
+        return userService.getPermission(id);
     }
 
     /**
      * Return all available permissions.
      */
-    @RequestMapping(value="/api/v1/permissions", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/permissions", method = RequestMethod.GET)
     public List<Permission> getAll() {
         return userService.getPermissions();
     }
 
     /**
+     * Return all available permissions.
+     */
+    @RequestMapping(value="/api/v1/permissions/_names", method = RequestMethod.GET)
+    public List<String> getAllNames() {
+        return userService.getPermissionNames();
+    }
+
+    /**
      * Create a new permission.
      */
-    @RequestMapping(value="/api/v1/permissions", method= RequestMethod.POST)
-    public Permission create(@RequestBody PermissionBuilder builder) {
+    @RequestMapping(value="/api/v1/permissions", method = RequestMethod.POST)
+    public Permission create(@RequestBody PermissionSpec builder) {
         return userService.createPermission(builder);
     }
 
     /**
      * Delete a  permission.
      */
-    @RequestMapping(value="/api/v1/permissions/{id}", method= RequestMethod.DELETE)
+    @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable String id) {
-        Permission p = getPermission(id);
+        Permission p = userService.getPermission(id);
         return ImmutableMap.of("success", userService.deletePermission(p));
     }
-
-    private Permission getPermission(String id) {
-        if (id.contains("::")) {
-            return userService.getPermission(id);
-        }
-        else {
-            return userService.getPermission(Integer.valueOf(id));
-        }
-    }
-
 }

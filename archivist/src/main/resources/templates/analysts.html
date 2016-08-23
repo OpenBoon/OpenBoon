@@ -6,17 +6,9 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <p>
-    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-        <div class="container-fluid">
-            <div class="navbar-header navbar-brand">
-                <span class="fa fa-server2" aria-hidden="true"></span>
-                Analysts
-            </div>
-        </div>
-    </nav>
-    <div class="table-responsive">
-        <table class="table table-striped">
+    <div class="wrapper">
+        <div th:include="fragments/analysts :: menu"/>
+        <table id="table" class="table table-striped table-hover">
             <thead>
             <tr>
                 <th>Url</th>
@@ -38,8 +30,11 @@
             </tr>
             </tbody>
         </table>
+        <div class="container-fluid">
+            <div th:include="fragments/table :: pager"/>
+        </div>
+        <div th:include="fragments/table :: clickable"/>
     </div>
-    </p>
 </section>
 
 </body>

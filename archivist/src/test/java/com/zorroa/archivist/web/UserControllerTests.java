@@ -1,16 +1,16 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.web.api.UserController;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.User;
-import com.zorroa.sdk.domain.UserUpdateBuilder;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.util.NestedServletException;
@@ -18,11 +18,10 @@ import org.springframework.web.util.NestedServletException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebAppConfiguration
 public class UserControllerTests extends MockMvcTest {
 
@@ -35,16 +34,17 @@ public class UserControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdateProfile() throws Exception {
 
         User user = userService.get("user");
 
-        UserUpdateBuilder builder = new UserUpdateBuilder();
-        builder.setPassword("bar");
+        UserProfileUpdate builder = new UserProfileUpdate();
         builder.setEmail("test@test.com");
+        builder.setFirstName("test123");
+        builder.setLastName("456test");
 
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId())
+        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId() + "/_profile")
                 .session(session)
                 .content(Json.serialize(builder))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -54,8 +54,8 @@ public class UserControllerTests extends MockMvcTest {
         User updated = Json.Mapper.readValue(result.getResponse().getContentAsString(), User.class);
         assertEquals(user.getId(), updated.getId());
         assertEquals(builder.getEmail(), updated.getEmail());
-        assertTrue(BCrypt.checkpw("bar", userService.getPassword("user")));
-
+        assertEquals(builder.getFirstName(), updated.getFirstName());
+        assertEquals(builder.getLastName(), updated.getLastName());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class UserControllerTests extends MockMvcTest {
         List<Permission> perms = userService.getPermissions(user);
         assertTrue(perms.size() > 0);
 
-        userService.setPermissions(user, userService.getPermission("group::superuser"));
+        userService.setPermissions(user, Lists.newArrayList(userService.getPermission("group::superuser")));
         perms.add(userService.getPermission("group::superuser"));
 
         MockHttpSession session = admin();

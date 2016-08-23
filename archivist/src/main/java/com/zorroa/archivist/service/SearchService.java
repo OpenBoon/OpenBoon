@@ -1,10 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.AssetAggregateBuilder;
-import com.zorroa.sdk.domain.AssetSearch;
-import com.zorroa.sdk.domain.AssetSuggestBuilder;
-import org.elasticsearch.action.count.CountResponse;
+import com.zorroa.sdk.search.AssetAggregateBuilder;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.search.AssetSuggestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;
 
@@ -16,18 +18,13 @@ import java.util.Set;
  */
 public interface SearchService {
     SearchResponse search(AssetSearch builder);
-    CountResponse count(AssetSearch builder);
+    long count(AssetSearch builder);
+
+    long count(Folder folder);
+
     SuggestResponse suggest(AssetSuggestBuilder builder);
     SearchResponse aggregate(AssetAggregateBuilder builder);
-    Iterable<Asset> scanAndScroll(AssetSearch search);
-
-    /**
-     * Return the total file size for the given search.
-     *
-     * @param builder
-     * @return
-     */
-    long getTotalFileSize(AssetSearch builder);
-
+    Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults);
+    PagedList<Asset> search(Paging page, AssetSearch search);
     Map<String, Set<String>> getFields();
 }

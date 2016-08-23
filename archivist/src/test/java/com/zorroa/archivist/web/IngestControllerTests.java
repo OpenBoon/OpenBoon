@@ -1,97 +1,104 @@
 package com.zorroa.archivist.web;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.web.api.AssetController;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.Schedule;
+import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.common.repository.AssetDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.util.NestedServletException;
 
-import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Created by chambers on 7/9/16.
+ */
 public class IngestControllerTests extends MockMvcTest {
-
     @Autowired
-    AssetController assetController;
-
-    @Autowired
-    AssetDao assetDao;
+    IngestDao ingestDao;
 
     Ingest ingest;
+    IngestSpec spec;
 
     @Before
     public void init() {
-        ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
+        spec = new IngestSpec();
+        spec.setPipeline(Lists.newArrayList());
+        spec.setGenerators(Lists.newArrayList());
+        spec.setFolderId(null);
+        spec.setPipelineId(null);
+        spec.setName("Test");
+        spec.setAutomatic(true);
+        spec.setRunNow(false);
+        spec.setSchedule(new Schedule());
+        ingest = ingestDao.create(spec);
     }
 
     @Test
-    public void testGetAll() throws Exception {
+    public void testCreate() throws Exception {
+        spec.setName("Test2");
         MockHttpSession session = admin();
-
-        Ingest ingest = ingestService.createIngest(new IngestBuilder(getStaticImagePath()));
-        ingestExecutorService.start(ingest);
-        refreshIndex();
-
-        MvcResult result = mvc.perform(get("/api/v1/ingests")
+        MvcResult result = mvc.perform(post("/api/v1/ingests")
                 .session(session)
+                .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Ingest> ingests = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Ingest>>() {});
-        assertEquals(2, ingests.size());
+        Ingest p = deserialize(result, Ingest.class);
+    }
+
+    @Test(expected=NestedServletException.class)
+    public void testCreateWithValidationFailureNumericName() throws Exception {
+        spec.setName("12345");
+        MockHttpSession session = admin();
+        mvc.perform(post("/api/v1/ingests")
+                .session(session)
+                .content(Json.serialize(spec))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test
-    public void testSearchByState() throws Exception {
+    public void testDelete() throws Exception {
         MockHttpSession session = admin();
+        MvcResult result = mvc.perform(delete("/api/v1/ingests/" + ingest.getId())
+                .session(session))
+                .andExpect(status().isOk())
+                .andReturn();
 
-        IngestFilter filter = new IngestFilter();
-        filter.setStates(EnumSet.of(IngestState.Idle));
+        Map<String, Object> data = deserialize(result, Map.class);
+        assertEquals(true, data.get("result"));
+    }
 
-        MvcResult result = mvc.perform(post("/api/v1/ingests/_search")
+    @Test
+    public void testUpdate() throws Exception {
+        IngestSpec spec2 = new IngestSpec();
+        spec2.setName("Rocky IV");
+        spec2.setGenerators(ImmutableList.of());
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(put("/api/v1/ingests/" + ingest.getId())
                 .session(session)
-                .content(Json.serialize(filter))
+                .content(Json.serialize(spec2))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Ingest> ingests = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Ingest>>() {});
-        assertEquals(1, ingests.size());
-    }
-
-    @Test
-    public void testSearchByPipeline() throws Exception {
-        MockHttpSession session = admin();
-
-        IngestFilter filter = new IngestFilter();
-        filter.setPipelines(Lists.newArrayList("standard"));
-
-        MvcResult result = mvc.perform(post("/api/v1/ingests/_search")
-                .session(session)
-                .content(Json.serialize(filter))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<Ingest> ingests = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Ingest>>() {});
-        assertEquals(1, ingests.size());
+        Map<String, Object> data = deserialize(result, Map.class);
+        assertEquals(true, data.get("result"));
     }
 
     @Test
@@ -103,90 +110,21 @@ public class IngestControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(this.ingest.getId(), ingest.getId());
-    }
-
-    @Test
-    public void testCreate() throws Exception {
-
-        IngestBuilder builder = new IngestBuilder();
-        builder.addToUris(getStaticImagePath());
-
-        MockHttpSession session = admin();
-        MvcResult result = mvc.perform(post("/api/v1/ingests")
-                .session(session)
-                .content(Json.serialize(builder))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(ingest.getId(), ingest.getId());
-    }
-
-    @Test
-    public void testUpdate() throws Exception {
-
-        IngestUpdateBuilder builder = new IngestUpdateBuilder();
-        builder.addToUris("file:///vol/data");
-
-        MockHttpSession session = admin();
-        MvcResult result = mvc.perform(put("/api/v1/ingests/" + ingest.getId())
-                .session(session)
-                .content(Json.serialize(builder))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Ingest updatedIngest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(ingest.getId(), updatedIngest.getId());
-
-        assertEquals(builder.getUris(), updatedIngest.getUris());
-    }
-
-    @Test
-    public void testDelete() throws Exception {
-
-        MockHttpSession session = admin();
-        MvcResult result = mvc.perform(delete("/api/v1/ingests/" + ingest.getId())
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> status = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        assertTrue((Boolean)status.get("status"));
+        Ingest data = deserialize(result, Ingest.class);
+        assertEquals(ingest, data);
     }
 
 
     @Test
-    public void testExecute() throws Exception {
-
-        IngestBuilder builder = new IngestBuilder();
-        builder.addToUris(getStaticImagePath());
-
+    public void testGetByName() throws Exception {
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(post("/api/v1/ingests/")
-                .session(session)
-                .content(Json.serialize(builder))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Ingest ingest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(ingest.getId(), ingest.getId());
-
-        refreshIndex();
-
-        result = mvc.perform(post("/api/v1/ingests/" + ingest.getId() + "/_execute")
+        MvcResult result = mvc.perform(get("/api/v1/ingests/" + ingest.getName())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Ingest finishedIngest = Json.Mapper.readValue(result.getResponse().getContentAsString(), Ingest.class);
-        assertEquals(ingest.getId(), finishedIngest.getId());
+        Ingest data = deserialize(result, Ingest.class);
+        assertEquals(ingest, data);
     }
 }

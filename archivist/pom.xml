@@ -5,7 +5,7 @@
 
     <groupId>com.zorroa</groupId>
     <artifactId>archivist</artifactId>
-    <version>0.21.0</version>
+    <version>0.30.0</version>
     <packaging>jar</packaging>
 
     <name>archivist</name>
@@ -15,7 +15,7 @@
         <relativePath>../pom.xml</relativePath>
         <groupId>com.zorroa</groupId>
         <artifactId>zorroa-server</artifactId>
-        <version>0.21.0</version>
+        <version>0.30.0</version>
     </parent>
 
     <properties>
@@ -89,12 +89,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zorroa.fileseq</groupId>
-            <artifactId>fileseq</artifactId>
-            <version>0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
@@ -127,9 +121,9 @@
         </dependency>
 
         <dependency>
-            <groupId>net.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
-            <version>0.4.8</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
         </dependency>
 
         <dependency>
@@ -156,6 +150,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-expressions</artifactId>
+            <version>5.3.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.uuid</groupId>
             <artifactId>java-uuid-generator</artifactId>
             <version>3.1.4</version>
@@ -178,36 +179,38 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>net.redhogs.cronparser</groupId>
+            <artifactId>cron-parser-core</artifactId>
+            <version>2.9</version>
+        </dependency>
+
         <!-- web interface depends -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
             <version>4.6.3</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>startbootstrap-sb-admin-2</artifactId>
-            <version>1.0.8-1</version>
-        </dependency>
-
-        <!-- charts -->
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>morrisjs</artifactId>
-            <version>0.5.1</version>
-        </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.6</version>
+            <version>3.3.7</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>1.11.3</version>
+            <version>2.2.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>dropzone</artifactId>
+            <version>4.3.0-2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>Bootstrap-3-Typeahead</artifactId>
+            <version>3.1.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -242,7 +245,7 @@
                         </goals>
                         <configuration>
                             <executable>/bin/rm</executable>
-                            <commandlineArgs>-rf index db/archivist.mv.db exports unittest</commandlineArgs>
+                            <commandlineArgs>-rf db unittest</commandlineArgs>
                         </configuration>
                     </execution>
                     <execution>

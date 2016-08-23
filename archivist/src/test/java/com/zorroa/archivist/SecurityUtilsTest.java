@@ -1,11 +1,12 @@
 package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.Access;
+import com.zorroa.archivist.domain.Acl;
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
-import com.zorroa.sdk.domain.Access;
-import com.zorroa.sdk.domain.Acl;
-import com.zorroa.sdk.domain.Permission;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +36,7 @@ public class SecurityUtilsTest extends AbstractTest {
     @Test
     public void testHasPermissionIsSuperuser() {
         Permission p = userService.getPermission("group::superuser");
-        userService.setPermissions(SecurityUtils.getUser(), p);
+        userService.setPermissions(SecurityUtils.getUser(), Lists.newArrayList(p));
 
         // Reauthenticate the user, this sets up the admin's normal
         // permissions.

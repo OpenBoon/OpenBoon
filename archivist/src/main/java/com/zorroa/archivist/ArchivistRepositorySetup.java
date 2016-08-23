@@ -1,34 +1,26 @@
 package com.zorroa.archivist;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.io.ByteStreams;
-import com.zorroa.archivist.aggregators.DateAggregator;
-import com.zorroa.archivist.aggregators.IngestPathAggregator;
-import com.zorroa.archivist.security.InternalAuthentication;
-import com.zorroa.archivist.service.IngestExecutorService;
-import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.service.MigrationService;
+import com.zorroa.archivist.service.PluginService;
+import com.zorroa.common.domain.EventSpec;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.common.service.EventLogService;
-import com.zorroa.sdk.domain.EventLogMessage;
-import com.zorroa.sdk.domain.IngestPipelineBuilder;
-import com.zorroa.sdk.processor.ProcessorFactory;
-import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequestBuilder;
+import com.zorroa.common.repository.ClusterSettingsDao;
+import com.zorroa.common.repository.EventLogDao;
+import com.zorroa.sdk.config.ApplicationProperties;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
+
 
 @Component
 public class ArchivistRepositorySetup implements ApplicationListener<ContextRefreshedEvent> {
@@ -36,10 +28,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     private static final Logger logger = LoggerFactory.getLogger(ArchivistRepositorySetup.class);
 
     @Autowired
-    IngestService ingestService;
-
-    @Autowired
-    IngestExecutorService ingestExecutorService;
+    PluginService pluginService;
 
     @Autowired
     Client client;
@@ -51,16 +40,16 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     MigrationService migrationService;
 
     @Autowired
-    EventLogService eventLogService;
+    EventLogDao eventLogDao;
 
-    @Value("${zorroa.common.index.alias}")
+    @Autowired
+    ClusterSettingsDao clusterSettingsDao;
+
+    @Autowired
+    ApplicationProperties properties;
+
+    @Value("${zorroa.cluster.index.alias}")
     private String alias;
-
-    @Value("${archivist.snapshot.basePath}")
-    private String snapshotPath;
-
-    @Value("${archivist.snapshot.repoName}")
-    private String snapshotRepoName;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -69,12 +58,10 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
          * for a unit test.
          */
         if (!ArchivistConfiguration.unittest) {
-            /*
-             * Authorize the startup thread as an admin.
+            /**
+             * Have async threads inherit the current authorization.
              */
             SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-            SecurityContextHolder.getContext().setAuthentication(
-                    authenticationManager.authenticate(new InternalAuthentication()));
 
             migrationService.processAll();
 
@@ -84,19 +71,12 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 logger.error("Failed to setup datasources, ", e);
                 throw new RuntimeException(e);
             }
-            /**
-             * TODO: get the snapshot repository working with elastic 1.7
-             *
-             * createSnapshotRepository();
-             */
 
             /**
-             * Reset all ingests to the idle state.
+             * Register plugins.
              */
-            ingestService.getAllIngests().stream()
-                    .map(i->ingestService.setIngestIdle(i))
-                    .count();
-            eventLogService.log(new EventLogMessage("Archivist Started").setType("Archivist Started"));
+            pluginService.registerAllPlugins();
+            eventLogDao.info(EventSpec.log("Archivist started"));
         }
     }
 
@@ -104,8 +84,28 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         logger.info("Setting up data sources");
         ElasticClientUtils.createIndexedScripts(client);
         ElasticClientUtils.createEventLogTemplate(client);
-        createDefaultIngestPipeline();
+        createSharedPaths();
+        writeClusterConfiguration();
         refreshIndex();
+    }
+
+    public void createSharedPaths() {
+        properties.getMap("zorroa.cluster.").forEach((k,v)-> {
+            if (k.contains(".path.")) {
+                File dir = new File((String)v);
+                boolean result = dir.mkdirs();
+                if (!result) {
+                    try {
+                        dir.setLastModified(System.currentTimeMillis());
+                    } catch (Exception e) {
+                    }
+                    if (!dir.exists()) {
+                        throw new RuntimeException("Failed to setup shared storage directory '" +
+                                dir + "', could not make directory and it does not exist.");
+                    }
+                }
+            }
+        });
     }
 
     public void refreshIndex() {
@@ -113,60 +113,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         client.admin().indices().prepareRefresh(alias).execute();
     }
 
-    public void createEventLogTemplate() throws IOException {
-        logger.info("Creating event log template");
-        ClassPathResource resource = new ClassPathResource("eventlog-template.json");
-        byte[] source = ByteStreams.toByteArray(resource.getInputStream());
-        client.admin().indices().preparePutTemplate("eventlog").setSource(source).get();
-    }
-
-    private void createDefaultIngestPipeline() {
-        if (!ingestService.ingestPipelineExists("standard")) {
-            IngestPipelineBuilder builder = new IngestPipelineBuilder();
-            builder.setName("standard");
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FilePathIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.VideoIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.PdfIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ProxyIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.CaffeIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FaceIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ColorAnalysisIngestor"));
-            builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
-            builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
-            ingestService.createIngestPipeline(builder);
-        }
-
-        if (!ingestService.ingestPipelineExists("production")) {
-            IngestPipelineBuilder builder = new IngestPipelineBuilder();
-            builder.setName("production");
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.FilePathIngestor",
-                    ImmutableMap.of("representations", ImmutableList.of(ImmutableMap.of("primary", "blend")))));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.BlenderIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ImageIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.VideoIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ShotgunIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ProxyIngestor"));
-            builder.addToProcessors(new ProcessorFactory<>("com.zorroa.plugins.ingestors.ColorAnalysisIngestor"));
-            builder.addToAggregators(new ProcessorFactory<>(DateAggregator.class));
-            builder.addToAggregators(new ProcessorFactory<>(IngestPathAggregator.class));
-            ingestService.createIngestPipeline(builder);
-        }
-    }
-
-    private void createSnapshotRepository() {
-        logger.info("Creating snapshot repository \"" + snapshotRepoName + "\" in \"" + snapshotPath + "\"");
-        // Later we can add support for S3 buckets or HDFS backups
-        Settings settings = Settings.builder()
-                .put("location", snapshotPath)
-                .put("compress", true)
-                .put("max_snapshot_bytes_per_sec", "50mb")
-                .put("max_restore_bytes_per_sec", "50mb")
-                .build();
-        PutRepositoryRequestBuilder builder =
-                client.admin().cluster().preparePutRepository(snapshotRepoName);
-        builder.setType("fs")
-                .setSettings(settings)
-                .execute().actionGet();
+    public void writeClusterConfiguration() {
+        clusterSettingsDao.save(properties);
     }
 }

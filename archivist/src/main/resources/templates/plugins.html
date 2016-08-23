@@ -7,47 +7,30 @@
 <body>
 
 <section layout:fragment="content">
-    <p>
-    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-        <div class="container-fluid">
-            <div class="navbar-header navbar-brand">
-                <span class="fa fa-lock" aria-hidden="true"></span>
-                Plugins
-            </div>
-        </div>
-    </nav>
-    <div class="container-fluid">
-    <div th:each="plugin: ${plugins}">
-        <div class="panel panel-default">
-            <div class="panel-heading" th:text="${plugin.name}"></div>
-            <div class="panel-body">
-                <dl class="dl-horizontal">
-                    <dt>Description:</dt>
-                    <dd th:text="${plugin.description}"></dd>
-                    <dt>Version:</dt>
-                    <dd th:text="${plugin.version}"></dd>
-                </dl>
-            </div>
-            <table class="table table-striped">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="proc: ${plugin.processors}">
-                        <td th:text="${proc.type}"></td>
-                        <td th:text="${proc.className}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </table>
-        </div>
+    <div th:include="fragments/plugins :: menu"/>
+    <div class="wrapper">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>Publisher</th>
+            <th>Description</th>
+            <th>Language</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="clickable-row" th:attr="data-href=${'/gui/plugins/' + plugin.id}"  th:each="plugin: ${plugins.list}">
+            <td th:text="${plugin.name}"></td>
+            <td th:text="${plugin.version}"></td>
+            <td th:text="${plugin.publisher}"></td>
+            <td th:text="${plugin.description}"></td>
+            <td th:text="${plugin.language}"></td>
+        </tr>
+        </tbody>
+    </table>
     </div>
-    </div>
-    </p>
+    <div th:include="fragments/table :: clickable"/>
 </section>
 
 </body>

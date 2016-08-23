@@ -2,10 +2,10 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.RoomBuilder;
 import com.zorroa.sdk.domain.Session;
-import com.zorroa.sdk.domain.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

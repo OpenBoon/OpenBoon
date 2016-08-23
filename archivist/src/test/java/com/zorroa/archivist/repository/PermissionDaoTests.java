@@ -1,11 +1,10 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
-import com.zorroa.sdk.domain.User;
-import com.zorroa.sdk.domain.UserBuilder;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +21,20 @@ public class PermissionDaoTests extends AbstractTest {
     @Autowired
     PermissionDao permissionDao;
 
+    @Autowired
+    UserDao userDao;
+
     Permission perm;
 
     User user;
 
     @Before
     public void init() {
-        PermissionBuilder b = new PermissionBuilder("project", "avatar");
+        PermissionSpec b = new PermissionSpec("project", "avatar");
         b.setDescription("Access to the Avatar project");
         perm = permissionDao.create(b, false);
 
-        UserBuilder ub = new UserBuilder();
+        UserSpec ub = new UserSpec();
         ub.setUsername("test");
         ub.setPassword("test");
         ub.setFirstName("mr");
@@ -44,7 +46,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testCreate() {
-        PermissionBuilder b = new PermissionBuilder("group", "test");
+        PermissionSpec b = new PermissionSpec("group", "test");
         b.setDescription("test");
 
         Permission p = permissionDao.create(b, false);
@@ -54,7 +56,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testCreateImmutable() {
-        PermissionBuilder b = new PermissionBuilder("foo", "bar");
+        PermissionSpec b = new PermissionSpec("foo", "bar");
         b.setDescription("foo bar");
         Permission p = permissionDao.create(b, true);
         assertTrue(p.isImmutable());
@@ -63,20 +65,8 @@ public class PermissionDaoTests extends AbstractTest {
     @Test
     public void testUpdateUserPermission() {
         assertTrue(permissionDao.updateUserPermission("test", "rambo"));
-        assertFalse(permissionDao.hasPermission(user, "user", "test"));
-        assertTrue(permissionDao.hasPermission(user, "user", "rambo"));
-    }
-
-    @Test
-    public void testHasPermissionUningNames() {
-        assertTrue(permissionDao.hasPermission(user, "user", "test"));
-        assertFalse(permissionDao.hasPermission(user, "a", "b"));
-    }
-
-    @Test
-    public void testHasPermission() {
-        assertTrue(permissionDao.hasPermission(user, permissionDao.get("user", "test")));
-        assertFalse(permissionDao.hasPermission(user, permissionDao.get("group", "manager")));
+        assertFalse(userDao.hasPermission(user, "user", "test"));
+        assertTrue(userDao.hasPermission(user, "user", "rambo"));
     }
 
     @Test
@@ -85,6 +75,26 @@ public class PermissionDaoTests extends AbstractTest {
         assertTrue(p.isImmutable());
         assertEquals("user", p.getType());
         assertEquals("test", p.getName());
+    }
+
+    @Test
+    public void testCount() {
+        long count = permissionDao.count();
+        PermissionSpec b = new PermissionSpec("foo", "bar").setDescription("bing");
+        permissionDao.create(b, true);
+        assertEquals(count+1, permissionDao.count());
+    }
+
+    @Test
+    public void testCountWithFilter() {
+        long count = permissionDao.count(new PermissionFilter().setTypes(Sets.newHashSet("user")));
+        assertTrue(count > 0);
+
+        PermissionSpec b = new PermissionSpec("foo", "bar").setDescription("bing");
+        permissionDao.create(b, true);
+
+        long newCount = permissionDao.count(new PermissionFilter().setTypes(Sets.newHashSet("user")));
+        assertEquals(count, newCount);
     }
 
     @Test
@@ -98,6 +108,32 @@ public class PermissionDaoTests extends AbstractTest {
     public void testGetAll() {
         List<Permission> perms = permissionDao.getAll();
         assertTrue(perms.size() > 0);
+    }
+
+    @Test
+    public void testGetPagedEmptyFilter() {
+        PagedList<Permission> perms = permissionDao.getPaged(Paging.first(), new PermissionFilter());
+        assertTrue(perms.size() > 0);
+    }
+
+    @Test
+    public void testGetPagedFiltered() {
+        PermissionSpec b = new PermissionSpec("test1", "test2");
+        b.setDescription("test");
+        permissionDao.create(b, false);
+
+        PagedList<Permission> perms = permissionDao.getPaged(Paging.first(),
+                new PermissionFilter().setTypes(Sets.newHashSet("test1")));
+        assertEquals(1, perms.size());
+
+        perms = permissionDao.getPaged(Paging.first(),
+                new PermissionFilter().setNames(Sets.newHashSet("test2")));
+        assertEquals(1, perms.size());
+
+        perms = permissionDao.getPaged(Paging.first(),
+                new PermissionFilter().setNames(Sets.newHashSet("test2"))
+                        .setTypes(Sets.newHashSet("test1")));
+        assertEquals(1, perms.size());
     }
 
     @Test
@@ -120,27 +156,6 @@ public class PermissionDaoTests extends AbstractTest {
         assertTrue(perms2.contains(perms1.get(1)));
     }
 
-
-    @Test
-    public void testSetOnUser() {
-        permissionDao.setOnUser(user, Lists.newArrayList(permissionDao.get("group::manager")));
-        List<Permission> perms = permissionDao.getAll(user);
-        assertTrue(perms.contains(permissionDao.get("group::manager")));
-    }
-
-    @Test
-    public void testSetOnUserVargs() {
-        permissionDao.setOnUser(user, permissionDao.get("group::manager"));
-        List<Permission> perms = permissionDao.getAll(user);
-        assertTrue(perms.contains(permissionDao.get("group::manager")));
-    }
-
-    @Test
-    public void testAssignPermission() {
-        assertTrue(permissionDao.assign(user, permissionDao.get("group::manager"), false));
-        assertFalse(permissionDao.assign(user, permissionDao.get("group::manager"), false));
-    }
-
     @Test
     public void testDelete() {
         /*
@@ -161,7 +176,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        PermissionBuilder b = new PermissionBuilder("group", "test").setDescription("foo");
+        PermissionSpec b = new PermissionSpec("group", "test").setDescription("foo");
         Permission p = permissionDao.create(b, false);
         assertEquals("group", p.getType());
         assertEquals("test", p.getName());

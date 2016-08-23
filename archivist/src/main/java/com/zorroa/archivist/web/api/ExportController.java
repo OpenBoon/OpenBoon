@@ -1,63 +1,69 @@
 package com.zorroa.archivist.web.api;
 
-import com.zorroa.sdk.domain.Export;
-import com.zorroa.sdk.domain.ExportBuilder;
-import com.zorroa.sdk.domain.ExportFilter;
-import com.zorroa.sdk.domain.ExportOutput;
+import com.zorroa.archivist.domain.ExportSpec;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.JobState;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.ExportService;
+import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.exception.ZorroaReadException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.io.File;
 
 /**
- * Created by chambers on 11/13/15.
+ * Created by chambers on 7/11/16.
  */
 @RestController
-@PreAuthorize("hasAuthority('group::export') || hasAuthority('group::superuser')")
 public class ExportController {
 
     @Autowired
     ExportService exportService;
 
+    @Autowired
+    JobService jobService;
+
     @RequestMapping(value="/api/v1/exports", method= RequestMethod.POST)
-    public Export create(@RequestBody ExportBuilder builder) {
-        return exportService.create(builder);
+    public Object create(@RequestBody ExportSpec spec) {
+        return exportService.create(spec);
     }
 
-    @RequestMapping(value="/api/v1/exports/{id}", method=RequestMethod.GET)
-    public Export get(@PathVariable int id) {
+    @RequestMapping(value="/api/v1/exports/{id}", method= RequestMethod.GET)
+    public Object get(@PathVariable int id) {
         return exportService.get(id);
     }
 
+    /**
+     * Stream an export.
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/api/v1/exports/{id}/_stream", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<FileSystemResource> getExport(@PathVariable int id) {
+        Job job = jobService.get(id);
+        /**
+         * Don't let people download other people's exports, as its not possible
+         * to know if they have access to each individual file.
+         */
+        if (!job.getUserCreated().equals(SecurityUtils.getUsername())) {
+            throw new ZorroaReadException("Invalid export " + job.getUserCreated() + " / " + SecurityUtils.getUsername());
+        }
+        if (!job.getState().equals(JobState.Finished)) {
+            throw new ZorroaReadException("Export is not complete.");
+        }
 
-    @RequestMapping(value="/api/v1/exports/_search", method=RequestMethod.POST)
-    public List<Export> getAll(@RequestBody ExportFilter filter) {
-        return exportService.getAll(filter);
+        File file = new File((String)job.getArgs().get("outputFile"));
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf("application/zip"))
+                .contentLength(file.length())
+                .body(new FileSystemResource(file));
     }
 
-    @RequestMapping(value="/api/v1/exports/{id}/outputs", method=RequestMethod.GET)
-    public List<ExportOutput> getAllOutputs(@PathVariable int id) {
-        Export export = exportService.get(id);
-        return exportService.getAllOutputs(export);
-    }
 
-    @RequestMapping(value="/api/v1/exports/{id}/_duplicate", method=RequestMethod.PUT)
-    public Export duplicate(@PathVariable int id) {
-        exportService.duplicate(exportService.get(id));
-        return exportService.get(id);
-    }
-
-    @RequestMapping(value="/api/v1/exports/{id}/_restart", method=RequestMethod.PUT)
-    public Export restart(@PathVariable int id) {
-        exportService.restart(exportService.get(id));
-        return exportService.get(id);
-    }
-
-    @RequestMapping(value="/api/v1/exports/{id}/_cancel", method=RequestMethod.PUT)
-    public Export cancel(@PathVariable int id) {
-        exportService.cancel(exportService.get(id));
-        return exportService.get(id);
-    }
 }

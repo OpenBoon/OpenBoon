@@ -2,11 +2,13 @@ package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.RoomService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,12 +5,15 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.ScanAndScrollAssetIterator;
+import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.exception.ArchivistException;
-import org.elasticsearch.action.count.CountRequestBuilder;
-import org.elasticsearch.action.count.CountResponse;
+import com.zorroa.sdk.exception.ZorroaReadException;
+import com.zorroa.sdk.search.*;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -25,8 +28,6 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
@@ -36,9 +37,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 9/25/15.
@@ -49,9 +54,12 @@ public class SearchServiceImpl implements SearchService {
     private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
 
     @Autowired
+    AssetDao assetDao;
+
+    @Autowired
     FolderService folderService;
 
-    @Value("${zorroa.common.index.alias}")
+    @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
     @Autowired
@@ -63,8 +71,22 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public CountResponse count(AssetSearch builder) {
-        return buildCount(builder).get();
+    public long count(AssetSearch builder) {
+        return buildSearch(builder).setSize(0).get().getHits().getTotalHits();
+    }
+
+    @Override
+    public long count(Folder folder) {
+        AssetSearch search = folder.getSearch();
+        if (search != null && search.isValid()) {
+            search.getFilter().addToLinks("folder", String.valueOf(folder.getId()));
+            return count(search);
+        }
+        else {
+            search = new AssetSearch();
+            search.getFilter().addToLinks("folder", String.valueOf(folder.getId()));
+            return count(search);
+        }
     }
 
     @Override
@@ -77,19 +99,7 @@ public class SearchServiceImpl implements SearchService {
         return buildAggregate(builder).get();
     }
 
-    @Override
-    public long getTotalFileSize(AssetSearch search) {
-        Sum sum = client.prepareSearch(alias)
-                .setTypes("asset")
-                .setQuery(getQuery(search))
-                .addAggregation(AggregationBuilders.sum("totalFileSize").field("source.fileSize"))
-                .setSearchType(SearchType.COUNT)
-                .get().getAggregations().get("totalFileSize");
-
-        return (long) sum.getValue();
-    }
-
-    public Iterable<Asset> scanAndScroll(AssetSearch search) {
+    public Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults) {
 
         SearchResponse rsp = client.prepareSearch(alias)
                 .setSearchType(SearchType.SCAN)
@@ -97,7 +107,17 @@ public class SearchServiceImpl implements SearchService {
                 .setQuery(getQuery(search))
                 .setSize(100).execute().actionGet();
 
+        if (rsp.getHits().getTotalHits() > maxResults) {
+            throw new ZorroaReadException("Asset search has returned more than " + maxResults + " results.");
+        }
         return new ScanAndScrollAssetIterator(client, rsp);
+    }
+
+    @Override
+    public PagedList<Asset> search(Paging page, AssetSearch search) {
+        search.setSize(page.getSize());
+        search.setFrom(search.getFrom());
+        return assetDao.getAll(page, buildSearch(search));
     }
 
     private SearchRequestBuilder buildSearch(AssetSearch search) {
@@ -128,13 +148,6 @@ public class SearchServiceImpl implements SearchService {
         return request;
     }
 
-    private CountRequestBuilder buildCount(AssetSearch search) {
-        CountRequestBuilder count = client.prepareCount(alias)
-                .setTypes("asset")
-                .setQuery(getQuery(search));
-        return count;
-    }
-
     private SuggestRequestBuilder buildSuggest(AssetSuggestBuilder builder) {
         // FIXME: We need to use builder.search in here somehow!
         CompletionSuggestionBuilder completion = new CompletionSuggestionBuilder("completions")
@@ -155,66 +168,88 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQuery(AssetSearch search) {
+        return getQuery(search, true);
+    }
+
+    private QueryBuilder getQuery(AssetSearch search, boolean perms) {
         if (search == null) {
             return QueryBuilders.filteredQuery(
-                    QueryBuilders.matchAllQuery(), getFilter(null));
+                    QueryBuilders.matchAllQuery(), SecurityUtils.getPermissionsFilter());
         }
 
         BoolQueryBuilder query = QueryBuilders.boolQuery();
+        if (perms) {
+            query.must(SecurityUtils.getPermissionsFilter());
+        }
+
         if (search.isQuerySet()) {
             query.must(getQueryStringQuery(search));
         }
 
         AssetFilter filter = search.getFilter();
-        if (filter.getFolderIds() != null) {
-            query.must(folderQuery(filter));
+        if (filter != null) {
+            applyFilterToQuery(filter, query);
         }
-        if (filter.getColors() != null) {
-            for (ColorFilter color: filter.getColors()) {
-                Preconditions.checkNotNull(color.getField(), "The ColorFilter.field was not set.");
-                BoolQueryBuilder colorFilter = QueryBuilders.boolQuery();
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".ratio"))
-                        .gte(color.getMinRatio()).lte(color.getMaxRatio()));
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".hue"))
-                        .gte(color.getHue() - color.getHueRange())
-                        .lte(color.getHue() + color.getHueRange()));
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".saturation"))
-                        .gte(color.getSaturation() - color.getSaturationRange())
-                        .lte(color.getSaturation() + color.getSaturationRange()));
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".brightness"))
-                        .gte(color.getBrightness() - color.getBrightnessRange())
-                        .lte(color.getBrightness() + color.getBrightnessRange()));
-
-                QueryBuilder colorFilterBuilder = QueryBuilders.nestedQuery(color.getField(),
-                        colorFilter);
-                query.must(colorFilterBuilder);
-            }
-        }
-        QueryBuilder filterBuilder = getFilter(filter);
-        query.filter(filterBuilder);
         return query;
     }
 
-    // Combine the folder search and filter using SHOULD.
-    // Merged into the main query as a MUST above.
-    private QueryBuilder folderQuery(AssetFilter filter) {
-        BoolQueryBuilder query = QueryBuilders.boolQuery();
-        if (filter.getFolderIds() != null) {
-            Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(64);
-            for (Folder folder : folderService.getAllDescendants(
-                    folderService.getAll(filter.getFolderIds()), true, true)) {
-                if (folder.getSearch() != null) {
-                    query.should(getQuery(folder.getSearch()));
-                }
-                folderIds.add(folder.getId());
+    private void linkQuery(BoolQueryBuilder query, AssetFilter filter) {
+
+        BoolQueryBuilder staticBool = QueryBuilders.boolQuery();
+
+        Map<String, List<String>> links = filter.getLinks();
+        for (Map.Entry<String, List<String>> link: links.entrySet()) {
+            if (link.getKey().equals("folder")) {
+                continue;
             }
 
-            if (!folderIds.isEmpty()) {
-                query.should(QueryBuilders.termsQuery("folders", folderIds));
+            BoolQueryBuilder linksBool = QueryBuilders.boolQuery();
+            QueryBuilder nested = QueryBuilders.nestedQuery("links", linksBool);
+            linksBool.should(QueryBuilders.boolQuery()
+                    .must(QueryBuilders.termQuery("links.type", link.getKey()))
+                    .must(QueryBuilders.termsQuery("links.id", link.getValue())));
+            staticBool.must(nested);
+        }
+
+        /*
+         * Now do the recursive bit on just folders.
+         */
+        if (links.containsKey("folder")) {
+
+            List<Integer> folders = links.get("folder")
+                    .stream().map(f->Integer.valueOf(f)).collect(Collectors.toList());
+
+            Set<String> childFolders = Sets.newHashSet();
+            for (Folder folder : folderService.getAllDescendants(
+                    folderService.getAll(folders), true, true)) {
+
+                /**
+                 * Not going to allow people to add assets manually
+                 * to smart folders, unless its to the smart query itself.
+                 */
+                if (folder.getSearch() != null) {
+                    staticBool.should(getQuery(folder.getSearch(), false));
+                }
+
+                /**
+                 * We don't allow dyhi folders to have manual entries.
+                 */
+                if (folder.getDyhiId() == null && !folder.isDyhiRoot()) {
+                    childFolders.add(String.valueOf(folder.getId()));
+                }
+            }
+
+            if (!childFolders.isEmpty()) {
+                BoolQueryBuilder linksBool = QueryBuilders.boolQuery();
+                QueryBuilder nested = QueryBuilders.nestedQuery("links", linksBool);
+                linksBool.should(QueryBuilders.boolQuery()
+                        .must(QueryBuilders.termQuery("links.type", "folder"))
+                        .must(QueryBuilders.termsQuery("links.id", childFolders)));
+                staticBool.should(nested);
             }
         }
 
-        return query;
+        query.must(staticBool);
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
@@ -236,24 +271,6 @@ public class SearchServiceImpl implements SearchService {
         }
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
-
-
-        /*
-         * Note: the default boost is 1
-         *
-         * With 5 keyword buckets, the boosts work out to:
-         * 1 = 0.1
-         * 2 = 0.5
-         * 3 = 1.0 (DEFAULT)
-         * 4 = 1.5
-         * 5 = 2.0
-         *
-         * The indexed fields get 1/2 as much boost.
-         *
-         * TODO: switch to BigDecmial to deal with rounding errors.
-         * TODO: function score query is another option
-         */
-
         qstring.field("keywords.all");
         qstring.field("keywords.all.raw", 2);
         qstring.allowLeadingWildcard(false);
@@ -264,71 +281,91 @@ public class SearchServiceImpl implements SearchService {
 
 
     /**
-     * Builds an "AND" filter based on all the options in the AssetFilter.
+     * Apply the given filter to the overall boolean query.
      *
-     * @param builder
+     * @param filter
+     * @param query;
      * @return
      */
-    private QueryBuilder getFilter(AssetFilter builder) {
-        AndQueryBuilder filter =  QueryBuilders.andQuery();
-        filter.add(SecurityUtils.getPermissionsFilter());
+    private void applyFilterToQuery(AssetFilter filter, BoolQueryBuilder query) {
 
-        if (builder == null) {
-            return filter;
+        if (filter.getLinks() != null) {
+            linkQuery(query, filter);
         }
 
-        if (builder.getAssetIds() != null) {
-            QueryBuilder assetsFilterBuilder = QueryBuilders.termsQuery("_id", builder.getAssetIds());
-            filter.add(assetsFilterBuilder);
-        }
+        if (filter.getColors() != null) {
+            for (ColorFilter color : filter.getColors()) {
+                Preconditions.checkNotNull(color.getField(), "The ColorFilter.field was not set.");
+                BoolQueryBuilder colorFilter = QueryBuilders.boolQuery();
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".ratio"))
+                        .gte(color.getMinRatio()).lte(color.getMaxRatio()));
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".hue"))
+                        .gte(color.getHue() - color.getHueRange())
+                        .lte(color.getHue() + color.getHueRange()));
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".saturation"))
+                        .gte(color.getSaturation() - color.getSaturationRange())
+                        .lte(color.getSaturation() + color.getSaturationRange()));
+                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".brightness"))
+                        .gte(color.getBrightness() - color.getBrightnessRange())
+                        .lte(color.getBrightness() + color.getBrightnessRange()));
 
-        if (builder.getIngestIds() != null) {
-            /**
-             * An asset can be exported N times so the "exports" field is an array.  For ingest, we record
-             * the first ingest ID along with the pipeline, so the value is an embedded object.  Thus, how
-             * they are queried is not the same.
-             */
-            QueryBuilder ingestsFilterBuilder = QueryBuilders.termsQuery("imports.id", builder.getIngestIds());
-            filter.add(ingestsFilterBuilder);
-        }
-
-        if (builder.getExportIds() != null) {
-            QueryBuilder exportsFilterBuilder = QueryBuilders.termsQuery("exports", builder.getExportIds());
-            filter.add(exportsFilterBuilder);
-        }
-
-        if (builder.getExistFields() != null) {
-            for (String term : builder.getExistFields()) {
-                QueryBuilder existsFilterBuilder = QueryBuilders.existsQuery(term);
-                filter.add(existsFilterBuilder);
+                QueryBuilder colorFilterBuilder = QueryBuilders.nestedQuery(color.getField(),
+                        colorFilter);
+                query.must(colorFilterBuilder);
             }
         }
 
-        if (builder.getFieldTerms() != null) {
-            for (AssetFieldTerms fieldTerms : builder.getFieldTerms()) {
-                QueryBuilder termsFilterBuilder = QueryBuilders.termsQuery(fieldTerms.getField(), fieldTerms.getTerms());
-                filter.add(termsFilterBuilder);
+        if (filter.getExists() != null) {
+            for (String term : filter.getExists()) {
+                QueryBuilder existsFilter = QueryBuilders.existsQuery(term);
+                query.must(existsFilter);
             }
         }
 
-        if (builder.getFieldRanges() != null) {
-            for (AssetFieldRange fieldRange : builder.getFieldRanges()) {
-                QueryBuilder rangeFilterBuilder = QueryBuilders.rangeQuery(fieldRange.getField())
-                        .gte(fieldRange.getMin())
-                        .lt(fieldRange.getMax());
-                filter.add(rangeFilterBuilder);
+        if (filter.getMissing() != null) {
+            for (String term : filter.getMissing()) {
+                QueryBuilder missingFilter = QueryBuilders.missingQuery(term);
+                query.must(missingFilter);
             }
         }
 
-        if (builder.getScripts() != null) {
-            for (AssetScript script : builder.getScripts()) {
+        if (filter.getTerms()!= null) {
+            for (Map.Entry<String, List<Object>> term : filter.getTerms().entrySet()) {
+                QueryBuilder termsQuery = QueryBuilders.termsQuery(term.getKey(), term.getValue());
+                query.must(termsQuery);
+            }
+        }
+
+        if (filter.getRange() != null) {
+            for (Map.Entry<String, RangeQuery> entry: filter.getRange().entrySet()) {
+                String field = entry.getKey();
+                RangeQuery rq = entry.getValue();
+                RangeQueryBuilder rqb = new RangeQueryBuilder(field);
+
+                for (Field f: RangeQuery.class.getDeclaredFields()) {
+                    try {
+                        Method m = RangeQueryBuilder.class.getMethod(f.getName(), f.getType());
+                        Object v = f.get(rq);
+                        if (v == null) {
+                            continue;
+                        }
+                        m.invoke(rqb, v);
+                    } catch (Exception e) {
+                        throw new IllegalArgumentException(
+                                "RangeQueryBuilder has no '" + f.getName() + "' method");
+                    }
+                }
+                query.must(rqb);
+            }
+        }
+
+        if (filter.getScripts() != null) {
+            for (AssetScript script : filter.getScripts()) {
                 QueryBuilder scriptFilterBuilder = QueryBuilders.scriptQuery(new Script(
-                        script.getScript(), ScriptService.ScriptType.INLINE, "native", script.getParams()));
-                filter.add(scriptFilterBuilder);
+                        script.getScript(), ScriptService.ScriptType.INLINE, script.getType(), script.getParams()));
+                query.must(scriptFilterBuilder);
             }
         }
-
-        return filter;
     }
 
     @Override

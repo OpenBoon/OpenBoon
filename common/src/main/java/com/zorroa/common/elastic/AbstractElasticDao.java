@@ -1,5 +1,6 @@
 package com.zorroa.common.elastic;
 
+import com.zorroa.sdk.config.ApplicationProperties;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,11 @@ public abstract class AbstractElasticDao {
     protected ElasticTemplate elastic;
     protected String alias = "archivist";
 
+    @Autowired
+    public void setApplicationProperties(ApplicationProperties props) {
+        this.alias = props.getString("zorroa.cluster.index.alias");
+
+    }
     @Autowired
     public void setClient(Client client) {
         this.client = client;

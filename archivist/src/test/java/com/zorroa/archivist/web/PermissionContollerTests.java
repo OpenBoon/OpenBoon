@@ -1,8 +1,8 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -23,7 +23,7 @@ public class PermissionContollerTests extends MockMvcTest {
 
     @Test
     public void testCreate() throws Exception {
-        PermissionBuilder b = new PermissionBuilder("project", "sw");
+        PermissionSpec b = new PermissionSpec("project", "sw");
         b.setDescription("Star Wars crew members");
 
         MockHttpSession session = admin();
@@ -59,7 +59,7 @@ public class PermissionContollerTests extends MockMvcTest {
     @Test
     public void testGet() throws Exception {
 
-        PermissionBuilder b = new PermissionBuilder("project", "sw");
+        PermissionSpec b = new PermissionSpec("project", "sw");
         b.setName("project::sw");
         b.setDescription("Star Wars crew members");
         Permission perm = userService.createPermission(b);
@@ -78,7 +78,7 @@ public class PermissionContollerTests extends MockMvcTest {
     @Test
     public void testFoo() throws Exception {
 
-        PermissionBuilder b = new PermissionBuilder("project", "sw");
+        PermissionSpec b = new PermissionSpec("project", "sw");
         b.setDescription("Star Wars crew members");
         Permission perm = userService.createPermission(b);
 

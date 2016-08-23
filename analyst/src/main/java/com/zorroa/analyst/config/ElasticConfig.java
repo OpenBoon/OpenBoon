@@ -1,8 +1,9 @@
 package com.zorroa.analyst.config;
 
 import com.zorroa.analyst.Application;
-import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.elastic.ElasticClientUtils;
+import com.zorroa.sdk.config.ApplicationProperties;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;
@@ -28,16 +29,18 @@ public class ElasticConfig {
     ApplicationProperties properties;
 
     @Bean
-    public Client elastic() throws IOException {
+    @Autowired
+    public Client elastic(ArchivistClient archivist) throws IOException {
 
         Random rand = new Random(System.nanoTime());
         int number = rand.nextInt(99999);
 
         String hostName = InetAddress.getLocalHost().getHostName();
+
         String nodeName = String.format("%s_%05d", hostName, number);
         String archivistHost = String.format("%s:%d",
                 URI.create(properties.getString("analyst.master.host")).getHost(),
-                properties.getInt("zorroa.common.index.port"));
+                properties.getInt("zorroa.cluster.index.port"));
 
         Settings.Builder builder =
                 Settings.settingsBuilder()
@@ -48,6 +51,7 @@ public class ElasticConfig {
                         .put("node.master", false)
                         .put("cluster.routing.allocation.disk.threshold_enabled", false)
                         .put("http.enabled", "false")
+                        .put("network.host", "0.0.0.0")
                         .put("discovery.zen.no_master_block", "write")
                         .put("discovery.zen.fd.ping_timeout", "3s")
                         .put("discovery.zen.fd.ping_retries", 10)

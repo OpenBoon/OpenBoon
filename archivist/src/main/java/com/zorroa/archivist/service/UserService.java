@@ -1,7 +1,12 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.Session;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -9,9 +14,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    User login();
-
-    User create(UserBuilder builder);
+    User create(UserSpec builder);
 
     User get(String username);
 
@@ -21,19 +24,21 @@ public interface UserService {
 
     List<User> getAll();
 
-    List<User> getAll(int size, int offset);
+    PagedList<User> getAll(Paging page);
 
-    int getCount();
+    long getCount();
 
     String getPassword(String username);
+
+    boolean setPassword(User user, String password);
 
     String getHmacKey(String username);
 
     String generateHmacKey(String username);
 
-    boolean update(User user, UserUpdateBuilder builder);
+    boolean update(User user, UserProfileUpdate builder);
 
-    boolean disable(User user);
+    boolean setEnabled(User user, boolean value);
 
     List<User> getAll(Room room);
 
@@ -45,15 +50,27 @@ public interface UserService {
 
     List<Permission> getPermissions();
 
+    PagedList<Permission> getPermissions(Paging page, PermissionFilter filter);
+
+    PagedList<Permission> getPermissions(Paging page);
+
+    PagedList<Permission> getUserAssignablePermissions(Paging page);
+
+    PagedList<Permission> getObjAssignablePermissions(Paging page);
+
     List<Permission> getPermissions(User user);
 
-    void setPermissions(User user, List<Permission> perms);
+    void setPermissions(User user, Collection<Permission> perms);
 
-    void setPermissions(User user, Permission... perms);
+    void addPermissions(User user, Collection<Permission> perms);
+
+    void removePermissions(User user, Collection<Permission> perms);
 
     Permission getPermission(int id);
 
-    Permission createPermission(PermissionBuilder builder);
+    Permission createPermission(PermissionSpec builder);
+
+    List<String> getPermissionNames();
 
     Permission getPermission(String name);
 

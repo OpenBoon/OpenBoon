@@ -1,7 +1,15 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
+import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.domain.RoomBuilder;
+import com.zorroa.sdk.domain.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +26,9 @@ public class UserDaoTests extends AbstractTest {
     UserDao userDao;
 
     @Autowired
+    PermissionDao permissionDao;
+
+    @Autowired
     RoomDao roomDao;
 
     @Autowired
@@ -27,7 +38,7 @@ public class UserDaoTests extends AbstractTest {
 
     @Before
     public void init() {
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("test");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
@@ -42,9 +53,9 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testGetCount() {
-        int count = userDao.getCount();
+        long count = userDao.getCount();
         assertEquals(count, userDao.getCount());
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("test2");
         builder.setPassword("test2");
         builder.setEmail("test@test.com");
@@ -56,7 +67,7 @@ public class UserDaoTests extends AbstractTest {
     public void testAll() {
         assertEquals(3, userDao.getAll().size());
 
-        UserBuilder builder = new UserBuilder();
+        UserSpec builder = new UserSpec();
         builder.setUsername("foo");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
@@ -67,8 +78,8 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testAllPageable() {
-        assertEquals(1, userDao.getAll(1, 0).size());
-        assertEquals(0, userDao.getAll(1, 4).size());
+        assertEquals(3, userDao.getAll(Paging.first()).size());
+        assertEquals(0, userDao.getAll(new Paging(2, 4)).size());
     }
 
     @Test(expected=EmptyResultDataAccessException.class)
@@ -88,18 +99,24 @@ public class UserDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testResetPassword() {
+        assertTrue(userDao.setPassword(user, "fiddlesticks"));
+        assertTrue(BCrypt.checkpw("fiddlesticks", userDao.getPassword(user.getUsername())));
+        assertFalse(BCrypt.checkpw("smeagol", userDao.getPassword(user.getUsername())));
+    }
+
+    @Test
     public void testUpdate() {
-        UserUpdateBuilder builder = new UserUpdateBuilder();
-        builder.setUsername("foo");
-        builder.setPassword("bar");
+        UserProfileUpdate builder = new UserProfileUpdate();
+        builder.setFirstName("foo");
+        builder.setLastName("bar");
         builder.setEmail("test@test.com");
 
         assertTrue(userDao.update(user, builder));
         User updated = userDao.get(user.getId());
         assertEquals(builder.getEmail(), updated.getEmail());
-        assertEquals(builder.getUsername(), updated.getUsername());
-
-        assertTrue(BCrypt.checkpw("bar", userDao.getPassword("foo")));
+        assertEquals(builder.getFirstName(), updated.getFirstName());
+        assertEquals(builder.getLastName(), updated.getLastName());
     }
 
     @Test
@@ -129,4 +146,36 @@ public class UserDaoTests extends AbstractTest {
         assertEquals(1, users.size());
         assertTrue(users.contains(userDao.get(1)));
     }
+
+    @Test
+    public void testHasPermissionUningNames() {
+        assertFalse(userDao.hasPermission(user, "group", "manager"));
+        userDao.addPermission(user, permissionDao.get("group::manager"), false);
+        assertTrue(userDao.hasPermission(user, "group", "manager"));
+        assertFalse(userDao.hasPermission(user, "a", "b"));
+    }
+
+    @Test
+    public void testHasPermission() {
+        assertFalse(userDao.hasPermission(user, "group", "manager"));
+        userDao.addPermission(user, permissionDao.get("group::manager"), false);
+        assertTrue(userDao.hasPermission(user, permissionDao.get("group", "manager")));
+        assertFalse(userDao.hasPermission(user, permissionDao.get("group", "superuser")));
+    }
+
+    @Test
+    public void testAddPermission() {
+        userDao.addPermission(user, permissionDao.get("group::manager"), false);
+        List<Permission> perms = permissionDao.getAll(user);
+        assertTrue(perms.contains(permissionDao.get("group::manager")));
+    }
+
+    @Test
+    public void testSetPermissions() {
+        Permission p = permissionDao.get("group::manager");
+        assertEquals(1, userDao.setPermissions(user, Lists.newArrayList(p)));
+        List<Permission> perms = permissionDao.getAll(user);
+        assertTrue(perms.contains(p));
+    }
+
 }

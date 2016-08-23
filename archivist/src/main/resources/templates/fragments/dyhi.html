@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+
+<div th:fragment="create">
+    <form id="dyHiCreateForm" autocomplete="off" action="#" role="form" th:action="@{/gui/dyhi}" th:object="${newDyHiForm}" method="post">
+        <input type="hidden" name="folderId" id="folderId" th:value="${folder.id}"/>
+        <div class="panel-heading-sm">
+            <h4> Fields
+                <button id="btn-plus-field" type="button" class="btn btn-default btn-xs pull-right">
+                    <span class="glyphicon glyphicon-plus"></span> Add Field</button>
+            </h4>
+            <div class="clearfix"></div>
+        </div>
+        <hr/>
+        <div id="attr-list" class="panel-body">
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-1">Type:</label>
+                <div class="col-sm-3">
+                    <select name="type[0]" class="form-control">
+                        <option value="Attr">Attr</option>
+                        <option value="Year">Year</option>
+                        <option value="Month">Month</option>
+                        <option value="Day">Day</option>
+                    </select>
+                </div>
+                <label class="col-sm-1">Value:</label>
+                <div class="col-sm-7">
+                    <input name="field[0]" type="text" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button id="btn-delete" type="button" class="btn btn-danger">Clear</button>
+        </div>
+    </form>
+
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+        $(function(e) {
+            var fieldCount = 1;
+            // remove all fields.
+            $("#btn-delete").on("click", function() {
+                $("#attr-list").empty();
+
+            });
+
+            // add new field.
+            $("#btn-plus-field").on("click", function() {
+                $("#attr-list").append(
+                        "<div class=\"row form-group\">"+
+                        "<label class=\"col-sm-1\">Type:</label>"+
+                        "<div class=\"col-sm-3\">"+
+                        "<select name=\"type[" + fieldCount + "]\" class=\"form-control\">"+
+                        "<option value=\"Attr\">Attr</option>"+
+                        "<option value=\"Year\">Year</option>"+
+                        "<option value=\"Month\">Month</option>"+
+                        "<option value=\"Day\">Day</option>"+
+                        "</select>"+
+                        "</div>"+
+                        "<label class=\"col-sm-1\">Value:</label>"+
+                        "<div class=\"col-sm-7\">"+
+                        "<input name=\"field[" + fieldCount + "]\" type=\"text\" class=\"form-control\"/>"+
+                        "</div>"+
+                        "</div>"
+                );
+                fieldCount++;
+            });
+
+
+            // populate existing.
+            var folderId = $('#folderId').val();
+            $.ajax({
+                type: 'GET',
+                url: '/api/v1/dyhi/_folder/' + folderId,
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(result) {
+                    $("#attr-list").empty();
+                    // Set the field count to the size of our array.
+                    fieldCount = result["levels"].length;
+                    $.each(result["levels"], function(i, item) {
+                        $("#attr-list").append(
+                                "<div class=\"row form-group\">"+
+                                "<label class=\"col-sm-1\">Type:</label>"+
+                                "<div class=\"col-sm-3\">"+
+                                "<select name=\"type[" + i + "]\" class=\"form-control\">"+
+                                "<option value=\"Attr\"" + (item["type"] == "Attr" ? " selected" : "") + ">Attr</option>"+
+                                "<option value=\"Year\"" + (item["type"] == "Year" ? " selected" : "") + ">Year</option>"+
+                                "<option value=\"Month\"" + (item["type"] == "Month" ? " selected" : "") + ">Month</option>"+
+                                "<option value=\"Day\"" + (item["type"] == "Day" ? " selected" : "") + ">Day</option>"+
+                                "</select>"+
+                                "</div>"+
+                                "<label class=\"col-sm-1\">Value:</label>"+
+                                "<div class=\"col-sm-7\">"+
+                                "<input value=\"" + item["field"] + "\" name=\"field[" + i + "]\" type=\"text\" class=\"form-control\"/>"+
+                                "</div>"+
+                                "</div>"
+                        );
+                    });
+                },
+                async: false
+            });
+        });
+        //]]>
+    </script>
+</div>
+
+
+<div th:fragment="modal_create">
+
+    <!-- Modal -->
+    <div class="modal fade" id="dyhiModalCreate" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title">Dynamic Hierarchy</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                    <div th:include="fragments/dyhi :: create"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- If there are validation errros, show form again. -->
+    <div th:if="${dyhiError}">
+        <script th:inline="javascript" type="text/javascript">
+            $(document).ready(function(e) {
+                $('#dyhiModalCreate').modal({'backdrop': 'static'});
+            });
+        </script>
+    </div>
+</div>
+
+</body>
+</html>

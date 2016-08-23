@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div th:include="fragments/users :: menu"/>
+    <div th:include="fragments/users :: side_menu"/>
+    <br/>
+    <div class="wrapper_side_menu">
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Change Password</h3>
+                </div>
+                <div class="panel-body">
+                <form id="userPasswordForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__/account}" th:object="${userPasswordForm}" method="post">
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" th:field="*{password}" class="form-control" id="password" required="true"/>
+                        <div id="password-help" class="help-block"></div>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-verify">Verify Password:</label>
+                        <input type="password" class="form-control" id="password-verify" required="true"/>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-save"></span> Save
+                        </button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            <br/>
+
+            <th:block th:if="${user.enabled}">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Disable User</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="userStateForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__/state}" th:object="${userStateForm}" method="post">
+                            <input type="hidden" name="enabled" value="false"/>
+                            <div class="form-group">
+                            <span id="helpBlock" class="help-block">
+                                Disabling a user will not delete any of their folders, bookmarks, or assets.
+                                Users can be reactivated at any time with all of their data intact.
+                            </span>
+                            <button type="submit" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-remove-sign"></span> Disable
+                            </button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </th:block>
+
+            <th:block th:if="${!user.enabled}">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Enable User</h3>
+                    </div>
+                <div class="panel-body">
+                    <form id="userStateForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__/state}" th:object="${userStateForm}" method="post">
+                        <input type="hidden" name="enabled" value="true"/>
+                        <div class="form-group">
+                             <span id="helpBlock" class="help-block">
+                                Enable this user.  Users that have been disabled will find all of their data intact.
+                            </span>
+                            <button type="submit" class="btn btn-success">
+                            <span class="glyphicon glyphicon-remove-sign"></span> Enable
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function(e) {
+
+            $('#password, #password-verify').keyup(function()  {
+                var password = $('#password').val();
+                var verify = $('#password-verify').val();
+
+                if (password.length < 8) {
+                    $('#password-help').text("Password must be 8 or more characters.")
+                            .attr("class", "help-block alert-danger")
+                }
+                else if (password != verify) {
+                    $('#password-help').text("Passwords do not match.")
+                            .attr("class", "help-block alert-danger");
+                }
+                else {
+                    $('#password-help').text("Password Ok")
+                            .attr("class", "help-block alert-success")
+                }
+            });
+        });
+        //]]>
+    </script>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+
+<div th:fragment="menu">
+    <nav class="navbar navbar-default navbar-shadow navbar-fixed-top secondnavbar" role="navigation" style="z-index: 999; border-width:0px; border-bottom-width: 1px">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="navbar navbar-header">
+                    <a class="navbar-brand" href="/gui/users"><i class="fa fa-user fa-fw fa-lg"/>Users</a>
+                    <p th:if="${user != null}" class="navbar-text navbar-section" th:text="${user.username}">...</p>
+                </div>
+
+                <div class="navbar-collapse collapse">
+                    <div class="navbar navbar-right">
+                        <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
+                                type="button" class="btn btn-danger navbar-btn"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
+
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-sort fa-lg fa-fw" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div th:fragment="side_menu">
+    <div class="navbar navbar-default navbar-fixed-left">
+        <nav class="nav-sidebar">
+            <div class="list-group">
+                <a th:href="${'/gui/users/' + user.id}" class="list-group-item">Profile</a>
+                <a th:href="${'/gui/users/' + user.id + '/account'}" class="list-group-item">Account</a>
+                <a th:href="${'/gui/users/' + user.id + '/permissions'}" class="list-group-item">Permissions</a>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<div th:fragment="modal_create">
+<div class="modal fade" id="modalCreate" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                <h4 class="modal-title">Create User</h4>
+            </div>
+            <div class="modal-body">
+                <form id="newUserForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users}" th:object="${newUserForm}" method="post">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" th:field="*{username}" class="form-control" id="username" required="true" describedby="username-success"/>
+                        <span id="username-valid" aria-hidden="true"></span>
+                        <span id="username-success" class="sr-only">(success)</span>
+                        <span id="username-help" class="help-block"></span>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address:</label>
+                        <input type="email" th:field="*{email}" class="form-control" id="email" required="true"/>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" th:field="*{password}" class="form-control" id="password" required="true" describedby="password-success"/>
+                        <span id="password-success" class="sr-only">(success)</span>
+                        <span id="password-help" class="help-block"></span>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-verify">Verify Password:</label>
+                        <input type="password" class="form-control" id="password-verify" required="true"/>
+                    </div>
+                    <button type="submit" class="btn btn-default">Create</button>
+                    </form>
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- If there are validation errros, show form again. -->
+    <div th:if="${errors}">
+        <script th:inline="javascript" type="text/javascript">
+            $('#modalCreate').modal({'backdrop': 'static'});
+        </script>
+    </div>
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+
+        $(document).ready(function(e) {
+            $('#password, #password-verify').keyup(function()  {
+                var password = $('#password').val();
+                var verify = $('#password-verify').val();
+
+                if (password.length < 8) {
+                    $('#password-help').text("Password must be 8 or more characters.");
+                }
+                else if (password != verify) {
+                    $('#password-help').text("Passwords do not match.");
+                }
+                else {
+                    $('#password-help').text("Password Ok");
+                }
+            });
+
+            $('#modalCreate').on('hidden.bs.modal', function (e) {
+                $(this).find('#newUserForm')[0].reset();
+
+                $('#username-valid').parent().attr("class", "form-group has-feedback");
+                $('#username-valid').attr("class", "form-control-feedback");
+                $('#username-help').text("");
+            })
+
+            $('#username').keyup(function()  {
+                var username = $(this).val();
+                var parent = $(this).parent();
+
+                if (username.length >= 3) {
+                    $.ajax( {
+                        url: '/api/v1/users/' + username + '/_exists',
+                        method: 'get',
+                        dataType: 'json',
+                        success: function(data) {
+                            if (!data["result"]) {
+                                $('#username-valid').attr("class", "glyphicon glyphicon-ok form-control-feedback");
+                                $('#username-help').text("Username is available");
+                                parent.attr("class", "form-group has-success has-feedback");
+                            }
+                            else {
+                                $('#username-valid').attr("class", "glyphicon glyphicon-remove form-control-feedback");
+                                $('#username-help').text("Username is not available");
+                                parent.attr("class", "form-group has-error has-feedback");
+                            }
+                        },
+                        error: function(err) {
+                            alert(err);
+                        }
+                    });
+                }
+                else {
+                    $('#username-valid').attr("class", "form-control-feedback");
+                    parent.attr("class", "form-group has-feedback");
+                }
+            });
+        });
+        //]]>
+    </script>
+</div>
+</div>
+
+</body>
+</html>

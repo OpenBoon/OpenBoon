@@ -1,17 +1,21 @@
 package com.zorroa.common.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
@@ -19,18 +23,13 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
-
-    private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
-
-    public AssetDaoImpl(String alias) {
-        this.alias = alias;
-    }
 
     @Override
     public String getType() {
@@ -41,40 +40,29 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         Map<String, Object> data = Json.deserialize(source, new TypeReference<Map<String, Object>>() {});
         Asset result = new Asset();
         result.setId(id);
-        result.setVersion(version);
         result.setDocument(data);
         return result;
     };
 
     @Override
-    public Asset upsert(AssetBuilder builder) {
-        String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
-        UpdateRequestBuilder upsert = prepareUpsert(builder, id);
-        upsert.setRefresh(true);
-        upsert.get();
-        return get(id);
+    public Asset index(Source source) {
+        String id = source.getId();
+        UpdateRequestBuilder upsert = prepareUpsert(source, id);
+        return new Asset(upsert.get().getId(), source.getDocument());
     }
 
     @Override
-    public String upsertAsync(AssetBuilder builder) {
-        String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
-        UpdateRequestBuilder upsert = prepareUpsert(builder, id);
-        upsert.execute();
-        return id;
-    }
-
-    @Override
-    public AnalyzeResult bulkUpsert(List<AssetBuilder> builders) {
-        AnalyzeResult result = new AnalyzeResult();
-        if (builders.isEmpty()) {
+    public AssetIndexResult index(String type, List<Source> sources) {
+        AssetIndexResult result = new AssetIndexResult();
+        if (sources.isEmpty()) {
             return result;
         }
-        List<AssetBuilder> retries = Lists.newArrayList();
+        List<Source> retries = Lists.newArrayList();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (AssetBuilder builder : builders) {
-            String id = uuidGenerator.generate(builder.getAbsolutePath()).toString();
-            bulkRequest.add(prepareUpsert(builder, id));
+        for (Source source : sources) {
+            String id = source.getId();
+            bulkRequest.add(prepareUpsert(source, id));
         }
 
         BulkResponse bulk = bulkRequest.get();
@@ -84,13 +72,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             UpdateResponse update = response.getResponse();
             if (response.isFailed()) {
                 String message = response.getFailure().getMessage();
-                AssetBuilder asset = builders.get(index);
+                Source asset = sources.get(index);
                 if (removeBrokenField(asset, message)) {
                     result.warnings++;
-                    retries.add(builders.get(index));
+                    retries.add(sources.get(index));
                 } else {
                     result.logs.add(new StringBuilder(1024).append(
-                            message).append(",").append(asset.getAbsolutePath()).toString());
+                            message).append(",").append(asset.getPath()).toString());
                     result.errors++;
                 }
             } else if (update.isCreated()) {
@@ -106,24 +94,32 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
          */
         if (!retries.isEmpty()) {
             result.retries++;
-            result.add(bulkUpsert(retries));
+            result.add(index(retries));
         }
         return result;
     }
 
-    private UpdateRequestBuilder prepareUpsert(AssetBuilder builder, String id) {
-        /**
-         * Close the AssetBuilder which has an open file handle to the asset itself.
-         */
-        builder.close();
-        builder.buildKeywords();
+    @Override
+    public AssetIndexResult index(List<Source> sources) {
+        return index("asset", sources);
+    }
 
-        byte[] doc = Json.serialize(builder.getDocument());
+    private UpdateRequestBuilder prepareUpsert(Source source, String id) {
+        byte[] doc = Json.serialize(source.getDocument());
         return client.prepareUpdate(alias, "asset", id)
                 .setDoc(doc)
                 .setId(id)
                 .setUpsert(doc);
     }
+
+    private UpdateRequestBuilder prepareUpsert(Source source, String id, String type) {
+        byte[] doc = Json.serialize(source.getDocument());
+        return client.prepareUpdate(alias, type, id)
+                .setDoc(doc)
+                .setId(id)
+                .setUpsert(doc);
+    }
+
 
     private static final Pattern[] RECOVERABLE_BULK_ERRORS = new Pattern[] {
             Pattern.compile("^MapperParsingException\\[failed to parse \\[(.*?)\\]\\];"),
@@ -131,7 +127,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             Pattern.compile("mapper \\[(.*?)\\] of different type")
     };
 
-    private boolean removeBrokenField(AssetBuilder asset, String error) {
+    private boolean removeBrokenField(Source asset, String error) {
         for (Pattern pattern: RECOVERABLE_BULK_ERRORS) {
             Matcher matcher = pattern.matcher(error);
             if (matcher.find()) {
@@ -142,62 +138,68 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public void addToExport(Asset asset, Export export) {
-        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), asset.getId());
-        updateBuilder.setScript(new Script("asset_append_export",
-                ScriptService.ScriptType.INDEXED, "groovy",
-                ImmutableMap.of("exportId", export.getId())));
-        updateBuilder.setRefresh(true).get();
-    }
+    public Map<String, Boolean> removeLink(String type, String value, List<String> assets) {
+        if (type.contains(".")) {
+            throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
+        }
 
-    @Override
-    public int addToFolder(Folder folder, List<String> assetIds) {
-        int result = 0;
-
+        Map<String,Object> link = ImmutableMap.of("type", type, "id", value);
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (String id: assetIds) {
+        for (String id: assets) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
-            updateBuilder.setScript(new Script("asset_append_folder",
+            updateBuilder.setScript(new Script("remove_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("folderId", folder.getId())));
+                    ImmutableMap.of("link", link)));
             bulkRequest.add(updateBuilder);
         }
 
+        Map<String, Boolean> result = Maps.newHashMapWithExpectedSize(assets.size());
         BulkResponse bulk = bulkRequest.setRefresh(true).get();
         for (BulkItemResponse rsp:  bulk.getItems()) {
-            if (!rsp.isFailed()) {
-                result++;
+            result.put(rsp.getId(), !rsp.isFailed());
+            if (rsp.isFailed()) {
+                logger.warn("Failed to unlink asset: {}",
+                        rsp.getFailureMessage(), rsp.getFailure().getCause());
             }
         }
         return result;
     }
 
     @Override
-    public int removeFromFolder(Folder folder, List<String> assetIds) {
-        int result = 0;
+    public Map<String, Boolean> appendLink(String type, String value, List<String> assets) {
+        if (type.contains(".")) {
+            throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
+        }
+
+        Map<String,Object> link = ImmutableMap.of("type", type, "id", value, "date", System.currentTimeMillis());
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        for (String id: assetIds) {
+        for (String id: assets) {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
-            updateBuilder.setScript(new Script("asset_remove_folder",
+
+            updateBuilder.setScript(new Script("append_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("folderId", folder.getId())));
+                    ImmutableMap.of("link", link)));
+
             bulkRequest.add(updateBuilder);
         }
 
+        Map<String, Boolean> result = Maps.newHashMapWithExpectedSize(assets.size());
         BulkResponse bulk = bulkRequest.setRefresh(true).get();
         for (BulkItemResponse rsp:  bulk.getItems()) {
-            if (!rsp.isFailed()) {
-                result++;
+            result.put(rsp.getId(), !rsp.isFailed());
+            if (rsp.isFailed()) {
+                logger.warn("Failed to link asset: {}",
+                        rsp.getFailureMessage(), rsp.getFailure().getCause());
             }
         }
         return result;
     }
 
     @Override
-    public long update(String assetId, AssetUpdateBuilder builder) {
+    public long update(String assetId, Map<String, Object> values) {
         Asset asset = get(assetId);
-        for (Map.Entry<String,Object> entry: builder.entrySet()) {
+        for (Map.Entry<String,Object> entry: values.entrySet()) {
             asset.setAttr(entry.getKey(), entry.getValue());
         }
 
@@ -215,18 +217,20 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public boolean existsByPath(String path) {
-        long count = client.prepareCount(alias)
-                .setQuery(QueryBuilders.termQuery("source.path.raw", path))
-                .get()
-                .getCount();
-        return count > 0;
+    public boolean exists(Path path) {
+        return client.prepareSearch(alias)
+                .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString()))
+                .setSize(0)
+                .get().getHits().getTotalHits() > 0;
     }
 
     @Override
-    public Asset getByPath(String path) {
-        List<Asset> assets = elastic.query(client.prepareSearch(alias).setTypes("asset").setQuery(
-                QueryBuilders.termQuery("source.path.raw", path)), MAPPER);
+    public Asset get(Path path) {
+        List<Asset> assets = elastic.query(client.prepareSearch(alias)
+                .setTypes(getType())
+                .setSize(1)
+                .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString())), MAPPER);
+
         if (assets.isEmpty()) {
             return null;
         }
@@ -234,28 +238,21 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public boolean existsByPathAfter(String path, long afterTime) {
-        long count = client.prepareCount(alias)
-                .setQuery(QueryBuilders.filteredQuery(
-                        QueryBuilders.termQuery("source.path.raw", path),
-                        QueryBuilders.rangeQuery("_timestamp").gt(afterTime)))
-                .get()
-                .getCount();
-        return count > 0;
+    public PagedList<Asset> getAll(Paging page, SearchRequestBuilder search) {
+        return elastic.page(search
+                .setFrom(page.getFrom())
+                .setSize(page.getSize()), page, MAPPER);
     }
 
     @Override
-    public List<Asset> getAll() {
-        return elastic.query(client.prepareSearch(alias)
+    public PagedList<Asset> getAll(Paging page) {
+        return elastic.page(client.prepareSearch(alias)
                 .setTypes(getType())
+                .setFrom(page.getFrom())
+                .setSize(page.getSize())
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.matchAllQuery())
-                .setVersion(true), MAPPER);
+                .setVersion(true), page, MAPPER);
 
-    }
-
-    @Override
-    public void refresh() {
-        client.admin().indices().prepareRefresh(alias).get();
     }
 }

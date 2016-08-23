@@ -1,157 +1,62 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.exception.ArchivistException;
-import com.zorroa.sdk.processor.ProcessorFactory;
-import com.zorroa.sdk.processor.export.ExportProcessor;
-import com.zorroa.sdk.util.Json;
-import org.elasticsearch.action.search.SearchResponse;
+import com.zorroa.archivist.domain.ExportSpec;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetSearch;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 /**
- * Created by chambers on 12/2/15.
+ * Created by chambers on 8/16/16.
  */
 public class ExportServiceTests extends AbstractTest {
 
-    Export export;
+    @Autowired
+    ExportService exportService;
+
+    @Autowired
+    PluginService pluginService;
+
+    @Autowired
+    AssetDao assetDao;
+
+    Job job;
+    ExportSpec spec;
+    Asset asset;
 
     @Before
     public void init() {
 
-        addTestAssets("standard");
-
-        ExportOptions options = new ExportOptions();
-        options.getImages().setFormat("jpg");
-        options.getImages().setScale(.5);
-
-        AssetSearch search = new AssetSearch();
-        search.setQuery("beer");
-
-        ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
-        outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
-
-        ExportBuilder builder = new ExportBuilder();
-        builder.setNote("An export for Bob");
-        builder.setOptions(options);
-        builder.setSearch(search);
-        builder.setOutputs(Lists.newArrayList(outputFactory));
-
-        export = exportService.create(builder);
-    }
-
-    @Test(expected=ArchivistException.class)
-    public void testExceedMaxAssetCount() {
-        ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
-        outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
-
-        ExportBuilder builder = new ExportBuilder();
-        builder.setNote("An export for Bob");
-        builder.setSearch(new AssetSearch());
-        builder.setOutputs(Lists.newArrayList(outputFactory));
-
-        export = exportService.create(builder);
-    }
-
-    @Test(expected=ArchivistException.class)
-    public void testZeroAssetExport() {
-        ProcessorFactory<ExportProcessor> outputFactory = new ProcessorFactory<>();
-        outputFactory.setKlass("com.zorroa.sdk.processor.export.ZipFileExport");
-        outputFactory.setArgs(ImmutableMap.of("zipEntryPath", ""));
-
-        ExportBuilder builder = new ExportBuilder();
-        builder.setSearch(new AssetSearch("oieowieowieowieowieoewo"));
-        builder.setOutputs(Lists.newArrayList(outputFactory));
-
-        export = exportService.create(builder);
-    }
-
-    @Test
-    public void testExportProperties() {
-        assertEquals(1, export.getAssetCount());
-        assertEquals(1800475, export.getTotalFileSize());
-    }
-
-    @Test
-    public void testRestart() {
-        logout();
-        exportExecutorService.execute(export);
-        authenticate();
-
-        exportService.restart(export);
-
-        Export export2 = exportService.get(export.getId());
-        assertEquals(ExportState.Queued, export2.getState());
-
-        logout();
-        exportExecutorService.execute(export);
-        authenticate();
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addKeywords("source", "cat");
+        asset = assetDao.index(source);
         refreshIndex();
-        // The second export should have v2 in the path.
-        logger.info("path {}", exportService.getAllOutputs(export).get(0).getPath());
-        assertEquals(2, (int) jdbc.queryForObject("SELECT int_execute_count FROM export WHERE pk_export=?",
-                Integer.class, export.getId()));
+
+        spec = new ExportSpec();
+        spec.setName("test");
+        spec.setSearch(new AssetSearch().setQuery("cats"));
+        job = exportService.create(spec);
     }
 
     @Test
-    public void testDuplicate() {
-        Export export2 = exportService.duplicate(export);
-        assertNotEquals(export.getId(), export2.getId());
-        assertEquals(Json.serializeToString(export.getOptions()), Json.serializeToString(export2.getOptions()));
-        assertEquals(Json.serializeToString(export.getSearch()), Json.serializeToString(export2.getSearch()));
+    public void testCreate() {
+        /**
+         * Export jobs are inline
+         */
+        int count = jdbc.queryForObject(
+                "SELECT COUNT(1) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
+        assertEquals(1, count);
 
-        List<ExportOutput> outputs1 = exportService.getAllOutputs(export);
-        List<ExportOutput> outputs2 = exportService.getAllOutputs(export2);
 
-        assertEquals(outputs1.size(), outputs2.size());
-        for (int i=0; i< outputs1.size(); i++) {
-            ExportOutput output1 = outputs1.get(i);
-            ExportOutput output2 = outputs2.get(i);
 
-            assertNotEquals(output1.getId(), output2.getId());
-            assertEquals(output1.getUserCreated(), output2.getUserCreated());
-            assertEquals(output1.getFactory().getKlass(), output2.getFactory().getKlass());
-            assertEquals(output1.getFileExtention(), output2.getFileExtention());
-        }
     }
 
-    @Test
-    public void testOfflineExport() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-        exportExecutorService.execute(export);
-        refreshIndex();
-        authenticate();
 
-        assertEquals(1, exportService.offline(export));
-        assertEquals(0, exportService.offline(export));
-    }
-
-    @Test
-    public void testOfflineExportOutput() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-        exportExecutorService.execute(export);
-        refreshIndex();
-        authenticate();
-
-        assertEquals(true, exportService.offline(exportService.getAllOutputs(export).get(0)));
-        assertEquals(false, exportService.offline(exportService.getAllOutputs(export).get(0)));
-    }
-
-    @Test
-    public void testExportsFolder() {
-        SearchResponse r = searchService.search(new AssetSearch().setFilter(
-                new AssetFilter().addToFolderIds(folderService.get("/Exports").getId())));
-        assertEquals(2, r.getHits().getTotalHits());
-    }
 }

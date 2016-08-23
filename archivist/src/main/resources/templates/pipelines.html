@@ -24,10 +24,8 @@
                 <dl class="dl-horizontal">
                     <dt>Description:</dt>
                     <dd th:text="${pipeline.description}"></dd>
-                    <dt>Created By</dt>
-                    <dd th:text="${pipeline.userCreated}"></dd>
-                    <dt>Created At</dt>
-                    <dd th:text="${#dates.format(pipeline.timeCreated, 'dd-MMM-yyyy hh:mm:ss')}"></dd>
+                    <dt>Type</dt>
+                    <dd th:text="${pipeline.type}"></dd>
                 </dl>
             </div>
             <table class="table table-striped">
@@ -40,7 +38,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="proc: ${pipeline.processors}">
-                        <td th:text="${proc.klass}"></td>
+                        <td th:text="${proc.className}"></td>
                         <td th:text="${proc.args}"></td>
                     </tr>
                     </tbody>

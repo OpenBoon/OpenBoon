@@ -1,12 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.event.EventServerHandler;
 import com.zorroa.archivist.repository.SessionDao;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.Session;
-import com.zorroa.sdk.domain.User;
-import com.zorroa.archivist.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

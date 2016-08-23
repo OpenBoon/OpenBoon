@@ -1,7 +1,7 @@
 package com.zorroa.archivist.security;
 
 import com.google.common.collect.Lists;
-import com.zorroa.sdk.domain.User;
+import com.zorroa.archivist.domain.User;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 /**

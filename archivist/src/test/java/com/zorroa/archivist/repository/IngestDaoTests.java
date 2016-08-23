@@ -2,189 +2,139 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.TestIngestor;
-import com.zorroa.archivist.domain.IngestSchedule;
-import com.zorroa.archivist.domain.IngestScheduleBuilder;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.ProcessorFactory;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.Schedule;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.DayOfWeek;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
+/**
+ * Created by chambers on 7/9/16.
+ */
 public class IngestDaoTests extends AbstractTest {
 
     @Autowired
     IngestDao ingestDao;
 
-    @Autowired
-    IngestScheduleDao ingestScheduleDao;
-
     Ingest ingest;
-    IngestPipeline pipeline;
+    IngestSpec spec;
 
     @Before
     public void init() {
-        pipeline = ingestService.getIngestPipeline("standard");
-        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        ingest = ingestDao.create(pipeline, builder);
+        spec = new IngestSpec();
+        spec.setPipeline(Lists.newArrayList());
+        spec.setGenerators(Lists.newArrayList());
+        spec.setFolderId(null);
+        spec.setPipelineId(null);
+        spec.setName("Test");
+        spec.setAutomatic(true);
+        spec.setRunNow(false);
+        spec.setSchedule(new Schedule());
+        ingest = ingestDao.create(spec);
     }
 
     @Test
     public void testCreate() {
-        IngestBuilder builder = new IngestBuilder(getStaticImagePath());
-        Ingest ingest01 = ingestDao.create(pipeline, builder);
-        Ingest ingest02 = ingestDao.get(ingest01.getId());
-        assertEquals(ingest01.getId(), ingest02.getId());
+        validate(spec, ingest);
+    }
+
+    @Test
+    public void testUpdate () {
+        Ingest spec2 = new Ingest();
+        spec2.setPipeline(Lists.newArrayList(
+                new ProcessorRef("foo.Bar")));
+        spec2.setGenerators(Lists.newArrayList(
+                new ProcessorRef("bing.Bang")));
+        spec2.setFolderId(1);
+        spec2.setPipelineId(null);
+        spec2.setName("Test");
+        spec2.setAutomatic(true);
+        spec2.setSchedule(new Schedule());
+
+        assertTrue(ingestDao.update(ingest.getId(), spec2));
+        assertFalse(ingestDao.update(-1, spec2));
+
+        Ingest ingest2 = ingestDao.refresh(ingest);
+        validate(spec2, ingest2);
     }
 
     @Test
     public void testDelete() {
-        assertTrue(ingestDao.delete(ingest));
-        assertFalse(ingestDao.delete(ingest));
+        assertTrue(ingestDao.delete(ingest.getId()));
+        assertFalse(ingestDao.delete(ingest.getId()));
     }
 
     @Test
     public void testGet() {
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(ingest01.getId(), ingest.getId());
-        assertEquals(ingest01.getUris(), ingest.getUris());
-        assertEquals(ingest01.getPipelineId(), ingest.getPipelineId());
-        assertEquals(ingest01.getState(), ingest.getState());
-        assertEquals(ingest01.getTimeCreated(), ingest.getTimeCreated());
-        assertEquals(ingest01.getTimeModified(), ingest.getTimeModified());
-        assertEquals(ingest01.getTimeStarted(), ingest.getTimeStarted());
-        assertEquals(ingest01.getTimeStopped(), ingest.getTimeStopped());
-        assertEquals(ingest01.getUserCreated(), ingest.getUserCreated());
-        assertEquals(ingest01.getUserModified(), ingest.getUserModified());
+        Ingest ingest2 = ingestDao.get(ingest.getId());
+        validate(ingest, ingest2);
+    }
+
+    @Test
+    public void testGetByName() {
+        Ingest ingest2 = ingestDao.get(ingest.getName());
+        validate(ingest, ingest2);
     }
 
     @Test
     public void testGetAll() {
-        List<Ingest> pending = ingestDao.getAll();
-        assertEquals(1, pending.size());
+        List<Ingest> all = ingestDao.getAll();
+        validate(ingest, all.get(0));
     }
 
     @Test
-    public void testGetAllBySchedule() {
-        IngestScheduleBuilder builder = new IngestScheduleBuilder();
-        builder.setDays(Lists.newArrayList(DayOfWeek.FRIDAY));
-        builder.setRunAtTime("10:00:00");
-        builder.setName("10AM");
-        builder.setIngestIds(Lists.newArrayList(ingest.getId()));
+    public void testGetAllPaged() {
+        for (int i=0; i<10; i++) {
+            spec.setName("Ingest" + i);
+            ingestDao.create(spec);
+        }
+        PagedList<Ingest> list = ingestDao.getAll(Paging.first(5));
 
-        IngestSchedule schedule = ingestScheduleDao.create(builder);
-        logger.info("{}", schedule.getIngestIds());
-
-        assertTrue(ingestDao.getAll(schedule).contains(ingest));
-        assertEquals(1, ingestDao.getAll(schedule).size());
+        assertEquals(5, list.getList().size());
+        assertEquals(11L, (long) list.getPage().getTotalCount());
+        assertEquals(3, list.getPage().getTotalPages());
     }
 
     @Test
-    public void testGetByFilter() {
-        // non existent pipelines
-        IngestFilter filter = new IngestFilter();
-        filter.setPipelines(Lists.newArrayList("foo", "bar"));
-        List<Ingest> ingests = ingestDao.getAll(filter);
-        assertEquals(0, ingests.size());
-
-        // existing pipeline
-        filter = new IngestFilter();
-        filter.setPipelines(Lists.newArrayList(pipeline.getName()));
-        ingests = ingestDao.getAll(filter);
-        assertEquals(1, ingests.size());
+    public void testCount() {
+        for (int i=0; i<10; i++) {
+            spec.setName("Ingest" + i);
+            ingestDao.create(spec);
+        }
+        assertEquals(11, ingestDao.count());
     }
 
     @Test
-    public void testGetAllByState() {
-        List<Ingest> idle = ingestDao.getAll(IngestState.Idle, 1000);
-        assertEquals(1, idle.size());
-        assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
-        idle = ingestDao.getAll(IngestState.Idle, 1000);
-        assertEquals(0, idle.size());
+    public void testExists() {
+        assertTrue(ingestDao.exists("Test"));
+        assertFalse(ingestDao.exists("False"));
     }
 
-    @Test
-    public void testSetStateWithOldState() {
-        assertTrue(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
-        assertFalse(ingestDao.setState(ingest, IngestState.Running, IngestState.Idle));
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(ingest01.getState(), IngestState.Running);
+    public static void validate(Ingest should, Ingest is) {
+        assertEquals(should.getPipeline(), is.getPipeline());
+        assertEquals(should.getGenerators(), is.getGenerators());
+        assertEquals(should.getFolderId(), is.getFolderId());
+        assertEquals(should.getPipeline(), is.getPipeline());
+        assertEquals(should.getName(), is.getName());
+        assertEquals(should.isAutomatic(), is.isAutomatic());
+        assertEquals(should.getSchedule(), is.getSchedule());
     }
 
-    @Test
-    public void testSetState() {
-        assertTrue(ingestDao.setState(ingest, IngestState.Running));
-        assertFalse(ingestDao.setState(ingest, IngestState.Running));
+    public static void validate(IngestSpec should, Ingest is) {
+        assertEquals(should.getPipeline(), is.getPipeline());
+        assertEquals(should.getGenerators(), is.getGenerators());
+        assertEquals(should.getFolderId(), is.getFolderId());
+        assertEquals(should.getPipeline(), is.getPipeline());
+        assertEquals(should.getName(), is.getName());
+        assertEquals(should.isAutomatic(), is.isAutomatic());
+        assertEquals(should.getSchedule(), is.getSchedule());
     }
-
-    @Test
-    public void testUpdate() {
-
-        IngestPipelineBuilder ipb = new IngestPipelineBuilder();
-        ipb.setName("test");
-        ipb.setDescription("A test pipeline");
-        ipb.addToProcessors(new ProcessorFactory<>(TestIngestor.class));
-        IngestPipeline testPipeline = ingestService.createIngestPipeline(ipb);
-
-        IngestUpdateBuilder updateBuilder = new IngestUpdateBuilder();
-        updateBuilder.addToUris("file:///foo");
-        updateBuilder.setPipelineId(testPipeline.getId());
-
-        assertTrue(ingestDao.update(ingest, updateBuilder));
-
-        Ingest updatedIngest = ingestDao.get(ingest.getId());
-        assertTrue(updatedIngest.getUris().contains("file:///foo"));
-        assertEquals(testPipeline.getId(), updatedIngest.getPipelineId());
-    }
-
-    @Test
-    public void testSetPaused() {
-        assertTrue(ingestDao.setPaused(ingest, true));
-        assertFalse(ingestDao.setPaused(ingest, true));
-        assertTrue(ingestDao.setPaused(ingest, false));
-        assertFalse(ingestDao.setPaused(ingest, false));
-    }
-
-    @Test
-    public void testSetTotalAssetCount() {
-        ingestDao.setTotalAssetCount(ingest ,1000);
-        Ingest _ingest = ingestDao.get(ingest.getId());
-        assertEquals(1000, _ingest.getTotalAssetCount());
-    }
-
-
-    @Test
-    public void testIncrementCounters() {
-        ingestDao.incrementCounters(ingest, 1, 2, 3, 4);
-        Ingest ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(1, ingest01.getCreatedCount());
-        assertEquals(2, ingest01.getUpdatedCount());
-        assertEquals(3, ingest01.getErrorCount());
-        assertEquals(4, ingest01.getWarningCount());
-        ingestDao.resetCounters(ingest);
-        ingest01 = ingestDao.get(ingest.getId());
-        assertEquals(0, ingest01.getCreatedCount());
-        assertEquals(0, ingest01.getUpdatedCount());
-        assertEquals(0, ingest01.getErrorCount());
-        assertEquals(0, ingest01.getWarningCount());
-    }
-
-    @Test
-    public void testSkipTable() {
-        String path = "/test/foo.tif";
-        ingestDao.addSkippedPath(ingest, path);
-        Set<String> skipped = ingestDao.getSkippedPaths(ingest);
-        assertTrue(skipped.contains(path));
-
-        ingestDao.removeSkippedPath(ingest, path);
-        skipped = ingestDao.getSkippedPaths(ingest);
-        assertFalse(skipped.contains(path));
-    }
-
 }

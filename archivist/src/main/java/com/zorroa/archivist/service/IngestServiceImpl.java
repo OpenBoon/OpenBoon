@@ -1,333 +1,169 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.event.EventServerHandler;
+import com.google.common.collect.Maps;
+import com.zorroa.archivist.domain.ImportSpec;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.repository.IngestDao;
-import com.zorroa.archivist.repository.IngestPipelineDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.exception.ArchivistException;
-import com.zorroa.sdk.processor.Processor;
-import com.zorroa.sdk.processor.ProcessorFactory;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.IOException;
+import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ScheduledFuture;
 
 /**
- *
- * The ingest service is responsible for processing IngestRequest objects which
- * results in the creation of assets using the assetService.
- *
- * @author chambers
- *
+ * Created by chambers on 7/9/16.
  */
 @Service
 @Transactional
-public class IngestServiceImpl implements IngestService, ApplicationContextAware {
+public class IngestServiceImpl implements IngestService {
 
     private static final Logger logger = LoggerFactory.getLogger(IngestServiceImpl.class);
-
-    private static final String INGEST_ROOT = "/Imports";
-
-    ApplicationContext applicationContext;
-
-    @Autowired
-    IngestPipelineDao ingestPipelineDao;
 
     @Autowired
     IngestDao ingestDao;
 
     @Autowired
-    IngestExecutorService ingestExecutorService;
+    MessagingService message;
 
     @Autowired
-    EventServerHandler eventServerHandler;
+    TransactionEventManager event;
 
     @Autowired
-    FolderService folderService;
+    ImportService importService;
 
-    @Autowired
-    TransactionEventManager transactionEventManager;
+    private final ThreadPoolTaskScheduler scheduler =  new ThreadPoolTaskScheduler();
 
-    @Override
-    public IngestPipeline createIngestPipeline(IngestPipelineBuilder builder) {
-        validateProcessors("ingest", builder.getProcessors());
-        validateProcessors("aggregator", builder.getAggregators());
-        return ingestPipelineDao.create(builder);
-    }
+    private final ConcurrentMap<Integer, ScheduledFuture> scheduled = Maps.newConcurrentMap();
 
-    @Override
-    public IngestPipeline getIngestPipeline(int id) {
-        return ingestPipelineDao.get(id);
-    }
-
-    @Override
-    public IngestPipeline getIngestPipeline(String s) {
-        return ingestPipelineDao.get(s);
-    }
-
-    @Override
-    public boolean ingestPipelineExists(String s) {
-        return ingestPipelineDao.exists(s);
-    }
-
-    @Override
-    public List<IngestPipeline> getIngestPipelines() {
-        return ingestPipelineDao.getAll();
-    }
-
-    @Override
-    public boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder) {
-        validateProcessors("ingest", builder.getProcessors());
-        validateProcessors("aggregator", builder.getAggregators());
-        return ingestPipelineDao.update(pipeline, builder);
-    }
-
-    @Override
-    public boolean deleteIngestPipeline(IngestPipeline pipeline) {
-        return ingestPipelineDao.delete(pipeline);
-    }
-
-    @Override
-    public boolean setIngestRunning(Ingest ingest) {
-        if (ingestDao.setState(ingest, IngestState.Running)) {
-            broadcast(ingest, MessageType.INGEST_UPDATE);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void resetIngestCounters(Ingest ingest) {
-        ingestDao.resetCounters(ingest);
-    }
-
-    @Override
-    public boolean setIngestIdle(Ingest ingest) {
-        if (ingestDao.setState(ingest, IngestState.Idle)) {
-            ingestDao.updateStoppedTime(ingest, System.currentTimeMillis());
-            broadcast(ingest, MessageType.INGEST_UPDATE);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean setIngestQueued(Ingest ingest) {
-        if (ingestDao.setState(ingest, IngestState.Queued)) {
-            broadcast(ingest, MessageType.INGEST_UPDATE);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean setIngestPaused(Ingest ingest, boolean value) {
-
-        return ingestDao.setPaused(ingest, value);
-    }
-
-    private void broadcast(Ingest ingest, MessageType messageType) {
-        /*
-         * Pulling an updated copy of the ingest to account for any changed fields.
+    @PostConstruct
+    public void init() {
+        /**
+         * Schedule all the current ingests.
          */
-        try {
-            ingest = getIngest(ingest.getId());
-        } catch (EmptyResultDataAccessException ignore) {
-
+        scheduler.setPoolSize(4);
+        for (Ingest i: ingestDao.getAll()) {
+            if (!i.isAutomatic()) {
+                continue;
+            }
+            schedule(i);
         }
-        String json = new String(Json.serialize(ingest), StandardCharsets.UTF_8);
+    }
 
-        transactionEventManager.afterCommit(() -> {
-            eventServerHandler.broadcast(new Message(messageType, json));
+    @Override
+    public Ingest create(IngestSpec spec) {
+        Ingest i = ingestDao.create(spec);
+
+        event.afterCommit(()-> {
+            if (i.isAutomatic()) { schedule(i); }
+            message.broadcast(new Message("INGEST_CREATE",
+                    ImmutableMap.of("id", i.getId())));
+
         });
-    }
 
-    @Override
-    public void setTotalAssetCount(
-            Ingest ingest, long count) {
-        ingestDao.setTotalAssetCount(ingest, count);
-        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_PROGRESS);
-    }
-
-    @Override
-    public void incrementIngestCounters(Ingest ingest, int created, int updated, int warnings, int errors) {
-        ingestDao.incrementCounters(ingest, created, updated, errors, warnings);
-        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_PROGRESS);
-
-        //TODO: can remoe this one, its deprecated
-        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_UPDATE_COUNTERS);
-    }
-
-    @Override
-    public void updateIngestStartTime(Ingest ingest, long time) {
-        ingestDao.updateStartTime(ingest, time);
-        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_START);
-    }
-
-    @Override
-    public void updateIngestStopTime(Ingest ingest, long time) {
-        ingestDao.updateStoppedTime(ingest, time);
-        broadcast(ingestDao.get(ingest.getId()), MessageType.INGEST_STOP);
-    }
-
-    @Override
-    public Ingest createIngest(IngestBuilder builder) {
-        builder.setUris(normalizePaths(builder.getUris()));
-
-        IngestPipeline pipeline;
-        if (builder.getPipelineId() == -1) {
-            pipeline = ingestPipelineDao.get("standard");
+        if (spec.isRunNow()) {
+            event.afterCommit(() -> {
+                spawnImportJob(i);
+            });
         }
-        else {
-            pipeline = ingestPipelineDao.get(builder.getPipelineId());
+
+        return i;
+    }
+
+    @Override
+    public Job spawnImportJob(Ingest ingest) {
+        try {
+            ingestDao.refresh(ingest);
+        } catch (EmptyResultDataAccessException e) {
+            logger.warn("Ingest {} no longer exists.", ingest.getId());
+            return null;
         }
-        Ingest ingest = ingestDao.create(pipeline, builder);
 
-        transactionEventManager.afterCommit(() -> {
-            String folderName = String.format("%d:%s", ingest.getId(), ingest.getName());
-            AssetFilter ingestFilter = new AssetFilter().setIngestId(ingest.getId());
-            FolderBuilder fBuilder = new FolderBuilder()
-                    .setName(folderName)
-                    .setParentId(folderService.get(INGEST_ROOT).getId())
-                    .setSearch(new AssetSearch().setFilter(ingestFilter));
-            folderService.create(fBuilder);
-        }, false);
-
-        broadcast(ingest, MessageType.INGEST_CREATE);
-        return ingest;
+        ImportSpec spec = new ImportSpec();
+        spec.setPipelineId(ingest.getPipelineId());
+        spec.setPipeline(ingest.getPipeline());
+        spec.setGenerators(ingest.getGenerators());
+        spec.setName("ingest " + ingest.getName());
+        return importService.create(spec);
     }
 
     @Override
-    public boolean deleteIngest(Ingest ingest) {
-        boolean ok = ingestDao.delete(ingest);
-        transactionEventManager.afterCommit(() -> {
-            folderService.delete(getFolder(ingest));
-        }, false);
-
-        broadcast(ingest, MessageType.INGEST_DELETE);
-        return ok;
+    public boolean update(int id, Ingest spec) {
+        boolean result = ingestDao.update(id, spec);
+        if (result) {
+            event.afterCommit(() -> {
+                schedule(ingestDao.get(id));
+                message.broadcast(new Message("INGEST_UPDATE",
+                        ImmutableMap.of("id", id)));
+            });
+        }
+        return result;
     }
 
     @Override
-    public boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder) {
-        builder.setUris(normalizePaths(builder.getUris()));
-
-        boolean ok = ingestDao.update(ingest, builder);
-        broadcast(ingest, MessageType.INGEST_UPDATE);
-        return ok;
+    public boolean delete(int id) {
+        boolean result = ingestDao.delete(id);
+        if (result) {
+            event.afterCommit(() -> {
+                message.broadcast(new Message("INGEST_DELETE",
+                        ImmutableMap.of("id", id)));
+            });
+        }
+        return result;
     }
 
     @Override
-    public Ingest getIngest(int id) {
-        return ingestDao.get(id);
-    }
-
-    @Override
-    public List<Ingest> getAllIngests() {
+    public List<Ingest> getAll() {
         return ingestDao.getAll();
     }
 
     @Override
-    public List<Ingest> getIngests(IngestFilter filter) {
-        return ingestDao.getAll(filter);
+    public PagedList<Ingest> getAll(Paging page) {
+        return ingestDao.getAll(page);
     }
 
     @Override
-    public List<Ingest> getAllIngests(IngestState state, int limit) {
-        return ingestDao.getAll(state, limit);
+    public Ingest get(int id) {
+        return ingestDao.get(id);
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
-        this.applicationContext = applicationContext;
+    public Ingest get(String name) {
+        return ingestDao.get(name);
     }
 
     @Override
-    public Folder getFolder(Ingest ingest) {
-        return folderService.get(folderService.get(INGEST_ROOT).getId(),
-                String.format("%d:%s", ingest.getId(), ingest.getName()));
+    public long count() {
+        return ingestDao.count();
     }
 
     @Override
-    @Transactional(propagation=Propagation.SUPPORTS)
-    public void beginWorkOnPath(Ingest ingest, String path) {
-        String tmp = getTmpWorkFilePath(ingest);
-        try {
-            Files.write(new File(tmp).toPath(), path.getBytes(Charsets.UTF_8));
-        } catch (IOException e) {
-            logger.warn("Failed to write work file '{}'", tmp, e);
-        }
+    public boolean exists(String name) {
+        return ingestDao.exists(name);
     }
 
-    @Override
-    @Transactional(propagation=Propagation.SUPPORTS)
-    public void endWorkOnPath(Ingest ingest, String path) {
-        String tmp = getTmpWorkFilePath(ingest);
-        try {
-            Files.delete(Paths.get(tmp));
-        } catch (IOException e) {
-            logger.warn("Failed to remove work file '{}'", tmp, e);
-        }
-    }
-
-    @Override
-    @Transactional(propagation=Propagation.SUPPORTS)
-    public Set<String> getSkippedPaths(Ingest ingest) {
-        Pattern filter = Pattern.compile(String.format("\\.%d\\.archivist", ingest.getId()));
-
-        File[] files = new File("/tmp").listFiles();
-        for (File file: files) {
-            if (!file.isFile()) {
-                continue;
-            }
-            if (!filter.matcher(file.getName()).find()) {
-                continue;
-            }
-            try {
-                String path = com.google.common.io.Files.readFirstLine(file, Charsets.UTF_8);
-                try {
-                    ingestDao.addSkippedPath(ingest, path);
-                } catch (DuplicateKeyException e) {
-                    /*
-                     * The path is already skipped.
-                     */
-                }
-                try {
-                    Files.delete(file.toPath());
-                } catch (IOException e) {
-                    logger.warn("Failed to delete work file '{}'", path, e);
-                }
-
-            } catch (IOException e) {
-                logger.warn("Failed to read work file '{}'", file.getAbsolutePath(), e);
-            }
-        }
-
-        return ingestDao.getSkippedPaths(ingest);
+    private void schedule(Ingest i) {
+        ScheduledFuture future = scheduler.schedule(() -> {
+            spawnImportJob(i);
+        }, new CronTrigger(i.getSchedule().toString()));
+        scheduled.put(i.getId(), future);
     }
 
     public List<String> normalizePaths(Collection<String> paths) {
@@ -357,41 +193,4 @@ public class IngestServiceImpl implements IngestService, ApplicationContextAware
         }
         return uri.toString();
     }
-
-    /**
-     * Where the work file is written.  If the server crashes during n ingest, any file left on disk
-     * is skipped during that time.
-     *
-     * @param ingest
-     * @return
-     */
-    private String getTmpWorkFilePath(Ingest ingest) {
-        return new StringBuilder(64)
-                .append("/tmp/")
-                .append(Thread.currentThread().getName())
-                .append(".")
-                .append(ingest.getId())
-                .append(".archivist").toString();
-    }
-
-    /**
-     * Validate list of processor factories to make sure the klass variable is set.
-     *
-     * @param processors
-     */
-    private void validateProcessors(String type, List<? extends ProcessorFactory<? extends Processor>> processors) {
-        if (processors == null) {
-            // Null processors are handled as empty lists later on.
-            return;
-        }
-        try {
-            for (ProcessorFactory<?> processor : processors) {
-                Preconditions.checkNotNull(processor.getKlass(),
-                        "Invalid '" + type + "' processor definition, cannot have null class");
-            }
-        } catch (Exception e) {
-            throw new ArchivistException(e.getMessage(), e);
-        }
-    }
 }
-

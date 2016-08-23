@@ -40,11 +40,15 @@
         "timestamp": {
           "type": "date"
         },
-        "id": {
+        "objectId": {
           "type": "string",
           "index": "not_analyzed"
         },
-        "type": {
+        "objectType": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "level": {
           "type": "string",
           "index": "not_analyzed"
         },
@@ -65,6 +69,10 @@
           "type": "string",
           "index": "not_analyzed",
           "include_in_all": false
+        },
+        "user": {
+          "type": "string",
+          "index": "not_analyzed"
         },
         "stack": {
           "type": "string",

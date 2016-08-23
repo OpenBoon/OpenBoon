@@ -1,19 +1,22 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.zorroa.sdk.domain.Room;
-import com.zorroa.sdk.domain.User;
-import com.zorroa.sdk.domain.UserBuilder;
-import com.zorroa.sdk.domain.UserUpdateBuilder;
+import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
+import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Room;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,11 +53,10 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public List<User> getAll(int size, int offset) {
-        StringBuilder sb = new StringBuilder(GET_ALL.length()+32)
-                .append(GET_ALL)
-                .append(" LIMIT ? OFFSET ?");
-        return jdbc.query(sb.toString(), MAPPER, size, offset);
+    public PagedList<User> getAll(Paging page) {
+        return new PagedList(page.setTotalCount(getCount()),
+                jdbc.query(GET_ALL.concat(" LIMIT ? OFFSET ?"),
+                        MAPPER, page.getSize(), page.getFrom()));
     }
 
     private static final String INSERT =
@@ -66,11 +68,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
                 "str_email, "+
                 "str_firstname, " +
                 "str_lastname, " +
-                "bool_enabled " +
-            ") VALUES (?,?,?,?,?,?)";
+                "bool_enabled, " +
+                "hmac_key " +
+            ") VALUES (?,?,?,?,?,?,?)";
 
     @Override
-    public User create(UserBuilder builder) {
+    public User create(UserSpec builder) {
         Preconditions.checkNotNull(builder.getUsername(), "The Username cannot be null");
         Preconditions.checkNotNull(builder.getPassword(), "The Password cannot be null");
         builder.setPassword(SecurityUtils.createPasswordHash(builder.getPassword()));
@@ -85,6 +88,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setString(4, builder.getFirstName());
             ps.setString(5, builder.getLastName());
             ps.setBoolean(6, true);
+            ps.setObject(7, UUID.randomUUID());
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -97,61 +101,29 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
+    public boolean setPassword(User user, String password) {
+        return jdbc.update(
+                "UPDATE user SET str_password=? WHERE pk_user=?",
+                SecurityUtils.createPasswordHash(password), user.getId()) == 1;
+    }
+
+    @Override
     public boolean setEnabled(User user, boolean value) {
         return jdbc.update(
                 "UPDATE user SET bool_enabled=? WHERE pk_user=? AND bool_enabled=?",
                 value, user.getId(), !value) == 1;
     }
 
+    private static final String UPDATE = JdbcUtils.update("user", "pk_user",
+            "str_email",
+            "str_firstname",
+            "str_lastname");
+
     @Override
-    public boolean update(User user, UserUpdateBuilder builder) {
-
-        List<String> updates = Lists.newArrayList();
-        List<Object> values = Lists.newArrayList();
-
-        StringBuilder sb = new StringBuilder(512);
-        sb.append("UPDATE user SET ");
-
-        if (builder.getUsername() != null) {
-            updates.add("str_username=?");
-            values.add(builder.getUsername());
-        }
-
-        if (builder.getPassword() != null) {
-            updates.add("str_password=?");
-            values.add(SecurityUtils.createPasswordHash(builder.getPassword()));
-        }
-
-        if (builder.getEmail() != null) {
-            updates.add("str_email=?");
-            values.add(builder.getEmail());
-        }
-
-        if (builder.getFirstName() != null) {
-            updates.add("str_firstname=?");
-            values.add(builder.getFirstName());
-        }
-
-        if (builder.getLastName() != null) {
-            updates.add("str_lastname=?");
-            values.add(builder.getLastName());
-        }
-
-        if (builder.getEnabled() != null) {
-            updates.add("bool_enabled=?");
-            values.add(builder.getEnabled());
-        }
-
-        if (values.isEmpty()) {
-            return false;
-        }
-
-        sb.append(StringUtils.join(updates, ", "));
-        sb.append(" WHERE pk_user=?");
-        values.add(user.getId());
-
-        logger.debug("updating user '{}', {}", sb.toString(), values);
-        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    public boolean update(User user, UserProfileUpdate builder) {
+        logger.info("updating user");
+        return jdbc.update(UPDATE, builder.getEmail(), builder.getFirstName(),
+                builder.getLastName(), user.getId()) == 1;
     }
 
     @Override
@@ -208,8 +180,75 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public int getCount() {
+    public long getCount() {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user", Integer.class);
     }
 
+
+    @Override
+    public boolean hasPermission(User user, Permission permission) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",
+                Integer.class, user.getId(), permission.getId()) == 1;
+    }
+
+    private static final String HAS_PERM =
+            "SELECT " +
+                "COUNT(1) " +
+            "FROM " +
+                "permission p,"+
+                "user_permission up " +
+            "WHERE " +
+                "p.pk_permission = up.pk_permission " +
+            "AND " +
+                "up.pk_user = ? " +
+            "AND " +
+                "p.str_name = ? " +
+            "AND " +
+                "p.str_type = ?";
+
+    @Override
+    public boolean hasPermission(User user, String type, String name) {
+        return jdbc.queryForObject(HAS_PERM, Integer.class, user.getId(), name, type) == 1;
+    }
+
+    private void clearPermissions(User user) {
+        /*
+         * Ensure the user's immutable permissions cannot be removed.
+         */
+        jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=0", user.getId());
+    }
+
+    @Override
+    public int setPermissions(User user, Collection<? extends Permission> perms) {
+        /*
+         * Does not remove immutable permissions.
+         */
+        clearPermissions(user);
+
+        int result = 0;
+        for (Permission p: perms) {
+            if (hasPermission(user, p)) {
+                continue;
+            }
+            jdbc.update("INSERT INTO user_permission (pk_permission, pk_user) VALUES (?,?)",
+                    p.getId(), user.getId());
+            result++;
+        }
+        return result;
+    }
+
+    @Override
+    public boolean addPermission(User user, Permission perm, boolean immutable) {
+        if (hasPermission(user, perm)) {
+            return false;
+        }
+        return jdbc.update("INSERT INTO user_permission (pk_permission, pk_user, bool_immutable) VALUES (?,?,?)",
+                perm.getId(), user.getId(), immutable) == 1;
+    }
+
+    @Override
+    public boolean removePermission(User user, Permission perm) {
+        return jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND pk_permission=? AND bool_immutable=0",
+                user.getId(), perm.getId()) == 1;
+    }
 }

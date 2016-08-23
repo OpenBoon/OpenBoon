@@ -1,8 +1,9 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.User;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.security.UnitTestAuthentication;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
@@ -11,6 +12,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -43,6 +45,10 @@ public abstract class MockMvcTest extends AbstractTest {
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, new MockSecurityContext(authentication));
         sessionRegistry.registerNewSession(session.getId(), authentication.getPrincipal());
         return session;
+    }
+
+    protected <T> T deserialize(MvcResult result, Class<T> type) {
+        return Json.deserialize(result.getResponse().getContentAsByteArray(), type);
     }
 
     /**

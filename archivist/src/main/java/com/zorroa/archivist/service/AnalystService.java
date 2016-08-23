@@ -1,11 +1,9 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.AnalystClient;
+import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.client.analyst.AnalystClient;
 import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.plugins.PluginProperties;
-import com.zorroa.sdk.processor.ProcessorProperties;
-import com.zorroa.sdk.processor.ProcessorType;
 
 import java.util.List;
 
@@ -13,21 +11,14 @@ import java.util.List;
  * Created by chambers on 2/9/16.
  */
 public interface AnalystService {
-    List<Analyst> getAll();
 
-    List<Analyst> getAll(Paging paging);
+    PagedList<Analyst> getAll(Paging paging);
 
     Analyst get(String url);
 
     int getCount();
 
     List<Analyst> getActive();
-
-    List<PluginProperties> getPlugins();
-
-    List<ProcessorProperties> getProcessors(ProcessorType type);
-
-    List<ProcessorProperties> getProcessors();
 
     AnalystClient getAnalystClient();
 }

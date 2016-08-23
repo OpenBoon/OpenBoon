@@ -1,75 +1,34 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 
 import java.util.List;
-import java.util.Set;
 
+/**
+ * Created by chambers on 7/9/16.
+ */
 public interface IngestService {
+    Ingest create(IngestSpec spec);
 
-    /*
-    * INGEST PIPELINE
-    */
-    IngestPipeline createIngestPipeline(IngestPipelineBuilder builder);
+    Job spawnImportJob(Ingest ingest);
 
-    List<IngestPipeline> getIngestPipelines();
+    boolean update(int id, Ingest spec);
 
-    IngestPipeline getIngestPipeline(int id);
+    boolean delete(int id);
 
-    IngestPipeline getIngestPipeline(String name);
+    List<Ingest> getAll();
 
-    boolean ingestPipelineExists(String name);
+    PagedList<Ingest> getAll(Paging page);
 
-    void updateIngestStartTime(Ingest ingest, long time);
+    Ingest get(int id);
 
-    void updateIngestStopTime(Ingest ingest, long time);
+    Ingest get(String name);
 
-    /*
-     * INGEST
-     */
-    Ingest createIngest(IngestBuilder builder);
+    long count();
 
-    boolean deleteIngest(Ingest ingest);
-
-    boolean updateIngest(Ingest ingest, IngestUpdateBuilder builder);
-
-    Ingest getIngest(int id);
-
-    List<Ingest> getAllIngests();
-
-    List<Ingest> getIngests(IngestFilter filter);
-
-    List<Ingest> getAllIngests(IngestState state, int limit);
-
-    boolean updateIngestPipeline(IngestPipeline pipeline, IngestPipelineUpdateBuilder builder);
-
-    boolean deleteIngestPipeline(IngestPipeline pipeline);
-
-    void setTotalAssetCount(Ingest ingest, long count);
-
-    void incrementIngestCounters(Ingest ingest, int created, int updated, int errors, int warnings);
-
-    boolean setIngestRunning(Ingest ingest);
-
-    void resetIngestCounters(Ingest ingest);
-
-    boolean setIngestIdle(Ingest ingest);
-
-    boolean setIngestQueued(Ingest ingest);
-
-    boolean setIngestPaused(Ingest ingest, boolean value);
-
-    void beginWorkOnPath(Ingest ingest, String path);
-
-    void endWorkOnPath(Ingest ingest, String path);
-
-    Set<String> getSkippedPaths(Ingest ingest);
-
-    /**
-     * Get the folder linked to the given ingest.
-     *
-     * @param ingest
-     * @return
-     */
-    Folder getFolder(Ingest ingest);
+    boolean exists(String name);
 }

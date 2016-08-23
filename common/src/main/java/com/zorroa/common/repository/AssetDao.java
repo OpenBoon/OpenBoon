@@ -1,34 +1,38 @@
 package com.zorroa.common.repository;
 
-import com.zorroa.sdk.domain.*;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.processor.Source;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public interface AssetDao {
 
-    Asset upsert(AssetBuilder builder);
-
-    String upsertAsync(AssetBuilder builder);
-
     Asset get(String id);
 
-    List<Asset> getAll();
+    PagedList<Asset> getAll(Paging page, SearchRequestBuilder search);
 
-    boolean existsByPath(String path);
+    PagedList<Asset> getAll(Paging page);
 
-    Asset getByPath(String path);
+    boolean exists(Path path);
 
-    boolean existsByPathAfter(String path, long afterTime);
+    Asset get(Path path);
 
-    int addToFolder(Folder folder, List<String> assetIds);
+    Map<String, Boolean> removeLink(String type, String value, List<String> assets);
 
-    int removeFromFolder(Folder folder, List<String> assetIds);
+    Map<String, Boolean>  appendLink(String type, String value, List<String> assets);
 
-    long update(String assetId, AssetUpdateBuilder builder);
+    long update(String assetId, Map<String, Object> attrs);
 
-    AnalyzeResult bulkUpsert(List<AssetBuilder> builders);
+    Asset index(Source source);
 
-    void addToExport(Asset asset, Export export);
+    AssetIndexResult index(List<Source> sources);
 
-    void refresh();
+    AssetIndexResult index(String type, List<Source> sources);
+
 }

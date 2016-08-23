@@ -7,31 +7,23 @@
 <body>
 
 <section layout:fragment="content">
-    <p>
-    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-        <div class="container-fluid">
-            <div class="navbar-header navbar-brand">
-                <span class="fa fa-list" aria-hidden="true"></span>
-                Fields
-            </div>
-        </div>
-    </nav>
+    <div class="wrapper">
     <div class="container-fluid">
-    <div th:each="type: ${fields}">
-        <div class="panel panel-default">
-            <div class="panel-heading" th:text="${type.key}"></div>
-            <div class="panel-body">
-                <div th:each="data, row: ${type.value}" th:with="numList=${ {2,1,0} }" th:if="${row.count % 3 == 0 or row.last}" class="row">
-                    <!-- Show all rows except the leftovers -->
-                    <div class="col-md-4" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.count % 3 == 0}" th:text="${type.value[dataIndex]}">data</div>
-                    <!-- Show the remainders (eg, if there are 9 items, the last row will have one item in it) -->
-                    <div class="col-md-4" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.last} and ${row.count % 3 != 0} and ${num &lt; row.count % 3}" th:text="${type.value[dataIndex]}">data</div>
+        <div th:each="type: ${fields}">
+            <div class="panel panel-default">
+                <div class="panel-heading" th:text="${type.key}"></div>
+                <div class="panel-body">
+                    <div th:each="data, row: ${type.value}" th:with="numList=${ {2,1,0} }" th:if="${row.count % 3 == 0 or row.last}" class="row">
+                        <!-- Show all rows except the leftovers -->
+                        <div class="col-md-4" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.count % 3 == 0}" th:text="${type.value[dataIndex]}">data</div>
+                        <!-- Show the remainders (eg, if there are 9 items, the last row will have one item in it) -->
+                        <div class="col-md-4" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})" th:if="${row.last} and ${row.count % 3 != 0} and ${num &lt; row.count % 3}" th:text="${type.value[dataIndex]}">data</div>
+                    </div>
                 </div>
             </div>
         </div>
+        </div>
     </div>
-    </div>
-    </p>
 </section>
 
 </body>

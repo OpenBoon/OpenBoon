@@ -1,9 +1,14 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserProfileUpdate;
+import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Session;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +18,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,10 +42,26 @@ public class UserController  {
         return userService.generateHmacKey(SecurityUtils.getUsername());
     }
 
+    /**
+     * An HTTP auth based login endpoint.
+     *
+     * @return
+     */
     @RequestMapping(value="/api/v1/login", method=RequestMethod.POST)
     public User login() {
-        return userService.login();
+        return userService.get(SecurityUtils.getUser().getId());
     }
+
+    /**
+     * An HTTP auth based logout endpoint.
+     *
+     * @return
+     */
+    @RequestMapping(value="/api/v1/logout", method=RequestMethod.POST)
+    public void logout(HttpServletRequest req) throws ServletException {
+        req.logout();
+    }
+
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users")
@@ -47,7 +71,7 @@ public class UserController  {
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users", method=RequestMethod.POST)
-    public User create(@Valid @RequestBody UserBuilder builder, BindingResult bindingResult) {
+    public User create(@Valid @RequestBody UserSpec builder, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("Failed to add user");
         }
@@ -64,13 +88,14 @@ public class UserController  {
         return ImmutableMap.of("result", userService.exists(username));
     }
 
-    @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.PUT)
-    public User update(@RequestBody UserUpdateBuilder builder, @PathVariable int id) {
+    @RequestMapping(value="/api/v1/users/{id}/_profile", method=RequestMethod.PUT)
+    public User update(@RequestBody UserProfileUpdate form, @PathVariable int id) {
         Session session = userService.getActiveSession();
 
         if (session.getUserId() == id || SecurityUtils.hasPermission("group::manager", "group::systems")) {
+            logger.info("updating user");
             User user = userService.get(id);
-            userService.update(user, builder);
+            userService.update(user, form);
             return userService.get(id);
         }
         else {
@@ -82,12 +107,10 @@ public class UserController  {
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
     public void disable(@PathVariable int id) {
         User user = userService.get(id);
-        logger.info("active session: {}", userService.getActiveSession());
-        logger.info("user {}", user);
         if (user.getId() == userService.getActiveSession().getUserId()) {
             throw new ArchivistException("You cannot disable your own user.");
         }
-        userService.disable(user);
+        userService.setEnabled(user, false);
     }
 
     /**
@@ -116,9 +139,33 @@ public class UserController  {
     public List<Permission> setPermissions(@RequestBody List<Integer> pids, @PathVariable int id) {
         User user = userService.get(id);
         List<Permission> perms = pids.stream().map(
-                i->userService.getPermission(i)).collect(Collectors.<Permission>toList());
+                i->userService.getPermission(i)).collect(Collectors.toList());
 
         userService.setPermissions(user, perms);
+        return userService.getPermissions(user);
+    }
+
+    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
+    @RequestMapping(value="/api/v1/users/{id}/permissions/_add", method=RequestMethod.PUT)
+    public List<Permission> addPermissions(@RequestBody List<String> pids, @PathVariable int id) {
+        User user = userService.get(id);
+        Set<Permission> resolved = Sets.newHashSetWithExpectedSize(pids.size());
+        for (String pid: pids) {
+            resolved.add(userService.getPermission(pid));
+        }
+        userService.addPermissions(user, resolved);
+        return userService.getPermissions(user);
+    }
+
+    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
+    @RequestMapping(value="/api/v1/users/{id}/permissions/_remove", method=RequestMethod.PUT)
+    public List<Permission> removePermissions(@RequestBody List<String> pids, @PathVariable int id) {
+        User user = userService.get(id);
+        Set<Permission> resolved = Sets.newHashSetWithExpectedSize(pids.size());
+        for (String pid: pids) {
+            resolved.add(userService.getPermission(pid));
+        }
+        userService.removePermissions(user, resolved);
         return userService.getPermissions(user);
     }
 }

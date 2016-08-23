@@ -1,15 +1,15 @@
 package com.zorroa.archivist.web.gui;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.zorroa.archivist.repository.EventLogDao;
+import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
+import com.zorroa.common.domain.EventSearch;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.SerializableElasticResult;
-import com.zorroa.sdk.domain.*;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
+import com.zorroa.common.repository.EventLogDao;
+import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by chambers on 6/3/16.
@@ -37,7 +34,22 @@ public class IndexController {
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
+    PipelineService pipelineService;
+
+    @Autowired
+    IngestService ingestService;
+
+    @Autowired
+    JobService jobService;
+
+    @Autowired
+    ImportService importService;
+
+    @Autowired
     AnalystService analystService;
+
+    @Autowired
+    PluginService pluginService;
 
     @Autowired
     FolderService folderService;
@@ -46,10 +58,10 @@ public class IndexController {
     SearchService searchService;
 
     @Autowired
-    UserService userService;
+    AssetService assetService;
 
     @Autowired
-    IngestService ingestService;
+    UserService userService;
 
     @Autowired
     HealthEndpoint healthEndpoint;
@@ -68,112 +80,70 @@ public class IndexController {
     @RequestMapping("/gui")
     public String index(Model model) {
         standardModel(model);
-        model.addAttribute("assetCount", searchService.count(new AssetSearch()).getCount());
+        model.addAttribute("assetCount", searchService.count(new AssetSearch()));
         model.addAttribute("userCount", userService.getCount());
-        model.addAttribute("folderCount", folderService.getCount());
+        model.addAttribute("folderCount", folderService.count());
         model.addAttribute("analystCount", analystService.getCount());
         model.addAttribute("user", SecurityUtils.getUser());
         return "overview";
     }
 
-    @RequestMapping("/gui/login")
+    @RequestMapping("/login")
     public String login(){
         return "login";
     }
 
-    @RequestMapping("/gui/logout")
+    @RequestMapping("/logout")
     public String logout(HttpServletRequest req) throws ServletException {
         req.logout();
-        return "login?logout";
+        return "redirect:/login?logout";
     }
 
     @RequestMapping("/gui/permissions")
-    public String permissions(Model model) {
+    public String permissions(Model model,
+                              @RequestParam(value="page", required=false) Integer page,
+                              @RequestParam(value="count", required=false) Integer count) {
+
+        Paging paging = new Paging(page, count);
         standardModel(model);
-        model.addAttribute("allPermissions", userService.getPermissions());
+        model.addAttribute("page", paging);
+        model.addAttribute("perms", userService.getPermissions(paging));
+        model.addAttribute("permSpec", new PermissionSpec());
         return "permissions";
     }
 
-    @RequestMapping("/gui/users")
-    public String users(Model model, @RequestParam(value="page", required=false) Integer page) {
-        standardModel(model);
-        /**
-         * TODO: generalize table paging so more types can use it.
-         */
-        page = Math.max(1, page == null ? 1: page);
-        int limit = 10;
-        int offset = (page - 1) * limit;
-        int count = userService.getCount();
-        int maxPages = (count / limit) + 1;
-
-        model.addAttribute("prevPage", Math.max(1, page-1));
-        model.addAttribute("nextPage", Math.min(maxPages, page+1));
-        model.addAttribute("pageDisplay", String.format("%d of %d", page, maxPages));
-        model.addAttribute("allUsers", userService.getAll(limit, offset));
-        model.addAttribute("userBuilder", new UserBuilder());
-        return "users";
-    }
-
-    @RequestMapping("/gui/users/{id}")
-    public String user(Model model, @PathVariable int id) {
-        standardModel(model);
-        model.addAttribute("user", userService.get(id));
-        model.addAttribute("userUpdateBuilder", new UserUpdateBuilder());
-        return "user";
-    }
-
-    @RequestMapping(value="/gui/users/{id}", method=RequestMethod.POST)
-    public String updateUser(Model model, @PathVariable int id,
-                             @Valid @ModelAttribute("userUpdateBuilder") UserUpdateBuilder userUpdateBuilder,
-                             BindingResult bindingResult) {
+    @RequestMapping(value="/gui/permissions", method=RequestMethod.POST)
+    public String permissions(Model model, @ModelAttribute("permSpec") PermissionSpec permSpec,
+                              BindingResult bindingResult) {
         standardModel(model);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", userService.get(id));
             model.addAttribute("errors", true);
-            return "user";
+            return "permissions";
         }
         else {
-            userService.update(userService.get(id), userUpdateBuilder);
+            userService.createPermission(permSpec);
+            return "redirect:/gui/permissions";
         }
-
-        model.addAttribute("user", userService.get(id));
-        model.addAttribute("userUpdateBuilder", new UserUpdateBuilder());
-        return "user";
     }
 
-    @RequestMapping(value="/gui/users", method=RequestMethod.POST)
-    public String createUser(Model model,
-                             @Valid @ModelAttribute("userBuilder") UserBuilder userBuilder,
-                             BindingResult bindingResult) {
+    @RequestMapping("/gui/permissions/{id}")
+    public String getPermission(Model model, @PathVariable int id) {
         standardModel(model);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", true);
-            return "users";
-        }
-
-        model.addAttribute("allUsers", userService.getAll());
-        User user = userService.create(userBuilder);
-        return "redirect:/gui/users/"+ user.getId();
+        model.addAttribute("perm", userService.getPermission(id));
+        model.addAttribute("permSpec", new PermissionSpec());
+        return "permission";
     }
 
     @RequestMapping("/gui/assets")
-    public String assets(Model model) {
+    public String assets(Model model,
+                         @RequestParam(value="page", required=false) Integer page,
+                         @RequestParam(value="count", required=false) Integer count, @RequestParam(value="query", required=false) String query) {
+
         standardModel(model);
-        model.addAttribute("search", new AssetSearch());
-        return "assets";
-    }
-
-    @RequestMapping(value="/gui/assets", method=RequestMethod.POST)
-    public String assetsSearch(@ModelAttribute AssetSearch search, Model model) {
-        standardModel(model);
-        model.addAttribute("search", new AssetSearch());
-
-        List<Map<String, Object>> result = Lists.newArrayList();
-        for (SearchHit hit: searchService.search(search).getHits().getHits()) {
-            result.add(hit.sourceAsMap());
-        }
-
-        model.addAttribute("result", result);
+        Paging paging = new Paging(page, count);
+        model.addAttribute("page", paging);
+        model.addAttribute("assets", searchService.search(paging,
+                new AssetSearch(query)));
         return "assets";
     }
 
@@ -184,116 +154,64 @@ public class IndexController {
         return "fields";
     }
 
-    @RequestMapping("/gui/folders")
-    public String folders(Model model) {
-        standardModel(model);
-        Folder folder = new Folder();
-        folder.setName("/");
-        model.addAttribute("path", Lists.newArrayList(folder));
-        model.addAttribute("folder", folder);
-        model.addAttribute("parent", null);
-        model.addAttribute("children", folderService.getAll());
-        return "folders";
-    }
-
-    @RequestMapping("/gui/folders/{id}")
-    public String folders(Model model, @PathVariable int id) {
-        standardModel(model);
-        Folder folder = folderService.get(id);
-        model.addAttribute("folder", folder);
-        model.addAttribute("parent", folderService.get(folder.getParentId()));
-        model.addAttribute("children", folderService.getChildren(folder));
-
-        List<Folder> path = Lists.newArrayList(folder);
-        Folder parent = folderService.get(folder.getParentId());
-        while (parent.getParentId() != null) {
-            path.add(parent);
-            parent = folderService.get(parent.getParentId());
-        }
-        Collections.reverse(path);
-        model.addAttribute("path", path);
-        return "folders";
-    }
-
-    @RequestMapping("/gui/plugins")
-    public String plugins(Model model) {
-        standardModel(model);
-        model.addAttribute("plugins", analystService.getPlugins());
-        return "plugins";
-    }
-
     @RequestMapping("/gui/analysts")
     public String analysts(Model model,
                            @RequestParam(value="page", required=false) Integer page,
                            @RequestParam(value="count", required=false) Integer count) {
         standardModel(model);
-        model.addAttribute("analysts", analystService.getAll(new Paging(page, count)));
+        Paging paging = new Paging(page, count);
+        model.addAttribute("page", paging);
+        model.addAttribute("analysts", analystService.getAll(paging));
         return "analysts";
     }
 
     @RequestMapping("/gui/ingests")
-    public String ingests(Model model) {
+    public String getIngests(Model model) {
         standardModel(model);
-        model.addAttribute("pipelines", ingestService.getIngestPipelines());
-        model.addAttribute("ingests", ingestService.getAllIngests());
-        model.addAttribute("builder", new IngestBuilder());
+        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("ingests", ingestService.getAll());
+        model.addAttribute("ingestForm", new NewIngestForm());
         return "ingests";
     }
 
-    @RequestMapping(value="/gui/ingests",  method=RequestMethod.POST)
+    @RequestMapping(value="/gui/ingests", method=RequestMethod.POST)
     public String createIngest(Model model,
-                               @Valid @ModelAttribute("ingestBuilder") IngestBuilder ingestBuilder,
+                               @Valid @ModelAttribute("ingestForm") NewIngestForm ingestForm,
                                BindingResult bindingResult) {
         standardModel(model);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", true);
+            model.addAttribute("pipelines", pipelineService.getAll());
             return "ingests";
         }
 
-        model.addAttribute("pipelines", ingestService.getIngestPipelines());
-        model.addAttribute("ingests", ingestService.getAllIngests());
-        model.addAttribute("builder", new IngestBuilder());
-        ingestService.createIngest(ingestBuilder);
+        model.addAttribute("ingests", ingestService.getAll());
+        model.addAttribute("ingestForm", new NewIngestForm());
+
+        IngestSpec spec = new IngestSpec();
+        spec.setName(ingestForm.getName());
+        spec.setSchedule(ingestForm.getSchedule());
+        spec.setRunNow(ingestForm.isRunNow());
+        spec.setAutomatic(ingestForm.isAutomatic());
+        spec.setFolderId(ingestForm.getFolderId());
+        spec.setPipelineId(ingestForm.getPipelineId());
+
+        for (String path: ingestForm.getPaths()) {
+            ProcessorRef ref = pluginService.getProcessorRef("com.zorroa.core.generator.FileSystemGenerator");
+            ref.setArg("path", path);
+            spec.addToGenerators(ref);
+        }
+
+        ingestService.create(spec);
+
         return "redirect:/gui/ingests";
-    }
-
-    @RequestMapping(value="/gui/ingests/{id}", method=RequestMethod.POST)
-    public String updateIngest(Model model, @PathVariable int id,
-                             @Valid @ModelAttribute("ingestUpdateBuilder") IngestUpdateBuilder ingestUpdateBuilder,
-                             BindingResult bindingResult) {
-        standardModel(model);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("ingest", ingestService.getIngest(id));
-            model.addAttribute("errors", true);
-            return "ingest";
-        }
-        else {
-            try {
-                ingestService.updateIngest(ingestService.getIngest(id), ingestUpdateBuilder);
-            } catch (Exception e) {
-                model.addAttribute("errors", true);
-                bindingResult.reject(e.getMessage());
-            }
-        }
-
-        model.addAttribute("ingest", ingestService.getIngest(id));
-        model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
-        return "ingest";
-    }
-
-    @RequestMapping("/gui/ingests/{id}")
-    public String ingest(Model model, @PathVariable int id) {
-        standardModel(model);
-        model.addAttribute("ingest", ingestService.getIngest(id));
-        model.addAttribute("ingestUpdateBuilder", new IngestUpdateBuilder());
-        return "ingest";
     }
 
     @RequestMapping("/gui/pipelines")
     public String pipelines(Model model) {
         standardModel(model);
-        model.addAttribute("pipelines", ingestService.getIngestPipelines());
+        model.addAttribute("pipelines", pipelineService.getAll());
         return "pipelines";
     }
 
@@ -308,19 +226,18 @@ public class IndexController {
 
     @RequestMapping("/gui/events")
     public String events(Model model,
-                         @RequestParam(value="type", required=false) String type) {
+                         @RequestParam(value="type", required=false) String type,
+                         @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         /**
          * TODO: need to handle multiple types.
          */
-        EventLogSearch search = new EventLogSearch();
+        EventSearch search = new EventSearch();
         if (type != null) {
-            search.setTypes(ImmutableSet.of(type));
+            search.setObjectTypes(ImmutableSet.of(type));
         }
-
         model.addAttribute("search", search);
-        SearchResponse rsp =  eventLogDao.getAll(search);
-        model.addAttribute("events", new SerializableElasticResult(rsp));
+        model.addAttribute("events", eventLogDao.getAll(search, new Paging(page)));
         return "events";
     }
 
@@ -329,12 +246,6 @@ public class IndexController {
      * @param model
      */
     private void standardModel(Model model) {
-        SerializableElasticResult result = new SerializableElasticResult(
-                eventLogDao.getAll(new EventLogSearch()
-                        .setLimit(0)
-                        .setAfterTime(System.currentTimeMillis() - (86400 * 1000))));
-
-        model.addAttribute("stdEvents", result);
-        model.addAttribute("stdIngests", ingestService.getAllIngests(IngestState.Running, 10));
+        //model.addAttribute("stdJobs", ingestService.getAllIngests(IngestState.Running, 10));
     }
 }

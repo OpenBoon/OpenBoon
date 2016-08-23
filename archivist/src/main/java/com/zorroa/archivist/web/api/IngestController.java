@@ -1,103 +1,72 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.service.IngestExecutorService;
+import com.zorroa.archivist.domain.Ingest;
+import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.service.IngestService;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.archivist.web.InvalidObjectException;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import javax.validation.Valid;
 
-@PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
+/**
+ * Created by chambers on 7/9/16.
+ */
 @RestController
 public class IngestController {
 
-    private static final Logger logger = LoggerFactory.getLogger(IngestPipelineController.class);
+    private static final Logger logger = LoggerFactory.getLogger(IngestController.class);
 
     @Autowired
     IngestService ingestService;
 
-    @Autowired
-    IngestExecutorService ingestExecutorService;
-
-    @RequestMapping(value="/api/v1/ingests", method=RequestMethod.POST)
-    public Ingest create(@RequestBody IngestBuilder builder) {
-        return ingestService.createIngest(builder);
+    @RequestMapping(value="/api/v1/ingests", method= RequestMethod.POST)
+    public Ingest create(@Valid @RequestBody IngestSpec spec, BindingResult valid) {
+        if (valid.hasErrors()) {
+            throw new InvalidObjectException("Failed to create Ingest", valid);
+        }
+        return ingestService.create(spec);
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.GET)
-    public Ingest get(@PathVariable int id) {
-        return ingestService.getIngest(id);
+    public Ingest get(@PathVariable String id) {
+        if (StringUtils.isNumeric(id)) {
+            return ingestService.get(Integer.parseInt(id));
+        }
+        else {
+            return ingestService.get(id);
+        }
     }
 
     @RequestMapping(value="/api/v1/ingests", method=RequestMethod.GET)
-    public List<Ingest> getAll() {
-        return ingestService.getAllIngests();
-    }
-
-    @RequestMapping(value="/api/v1/ingests/_search", method=RequestMethod.POST)
-    public List<Ingest> search(@RequestBody IngestFilter filter) {
-        return ingestService.getIngests(filter);
-    }
-
-    @Deprecated
-    @RequestMapping(value="/api/v1/ingests/{id}/_execute", method=RequestMethod.POST)
-    public Ingest execute(@PathVariable int id) {
-        // alias for start for backwards compat
-        Ingest ingest = ingestService.getIngest(id);
-        ingestExecutorService.start(ingest);
-        return ingest;
-    }
-
-    @RequestMapping(value="/api/v1/ingests/{id}/_start", method=RequestMethod.PUT)
-    public Ingest start(@PathVariable int id) {
-        Ingest ingest = ingestService.getIngest(id);
-        ingestExecutorService.start(ingest);
-        return ingest;
-    }
-
-    @RequestMapping(value="/api/v1/ingests/{id}/_stop", method=RequestMethod.PUT)
-    public Ingest stop(@PathVariable int id) {
-        Ingest ingest = ingestService.getIngest(id);
-        ingestExecutorService.stop(ingest);
-        return ingest;
-    }
-
-    @RequestMapping(value="/api/v1/ingests/{id}/_pause", method=RequestMethod.PUT)
-    public Ingest pause(@PathVariable int id) {
-        Ingest ingest = ingestService.getIngest(id);
-        ingestExecutorService.pause(ingest);
-        return ingest;
-    }
-
-    @RequestMapping(value="/api/v1/ingests/{id}/_resume", method=RequestMethod.PUT)
-    public Ingest resume(@PathVariable int id) {
-        Ingest ingest = ingestService.getIngest(id);
-        ingestExecutorService.resume(ingest);
-        return ingest;
+    public PagedList<Ingest> getPaged(@RequestParam(value="page", required=false) Integer page,
+                                        @RequestParam(value="count", required=false) Integer count) {
+        return ingestService.getAll(new Paging(page, count));
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.PUT)
-    public Ingest update(@RequestBody IngestUpdateBuilder builder, @PathVariable int id) {
-        Ingest ingest = ingestService.getIngest(id);
-        ingestService.updateIngest(ingest, builder);
-        return ingestService.getIngest(ingest.getId());
+    public Object update(@PathVariable Integer id, @Valid @RequestBody Ingest spec, BindingResult valid) {
+        checkValid(valid);
+        boolean result = ingestService.update(id, spec);
+        return ImmutableMap.of("result", result, "object", ingestService.get(id));
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.DELETE)
-    public Map<String, Object> delete(@PathVariable int id) {
-        Ingest ingest = ingestService.getIngest(id);
+    public Object delete(@PathVariable Integer id) {
+        boolean result = ingestService.delete(id);
+        return ImmutableMap.of("result", result);
+    }
 
-        if (!ingest.getState().equals(IngestState.Idle)) {
-            throw new IllegalStateException("Ingest must be idle to be deleted.");
+    public static void checkValid(BindingResult valid) {
+        if (valid.hasErrors()) {
+            throw new InvalidObjectException("Failed to create Ingest", valid);
         }
-        return ImmutableMap.<String, Object>builder()
-                .put("status", ingestService.deleteIngest(ingest))
-                .build();
     }
 }

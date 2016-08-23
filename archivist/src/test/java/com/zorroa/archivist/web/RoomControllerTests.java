@@ -4,10 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.TestSearchResult;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.web.api.RoomController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +20,11 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.zorroa.sdk.util.Json.deserialize;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,7 +53,7 @@ public class RoomControllerTests extends MockMvcTest {
                  .andExpect(status().isOk())
                  .andReturn();
 
-        Room room = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room room = deserialize(result, Room.class);
         assertEquals(bld.getName(), room.getName());
     }
 
@@ -72,7 +76,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Room updatedRoom = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room updatedRoom = deserialize(result, Room.class);
         assertEquals(update.getName(), updatedRoom.getName());
         assertTrue(BCrypt.checkpw("test123", roomDao.getPassword(room.getId())));
     }
@@ -91,7 +95,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        boolean isDeleted = deserialize(result.getResponse().getContentAsByteArray(), Boolean.class);
+        boolean isDeleted = deserialize(result, Boolean.class);
         assertTrue(isDeleted);
     }
 
@@ -196,7 +200,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Room room2 = deserialize(result.getResponse().getContentAsByteArray(), Room.class);
+        Room room2 = deserialize(result, Room.class);
         assertEquals(room1.getName(), room2.getName());
     }
 
@@ -406,9 +410,9 @@ public class RoomControllerTests extends MockMvcTest {
     public void testGetAssets() throws Exception {
         MockHttpSession session = user();
 
-        AssetBuilder assetBuilder = new AssetBuilder(getStaticImagePath() + "/beer_kettle_01.jpg");
-        assetBuilder.addKeywords("source", "bender");
-        assetDao.upsert(assetBuilder);
+        Source source = new Source(new File(getTestImagePath() + "/beer_kettle_01.jpg"));
+        AssetUtils.addKeywords(source, "source", "bender");
+        assetDao.index(source);
         refreshIndex();
 
         RoomBuilder builder = new RoomBuilder();

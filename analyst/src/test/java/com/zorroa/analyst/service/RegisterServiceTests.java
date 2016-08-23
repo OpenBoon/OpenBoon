@@ -4,7 +4,6 @@ import com.zorroa.analyst.AbstractTest;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.util.Json;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,18 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class RegisterServiceTests extends AbstractTest {
 
     @Autowired
-    PluginService pluginService;
-
-    @Autowired
     RegisterService registerService;
 
     @Autowired
     AnalystDao analystDao;
-
-    @Before
-    public void init() {
-        pluginService.loadPlugins();
-    }
 
     @Test
     public void testRegister() {
@@ -34,7 +25,5 @@ public class RegisterServiceTests extends AbstractTest {
 
         Analyst analyst = analystDao.get(id);
         logger.info("{}", Json.serializeToString(analyst));
-
-
     }
 }

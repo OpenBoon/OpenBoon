@@ -2,18 +2,15 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
-import com.zorroa.sdk.domain.User;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,7 +23,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
             JdbcUtils.insert("permission", "str_name", "str_type", "str_description", "bool_immutable");
 
     @Override
-    public Permission create(PermissionBuilder builder, boolean immutable) {
+    public Permission create(PermissionSpec builder, boolean immutable) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
@@ -74,17 +71,41 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public Permission get(String authority) {
-        String[] parts = authority.split("::");
+        String[] parts = authority.split(Permission.JOIN);
         return jdbc.queryForObject("SELECT * FROM permission WHERE str_type=? AND str_name=?", MAPPER, parts);
     }
 
+    public static String GET_ALL =
+            "SELECT * FROM permission ";
+
     @Override
     public List<Permission> getAll() {
-        /**
-         * This function does not return user/internal perms, just the perm that can be
-         * manually assigned.
-         */
-        return jdbc.query("SELECT * FROM permission WHERE str_type NOT IN ('user', 'internal')", MAPPER);
+        return jdbc.query(GET_ALL, MAPPER);
+    }
+
+    @Override
+    public PagedList<Permission> getPaged(Paging page) {
+        return getPaged(page, new PermissionFilter());
+    }
+
+    @Override
+    public PagedList<Permission> getPaged(Paging page, DaoFilter filter) {
+        filter.setOrderBy("str_type,str_name");
+        return new PagedList(page.setTotalCount(count(filter)),
+                jdbc.query(filter.getQuery(
+                        GET_ALL, page),
+                        MAPPER, filter.getValues(page)));
+    }
+
+    @Override
+    public long count() {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM permission", Long.class);
+    }
+
+    @Override
+    public long count(DaoFilter filter) {
+        return jdbc.queryForObject(filter.getCountQuery(GET_ALL),
+                Long.class, filter.getValues());
     }
 
     private static final String GET_BY_USER =
@@ -122,35 +143,6 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     @Override
-    public void setOnUser(User user, Collection<? extends Permission> perms) {
-        removeAllPermissions(user);
-        for (Permission p: perms) {
-            /*
-             * Don't re-assign user permissions, since those cannot be removed.
-             */
-            if (hasPermission(user, p) || p.getType().equals("user")) {
-                continue;
-            }
-            jdbc.update("INSERT INTO user_permission (pk_permission, pk_user) VALUES (?,?)",
-                    p.getId(), user.getId());
-        }
-    }
-
-    @Override
-    public void setOnUser(User user, Permission ... perms) {
-        setOnUser(user, Arrays.asList(perms));
-    }
-
-    @Override
-    public boolean assign(User user, Permission perm, boolean immutable) {
-        if (hasPermission(user, perm)) {
-            return false;
-        }
-        return jdbc.update("INSERT INTO user_permission (pk_permission, pk_user, bool_immutable) VALUES (?,?,?)",
-                perm.getId(), user.getId(), immutable) == 1;
-    }
-
-    @Override
     public boolean delete(Permission perm) {
         /*
          * Ensure immutable permissions cannot be deleted.
@@ -161,38 +153,5 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     @Override
     public boolean delete(User user) {
         return jdbc.update("DELETE FROM permission WHERE str_type='user' AND str_name=?", user.getUsername()) == 1;
-    }
-
-    private void removeAllPermissions(User user) {
-        /*
-         * Ensure the user's immutable permissions cannot be removed.
-         */
-        jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=0", user.getId());
-    }
-
-    @Override
-    public boolean hasPermission(User user, Permission permission) {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",
-                Integer.class, user.getId(), permission.getId()) == 1;
-    }
-
-    private static final String HAS_PERM =
-            "SELECT " +
-                "COUNT(1) " +
-            "FROM " +
-                "permission p,"+
-                "user_permission up " +
-            "WHERE " +
-                "p.pk_permission = up.pk_permission " +
-            "AND " +
-                "up.pk_user = ? " +
-            "AND " +
-                "p.str_name = ? " +
-            "AND " +
-                "p.str_type = ?";
-
-    @Override
-    public boolean hasPermission(User user, String type, String name) {
-        return jdbc.queryForObject(HAS_PERM, Integer.class, user.getId(), name, type) == 1;
     }
 }

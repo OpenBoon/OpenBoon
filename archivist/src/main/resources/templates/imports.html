@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="/webjars/dropzone/4.3.0/dropzone.css" rel="stylesheet" type="text/css"/>
+    <script src="/webjars/dropzone/4.3.0/dropzone.js"></script>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div th:include="fragments/imports :: menu"/>
+    <div class="wrapper">
+        <table id="table" class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Date</th>
+                <th>Assets</th>
+                <th>Progress</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="job: ${imports}" th:attr="data-href=${'/gui/imports/' + job.id}">
+
+                <td class="vert-align">
+                    <div th:include="fragments/job :: state_label"/>
+                </td>
+
+                <td class="vert-align" th:text="${job.name}"></td>
+                <td class="vert-align" th:text="${job.userCreated}"></td>
+                <td class="vert-align" th:text="${#dates.format(job.timeStarted, 'dd MMM yyyy HH:mm')}"></td>
+                <td class="vert-align" th:text="${job.stats.assetCreated}"></td>
+                <td class="col-md-4 vert-align">
+                    <div th:include="fragments/job :: progress"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="container-fluid">
+            <div th:include="fragments/table :: pager"/>
+        </div>
+    </div>
+
+    <div th:include="fragments/imports :: modal_create"/>
+    <div th:include="fragments/table :: clickable"/>
+</section>
+
+</body>
+</html>

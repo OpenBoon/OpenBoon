@@ -66,39 +66,68 @@ public class ElasticClientUtils {
      * @param client
      */
     public static void createIndexedScripts(Client client) {
-        Map<String, Object> script1 = ImmutableMap.of(
-                "script", "if (ctx._source.exports == null ) {  ctx._source.exports = [exportId] } " +
-                        "else { ctx._source.exports += exportId; ctx._source.exports = ctx._source.exports.unique(); }",
-                "params", ImmutableMap.of("exportId", "exportId"));
+        createRemoveLinkScript(client);
+        createAppendLinkScript(client);
+    }
+
+    private static final String REMOVE_SCRIPT =
+            "if (ctx._source.links != null) {"+
+            "ctx._source.links.removeIf( {l -> l.id == link.id && l.type == link.type} ) }";
+
+    public static void createRemoveLinkScript(Client client) {
+        Map<String, Object> script = ImmutableMap.of(
+                "script", REMOVE_SCRIPT,
+                "params", ImmutableMap.of("link", "link"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
-                .setId("asset_append_export")
-                .setSource(script1)
-                .get();
-
-        Map<String, Object> script2 = ImmutableMap.of(
-                "script", "if (ctx._source.folders == null ) { ctx._source.folders = [folderId] } else " +
-                        "{ ctx._source.folders += folderId; ctx._source.folders = ctx._source.folders.unique(); }",
-                "params", ImmutableMap.of("folderId", "folderId"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("asset_append_folder")
-                .setSource(script2)
-                .get();
-
-        Map<String, Object> script3 = ImmutableMap.of(
-                "script", "if (ctx._source.folders != null ) { ctx._source.folders.removeIf( {f -> f == folderId} )}",
-                "params", ImmutableMap.of("folderId", "folderId"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("asset_remove_folder")
-                .setSource(script3)
+                .setId("remove_link")
+                .setSource(script)
                 .get();
     }
 
+    private static final String APPEND_SCRIPT =
+            "if (ctx._source.links == null) { ctx._source.links = []; }; "+
+            "ctx._source.links += link;";
+
+    public static void createAppendLinkScript(Client client) {
+        Map<String, Object> script = ImmutableMap.of(
+                "script", APPEND_SCRIPT,
+                "params", ImmutableMap.of("link", "link"));
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("append_link")
+                .setSource(script)
+                .get();
+    }
+
+    /*
+    public static void createRemoveLinkScript(Client client) {
+        Map<String, Object> script = ImmutableMap.of(
+                "script", "if (ctx._source.links == null) { return ; }; if (ctx._source.links[attrKey] != null) { ctx._source.links[attrKey].removeIf( {f -> f == attrValue} )}",
+                "params", ImmutableMap.of("attrKey", "attrKey", "attrValue", "attrValue"));
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("remove_link")
+                .setSource(script)
+                .get();
+    }
+
+    public static void createAppendLinkScript(Client client) {
+        Map<String, Object> script = ImmutableMap.of(
+                "script", "if (ctx._source.links == null) { ctx._source.links = [:]; }; if (ctx._source.links[attrKey] == null ) {  ctx._source.links[attrKey] = [attrValue] } " +
+                        "else { ctx._source.links[attrKey] += attrValue; ctx._source.links[attrKey] = ctx._source.links[attrValue].unique(); }",
+                "params", ImmutableMap.of("attrKey", "attrKey", "attrValue", "attrValue"));
+
+        client.preparePutIndexedScript()
+                .setScriptLang("groovy")
+                .setId("append_link")
+                .setSource(script)
+                .get();
+    }
+    */
     /**
      * Delete all indexes.
      *

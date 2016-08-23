@@ -1,10 +1,12 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,15 +24,21 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         Folder folder = new Folder();
         folder.setId(rs.getInt("pk_folder"));
         folder.setName(rs.getString("str_name"));
-        folder.setUserCreated(rs.getInt("user_created"));
-        folder.setUserModified(rs.getInt("user_modified"));
+        folder.setUserCreated(resolveUser(rs.getInt("user_created")));
+        folder.setUserModified(resolveUser(rs.getInt("user_modified")));
         folder.setRecursive(rs.getBoolean("bool_recursive"));
         folder.setTimeCreated(rs.getLong("time_created"));
         folder.setTimeModified(rs.getLong("time_modified"));
+        folder.setDyhiRoot(rs.getBoolean("bool_dyhi_root"));
 
         Object parent = rs.getObject("pk_parent");
         if (parent != null) {
             folder.setParentId((Integer) parent);
+        }
+
+        Object dyhi = rs.getObject("pk_dyhi");
+        if (dyhi != null) {
+            folder.setDyhiId((Integer)dyhi);
         }
 
         String search = rs.getString("json_search");
@@ -114,6 +122,11 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
+    public int count(DyHierarchy d) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE pk_dyhi=?", Integer.class, d.getId());
+    }
+
+    @Override
     public boolean exists(Folder parent, String name) {
         return exists(parent.getId(), name);
     }
@@ -127,10 +140,11 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     "bool_recursive",
                     "user_modified",
                     "time_modified",
-                    "json_search");
+                    "json_search",
+                    "pk_dyhi");
 
     @Override
-    public Folder create(FolderBuilder builder) {
+    public Folder create(FolderSpec builder) {
         long time = System.currentTimeMillis();
         int user = SecurityUtils.getUser().getId();
 
@@ -146,55 +160,41 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             ps.setInt(6, user);
             ps.setLong(7, time);
             ps.setString(8, Json.serializeToString(builder.getSearch(), null));
+            ps.setObject(9, builder.getDyhiId());
             return ps;
         }, keyHolder);
 
         return get(keyHolder.getKey().intValue());
     }
 
+    private static final String UPDATE = JdbcUtils.update("folder", "pk_folder",
+            "time_modified",
+            "user_modified",
+            "pk_parent",
+            "str_name",
+            "bool_recursive",
+            "json_search");
+
     @Override
-    public boolean update(Folder folder, FolderUpdateBuilder builder) {
+    public boolean update(int id, Folder folder) {
+        Preconditions.checkNotNull(folder.getParentId(), "Parent folder cannot be null");
+        return jdbc.update(UPDATE,
+                System.currentTimeMillis(),
+                SecurityUtils.getUser().getId(),
+                folder.getParentId(),
+                folder.getName(),
+                folder.isRecursive(),
+                Json.serializeToString(folder.getSearch(), null),
+                folder.getId()) == 1;
+    }
 
-        if (builder.isset("acl")) {
-            setAcl(folder, builder.getAcl());
-        }
-
-        List<Object> values = Lists.newArrayList();
-        List<String> sets = Lists.newArrayList();
-
-        if (builder.isset("name")) {
-            sets.add("str_name=?");
-            values.add(builder.getName());
-        }
-
-        if (builder.isset("parentId")) {
-            sets.add("pk_parent=?");
-            values.add(builder.getParentId());
-        }
-
-        if (builder.isset("recursive")) {
-            sets.add("bool_recursive=?");
-            values.add(builder.getRecursive());
-        }
-
-        if (builder.isset("search")) {
-            sets.add("json_search=?");
-            values.add(Json.serializeToString(builder.getSearch(), null));
-        }
-
-        values.add(folder.getId());
-
-        StringBuilder sb = new StringBuilder(512);
-        sb.append("UPDATE folder SET ");
-        sb.append(String.join(",", sets));
-        sb.append(" WHERE pk_folder=? ");
-
-        return jdbc.update(sb.toString(), values.toArray()) == 1;
+    @Override
+    public int deleteAll(DyHierarchy dyhi) {
+        return jdbc.update("DELETE FROM folder WHERE pk_dyhi=?", dyhi.getId());
     }
 
     @Override
     public boolean delete(Folder folder) {
-        logger.debug("Deleting folder: {}", folder);
         return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) ==1;
     }
 
@@ -202,6 +202,11 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     public boolean hasAccess(Folder folder, Access access) {
         return jdbc.queryForObject(appendAccess("SELECT COUNT(1) FROM folder WHERE pk_folder=?", access),
                 Integer.class, appendAclArgs(folder.getId())) > 0;
+    }
+
+    @Override
+    public boolean setDyHierarchyRoot(Folder folder, boolean value) {
+        return jdbc.update("UPDATE folder SET bool_dyhi_root=? WHERE pk_folder=?", value, folder.getId()) == 1;
     }
 
     @Override
@@ -219,7 +224,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public Acl getAcl(Folder folder) {
         Acl result = new Acl();
-        jdbc.query("SELECT * FROM  folder_acl WHERE pk_folder=?", rs -> {
+        jdbc.query("SELECT * FROM folder_acl WHERE pk_folder=?", rs -> {
             result.add(new AclEntry(rs.getInt("pk_permission"), rs.getInt("int_access")));
         }, folder.getId());
         return result;

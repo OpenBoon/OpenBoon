@@ -27,6 +27,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class MultipleWebSecurityConfig {
 
+    private static final Logger logger = LoggerFactory.getLogger(MultipleWebSecurityConfig.class);
+
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @EnableGlobalMethodSecurity(prePostEnabled=true)
@@ -42,11 +44,8 @@ public class MultipleWebSecurityConfig {
             http
                 .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .antMatcher("/api/**")
-                .authorizeRequests()
-                .antMatchers("/health/**").permitAll()
-                .antMatchers("/cluster/**").permitAll()
-                .antMatchers("/console/**").hasAuthority("user::admin")
-                .anyRequest().authenticated()
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
                 .and()
                 .httpBasic()
                 .and().headers().frameOptions().disable()
@@ -71,28 +70,31 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .authorizeRequests()
-                    .antMatchers("/gui/**")
-                    .hasAuthority("group::user")
+                    .antMatchers("/gui/**").authenticated()
+                    .antMatchers("/health/**").permitAll()
+                    .antMatchers("/cluster/**").permitAll()
+                    .antMatchers("/console/**").hasAuthority("user::admin")
                 .and()
                 .formLogin()
-                    .loginPage("/gui/login")
-                    .failureUrl("/gui/login?error")
+                    .loginPage("/login").permitAll()
+                    .failureUrl("/login?error").permitAll()
                     .defaultSuccessUrl("/gui")
                     .permitAll()
                 .and()
                     .exceptionHandling()
-                    .accessDeniedPage("/gui/login")
+                    .accessDeniedPage("/login")
                 .and().headers().frameOptions().disable()
                 .and()
                     .sessionManagement()
-                    .invalidSessionUrl("/gui/login")
+                    .invalidSessionUrl("/login")
                     .maximumSessions(10)
                     .sessionRegistry(sessionRegistry)
+                    .expiredUrl("/login")
                     .and()
                 .and()
                     .csrf().disable()
                 .logout().logoutRequestMatcher(
-                new AntPathRequestMatcher("/gui/logout")).logoutSuccessUrl("/gui/login?logout").permitAll();
+                new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").permitAll();
         }
     }
 
@@ -101,8 +103,6 @@ public class MultipleWebSecurityConfig {
         auth
                 .authenticationProvider(authenticationProvider())
                 .authenticationProvider(hmacAuthenticationProvider())
-                .authenticationProvider(backgroundTaskAuthenticationProvider())
-                .authenticationProvider(internalAuthenticationProvider())
                 .authenticationEventPublisher(authenticationEventPublisher());
 
         /**

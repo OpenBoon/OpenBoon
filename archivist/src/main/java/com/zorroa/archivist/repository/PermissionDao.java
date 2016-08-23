@@ -1,17 +1,19 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.sdk.domain.Permission;
-import com.zorroa.sdk.domain.PermissionBuilder;
-import com.zorroa.sdk.domain.User;
+import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.PermissionSpec;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by chambers on 10/27/15.
  */
 public interface PermissionDao {
-    Permission create(PermissionBuilder builder, boolean immutable);
+
+    Permission create(PermissionSpec builder, boolean immutable);
 
     Permission update(Permission permission);
 
@@ -23,6 +25,14 @@ public interface PermissionDao {
 
     List<Permission> getAll();
 
+    PagedList<Permission> getPaged(Paging page, DaoFilter filter);
+
+    PagedList<Permission> getPaged(Paging page);
+
+    long count();
+
+    long count(DaoFilter filter);
+
     List<Permission> getAll(User user);
 
     List<Permission> getAll(String type);
@@ -31,17 +41,7 @@ public interface PermissionDao {
 
     List<Permission> getAll(Integer[] ids);
 
-    void setOnUser(User user, Collection<? extends Permission> perms);
-
-    void setOnUser(User user, Permission... perms);
-
-    boolean assign(User user, Permission perm, boolean immutable);
-
     boolean delete(Permission perm);
 
     boolean delete(User user);
-
-    boolean hasPermission(User user, Permission permission);
-
-    boolean hasPermission(User user, String type, String name);
 }

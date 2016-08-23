@@ -2,12 +2,15 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.TestSearchResult;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.web.api.FolderController;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.Folder;
-import com.zorroa.sdk.domain.FolderBuilder;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Link;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +43,7 @@ public class FolderControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder().setName("TestFolder1"))))
+                .content(Json.serialize(new FolderSpec("TestFolder1"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -54,7 +57,7 @@ public class FolderControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder().setName("TestFolder2"))))
+                .content(Json.serialize(new FolderSpec("TestFolder2"))))
                 .andExpect(status().isOk())
                 .andReturn();
         Folder folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
@@ -136,7 +139,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testUpdate() throws Exception {
         MockHttpSession session = user();
 
-        FolderBuilder builder = new FolderBuilder(folder).setName("TestFolder9000");
+        FolderSpec builder = new FolderSpec(folder).setName("TestFolder9000");
         MvcResult result = mvc.perform(put("/api/v1/folders/" + folder.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -157,14 +160,14 @@ public class FolderControllerTests extends MockMvcTest {
         mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder("first"))))
+                .content(Json.serialize(new FolderSpec("first"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder("second"))))
+                .content(Json.serialize(new FolderSpec("second"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -201,7 +204,7 @@ public class FolderControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder("grandpa"))))
+                .content(Json.serialize(new FolderSpec("grandpa"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -211,7 +214,7 @@ public class FolderControllerTests extends MockMvcTest {
         result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder("daddy", grandpa))))
+                .content(Json.serialize(new FolderSpec("daddy", grandpa))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -221,7 +224,7 @@ public class FolderControllerTests extends MockMvcTest {
         mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder("uncly", grandpa))))
+                .content(Json.serialize(new FolderSpec("uncly", grandpa))))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -241,7 +244,7 @@ public class FolderControllerTests extends MockMvcTest {
         result = mvc.perform(put("/api/v1/folders/" + dad.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderBuilder(dad).setName("daddy2"))))
+                .content(Json.serialize(dad.setName("daddy2"))))
                 .andExpect(status().isOk())
                 .andReturn();
         Folder dad2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
@@ -254,10 +257,10 @@ public class FolderControllerTests extends MockMvcTest {
     @Test
     public void testAddAsset() throws Exception {
         authenticate();
-        addTestAssets("standard");
-        List<Asset> assets = assetDao.getAll();
+        addTestAssets("set04/standard");
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
 
-        Folder folder1 = folderService.create(new FolderBuilder("foo"));
+        Folder folder1 = folderService.create(new FolderSpec("foo"));
 
         MockHttpSession session = admin();
         mvc.perform(post("/api/v1/folders/" + folder1.getId() + "/assets")
@@ -269,10 +272,10 @@ public class FolderControllerTests extends MockMvcTest {
 
         refreshIndex();
 
-        assets = assetDao.getAll();
+        assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getAttr("folders", Json.SET_OF_INTS);
-            assertTrue(folderIds.contains(folder1.getId()));
+            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
+            assertEquals(links.get(0).getId(), String.valueOf(folder1.getId()));
         }
     }
 
@@ -280,10 +283,10 @@ public class FolderControllerTests extends MockMvcTest {
     public void testRemoveAsset() throws Exception {
         authenticate();
 
-        addTestAssets("standard");
-        List<Asset> assets = assetDao.getAll();
+        addTestAssets("set04/standard");
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
 
-        Folder folder1 = folderService.create(new FolderBuilder("foo"));
+        Folder folder1 = folderService.create(new FolderSpec("foo"));
         folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
         refreshIndex();
 
@@ -296,10 +299,10 @@ public class FolderControllerTests extends MockMvcTest {
                 .andReturn();
 
         refreshIndex();
-        assets = assetDao.getAll();
+        assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            Set<Integer> folderIds = asset.getAttr("folders", Json.SET_OF_INTS);
-            assertFalse(folderIds.contains(folder1.getId()));
+            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
+            assertEquals(0, links.size());
         }
     }
 
@@ -307,10 +310,10 @@ public class FolderControllerTests extends MockMvcTest {
     public void testGetAssets() throws Exception {
         authenticate();
 
-        addTestAssets("standard");
-        List<Asset> assets = assetDao.getAll();
+        addTestAssets("set04/standard");
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
 
-        Folder folder1 = folderService.create(new FolderBuilder("foo"));
+        Folder folder1 = folderService.create(new FolderSpec("foo"));
         folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
         refreshIndex();
 

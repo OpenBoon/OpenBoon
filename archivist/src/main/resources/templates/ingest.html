@@ -29,14 +29,15 @@
             </div>
 
             <div class="form-group">
-                <label>URIs:</label>
-                <div id="uriList" class="list-group">
-                    <li class="list-group-item" th:each="uri: ${ingest.uris}">
-                    <th:block th:text="${uri}"></th:block>
+
+                <label>g:</label>
+                <div id="generatorList" class="list-group">
+                    <li class="list-group-item" th:each="generator: ${ingest.generators}">
+                    <th:block th:text="${generator}"></th:block>
                         <a class="uriDeleteButton" href="#" style="float: right">
                             <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
                         </a>
-                        <input name="uris" type="hidden" th:value="${uri}"/>
+                        <input name="generator" type="hidden" th:value="${generator}"/>
                     </li>
                 </div>
                 <div class="input-group">
@@ -45,8 +46,7 @@
                     </span>
                     <input id="addUriText" type="text" class="form-control"/>
                 </div>
-
-                <div class="alert alert-danger" th:if="${#fields.hasErrors('uris')}" th:errors="*{uris}"></div>
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('generators')}" th:errors="*{generators}"></div>
             </div>
 
             <div class="form-group">
@@ -71,7 +71,7 @@
                             + "<a class=\"uriDeleteButton\" href=\"#\" style=\"float: right\">"
                             + "<span class=\"glyphicon glyphicon-remove-circle\"></span>"
                             + "</a>"
-                            + "<input type=\"hidden\" name=\"uris\" value=\"" + val + "\">");
+                            + "<input type=\"hidden\" name=\"generators\" value=\"" + val + "\">");
                 }
             });
 
@@ -88,3 +88,4 @@
 
 </body>
 </html>
+

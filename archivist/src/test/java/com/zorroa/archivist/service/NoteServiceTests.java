@@ -2,10 +2,10 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.AssetBuilder;
+import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Note;
 import com.zorroa.sdk.domain.NoteBuilder;
-import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.processor.Source;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class NoteServiceTests extends AbstractTest {
 
     @Before
     public void init() {
-        AssetBuilder ab = new AssetBuilder(getTestImage("beer_kettle_01.jpg"));
-        assetId = assetDao.upsert(ab).getId();
+        Source ab = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        assetId = assetDao.index(ab).getId();
     }
 
     @Test

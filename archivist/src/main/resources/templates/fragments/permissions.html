@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+
+<div th:fragment="menu">
+    <nav class="navbar navbar-default navbar-shadow navbar-fixed-top secondnavbar" role="navigation" style="z-index: 999; border-width:0px; border-bottom-width: 1px">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="navbar navbar-header">
+                    <a class="navbar-brand" href="/gui/permissions"><i class="fa fa-lock fa-fw fa-lg"/>Permissions</a>
+                    <p th:if="${permission != null}" class="navbar-text navbar-section" th:text="${permission.name}">...</p>
+                </div>
+
+                <div class="navbar-collapse collapse">
+                    <div class="navbar navbar-right">
+                        <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
+                                type="button" class="btn btn-danger navbar-btn"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
+
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-sort fa-lg fa-fw" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div th:fragment="side_menu">
+    <div class="navbar navbar-default navbar-fixed-left">
+        <nav class="nav-sidebar">
+            <div class="list-group">
+                <a th:href="${'/gui/permissions/' + perm.id}" class="list-group-item">Properties</a>
+                <a th:href="${'/gui/permissions/' + perm.id + '/auto'}" class="list-group-item">Auto Assignment</a>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<div th:fragment="modal_create">
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalCreate" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close">&times;</button>
+                    <h4 class="modal-title">Create Permission</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="createForm" autocomplete="off" action="#" role="form" th:action="@{/gui/permissions}" th:object="${permSpec}" method="post">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" th:field="*{name}" class="form-control" id="name" required="true"/>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type:</label>
+                            <input type="text" th:field="*{type}" class="form-control" id="type" required="true"/>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <input type="text" th:field="*{description}" class="form-control" id="description" required="true"/>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Create</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- If there are validation errros, show form again. -->
+    <div th:if="${errors}">
+        <script th:inline="javascript" type="text/javascript">
+            $(document).ready(function(e) {
+                $('#modalCreate').modal({'backdrop': 'static'});
+            });
+        </script>
+    </div>
+</div>
+
+</body>
+</html>

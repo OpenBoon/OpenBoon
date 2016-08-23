@@ -1,5 +1,6 @@
 package com.zorroa.common.config;
 
+import com.zorroa.common.UnitTestConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=UnitTestConfiguration.class)
-@TestPropertySource("classpath:/application.properties")
+@TestPropertySource("classpath:/test.properties")
 public class SpringApplicationPropertiesTests {
 
     @Autowired

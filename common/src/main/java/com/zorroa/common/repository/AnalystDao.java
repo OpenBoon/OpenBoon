@@ -1,5 +1,6 @@
 package com.zorroa.common.repository;
 
+import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
@@ -19,7 +20,7 @@ public interface AnalystDao {
 
     long count();
 
-    List<Analyst> getAll(Paging paging);
+    PagedList<Analyst> getAll(Paging paging);
 
     List<Analyst> getActive(Paging paging);
 
