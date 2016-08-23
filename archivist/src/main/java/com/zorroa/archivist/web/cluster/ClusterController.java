@@ -1,12 +1,13 @@
 package com.zorroa.archivist.web.cluster;
 
+import com.zorroa.archivist.domain.TaskSpec;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.common.domain.ExecuteTaskExpand;
+import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.ExecuteTaskStopped;
 import com.zorroa.common.repository.ClusterSettingsDao;
-import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsResult;
-import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,8 @@ public class ClusterController {
      * @return
      */
     @RequestMapping(value="/cluster/v1/task/_expand", method=RequestMethod.POST)
-    public void expand(@RequestBody ZpsScript script) {
-        jobService.expand(script);
+    public void expand(@RequestBody ExecuteTaskExpand expand) {
+        jobService.expand(expand);
         jobExecutorService.queueSchedule();
     }
 
@@ -56,7 +57,7 @@ public class ClusterController {
      * @return
      */
     @RequestMapping(value="/cluster/v1/task/_running", method=RequestMethod.POST)
-    public void running(@RequestBody ZpsScript task) {
+    public void running(@RequestBody ExecuteTaskStart task) {
         jobService.setTaskState(task, TaskState.Running, TaskState.Queued);
     }
 
@@ -66,9 +67,8 @@ public class ClusterController {
      * @return
      */
     @RequestMapping(value="/cluster/v1/task/_completed", method=RequestMethod.POST)
-    public void completed(@RequestBody ZpsResult result) {
-        logger.info("Result: {}", Json.prettyString(result));
-        jobService.setTaskCompleted(result, result.getExitStatus());
+    public void completed(@RequestBody ExecuteTaskStopped result) {
+        jobService.setTaskCompleted(result);
     }
 
 }

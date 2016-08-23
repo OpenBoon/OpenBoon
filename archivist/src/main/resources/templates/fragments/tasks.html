@@ -55,7 +55,7 @@ $(function(){
         <thead>
         <tr>
             <th>Id</th>
-            <th>Execute</th>
+            <th>Name</th>
             <th>State</th>
             <th>Duration</th>
             <th>Host</th>
@@ -64,7 +64,7 @@ $(function(){
         <tbody>
         <tr class="clickable-row" th:attr="data-id=${task.taskId}" data-toggle="modal" data-target="#viewModal" th:each="task: ${tasks}">
             <td class="vert-align" th:text="${task.taskId}"></td>
-            <td class="vert-align" th:text="${task.execute}"></td>
+            <td class="vert-align" th:text="${task.name}"></td>
             <td class="vert-align">
                 <div th:include="fragments/tasks :: state_label"/>
             </td>

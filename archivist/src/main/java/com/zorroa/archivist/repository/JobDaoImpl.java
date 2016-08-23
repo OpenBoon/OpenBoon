@@ -5,13 +5,12 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.domain.JobId;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.common.domain.TaskId;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsJob;
-import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -33,35 +32,38 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                     "int_type",
                     "int_user_created",
                     "time_started",
-                    "json_script",
-                    "json_args");
+                    "json_args",
+                    "json_env");
 
     @Override
-    public ZpsScript create(ZpsScript script, PipelineType type) {
-        Preconditions.checkNotNull(script);
-        Preconditions.checkNotNull(script.getName());
+    public Job create(JobSpec spec) {
+        Preconditions.checkNotNull(spec);
+        Preconditions.checkNotNull(spec.getName());
+        Preconditions.checkNotNull(spec.getType());
 
-        if (script.getJobId() == null) {
-            script.setJobId(nextId());
+        if (spec.getJobId() == null) {
+            spec.setJobId(nextId());
         }
+
+        logger.info("jspec: {}", Json.prettyString(spec));
 
         jdbc.update(connection -> {
             PreparedStatement ps =
                     connection.prepareStatement(INSERT);
-            ps.setInt(1, script.getJobId());
-            ps.setString(2, script.getName());
-            ps.setInt(3, type.ordinal());
+            ps.setInt(1, spec.getJobId());
+            ps.setString(2, spec.getName());
+            ps.setInt(3, spec.getType().ordinal());
             ps.setInt(4, SecurityUtils.getUser().getId());
             ps.setLong(5, System.currentTimeMillis());
-            ps.setString(6, Json.serializeToString(script));
-            ps.setString(7, Json.serializeToString(script.getArgs()));
+            ps.setString(6, Json.serializeToString(spec.getArgs(), "{}"));
+            ps.setString(7, Json.serializeToString(spec.getEnv(), "{}"));
             return ps;
         });
 
         // insert supporting tables.
-        jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", script.getJobId());
-        jdbc.update("INSERT INTO job_count (pk_job) VALUES (?)", script.getJobId());
-        return script;
+        jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", spec.getJobId());
+        jdbc.update("INSERT INTO job_count (pk_job) VALUES (?)", spec.getJobId());
+        return get(spec.getJobId());
     }
 
     @Override
@@ -138,8 +140,8 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
-    public Job get(ZpsScript script) {
-        return get(script.getJobId());
+    public Job get(JobId job) {
+        return get(job.getJobId());
     }
 
     @Override
@@ -189,12 +191,12 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "pk_job=?";
 
     @Override
-    public void incrementWaitingTaskCount(ZpsTask task) {
-        jdbc.update(INC_WAITING_TASK_COUNT, task.getJobId());
+    public void incrementWaitingTaskCount(JobId job) {
+        jdbc.update(INC_WAITING_TASK_COUNT, job.getJobId());
     }
 
     @Override
-    public boolean setState(ZpsJob job, JobState newState, JobState expect) {
+    public boolean setState(JobId job, JobState newState, JobState expect) {
         List<Object> values = Lists.newArrayListWithCapacity(4);
         List<String> fields = Lists.newArrayListWithCapacity(4);
 
@@ -219,7 +221,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
-    public JobState updateTaskStateCounts(ZpsTask task, TaskState newState, TaskState expect) {
+    public JobState updateTaskStateCounts(TaskId task, TaskState newState, TaskState expect) {
         /**
          * TODO: implement as a trigger!
          */

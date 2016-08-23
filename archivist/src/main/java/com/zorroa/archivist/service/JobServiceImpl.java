@@ -9,14 +9,10 @@ import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.common.domain.*;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsJob;
-import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +58,10 @@ public class JobServiceImpl implements JobService {
      * which map an execution pipeline to each asset generated.  The final task
      * is the reducer.
      *
-     * @param job
+     * @param spec
      */
     @Override
-    public ZpsScript launch(ZpsScript job, PipelineType type) {
+    public Job launch(JobSpec spec) {
         /**
          * These environment varibles will be set on each task.
          */
@@ -78,19 +74,22 @@ public class JobServiceImpl implements JobService {
                 sharedData.getRootPath().resolve("certs/archivist.p12").toString());
         env.put("ZORROA_USER", SecurityUtils.getUsername());
         env.put("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
-        job.setEnv(env);
+        spec.setEnv(env);
 
-        job = jobDao.create(job, type);
-        job = createTask(job);
-        final int id = job.getJobId();
+        Job job = jobDao.create(spec);
+
+        if (spec.getTasks() != null) {
+            for (TaskSpec tspec: spec.getTasks()) {
+                createTask(tspec.setJobId(job.getJobId()));
+            }
+        }
         event.afterCommit(()->
-                message.broadcast(new Message("JOB_CREATE",
-                        ImmutableMap.of("type", type, "id", id))));
-        return job;
+                message.broadcast(new Message("JOB_CREATE", job)));
+        return jobDao.get(job.getId());
     }
 
     @Override
-    public boolean cancel(ZpsJob job) {
+    public boolean cancel(JobId job) {
         if (jobDao.setState(job, JobState.Cancelled, JobState.Active)) {
             event.afterCommit(()->
                     message.broadcast(new Message("JOB_CANCELED",
@@ -101,7 +100,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean restart(ZpsJob job) {
+    public boolean restart(JobId job) {
         if (jobDao.setState(job, JobState.Active, JobState.Cancelled)) {
             event.afterCommit(()->
                     message.broadcast(new Message("JOB_RESTARTED",
@@ -112,29 +111,34 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean createParentDepend(ZpsTask task) {
+    public boolean createParentDepend(TaskId task) {
         return taskDao.createParentDepend(task);
     }
 
     @Override
-    public void expand(ZpsScript script) {
-
+    public Task expand(ExecuteTaskExpand expand) {
         if (logger.isDebugEnabled()) {
-            logger.debug("Expanding: {}", Json.prettyString(script));
+            logger.debug("Expanding: {}", Json.prettyString(expand));
         }
 
-        ZpsTask task = createTask(script);
+        TaskSpec spec = new TaskSpec();
+        spec.setJobId(expand.getJobId());
+        spec.setName(expand.getName());
+        spec.setScript(expand.getScript());
+        spec.setParentTaskId(expand.getParentTaskId());
+        return createTask(spec);
     }
 
-    public ZpsScript createTask(ZpsScript script) {
+    public Task createTask(TaskSpec spec) {
         /**
          * Create the first task which is just the script itself.
          */
 
-        ZpsScript newScript = taskDao.create(script);
-        jobDao.incrementWaitingTaskCount(script);
-        taskDao.incrementDependCount(script);
-        return newScript;
+        Task task = taskDao.create(spec);
+        logger.info("incrementing waiting tasks: {}", spec.getJobId());
+        jobDao.incrementWaitingTaskCount(task);
+        taskDao.incrementDependCount(task);
+        return task;
     }
 
     @Override
@@ -143,7 +147,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean setTaskState(ZpsTask task, TaskState newState, TaskState expect) {
+    public boolean setTaskState(TaskId task, TaskState newState, TaskState expect) {
         Preconditions.checkNotNull(task.getTaskId());
         Preconditions.checkNotNull(task.getJobId());
 
@@ -157,25 +161,25 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void setHost(ZpsTask script, String host) {
+    public void setHost(TaskId script, String host) {
         taskDao.setHost(script, host);
     }
 
     @Override
-    public boolean setTaskQueued(ZpsTask script) {
+    public boolean setTaskQueued(TaskId script) {
         return setTaskState(script, TaskState.Queued, TaskState.Waiting);
     }
 
     @Override
-    public boolean setTaskCompleted(ZpsTask task, int exitStatus) {
-        TaskState newState = exitStatus == 0 ? TaskState.Success : TaskState.Failure;
-        if (setTaskState(task, newState, TaskState.Running)) {
+    public boolean setTaskCompleted(ExecuteTaskStopped result) {
+        TaskState newState = result.getExitStatus() == 0 ? TaskState.Success : TaskState.Failure;
+        if (setTaskState(result, newState, TaskState.Running)) {
 
             if (newState.equals(TaskState.Success)) {
-                logger.info("decremented {} depend counts" , taskDao.decrementDependCount(task));
+                logger.info("decremented {} depend counts" , taskDao.decrementDependCount(result));
             }
 
-            taskDao.setExitStatus(task, exitStatus);
+            taskDao.setExitStatus(result, result.getExitStatus());
             return true;
         }
         return false;
@@ -192,7 +196,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public PagedList<Task> getAllTasks(int job,Paging page) {
+    public PagedList<Task> getAllTasks(int job, Paging page) {
         return taskDao.getAll(job, page);
     }
 }

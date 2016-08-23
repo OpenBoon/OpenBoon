@@ -1,12 +1,12 @@
 package com.zorroa.analyst;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.ImmutableMap;
 import com.zorroa.common.cluster.AbstractClient;
 import com.zorroa.common.cluster.Http;
 import com.zorroa.common.cluster.Protocol;
-import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
+import com.zorroa.common.domain.ExecuteTaskExpand;
+import com.zorroa.common.domain.ExecuteTaskStarted;
+import com.zorroa.common.domain.ExecuteTaskStopped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,36 +56,27 @@ public class ArchivistClient extends AbstractClient {
     /**
      * Execute a reaction from a currently running zps script.
      *
-     * @param expand
+     * @param spec
      */
-    public void expand(ZpsScript expand) {
-        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_expand", expand);
+    public void expand(ExecuteTaskExpand spec) {
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_expand", spec);
     }
 
     /**
      * Mark a task as running.
      *
-     * @param script
+     * @param task
      */
-    public void reportTaskRunning(ZpsTask script) {
-        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_running",
-                ImmutableMap.of(
-                        "taskId", script.getTaskId(),
-                        "jobId", script.getJobId()));
+    public void reportTaskStarted(ExecuteTaskStarted task) {
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_running", task);
     }
 
     /**
      * Mark a task as completed.
      *
-     * @param script
+     * @param result
      */
-    public void reportTaskCompleted(ZpsTask script, int exitStatus) {
-        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_completed",
-                ImmutableMap.of(
-                    "taskId", script.getTaskId(),
-                    "jobId", script.getJobId(),
-                    "exitStatus" , exitStatus,
-                    "parentTaskId", script.getParentTaskId()));
-
+    public void reportTaskStopped(ExecuteTaskStopped result) {
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_completed", result);
     }
 }

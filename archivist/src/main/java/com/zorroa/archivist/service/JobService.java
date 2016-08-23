@@ -1,11 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.zps.ZpsJob;
-import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
+import com.zorroa.common.domain.*;
 
 /**
  * Created by chambers on 6/24/16.
@@ -16,11 +12,10 @@ public interface JobService {
      * Launches a Job using the given ZPS script. Returns the script
      * back populated with the jobId and first task Id.
      *
-     * @param script
-     * @param type
+     * @param spec
      * @return
      */
-    ZpsScript launch(ZpsScript script, PipelineType type);
+    Job launch(JobSpec spec);
 
     /**
      * Cancel the given job.  The job can be restarted.
@@ -28,7 +23,7 @@ public interface JobService {
      * @param job
      * @return
      */
-    boolean cancel(ZpsJob job);
+    boolean cancel(JobId job);
 
     /**
      * Restart a canceled job.
@@ -36,11 +31,11 @@ public interface JobService {
      * @param job
      * @return
      */
-    boolean restart(ZpsJob job);
+    boolean restart(JobId job);
 
-    boolean createParentDepend(ZpsTask task);
+    boolean createParentDepend(TaskId task);
 
-    void expand(ZpsScript script);
+    Task expand(ExecuteTaskExpand task);
 
     /**
      * Create a new task.
@@ -48,7 +43,7 @@ public interface JobService {
      * @param script
      * @return
      */
-    ZpsScript createTask(ZpsScript script);
+    Task createTask(TaskSpec script);
 
     /**
      * Get a job by id.
@@ -66,7 +61,7 @@ public interface JobService {
      * @param expect
      * @return
      */
-    boolean setTaskState(ZpsTask task, TaskState newState, TaskState expect);
+    boolean setTaskState(TaskId task, TaskState newState, TaskState expect);
 
     /**
      * Set the host the task is running on.
@@ -74,7 +69,7 @@ public interface JobService {
      * @param task
      * @param host
      */
-    void setHost(ZpsTask task, String host);
+    void setHost(TaskId task, String host);
 
     /**
      * Set the task state to queued.
@@ -82,16 +77,15 @@ public interface JobService {
      * @param script
      * @return
      */
-    boolean setTaskQueued(ZpsTask script);
+    boolean setTaskQueued(TaskId script);
 
     /**
      * Update the task state to finished or succeeded based on the exit status.
      *
-     * @param script
-     * @param exitStatus
+     * @param result
      * @return
      */
-    boolean setTaskCompleted(ZpsTask script, int exitStatus);
+    boolean setTaskCompleted(ExecuteTaskStopped result);
 
     /**
      * Increment asset related stats.

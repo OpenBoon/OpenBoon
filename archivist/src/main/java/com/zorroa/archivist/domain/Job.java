@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.sdk.zps.ZpsJob;
+import com.zorroa.common.domain.JobId;
 
 import java.util.Map;
 import java.util.Objects;
@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Created by chambers on 7/12/16.
  */
-public class Job implements ZpsJob {
+public class Job implements JobId {
 
     private int id;
     private String name;

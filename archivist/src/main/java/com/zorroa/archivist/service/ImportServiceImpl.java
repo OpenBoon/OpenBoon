@@ -49,15 +49,19 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public Job create(ImportSpec spec) {
 
-        ZpsScript script = new ZpsScript();
-        script.setJobId(jobDao.nextId());
-
+        JobSpec jspec = new JobSpec();
+        jspec.setType(Import);
         if (spec.getName() == null) {
-            script.setName(String.format("import by %s", SecurityUtils.getUsername()));
+            jspec.setName(String.format("import by %s", SecurityUtils.getUsername()));
         }
         else {
-            script.setName(String.format("import ", spec.getName()));
+            jspec.setName(String.format("import ", spec.getName()));
         }
+
+        /**
+         * Create the job.
+         */
+        Job job = jobService.launch(jspec);
 
         List<ProcessorRef> pipeline = Lists.newArrayList();
         if (spec.getPipelineId() != null) {
@@ -72,7 +76,7 @@ public class ImportServiceImpl implements ImportService {
                 new SdkProcessorRef()
                         .setClassName("com.zorroa.sdk.processor.builtin.IndexSource")
                         .setLanguage("java")
-                        .setArgs(ImmutableMap.of("importId", script.getJobId())));
+                        .setArgs(ImmutableMap.of("importId", job.getJobId())));
 
         /**
          * Now attach the pipeline to each generator, be sure to validate each processor
@@ -88,10 +92,13 @@ public class ImportServiceImpl implements ImportService {
         /**
          * The execute property holds the current processors to be executed.
          */
+        ZpsScript script = new ZpsScript();
         script.setExecute(generators);
 
-        jobService.launch(script, Import);
-        Job job = jobService.get(script.getJobId());
+        jobService.createTask(new TaskSpec().setScript(script)
+                .setJobId(job.getJobId())
+                .setName("Path Generation"));
+
         return job;
     }
 }

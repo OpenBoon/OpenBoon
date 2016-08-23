@@ -1,18 +1,14 @@
 package com.zorroa.analyst.service;
 
-import com.zorroa.sdk.zps.ZpsScript;
-
-import java.util.Map;
+import com.zorroa.common.domain.ExecuteTaskStart;
 
 /**
  * Created by chambers on 2/8/16.
  */
 public interface ProcessManagerService {
 
-    void execute(ZpsScript script);
+    void execute(ExecuteTaskStart script);
 
-    void execute(ZpsScript script, Map<String,Object> args);
-
-    void queueExecute(ZpsScript script);
+    void queueExecute(ExecuteTaskStart script);
 
 }

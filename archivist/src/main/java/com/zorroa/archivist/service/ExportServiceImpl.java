@@ -101,8 +101,26 @@ public class ExportServiceImpl implements ExportService {
     @Override
     public Job create(ExportSpec spec) {
 
+        JobSpec jspec = new JobSpec();
+        jspec.setType(PipelineType.Export);
+        if (spec.getName() == null) {
+            jspec.setName(String.format("export by %s", SecurityUtils.getUsername()));
+        }
+        else {
+            jspec.setName(String.format("export %s ", spec.getName()));
+        }
+
+        int jobId = jobDao.nextId();
+        Path exportRoot = getExportPath(jobId);
+
+        jspec.putToArgs("exportId", jobId);
+        jspec.putToArgs("outputFile", exportRoot.toString());
+        Job job = jobService.launch(jspec);
+
+        /**
+         * Now start to build the script for the task.
+         */
         ZpsScript script = new ZpsScript();
-        script.setJobId(jobDao.nextId());
 
         /**
          * This entire job runs in a single frame.  If this is eventually set False
@@ -110,24 +128,13 @@ public class ExportServiceImpl implements ExportService {
          */
         script.setInline(true);
 
-        if (spec.getName() == null) {
-            script.setName(String.format("export by %s", SecurityUtils.getUsername()));
-        }
-        else {
-            script.setName(String.format("export %s ", spec.getName()));
-        }
-
-        /**
-         * The location of the output file.
-         */
-        Path exportRoot = getExportPath(script.getJobId());
 
         /**
          * Replace the search the user supplied with our own search so we ensure
          * we get the exact assets during the export and new data
          * added that might match their search change the export.
          */
-        AssetSearch search = performExportSearch(spec.getSearch(), script.getJobId());
+        AssetSearch search = performExportSearch(spec.getSearch(), job.getJobId());
 
         /**
          * Arrays for the primary and per-asset pipeline.
@@ -168,21 +175,17 @@ public class ExportServiceImpl implements ExportService {
             }
         }
 
-        Path zipFile = exportRoot.resolve("zorroa_export_v" + script.getJobId() + ".zip");
+        Path zipFile = exportRoot.resolve("zorroa_export_v" + job.getJobId() + ".zip");
         export.add(new SdkProcessorRef()
                 .setClassName("com.zorroa.sdk.processor.builtin.CompressSource")
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("dstFile", zipFile.toString())));
 
-        script.setArgs(ImmutableMap.of(
-                "exportId", script.getJobId(),
-                "outputFile", zipFile.toString()));
+        jobService.createTask(new TaskSpec()
+                .setJobId(job.getJobId())
+                .setName("Setup and Generation")
+                .setScript(script));
 
-        jobService.launch(script, PipelineType.Export);
-
-
-
-        Job job = jobService.get(script.getJobId());
         return job;
     }
 

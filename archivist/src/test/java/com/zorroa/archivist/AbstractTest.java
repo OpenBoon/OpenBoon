@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.security.BackgroundTaskAuthentication;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -30,6 +29,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
@@ -213,7 +213,7 @@ public abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     public void authenticate() {
-        Authentication auth = new BackgroundTaskAuthentication(userService.get("admin"));
+        Authentication auth = new UsernamePasswordAuthenticationToken("admin", "admin");
         SecurityContextHolder.getContext().setAuthentication(
                 authenticationManager.authenticate(auth));
     }

@@ -3,7 +3,7 @@ package com.zorroa.archivist;
 import com.zorroa.common.cluster.AbstractClient;
 import com.zorroa.common.cluster.Http;
 import com.zorroa.common.cluster.Protocol;
-import com.zorroa.sdk.zps.ZpsScript;
+import com.zorroa.common.domain.ExecuteTaskStart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,11 +48,11 @@ public class AnalystClient extends AbstractClient {
     }
 
     /**
-     * Executes the given ZPS script.
+     * Executes the given task;
      *
-     * @param script
+     * @param task
      */
-    public void execute(ZpsScript script) {
-        Http.post(client, loadBalancer.nextHost(), "/api/v1/task/_execute", script);
+    public void execute(ExecuteTaskStart task) {
+        Http.post(client, loadBalancer.nextHost(), "/api/v1/task/_execute", task);
     }
 }

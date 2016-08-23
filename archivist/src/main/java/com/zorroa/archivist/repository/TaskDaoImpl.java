@@ -4,12 +4,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Task;
+import com.zorroa.archivist.domain.TaskSpec;
 import com.zorroa.archivist.domain.TaskState;
+import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.common.domain.TaskId;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,6 +31,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             JdbcUtils.insert("task",
                 "pk_job",
                 "pk_parent",
+                "str_name",
                 "int_state",
                 "json_script",
                 "int_order",
@@ -36,48 +39,45 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "time_state_change");
 
     @Override
-    public ZpsScript create(ZpsScript script) {
+    public Task create(TaskSpec task) {
         long time = System.currentTimeMillis();
         /**
          * TODO: because we insert to get the ID, the ID stored on the script
          * is inaccurate.  Currently we just handle this in the mapper
          * but we could manually query the sequence
          */
-        Preconditions.checkNotNull(script.getJobId());
+        Preconditions.checkNotNull(task.getJobId());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_task"});
-            ps.setInt(1, script.getJobId());
-            ps.setObject(2, script.getParentTaskId());
-            ps.setInt(3, TaskState.Waiting.ordinal());
-            ps.setString(4, Json.serializeToString(script));
-            ps.setInt(5, 1);
-            ps.setLong(6, time);
+            ps.setInt(1, task.getJobId());
+            ps.setObject(2, task.getParentTaskId());
+            ps.setString(3, task.getName() == null ? "subtask" : task.getName());
+            ps.setInt(4, TaskState.Waiting.ordinal());
+            ps.setString(5, task.getScript());
+            ps.setInt(6, 1);
             ps.setLong(7, time);
+            ps.setLong(8, time);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
-        /**
-         * Replace the task ID with the new task ID before returning.
-         */
-        script.setTaskId(id);
-        return script;
+        return get(id);
     }
 
     @Override
-    public boolean setHost(ZpsTask task, String host) {
+    public boolean setHost(TaskId task, String host) {
         return jdbc.update("UPDATE task SET str_host=? WHERE pk_task=?", host, task.getTaskId()) == 1;
     }
 
     @Override
-    public boolean setExitStatus(ZpsTask task, int exitStatus) {
+    public boolean setExitStatus(TaskId task, int exitStatus) {
         return jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?",
                 exitStatus, task.getTaskId()) == 1;
     }
 
     @Override
-    public boolean setState(ZpsTask task, TaskState value, TaskState expect) {
+    public boolean setState(TaskId task, TaskState value, TaskState expect) {
         logger.debug("setting task: {} from {} to {}", task.getTaskId(), expect, value);
         List<Object> values = Lists.newArrayListWithCapacity(4);
         List<String> fields = Lists.newArrayListWithCapacity(4);
@@ -127,7 +127,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "int_depend_count > 0";
 
     @Override
-    public int decrementDependCount(ZpsTask finishedTask) {
+    public int decrementDependCount(TaskId finishedTask) {
         logger.info("decrementing: task:{} parent:{}", finishedTask.getTaskId(), finishedTask.getParentTaskId());
         // Decrement tasks depending on both ourself and our parent.
         int count = jdbc.update(DECREMENT_DEPEND, finishedTask.getTaskId());
@@ -146,7 +146,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "pk_depend_parent=?";
 
     @Override
-    public int incrementDependCount(ZpsTask task) {
+    public int incrementDependCount(TaskId task) {
         int count = jdbc.update(INCREMENT_DEPEND, task.getTaskId());
         if (task.getParentTaskId() != null) {
             count+=jdbc.update(INCREMENT_DEPEND, task.getParentTaskId());
@@ -167,34 +167,36 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "pk_depend_parent IS NULL";
 
     @Override
-    public boolean createParentDepend(ZpsTask child) {
+    public boolean createParentDepend(TaskId child) {
         // Might have to check if the parent task is done.
         return jdbc.update(SET_DEPEND, child.getParentTaskId(), child.getTaskId()) > 0;
     }
 
-    private static final RowMapper<ZpsTask> TASK_MAPPER = (rs, row) -> {
-        final int taskId = rs.getInt(1);
-        final int jobId = rs.getInt(2);
-        final int parentTaskId = rs.getInt(3);
-        return new ZpsTask() {
-            public Integer getJobId() { return jobId; }
-            public Integer getTaskId() { return taskId; }
-            public Integer getParentTaskId() { return parentTaskId; }
-        };
+    private static final RowMapper<ExecuteTaskStart> EXECUTE_TASK_MAPPER = (rs, row) -> {
+        /*
+         * We don't parse the script here, its not needed as we're just going to
+         * turn it back into a string anyway.
+         */
+        ExecuteTaskStart e = new ExecuteTaskStart();
+        e.setScript(rs.getString(1));
+        e.setTaskId(rs.getInt(2));
+        e.setJobId(rs.getInt(3));
+        if (rs.getObject(4) != null) {
+            e.setParentTaskId(rs.getInt(4));
+        }
+        e.setArgs(Json.deserialize(rs.getString(5), Json.GENERIC_MAP));
+        e.setEnv(Json.deserialize(rs.getString(6), Map.class));
+        return e;
     };
-
-    private static final RowMapper<ZpsScript> ZPS_MAPPER = (rs, row) ->
-            Json.deserialize(rs.getString(1), ZpsScript.class)
-                .setTaskId(rs.getInt(2))
-                .setJobId(rs.getInt(3))
-                .setParentTaskId(rs.getInt(4));
 
     private static final String GET_WAITING =
             "SELECT " +
                 "task.json_script,"+
                 "task.pk_task,"+
                 "task.pk_job, " +
-                "task.pk_parent "+
+                "task.pk_parent, "+
+                "job.json_args,"+
+                "job.json_env " +
             "FROM " +
                 "task,"+
                 "job " +
@@ -209,15 +211,13 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "ORDER BY " +
                 "task.int_order ASC LIMIT ? ";
     @Override
-    public List<ZpsScript> getWaiting(int limit) {
-        return jdbc.query(GET_WAITING, ZPS_MAPPER, limit);
+    public List<ExecuteTaskStart> getWaiting(int limit) {
+        return jdbc.query(GET_WAITING, EXECUTE_TASK_MAPPER, limit);
     }
 
     private static final String GET_QUEUED =
             "SELECT " +
-                "task.pk_task,"+
-                "task.pk_job, " +
-                "task.pk_parent "+
+                "task.* " +
             "FROM " +
                 "task,"+
                 "job " +
@@ -232,8 +232,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "LIMIT ? ";
 
     @Override
-    public List<ZpsTask> getOrphanTasks(int limit, long duration, TimeUnit unit) {
-        return jdbc.query(GET_QUEUED, TASK_MAPPER,
+    public List<Task> getOrphanTasks(int limit, long duration, TimeUnit unit) {
+        return jdbc.query(GET_QUEUED, MAPPER,
                 System.currentTimeMillis() - unit.toMillis(duration), limit);
     }
 
@@ -242,9 +242,9 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         task.setTaskId(rs.getInt("pk_task"));
         task.setJobId(rs.getInt("pk_job"));
         task.setParentId(rs.getInt("pk_parent"));
+        task.setName(rs.getString("str_name"));
         task.setExitStatus(rs.getInt("int_exit_status"));
         task.setHost(rs.getString("str_host"));
-        task.setScript(rs.getString("json_script"));
         task.setState(TaskState.values()[rs.getInt("int_state")]);
         task.setTimeCreated(rs.getLong("time_created"));
         task.setTimeStarted(rs.getLong("time_started"));
@@ -258,6 +258,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "task.pk_task,"+
             "task.pk_parent,"+
             "task.pk_job,"+
+            "task.str_name,"+
             "task.int_state,"+
             "task.time_started,"+
             "task.time_stopped,"+

@@ -1,9 +1,12 @@
 package com.zorroa.analyst.service;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.zorroa.analyst.ArchivistClient;
+import com.zorroa.common.domain.ExecuteTaskExpand;
+import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.ExecuteTaskStarted;
+import com.zorroa.common.domain.ExecuteTaskStopped;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.repository.EventLogDao;
 import com.zorroa.sdk.config.ApplicationProperties;
@@ -47,36 +50,23 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     ListeningExecutorService analyzeExecutor;
 
     @Override
-    public void queueExecute(ZpsScript script) {
-        analyzeExecutor.execute(()->execute(script));
+    public void queueExecute(ExecuteTaskStart task) {
+        analyzeExecutor.execute(()->execute(task));
     }
 
     @Override
-    public void execute(ZpsScript script) {
-        execute(script, ImmutableMap.of());
-    }
+    public void execute(ExecuteTaskStart task) {
+        ZpsScript script = Json.deserialize(task.getScript(), ZpsScript.class);
+        task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
 
-    @Override
-    public void execute(ZpsScript script, Map<String,Object> args) {
-        script.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
-
-        archivistClient.reportTaskRunning(script);
-
+        archivistClient.reportTaskStarted(new ExecuteTaskStarted(task));
         int exit = 1;
         try {
-
-            if (script.getArgs() == null) {
-                script.setArgs(args);
-            }
-            else {
-                script.getArgs().putAll(args);
-            }
-
             String lang = determineLanguagePlugin(script);
             logger.debug("running script with language: {}", lang);
-            String[] command = createCommand(script, lang);
+            String[] command = createCommand(script, task, lang);
             logger.info("running command: {}", String.join(" ", command));
-            exit = runProcess(command, script);
+            exit = runProcess(command, task, script);
 
         } catch (Exception e) {
             // don't throw anything, just log
@@ -84,15 +74,16 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             exit=1;
         }
         finally {
-            logger.info("Completed task: {} job:{}", script.getTaskId(), script.getJobId());
+            logger.info("Completed task: {} job:{}", task.getTaskId(), task.getJobId());
             if (logger.isDebugEnabled()) {
                 logger.debug("Completed {}", Json.prettyString(script));
             }
-            archivistClient.reportTaskCompleted(script, exit);
+
+            archivistClient.reportTaskStopped(new ExecuteTaskStopped(task, exit));
         }
     }
 
-    public String[] createCommand(ZpsScript script, String lang) throws IOException {
+    public String[] createCommand(ZpsScript script, ExecuteTaskStart task, String lang) throws IOException {
         ImmutableList.Builder<String> b = ImmutableList.<String>builder()
                 .add(String.format("%s/lang-%s/bin/zpsgo", properties.getString("zorroa.cluster.path.plugins"), lang))
                 .add("-shared-path", properties.getString("zorroa.cluster.path.shared"))
@@ -102,8 +93,8 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
                 .add("-export-path", properties.getString("zorroa.cluster.path.exports"))
                 .add("-script", writeScript(script).toString());
 
-        if (script.getArgs() != null) {
-            script.getArgs().forEach((k, v) -> {
+        if (task.getArgs() != null) {
+            task.getArgs().forEach((k, v) -> {
                 b.add("-global", k.concat("=").concat(v.toString()));
             });
         }
@@ -125,7 +116,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         }
     }
 
-    public int runProcess(String[] command, ZpsScript script) throws IOException {
+    public int runProcess(String[] command, ExecuteTaskStart task, ZpsScript script) throws IOException {
 
         ProcessBuilder builder = new ProcessBuilder(command);
         /**
@@ -133,9 +124,9 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
          */
         builder.redirectError(ProcessBuilder.Redirect.INHERIT);
 
-        if (script.getEnv() != null) {
+        if (task.getEnv() != null) {
             Map<String,String> env = builder.environment();
-            for (Map.Entry<String, String> e: script.getEnv().entrySet()) {
+            for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
                 env.put(e.getKey(), e.getValue());
             }
         }
@@ -149,7 +140,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
         while ((line = reader.readLine()) != null) {
             if (line.startsWith(ZpsExecutor.SUFFIX)) {
-                processBuffer(sb);
+                processBuffer(sb, task);
                 buffer = false;
                 sb.setLength(0);
             }
@@ -172,11 +163,19 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         return exit;
     }
 
-    public void processBuffer(StringBuilder sb) {
-        ZpsScript expand = Json.deserialize(sb.toString(), ZpsScript.class);
+    public void processBuffer(StringBuilder sb, ExecuteTaskStart task) {
+        String scriptText = sb.toString();
+        // Double check it can be serialized.
+        ZpsScript script = Json.deserialize(scriptText, ZpsScript.class);
         if (logger.isDebugEnabled()) {
-            logger.debug("Reaction: {}", Json.prettyString(expand));
+            logger.debug("Reaction: {}", Json.prettyString(script));
         }
-        archivistClient.expand(expand);
+        ExecuteTaskExpand st = new ExecuteTaskExpand();
+        st.setScript(sb.toString());
+        st.setParentTaskId(task.getTaskId());
+        st.setJobId(task.getJobId());
+        st.setScript(scriptText);
+        st.setName(script.getName());
+        archivistClient.expand(st);
     }
 }

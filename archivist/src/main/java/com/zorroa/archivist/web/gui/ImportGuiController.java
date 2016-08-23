@@ -10,6 +10,8 @@ import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,8 @@ import java.util.List;
  */
 @Controller
 public class ImportGuiController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImportGuiController.class);
 
     @Autowired
     PipelineService pipelineService;
@@ -89,7 +93,7 @@ public class ImportGuiController {
          * Make a bunch of generators based on the type of file.
          */
         List<String> filePaths = Lists.newArrayList();
-        ProcessorRef fileGen = pluginService.getProcessorRef("com.zorroa.core.generator.FileListGenerator");
+        ProcessorRef fileGen = pluginService.getProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator");
         fileGen.setArg("paths", filePaths);
 
         for (String path: serverImportForm.getPaths()) {

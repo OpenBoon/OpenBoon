@@ -3,14 +3,14 @@ package com.zorroa.archivist.service;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
 import org.apache.http.HttpHost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +115,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
                     return;
                 }
 
-                for (ZpsScript task : taskDao.getWaiting(10)) {
+                for (ExecuteTaskStart task : taskDao.getWaiting(10)) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Starting: {}", Json.prettyString(task));
                     }
@@ -149,7 +149,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
      * Called by unit tests.
      */
     public void unittestSchedule() {
-        for (ZpsScript task: taskDao.getWaiting(10)) {
+        for (ExecuteTaskStart task: taskDao.getWaiting(10)) {
             logger.debug("SCHEDULE");
             logger.debug("{}", Json.prettyString(task));
             logger.debug("SCHEDULE");
@@ -172,10 +172,10 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
      * TODO: may need to verify with analyst that its still around.
      */
     public void checkForExpired() {
-        List<ZpsTask> expired = taskDao.getOrphanTasks(10, 30, TimeUnit.MINUTES);
+        List<Task> expired = taskDao.getOrphanTasks(10, 30, TimeUnit.MINUTES);
         if (!expired.isEmpty()) {
             logger.warn("Found {} expired tasks!", expired.size());
-            for (ZpsTask task : expired) {
+            for (Task task : expired) {
                 logger.warn("resetting task {} to Waiting", task.getTaskId());
                 if (!jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued)) {
                     jobService.setTaskState(task, TaskState.Waiting, TaskState.Running);

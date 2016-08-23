@@ -1,18 +1,18 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.sdk.zps.ZpsTask;
+import com.zorroa.common.domain.TaskId;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 /**
  * Created by chambers on 7/13/16.
  */
-public class Task implements ZpsTask {
+public class Task implements TaskId {
 
     private Integer taskId;
     private Integer parentId;
     private Integer jobId;
-    private String execute;
+    private String name;
     private String host;
     private TaskState state;
     private long timeStarted;
@@ -20,7 +20,6 @@ public class Task implements ZpsTask {
     private long timeCreated;
     private long timeStateChange;
     private int exitStatus;
-    private String script;
 
     @Override
     public Integer getTaskId() {
@@ -37,6 +36,15 @@ public class Task implements ZpsTask {
         return jobId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Task setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public Task setTaskId(Integer taskId) {
         this.taskId = taskId;
         return this;
@@ -44,15 +52,6 @@ public class Task implements ZpsTask {
 
     public Task setJobId(Integer jobId) {
         this.jobId = jobId;
-        return this;
-    }
-
-    public String getExecute() {
-        return execute;
-    }
-
-    public Task setExecute(String execute) {
-        this.execute = execute;
         return this;
     }
 
@@ -119,15 +118,6 @@ public class Task implements ZpsTask {
         return this;
     }
 
-    public String getScript() {
-        return script;
-    }
-
-    public Task setScript(String script) {
-        this.script = script;
-        return this;
-    }
-
     public Integer getParentId() {
         return parentId;
     }
@@ -153,7 +143,7 @@ public class Task implements ZpsTask {
         return MoreObjects.toStringHelper(this)
                 .add("taskId", taskId)
                 .add("jobId", jobId)
-                .add("execute", execute)
+                .add("name", name)
                 .toString();
     }
 }

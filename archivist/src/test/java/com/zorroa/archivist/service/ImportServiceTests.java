@@ -23,6 +23,9 @@ import static org.junit.Assert.assertTrue;
 public class ImportServiceTests extends AbstractTest {
 
     @Autowired
+    JobService jobService;
+
+    @Autowired
     ImportService importService;
 
     @Autowired
@@ -50,6 +53,7 @@ public class ImportServiceTests extends AbstractTest {
     @Test
     public void testCreate() {
 
+        job = jobService.get(job.getJobId());
         assertEquals(PipelineType.Import, job.getType());
         assertTrue(job.getTimeStarted() > 0);
         assertEquals(-1, job.getTimeStopped());

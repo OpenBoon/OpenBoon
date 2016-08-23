@@ -3,12 +3,13 @@ package com.zorroa.archivist.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Created by chambers on 10/27/15.
  */
-public class Permission {
+public class Permission implements Serializable {
 
     public static final String JOIN = "::";
 

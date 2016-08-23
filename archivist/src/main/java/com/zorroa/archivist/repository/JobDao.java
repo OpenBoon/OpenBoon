@@ -1,11 +1,10 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.domain.*;
+import com.zorroa.common.domain.JobId;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.zps.ZpsJob;
-import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
+import com.zorroa.common.domain.TaskId;
 
 /**
  * Created by chambers on 6/24/16.
@@ -14,11 +13,11 @@ public interface JobDao {
 
     int nextId();
 
-    ZpsScript create(ZpsScript job, PipelineType type);
+    Job create(JobSpec spec);
 
     Job get(int id);
 
-    Job get(ZpsScript script);
+    Job get(JobId script);
 
     PagedList<Job> getAll(Paging page, JobFilter filter);
 
@@ -28,9 +27,9 @@ public interface JobDao {
 
     boolean incrementStats(int id, int created, int updated, int errors, int warnings);
 
-    void incrementWaitingTaskCount(ZpsTask task);
+    void incrementWaitingTaskCount(JobId job);
 
-    boolean setState(ZpsJob job, JobState newState, JobState expect);
+    boolean setState(JobId job, JobState newState, JobState expect);
 
-    JobState updateTaskStateCounts(ZpsTask task, TaskState value, TaskState expect);
+    JobState updateTaskStateCounts(TaskId task, TaskState value, TaskState expect);
 }
