@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -75,7 +76,7 @@ public class AssetController {
      */
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<FileSystemResource> streamAsset(@PathVariable String id, HttpServletResponse response) throws ExecutionException, IOException {
+    public ResponseEntity<InputStreamResource> streamAsset(@PathVariable String id, HttpServletResponse response) throws ExecutionException, IOException {
         Asset asset = assetService.get(id);
 
         if (!SecurityUtils.hasPermission("export", asset)) {
@@ -84,9 +85,9 @@ public class AssetController {
 
         File path = new File(asset.getAttr("source.path", String.class));
         return ResponseEntity.ok()
-                .contentType(MediaType.valueOf(asset.getAttr("source.type", String.class)))
+                .contentType(MediaType.valueOf(asset.getAttr("source.mediaType", String.class)))
                 .contentLength(asset.getAttr("source.fileSize", Long.class))
-                .body(new FileSystemResource(path));
+                .body(new InputStreamResource(new FileInputStream(path)));
     }
 
     @RequestMapping(value="/api/v1/assets/{id}/notes", method=RequestMethod.GET)
