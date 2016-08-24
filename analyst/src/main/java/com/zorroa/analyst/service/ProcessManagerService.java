@@ -7,7 +7,7 @@ import com.zorroa.common.domain.ExecuteTaskStart;
  */
 public interface ProcessManagerService {
 
-    void execute(ExecuteTaskStart script);
+    int execute(ExecuteTaskStart script);
 
     void queueExecute(ExecuteTaskStart script);
 

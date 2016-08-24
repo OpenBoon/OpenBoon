@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Note: we currently only create the mapping in Archivist.
  */
@@ -22,9 +24,11 @@ public class ProcessManagerServiceTests extends AbstractTest {
     @Test
     public void testExecute() throws IOException {
         ZpsScript zps = ZpsScript.load(new File("../unittest/resources/scripts/import.zps"));
-        processManager.execute(new ExecuteTaskStart()
+        int result = processManager.execute(new ExecuteTaskStart()
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
                 .setScript(Json.serializeToString(zps)));
+        assertEquals(0, result);
+
     }
 
 }

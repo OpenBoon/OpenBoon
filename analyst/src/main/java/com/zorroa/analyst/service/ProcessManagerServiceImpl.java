@@ -2,6 +2,7 @@ package com.zorroa.analyst.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.domain.ExecuteTaskExpand;
 import com.zorroa.common.domain.ExecuteTaskStart;
@@ -55,11 +56,14 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     }
 
     @Override
-    public void execute(ExecuteTaskStart task) {
+    public int execute(ExecuteTaskStart task) {
         ZpsScript script = Json.deserialize(task.getScript(), ZpsScript.class);
         task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
 
-        archivistClient.reportTaskStarted(new ExecuteTaskStarted(task));
+        if (!Application.isUnitTest()) {
+            archivistClient.reportTaskStarted(new ExecuteTaskStarted(task));
+        }
+
         int exit = 1;
         try {
             String lang = determineLanguagePlugin(script);
@@ -79,8 +83,12 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
                 logger.debug("Completed {}", Json.prettyString(script));
             }
 
-            archivistClient.reportTaskStopped(new ExecuteTaskStopped(task, exit));
+            if (!Application.isUnitTest()) {
+                archivistClient.reportTaskStopped(new ExecuteTaskStopped(task, exit));
+            }
         }
+
+        return exit;
     }
 
     public String[] createCommand(ZpsScript script, ExecuteTaskStart task, String lang) throws IOException {
