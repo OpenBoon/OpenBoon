@@ -186,7 +186,7 @@ public class FolderServiceTests extends AbstractTest {
 
         folderService.removeDyHierarchyRoot(folder, "source.file");
         folder = folderService.get(folder.getId());
-        assertFalse(folder.getSearch().getFilter().getExists().contains("source.file"));
+        assertNull(folder.getSearch());
         assertFalse(folder.isDyhiRoot());
     }
 }

@@ -76,7 +76,6 @@ public class FolderServiceImpl implements FolderService {
          * Adds the first attribute to the exists query.  This augments the existing
          * smart query on the folder.
          */
-
         AssetSearch search = folder.getSearch();
         if (search == null) {
             search = new AssetSearch();
