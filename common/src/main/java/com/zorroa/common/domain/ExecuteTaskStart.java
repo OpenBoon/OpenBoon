@@ -12,6 +12,7 @@ public class ExecuteTaskStart extends ExecuteTask implements TaskId, JobId {
     private Map<String, String> env;
     private Map<String, Object> args;
     private String script;
+    private String logPath;
 
     public ExecuteTaskStart() { }
 
@@ -63,6 +64,15 @@ public class ExecuteTaskStart extends ExecuteTask implements TaskId, JobId {
             args = Maps.newHashMap();
         }
         args.put(k, v);
+        return this;
+    }
+
+    public String getLogPath() {
+        return logPath;
+    }
+
+    public ExecuteTaskStart setLogPath(String logPath) {
+        this.logPath = logPath;
         return this;
     }
 }

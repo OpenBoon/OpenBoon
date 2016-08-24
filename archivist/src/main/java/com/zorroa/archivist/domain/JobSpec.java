@@ -15,6 +15,7 @@ public class JobSpec {
     private Map<String, String> env;
     private String name;
     private PipelineType type;
+    private String logPath;
 
     private List<TaskSpec> tasks;
 
@@ -51,6 +52,14 @@ public class JobSpec {
         return this;
     }
 
+    public JobSpec putToEnv(String k, String v) {
+        if (env == null) {
+            env = Maps.newHashMap();
+        }
+        env.put(k, v);
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -84,6 +93,15 @@ public class JobSpec {
 
     public JobSpec setTasks(List<TaskSpec> tasks) {
         this.tasks = tasks;
+        return this;
+    }
+
+    public String getLogPath() {
+        return logPath;
+    }
+
+    public JobSpec setLogPath(String logPath) {
+        this.logPath = logPath;
         return this;
     }
 }

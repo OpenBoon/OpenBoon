@@ -110,10 +110,10 @@ public class ExportServiceImpl implements ExportService {
             jspec.setName(String.format("export %s ", spec.getName()));
         }
 
-        int jobId = jobDao.nextId();
-        Path exportRoot = getExportPath(jobId);
+        jobDao.nextId(jspec);
+        Path exportRoot = getExportPath(jspec);
 
-        jspec.putToArgs("exportId", jobId);
+        jspec.putToArgs("exportId", jspec.getJobId());
         jspec.putToArgs("outputFile", exportRoot.toString());
         Job job = jobService.launch(jspec);
 
@@ -200,13 +200,13 @@ public class ExportServiceImpl implements ExportService {
         return jobService.getAll(page, new JobFilter().setType(PipelineType.Export));
     }
 
-    private Path getExportPath(long id) {
+    private Path getExportPath(JobSpec spec) {
         DateTime time = new DateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd");
 
         return sharedData.getExportPath()
                 .resolve(formatter.print(time))
-                .resolve(String.valueOf(id));
+                .resolve(String.valueOf(spec.getJobId()));
 
     }
 }

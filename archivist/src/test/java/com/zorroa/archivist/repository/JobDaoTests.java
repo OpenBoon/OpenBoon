@@ -26,6 +26,7 @@ public class JobDaoTests extends AbstractTest {
         spec = new JobSpec();
         spec.setName("job");
         spec.setType(PipelineType.Import);
+        spec.setLogPath(properties.getString("archivist.path.logs"));
         job = jobDao.create(spec);
     }
 

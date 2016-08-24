@@ -1,0 +1,1 @@
+ALTER TABLE job ADD str_log_path VARCHAR(255) NOT NULL;

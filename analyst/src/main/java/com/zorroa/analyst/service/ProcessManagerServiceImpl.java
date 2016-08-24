@@ -19,9 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -70,7 +68,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             logger.debug("running script with language: {}", lang);
             String[] command = createCommand(script, task, lang);
             logger.info("running command: {}", String.join(" ", command));
-            exit = runProcess(command, task, script);
+            exit = runProcess(command, task);
 
         } catch (Exception e) {
             // don't throw anything, just log
@@ -124,14 +122,11 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         }
     }
 
-    public int runProcess(String[] command, ExecuteTaskStart task, ZpsScript script) throws IOException {
+    private static final int NEWLINE = '\n';
+
+    public int runProcess(String[] command, ExecuteTaskStart task) throws IOException {
 
         ProcessBuilder builder = new ProcessBuilder(command);
-        /**
-         * Dump STDERR or the process to this log.
-         */
-        builder.redirectError(ProcessBuilder.Redirect.INHERIT);
-
         if (task.getEnv() != null) {
             Map<String,String> env = builder.environment();
             for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
@@ -146,22 +141,27 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         boolean buffer = false;
         String line;
 
-        while ((line = reader.readLine()) != null) {
-            if (line.startsWith(ZpsExecutor.SUFFIX)) {
-                processBuffer(sb, task);
-                buffer = false;
-                sb.setLength(0);
-            }
-            else if (buffer) {
-                sb.append(line);
-            }
-            else if (line.startsWith(ZpsExecutor.PREFIX)) {
-                buffer = true;
-                sb = new StringBuilder(8096);
+        try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()))) {
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(ZpsExecutor.SUFFIX)) {
+                    processBuffer(sb, task, logStream);
+                    logStream.write(NEWLINE);
+                    buffer = false;
+                    sb.setLength(0);
+                } else if (buffer) {
+                    sb.append(line);
+                } else if (line.startsWith(ZpsExecutor.PREFIX)) {
+                    buffer = true;
+                    sb = new StringBuilder(8096);
+                }
+                else {
+                    logStream.write(line.getBytes());
+                    logStream.write(NEWLINE);
+                }
             }
         }
 
-        int exit = 0;
+        int exit;
         try {
             exit = process.waitFor();
         } catch (InterruptedException e) {
@@ -171,13 +171,18 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         return exit;
     }
 
-    public void processBuffer(StringBuilder sb, ExecuteTaskStart task) {
+    public void processBuffer(StringBuilder sb, ExecuteTaskStart task, FileOutputStream log) throws IOException {
         String scriptText = sb.toString();
+
         // Double check it can be serialized.
         ZpsScript script = Json.deserialize(scriptText, ZpsScript.class);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Reaction: {}", Json.prettyString(script));
-        }
+
+        log.write(ZpsExecutor.PREFIX.getBytes());
+        log.write(NEWLINE);
+        log.write(Json.prettyString(script).getBytes());
+        log.write(NEWLINE);
+        log.write(ZpsExecutor.SUFFIX.getBytes());
+
         ExecuteTaskExpand st = new ExecuteTaskExpand();
         st.setScript(sb.toString());
         st.setParentTaskId(task.getTaskId());

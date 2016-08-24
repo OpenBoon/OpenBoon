@@ -186,6 +186,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }
         e.setArgs(Json.deserialize(rs.getString(5), Json.GENERIC_MAP));
         e.setEnv(Json.deserialize(rs.getString(6), Map.class));
+        e.setLogPath(String.format("%s/%s.%04d.log",
+                rs.getString(7), rs.getString(8).replace(' ', '_'), rs.getInt(2)));
         return e;
     };
 
@@ -196,7 +198,9 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "task.pk_job, " +
                 "task.pk_parent, "+
                 "job.json_args,"+
-                "job.json_env " +
+                "job.json_env, " +
+                "job.str_log_path, " +
+                "task.str_name "+
             "FROM " +
                 "task,"+
                 "job " +

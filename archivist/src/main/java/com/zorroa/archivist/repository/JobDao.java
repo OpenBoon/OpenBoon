@@ -11,7 +11,7 @@ import com.zorroa.common.domain.TaskId;
  */
 public interface JobDao {
 
-    int nextId();
+    JobSpec nextId(JobSpec spec);
 
     Job create(JobSpec spec);
 

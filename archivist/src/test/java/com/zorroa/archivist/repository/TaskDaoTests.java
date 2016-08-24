@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -136,5 +137,11 @@ public class TaskDaoTests extends AbstractTest {
             ps.setInt(3, task.getTaskId());
             return ps;
         });
+    }
+
+    public void testGetWaiting() {
+        List<ExecuteTaskStart> waiting = taskDao.getWaiting(5);
+
+
     }
 }

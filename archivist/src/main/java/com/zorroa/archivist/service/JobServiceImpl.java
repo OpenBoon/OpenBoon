@@ -2,7 +2,6 @@ package com.zorroa.archivist.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.TaskDao;
@@ -10,16 +9,23 @@ import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.*;
+import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.processor.SharedData;
+import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * A service for creating and manipulating jobs.
@@ -51,6 +57,9 @@ public class JobServiceImpl implements JobService {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    ApplicationProperties properties;
+
     /**
      * Creating a job creates both a job record and the initial task.
      *
@@ -62,30 +71,52 @@ public class JobServiceImpl implements JobService {
      */
     @Override
     public Job launch(JobSpec spec) {
-        /**
-         * These environment varibles will be set on each task.
-         */
-        Map<String,String> env = Maps.newHashMap();
+        jobDao.nextId(spec);
+        createLogPath(spec);
 
         /**
-         * The path to the SSL cert needed for tasks to communicate back to archivist.
+         * Some basic env vars.
          */
-        env.put("ZORROA_CERT_PATH",
+        spec.putToEnv("ZORROA_JOB_ID", String.valueOf(spec.getJobId()));
+        spec.putToEnv("ZORROA_JOB_TYPE", spec.getType().toString());
+
+        /**
+         * These options allow jobs to talk back to the archivist.
+         */
+        spec.putToEnv("ZORROA_CERT_PATH",
                 sharedData.getRootPath().resolve("certs/archivist.p12").toString());
-        env.put("ZORROA_USER", SecurityUtils.getUsername());
-        env.put("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
-        spec.setEnv(env);
+        spec.putToEnv("ZORROA_USER", SecurityUtils.getUsername());
+        spec.putToEnv("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
 
         Job job = jobDao.create(spec);
-
         if (spec.getTasks() != null) {
             for (TaskSpec tspec: spec.getTasks()) {
                 createTask(tspec.setJobId(job.getJobId()));
             }
         }
+
         event.afterCommit(()->
                 message.broadcast(new Message("JOB_CREATE", job)));
         return jobDao.get(job.getId());
+    }
+
+    private void createLogPath(JobSpec spec) {
+        DateTime time = new DateTime();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM");
+
+        Path localPath = Paths.get(properties.getString("archivist.path.logs"),
+                formatter.print(time), spec.getType().toString(), String.valueOf(spec.getJobId()));
+        File localFile = localPath.toFile();
+        if (localFile.exists()) {
+            logger.warn("Log file path exists: {}", localFile);
+        }
+        else {
+            localPath.toFile().mkdirs();
+        }
+
+        Path clusterPath = FileUtils.normalize(Paths.get(properties.getString("zorroa.cluster.path.shared"),
+                "logs", formatter.print(time), spec.getType().toString(), String.valueOf(spec.getJobId())));
+        spec.setLogPath(clusterPath.toString());
     }
 
     @Override

@@ -33,7 +33,8 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                     "int_user_created",
                     "time_started",
                     "json_args",
-                    "json_env");
+                    "json_env",
+                    "str_log_path");
 
     @Override
     public Job create(JobSpec spec) {
@@ -41,11 +42,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         Preconditions.checkNotNull(spec.getName());
         Preconditions.checkNotNull(spec.getType());
 
-        if (spec.getJobId() == null) {
-            spec.setJobId(nextId());
-        }
-
-        logger.info("jspec: {}", Json.prettyString(spec));
+        nextId(spec);
 
         jdbc.update(connection -> {
             PreparedStatement ps =
@@ -57,6 +54,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
             ps.setLong(5, System.currentTimeMillis());
             ps.setString(6, Json.serializeToString(spec.getArgs(), "{}"));
             ps.setString(7, Json.serializeToString(spec.getEnv(), "{}"));
+            ps.setString(8, spec.getLogPath());
             return ps;
         });
 
@@ -67,8 +65,11 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
-    public int nextId() {
-        return jdbc.queryForObject("SELECT JOB_SEQ.nextval FROM dual", Integer.class);
+    public JobSpec nextId(JobSpec spec) {
+        if (spec.getJobId() == null) {
+            spec.setJobId(jdbc.queryForObject("SELECT JOB_SEQ.nextval FROM dual", Integer.class));
+        }
+        return spec;
     }
 
     private final RowMapper<Job> MAPPER = (rs, row) -> {
