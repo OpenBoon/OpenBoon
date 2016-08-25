@@ -1,7 +1,7 @@
 package com.zorroa.analyst;
 
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.sdk.config.ApplicationProperties;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;

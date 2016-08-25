@@ -1,8 +1,6 @@
 package com.zorroa.common.config;
 
 import com.google.common.collect.Maps;
-import com.zorroa.sdk.config.ApplicationProperties;
-import com.zorroa.sdk.config.ApplicationPropertiesException;
 import com.zorroa.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.CompositePropertySource;

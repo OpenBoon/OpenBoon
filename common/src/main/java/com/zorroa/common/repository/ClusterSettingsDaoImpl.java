@@ -1,8 +1,8 @@
 package com.zorroa.common.repository;
 
 import com.google.common.collect.Maps;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.AbstractElasticDao;
-import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.common.unit.TimeValue;

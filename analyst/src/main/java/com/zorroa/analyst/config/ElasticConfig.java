@@ -2,8 +2,8 @@ package com.zorroa.analyst.config;
 
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.sdk.config.ApplicationProperties;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;

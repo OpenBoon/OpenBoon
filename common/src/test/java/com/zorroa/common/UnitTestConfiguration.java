@@ -1,10 +1,10 @@
 package com.zorroa.common;
 
 import com.google.common.collect.ImmutableSet;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.SpringApplicationProperties;
 import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
 import com.zorroa.common.elastic.ZorroaNode;
-import com.zorroa.sdk.config.ApplicationProperties;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;

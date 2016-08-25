@@ -5,7 +5,7 @@ package com.zorroa.archivist.service;
  */
 
 import com.zorroa.archivist.repository.MaintenanceDao;
-import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

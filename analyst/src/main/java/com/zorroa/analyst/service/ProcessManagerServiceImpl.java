@@ -4,13 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.ExecuteTaskExpand;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStarted;
 import com.zorroa.common.domain.ExecuteTaskStopped;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.repository.EventLogDao;
-import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsExecutor;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -58,18 +58,24 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         ZpsScript script = Json.deserialize(task.getScript(), ZpsScript.class);
         task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
 
-        if (!Application.isUnitTest()) {
-            archivistClient.reportTaskStarted(new ExecuteTaskStarted(task));
-        }
-
         int exit = 1;
         try {
-            String lang = determineLanguagePlugin(script);
-            logger.debug("running script with language: {}", lang);
-            String[] command = createCommand(script, task, lang);
-            logger.info("running command: {}", String.join(" ", command));
-            exit = runProcess(command, task);
-
+            if (!Application.isUnitTest()) {
+                /**
+                 * Don't run the actual command during a unit test
+                 * since the language plugin is probably not installed.
+                 */
+                archivistClient.reportTaskStarted(new ExecuteTaskStarted(task));
+                String lang = determineLanguagePlugin(script);
+                logger.debug("running script with language: {}", lang);
+                String[] command = createCommand(script, task, lang);
+                logger.info("running command: {}", String.join(" ", command));
+                exit = runProcess(command, task);
+            }
+            else {
+                // unittest
+                exit = 0;
+            }
         } catch (Exception e) {
             // don't throw anything, just log
             logger.warn("Failed to execute process: ", e);

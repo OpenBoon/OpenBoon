@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.security.JdbcSessionRegistry;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.filesystem.UUIDFileSystem;
 import com.zorroa.sdk.processor.SharedData;

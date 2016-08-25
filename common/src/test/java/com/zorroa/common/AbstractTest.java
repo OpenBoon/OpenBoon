@@ -2,9 +2,9 @@ package com.zorroa.common;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.CommonBeanConfig;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.FileUtils;

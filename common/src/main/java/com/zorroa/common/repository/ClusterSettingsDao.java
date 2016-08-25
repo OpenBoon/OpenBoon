@@ -1,6 +1,6 @@
 package com.zorroa.common.repository;
 
-import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.common.config.ApplicationProperties;
 
 import java.util.Map;
 

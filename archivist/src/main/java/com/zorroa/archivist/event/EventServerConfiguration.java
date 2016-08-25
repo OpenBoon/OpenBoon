@@ -1,6 +1,6 @@
 package com.zorroa.archivist.event;
 
-import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.common.config.ApplicationProperties;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

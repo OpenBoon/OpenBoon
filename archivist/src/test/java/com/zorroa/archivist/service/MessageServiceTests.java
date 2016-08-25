@@ -4,7 +4,6 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.TestMessagingClient;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.RoomBuilder;
@@ -32,9 +31,6 @@ public class MessageServiceTests extends AbstractTest {
     @Autowired
     SessionRegistry sessionRegistry;
 
-    @Autowired
-    ApplicationProperties applicationProperties;
-
     @Value("${archivist.events.port}")
     private int port;
 
@@ -45,7 +41,7 @@ public class MessageServiceTests extends AbstractTest {
     public void init() throws Exception {
 
         SslContext sslContext = null;
-        if (applicationProperties.getBoolean("archivist.events.ssl")) {
+        if (properties.getBoolean("archivist.events.ssl")) {
             sslContext = SslContextBuilder.forClient()
                     .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
         }
