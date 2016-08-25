@@ -18,11 +18,6 @@ public class ImportSpec {
     private List<ProcessorRef> generators;
 
     /**
-     * Attributes to manually assign.
-     */
-    public Map<String, Object> attrs = ImmutableMap.of();
-
-    /**
      * Any global args to the script
      */
     public Map<String, Object> args = ImmutableMap.of();
@@ -36,16 +31,6 @@ public class ImportSpec {
      * Utilize a pre-existing pipline.
      */
     public Integer pipelineId;
-
-
-    public Map<String, Object> getAttrs() {
-        return attrs;
-    }
-
-    public ImportSpec setAttrs(Map<String, Object> attrs) {
-        this.attrs = attrs;
-        return this;
-    }
 
     public List<ProcessorRef> getPipeline() {
         return pipeline;

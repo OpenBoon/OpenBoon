@@ -1,13 +1,17 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.util.FileUtils;
+import com.zorroa.sdk.util.StringUtils;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.zorroa.archivist.domain.PipelineType.Import;
 
@@ -44,6 +49,60 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public PagedList<Job> getAll(Paging page) {
         return jobService.getAll(page, new JobFilter().setType(PipelineType.Import));
+    }
+
+    @Override
+    public Job create(DebugImportSpec spec) {
+        String syncId = UUID.randomUUID().toString();
+
+        JobSpec jspec = new JobSpec();
+        jspec.putToArgs("syncId", syncId);
+        jspec.setType(Import);
+        jspec.setName(String.format("debugging import by %s (%s)",
+                SecurityUtils.getUsername(), FileUtils.filename(spec.getPath())));
+
+        Job job = jobService.launch(jspec);
+
+        List<ProcessorRef> pipeline = Lists.newArrayList();
+        if (JdbcUtils.isValid(spec.getPipeline())) {
+            for (ProcessorRef ref: spec.getPipeline()) {
+                pipeline.add(pluginService.getProcessorRef(ref));
+            }
+        }
+        else if (spec.getPipelineId() != null) {
+            if (StringUtils.isNumeric(spec.getPipelineId())) {
+                for (ProcessorRef ref : pipelineService.get(Integer.valueOf(spec.getPipelineId())).getProcessors()) {
+                    pipeline.add(pluginService.getProcessorRef(ref));
+                }
+            }
+            else {
+                for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
+                    pipeline.add(pluginService.getProcessorRef(ref));
+                }
+            }
+        }
+
+        /*
+         * Add the final processor which ships the data back to this waiting call.
+         */
+        pipeline.add(new SdkProcessorRef("com.zorroa.sdk.processor.builtin.ReturnResponse"));
+
+        List<ProcessorRef> generator = Lists.newArrayList();
+        generator.add(
+                new SdkProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator")
+                .setArg("paths", ImmutableList.of(spec.getPath()))
+                .setArg("pipeline", pipeline));
+
+        ZpsScript script = new ZpsScript();
+        script.setExecute(generator);
+        script.setInline(true);
+
+        jobService.createTask(new TaskSpec().setScript(script)
+                .setJobId(job.getJobId())
+                .setName("Path Generation"));
+
+
+        return job;
     }
 
     @Override

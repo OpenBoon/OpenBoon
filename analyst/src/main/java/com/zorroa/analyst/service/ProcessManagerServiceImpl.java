@@ -5,12 +5,10 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.ExecuteTaskExpand;
-import com.zorroa.common.domain.ExecuteTaskStart;
-import com.zorroa.common.domain.ExecuteTaskStarted;
-import com.zorroa.common.domain.ExecuteTaskStopped;
+import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.common.repository.EventLogDao;
+import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsExecutor;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -181,20 +179,29 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         String scriptText = sb.toString();
 
         // Double check it can be serialized.
-        ZpsScript script = Json.deserialize(scriptText, ZpsScript.class);
+        Reaction reaction = Json.deserialize(scriptText, Reaction.class);
 
-        log.write(ZpsExecutor.PREFIX.getBytes());
-        log.write(NEWLINE);
-        log.write(Json.prettyString(script).getBytes());
-        log.write(NEWLINE);
-        log.write(ZpsExecutor.SUFFIX.getBytes());
+        if (reaction.getExpand() != null) {
+            logger.info("Processing expand from job: {}", task.getJobId());
+            ZpsScript script  = reaction.getExpand();
 
-        ExecuteTaskExpand st = new ExecuteTaskExpand();
-        st.setScript(sb.toString());
-        st.setParentTaskId(task.getTaskId());
-        st.setJobId(task.getJobId());
-        st.setScript(scriptText);
-        st.setName(script.getName());
-        archivistClient.expand(st);
+            log.write(ZpsExecutor.PREFIX.getBytes());
+            log.write(NEWLINE);
+            log.write(Json.prettyString(script).getBytes());
+            log.write(NEWLINE);
+            log.write(ZpsExecutor.SUFFIX.getBytes());
+
+            ExecuteTaskExpand st = new ExecuteTaskExpand();
+            st.setScript(Json.serializeToString(script));
+            st.setParentTaskId(task.getTaskId());
+            st.setJobId(task.getJobId());
+            st.setName(script.getName());
+            archivistClient.expand(st);
+        }
+
+        if (reaction.getResponse() != null) {
+            logger.info("Processing response from job: {}", task.getJobId());
+            archivistClient.respond(new ExecuteTaskResponse(task, reaction.getResponse()));
+        }
     }
 }

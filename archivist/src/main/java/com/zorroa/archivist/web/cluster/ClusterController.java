@@ -1,10 +1,10 @@
 package com.zorroa.archivist.web.cluster;
 
-import com.zorroa.archivist.domain.TaskSpec;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.domain.ExecuteTaskExpand;
+import com.zorroa.common.domain.ExecuteTaskResponse;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStopped;
 import com.zorroa.common.repository.ClusterSettingsDao;
@@ -38,6 +38,16 @@ public class ClusterController {
     @RequestMapping(value="/cluster/v1/settings", method= RequestMethod.GET)
     public Map<String, Object> getConfig() {
         return clusterSettingsDao.get();
+    }
+
+    /**
+     * Process a response
+     *
+     * @return
+     */
+    @RequestMapping(value="/cluster/v1/task/_response", method=RequestMethod.POST)
+    public void respond(@RequestBody ExecuteTaskResponse response) {
+        jobExecutorService.handleResponse(response);
     }
 
     /**

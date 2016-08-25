@@ -5,6 +5,7 @@ import com.zorroa.common.cluster.AbstractClient;
 import com.zorroa.common.cluster.Http;
 import com.zorroa.common.cluster.Protocol;
 import com.zorroa.common.domain.ExecuteTaskExpand;
+import com.zorroa.common.domain.ExecuteTaskResponse;
 import com.zorroa.common.domain.ExecuteTaskStarted;
 import com.zorroa.common.domain.ExecuteTaskStopped;
 import org.slf4j.Logger;
@@ -51,6 +52,15 @@ public class ArchivistClient extends AbstractClient {
     public Map<String, String> getClusterSettings() {
         return Http.get(client, loadBalancer.nextHost(), "/cluster/v1/settings",
                 new TypeReference<Map<String, String>>() {});
+    }
+
+    /**
+     * Send back a response
+     *
+     * @param response
+     */
+    public void respond(ExecuteTaskResponse response) {
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_response", response);
     }
 
     /**

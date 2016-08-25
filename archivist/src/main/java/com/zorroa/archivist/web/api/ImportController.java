@@ -1,8 +1,11 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.domain.DebugImportSpec;
 import com.zorroa.archivist.domain.ImportSpec;
+import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.service.ImportService;
+import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +24,18 @@ public class ImportController {
     @Autowired
     JobService jobService;
 
+    @Autowired
+    JobExecutorService jobExecutorService;
+
     @RequestMapping(value="/api/v1/imports", method = RequestMethod.POST)
     public Object create(@RequestBody ImportSpec spec) throws IOException {
         return importService.create(spec);
+    }
+
+    @RequestMapping(value="/api/v1/imports/_debug", method = RequestMethod.POST)
+    public Object create_debug(@RequestBody DebugImportSpec spec) throws IOException, InterruptedException {
+        Job job = importService.create(spec);
+        return jobExecutorService.waitOnResponse(job);
     }
 
     @RequestMapping(value="/api/v1/imports/{id}/_cancel", method = RequestMethod.PUT)

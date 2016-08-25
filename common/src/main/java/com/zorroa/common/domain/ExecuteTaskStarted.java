@@ -7,9 +7,7 @@ public class ExecuteTaskStarted extends ExecuteTask {
 
     public ExecuteTaskStarted() { }
 
-    public ExecuteTaskStarted(ExecuteTask t) {
-        this.setJobId(t.getJobId());
-        this.setTaskId(t.getTaskId());
-        this.setParentTaskId(t.getParentTaskId());
+    public ExecuteTaskStarted(ExecuteTask task) {
+        super(task);
     }
 }

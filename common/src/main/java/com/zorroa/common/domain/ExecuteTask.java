@@ -9,6 +9,16 @@ public class ExecuteTask implements TaskId, JobId {
     private Integer jobId;
     private Integer parentTaskId;
 
+    public ExecuteTask() {
+
+    }
+
+    public ExecuteTask(ExecuteTask task) {
+        this.taskId = task.getTaskId();
+        this.jobId = task.getJobId();
+        this.parentTaskId = task.getParentTaskId();
+    }
+
     public Integer getTaskId() {
         return taskId;
     }

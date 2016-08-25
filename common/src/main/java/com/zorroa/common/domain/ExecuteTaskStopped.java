@@ -10,9 +10,7 @@ public class ExecuteTaskStopped extends ExecuteTask {
     public ExecuteTaskStopped() { }
 
     public ExecuteTaskStopped(ExecuteTask task, int exitStatus) {
-        this.setTaskId(task.getTaskId());
-        this.setJobId(task.getJobId());
-        this.setParentTaskId(task.getParentTaskId());
+        super(task);
         this.exitStatus = exitStatus;
     }
 

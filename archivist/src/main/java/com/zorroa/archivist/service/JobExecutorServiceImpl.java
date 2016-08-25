@@ -1,14 +1,19 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.domain.ExecuteTaskResponse;
 import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.sdk.exception.ZorroaReadException;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
 import org.apache.http.HttpHost;
@@ -21,6 +26,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -142,6 +148,42 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
         finally {
             logger.debug("scheduling finished.");
             beingScheduled.set(false);
+        }
+    }
+
+    private final Cache<Integer, SynchronousQueue<Object>> returnQueue = CacheBuilder.newBuilder()
+            .maximumSize(100)
+            .expireAfterWrite(60, TimeUnit.SECONDS)
+            .build();
+
+    @Override
+    public void handleResponse(ExecuteTaskResponse response) {
+        logger.info("Processing job respoonse, id:{}, data:{}", response.getJobId(), response.getResponse());
+        try {
+            SynchronousQueue<Object> queue = returnQueue.asMap().get(response.getJobId());
+            if (queue == null) {
+                logger.warn("Synchronous queue expired for job: {}", response.getJobId());
+                return;
+            }
+            queue.put(response.getResponse());
+        } catch (InterruptedException e) {
+            logger.warn("Waiting thread disappeared for job response ID: {}",
+                    response.getJobId(), e);
+        }
+    }
+
+    @Override
+    public Object waitOnResponse(Job job) {
+        returnQueue.put(job.getId(), new SynchronousQueue<>());
+        queueSchedule();
+
+        /*
+         * Wait for the job to complete and submit and object.
+         */
+        try {
+            return returnQueue.asMap().get(job.getId()).poll(30, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new ZorroaReadException("Failed waiting on response, ", e);
         }
     }
 

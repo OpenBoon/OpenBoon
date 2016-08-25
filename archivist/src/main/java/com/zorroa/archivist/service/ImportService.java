@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.DebugImportSpec;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.common.domain.PagedList;
@@ -11,6 +12,8 @@ import com.zorroa.common.domain.Paging;
 public interface ImportService {
 
     PagedList<Job> getAll(Paging page);
+
+    Job create(DebugImportSpec spec);
 
     /**
      * Create a import job with the given import spec.
