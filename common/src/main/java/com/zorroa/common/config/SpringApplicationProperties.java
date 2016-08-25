@@ -2,12 +2,16 @@ package com.zorroa.common.config;
 
 import com.google.common.collect.Maps;
 import com.zorroa.sdk.config.ApplicationProperties;
+import com.zorroa.sdk.config.ApplicationPropertiesException;
+import com.zorroa.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
@@ -48,6 +52,24 @@ public class SpringApplicationProperties implements ApplicationProperties {
             return def;
         }
         return result;
+    }
+
+    @Override
+    public Path getPath(String key) {
+        String result =  env.getProperty(key);
+        if (result == null) {
+            throw new ApplicationPropertiesException("Configuration key not found: '" + key + "'");
+        }
+        return FileUtils.normalize(Paths.get(result));
+    }
+
+    @Override
+    public Path getPath(String key, Path path) {
+        String result =  env.getProperty(key);
+        if (result == null) {
+            return path;
+        }
+        return FileUtils.normalize(Paths.get(result));
     }
 
     public int getInt(String key) {
@@ -175,5 +197,4 @@ public class SpringApplicationProperties implements ApplicationProperties {
                     .filter(key->key.startsWith(prefix)).forEach(key -> result.put(key, env.getProperty(key)));
         }
     }
-
 }
