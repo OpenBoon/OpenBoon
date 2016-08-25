@@ -10,6 +10,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.domain.TaskId;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -51,4 +52,6 @@ public interface TaskDao {
     Task get(int id);
 
     long countByJob(int job);
+
+    Path getLogFilePath(int id);
 }

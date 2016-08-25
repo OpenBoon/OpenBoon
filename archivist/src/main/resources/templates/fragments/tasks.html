@@ -5,7 +5,7 @@
 <body>
 
 <div th:fragment="view_modal">
-<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+<div class="modal modal-wide fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,10 +13,27 @@
                 <h4 class="modal-title">Task</h4>
             </div>
             <div class="modal-body">
-                <p id="taskDetails">Some Details</p>
+                <pre id="log"></pre>
             </div>
         </div>
     </div>
+    <script th:inline="javascript" type="text/javascript">
+        $(document).ready(function() {
+            $('#viewModal').on('show.bs.modal', function(e) {
+
+                //get data-id attribute of the clicked element
+                var taskId = $(e.relatedTarget).data('id');
+                $.ajax({
+                    url : "/api/v1/tasks/" + taskId + "/_log",
+                    dataType: "text",
+                    success : function (data) {
+                        $("#log").text(data);
+                    }
+                });
+            });
+        });
+    </script>
+
 </div>
 <script th:inline="javascript" type="text/javascript">
 $(function(){

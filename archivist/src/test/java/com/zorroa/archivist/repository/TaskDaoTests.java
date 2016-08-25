@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by chambers on 7/12/16.
@@ -139,9 +141,23 @@ public class TaskDaoTests extends AbstractTest {
         });
     }
 
+    @Test
     public void testGetWaiting() {
         List<ExecuteTaskStart> waiting = taskDao.getWaiting(5);
+        assertEquals(1, waiting.size());
 
+        ExecuteTaskStart task = waiting.get(0);
+        assertNotNull(task.getLogPath());
+        assertNotNull(task.getJobId());
+        assertNotNull(task.getArgs());
+        assertNotNull(task.getEnv());
+        assertNotNull(task.getScript());
+    }
 
+    @Test
+    public void testGetLogPath() {
+        Path lp = taskDao.getLogFilePath(task.getTaskId());
+        assertTrue(lp.toString().startsWith(
+                properties.getPath("zorroa.cluster.path.shared") + "/logs"));
     }
 }

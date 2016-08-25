@@ -16,6 +16,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Map;
@@ -172,6 +174,13 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         return jdbc.update(SET_DEPEND, child.getParentTaskId(), child.getTaskId()) > 0;
     }
 
+    private static final RowMapper<Path> LOG_PATH_MAPPER = (rs, row) ->
+            Paths.get(
+                    rs.getString("str_log_path")).resolve(
+                    rs.getString("str_name").replace(' ', '_')
+                            .concat(String.format(".%04d.log", rs.getInt("pk_task"))));
+
+
     private static final RowMapper<ExecuteTaskStart> EXECUTE_TASK_MAPPER = (rs, row) -> {
         /*
          * We don't parse the script here, its not needed as we're just going to
@@ -186,8 +195,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }
         e.setArgs(Json.deserialize(rs.getString(5), Json.GENERIC_MAP));
         e.setEnv(Json.deserialize(rs.getString(6), Map.class));
-        e.setLogPath(String.format("%s/%s.%04d.log",
-                rs.getString(7), rs.getString(8).replace(' ', '_'), rs.getInt(2)));
+        e.setLogPath(LOG_PATH_MAPPER.mapRow(rs, row).toString());
         return e;
     };
 
@@ -289,5 +297,23 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     @Override
     public long countByJob(int job) {
         return jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE task.pk_job=?", Long.class, job);
+    }
+    private static final String GET_LOG_PATH =
+        "SELECT " +
+            "task.pk_task,"+
+            "job.str_log_path, " +
+            "task.str_name "+
+        "FROM " +
+            "task,"+
+            "job " +
+        "WHERE " +
+            "task.pk_job = job.pk_job " +
+        "AND " +
+            "task.pk_task=?";
+
+
+    @Override
+    public Path getLogFilePath(int id) {
+        return jdbc.queryForObject(GET_LOG_PATH, LOG_PATH_MAPPER, id);
     }
 }

@@ -12,7 +12,6 @@ import com.zorroa.common.domain.*;
 import com.zorroa.sdk.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.processor.SharedData;
-import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * A service for creating and manipulating jobs.
@@ -104,8 +102,11 @@ public class JobServiceImpl implements JobService {
         DateTime time = new DateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM");
 
-        Path localPath = Paths.get(properties.getString("archivist.path.logs"),
-                formatter.print(time), spec.getType().toString(), String.valueOf(spec.getJobId()));
+        Path localPath = properties.getPath("archivist.path.logs")
+                .resolve(formatter.print(time))
+                .resolve(spec.getType().toString())
+                .resolve(String.valueOf(spec.getJobId()));
+
         File localFile = localPath.toFile();
         if (localFile.exists()) {
             logger.warn("Log file path exists: {}", localFile);
@@ -114,8 +115,12 @@ public class JobServiceImpl implements JobService {
             localPath.toFile().mkdirs();
         }
 
-        Path clusterPath = FileUtils.normalize(Paths.get(properties.getString("zorroa.cluster.path.shared"),
-                "logs", formatter.print(time), spec.getType().toString(), String.valueOf(spec.getJobId())));
+        Path clusterPath = properties.getPath("zorroa.cluster.path.shared")
+                .resolve("logs")
+                .resolve(formatter.print(time))
+                .resolve(spec.getType().toString())
+                .resolve(String.valueOf(spec.getJobId()));
+
         spec.setLogPath(clusterPath.toString());
     }
 
@@ -166,7 +171,6 @@ public class JobServiceImpl implements JobService {
          */
 
         Task task = taskDao.create(spec);
-        logger.info("incrementing waiting tasks: {}", spec.getJobId());
         jobDao.incrementWaitingTaskCount(task);
         taskDao.incrementDependCount(task);
         return task;

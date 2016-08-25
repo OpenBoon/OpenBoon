@@ -67,6 +67,7 @@
 .wrapper {
     margin-top: 100px;
     width: 100%;
+    width: 100%;
 }
 
 /*
@@ -76,6 +77,10 @@
     -webkit-border-radius: 0px !important;
     -moz-border-radius: 0px !important;
     border-radius: 0px !important;
+}
+
+.modal-wide .modal-dialog {
+    width: 80%; /* or whatever you wish */
 }
 
 /*
