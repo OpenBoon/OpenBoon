@@ -158,14 +158,14 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
 
     @Override
     public void handleResponse(ExecuteTaskResponse response) {
-        logger.info("Processing job respoonse, id:{}, data:{}", response.getJobId(), response.getResponse());
+        logger.info("Processing job response, id:{}, data:{}", response.getJobId(), response.getResponse());
         try {
             SynchronousQueue<Object> queue = returnQueue.asMap().get(response.getJobId());
             if (queue == null) {
                 logger.warn("Synchronous queue expired for job: {}", response.getJobId());
                 return;
             }
-            queue.put(response.getResponse());
+            queue.offer(response.getResponse(), 30, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             logger.warn("Waiting thread disappeared for job response ID: {}",
                     response.getJobId(), e);

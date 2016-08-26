@@ -8,6 +8,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.Registry;
@@ -138,9 +139,11 @@ public class Http {
             cm = new PoolingHttpClientConnectionManager();
         }
 
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30 * 1000).build();
         return HttpClients.custom()
                 .setConnectionManager(cm)
                 .setConnectionManagerShared(true)
+                .setDefaultRequestConfig(requestConfig)
                 .build();
     }
 }
