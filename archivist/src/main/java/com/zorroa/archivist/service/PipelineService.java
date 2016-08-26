@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.processor.ProcessorRef;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface PipelineService {
     boolean update(int id, Pipeline spec);
 
     boolean delete(int id);
+
+    List<ProcessorRef> getProcessors(Object pipelineId, List<ProcessorRef> custom);
 }

@@ -6,7 +6,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * Created by chambers on 8/25/16.
+ * The DebugImportSpec class is specifically for doing debug imports.  This class only
+ * allows a single path to be analyzed.
  */
 public class DebugImportSpec {
 
@@ -15,7 +16,10 @@ public class DebugImportSpec {
 
     private List<ProcessorRef> pipeline;
 
-    private String pipelineId;
+    /**
+     * Utilize a pre-existing pipeline.  This could be the name or a numeric id.
+     */
+    public Object pipelineId;
 
     public String getPath() {
         return path;
@@ -35,11 +39,11 @@ public class DebugImportSpec {
         return this;
     }
 
-    public String getPipelineId() {
+    public Object getPipelineId() {
         return pipelineId;
     }
 
-    public DebugImportSpec setPipelineId(String pipelineId) {
+    public DebugImportSpec setPipelineId(Object pipelineId) {
         this.pipelineId = pipelineId;
         return this;
     }

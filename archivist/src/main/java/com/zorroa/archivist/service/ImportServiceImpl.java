@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -11,7 +10,6 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.FileUtils;
-import com.zorroa.sdk.util.StringUtils;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,24 +61,8 @@ public class ImportServiceImpl implements ImportService {
 
         Job job = jobService.launch(jspec);
 
-        List<ProcessorRef> pipeline = Lists.newArrayList();
-        if (JdbcUtils.isValid(spec.getPipeline())) {
-            for (ProcessorRef ref: spec.getPipeline()) {
-                pipeline.add(pluginService.getProcessorRef(ref));
-            }
-        }
-        else if (spec.getPipelineId() != null) {
-            if (StringUtils.isNumeric(spec.getPipelineId())) {
-                for (ProcessorRef ref : pipelineService.get(Integer.valueOf(spec.getPipelineId())).getProcessors()) {
-                    pipeline.add(pluginService.getProcessorRef(ref));
-                }
-            }
-            else {
-                for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
-                    pipeline.add(pluginService.getProcessorRef(ref));
-                }
-            }
-        }
+        List<ProcessorRef> pipeline = pipelineService.getProcessors(
+                spec.getPipelineId(), spec.getPipeline());
 
         /*
          * Add the final processor which ships the data back to this waiting call.
@@ -122,12 +104,9 @@ public class ImportServiceImpl implements ImportService {
          */
         Job job = jobService.launch(jspec);
 
-        List<ProcessorRef> pipeline = Lists.newArrayList();
-        if (spec.getPipelineId() != null) {
-            for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
-                pipeline.add(pluginService.getProcessorRef(ref));
-            }
-        }
+        List<ProcessorRef> pipeline = pipelineService.getProcessors(
+                spec.getPipelineId(), spec.getPipeline());
+
         /**
          * At the end we add an IndexSource processor.
          */
