@@ -29,7 +29,9 @@ public class ImportController {
 
     @RequestMapping(value="/api/v1/imports", method = RequestMethod.POST)
     public Object create(@RequestBody ImportSpec spec) throws IOException {
-        return importService.create(spec);
+        Job job = importService.create(spec);
+        jobExecutorService.queueSchedule();
+        return job;
     }
 
     @RequestMapping(value="/api/v1/imports/_debug", method = RequestMethod.POST)
