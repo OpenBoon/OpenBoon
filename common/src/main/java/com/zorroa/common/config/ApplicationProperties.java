@@ -12,6 +12,7 @@ public interface ApplicationProperties {
     <T> T get(String key, T def);
     String getString(String key);
     String getString(String key, String def);
+    Iterable<String> split(String key, String delimiter);
     Path getPath(String key);
     Path getPath(String key, Path def);
     int getInt(String key);

@@ -1,5 +1,6 @@
 package com.zorroa.common.config;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.zorroa.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,11 @@ public class SpringApplicationProperties implements ApplicationProperties {
             return def;
         }
         return result;
+    }
+
+    @Override
+    public Iterable<String> split(String key, String delimiter) {
+        return Splitter.on(delimiter).trimResults().omitEmptyStrings().split(getString(key));
     }
 
     @Override
