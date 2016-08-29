@@ -75,7 +75,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             /**
              * Register plugins.
              */
-            pluginService.registerAllPlugins();
+            pluginService.installAndRegisterAllPlugins();
+
             eventLogDao.info(EventSpec.log("Archivist started"));
         }
     }

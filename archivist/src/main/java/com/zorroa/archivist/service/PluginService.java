@@ -41,5 +41,5 @@ public interface PluginService {
 
     Processor getProcessor(String name);
 
-    void registerAllPlugins();
+    void installAndRegisterAllPlugins();
 }

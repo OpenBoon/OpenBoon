@@ -9,7 +9,10 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.exception.PluginException;
-import com.zorroa.sdk.plugins.*;
+import com.zorroa.sdk.plugins.PipelineSpec;
+import com.zorroa.sdk.plugins.PluginRegistry;
+import com.zorroa.sdk.plugins.PluginSpec;
+import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
@@ -25,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -65,9 +67,7 @@ public class PluginServiceImpl implements PluginService {
     @Value("${archivist.path.models}")
     private String modelPathStr;
 
-    PluginInstaller pluginInstaller;
-
-    PluginLoader pluginLoader;
+    PluginRegistry pluginRegistry;
 
     Path pluginPath;
     Path modelPath;
@@ -75,9 +75,7 @@ public class PluginServiceImpl implements PluginService {
     @PostConstruct
     public void init() {
         String _path = properties.getString("archivist.path.plugins");
-        if (_path.contains(":")) {
-            throw new RuntimeException("Cannot specify multiple plugin paths.");
-        }
+
         pluginPath =  FileUtils.normalize(Paths.get(_path));
         modelPath = FileUtils.normalize(Paths.get(modelPathStr));
 
@@ -86,18 +84,19 @@ public class PluginServiceImpl implements PluginService {
             logger.info("Plugin path did not exist: {}", pluginPath);
         }
 
-        pluginInstaller = new PluginInstaller(sharedData);
-        pluginLoader = new PluginLoader(sharedData.getPluginPath());
+        /**
+         * Create the registry, but ArchivistRepositorySetup loads the plugins
+         * once the application is fully initialized.
+         */
+        pluginRegistry = new PluginRegistry(sharedData);
     }
 
     @Override
     public Plugin installPlugin(MultipartFile file) {
-        synchronized(pluginInstaller) {
-            Path dst = pluginPath.resolve(file.getOriginalFilename());
+        synchronized(pluginRegistry) {
             try {
-                Files.copy(file.getInputStream(), dst);
-                Path pluginPath = pluginInstaller.unpackPluginPackage(dst);
-                PluginSpec plugin = pluginLoader.loadPlugin(pluginPath);
+                Path pluginPath = pluginRegistry.unpackPluginPackage(file.getInputStream());
+                PluginSpec plugin = pluginRegistry.loadPlugin(pluginPath);
                 installPlugin(plugin);
                 return pluginDao.get(plugin.getName());
 
@@ -109,16 +108,15 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public Plugin installPlugin(Path zipFilePath) {
-        synchronized(pluginLoader) {
+        synchronized(pluginRegistry) {
             if (zipFilePath.startsWith(pluginPath)) {
                 throw new PluginException("Plugin '" + zipFilePath + "' is already installed.");
             }
 
             Path dst = pluginPath.resolve(FileUtils.filename(zipFilePath));
             try {
-                Files.copy(zipFilePath, dst);
-                Path pluginPath = pluginInstaller.unpackPluginPackage(dst);
-                PluginSpec plugin = pluginLoader.loadPlugin(pluginPath);
+                Path pluginPath = pluginRegistry.unpackPluginPackage(dst);
+                PluginSpec plugin = pluginRegistry.loadPlugin(pluginPath);
                 installPlugin(plugin);
                 return pluginDao.get(plugin.getName());
             } catch (Exception e) {
@@ -188,12 +186,13 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public void registerAllPlugins() {
+    public void installAndRegisterAllPlugins() {
 
-        pluginInstaller.installAllPlugins(
-                properties.getString("archivist.path.pluginSearchPath").split(":"));
+        pluginRegistry.installAllPlugins(
+                properties.split("archivist.path.pluginSearchPath", ":"));
+        pluginRegistry.loadInstalledPlugins();
 
-        for (PluginSpec spec: pluginLoader.getPlugins()) {
+        for (PluginSpec spec: pluginRegistry.getPlugins()) {
             installPlugin(spec);
         }
     }

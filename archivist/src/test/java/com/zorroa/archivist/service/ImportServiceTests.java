@@ -35,7 +35,7 @@ public class ImportServiceTests extends AbstractTest {
 
     @Before
     public void init() {
-        pluginService.registerAllPlugins();
+        pluginService.installAndRegisterAllPlugins();
         ImportSpec spec = new ImportSpec();
         spec.setGenerators(ImmutableList.of(
                 new SdkProcessorRef("com.zorroa.sdk.processors.builtin.NoOpProcessor")));
