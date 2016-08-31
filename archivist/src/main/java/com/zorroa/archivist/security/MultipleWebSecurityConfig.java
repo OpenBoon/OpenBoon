@@ -1,6 +1,10 @@
 package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.LogSpec;
+import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.service.LogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,11 +103,11 @@ public class MultipleWebSecurityConfig {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth, LogService logService) throws Exception {
         auth
                 .authenticationProvider(authenticationProvider())
                 .authenticationProvider(hmacAuthenticationProvider())
-                .authenticationEventPublisher(authenticationEventPublisher());
+                .authenticationEventPublisher(authenticationEventPublisher(logService));
 
         /**
          * If its a unit test we add our rubber stamp authenticator.
@@ -114,7 +118,9 @@ public class MultipleWebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationEventPublisher authenticationEventPublisher() {
+    @Autowired
+    public AuthenticationEventPublisher authenticationEventPublisher(LogService logService) {
+
         return new AuthenticationEventPublisher() {
 
             private final Logger logger = LoggerFactory.getLogger(FormSecurityConfig.class);
@@ -122,13 +128,27 @@ public class MultipleWebSecurityConfig {
             @Override
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
+                try {
+                    logService.log(new LogSpec()
+                            .setAction(LogAction.Login)
+                            .setUser((User) authentication.getPrincipal()));
+                } catch (Exception e) {
+                    // If we throw here, the authentication fails, so if we can't log
+                    // it then nobody can login.  Sorry L337 hackers
+                    logger.warn("Failed log log user authentication", e);
+                    throw new SecurityException(e);
+                }
             }
 
             @Override
             public void publishAuthenticationFailure(
                     AuthenticationException exception,
                     Authentication authentication) {
-                logger.info("Failed to authenticate: {}", authentication, exception);
+                logger.info("Failed to authenticate: {}", authentication);
+                logService.log(new LogSpec()
+                        .setAction(LogAction.Login_Failure)
+                        .setMessage(authentication.getPrincipal().toString() + " failed to login, reason "
+                        + exception.getMessage()));
             }
         };
     }

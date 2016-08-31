@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.processor.ProcessorRef;
@@ -43,6 +44,12 @@ public class ImportServiceImpl implements ImportService {
 
     @Autowired
     PluginService pluginService;
+
+    @Autowired
+    TransactionEventManager transactionEventManager;
+
+    @Autowired
+    LogService logService;
 
     @Override
     public PagedList<Job> getAll(Paging page) {
@@ -136,6 +143,10 @@ public class ImportServiceImpl implements ImportService {
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
                 .setName("Path Generation"));
+
+        transactionEventManager.afterCommitSync(() -> {
+            logService.log(LogSpec.build(LogAction.Create, "import", job.getJobId()));
+        });
 
         return job;
     }

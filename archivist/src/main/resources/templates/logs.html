@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="wrapper">
+    <div th:include="fragments/logs :: menu"/>
+    <table id="table" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="log: ${logs}">
+            <td class="col-md-3" th:text="${#dates.format(log.timestamp, 'dd MMM yyyy HH:mm:ss')}"></td>
+            <td class="col-md-2"><div th:if="${log.get('user') != null}"
+                                      th:include="fragments/users :: user_label(${log.user})"/></td>
+            <td th:text="${log.getOrDefault('action', '')}"></td>
+            <td th:text="${log.getOrDefault('message', '')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="container-fluid">
+        <div th:include="fragments/table :: pager"/>
+    </div>
+    </div>
+</section>
+
+</body>
+</html>

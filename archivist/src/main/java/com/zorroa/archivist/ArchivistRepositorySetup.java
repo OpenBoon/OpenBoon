@@ -3,10 +3,8 @@ package com.zorroa.archivist;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.EventSpec;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.common.repository.ClusterSettingsDao;
-import com.zorroa.common.repository.EventLogDao;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +36,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     @Autowired
     MigrationService migrationService;
-
-    @Autowired
-    EventLogDao eventLogDao;
 
     @Autowired
     ClusterSettingsDao clusterSettingsDao;
@@ -76,8 +71,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
              * Register plugins.
              */
             pluginService.installAndRegisterAllPlugins();
-
-            eventLogDao.info(EventSpec.log("Archivist started"));
         }
     }
 

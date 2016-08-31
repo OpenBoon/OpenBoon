@@ -34,7 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -50,6 +52,9 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
     @Autowired
     FolderService folderService;
+
+    @Autowired
+    LogService logService;
 
     @Autowired
     Client client;
@@ -99,10 +104,10 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
         }
 
         /*
-         * Queue up an event where after this transaction commits.  Only 1 thread
-         * is running at a time, so
+         * Queue up an event where after this transaction commits.
          */
         transactionEventManager.afterCommitSync(() -> {
+            logService.log(LogSpec.build(LogAction.Update, updated));
             folderService.deleteAll(current);
             submitGenerate(dyHierarchyDao.get(current.getId()));
         });
@@ -123,6 +128,9 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             } else {
                 folderService.deleteAll(dyhi);
             }
+            transactionEventManager.afterCommitSync(() -> {
+                logService.log(LogSpec.build(LogAction.Delete, dyhi));
+            });
             return true;
         }
         return false;
@@ -144,9 +152,12 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
              * Generate the hierarchy in another thread
              * after this method returns.
              */
-            transactionEventManager.afterCommitSync(()
-                    -> submitGenerate(dyhi));
+            transactionEventManager.afterCommitSync(()-> {
+                logService.log(LogSpec.build(LogAction.Create, dyhi));
+                submitGenerate(dyhi);
+            });
         }
+
         return dyhi;
     }
 

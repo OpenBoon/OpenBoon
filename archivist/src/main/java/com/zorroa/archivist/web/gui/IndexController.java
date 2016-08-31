@@ -1,13 +1,12 @@
 package com.zorroa.archivist.web.gui;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.IngestSpec;
+import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
-import com.zorroa.common.domain.EventSearch;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.common.repository.EventLogDao;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
@@ -55,6 +54,9 @@ public class IndexController {
     FolderService folderService;
 
     @Autowired
+    LogService logService;
+
+    @Autowired
     SearchService searchService;
 
     @Autowired
@@ -65,9 +67,6 @@ public class IndexController {
 
     @Autowired
     HealthEndpoint healthEndpoint;
-
-    @Autowired
-    EventLogDao eventLogDao;
 
     @Autowired
     Validator validator;
@@ -224,21 +223,22 @@ public class IndexController {
         return "status";
     }
 
-    @RequestMapping("/gui/events")
+    @RequestMapping("/gui/logs")
     public String events(Model model,
-                         @RequestParam(value="type", required=false) String type,
+                         @RequestParam(value="query", required=false) String query,
                          @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
-        /**
-         * TODO: need to handle multiple types.
-         */
-        EventSearch search = new EventSearch();
-        if (type != null) {
-            search.setObjectTypes(ImmutableSet.of(type));
+
+        LogSearch search = new LogSearch();
+        if (query != null) {
+            search.setQuery(ImmutableMap.of("query_string", ImmutableMap.of("query", query)));
         }
+
+        Paging paging = new Paging(page);
         model.addAttribute("search", search);
-        model.addAttribute("events", eventLogDao.getAll(search, new Paging(page)));
-        return "events";
+        model.addAttribute("logs", logService.search(search, paging));
+        model.addAttribute("page", paging);
+        return "logs";
     }
 
     /**

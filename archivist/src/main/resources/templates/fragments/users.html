@@ -28,6 +28,12 @@
     </nav>
 </div>
 
+<div th:fragment="user_label(user)">
+    <th:block th:if="${user}">
+        <i class="fa fa-user fa-fw" th:text="${'&nbsp;' + user.get('username')}"/>
+    </th:block>
+</div>
+
 <div th:fragment="side_menu">
     <div class="navbar navbar-default navbar-fixed-left">
         <nav class="nav-sidebar">

@@ -3,11 +3,10 @@ package com.zorroa.archivist.web.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.archivist.service.AnalystService;
-import com.zorroa.archivist.service.AssetService;
-import com.zorroa.archivist.service.NoteService;
-import com.zorroa.archivist.service.SearchService;
+import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
@@ -66,6 +65,9 @@ public class AssetController {
     @Autowired
     AnalystService analystService;
 
+    @Autowired
+    LogService logService;
+
     /**
      * Stream the given asset ID.
      *
@@ -82,6 +84,8 @@ public class AssetController {
         if (!SecurityUtils.hasPermission("export", asset)) {
             throw new AccessDeniedException("export access denied");
         }
+
+        logService.log(LogSpec.build(LogAction.Export, "asset", asset.getId()));
 
         File path = new File(asset.getAttr("source.path", String.class));
         return ResponseEntity.ok()

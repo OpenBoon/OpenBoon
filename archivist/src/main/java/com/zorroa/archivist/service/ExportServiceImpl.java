@@ -5,12 +5,12 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.Export;
 import com.zorroa.sdk.exception.ZorroaWriteException;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.SharedData;
@@ -51,13 +51,16 @@ public class ExportServiceImpl implements ExportService {
     SearchService searchService;
 
     @Autowired
-    FolderService folderService;
-
-    @Autowired
     AssetDao assetDao;
 
     @Autowired
     ApplicationProperties properties;
+
+    @Autowired
+    TransactionEventManager transactionEventManager;
+
+    @Autowired
+    LogService logService;
 
     SharedData sharedData;
 
@@ -92,7 +95,6 @@ public class ExportServiceImpl implements ExportService {
         if (ids.isEmpty()) {
             throw new ZorroaWriteException("Unable to start export, search returns no assets");
         }
-
         assetDao.appendLink("export", String.valueOf(exportId), ids);
         return new AssetSearch().setFilter(
                 new AssetFilter().addToTerms("link.export.id", String.valueOf(exportId)));
@@ -130,13 +132,6 @@ public class ExportServiceImpl implements ExportService {
 
 
         /**
-         * Replace the search the user supplied with our own search so we ensure
-         * we get the exact assets during the export and new data
-         * added that might match their search change the export.
-         */
-        AssetSearch search = performExportSearch(spec.getSearch(), job.getJobId());
-
-        /**
          * Arrays for the primary and per-asset pipeline.
          */
         List<ProcessorRef> export = Lists.newArrayList();
@@ -152,6 +147,12 @@ public class ExportServiceImpl implements ExportService {
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("path", exportRoot.toString())));
 
+        /**
+         * Replace the search the user supplied with our own search so we ensure
+         * we get the exact assets during the export and new data
+         * added that might match their search change the export.
+         */
+        AssetSearch search = performExportSearch(spec.getSearch(), job.getJobId());
         pipeline.add(pluginService.getProcessorRef(
                 "com.zorroa.sdk.processor.builtin.AssetSearchGenerator",
                 ImmutableMap.of(
@@ -186,14 +187,17 @@ public class ExportServiceImpl implements ExportService {
                 .setName("Setup and Generation")
                 .setScript(script));
 
+        /**
+         * Log the create export with the search for the given assets.  When someone
+         * downloads the export, that actually logs it as an exported asset.
+         */
+        transactionEventManager.afterCommitSync(() -> {
+            logService.log(LogSpec.build(LogAction.Create,
+                    "export", job.getId()).setSearch(search));
+        });
+
         return job;
     }
-
-    @Override
-    public Export get(int id) {
-        return null;
-    }
-
 
     @Override
     public PagedList<Job> getAll(Paging page) {

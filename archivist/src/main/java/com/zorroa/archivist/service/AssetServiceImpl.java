@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
@@ -43,6 +45,9 @@ public class AssetServiceImpl implements AssetService {
 
     @Autowired
     DyHierarchyService dyHierarchyService;
+
+    @Autowired
+    LogService logService;
 
     @Override
     public Asset get(String id) {
@@ -103,10 +108,7 @@ public class AssetServiceImpl implements AssetService {
                         "assetId", assetId,
                         "version", version,
                         "source", attrs)));
+        logService.log(LogSpec.build(LogAction.Update, "asset", assetId));
         return version;
     }
-
-
-
-
 }

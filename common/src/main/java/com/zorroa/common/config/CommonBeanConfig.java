@@ -11,11 +11,6 @@ import org.springframework.context.annotation.Configuration;
 public class CommonBeanConfig {
 
     @Bean
-    public EventLogDao eventLogDao() {
-        return new EventLogDaoImpl();
-    }
-
-    @Bean
     public AssetDao assetDao() {
         return new AssetDaoImpl();
     }

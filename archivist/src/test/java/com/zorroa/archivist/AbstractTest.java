@@ -6,12 +6,12 @@ import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.repository.LogDao;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.repository.AnalystDao;
-import com.zorroa.common.repository.EventLogDao;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.domain.AnalystState;
 import com.zorroa.sdk.processor.Source;
@@ -92,7 +92,7 @@ public abstract class AbstractTest {
     protected MessagingService messagingService;
 
     @Autowired
-    protected EventLogDao eventLogDao;
+    protected LogDao eventLogDao;
 
     @Autowired
     protected ApplicationProperties properties;

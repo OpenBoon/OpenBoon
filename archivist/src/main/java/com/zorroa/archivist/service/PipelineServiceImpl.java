@@ -3,15 +3,17 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.repository.PipelineDao;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.processor.ProcessorRef;
-import com.zorroa.sdk.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static com.sun.tools.doclint.Entity.nu;
 
 /**
  *
@@ -48,6 +48,9 @@ public class PipelineServiceImpl implements PipelineService {
     @Autowired
     TransactionEventManager event;
 
+    @Autowired
+    LogService logService;
+
     @Override
     public Pipeline create(PipelineSpecV spec) {
         /**
@@ -60,9 +63,13 @@ public class PipelineServiceImpl implements PipelineService {
         spec.setProcessors(validated);
 
         Pipeline p = pipelineDao.create(spec);
-        event.afterCommit(()->
-                message.broadcast(new Message("PIPELINE_CREATE",
-                        ImmutableMap.of("id", p.getId()))));
+        event.afterCommit(()-> {
+            message.broadcast(new Message("PIPELINE_CREATE",
+                    ImmutableMap.of("id", p.getId())));
+            if (SecurityUtils.getAuthentication() != null) {
+                logService.log(LogSpec.build(LogAction.Create, p));
+            }
+        });
         return p;
     }
 
@@ -95,9 +102,11 @@ public class PipelineServiceImpl implements PipelineService {
     public boolean update(int id, Pipeline spec) {
         boolean result = pipelineDao.update(id, spec);
         if (result) {
-            event.afterCommit(() ->
-                    message.broadcast(new Message("PIPELINE_UPDATE",
-                            ImmutableMap.of("id", id))));
+            event.afterCommit(() -> {
+                message.broadcast(new Message("PIPELINE_UPDATE",
+                        ImmutableMap.of("id", id)));
+                logService.log(LogSpec.build(LogAction.Update, "pipeline", id));
+            });
         }
         return result;
     }
@@ -106,9 +115,11 @@ public class PipelineServiceImpl implements PipelineService {
     public boolean delete(int id) {
         boolean result = pipelineDao.delete(id);
         if (result) {
-            event.afterCommit(() ->
-                    message.broadcast(new Message("PIPELINE_DELETE",
-                            ImmutableMap.of("id", id))));
+            event.afterCommit(() -> {
+                message.broadcast(new Message("PIPELINE_DELETE",
+                        ImmutableMap.of("id", id)));
+                logService.log(LogSpec.build(LogAction.Delete, "pipeline", id));
+            });
         }
         return result;
     }

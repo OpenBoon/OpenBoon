@@ -2,7 +2,10 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.FilterSpec;
+import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.repository.FilterDao;
+import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import org.slf4j.Logger;
@@ -25,9 +28,20 @@ public class FilterServiceImpl implements FilterService {
     @Autowired
     FilterDao filterDao;
 
+    @Autowired
+    TransactionEventManager transactionEventManager;
+
+    @Autowired
+    LogService logService;
+
     @Override
     public Filter create(FilterSpec spec) {
         Filter filter = filterDao.create(spec);
+        transactionEventManager.afterCommitSync(() -> {
+            logService.log(LogSpec.build(LogAction.Create,
+                    "filter", filter.getId()));
+        });
+
         return filter;
     }
 

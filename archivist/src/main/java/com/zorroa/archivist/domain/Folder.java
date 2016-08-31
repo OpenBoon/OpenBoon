@@ -1,11 +1,10 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.common.domain.EventLoggable;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.Objects;
 
-public class Folder implements EventLoggable {
+public class Folder implements Loggable<Integer> {
 
     public static final Integer ROOT_ID = 0;
 
@@ -172,8 +171,9 @@ public class Folder implements EventLoggable {
         return Objects.hash(id);
     }
 
+
     @Override
-    public String getEventLogId() {
-        return String.valueOf(id);
+    public Integer getTargetId() {
+        return getId();
     }
 }

@@ -58,6 +58,8 @@ public class FolderServiceImpl implements FolderService {
     @Autowired
     TransactionEventManager transactionEventManager;
 
+    @Autowired
+    LogService logService;
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder, String attribute) {
@@ -93,7 +95,11 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public void setAcl(Folder folder, Acl acl) {
         folderDao.setAcl(folder, acl);
-        transactionEventManager.afterCommit(()->invalidate(folder));
+        transactionEventManager.afterCommit(() -> {
+            invalidate(folder);
+            logService.log(LogSpec.build(LogAction.Update, folder)
+                    .setMessage("permissions changed"));
+        });
     }
 
     @Override
@@ -171,6 +177,7 @@ public class FolderServiceImpl implements FolderService {
                 invalidate(current, current.getParentId());
                 messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
                         get(folder.getId())));
+                logService.log(LogSpec.build(LogAction.Update, folder));
             });
         }
         return result;
@@ -197,6 +204,7 @@ public class FolderServiceImpl implements FolderService {
                 transactionEventManager.afterCommitSync(() -> {
                     invalidate(folder);
                     messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
+                    logService.log(LogSpec.build(LogAction.Delete, folder));
                 });
             }
         }
@@ -206,6 +214,7 @@ public class FolderServiceImpl implements FolderService {
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(folder);
                 messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
+                logService.log(LogSpec.build(LogAction.Delete, folder));
             });
         }
         return result;
@@ -216,10 +225,11 @@ public class FolderServiceImpl implements FolderService {
         if (assetIds.size() >= 1024) {
             throw new IllegalArgumentException("Cannot hve more than 1024 assets in a folder");
         }
-        Map<String, Boolean> result  = assetDao.appendLink("folder", String.valueOf(folder.getId()), assetIds);
+        Map<String, Boolean> result = assetDao.appendLink("folder", String.valueOf(folder.getId()), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
                 ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
+        logService.log(LogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
     }
 
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
@@ -228,6 +238,7 @@ public class FolderServiceImpl implements FolderService {
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
                 ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));
+        logService.log(LogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
     }
 
     private void invalidate(Folder folder, Integer ... additional) {
@@ -345,6 +356,7 @@ public class FolderServiceImpl implements FolderService {
                 result = get(spec.getParentId(), spec.getName());
             } catch (EmptyResultDataAccessException e) {
                 result = folderDao.create(spec);
+                emitFolderCreated(result);
             }
         }
         else {
@@ -353,11 +365,21 @@ public class FolderServiceImpl implements FolderService {
             }
             catch (DuplicateKeyException e) {
                 result = get(spec.getParentId(), spec.getName());
+                emitFolderCreated(result);
             }
         }
 
         return result;
 
+    }
+
+    private void emitFolderCreated(Folder folder) {
+        transactionEventManager.afterCommitSync(() -> {
+            invalidate(null, folder.getParentId());
+            messagingService.broadcast(new Message(MessageType.FOLDER_CREATE,
+                    ImmutableMap.of("folderId", folder.getId(), "parentId", folder.getParentId())));
+            logService.log(LogSpec.build(LogAction.Create, folder));
+        });
     }
 
     @Override

@@ -3,10 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.domain.ImportSpec;
-import com.zorroa.archivist.domain.Ingest;
-import com.zorroa.archivist.domain.IngestSpec;
-import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
@@ -49,6 +46,9 @@ public class IngestServiceImpl implements IngestService {
     @Autowired
     ImportService importService;
 
+    @Autowired
+    LogService logService;
+
     private final ThreadPoolTaskScheduler scheduler =  new ThreadPoolTaskScheduler();
 
     private final ConcurrentMap<Integer, ScheduledFuture> scheduled = Maps.newConcurrentMap();
@@ -75,7 +75,7 @@ public class IngestServiceImpl implements IngestService {
             if (i.isAutomatic()) { schedule(i); }
             message.broadcast(new Message("INGEST_CREATE",
                     ImmutableMap.of("id", i.getId())));
-
+            logService.log(LogSpec.build(LogAction.Create, i));
         });
 
         if (spec.isRunNow()) {
@@ -100,7 +100,7 @@ public class IngestServiceImpl implements IngestService {
         spec.setPipelineId(ingest.getPipelineId());
         spec.setPipeline(ingest.getPipeline());
         spec.setGenerators(ingest.getGenerators());
-        spec.setName("ingest " + ingest.getName());
+        spec.setName("scheduled ingest " + ingest.getName());
         return importService.create(spec);
     }
 
@@ -112,6 +112,7 @@ public class IngestServiceImpl implements IngestService {
                 schedule(ingestDao.get(id));
                 message.broadcast(new Message("INGEST_UPDATE",
                         ImmutableMap.of("id", id)));
+                logService.log(LogSpec.build(LogAction.Update, "ingest", id));
             });
         }
         return result;
@@ -124,6 +125,7 @@ public class IngestServiceImpl implements IngestService {
             event.afterCommit(() -> {
                 message.broadcast(new Message("INGEST_DELETE",
                         ImmutableMap.of("id", id)));
+                logService.log(LogSpec.build(LogAction.Delete, "ingest", id));
             });
         }
         return result;

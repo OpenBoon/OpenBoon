@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Created by chambers on 10/27/15.
  */
-public class Permission implements Serializable {
+public class Permission implements Loggable<Integer>, Serializable {
 
     public static final String JOIN = "::";
 
@@ -92,5 +92,10 @@ public class Permission implements Serializable {
                 .add("type", type)
                 .add("description", description)
                 .toString();
+    }
+
+    @Override
+    public Integer getTargetId() {
+        return id;
     }
 }

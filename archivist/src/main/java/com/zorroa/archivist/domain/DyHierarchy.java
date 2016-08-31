@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Created by chambers on 7/14/16.
  */
-public class DyHierarchy {
+public class DyHierarchy implements Loggable<Integer> {
 
     /**
      * Id of the aggregation.
@@ -117,5 +117,10 @@ public class DyHierarchy {
                 .add("id", id)
                 .add("folderId", folderId)
                 .toString();
+    }
+
+    @Override
+    public Integer getTargetId() {
+        return id;
     }
 }

@@ -3,6 +3,7 @@ package com.zorroa.common.elastic;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteStreams;
+import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
@@ -57,7 +58,11 @@ public class ElasticClientUtils {
     public static void createEventLogTemplate(Client client) throws IOException {
         ClassPathResource resource = new ClassPathResource("eventlog-template.json");
         byte[] source = ByteStreams.toByteArray(resource.getInputStream());
-        client.admin().indices().preparePutTemplate("eventlog").setSource(source).get();
+        PutIndexTemplateResponse rsp = client.admin().indices()
+                .preparePutTemplate("eventlog").setSource(source).get();
+        if (!rsp.isAcknowledged()) {
+            logger.warn("Creating eventlog template not acked");
+        }
     }
 
     /**

@@ -49,10 +49,13 @@ public class UserServiceImpl implements UserService {
     FolderService folderService;
 
     @Autowired
-    TransactionEventManager transactionEventManager;
+    TransactionEventManager txem;
 
     @Autowired
     MessagingService messagingService;
+
+    @Autowired
+    LogService logService;
 
     @Override
     public User create(UserSpec builder) {
@@ -85,8 +88,9 @@ public class UserServiceImpl implements UserService {
                 .setParentId(userRoot.getId())
                 .setAcl(new Acl().addEntry(userPerm, Access.Read, Access.Write)), false);
 
-        transactionEventManager.afterCommitSync(() -> {
+        txem.afterCommitSync(() -> {
             messagingService.broadcast(new Message("USER_CREATE", user));
+            logService.log(LogSpec.build(LogAction.Create, user));
         });
 
         return user;
@@ -157,8 +161,9 @@ public class UserServiceImpl implements UserService {
     public boolean update(User user, UserProfileUpdate form) {
         boolean result = userDao.update(user, form);
         if (result) {
-            transactionEventManager.afterCommitSync(() -> {
+            txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
+                logService.log(LogSpec.build(LogAction.Update, user));
             });
         }
         return result;
@@ -171,8 +176,9 @@ public class UserServiceImpl implements UserService {
         if (result) {
             if (result) {
                 Message msg = new Message(value ? "USER_ENABLED": "USER_DISABLED", user);
-                transactionEventManager.afterCommitSync(() -> {
+                txem.afterCommitSync(() -> {
                     messagingService.broadcast(msg);
+                    logService.log(LogSpec.build(value ? "enable" : "disable", user));
                 });
             }
         }
@@ -260,6 +266,10 @@ public class UserServiceImpl implements UserService {
         List<Permission> filtered = perms.stream().filter(
                 p->!PERMANENT_TYPES.contains(p.getType())).collect(Collectors.toList());
         userDao.setPermissions(user, filtered);
+        txem.afterCommitSync(() -> {
+            logService.log(LogSpec.build("set_permission", user)
+                    .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
+        });
     }
 
     @Override
@@ -270,6 +280,10 @@ public class UserServiceImpl implements UserService {
             }
             userDao.addPermission(user, p, false);
         }
+        txem.afterCommitSync(() -> {
+            logService.log(LogSpec.build("add_permission", user)
+                    .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
+        });
     }
 
     @Override
@@ -281,6 +295,10 @@ public class UserServiceImpl implements UserService {
             }
             userDao.removePermission(user, p);
         }
+        txem.afterCommitSync(() -> {
+            logService.log(LogSpec.build("remove_permission", user)
+                    .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
+        });
     }
 
     @Override
@@ -291,8 +309,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Permission createPermission(PermissionSpec builder) {
         Permission perm = permissionDao.create(builder, false);
-        transactionEventManager.afterCommitSync(() -> {
+        txem.afterCommitSync(() -> {
             messagingService.broadcast(new Message("PERMISSION_CREATE", builder));
+            logService.log(LogSpec.build(LogAction.Create, perm));
         });
         return perm;
     }
@@ -311,8 +330,9 @@ public class UserServiceImpl implements UserService {
     public boolean deletePermission(Permission permission) {
         boolean result = permissionDao.delete(permission);
         if (result) {
-            transactionEventManager.afterCommitSync(() -> {
+            txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("PERMISSION_DELETE", permission));
+                logService.log(LogSpec.build(LogAction.Delete, permission));
             });
         }
         return result;

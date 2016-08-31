@@ -1,12 +1,16 @@
 package com.zorroa.archivist.web.api;
 
-import com.zorroa.archivist.domain.ExportSpec;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobState;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.ExportService;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.archivist.service.LogService;
+import com.zorroa.archivist.service.SearchService;
+import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.exception.ZorroaReadException;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
@@ -27,6 +31,15 @@ public class ExportController {
     @Autowired
     JobService jobService;
 
+    @Autowired
+    SearchService searchService;
+
+    @Autowired
+    LogService logService;
+
+    @Autowired
+    ApplicationProperties properties;
+
     @RequestMapping(value="/api/v1/exports", method= RequestMethod.POST)
     public Object create(@RequestBody ExportSpec spec) {
         return exportService.create(spec);
@@ -34,7 +47,7 @@ public class ExportController {
 
     @RequestMapping(value="/api/v1/exports/{id}", method= RequestMethod.GET)
     public Object get(@PathVariable int id) {
-        return exportService.get(id);
+        return jobService.get(id);
     }
 
     /**
@@ -58,6 +71,8 @@ public class ExportController {
             throw new ZorroaReadException("Export is not complete.");
         }
 
+        logExportDownload(id);
+
         File file = new File((String)job.getArgs().get("outputFile"));
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf("application/zip"))
@@ -65,5 +80,10 @@ public class ExportController {
                 .body(new FileSystemResource(file));
     }
 
-
+    private void logExportDownload(int id) {
+        for (Asset asset : searchService.scanAndScroll(new AssetSearch().setFilter(
+                new AssetFilter().addToTerms("link.export.id", String.valueOf(id))), 10000)) {
+            logService.log(LogSpec.build(LogAction.Export, "asset", asset.getId()));
+        }
+    }
 }

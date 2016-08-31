@@ -59,6 +59,9 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     FolderService folderService;
 
+    @Autowired
+    LogService eventLogService;
+
     @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
@@ -67,7 +70,8 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponse search(AssetSearch search) {
-        return buildSearch(search).get();
+        SearchResponse rsp =  buildSearch(search).get();
+        return rsp;
     }
 
     @Override
@@ -99,8 +103,8 @@ public class SearchServiceImpl implements SearchService {
         return buildAggregate(builder).get();
     }
 
+    @Override
     public Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults) {
-
         SearchResponse rsp = client.prepareSearch(alias)
                 .setSearchType(SearchType.SCAN)
                 .setScroll(new TimeValue(60000))
@@ -115,8 +119,6 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public PagedList<Asset> search(Paging page, AssetSearch search) {
-        search.setSize(page.getSize());
-        search.setFrom(search.getFrom());
         return assetDao.getAll(page, buildSearch(search));
     }
 
@@ -130,13 +132,9 @@ public class SearchServiceImpl implements SearchService {
             request.setFetchSource(search.getFields(), new String[]{});
         }
 
-        if (search.getFrom() != null) {
-            request.setFrom(search.getFrom());
-        }
-
-        if (search.getSize() != null) {
-            request.setSize(search.getSize());
-        }
+        Paging page = new Paging(search.getPage(), search.getSize());
+        request.setFrom(page.getFrom());
+        request.setSize(page.getSize());
 
         if (search.getOrder() != null) {
             for (AssetSearchOrder searchOrder : search.getOrder()) {

@@ -1,7 +1,6 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.common.domain.EventLoggable;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -13,7 +12,7 @@ import java.util.Objects;
 /**
  * Created by chambers on 7/9/16.
  */
-public class Ingest implements EventLoggable {
+public class Ingest implements Loggable<Integer> {
 
     /**
      * The ID of the ingest.
@@ -196,9 +195,7 @@ public class Ingest implements EventLoggable {
     }
 
     @Override
-    public String getEventLogId() {
-        return String.valueOf(id);
+    public Integer getTargetId() {
+        return id;
     }
-
-
 }

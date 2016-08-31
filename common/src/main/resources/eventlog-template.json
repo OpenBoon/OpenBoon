@@ -11,8 +11,7 @@
           "filter": [
             "delimiter_filter",
             "standard",
-            "lowercase",
-            "stop"
+            "lowercase"
           ]
         }
       },
@@ -28,8 +27,7 @@
     }
   },
   "mappings": {
-    "event": {
-      "dynamic": "strict",
+    "logs": {
       "_all": {
         "enabled": true
       },
@@ -40,19 +38,7 @@
         "timestamp": {
           "type": "date"
         },
-        "objectId": {
-          "type": "string",
-          "index": "not_analyzed"
-        },
-        "objectType": {
-          "type": "string",
-          "index": "not_analyzed"
-        },
-        "level": {
-          "type": "string",
-          "index": "not_analyzed"
-        },
-        "tags": {
+        "action": {
           "type": "string",
           "index": "not_analyzed"
         },
@@ -61,23 +47,13 @@
           "analyzer": "standard",
           "search_analyzer": "simple"
         },
-        "path": {
-          "type": "string",
-          "index": "not_analyzed"
-        },
-        "host": {
-          "type": "string",
-          "index": "not_analyzed",
-          "include_in_all": false
-        },
         "user": {
-          "type": "string",
-          "index": "not_analyzed"
-        },
-        "stack": {
-          "type": "string",
-          "index": "not_analyzed",
-          "include_in_all": false
+          "properties": {
+            "username": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
         }
       }
     }

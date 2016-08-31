@@ -1,7 +1,6 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
-import com.zorroa.common.domain.EventLoggable;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class Pipeline implements EventLoggable {
+public class Pipeline implements Loggable<Integer> {
     private int id;
 
     @NotNull
@@ -64,8 +63,8 @@ public class Pipeline implements EventLoggable {
     }
 
     @Override
-    public String getEventLogId() {
-        return String.valueOf(id);
+    public Integer getTargetId() {
+        return id;
     }
 
     @Override

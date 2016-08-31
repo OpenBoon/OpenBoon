@@ -7,7 +7,6 @@ import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AssetDao;
-import com.zorroa.common.repository.EventLogDao;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsExecutor;
@@ -36,9 +35,6 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
     @Autowired
     ArchivistClient archivistClient;
-
-    @Autowired
-    EventLogDao eventLogDao;
 
     @Autowired
     ApplicationProperties properties;

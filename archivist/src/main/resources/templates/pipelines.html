@@ -7,15 +7,7 @@
 <body>
 
 <section layout:fragment="content">
-    <p>
-    <nav class="navbar navbar-default" style="border-width:0px; border-bottom-width: 1px">
-        <div class="container-fluid">
-            <div class="navbar-header navbar-brand">
-                <span class="fa fa-cogs" aria-hidden="true"></span>
-                Pipelines
-            </div>
-        </div>
-    </nav>
+
     <div class="container-fluid">
     <div th:each="pipeline: ${pipelines}">
         <div class="panel panel-default">
@@ -47,7 +39,6 @@
         </div>
     </div>
     </div>
-    </p>
 </section>
 
 </body>
