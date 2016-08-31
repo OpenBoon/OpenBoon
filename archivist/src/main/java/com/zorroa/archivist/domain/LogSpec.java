@@ -52,12 +52,15 @@ public class LogSpec {
 
     private Map<String,Object> attrs;
 
-    public LogSpec() {}
+    public LogSpec() {
 
-    public static final LogSpec build(String action, String message) {
+    }
+
+    public static final LogSpec build(LogAction action, AssetSearch search) {
         return new LogSpec()
+                .setUser(SecurityUtils.getUser())
                 .setAction(action.toString().toLowerCase())
-                .setMessage(message);
+                .setSearch(search);
     }
 
     public static final LogSpec build(String action, Loggable target) {

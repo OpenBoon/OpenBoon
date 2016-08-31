@@ -29,7 +29,7 @@ public class LogControllerTests extends MockMvcTest {
 
     @Before
     public void init() throws InterruptedException {
-        logService.log(LogSpec.build("test", "A test message"));
+        logService.log(new LogSpec().setAction("test").setMessage("A log test"));
         Thread.sleep(1100);
         refreshIndex();
     }
@@ -42,7 +42,7 @@ public class LogControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/logs/_search")
                 .session(session)
-                .content(Json.serialize(search))
+                .content(Json.serializeToString(search))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -50,7 +50,6 @@ public class LogControllerTests extends MockMvcTest {
         Map sr = deserialize(result, Map.class);
         assertTrue(sr.containsKey("list"));
         assertTrue(sr.containsKey("page"));
-        assertTrue(sr.containsKey("aggregations"));
         assertTrue((int) ((Map<String,Object>)sr.get("page")).get("totalCount") > 0);
     }
 
@@ -63,7 +62,7 @@ public class LogControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/logs/_search")
                 .session(session)
-                .content(Json.serialize(search))
+                .content(Json.serializeToString(search))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -71,7 +70,6 @@ public class LogControllerTests extends MockMvcTest {
         Map sr = deserialize(result, Map.class);
         assertTrue(sr.containsKey("list"));
         assertTrue(sr.containsKey("page"));
-        assertTrue(sr.containsKey("aggregations"));
         assertEquals(1, (int) ((Map<String,Object>)sr.get("page")).get("totalCount"));
     }
 
@@ -84,13 +82,34 @@ public class LogControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/logs/_search")
                 .session(session)
-                .content(Json.serialize(search))
+                .content(Json.serializeToString(search))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
         Map sr = deserialize(result, Map.class);
-        logger.info("{}", sr);
+        assertTrue(sr.containsKey("list"));
+        assertTrue(sr.containsKey("page"));
+        assertTrue((int)((Map<String,Object>)sr.get("page")).get("totalCount") > 0);
+    }
+
+    @Test
+    public void testTermQueryWithAggs() throws Exception {
+
+        LogSearch search = new LogSearch();
+        search.setQuery(ImmutableMap.of("term", ImmutableMap.of("message", "test")));
+        search.setAggs(ImmutableMap.of("actions", ImmutableMap.of("terms",
+                ImmutableMap.of("field", "action"))));
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(get("/api/v1/logs/_search")
+                .session(session)
+                .content(Json.serializeToString(search))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map sr = deserialize(result, Map.class);
         assertTrue(sr.containsKey("list"));
         assertTrue(sr.containsKey("page"));
         assertTrue(sr.containsKey("aggregations"));
@@ -106,7 +125,7 @@ public class LogControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/logs/_search")
                 .session(session)
-                .content(Json.serialize(search))
+                .content(Json.serializeToString(search))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -114,7 +133,6 @@ public class LogControllerTests extends MockMvcTest {
         Map sr = deserialize(result, Map.class);
         assertTrue(sr.containsKey("list"));
         assertTrue(sr.containsKey("page"));
-        assertTrue(sr.containsKey("aggregations"));
-        assertEquals(0, (int) ((Map<String,Object>)sr.get("page")).get("totalCount"));
+        assertEquals(0, (int) ((Map<String, Object>)sr.get("page")).get("totalCount"));
     }
 }

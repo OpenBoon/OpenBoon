@@ -1,6 +1,8 @@
 package com.zorroa.archivist.web.gui;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.PermissionSpec;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Created by chambers on 6/3/16.
@@ -231,14 +234,52 @@ public class IndexController {
 
         LogSearch search = new LogSearch();
         if (query != null) {
-            search.setQuery(ImmutableMap.of("query_string", ImmutableMap.of("query", query)));
+            search.setQuery(parseQueryParam(query));
         }
+
+        search.setAggs(ImmutableMap.of("all",
+                ImmutableMap.of("global", ImmutableMap.of(),
+                        "aggs", ImmutableMap.of("actions",
+                                ImmutableMap.of("terms",ImmutableMap.of("field", "action"))))));
 
         Paging paging = new Paging(page);
         model.addAttribute("search", search);
         model.addAttribute("logs", logService.search(search, paging));
         model.addAttribute("page", paging);
+        model.addAttribute("query", query);
         return "logs";
+    }
+
+    /**
+     * Very basic conversion from a query string to an elastic query. We could actually
+     * do this way cooler.
+     *
+     * @param query
+     * @return
+     */
+    private Map<String, Map<String, Object>> parseQueryParam(String query) {
+        if (query == null || query.isEmpty()) {
+            return LogSearch.DEFAULT_QUERY;
+        }
+        Map<String, Map<String, Object>> result = Maps.newHashMap();
+        for (String phrase : Splitter.on(",").trimResults().omitEmptyStrings().split(query)) {
+            String[] parts = phrase.split(":");
+            if (parts.length != 3) {
+                continue;
+            }
+            String type = parts[0];
+            String field = parts[1];
+            String value = parts[2];
+
+            Map<String, Object> g = result.get(type);
+            if (g == null) {
+                g = Maps.newHashMap();
+                result.put(type, g);
+            }
+            g.put(field, value);
+        }
+        logger.info("{}", result);
+        return result;
     }
 
     /**

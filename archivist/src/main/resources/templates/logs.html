@@ -9,6 +9,13 @@
 <section layout:fragment="content">
     <div class="wrapper">
     <div th:include="fragments/logs :: menu"/>
+    <ul class="nav nav-pills" role="tablist">
+        <th:block th:each="action: ${logs.aggregations['all']['actions']['buckets']}">
+            <li role="presentation"><a th:href="${'/gui/logs?query=term:action:'+action.key}"><th:block th:text="${action.key}"/>
+                <span class="badge" th:text="${action.doc_count}">0</span></a></li>
+        </th:block>
+        <div th:include="fragments/table :: pager"/>
+    </ul>
     <table id="table" class="table table-striped">
         <thead>
         <tr>
@@ -21,16 +28,13 @@
         <tbody>
         <tr th:each="log: ${logs}">
             <td class="col-md-3" th:text="${#dates.format(log.timestamp, 'dd MMM yyyy HH:mm:ss')}"></td>
-            <td class="col-md-2"><div th:if="${log.get('user') != null}"
-                                      th:include="fragments/users :: user_label(${log.user})"/></td>
+            <td class="col-md-2"><div th:if="${log['user'] != null}"
+                                      th:include="fragments/users :: user_label(${log['user']})"/></td>
             <td th:text="${log.getOrDefault('action', '')}"></td>
-            <td th:text="${log.getOrDefault('message', '')}"></td>
+            <td th:text="${log.getOrDefault('message', log.getOrDefault('search', ''))}"></td>
         </tr>
         </tbody>
     </table>
-    <div class="container-fluid">
-        <div th:include="fragments/table :: pager"/>
-    </div>
     </div>
 </section>
 

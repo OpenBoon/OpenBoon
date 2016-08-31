@@ -4,19 +4,19 @@ import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
-import com.zorroa.common.elastic.PagedElasticList;
+import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.search.sort.SortOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * The event log is a temporary/rotating log of events which are time sensitive.
@@ -24,8 +24,6 @@ import java.util.Locale;
  */
 @Repository
 public class LogDaoImpl extends AbstractElasticDao implements LogDao {
-
-    protected final Logger logger = LoggerFactory.getLogger(LogDaoImpl.class);
 
     @Autowired
     Client client;
@@ -49,12 +47,23 @@ public class LogDaoImpl extends AbstractElasticDao implements LogDao {
     }
 
     @Override
-    public PagedElasticList search(LogSearch search, Paging page) {
-        return new PagedElasticList(client.prepareSearch("eventlog")
+    public ElasticPagedList<Map<String,Object>> search(LogSearch search, Paging page) {
+
+        SearchRequestBuilder req = client.prepareSearch("eventlog")
                 .setQuery(Json.serializeToString(search.getQuery(), "{\"match_all\": {}}"))
-                .setFrom(page.getFrom())
-                .setSize(page.getSize())
-                .addSort("timestamp", SortOrder.DESC).get(), page);
+                .addSort("timestamp", SortOrder.DESC);
+
+        if (search.getAggs() != null) {
+            req.setAggregations(search.getAggs());
+        }
+
+        ElasticPagedList<Map<String,Object>> result =  elastic.page(req, page,
+                    (id, version, source) -> {
+                        Map<String,Object> r =  Json.deserialize(source, Json.GENERIC_MAP);
+                        r.put("id", id);
+                        return r;
+                    });
+        return result;
     }
 
     @Override

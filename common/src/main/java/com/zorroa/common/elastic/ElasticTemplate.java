@@ -100,10 +100,9 @@ public class ElasticTemplate {
 
     public <T> ElasticPagedList<T> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
-        logger.info("{}", builder.toString());
+
         final SearchResponse r = builder.get();
         final List<T> list = Lists.newArrayListWithCapacity(r.getHits().getHits().length);
-
         for (SearchHit hit: r.getHits()) {
             try {
                 list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
@@ -114,7 +113,6 @@ public class ElasticTemplate {
 
         paging.setTotalCount(r.getHits().getTotalHits());
         ElasticPagedList result = new ElasticPagedList(paging, list);
-
         if (r.getAggregations() != null) {
             try {
                 InternalAggregations aggregations = (InternalAggregations) r.getAggregations();
@@ -122,9 +120,9 @@ public class ElasticTemplate {
                 jsonBuilder.startObject();
                 aggregations.toXContent(jsonBuilder, ToXContent.EMPTY_PARAMS);
                 jsonBuilder.endObject();
-                result.setAggregations(Json.Mapper.readValue( jsonBuilder.string(), Json.GENERIC_MAP));
+                result.setAggregations(Json.Mapper.readValue(jsonBuilder.string(), Json.GENERIC_MAP));
             } catch (IOException e) {
-                logger.warn("Failed to deserialize aggregations.");
+                logger.warn("Failed to deserialize aggregations.", e);
             }
         }
 
