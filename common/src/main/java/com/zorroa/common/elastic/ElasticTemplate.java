@@ -1,22 +1,32 @@
 package com.zorroa.common.elastic;
 
 import com.google.common.collect.Lists;
-import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.xcontent.ToXContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.InternalAggregations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ElasticTemplate {
+
+    private static final Logger logger = LoggerFactory.getLogger(ElasticTemplate.class);
+
 
     private Client client;
     private String index;
@@ -84,23 +94,41 @@ public class ElasticTemplate {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }
         }
+
         return result;
     }
 
-    public <T> PagedList<T> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
+    public <T> ElasticPagedList<T> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
+        logger.info("{}", builder.toString());
         final SearchResponse r = builder.get();
-        List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
+        final List<T> list = Lists.newArrayListWithCapacity(r.getHits().getHits().length);
 
         for (SearchHit hit: r.getHits()) {
             try {
-                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }
         }
+
         paging.setTotalCount(r.getHits().getTotalHits());
-        return new PagedList(paging, result);
+        ElasticPagedList result = new ElasticPagedList(paging, list);
+
+        if (r.getAggregations() != null) {
+            try {
+                InternalAggregations aggregations = (InternalAggregations) r.getAggregations();
+                XContentBuilder jsonBuilder = XContentFactory.jsonBuilder();
+                jsonBuilder.startObject();
+                aggregations.toXContent(jsonBuilder, ToXContent.EMPTY_PARAMS);
+                jsonBuilder.endObject();
+                result.setAggregations(Json.Mapper.readValue( jsonBuilder.string(), Json.GENERIC_MAP));
+            } catch (IOException e) {
+                logger.warn("Failed to deserialize aggregations.");
+            }
+        }
+
+        return result;
     }
 
     /**
