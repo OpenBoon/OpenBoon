@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
@@ -60,7 +62,7 @@ public class SearchServiceImpl implements SearchService {
     FolderService folderService;
 
     @Autowired
-    LogService eventLogService;
+    LogService logService;
 
     @Value("${zorroa.cluster.index.alias}")
     private String alias;
@@ -82,13 +84,13 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public long count(Folder folder) {
         AssetSearch search = folder.getSearch();
-        if (search != null && search.isValid()) {
+        if (search != null && search.getFilter() != null) {
             search.getFilter().addToLinks("folder", String.valueOf(folder.getId()));
             return count(search);
         }
         else {
             search = new AssetSearch();
-            search.getFilter().addToLinks("folder", String.valueOf(folder.getId()));
+            search.addToFilter().addToLinks("folder", String.valueOf(folder.getId()));
             return count(search);
         }
     }
@@ -119,6 +121,13 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public PagedList<Asset> search(Paging page, AssetSearch search) {
+        /**
+         * Only log valid searches (the ones that are not for the whole repo)
+         * since otherwise it creates a lot of logs of empty searches.
+         */
+        if (!search.isEmpty()) {
+            logService.log(new LogSpec().build(LogAction.Search, search));
+        }
         return assetDao.getAll(page, buildSearch(search));
     }
 
@@ -252,8 +261,12 @@ public class SearchServiceImpl implements SearchService {
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
 
+        /**
+         * Note: fuzzy defaults to true.
+         */
         String query = search.getQuery();
-        if (search.isFuzzy() && query != null) {
+        boolean fuzzy = search.getFuzzy() != null ? search.getFuzzy() : true;
+        if (fuzzy && query != null) {
             StringBuilder sb = new StringBuilder(query.length() + 10);
             for (String part: Splitter.on(" ").omitEmptyStrings().trimResults().split(query)) {
                 sb.append(part);

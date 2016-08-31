@@ -82,11 +82,7 @@ public class FolderServiceImpl implements FolderService {
         if (search == null) {
             search = new AssetSearch();
         }
-        List<String> exists = search.getFilter().getExists();
-        if (exists == null || !exists.contains(attribute)) {
-            search.getFilter().addToExists(attribute);
-        }
-
+        search.addToFilter().addToExists(attribute);
         folder.setSearch(search);
         folderDao.update(folder.getId(), folder);
         return folderDao.setDyHierarchyRoot(folder, true);

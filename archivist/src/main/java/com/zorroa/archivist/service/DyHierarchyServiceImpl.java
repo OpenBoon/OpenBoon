@@ -426,20 +426,20 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             AssetSearch search = new AssetSearch();
             switch (level.getType()) {
                 case Attr:
-                    search.getFilter().addToTerms(level.getField(), Lists.newArrayList(value));
+                    search.addToFilter().addToTerms(level.getField(), Lists.newArrayList(value));
                     break;
                 case Year:
-                    search.getFilter().addToScripts(new AssetScript(
+                    search.addToFilter().addToScripts(new AssetScript(
                             String.format("doc['%s'].getYear() == value", level.getField()),
                             ImmutableMap.of("value", Integer.valueOf(value))));
                     break;
                 case Month:
-                    search.getFilter().addToScripts(new AssetScript(
+                    search.addToFilter().addToScripts(new AssetScript(
                             String.format("doc['%s'].getMonth() == value", level.getField()),
                             ImmutableMap.of("value", Integer.valueOf(value) - 1)));
                     break;
                 case Day:
-                    search.getFilter().addToScripts(new AssetScript(
+                    search.addToFilter().addToScripts(new AssetScript(
                             String.format("doc['%s'].getDayOfMonth() == value", level.getField()),
                             ImmutableMap.of("value", Integer.valueOf(value))));
                     break;
