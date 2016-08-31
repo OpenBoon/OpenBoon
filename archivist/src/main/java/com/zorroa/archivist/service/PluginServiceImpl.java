@@ -97,7 +97,7 @@ public class PluginServiceImpl implements PluginService {
             try {
                 Path pluginPath = pluginRegistry.unpackPluginPackage(file.getInputStream());
                 PluginSpec plugin = pluginRegistry.loadPlugin(pluginPath);
-                installPlugin(plugin);
+                createPluginRecord(plugin);
                 return pluginDao.get(plugin.getName());
 
             } catch (Exception e) {
@@ -113,11 +113,10 @@ public class PluginServiceImpl implements PluginService {
                 throw new PluginException("Plugin '" + zipFilePath + "' is already installed.");
             }
 
-            Path dst = pluginPath.resolve(FileUtils.filename(zipFilePath));
             try {
-                Path pluginPath = pluginRegistry.unpackPluginPackage(dst);
+                Path pluginPath = pluginRegistry.unpackPluginPackage(zipFilePath);
                 PluginSpec plugin = pluginRegistry.loadPlugin(pluginPath);
-                installPlugin(plugin);
+                createPluginRecord(plugin);
                 return pluginDao.get(plugin.getName());
             } catch (Exception e) {
                 throw new PluginException("Failed to install plugin, " + e.getMessage(), e);
@@ -125,7 +124,7 @@ public class PluginServiceImpl implements PluginService {
         }
     }
 
-    private void installPlugin(PluginSpec spec) {
+    private void createPluginRecord(PluginSpec spec) {
         boolean newOrChanged = false;
 
         Plugin plugin;
@@ -193,7 +192,7 @@ public class PluginServiceImpl implements PluginService {
         pluginRegistry.loadInstalledPlugins();
 
         for (PluginSpec spec: pluginRegistry.getPlugins()) {
-            installPlugin(spec);
+            createPluginRecord(spec);
         }
     }
 
