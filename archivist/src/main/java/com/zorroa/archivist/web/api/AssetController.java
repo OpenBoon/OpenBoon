@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
+import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
@@ -100,14 +101,14 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)
-    public void search(@RequestBody AssetSearch search, HttpServletResponse httpResponse) throws IOException {
+    public void searchV2(@RequestBody AssetSearch search, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         SearchResponse response = searchService.search(search);
         HttpUtils.writeElasticResponse(response, httpResponse);
     }
 
     @RequestMapping(value="/api/v3/assets/_search", method=RequestMethod.POST)
-    public Object searchV3(@RequestBody AssetSearch search) throws IOException {
+    public PagedList<Asset> searchV3(@RequestBody AssetSearch search) throws IOException {
         return searchService.search(new Paging(search.getPage(), search.getSize()), search);
     }
 
@@ -160,6 +161,11 @@ public class AssetController {
     public void get(@PathVariable String id, HttpServletResponse httpResponse) throws IOException {
         GetResponse response = client.prepareGet(alias, "asset", id).get();
         HttpUtils.writeElasticResponse(response, httpResponse);
+    }
+
+    @RequestMapping(value="/api/v2/assets/{id}", method=RequestMethod.GET)
+    public Object getV2(@PathVariable String id) throws IOException {
+        return assetService.get(id);
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
