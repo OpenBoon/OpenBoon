@@ -5,6 +5,7 @@
 .springBeans
 .idea
 .DS_store
+plugins/*.zip
 
 # These directotes are usually created when the Archivist starts up and
 # are used for applicion data.
