@@ -25,12 +25,11 @@ git checkout plugin-refactor
 mvn clean install
 ```
 
-Next, copy the standard plugins built by the Plugin SDK into the plugin directory.  These are not installed into the
-server automatically to avoid inadvertanly making the Archvist depend on plugins. That being said, 
-there is still one place where Generator plugins are refereneced by name, so those will be moved to the SDK shortly.
+Next, install the standard plugins built by the Plugin SDK into the plugin directory.  These are not installed into the
+server automatically to avoid inadvertanly making the Archvist depend on plugins.
 
 ```
-cp ../zorroa-plugin-sdk/dist/*.zip plugins
+./install-plugins.sh
 ```
 
 Next, start the archivist and analyst with their respective run scripts.:
