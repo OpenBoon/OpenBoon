@@ -15,9 +15,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.util.NestedServletException;
 
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -79,8 +78,8 @@ public class IngestControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Map<String, Object> data = deserialize(result, Map.class);
-        assertEquals(true, data.get("result"));
+        StatusResult rs = deserialize(result, StatusResult.class);
+        assertTrue(rs.success);
     }
 
     @Test
@@ -97,8 +96,8 @@ public class IngestControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Map<String, Object> data = deserialize(result, Map.class);
-        assertEquals(true, data.get("result"));
+        StatusResult rs = deserialize(result, StatusResult.class);
+        assertTrue(rs.success);
     }
 
     @Test

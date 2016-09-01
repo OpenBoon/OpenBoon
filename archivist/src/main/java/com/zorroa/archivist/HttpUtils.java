@@ -42,8 +42,8 @@ public class HttpUtils {
         }
     }
 
-    public static Map<String, Object> status(String type, Object id, String op, boolean result) {
-        return ImmutableMap.of("type", type, "id", id, "op", op, "status", result);
+    public static Map<String, Object> status(String type, Object id, String op, boolean success) {
+        return ImmutableMap.of("type", type, "id", id, "op", op, "success", success);
     }
 
     public static Map<String, Object> count(Number count) {
@@ -51,10 +51,10 @@ public class HttpUtils {
     }
 
     public static Map<String, Object> deleted(String type, Object id, boolean result) {
-        return ImmutableMap.of("type", type, "id", id, "op", "delete", "status", result);
+        return ImmutableMap.of("type", type, "id", id, "op", "delete", "success", result);
     }
 
-    public static Map<String, Object> updated(String type, Object id, boolean result, Object object) {
-        return ImmutableMap.of("type", type, "id", id, "op", "update", "status", result, "object", object);
+    public static Map<String, Object> updated(String type, Object id, boolean success, Object object) {
+        return ImmutableMap.of("type", type, "id", id, "op", "update", "success", success, "object", object);
     }
 }

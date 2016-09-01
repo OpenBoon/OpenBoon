@@ -79,4 +79,11 @@ public abstract class MockMvcTest extends AbstractTest {
         User user = userService.get(id);
         return buildSession(new UnitTestAuthentication(user, userService.getPermissions()));
     }
+
+    public static class StatusResult<T> {
+        public T object;
+        public String op;
+        public String id;
+        public boolean success;
+    }
 }

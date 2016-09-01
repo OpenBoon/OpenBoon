@@ -47,7 +47,7 @@ public class ImportController {
 
     @RequestMapping(value="/api/v1/imports/{id}/_restart", method = RequestMethod.PUT)
     public Object pause(@PathVariable Integer id) throws IOException {
-        return HttpUtils.status("imports", id, "restart", jobService.cancel(() -> id));
+        return HttpUtils.status("imports", id, "restart", jobService.restart(() -> id));
     }
 
     @RequestMapping(value="/api/v1/imports/{id}", method = RequestMethod.GET)

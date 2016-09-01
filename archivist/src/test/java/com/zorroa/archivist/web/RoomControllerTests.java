@@ -76,7 +76,7 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Room updatedRoom = deserialize(result, Room.class);
+        Room updatedRoom = roomService.get(room.getId());
         assertEquals(update.getName(), updatedRoom.getName());
         assertTrue(BCrypt.checkpw("test123", roomDao.getPassword(room.getId())));
     }
@@ -95,8 +95,8 @@ public class RoomControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        boolean isDeleted = deserialize(result, Boolean.class);
-        assertTrue(isDeleted);
+        StatusResult r = deserialize(result, StatusResult.class);
+        assertTrue(r.success);
     }
 
     @Test

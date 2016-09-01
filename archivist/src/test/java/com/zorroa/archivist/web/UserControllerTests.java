@@ -51,7 +51,10 @@ public class UserControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        User updated = Json.Mapper.readValue(result.getResponse().getContentAsString(), User.class);
+        StatusResult<User> sr = Json.deserialize(
+                result.getResponse().getContentAsByteArray(), new TypeReference<StatusResult<User>>() {});
+        User updated = sr.object;
+
         assertEquals(user.getId(), updated.getId());
         assertEquals(builder.getEmail(), updated.getEmail());
         assertEquals(builder.getFirstName(), updated.getFirstName());

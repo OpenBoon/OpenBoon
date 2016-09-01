@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,8 +75,8 @@ public class ImportControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Map<String, Object> status = deserialize(cancel, Map.class);
-        assertEquals(true, (boolean) status.get("status"));
+        StatusResult rs = deserialize(cancel, StatusResult.class);
+        assertTrue(rs.success);
 
         MvcResult restart = mvc.perform(put("/api/v1/imports/" + job.getJobId() + "/_restart")
                 .session(session)
@@ -83,7 +84,7 @@ public class ImportControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        status = deserialize(restart, Map.class);
-        assertEquals(true, (boolean) status.get("status"));
+        rs = deserialize(restart, StatusResult.class);
+        assertTrue(rs.success);
     }
 }

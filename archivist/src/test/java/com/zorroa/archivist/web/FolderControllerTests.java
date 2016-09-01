@@ -105,8 +105,8 @@ public class FolderControllerTests extends MockMvcTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
-        boolean exists = Json.Mapper.readValue(result.getResponse().getContentAsString(), Boolean.class);
-        assertTrue(exists);
+        StatusResult rs = deserialize(result, StatusResult.class);
+        assertTrue(rs.success);
     }
 
     @Test
@@ -117,8 +117,8 @@ public class FolderControllerTests extends MockMvcTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
-        boolean exists = Json.Mapper.readValue(result.getResponse().getContentAsString(), Boolean.class);
-        assertFalse(exists);
+        StatusResult rs = deserialize(result, StatusResult.class);
+        assertFalse(rs.success);
     }
 
     @Test
