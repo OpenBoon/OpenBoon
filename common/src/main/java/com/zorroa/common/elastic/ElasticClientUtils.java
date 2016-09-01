@@ -92,8 +92,8 @@ public class ElasticClientUtils {
     }
 
     private static final String APPEND_SCRIPT =
-            "if (ctx._source.links == null) { ctx._source.links = []; }; "+
-            "ctx._source.links += link;";
+            "if (ctx._source.links == null) { ctx._source.links = [link]; } else " +
+                    "{ ctx._source.links += link; }";
 
     public static void createAppendLinkScript(Client client) {
         Map<String, Object> script = ImmutableMap.of(
