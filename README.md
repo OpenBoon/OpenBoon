@@ -12,7 +12,6 @@ git@github.com:Zorroa/zorroa-plugin-sdk.git
 ```
 git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
 cd zorroa-plugin-sdk
-git checkout plugin-refactor
 mvn clean install
 ```
 
@@ -21,7 +20,6 @@ mvn clean install
 ```
 git clone git@github.com:Zorroa/zorroa-server.git
 cd zorroa-server
-git checkout plugin-refactor
 mvn clean install
 ```
 
@@ -29,6 +27,7 @@ Next, install the standard plugins built by the Plugin SDK into the plugin direc
 server automatically to avoid inadvertanly making the Archvist depend on plugins.
 
 ```
+cd archivist
 ./install-plugins.sh
 ```
 
