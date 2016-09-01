@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.api;
 
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.ExportService;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by chambers on 7/11/16.
@@ -81,9 +83,15 @@ public class ExportController {
     }
 
     private void logExportDownload(int id) {
-        for (Asset asset : searchService.scanAndScroll(new AssetSearch().setFilter(
-                new AssetFilter().addToTerms("link.export.id", String.valueOf(id))), 10000)) {
-            logService.log(LogSpec.build(LogAction.Export, "asset", asset.getId()));
+        List<String> ids = Lists.newArrayList();
+        AssetSearch search = new AssetSearch()
+                .setFields(new String[] {})
+                .setFilter(new AssetFilter()
+                .addToTerms("link.export.id", String.valueOf(id)));
+
+        for (Asset asset : searchService.scanAndScroll(search, 10000)) {
+            ids.add(asset.getId());
         }
+        logService.log(LogSpec.build(LogAction.Export, "asset", ids.toArray()));
     }
 }

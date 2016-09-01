@@ -42,7 +42,7 @@ public class LogSpec {
      * }
      *
      */
-    private Map<String, Object> target;
+    private Map<String, Object[]> target;
 
     /**
      * The type of log, action, event, etc.
@@ -79,11 +79,11 @@ public class LogSpec {
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
-    public static final LogSpec build(LogAction action, String type, Object id) {
+    public static final LogSpec build(LogAction action, String type, Object ... id) {
         return new LogSpec()
                 .setUser(SecurityUtils.getUser())
                 .setAction(action.toString().toLowerCase())
-                .setTarget(ImmutableMap.of(type, id));
+                .setTarget(ImmutableMap.of(type, new Object[] {id}));
     }
 
     public LogSpec setUser(User user) {
@@ -95,7 +95,7 @@ public class LogSpec {
 
     public LogSpec setTarget(Loggable target) {
         this.target = ImmutableMap.of(
-                target.getTargetType(), target.getTargetId());
+                target.getTargetType(), new Object[] {target.getTargetId() });
         return this;
     }
 
@@ -158,11 +158,11 @@ public class LogSpec {
         return this;
     }
 
-    public Map<String, Object> getTarget() {
+    public Map<String, Object[]> getTarget() {
         return target;
     }
 
-    public LogSpec setTarget(Map<String, Object> target) {
+    public LogSpec setTarget(Map<String, Object[]> target) {
         this.target = target;
         return this;
     }
