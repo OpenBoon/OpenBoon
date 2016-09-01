@@ -2,10 +2,13 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * LogSpec defines log entry properties.
@@ -48,7 +51,7 @@ public class LogSpec {
 
     private String action;
 
-    private AssetSearch search;
+    private Set<String> query;
 
     private Map<String,Object> attrs;
 
@@ -110,12 +113,26 @@ public class LogSpec {
         return this;
     }
 
-    public AssetSearch getSearch() {
-        return search;
+    public Set<String> getQuery() {
+        return query;
+    }
+
+    public LogSpec setQuery(Set<String> query) {
+        this.query = query;
+        return this;
     }
 
     public LogSpec setSearch(AssetSearch search) {
-        this.search = search;
+        this.query = Sets.newHashSet();
+        if (search.isQuerySet()) {
+            this.query.add(search.getQuery());
+        }
+        if (search.getFilter() != null) {
+            if (search.getFilter().getTerms() != null) {
+                this.query.addAll(search.getFilter().getTerms().values().stream().map(
+                        v->v.toString()).collect(Collectors.toList()));
+            }
+        }
         return this;
     }
 
