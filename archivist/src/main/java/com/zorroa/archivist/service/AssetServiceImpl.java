@@ -21,6 +21,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,12 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public Asset get(String id) {
-        return assetDao.get(id);
+        if (id.startsWith("/")) {
+            return get(Paths.get(id));
+        }
+        else {
+            return assetDao.get(id);
+        }
     }
 
     @Override

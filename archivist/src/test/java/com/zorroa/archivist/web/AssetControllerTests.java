@@ -211,10 +211,49 @@ public class AssetControllerTests extends MockMvcTest {
                     .andReturn();
             Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                     new TypeReference<Map<String, Object>>() {});
-
-
-            logger.info("{}", json);
             assertEquals(asset.getId(), json.get("_id"));
+        }
+    }
+
+    @Test
+    public void testGetV2() throws Exception {
+
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+        refreshIndex();
+
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
+        for (Asset asset: assets) {
+            MvcResult result = mvc.perform(get("/api/v2/assets/" + asset.getId())
+                    .session(session)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                    new TypeReference<Map<String, Object>>() {});
+            assertEquals(asset.getId(), json.get("id"));
+        }
+    }
+
+    @Test
+    public void testGetByPath() throws Exception {
+
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+        refreshIndex();
+
+        PagedList<Asset> assets = assetDao.getAll(Paging.first());
+        for (Asset asset: assets) {
+            String url = "/api/v1/assets/_path";
+            MvcResult result = mvc.perform(get(url)
+                    .session(session)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(Json.serializeToString(ImmutableMap.of("path", asset.getAttr("source.path")))))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                    new TypeReference<Map<String, Object>>() {});
+            assertEquals(asset.getId(), json.get("id"));
         }
     }
 

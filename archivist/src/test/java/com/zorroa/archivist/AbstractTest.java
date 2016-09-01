@@ -274,7 +274,7 @@ public abstract class AbstractTest {
             }
         }
 
-        logger.info("{}", result);
+        logger.info("TEST ASSET: {}", result);
         return result;
     }
 

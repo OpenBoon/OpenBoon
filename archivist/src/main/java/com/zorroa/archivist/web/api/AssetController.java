@@ -163,8 +163,13 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v2/assets/{id}", method=RequestMethod.GET)
-    public Object getV2(@PathVariable String id) throws IOException {
+    public Object getV2(@PathVariable String id) {
         return assetService.get(id);
+    }
+
+    @RequestMapping(value="/api/v1/assets/_path", method=RequestMethod.GET)
+    public Object getByPath(@RequestBody Map<String,String> path) {
+        return assetService.get(path.get("path"));
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
