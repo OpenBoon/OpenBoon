@@ -8,10 +8,11 @@ import com.zorroa.common.elastic.ElasticPagedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -24,12 +25,12 @@ public class LogServiceImpl implements LogService {
     @Autowired
     LogDao logDao;
 
-    @Async
+    private Executor executor = Executors.newSingleThreadExecutor();
+
     @Override
     public void log(LogSpec spec) {
-        logDao.create(spec);
+        executor.execute(() -> logDao.create(spec));
     }
-
 
     @Override
     public ElasticPagedList<Map<String,Object>> search(LogSearch search, Paging page) {
