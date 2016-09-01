@@ -4,7 +4,6 @@ import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobSpec;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.service.JobService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,10 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -61,8 +58,8 @@ public class ImportControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Map<String, Object> status = deserialize(result, Map.class);
-        assertEquals(true, (boolean) status.get("status"));
+        StatusResult rs = deserialize(result, StatusResult.class);
+        assertTrue(rs.success);
     }
 
     @Test
