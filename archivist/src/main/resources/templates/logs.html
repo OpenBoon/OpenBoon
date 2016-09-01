@@ -31,7 +31,7 @@
             <td class="col-md-2"><div th:if="${log['user'] != null}"
                                       th:include="fragments/users :: user_label(${log['user']})"/></td>
             <td th:text="${log.getOrDefault('action', '')}"></td>
-            <td th:text="${log.getOrDefault('message', log.getOrDefault('query', ''))}"></td>
+            <td th:text="${log.getOrDefault('message', log.getOrDefault('query', log.getOrDefault('target', '')))}"></td>
         </tr>
         </tbody>
     </table>
