@@ -278,7 +278,6 @@ public class IndexController {
             }
             g.put(field, value);
         }
-        logger.info("{}", result);
         return result;
     }
 

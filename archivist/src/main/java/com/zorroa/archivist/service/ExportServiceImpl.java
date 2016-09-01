@@ -20,6 +20,8 @@ import com.zorroa.sdk.zps.ZpsScript;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,8 @@ import java.util.List;
 @Service
 @Transactional
 public class ExportServiceImpl implements ExportService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExportServiceImpl.class);
 
     @Autowired
     JobService jobService;
@@ -95,9 +99,11 @@ public class ExportServiceImpl implements ExportService {
         if (ids.isEmpty()) {
             throw new ZorroaWriteException("Unable to start export, search returns no assets");
         }
+
         assetDao.appendLink("export", String.valueOf(exportId), ids);
+
         return new AssetSearch().setFilter(
-                new AssetFilter().addToTerms("link.export.id", String.valueOf(exportId)));
+                new AssetFilter().addToLinks("export", String.valueOf(exportId)));
     }
 
     @Override
@@ -114,9 +120,11 @@ public class ExportServiceImpl implements ExportService {
 
         jobDao.nextId(jspec);
         Path exportRoot = getExportPath(jspec);
+        Path zipFile = exportRoot.resolve("zorroa_export.zip");
 
         jspec.putToArgs("exportId", jspec.getJobId());
-        jspec.putToArgs("outputFile", exportRoot.toString());
+        jspec.putToArgs("outputRoot", exportRoot.toString());
+        jspec.putToArgs("outputFile", zipFile.toString());
         Job job = jobService.launch(jspec);
 
         /**
@@ -176,7 +184,6 @@ public class ExportServiceImpl implements ExportService {
             }
         }
 
-        Path zipFile = exportRoot.resolve("zorroa_export_v" + job.getJobId() + ".zip");
         export.add(new SdkProcessorRef()
                 .setClassName("com.zorroa.sdk.processor.builtin.CompressSource")
                 .setLanguage("java")
@@ -193,7 +200,7 @@ public class ExportServiceImpl implements ExportService {
          */
         transactionEventManager.afterCommitSync(() -> {
             logService.log(LogSpec.build(LogAction.Create,
-                    "export", job.getId()).setSearch(search));
+                    "export", export));
         });
 
         return job;
@@ -206,7 +213,7 @@ public class ExportServiceImpl implements ExportService {
 
     private Path getExportPath(JobSpec spec) {
         DateTime time = new DateTime();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY/MM/dd");
 
         return sharedData.getExportPath()
                 .resolve(formatter.print(time))

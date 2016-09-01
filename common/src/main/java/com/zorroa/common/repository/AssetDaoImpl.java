@@ -170,7 +170,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
         }
 
-        Map<String,Object> link = ImmutableMap.of("type", type, "id", value, "date", System.currentTimeMillis());
+        Map<String, Object> link = ImmutableMap.of("type", type, "id", value, "date", System.currentTimeMillis());
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assets) {
