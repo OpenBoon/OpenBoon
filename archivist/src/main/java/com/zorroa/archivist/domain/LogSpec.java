@@ -6,9 +6,9 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.search.AssetSearch;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * LogSpec defines log entry properties.
@@ -129,8 +129,11 @@ public class LogSpec {
         }
         if (search.getFilter() != null) {
             if (search.getFilter().getTerms() != null) {
-                this.query.addAll(search.getFilter().getTerms().values().stream().map(
-                        v->v.toString()).collect(Collectors.toList()));
+                for (Map.Entry<String, List<Object>> entry : search.getFilter().getTerms().entrySet()) {
+                    for (Object value: entry.getValue()) {
+                        this.query.add(value.toString());
+                    }
+                }
             }
         }
         return this;
