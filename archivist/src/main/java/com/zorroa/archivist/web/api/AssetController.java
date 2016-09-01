@@ -1,7 +1,6 @@
 package com.zorroa.archivist.web.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
@@ -126,7 +125,7 @@ public class AssetController {
 
     @RequestMapping(value="/api/v2/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     public Object count(@RequestBody AssetSearch search) throws IOException {
-        return ImmutableMap.of("count", searchService.count(search));
+        return HttpUtils.count(searchService.count(search));
     }
 
     @RequestMapping(value="/api/v2/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -169,12 +168,9 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> update(@RequestBody Map<String, Object> attrs, @PathVariable String id) throws IOException {
-        long version = assetService.update(id, attrs);
-        return ImmutableMap.of(
-                "assetId", id,
-                "version", version,
-                "source", attrs);
+    public Object update(@RequestBody Map<String, Object> attrs, @PathVariable String id) throws IOException {
+        assetService.update(id, attrs);
+        return HttpUtils.updated("asset", id, true, assetService.get(id));
     }
 
     @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)

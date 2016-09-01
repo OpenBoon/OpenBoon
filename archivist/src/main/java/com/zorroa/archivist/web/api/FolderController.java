@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.api;
 
-import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
@@ -51,7 +50,7 @@ public class FolderController {
 
     @RequestMapping(value="/api/v1/folders/{id}/_assetCount", method=RequestMethod.GET)
     public Object countAssets(@PathVariable int id) {
-        return ImmutableMap.of("count", searchService.count(folderService.get(id)));
+        return HttpUtils.count(searchService.count(folderService.get(id)));
     }
 
     @RequestMapping(value="/api/v1/folders/_/**", method=RequestMethod.GET)
@@ -64,11 +63,11 @@ public class FolderController {
 
     @Deprecated
     @RequestMapping(value="/api/v1/folders/_exists/**", method=RequestMethod.GET)
-    public boolean exists(HttpServletRequest request) {
+    public Object exists(HttpServletRequest request) {
         String path = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         path = path.replace("/api/v1/folders/_exists", "");
-        return folderService.exists(path);
+        return HttpUtils.status("folders", path, "exists", folderService.exists(path));
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.PUT)
@@ -78,12 +77,9 @@ public class FolderController {
     }
 
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.DELETE)
-    public Folder delete(@PathVariable int id) {
+    public Object delete(@PathVariable int id) {
         Folder folder = folderService.get(id);
-        if (folderService.delete(folder)) {
-            return folder;
-        }
-        return null;
+        return HttpUtils.deleted("folders", id, folderService.delete(folder));
     }
 
     @RequestMapping(value="/api/v1/folders/{id}/_children", method=RequestMethod.GET)
@@ -106,11 +102,12 @@ public class FolderController {
      * @throws Exception
      */
     @RequestMapping(value="/api/v1/folders/{id}/assets", method=RequestMethod.DELETE)
-    public void removeAssets(
+    public Object removeAssets(
             @RequestBody List<String> assetIds,
             @PathVariable Integer id) throws Exception {
         Folder folder = folderService.get(id);
         folderService.removeAssets(folder, assetIds);
+        return HttpUtils.status("folders", id, "removeAssets", true);
     }
 
     /**
@@ -121,10 +118,11 @@ public class FolderController {
      * @throws Exception
      */
     @RequestMapping(value="/api/v1/folders/{id}/assets", method=RequestMethod.POST)
-    public void addAssets(
+    public Object addAssets(
             @RequestBody List<String> assetIds,
             @PathVariable Integer id) throws Exception {
         Folder folder = folderService.get(id);
         folderService.addAssets(folder, assetIds);
+        return HttpUtils.status("folders", id, "addAssets", true);
     }
 }

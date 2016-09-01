@@ -4,7 +4,7 @@ package com.zorroa.archivist.web.api;
  * Created by chambers on 10/28/15.
  */
 
-import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.service.UserService;
@@ -59,6 +59,6 @@ public class PermissionController {
     @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable String id) {
         Permission p = userService.getPermission(id);
-        return ImmutableMap.of("success", userService.deletePermission(p));
+        return HttpUtils.status("permissions", id, "delete", userService.deletePermission(p));
     }
 }

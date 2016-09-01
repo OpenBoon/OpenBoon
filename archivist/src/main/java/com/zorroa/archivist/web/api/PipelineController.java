@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web.api;
 
-import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.service.PipelineService;
@@ -51,14 +51,12 @@ public class PipelineController {
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.PUT)
     public Object update(@PathVariable Integer id, @Valid @RequestBody Pipeline spec, BindingResult valid) {
         checkValid(valid);
-        boolean result = pipelineService.update(id, spec);
-        return ImmutableMap.of("result", result, "object", pipelineService.get(id));
+        return HttpUtils.updated("pipelines", id, pipelineService.update(id, spec), pipelineService.get(id));
     }
 
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.DELETE)
     public Object delete(@PathVariable Integer id) {
-        boolean result = pipelineService.delete(id);
-        return ImmutableMap.of("result", result);
+        return HttpUtils.deleted("pipelines", id, pipelineService.delete(id));
     }
 
     public static void checkValid(BindingResult valid) {

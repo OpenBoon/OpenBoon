@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web.api;
 
-import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.service.IngestService;
@@ -54,14 +54,12 @@ public class IngestController {
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.PUT)
     public Object update(@PathVariable Integer id, @Valid @RequestBody Ingest spec, BindingResult valid) {
         checkValid(valid);
-        boolean result = ingestService.update(id, spec);
-        return ImmutableMap.of("result", result, "object", ingestService.get(id));
+        return HttpUtils.updated("ingests", id, ingestService.update(id, spec), ingestService.get(id));
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.DELETE)
     public Object delete(@PathVariable Integer id) {
-        boolean result = ingestService.delete(id);
-        return ImmutableMap.of("result", result);
+        return HttpUtils.deleted("ingests", id, ingestService.delete(id));
     }
 
     public static void checkValid(BindingResult valid) {

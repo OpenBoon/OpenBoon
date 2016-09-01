@@ -1,6 +1,6 @@
 package com.zorroa.archivist.web.api;
 
-import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.DebugImportSpec;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
@@ -42,12 +42,12 @@ public class ImportController {
 
     @RequestMapping(value="/api/v1/imports/{id}/_cancel", method = RequestMethod.PUT)
     public Object stop(@PathVariable Integer id) throws IOException {
-        return ImmutableMap.of("id", id, "op", "_cancel", "status", jobService.cancel(() -> id));
+        return HttpUtils.status("imports", id, "cancel", jobService.cancel(() -> id));
     }
 
     @RequestMapping(value="/api/v1/imports/{id}/_restart", method = RequestMethod.PUT)
     public Object pause(@PathVariable Integer id) throws IOException {
-        return ImmutableMap.of("id", id, "op", "_restart", "status", jobService.restart(() -> id));
+        return HttpUtils.status("imports", id, "restart", jobService.cancel(() -> id));
     }
 
     @RequestMapping(value="/api/v1/imports/{id}", method = RequestMethod.GET)

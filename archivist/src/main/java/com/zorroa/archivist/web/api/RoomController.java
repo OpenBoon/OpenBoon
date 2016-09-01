@@ -101,13 +101,12 @@ public class RoomController {
     }
 
     @RequestMapping(value="/api/v1/rooms/{id}", method=RequestMethod.PUT)
-    public Room update(@RequestBody RoomUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
+    public Object update(@RequestBody RoomUpdateBuilder builder, @PathVariable int id, HttpSession httpSession) {
         Session session = userService.getActiveSession();
-
         if (session.getUserId() == id || SecurityUtils.hasPermission("group::manager", "group::systems")) {
             Room room = roomService.get(id);
             roomService.update(room, builder);
-            return roomService.get(id);
+            return HttpUtils.updated("rooms", id, roomService.update(room, builder), roomService.get(id));
         }
         else {
             throw new SecurityException("You do not have the access to modify this room.");
@@ -115,10 +114,10 @@ public class RoomController {
     }
 
     @RequestMapping(value="/api/v1/rooms/{id}", method=RequestMethod.DELETE)
-    public boolean delete(@PathVariable int id) {
+    public Object delete(@PathVariable int id) {
         Room room = roomService.get(id);
-        // TODO: what if people are in the room.
-        return roomService.delete(room);
+        // TODO: what if people are in the room?
+        return HttpUtils.deleted("rooms", "id", roomService.delete(room));
     }
 
     /**

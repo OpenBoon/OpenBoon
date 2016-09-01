@@ -2,6 +2,7 @@ package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
@@ -89,14 +90,13 @@ public class UserController  {
     }
 
     @RequestMapping(value="/api/v1/users/{id}/_profile", method=RequestMethod.PUT)
-    public User update(@RequestBody UserProfileUpdate form, @PathVariable int id) {
+    public Object update(@RequestBody UserProfileUpdate form, @PathVariable int id) {
         Session session = userService.getActiveSession();
 
         if (session.getUserId() == id || SecurityUtils.hasPermission("group::manager", "group::systems")) {
-            logger.info("updating user");
             User user = userService.get(id);
             userService.update(user, form);
-            return userService.get(id);
+            return HttpUtils.updated("users", id, userService.update(user, form), userService.get(id));
         }
         else {
             throw new SecurityException("You do not have the access to modify this user.");
@@ -105,12 +105,12 @@ public class UserController  {
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
     @RequestMapping(value="/api/v1/users/{id}", method=RequestMethod.DELETE)
-    public void disable(@PathVariable int id) {
+    public Object disable(@PathVariable int id) {
         User user = userService.get(id);
         if (user.getId() == userService.getActiveSession().getUserId()) {
             throw new ArchivistException("You cannot disable your own user.");
         }
-        userService.setEnabled(user, false);
+        return HttpUtils.status("users", id, "disable", userService.setEnabled(user, false));
     }
 
     /**
@@ -140,7 +140,6 @@ public class UserController  {
         User user = userService.get(id);
         List<Permission> perms = pids.stream().map(
                 i->userService.getPermission(i)).collect(Collectors.toList());
-
         userService.setPermissions(user, perms);
         return userService.getPermissions(user);
     }
