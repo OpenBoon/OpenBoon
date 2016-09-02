@@ -28,7 +28,7 @@ public class AssetDaoTests extends AbstractTest {
     @Before
     public void init() {
         Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        asset1 = assetDao.index(builder);
+        asset1 = assetDao.index(builder, null);
         refreshIndex();
     }
 
@@ -62,7 +62,7 @@ public class AssetDaoTests extends AbstractTest {
         Source source1 = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
         Source source2 = new Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"));
 
-        AssetIndexResult result = assetDao.index(ImmutableList.of(source1, source2));
+        AssetIndexResult result = assetDao.index(ImmutableList.of(source1, source2), null);
         refreshIndex();
         assertEquals(1, result.created);
         assertEquals(1, result.updated);

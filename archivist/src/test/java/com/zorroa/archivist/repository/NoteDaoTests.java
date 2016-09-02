@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import org.junit.Before;
@@ -23,15 +22,12 @@ public class NoteDaoTests extends AbstractTest {
     @Autowired
     NoteDao noteDao;
 
-    @Autowired
-    AssetDao assetDao;
-
     String assetId;
 
     @Before
     public void init() {
         Source ab = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        assetId = assetDao.index(ab).getId();
+        assetId = assetService.index(ab).getId();
     }
 
     @Test

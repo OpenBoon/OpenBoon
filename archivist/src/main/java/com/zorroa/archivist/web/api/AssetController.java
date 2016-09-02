@@ -10,6 +10,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.domain.Link;
 import com.zorroa.sdk.domain.Note;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
@@ -178,8 +179,13 @@ public class AssetController {
         return HttpUtils.updated("asset", id, true, assetService.get(id));
     }
 
+    public static class IndexAssetRequest {
+        public List<Source> sources;
+        public Link link;
+    }
+
     @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-    public AssetIndexResult index(@RequestBody List<Source> source) throws IOException {
-        return assetService.index(source);
+    public AssetIndexResult index(@RequestBody IndexAssetRequest req) throws IOException {
+        return assetService.index(req.sources, req.link);
     }
 }

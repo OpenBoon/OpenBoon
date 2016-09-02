@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.ExportSpec;
 import com.zorroa.archivist.domain.Job;
-import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
@@ -24,9 +23,6 @@ public class ExportServiceTests extends AbstractTest {
     @Autowired
     PluginService pluginService;
 
-    @Autowired
-    AssetDao assetDao;
-
     Job job;
     ExportSpec spec;
     Asset asset;
@@ -36,7 +32,7 @@ public class ExportServiceTests extends AbstractTest {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "cat");
-        asset = assetDao.index(source);
+        asset = assetService.index(source);
         refreshIndex();
 
         spec = new ExportSpec();

@@ -412,7 +412,7 @@ public class RoomControllerTests extends MockMvcTest {
 
         Source source = new Source(new File(getTestImagePath() + "/beer_kettle_01.jpg"));
         AssetUtils.addKeywords(source, "source", "bender");
-        assetDao.index(source);
+        assetService.index(source);
         refreshIndex();
 
         RoomBuilder builder = new RoomBuilder();

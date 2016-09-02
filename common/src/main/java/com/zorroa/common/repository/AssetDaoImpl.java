@@ -9,6 +9,7 @@ import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.domain.Link;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -44,14 +45,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     @Override
-    public Asset index(Source source) {
+    public Asset index(Source source, Link sourceLink) {
         String id = source.getId();
         UpdateRequestBuilder upsert = prepareUpsert(source, id);
         return new Asset(upsert.get().getId(), source.getDocument());
     }
 
     @Override
-    public AssetIndexResult index(String type, List<Source> sources) {
+    public AssetIndexResult index(List<Source> sources, Link sourceLink) {
         AssetIndexResult result = new AssetIndexResult();
         if (sources.isEmpty()) {
             return result;
@@ -66,9 +67,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
         BulkResponse bulk = bulkRequest.get();
 
+        List<String> created = Lists.newArrayList();
+
         int index = 0;
         for (BulkItemResponse response : bulk) {
             UpdateResponse update = response.getResponse();
+            if (update.isCreated()) {
+                created.add(update.getId());
+            }
             if (response.isFailed()) {
                 String message = response.getFailure().getMessage();
                 Source asset = sources.get(index);
@@ -93,14 +99,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
          */
         if (!retries.isEmpty()) {
             result.retries++;
-            result.add(index(retries));
+            result.add(index(retries, sourceLink));
         }
-        return result;
-    }
 
-    @Override
-    public AssetIndexResult index(List<Source> sources) {
-        return index("asset", sources);
+        if (!created.isEmpty() && sourceLink != null) {
+            appendLink(sourceLink.getType(), sourceLink.getId(), created);
+        }
+
+        return result;
     }
 
     private UpdateRequestBuilder prepareUpsert(Source source, String id) {

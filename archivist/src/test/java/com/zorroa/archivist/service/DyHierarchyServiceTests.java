@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.processor.Source;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +25,6 @@ public class DyHierarchyServiceTests extends AbstractTest {
     @Autowired
     DyHierarchyService dyhiService;
 
-    @Autowired
-    AssetDao assetDao;
-
 
     @Before
     public void init() throws ParseException {
@@ -40,7 +36,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             Source ab = new Source(f);
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"));
-            assetDao.index(ab);
+            assetService.index(ab);
         }
         for (File f: getTestPath("office").toFile().listFiles()) {
             if (!f.isFile()) {
@@ -49,7 +45,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             Source ab = new Source(f);
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("03-05-2013 09:11:14"));
-            assetDao.index(ab);
+            assetService.index(ab);
         }
         for (File f: getTestPath("video").toFile().listFiles()) {
             if (!f.isFile()) {
@@ -58,7 +54,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             Source ab = new Source(f);
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("11-12-2015 06:14:10"));
-            assetDao.index(ab);
+            assetService.index(ab);
         }
         refreshIndex();
     }
@@ -125,7 +121,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
                 continue;
             }
             Source ab = new Source(f);
-            assetDao.index(ab);
+            assetService.index(ab);
         }
 
         for (File f: getTestImagePath("set03").toFile().listFiles()) {
@@ -133,7 +129,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
                 continue;
             }
             Source ab = new Source(f);
-            assetDao.index(ab);
+            assetService.index(ab);
         }
 
         refreshIndex();

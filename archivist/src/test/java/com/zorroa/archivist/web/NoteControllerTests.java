@@ -3,7 +3,6 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.service.NoteService;
-import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Note;
 import com.zorroa.sdk.domain.NoteBuilder;
 import com.zorroa.sdk.domain.NoteSearch;
@@ -31,15 +30,12 @@ public class NoteControllerTests extends MockMvcTest {
     @Autowired
     NoteService noteService;
 
-    @Autowired
-    AssetDao assetDao;
-
     String assetId;
 
     @Before
     public void init() {
         Source ab = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        assetId = assetDao.index(ab).getId();
+        assetId = assetService.index(ab).getId();
         refreshIndex();
     }
 

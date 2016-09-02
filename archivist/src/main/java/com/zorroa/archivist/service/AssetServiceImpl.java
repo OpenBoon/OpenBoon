@@ -8,10 +8,7 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Message;
-import com.zorroa.sdk.domain.MessageType;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import org.slf4j.Logger;
@@ -71,26 +68,36 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    public Asset index(Source source, Link link) {
+        return assetDao.index(source, link);
+    }
+
+    @Override
     public Asset index(Source source) {
-        return assetDao.index(source);
+        return index(source, null);
     }
 
     @Override
-    public AssetIndexResult index(String index, List<Source> sources) {
-        AssetIndexResult result =  assetDao.index(index, sources);
+    public AssetIndexResult index(List<Source> sources, Link link) {
+        AssetIndexResult result =  assetDao.index(sources, link);
         if (result.created + result.updated > 0) {
             dyHierarchyService.submitGenerateAll(false);
         }
         return result;
     }
 
-    @Override
     public AssetIndexResult index(List<Source> sources) {
-        AssetIndexResult result =  assetDao.index(sources);
-        if (result.created + result.updated > 0) {
-            dyHierarchyService.submitGenerateAll(false);
-        }
-        return result;
+        return index(sources, null);
+    }
+
+    @Override
+    public Map<String, Boolean> removeLink(String type, String value, List<String> assets) {
+        return assetDao.removeLink(type, value, assets);
+    }
+
+    @Override
+    public Map<String, Boolean> appendLink(String type, String value, List<String> assets) {
+        return assetDao.appendLink(type, value, assets);
     }
 
     @Override

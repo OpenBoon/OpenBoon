@@ -138,7 +138,7 @@ public class SearchServiceImpl implements SearchService {
                 .setQuery(getQuery(search));
 
         if (search.getFields() != null) {
-            request.setFetchSource(search.getFields(), new String[]{});
+            request.setFetchSource(search.getFields(), new String[] { "links", "permissions"} );
         }
 
         Paging page = new Paging(search.getPage(), search.getSize());

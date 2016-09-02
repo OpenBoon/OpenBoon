@@ -35,9 +35,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class SearchServiceTests extends AbstractTest {
 
-    @Autowired
-    AssetDao assetDao;
-
     @Test
     public void testSearchPermissionsMiss() throws IOException {
 
@@ -45,7 +42,7 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
 
         SecurityUtils.setReadPermissions(source, Lists.newArrayList(perm));
-        Asset asset1 = assetDao.index(source);
+        Asset asset1 = assetService.index(source);
         refreshIndex(100);
 
         AssetSearch search = new AssetSearch().setQuery("beer");
@@ -63,7 +60,7 @@ public class SearchServiceTests extends AbstractTest {
          * Add a permission from the current user to the asset.
          */
         SecurityUtils.setReadPermissions(source, Lists.newArrayList(userService.getPermissions(SecurityUtils.getUser()).get(0)));
-        Asset asset1 = assetDao.index(source);
+        assetService.index(source);
         refreshIndex(100);
 
         AssetSearch search = new AssetSearch().setQuery("captain");
@@ -78,7 +75,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", source.getAttr("source.filename", String.class));
-        Asset asset1 = assetDao.index(source);
+        Asset asset1 = assetService.index(source);
         refreshIndex(100);
 
         folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
@@ -97,7 +94,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", source.getAttr("source.filename", String.class));
-        Asset asset1 = assetDao.index(source);
+        Asset asset1 = assetService.index(source);
         refreshIndex(100);
 
         folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
@@ -120,7 +117,7 @@ public class SearchServiceTests extends AbstractTest {
         Folder folder3 = folderService.create(builder);
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Asset asset1 = assetDao.index(source);
+        Asset asset1 = assetService.index(source);
         refreshIndex(100);
 
         folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
@@ -149,8 +146,8 @@ public class SearchServiceTests extends AbstractTest {
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.addKeywords("source", source2.getAttr("source", SourceSchema.class).getFilename());
 
-        Asset asset1 = assetDao.index(source1);
-        Asset asset2 = assetDao.index(source2);
+        Asset asset1 = assetService.index(source1);
+        Asset asset2 = assetService.index(source2);
         refreshIndex();
 
         folderService.addAssets(folder2, Lists.newArrayList(asset2.getId()));
@@ -183,7 +180,7 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
 
-        Asset a = assetDao.index(source);
+        Asset a = assetService.index(source);
         refreshIndex();
 
         logger.info("{}", (List) a.getAttr("links"));
@@ -212,11 +209,11 @@ public class SearchServiceTests extends AbstractTest {
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.addKeywords("source", source2.getAttr("source", SourceSchema.class).getFilename());
 
-        assetDao.index(source1);
-        assetDao.index(source2);
+        assetService.index(source1);
+        assetService.index(source2);
         refreshIndex();
 
-        assetDao.appendLink("folder", String.valueOf(folder2.getId()), ImmutableList.of(source2.getId()));
+        assetService.appendLink("folder", String.valueOf(folder2.getId()), ImmutableList.of(source2.getId()));
 
         AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
         AssetSearch search = new AssetSearch().setFilter(filter);
@@ -240,7 +237,7 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", source.getAttr("source", SourceSchema.class).getFilename());
 
-        assetDao.index(source);
+        assetService.index(source);
         refreshIndex();
 
         AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
@@ -253,7 +250,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.addKeywords("source", "zipzoom");
-        assetDao.index(Source);
+        assetService.index(Source);
         refreshIndex();
 
         /*
@@ -272,7 +269,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.addKeywords("source","zipzoom");
-        assetDao.index(Source);
+        assetService.index(Source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -284,7 +281,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.addKeywords("source", "zoolander");
-        assetDao.index(Source);
+        assetService.index(Source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -298,7 +295,7 @@ public class SearchServiceTests extends AbstractTest {
          */
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.addKeywords("source", "zoolander~");
-        assetDao.index(Source);
+        assetService.index(Source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
@@ -310,7 +307,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
-        assetDao.index(Source);
+        assetService.index(Source);
         refreshIndex();
 
         Map<String, Set<String>> fields = searchService.getFields();
@@ -327,7 +324,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.setAttr("colors.original", ImmutableList.of(color));
-        assetDao.index(Source);
+        assetService.index(Source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
