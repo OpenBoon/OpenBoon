@@ -9,7 +9,6 @@ import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Color;
 import com.zorroa.sdk.processor.Source;
@@ -19,7 +18,6 @@ import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.ColorFilter;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -323,14 +321,13 @@ public class SearchServiceTests extends AbstractTest {
         Color color = new Color(255, 10, 10).setRatio(50f);
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.setAttr("colors.original", ImmutableList.of(color));
+        Source.setAttr("colors", ImmutableList.of(color));
         assetService.index(Source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch().setFilter(new AssetFilter().addToColors(
+                new AssetSearch().setFilter(new AssetFilter().putToColors("colors",
                         new ColorFilter()
-                        .setField("colors.original")
                         .setMinRatio(45)
                         .setMaxRatio(55)
                         .setHueAndRange(0, 5)

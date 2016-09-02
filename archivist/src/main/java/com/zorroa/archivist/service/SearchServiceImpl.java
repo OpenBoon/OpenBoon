@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -305,24 +304,26 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (filter.getColors() != null) {
-            for (ColorFilter color : filter.getColors()) {
-                Preconditions.checkNotNull(color.getField(), "The ColorFilter.field was not set.");
-                BoolQueryBuilder colorFilter = QueryBuilders.boolQuery();
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".ratio"))
-                        .gte(color.getMinRatio()).lte(color.getMaxRatio()));
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".hue"))
-                        .gte(color.getHue() - color.getHueRange())
-                        .lte(color.getHue() + color.getHueRange()));
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".saturation"))
-                        .gte(color.getSaturation() - color.getSaturationRange())
-                        .lte(color.getSaturation() + color.getSaturationRange()));
-                colorFilter.must(QueryBuilders.rangeQuery(color.getField().concat(".brightness"))
-                        .gte(color.getBrightness() - color.getBrightnessRange())
-                        .lte(color.getBrightness() + color.getBrightnessRange()));
+            for (Map.Entry<String, List<ColorFilter>> entry : filter.getColors().entrySet()) {
+                for (ColorFilter color: entry.getValue()) {
+                    String field = entry.getKey();
+                    BoolQueryBuilder colorFilter = QueryBuilders.boolQuery();
+                    colorFilter.must(QueryBuilders.rangeQuery(field.concat(".ratio"))
+                            .gte(color.getMinRatio()).lte(color.getMaxRatio()));
+                    colorFilter.must(QueryBuilders.rangeQuery(field.concat(".hue"))
+                            .gte(color.getHue() - color.getHueRange())
+                            .lte(color.getHue() + color.getHueRange()));
+                    colorFilter.must(QueryBuilders.rangeQuery(field.concat(".saturation"))
+                            .gte(color.getSaturation() - color.getSaturationRange())
+                            .lte(color.getSaturation() + color.getSaturationRange()));
+                    colorFilter.must(QueryBuilders.rangeQuery(field.concat(".brightness"))
+                            .gte(color.getBrightness() - color.getBrightnessRange())
+                            .lte(color.getBrightness() + color.getBrightnessRange()));
 
-                QueryBuilder colorFilterBuilder = QueryBuilders.nestedQuery(color.getField(),
-                        colorFilter);
-                query.must(colorFilterBuilder);
+                    QueryBuilder colorFilterBuilder = QueryBuilders.nestedQuery("colors",
+                            colorFilter);
+                    query.must(colorFilterBuilder);
+                }
             }
         }
 
