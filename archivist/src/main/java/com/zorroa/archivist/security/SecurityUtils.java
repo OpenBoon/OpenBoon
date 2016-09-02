@@ -131,26 +131,38 @@ public class SecurityUtils {
 
     public static void setWritePermissions(Source source, Collection<Permission> perms) {
         PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
+        if (ps == null) {
+            ps = new PermissionSchema();
+        }
         ps.getWrite().clear();
         for (Permission p : perms) {
             ps.getWrite().add(p.getId());
         }
+        source.setAttr("permissions", ps);
     }
 
     public static void setReadPermissions(Source source, Collection<Permission> perms) {
         PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
+        if (ps == null) {
+            ps = new PermissionSchema();
+        }
         ps.getRead().clear();
         for (Permission p : perms) {
             ps.getRead().add(p.getId());
         }
+        source.setAttr("permissions", ps);
     }
 
     public static void setExportPermissions(Source source, Collection<Permission> perms) {
         PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
+        if (ps == null) {
+            ps = new PermissionSchema();
+        }
         ps.getExport().clear();
         for (Permission p : perms) {
             ps.getExport().add(p.getId());
         }
+        source.setAttr("permissions", ps);
     }
 
 }
