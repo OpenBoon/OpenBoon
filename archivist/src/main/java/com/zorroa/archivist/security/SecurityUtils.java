@@ -84,6 +84,9 @@ public class SecurityUtils {
     }
 
     public static boolean hasPermission(Set<Integer> permIds) {
+        if (permIds == null) {
+            return true;
+        }
         if (permIds == null || permIds.isEmpty()) {
             return true;
         }
