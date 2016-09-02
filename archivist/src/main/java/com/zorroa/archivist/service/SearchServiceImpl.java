@@ -320,7 +320,7 @@ public class SearchServiceImpl implements SearchService {
                             .gte(color.getBrightness() - color.getBrightnessRange())
                             .lte(color.getBrightness() + color.getBrightnessRange()));
 
-                    QueryBuilder colorFilterBuilder = QueryBuilders.nestedQuery("colors",
+                    QueryBuilder colorFilterBuilder = QueryBuilders.nestedQuery(field,
                             colorFilter);
                     query.must(colorFilterBuilder);
                 }
