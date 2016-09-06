@@ -72,9 +72,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         int index = 0;
         for (BulkItemResponse response : bulk) {
             UpdateResponse update = response.getResponse();
-            if (update.isCreated()) {
-                created.add(update.getId());
-            }
             if (response.isFailed()) {
                 String message = response.getFailure().getMessage();
                 Source asset = sources.get(index);
@@ -87,6 +84,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                     result.errors++;
                 }
             } else if (update.isCreated()) {
+                created.add(update.getId());
                 result.created++;
             } else {
                 result.updated++;
