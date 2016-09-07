@@ -127,6 +127,8 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     public int runProcess(String[] command, ExecuteTaskStart task) throws IOException {
 
         ProcessBuilder builder = new ProcessBuilder(command);
+        builder.redirectErrorStream(true);
+
         if (task.getEnv() != null) {
             Map<String,String> env = builder.environment();
             for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
