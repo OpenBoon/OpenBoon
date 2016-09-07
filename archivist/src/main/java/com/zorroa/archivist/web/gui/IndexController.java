@@ -217,6 +217,15 @@ public class IndexController {
         return "pipelines";
     }
 
+
+    @RequestMapping("/gui/pipelines/{id}")
+    public String showPipeline(Model model, @PathVariable int id) {
+        standardModel(model);
+        model.addAttribute("pipeline", pipelineService.get(id));
+        return "pipeline";
+    }
+
+
     @RequestMapping("/gui/status")
     public String status(Model model) {
         standardModel(model);

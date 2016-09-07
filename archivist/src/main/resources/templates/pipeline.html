@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <div th:include="fragments/pipelines :: menu"/>
+    <div class="wrapper">
+        <br/>
+
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <button type="button" class="list-group-item" th:text="${proc.className}" th:each="proc: ${pipeline.processors}"/>
+            </ul>
+        </div>
+
+        </div>
+        <div class="col-md-8">
+            <form class="form-inline">
+            <div class="form-group">
+                <label for="args">Comment:</label>
+                <textarea class="form-control" rows="15" id="args"></textarea>
+            </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
