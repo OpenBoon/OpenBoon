@@ -49,7 +49,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         /*
          * Might turn into an issue but we have lots of caching around folders
          */
-        folder.setAcl(getAcl(folder));
+        folder.setAcl(getAcl(folder.getId()));
         return folder;
     };
 
@@ -144,7 +144,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     "pk_dyhi");
 
     @Override
-    public Folder create(FolderSpec builder) {
+    public Folder create(FolderSpec spec) {
         long time = System.currentTimeMillis();
         int user = SecurityUtils.getUser().getId();
 
@@ -152,19 +152,21 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         jdbc.update(connection -> {
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_folder"});
-            ps.setInt(1, builder.getParentId() == null ?  Folder.ROOT_ID : builder.getParentId());
-            ps.setString(2, builder.getName());
+            ps.setInt(1, spec.getParentId() == null ?  Folder.ROOT_ID : spec.getParentId());
+            ps.setString(2, spec.getName());
             ps.setInt(3, user);
             ps.setLong(4, time);
-            ps.setBoolean(5, builder.isRecursive());
+            ps.setBoolean(5, spec.isRecursive());
             ps.setInt(6, user);
             ps.setLong(7, time);
-            ps.setString(8, Json.serializeToString(builder.getSearch(), null));
-            ps.setObject(9, builder.getDyhiId());
+            ps.setString(8, Json.serializeToString(spec.getSearch(), null));
+            ps.setObject(9, spec.getDyhiId());
             return ps;
         }, keyHolder);
 
-        return get(keyHolder.getKey().intValue());
+        int id = keyHolder.getKey().intValue();
+        setAcl(id, spec.getAcl());
+        return getAfterCreate(id);
     }
 
     private static final String UPDATE = JdbcUtils.update("folder", "pk_folder",
@@ -210,23 +212,23 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
-    public void setAcl(Folder folder, Acl acl) {
-        jdbc.update("DELETE FROM folder_acl WHERE pk_folder=?", folder.getId());
+    public void setAcl(int folder, Acl acl) {
+        jdbc.update("DELETE FROM folder_acl WHERE pk_folder=?", folder);
         if (acl == null || acl.isEmpty()) {
             return;
         }
         for (AclEntry entry: acl) {
             jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
-                    entry.getPermissionId(), folder.getId(), entry.getAccess());
+                    entry.getPermissionId(), folder, entry.getAccess());
         }
     }
 
     @Override
-    public Acl getAcl(Folder folder) {
+    public Acl getAcl(int folder) {
         Acl result = new Acl();
         jdbc.query("SELECT * FROM folder_acl WHERE pk_folder=?", rs -> {
             result.add(new AclEntry(rs.getInt("pk_permission"), rs.getInt("int_access")));
-        }, folder.getId());
+        }, folder);
         return result;
     }
 
@@ -274,7 +276,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     public Object[] appendAclArgs(Object ... args) {
-        if (SecurityUtils.hasPermission("group::superuser")) {
+        if (SecurityUtils.hasPermission("group::superuser"))  {
             return args;
         }
 
@@ -284,5 +286,16 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         }
         result.addAll(SecurityUtils.getPermissionIds());
         return result.toArray();
+    }
+
+    /**
+     * Called by create so we can return a folder object even if we are stupid and create
+     * a folder we don't have access to.
+     *
+     * @param id
+     * @return
+     */
+    private Folder getAfterCreate(int id) {
+        return jdbc.queryForObject(GET.concat(" WHERE pk_folder=?"), MAPPER, id);
     }
 }

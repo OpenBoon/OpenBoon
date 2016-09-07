@@ -13,6 +13,7 @@ import com.zorroa.sdk.domain.Asset;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.Map;
@@ -91,6 +92,39 @@ public class FolderServiceTests extends AbstractTest {
         folderService.setAcl(folder, new Acl().addEntry(
                 userService.getPermission("group::superuser"), Access.Read));
         folderService.get(folder.getId());
+    }
+
+    @Test(expected=EmptyResultDataAccessException.class)
+    public void testCreateWithReadAcl() {
+        FolderSpec builder = new FolderSpec("Folder");
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Read));
+        Folder folder = folderService.create(builder);
+        folderService.get(folder.getId());
+    }
+
+    @Test(expected=AccessDeniedException.class)
+    public void testAddAssetsWithWriteAcl() {
+        FolderSpec builder = new FolderSpec("Folder");
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Write));
+        Folder folder = folderService.create(builder);
+        folderService.addAssets(folder, assetService.getAll(
+                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+    }
+
+    @Test(expected=AccessDeniedException.class)
+    public void testDeleteFolderWithWriteAcl() {
+        FolderSpec builder = new FolderSpec("Folder");
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Write));
+        Folder folder = folderService.create(builder);
+        folderService.delete(folder);
+    }
+
+    @Test(expected=AccessDeniedException.class)
+    public void testUpdateFolderWithWriteAcl() {
+        FolderSpec builder = new FolderSpec("Folder");
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Write));
+        Folder folder = folderService.create(builder);
+        folderService.update(folder.getId(), folder.setName("biblo"));
     }
 
     @Test

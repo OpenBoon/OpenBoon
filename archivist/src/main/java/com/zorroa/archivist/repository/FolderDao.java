@@ -41,7 +41,7 @@ public interface FolderDao {
 
     boolean setDyHierarchyRoot(Folder folder, boolean value);
 
-    void setAcl(Folder folder, Acl acl);
+    void setAcl(int folder, Acl acl);
 
-    Acl getAcl(Folder folder);
+    Acl getAcl(int folder);
 }

@@ -82,7 +82,7 @@ public class FolderDaoTests extends AbstractTest {
         Folder f1 = folderDao.create(new FolderSpec("level1", pub));
         Folder f2 = folderDao.create(new FolderSpec("level2", pub));
         Folder f3 = folderDao.create(new FolderSpec("level3", pub));
-        folderDao.setAcl(f3, new Acl().addEntry(
+        folderDao.setAcl(f3.getId(), new Acl().addEntry(
                 userService.getPermission("group::superuser")));
 
         assertFalse(folderDao.hasAccess(f3, Access.Read));
@@ -100,7 +100,7 @@ public class FolderDaoTests extends AbstractTest {
         Permission p = userService.createPermission(new PermissionSpec("group", "foo"));
         Acl acl = new Acl();
         acl.addEntry(p, Access.Read);
-        folderDao.setAcl(folder1, acl);
+        folderDao.setAcl(folder1.getId(), acl);
 
         assertFalse(folderDao.hasAccess(folder1, Access.Read));
     }
@@ -111,9 +111,9 @@ public class FolderDaoTests extends AbstractTest {
         Folder folder1 = folderDao.create(builder);
 
         Permission p = userService.createPermission(new PermissionSpec("group","foo"));
-        folderDao.setAcl(folder1, new Acl().addEntry(p, Access.Read));
+        folderDao.setAcl(folder1.getId(), new Acl().addEntry(p, Access.Read));
 
-        Acl acl = folderDao.getAcl(folder1);
+        Acl acl = folderDao.getAcl(folder1.getId());
         assertTrue(acl.hasAccess(p.getId(), Access.Read));
     }
 

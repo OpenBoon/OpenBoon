@@ -90,7 +90,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void setAcl(Folder folder, Acl acl) {
-        folderDao.setAcl(folder, acl);
+        folderDao.setAcl(folder.getId(), acl);
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
             logService.log(LogSpec.build(LogAction.Update, folder)
@@ -159,12 +159,10 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean update(int id, Folder folder) {
-
-        Folder current = folderDao.get(id);
-        if (!SecurityUtils.hasPermission(current.getAcl(),  Access.Write)) {
+        if (!SecurityUtils.hasPermission(folderDao.getAcl(id),  Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
-
+        Folder current = folderDao.get(id);
         boolean result = folderDao.update(id, folder);
         if (result) {
             setAcl(folder, folder.getAcl());
@@ -219,8 +217,13 @@ public class FolderServiceImpl implements FolderService {
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds) {
         if (assetIds.size() >= 1024) {
-            throw new IllegalArgumentException("Cannot hve more than 1024 assets in a folder");
+            throw new IllegalArgumentException("Cannot have more than 1024 assets in a folder");
         }
+
+        if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
+            throw new AccessDeniedException("You cannot make changes to this folder");
+        }
+
         Map<String, List<Object>> result = assetDao.appendLink("folder", String.valueOf(folder.getId()), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
@@ -231,6 +234,11 @@ public class FolderServiceImpl implements FolderService {
 
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public Map<String, List<Object>> removeAssets(Folder folder, List<String> assetIds) {
+
+        if (!SecurityUtils.hasPermission(folder.getAcl(),  Access.Write)) {
+            throw new AccessDeniedException("You cannot make changes to this folder");
+        }
+
         Map<String, List<Object>> result = assetDao.removeLink("folder", String.valueOf(folder.getId()), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
@@ -345,7 +353,7 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public Folder create(Folder parent, FolderSpec spec, boolean mightExist) {
 
-        if (!SecurityUtils.hasPermission(parent.getAcl(),  Access.Write)) {
+        if (!SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
         Folder result;
