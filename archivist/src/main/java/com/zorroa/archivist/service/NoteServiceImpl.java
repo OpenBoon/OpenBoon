@@ -1,17 +1,13 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.Note;
+import com.zorroa.archivist.domain.NoteSpec;
 import com.zorroa.archivist.repository.NoteDao;
-import com.zorroa.sdk.domain.Note;
-import com.zorroa.sdk.domain.NoteBuilder;
-import com.zorroa.sdk.domain.NoteSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -31,23 +27,9 @@ public class NoteServiceImpl implements NoteService {
     NoteDao noteDao;
 
     @Override
-    public Note create(NoteBuilder builder) {
+    public Note create(NoteSpec builder) {
         Preconditions.checkNotNull(builder.getText(), "Text of a note cannot be null");
-
-        /*
-         * Look for any hash tags
-         */
-        Set<String> tags = builder.getTags();
-        if (tags == null) {
-            tags = Sets.newHashSet();
-            builder.setTags(tags);
-        }
-
-        Matcher mat = TAG_PATTERN.matcher(builder.getText());
-        while (mat.find()) {
-            tags.add(mat.group(1));
-        }
-
+        Preconditions.checkNotNull(builder.getAsset(), "Asset cannot be null");
         return noteDao.create(builder);
     }
 
@@ -59,10 +41,5 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<Note> getAll(String assetId) {
         return noteDao.getAll(assetId);
-    }
-
-    @Override
-    public List<Note> search(NoteSearch search) {
-        return noteDao.search(search);
     }
 }

@@ -1,13 +1,10 @@
 package com.zorroa.archivist.web.api;
 
-import com.zorroa.sdk.domain.Note;
-import com.zorroa.sdk.domain.NoteBuilder;
-import com.zorroa.sdk.domain.NoteSearch;
+import com.zorroa.archivist.domain.Note;
+import com.zorroa.archivist.domain.NoteSpec;
 import com.zorroa.archivist.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by chambers on 3/17/16.
@@ -34,15 +31,7 @@ public class NoteController {
      * Create a new note.
      */
     @RequestMapping(value="/api/v1/notes", method=RequestMethod.POST)
-    public Note create(@RequestBody NoteBuilder builder) {
+    public Note create(@RequestBody NoteSpec builder) {
         return noteService.create(builder);
-    }
-
-    /**
-     * Search for note.
-     */
-    @RequestMapping(value="/api/v1/notes/_search", method=RequestMethod.POST)
-    public List<Note> search(@RequestBody NoteSearch search) {
-        return noteService.search(search);
     }
 }

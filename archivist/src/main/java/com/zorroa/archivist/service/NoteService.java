@@ -1,8 +1,7 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.sdk.domain.Note;
-import com.zorroa.sdk.domain.NoteBuilder;
-import com.zorroa.sdk.domain.NoteSearch;
+import com.zorroa.archivist.domain.Note;
+import com.zorroa.archivist.domain.NoteSpec;
 
 import java.util.List;
 
@@ -13,11 +12,9 @@ public interface NoteService {
      * @param builder
      * @return
      */
-    Note create(NoteBuilder builder);
+    Note create(NoteSpec builder);
 
     Note get(String id);
 
     List<Note> getAll(String assetId);
-
-    List<Note> search(NoteSearch search);
 }

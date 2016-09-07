@@ -1,11 +1,8 @@
 package com.zorroa.archivist.web;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.Sets;
+import com.zorroa.archivist.domain.Note;
+import com.zorroa.archivist.domain.NoteSpec;
 import com.zorroa.archivist.service.NoteService;
-import com.zorroa.sdk.domain.Note;
-import com.zorroa.sdk.domain.NoteBuilder;
-import com.zorroa.sdk.domain.NoteSearch;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
@@ -14,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,9 +36,8 @@ public class NoteControllerTests extends MockMvcTest {
 
     @Test
     public void testCreate() throws Exception {
-        NoteBuilder nb = new NoteBuilder();
+        NoteSpec nb = new NoteSpec();
         nb.setAsset(assetId);
-        nb.setTags(Sets.newHashSet("foo"));
         nb.setText("a note on an asset");
 
         MockHttpSession session = admin();
@@ -55,39 +49,14 @@ public class NoteControllerTests extends MockMvcTest {
                 .andReturn();
 
         Note n = Json.deserialize(result.getResponse().getContentAsByteArray(), Note.class);
-        assertEquals(n.getTags(), nb.getTags());
         assertEquals(n.getText(), nb.getText());
         assertEquals(n.getAsset(), nb.getAsset());
     }
 
     @Test
-    public void getSearch() throws Exception {
-        NoteBuilder nb = new NoteBuilder();
-        nb.setAsset(assetId);
-        nb.setTags(Sets.newHashSet("foo"));
-        nb.setText("a note on an asset elephant");
-        noteService.create(nb);
-
-        NoteSearch search = new NoteSearch().setQuery("foo");
-
-        MockHttpSession session = admin();
-        MvcResult result = mvc.perform(post("/api/v1/notes/_search")
-                .session(session)
-                .content(Json.serialize(search))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<Note> notes = Json.deserialize(result.getResponse().getContentAsByteArray(),
-                new TypeReference<List<Note>>() {});
-        assertEquals(1, notes.size());
-    }
-
-    @Test
     public void getNote() throws Exception {
-        NoteBuilder nb = new NoteBuilder();
+        NoteSpec nb = new NoteSpec();
         nb.setAsset(assetId);
-        nb.setTags(Sets.newHashSet("foo"));
         nb.setText("a note on an asset elephant");
         Note note = noteService.create(nb);
 
@@ -98,7 +67,6 @@ public class NoteControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
         Note n = Json.deserialize(result.getResponse().getContentAsByteArray(), Note.class);
-        assertEquals(n.getTags(), nb.getTags());
         assertEquals(n.getText(), nb.getText());
         assertEquals(n.getAsset(), nb.getAsset());
     }
