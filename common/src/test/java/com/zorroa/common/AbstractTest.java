@@ -89,7 +89,7 @@ public abstract class AbstractTest {
     public void __init() throws IOException, ClassNotFoundException {
         /**
          * For analyst, this is only done for unit tests.  In production, the
-         * archivist handles creatig the index and the mapping.
+         * archivist handles creating the index and the mapping.
          */
         ElasticClientUtils.deleteAllIndexes(client);
         ElasticClientUtils.createLatestMapping(client, "archivist");

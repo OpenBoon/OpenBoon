@@ -7,18 +7,82 @@ import com.zorroa.archivist.domain.Access;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.common.domain.PagedList;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Asset;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
 public class FolderServiceTests extends AbstractTest {
 
+    @Before
+    public void init() {
+        addTestAssets("set04/standard");
+        refreshIndex();
+    }
+
+    @Test
+    public void testAddAssetToFolder() {
+
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+
+        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+
+        assertTrue(results.get("failed").isEmpty());
+        assertFalse(results.get("success").isEmpty());
+
+    }
+
+    @Test
+    public void testAddDuplicateAssetsToFolder() {
+
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+
+        folderService.addAssets(folder, assetService.getAll(
+                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+
+        folderService.addAssets(folder, assetService.getAll(
+                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+
+        refreshIndex();
+
+        PagedList<Asset> assets = assetService.getAll(Paging.first());
+        for (Asset a: assets) {
+            assertEquals(1, ((List) a.getAttr("links")).size());
+        }
+    }
+
+    @Test
+    public void testRemoveAssetFromFolder() {
+
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+
+        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+
+        assertTrue(results.get("failed").isEmpty());
+        assertFalse(results.get("success").isEmpty());
+
+        results = folderService.removeAssets(folder, assetService.getAll(
+                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+        assertTrue(results.get("failed").isEmpty());
+        assertFalse(results.get("success").isEmpty());
+    }
+
+
     @Test(expected=EmptyResultDataAccessException.class)
     public void testSetAcl() {
-        authenticate("admin");
 
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);

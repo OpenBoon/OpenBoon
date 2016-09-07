@@ -175,7 +175,7 @@ public abstract class AbstractTest {
         client.admin().indices().prepareDelete("_all").get();
         migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true);
         archivistRepositorySetup.setupDataSources();
-        ElasticClientUtils.refreshIndex(client);
+        refreshIndex();
 
         /**
          * TODO: fix this for elastic 1.7
@@ -300,6 +300,7 @@ public abstract class AbstractTest {
 
     public AnalystBuilder sendAnalystPing() {
         AnalystBuilder ab = getAnalystBuilder();
+        analystDao.register(ab);
         refreshIndex();
         return ab;
     }

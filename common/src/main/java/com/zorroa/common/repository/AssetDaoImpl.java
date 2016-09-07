@@ -146,7 +146,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Map<String, Boolean> removeLink(String type, String value, List<String> assets) {
+    public Map<String, List<Object>> removeLink(String type, String value, List<String> assets) {
         if (type.contains(".")) {
             throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
         }
@@ -161,20 +161,26 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             bulkRequest.add(updateBuilder);
         }
 
-        Map<String, Boolean> result = Maps.newHashMapWithExpectedSize(assets.size());
+        Map<String, List<Object>> result = Maps.newHashMapWithExpectedSize(assets.size());
+        result.put("success", Lists.newArrayList());
+        result.put("failed", Lists.newArrayList());
+
         BulkResponse bulk = bulkRequest.setRefresh(true).get();
         for (BulkItemResponse rsp:  bulk.getItems()) {
-            result.put(rsp.getId(), !rsp.isFailed());
             if (rsp.isFailed()) {
+                result.get("failed").add(ImmutableMap.of("id", rsp.getId(), "error", rsp.getFailureMessage()));
                 logger.warn("Failed to unlink asset: {}",
                         rsp.getFailureMessage(), rsp.getFailure().getCause());
+            }
+            else {
+                result.get("success").add(rsp.getId());
             }
         }
         return result;
     }
 
     @Override
-    public Map<String, Boolean> appendLink(String type, String value, List<String> assets) {
+    public Map<String, List<Object>> appendLink(String type, String value, List<String> assets) {
         if (type.contains(".")) {
             throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
         }
@@ -192,15 +198,22 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             bulkRequest.add(updateBuilder);
         }
 
-        Map<String, Boolean> result = Maps.newHashMapWithExpectedSize(assets.size());
+        Map<String, List<Object>> result = Maps.newHashMapWithExpectedSize(assets.size());
+        result.put("success", Lists.newArrayList());
+        result.put("failed", Lists.newArrayList());
+
         BulkResponse bulk = bulkRequest.setRefresh(true).get();
         for (BulkItemResponse rsp:  bulk.getItems()) {
-            result.put(rsp.getId(), !rsp.isFailed());
             if (rsp.isFailed()) {
+                result.get("failed").add(ImmutableMap.of("id", rsp.getId(), "error", rsp.getFailureMessage()));
                 logger.warn("Failed to link asset: {}",
                         rsp.getFailureMessage(), rsp.getFailure().getCause());
             }
+            else {
+                result.get("success").add(rsp.getId());
+            }
         }
+
         return result;
     }
 

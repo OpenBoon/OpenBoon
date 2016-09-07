@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.FolderSpec;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 public interface FolderService {
@@ -66,9 +67,9 @@ public interface FolderService {
 
     void setAcl(Folder folder, Acl acl);
 
-    void addAssets(Folder folder, List<String> assetIds);
+    Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds);
 
-    void removeAssets(Folder folder, List<String> assetIds);
+    Map<String, List<Object>>removeAssets(Folder folder, List<String> assetIds);
 
     /**
      * Asynchronously creata a new folder.  Return a future in case

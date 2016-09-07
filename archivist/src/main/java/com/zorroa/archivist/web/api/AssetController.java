@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
+import com.zorroa.archivist.domain.Note;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.PagedList;
@@ -11,7 +12,6 @@ import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.Link;
-import com.zorroa.sdk.domain.Note;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
@@ -96,7 +96,7 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/{id}/notes", method=RequestMethod.GET)
-    public List<Note> getAllNotes(@PathVariable String id) throws IOException {
+    public List<Note> getNotes(@PathVariable String id) throws IOException {
         return noteService.getAll(id);
     }
 

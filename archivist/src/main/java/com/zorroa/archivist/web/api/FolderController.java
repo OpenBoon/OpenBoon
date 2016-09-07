@@ -106,8 +106,7 @@ public class FolderController {
             @RequestBody List<String> assetIds,
             @PathVariable Integer id) throws Exception {
         Folder folder = folderService.get(id);
-        folderService.removeAssets(folder, assetIds);
-        return HttpUtils.status("folders", id, "removeAssets", true);
+        return folderService.removeAssets(folder, assetIds);
     }
 
     /**
@@ -122,7 +121,6 @@ public class FolderController {
             @RequestBody List<String> assetIds,
             @PathVariable Integer id) throws Exception {
         Folder folder = folderService.get(id);
-        folderService.addAssets(folder, assetIds);
-        return HttpUtils.status("folders", id, "addAssets", true);
+        return folderService.addAssets(folder, assetIds);
     }
 }

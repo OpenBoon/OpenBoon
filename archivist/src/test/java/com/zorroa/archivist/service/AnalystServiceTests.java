@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import org.junit.Before;
@@ -21,7 +20,7 @@ public class AnalystServiceTests extends AbstractTest {
     @Before
     public void init() {
         ping = sendAnalystPing();
-        ElasticClientUtils.refreshIndex(client);
+        refreshIndex();
     }
 
     @Test

@@ -217,24 +217,26 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
-    public void addAssets(Folder folder, List<String> assetIds) {
+    public Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds) {
         if (assetIds.size() >= 1024) {
             throw new IllegalArgumentException("Cannot hve more than 1024 assets in a folder");
         }
-        Map<String, Boolean> result = assetDao.appendLink("folder", String.valueOf(folder.getId()), assetIds);
+        Map<String, List<Object>> result = assetDao.appendLink("folder", String.valueOf(folder.getId()), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
                 ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
         logService.log(LogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
+        return result;
     }
 
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
-    public void removeAssets(Folder folder, List<String> assetIds) {
-        Map<String, Boolean> result = assetDao.removeLink("folder", String.valueOf(folder.getId()), assetIds);
+    public Map<String, List<Object>> removeAssets(Folder folder, List<String> assetIds) {
+        Map<String, List<Object>> result = assetDao.removeLink("folder", String.valueOf(folder.getId()), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
                 ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));
         logService.log(LogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
+        return result;
     }
 
     private void invalidate(Folder folder, Integer ... additional) {
@@ -358,10 +360,10 @@ public class FolderServiceImpl implements FolderService {
         else {
             try {
                 result = folderDao.create(spec);
+                emitFolderCreated(result);
             }
             catch (DuplicateKeyException e) {
                 result = get(spec.getParentId(), spec.getName());
-                emitFolderCreated(result);
             }
         }
 

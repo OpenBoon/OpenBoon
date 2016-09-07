@@ -55,7 +55,7 @@ public class ElasticTemplate {
     public <T> T queryForObject(SearchRequestBuilder builder, JsonRowMapper<T> mapper) {
         final SearchResponse r = builder.get();
         if (r.getHits().getTotalHits() == 0) {
-            throw new EmptyResultDataAccessException("Expected 1, was", 0);
+            throw new EmptyResultDataAccessException("Expected 1 result from " + builder.toString() + ", got: ", 0);
         }
         SearchHit hit = r.getHits().getAt(0);
         try {

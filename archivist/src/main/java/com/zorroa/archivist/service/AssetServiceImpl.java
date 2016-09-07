@@ -91,12 +91,12 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public Map<String, Boolean> removeLink(String type, String value, List<String> assets) {
+    public Map<String, List<Object>> removeLink(String type, String value, List<String> assets) {
         return assetDao.removeLink(type, value, assets);
     }
 
     @Override
-    public Map<String, Boolean> appendLink(String type, String value, List<String> assets) {
+    public Map<String, List<Object>> appendLink(String type, String value, List<String> assets) {
         return assetDao.appendLink(type, value, assets);
     }
 

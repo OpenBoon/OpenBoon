@@ -289,7 +289,7 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private static class ElasticMigrationProperties {
-        private int version = 0;
+        private int version = 1;
         private boolean reindex = false;
         private boolean reingest = false;
         private Map<String, Object> mapping;
