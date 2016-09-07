@@ -103,8 +103,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     }
 
     public void refreshIndex() {
-        logger.info("Refreshing index: '{}'", alias);
-        client.admin().indices().prepareRefresh(alias).execute();
+        logger.info("Refreshing Elastic Indexes");
+        ElasticClientUtils.refreshIndex(client);
     }
 
     public void writeClusterConfiguration() {

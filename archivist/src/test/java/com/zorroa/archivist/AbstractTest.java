@@ -11,6 +11,7 @@ import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.domain.AnalystState;
@@ -174,7 +175,7 @@ public abstract class AbstractTest {
         client.admin().indices().prepareDelete("_all").get();
         migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true);
         archivistRepositorySetup.setupDataSources();
-        refreshIndex(100);
+        ElasticClientUtils.refreshIndex(client);
 
         /**
          * TODO: fix this for elastic 1.7
@@ -292,28 +293,13 @@ public abstract class AbstractTest {
     }
 
     public void refreshIndex() {
-        refreshIndex(10);
+        ElasticClientUtils.refreshIndex(client, 10);
     }
 
-    public void refreshIndex(long sleep) {
-        refreshIndex(alias, sleep);
-    }
-
-    public void refreshIndex(String alias, long sleep) {
-        try {
-            Thread.sleep(sleep/2);
-        } catch (InterruptedException e) {
-        }
-        client.admin().indices().prepareRefresh(alias).get();
-        try {
-            Thread.sleep(sleep/2);
-        } catch (InterruptedException e) {
-        }
-    }
+    public void refreshIndex(long sleep) { ElasticClientUtils.refreshIndex(client, sleep); }
 
     public AnalystBuilder sendAnalystPing() {
         AnalystBuilder ab = getAnalystBuilder();
-        analystDao.register(ab);
         refreshIndex();
         return ab;
     }
