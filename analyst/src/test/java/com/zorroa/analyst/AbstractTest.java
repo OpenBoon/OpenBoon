@@ -38,9 +38,7 @@ public abstract class AbstractTest {
     public AbstractTest() {
         System.setProperty("zorroa.unittest", "true");
     }
-
-    private String index = "archivist";
-
+    
     @Before
     public void __init() throws IOException, ClassNotFoundException {
         /**
@@ -48,7 +46,8 @@ public abstract class AbstractTest {
          * archivist handles creating the index and the mapping.
          */
         ElasticClientUtils.deleteAllIndexes(client);
-        ElasticClientUtils.createLatestMapping(client, index);
+        ElasticClientUtils.createLatestMapping(client, "archivist");
+        ElasticClientUtils.createLatestMapping(client, "analyst");
     }
 
     public void refreshIndex() {
