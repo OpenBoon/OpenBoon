@@ -1,0 +1,42 @@
+{
+  "migration": {
+    "reindex": true,
+    "reingest": false
+  },
+  "settings": {
+
+  },
+  "mappings": {
+    "analyst": {
+      "_all": {
+        "enabled": false
+      },
+      "dynamic": true,
+      "_timestamp": {
+        "enabled": false
+      },
+      "properties": {
+        "url": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "updatedTime": {
+          "index": "not_analyzed",
+          "type": "date"
+        },
+        "createdTime": {
+          "index": "not_analyzed",
+          "type": "date"
+        },
+        "state": {
+          "index": "not_analyzed",
+          "type": "integer"
+        },
+        "queueSize": {
+          "index": "not_analyzed",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

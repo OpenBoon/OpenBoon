@@ -34,6 +34,12 @@ public class LogDaoImpl extends AbstractElasticDao implements LogDao {
     }
 
     @Override
+    public String getIndex() {
+        return "eventlog";
+    }
+
+
+    @Override
     public void create(LogSpec spec) {
         /**
          * Don't wait around for the log to even finish, its supposed to be

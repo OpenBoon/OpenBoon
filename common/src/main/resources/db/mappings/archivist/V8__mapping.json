@@ -12,31 +12,38 @@
     "analysis": {
       "analyzer": {
         "default": {
-          "tokenizer": "standard",
+          "tokenizer": "keyword",
           "filter": [
+            "trim",
             "delimiter_filter",
-            "standard",
-            "lowercase",
-            "stop"
+            "lowercase"
+          ]
+        },
+        "case_sensitive": {
+          "tokenizer": "keyword",
+          "filter": [
+            "trim",
+            "delimiter_filter"
           ]
         },
         "path_analyzer" : {
           "type" : "custom",
           "tokenizer" : "path_tokenizer"
         },
+        "package_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "package_tokenizer"
+        },
         "trim_analyzer" : {
           "type" : "custom",
           "tokenizer" : "keyword",
-          "filter" : "trim"
+          "filter" : ["trim"]
         }
       },
       "filter": {
         "delimiter_filter": {
           "type": "word_delimiter",
-          "catenate_words": false,
-          "preserve_original": true,
-          "split_on_numerics": true,
-          "generate_word_parts": true
+          "preserve_original": "true"
         }
       },
       "tokenizer": {
@@ -44,57 +51,41 @@
           "type": "path_hierarchy",
           "delimiter": "/"
         },
-        "archivist_ngram_tokenizer": {
+        "package_tokenizer" : {
+          "type": "path_hierarchy",
+          "delimiter": "."
+        },
+        "ngram_tokenizer": {
           "type": "edgeNGram",
-          "min_gram": 2,
-          "max_gram": 20,
+          "min_gram": 3,
+          "max_gram": 32,
           "token_chars": ["letter", "digit"]
         }
       }
     }
   },
   "mappings": {
-    "note": {
-      "_all": {
-        "enabled": true
-      },
-      "dynamic": true,
-      "_timestamp": {
-        "enabled": false
-      },
-      "properties": {
-        "_id": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "asset": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
-        "text": {
-          "index": "analyzed",
-          "type": "string"
-        },
-        "annotations": {
-          "type": "geo_shape",
-          "tree": "quadtree",
-          "tree_levels": 1
-        }
-      }
-    },
     "asset": {
       "_all": {
         "enabled": false
       },
       "dynamic": true,
+      "dynamic_date_formats": [
+        "yyyy/MM/dd HH:mm:ss Z",
+        "yyyy/MM/dd Z",
+        "yyyy/MM/dd HH:mm:ss",
+        "yyyy/MM/dd",
+        "yyyy-MM-dd HH:mm:ss Z",
+        "yyyy-MM-dd Z",
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-dd",
+        "MM/dd/yyyy",
+        "MM-dd-yyyy"
+      ],
       "_timestamp": {
         "enabled": true
       },
       "properties": {
-        "_id": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
         "keywords": {
           "dynamic": true,
           "properties": {
@@ -108,7 +99,6 @@
               "type": "string",
               "fields": {
                 "raw": {
-                  "store": true,
                   "type": "string",
                   "index": "not_analyzed"
                 }
@@ -117,22 +107,25 @@
           }
         },
         "links": {
+          "type": "nested",
           "properties": {
-            "inputs": {
+            "type": {
               "type": "string",
               "index": "not_analyzed"
-            }
-          },
-          "properties": {
-            "outputs": {
+            },
+            "id": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "date": {
+              "type": "date",
+              "index": "not_analyzed"
+            },
+            "search": {
               "type": "string",
               "index": "not_analyzed"
             }
           }
-        },
-        "folders": {
-          "type": "integer",
-          "index": "not_analyzed"
         },
         "source": {
           "properties": {
@@ -193,26 +186,60 @@
         "imports": {
           "properties": {
             "id": {"type": "integer"},
-            "pipeline": {"type": "integer"},
+            "pipelineId": {"type": "integer"},
             "timestamp": {"type": "date" }
+          }
+        },
+        "colors": {
+          "type": "nested",
+          "properties": {
+            "red": {
+              "type": "integer"
+            },
+            "green": {
+              "type": "integer"
+            },
+            "blue": {
+              "type": "integer"
+            },
+            "hue": {
+              "type": "float"
+            },
+            "saturation": {
+              "type": "float"
+            },
+            "brightness": {
+              "type": "float"
+            },
+            "ratio": {
+              "type": "float"
+            }
           }
         }
       },
       "dynamic_templates": [
         {
-          "time_template": {
-            "match": ".+Time$",
-            "match_mapping_type": "string",
+          "shape_template": {
+            "match": "^.+Shape$|^shape$",
             "mapping": {
-              "type": "date"
+              "type": "geo_shape"
             }
           }
         },
         {
-          "location_template": {
-            "match": "^.+Location$|^location$|^shape$",
+          "point_template": {
+            "match": "^.+Point|^point$",
+            "match_mapping_type": "double",
             "mapping": {
-              "type": "geo_shape"
+              "type": "geo_point"
+            }
+          }
+        },
+        {
+          "color_template": {
+            "path_match": "*.colors",
+            "mapping": {
+              "type": "nested"
             }
           }
         },

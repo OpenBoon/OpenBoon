@@ -12,22 +12,22 @@ public abstract class AbstractElasticDao {
 
     protected Client client;
     protected ElasticTemplate elastic;
-    protected String alias = "archivist";
 
     @Autowired
     public void setApplicationProperties(ApplicationProperties props) {
-        this.alias = props.getString("zorroa.cluster.index.alias");
 
     }
+
     @Autowired
     public void setClient(Client client) {
         this.client = client;
-        this.elastic = new ElasticTemplate(client, alias, getType());
+        this.elastic = new ElasticTemplate(client, getIndex(), getType());
     }
 
     public abstract String getType();
+    public abstract String getIndex();
 
     public void refreshIndex() {
-        client.admin().indices().prepareRefresh(alias).get();
+        client.admin().indices().prepareRefresh(getIndex()).get();
     }
 }

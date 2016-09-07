@@ -23,7 +23,6 @@ import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -47,9 +46,6 @@ import java.util.regex.Pattern;
 public class MigrationServiceImpl implements MigrationService {
 
     private static final Logger logger = LoggerFactory.getLogger(MigrationServiceImpl.class);
-
-    @Value("${zorroa.cluster.index.alias}")
-    String alias;
 
     @Autowired
     MigrationDao migrationDao;
@@ -118,8 +114,8 @@ public class MigrationServiceImpl implements MigrationService {
             throw new ArchivistException("Failed to setup ElasticSearch index, ", e);
         }
 
-        final String oldIndex = String.format("%s_%02d", alias, m.getVersion());
-        final String newIndex = String.format("%s_%02d", alias, props.getVersion());
+        final String oldIndex = String.format("%s_%02d", m.getName(), m.getVersion());
+        final String newIndex = String.format("%s_%02d", m.getName(), props.getVersion());
         final boolean oldIndexExists = client.admin().indices().prepareExists(oldIndex).get().isExists();
         final boolean newIndexExists = client.admin().indices().prepareExists(newIndex).get().isExists();
 
@@ -237,9 +233,9 @@ public class MigrationServiceImpl implements MigrationService {
             IndicesAliasesRequestBuilder req = client.admin().indices().prepareAliases();
             logger.info("old index: {} exists: {}, removing alias.", oldIndex, oldIndexExists);
             if (oldIndexExists) {
-                req.removeAlias(oldIndex, alias);
+                req.removeAlias(oldIndex, m.getName());
             }
-            req.addAlias(newIndex, alias).execute().actionGet();
+            req.addAlias(newIndex, m.getName()).execute().actionGet();
         } catch (ElasticsearchException e) {
             logger.warn("Could not remove alias from {}, error was: '{}'. (this is ok)", oldIndex, e.getMessage());
         }
@@ -259,6 +255,7 @@ public class MigrationServiceImpl implements MigrationService {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(getClass().getClassLoader());
         Resource[] resources = resolver.getResources(m.getPath());
         for (Resource resource : resources) {
+
             Matcher matcher = MAPPING_NAMING_CONV.matcher(resource.getFilename());
             if (!matcher.matches()) {
                 logger.warn("'{}' is not using the proper naming convention.", resource.getFilename());
@@ -268,14 +265,13 @@ public class MigrationServiceImpl implements MigrationService {
             int version = Integer.valueOf(matcher.group(1));
             Map<String, Object> mapping = Json.Mapper.readValue(resource.getInputStream(), Json.GENERIC_MAP);
 
-            if (mapping.containsKey("version")) {
-                result.setVersion((int) mapping.get("version"));
-                result.setMapping(mapping);
-            }
-            else if (mapping.containsKey("migration")) {
+            result.setMapping(mapping);
+            result.setVersion(version);
+
+            if (mapping.containsKey("migration")) {
                 Map<String, Boolean> props = Json.Mapper.convertValue(mapping.get("migration"),
                         new TypeReference<Map<String, Boolean>>(){});
-                result.incrementVersion(version, mapping);
+
                 if (props.get("reindex")) {
                     result.setReindex(true);
                 }
@@ -293,7 +289,7 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private static class ElasticMigrationProperties {
-        private int version = 1;
+        private int version = 0;
         private boolean reindex = false;
         private boolean reingest = false;
         private Map<String, Object> mapping;

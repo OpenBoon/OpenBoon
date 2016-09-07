@@ -31,10 +31,15 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
+    public String getIndex() {
+        return "analyst";
+    }
+
+    @Override
     public String register(AnalystBuilder builder)  {
         String id = uuidGenerator.generate(builder.getUrl()).toString();
         byte[] doc = Json.serialize(builder);
-        return elastic.index(client.prepareIndex(alias, "analyst", id)
+        return elastic.index(client.prepareIndex(getIndex(), "analyst", id)
                 .setSource(doc)
                 .setOpType(IndexRequest.OpType.INDEX));
     }
@@ -42,7 +47,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     @Override
     public void update(String id, AnalystUpdateBuilder builder) {
         byte[] doc = Json.serialize(builder);
-        client.prepareUpdate(alias, getType(), id)
+        client.prepareUpdate(getIndex(), getType(), id)
                 .setDoc(doc)
                 .setRefresh(true)
                 .get();
@@ -54,7 +59,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     @Override
     public Analyst get(String id) {
         if (id.startsWith("http")) {
-            return elastic.queryForObject(client.prepareSearch(alias)
+            return elastic.queryForObject(client.prepareSearch(getIndex())
                     .setTypes(getType())
                     .setQuery(QueryBuilders.termQuery("url", id)), MAPPER);
         }
@@ -65,14 +70,14 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
 
     @Override
     public long count() {
-        return elastic.count(client.prepareSearch(alias)
+        return elastic.count(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setQuery(QueryBuilders.matchAllQuery()));
     }
 
     @Override
     public PagedList<Analyst> getAll(Paging page) {
-        return elastic.page(client.prepareSearch(alias)
+        return elastic.page(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setSize(page.getSize())
                 .setFrom(page.getFrom())
@@ -85,7 +90,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 QueryBuilders.boolQuery()
                         .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()));
 
-        return elastic.query(client.prepareSearch(alias)
+        return elastic.query(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setSize(paging.getSize())
                 .setFrom(paging.getFrom())
@@ -100,7 +105,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                         .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()))
                         .must(QueryBuilders.rangeQuery("queueSize").lt(maxQueueSize));
 
-        return elastic.query(client.prepareSearch(alias)
+        return elastic.query(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setSize(paging.getSize())
                 .setFrom(paging.getFrom())

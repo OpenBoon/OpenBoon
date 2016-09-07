@@ -196,7 +196,7 @@ public class ElasticClientUtils {
      * @throws IOException
      */
     public static void createLatestMapping(Client client, String index) throws IOException {
-        Resource mapping = getLatestMappingVersion("classpath:/db/mappings/*.json");
+        Resource mapping = getLatestMappingVersion("classpath:/db/mappings/" + index + "/*.json");
         client.admin()
                 .indices()
                 .prepareCreate(index)

@@ -36,6 +36,11 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         return "asset";
     }
 
+    @Override
+    public String getIndex() {
+        return "archivist";
+    }
+
     private static final JsonRowMapper<Asset> MAPPER = (id, version, source) -> {
         Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
         Asset result = new Asset();
@@ -109,7 +114,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private UpdateRequestBuilder prepareUpsert(Source source, String id) {
         byte[] doc = Json.serialize(source.getDocument());
-        return client.prepareUpdate(alias, "asset", id)
+        return client.prepareUpdate(getIndex(), "asset", id)
                 .setDoc(doc)
                 .setId(id)
                 .setUpsert(doc);
@@ -117,7 +122,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private UpdateRequestBuilder prepareUpsert(Source source, String id, String type) {
         byte[] doc = Json.serialize(source.getDocument());
-        return client.prepareUpdate(alias, type, id)
+        return client.prepareUpdate(getIndex(), type, id)
                 .setDoc(doc)
                 .setId(id)
                 .setUpsert(doc);
@@ -149,7 +154,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         Map<String,Object> link = ImmutableMap.of("type", type, "id", value);
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assets) {
-            UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
+            UpdateRequestBuilder updateBuilder = client.prepareUpdate(getIndex(), getType(), id);
             updateBuilder.setScript(new Script("remove_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
                     ImmutableMap.of("link", link)));
@@ -178,7 +183,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assets) {
-            UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), id);
+            UpdateRequestBuilder updateBuilder = client.prepareUpdate(getIndex(), getType(), id);
 
             updateBuilder.setScript(new Script("append_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
@@ -206,7 +211,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             asset.setAttr(entry.getKey(), entry.getValue());
         }
 
-        UpdateRequestBuilder updateBuilder = client.prepareUpdate(alias, getType(), assetId)
+        UpdateRequestBuilder updateBuilder = client.prepareUpdate(getIndex(), getType(), assetId)
             .setDoc(Json.serializeToString(asset.getDocument()))
             .setRefresh(true);
 
@@ -221,7 +226,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public boolean exists(Path path) {
-        return client.prepareSearch(alias)
+        return client.prepareSearch(getIndex())
                 .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString()))
                 .setSize(0)
                 .get().getHits().getTotalHits() > 0;
@@ -229,7 +234,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public Asset get(Path path) {
-        List<Asset> assets = elastic.query(client.prepareSearch(alias)
+        List<Asset> assets = elastic.query(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setSize(1)
                 .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString())), MAPPER);
@@ -249,7 +254,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public PagedList<Asset> getAll(Paging page) {
-        return elastic.page(client.prepareSearch(alias)
+        return elastic.page(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setFrom(page.getFrom())
                 .setSize(page.getSize())

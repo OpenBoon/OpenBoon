@@ -50,8 +50,6 @@ public abstract class AbstractTest {
         System.setProperty("zorroa.unittest", "true");
     }
 
-    private String index = "archivist";
-
     public Path getTestImagePath(String subdir) {
         return FileUtils.normalize(Paths.get("../unittest/resources/images").resolve(subdir));
     }
@@ -94,7 +92,8 @@ public abstract class AbstractTest {
          * archivist handles creatig the index and the mapping.
          */
         ElasticClientUtils.deleteAllIndexes(client);
-        ElasticClientUtils.createLatestMapping(client, index);
+        ElasticClientUtils.createLatestMapping(client, "archivist");
+        ElasticClientUtils.createLatestMapping(client, "analyst");
         ElasticClientUtils.createIndexedScripts(client);
         ElasticClientUtils.createEventLogTemplate(client);
     }
