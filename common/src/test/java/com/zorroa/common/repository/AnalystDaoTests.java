@@ -2,9 +2,11 @@ package com.zorroa.common.repository;
 
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
+import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.domain.AnalystState;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,6 +19,27 @@ public class AnalystDaoTests extends AbstractTest {
 
     @Autowired
     AnalystDao analystDao;
+
+    String id;
+    AnalystBuilder builder;
+
+    @Before
+    public void init() {
+        builder = new AnalystBuilder();
+        builder.setState(AnalystState.UP);
+        builder.setUrl("http://127.0.0.2:8099");
+        builder.setQueueSize(1);
+        builder.setMetrics(Maps.newHashMap());
+        builder.setArch("osx");
+        builder.setStartedTime(System.currentTimeMillis());
+        id = analystDao.register(builder);
+        refreshIndex();
+    }
+
+    @Test
+    public void testGetAll() {
+        assertEquals(1, analystDao.getAll(Paging.first()).size());
+    }
 
     @Test
     public void testRegister() {

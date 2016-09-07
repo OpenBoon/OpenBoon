@@ -39,7 +39,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     public String register(AnalystBuilder builder)  {
         String id = uuidGenerator.generate(builder.getUrl()).toString();
         byte[] doc = Json.serialize(builder);
-        return elastic.index(client.prepareIndex(getIndex(), "analyst", id)
+        return elastic.index(client.prepareIndex(getIndex(), getType(), id)
                 .setSource(doc)
                 .setOpType(IndexRequest.OpType.INDEX));
     }
