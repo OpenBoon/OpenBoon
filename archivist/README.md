@@ -45,7 +45,12 @@ See the Ingester README for an example of how to run an ingest with external pro
    * 8087 - Event interface
    * 9200 - ElasticSearch direct HTTP
 
-## REST Endpoint Quick Reference
+## REST Endpoints
+
+The Archivist REST endpoints are used in the Python and ObjectiveC SDKs
+to create, update and delete objects (CRUD) and perform searches.
+
+### Quick Reference
 
 | Endpoint                   | Method | Description                                                    |
 |----------------------------|--------|----------------------------------------------------------------|
@@ -71,6 +76,37 @@ See the Ingester README for an example of how to run an ingest with external pro
 | /api/v1/logout             | POST   | Log the authenticated user out                                 |
 | /api/v1/users              | GET    | Get a list of all users                                        |
 | /health                    | GET    | Show the health details for the server
+
+### Java Spelunking
+
+Look at these Java files to get the arguments and return values for each REST endpoint:
+```
+<archivist>/src/main/java/com/zorroa/archivist/web/api
+```
+Contains all the "web" endpoints, grouped by type into FooController.java classes.
+For example, AssetController contains all of the asset-related endpoints for creating,
+updating and deleting assets, as well as *some* of the search endpoints, others are in
+the RoomController because they affect the search for the current room.
+
+All arguments and return values use JSON. The JSON layout for any argument or return
+value will exactly match the layout of the type, usually a Builder for arguments, and
+a domain argument for return values. Most of these are specified in the Java SDK
+in the zorroa-plugin-sdk repo in:
+```
+<zorroa-plugin-sdk>/sdk/src/main/java/com/zorroa/sdk/domain
+```
+Fields in the domain objects are converted to JSON automatically using the variable
+name and the type of the object. Anything marked with @JsonIgnore is skipped.
+
+The `@RequestMapping` annotation marks each endpoint and defines the name. Each endpoint
+will indicate the HTTP method (GET, PUT, POST, or DELETE) for that name. The `@PathVariable`
+annotation marks the name for variables in the endpoint name. For example, `/api/v1/assets/{id}/_stream`
+has a `@PathVariable` for the {id} variable, which is read as a string that represents the
+asset's unique identifier.
+
+Return values for endpoints can be specified in (at least) two ways:
+1. The return value of the Java method.
+2. As a string using various Java "response" methods.
 
 ## Persistent Data Files
 
