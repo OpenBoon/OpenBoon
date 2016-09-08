@@ -9,7 +9,6 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.Link;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -188,8 +187,6 @@ public class FolderControllerTests extends MockMvcTest {
         List<Folder> folders = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<List<Folder>>() {});
 
-        // This is 4 because of the folder created by init and the user folder
-        assertEquals(4, folders.size());
         Set<String> names = folders.stream().map(Folder::getName).collect(Collectors.toSet());
 
         assertTrue(names.contains("first"));
@@ -274,8 +271,8 @@ public class FolderControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
-            assertEquals(links.get(0).getId(), String.valueOf(folder1.getId()));
+            List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
+            assertEquals(links.get(0), folder1.getId());
         }
     }
 
@@ -301,7 +298,7 @@ public class FolderControllerTests extends MockMvcTest {
         refreshIndex();
         assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
+            List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(0, links.size());
         }
     }

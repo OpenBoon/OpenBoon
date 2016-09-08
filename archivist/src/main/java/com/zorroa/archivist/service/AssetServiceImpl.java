@@ -68,7 +68,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public Asset index(Source source, Link link) {
+    public Asset index(Source source, LinkSpec link) {
         return assetDao.index(source, link);
     }
 
@@ -78,7 +78,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public AssetIndexResult index(List<Source> sources, Link link) {
+    public AssetIndexResult index(List<Source> sources, LinkSpec link) {
         AssetIndexResult result =  assetDao.index(sources, link);
         if (result.created + result.updated > 0) {
             dyHierarchyService.submitGenerateAll(false);

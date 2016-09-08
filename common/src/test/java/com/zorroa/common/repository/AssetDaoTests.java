@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -70,13 +70,16 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testAppendLink() {
-        assertTrue(assetDao.appendLink("folder", "100",
+        assertTrue(assetDao.appendLink("folder", 100,
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
         assertTrue(assetDao.appendLink("parent", "foo",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         Asset a = assetDao.get(asset1.getId());
-        assertEquals(2, ((List) a.getAttr("links")).size());
+        Map<String, Collection<Object>> links = a.getAttr("links");
+        assertEquals(2, links.size());
+        assertTrue(links.get("folder").contains(100));
+        assertTrue(links.get("parent").contains("foo"));
     }
 
     @Test
@@ -85,13 +88,16 @@ public class AssetDaoTests extends AbstractTest {
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         Asset a = assetDao.get(asset1.getId());
-        assertEquals(1, ((List) a.getAttr("links")).size());
+        Map<String, Collection<Object>> links = a.getAttr("links");
+        assertEquals(1, links.size());
 
         assertTrue(assetDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         a = assetDao.get(asset1.getId());
-        assertEquals(0, ((List) a.getAttr("links")).size());
+        links = a.getAttr("links");
+        assertEquals(1, links.size());
+        assertEquals(0, links.get("folder").size());
     }
 
     @Test

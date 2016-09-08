@@ -59,7 +59,7 @@ public class FolderServiceTests extends AbstractTest {
 
         PagedList<Asset> assets = assetService.getAll(Paging.first());
         for (Asset a: assets) {
-            assertEquals(1, ((List) a.getAttr("links")).size());
+            assertEquals(1, ((List) a.getAttr("links.folder")).size());
         }
     }
 

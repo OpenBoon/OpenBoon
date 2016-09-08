@@ -11,7 +11,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Link;
+import com.zorroa.sdk.domain.LinkSpec;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
@@ -181,7 +181,7 @@ public class AssetController {
 
     public static class IndexAssetRequest {
         public List<Source> sources;
-        public Link link;
+        public LinkSpec link;
     }
 
     @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)

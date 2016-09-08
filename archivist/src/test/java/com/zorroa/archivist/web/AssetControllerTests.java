@@ -11,7 +11,6 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.Link;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.*;
 import com.zorroa.sdk.util.AssetUtils;
@@ -26,8 +25,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AssetControllerTests extends MockMvcTest {
@@ -282,11 +283,11 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Paging.first());
         for (Asset asset: assets) {
-            List<Link> links = asset.getAttr("links", new TypeReference<List<Link>>() {});
+            List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(2, links.size());
             assertTrue(
-                    links.get(0).getId().equals(String.valueOf(folder1.getId())) ||
-                    links.get(1).getId().equals(String.valueOf(folder1.getId())));
+                    links.get(0).equals(folder1.getId()) ||
+                    links.get(1).equals(folder1.getId()));
         }
     }
 

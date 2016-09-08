@@ -4,7 +4,7 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Link;
+import com.zorroa.sdk.domain.LinkSpec;
 import com.zorroa.sdk.processor.Source;
 
 import java.nio.file.Path;
@@ -24,7 +24,7 @@ public interface AssetService {
      */
     PagedList<Asset> getAll(Paging page);
 
-    Asset index(Source source, Link link);
+    Asset index(Source source, LinkSpec link);
     Asset index(Source source);
     /**
      * Index the given list of sources, optionally attaching the given
@@ -34,7 +34,7 @@ public interface AssetService {
      * @param link
      * @return
      */
-    AssetIndexResult index(List<Source> sources, Link link);
+    AssetIndexResult index(List<Source> sources, LinkSpec link);
     AssetIndexResult index(List<Source> sources);
 
     Map<String, List<Object>> removeLink(String type, String value, List<String> assets);

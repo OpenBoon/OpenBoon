@@ -4,14 +4,13 @@ import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Link;
+import com.zorroa.sdk.domain.LinkSpec;
 import com.zorroa.sdk.processor.Source;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-
 
 
 public interface AssetDao {
@@ -26,9 +25,9 @@ public interface AssetDao {
 
     Asset get(Path path);
 
-    Map<String, List<Object>> removeLink(String type, String value, List<String> assets);
+    Map<String, List<Object>> removeLink(String type, Object value, List<String> assets);
 
-    Map<String, List<Object>> appendLink(String type, String value, List<String> assets);
+    Map<String, List<Object>> appendLink(String type, Object value, List<String> assets);
 
     long update(String assetId, Map<String, Object> attrs);
 
@@ -38,7 +37,7 @@ public interface AssetDao {
      * @param sourceLink
      * @return
      */
-    Asset index(Source source, Link sourceLink);
+    Asset index(Source source, LinkSpec sourceLink);
 
     /**
      * Index the given sources.  If any assets are created, attach a source link.
@@ -46,6 +45,6 @@ public interface AssetDao {
      * @param sourceLink
      * @return
      */
-    AssetIndexResult index(List<Source> sources, Link sourceLink);
+    AssetIndexResult index(List<Source> sources, LinkSpec sourceLink);
 
 }

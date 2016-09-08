@@ -203,18 +203,12 @@ public class SearchServiceImpl implements SearchService {
 
         BoolQueryBuilder staticBool = QueryBuilders.boolQuery();
 
-        Map<String, List<String>> links = filter.getLinks();
-        for (Map.Entry<String, List<String>> link: links.entrySet()) {
+        Map<String, List<Object>> links = filter.getLinks();
+        for (Map.Entry<String, List<Object>> link: links.entrySet()) {
             if (link.getKey().equals("folder")) {
                 continue;
             }
-
-            BoolQueryBuilder linksBool = QueryBuilders.boolQuery();
-            QueryBuilder nested = QueryBuilders.nestedQuery("links", linksBool);
-            linksBool.should(QueryBuilders.boolQuery()
-                    .must(QueryBuilders.termQuery("links.type", link.getKey()))
-                    .must(QueryBuilders.termsQuery("links.id", link.getValue())));
-            staticBool.must(nested);
+            staticBool.should(QueryBuilders.termsQuery("links." + link.getKey(), link.getValue()));
         }
 
         /*
@@ -223,7 +217,7 @@ public class SearchServiceImpl implements SearchService {
         if (links.containsKey("folder")) {
 
             List<Integer> folders = links.get("folder")
-                    .stream().map(f->Integer.valueOf(f)).collect(Collectors.toList());
+                    .stream().map(f->Integer.valueOf(f.toString())).collect(Collectors.toList());
 
             Set<String> childFolders = Sets.newHashSet();
             for (Folder folder : folderService.getAllDescendants(
@@ -246,12 +240,7 @@ public class SearchServiceImpl implements SearchService {
             }
 
             if (!childFolders.isEmpty()) {
-                BoolQueryBuilder linksBool = QueryBuilders.boolQuery();
-                QueryBuilder nested = QueryBuilders.nestedQuery("links", linksBool);
-                linksBool.should(QueryBuilders.boolQuery()
-                        .must(QueryBuilders.termQuery("links.type", "folder"))
-                        .must(QueryBuilders.termsQuery("links.id", childFolders)));
-                staticBool.should(nested);
+                staticBool.should(QueryBuilders.termsQuery("links.folder", childFolders));
             }
         }
 

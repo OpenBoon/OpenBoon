@@ -224,7 +224,7 @@ public class FolderServiceImpl implements FolderService {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
-        Map<String, List<Object>> result = assetDao.appendLink("folder", String.valueOf(folder.getId()), assetIds);
+        Map<String, List<Object>> result = assetDao.appendLink("folder", folder.getId(), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
                 ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
@@ -239,7 +239,7 @@ public class FolderServiceImpl implements FolderService {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
-        Map<String, List<Object>> result = assetDao.removeLink("folder", String.valueOf(folder.getId()), assetIds);
+        Map<String, List<Object>> result = assetDao.removeLink("folder", folder.getId(), assetIds);
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
                 ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));

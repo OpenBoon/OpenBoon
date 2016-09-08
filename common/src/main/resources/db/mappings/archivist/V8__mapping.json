@@ -107,24 +107,8 @@
           }
         },
         "links": {
-          "type": "nested",
           "properties": {
-            "type": {
-              "type": "string",
-              "index": "not_analyzed"
-            },
-            "id": {
-              "type": "string",
-              "index": "not_analyzed"
-            },
-            "date": {
-              "type": "date",
-              "index": "not_analyzed"
-            },
-            "search": {
-              "type": "string",
-              "index": "not_analyzed"
-            }
+
           }
         },
         "source": {
@@ -179,17 +163,6 @@
             }
           }
         },
-        "exports": {
-          "type": "integer",
-          "index": "not_analyzed"
-        },
-        "imports": {
-          "properties": {
-            "id": {"type": "integer"},
-            "pipelineId": {"type": "integer"},
-            "timestamp": {"type": "date" }
-          }
-        },
         "colors": {
           "type": "nested",
           "properties": {
@@ -240,6 +213,16 @@
             "path_match": "*.colors",
             "mapping": {
               "type": "nested"
+            }
+          }
+        },
+        {
+          "link_template": {
+            "match": "links.*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "index": "not_analyzed"
             }
           }
         },

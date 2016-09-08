@@ -76,13 +76,14 @@ public class ElasticClientUtils {
     }
 
     private static final String REMOVE_SCRIPT =
-            "if (ctx._source.links != null) {"+
-            "ctx._source.links.removeIf( {l -> l.id == link.id && l.type == link.type} ) }";
+            "if (ctx._source.links == null) { return; }; "+
+            "if (ctx._source.links[type] == null) { return; }; "+
+            "ctx._source.links[type].removeIf({i-> i==id});";
 
     public static void createRemoveLinkScript(Client client) {
         Map<String, Object> script = ImmutableMap.of(
                 "script", REMOVE_SCRIPT,
-                "params", ImmutableMap.of("link", "link"));
+                "params", ImmutableMap.of("type", "type", "id", "id"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
@@ -92,13 +93,15 @@ public class ElasticClientUtils {
     }
 
     private static final String APPEND_SCRIPT =
-            "if (ctx._source.links == null) { ctx._source.links = [link]; } else " +
-                    "{ ctx._source.links.removeIf( {l -> l.id == link.id && l.type == link.type}); ctx._source.links += link; }";
+            "if (ctx._source.links == null) { ctx._source.links = [:]; };  " +
+            "if (ctx._source.links[type] == null) { ctx._source.links[type] = []; };" +
+            "ctx._source.links[type] += id; "+
+            "ctx._source.links[type] = ctx._source.links[type].unique();";
 
     public static void createAppendLinkScript(Client client) {
         Map<String, Object> script = ImmutableMap.of(
                 "script", APPEND_SCRIPT,
-                "params", ImmutableMap.of("link", "link"));
+                "params", ImmutableMap.of("type", "type", "id", "id"));
 
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
@@ -107,32 +110,6 @@ public class ElasticClientUtils {
                 .get();
     }
 
-    /*
-    public static void createRemoveLinkScript(Client client) {
-        Map<String, Object> script = ImmutableMap.of(
-                "script", "if (ctx._source.links == null) { return ; }; if (ctx._source.links[attrKey] != null) { ctx._source.links[attrKey].removeIf( {f -> f == attrValue} )}",
-                "params", ImmutableMap.of("attrKey", "attrKey", "attrValue", "attrValue"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("remove_link")
-                .setSource(script)
-                .get();
-    }
-
-    public static void createAppendLinkScript(Client client) {
-        Map<String, Object> script = ImmutableMap.of(
-                "script", "if (ctx._source.links == null) { ctx._source.links = [:]; }; if (ctx._source.links[attrKey] == null ) {  ctx._source.links[attrKey] = [attrValue] } " +
-                        "else { ctx._source.links[attrKey] += attrValue; ctx._source.links[attrKey] = ctx._source.links[attrValue].unique(); }",
-                "params", ImmutableMap.of("attrKey", "attrKey", "attrValue", "attrValue"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("append_link")
-                .setSource(script)
-                .get();
-    }
-    */
     /**
      * Delete all indexes.
      *

@@ -9,7 +9,7 @@ import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.Link;
+import com.zorroa.sdk.domain.LinkSpec;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -50,14 +50,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     @Override
-    public Asset index(Source source, Link sourceLink) {
+    public Asset index(Source source, LinkSpec sourceLink) {
         String id = source.getId();
         UpdateRequestBuilder upsert = prepareUpsert(source, id);
         return new Asset(upsert.get().getId(), source.getDocument());
     }
 
     @Override
-    public AssetIndexResult index(List<Source> sources, Link sourceLink) {
+    public AssetIndexResult index(List<Source> sources, LinkSpec sourceLink) {
         AssetIndexResult result = new AssetIndexResult();
         if (sources.isEmpty()) {
             return result;
@@ -146,7 +146,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Map<String, List<Object>> removeLink(String type, String value, List<String> assets) {
+    public Map<String, List<Object>> removeLink(String type, Object value, List<String> assets) {
         if (type.contains(".")) {
             throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
         }
@@ -157,7 +157,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             UpdateRequestBuilder updateBuilder = client.prepareUpdate(getIndex(), getType(), id);
             updateBuilder.setScript(new Script("remove_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("link", link)));
+                    link));
             bulkRequest.add(updateBuilder);
         }
 
@@ -180,12 +180,11 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Map<String, List<Object>> appendLink(String type, String value, List<String> assets) {
+    public Map<String, List<Object>> appendLink(String type, Object value, List<String> assets) {
         if (type.contains(".")) {
             throw new IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)");
         }
-
-        Map<String, Object> link = ImmutableMap.of("type", type, "id", value, "date", System.currentTimeMillis());
+        Map<String, Object> link = ImmutableMap.of("type", type, "id", value);
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (String id: assets) {
@@ -193,7 +192,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
             updateBuilder.setScript(new Script("append_link",
                     ScriptService.ScriptType.INDEXED, "groovy",
-                    ImmutableMap.of("link", link)));
+                    link));
 
             bulkRequest.add(updateBuilder);
         }
