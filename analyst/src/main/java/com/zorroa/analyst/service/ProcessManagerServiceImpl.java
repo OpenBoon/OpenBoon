@@ -144,6 +144,18 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         String line;
 
         try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()))) {
+            for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
+                if (e.getKey().equals("ZORROA_HMAC_KEY")) {
+                    continue;
+                }
+                logStream.write(new StringBuilder(256)
+                        .append("ENV: ")
+                        .append(e.getKey())
+                        .append("=")
+                        .append(e.getValue())
+                        .toString().getBytes());
+                logStream.write(NEWLINE);
+            }
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(ZpsExecutor.SUFFIX)) {
                     processBuffer(sb, task, logStream);
