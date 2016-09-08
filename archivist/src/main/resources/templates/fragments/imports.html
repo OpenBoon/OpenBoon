@@ -149,13 +149,13 @@
 
             function pathExists(val, handler) {
                 $.ajax({
-                    url: '/ofs/_exists',
+                    url: '/api/v1/ofs/_exists',
                     method: 'post',
                     data: JSON.stringify({"path": val}),
                     dataType: 'json',
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
-                        var exists = data["result"]
+                        var exists = data["result"];
                         handler(exists);
                     },
                     error: function (err) {
