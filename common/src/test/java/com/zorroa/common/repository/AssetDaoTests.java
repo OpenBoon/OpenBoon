@@ -76,10 +76,12 @@ public class AssetDaoTests extends AbstractTest {
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         Asset a = assetDao.get(asset1.getId());
-        Map<String, Collection<Object>> links = a.getAttr("links");
-        assertEquals(2, links.size());
-        assertTrue(links.get("folder").contains(100));
-        assertTrue(links.get("parent").contains("foo"));
+        Collection<Object> folder_links = a.getAttr("links.folder");
+        Collection<Object> parent_links = a.getAttr("links.parent");
+        assertEquals(1, folder_links.size());
+        assertEquals(1, parent_links.size());
+        assertTrue(folder_links.contains(100));
+        assertTrue(parent_links.contains("foo"));
     }
 
     @Test
@@ -88,16 +90,15 @@ public class AssetDaoTests extends AbstractTest {
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         Asset a = assetDao.get(asset1.getId());
-        Map<String, Collection<Object>> links = a.getAttr("links");
+        Collection<Object> links = a.getAttr("links.folder");
         assertEquals(1, links.size());
 
         assertTrue(assetDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         a = assetDao.get(asset1.getId());
-        links = a.getAttr("links");
-        assertEquals(1, links.size());
-        assertEquals(0, links.get("folder").size());
+        links = a.getAttr("links.folder");
+        assertEquals(0, links.size());
     }
 
     @Test
