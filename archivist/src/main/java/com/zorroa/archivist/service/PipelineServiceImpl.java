@@ -100,6 +100,12 @@ public class PipelineServiceImpl implements PipelineService {
 
     @Override
     public boolean update(int id, Pipeline spec) {
+        List<ProcessorRef> validated = Lists.newArrayList();
+        for (ProcessorRef ref: spec.getProcessors()) {
+            validated.add(pluginService.getProcessorRef(ref));
+        }
+        spec.setProcessors(validated);
+
         boolean result = pipelineDao.update(id, spec);
         if (result) {
             event.afterCommit(() -> {

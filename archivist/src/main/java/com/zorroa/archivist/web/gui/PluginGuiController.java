@@ -3,6 +3,8 @@ package com.zorroa.archivist.web.gui;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.domain.Paging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class PluginGuiController {
+
+    private static final Logger logger = LoggerFactory.getLogger(PluginGuiController.class);
 
     @Autowired
     PluginService pluginService;
@@ -43,6 +47,12 @@ public class PluginGuiController {
         model.addAttribute("plugin", plugin);
         model.addAttribute("processor", pluginService.getProcessor(id));
         return "processor";
+    }
+
+    @RequestMapping("/gui/docs/processor/{name:.+}")
+    public String processor_docs(Model model, @PathVariable String name) {
+        model.addAttribute("processor", pluginService.getProcessor(name));
+        return "processor_docs";
     }
 
     /**

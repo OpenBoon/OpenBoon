@@ -222,6 +222,7 @@ public class IndexController {
     public String showPipeline(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("pipeline", pipelineService.get(id));
+        model.addAttribute("processors", pluginService.getAllProcessors());
         return "pipeline";
     }
 

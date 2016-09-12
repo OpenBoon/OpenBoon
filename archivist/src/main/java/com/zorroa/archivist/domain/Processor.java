@@ -25,6 +25,7 @@ public class Processor {
 
     // Properties from parent Plugin
 
+    private int pluginId;
     private String pluginName;
     private String pluginVersion;
     private String pluginLanguage;
@@ -125,6 +126,15 @@ public class Processor {
 
     public Processor setPluginLanguage(String pluginLanguage) {
         this.pluginLanguage = pluginLanguage;
+        return this;
+    }
+
+    public int getPluginId() {
+        return pluginId;
+    }
+
+    public Processor setPluginId(int pluginId) {
+        this.pluginId = pluginId;
         return this;
     }
 

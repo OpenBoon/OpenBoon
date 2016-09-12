@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:fragment="display_props">
+    <ul>
+        <div th:with="displays = ${processor.display}"
+             th:include="fragments/display_props :: display_props"/>
+    </ul>
+</div>
+</body>
+
+</html>

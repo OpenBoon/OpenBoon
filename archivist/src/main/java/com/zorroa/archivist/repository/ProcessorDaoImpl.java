@@ -89,6 +89,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         p.setDescription(rs.getString("str_description"));
         p.setDisplay(Json.deserialize(rs.getString("json_display"), new TypeReference<List<Map<String, Object>>>() {}));
         p.setSupportedExtensions(Json.deserialize(rs.getString("json_ext"), Json.SET_OF_STRINGS));
+        p.setPluginId(rs.getInt("pk_plugin"));
         p.setPluginLanguage(rs.getString("plugin_lang"));
         p.setPluginVersion(rs.getString("plugin_ver"));
         p.setPluginName(rs.getString("plugin_name"));
@@ -105,6 +106,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             "processor.str_description,"+
             "processor.json_display,"+
             "processor.json_ext, " +
+            "plugin.pk_plugin, "+
             "plugin.str_name AS plugin_name, "+
             "plugin.str_lang AS plugin_lang, " +
             "plugin.str_version AS plugin_ver " +
@@ -128,7 +130,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public List<Processor> getAll() {
-        return jdbc.query(GET, MAPPER);
+        return jdbc.query(GET.concat(" ORDER BY processor.str_short_name"), MAPPER);
     }
 
     @Override
