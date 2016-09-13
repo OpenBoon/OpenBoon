@@ -118,15 +118,30 @@
             return true;
         }
 
+        function failureAlert(message) {
+            var alert = $("#failure-alert");
+            $("#failure-alert span").remove();
+            $("#failure-alert button").after("<span>" + message + "</span>");
+            alert.alert();
+            alert.fadeTo(2000, 500);
+        }
+
         function save() {
             hide_all_alerts();
 
             var id = $("#id").val();
-            var doc = {
-                "processors": get_pipeline(),
-                "name": $("#name").val(),
-                "description": $("#description").val(),
-                "type": $("#type").val()
+            var doc;
+
+            try {
+                doc = {
+                    "processors": get_pipeline(),
+                    "name": $("#name").val(),
+                    "description": $("#description").val(),
+                    "type": $("#type").val()
+                }
+            } catch (e) {
+                failureAlert("Failed to parse json " + e.message);
+                return
             }
 
             $.ajax({
@@ -145,11 +160,7 @@
                 complete: function(data, status) {
                     if (status == "error") {
                         var message = JSON.parse(data.responseText)["message"];
-                        var alert = $("#failure-alert");
-                        $("#failure-alert span").remove();
-                        $("#failure-alert button").after("<span>" + message + "</span>");
-                        alert.alert();
-                        alert.fadeTo(2000, 500);
+                        failureAlert(message);
                     }
                 }
             });
@@ -163,10 +174,14 @@
         function get_pipeline() {
             var pipeline = [];
             $("#proc-list").children(".processor").each(function(idx, itm) {
-                console.log($(itm));
-                ref = {
-                    "className": $(itm).attr("data-classname"),
-                    "args": JSON.parse($(itm).attr("data-args"))
+                try {
+                    ref = {
+                        "className": $(itm).attr("data-classname"),
+                        "args": JSON.parse($(itm).attr("data-args"))
+                    }
+                } catch (e) {
+                    throw SyntaxError($(itm).attr("data-classname")
+                            + " " + e.message);
                 }
                 pipeline.push(ref);
             });
@@ -192,7 +207,6 @@
                 "draggable": ".list-group-item",
                 "filter:": ".js-remove",
                 onFilter: function (evt) {
-                    console.log(evt);
                     evt.item.parentNode.removeChild(evt.item);
                 }
                 });
@@ -235,8 +249,8 @@
 
             $("#args").keyup(function() {
                 var keyed = $(this).val();
+                get_selected_proc().attr("data-args", keyed);
                 if (validate_args()) {
-                    get_selected_proc().attr("data-args", keyed);
                     $("#args-group").removeClass("has-error");
                 }
                 else {
@@ -257,7 +271,6 @@
 
             $(document).on("click", ".proc-remove", function(e) {
                 var selected = $(this).parent().parent();
-                console.log(selected);
                 selected.remove();
                 $("#args").val("");
                 $("#docs").empty();
