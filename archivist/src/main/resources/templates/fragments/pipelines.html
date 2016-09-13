@@ -15,8 +15,17 @@
 
                 <div class="navbar-collapse collapse">
                     <div class="navbar navbar-right">
+                        <th:block th:if="${pipeline != null}">
+                         <a th:href="'/api/v1/pipelines/' + ${pipeline.id} + '/_export'" class="btn btn-danger navbar-btn"
+                            data-toggle="tooltip" title="Export to File" download="true"><i class="fa fa-download fa-lg fa-fw" aria-hidden="true"></i></a>
+
+                        </th:block>
+
+                        <button onclick="$('#modalImport').modal({'backdrop': 'static'});"
+                                type="button" class="btn btn-danger navbar-btn" data-toggle="tooltip" title="Import from File"><i class="fa fa-upload fa-lg fa-fw" aria-hidden="true"></i></button>
+
                         <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
-                                type="button" class="btn btn-danger navbar-btn"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
+                                type="button" class="btn btn-danger navbar-btn" data-toggle="tooltip" title="Create New Pipeline"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
 
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
@@ -26,6 +35,32 @@
             </div>
         </div>
     </nav>
+</div>
+
+<div th:fragment="modal_import">
+    <div class="modal fade" id="modalImport" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close">&times;</button>
+                    <h4 class="modal-title">Import Pipeline</h4>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" id="pipelineImport" autocomplete="off" role="form" action="/gui/pipelines/_import" method="post">
+                        <div class="form-group">
+                            <label for="jfile">File:</label>
+                            <input type="file" class="form-control" name="jfile" id="jfile" required="true"/>
+                        </div>
+                        <button type="submit" class="btn btn-success">Import</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div th:fragment="modal_create">

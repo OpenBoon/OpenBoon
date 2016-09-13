@@ -7,6 +7,7 @@ import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.archivist.web.InvalidObjectException;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -40,6 +42,21 @@ public class PipelineController {
         else {
             return pipelineService.get(id);
         }
+    }
+
+    @RequestMapping(value="/api/v1/pipelines/{id}/_export", method=RequestMethod.GET, produces = {"application/octet-stream"})
+    public byte[] export(@PathVariable String id, HttpServletResponse rsp) {
+
+        Pipeline export;
+        if (StringUtils.isNumeric(id)) {
+            export = pipelineService.get(Integer.parseInt(id));
+        }
+        else {
+            export = pipelineService.get(id);
+        }
+        export.setId(null);
+        rsp.setHeader("Content-disposition", "attachment; filename=\"" + export.getName() + ".json\"");
+        return Json.prettyString(export).getBytes();
     }
 
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.GET)

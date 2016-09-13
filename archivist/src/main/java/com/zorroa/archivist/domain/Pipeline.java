@@ -11,7 +11,12 @@ import java.util.Objects;
 
 
 public class Pipeline implements Loggable<Integer> {
-    private int id;
+
+    /**
+     * The id of the pipeline.  This is an Integer so we can set it to
+     * null with exports.
+     */
+    private Integer id;
 
     @NotNull
     private PipelineType type;
@@ -26,11 +31,11 @@ public class Pipeline implements Loggable<Integer> {
     @NotNull
     private List<ProcessorRef> processors;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Pipeline setId(int id) {
+    public Pipeline setId(Integer id) {
         this.id = id;
         return this;
     }

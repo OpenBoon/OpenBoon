@@ -9,6 +9,7 @@ import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -239,6 +243,21 @@ public class IndexController {
             return "redirect:/gui/pipelines/" + p.getId();
         }
     }
+
+    @RequestMapping(value="/gui/pipelines/_import", method=RequestMethod.POST, consumes = "multipart/form-data")
+    public String uploadPipeline(@RequestParam("jfile") MultipartFile jfile, RedirectAttributes redirectAttributes) throws IOException {
+
+        PipelineSpecV spec = Json.Mapper.readValue(jfile.getInputStream(), PipelineSpecV.class);
+        if(pipelineService.exists(spec.getName())) {
+            spec.setName("Imported " + spec.getName());
+        }
+
+        Pipeline p = pipelineService.create(spec);
+        redirectAttributes.addFlashAttribute("message",
+                "Pipeline imported");
+        return "redirect:/gui/pipelines/" + p.getId();
+    }
+
 
     @RequestMapping("/gui/status")
     public String status(Model model) {
