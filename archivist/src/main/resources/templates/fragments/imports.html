@@ -43,40 +43,11 @@
         <div class="modal-content">
             <div class="modal-body">
                 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-                    <li class="active"><a href="#upload" data-toggle="tab">Upload</a></li>
-                    <li><a href="#server" data-toggle="tab">Server Drive</a></li>
-                    <li><a href="#url" data-toggle="tab">URL</a></li>
+                    <li><a href="#server" data-toggle="tab">Directory Scan</a></li>
                 </ul>
                 <div id="my-tab-content" class="tab-content">
-                    <div class="tab-pane active" id="upload">
-                        <div class="container-fluid">
-                            <form class="form-horizontal" id="importForm" action="#" method="post">
-                                <div class="dropzone-preview" id="importDropzone">
-                                    <div class="dz-default dz-message text-center" data-dz-message="">
-                                        <br/><br/><br/><br/>
-                                        <h3><span id="clickable" class="label label-info">Click or Drag to Upload</span></h3>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="folderId">Add To Folder:</label>
-                                    <button id="folderId" type="button" class="btn btn-default">...</button>
-                                </div>
-                                <div class="form-group">
-                                    <label for="notes">Notes:</label>
-                                    <textarea class="form-control" rows="3" id="notes"></textarea>
-                                </div>
-
-                                <div class="form-group text-center">
-                                    <div class="col-md-6 col-md-offset-3">
-                                        <button type="reset" class="btn btn-default">Reset</button>
-                                        <button type="submit" class="btn btn-default">Submit</button>
-                                        <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="server">
+                    <div class="tab-pane active" id="server">
+                        <div class="alert alert-warning" role="alert">The Zorroa servers must have access to all files and directories.</div>
                         <form id="serverImportForm" autocomplete="off" action="#" role="form" th:action="@{/gui/imports/server}" th:object="${serverImportForm}" method="post">
                             <div class="form-group">
                                 <label>Paths:</label>
@@ -99,10 +70,6 @@
 
                             <button type="submit" class="btn btn-default">Create</button>
                         </form>
-                    </div>
-                    <div class="tab-pane" id="url">
-                        <h1>URL</h1>
-                        <p>orange orange orange orange orange</p>
                     </div>
                 </div>
             </div>
