@@ -3,9 +3,7 @@ package com.zorroa.archivist.web.gui;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.zorroa.archivist.domain.IngestSpec;
-import com.zorroa.archivist.domain.LogSearch;
-import com.zorroa.archivist.domain.PermissionSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.domain.Paging;
@@ -214,18 +212,33 @@ public class IndexController {
     public String pipelines(Model model) {
         standardModel(model);
         model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelineSpec", new PipelineSpecV());
         return "pipelines";
     }
 
 
     @RequestMapping("/gui/pipelines/{id}")
-    public String showPipeline(Model model, @PathVariable int id) {
+    public String getPipeline(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("pipeline", pipelineService.get(id));
         model.addAttribute("processors", pluginService.getAllProcessors());
+        model.addAttribute("pipelineSpec", new PipelineSpecV());
         return "pipeline";
     }
 
+    @RequestMapping(value="/gui/pipelines", method=RequestMethod.POST)
+    public String createPipeline(Model model,
+                                 @Valid @ModelAttribute("pipelineSpec") PipelineSpecV pipelineSpec,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("pipelines", pipelineService.getAll());
+            return "pipelines";
+        }
+        else {
+            Pipeline p = pipelineService.create(pipelineSpec);
+            return "redirect:/gui/pipelines/" + p.getId();
+        }
+    }
 
     @RequestMapping("/gui/status")
     public String status(Model model) {
