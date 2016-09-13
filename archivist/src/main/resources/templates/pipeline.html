@@ -15,22 +15,23 @@
 
     <div class="row" style="padding: 5px">
         <div class="col-md-4">
-
-            <div class="btn-group" style="padding-bottom: 10px">
+            <div style="position:relative;">
                 <button id="btn-save" type="button" class="btn btn-default">Save</button>
-                <button id="btn-remove" type="button" class="btn btn-default">Remove</button>
-                <button type="button" class="btn btn-default">Processors</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                </button>
-                <ul id="proc-select" class="dropdown-menu">
+                <button type="button" class="btn btn-default dropdown-toggle" id="processorDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Processor <span class="caret"></span></button>
+                <ul id="proc-select" class="dropdown-menu" aria-labelledby="processorDropDown" style="z-index:1000">
                     <li th:each="processor: ${processors}">
                         <a class="newProcessor" href="#" th:attr="data-cn=${processor.name}" th:text="${processor.shortName}"></a>
                     </li>
                 </ul>
             </div>
+            <br/>
             <ul id="proc-list" class="list-group">
-                <button type="button" th:text="${proc.className}" th:attr="data-args=${proc.args}" class="list-group-item processor" th:each="proc: ${pipeline.processors}"/>
+                <li th:attr="data-args=${T(com.zorroa.sdk.util.Json).prettyString(proc.args)},data-classname=${proc.className}" class="list-group-item processor" th:each="proc: ${pipeline.processors}">
+                    <th:block th:text="${proc.className}"/>
+                    <span class="pull-right">
+                        <a href="#" class="proc-remove"><span class="glyphicon glyphicon-trash"></span></a>
+                    </span>
+                </li>
             </ul>
         <div class="alert alert-success" id="success-alert">
             <button type="button" class="close" data-dismiss="alert">x</button>
@@ -38,6 +39,10 @@
         </div>
         <div class="alert alert-danger" id="failure-alert">
             <button type="button" class="close" data-dismiss="alert">x</button>
+        </div>
+        <div th:if="${message}" class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            <th:block th:text="${message}"></th:block>
         </div>
         </div>
         <div class="col-md-8">
@@ -157,9 +162,10 @@
 
         function get_pipeline() {
             var pipeline = [];
-            $("#proc-list").children("button").each(function(idx, itm) {
+            $("#proc-list").children(".processor").each(function(idx, itm) {
+                console.log($(itm));
                 ref = {
-                    "className": $(itm).text(),
+                    "className": $(itm).attr("data-classname"),
                     "args": JSON.parse($(itm).attr("data-args"))
                 }
                 pipeline.push(ref);
@@ -244,21 +250,27 @@
                 selected.siblings().removeClass("list-group-item-success").end();
                 selected.addClass("list-group-item-success");
                 $("#args").val(selected.attr("data-args"));
-                $("#docs").load("/gui/docs/processor/" + selected.text());
+                $("#docs").load("/gui/docs/processor/" + selected.attr("data-classname"));
 
                 e.preventDefault();
             });
 
-            $(document).on("click", "#btn-remove", function(e) {
-                var selected = get_selected_proc();
+            $(document).on("click", ".proc-remove", function(e) {
+                var selected = $(this).parent().parent();
+                console.log(selected);
                 selected.remove();
                 $("#args").val("");
                 $("#docs").empty();
             });
 
             $('.newProcessor').on("click", function(e) {
-                $('#proc-list').append("<button type=\"button\" data-args=\"{}\" class=\"list-group-item processor\">"
-                        + $(this).attr("data-cn") + "</button>");
+                $('#proc-list').append("<li data-classname=\"" + $(this).attr("data-cn")
+                        + "\" data-args=\"{}\" class=\"list-group-item processor\">"
+                        + $(this).attr("data-cn")
+                        + "<span class=\"pull-right\">"
+                        + "<a href=\"#\" class=\"proc-remove\">"
+                        + "<span class=\"glyphicon glyphicon-trash\"></span></a></span>"
+                        + "</li>");
             });
         });
         //]]>
