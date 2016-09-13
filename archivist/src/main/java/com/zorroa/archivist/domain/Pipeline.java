@@ -25,7 +25,6 @@ public class Pipeline implements Loggable<Integer> {
     @Pattern(regexp="^[a-z].*$", flags={Pattern.Flag.CASE_INSENSITIVE})
     private String name;
 
-    @NotNull
     private String description;
 
     @NotNull

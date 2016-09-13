@@ -248,10 +248,18 @@ public class IndexController {
     public String uploadPipeline(@RequestParam("jfile") MultipartFile jfile, RedirectAttributes redirectAttributes) throws IOException {
 
         PipelineSpecV spec = Json.Mapper.readValue(jfile.getInputStream(), PipelineSpecV.class);
-        if(pipelineService.exists(spec.getName())) {
-            spec.setName("Imported " + spec.getName());
+        int nameCounter = 1;
+        String checkName = spec.getName();
+        for(;;) {
+            if (pipelineService.exists(checkName)) {
+                checkName = "Imported(" + nameCounter + ") " + spec.getName();
+                nameCounter++;
+            }
+            else {
+                spec.setName(checkName);
+                break;
+            }
         }
-
         Pipeline p = pipelineService.create(spec);
         redirectAttributes.addFlashAttribute("message",
                 "Pipeline imported");

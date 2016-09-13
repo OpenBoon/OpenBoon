@@ -5,6 +5,7 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.processor.ProcessorRef;
@@ -43,7 +44,11 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
         Preconditions.checkNotNull(spec.getName());
         Preconditions.checkNotNull(spec.getType());
         Preconditions.checkNotNull(spec.getProcessors());
-        Preconditions.checkNotNull(spec.getDescription());
+
+        if (spec.getDescription() == null) {
+            spec.setDescription(spec.getName() + " " +
+                    spec.getType() + " pipeline created by " + SecurityUtils.getUsername());
+        }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
