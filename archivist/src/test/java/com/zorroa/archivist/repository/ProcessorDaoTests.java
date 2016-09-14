@@ -8,10 +8,13 @@ import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.sdk.plugins.PluginSpec;
 import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -40,6 +43,7 @@ public class ProcessorDaoTests extends AbstractTest {
         spec.setName("test");
         spec.setVersion("1.0");
         spec.setPublisher("Zorroa Corp 2016");
+        spec.setMd5(Md5Crypt.md5Crypt(UUID.randomUUID().toString().getBytes()));
         plugin = pluginDao.create(spec);
 
         pspec = new ProcessorSpec();

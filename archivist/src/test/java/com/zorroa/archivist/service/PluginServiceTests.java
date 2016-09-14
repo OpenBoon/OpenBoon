@@ -9,12 +9,14 @@ import com.zorroa.archivist.repository.ProcessorDao;
 import com.zorroa.sdk.plugins.PluginSpec;
 import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -46,6 +48,7 @@ public class PluginServiceTests extends AbstractTest {
         spec.setName("test");
         spec.setVersion("1.0");
         spec.setPublisher("Zorroa Corp 2016");
+        spec.setMd5(Md5Crypt.md5Crypt(UUID.randomUUID().toString().getBytes()));
         plugin = pluginDao.create(spec);
 
         pspec = new ProcessorSpec();
