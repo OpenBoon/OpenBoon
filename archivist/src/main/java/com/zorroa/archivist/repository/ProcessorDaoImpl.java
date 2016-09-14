@@ -162,6 +162,12 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         return jdbc.update("DELETE FROM processor WHERE processor.pk_processor=?", id) > 0;
     }
 
+
+    @Override
+    public boolean deleteAll(Plugin plugin) {
+        return jdbc.update("DELETE FROM processor WHERE processor.pk_plugin=?", plugin.getId()) > 0;
+    }
+
     @Override
     public long count() {
         return jdbc.queryForObject("SELECT COUNT(1) FROM processor", Long.class);

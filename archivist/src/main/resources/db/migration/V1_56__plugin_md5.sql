@@ -1,0 +1,1 @@
+ALTER TABLE plugin ADD COLUMN str_md5 VARCHAR(48);

@@ -36,6 +36,8 @@ public interface ProcessorDao {
 
     boolean delete(int id);
 
+    boolean deleteAll(Plugin plugin);
+
     long count();
 
     ProcessorRef getRef(String name);

@@ -126,11 +126,11 @@ public class PluginServiceImpl implements PluginService {
 
     private void createPluginRecord(PluginSpec spec) {
         boolean newOrChanged = false;
-
         Plugin plugin;
         try {
             plugin = pluginDao.get(spec.getName());
-            if (!plugin.getVersion().equals(spec.getVersion())) {
+            if (!spec.getMd5().equals(plugin.getMd5())) {
+                logger.info("The plugin {} has changed, reloading.", plugin.getName());
                 newOrChanged = true;
                 pluginDao.update(plugin.getId(), spec);
             }
@@ -138,18 +138,15 @@ public class PluginServiceImpl implements PluginService {
             newOrChanged = true;
             plugin = pluginDao.create(spec);
         }
-
         /**
          * If the plugin is a new version or just a new plugin then we register
          * the other stuff.
-         *
-         * READ: On version up, existing entities created by a plugin are DELETED.
-         * TODO: Save old entities as .old?
-         */
+        */
         if (newOrChanged) {
             registerProcessors(plugin, spec);
             registerPipelines(plugin, spec);
         }
+
     }
 
     public void registerPipelines(Plugin p, PluginSpec spec) {
@@ -201,6 +198,8 @@ public class PluginServiceImpl implements PluginService {
             logger.warn("Plugin {} contains no processors", plugin);
             return;
         }
+        processorDao.deleteAll(plugin);
+
         for (ProcessorSpec spec: pspec.getProcessors()) {
 
             Processor proc;

@@ -34,7 +34,8 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
                     "str_description",
                     "str_publisher",
                     "time_created",
-                    "time_modified");
+                    "time_modified",
+                    "str_md5");
 
     @Override
     public Plugin create(PluginSpec spec) {
@@ -42,6 +43,7 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
         Preconditions.checkNotNull(spec.getDescription());
         Preconditions.checkNotNull(spec.getVersion());
         Preconditions.checkNotNull(spec.getPublisher());
+        Preconditions.checkNotNull(spec.getMd5());
 
         long time = System.currentTimeMillis();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -55,6 +57,7 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
             ps.setString(5, spec.getPublisher());
             ps.setLong(6, time);
             ps.setLong(7, time);
+            ps.setString(8, spec.getMd5());
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -69,6 +72,7 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
         result.setLanguage(rs.getString("str_lang"));
         result.setVersion(rs.getString("str_version"));
         result.setPublisher(rs.getString("str_publisher"));
+        result.setMd5(rs.getString("str_md5"));
         return result;
     };
 
@@ -79,7 +83,8 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
                 "str_version,"+
                 "str_description,"+
                 "str_publisher,"+
-                "str_lang " +
+                "str_lang, " +
+                "str_md5 " +
             "FROM " +
                 "plugin ";
 
@@ -117,11 +122,11 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
     }
 
     private static final String UPDATE =
-        JdbcUtils.update("plugin", "pk_plugin", "str_version", "time_modified");
+        JdbcUtils.update("plugin", "pk_plugin", "str_version", "time_modified", "str_md5");
 
     @Override
     public boolean update(int id, PluginSpec spec) {
-        return jdbc.update(UPDATE, spec.getVersion(), System.currentTimeMillis(), id) == 1;
+        return jdbc.update(UPDATE, spec.getVersion(), System.currentTimeMillis(), spec.getMd5(), id) == 1;
     }
 
     @Override

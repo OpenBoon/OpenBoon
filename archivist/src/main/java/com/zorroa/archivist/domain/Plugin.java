@@ -15,6 +15,7 @@ public class Plugin {
     private String version;
     private String publisher;
     private String language;
+    private String md5;
 
     public int getId() {
         return id;
@@ -67,6 +68,15 @@ public class Plugin {
 
     public Plugin setLanguage(String language) {
         this.language = language;
+        return this;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public Plugin setMd5(String md5) {
+        this.md5 = md5;
         return this;
     }
 
