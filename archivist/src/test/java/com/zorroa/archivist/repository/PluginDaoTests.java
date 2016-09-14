@@ -5,11 +5,14 @@ import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.plugins.PluginSpec;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+
+import java.util.UUID;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -37,6 +40,7 @@ public class PluginDaoTests extends AbstractTest {
         spec.setName("test");
         spec.setVersion("1.0");
         spec.setPublisher("Zorroa Corp 2016");
+        spec.setMd5(Md5Crypt.md5Crypt(UUID.randomUUID().toString().getBytes()));
         plugin = pluginDao.create(spec);
     }
 

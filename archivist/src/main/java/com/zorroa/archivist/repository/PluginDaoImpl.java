@@ -39,11 +39,11 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
 
     @Override
     public Plugin create(PluginSpec spec) {
-        Preconditions.checkNotNull(spec.getName());
-        Preconditions.checkNotNull(spec.getDescription());
-        Preconditions.checkNotNull(spec.getVersion());
-        Preconditions.checkNotNull(spec.getPublisher());
-        Preconditions.checkNotNull(spec.getMd5());
+        Preconditions.checkNotNull(spec.getName(), "Plugin name is null");
+        Preconditions.checkNotNull(spec.getDescription(), "Plugin description is null");
+        Preconditions.checkNotNull(spec.getVersion(), "Plugin version is null");
+        Preconditions.checkNotNull(spec.getPublisher(), "Plugin publisher is null");
+        Preconditions.checkNotNull(spec.getMd5(), "Plugin md5 is null");
 
         long time = System.currentTimeMillis();
         KeyHolder keyHolder = new GeneratedKeyHolder();
