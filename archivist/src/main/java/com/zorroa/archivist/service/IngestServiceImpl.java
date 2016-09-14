@@ -58,6 +58,7 @@ public class IngestServiceImpl implements IngestService {
         /**
          * Schedule all the current ingests.
          */
+        /*
         scheduler.setPoolSize(4);
         for (Ingest i: ingestDao.getAll()) {
             if (!i.isAutomatic()) {
@@ -65,6 +66,7 @@ public class IngestServiceImpl implements IngestService {
             }
             schedule(i);
         }
+        */
     }
 
     @Override
