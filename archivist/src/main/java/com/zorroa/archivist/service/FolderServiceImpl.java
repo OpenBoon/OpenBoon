@@ -382,8 +382,7 @@ public class FolderServiceImpl implements FolderService {
     private void emitFolderCreated(Folder folder) {
         transactionEventManager.afterCommitSync(() -> {
             invalidate(null, folder.getParentId());
-            messagingService.broadcast(new Message(MessageType.FOLDER_CREATE,
-                    ImmutableMap.of("folderId", folder.getId(), "parentId", folder.getParentId())));
+            messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
             logService.log(LogSpec.build(LogAction.Create, folder));
         });
     }
