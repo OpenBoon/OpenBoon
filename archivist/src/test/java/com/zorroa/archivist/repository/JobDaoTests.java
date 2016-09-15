@@ -71,13 +71,11 @@ public class JobDaoTests extends AbstractTest {
 
     @Test
     public void testIncrementStats() {
-        jobDao.incrementStats(job.getJobId(), 1, 2, 3, 4);
+        jobDao.incrementStats(job.getJobId(), 1, 2, 3);
         Job j = jobDao.get(job.getJobId());
-        assertEquals(6, j.getStats().getAssetTotal());
-        assertEquals(1, j.getStats().getAssetCreated());
-        assertEquals(2, j.getStats().getAssetUpdated());
-        assertEquals(3, j.getStats().getAssetErrored());
-        assertEquals(4, j.getStats().getAssetWarning());
+        assertEquals(1, j.getStats().getFrameSuccessCount());
+        assertEquals(2, j.getStats().getFrameErrorCount());
+        assertEquals(3, j.getStats().getFrameWarningCount());
     }
 
     public void validate(Job job) {

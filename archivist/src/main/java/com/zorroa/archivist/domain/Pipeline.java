@@ -14,7 +14,7 @@ public class Pipeline implements Loggable<Integer> {
 
     /**
      * The id of the pipeline.  This is an Integer so we can set it to
-     * null with exports.
+     * null if a pipeline is exported.
      */
     private Integer id;
 
@@ -76,7 +76,7 @@ public class Pipeline implements Loggable<Integer> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pipeline pipeline = (Pipeline) o;
-        return getId() == pipeline.getId();
+        return getId().equals(pipeline.getId());
     }
 
     @Override

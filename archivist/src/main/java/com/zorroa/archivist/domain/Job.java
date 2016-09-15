@@ -242,54 +242,44 @@ public class Job implements JobId {
      * Counts and data related to the jobs output.
      */
     public static class Stats {
-        private int assetTotal;
-        private int assetCreated;
-        private int assetUpdated;
-        private int assetErrored;
-        private int assetWarning;
+        private int frameSuccessCount;
+        private int frameErrorCount;
+        private int frameWarningCount;
+        private int frameTotalCount;
 
-        public int getAssetTotal() {
-            return assetTotal;
+        public int getFrameSuccessCount() {
+            return frameSuccessCount;
         }
 
-        public Stats setAssetTotal(int assetTotal) {
-            this.assetTotal = assetTotal;
+        public Stats setFrameSuccessCount(int frameSuccessCount) {
+            this.frameSuccessCount = frameSuccessCount;
             return this;
         }
 
-        public int getAssetCreated() {
-            return assetCreated;
+        public int getFrameErrorCount() {
+            return frameErrorCount;
         }
 
-        public Stats setAssetCreated(int assetCreated) {
-            this.assetCreated = assetCreated;
+        public Stats setFrameErrorCount(int frameErrorCount) {
+            this.frameErrorCount = frameErrorCount;
             return this;
         }
 
-        public int getAssetUpdated() {
-            return assetUpdated;
+        public int getFrameWarningCount() {
+            return frameWarningCount;
         }
 
-        public Stats setAssetUpdated(int assetUpdated) {
-            this.assetUpdated = assetUpdated;
+        public Stats setFrameWarningCount(int frameWarningCount) {
+            this.frameWarningCount = frameWarningCount;
             return this;
         }
 
-        public int getAssetErrored() {
-            return assetErrored;
+        public int getFrameTotalCount() {
+            return frameTotalCount;
         }
 
-        public Stats setAssetErrored(int assetErrored) {
-            this.assetErrored = assetErrored;
-            return this;
-        }
-
-        public int getAssetWarning() {
-            return assetWarning;
-        }
-
-        public Stats setAssetWarning(int assetWarning) {
-            this.assetWarning = assetWarning;
+        public Stats setFrameTotalCount(int frameTotalCount) {
+            this.frameTotalCount = frameTotalCount;
             return this;
         }
     }

@@ -25,7 +25,7 @@ public interface JobDao {
 
     long count();
 
-    boolean incrementStats(int id, int created, int updated, int errors, int warnings);
+    boolean incrementStats(int id, int success, int errors, int warnings);
 
     void incrementWaitingTaskCount(JobId job);
 

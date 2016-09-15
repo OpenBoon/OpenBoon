@@ -64,6 +64,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
+
+        jdbc.update("INSERT INTO task_stat (pk_task, pk_job) VALUES (?, ?)", id, task.getJobId());
         return get(id);
     }
 
@@ -76,6 +78,21 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     public boolean setExitStatus(TaskId task, int exitStatus) {
         return jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?",
                 exitStatus, task.getTaskId()) == 1;
+    }
+
+    private static final String INC_STATS =
+            "UPDATE " +
+                "task_stat " +
+            "SET " +
+                "int_frame_success_count=int_frame_success_count+?," +
+                "int_frame_error_count=int_frame_error_count+?,"+
+                "int_frame_warning_count=int_frame_warning_count+? "+
+            "WHERE " +
+                "pk_task=?";
+
+    @Override
+    public boolean incrementStats(int id, int success, int errors, int warnings) {
+        return jdbc.update(INC_STATS, success, errors, warnings, id) == 1;
     }
 
     @Override
@@ -227,15 +244,31 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         return jdbc.query(GET_WAITING, EXECUTE_TASK_MAPPER, limit);
     }
 
+    private static final String GET_TASKS =
+        "SELECT " +
+            "task.pk_task,"+
+            "task.pk_parent,"+
+            "task.pk_job,"+
+            "task.str_name,"+
+            "task.int_state,"+
+            "task.time_started,"+
+            "task.time_stopped,"+
+            "task.time_created,"+
+            "task.time_state_change,"+
+            "task.json_script,"+
+            "task.int_exit_status,"+
+            "task.str_host, " +
+            "task_stat.int_frame_total_count, " +
+            "task_stat.int_frame_success_count,"+
+            "task_stat.int_frame_error_count,"+
+            "task_stat.int_frame_warning_count " +
+        "FROM " +
+            "task JOIN task_stat ON task.pk_task = task_stat.pk_task " ;
+
     private static final String GET_QUEUED =
-            "SELECT " +
-                "task.* " +
-            "FROM " +
-                "task,"+
-                "job " +
+            GET_TASKS +
+            "JOIN job ON task.pk_job = job.pk_job " +
             "WHERE " +
-                "task.pk_job = job.pk_job " +
-            "AND " +
                 "job.int_state = 0 " +
             "AND " +
                 "task.int_state IN (1, 2) " +
@@ -262,25 +295,15 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         task.setTimeStarted(rs.getLong("time_started"));
         task.setTimeStopped(rs.getLong("time_stopped"));
         task.setTimeStateChange(rs.getLong("time_state_change"));
+
+        Task.Stats s = new Task.Stats();
+        s.setFrameErrorCount(rs.getInt("int_frame_error_count"));
+        s.setFrameSuccessCount(rs.getInt("int_frame_success_count"));
+        s.setFrameWarningCount(rs.getInt("int_frame_warning_count"));
+        s.setFrameTotalCount(rs.getInt("int_frame_total_count"));
+        task.setStats(s);
         return task;
     };
-
-    private static final String GET_TASKS =
-        "SELECT " +
-            "task.pk_task,"+
-            "task.pk_parent,"+
-            "task.pk_job,"+
-            "task.str_name,"+
-            "task.int_state,"+
-            "task.time_started,"+
-            "task.time_stopped,"+
-            "task.time_created,"+
-            "task.time_state_change,"+
-            "task.json_script,"+
-            "task.int_exit_status,"+
-            "task.str_host " +
-        "FROM " +
-            "task ";
 
     @Override
     public PagedList<Task> getAll(int job, Paging page) {

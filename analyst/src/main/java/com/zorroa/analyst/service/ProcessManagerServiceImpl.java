@@ -213,5 +213,12 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             logger.info("Processing response from job: {}", task.getJobId());
             archivistClient.respond(new ExecuteTaskResponse(task, reaction.getResponse()));
         }
+
+        if (reaction.getStats() != null) {
+            archivistClient.reportTaskStats(new ExecuteTaskStats(task)
+                    .setErrorCount(reaction.getStats().getErrorCount())
+                    .setSuccessCount(reaction.getStats().getSuccessCount())
+                    .setWarningCount(reaction.getStats().getWarningCount()));
+        }
     }
 }

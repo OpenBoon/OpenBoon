@@ -221,8 +221,13 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean updateStats(int id, int created, int updated, int errors, int warnings) {
-        return jobDao.incrementStats(id, created, updated, errors, warnings);
+    public boolean incrementJobStats(int id, int success, int errors, int warnings) {
+        return jobDao.incrementStats(id, success, errors, warnings);
+    }
+
+    @Override
+    public boolean incrementTaskStats(int id, int success, int errors, int warnings) {
+        return taskDao.incrementStats(id, success, errors, warnings);
     }
 
     @Override

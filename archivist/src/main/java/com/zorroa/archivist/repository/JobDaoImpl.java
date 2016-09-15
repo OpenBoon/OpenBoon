@@ -84,11 +84,10 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         job.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
 
         Job.Stats a = new Job.Stats();
-        a.setAssetTotal(rs.getInt("int_asset_total_count"));
-        a.setAssetCreated(rs.getInt("int_asset_create_count"));
-        a.setAssetUpdated(rs.getInt("int_asset_update_count"));
-        a.setAssetErrored(rs.getInt("int_asset_error_count"));
-        a.setAssetWarning(rs.getInt("int_asset_warning_count"));
+        a.setFrameTotalCount(rs.getInt("int_frame_total_count"));
+        a.setFrameSuccessCount(rs.getInt("int_frame_success_count"));
+        a.setFrameErrorCount(rs.getInt("int_frame_error_count"));
+        a.setFrameWarningCount(rs.getInt("int_frame_warning_count"));
         job.setStats(a);
 
         Job.Counts t = new Job.Counts();
@@ -114,11 +113,10 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "job.int_type,"+
                 "job.json_args,"+
                 "job.int_user_created,"+
-                "job_stat.int_asset_total_count,"+
-                "job_stat.int_asset_create_count," +
-                "job_stat.int_asset_warning_count,"+
-                "job_stat.int_asset_error_count,"+
-                "job_stat.int_asset_update_count,"+
+                "job_stat.int_frame_total_count,"+
+                "job_stat.int_frame_success_count," +
+                "job_stat.int_frame_warning_count,"+
+                "job_stat.int_frame_error_count,"+
                 "job_count.int_task_total_count,"+
                 "job_count.int_task_completed_count,"+
                 "job_count.int_task_state_queued_count,"+
@@ -169,17 +167,15 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
             "UPDATE " +
                 "job_stat " +
             "SET " +
-                "int_asset_total_count=int_asset_total_count+?,"+
-                "int_asset_create_count=int_asset_create_count+?," +
-                "int_asset_warning_count=int_asset_warning_count+?,"+
-                "int_asset_error_count=int_asset_error_count+?,"+
-                "int_asset_update_count=int_asset_update_count+? " +
+                "int_frame_success_count=int_frame_success_count+?," +
+                "int_frame_error_count=int_frame_error_count+?,"+
+                "int_frame_warning_count=int_frame_warning_count+? "+
             "WHERE " +
                 "pk_job=?";
 
     @Override
-    public boolean incrementStats(int id, int created, int updated, int errors, int warnings) {
-        return jdbc.update(INC_STATS, created+updated+errors, created, warnings, errors, updated, id) == 1;
+    public boolean incrementStats(int id, int success, int errors, int warnings) {
+        return jdbc.update(INC_STATS, success, errors, warnings, id) == 1;
     }
 
     private static final String INC_WAITING_TASK_COUNT =

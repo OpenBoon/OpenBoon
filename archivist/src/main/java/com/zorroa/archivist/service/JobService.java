@@ -91,13 +91,14 @@ public interface JobService {
      * Increment asset related stats.
      *
      * @param id
-     * @param created
-     * @param updated
+     * @param success
      * @param errors
      * @param warnings
      * @return
      */
-    boolean updateStats(int id, int created, int updated, int errors, int warnings);
+    boolean incrementJobStats(int id, int success, int errors, int warnings);
+
+    boolean incrementTaskStats(int id, int success, int errors, int warnings);
 
     /**
      * Return a list of jobs matching the given criteria.

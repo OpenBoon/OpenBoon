@@ -3,11 +3,9 @@ package com.zorroa.archivist.web.cluster;
 import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
-import com.zorroa.common.domain.ExecuteTaskExpand;
-import com.zorroa.common.domain.ExecuteTaskResponse;
-import com.zorroa.common.domain.ExecuteTaskStart;
-import com.zorroa.common.domain.ExecuteTaskStopped;
+import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.ClusterSettingsDao;
+import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +46,20 @@ public class ClusterController {
     @RequestMapping(value="/cluster/v1/task/_response", method=RequestMethod.POST)
     public void respond(@RequestBody ExecuteTaskResponse response) {
         jobExecutorService.handleResponse(response);
+    }
+
+    /**
+     * Increment task stats
+     *
+     * @return
+     */
+    @RequestMapping(value="/cluster/v1/task/_stats", method=RequestMethod.POST)
+    public void incrementStats(@RequestBody ExecuteTaskStats stats) {
+        logger.info("stats: {}", Json.prettyString(stats));
+        jobService.incrementJobStats(stats.getJobId(), stats.getSuccessCount(),
+                stats.getErrorCount(), stats.getWarningCount());
+        jobService.incrementTaskStats(stats.getTaskId(), stats.getSuccessCount(),
+                stats.getErrorCount(), stats.getWarningCount());
     }
 
     /**

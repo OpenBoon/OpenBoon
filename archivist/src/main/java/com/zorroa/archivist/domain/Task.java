@@ -21,6 +21,8 @@ public class Task implements TaskId {
     private long timeStateChange;
     private int exitStatus;
 
+    private Stats stats;
+
     @Override
     public Integer getTaskId() {
         return taskId;
@@ -135,6 +137,58 @@ public class Task implements TaskId {
             long stopped = timeStopped <= 0 ? System.currentTimeMillis(): timeStopped;
             return DurationFormatUtils.formatDuration(
                     stopped - timeStarted, "HH:mm:ss", true);
+        }
+    }
+
+    public Stats getStats() {
+        return stats;
+    }
+
+    public Task setStats(Stats stats) {
+        this.stats = stats;
+        return this;
+    }
+
+    public static class Stats {
+        private int frameSuccessCount;
+        private int frameErrorCount;
+        private int frameWarningCount;
+        private int frameTotalCount;
+
+        public int getFrameSuccessCount() {
+            return frameSuccessCount;
+        }
+
+        public Stats setFrameSuccessCount(int frameSuccessCount) {
+            this.frameSuccessCount = frameSuccessCount;
+            return this;
+        }
+
+        public int getFrameErrorCount() {
+            return frameErrorCount;
+        }
+
+        public Stats setFrameErrorCount(int frameErrorCount) {
+            this.frameErrorCount = frameErrorCount;
+            return this;
+        }
+
+        public int getFrameWarningCount() {
+            return frameWarningCount;
+        }
+
+        public Stats setFrameWarningCount(int frameWarningCount) {
+            this.frameWarningCount = frameWarningCount;
+            return this;
+        }
+
+        public int getFrameTotalCount() {
+            return frameTotalCount;
+        }
+
+        public Stats setFrameTotalCount(int frameTotalCount) {
+            this.frameTotalCount = frameTotalCount;
+            return this;
         }
     }
 

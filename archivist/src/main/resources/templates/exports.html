@@ -29,7 +29,7 @@
                 <td class="vert-align" th:text="${job.name}"></td>
                 <td class="vert-align" th:text="${job.userCreated}"></td>
                 <td class="vert-align" th:text="${#dates.format(job.timeStarted, 'dd MMM yyyy HH:mm')}"></td>
-                <td class="vert-align" th:text="${job.stats.assetCreated}"></td>
+                <td class="vert-align" th:text="${job.stats.frameTotalCount}"></td>
                 <td class="col-md-4 vert-align">
                     <div th:include="fragments/job :: progress"/>
                 </td>

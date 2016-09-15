@@ -35,6 +35,8 @@ public interface TaskDao {
 
     boolean setExitStatus(TaskId task, int exitStatus);
 
+    boolean incrementStats(int id, int success, int errors, int warnings);
+
     boolean setState(TaskId script, TaskState value, TaskState expect);
 
     int decrementDependCount(TaskId task);

@@ -5,9 +5,11 @@ package com.zorroa.common.domain;
  */
 public class ExecuteTaskStats extends ExecuteTask {
 
-    private int assetCount = 0;
     private int warningCount = 0;
     private int errorCount = 0;
+    private int successCount = 0;
+
+    public ExecuteTaskStats() { }
 
     public ExecuteTaskStats(ExecuteTask task) {
         this.setJobId(task.getJobId());
@@ -15,12 +17,12 @@ public class ExecuteTaskStats extends ExecuteTask {
         this.setParentTaskId(task.getParentTaskId());
     }
 
-    public int getAssetCount() {
-        return assetCount;
+    public int getSuccessCount() {
+        return successCount;
     }
 
-    public ExecuteTaskStats setAssetCount(int assetCount) {
-        this.assetCount = assetCount;
+    public ExecuteTaskStats setSuccessCount(int successCount) {
+        this.successCount = successCount;
         return this;
     }
 

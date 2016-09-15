@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.common.cluster.AbstractClient;
 import com.zorroa.common.cluster.Http;
 import com.zorroa.common.cluster.Protocol;
-import com.zorroa.common.domain.ExecuteTaskExpand;
-import com.zorroa.common.domain.ExecuteTaskResponse;
-import com.zorroa.common.domain.ExecuteTaskStarted;
-import com.zorroa.common.domain.ExecuteTaskStopped;
+import com.zorroa.common.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +58,15 @@ public class ArchivistClient extends AbstractClient {
      */
     public void respond(ExecuteTaskResponse response) {
         Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_response", response);
+    }
+
+    /**
+     * Increment running task stats.
+     *
+     * @param stats
+     */
+    public void reportTaskStats(ExecuteTaskStats stats) {
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_stats", stats);
     }
 
     /**

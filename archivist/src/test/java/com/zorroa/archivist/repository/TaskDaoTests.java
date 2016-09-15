@@ -130,6 +130,15 @@ public class TaskDaoTests extends AbstractTest {
         assertEquals(1, tasks.size());
     }
 
+    @Test
+    public void incrementTaskStats() {
+        taskDao.incrementStats(task.getTaskId(), 1, 2, 3);
+        task = taskDao.get(task.getTaskId());
+        assertEquals(1, task.getStats().getFrameSuccessCount());
+        assertEquals(2, task.getStats().getFrameErrorCount());
+        assertEquals(3, task.getStats().getFrameWarningCount());
+    }
+
     private void updateState(final long time, TaskState state) {
         jdbc.update(connection -> {
             PreparedStatement ps =

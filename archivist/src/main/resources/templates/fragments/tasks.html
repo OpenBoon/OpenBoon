@@ -75,17 +75,19 @@ $(function(){
             <th>Name</th>
             <th>State</th>
             <th>Duration</th>
+            <th>Errors</th>
             <th>Host</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="clickable-row" th:attr="data-id=${task.taskId}" data-toggle="modal" data-target="#viewModal" th:each="task: ${tasks}">
+        <tr th:class="${task.stats.frameErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:attr="data-id=${task.taskId}" data-toggle="modal" data-target="#viewModal" th:each="task: ${tasks}">
             <td class="vert-align" th:text="${task.taskId}"></td>
             <td class="vert-align" th:text="${task.name}"></td>
             <td class="vert-align">
                 <div th:include="fragments/tasks :: state_label"/>
             </td>
             <td class="vert-align" th:text="${task.duration()}"></td>
+            <td class="vert-align" th:text="${task.stats.frameErrorCount}"></td>
             <td class="vert-align" th:text="${task.host}"></td>
         </tr>
         </tbody>
