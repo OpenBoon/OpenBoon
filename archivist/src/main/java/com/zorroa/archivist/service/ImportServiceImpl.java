@@ -85,6 +85,7 @@ public class ImportServiceImpl implements ImportService {
         ZpsScript script = new ZpsScript();
         script.setExecute(generator);
         script.setInline(true);
+        script.setStrict(true);
 
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
@@ -139,7 +140,6 @@ public class ImportServiceImpl implements ImportService {
          */
         ZpsScript script = new ZpsScript();
         script.setExecute(generators);
-
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
                 .setName("Path Generation"));
