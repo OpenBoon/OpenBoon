@@ -9,6 +9,7 @@
 
 <section layout:fragment="content">
     <div th:include="fragments/imports :: menu"/>
+    <div th:include="fragments/alert :: alert"/>
     <div class="wrapper">
         <table id="table" class="table table-striped table-hover">
             <thead>
@@ -22,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:class="${job.stats.frameErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:each="job: ${imports}" th:attr="data-href=${'/gui/imports/' + job.id}">
+            <tr th:class="${job.stats.frameErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:each="job: ${imports}" th:id="${'imports-' + job.id}" th:attr="data-href=${'/gui/imports/' + job.id}">
                 <td class="vert-align">
                     <div th:include="fragments/job :: state_label"/>
                 </td>
@@ -44,6 +45,7 @@
 
     <div th:include="fragments/imports :: modal_create"/>
     <div th:include="fragments/table :: clickable"/>
+    <div th:include="fragments/job :: contextMenu"/>
 </section>
 
 </body>

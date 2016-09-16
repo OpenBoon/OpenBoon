@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.api;
 
-import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.DebugImportSpec;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
@@ -38,16 +37,6 @@ public class ImportController {
     public Object create_debug(@RequestBody DebugImportSpec spec) throws IOException, InterruptedException {
         Job job = importService.create(spec);
         return jobExecutorService.waitOnResponse(job);
-    }
-
-    @RequestMapping(value="/api/v1/imports/{id}/_cancel", method = RequestMethod.PUT)
-    public Object stop(@PathVariable Integer id) throws IOException {
-        return HttpUtils.status("imports", id, "cancel", jobService.cancel(() -> id));
-    }
-
-    @RequestMapping(value="/api/v1/imports/{id}/_restart", method = RequestMethod.PUT)
-    public Object pause(@PathVariable Integer id) throws IOException {
-        return HttpUtils.status("imports", id, "restart", jobService.restart(() -> id));
     }
 
     @RequestMapping(value="/api/v1/imports/{id}", method = RequestMethod.GET)

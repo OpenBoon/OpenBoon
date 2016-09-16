@@ -12,12 +12,12 @@ public enum JobState {
     Active,
 
     /**
-     * The job was cancelled, but could be restarted.
+     * The job was manually cancelled.
      */
     Cancelled,
 
     /**
-     * The job is finished.
+     * The job finished naturally.
      */
     Finished
 }
