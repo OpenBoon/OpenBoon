@@ -20,6 +20,16 @@ public abstract class DaoFilter {
 
     public abstract void build();
 
+    public void addToWhere(String col) {
+        this.where.add(col);
+    }
+
+    public void addToValues(Object ... val) {
+        for (Object o: val) {
+            values.add(o);
+        }
+    }
+
     public String getQuery(String base, Paging page) {
         __build();
         StringBuilder sb = new StringBuilder(1024);

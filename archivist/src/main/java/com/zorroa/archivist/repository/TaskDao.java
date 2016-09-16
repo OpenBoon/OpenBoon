@@ -51,6 +51,8 @@ public interface TaskDao {
 
     PagedList<Task> getAll(int job, Paging page);
 
+    List<Task> getAll(int job, DaoFilter filter);
+
     Task get(int id);
 
     long countByJob(int job);

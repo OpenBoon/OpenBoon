@@ -313,6 +313,14 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     }
 
     @Override
+    public List<Task> getAll(int job, DaoFilter filter) {
+        filter.addToWhere("task.pk_job=?");
+        filter.addToValues(job);
+        return jdbc.query(filter.getQuery(GET_TASKS, null),
+                MAPPER, filter.getValues());
+    }
+
+    @Override
     public Task get(int id) {
         return jdbc.queryForObject(GET_TASKS.concat("WHERE task.pk_task=?"), MAPPER, id);
     }

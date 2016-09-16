@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
@@ -17,9 +18,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 7/12/16.
@@ -89,6 +88,34 @@ public class TaskDaoTests extends AbstractTest {
     public void getWaiting() {
         assertEquals(1, taskDao.getWaiting(5).size());
     }
+
+    @Test
+    public void getAllByFilter() {
+        for (int i=0; i<10; i++) {
+            TaskSpec spec = new TaskSpec();
+            spec.setName("a task");
+            spec.setScript(new ZpsScript());
+            spec.setJobId(job.getJobId());
+            task = jobService.createTask(spec);
+        }
+
+        assertEquals(11, taskDao.getAll(job.getJobId(), new TaskFilter()).size());
+        assertEquals(1, taskDao.getAll(job.getJobId(),
+                new TaskFilter().setTasks(ImmutableSet.of(task.getTaskId()))).size());
+
+
+        assertEquals(11, taskDao.getAll(job.getJobId(),
+                new TaskFilter().setStates(ImmutableSet.of(TaskState.Waiting))).size());
+        assertEquals(0, taskDao.getAll(job.getJobId(),
+                new TaskFilter().setStates(ImmutableSet.of(TaskState.Running))).size());
+
+        assertTrue(jobService.setTaskState(task, TaskState.Queued, TaskState.Waiting));
+        assertEquals(10, taskDao.getAll(job.getJobId(),
+                new TaskFilter().setStates(ImmutableSet.of(TaskState.Waiting))).size());
+        assertEquals(1, taskDao.getAll(job.getJobId(),
+                new TaskFilter().setStates(ImmutableSet.of(TaskState.Queued))).size());
+    }
+
 
     @Test
     public void getOrphanTasks() {
