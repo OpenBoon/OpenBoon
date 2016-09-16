@@ -52,7 +52,7 @@ public class ImportControllerTests extends MockMvcTest {
     @Test
     public void testCancel() throws Exception {
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(put("/api/v1/imports/" + job.getJobId() + "/_cancel")
+        MvcResult result = mvc.perform(put("/api/v1/jobs/" + job.getJobId() + "/_cancel")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -66,7 +66,7 @@ public class ImportControllerTests extends MockMvcTest {
     public void testRestart() throws Exception {
         MockHttpSession session = admin();
 
-        MvcResult cancel = mvc.perform(put("/api/v1/imports/" + job.getJobId() + "/_cancel")
+        MvcResult cancel = mvc.perform(put("/api/v1/jobs/" + job.getJobId() + "/_cancel")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -75,7 +75,7 @@ public class ImportControllerTests extends MockMvcTest {
         StatusResult rs = deserialize(cancel, StatusResult.class);
         assertTrue(rs.success);
 
-        MvcResult restart = mvc.perform(put("/api/v1/imports/" + job.getJobId() + "/_restart")
+        MvcResult restart = mvc.perform(put("/api/v1/jobs/" + job.getJobId() + "/_restart")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

@@ -98,7 +98,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
         assertEquals(5, searchService.search(day.getSearch()).getHits().getTotalHits());
 
         year = folderService.get(f.getId(), "2013");
-        assertEquals(1, searchService.search(year.getSearch()).getHits().getTotalHits());
+        assertEquals(2, searchService.search(year.getSearch()).getHits().getTotalHits());
     }
 
     @Test
