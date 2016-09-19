@@ -273,18 +273,21 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 year.field(level.getField());
                 year.interval(new DateHistogramInterval("1y"));
                 year.format("yyyy");
+                year.minDocCount(1);
                 return year;
             case Month:
                 DateHistogramBuilder month = AggregationBuilders.dateHistogram(String.valueOf(idx));
                 month.field(level.getField());
                 month.interval(new DateHistogramInterval("1M"));
                 month.format("M");
+                month.minDocCount(1);
                 return month;
             case Day:
                 DateHistogramBuilder day = AggregationBuilders.dateHistogram(String.valueOf(idx));
                 day.field(level.getField());
                 day.interval(new DateHistogramInterval("1d"));
                 day.format("d");
+                day.minDocCount(1);
                 return day;
         }
 
