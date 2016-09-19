@@ -105,7 +105,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     }
 
     @Override
-    public boolean setState(TaskId task, TaskState value, TaskState expect) {
+    public boolean setState(TaskId task, TaskState value, TaskState ... expect) {
         logger.debug("setting task: {} from {} to {}", task.getTaskId(), expect, value);
         List<Object> values = Lists.newArrayListWithCapacity(4);
         List<String> fields = Lists.newArrayListWithCapacity(4);
@@ -138,8 +138,10 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         sb.append(" WHERE pk_task=? ");
 
         if (expect != null) {
-            values.add(expect.ordinal());
-            sb.append(" AND int_state=?");
+            for (TaskState ts: expect) {
+                values.add(ts.ordinal());
+            }
+            sb.append("AND " + JdbcUtils.in("int_state", expect.length));
         }
         else {
             values.add(value.ordinal());

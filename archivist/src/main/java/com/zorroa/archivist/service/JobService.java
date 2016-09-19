@@ -63,7 +63,7 @@ public interface JobService {
      * @param expect
      * @return
      */
-    boolean setTaskState(TaskId task, TaskState newState, TaskState expect);
+    boolean setTaskState(TaskId task, TaskState newState, TaskState ... expect);
 
     /**
      * Set the host the task is running on.

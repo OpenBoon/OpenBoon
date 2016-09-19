@@ -88,6 +88,13 @@ public class TaskDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testSetStateMultipleExpect() {
+        assertTrue(taskDao.setState(task, TaskState.Queued, TaskState.Failure, TaskState.Waiting));
+        assertTrue(taskDao.setState(task, TaskState.Waiting, TaskState.Running, TaskState.Queued));
+        assertFalse(taskDao.setState(task, TaskState.Running, TaskState.Queued, TaskState.Success));
+    }
+
+    @Test
     public void getWaiting() {
         assertEquals(1, taskDao.getWaiting(5).size());
     }

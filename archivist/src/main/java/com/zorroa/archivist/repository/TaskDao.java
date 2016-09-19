@@ -39,7 +39,7 @@ public interface TaskDao {
 
     TaskState getState(TaskId task, boolean forUpdate);
 
-    boolean setState(TaskId script, TaskState value, TaskState expect);
+    boolean setState(TaskId script, TaskState value, TaskState ... expect);
 
     int decrementDependCount(TaskId task);
 
