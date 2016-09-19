@@ -82,6 +82,9 @@ public class TaskDaoTests extends AbstractTest {
     public void testSetState() {
         assertTrue(taskDao.setState(task, TaskState.Queued, TaskState.Waiting));
         assertFalse(taskDao.setState(task, TaskState.Queued, TaskState.Waiting));
+
+        assertTrue(taskDao.setState(task, TaskState.Running, null));
+        assertFalse("Task was already running", taskDao.setState(task, TaskState.Running, null));
     }
 
     @Test

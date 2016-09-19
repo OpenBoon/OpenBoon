@@ -36,6 +36,8 @@ public class JobServiceTests extends AbstractTest {
         tspec.setScript(new ZpsScript());
         tspec.setJobId(job.getJobId());
         task = jobService.createTask(tspec);
+
+        job = jobService.get(job.getId());
     }
 
     @Test
@@ -71,5 +73,18 @@ public class JobServiceTests extends AbstractTest {
         assertFalse(jobService.cancel(job));
         assertTrue(jobService.restart(job));
         assertFalse(jobService.restart(job));
+    }
+
+    @Test
+    public void setTaskState() {
+
+        assertEquals(0, job.getCounts().getTasksRunning());
+        assertEquals(1, job.getCounts().getTasksWaiting());
+
+        assertTrue(jobService.setTaskState(task, TaskState.Running, null));
+        job = jobService.get(job.getId());
+
+        assertEquals("running count not incremented", 1, job.getCounts().getTasksRunning());
+        assertEquals("waiting count not decremented", 0, job.getCounts().getTasksWaiting());
     }
 }

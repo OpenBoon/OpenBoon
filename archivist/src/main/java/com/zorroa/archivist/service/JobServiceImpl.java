@@ -182,12 +182,23 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public boolean setTaskState(TaskId task, TaskState newState) {
+        return setTaskState(task, newState, null);
+    }
+
+    @Override
     public boolean setTaskState(TaskId task, TaskState newState, TaskState expect) {
         Preconditions.checkNotNull(task.getTaskId());
         Preconditions.checkNotNull(task.getJobId());
+        Preconditions.checkNotNull(newState);
+
+        TaskState oldState = expect;
+        if (oldState == null) {
+            oldState = taskDao.getState(task, true);
+        }
 
         if (taskDao.setState(task, newState, expect)) {
-            if (jobDao.updateTaskStateCounts(task, newState, expect).equals(JobState.Finished)) {
+            if (jobDao.updateTaskStateCounts(task, newState, oldState).equals(JobState.Finished)) {
                 dyHierarchyService.submitGenerateAll(true);
             }
             return true;

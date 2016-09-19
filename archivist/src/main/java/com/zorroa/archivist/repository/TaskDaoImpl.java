@@ -96,6 +96,15 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     }
 
     @Override
+    public TaskState getState(TaskId task, boolean forUpdate) {
+        String q = "SELECT int_state FROM TASK WHERE pk_task=?";
+        if (forUpdate) {
+            q.concat(" FOR UPDATE");
+        }
+        return TaskState.values()[jdbc.queryForObject(q, Integer.class, task.getTaskId())];
+    }
+
+    @Override
     public boolean setState(TaskId task, TaskState value, TaskState expect) {
         logger.debug("setting task: {} from {} to {}", task.getTaskId(), expect, value);
         List<Object> values = Lists.newArrayListWithCapacity(4);
@@ -127,9 +136,14 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         sb.append("UPDATE task SET ");
         sb.append(String.join(",", fields));
         sb.append(" WHERE pk_task=? ");
+
         if (expect != null) {
             values.add(expect.ordinal());
             sb.append(" AND int_state=?");
+        }
+        else {
+            values.add(value.ordinal());
+            sb.append(" AND int_state != ?");
         }
 
         return jdbc.update(sb.toString(), values.toArray()) == 1;

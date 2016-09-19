@@ -53,6 +53,8 @@ public interface JobService {
      */
     Job get(int id);
 
+    boolean setTaskState(TaskId task, TaskState newState);
+
     /**
      * Set the state of a given task.  The current state must be the expected state.
      *
