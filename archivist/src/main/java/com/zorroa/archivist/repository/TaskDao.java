@@ -4,11 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.archivist.domain.TaskState;
-import com.zorroa.common.domain.ExecuteTaskStart;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.*;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -21,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public interface TaskDao {
 
     Set<TaskState> STOPPERS = Sets.newEnumSet(ImmutableList.of(
-            TaskState.Failure, TaskState.Success), TaskState.class);
+            TaskState.Skipped, TaskState.Failure, TaskState.Success), TaskState.class);
 
     Set<TaskState> STARTERS = Sets.newEnumSet(ImmutableList.of(
             TaskState.Running), TaskState.class);

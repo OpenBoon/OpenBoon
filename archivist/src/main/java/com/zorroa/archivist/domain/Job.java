@@ -115,23 +115,29 @@ public class Job implements JobId {
         return this;
     }
 
+    Map<String, Float> NO_PROGRESS = ImmutableMap.<String, Float>builder()
+            .put("running", 0f)
+            .put("success", 0f)
+            .put("waiting", 0f)
+            .put("failed", 0f)
+            .put("skipped", 0f)
+            .put("total", 0f)
+            .build();
+
     public Map<String,Float> getProgress() {
         if (counts.getTasksTotal() == 0) {
-            return ImmutableMap.of(
-                    "running", 0f,
-                    "success", 0f,
-                    "waiting", 0f,
-                    "failed", 0f,
-                    "total", 0f);
+            return NO_PROGRESS;
         }
         else {
             float t = (float) counts.getTasksTotal();
-            return ImmutableMap.of(
-                    "total", (counts.getTasksCompleted() / t) * 100,
-                    "running", (counts.getTasksRunning() / t) * 100,
-                    "success", (counts.getTasksSuccess() / t) * 100,
-                    "failed", (counts.getTasksFailure() / t) * 100,
-                    "waiting", ((counts.getTasksWaiting() + counts.getTasksQueued()) / t) * 100);
+            return ImmutableMap.<String, Float>builder()
+                    .put("running", (counts.getTasksRunning() / t) * 100)
+                    .put("success", (counts.getTasksSuccess() / t) * 100)
+                    .put("waiting", ((counts.getTasksWaiting() + counts.getTasksQueued()) / t) * 100)
+                    .put("failed", (counts.getTasksFailure() / t) * 100)
+                    .put("skipped", (counts.getTasksSkipped() / t) * 100)
+                    .put("total", (counts.getTasksCompleted() / t) * 100)
+                    .build();
         }
     }
 
@@ -173,6 +179,7 @@ public class Job implements JobId {
         private int tasksRunning;
         private int tasksSuccess;
         private int tasksFailure;
+        private int tasksSkipped;
 
         public int getTasksCompleted() {
             return tasksCompleted;
@@ -235,6 +242,29 @@ public class Job implements JobId {
         public Counts setTasksFailure(int tasksFailure) {
             this.tasksFailure = tasksFailure;
             return this;
+        }
+
+        public int getTasksSkipped() {
+            return tasksSkipped;
+        }
+
+        public Counts setTasksSkipped(int tasksSkipped) {
+            this.tasksSkipped = tasksSkipped;
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("tasksTotal", tasksTotal)
+                    .add("tasksCompleted", tasksCompleted)
+                    .add("tasksWaiting", tasksWaiting)
+                    .add("tasksQueued", tasksQueued)
+                    .add("tasksRunning", tasksRunning)
+                    .add("tasksSuccess", tasksSuccess)
+                    .add("tasksFailure", tasksFailure)
+                    .add("tasksSkipped", tasksSkipped)
+                    .toString();
         }
     }
 

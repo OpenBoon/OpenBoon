@@ -1,29 +1,38 @@
 package com.zorroa.common.domain;
 
 /**
- * ExecuteTaskStopped contains new state of the task.
+ * Created by chambers on 8/22/16.
  */
-public class ExecuteTaskStopped implements TaskId, JobId {
+public class ExecuteTaskStop implements TaskId, JobId {
 
     private ExecuteTask task;
+    private String reason;
     private TaskState newState;
 
-    public ExecuteTaskStopped() { }
+    public ExecuteTaskStop() { }
 
-    public ExecuteTaskStopped(ExecuteTask task) {
+    public ExecuteTaskStop(int job, int task, int parent) {
+        this.task = new ExecuteTask(job, task, parent);
+    }
+
+    public ExecuteTaskStop(ExecuteTask task) {
         this.task = task;
     }
 
-    public ExecuteTaskStopped(ExecuteTask task, TaskState newState) {
-        this.task = task;
-        this.newState = newState;
+    public String getReason() {
+        return reason;
+    }
+
+    public ExecuteTaskStop setReason(String reason) {
+        this.reason = reason;
+        return this;
     }
 
     public TaskState getNewState() {
         return newState;
     }
 
-    public ExecuteTaskStopped setNewState(TaskState newState) {
+    public ExecuteTaskStop setNewState(TaskState newState) {
         this.newState = newState;
         return this;
     }
@@ -32,7 +41,7 @@ public class ExecuteTaskStopped implements TaskId, JobId {
         return task;
     }
 
-    public ExecuteTaskStopped setTask(ExecuteTask task) {
+    public ExecuteTaskStop setTask(ExecuteTask task) {
         this.task = task;
         return this;
     }

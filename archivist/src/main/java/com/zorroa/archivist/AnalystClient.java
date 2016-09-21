@@ -4,6 +4,7 @@ import com.zorroa.common.cluster.AbstractClient;
 import com.zorroa.common.cluster.Http;
 import com.zorroa.common.cluster.Protocol;
 import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.ExecuteTaskStop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,5 +55,14 @@ public class AnalystClient extends AbstractClient {
      */
     public void execute(ExecuteTaskStart task) {
         Http.post(client, loadBalancer.nextHost(), "/api/v1/task/_execute", task);
+    }
+
+    /**
+     * Executes the given task;
+     *
+     * @param task
+     */
+    public void stop(ExecuteTaskStop task) {
+        Http.post(client, loadBalancer.nextHost(), "/api/v1/task/_stop", task);
     }
 }

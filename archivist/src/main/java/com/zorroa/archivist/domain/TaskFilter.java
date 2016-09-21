@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.repository.DaoFilter;
+import com.zorroa.common.domain.TaskState;
 
 import java.util.Set;
 

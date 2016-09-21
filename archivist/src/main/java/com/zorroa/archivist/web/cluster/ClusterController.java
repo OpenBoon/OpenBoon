@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.cluster;
 
-import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.domain.*;
@@ -56,9 +55,9 @@ public class ClusterController {
     @RequestMapping(value="/cluster/v1/task/_stats", method=RequestMethod.POST)
     public void incrementStats(@RequestBody ExecuteTaskStats stats) {
         logger.info("stats: {}", Json.prettyString(stats));
-        jobService.incrementJobStats(stats.getJobId(), stats.getSuccessCount(),
+        jobService.incrementJobStats(stats.getTask().getJobId(), stats.getSuccessCount(),
                 stats.getErrorCount(), stats.getWarningCount());
-        jobService.incrementTaskStats(stats.getTaskId(), stats.getSuccessCount(),
+        jobService.incrementTaskStats(stats.getTask().getTaskId(), stats.getSuccessCount(),
                 stats.getErrorCount(), stats.getWarningCount());
     }
 
@@ -80,7 +79,7 @@ public class ClusterController {
      */
     @RequestMapping(value="/cluster/v1/task/_running", method=RequestMethod.POST)
     public void running(@RequestBody ExecuteTaskStart task) {
-        jobService.setTaskState(task, TaskState.Running, TaskState.Queued);
+        jobService.setTaskState(task.getTask(), TaskState.Running, TaskState.Queued);
     }
 
     /**
@@ -88,8 +87,8 @@ public class ClusterController {
      *
      * @return
      */
-    @RequestMapping(value="/cluster/v1/task/_completed", method=RequestMethod.POST)
-    public void completed(@RequestBody ExecuteTaskStopped result) {
+    @RequestMapping(value="/cluster/v1/task/_stopped", method=RequestMethod.POST)
+    public void stopped(@RequestBody ExecuteTaskStopped result) {
         jobService.setTaskCompleted(result);
     }
 

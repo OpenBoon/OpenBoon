@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.common.domain.ExecuteTask;
 import com.zorroa.common.domain.ExecuteTaskStopped;
+import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,10 +61,10 @@ public class JobServiceTests extends AbstractTest {
     public void setTaskCompleted() {
         assertTrue(jobService.setTaskQueued(task));
         assertTrue(jobService.setTaskState(task, TaskState.Running, TaskState.Queued));
-        assertTrue(jobService.setTaskCompleted(new ExecuteTaskStopped(
-                new ExecuteTask()
-                .setTaskId(task.getTaskId())
-                .setJobId(job.getJobId()), 0)));
+        assertTrue(jobService.setTaskCompleted(
+                new ExecuteTaskStopped(
+                    new ExecuteTask(job.getJobId(), task.getTaskId()))
+                        .setNewState(TaskState.Success)));
         assertEquals(JobState.Finished, jobService.get(task.getJobId()).getState());
     }
 

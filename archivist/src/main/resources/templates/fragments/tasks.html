@@ -22,7 +22,7 @@
             $('#viewModal').on('show.bs.modal', function(e) {
 
                 //get data-id attribute of the clicked element
-                var taskId = $(e.relatedTarget).data('id');
+                var taskId = $(this).val();
                 $.ajax({
                     url : "/api/v1/tasks/" + taskId + "/_log",
                     dataType: "text",
@@ -35,19 +35,8 @@
     </script>
 
 </div>
-<script th:inline="javascript" type="text/javascript">
-$(function(){
-    $('#viewModal').modal({
-    backdrop: "static"});
-
-}).on('show', function(){ //subscribe to show method
-    var getIdFromRow = $(event.target).closest('tr').data('id'); //get the id from tr
-    //make your ajax call populate items or what even you need
-    $(this).find('#taskDetails').html($('Task ' + getIdFromRow))
-    });
-});
-</script>
 </div>
+
 
 <div th:fragment="state_label">
     <th:block th:if="${task.state.name()} eq 'Running'">
@@ -65,6 +54,9 @@ $(function(){
     <th:block th:if="${task.state.name()} eq 'Failure'">
         <span class="label label-danger">Failure</span>
     </th:block>
+    <th:block th:if="${task.state.name()} eq 'Skipped'">
+        <span class="label label-default">Skipped</span>
+    </th:block>
 </div>
 
 <div th:fragment="task_table">
@@ -80,7 +72,7 @@ $(function(){
         </tr>
         </thead>
         <tbody>
-        <tr th:class="${task.stats.frameErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:attr="data-id=${task.taskId}" data-toggle="modal" data-target="#viewModal" th:each="task: ${tasks}">
+        <tr th:class="${task.stats.frameErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:attr="data-id=${task.taskId}" th:each="task: ${tasks}">
             <td class="vert-align" th:text="${task.taskId}"></td>
             <td class="vert-align" th:text="${task.name}"></td>
             <td class="vert-align">
@@ -95,8 +87,101 @@ $(function(){
     <div class="container-fluid">
         <div th:include="fragments/table :: pager"/>
     </div>
+    <div th:include="fragments/table :: selectable"/>
     <div th:include="fragments/tasks :: view_modal"/>
-    <div th:include="fragments/table :: clickable_view_modal"/>
+
+    <div id="contextMenu" class="dropdown clearfix">
+        <ul class="dropdown-menu fa-ul" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
+            <li><a tabindex="-1" id="li-view" href="#"><i class="glyphicon glyphicon-info-sign"></i>&nbsp;Log</a></li>
+            <li class="divider"></li>
+            <li><a tabindex="-1" id="li-retry" href="#">Retry</a></li>
+            <li><a tabindex="-1" id="li-skip" href="#">Skip</a></li>
+        </ul>
+    </div>
+
+    <script th:inline="javascript" type="text/javascript">
+        $(function() {
+
+            var contextMenu = $("#contextMenu");
+            var selected;
+
+            function hideContextMenu() {
+                selected = null;
+                contextMenu.hide();
+            }
+
+            function getSelectedTask() {
+                if (selected == null) {
+                    return null;
+                }
+                else {
+                    return selected;
+                }
+            }
+
+            function retryTask(task) {
+                $.ajax({
+                    url: "/api/v1/tasks/" + task + "/_retry",
+                    type: "PUT",
+                    success: function(result) {
+                        if (result["success"]) {
+                            bs_alert("alert-success", "Attempting to retry task.");
+                        }
+                    }
+                });
+            }
+
+            function skipTask(task) {
+                $.ajax({
+                    url: "/api/v1/tasks/" + task + "/_skip",
+                    type: "PUT",
+                    success: function(result) {
+                        if (result["success"]) {
+                            bs_alert("alert-success", "Attempting to retry task.");
+                        }
+                    }
+                });
+            }
+
+            $("body").on("contextmenu", "#table tr", function(e) {
+                contextMenu.css({
+                    display: "block",
+                    left: e.pageX,
+                    top: e.pageY
+                });
+                selected = $(this).attr("data-id");
+                return false;
+            });
+
+            $("body").on("click", function(e) {
+                if (contextMenu.is(":visible"))  {
+                    hideContextMenu();
+                }
+            });
+
+            contextMenu.on("click", "a", function() {
+                var option = this.id;
+                var task = getSelectedTask();
+                if (task == null) { return ;}
+
+                if (option == "li-view") {
+                    $('#viewModal').val(task);
+                    $('#viewModal').modal({backdrop: "static"});
+                }
+                else if (option == "li-retry") {
+                    retryTask(task);
+                }
+                else if (option == "li-skip") {
+                    skipTask(task);
+                }
+
+                hideContextMenu();
+            });
+
+        });
+
+    </script>
+
 </div>
 
 

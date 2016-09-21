@@ -5,10 +5,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.JobId;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.*;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,8 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
-
-import static com.zorroa.archivist.repository.TaskDao.STOPPERS;
 
 /**
  * Created by chambers on 6/24/16.
@@ -75,7 +70,6 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     private final RowMapper<Job> MAPPER = (rs, row) -> {
         Job job = new Job();
         job.setId(rs.getInt("pk_job"));
-        job.setState(JobState.values()[rs.getInt("int_state")]);
         job.setName(rs.getString("str_name"));
         job.setTimeStarted(rs.getLong("time_started"));
         job.setTimeStopped(rs.getLong("time_stopped"));
@@ -98,7 +92,21 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         t.setTasksRunning(rs.getInt("int_task_state_running_count"));
         t.setTasksSuccess(rs.getInt("int_task_state_success_count"));
         t.setTasksFailure(rs.getInt("int_task_state_failure_count"));
+        t.setTasksSkipped(rs.getInt("int_task_state_skipped_count"));
         job.setCounts(t);
+
+        JobState state = JobState.values()[rs.getInt("int_state")];
+
+        if (!state.equals(JobState.Cancelled)) {
+            if (t.getTasksSuccess() + t.getTasksSkipped() == t.getTasksTotal()) {
+                job.setState(JobState.Finished);
+            } else {
+                job.setState(JobState.Active);
+            }
+        }
+        else {
+            job.setState(state);
+        }
 
         return job;
     };
@@ -123,7 +131,8 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "job_count.int_task_state_waiting_count,"+
                 "job_count.int_task_state_running_count,"+
                 "job_count.int_task_state_success_count,"+
-                "job_count.int_task_state_failure_count " +
+                "job_count.int_task_state_failure_count, " +
+                "job_count.int_task_state_skipped_count " +
             "FROM " +
                 "job," +
                 "job_count,"+
@@ -218,7 +227,18 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
-    public JobState updateTaskStateCounts(TaskId task, TaskState newState, TaskState expect) {
+    public JobState getState(int id) {
+        if (jdbc.queryForObject("SELECT int_task_total_count - (int_task_state_success_count + int_task_state_skipped_count) AS c FROM job_count WHERE pk_job=?",
+                Integer.class, id) == 0) {
+            return JobState.Finished;
+        }
+        else {
+            return JobState.Active;
+        }
+    }
+
+    @Override
+    public void updateTaskStateCounts(TaskId task, TaskState newState, TaskState expect) {
         /**
          * TODO: implement as a trigger!
          */
@@ -230,31 +250,12 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 m + "=" + m + "-1"
         );
 
-        if (STOPPERS.contains(newState)) {
-            cols.add("int_task_completed_count=int_task_completed_count+1");
-        }
 
         String update = new StringBuilder(256)
                 .append("UPDATE job_count SET ")
                 .append(String.join(",", cols))
                 .append(" WHERE pk_job=?").toString();
 
-        if (jdbc.update(update.toString(), task.getJobId()) == 1) {
-            if (STOPPERS.contains(newState)) {
-                int pt = jdbc.queryForObject(
-                        "SELECT int_task_total_count - int_task_completed_count FROM job_count WHERE pk_job=?",
-                        Integer.class, task.getJobId());
-                if (pt == 0) {
-                    if (setState(task, JobState.Finished, JobState.Active)) {
-                        return JobState.Finished;
-                    }
-                }
-            }
-        }
-        else {
-            logger.warn("Failed to update task counts for job {}, '{}' '{}'",  task.getJobId(), p, m);
-        }
-
-        return JobState.Active;
+        jdbc.update(update.toString(), task.getJobId());
     }
 }

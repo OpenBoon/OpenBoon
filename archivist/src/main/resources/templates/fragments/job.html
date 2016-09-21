@@ -6,7 +6,7 @@
 
 <div th:fragment="state_label">
     <th:block th:if="${job.state.name()} eq 'Active'">
-        <span class="label label-warning">Running</span>
+        <span class="label label-warning">Active</span>
     </th:block>
     <th:block th:if="${job.state.name()} eq 'Finished'">
         <span class="label label-success">Finished</span>
@@ -30,6 +30,9 @@
         <div class="progress-bar progress-bar-danger" th:style="${'width: '+ job.progress.failed + '%'}">
             <span class="sr-only"></span>
         </div>
+        <div class="progress-bar" th:style="${'background-color: #777; width: '+ job.progress.skipped + '%'}">
+            <span class="sr-only"></span>
+        </div>
     </div>
 </div>
 
@@ -40,8 +43,6 @@
         <li class="divider"></li>
         <li><a tabindex="-1" id="li-cancel" href="#">Cancel</a></li>
         <li><a tabindex="-1" id="li-restart" href="#">Restart</a></li>
-        <li class="divider"></li>
-        <li><a tabindex="-1" id="li-retry-errors" href="#">Retry All Errors</a></li>
     </ul>
 </div>
 <script th:inline="javascript" type="text/javascript">
@@ -70,10 +71,10 @@ $(function() {
             type: "PUT",
             success: function(result) {
                 if (result["success"]) {
-                    alert("alert-success", "Job was canceled.");
+                    bs_alert("alert-success", "Job was canceled.");
                 }
                 else {
-                    alert("alert-warning", "Job must be in Running state to be canceled.");
+                    bs_alert("alert-warning", "Job must be in Running state to be canceled.");
                 }
             }
         });
@@ -85,10 +86,10 @@ $(function() {
             type: "PUT",
             success: function(result) {
                 if (result["success"]) {
-                    alert("alert-success", "Job was restarted.");
+                    bs_alert("alert-success", "Job was restarted.");
                 }
                 else {
-                    alert("alert-warning", "Job must be in Canceled state to be restarted.");
+                    bs_alert("alert-warning", "Job must be in Canceled state to be restarted.");
                 }
             }
         });

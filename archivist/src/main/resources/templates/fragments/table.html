@@ -19,6 +19,17 @@
     </ul>
 </div>
 
+<div th:fragment="selectable">
+    <script th:inline="javascript" type="text/javascript">
+        $('#table').on('click', '.clickable-row', function(event) {
+            $(this).addClass('success').siblings().removeClass('success');
+        }).on('mousedown', '.clickable-row', function(event) {
+            event.preventDefault();
+        });
+    </script>
+</div>
+
+
 <div th:fragment="clickable">
 <script th:inline="javascript" type="text/javascript">
     $('#table').on('click', '.clickable-row', function(event) {

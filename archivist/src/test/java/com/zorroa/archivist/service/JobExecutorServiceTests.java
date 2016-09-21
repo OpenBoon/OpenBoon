@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.common.domain.ExecuteTask;
 import com.zorroa.common.domain.ExecuteTaskExpand;
 import com.zorroa.common.domain.ExecuteTaskStopped;
+import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -54,8 +55,7 @@ public class JobExecutorServiceTests extends AbstractTest {
                 .setClassName("foo")
                 .setLanguage("java")));
 
-        jobService.expand(new ExecuteTaskExpand(new ExecuteTask()
-                .setJobId(job.getJobId()))
+        jobService.expand(new ExecuteTaskExpand(job.getJobId(), null)
                 .setName("foo")
                 .setScript(Json.serializeToString(expand)));
 
@@ -90,9 +90,8 @@ public class JobExecutorServiceTests extends AbstractTest {
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(1, dependCount);
 
-        jobService.setTaskCompleted(new ExecuteTaskStopped(new ExecuteTask()
-                .setTaskId(task1.getTaskId())
-                .setJobId(task1.getJobId()), 0));
+        jobService.setTaskCompleted(new ExecuteTaskStopped(
+                    new ExecuteTask(task1.getJobId(), task1.getTaskId()), TaskState.Success));
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(0, dependCount);
@@ -130,7 +129,7 @@ public class JobExecutorServiceTests extends AbstractTest {
 
         jobService.setTaskCompleted(new ExecuteTaskStopped(new ExecuteTask()
                 .setTaskId(task1.getTaskId())
-                .setJobId(task1.getJobId()), 0));
+                .setJobId(task1.getJobId()), TaskState.Success));
 
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
@@ -139,7 +138,7 @@ public class JobExecutorServiceTests extends AbstractTest {
         jobService.setTaskState(task3, TaskState.Running, TaskState.Waiting);
         jobService.setTaskCompleted(new ExecuteTaskStopped(new ExecuteTask()
                 .setTaskId(task3.getTaskId())
-                .setJobId(task3.getJobId()), 0));
+                .setJobId(task3.getJobId()), TaskState.Success));
 
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());

@@ -1,14 +1,20 @@
 package com.zorroa.analyst.service;
 
+import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.ExecuteTaskStop;
+
+import java.util.concurrent.Future;
 
 /**
  * Created by chambers on 2/8/16.
  */
 public interface ProcessManagerService {
 
-    int execute(ExecuteTaskStart script);
+    boolean stopTask(ExecuteTaskStop task);
 
-    void queueExecute(ExecuteTaskStart script);
+    void asyncStopTask(ExecuteTaskStop task);
+
+    Future<AnalystProcess> execute(ExecuteTaskStart script, boolean async);
 
 }

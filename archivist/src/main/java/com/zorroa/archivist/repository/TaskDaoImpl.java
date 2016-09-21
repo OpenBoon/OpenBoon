@@ -5,11 +5,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.archivist.domain.TaskState;
-import com.zorroa.common.domain.ExecuteTaskStart;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.*;
 import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -219,13 +215,15 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
          * We don't parse the script here, its not needed as we're just going to
          * turn it back into a string anyway.
          */
-        ExecuteTaskStart e = new ExecuteTaskStart();
-        e.setScript(rs.getString(1));
-        e.setTaskId(rs.getInt(2));
-        e.setJobId(rs.getInt(3));
+        ExecuteTask t = new ExecuteTask();
+        t.setTaskId(rs.getInt(2));
+        t.setJobId(rs.getInt(3));
         if (rs.getObject(4) != null) {
-            e.setParentTaskId(rs.getInt(4));
+            t.setParentTaskId(rs.getInt(4));
         }
+
+        ExecuteTaskStart e = new ExecuteTaskStart(t);
+        e.setScript(rs.getString(1));
         e.setArgs(Json.deserialize(rs.getString(5), Json.GENERIC_MAP));
         e.setEnv(Json.deserialize(rs.getString(6), Map.class));
         e.setLogPath(LOG_PATH_MAPPER.mapRow(rs, row).toString());
@@ -244,7 +242,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "task.str_name "+
             "FROM " +
                 "task,"+
-                "job " +
+                "job  " +
             "WHERE " +
                 "task.pk_job = job.pk_job " +
             "AND " +

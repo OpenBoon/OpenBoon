@@ -48,20 +48,32 @@ public class AnalystServiceImpl implements AnalystService {
     }
 
     @Override
-    public AnalystClient getAnalystClient() {
-        KeyStore trustStore = null;
-        try {
-            trustStore = KeyStore.getInstance("PKCS12");
-            InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
-            trustStore.load(trustStoreInput, "zorroa".toCharArray());
-        } catch (Exception e) {
-            throw new ArchivistException("Failed to acquire SSL client");
-        }
+    public AnalystClient getAnalystClient(String host) {
+        KeyStore trustStore = getTrustStore();
+        AnalystClient client = new AnalystClient(trustStore);
+        client.getLoadBalancer().addHost(host);
+        return client;
+    }
 
+    @Override
+    public AnalystClient getAnalystClient() {
+        KeyStore trustStore = getTrustStore();
         AnalystClient client = new AnalystClient(trustStore);
         for (Analyst a : analystDao.getActive(new Paging(1, 5), maxQueueSize)) {
             client.getLoadBalancer().addHost(a.getUrl());
         }
         return client;
+    }
+
+    private KeyStore getTrustStore() {
+        try {
+            KeyStore trustStore = KeyStore.getInstance("PKCS12");
+            InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
+            trustStore.load(trustStoreInput, "zorroa".toCharArray());
+            return trustStore;
+        } catch (Exception e) {
+            throw new ArchivistException("Failed to acquire SSL client");
+        }
+
     }
 }

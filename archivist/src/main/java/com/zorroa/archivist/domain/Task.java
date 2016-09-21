@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.TaskState;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 /**

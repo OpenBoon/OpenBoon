@@ -1,7 +1,11 @@
 package com.zorroa.analyst.service;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.ApplicationProperties;
@@ -19,7 +23,10 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Map;
+import java.util.concurrent.*;
 
 
 /**
@@ -42,51 +49,183 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     @Autowired
     ListeningExecutorService analyzeExecutor;
 
+    /**
+     * Executor for handling task manipulation commands.
+     */
+    private final ExecutorService asyncCommandExecutor = Executors.newSingleThreadExecutor();
+
+    /**
+     * Maintains a list of running processes.
+     */
+    private final ConcurrentMap<Integer, AnalystProcess> processMap = Maps.newConcurrentMap();
+
     @Override
-    public void queueExecute(ExecuteTaskStart task) {
-        analyzeExecutor.execute(()->execute(task));
+    public boolean stopTask(ExecuteTaskStop stop) {
+        int taskId = stop.getTask().getTaskId();
+        /**
+         * Set to true if we actually kill the process.
+         */
+        boolean result = false;
+        AnalystProcess p = processMap.remove(stop.getTask().getTaskId());
+
+        if (p == null) {
+            logger.warn("Attempted to stop task {}, was not queued or running.", taskId);
+        }
+        else {
+            try {
+                synchronized (p) {
+                    p.setNewState(stop.getNewState());
+                    // If the process is null, the process never started
+                    if (p.getProcess() != null) {
+                        p.getProcess().destroyForcibly().waitFor();
+                        result = true;
+                    } else {
+                        logger.warn("The process for task {} never started.", taskId);
+                    }
+                }
+
+                if (p.getLogFile() != null) {
+                    Files.write(p.getLogFile(), ImmutableList.of("Process killed, reason: " + stop.getReason()),
+                            StandardOpenOption.APPEND);
+                }
+
+            } catch (Exception e) {
+                logger.warn("Failed to kill task {}", taskId, e);
+                /**
+                 * In this case, we don't report the task as stopped.
+                 */
+                return false;
+            }
+        }
+
+        /**
+         * Report the task as stopped, even if we didn't stop the task.
+         */
+        if (!Application.isUnitTest()) {
+            archivistClient.reportTaskStopped(new ExecuteTaskStopped(stop.getTask())
+                    .setNewState(stop.getNewState()));
+        }
+        return result;
     }
 
     @Override
-    public int execute(ExecuteTaskStart task) {
+    public void asyncStopTask(ExecuteTaskStop task) {
+        asyncCommandExecutor.execute(() -> {
+            stopTask(task);
+        });
+    }
+
+    @Override
+    public Future<AnalystProcess> execute(ExecuteTaskStart task, boolean async) {
+        AnalystProcess p = processMap.putIfAbsent(task.getTask().getTaskId(), new AnalystProcess());
+        if (p != null) {
+            /**
+             * Not sure if we should return null here, or an exception.  Nothing gets
+             * thrown back to the archivist, it doesn't care if the task doesn't execute.
+             */
+            logger.warn("The task {} is already queued or executing.", task.getTaskId());
+            return null;
+        }
+
+        if (async) {
+            return analyzeExecutor.submit(() -> execute(task));
+        }
+        else {
+            final AnalystProcess result = execute(task);
+            return new Future<AnalystProcess>() {
+
+                @Override
+                public boolean cancel(boolean mayInterruptIfRunning) {
+                    return false;
+                }
+
+                @Override
+                public boolean isCancelled() {
+                    return false;
+                }
+
+                @Override
+                public boolean isDone() {
+                    return true;
+                }
+
+                @Override
+                public AnalystProcess get() throws InterruptedException, ExecutionException {
+                    return result;
+                }
+
+                @Override
+                public AnalystProcess get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+                    return result;
+                }
+            };
+        }
+    }
+
+    private AnalystProcess execute(ExecuteTaskStart task) {
+        Preconditions.checkNotNull(task.getTask().getTaskId(), "Task ID cannot be null");
+        Preconditions.checkNotNull(task.getTask().getJobId(), "Job ID cannot be null");
+
+        int taskId = task.getTask().getTaskId();
+
+        AnalystProcess proc = processMap.get(task.getTask().getTaskId());
+        if (proc == null) {
+            logger.warn("No process record exists for task: {}", task);
+            return proc;
+        }
+
+        if (proc.getNewState() != null) {
+            logger.warn("A new state was already set for the task: {}", task);
+            return proc;
+        }
+
         ZpsScript script = Json.deserialize(task.getScript(), ZpsScript.class);
         task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
 
         int exit = 1;
+        Stopwatch timer = Stopwatch.createStarted();
         try {
             if (!Application.isUnitTest()) {
-                /**
-                 * Don't run the actual command during a unit test
-                 * since the language plugin is probably not installed.
-                 */
-                archivistClient.reportTaskStarted(new ExecuteTaskStarted(task));
-                String lang = determineLanguagePlugin(script);
-                logger.debug("running script with language: {}", lang);
-                String[] command = createCommand(script, task, lang);
-                logger.info("running command: {}", String.join(" ", command));
-                exit = runProcess(command, task);
+                archivistClient.reportTaskStarted(new ExecuteTaskStarted(task.getTask()));
             }
-            else {
-                // unittest
-                exit = 0;
-            }
+            String lang = determineLanguagePlugin(script);
+            logger.debug("running script with language: {}", lang);
+            String[] command = createCommand(script, task, lang);
+            logger.info("running command: {}", String.join(" ", command));
+            exit = runProcess(command, task, proc);
+
         } catch (Exception e) {
             // don't throw anything, just log
             logger.warn("Failed to execute process: ", e);
             exit=1;
         }
         finally {
-            logger.info("Completed task: {} job:{}", task.getTaskId(), task.getJobId());
+            logger.info("Task {} stopped, exit status: {} in {}ms", taskId, exit,
+                timer.stop().elapsed(TimeUnit.MILLISECONDS));
+
+            /**
+             * Set the new task state based on the exit value of the process.
+             */
+            TaskState newState = exit == 0 ? TaskState.Success : TaskState.Failure;
+
+            /**
+             * If the running proces has a new state attached, use that instead.
+             */
+            if (proc.getNewState() == null) {
+                proc.setNewState(newState);
+            }
+
             if (logger.isDebugEnabled()) {
                 logger.debug("Completed {}", Json.prettyString(script));
             }
 
             if (!Application.isUnitTest()) {
-                archivistClient.reportTaskStopped(new ExecuteTaskStopped(task, exit));
+                archivistClient.reportTaskStopped(new ExecuteTaskStopped(task.getTask())
+                        .setNewState(proc.getNewState()));
             }
         }
 
-        return exit;
+        return proc;
     }
 
     public String[] createCommand(ZpsScript script, ExecuteTaskStart task, String lang) throws IOException {
@@ -124,7 +263,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
     private static final int NEWLINE = '\n';
 
-    public int runProcess(String[] command, ExecuteTaskStart task) throws IOException {
+    public int runProcess(String[] command, ExecuteTaskStart task, AnalystProcess proc) throws IOException {
 
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.redirectErrorStream(true);
@@ -137,8 +276,19 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         }
 
         Process process = builder.start();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        synchronized (proc) {
+            if (proc.getNewState() == null) {
+                proc.setProcess(process);
+                proc.setLogFile(Paths.get(task.getLogPath()));
+            }
+            else {
+                logger.warn("The task {} state was changed to: {}", task.getTask().getTaskId(),
+                        proc.getNewState());
+                return 1;
+            }
+        }
 
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         StringBuilder sb = null;
         boolean buffer = false;
         String line;
@@ -185,15 +335,15 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         return exit;
     }
 
-    public void processBuffer(StringBuilder sb, ExecuteTaskStart task, FileOutputStream log) throws IOException {
+    public void processBuffer(StringBuilder sb, ExecuteTaskStart start, FileOutputStream log) throws IOException {
         String scriptText = sb.toString();
 
         // Double check it can be serialized.
         Reaction reaction = Json.deserialize(scriptText, Reaction.class);
 
         if (reaction.getExpand() != null) {
-            logger.info("Processing expand from job: {}", task.getJobId());
-            ZpsScript script  = reaction.getExpand();
+            logger.info("Processing expand from job: {}", start.getTask().getJobId());
+            ZpsScript script = reaction.getExpand();
 
             log.write(ZpsExecutor.PREFIX.getBytes());
             log.write(NEWLINE);
@@ -203,19 +353,19 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
             ExecuteTaskExpand st = new ExecuteTaskExpand();
             st.setScript(Json.serializeToString(script));
-            st.setParentTaskId(task.getTaskId());
-            st.setJobId(task.getJobId());
+            st.setParentTaskId(start.getTask().getTaskId());
+            st.setJobId(start.getTask().getJobId());
             st.setName(script.getName());
             archivistClient.expand(st);
         }
 
         if (reaction.getResponse() != null) {
-            logger.info("Processing response from job: {}", task.getJobId());
-            archivistClient.respond(new ExecuteTaskResponse(task, reaction.getResponse()));
+            logger.info("Processing response from job: {}", start.getTask().getJobId());
+            archivistClient.respond(new ExecuteTaskResponse(start.getTask(), reaction.getResponse()));
         }
 
         if (reaction.getStats() != null) {
-            archivistClient.reportTaskStats(new ExecuteTaskStats(task)
+            archivistClient.reportTaskStats(new ExecuteTaskStats(start.getTask())
                     .setErrorCount(reaction.getStats().getErrorCount())
                     .setSuccessCount(reaction.getStats().getSuccessCount())
                     .setWarningCount(reaction.getStats().getWarningCount()));

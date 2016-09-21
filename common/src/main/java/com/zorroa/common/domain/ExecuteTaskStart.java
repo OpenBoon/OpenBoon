@@ -7,19 +7,24 @@ import java.util.Map;
 /**
  * Created by chambers on 8/22/16.
  */
-public class ExecuteTaskStart extends ExecuteTask implements TaskId, JobId {
+public class ExecuteTaskStart implements TaskId, JobId {
 
     private Map<String, String> env;
     private Map<String, Object> args;
     private String script;
     private String logPath;
+    private ExecuteTask task;
 
     public ExecuteTaskStart() { }
 
+    public ExecuteTaskStart(ExecuteTask task) {
+        this.task = task;
+        this.env = Maps.newHashMap();
+        this.args = Maps.newHashMap();
+    }
+
     public ExecuteTaskStart(Integer jobId, Integer taskId, Integer parentTaskId) {
-        this.setJobId(jobId);
-        this.setTaskId(taskId);
-        this.setParentTaskId(parentTaskId);
+        this.task = new ExecuteTask(jobId, taskId, parentTaskId);
         this.env = Maps.newHashMap();
         this.args = Maps.newHashMap();
     }
@@ -74,5 +79,29 @@ public class ExecuteTaskStart extends ExecuteTask implements TaskId, JobId {
     public ExecuteTaskStart setLogPath(String logPath) {
         this.logPath = logPath;
         return this;
+    }
+
+    public ExecuteTask getTask() {
+        return task;
+    }
+
+    public ExecuteTaskStart setTask(ExecuteTask task) {
+        this.task = task;
+        return this;
+    }
+
+    @Override
+    public Integer getTaskId() {
+        return task.getTaskId();
+    }
+
+    @Override
+    public Integer getParentTaskId() {
+        return task.getParentTaskId();
+    }
+
+    @Override
+    public Integer getJobId() {
+        return task.getJobId();
     }
 }

@@ -3,7 +3,9 @@ package com.zorroa.common.domain;
 /**
  * Created by chambers on 9/15/16.
  */
-public class ExecuteTaskStats extends ExecuteTask {
+public class ExecuteTaskStats {
+
+    private ExecuteTask task;
 
     private int warningCount = 0;
     private int errorCount = 0;
@@ -12,9 +14,7 @@ public class ExecuteTaskStats extends ExecuteTask {
     public ExecuteTaskStats() { }
 
     public ExecuteTaskStats(ExecuteTask task) {
-        this.setJobId(task.getJobId());
-        this.setTaskId(task.getTaskId());
-        this.setParentTaskId(task.getParentTaskId());
+        this.task = task;
     }
 
     public int getSuccessCount() {
@@ -41,6 +41,15 @@ public class ExecuteTaskStats extends ExecuteTask {
 
     public ExecuteTaskStats setErrorCount(int errorCount) {
         this.errorCount = errorCount;
+        return this;
+    }
+
+    public ExecuteTask getTask() {
+        return task;
+    }
+
+    public ExecuteTaskStats setTask(ExecuteTask task) {
+        this.task = task;
         return this;
     }
 }

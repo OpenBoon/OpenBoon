@@ -7,12 +7,11 @@ import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.Task;
-import com.zorroa.archivist.domain.TaskState;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.ExecuteTaskResponse;
-import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.*;
 import com.zorroa.sdk.exception.ZorroaReadException;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
@@ -20,7 +19,8 @@ import org.apache.http.HttpHost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 3. Queue tasks to analyst, updating the task so its not requeued.
  * 4. Handle cases where analysts go down and lose tasks by requeuing them.
  */
-@Service
+@Component
 public class JobExecutorServiceImpl extends AbstractScheduledService implements JobExecutorService {
 
     private static final Logger logger = LoggerFactory.getLogger(JobExecutorServiceImpl.class);
@@ -131,7 +131,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
                                 analysts.execute(task);
                                 HttpHost host = analysts.getLoadBalancer().lastHost();
                                 if (host != null) {
-                                    jobService.setHost(task, host.getHostName());
+                                    jobService.setHost(task, host.toString());
                                 }
                             } catch (Exception e) {
                                 logger.warn("Failed to dispatch task: ", e);
@@ -219,10 +219,42 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
             logger.warn("Found {} expired tasks!", expired.size());
             for (Task task : expired) {
                 logger.warn("resetting task {} to Waiting", task.getTaskId());
-                if (!jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued)) {
-                    jobService.setTaskState(task, TaskState.Waiting, TaskState.Running);
-                }
+                jobService.setTaskState(task, TaskState.Waiting);
             }
+        }
+    }
+
+    @Override
+    @Async
+    public void retryTask(Task task) {
+        if (TaskState.requiresStop(task.getState())) {
+            killRunningTaskOnAnalyst(task, TaskState.Waiting);
+        }
+        else {
+            jobService.setTaskState(task, TaskState.Waiting);
+        }
+    }
+
+    @Override
+    @Async
+    public void skipTask(Task task) {
+        if (TaskState.requiresStop(task.getState())) {
+            killRunningTaskOnAnalyst(task, TaskState.Skipped);
+        }
+        else {
+            jobService.setTaskState(task, TaskState.Skipped);
+        }
+    }
+
+    public void killRunningTaskOnAnalyst(Task task, TaskState newState) {
+        AnalystClient client = analystService.getAnalystClient(task.getHost());
+        try {
+            logger.info("Killing runinng task: {}", task);
+            client.stop(new ExecuteTaskStop(new ExecuteTask(task.getJobId(), task.getTaskId(), task.getParentTaskId()) )
+                    .setNewState(newState)
+                    .setReason("Stopped by " + SecurityUtils.getUsername()));
+        } catch (Exception e) {
+            logger.warn("Failed to kill running task an analyst {}", task.getHost());
         }
     }
 

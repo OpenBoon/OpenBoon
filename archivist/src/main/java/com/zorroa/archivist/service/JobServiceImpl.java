@@ -58,6 +58,9 @@ public class JobServiceImpl implements JobService {
     @Autowired
     ApplicationProperties properties;
 
+    @Autowired
+    AnalystService analystService;
+
     /**
      * Creating a job creates both a job record and the initial task.
      *
@@ -198,9 +201,7 @@ public class JobServiceImpl implements JobService {
         TaskState oldState = taskDao.getState(task, true);
 
         if (taskDao.setState(task, newState, expect)) {
-            if (jobDao.updateTaskStateCounts(task, newState, oldState).equals(JobState.Finished)) {
-                dyHierarchyService.submitGenerateAll(true);
-            }
+            jobDao.updateTaskStateCounts(task, newState, oldState);
             return true;
         }
         return false;
@@ -218,14 +219,11 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public boolean setTaskCompleted(ExecuteTaskStopped result) {
-        TaskState newState = result.getExitStatus() == 0 ? TaskState.Success : TaskState.Failure;
-        if (setTaskState(result, newState, TaskState.Running)) {
-
+        TaskState newState = result.getNewState();
+        if (setTaskState(result, newState, TaskState.Running, TaskState.Queued)) {
             if (newState.equals(TaskState.Success)) {
                 logger.info("decremented {} depend counts" , taskDao.decrementDependCount(result));
             }
-
-            taskDao.setExitStatus(result, result.getExitStatus());
             return true;
         }
         return false;
@@ -250,4 +248,6 @@ public class JobServiceImpl implements JobService {
     public PagedList<Task> getAllTasks(int job, Paging page) {
         return taskDao.getAll(job, page);
     }
+
+
 }

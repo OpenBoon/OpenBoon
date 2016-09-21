@@ -2,6 +2,7 @@ package com.zorroa.analyst.web;
 
 import com.zorroa.analyst.service.ProcessManagerService;
 import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.ExecuteTaskStop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by chambers on 2/16/16.
+ * All methods here are async. The calling thread gets no indication of
+ * what actually happened to avoid blocking on the archivist.
  */
 @RestController
 public class ProcessManagerController {
@@ -18,7 +20,12 @@ public class ProcessManagerController {
     ProcessManagerService processManager;
 
     @RequestMapping(value="/api/v1/task/_execute", method=RequestMethod.POST)
-    public void executeScript(@RequestBody ExecuteTaskStart task) throws Throwable {
-        processManager.queueExecute(task);
+    public void executeTask(@RequestBody ExecuteTaskStart task) throws Throwable {
+        processManager.execute(task, true);
+    }
+
+    @RequestMapping(value="/api/v1/task/_stop", method=RequestMethod.POST)
+    public void stopTask(@RequestBody ExecuteTaskStop task) throws Throwable {
+        processManager.asyncStopTask(task);
     }
 }

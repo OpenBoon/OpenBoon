@@ -93,6 +93,6 @@ public class ArchivistClient extends AbstractClient {
      * @param result
      */
     public void reportTaskStopped(ExecuteTaskStopped result) {
-        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_completed", result);
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_stopped", result);
     }
 }

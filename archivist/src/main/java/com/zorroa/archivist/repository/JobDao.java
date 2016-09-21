@@ -1,10 +1,10 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.JobId;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.domain.TaskId;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.JobFilter;
+import com.zorroa.archivist.domain.JobSpec;
+import com.zorroa.archivist.domain.JobState;
+import com.zorroa.common.domain.*;
 
 /**
  * Created by chambers on 6/24/16.
@@ -31,5 +31,7 @@ public interface JobDao {
 
     boolean setState(JobId job, JobState newState, JobState expect);
 
-    JobState updateTaskStateCounts(TaskId task, TaskState value, TaskState expect);
+    JobState getState(int id);
+
+    void updateTaskStateCounts(TaskId task, TaskState value, TaskState expect);
 }

@@ -20,5 +20,7 @@ public interface AnalystService {
 
     List<Analyst> getActive();
 
+    AnalystClient getAnalystClient(String host);
+
     AnalystClient getAnalystClient();
 }
