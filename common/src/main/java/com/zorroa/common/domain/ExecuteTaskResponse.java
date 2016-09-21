@@ -38,4 +38,13 @@ public class ExecuteTaskResponse implements TaskId, JobId {
     public Integer getJobId() {
         return task.getJobId();
     }
+
+    public ExecuteTask getTask() {
+        return task;
+    }
+
+    public ExecuteTaskResponse setTask(ExecuteTask task) {
+        this.task = task;
+        return this;
+    }
 }

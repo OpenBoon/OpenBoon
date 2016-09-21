@@ -360,8 +360,9 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         }
 
         if (reaction.getResponse() != null) {
-            logger.info("Processing response from job: {}", start.getTask().getJobId());
-            archivistClient.respond(new ExecuteTaskResponse(start.getTask(), reaction.getResponse()));
+            logger.info("Processing response from task: {}", Json.serializeToString(start.getTask()));
+            ExecuteTaskResponse rsp = new ExecuteTaskResponse(start.getTask(), reaction.getResponse());
+            archivistClient.respond(rsp);
         }
 
         if (reaction.getStats() != null) {
