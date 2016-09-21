@@ -19,10 +19,11 @@ import org.apache.http.HttpHost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,7 +43,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 4. Handle cases where analysts go down and lose tasks by requeuing them.
  */
 @Component
-public class JobExecutorServiceImpl extends AbstractScheduledService implements JobExecutorService {
+public class JobExecutorServiceImpl extends AbstractScheduledService
+        implements JobExecutorService, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(JobExecutorServiceImpl.class);
 
@@ -84,8 +86,8 @@ public class JobExecutorServiceImpl extends AbstractScheduledService implements 
      */
     private final ExecutorService dispatchQueue = Executors.newFixedThreadPool(4);
 
-    @PostConstruct
-    public void init() {
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (!ArchivistConfiguration.unittest) {
             startAsync();
         }
