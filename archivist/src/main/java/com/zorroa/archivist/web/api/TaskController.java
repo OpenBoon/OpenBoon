@@ -3,6 +3,7 @@ package com.zorroa.archivist.web.api;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -50,5 +51,11 @@ public class TaskController {
     @ResponseBody
     public void skip(@PathVariable int id) throws ExecutionException, IOException {
         jobExecutorService.skipTask(taskDao.get(id));
+    }
+
+    @RequestMapping(value = "/api/v1/tasks/{id}/_script", method = RequestMethod.GET)
+    @ResponseBody
+    public String getScript(@PathVariable int id) throws ExecutionException, IOException {
+        return Json.prettyString(Json.deserialize(taskDao.getScript(id), Object.class));
     }
 }

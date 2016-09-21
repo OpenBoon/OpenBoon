@@ -100,6 +100,12 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         return TaskState.values()[jdbc.queryForObject(q, Integer.class, task.getTaskId())];
     }
 
+
+    @Override
+    public String getScript(int id) {
+        return jdbc.queryForObject("SELECT json_script FROM task WHERE pk_task=?", String.class, id);
+    }
+
     @Override
     public boolean setState(TaskId task, TaskState value, TaskState ... expect) {
         logger.debug("setting task: {} from {} to {}", task.getTaskId(), expect, value);

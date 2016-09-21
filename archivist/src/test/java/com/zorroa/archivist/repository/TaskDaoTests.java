@@ -8,6 +8,7 @@ import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;
@@ -206,5 +207,12 @@ public class TaskDaoTests extends AbstractTest {
         Path lp = taskDao.getLogFilePath(task.getTaskId());
         assertTrue(lp.toString().startsWith(
                 properties.getPath("zorroa.cluster.path.shared") + "/logs"));
+    }
+
+    @Test
+    public void testGetScript() {
+        String script = taskDao.getScript(task.getTaskId());
+        // Just ensure the string parses to a ZpsScript
+        ZpsScript zps = Json.deserialize(script, ZpsScript.class);
     }
 }

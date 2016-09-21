@@ -4,13 +4,46 @@
 <head></head>
 <body>
 
-<div th:fragment="view_modal">
-<div class="modal modal-wide fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+<div th:fragment="script_modal">
+    <div class="modal modal-wide fade" id="scriptModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Script</h4>
+                </div>
+                <div class="modal-body">
+                    <pre id="script"></pre>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript" type="text/javascript">
+            $(document).ready(function() {
+                $('#scriptModal').on('show.bs.modal', function(e) {
+
+                    //get data-id attribute of the clicked element
+                    var taskId = $(this).val();
+                    $.ajax({
+                        url : "/api/v1/tasks/" + taskId + "/_script",
+                        dataType: "text",
+                        success : function (data) {
+                            $("#script").text(data);
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</div>
+
+
+<div th:fragment="log_modal">
+<div class="modal modal-wide fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Task</h4>
+                <h4 class="modal-title">Log</h4>
             </div>
             <div class="modal-body">
                 <pre id="log"></pre>
@@ -19,7 +52,7 @@
     </div>
     <script th:inline="javascript" type="text/javascript">
         $(document).ready(function() {
-            $('#viewModal').on('show.bs.modal', function(e) {
+            $('#logModal').on('show.bs.modal', function(e) {
 
                 //get data-id attribute of the clicked element
                 var taskId = $(this).val();
@@ -33,7 +66,6 @@
             });
         });
     </script>
-
 </div>
 </div>
 
@@ -88,11 +120,12 @@
         <div th:include="fragments/table :: pager"/>
     </div>
     <div th:include="fragments/table :: selectable"/>
-    <div th:include="fragments/tasks :: view_modal"/>
-
+    <div th:include="fragments/tasks :: log_modal"/>
+    <div th:include="fragments/tasks :: script_modal"/>
     <div id="contextMenu" class="dropdown clearfix">
         <ul class="dropdown-menu fa-ul" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;margin-bottom:5px;">
             <li><a tabindex="-1" id="li-view" href="#"><i class="glyphicon glyphicon-info-sign"></i>&nbsp;Log</a></li>
+            <li><a tabindex="-1" id="li-script" href="#"><i class="glyphicon glyphicon-info-sign"></i>&nbsp;Script</a></li>
             <li class="divider"></li>
             <li><a tabindex="-1" id="li-retry" href="#">Retry</a></li>
             <li><a tabindex="-1" id="li-skip" href="#">Skip</a></li>
@@ -165,8 +198,12 @@
                 if (task == null) { return ;}
 
                 if (option == "li-view") {
-                    $('#viewModal').val(task);
-                    $('#viewModal').modal({backdrop: "static"});
+                    $('#logModal').val(task);
+                    $('#logModal').modal({backdrop: "static"});
+                }
+                else if (option == "li-script") {
+                    $('#scriptModal').val(task);
+                    $('#scriptModal').modal({backdrop: "static"});
                 }
                 else if (option == "li-retry") {
                     retryTask(task);
