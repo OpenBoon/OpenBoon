@@ -69,7 +69,7 @@
         <tbody>
         <tr class="clickable-row" th:each="asset: ${assets}">
             <td class="vert-align">
-                <a th:if="${asset.proxies != null}" th:attr="data-id=${asset.id}" data-toggle="modal" data-target="#imagemodal">
+                <a th:if="${asset.proxies != null}" th:attr="data-id=${asset.id},data-type=${asset.getAttr('source.mediaType')}" data-toggle="modal" data-target="#imagemodal">
                     <img class="center-cropped" th:src="@{/api/v1/ofs/__${asset.proxies.smallest.id}__}"/></a>
             </td>
             <td class="vert-align" th:attr="data-id=${asset.id}" data-toggle="modal" data-target="#viewModal" th:text="${asset.getAttr('source.filename')}"></td>
@@ -115,15 +115,29 @@
         $(document).ready(function() {
             $('#imagemodal').on('show.bs.modal', function(e) {
                 var assetId = $(e.relatedTarget).data('id');
-                var img = $("<img />").attr('class', "center-block").height($(window).height()-50).attr('src', "/api/v1/assets/" + assetId + "/_stream")
-                .on('load', function() {
-                    if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
-                        alert('broken image!');
-                    } else {
+                var type = $(e.relatedTarget).data('type');
 
-                        $("#image").empty().append(img);
-                    }
-                });
+                if (type.startsWith("image")) {
+                    console.log("image");
+                    view = $("<img />").attr('class', "center-block").height($(window).height()-50).attr('src', "/api/v1/assets/" + assetId + "/_stream")
+                }
+                else if (type.startsWith("video")) {
+                    $("#image").empty().append(
+                            '<video class="center-block" controls="controls"><source src="/api/v1/assets/'
+                            + assetId
+                            + '/_stream" type="' + type + '"/></video>');
+                    return;
+                }
+
+                if (view) {
+                    view.on('load', function () {
+                        if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                            alert('broken image!');
+                        } else {
+                            $("#image").empty().append(view);
+                        }
+                    });
+                }
             });
         });
     </script>
