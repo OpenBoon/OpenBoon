@@ -28,24 +28,7 @@
         </table>
         <hr width="100%" class="no-margin"/>
         <div th:include="fragments/tasks :: task_table"/>
-    </div>
-
-    <script th:inline="javascript" type="text/javascript">
-        $('#opener').on('click', function() {
-            var panel = $('#rightContent');
-            var table = $('#leftContent');
-
-            if (panel.hasClass("hidden")) {
-                panel.removeClass('hidden').addClass('col-md-3');
-                table.removeClass('col-md-12').addClass("col-md-9");
-            } else {
-                panel.addClass('hidden').removeClass('col-md-3');
-                table.removeClass('col-md-9').addClass("col-md-12")
-            }
-            return false;
-        });
-    </script>
-
+    </div>3
     <div th:include="fragments/imports :: modal_create"/>
 
 </section>

@@ -142,18 +142,10 @@ public class ExportServiceImpl implements ExportService {
         /**
          * Arrays for the primary and per-asset pipeline.
          */
-        List<ProcessorRef> export = Lists.newArrayList();
-        List<ProcessorRef> pipeline = Lists.newArrayList();
-        script.setExecute(pipeline);
-
-        /**
-         * First setup the core pipeline for the main task.  We create the
-         * output directory, add the export id, and kick off a search generator.
-         */
-        pipeline.add(new SdkProcessorRef()
-                .setClassName("com.zorroa.sdk.processor.builtin.MakeDirectory")
-                .setLanguage("java")
-                .setArgs(ImmutableMap.of("path", exportRoot.toString())));
+        List<ProcessorRef> generate = Lists.newArrayList();
+        List<ProcessorRef> execute = Lists.newArrayList();
+        script.setGenerate(generate);
+        script.setExecute(execute);
 
         /**
          * Replace the search the user supplied with our own search so we ensure
@@ -161,11 +153,18 @@ public class ExportServiceImpl implements ExportService {
          * added that might match their search change the export.
          */
         AssetSearch search = performExportSearch(spec.getSearch(), job.getJobId());
-        pipeline.add(pluginService.getProcessorRef(
+        generate.add(pluginService.getProcessorRef(
                 "com.zorroa.sdk.processor.builtin.AssetSearchGenerator",
-                ImmutableMap.of(
-                        "pipeline", export,
-                        "search", search)));
+                ImmutableMap.of("search", search)));
+
+        /**
+         * First setup the core pipeline for the main task.  We create the
+         * output directory, add the export id, and kick off a search generator.
+         */
+        execute.add(new SdkProcessorRef()
+                .setClassName("com.zorroa.sdk.processor.builtin.MakeDirectory")
+                .setLanguage("java")
+                .setArgs(ImmutableMap.of("path", exportRoot.toString())));
 
         /**
          * Now setup the per file export pipeline.  A CopySource processors is
@@ -173,18 +172,18 @@ public class ExportServiceImpl implements ExportService {
          * modifications by the user.  Finally a CompressSource is appended.  All
          * of this is run inline to the generator.
          */
-        export.add(new SdkProcessorRef()
+        execute.add(new SdkProcessorRef()
                 .setClassName("com.zorroa.sdk.processor.builtin.CopySource")
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("dstDirectory", exportRoot.resolve("tmp").toString())));
 
         if (spec.getPipelineId() != null) {
             for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
-                export.add(pluginService.getProcessorRef(ref));
+                execute.add(pluginService.getProcessorRef(ref));
             }
         }
 
-        export.add(new SdkProcessorRef()
+        execute.add(new SdkProcessorRef()
                 .setClassName("com.zorroa.sdk.processor.builtin.CompressSource")
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("dstFile", zipFile.toString())));
@@ -200,7 +199,7 @@ public class ExportServiceImpl implements ExportService {
          */
         transactionEventManager.afterCommitSync(() -> {
             logService.log(LogSpec.build(LogAction.Create,
-                    "export", export));
+                    "export", job.getJobId()));
         });
 
         return job;

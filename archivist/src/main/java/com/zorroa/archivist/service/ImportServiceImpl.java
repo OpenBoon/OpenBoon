@@ -65,25 +65,19 @@ public class ImportServiceImpl implements ImportService {
         jspec.setType(Import);
         jspec.setName(String.format("debugging import by %s (%s)",
                 SecurityUtils.getUsername(), FileUtils.filename(spec.getPath())));
-
         Job job = jobService.launch(jspec);
+
+        List<ProcessorRef> generator = ImmutableList.of(
+                new SdkProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator")
+                        .setArg("paths", ImmutableList.of(spec.getPath())));
 
         List<ProcessorRef> pipeline = pipelineService.getProcessors(
                 spec.getPipelineId(), spec.getPipeline());
-
-        /*
-         * Add the final processor which ships the data back to this waiting call.
-         */
         pipeline.add(new SdkProcessorRef("com.zorroa.sdk.processor.builtin.ReturnResponse"));
 
-        List<ProcessorRef> generator = Lists.newArrayList();
-        generator.add(
-                new SdkProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator")
-                .setArg("paths", ImmutableList.of(spec.getPath()))
-                .setArg("pipeline", pipeline));
-
         ZpsScript script = new ZpsScript();
-        script.setExecute(generator);
+        script.setGenerate(generator);
+        script.setExecute(pipeline);
         script.setInline(true);
         script.setStrict(true);
 
@@ -112,17 +106,34 @@ public class ImportServiceImpl implements ImportService {
          */
         Job job = jobService.launch(jspec);
 
-        List<ProcessorRef> pipeline = pipelineService.getProcessors(
-                spec.getPipelineId(), spec.getPipeline());
+        List<ProcessorRef> execute = Lists.newArrayList();
 
         /**
-         * At the end we add an IndexSource processor.
+         * Add an ExpandCollector so we generate right into new tasks.
+         */
+        execute.add(
+                new SdkProcessorRef()
+                        .setClassName("com.zorroa.sdk.processor.builtin.ExpandCollector")
+                        .setLanguage("java"));
+
+        /**
+         * Resolve the user supplied pipeline.
+         */
+        List<ProcessorRef> pipeline = pipelineService.getProcessors(
+                spec.getPipelineId(), spec.getPipeline());
+        /**
+         * At the end we add an IndexDocumentCollector to index the results of our job.
          */
         pipeline.add(
                 new SdkProcessorRef()
-                        .setClassName("com.zorroa.sdk.processor.builtin.IndexSource")
+                        .setClassName("com.zorroa.sdk.processor.builtin.IndexDocumentCollector")
                         .setLanguage("java")
                         .setArgs(ImmutableMap.of("importId", job.getJobId())));
+
+        /**
+         * Now finally, attach the pipeline to the expander as a sub execute list.
+         */
+        execute.get(0).setExecute(pipeline);
 
         /**
          * Now attach the pipeline to each generator, be sure to validate each processor
@@ -131,7 +142,6 @@ public class ImportServiceImpl implements ImportService {
         List<ProcessorRef> generators = Lists.newArrayListWithCapacity(spec.getGenerators().size());
         for (ProcessorRef m: spec.getGenerators()) {
             ProcessorRef gen = pluginService.getProcessorRef(m);
-            gen.setArg("pipeline", pipeline);
             generators.add(gen);
         }
 
@@ -139,7 +149,9 @@ public class ImportServiceImpl implements ImportService {
          * The execute property holds the current processors to be executed.
          */
         ZpsScript script = new ZpsScript();
-        script.setExecute(generators);
+        script.setGenerate(generators);
+        script.setExecute(execute);
+
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
                 .setName("Path Generation"));
