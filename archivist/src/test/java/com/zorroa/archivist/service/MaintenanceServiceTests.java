@@ -1,6 +1,12 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.ExpiredJob;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.JobSpec;
+import com.zorroa.archivist.domain.TaskSpec;
+import com.zorroa.archivist.repository.MaintenanceDao;
+import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,7 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static org.junit.Assert.assertTrue;
+import static com.zorroa.archivist.domain.PipelineType.Import;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 4/21/16.
@@ -18,21 +25,63 @@ public class MaintenanceServiceTests extends AbstractTest {
     @Autowired
     MaintenanceService maintenanceService;
 
+    @Autowired
+    MaintenanceDao maintenanceDao;
+
+    @Autowired
+    JobService jobService;
+
     @Test
     public void testBackup() throws IOException {
-        File file = null;
-        try {
-            file = maintenanceService.backup();
-            assertTrue(file.exists());
-        } finally {
-            if (file != null) {
-                Files.deleteIfExists(file.toPath());
-            }
-        }
+        File tmpFile = Files.createTempFile("backup", "zorroa").toFile();
+        maintenanceService.backup(tmpFile);
+        assertTrue(tmpFile.exists());
+        Files.deleteIfExists(tmpFile.toPath());
+        assertFalse(tmpFile.exists());
+    }
+
+    @Test
+    public void testAutomaticBackup() throws IOException {
+        File file = maintenanceService.automaticBackup();
+        assertTrue(file.exists());
+        Files.deleteIfExists(file.toPath());
+    }
+
+    @Test
+    public void testRemoveExpiredBackups() throws IOException {
+        File file = maintenanceService.automaticBackup();
+        assertTrue(file.exists());
+        assertEquals(1, maintenanceService.removeExpiredBackups(0));
+        assertFalse(file.exists());
     }
 
     @Test
     public void testRemoveExpiredJobData() {
-        maintenanceService.removeExpiredJobData();
+        JobSpec jspec = new JobSpec();
+        jspec.setType(Import);
+        jspec.setName("test");
+        Job job = jobService.launch(jspec);
+
+        jobService.createTask(new TaskSpec()
+                .setJobId(jspec.getJobId())
+                .setScript(new ZpsScript())
+                .setName("test"));
+
+        long time = System.currentTimeMillis()+1000;
+        ExpiredJob ejob = maintenanceDao.getExpiredJobs(time).get(0);
+
+        assertEquals("Wrong job id", job.getJobId(), ejob.getJobId());
+        assertTrue("Log directory does not exist", new File(ejob.getLogPath()).exists());
+        assertEquals(1, (int) jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?",
+                Integer.class, job.getId()));
+        assertEquals(1, (int) jdbc.queryForObject("SELECT COUNT(1) FROM task_stat WHERE pk_job=?",
+                Integer.class, job.getId()));
+
+        assertEquals(1, maintenanceService.removeExpiredJobData(time));
+        assertFalse("Log directory should not exist", new File(ejob.getLogPath()).exists());
+        assertEquals(0, (int) jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?",
+                Integer.class, job.getId()));
+        assertEquals(0, (int) jdbc.queryForObject("SELECT COUNT(1) FROM task_stat WHERE pk_job=?",
+                Integer.class, job.getId()));
     }
 }

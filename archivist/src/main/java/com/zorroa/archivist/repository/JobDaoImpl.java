@@ -36,6 +36,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         Preconditions.checkNotNull(spec);
         Preconditions.checkNotNull(spec.getName());
         Preconditions.checkNotNull(spec.getType());
+        long time = System.currentTimeMillis();
 
         nextId(spec);
 
@@ -46,7 +47,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
             ps.setString(2, spec.getName());
             ps.setInt(3, spec.getType().ordinal());
             ps.setInt(4, SecurityUtils.getUser().getId());
-            ps.setLong(5, System.currentTimeMillis());
+            ps.setLong(5, time);
             ps.setString(6, Json.serializeToString(spec.getArgs(), "{}"));
             ps.setString(7, Json.serializeToString(spec.getEnv(), "{}"));
             ps.setString(8, spec.getLogPath());
@@ -55,7 +56,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
 
         // insert supporting tables.
         jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", spec.getJobId());
-        jdbc.update("INSERT INTO job_count (pk_job) VALUES (?)", spec.getJobId());
+        jdbc.update("INSERT INTO job_count (pk_job, time_updated) VALUES (?, ?)", spec.getJobId(), time);
         return get(spec.getJobId());
     }
 
@@ -72,7 +73,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         job.setId(rs.getInt("pk_job"));
         job.setName(rs.getString("str_name"));
         job.setTimeStarted(rs.getLong("time_started"));
-        job.setTimeStopped(rs.getLong("time_stopped"));
+        job.setTimeUpdated(rs.getLong("time_updated"));
         job.setType(PipelineType.values()[rs.getInt("int_type")]);
         job.setUserCreated(resolveUser(rs.getInt("int_user_created")));
         job.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
@@ -117,7 +118,6 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "job.str_name,"+
                 "job.int_state,"+
                 "job.time_started,"+
-                "job.time_stopped,"+
                 "job.int_type,"+
                 "job.json_args,"+
                 "job.int_user_created,"+
@@ -132,7 +132,8 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "job_count.int_task_state_running_count,"+
                 "job_count.int_task_state_success_count,"+
                 "job_count.int_task_state_failure_count, " +
-                "job_count.int_task_state_skipped_count " +
+                "job_count.int_task_state_skipped_count, " +
+                "job_count.time_updated " +
             "FROM " +
                 "job," +
                 "job_count,"+
@@ -208,11 +209,6 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
 
         fields.add("int_state=?");
         values.add(newState.ordinal());
-
-        if (newState.equals(JobState.Finished)) {
-            fields.add("time_stopped=?");
-            values.add(System.currentTimeMillis());
-        }
 
         StringBuilder sb = new StringBuilder(256);
         sb.append("UPDATE job SET ");

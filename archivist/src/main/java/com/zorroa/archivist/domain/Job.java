@@ -20,7 +20,7 @@ public class Job implements JobId {
     private Map<String, Object> args;
 
     private long timeStarted;
-    private long timeStopped;
+    private long timeUpdated;
 
     private Counts counts;
     private Stats stats;
@@ -70,12 +70,12 @@ public class Job implements JobId {
         return this;
     }
 
-    public long getTimeStopped() {
-        return timeStopped;
+    public long getTimeUpdated() {
+        return timeUpdated;
     }
 
-    public Job setTimeStopped(long timeStopped) {
-        this.timeStopped = timeStopped;
+    public Job setTimeUpdated(long timeUpdated) {
+        this.timeUpdated = timeUpdated;
         return this;
     }
 

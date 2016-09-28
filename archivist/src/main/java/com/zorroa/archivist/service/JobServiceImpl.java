@@ -13,9 +13,6 @@ import com.zorroa.common.domain.*;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,14 +98,26 @@ public class JobServiceImpl implements JobService {
         return jobDao.get(job.getId());
     }
 
-    private void createLogPath(JobSpec spec) {
-        DateTime time = new DateTime();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM");
-
-        Path localPath = properties.getPath("archivist.path.logs")
-                .resolve(formatter.print(time))
-                .resolve(spec.getType().toString())
+    /**
+     * Decorates a base path with the final leaf directories
+     * for a job.
+     *
+     * @param spec
+     * @param basePath
+     * @return
+     */
+    private Path resolveLogPath(JobSpec spec, Path basePath) {
+        return basePath
+                .resolve(spec.getType().toString().toLowerCase())
                 .resolve(String.valueOf(spec.getJobId()));
+
+    }
+
+    private void createLogPath(JobSpec spec) {
+
+        // The local path is the one archivist can see.
+        Path localPath = resolveLogPath(spec,
+                properties.getPath("archivist.path.logs"));
 
         File localFile = localPath.toFile();
         if (localFile.exists()) {
@@ -118,12 +127,9 @@ public class JobServiceImpl implements JobService {
             localPath.toFile().mkdirs();
         }
 
-        Path clusterPath = properties.getPath("zorroa.cluster.path.shared")
-                .resolve("logs")
-                .resolve(formatter.print(time))
-                .resolve(spec.getType().toString())
-                .resolve(String.valueOf(spec.getJobId()));
-
+        // The cluster path is what
+        Path clusterPath = resolveLogPath(spec,
+                properties.getPath("zorroa.cluster.path.logs"));
         spec.setLogPath(clusterPath.toString());
     }
 

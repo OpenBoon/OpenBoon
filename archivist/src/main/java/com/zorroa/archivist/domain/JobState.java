@@ -17,7 +17,13 @@ public enum JobState {
     Cancelled,
 
     /**
-     * The job finished naturally.
+     * The job finished naturally.  This is a psuedo state and is never set
+     * on the job but calculated based on the pending task list.
      */
-    Finished
+    Finished,
+
+    /**
+     * Job is expired and no longer restartable.
+     */
+    Expired
 }

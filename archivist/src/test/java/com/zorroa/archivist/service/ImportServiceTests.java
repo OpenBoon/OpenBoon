@@ -38,7 +38,7 @@ public class ImportServiceTests extends AbstractTest {
         pluginService.installAndRegisterAllPlugins();
         ImportSpec spec = new ImportSpec();
         spec.setGenerators(ImmutableList.of(
-                new SdkProcessorRef("com.zorroa.sdk.processors.builtin.NoOpProcessor")));
+                new SdkProcessorRef("com.zorroa.sdk.processors.builtin.GroupProcessor")));
         job = importService.create(spec);
     }
 
@@ -56,7 +56,6 @@ public class ImportServiceTests extends AbstractTest {
         job = jobService.get(job.getJobId());
         assertEquals(PipelineType.Import, job.getType());
         assertTrue(job.getTimeStarted() > 0);
-        assertEquals(-1, job.getTimeStopped());
 
         assertEquals(1, job.getCounts().getTasksTotal());
         assertEquals(1, job.getCounts().getTasksWaiting());
