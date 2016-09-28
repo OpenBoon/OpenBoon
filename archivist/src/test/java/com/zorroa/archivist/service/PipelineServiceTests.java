@@ -30,7 +30,7 @@ public class PipelineServiceTests extends AbstractTest {
     public void init() {
         spec = new PipelineSpecV();
         spec.setProcessors(Lists.newArrayList(
-                new ProcessorRef("com.zorroa.sdk.processor.builtin.NoOpProcessor")));
+                new ProcessorRef("com.zorroa.sdk.processor.builtin.GroupProcessor")));
         spec.setDescription("A NoOp");
         spec.setName("test");
         spec.setType(PipelineType.Import);

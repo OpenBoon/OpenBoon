@@ -30,4 +30,9 @@ public class MaintenanceServiceTests extends AbstractTest {
             }
         }
     }
+
+    @Test
+    public void testRemoveExpiredJobData() {
+        maintenanceService.removeExpiredJobData();
+    }
 }
