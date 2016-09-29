@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Plugin;
@@ -50,7 +51,7 @@ public class ProcessorDaoTests extends AbstractTest {
         pspec.setDescription("foo");
         pspec.setClassName("com.foo.Bar");
         pspec.setDisplay(Lists.newArrayList());
-        pspec.setSupportedExtensions(new String[] { "jpg"});
+        pspec.setFilters(ImmutableList.of("_doc.source.extension=='jpg'"));
         pspec.setType("unittest");
 
         proc = processorDao.create(plugin, pspec);
@@ -62,7 +63,7 @@ public class ProcessorDaoTests extends AbstractTest {
         assertEquals(spec.getClassName(), pr.getName());
         assertEquals(spec.getDescription(),pr.getDescription());
         assertEquals(spec.getType(), pr.getType());
-        assertEquals(spec.getSupportedExtensions().length, pr.getSupportedExtensions().size());
+        assertEquals(spec.getFilters().size(), pr.getFilters().size());
         assertEquals(spec.getDisplay(), pr.getDisplay());
 
         assertEquals("com.foo", pr.getModule());

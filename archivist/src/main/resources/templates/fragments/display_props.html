@@ -11,13 +11,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingOne">
                     <h4 class="panel-title">
+                        <div class="btn btn-default disabled" style="cursor:default;" data-toggle="popover" title="ToolTip" th:attr="data-content=${display.toolTip}">
                         <i th:if="${#strings.startsWith(display.type, 'list[')}" class="fa fa-list"></i>
                         <i th:if="${display.type == 'boolean'}" class="fa fa-toggle-on"></i>
                         <i th:if="${display.type == 'string'}" class="fa fa-font"></i>
+                        <i th:if="${display.type == 'float'}" class="fa fa-calculator"></i>
                         <i th:if="${display.type == 'int'}" class="fa fa-italic"></i>
                         <i th:if="${display.type == 'file'}" class="fa fa-file-text-o"></i>
-                        <a th:text="${display.label}" role="button" data-toggle="collapse" data-parent="#accordion" th:href="${'#' + display.name}" aria-expanded="false" th:aria-controls="${display.name}">
-                        </a>
+                        </div>
+                        <a th:text="${display.label}" role="button" data-toggle="collapse" data-parent="#accordion" th:href="${'#' + display.name}" aria-expanded="false" th:aria-controls="${display.name}"></a>
                     </h4>
                 </div>
                 <div th:id="${display.name}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
@@ -27,6 +29,8 @@
                             <dd th:text="${display.name}"></dd>
                             <dt>Label:</dt>
                             <dd th:text="${display.label}"></dd>
+                            <dt>ToolTip:</dt>
+                            <dd th:text="${display.toolTip}"></dd>
                             <dt>Type:</dt>
                             <dd th:text="${display.type}"></dd>
                             <dt>Widget:</dt>
@@ -45,7 +49,14 @@
         </th:block>
     </div>
 </div>
-</div>
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+        $(function () {
+            $('[data-toggle="popover"]').popover({trigger: "hover"});
+        })
+        //]]>
+    </script>
 
+</div>
 </body>
 </html>

@@ -9,12 +9,12 @@
 <section layout:fragment="content">
     <div th:include="fragments/plugins :: menu"/>
     <div class="wrapper">
-    <table class="table table-striped table-hover">
+    <table id="table" class="table table-striped table-hover">
         <thead>
         <tr>
             <th>Type</th>
             <th>Name</th>
-            <th>File Types</th>
+            <th>Filters</th>
             <th>Description</th>
         </tr>
         </thead>
@@ -22,7 +22,7 @@
             <tr class="clickable-row" th:attr="data-href=${'/gui/plugins/' + plugin.id + '/processors/' + processor.id}" th:each="processor: ${processors}">
                 <td th:text="${processor.type}"></td>
                 <td th:text="${processor.name}"></td>
-                <td th:text="${processor.supportedExtensions}"></td>
+                <td th:text="${processor.filters}"></td>
                 <td th:text="${processor.description}"></td>
             </tr>
         </tbody>

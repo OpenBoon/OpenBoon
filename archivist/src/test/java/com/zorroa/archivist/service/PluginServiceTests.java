@@ -55,7 +55,7 @@ public class PluginServiceTests extends AbstractTest {
         pspec.setDescription("foo");
         pspec.setClassName("com.foo.Bar");
         pspec.setDisplay(Lists.newArrayList());
-        pspec.setSupportedExtensions(new String[] { "jpg"});
+        pspec.setFilters(Lists.newArrayList("_doc.source.extension=='jpg'"));
         pspec.setType("unittest");
 
         proc = processorDao.create(plugin, pspec);

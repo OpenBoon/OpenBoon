@@ -41,7 +41,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
                     "str_type",
                     "str_description",
                     "json_display",
-                    "json_ext",
+                    "json_filters",
                     "time_created",
                     "time_modified");
 
@@ -70,7 +70,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             ps.setString(5, spec.getType());
             ps.setString(6, spec.getDescription() == null ? shortName : spec.getDescription());
             ps.setString(7, Json.serializeToString(spec.getDisplay(), "[]"));
-            ps.setString(8, Json.serializeToString(spec.getSupportedExtensions(), "[]"));
+            ps.setString(8, Json.serializeToString(spec.getFilters(), "[]"));
             ps.setLong(9, time);
             ps.setLong(10, time);
             return ps;
@@ -88,7 +88,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         p.setType(rs.getString("str_type"));
         p.setDescription(rs.getString("str_description"));
         p.setDisplay(Json.deserialize(rs.getString("json_display"), new TypeReference<List<Map<String, Object>>>() {}));
-        p.setSupportedExtensions(Json.deserialize(rs.getString("json_ext"), Json.SET_OF_STRINGS));
+        p.setFilters(Json.deserialize(rs.getString("json_filters"), Json.LIST_OF_STRINGS));
         p.setPluginId(rs.getInt("pk_plugin"));
         p.setPluginLanguage(rs.getString("plugin_lang"));
         p.setPluginVersion(rs.getString("plugin_ver"));
@@ -105,7 +105,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             "processor.str_type,"+
             "processor.str_description,"+
             "processor.json_display,"+
-            "processor.json_ext, " +
+            "processor.json_filters, " +
             "plugin.pk_plugin, "+
             "plugin.str_name AS plugin_name, "+
             "plugin.str_lang AS plugin_lang, " +

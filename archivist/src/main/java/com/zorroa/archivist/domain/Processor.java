@@ -5,7 +5,6 @@ import com.google.common.base.MoreObjects;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Created by chambers on 8/16/16.
@@ -15,7 +14,7 @@ import java.util.Set;
 public class Processor {
 
     private int id;
-    private Set<String> supportedExtensions;
+    private List<String> filters;
     private String description;
     private String name;
     private String shortName;
@@ -39,12 +38,12 @@ public class Processor {
         return this;
     }
 
-    public Set<String> getSupportedExtensions() {
-        return supportedExtensions;
+    public List<String> getFilters() {
+        return filters;
     }
 
-    public Processor setSupportedExtensions(Set<String> supportedExtensions) {
-        this.supportedExtensions = supportedExtensions;
+    public Processor setFilters(List<String> filters) {
+        this.filters = filters;
         return this;
     }
 

@@ -42,7 +42,7 @@ public class PluginGuiController {
     @RequestMapping("/gui/plugins/{pid}/processors/{id}")
     public String plugins(Model model, @PathVariable int pid, @PathVariable int id) {
         standardModel(model);
-        Plugin plugin = pluginService.getPlugin(id);
+        Plugin plugin = pluginService.getPlugin(pid);
 
         model.addAttribute("plugin", plugin);
         model.addAttribute("processor", pluginService.getProcessor(id));
