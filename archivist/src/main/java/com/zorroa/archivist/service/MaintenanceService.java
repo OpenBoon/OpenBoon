@@ -7,6 +7,8 @@ import java.io.File;
  */
 public interface MaintenanceService {
 
+    File getNextAutomaticBackupFile();
+
     /**
      * Make an online backup of the local H2 SQL DB.  The backup file
      * is named backup_YYYY-MM-dd.zip.

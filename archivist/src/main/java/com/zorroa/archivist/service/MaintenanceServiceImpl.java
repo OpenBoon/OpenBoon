@@ -56,18 +56,24 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
     }
 
     @Override
+    public File getNextAutomaticBackupFile() {
+        String path = properties.getString("archivist.path.backups");
+        DateTime time = new DateTime();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd");
+
+        File fullPath = new File(String.format("%s/backup_%s.zip",
+                path, formatter.print(time)));
+        return fullPath;
+    }
+
+    @Override
     public File automaticBackup() {
         /**
          * First we back up everything if we don't have a backup for today
          * already.
          */
         try {
-            String path = properties.getString("archivist.path.backups");
-            DateTime time = new DateTime();
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-
-            File fullPath = new File(String.format("%s/backup_%s.zip",
-                    path, formatter.print(time)));
+            File fullPath = getNextAutomaticBackupFile();
 
             /**
              * If our path doesn't exist, do a full backup.

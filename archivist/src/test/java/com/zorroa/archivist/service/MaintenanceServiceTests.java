@@ -42,17 +42,27 @@ public class MaintenanceServiceTests extends AbstractTest {
 
     @Test
     public void testAutomaticBackup() throws IOException {
-        File file = maintenanceService.automaticBackup();
-        assertTrue(file.exists());
-        Files.deleteIfExists(file.toPath());
+
+        File file = maintenanceService.getNextAutomaticBackupFile();
+        if (file.exists()) {
+            Files.delete(file.toPath());
+        }
+        File backup = maintenanceService.automaticBackup();
+        assertTrue(backup.exists());
+        Files.deleteIfExists(backup.toPath());
     }
 
     @Test
     public void testRemoveExpiredBackups() throws IOException {
-        File file = maintenanceService.automaticBackup();
-        assertTrue(file.exists());
+        File file = maintenanceService.getNextAutomaticBackupFile();
+        if (file.exists()) {
+            Files.delete(file.toPath());
+        }
+
+        File backup = maintenanceService.automaticBackup();
+        assertTrue(backup.exists());
         assertEquals(1, maintenanceService.removeExpiredBackups(0));
-        assertFalse(file.exists());
+        assertFalse(backup.exists());
     }
 
     @Test
