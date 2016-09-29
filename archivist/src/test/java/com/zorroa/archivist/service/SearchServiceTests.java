@@ -9,6 +9,8 @@ import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.domain.Paging;
+import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Color;
 import com.zorroa.sdk.processor.Source;
@@ -17,6 +19,7 @@ import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.ColorFilter;
+import com.zorroa.sdk.search.Scroll;
 import org.junit.Test;
 
 import java.io.File;
@@ -25,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -330,5 +334,24 @@ public class SearchServiceTests extends AbstractTest {
                         .setHueAndRange(0, 5)
                         .setSaturationAndRange(100, 5)
                         .setBrightnessAndRange(50, 5)))).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testScrollSearch() throws IOException {
+        assetService.index(new Source(getTestImagePath().resolve("beer_kettle_01.jpg")));
+        assetService.index(new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg")));
+        refreshIndex();
+
+        ElasticPagedList<Asset> result1 =
+                searchService.search(Paging.first(1),
+                        new AssetSearch().setScroll(new Scroll().setTimeout("1m")));
+        assertNotNull(result1.getScroll());
+        assertEquals(1, result1.size());
+
+        ElasticPagedList<Asset> result2 =
+                searchService.search(Paging.first(1), new AssetSearch().setScroll(result1.getScroll()
+                        .setTimeout("1m")));
+        assertNotNull(result2.getScroll());
+        assertEquals(1, result2.size());
     }
 }

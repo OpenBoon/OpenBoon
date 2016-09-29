@@ -1,7 +1,7 @@
 package com.zorroa.common.repository;
 
-import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
 import com.zorroa.sdk.domain.LinkSpec;
@@ -17,9 +17,31 @@ public interface AssetDao {
 
     Asset get(String id);
 
-    PagedList<Asset> getAll(Paging page, SearchRequestBuilder search);
+    /**
+     * Return the next page of an asset scroll.
+     *
+     * @param scrollId
+     * @param scrollTimeout
+     * @return
+     */
+    ElasticPagedList<Asset> getAll(String scrollId, String scrollTimeout);
 
-    PagedList<Asset> getAll(Paging page);
+    /**
+     * Get all assets given the page and SearchRequestBuilder.
+     *
+     * @param page
+     * @param search
+     * @return
+     */
+    ElasticPagedList<Asset> getAll(Paging page, SearchRequestBuilder search);
+
+    /**
+     * Get all assets by page.
+     *
+     * @param page
+     * @return
+     */
+    ElasticPagedList<Asset> getAll(Paging page);
 
     boolean exists(Path path);
 

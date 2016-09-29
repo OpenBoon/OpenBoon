@@ -3,9 +3,9 @@ package com.zorroa.common.repository;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
+import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
@@ -263,14 +263,19 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public PagedList<Asset> getAll(Paging page, SearchRequestBuilder search) {
-        return elastic.page(search
-                .setFrom(page.getFrom())
-                .setSize(page.getSize()), page, MAPPER);
+    public ElasticPagedList<Asset> getAll(String id, String timeout) {
+        return elastic.scroll(id ,timeout, MAPPER);
     }
 
     @Override
-    public PagedList<Asset> getAll(Paging page) {
+    public ElasticPagedList<Asset> getAll(Paging page, SearchRequestBuilder search) {
+        return elastic.page(search
+                    .setFrom(page.getFrom())
+                    .setSize(page.getSize()), page, MAPPER);
+    }
+
+    @Override
+    public ElasticPagedList<Asset> getAll(Paging page) {
         return elastic.page(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setFrom(page.getFrom())

@@ -2,12 +2,14 @@ package com.zorroa.common.elastic;
 
 import com.google.common.collect.Lists;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.search.Scroll;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -98,6 +100,25 @@ public class ElasticTemplate {
         return result;
     }
 
+    public <T> ElasticPagedList<T> scroll(String id, String timeout, JsonRowMapper<T> mapper) {
+        SearchScrollRequestBuilder ssrb = client.prepareSearchScroll(id).setScroll(timeout);
+        final SearchResponse r = ssrb.get();
+
+        final List<T> list = Lists.newArrayListWithCapacity(r.getHits().getHits().length);
+        for (SearchHit hit: r.getHits()) {
+            try {
+                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+            } catch (Exception e) {
+                throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
+            }
+        }
+
+        long totalCount = r.getHits().getTotalHits();
+        ElasticPagedList result = new ElasticPagedList(new Paging().setTotalCount(totalCount), list);
+        result.setScroll(new Scroll(r.getScrollId()));
+
+        return result;
+    }
     public <T> ElasticPagedList<T> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
 
@@ -113,6 +134,8 @@ public class ElasticTemplate {
 
         paging.setTotalCount(r.getHits().getTotalHits());
         ElasticPagedList result = new ElasticPagedList(paging, list);
+        result.setScroll(new Scroll(r.getScrollId()));
+
         if (r.getAggregations() != null) {
             try {
                 InternalAggregations aggregations = (InternalAggregations) r.getAggregations();

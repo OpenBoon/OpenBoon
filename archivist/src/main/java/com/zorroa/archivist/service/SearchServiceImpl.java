@@ -8,8 +8,8 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
+import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.exception.ArchivistException;
@@ -30,6 +30,7 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.SortParseElement;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,8 +108,8 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults) {
         SearchResponse rsp = client.prepareSearch(alias)
-                .setSearchType(SearchType.SCAN)
                 .setScroll(new TimeValue(60000))
+                .addSort("_doc", SortOrder.ASC)
                 .setQuery(getQuery(search))
                 .setSize(100).execute().actionGet();
 
@@ -118,16 +119,48 @@ public class SearchServiceImpl implements SearchService {
         return new ScanAndScrollAssetIterator(client, rsp);
     }
 
+    private boolean isSearchLogged(Paging page, AssetSearch search) {
+        if (!search.isEmpty() && page.getNumber() == 1) {
+            Scroll scroll = search.getScroll();
+            if (scroll != null) {
+                // Don't log subsequent searchs.
+                if (scroll.getId() != null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
-    public PagedList<Asset> search(Paging page, AssetSearch search) {
+    public ElasticPagedList<Asset> search(Paging page, AssetSearch search) {
+
+        /**
+         * If the search is not empty (its a valid search) and the page
+         * number is 1, then log the search.
+         */
+        if (isSearchLogged(page, search)) {
+            logService.log(new LogSpec().build(LogAction.Search, search));
+        }
+
+        if (search.getScroll() != null) {
+            Scroll scroll = search.getScroll();
+            if (scroll.getId() != null) {
+                return assetDao.getAll(scroll.getId(), scroll.getTimeout());
+            }
+        }
+
+        return assetDao.getAll(page, buildSearch(search));
+    }
+
+    @Override
+    public ElasticPagedList<Asset> scroll(String id, String timeout) {
         /**
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        if (!search.isEmpty()) {
-            logService.log(new LogSpec().build(LogAction.Search, search));
-        }
-        return assetDao.getAll(page, buildSearch(search));
+        return assetDao.getAll(id, timeout);
     }
 
     private SearchRequestBuilder buildSearch(AssetSearch search) {
@@ -135,6 +168,12 @@ public class SearchServiceImpl implements SearchService {
         SearchRequestBuilder request = client.prepareSearch(alias)
                 .setTypes("asset")
                 .setQuery(getQuery(search));
+
+        if (search.getScroll()!= null) {
+            if (search.getScroll().getTimeout() != null) {
+                request.setScroll(search.getScroll().getTimeout());
+            }
+        }
 
         if (search.getFields() != null) {
             request.setFetchSource(search.getFields(), new String[] { "links", "permissions"} );
@@ -144,7 +183,10 @@ public class SearchServiceImpl implements SearchService {
         request.setFrom(page.getFrom());
         request.setSize(page.getSize());
 
-        if (search.getOrder() != null) {
+        if (search.getScroll() != null) {
+            request.addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC);
+        }
+        else if (search.getOrder() != null) {
             for (AssetSearchOrder searchOrder : search.getOrder()) {
                 SortOrder sortOrder = searchOrder.getAscending() ? SortOrder.ASC : SortOrder.DESC;
                 request.addSort(searchOrder.getField(), sortOrder);
