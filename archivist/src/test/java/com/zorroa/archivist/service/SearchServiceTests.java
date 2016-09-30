@@ -9,10 +9,10 @@ import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Color;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
@@ -27,9 +27,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 10/30/15.
@@ -342,14 +340,14 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg")));
         refreshIndex();
 
-        ElasticPagedList<Asset> result1 =
-                searchService.search(Paging.first(1),
+        PagedList<Asset> result1 =
+                searchService.search(Pager.first(1),
                         new AssetSearch().setScroll(new Scroll().setTimeout("1m")));
         assertNotNull(result1.getScroll());
         assertEquals(1, result1.size());
 
-        ElasticPagedList<Asset> result2 =
-                searchService.search(Paging.first(1), new AssetSearch().setScroll(result1.getScroll()
+        PagedList<Asset> result2 =
+                searchService.search(Pager.first(1), new AssetSearch().setScroll(result1.getScroll()
                         .setTimeout("1m")));
         assertNotNull(result2.getScroll());
         assertEquals(1, result2.size());

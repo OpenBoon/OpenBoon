@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.archivist.web.InvalidObjectException;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.util.StringUtils;
 import org.slf4j.Logger;
@@ -61,8 +61,8 @@ public class PipelineController {
 
     @RequestMapping(value="/api/v1/pipelines", method=RequestMethod.GET)
     public PagedList<Pipeline> getPaged(@RequestParam(value="page", required=false) Integer page,
-                                      @RequestParam(value="count", required=false) Integer count) {
-        return pipelineService.getAll(new Paging(page, count));
+                                        @RequestParam(value="count", required=false) Integer count) {
+        return pipelineService.getAll(new Pager(page, count));
     }
 
     @RequestMapping(value="/api/v1/pipelines/{id}", method=RequestMethod.PUT)

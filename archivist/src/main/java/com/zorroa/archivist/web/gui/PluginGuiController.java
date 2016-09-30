@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.gui;
 
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.service.PluginService;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class PluginGuiController {
     @RequestMapping("/gui/plugins")
     public String plugins(Model model, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
-        model.addAttribute("plugins", pluginService.getAllPlugins(new Paging(page)));
+        model.addAttribute("plugins", pluginService.getAllPlugins(new Pager(page)));
         return "plugins";
     }
 

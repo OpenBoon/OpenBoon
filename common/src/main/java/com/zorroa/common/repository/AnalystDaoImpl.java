@@ -2,14 +2,9 @@ package com.zorroa.common.repository;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
-import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.domain.AnalystBuilder;
-import com.zorroa.sdk.domain.AnalystState;
-import com.zorroa.sdk.domain.AnalystUpdateBuilder;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -76,7 +71,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public PagedList<Analyst> getAll(Paging page) {
+    public PagedList<Analyst> getAll(Pager page) {
         return elastic.page(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setSize(page.getSize())
@@ -85,7 +80,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public List<Analyst> getActive(Paging paging) {
+    public List<Analyst> getActive(Pager paging) {
         QueryBuilder query =
                 QueryBuilders.boolQuery()
                         .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()));
@@ -99,7 +94,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public List<Analyst> getActive(Paging paging, int maxQueueSize) {
+    public List<Analyst> getActive(Pager paging, int maxQueueSize) {
         QueryBuilder query =
                 QueryBuilders.boolQuery()
                         .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()))

@@ -9,7 +9,6 @@ import com.zorroa.archivist.domain.Folder;
  */
 public interface DyHierarchyDao extends GenericDao<DyHierarchy, DyHierarchySpec> {
 
-
     DyHierarchy get(Folder folder);
 
     boolean isWorking(DyHierarchy d);

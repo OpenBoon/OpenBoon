@@ -6,11 +6,7 @@ import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.Message;
-import com.zorroa.sdk.domain.Room;
-import com.zorroa.sdk.domain.Session;
+import com.zorroa.sdk.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PagedList<User> getAll(Paging page) {
+    public PagedList<User> getAll(Pager page) {
         return userDao.getAll(page);
     }
 
@@ -212,17 +208,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PagedList<Permission> getPermissions(Paging page) {
+    public PagedList<Permission> getPermissions(Pager page) {
         return permissionDao.getPaged(page);
     }
 
     @Override
-    public PagedList<Permission> getPermissions(Paging page, PermissionFilter filter) {
+    public PagedList<Permission> getPermissions(Pager page, PermissionFilter filter) {
         return permissionDao.getPaged(page, filter);
     }
 
     @Override
-    public PagedList<Permission> getUserAssignablePermissions(Paging page) {
+    public PagedList<Permission> getUserAssignablePermissions(Pager page) {
         return permissionDao.getPaged(page,
                 new PermissionFilter()
                         .setAssignableToUser(true)
@@ -230,7 +226,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PagedList<Permission> getObjAssignablePermissions(Paging page) {
+    public PagedList<Permission> getObjAssignablePermissions(Pager page) {
         return permissionDao.getPaged(page,
                 new PermissionFilter()
                         .setAssignableToObj(true)

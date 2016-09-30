@@ -2,8 +2,8 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.LogSpec;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.ElasticPagedList;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public interface LogDao {
 
     void create(LogSpec spec);
 
-    ElasticPagedList<Map<String,Object>> search(LogSearch search, Paging page);
+    PagedList<Map<String,Object>> search(LogSearch search, Pager page);
 
     String getIndexName(LogSpec spec);
 }

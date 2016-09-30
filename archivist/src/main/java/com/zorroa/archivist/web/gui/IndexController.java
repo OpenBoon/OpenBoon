@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
@@ -108,7 +108,7 @@ public class IndexController {
                               @RequestParam(value="page", required=false) Integer page,
                               @RequestParam(value="count", required=false) Integer count) {
 
-        Paging paging = new Paging(page, count);
+        Pager paging = new Pager(page, count);
         standardModel(model);
         model.addAttribute("page", paging);
         model.addAttribute("perms", userService.getPermissions(paging));
@@ -144,7 +144,7 @@ public class IndexController {
                          @RequestParam(value="count", required=false) Integer count, @RequestParam(value="query", required=false) String query) {
 
         standardModel(model);
-        Paging paging = new Paging(page, count);
+        Pager paging = new Pager(page, count);
         model.addAttribute("page", paging);
         model.addAttribute("assets", searchService.search(paging,
                 new AssetSearch(query)));
@@ -163,7 +163,7 @@ public class IndexController {
                            @RequestParam(value="page", required=false) Integer page,
                            @RequestParam(value="count", required=false) Integer count) {
         standardModel(model);
-        Paging paging = new Paging(page, count);
+        Pager paging = new Pager(page, count);
         model.addAttribute("page", paging);
         model.addAttribute("analysts", analystService.getAll(paging));
         return "analysts";
@@ -292,7 +292,7 @@ public class IndexController {
                         "aggs", ImmutableMap.of("actions",
                                 ImmutableMap.of("terms",ImmutableMap.of("field", "action"))))));
 
-        Paging paging = new Paging(page);
+        Pager paging = new Pager(page);
         model.addAttribute("search", search);
         model.addAttribute("logs", logService.search(search, paging));
         model.addAttribute("page", paging);

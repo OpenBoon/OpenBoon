@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.FilterSpec;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface FilterService {
 
     List<Filter> getAll();
 
-    PagedList<Filter> getPaged(Paging page);
+    PagedList<Filter> getPaged(Pager page);
 }

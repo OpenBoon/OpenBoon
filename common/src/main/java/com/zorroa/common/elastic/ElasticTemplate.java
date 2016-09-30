@@ -1,7 +1,8 @@
 package com.zorroa.common.elastic;
 
 import com.google.common.collect.Lists;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.Scroll;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.get.GetRequestBuilder;
@@ -100,7 +101,7 @@ public class ElasticTemplate {
         return result;
     }
 
-    public <T> ElasticPagedList<T> scroll(String id, String timeout, JsonRowMapper<T> mapper) {
+    public <T> PagedList<T> scroll(String id, String timeout, JsonRowMapper<T> mapper) {
         SearchScrollRequestBuilder ssrb = client.prepareSearchScroll(id).setScroll(timeout);
         final SearchResponse r = ssrb.get();
 
@@ -114,12 +115,12 @@ public class ElasticTemplate {
         }
 
         long totalCount = r.getHits().getTotalHits();
-        ElasticPagedList result = new ElasticPagedList(new Paging().setTotalCount(totalCount), list);
+        PagedList result = new PagedList(new Pager().setTotalCount(totalCount), list);
         result.setScroll(new Scroll(r.getScrollId()));
 
         return result;
     }
-    public <T> ElasticPagedList<T> page(SearchRequestBuilder builder, Paging paging, JsonRowMapper<T> mapper) {
+    public <T> PagedList<T> page(SearchRequestBuilder builder, Pager paging, JsonRowMapper<T> mapper) {
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
 
         final SearchResponse r = builder.get();
@@ -133,7 +134,7 @@ public class ElasticTemplate {
         }
 
         paging.setTotalCount(r.getHits().getTotalHits());
-        ElasticPagedList result = new ElasticPagedList(paging, list);
+        PagedList result = new PagedList(paging, list);
         result.setScroll(new Scroll(r.getScrollId()));
 
         if (r.getAggregations() != null) {

@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.RoomBuilder;
 import com.zorroa.sdk.domain.Session;
@@ -78,8 +78,8 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testAllPageable() {
-        assertEquals(3, userDao.getAll(Paging.first()).size());
-        assertEquals(0, userDao.getAll(new Paging(2, 4)).size());
+        assertEquals(3, userDao.getAll(Pager.first()).size());
+        assertEquals(0, userDao.getAll(new Pager(2, 4)).size());
     }
 
     @Test(expected=EmptyResultDataAccessException.class)

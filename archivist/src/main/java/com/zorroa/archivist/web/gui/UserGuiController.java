@@ -7,7 +7,7 @@ import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
 import com.zorroa.archivist.web.gui.forms.UserPasswordForm;
 import com.zorroa.archivist.web.gui.forms.UserStateForm;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class UserGuiController {
     @RequestMapping("/gui/users")
     public String users(Model model, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
-        Paging paging = new Paging(page);
+        Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("allUsers", userService.getAll(paging));
         return "users";
@@ -118,7 +118,7 @@ public class UserGuiController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", true);
-            model.addAttribute("page", new Paging(1));
+            model.addAttribute("page", new Pager(1));
             model.addAttribute("allUsers", userService.getAll());
             return "users";
         }

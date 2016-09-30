@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
 
@@ -30,7 +30,7 @@ public interface ProcessorDao {
 
     List<Processor> getAll(Plugin plugin);
 
-    PagedList<Processor> getAll(Paging page);
+    PagedList<Processor> getAll(Pager page);
 
     boolean update(int id, Processor spec);
 

@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.service.IngestService;
 import com.zorroa.archivist.web.InvalidObjectException;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +47,8 @@ public class IngestController {
 
     @RequestMapping(value="/api/v1/ingests", method=RequestMethod.GET)
     public PagedList<Ingest> getPaged(@RequestParam(value="page", required=false) Integer page,
-                                        @RequestParam(value="count", required=false) Integer count) {
-        return ingestService.getAll(new Paging(page, count));
+                                      @RequestParam(value="count", required=false) Integer count) {
+        return ingestService.getAll(new Pager(page, count));
     }
 
     @RequestMapping(value="/api/v1/ingests/{id}", method=RequestMethod.PUT)

@@ -8,8 +8,8 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
@@ -54,7 +54,7 @@ public class ImportServiceImpl implements ImportService {
     LogService logService;
 
     @Override
-    public PagedList<Job> getAll(Paging page) {
+    public PagedList<Job> getAll(Pager page) {
         return jobService.getAll(page, new JobFilter().setType(PipelineType.Import));
     }
 

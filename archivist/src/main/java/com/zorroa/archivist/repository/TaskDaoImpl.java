@@ -5,7 +5,12 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.domain.ExecuteTask;
+import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -326,7 +331,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     };
 
     @Override
-    public PagedList<Task> getAll(int job, Paging page) {
+    public PagedList<Task> getAll(int job, Pager page) {
         return new PagedList(page.setTotalCount(countByJob(job)),
                 jdbc.query(GET_TASKS.concat("WHERE task.pk_job=? ORDER BY pk_task LIMIT ? OFFSET ?"),
                         MAPPER, job, page.getSize(), page.getFrom()));

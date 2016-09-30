@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testGetAsset() {
-        PagedList<Asset> assets = assetService.getAll(Paging.first());
+        PagedList<Asset> assets = assetService.getAll(Pager.first());
         for (Asset a: assets) {
             assertEquals(a.getId(),
                     assetService.get(Paths.get(a.getAttr("source.path", String.class))).getId());

@@ -1,10 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.LinkSpec;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 
 import java.nio.file.Path;
@@ -22,7 +18,7 @@ public interface AssetService {
      *
      * @return
      */
-    PagedList<Asset> getAll(Paging page);
+    PagedList<Asset> getAll(Pager page);
 
     Asset index(Source source, LinkSpec link);
     Asset index(Source source);

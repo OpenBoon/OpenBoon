@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Folder;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
@@ -33,7 +33,7 @@ public interface SearchService {
      * @param search
      * @return
      */
-    ElasticPagedList<Asset> search(Paging page, AssetSearch search);
+    PagedList<Asset> search(Pager page, AssetSearch search);
 
     /**
      * Return the next page of an asset scroll.
@@ -42,7 +42,7 @@ public interface SearchService {
      * @param timeout
      * @return
      */
-    ElasticPagedList<Asset> scroll(String id, String timeout);
+    PagedList<Asset> scroll(String id, String timeout);
 
     Map<String, Set<String>> getFields();
 }

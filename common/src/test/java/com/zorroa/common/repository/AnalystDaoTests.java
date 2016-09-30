@@ -2,10 +2,10 @@ package com.zorroa.common.repository;
 
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
 import com.zorroa.sdk.domain.AnalystState;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class AnalystDaoTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        assertEquals(1, analystDao.getAll(Paging.first()).size());
+        assertEquals(1, analystDao.getAll(Pager.first()).size());
     }
 
     @Test

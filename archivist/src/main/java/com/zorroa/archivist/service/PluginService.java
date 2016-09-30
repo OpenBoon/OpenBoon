@@ -3,8 +3,8 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +21,7 @@ public interface PluginService {
 
     Plugin installPlugin(Path zipFilePath);
 
-    PagedList<Plugin> getAllPlugins(Paging page);
+    PagedList<Plugin> getAllPlugins(Pager page);
     List<Plugin> getAllPlugins();
     Plugin getPlugin(String name);
     Plugin getPlugin(int id);

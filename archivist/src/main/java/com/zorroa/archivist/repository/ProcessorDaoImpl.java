@@ -6,8 +6,8 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
@@ -145,7 +145,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
     }
 
     @Override
-    public PagedList<Processor> getAll(Paging page) {
+    public PagedList<Processor> getAll(Pager page) {
         return new PagedList<>(
                 page.setTotalCount(count()),
                 jdbc.query(GET.concat("ORDER BY processor.str_name LIMIT ? OFFSET ?"), MAPPER,

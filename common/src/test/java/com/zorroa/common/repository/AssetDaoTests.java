@@ -4,11 +4,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.junit.Before;
@@ -56,13 +55,13 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        PagedList<Asset> assets = assetDao.getAll(Paging.first(10));
+        PagedList<Asset> assets = assetDao.getAll(Pager.first(10));
         assertEquals(1, assets.getList().size());
     }
 
     @Test
     public void testGetAllBySearchRequest() {
-        PagedList<Asset> assets = assetDao.getAll(Paging.first(10));
+        PagedList<Asset> assets = assetDao.getAll(Pager.first(10));
         assertEquals(1, assets.getList().size());
     }
 
@@ -79,7 +78,7 @@ public class AssetDaoTests extends AbstractTest {
             .setQuery(ImmutableMap.of("match_all", ImmutableMap.of()))
             .setScroll("1m");
 
-        ElasticPagedList<Asset> assets = assetDao.getAll(Paging.first(1), req);
+        PagedList<Asset> assets = assetDao.getAll(Pager.first(1), req);
         assertEquals(1, assets.getList().size());
         assertEquals(6, (long) assets.getPage().getTotalCount());
         assertNotNull(assets.getScroll());

@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.domain.Schedule;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
@@ -117,7 +117,7 @@ public class IngestDaoImpl extends AbstractDao implements IngestDao {
     }
 
     @Override
-    public PagedList<Ingest> getAll(Paging page) {
+    public PagedList<Ingest> getAll(Pager page) {
         return new PagedList(page.setTotalCount(count()),
                     jdbc.query("SELECT * FROM ingest ORDER BY pk_ingest LIMIT ? OFFSET ?",
                         MAPPER, page.getSize(), page.getFrom()));

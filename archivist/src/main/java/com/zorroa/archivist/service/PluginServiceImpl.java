@@ -6,8 +6,8 @@ import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.repository.PluginDao;
 import com.zorroa.archivist.repository.ProcessorDao;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.exception.PluginException;
 import com.zorroa.sdk.plugins.PipelineSpec;
 import com.zorroa.sdk.plugins.PluginRegistry;
@@ -220,7 +220,7 @@ public class PluginServiceImpl implements PluginService {
      */
 
     @Override
-    public PagedList<Plugin> getAllPlugins(Paging page) {
+    public PagedList<Plugin> getAllPlugins(Pager page) {
         return pluginDao.getAll(page);
     }
 

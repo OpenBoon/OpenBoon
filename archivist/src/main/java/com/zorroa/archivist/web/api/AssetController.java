@@ -7,11 +7,7 @@ import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.Note;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.AssetIndexResult;
-import com.zorroa.sdk.domain.LinkSpec;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
@@ -109,7 +105,7 @@ public class AssetController {
 
     @RequestMapping(value="/api/v3/assets/_search", method=RequestMethod.POST)
     public PagedList<Asset> searchV3(@RequestBody AssetSearch search) throws IOException {
-        return searchService.search(new Paging(search.getPage(), search.getSize()), search);
+        return searchService.search(new Pager(search.getPage(), search.getSize()), search);
     }
 
     @RequestMapping(value="/api/v1/assets/_fields", method=RequestMethod.GET)

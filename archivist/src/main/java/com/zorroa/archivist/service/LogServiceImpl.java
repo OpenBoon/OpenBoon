@@ -3,8 +3,8 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.repository.LogDao;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.ElasticPagedList;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,8 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ElasticPagedList<Map<String,Object>> search(LogSearch search, Paging page) {
-        ElasticPagedList<Map<String,Object>> result =  logDao.search(search, page);
+    public PagedList<Map<String,Object>> search(LogSearch search, Pager page) {
+        PagedList<Map<String,Object>> result =  logDao.search(search, page);
         return result;
     }
 

@@ -5,7 +5,11 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.domain.JobId;
+import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
@@ -154,7 +158,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
-    public PagedList<Job> getAll(Paging page, JobFilter filter) {
+    public PagedList<Job> getAll(Pager page, JobFilter filter) {
         Tuple<String, List<Object>> query = filter.getQuery(GET, page);
         return new PagedList<>(page.setTotalCount(count(filter)),
                 jdbc.query(query.getLeft(), MAPPER, query.getRight().toArray()));

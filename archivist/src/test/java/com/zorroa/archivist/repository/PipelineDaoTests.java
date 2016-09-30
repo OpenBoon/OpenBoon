@@ -5,8 +5,8 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.domain.PipelineType;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +76,7 @@ public class PipelineDaoTests extends AbstractTest {
             spec.setName("Pipeline" + i);
             pipelineDao.create(spec);
         }
-        PagedList<Pipeline> list = pipelineDao.getAll(Paging.first(5));
+        PagedList<Pipeline> list = pipelineDao.getAll(Pager.first(5));
 
         assertEquals(5, list.getList().size());
         assertEquals(count + 10, (long) list.getPage().getTotalCount());

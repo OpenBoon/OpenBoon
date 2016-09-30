@@ -1,10 +1,10 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ public class AnalystServiceTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        PagedList<Analyst> list = analystService.getAll(Paging.first());
+        PagedList<Analyst> list = analystService.getAll(Pager.first());
         assertEquals(1, list.size());
     }
 

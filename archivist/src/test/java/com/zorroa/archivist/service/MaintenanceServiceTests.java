@@ -54,6 +54,7 @@ public class MaintenanceServiceTests extends AbstractTest {
 
     @Test
     public void testRemoveExpiredBackups() throws IOException {
+        maintenanceService.removeExpiredBackups(0);
         File file = maintenanceService.getNextAutomaticBackupFile();
         if (file.exists()) {
             Files.delete(file.toPath());

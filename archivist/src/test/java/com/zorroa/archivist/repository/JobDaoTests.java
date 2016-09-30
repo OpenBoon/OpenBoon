@@ -2,8 +2,8 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +53,13 @@ public class JobDaoTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        PagedList<Job> jobs = jobDao.getAll(Paging.first(), new JobFilter());
+        PagedList<Job> jobs = jobDao.getAll(Pager.first(), new JobFilter());
         assertEquals(1, jobs.getList().size());
 
-        jobs = jobDao.getAll(Paging.first(), new JobFilter().setState(JobState.Finished));
+        jobs = jobDao.getAll(Pager.first(), new JobFilter().setState(JobState.Finished));
         assertEquals(0, jobs.getList().size());
 
-        jobs = jobDao.getAll(Paging.first(), new JobFilter().setState(JobState.Active));
+        jobs = jobDao.getAll(Pager.first(), new JobFilter().setState(JobState.Active));
         assertEquals(1, jobs.getList().size());
     }
 

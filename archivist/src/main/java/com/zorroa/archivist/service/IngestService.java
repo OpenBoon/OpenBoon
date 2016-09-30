@@ -3,8 +3,9 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.domain.Job;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface IngestService {
 
     List<Ingest> getAll();
 
-    PagedList<Ingest> getAll(Paging page);
+    PagedList<Ingest> getAll(Pager page);
 
     Ingest get(int id);
 

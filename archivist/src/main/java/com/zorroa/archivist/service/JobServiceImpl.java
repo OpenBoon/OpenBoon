@@ -11,6 +11,8 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
@@ -246,12 +248,12 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public PagedList<Job> getAll(Paging page, JobFilter filter) {
+    public PagedList<Job> getAll(Pager page, JobFilter filter) {
         return jobDao.getAll(page, filter);
     }
 
     @Override
-    public PagedList<Task> getAllTasks(int job, Paging page) {
+    public PagedList<Task> getAllTasks(int job, Pager page) {
         return taskDao.getAll(job, page);
     }
 

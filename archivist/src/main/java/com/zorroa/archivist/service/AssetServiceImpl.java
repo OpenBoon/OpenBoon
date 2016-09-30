@@ -5,8 +5,6 @@ import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
@@ -63,7 +61,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public PagedList<Asset> getAll(Paging page) {
+    public PagedList<Asset> getAll(Pager page) {
         return assetDao.getAll(page);
     }
 

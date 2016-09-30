@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +112,7 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testGetPagedEmptyFilter() {
-        PagedList<Permission> perms = permissionDao.getPaged(Paging.first(), new PermissionFilter());
+        PagedList<Permission> perms = permissionDao.getPaged(Pager.first(), new PermissionFilter());
         assertTrue(perms.size() > 0);
     }
 
@@ -122,15 +122,15 @@ public class PermissionDaoTests extends AbstractTest {
         b.setDescription("test");
         permissionDao.create(b, false);
 
-        PagedList<Permission> perms = permissionDao.getPaged(Paging.first(),
+        PagedList<Permission> perms = permissionDao.getPaged(Pager.first(),
                 new PermissionFilter().setTypes(Sets.newHashSet("test1")));
         assertEquals(1, perms.size());
 
-        perms = permissionDao.getPaged(Paging.first(),
+        perms = permissionDao.getPaged(Pager.first(),
                 new PermissionFilter().setNames(Sets.newHashSet("test2")));
         assertEquals(1, perms.size());
 
-        perms = permissionDao.getPaged(Paging.first(),
+        perms = permissionDao.getPaged(Pager.first(),
                 new PermissionFilter().setNames(Sets.newHashSet("test2"))
                         .setTypes(Sets.newHashSet("test1")));
         assertEquals(1, perms.size());

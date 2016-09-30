@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository;
 import com.google.common.base.Preconditions;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Plugin;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.plugins.PluginSpec;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.jdbc.core.RowMapper;
@@ -109,7 +109,7 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
     }
 
     @Override
-    public PagedList<Plugin> getAll(Paging page) {
+    public PagedList<Plugin> getAll(Pager page) {
         return new PagedList<>(
                 page.setTotalCount(count()),
                 jdbc.query(GET.concat("ORDER BY str_name LIMIT ? OFFSET ?"), MAPPER,

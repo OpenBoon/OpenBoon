@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AnalystClient;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface AnalystService {
 
-    PagedList<Analyst> getAll(Paging paging);
+    PagedList<Analyst> getAll(Pager paging);
 
     Analyst get(String url);
 

@@ -4,7 +4,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -49,7 +53,7 @@ public interface TaskDao {
 
     List<Task> getOrphanTasks(int limit, long duration, TimeUnit unit);
 
-    PagedList<Task> getAll(int job, Paging page);
+    PagedList<Task> getAll(int job, Pager page);
 
     List<Task> getAll(int job, DaoFilter filter);
 

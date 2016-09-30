@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.FilterSpec;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -72,7 +72,7 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
     }
 
     @Override
-    public PagedList<Filter> getAll(Paging page) {
+    public PagedList<Filter> getAll(Pager page) {
         return new PagedList(page.setTotalCount(count()),
                 jdbc.query(GET.concat(" ORDER BY str_description LIMIT ? OFFSET ?"),
                         MAPPER, page.getSize(), page.getFrom()));

@@ -6,8 +6,8 @@ import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.repository.FilterDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public PagedList<Filter> getPaged(Paging page) {
+    public PagedList<Filter> getPaged(Pager page) {
         return filterDao.getAll(page);
     }
 }

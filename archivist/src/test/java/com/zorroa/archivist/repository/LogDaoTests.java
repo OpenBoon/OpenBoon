@@ -5,7 +5,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.service.LogService;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class LogDaoTests extends AbstractTest {
                         "aggs", ImmutableMap.of("actions",
                                 ImmutableMap.of("terms",ImmutableMap.of("field", "action"))))));
 
-        logService.search(search, Paging.first());
+        logService.search(search, Pager.first());
     }
 
 }

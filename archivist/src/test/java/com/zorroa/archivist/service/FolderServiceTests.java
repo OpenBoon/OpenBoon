@@ -7,9 +7,9 @@ import com.zorroa.archivist.domain.Access;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,7 +36,7 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder = folderService.create(builder);
 
         Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
-                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
@@ -50,14 +50,14 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder = folderService.create(builder);
 
         folderService.addAssets(folder, assetService.getAll(
-                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         folderService.addAssets(folder, assetService.getAll(
-                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         refreshIndex();
 
-        PagedList<Asset> assets = assetService.getAll(Paging.first());
+        PagedList<Asset> assets = assetService.getAll(Pager.first());
         for (Asset a: assets) {
             assertEquals(1, ((List) a.getAttr("links.folder")).size());
         }
@@ -70,13 +70,13 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder = folderService.create(builder);
 
         Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
-                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
 
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
 
         results = folderService.removeAssets(folder, assetService.getAll(
-                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
     }
@@ -108,7 +108,7 @@ public class FolderServiceTests extends AbstractTest {
         builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Write));
         Folder folder = folderService.create(builder);
         folderService.addAssets(folder, assetService.getAll(
-                Paging.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
     }
 
     @Test(expected=AccessDeniedException.class)

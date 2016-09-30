@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.Session;
 
@@ -24,7 +24,7 @@ public interface UserService {
 
     List<User> getAll();
 
-    PagedList<User> getAll(Paging page);
+    PagedList<User> getAll(Pager page);
 
     long getCount();
 
@@ -50,13 +50,13 @@ public interface UserService {
 
     List<Permission> getPermissions();
 
-    PagedList<Permission> getPermissions(Paging page, PermissionFilter filter);
+    PagedList<Permission> getPermissions(Pager page, PermissionFilter filter);
 
-    PagedList<Permission> getPermissions(Paging page);
+    PagedList<Permission> getPermissions(Pager page);
 
-    PagedList<Permission> getUserAssignablePermissions(Paging page);
+    PagedList<Permission> getUserAssignablePermissions(Pager page);
 
-    PagedList<Permission> getObjAssignablePermissions(Paging page);
+    PagedList<Permission> getObjAssignablePermissions(Pager page);
 
     List<Permission> getPermissions(User user);
 

@@ -7,8 +7,8 @@ import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Room;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -53,7 +53,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public PagedList<User> getAll(Paging page) {
+    public PagedList<User> getAll(Pager page) {
         return new PagedList(page.setTotalCount(getCount()),
                 jdbc.query(GET_ALL.concat(" LIMIT ? OFFSET ?"),
                         MAPPER, page.getSize(), page.getFrom()));

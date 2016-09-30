@@ -2,9 +2,9 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.LogSpec;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.common.elastic.AbstractElasticDao;
-import com.zorroa.common.elastic.ElasticPagedList;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -53,7 +53,7 @@ public class LogDaoImpl extends AbstractElasticDao implements LogDao {
     }
 
     @Override
-    public ElasticPagedList<Map<String,Object>> search(LogSearch search, Paging page) {
+    public PagedList<Map<String,Object>> search(LogSearch search, Pager page) {
 
         SearchRequestBuilder req = client.prepareSearch("eventlog")
                 .setQuery(Json.serializeToString(search.getQuery(), "{\"match_all\": {}}"))
@@ -63,7 +63,7 @@ public class LogDaoImpl extends AbstractElasticDao implements LogDao {
             req.setAggregations(search.getAggs());
         }
 
-        ElasticPagedList<Map<String,Object>> result =  elastic.page(req, page,
+        PagedList<Map<String,Object>> result =  elastic.page(req, page,
                     (id, version, source) -> {
                         Map<String,Object> r =  Json.deserialize(source, Json.GENERIC_MAP);
                         r.put("id", id);

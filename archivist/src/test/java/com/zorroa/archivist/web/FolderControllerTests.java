@@ -5,10 +5,10 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.web.api.FolderController;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -255,7 +255,7 @@ public class FolderControllerTests extends MockMvcTest {
     public void testAddAsset() throws Exception {
         authenticate();
         addTestAssets("set04/standard");
-        PagedList<Asset> assets = assetDao.getAll(Paging.first());
+        PagedList<Asset> assets = assetDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
 
@@ -269,7 +269,7 @@ public class FolderControllerTests extends MockMvcTest {
 
         refreshIndex();
 
-        assets = assetDao.getAll(Paging.first());
+        assets = assetDao.getAll(Pager.first());
         for (Asset asset: assets) {
             List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(links.get(0), folder1.getId());
@@ -281,7 +281,7 @@ public class FolderControllerTests extends MockMvcTest {
         authenticate();
 
         addTestAssets("set04/standard");
-        PagedList<Asset> assets = assetDao.getAll(Paging.first());
+        PagedList<Asset> assets = assetDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
@@ -296,7 +296,7 @@ public class FolderControllerTests extends MockMvcTest {
                 .andReturn();
 
         refreshIndex();
-        assets = assetDao.getAll(Paging.first());
+        assets = assetDao.getAll(Pager.first());
         for (Asset asset: assets) {
             List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(0, links.size());
@@ -308,7 +308,7 @@ public class FolderControllerTests extends MockMvcTest {
         authenticate();
 
         addTestAssets("set04/standard");
-        PagedList<Asset> assets = assetDao.getAll(Paging.first());
+        PagedList<Asset> assets = assetDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));

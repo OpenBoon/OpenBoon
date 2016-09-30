@@ -5,8 +5,8 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Ingest;
 import com.zorroa.archivist.domain.IngestSpec;
 import com.zorroa.archivist.domain.Schedule;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,7 +96,7 @@ public class IngestDaoTests extends AbstractTest {
             spec.setName("Ingest" + i);
             ingestDao.create(spec);
         }
-        PagedList<Ingest> list = ingestDao.getAll(Paging.first(5));
+        PagedList<Ingest> list = ingestDao.getAll(Pager.first(5));
 
         assertEquals(5, list.getList().size());
         assertEquals(11L, (long) list.getPage().getTotalCount());

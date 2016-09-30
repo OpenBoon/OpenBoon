@@ -8,10 +8,10 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.common.elastic.ElasticPagedList;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.exception.ArchivistException;
 import com.zorroa.sdk.exception.ZorroaReadException;
 import com.zorroa.sdk.search.*;
@@ -119,7 +119,7 @@ public class SearchServiceImpl implements SearchService {
         return new ScanAndScrollAssetIterator(client, rsp);
     }
 
-    private boolean isSearchLogged(Paging page, AssetSearch search) {
+    private boolean isSearchLogged(Pager page, AssetSearch search) {
         if (!search.isEmpty() && page.getNumber() == 1) {
             Scroll scroll = search.getScroll();
             if (scroll != null) {
@@ -134,7 +134,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public ElasticPagedList<Asset> search(Paging page, AssetSearch search) {
+    public PagedList<Asset> search(Pager page, AssetSearch search) {
 
         /**
          * If the search is not empty (its a valid search) and the page
@@ -155,7 +155,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public ElasticPagedList<Asset> scroll(String id, String timeout) {
+    public PagedList<Asset> scroll(String id, String timeout) {
         /**
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
@@ -179,7 +179,7 @@ public class SearchServiceImpl implements SearchService {
             request.setFetchSource(search.getFields(), new String[] { "links", "permissions"} );
         }
 
-        Paging page = new Paging(search.getPage(), search.getSize());
+        Pager page = new Pager(search.getPage(), search.getSize());
         request.setFrom(page.getFrom());
         request.setSize(page.getSize());
 

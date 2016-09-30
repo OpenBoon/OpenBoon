@@ -2,6 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.*;
 import com.zorroa.common.domain.*;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 /**
  * Created by chambers on 6/24/16.
@@ -109,7 +111,7 @@ public interface JobService {
      * @param filter
      * @return
      */
-    PagedList<Job> getAll(Paging page, JobFilter filter);
+    PagedList<Job> getAll(Pager page, JobFilter filter);
 
-    PagedList<Task> getAllTasks(int job, Paging page);
+    PagedList<Task> getAllTasks(int job, Pager page);
 }

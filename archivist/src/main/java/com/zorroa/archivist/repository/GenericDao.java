@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface GenericDao<T, S> {
 
     List<T> getAll();
 
-    PagedList<T> getAll(Paging paging);
+    PagedList<T> getAll(Pager paging);
 
     boolean update(int id, T spec);
 

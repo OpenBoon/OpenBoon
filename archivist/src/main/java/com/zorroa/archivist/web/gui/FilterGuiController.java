@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.FilterService;
 import com.zorroa.archivist.service.UserService;
 import com.zorroa.archivist.web.gui.forms.NewFilterForm;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class FilterGuiController {
                              @RequestParam(value="page", required=false) Integer page,
                              @RequestParam(value="count", required=false) Integer count) {
         standardModel(model);
-        Paging pager = new Paging(page, count);
+        Pager pager = new Pager(page, count);
         model.addAttribute("filters", filterService.getPaged(pager));
         model.addAttribute("page", pager);
         return "filters";

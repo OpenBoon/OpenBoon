@@ -6,9 +6,9 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +139,7 @@ public class IngestServiceImpl implements IngestService {
     }
 
     @Override
-    public PagedList<Ingest> getAll(Paging page) {
+    public PagedList<Ingest> getAll(Pager page) {
         return ingestDao.getAll(page);
     }
 

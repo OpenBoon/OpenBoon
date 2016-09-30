@@ -4,8 +4,8 @@ import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Room;
 
 import java.util.Collection;
@@ -35,7 +35,7 @@ public interface UserDao {
 
     boolean update(User user, UserProfileUpdate update);
 
-    PagedList<User> getAll(Paging paging);
+    PagedList<User> getAll(Pager paging);
 
     User create(UserSpec builder);
 

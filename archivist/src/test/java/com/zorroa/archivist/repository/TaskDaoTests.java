@@ -5,9 +5,9 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.domain.ExecuteTaskStart;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
@@ -165,7 +165,7 @@ public class TaskDaoTests extends AbstractTest {
 
     @Test
     public void getTasks() {
-        PagedList<Task> tasks = taskDao.getAll(job.getJobId(), Paging.first());
+        PagedList<Task> tasks = taskDao.getAll(job.getJobId(), Pager.first());
         assertEquals(1, tasks.size());
     }
 

@@ -2,9 +2,9 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.service.AnalystService;
-import com.zorroa.common.domain.PagedList;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.AnalystBuilder;
+import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;

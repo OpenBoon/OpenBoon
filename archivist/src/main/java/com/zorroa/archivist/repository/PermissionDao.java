@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.List;
 
@@ -25,9 +25,9 @@ public interface PermissionDao {
 
     List<Permission> getAll();
 
-    PagedList<Permission> getPaged(Paging page, DaoFilter filter);
+    PagedList<Permission> getPaged(Pager page, DaoFilter filter);
 
-    PagedList<Permission> getPaged(Paging page);
+    PagedList<Permission> getPaged(Pager page);
 
     long count();
 

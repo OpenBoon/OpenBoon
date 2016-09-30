@@ -3,8 +3,8 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -84,12 +84,12 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     @Override
-    public PagedList<Permission> getPaged(Paging page) {
+    public PagedList<Permission> getPaged(Pager page) {
         return getPaged(page, new PermissionFilter());
     }
 
     @Override
-    public PagedList<Permission> getPaged(Paging page, DaoFilter filter) {
+    public PagedList<Permission> getPaged(Pager page, DaoFilter filter) {
         filter.setOrderBy("str_type,str_name");
         return new PagedList(page.setTotalCount(count(filter)),
                 jdbc.query(filter.getQuery(

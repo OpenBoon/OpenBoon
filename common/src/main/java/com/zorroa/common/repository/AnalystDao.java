@@ -1,10 +1,6 @@
 package com.zorroa.common.repository;
 
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
-import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.domain.AnalystBuilder;
-import com.zorroa.sdk.domain.AnalystUpdateBuilder;
+import com.zorroa.sdk.domain.*;
 
 import java.util.List;
 
@@ -20,9 +16,9 @@ public interface AnalystDao {
 
     long count();
 
-    PagedList<Analyst> getAll(Paging paging);
+    PagedList<Analyst> getAll(Pager paging);
 
-    List<Analyst> getActive(Paging paging);
+    List<Analyst> getActive(Pager paging);
 
-    List<Analyst> getActive(Paging paging, int maxQueueSize);
+    List<Analyst> getActive(Pager paging, int maxQueueSize);
 }

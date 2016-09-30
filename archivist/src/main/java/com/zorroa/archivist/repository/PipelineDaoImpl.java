@@ -6,8 +6,8 @@ import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -98,7 +98,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
     }
 
     @Override
-    public PagedList<Pipeline> getAll(Paging page) {
+    public PagedList<Pipeline> getAll(Pager page) {
         return new PagedList<>(
                 page.setTotalCount(count()),
                     jdbc.query("SELECT * FROM pipeline ORDER BY pk_pipeline LIMIT ? OFFSET ?", MAPPER,

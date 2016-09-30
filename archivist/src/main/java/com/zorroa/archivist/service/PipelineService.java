@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface PipelineService {
 
     List<Pipeline> getAll();
 
-    PagedList<Pipeline> getAll(Paging page);
+    PagedList<Pipeline> getAll(Pager page);
 
     boolean update(int id, Pipeline spec);
 

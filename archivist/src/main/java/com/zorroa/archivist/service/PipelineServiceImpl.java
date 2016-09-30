@@ -10,9 +10,9 @@ import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.domain.Message;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +94,7 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public PagedList<Pipeline> getAll(Paging page) {
+    public PagedList<Pipeline> getAll(Pager page) {
         return pipelineDao.getAll(page);
     }
 

@@ -4,7 +4,11 @@ import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobFilter;
 import com.zorroa.archivist.domain.JobSpec;
 import com.zorroa.archivist.domain.JobState;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.domain.JobId;
+import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 /**
  * Created by chambers on 6/24/16.
@@ -19,7 +23,7 @@ public interface JobDao {
 
     Job get(JobId script);
 
-    PagedList<Job> getAll(Paging page, JobFilter filter);
+    PagedList<Job> getAll(Pager page, JobFilter filter);
 
     long count(JobFilter filter);
 

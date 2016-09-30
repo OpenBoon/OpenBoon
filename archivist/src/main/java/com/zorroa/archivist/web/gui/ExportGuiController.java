@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.gui;
 
 import com.zorroa.archivist.service.ExportService;
 import com.zorroa.archivist.service.JobService;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class ExportGuiController {
 
     @RequestMapping("/gui/exports")
     public String getAllImports(Model model, @RequestParam(value="page", required=false) Integer page) {
-        Paging paging = new Paging(page);
+        Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("exports", exportService.getAll(paging));
         return "exports";
@@ -33,7 +33,7 @@ public class ExportGuiController {
 
     @RequestMapping("/gui/exports/{id}")
     public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
-        Paging paging = new Paging(page);
+        Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("job", jobService.get(id));
         model.addAttribute("tasks", jobService.getAllTasks(id, paging));

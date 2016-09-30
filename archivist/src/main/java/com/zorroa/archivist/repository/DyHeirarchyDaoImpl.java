@@ -8,8 +8,8 @@ import com.zorroa.archivist.domain.DyHierarchyLevel;
 import com.zorroa.archivist.domain.DyHierarchySpec;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -99,7 +99,7 @@ public class DyHeirarchyDaoImpl extends AbstractDao implements DyHierarchyDao {
     }
 
     @Override
-    public PagedList<DyHierarchy> getAll(Paging page) {
+    public PagedList<DyHierarchy> getAll(Pager page) {
         return new PagedList(page.setTotalCount(count()),
                 jdbc.query(GET.concat("ORDER BY pk_dyhi LIMIT ? OFFSET ?"),
                         MAPPER, page.getSize(), page.getFrom()));

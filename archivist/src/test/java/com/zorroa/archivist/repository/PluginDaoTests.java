@@ -3,7 +3,7 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.service.PluginService;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.plugins.PluginSpec;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;
@@ -51,9 +51,9 @@ public class PluginDaoTests extends AbstractTest {
 
     @Test
     public void testGetAllWithPaging() {
-        assertEquals(1, (long) pluginDao.getAll(new Paging(1)).getPage().getTotalCount());
-        assertEquals(1, (long) pluginDao.getAll(new Paging(1)).getPage().getTotalPages());
-        assertEquals(1, (long) pluginDao.getAll(new Paging(1)).getPage().getNumber());
+        assertEquals(1, (long) pluginDao.getAll(new Pager(1)).getPage().getTotalCount());
+        assertEquals(1, (long) pluginDao.getAll(new Pager(1)).getPage().getTotalPages());
+        assertEquals(1, (long) pluginDao.getAll(new Pager(1)).getPage().getNumber());
     }
 
     public void validate(Plugin p, PluginSpec s) {

@@ -2,7 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +30,7 @@ public abstract class DaoFilter {
         }
     }
 
-    public String getQuery(String base, Paging page) {
+    public String getQuery(String base, Pager page) {
         __build();
         StringBuilder sb = new StringBuilder(1024);
         sb.append(base);
@@ -74,7 +74,7 @@ public abstract class DaoFilter {
         return values.toArray();
     }
 
-    public Object[] getValues(Paging page) {
+    public Object[] getValues(Pager page) {
         __build();
         Object[] result = Arrays.copyOf(values.toArray(), values.size()+2);
         result[values.size()]= page.getSize();

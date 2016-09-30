@@ -7,7 +7,7 @@ import com.zorroa.archivist.service.ImportService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.archivist.service.PluginService;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;
@@ -49,7 +49,7 @@ public class ImportGuiController {
     @RequestMapping("/gui/imports/{id}")
     public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
-        Paging paging = new Paging(page);
+        Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("job", jobService.get(id));
         model.addAttribute("tasks", jobService.getAllTasks(id, paging));
@@ -61,7 +61,7 @@ public class ImportGuiController {
     @RequestMapping("/gui/imports")
     public String getAllImports(Model model, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
-        Paging paging = new Paging(page);
+        Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
         model.addAttribute("pipelines", pipelineService.getAll());
@@ -74,7 +74,7 @@ public class ImportGuiController {
                                @Valid @ModelAttribute("serverImportForm") NewServerImportForm serverImportForm, BindingResult bindingResult) {
 
         standardModel(model);
-        Paging paging = new Paging(1);
+        Pager paging = new Pager(1);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
         model.addAttribute("pipelines", pipelineService.getAll());

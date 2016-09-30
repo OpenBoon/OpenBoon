@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.DyHierarchyService;
-import com.zorroa.common.domain.PagedList;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +107,7 @@ public class DyHierarchyDaoTests extends AbstractTest {
     @Test
     public void testGetAllPaged() {
         long count = dyHierarchyDao.count();
-        PagedList<DyHierarchy> list = dyHierarchyDao.getAll(Paging.first());
+        PagedList<DyHierarchy> list = dyHierarchyDao.getAll(Pager.first());
         assertEquals(count, list.size());
 
         Folder f2 = folderService.create(new FolderSpec("bar"), false);
@@ -117,7 +117,7 @@ public class DyHierarchyDaoTests extends AbstractTest {
                 ImmutableList.of(
                         new DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)));
         dyHierarchyDao.create(spec);
-        list = dyHierarchyDao.getAll(Paging.first());
+        list = dyHierarchyDao.getAll(Pager.first());
         assertEquals(count+1, list.size());
     }
 }

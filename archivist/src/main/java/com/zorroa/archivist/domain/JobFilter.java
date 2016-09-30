@@ -1,7 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.Lists;
-import com.zorroa.common.domain.Paging;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Tuple;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class JobFilter {
         return this;
     }
 
-    public Tuple<String, List<Object>> getQuery(String base, Paging page) {
+    public Tuple<String, List<Object>> getQuery(String base, Pager page) {
         List<String> where = Lists.newArrayList();
         List<Object> values = Lists.newArrayList();
 
