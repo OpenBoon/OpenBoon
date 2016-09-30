@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -10,6 +11,7 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.domain.PagedList;
 import com.zorroa.common.domain.Paging;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
@@ -59,17 +61,33 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public Job create(DebugImportSpec spec) {
         String syncId = UUID.randomUUID().toString();
-
         JobSpec jspec = new JobSpec();
         jspec.putToArgs("syncId", syncId);
         jspec.setType(Import);
-        jspec.setName(String.format("debugging import by %s (%s)",
-                SecurityUtils.getUsername(), FileUtils.filename(spec.getPath())));
-        Job job = jobService.launch(jspec);
 
-        List<ProcessorRef> generator = ImmutableList.of(
-                new SdkProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator")
-                        .setArg("paths", ImmutableList.of(spec.getPath())));
+        List<ProcessorRef> generator;
+        if (JdbcUtils.isValid(spec.getPath())) {
+            jspec.setName(String.format("debugging import by %s (file=%s)",
+                    SecurityUtils.getUsername(), FileUtils.filename(spec.getPath())));
+
+            generator = ImmutableList.of(
+                    new SdkProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator")
+                            .setArg("paths", ImmutableList.of(spec.getPath())));
+        }
+        else if (JdbcUtils.isValid(spec.getQuery())) {
+            jspec.setName(String.format("debugging import by %s (search=%s)",
+                    SecurityUtils.getUsername(), spec.getQuery()));
+
+            AssetSearch search = new AssetSearch();
+            search.setQuery(spec.getQuery());
+            search.setSize(1);
+            generator = ImmutableList.of(
+                    new SdkProcessorRef("com.zorroa.sdk.processor.builtin.AssetSearchGenerator")
+                            .setArg("search", search));
+        }
+        else {
+            throw new IllegalArgumentException("Must set either a path or search query.");
+        }
 
         List<ProcessorRef> pipeline = pipelineService.getProcessors(
                 spec.getPipelineId(), spec.getPipeline());
@@ -81,6 +99,7 @@ public class ImportServiceImpl implements ImportService {
         script.setInline(true);
         script.setStrict(true);
 
+        Job job = jobService.launch(jspec);
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
                 .setName("Path Generation"));

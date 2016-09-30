@@ -23,7 +23,6 @@
                     <div class="navbar navbar-right">
                         <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
                                 type="button" class="btn btn-danger navbar-btn"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
-
                         <button id="opener" type="button" class="btn btn-default navbar-btn"><i class="fa fa-info fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
@@ -43,10 +42,10 @@
         <div class="modal-content">
             <div class="modal-body">
                 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-                    <li><a href="#server" data-toggle="tab">Directory Scan</a></li>
+                    <li><a href="#server-tab" data-toggle="tab">Directory Scan</a></li>
                 </ul>
-                <div id="my-tab-content" class="tab-content">
-                    <div class="tab-pane active" id="server">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="server-tab">
                         <div class="alert alert-warning" role="alert">The Zorroa servers must have access to all files and directories.</div>
                         <form id="serverImportForm" autocomplete="off" action="#" role="form" th:action="@{/gui/imports/server}" th:object="${serverImportForm}" method="post">
                             <div class="form-group">
@@ -67,7 +66,6 @@
                                 </select>
                                 <div class="alert alert-danger" th:if="${#fields.hasErrors('pipelineId')}" th:errors="*{pipelineId}"></div>
                             </div>
-
                             <button id="btn-server-submit" type="submit" class="btn btn-default">Create</button>
                         </form>
                     </div>
