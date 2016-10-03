@@ -57,6 +57,7 @@ public class ImportGuiController {
         model.addAttribute("job", jobService.get(id));
         model.addAttribute("tasks", jobService.getAllTasks(id, paging));
         model.addAttribute("serverImportForm", new ServerImportForm());
+        model.addAttribute("searchImportForm", new SearchImportForm());
         model.addAttribute("pipelines", pipelineService.getAll());
         return "import";
     }
