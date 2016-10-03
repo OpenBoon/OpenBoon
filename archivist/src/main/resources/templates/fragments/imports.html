@@ -95,7 +95,6 @@
             $('#btn-count').click(function()  {
                 var val = $('#search').val();
                 var btn = $(this);
-                console.log(val);
                 $.ajax({
                     url: '/api/v2/assets/_count',
                     method: 'post',
