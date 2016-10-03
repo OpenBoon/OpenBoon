@@ -11,23 +11,29 @@
 
     <div th:include="fragments/pipelines :: menu"/>
     <div class="wrapper">
-        <br/>
+    <br/>
 
-    <div class="row" style="padding: 5px">
-        <div class="col-md-4">
-            <div style="position:relative;">
-                <button id="btn-save" type="button" class="btn btn-default">Save</button>
-                <button type="button" class="btn btn-default dropdown-toggle" id="processorDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Processor <span class="caret"></span></button>
-                <ul id="proc-select" class="dropdown-menu" aria-labelledby="processorDropDown" style="z-index:1000">
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-sm-2">
+            <div style="position:fixed; top:110px; bottom:40px; overflow-y:scroll; float:none; width:inherit;">
+                <ul id="proc-select" aria-labelledby="processorDropDown">
                     <li th:each="processor: ${processors}">
-                        <a class="newProcessor" href="#" th:attr="data-cn=${processor.name}" th:text="${processor.shortName}"></a>
+                        <a data-toggle="tooltip" th:title="${processor.description}" class="newProcessor" href="#" th:attr="data-cn=${processor.name}" th:text="${processor.shortName}"></a>
                     </li>
                 </ul>
+                <footer style="position:fixed; bottom: 0; height:40px; background-color:red;">footer</footer>
+            </div>
+        </div>
+
+        <div class="col-sm-3"  style="margin-left: 10px">
+            <div style="position:relative;">
+                <button id="btn-save" type="button" class="btn btn-default">Save</button>
             </div>
             <br/>
             <ul id="proc-list" class="list-group">
                 <li th:attr="data-args=${T(com.zorroa.sdk.util.Json).prettyString(proc.args)},data-classname=${proc.className}" class="list-group-item processor" th:each="proc: ${pipeline.processors}">
-                    <th:block th:text="${proc.className}"/>
+                    <th:block th:text="${#strings.arraySplit(proc.className, '\.')[#arrays.length(#strings.arraySplit(proc.className, '\.'))-1]}"/>
                     <span class="pull-right">
                         <a href="#" class="proc-remove"><span class="glyphicon glyphicon-trash"></span></a>
                     </span>
@@ -45,7 +51,7 @@
             <th:block th:text="${message}"></th:block>
         </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-sm-6">
             <!-- Nav tabs -->
 
             <ul class="nav nav-tabs" role="tablist">
@@ -113,6 +119,8 @@
     </div>
     </div>
     </div>
+    </div>
+
     <div th:include="fragments/pipelines :: modal_create"/>
     <div th:include="fragments/pipelines :: modal_import"/>
     <script th:inline="javascript" type="text/javascript">
@@ -287,9 +295,11 @@
             });
 
             $('.newProcessor').on("click", function(e) {
+                var cna = $(this).attr("data-cn").split(".");
+                var name = cna[cna.length-1];
                 $('#proc-list').append("<li data-classname=\"" + $(this).attr("data-cn")
                         + "\" data-args=\"{}\" class=\"list-group-item processor\">"
-                        + $(this).attr("data-cn")
+                        + name
                         + "<span class=\"pull-right\">"
                         + "<a href=\"#\" class=\"proc-remove\">"
                         + "<span class=\"glyphicon glyphicon-trash\"></span></a></span>"

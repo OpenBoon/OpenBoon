@@ -93,7 +93,7 @@ public class ImportGuiController {
          * Make a bunch of generators based on the type of file.
          */
         List<String> filePaths = Lists.newArrayList();
-        ProcessorRef fileGen = pluginService.getProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator");
+        ProcessorRef fileGen = pluginService.getProcessorRef("com.zorroa.core.generator.FileListGenerator");
         fileGen.setArg("paths", filePaths);
 
         for (String path: serverImportForm.getPaths()) {

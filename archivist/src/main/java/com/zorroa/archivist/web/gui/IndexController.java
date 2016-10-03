@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web.gui;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
@@ -225,7 +226,8 @@ public class IndexController {
     public String getPipeline(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("pipeline", pipelineService.get(id));
-        model.addAttribute("processors", pluginService.getAllProcessors());
+        model.addAttribute("processors", pluginService.getAllProcessors(
+                new ProcessorFilter().setTypes(ImmutableList.of("document"))));
         model.addAttribute("pipelineSpec", new PipelineSpecV());
         return "pipeline";
     }
