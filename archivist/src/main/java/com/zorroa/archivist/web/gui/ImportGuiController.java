@@ -7,9 +7,12 @@ import com.zorroa.archivist.service.ImportService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.archivist.service.PluginService;
+import com.zorroa.archivist.web.gui.forms.SearchImportForm;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
+import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +56,7 @@ public class ImportGuiController {
         model.addAttribute("page", paging);
         model.addAttribute("job", jobService.get(id));
         model.addAttribute("tasks", jobService.getAllTasks(id, paging));
-        model.addAttribute("serverImportForm", new NewServerImportForm());
+        model.addAttribute("serverImportForm", new ServerImportForm());
         model.addAttribute("pipelines", pipelineService.getAll());
         return "import";
     }
@@ -65,13 +68,14 @@ public class ImportGuiController {
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
         model.addAttribute("pipelines", pipelineService.getAll());
-        model.addAttribute("serverImportForm", new NewServerImportForm());
+        model.addAttribute("serverImportForm", new ServerImportForm());
+        model.addAttribute("searchImportForm", new SearchImportForm());
         return "imports";
     }
 
     @RequestMapping(value="/gui/imports/server",  method= RequestMethod.POST)
     public String createImport(Model model,
-                               @Valid @ModelAttribute("serverImportForm") NewServerImportForm serverImportForm, BindingResult bindingResult) {
+                               @Valid @ModelAttribute("serverImportForm") ServerImportForm serverImportForm, BindingResult bindingResult) {
 
         standardModel(model);
         Pager paging = new Pager(1);
@@ -112,6 +116,38 @@ public class ImportGuiController {
             generators.add(fileGen);
         }
         spec.setGenerators(generators);
+        importService.create(spec);
+        return "redirect:/gui/imports";
+    }
+
+    @RequestMapping(value="/gui/imports/search",  method= RequestMethod.POST)
+    public String createImport(Model model,
+                               @Valid @ModelAttribute("searchImportForm") SearchImportForm searchImportForm, BindingResult bindingResult) {
+
+        standardModel(model);
+        Pager paging = new Pager(1);
+        model.addAttribute("page", paging);
+        model.addAttribute("imports", importService.getAll(paging));
+        model.addAttribute("pipelines", pipelineService.getAll());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("search_errors", true);
+            return "imports";
+        }
+
+        ImportSpec spec = new ImportSpec();
+        spec.setName("search import by " + SecurityUtils.getUsername());
+        spec.setPipelineId(searchImportForm.getPipelineId());
+        List<ProcessorRef> generators = Lists.newArrayList();
+
+        String searchJson = searchImportForm.getSearch();
+        AssetSearch search = Json.deserialize(searchJson, AssetSearch.class);
+
+        ProcessorRef gen = pluginService.getProcessorRef("com.zorroa.core.generator.AssetSearchGenerator");
+        gen.setArg("search", search);
+        generators.add(gen);
+        spec.setGenerators(generators);
+
         importService.create(spec);
         return "redirect:/gui/imports";
     }

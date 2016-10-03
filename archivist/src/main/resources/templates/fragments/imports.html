@@ -23,6 +23,9 @@
                     <div class="navbar navbar-right">
                         <button onclick="$('#modalCreate').modal({'backdrop': 'static'});"
                                 type="button" class="btn btn-danger navbar-btn"><i class="fa fa-plus fa-lg fa-fw" aria-hidden="true"></i></button>
+                        <button onclick="$('#modalSearch').modal({'backdrop': 'static'});"
+                                type="button" class="btn btn-danger navbar-btn"><i class="fa fa-refresh fa-lg fa-fw" aria-hidden="true"></i></button>
+
                         <button id="opener" type="button" class="btn btn-default navbar-btn"><i class="fa fa-info fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
@@ -32,6 +35,86 @@
             </div>
         </div>
     </nav>
+</div>
+
+<div th:fragment="modal_search">
+
+    <div class="modal fade" id="modalSearch" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                        <li><a href="#server-tab" data-toggle="tab">Reprocess Assets</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="server-tab">
+                            <form id="searchImportForm" autocomplete="off" action="#" role="form" th:action="@{/gui/imports/search}" th:object="${searchImportForm}" method="post">
+                                <div class="form-group">
+                                    <label>Search:</label>
+                                    <textarea class="form-control" rows="8" id="search" name="search">
+{
+    "query": "test",
+    "filter": {}
+}
+                                    </textarea>
+                                    <button id="btn-count" type="button" class="btn btn-default">Count: 0</button>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('search')}" th:errors="*{search}"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pipelineId">Pipeline</label>
+                                    <select  id="pipelineId" th:field="*{pipelineId}">
+                                        <option th:each="pipe: ${pipelines}" th:value="${pipe.id}" th:text="${pipe.name}"></option>
+                                    </select>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('pipelineId')}" th:errors="*{pipelineId}"></div>
+                                </div>
+                                <button id="btn-server-submit" type="submit" class="btn btn-default">Create</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${search_errors == true}">
+        <script th:inline="javascript" type="text/javascript">
+            //<![CDATA[
+            $('#modalSearch').modal({'backdrop': 'static'});
+            //]]>
+        </script>
+    </div>
+
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+
+        $(document).ready(function() {
+            $('#btn-count').click(function()  {
+                var val = $('#search').val();
+                var btn = $(this);
+                console.log(val);
+                $.ajax({
+                    url: '/api/v2/assets/_count',
+                    method: 'post',
+                    data: JSON.stringify(JSON.parse(val)),
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        console.log(data);
+                        btn.text("Count: " + data["count"]);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            });
+        });
+        //]]>
+    </script>
+
 </div>
 
 <div th:fragment="modal_create">

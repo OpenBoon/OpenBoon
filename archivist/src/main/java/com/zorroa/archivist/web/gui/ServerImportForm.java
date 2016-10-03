@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by chambers on 7/27/16.
  */
-public class NewServerImportForm {
+public class ServerImportForm {
 
     @NotEmpty
     private List<String> paths;
@@ -20,7 +20,7 @@ public class NewServerImportForm {
         return paths;
     }
 
-    public NewServerImportForm setPaths(List<String> paths) {
+    public ServerImportForm setPaths(List<String> paths) {
         this.paths = paths;
         return this;
     }
@@ -29,7 +29,7 @@ public class NewServerImportForm {
         return pipelineId;
     }
 
-    public NewServerImportForm setPipelineId(Integer pipelineId) {
+    public ServerImportForm setPipelineId(Integer pipelineId) {
         this.pipelineId = pipelineId;
         return this;
     }
