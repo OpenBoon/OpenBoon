@@ -26,6 +26,8 @@ public interface PluginService {
     Plugin getPlugin(String name);
     Plugin getPlugin(int id);
 
+    boolean deletePlugin(Plugin plugin);
+
     List<Processor> getAllProcessors(Plugin plugin);
     List<Processor> getAllProcessors();
 

@@ -6,7 +6,6 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.PipelineType;
-import com.zorroa.archivist.domain.SdkProcessorRef;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class ImportServiceTests extends AbstractTest {
         pluginService.installAndRegisterAllPlugins();
         ImportSpec spec = new ImportSpec();
         spec.setGenerators(ImmutableList.of(
-                new SdkProcessorRef("com.zorroa.sdk.processors.builtin.GroupProcessor")));
+                new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
         job = importService.create(spec);
     }
 

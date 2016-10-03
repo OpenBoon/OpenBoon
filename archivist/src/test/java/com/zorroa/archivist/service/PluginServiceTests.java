@@ -63,7 +63,17 @@ public class PluginServiceTests extends AbstractTest {
 
     @Test
     public void testInstallPlugin() throws IOException {
+        try {
+            Plugin p = pluginService.getPlugin("zorroa-test");
+            pluginService.deletePlugin(p);
+        }
+        catch (Exception e) {
+            // This is ok.
+            logger.warn("Failed to delete plugin: ",e);
+        }
+
         int size = pluginService.getAllPlugins().size();
+
         pluginService.installPlugin(Paths.get("../unittest/resources/plugins/zorroa-test-plugin.zip"));
         assertEquals(size+1, pluginService.getAllPlugins().size());
     }

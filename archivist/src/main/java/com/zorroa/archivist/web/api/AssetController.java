@@ -181,7 +181,7 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-    public AssetIndexResult index(@RequestBody IndexAssetRequest req) throws IOException {
+    public DocumentIndexResult index(@RequestBody IndexAssetRequest req) throws IOException {
         return assetService.index(req.sources, req.link);
     }
 }

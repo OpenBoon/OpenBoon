@@ -66,12 +66,12 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 logger.error("Failed to setup datasources, ", e);
                 throw new RuntimeException(e);
             }
-
-            /**
-             * Register plugins.
-             */
-            pluginService.installAndRegisterAllPlugins();
         }
+
+        /**
+         * Register plugins.
+         */
+        pluginService.installAndRegisterAllPlugins();
     }
 
     public void setupDataSources() throws IOException {

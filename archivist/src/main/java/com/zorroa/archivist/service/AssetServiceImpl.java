@@ -76,15 +76,15 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public AssetIndexResult index(List<Source> sources, LinkSpec link) {
-        AssetIndexResult result =  assetDao.index(sources, link);
+    public DocumentIndexResult index(List<Source> sources, LinkSpec link) {
+        DocumentIndexResult result =  assetDao.index(sources, link);
         if (result.created + result.updated > 0) {
             dyHierarchyService.submitGenerateAll(false);
         }
         return result;
     }
 
-    public AssetIndexResult index(List<Source> sources) {
+    public DocumentIndexResult index(List<Source> sources) {
         return index(sources, null);
     }
 

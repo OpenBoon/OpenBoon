@@ -154,15 +154,15 @@ public class ExportServiceImpl implements ExportService {
          */
         AssetSearch search = performExportSearch(spec.getSearch(), job.getJobId());
         generate.add(pluginService.getProcessorRef(
-                "com.zorroa.sdk.processor.builtin.AssetSearchGenerator",
+                "com.zorroa.core.generator.AssetSearchGenerator",
                 ImmutableMap.of("search", search)));
 
         /**
          * First setup the core pipeline for the main task.  We create the
          * output directory, add the export id, and kick off a search generator.
          */
-        execute.add(new SdkProcessorRef()
-                .setClassName("com.zorroa.sdk.processor.builtin.MakeDirectory")
+        execute.add(new ProcessorRef()
+                .setClassName("com.zorroa.core.processor.MakeDirectory")
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("path", exportRoot.toString())));
 
@@ -172,8 +172,8 @@ public class ExportServiceImpl implements ExportService {
          * modifications by the user.  Finally a CompressSource is appended.  All
          * of this is run inline to the generator.
          */
-        execute.add(new SdkProcessorRef()
-                .setClassName("com.zorroa.sdk.processor.builtin.CopySource")
+        execute.add(new ProcessorRef()
+                .setClassName("com.zorroa.core.processor.CopySource")
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("dstDirectory", exportRoot.resolve("tmp").toString())));
 
@@ -183,8 +183,8 @@ public class ExportServiceImpl implements ExportService {
             }
         }
 
-        execute.add(new SdkProcessorRef()
-                .setClassName("com.zorroa.sdk.processor.builtin.CompressSource")
+        execute.add(new ProcessorRef()
+                .setClassName("com.zorroa.core.processor.CompressSource")
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("dstFile", zipFile.toString())));
 

@@ -71,7 +71,7 @@ public class ImportServiceImpl implements ImportService {
                     SecurityUtils.getUsername(), FileUtils.filename(spec.getPath())));
 
             generator = ImmutableList.of(
-                    new SdkProcessorRef("com.zorroa.sdk.processor.builtin.FileListGenerator")
+                    new ProcessorRef("com.zorroa.core.generator.FileListGenerator")
                             .setArg("paths", ImmutableList.of(spec.getPath())));
         }
         else if (JdbcUtils.isValid(spec.getQuery())) {
@@ -82,7 +82,7 @@ public class ImportServiceImpl implements ImportService {
             search.setQuery(spec.getQuery());
             search.setSize(1);
             generator = ImmutableList.of(
-                    new SdkProcessorRef("com.zorroa.sdk.processor.builtin.AssetSearchGenerator")
+                    new ProcessorRef("com.zorroa.core.generator.AssetSearchGenerator")
                             .setArg("search", search));
         }
         else {
@@ -91,7 +91,7 @@ public class ImportServiceImpl implements ImportService {
 
         List<ProcessorRef> pipeline = pipelineService.getProcessors(
                 spec.getPipelineId(), spec.getPipeline());
-        pipeline.add(new SdkProcessorRef("com.zorroa.sdk.processor.builtin.ReturnResponse"));
+        pipeline.add(new ProcessorRef("com.zorroa.core.processor.ReturnResponse"));
 
         ZpsScript script = new ZpsScript();
         script.setGenerate(generator);
@@ -131,8 +131,8 @@ public class ImportServiceImpl implements ImportService {
          * Add an ExpandCollector so we generate right into new tasks.
          */
         execute.add(
-                new SdkProcessorRef()
-                        .setClassName("com.zorroa.sdk.processor.builtin.ExpandCollector")
+                new ProcessorRef()
+                        .setClassName("com.zorroa.core.collector.ExpandCollector")
                         .setLanguage("java"));
 
         /**
@@ -144,8 +144,8 @@ public class ImportServiceImpl implements ImportService {
          * At the end we add an IndexDocumentCollector to index the results of our job.
          */
         pipeline.add(
-                new SdkProcessorRef()
-                        .setClassName("com.zorroa.sdk.processor.builtin.IndexDocumentCollector")
+                new ProcessorRef()
+                        .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
                         .setLanguage("java")
                         .setArgs(ImmutableMap.of("importId", job.getJobId())));
 

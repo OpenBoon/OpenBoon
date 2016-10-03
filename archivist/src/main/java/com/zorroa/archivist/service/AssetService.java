@@ -30,8 +30,8 @@ public interface AssetService {
      * @param link
      * @return
      */
-    AssetIndexResult index(List<Source> sources, LinkSpec link);
-    AssetIndexResult index(List<Source> sources);
+    DocumentIndexResult index(List<Source> sources, LinkSpec link);
+    DocumentIndexResult index(List<Source> sources);
 
     Map<String, List<Object>> removeLink(String type, String value, List<String> assets);
     Map<String, List<Object>> appendLink(String type, String value, List<String> assets);

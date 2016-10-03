@@ -63,6 +63,6 @@ public interface AssetDao {
      * @param sourceLink
      * @return
      */
-    AssetIndexResult index(List<Source> sources, LinkSpec sourceLink);
+    DocumentIndexResult index(List<Source> sources, LinkSpec sourceLink);
 
 }

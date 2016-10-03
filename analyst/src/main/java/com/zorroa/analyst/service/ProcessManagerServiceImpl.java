@@ -13,7 +13,6 @@ import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsExecutor;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -307,14 +306,14 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
                 logStream.write(NEWLINE);
             }
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith(ZpsExecutor.SUFFIX)) {
+                if (line.startsWith(ZpsScript.SUFFIX)) {
                     processBuffer(sb, task, logStream);
                     logStream.write(NEWLINE);
                     buffer = false;
                     sb.setLength(0);
                 } else if (buffer) {
                     sb.append(line);
-                } else if (line.startsWith(ZpsExecutor.PREFIX)) {
+                } else if (line.startsWith(ZpsScript.PREFIX)) {
                     buffer = true;
                     sb = new StringBuilder(8096);
                 }
@@ -345,11 +344,11 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             logger.info("Processing expand from job: {}", start.getTask().getJobId());
             ZpsScript script = reaction.getExpand();
 
-            log.write(ZpsExecutor.PREFIX.getBytes());
+            log.write(ZpsScript.PREFIX.getBytes());
             log.write(NEWLINE);
             log.write(Json.prettyString(script).getBytes());
             log.write(NEWLINE);
-            log.write(ZpsExecutor.SUFFIX.getBytes());
+            log.write(ZpsScript.SUFFIX.getBytes());
 
             ExecuteTaskExpand st = new ExecuteTaskExpand();
             st.setScript(Json.serializeToString(script));

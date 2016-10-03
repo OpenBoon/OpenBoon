@@ -43,6 +43,7 @@ public class MultipleWebSecurityConfig {
         @Autowired
         SessionRegistry sessionRegistry;
 
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http

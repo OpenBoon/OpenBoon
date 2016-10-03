@@ -30,7 +30,7 @@ public class PipelineServiceTests extends AbstractTest {
     public void init() {
         spec = new PipelineSpecV();
         spec.setProcessors(Lists.newArrayList(
-                new ProcessorRef("com.zorroa.sdk.processor.builtin.GroupProcessor")));
+                new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
         spec.setDescription("A NoOp");
         spec.setName("test");
         spec.setType(PipelineType.Import);
@@ -53,7 +53,16 @@ public class PipelineServiceTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        assertEquals(1, pipelineService.getAll().size());
+        int current = pipelineService.getAll().size();
+        spec = new PipelineSpecV();
+        spec.setProcessors(Lists.newArrayList(
+                new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+        spec.setDescription("Test");
+        spec.setName("test2");
+        spec.setType(PipelineType.Import);
+        pipelineService.create(spec);
+
+        assertEquals(current+1, pipelineService.getAll().size());
     }
 
     @Test

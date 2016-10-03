@@ -53,8 +53,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public AssetIndexResult index(List<Source> sources, LinkSpec sourceLink) {
-        AssetIndexResult result = new AssetIndexResult();
+    public DocumentIndexResult index(List<Source> sources, LinkSpec sourceLink) {
+        DocumentIndexResult result = new DocumentIndexResult();
         if (sources.isEmpty()) {
             return result;
         }

@@ -204,7 +204,7 @@ public class PluginServiceImpl implements PluginService {
 
             Processor proc;
             try {
-                proc = processorDao.get(pspec.getName());
+                proc = processorDao.get(spec.getClassName());
                 processorDao.delete(proc.getId());
             }
             catch (EmptyResultDataAccessException e) {
@@ -240,6 +240,11 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
+    public boolean deletePlugin(Plugin plugin) {
+        return pluginDao.delete(plugin.getId());
+    }
+
+    @Override
     public List<Processor> getAllProcessors(Plugin plugin) {
         return processorDao.getAll(plugin);
     }
@@ -249,33 +254,18 @@ public class PluginServiceImpl implements PluginService {
         return processorDao.get(id);
     }
 
-    private static final String BUILT_IN_PACKAGE =
-            "com.zorroa.sdk.processor.builtin.";
-
     @Override
     public ProcessorRef getProcessorRef(String name, Map<String, Object> args) {
-        if (name.startsWith(BUILT_IN_PACKAGE)) {
-            return new SdkProcessorRef(name, args);
-        }
         return processorDao.getRef(name).setArgs(args);
     }
 
     @Override
     public ProcessorRef getProcessorRef(String name) {
-        if (name.startsWith(BUILT_IN_PACKAGE)) {
-            return new SdkProcessorRef(name);
-        }
         return processorDao.getRef(name).setArgs(Maps.newHashMap());
     }
 
     @Override
     public ProcessorRef getProcessorRef(ProcessorRef ref) {
-        if (ref.getClassName().startsWith(BUILT_IN_PACKAGE)) {
-            return new SdkProcessorRef(ref.getClassName(), ref.getArgs());
-        }
-        if (SdkProcessorRef.class.isAssignableFrom(ref.getClass())) {
-            return ref;
-        }
         return processorDao.getRef(ref.getClassName()).setArgs(ref.getArgs());
     }
 

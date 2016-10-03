@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.domain.DocumentIndexResult;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
@@ -95,7 +95,7 @@ public class AssetDaoTests extends AbstractTest {
         Source source1 = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
         Source source2 = new Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"));
 
-        AssetIndexResult result = assetDao.index(ImmutableList.of(source1, source2), null);
+        DocumentIndexResult result = assetDao.index(ImmutableList.of(source1, source2), null);
         refreshIndex();
         assertEquals(1, result.created);
         assertEquals(1, result.updated);
