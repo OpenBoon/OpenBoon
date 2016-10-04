@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by chambers on 8/22/16.
+ * An internal class for creating a new batch job.
  */
 public class JobSpec {
 

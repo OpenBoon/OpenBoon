@@ -10,6 +10,8 @@ import com.zorroa.sdk.domain.Pager;
  */
 public interface JobService {
 
+    Job launch(JobSpecV spec);
+
     /**
      * Launches a Job using the given ZPS script. Returns the script
      * back populated with the jobId and first task Id.

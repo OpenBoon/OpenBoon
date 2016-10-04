@@ -1,13 +1,14 @@
 package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.domain.JobSpecV;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.exception.MalformedDataException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 /**
@@ -27,5 +28,18 @@ public class JobController {
     @RequestMapping(value="/api/v1/jobs/{id}/_restart", method = RequestMethod.PUT)
     public Object restart(@PathVariable Integer id) throws IOException {
         return HttpUtils.status("job", id, "restart", jobService.restart(() -> id));
+    }
+
+    @RequestMapping(value="/api/v1/jobs/{id}", method = RequestMethod.GET)
+    public Object get(@PathVariable int id) throws IOException {
+        return jobService.get(id);
+    }
+
+    @RequestMapping(value="/api/v1/jobs", method = RequestMethod.POST)
+    public Object launch(@Valid @RequestBody JobSpecV spec, BindingResult valid) throws IOException {
+        if (valid.hasErrors()) {
+            throw new MalformedDataException(HttpUtils.getBindingErrorString(valid));
+        }
+        return jobService.launch(spec);
     }
 }

@@ -1,7 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.TaskDao;
@@ -60,6 +62,50 @@ public class JobServiceImpl implements JobService {
     @Autowired
     AnalystService analystService;
 
+    @Autowired
+    PluginService pluginService;
+
+    /**
+     * Launch a validated JobSpec provided by REST endpoint.
+     * @param specv
+     * @return
+     */
+    @Override
+    public Job launch(JobSpecV specv) {
+
+        if (!JdbcUtils.isValid(specv.getScript().getGenerate()) &&
+               !JdbcUtils.isValid(specv.getScript().getOver())) {
+            throw new IllegalArgumentException("Script has neither data to iterate over or a generator");
+        }
+
+        if (!JdbcUtils.isValid(specv.getScript().getExecute())) {
+            throw new IllegalArgumentException("Script has no execute clause.");
+        }
+
+        /**
+         * Validates processors actually exist.
+         */
+        specv.getScript().setGenerate(
+                pluginService.getProcessorRefs(specv.getScript().getGenerate()));
+        specv.getScript().setExecute(
+                pluginService.getProcessorRefs(specv.getScript().getExecute()));
+
+        TaskSpec tspec = new TaskSpec();
+        tspec.setName(specv.getName());
+        tspec.setScript(Json.serializeToString(specv.getScript()));
+
+        JobSpec spec = new JobSpec();
+        spec.setName(specv.getName());
+        spec.setType(specv.getType());
+        spec.setArgs(specv.getArgs());
+        spec.setEnv(specv.getEnv());
+        spec.setArgs(specv.getArgs());
+        spec.setTasks(ImmutableList.of(tspec));
+
+        Job job = launch(spec);
+        return job;
+    }
+
     /**
      * Creating a job creates both a job record and the initial task.
      *
@@ -94,7 +140,6 @@ public class JobServiceImpl implements JobService {
                 createTask(tspec.setJobId(job.getJobId()));
             }
         }
-
         event.afterCommit(()->
                 message.broadcast(new Message("JOB_CREATE", job)));
         return jobDao.get(job.getId());

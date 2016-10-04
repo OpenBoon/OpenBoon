@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
+/**
+ * A validated version of the PipelineSpec which is submitted via a REST endpoint.
+ */
 public class PipelineSpecV {
 
     @NotNull

@@ -86,7 +86,7 @@ public class PipelineControllerTests extends MockMvcTest {
         pl = pipelineService.create(spec);
 
         PipelineSpecV spec2 = new PipelineSpecV();
-        spec2.setType(PipelineType.Update);
+        spec2.setType(PipelineType.Batch);
         spec2.setProcessors(Lists.newArrayList());
         spec2.setName("Rocky IV");
         spec2.setDescription("a movie");

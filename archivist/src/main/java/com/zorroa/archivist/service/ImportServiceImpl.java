@@ -173,7 +173,7 @@ public class ImportServiceImpl implements ImportService {
 
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
-                .setName("Path Generation"));
+                .setName("Frame Generator"));
 
         transactionEventManager.afterCommitSync(() -> {
             logService.log(LogSpec.build(LogAction.Create, "import", job.getJobId()));

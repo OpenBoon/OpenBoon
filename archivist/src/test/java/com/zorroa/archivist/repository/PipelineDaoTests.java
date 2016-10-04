@@ -53,7 +53,7 @@ public class PipelineDaoTests extends AbstractTest {
         Pipeline update = new Pipeline();
         update.setName("foo");
         update.setDescription("foo bar");
-        update.setType(PipelineType.Train);
+        update.setType(PipelineType.Batch);
         update.setProcessors(Lists.newArrayList(new ProcessorRef().setClassName("bar.Bing")));
         assertTrue(pipelineDao.update(pipeline.getId(), update));
 

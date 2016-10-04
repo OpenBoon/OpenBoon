@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PipelineDao;
@@ -267,6 +268,18 @@ public class PluginServiceImpl implements PluginService {
     @Override
     public ProcessorRef getProcessorRef(ProcessorRef ref) {
         return processorDao.getRef(ref.getClassName()).setArgs(ref.getArgs());
+    }
+
+    @Override
+    public List<ProcessorRef> getProcessorRefs(List<ProcessorRef> refs) {
+        if (refs == null) {
+            return null;
+        }
+        List<ProcessorRef> result = Lists.newArrayListWithCapacity(refs.size());
+        for (ProcessorRef ref: refs) {
+            result.add(processorDao.getRef(ref.getClassName()).setArgs(ref.getArgs()));
+        }
+        return result;
     }
 
     @Override
