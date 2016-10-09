@@ -223,6 +223,11 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
                 logger.debug("Completed {}", Json.prettyString(script));
             }
 
+            /**
+             * Remove from process map.
+             */
+            processMap.remove(task.getTask().getTaskId());
+
             if (!Application.isUnitTest()) {
                 archivistClient.reportTaskStopped(new ExecuteTaskStopped(task.getTask())
                         .setNewState(proc.getNewState()));
