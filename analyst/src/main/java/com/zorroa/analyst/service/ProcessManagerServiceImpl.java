@@ -180,6 +180,11 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
         ZpsScript script = Json.deserialize(task.getScript(), ZpsScript.class);
         task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_CERTS", properties.getString("zorroa.cluster.path.certs"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_OFS", properties.getString("zorroa.cluster.path.ofs"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_PLUGINS", properties.getString("zorroa.cluster.path.plugins"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_MODELS", properties.getString("zorroa.cluster.path.models"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_SHARED", properties.getString("zorroa.cluster.path.shared"));
 
         int exit = 1;
         Stopwatch timer = Stopwatch.createStarted();
@@ -230,12 +235,12 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     public String[] createCommand(ZpsScript script, ExecuteTaskStart task, String lang) throws IOException {
         ImmutableList.Builder<String> b = ImmutableList.<String>builder()
                 .add(String.format("%s/lang-%s/bin/zpsgo", properties.getString("zorroa.cluster.path.plugins"), lang))
-                .add("-shared-path", properties.getString("zorroa.cluster.path.shared"))
-                .add("-plugin-path", properties.getString("zorroa.cluster.path.plugins"))
-                .add("-model-path", properties.getString("zorroa.cluster.path.models"))
-                .add("-ofs-path", properties.getString("zorroa.cluster.path.ofs"))
-                .add("-export-path", properties.getString("zorroa.cluster.path.exports"))
-                .add("-script", writeScript(script).toString());
+                .add("--shared-path", properties.getString("zorroa.cluster.path.shared"))
+                .add("--plugin-path", properties.getString("zorroa.cluster.path.plugins"))
+                .add("--model-path", properties.getString("zorroa.cluster.path.models"))
+                .add("--ofs-path", properties.getString("zorroa.cluster.path.ofs"))
+                .add("--export-path", properties.getString("zorroa.cluster.path.exports"))
+                .add("--script", writeScript(script).toString());
 
         if (task.getArgs() != null) {
             task.getArgs().forEach((k, v) -> {
