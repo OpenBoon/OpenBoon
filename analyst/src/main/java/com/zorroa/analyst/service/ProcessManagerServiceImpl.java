@@ -179,6 +179,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         }
 
         ZpsScript script = Json.deserialize(task.getScript(), ZpsScript.class);
+
         task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
         task.putToEnv("ZORROA_CLUSTER_PATH_CERTS", properties.getString("zorroa.cluster.path.certs"));
         task.putToEnv("ZORROA_CLUSTER_PATH_OFS", properties.getString("zorroa.cluster.path.ofs"));
@@ -192,11 +193,25 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             if (!Application.isUnitTest()) {
                 archivistClient.reportTaskStarted(new ExecuteTaskStarted(task.getTask()));
             }
-            String lang = determineLanguagePlugin(script);
-            logger.debug("running script with language: {}", lang);
-            String[] command = createCommand(script, task, lang);
-            logger.info("running command: {}", String.join(" ", command));
-            exit = runProcess(command, task, proc);
+            for(;;) {
+                String lang = determineLanguagePlugin(script);
+                logger.debug("running script with language: {}", lang);
+                String[] command = createCommand(script, task, lang);
+                logger.info("running command: {}", String.join(" ", command));
+                exit = runProcess(command, task, proc);
+
+                if (exit != 0) {
+                    break;
+                }
+
+                ZpsScript next = proc.nextProcess();
+                if (next == null) {
+                    break;
+                }
+                logger.info("Running next script");
+                script = next;
+                proc.incrementProcessCount();
+            }
 
         } catch (Exception e) {
             // don't throw anything, just log
@@ -224,7 +239,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             }
 
             /**
-             * Remove from process map.
+             * Remove from procoess map
              */
             processMap.remove(task.getTask().getTaskId());
 
@@ -262,7 +277,10 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     }
 
     public String determineLanguagePlugin(ZpsScript script) {
-        if (script.getExecute() != null && !script.getExecute().isEmpty()) {
+        if (script.getGenerate() != null && !script.getGenerate().isEmpty()) {
+            return script.getExecute().get(0).getLanguage();
+        }
+        else if (script.getExecute()!= null && !script.getExecute().isEmpty()) {
             return script.getExecute().get(0).getLanguage();
         }
         else {
@@ -302,7 +320,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         boolean buffer = false;
         String line;
 
-        try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()))) {
+        try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()), proc.getProcessCount() > 1)) {
             for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
                 if (e.getKey().equals("ZORROA_HMAC_KEY")) {
                     continue;
@@ -317,7 +335,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
             }
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(ZpsScript.SUFFIX)) {
-                    processBuffer(sb, task, logStream);
+                    processBuffer(sb, task, logStream, proc);
                     logStream.write(NEWLINE);
                     buffer = false;
                     sb.setLength(0);
@@ -344,11 +362,16 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         return exit;
     }
 
-    public void processBuffer(StringBuilder sb, ExecuteTaskStart start, FileOutputStream log) throws IOException {
+    public void processBuffer(StringBuilder sb, ExecuteTaskStart start, FileOutputStream log, AnalystProcess process) throws IOException {
         String scriptText = sb.toString();
 
         // Double check it can be serialized.
         Reaction reaction = Json.deserialize(scriptText, Reaction.class);
+
+        if (reaction.getNextProcess() != null) {
+            logger.info("Adding process to queue for job: {}", start.getTask().getJobId());
+            process.addToNextProcess(reaction.getNextProcess());
+        }
 
         if (reaction.getExpand() != null) {
             logger.info("Processing expand from job: {}", start.getTask().getJobId());

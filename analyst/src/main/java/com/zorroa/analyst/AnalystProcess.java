@@ -1,8 +1,11 @@
 package com.zorroa.analyst;
 
+import com.google.common.collect.Queues;
 import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.zps.ZpsScript;
 
 import java.nio.file.Path;
+import java.util.Queue;
 
 /**
  * Created by chambers on 9/20/16.
@@ -12,6 +15,8 @@ public class AnalystProcess {
     private Process process = null;
     private Path logFile = null;
     private TaskState newState = null;
+    private Queue<ZpsScript> processQueue;
+    private int processCount = 1;
 
     public AnalystProcess() {}
 
@@ -39,6 +44,30 @@ public class AnalystProcess {
 
     public AnalystProcess setNewState(TaskState newState) {
         this.newState = newState;
+        return this;
+    }
+
+    public AnalystProcess addToNextProcess(ZpsScript next) {
+        if (this.processQueue == null) {
+            this.processQueue = Queues.newArrayDeque();
+        }
+        this.processQueue.add(next);
+        return this;
+    }
+
+    public ZpsScript nextProcess() {
+        if (this.processQueue == null) {
+            return null;
+        }
+        return processQueue.poll();
+    }
+
+    public int getProcessCount() {
+        return processCount;
+    }
+
+    public AnalystProcess incrementProcessCount() {
+        processCount++;
         return this;
     }
 }
