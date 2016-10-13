@@ -140,6 +140,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         for (Pattern pattern: RECOVERABLE_BULK_ERRORS) {
             Matcher matcher = pattern.matcher(error);
             if (matcher.find()) {
+                logger.warn("Removing broken field: {}, {}", matcher.group(1), error);
                 return asset.removeAttr(matcher.group(1));
             }
         }
