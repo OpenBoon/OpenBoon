@@ -15,7 +15,6 @@ import com.zorroa.common.domain.*;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +50,6 @@ public class JobServiceImpl implements JobService {
     TransactionEventManager event;
 
     @Autowired
-    SharedData sharedData;
-
-    @Autowired
     UserDao userDao;
 
     @Autowired
@@ -83,7 +79,7 @@ public class JobServiceImpl implements JobService {
         }
 
         /**
-         * Validates processors actually exist.
+         * Validates processors actually exists.
          */
         specv.getScript().setGenerate(
                 pluginService.getProcessorRefs(specv.getScript().getGenerate()));
@@ -129,8 +125,6 @@ public class JobServiceImpl implements JobService {
         /**
          * These options allow jobs to talk back to the archivist.
          */
-        spec.putToEnv("ZORROA_CERT_PATH",
-                sharedData.getRootPath().resolve("certs/archivist.p12").toString());
         spec.putToEnv("ZORROA_USER", SecurityUtils.getUsername());
         spec.putToEnv("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
 
