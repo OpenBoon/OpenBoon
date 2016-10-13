@@ -26,6 +26,7 @@ public class PluginController {
     @Autowired
     PluginService pluginService;
 
+    @ResponseBody
     @RequestMapping(value="/api/v1/plugins", method = RequestMethod.POST)
     public Object handlePluginUpload(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
