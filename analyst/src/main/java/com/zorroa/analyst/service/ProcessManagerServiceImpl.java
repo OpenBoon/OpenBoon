@@ -264,7 +264,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
         if (task.getArgs() != null) {
             task.getArgs().forEach((k, v) -> {
-                b.add("-global", k.concat("=").concat(v.toString()));
+                b.add("--global", k.concat("=").concat(v.toString()));
             });
         }
         return b.build().toArray(new String[] {});
