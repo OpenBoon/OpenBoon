@@ -267,7 +267,9 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public ProcessorRef getProcessorRef(ProcessorRef ref) {
-        return processorDao.getRef(ref.getClassName()).setArgs(ref.getArgs());
+        return processorDao.getRef(ref.getClassName())
+                .setArgs(ref.getArgs())
+                .setFilters(ref.getFilters());
     }
 
     @Override
@@ -277,7 +279,9 @@ public class PluginServiceImpl implements PluginService {
         }
         List<ProcessorRef> result = Lists.newArrayListWithCapacity(refs.size());
         for (ProcessorRef ref: refs) {
-            result.add(processorDao.getRef(ref.getClassName()).setArgs(ref.getArgs()));
+            result.add(processorDao.getRef(ref.getClassName())
+                    .setArgs(ref.getArgs())
+                    .setFilters(ref.getFilters()));
         }
         return result;
     }
