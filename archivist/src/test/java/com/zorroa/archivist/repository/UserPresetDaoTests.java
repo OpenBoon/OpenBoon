@@ -31,7 +31,7 @@ public class UserPresetDaoTests extends AbstractTest {
         spec = new UserPresetSpec();
         spec.setName("defaults");
         spec.setSettings(new UserSettings().setSearch(
-                new UserSettings.Search().setQueryFields(Lists.newArrayList(ImmutableMap.of("foo", 1.0f)))));
+                new UserSettings.Search().setQueryFields(ImmutableMap.of("foo", 1.0f))));
         spec.setPermissionIds(ImmutableList.of(userService.getPermission("group::superuser").getId()));
         preset = userPresetDao.create(spec);
     }
@@ -41,7 +41,7 @@ public class UserPresetDaoTests extends AbstractTest {
         assertEquals(spec.getName(), preset.getName());
         assertNotNull(preset.getPermissionIds());
         assertEquals(spec.getPermissionIds(), preset.getPermissionIds());
-        assertTrue(spec.getSettings().getSearch().getQueryFields().get(0).containsKey("foo"));
+        assertTrue(spec.getSettings().getSearch().getQueryFields().containsKey("foo"));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class UserPresetDaoTests extends AbstractTest {
     public void testUpdate() {
         preset.setPermissionIds(ImmutableList.of(userService.getPermission("group::manager").getId()));
         preset.setSettings(new UserSettings().setSearch(
-                new UserSettings.Search().setQueryFields(Lists.newArrayList(ImmutableMap.of("bar", 1.0f)))));
+                new UserSettings.Search().setQueryFields(ImmutableMap.of("bar", 1.0f))));
         preset.setName("bilbo");
         assertTrue(userPresetDao.update(preset.getPresetId(), preset));
 
@@ -61,7 +61,7 @@ public class UserPresetDaoTests extends AbstractTest {
         assertEquals(preset.getName(), updated.getName());
         assertNotNull(updated.getPermissionIds());
         assertEquals(preset.getPermissionIds(), updated.getPermissionIds());
-        assertTrue(updated.getSettings().getSearch().getQueryFields().get(0).containsKey("bar"));
+        assertTrue(updated.getSettings().getSearch().getQueryFields().containsKey("bar"));
     }
 
     @Test

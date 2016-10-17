@@ -1,6 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,13 +29,13 @@ public class UserSettings {
     }
 
     public static class Search {
-        private List<Map<String, Float>> queryFields;
+        private Map<String, Float> queryFields;
 
-        public List<Map<String, Float>> getQueryFields() {
+        public Map<String, Float> getQueryFields() {
             return queryFields;
         }
 
-        public Search setQueryFields(List<Map<String, Float>> queryFields) {
+        public Search setQueryFields(Map<String, Float> queryFields) {
             this.queryFields = queryFields;
             return this;
         }
