@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
@@ -240,6 +241,29 @@ public class SearchServiceTests extends AbstractTest {
         AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testQueryWithCustomFields() throws IOException {
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.setAttr("foo.bar1", "captain kirk");
+        source.setAttr("foo.bar2", "bilbo baggins");
+        source.setAttr("foo.bar3", "pirate pete");
+
+        assetService.index(source);
+        refreshIndex();
+
+        assertEquals(1, searchService.search(
+                new AssetSearch("captain").setQueryFields(ImmutableMap.of("foo.bar1", 1.0f))).getHits().getTotalHits());
+        assertEquals(0, searchService.search(
+                new AssetSearch("captain").setQueryFields(ImmutableMap.of("foo.bar2", 1.0f))).getHits().getTotalHits());
+
+        assertEquals(1, searchService.search(
+                new AssetSearch("captain baggins").setQueryFields(
+                        ImmutableMap.of("foo.bar1", 1.0f, "foo.bar2", 2.0f))).getHits().getTotalHits());
+
+
     }
 
     @Test

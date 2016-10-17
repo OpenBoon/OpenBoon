@@ -1,13 +1,16 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
@@ -38,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -69,6 +73,17 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     Client client;
+
+    @Autowired
+    ApplicationProperties properties;
+
+    private Map<String, Float> defaultQueryFields =
+            ImmutableMap.of("keywords.all", 1.0f, "keywords.all.raw", 2.0f);
+
+    @PostConstruct
+    public void init() {
+        initializeDefaultQueryFields();
+    }
 
     @Override
     public SearchResponse search(AssetSearch search) {
@@ -312,8 +327,12 @@ public class SearchServiceImpl implements SearchService {
         }
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
-        qstring.field("keywords.all");
-        qstring.field("keywords.all.raw", 2);
+
+        if (!JdbcUtils.isValid(search.getQueryFields())) {
+            search.setQueryFields(defaultQueryFields);
+        }
+
+        search.getQueryFields().forEach((k,v)-> qstring.field(k, v));
         qstring.allowLeadingWildcard(false);
         qstring.lenient(true);
         qstring.fuzziness(Fuzziness.AUTO);
@@ -449,5 +468,23 @@ public class SearchServiceImpl implements SearchService {
                 getList(result, String.join("", fieldName, key, "."), item);
             }
         }
+    }
+
+    private void initializeDefaultQueryFields() {
+        Map<String, Object> queryFieldProps =
+                properties.getMap("archivist.search.queryFields");
+
+        if (!queryFieldProps.isEmpty()) {
+            /**
+             * Using ImmutableMap.Builder to ensure this default cannot
+             * be modified by accident.
+             */
+            ImmutableMap.Builder<String, Float> builder = ImmutableMap.builder();
+            queryFieldProps.forEach((k,v)-> builder.put(
+                    k.replace("archivist.search.queryFields.",""),
+                    Float.valueOf(v.toString())));
+            defaultQueryFields = builder.build();
+        }
+        logger.info("Default search fields: {}", defaultQueryFields);
     }
 }
