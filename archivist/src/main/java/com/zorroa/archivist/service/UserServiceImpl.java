@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.sdk.domain.*;
 import org.slf4j.Logger;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PermissionDao permissionDao;
+
+    @Autowired
+    UserPresetDao userPresetDao;
 
     @Autowired
     FolderService folderService;
@@ -332,5 +336,30 @@ public class UserServiceImpl implements UserService {
             });
         }
         return result;
+    }
+
+    @Override
+    public List<UserPreset> getUserPresets() {
+        return userPresetDao.getAll();
+    }
+
+    @Override
+    public UserPreset getUserPreset(int id) {
+        return userPresetDao.get(id);
+    }
+
+    @Override
+    public boolean updateUserPreset(int id, UserPreset preset) {
+        return userPresetDao.update(id, preset);
+    }
+
+    @Override
+    public UserPreset createUserPreset(UserPresetSpec preset) {
+        return userPresetDao.create(preset);
+    }
+
+    @Override
+    public boolean deleteUserPreset(UserPreset preset) {
+        return userPresetDao.delete(preset.getPresetId());
     }
 }

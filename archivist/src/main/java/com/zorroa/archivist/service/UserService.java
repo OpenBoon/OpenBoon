@@ -79,4 +79,11 @@ public interface UserService {
     boolean hasPermission(User user, Permission permission);
 
     boolean deletePermission(Permission permission);
+
+    // Presets
+    List<UserPreset> getUserPresets();
+    UserPreset getUserPreset(int id);
+    boolean updateUserPreset(int id, UserPreset preset);
+    UserPreset createUserPreset(UserPresetSpec preset);
+    boolean deleteUserPreset(UserPreset preset);
 }
