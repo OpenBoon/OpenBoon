@@ -78,7 +78,7 @@ public class SearchServiceImpl implements SearchService {
     ApplicationProperties properties;
 
     private Map<String, Float> defaultQueryFields =
-            ImmutableMap.of("keywords.all", 1.0f, "keywords.all.raw", 2.0f);
+            ImmutableMap.of("keywords.all", 1.0f);
 
     @PostConstruct
     public void init() {
@@ -328,11 +328,20 @@ public class SearchServiceImpl implements SearchService {
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
 
-        if (!JdbcUtils.isValid(search.getQueryFields())) {
-            search.setQueryFields(defaultQueryFields);
+        Map<String, Float> queryFields = null;
+
+        if (JdbcUtils.isValid(search.getQueryFields())) {
+            queryFields = search.getQueryFields();
+        }
+        else if (JdbcUtils.isValid(SecurityUtils.getUser().getSettings().getSearch())) {
+            queryFields = SecurityUtils.getUser().getSettings().getSearch().getQueryFields();
         }
 
-        search.getQueryFields().forEach((k,v)-> qstring.field(k, v));
+        if (!JdbcUtils.isValid(queryFields)) {
+            queryFields = defaultQueryFields;
+        }
+
+        queryFields.forEach((k,v)-> qstring.field(k, v));
         qstring.allowLeadingWildcard(false);
         qstring.lenient(true);
         qstring.fuzziness(Fuzziness.AUTO);
