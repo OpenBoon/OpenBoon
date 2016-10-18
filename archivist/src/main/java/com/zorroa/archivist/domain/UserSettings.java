@@ -3,11 +3,34 @@ package com.zorroa.archivist.domain;
 import java.util.Map;
 
 /**
- * Created by chambers on 10/17/16.
+ * Class to represent user customizable settings.  See property comments for a full
+ * description of each field.
+ *
+ * Example JSON structure:
+ *
+ * {
+ *     "search": {
+ *         "queryFields": {
+ *             "source.filename": 1.0,
+ *             "keywords.all", 2.0
+ *         }
+ *     },
+ *     "metadata": {
+ *
+ *     }
+ * }
+ *
  */
 public class UserSettings {
 
+    /**
+     * All search related settings.
+     */
     private Search search;
+
+    /**
+     * All settings related to display of metadata.
+     */
     private Metadata metadata;
 
     public Search getSearch() {
@@ -28,7 +51,15 @@ public class UserSettings {
         return this;
     }
 
+    /**
+     * All search related settings.
+     */
     public static class Search {
+
+        /**
+         * The fields and their associated boost value, which are used with
+         * a query string query.
+         */
         private Map<String, Float> queryFields;
 
         public Map<String, Float> getQueryFields() {
@@ -41,6 +72,13 @@ public class UserSettings {
         }
     }
 
+    /**
+     * All metadata related display setting.  This mostly revolves around
+     * what attributes to display in the metadata window.
+     *
+     * This class is currently a place holder until the structure of this
+     * setting is known.
+     */
     public static class Metadata {
 
     }
