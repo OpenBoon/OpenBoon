@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
@@ -47,6 +48,29 @@ public class UserServiceTests extends AbstractTest {
         assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
         assertTrue(userService.hasPermission(user, userService.getPermission("user::test")));
         assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
+    }
+
+    @Test
+    public void createUserWithPresets() {
+        UserPreset presets = userService.createUserPreset(new UserPresetSpec()
+                .setName("defaults")
+                .setPermissionIds(Lists.newArrayList(userService.getPermission("group::user").getId()))
+                .setSettings(new UserSettings().setSearch(
+                        new UserSettings.Search().setQueryFields(ImmutableMap.of("foo", 1.0f)))));
+
+        UserSpec builder = new UserSpec();
+        builder.setUsername("bilbo");
+        builder.setPassword("123password");
+        builder.setEmail("bilbo@test.com");
+        builder.setFirstName("Bilbo");
+        builder.setLastName("Baggings");
+        builder.setUserPresetId(presets.getPresetId());
+
+        User user = userService.create(builder);
+        assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
+
+        UserSettings settings = user.getSettings();
+        assertTrue(settings.getSearch().getQueryFields().containsKey("foo"));
     }
 
     @Test

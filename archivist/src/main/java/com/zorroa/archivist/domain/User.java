@@ -14,6 +14,7 @@ public class User implements Loggable<Integer>, Serializable {
     private String lastName;
     private String email;
     private Boolean enabled;
+    private UserSettings settings;
 
     public int getId() {
         return id;
@@ -66,6 +67,15 @@ public class User implements Loggable<Integer>, Serializable {
 
     public User setEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
+    }
+
+    public UserSettings getSettings() {
+        return settings;
+    }
+
+    public User setSettings(UserSettings settings) {
+        this.settings = settings;
         return this;
     }
 

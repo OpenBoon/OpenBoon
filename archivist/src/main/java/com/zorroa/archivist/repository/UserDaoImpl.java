@@ -2,14 +2,12 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserProfileUpdate;
-import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Room;
+import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -31,6 +29,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         user.setFirstName(rs.getString("str_firstname"));
         user.setLastName(rs.getString("str_lastname"));
         user.setEnabled(rs.getBoolean("bool_enabled"));
+        user.setSettings(Json.deserialize(rs.getString("json_settings"), UserSettings.class));
         return user;
     };
 
@@ -60,17 +59,15 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     private static final String INSERT =
-            "INSERT INTO " +
-                "user " +
-            "(" +
-                "str_username, "+
-                "str_password, " +
-                "str_email, "+
-                "str_firstname, " +
-                "str_lastname, " +
-                "bool_enabled, " +
-                "hmac_key " +
-            ") VALUES (?,?,?,?,?,?,?)";
+            JdbcUtils.insert("user",
+                "str_username",
+                "str_password",
+                "str_email",
+                "str_firstname",
+                "str_lastname",
+                "bool_enabled",
+                "hmac_key",
+                "json_settings");
 
     @Override
     public User create(UserSpec builder) {
@@ -89,6 +86,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setString(5, builder.getLastName());
             ps.setBoolean(6, true);
             ps.setObject(7, UUID.randomUUID());
+            ps.setString(8, "{}");
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -98,6 +96,20 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public boolean exists(String name) {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user WHERE str_username=?", Boolean.class, name);
+    }
+
+    @Override
+    public boolean setSettings(User user, UserSettings settings) {
+        return jdbc.update(
+                "UPDATE user SET json_settings=? WHERE pk_user=?",
+                Json.serializeToString(settings, "{}"), user.getId()) == 1;
+    }
+
+    @Override
+    public UserSettings getSettings(int id) {
+        return Json.deserialize(
+                jdbc.queryForObject("SELECT json_settings FROM user WHERE pk_user=?",
+                        String.class, id), UserSettings.class);
     }
 
     @Override

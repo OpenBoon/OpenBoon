@@ -3,10 +3,7 @@ package com.zorroa.archivist.web.api;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserProfileUpdate;
-import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.UserService;
 import com.zorroa.sdk.domain.Session;
@@ -90,13 +87,26 @@ public class UserController  {
     }
 
     @RequestMapping(value="/api/v1/users/{id}/_profile", method=RequestMethod.PUT)
-    public Object update(@RequestBody UserProfileUpdate form, @PathVariable int id) {
+    public Object updateProfile(@RequestBody UserProfileUpdate form, @PathVariable int id) {
         Session session = userService.getActiveSession();
 
         if (session.getUserId() == id || SecurityUtils.hasPermission("group::manager", "group::systems")) {
             User user = userService.get(id);
-            userService.update(user, form);
+
             return HttpUtils.updated("users", id, userService.update(user, form), userService.get(id));
+        }
+        else {
+            throw new SecurityException("You do not have the access to modify this user.");
+        }
+    }
+
+    @RequestMapping(value="/api/v1/users/{id}/_settings", method=RequestMethod.PUT)
+    public Object updateSettings(@RequestBody UserSettings settings, @PathVariable int id) {
+        Session session = userService.getActiveSession();
+
+        if (session.getUserId() == id || SecurityUtils.hasPermission("group::manager", "group::systems")) {
+            User user = userService.get(id);
+            return HttpUtils.updated("users", id, userService.updateSettings(user, settings), userService.get(id));
         }
         else {
             throw new SecurityException("You do not have the access to modify this user.");

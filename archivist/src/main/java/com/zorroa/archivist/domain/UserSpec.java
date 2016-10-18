@@ -16,9 +16,12 @@ public class UserSpec {
     @NotEmpty
     @Email
     private String email;
-    private Integer[] permissionIds;
 
-    public UserSpec() { }
+    private Integer[] permissionIds;
+    private Integer userPresetId;
+
+    public UserSpec() {
+    }
 
     public String getPassword() {
         return password;
@@ -76,9 +79,18 @@ public class UserSpec {
 
     public UserSpec setPermissions(Permission... permissions) {
         this.permissionIds = new Integer[permissions.length];
-        for (int i=0; i<permissions.length; i++) {
+        for (int i = 0; i < permissions.length; i++) {
             this.permissionIds[i] = permissions[i].getId();
         }
+        return this;
+    }
+
+    public Integer getUserPresetId() {
+        return userPresetId;
+    }
+
+    public UserSpec setUserPresetId(Integer userPresetId) {
+        this.userPresetId = userPresetId;
         return this;
     }
 }

@@ -1,9 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserProfileUpdate;
-import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Room;
@@ -26,6 +23,10 @@ public interface UserDao {
     List<User> getAll(Room room);
 
     String getPassword(String username);
+
+    boolean setSettings(User user, UserSettings settings);
+
+    UserSettings getSettings(int id);
 
     boolean setPassword(User user, String password);
 
@@ -52,4 +53,5 @@ public interface UserDao {
     boolean addPermission(User user, Permission perm, boolean immutable);
 
     boolean removePermission(User user, Permission perm);
+
 }

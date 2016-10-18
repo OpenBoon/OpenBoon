@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
@@ -62,21 +63,29 @@ public class UserServiceImpl implements UserService {
         User user = userDao.create(builder);
 
         /*
-         * Create a permission for this specific user.
+         * Grab the preset, if any.
          */
-        Permission userPerm = permissionDao.create(
-                new PermissionSpec("user", builder.getUsername()), true);
+        UserPreset preset = null;
+        if (builder.getUserPresetId() != null) {
+            preset = userPresetDao.get(builder.getUserPresetId());
+            userDao.setSettings(user, preset.getSettings());
+        }
 
         /*
          * Get the permissions specified with the builder and add our
-         * user permission to the list.
+         * user permission to the list.q
          */
-        List<Permission> perms = permissionDao.getAll(builder.getPermissionIds());
+        Set<Permission> perms = Sets.newHashSet(permissionDao.getAll(builder.getPermissionIds()));
+        if (preset!=null && preset.getPermissionIds() != null) {
+            perms.addAll(permissionDao.getAll(preset.getPermissionIds().toArray(new Integer[]{})));
+        }
         setPermissions(user, perms);
 
         /*
-         * Add the user's permission as an immutable permission.
+         * Create and add permission for this specific user.
          */
+        Permission userPerm = permissionDao.create(
+                new PermissionSpec("user", builder.getUsername()), true);
         userDao.addPermission(user, userPerm, true);
 
         /*
@@ -93,7 +102,7 @@ public class UserServiceImpl implements UserService {
             logService.log(LogSpec.build(LogAction.Create, user));
         });
 
-        return user;
+        return userDao.get(user.getId());
     }
 
     @Override
@@ -163,6 +172,18 @@ public class UserServiceImpl implements UserService {
         if (result) {
             txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
+                logService.log(LogSpec.build(LogAction.Update, user));
+            });
+        }
+        return result;
+    }
+
+    @Override
+    public boolean updateSettings(User user, UserSettings settings) {
+        boolean result = userDao.setSettings(user, settings);
+        if (result) {
+            txem.afterCommitSync(() -> {
+                messagingService.broadcast(new Message("USER_SETTINGS", get(user.getId())));
                 logService.log(LogSpec.build(LogAction.Update, user));
             });
         }

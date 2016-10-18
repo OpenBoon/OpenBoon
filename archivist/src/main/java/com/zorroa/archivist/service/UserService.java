@@ -38,6 +38,8 @@ public interface UserService {
 
     boolean update(User user, UserProfileUpdate builder);
 
+    boolean updateSettings(User user, UserSettings settings);
+
     boolean setEnabled(User user, boolean value);
 
     List<User> getAll(Room room);
