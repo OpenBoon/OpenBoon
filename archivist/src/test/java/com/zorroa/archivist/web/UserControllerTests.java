@@ -1,10 +1,12 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
+import com.zorroa.archivist.domain.UserSettings;
 import com.zorroa.archivist.web.api.UserController;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
@@ -59,6 +61,29 @@ public class UserControllerTests extends MockMvcTest {
         assertEquals(builder.getEmail(), updated.getEmail());
         assertEquals(builder.getFirstName(), updated.getFirstName());
         assertEquals(builder.getLastName(), updated.getLastName());
+    }
+
+    @Test
+    public void testUpdateSettings() throws Exception {
+        User user = userService.get("user");
+        UserSettings settings = new UserSettings();
+        settings.setSearch(
+                new UserSettings.Search().setQueryFields(ImmutableMap.of("foo", 1.0f)));
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId() + "/_settings")
+                .session(session)
+                .content(Json.serialize(settings))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        StatusResult<User> sr = Json.deserialize(
+                result.getResponse().getContentAsByteArray(), new TypeReference<StatusResult<User>>() {});
+        User updated = sr.object;
+        assertEquals(user.getId(), updated.getId());
+        assertNotNull(updated.getSettings().getSearch().getQueryFields());
+        assertEquals(settings.getSearch().getQueryFields(), updated.getSettings().getSearch().getQueryFields());
     }
 
     @Test

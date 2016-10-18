@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.UserSettings;
 import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
@@ -77,6 +78,49 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
         assertEquals(1, count);
+    }
+
+    @Test
+    public void testUserSettingsQueryFieldSearchFailure() throws Exception {
+
+        userService.updateSettings(userService.get("admin"),
+                new UserSettings().setSearch(new UserSettings.Search().setQueryFields(ImmutableMap.of("foo",1.0f))));
+
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+
+        MvcResult result = mvc.perform(post("/api/v3/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(new AssetSearch("beer"))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PagedList<Asset> assets = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                PagedList.class);
+        assertEquals(0,(long) assets.getPage().getTotalCount());
+    }
+
+    @Test
+    public void testUserSettingsQueryFieldSearch() throws Exception {
+
+        userService.updateSettings(userService.get("admin"),
+                new UserSettings().setSearch(new UserSettings.Search().setQueryFields(
+                        ImmutableMap.of("source.extension",1.0f))));
+
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+
+        MvcResult result = mvc.perform(post("/api/v3/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(new AssetSearch("jpg"))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PagedList<Asset> assets = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                PagedList.class);
+        assertEquals(2, (long) assets.getPage().getTotalCount());
     }
 
     @Test
