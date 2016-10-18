@@ -78,7 +78,7 @@ public class SearchServiceImpl implements SearchService {
     ApplicationProperties properties;
 
     private Map<String, Float> defaultQueryFields =
-            ImmutableMap.of("keywords.all", 1.0f);
+            ImmutableMap.of("keywords.all", 1.0f, "keywords.all.raw", 2.0f);
 
     @PostConstruct
     public void init() {
