@@ -194,7 +194,7 @@ public class SearchServiceImpl implements SearchService {
             request.setFetchSource(search.getFields(), new String[] { "links", "permissions"} );
         }
 
-        Pager page = new Pager(search.getClosestPage(), search.getSize());
+        Pager page = new Pager(search.getFrom(), search.getSize(), 0);
         request.setFrom(page.getFrom());
         request.setSize(page.getSize());
 
