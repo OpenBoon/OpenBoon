@@ -425,7 +425,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         addTestAssets("set04/standard");
 
-        AssetSearch search = new AssetSearch().setPage(1).setSize(1);
+        AssetSearch search = new AssetSearch().setPageAndSize(1, 1);
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

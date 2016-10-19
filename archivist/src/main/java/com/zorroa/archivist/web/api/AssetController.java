@@ -105,7 +105,7 @@ public class AssetController {
 
     @RequestMapping(value="/api/v3/assets/_search", method=RequestMethod.POST)
     public PagedList<Asset> searchV3(@RequestBody AssetSearch search) throws IOException {
-        return searchService.search(new Pager(search.getPage(), search.getSize()), search);
+        return searchService.search(new Pager(search.getClosestPage(), search.getSize()), search);
     }
 
     @RequestMapping(value="/api/v1/assets/_fields", method=RequestMethod.GET)
