@@ -269,7 +269,7 @@ public class PluginServiceImpl implements PluginService {
     public ProcessorRef getProcessorRef(ProcessorRef ref) {
         return processorDao.getRef(ref.getClassName())
                 .setArgs(ref.getArgs())
-                .setFilters(ref.getFilters());
+                .addToFilters(ref.getFilters());
     }
 
     @Override
@@ -281,7 +281,7 @@ public class PluginServiceImpl implements PluginService {
         for (ProcessorRef ref: refs) {
             result.add(processorDao.getRef(ref.getClassName())
                     .setArgs(ref.getArgs())
-                    .setFilters(ref.getFilters()));
+                    .addToFilters(ref.getFilters()));
         }
         return result;
     }

@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
@@ -177,12 +178,19 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         ProcessorRef ref = new ProcessorRef();
         ref.setClassName(rs.getString("str_name"));
         ref.setLanguage(rs.getString("plugin_lang"));
+        ref.setFilters(Lists.newArrayList());
+
+        List<String> filters = Json.deserialize(rs.getString("json_filters"), Json.LIST_OF_STRINGS);
+        for (String filt: filters) {
+            ref.getFilters().add(new com.zorroa.sdk.processor.ProcessorFilter(filt));
+        }
         return ref;
     };
 
     private static final String GET_REF =
         "SELECT " +
             "processor.str_name,"+
+            "processor.json_filters, "+
             "plugin.str_lang AS plugin_lang " +
         "FROM " +
             "processor INNER JOIN plugin ON ( processor.pk_plugin = plugin.pk_plugin ) " +
