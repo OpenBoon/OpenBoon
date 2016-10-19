@@ -53,7 +53,7 @@ public class PluginDaoTests extends AbstractTest {
     public void testGetAllWithPaging() {
         assertTrue(pluginDao.getAll(new Pager(1)).getPage().getTotalCount() > 0);
         assertTrue(pluginDao.getAll(new Pager(1)).getPage().getTotalPages() > 0);
-        assertEquals(1, (long) pluginDao.getAll(new Pager(1)).getPage().getNumber());
+        assertEquals(1, (long) pluginDao.getAll(new Pager(1)).getPage().getClosestPage());
     }
 
     public void validate(Plugin p, PluginSpec s) {

@@ -135,7 +135,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private boolean isSearchLogged(Pager page, AssetSearch search) {
-        if (!search.isEmpty() && page.getNumber() == 1) {
+        if (!search.isEmpty() && page.getClosestPage() == 1) {
             Scroll scroll = search.getScroll();
             if (scroll != null) {
                 // Don't log subsequent searchs.
@@ -194,7 +194,7 @@ public class SearchServiceImpl implements SearchService {
             request.setFetchSource(search.getFields(), new String[] { "links", "permissions"} );
         }
 
-        Pager page = new Pager(search.getPage(), search.getSize());
+        Pager page = new Pager(search.getFrom(), search.getSize(), 0);
         request.setFrom(page.getFrom());
         request.setSize(page.getSize());
 
