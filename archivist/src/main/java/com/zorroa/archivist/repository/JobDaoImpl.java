@@ -159,6 +159,9 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
 
     @Override
     public PagedList<Job> getAll(Pager page, JobFilter filter) {
+        if (filter == null) {
+            filter = new JobFilter();
+        }
         Tuple<String, List<Object>> query = filter.getQuery(GET, page);
         return new PagedList<>(page.setTotalCount(count(filter)),
                 jdbc.query(query.getLeft(), MAPPER, query.getRight().toArray()));

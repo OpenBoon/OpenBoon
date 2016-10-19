@@ -1,8 +1,12 @@
 package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.JobFilter;
 import com.zorroa.archivist.domain.JobSpecV;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.exception.MalformedDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -33,6 +37,13 @@ public class JobController {
     @RequestMapping(value="/api/v1/jobs/{id}", method = RequestMethod.GET)
     public Object get(@PathVariable int id) throws IOException {
         return jobService.get(id);
+    }
+
+    @RequestMapping(value="/api/v1/jobs", method = RequestMethod.GET)
+    public PagedList<Job> getAll(@RequestBody(required = false) JobFilter filter,
+                                 @RequestParam(value="from", required=false) Integer from,
+                                 @RequestParam(value="count", required=false) Integer count) throws IOException {
+        return jobService.getAll(new Pager(from, count), filter);
     }
 
     @RequestMapping(value="/api/v1/jobs", method = RequestMethod.POST)
