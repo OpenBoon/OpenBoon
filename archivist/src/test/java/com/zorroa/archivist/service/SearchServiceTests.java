@@ -17,10 +17,7 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
-import com.zorroa.sdk.search.AssetFilter;
-import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.search.ColorFilter;
-import com.zorroa.sdk.search.Scroll;
+import com.zorroa.sdk.search.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -375,5 +372,18 @@ public class SearchServiceTests extends AbstractTest {
                         .setTimeout("1m")));
         assertNotNull(result2.getScroll());
         assertEquals(1, result2.size());
+    }
+
+    @Test
+    public void testAggregationSearch() throws IOException {
+        assetService.index(new Source(getTestImagePath().resolve("beer_kettle_01.jpg")));
+        assetService.index(new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg")));
+        refreshIndex();
+
+        PagedList<Asset> page = searchService.search(Pager.first(1),
+                new AssetSearch().addToAggs("date",
+                        ImmutableMap.of("max",
+                                ImmutableMap.of("field", "source.fileSize"))));
+        assertEquals(1, page.getAggregations().size());
     }
 }

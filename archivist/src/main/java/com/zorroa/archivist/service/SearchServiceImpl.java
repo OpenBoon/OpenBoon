@@ -184,6 +184,10 @@ public class SearchServiceImpl implements SearchService {
                 .setTypes("asset")
                 .setQuery(getQuery(search));
 
+        if (search.getAggs() != null) {
+            request.setAggregations(getAggregations(search));
+        }
+
         if (search.getScroll()!= null) {
             if (search.getScroll().getTimeout() != null) {
                 request.setScroll(search.getScroll().getTimeout());
@@ -228,6 +232,17 @@ public class SearchServiceImpl implements SearchService {
                 .setAggregations(builder.getAggregations())
                 .setSearchType(SearchType.COUNT);
         return aggregation;
+    }
+
+    private Map<String, Object> getAggregations(AssetSearch search) {
+        if (search.getAggs() == null) {
+            return null;
+        }
+        Map<String, Object> result = Maps.newHashMap();
+        for (Map.Entry<String, Map<String, Object>> entry: search.getAggs().entrySet()) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
 
     private QueryBuilder getQuery(AssetSearch search) {
