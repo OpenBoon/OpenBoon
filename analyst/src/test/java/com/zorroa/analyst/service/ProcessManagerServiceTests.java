@@ -1,11 +1,13 @@
 package com.zorroa.analyst.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStop;
 import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
@@ -63,13 +65,10 @@ public class ProcessManagerServiceTests extends AbstractTest {
 
     @Test
     public void testStop() throws IOException, InterruptedException {
-
-        /**
-         * Execute a sleep task.
-         */
-        ZpsScript zps = ZpsScript.load(new File("../unittest/resources/scripts/sleep.zps"));
         processManager.execute(new ExecuteTaskStart(1, 1, 1)
-                .setScript(Json.serializeToString(zps))
+                .setScript(Json.serializeToString(new ZpsScript()
+                        .setExecute(ImmutableList.of(
+                                new ProcessorRef("com.zorroa.analyst.TestSleepProcessor")))))
                 .setLogPath(Files.createTempFile("analyst", "test").toString()), true);
 
         Thread.sleep(1000);
