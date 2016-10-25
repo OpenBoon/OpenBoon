@@ -1,7 +1,6 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.web.api.FolderController;
@@ -84,7 +83,7 @@ public class FolderControllerTests extends MockMvcTest {
     @Test
     public void testGetByPath() throws Exception {
         MockHttpSession session = user();
-        MvcResult result = mvc.perform(get("/api/v1/folders/_/Users")
+        MvcResult result = mvc.perform(get("/api/v1/folders/_path/Users")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -301,28 +300,5 @@ public class FolderControllerTests extends MockMvcTest {
             List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(0, links.size());
         }
-    }
-
-    @Test
-    public void testGetAssets() throws Exception {
-        authenticate();
-
-        addTestAssets("set04/standard");
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
-
-        Folder folder1 = folderService.create(new FolderSpec("foo"));
-        folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
-        refreshIndex();
-
-        MockHttpSession session = admin();
-        MvcResult result = mvc.perform(get("/api/v1/folders/" + folder1.getId() + "/assets")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        TestSearchResult searchResult = Json.Mapper.readValue(
-                result.getResponse().getContentAsString(), TestSearchResult.class);
-        assertEquals(assets.size(), searchResult.getHits().getTotal());
     }
 }
