@@ -113,6 +113,10 @@ public class FolderServiceImpl implements FolderService {
         int parentId = Folder.ROOT_ID;
         Folder current = null;
 
+        if ("/".equals(path)) {
+            return folderDao.get(0);
+        }
+
         // Just throw the exception to the caller,don't return null
         // as none of the other 'get' functions do.
         for (String name : Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
@@ -222,6 +226,10 @@ public class FolderServiceImpl implements FolderService {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
+        }
+
+        if (folder.getSearch() != null) {
+            throw new IllegalArgumentException("Cannot add assets to a smart folder.  Remove the search first.");
         }
 
         Map<String, List<Object>> result = assetDao.appendLink("folder", folder.getId(), assetIds);
