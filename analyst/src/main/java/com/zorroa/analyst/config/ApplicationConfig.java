@@ -10,6 +10,7 @@ import com.zorroa.common.repository.ClusterSettingsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.endpoint.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.LinkedHashMap;
@@ -37,10 +39,13 @@ public class ApplicationConfig {
     @Autowired
     ApplicationProperties properties;
 
+    @Value("${server.ssl.trust-store}")
+    private String trustStorePath;
+
     @Bean
     public ArchivistClient archivist() throws Exception {
         KeyStore trustStore = KeyStore.getInstance("PKCS12");
-        InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
+        InputStream trustStoreInput = new FileInputStream(trustStorePath);
         trustStore.load(trustStoreInput, "zorroa".toCharArray());
         ArchivistClient client =  new ArchivistClient(trustStore,
                 properties.getString("analyst.master.host"));

@@ -8,9 +8,9 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.exception.ArchivistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.List;
@@ -26,6 +26,9 @@ public class AnalystServiceImpl implements AnalystService {
 
     @Value("${archivist.scheduler.maxQueueSize}")
     private int maxQueueSize;
+
+    @Value("${server.ssl.trust-store}")
+    private String trustStorePath;
 
     @Override
     public Analyst get(String url) {
@@ -68,7 +71,7 @@ public class AnalystServiceImpl implements AnalystService {
     private KeyStore getTrustStore() {
         try {
             KeyStore trustStore = KeyStore.getInstance("PKCS12");
-            InputStream trustStoreInput = new ClassPathResource("truststore.p12").getInputStream();
+            InputStream trustStoreInput = new FileInputStream(trustStorePath);
             trustStore.load(trustStoreInput, "zorroa".toCharArray());
             return trustStore;
         } catch (Exception e) {
