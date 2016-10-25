@@ -205,13 +205,24 @@ public class SearchServiceImpl implements SearchService {
         if (search.getScroll() != null) {
             request.addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC);
         }
-        else if (search.getOrder() != null) {
-            for (AssetSearchOrder searchOrder : search.getOrder()) {
-                SortOrder sortOrder = searchOrder.getAscending() ? SortOrder.ASC : SortOrder.DESC;
-                request.addSort(searchOrder.getField(), sortOrder);
+        else {
+            if (search.getOrder() != null) {
+                for (AssetSearchOrder searchOrder : search.getOrder()) {
+                    SortOrder sortOrder = searchOrder.getAscending() ? SortOrder.ASC : SortOrder.DESC;
+                    request.addSort(searchOrder.getField(), sortOrder);
+                }
+            }
+            else {
+                /**
+                 * The default sort, if we are not using scroll, is first
+                 * by score, then by date (newest first), then tie breaker is
+                 * doc id.
+                 */
+                request.addSort(SortParseElement.SCORE_FIELD_NAME, SortOrder.DESC);
+                request.addSort("_timestamp", SortOrder.DESC);
+                request.addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC);
             }
         }
-
         return request;
     }
 
