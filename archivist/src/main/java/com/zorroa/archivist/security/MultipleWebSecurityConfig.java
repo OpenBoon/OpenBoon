@@ -188,16 +188,6 @@ public class MultipleWebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider backgroundTaskAuthenticationProvider() {
-        return new BackgroundTaskAuthenticationProvider();
-    }
-
-    @Bean
-    public AuthenticationProvider internalAuthenticationProvider() {
-        return new InternalAuthenticationProvider();
-    }
-
-    @Bean
     public SessionRegistry sessionRegistry() {
         return new JdbcSessionRegistry();
     }
