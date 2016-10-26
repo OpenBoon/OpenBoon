@@ -90,14 +90,14 @@ public class FolderServiceTests extends AbstractTest {
         folderService.get(folder.getId());
 
         folderService.setAcl(folder, new Acl().addEntry(
-                userService.getPermission("group::superuser"), Access.Read));
+                userService.getPermission("group::administrator"), Access.Read));
         folderService.get(folder.getId());
     }
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testCreateWithReadAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Read));
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Read));
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
     }
@@ -105,7 +105,7 @@ public class FolderServiceTests extends AbstractTest {
     @Test(expected=AccessDeniedException.class)
     public void testAddAssetsWithWriteAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Write));
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
         Folder folder = folderService.create(builder);
         folderService.addAssets(folder, assetService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
@@ -114,7 +114,7 @@ public class FolderServiceTests extends AbstractTest {
     @Test(expected=AccessDeniedException.class)
     public void testDeleteFolderWithWriteAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Write));
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
         Folder folder = folderService.create(builder);
         folderService.delete(folder);
     }
@@ -122,7 +122,7 @@ public class FolderServiceTests extends AbstractTest {
     @Test(expected=AccessDeniedException.class)
     public void testUpdateFolderWithWriteAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::superuser"), Access.Write));
+        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
         Folder folder = folderService.create(builder);
         folderService.update(folder.getId(), folder.setName("biblo"));
     }

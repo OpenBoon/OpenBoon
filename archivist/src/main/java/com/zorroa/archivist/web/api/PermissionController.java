@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::superuser')")
+@PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
 @RestController
 public class PermissionController {
 

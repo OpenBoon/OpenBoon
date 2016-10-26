@@ -24,7 +24,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
         builder.setPermissions(
-                userService.getPermission("group::user"));
+                userService.getPermission("group::manager"));
         User user = userService.create(builder);
 
         /*
@@ -45,16 +45,16 @@ public class UserServiceTests extends AbstractTest {
          */
         List<Permission> perms = userService.getPermissions(user);
         assertEquals(2, perms.size());
-        assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
+        assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
         assertTrue(userService.hasPermission(user, userService.getPermission("user::test")));
-        assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
+        assertFalse(userService.hasPermission(user, userService.getPermission("group::developer")));
     }
 
     @Test
     public void createUserWithPresets() {
         UserPreset presets = userService.createUserPreset(new UserPresetSpec()
                 .setName("defaults")
-                .setPermissionIds(Lists.newArrayList(userService.getPermission("group::user").getId()))
+                .setPermissionIds(Lists.newArrayList(userService.getPermission("group::manager").getId()))
                 .setSettings(new UserSettings().setSearch(
                         new UserSettings.Search().setQueryFields(ImmutableMap.of("foo", 1.0f)))));
 
@@ -67,7 +67,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setUserPresetId(presets.getPresetId());
 
         User user = userService.create(builder);
-        assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
+        assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
 
         UserSettings settings = user.getSettings();
         assertTrue(settings.getSearch().getQueryFields().containsKey("foo"));
@@ -82,7 +82,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
         builder.setPermissions(
-                userService.getPermission("group::user"));
+                userService.getPermission("group::manager"));
         User user = userService.create(builder);
 
         assertTrue(userService.setEnabled(user, false));
@@ -96,17 +96,17 @@ public class UserServiceTests extends AbstractTest {
         builder.setEmail("test@test.com");
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
-        builder.setPermissions(userService.getPermission("group::user"));
+        builder.setPermissions(userService.getPermission("group::manager"));
         User user = userService.create(builder);
 
-        Permission mgr = userService.getPermission("group::manager");
-        assertTrue(userService.hasPermission(user, userService.getPermission("group::user")));
-        assertFalse(userService.hasPermission(user, mgr));
+        Permission dev = userService.getPermission("group::developer");
+        assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
+        assertFalse(userService.hasPermission(user, dev));
 
-        userService.setPermissions(user, Lists.newArrayList(mgr));
+        userService.setPermissions(user, Lists.newArrayList(dev));
 
-        assertFalse(userService.hasPermission(user, userService.getPermission("group::user")));
-        assertTrue(userService.hasPermission(user, mgr));
+        assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
+        assertTrue(userService.hasPermission(user, dev));
     }
 
     @Test
@@ -135,9 +135,9 @@ public class UserServiceTests extends AbstractTest {
     public void testImmutablePermissions() {
         UserSpec builder = new UserSpec();
         builder.setPermissionIds(new Integer[]{
-                userService.getPermission("group::superuser").getId()});
+                userService.getPermission("group::administrator").getId()});
 
-        Permission sup = userService.getPermission("group::superuser");
+        Permission sup = userService.getPermission("group::administrator");
 
         User admin = userService.get("admin");
         userService.setPermissions(admin, Lists.newArrayList(sup));

@@ -160,7 +160,7 @@ public class UserDaoTests extends AbstractTest {
         assertFalse(userDao.hasPermission(user, "group", "manager"));
         userDao.addPermission(user, permissionDao.get("group::manager"), false);
         assertTrue(userDao.hasPermission(user, permissionDao.get("group", "manager")));
-        assertFalse(userDao.hasPermission(user, permissionDao.get("group", "superuser")));
+        assertFalse(userDao.hasPermission(user, permissionDao.get("group", "administrator")));
     }
 
     @Test

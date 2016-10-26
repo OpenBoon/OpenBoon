@@ -2,7 +2,6 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.UserPreset;
 import com.zorroa.archivist.domain.UserPresetSpec;
@@ -32,7 +31,7 @@ public class UserPresetDaoTests extends AbstractTest {
         spec.setName("defaults");
         spec.setSettings(new UserSettings().setSearch(
                 new UserSettings.Search().setQueryFields(ImmutableMap.of("foo", 1.0f))));
-        spec.setPermissionIds(ImmutableList.of(userService.getPermission("group::superuser").getId()));
+        spec.setPermissionIds(ImmutableList.of(userService.getPermission("group::administrator").getId()));
         preset = userPresetDao.create(spec);
     }
 

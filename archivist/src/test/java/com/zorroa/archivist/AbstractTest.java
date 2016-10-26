@@ -227,7 +227,7 @@ public abstract class AbstractTest {
         User user = userService.get(username);
         List<Permission> perms = userService.getPermissions(user);
         if (superUser) {
-            perms.add(userService.getPermission("group::superuser"));
+            perms.add(userService.getPermission("group::administrator"));
         }
 
         SecurityContextHolder.getContext().setAuthentication(

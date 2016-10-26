@@ -239,7 +239,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
      * @return
      */
     private String appendAccess(String query, Access access) {
-        if (SecurityUtils.hasPermission("group::superuser")) {
+        if (SecurityUtils.hasPermission("group::administrator")) {
             return query;
         }
 
@@ -276,7 +276,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     public Object[] appendAclArgs(Object ... args) {
-        if (SecurityUtils.hasPermission("group::superuser"))  {
+        if (SecurityUtils.hasPermission("group::administrator"))  {
             return args;
         }
 

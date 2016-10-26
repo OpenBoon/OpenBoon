@@ -34,8 +34,8 @@ public class SecurityUtilsTest extends AbstractTest {
     }
 
     @Test
-    public void testHasPermissionIsSuperuser() {
-        Permission p = userService.getPermission("group::superuser");
+    public void testHasPermissionIsAdministrator() {
+        Permission p = userService.getPermission("group::administrator");
         userService.setPermissions(SecurityUtils.getUser(), Lists.newArrayList(p));
 
         // Reauthenticate the user, this sets up the admin's normal

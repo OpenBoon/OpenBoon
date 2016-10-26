@@ -106,7 +106,7 @@ public class SecurityUtils {
         if (acl == null) {
             return true;
         }
-        if (hasPermission("group::superuser")) {
+        if (hasPermission("group::administrator")) {
             return true;
         }
         return acl.hasAccess(getPermissionIds(), access);

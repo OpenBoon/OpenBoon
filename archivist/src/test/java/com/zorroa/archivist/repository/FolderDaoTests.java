@@ -76,18 +76,18 @@ public class FolderDaoTests extends AbstractTest {
     @Test
     public void testGetChildrenInsecure() {
         authenticate("admin");
-        assertFalse(SecurityUtils.hasPermission("group::superuser"));
+        assertFalse(SecurityUtils.hasPermission("group::administrator"));
 
-        Folder pub = folderDao.get(0, "Folders");
+        Folder pub = folderDao.get(0, "Users");
         Folder f1 = folderDao.create(new FolderSpec("level1", pub));
         Folder f2 = folderDao.create(new FolderSpec("level2", pub));
         Folder f3 = folderDao.create(new FolderSpec("level3", pub));
         folderDao.setAcl(f3.getId(), new Acl().addEntry(
-                userService.getPermission("group::superuser")));
+                userService.getPermission("group::administrator")));
 
         assertFalse(folderDao.hasAccess(f3, Access.Read));
-        assertEquals(3, folderDao.getChildrenInsecure(pub.getId()).size());
-        assertEquals(2, folderDao.getChildren(pub.getId()).size());
+        assertEquals(5, folderDao.getChildrenInsecure(pub.getId()).size());
+        assertEquals(3, folderDao.getChildren(pub.getId()).size());
     }
 
     @Test

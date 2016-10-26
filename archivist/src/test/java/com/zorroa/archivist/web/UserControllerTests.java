@@ -136,8 +136,8 @@ public class UserControllerTests extends MockMvcTest {
         List<Permission> perms = userService.getPermissions(user);
         assertTrue(perms.size() > 0);
 
-        userService.setPermissions(user, Lists.newArrayList(userService.getPermission("group::superuser")));
-        perms.add(userService.getPermission("group::superuser"));
+        userService.setPermissions(user, Lists.newArrayList(userService.getPermission("group::administrator")));
+        perms.add(userService.getPermission("group::administrator"));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/users/" + user.getId() + "/permissions")
