@@ -8,7 +8,6 @@ import com.zorroa.archivist.service.LogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -27,7 +26,6 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -101,6 +99,7 @@ public class MultipleWebSecurityConfig {
             http
                 .authorizeRequests()
                     .antMatchers("/gui/**").authenticated()
+                    .antMatchers("/docs/**").permitAll()
                     .antMatchers("/health/**").permitAll()
                     .antMatchers("/cluster/**").permitAll()
                     .antMatchers("/console/**").hasAuthority("user::admin")
@@ -116,7 +115,6 @@ public class MultipleWebSecurityConfig {
                 .and().headers().frameOptions().disable()
                 .and()
                     .sessionManagement()
-                    .invalidSessionUrl("/login")
                     .maximumSessions(10)
                     .sessionRegistry(sessionRegistry)
                     .expiredUrl("/login")

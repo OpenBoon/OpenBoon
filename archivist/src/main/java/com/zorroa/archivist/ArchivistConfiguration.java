@@ -9,13 +9,11 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.filesystem.UUIDFileSystem;
 import com.zorroa.sdk.processor.SharedData;
 import org.flywaydb.core.Flyway;
-import org.h2.server.web.WebServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.InfoEndpoint;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,14 +40,6 @@ public class ArchivistConfiguration {
 
     @Autowired
     ApplicationProperties properties;
-
-
-    @Bean
-    public ServletRegistrationBean h2servletRegistration() {
-        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
-        registrationBean.addUrlMappings("/console/*");
-        return registrationBean;
-    }
 
     @Bean
     @ConfigurationProperties(prefix="archivist.datasource.primary")
