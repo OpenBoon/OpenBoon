@@ -90,6 +90,9 @@ public class SecurityUtils {
         if (permIds == null || permIds.isEmpty()) {
             return true;
         }
+        if (hasPermission("group::administrator")) {
+            return true;
+        }
         return !Sets.intersection(permIds, SecurityUtils.getPermissionIds()).isEmpty();
     }
 

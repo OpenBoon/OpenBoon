@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.service.LogService;
 import com.zorroa.sdk.domain.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.IOException;
 /**
  * Created by chambers on 12/29/15.
  */
+@PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
 @RestController
 public class LogController {
 

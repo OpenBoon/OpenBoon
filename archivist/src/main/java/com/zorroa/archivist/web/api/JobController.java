@@ -9,6 +9,7 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.exception.MalformedDataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 /**
  * Unified controller for manipulating jobs of any type (import, export, etc)
  */
+@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
 @RestController
 public class JobController {
 

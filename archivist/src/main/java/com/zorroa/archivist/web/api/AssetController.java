@@ -78,6 +78,9 @@ public class AssetController {
     public ResponseEntity<InputStreamResource> streamAsset(@PathVariable String id, HttpServletResponse response) throws ExecutionException, IOException {
         Asset asset = assetService.get(id);
 
+        /**
+         * Checks to see if the user can export this asset.
+         */
         if (!SecurityUtils.hasPermission("export", asset)) {
             throw new AccessDeniedException("export access denied");
         }
@@ -171,6 +174,12 @@ public class AssetController {
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     public Object update(@RequestBody Map<String, Object> attrs, @PathVariable String id) throws IOException {
+        Asset asset = assetService.get(id);
+        if (!SecurityUtils.hasPermission("write", asset)) {
+            throw new AccessDeniedException("export access denied");
+        }
+
+
         assetService.update(id, attrs);
         return HttpUtils.updated("asset", id, true, assetService.get(id));
     }

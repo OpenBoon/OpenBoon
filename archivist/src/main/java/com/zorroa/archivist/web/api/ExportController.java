@@ -49,6 +49,7 @@ public class ExportController {
 
     @RequestMapping(value="/api/v1/exports/{id}", method= RequestMethod.GET)
     public Object get(@PathVariable int id) {
+        // TODO check username or admin
         return jobService.get(id);
     }
 

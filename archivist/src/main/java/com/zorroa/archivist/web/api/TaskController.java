@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by chambers on 8/24/16.
  */
+@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
 @RestController
 public class TaskController {
 

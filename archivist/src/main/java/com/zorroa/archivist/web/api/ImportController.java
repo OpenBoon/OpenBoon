@@ -7,6 +7,7 @@ import com.zorroa.archivist.service.ImportService;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -33,6 +34,8 @@ public class ImportController {
         return job;
     }
 
+
+    @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
     @RequestMapping(value="/api/v1/imports/_debug", method = RequestMethod.POST)
     public Object create_debug(@RequestBody DebugImportSpec spec) throws IOException, InterruptedException {
         Job job = importService.create(spec);

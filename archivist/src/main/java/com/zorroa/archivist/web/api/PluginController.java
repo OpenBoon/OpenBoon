@@ -8,6 +8,7 @@ import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.exception.PluginException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * Created by chambers on 6/29/16.
  */
 
+@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
 @RestController
 public class PluginController {
 
