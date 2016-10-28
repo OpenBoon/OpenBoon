@@ -266,17 +266,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public PagedList<Asset> getAll(Pager page, SearchRequestBuilder search) {
-        return elastic.page(search
-                    .setFrom(page.getFrom())
-                    .setSize(page.getSize()), page, MAPPER);
+        return elastic.page(search, page, MAPPER);
     }
 
     @Override
     public PagedList<Asset> getAll(Pager page) {
         return elastic.page(client.prepareSearch(getIndex())
                 .setTypes(getType())
-                .setFrom(page.getFrom())
-                .setSize(page.getSize())
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), page, MAPPER);

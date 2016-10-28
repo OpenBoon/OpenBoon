@@ -87,7 +87,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponse search(AssetSearch search) {
-        SearchResponse rsp =  buildSearch(search).get();
+        SearchResponse rsp =  buildSearch(search)
+                .setFrom(search.getFrom() == null ? 0 : search.getFrom())
+                .setSize(search.getSize() == null ? 10 : search.getSize()).get();
         return rsp;
     }
 
@@ -150,7 +152,6 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public PagedList<Asset> search(Pager page, AssetSearch search) {
-
         /**
          * If the search is not empty (its a valid search) and the page
          * number is 1, then log the search.
@@ -182,6 +183,7 @@ public class SearchServiceImpl implements SearchService {
 
         SearchRequestBuilder request = client.prepareSearch(alias)
                 .setTypes("asset")
+                .setPreference(SecurityUtils.getCookieId())
                 .setQuery(getQuery(search));
 
         if (search.getAggs() != null) {
@@ -197,10 +199,6 @@ public class SearchServiceImpl implements SearchService {
         if (search.getFields() != null) {
             request.setFetchSource(search.getFields(), new String[] { "links", "permissions"} );
         }
-
-        Pager page = new Pager(search.getFrom(), search.getSize(), 0);
-        request.setFrom(page.getFrom());
-        request.setSize(page.getSize());
 
         if (search.getScroll() != null) {
             request.addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC);
@@ -220,7 +218,6 @@ public class SearchServiceImpl implements SearchService {
                  */
                 request.addSort(SortParseElement.SCORE_FIELD_NAME, SortOrder.DESC);
                 request.addSort("_timestamp", SortOrder.DESC);
-                request.addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC);
             }
         }
         return request;
