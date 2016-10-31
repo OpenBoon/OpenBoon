@@ -12,11 +12,11 @@ import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.client.exception.ArchivistException;
+import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.exception.ArchivistException;
-import com.zorroa.sdk.exception.ZorroaReadException;
 import com.zorroa.sdk.search.*;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -131,7 +131,7 @@ public class SearchServiceImpl implements SearchService {
                 .setSize(100).execute().actionGet();
 
         if (rsp.getHits().getTotalHits() > maxResults) {
-            throw new ZorroaReadException("Asset search has returned more than " + maxResults + " results.");
+            throw new ArchivistReadException("Asset search has returned more than " + maxResults + " results.");
         }
         return new ScanAndScrollAssetIterator(client, rsp);
     }

@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.exception.MalformedDataException;
 import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +126,7 @@ public class RoomServiceImpl implements RoomService {
 
     public int setSelection(Room room, Set<String> selection) {
         if (selection.size() > SELECTION_MAX_SIZE) {
-            throw new MalformedDataException(String.format(
+            throw new ArchivistWriteException(String.format(
                     "The selection is too large, maximum allowed size: '%d', size: '%d'",
                         SELECTION_MAX_SIZE, selection.size()));
         }

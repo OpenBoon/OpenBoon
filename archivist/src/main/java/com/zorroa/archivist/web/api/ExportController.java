@@ -8,8 +8,8 @@ import com.zorroa.archivist.service.JobService;
 import com.zorroa.archivist.service.LogService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.exception.ZorroaReadException;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,10 +68,10 @@ public class ExportController {
          * to know if they have access to each individual file.
          */
         if (!job.getUserCreated().equals(SecurityUtils.getUsername())) {
-            throw new ZorroaReadException("Invalid export " + job.getUserCreated() + " / " + SecurityUtils.getUsername());
+            throw new ArchivistReadException("Invalid export " + job.getUserCreated() + " / " + SecurityUtils.getUsername());
         }
         if (!job.getState().equals(JobState.Finished)) {
-            throw new ZorroaReadException("Export is not complete.");
+            throw new ArchivistReadException("Export is not complete.");
         }
 
         logExportDownload(id);

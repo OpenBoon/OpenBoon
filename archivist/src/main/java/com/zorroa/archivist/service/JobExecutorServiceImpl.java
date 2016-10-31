@@ -12,7 +12,7 @@ import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
-import com.zorroa.sdk.exception.ZorroaReadException;
+import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
 import org.apache.http.HttpHost;
@@ -185,7 +185,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
         try {
             return returnQueue.asMap().get(job.getId()).poll(30, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            throw new ZorroaReadException("Failed waiting on response, ", e);
+            throw new ArchivistReadException("Failed waiting on response, ", e);
         }
     }
 

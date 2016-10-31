@@ -5,9 +5,9 @@ import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobFilter;
 import com.zorroa.archivist.domain.JobSpecV;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.exception.MalformedDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -51,7 +51,7 @@ public class JobController {
     @RequestMapping(value="/api/v1/jobs", method = RequestMethod.POST)
     public Object launch(@Valid @RequestBody JobSpecV spec, BindingResult valid) throws IOException {
         if (valid.hasErrors()) {
-            throw new MalformedDataException(HttpUtils.getBindingErrorString(valid));
+            throw new ArchivistWriteException(HttpUtils.getBindingErrorString(valid));
         }
         return jobService.launch(spec);
     }

@@ -4,11 +4,11 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.RoomBuilder;
 import com.zorroa.sdk.domain.RoomUpdateBuilder;
 import com.zorroa.sdk.domain.Session;
-import com.zorroa.sdk.exception.MalformedDataException;
 import com.zorroa.sdk.search.AssetSearch;
 import org.junit.Before;
 import org.junit.Test;
@@ -118,7 +118,7 @@ public class RoomServiceTests extends AbstractTest {
         assertFalse(roomService.delete(room));
     }
 
-    @Test(expected= MalformedDataException.class)
+    @Test(expected=ArchivistWriteException.class)
     public void setSelectionTooLarge() {
         Set<String> selection = Sets.newHashSetWithExpectedSize(RoomService.SELECTION_MAX_SIZE+1);
         for (int i=0; i<RoomService.SELECTION_MAX_SIZE+1; i++) {

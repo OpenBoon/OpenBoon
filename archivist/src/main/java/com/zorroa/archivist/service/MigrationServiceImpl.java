@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.domain.Migration;
 import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.repository.MigrationDao;
-import com.zorroa.sdk.exception.ArchivistException;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequestBuilder;
@@ -111,7 +110,7 @@ public class MigrationServiceImpl implements MigrationService {
             props = getLatestVersion(m);
         } catch (IOException e) {
             logger.warn("Failed to migration elastic index, unable to load elastic mapping: {}", m.getPath());
-            throw new ArchivistException("Failed to setup ElasticSearch index, ", e);
+            throw new RuntimeException("Failed to setup ElasticSearch index, ", e);
         }
 
         final String oldIndex = String.format("%s_%02d", m.getName(), m.getVersion());

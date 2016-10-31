@@ -14,6 +14,7 @@ import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.MessageType;
 import com.zorroa.sdk.search.AssetSearch;
@@ -221,7 +222,7 @@ public class FolderServiceImpl implements FolderService {
     @Transactional(propagation=Propagation.NOT_SUPPORTED)
     public Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds) {
         if (assetIds.size() >= 1024) {
-            throw new IllegalArgumentException("Cannot have more than 1024 assets in a folder");
+            throw new ArchivistWriteException("Cannot have more than 1024 assets in a folder");
         }
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
@@ -229,7 +230,7 @@ public class FolderServiceImpl implements FolderService {
         }
 
         if (folder.getSearch() != null) {
-            throw new IllegalArgumentException("Cannot add assets to a smart folder.  Remove the search first.");
+            throw new ArchivistWriteException("Cannot add assets to a smart folder.  Remove the search first.");
         }
 
         Map<String, List<Object>> result = assetDao.appendLink("folder", folder.getId(), assetIds);

@@ -8,10 +8,10 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.exception.ZorroaWriteException;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.search.AssetFilter;
@@ -97,7 +97,7 @@ public class ExportServiceImpl implements ExportService {
         }
 
         if (ids.isEmpty()) {
-            throw new ZorroaWriteException("Unable to start export, search returns no assets");
+            throw new ArchivistWriteException("Unable to start export, search returns no assets");
         }
 
         assetDao.appendLink("export", String.valueOf(exportId), ids);

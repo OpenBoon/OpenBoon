@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.sdk.exception.PluginException;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +44,7 @@ public class PluginController {
                     "language", p.getLanguage());
         }
         else {
-            throw new PluginException("Failed to handle plugin zip file");
+            throw new ArchivistWriteException("Failed to handle plugin zip file");
         }
     }
 
