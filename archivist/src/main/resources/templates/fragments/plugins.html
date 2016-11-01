@@ -17,6 +17,9 @@
 
             <div class="navbar-collapse collapse">
             <div class="navbar navbar-right">
+                <a th:href="${'/docs/' + plugin.name + '/index.html'}" target="_docs" th:if="${plugin != null}" class="btn btn-info navbar-btn">
+                    <i class="fa fa-question-circle fa-lg fa-fw" aria-hidden="true"/>
+                </a>
                 <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-filter fa-lg fa-fw" aria-hidden="true"></i></button>
                 <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-th fa-lg fa-fw" aria-hidden="true"></i></button>
                 <button type="button" class="btn btn-default navbar-btn"><i class="fa fa-sort fa-lg fa-fw" aria-hidden="true"></i></button>
