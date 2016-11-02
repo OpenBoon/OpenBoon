@@ -3,13 +3,10 @@ package com.zorroa.analyst;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.common.cluster.AbstractClient;
 import com.zorroa.common.cluster.Http;
-import com.zorroa.common.cluster.Protocol;
 import com.zorroa.common.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.KeyStore;
-import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -23,27 +20,6 @@ public class ArchivistClient extends AbstractClient {
 
     public ArchivistClient(String host) {
         this.getLoadBalancer().addHost(host);
-    }
-
-    public ArchivistClient(KeyStore trustStore) {
-        super(trustStore);
-    }
-
-    public ArchivistClient(KeyStore trustStore, String host, int port, Protocol protocol) {
-        super(trustStore);
-        this.loadBalancer.addHost(host, port, protocol);
-    }
-
-    public ArchivistClient(KeyStore trustStore, Collection<String> hosts) {
-        super(trustStore);
-        this.loadBalancer.addHosts(hosts);
-    }
-
-    public ArchivistClient(KeyStore trustStore, String... hosts) {
-        super(trustStore);
-        for (String host: hosts) {
-            this.loadBalancer.addHost(host);
-        }
     }
 
     public Map<String, String> getClusterSettings() {

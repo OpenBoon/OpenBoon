@@ -11,22 +11,17 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
-import java.security.KeyStore;
 
 /**
  * An convenience class for making HTTP/HTTPS requests with Apache HttpClient.
@@ -117,32 +112,22 @@ public class Http {
         return response;
     }
 
-    /**
-     *
-     * @param trustStore
-     * @return
-     * @throws Exception
-     */
-    public static CloseableHttpClient initClient(KeyStore trustStore) {
-        PoolingHttpClientConnectionManager cm;
+    public static CloseableHttpClient initClient() {
+        SSLConnectionSocketFactory factory = null;
+
         try {
             SSLContext ctx = SSLContexts.custom()
-                    .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
+                    .loadTrustMaterial(null, new TrustSelfSignedStrategy())
                     .build();
-            SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(ctx, new NoopHostnameVerifier());
-            Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
-                    .<ConnectionSocketFactory> create().register("https", factory)
-                    .build();
-            cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-
+            factory = new SSLConnectionSocketFactory(ctx, new NoopHostnameVerifier());
         } catch (Exception e) {
-            cm = new PoolingHttpClientConnectionManager();
+            logger.warn("Failed to initialize SSL config, ", e);
         }
 
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30 * 1000).build();
         return HttpClients.custom()
-                .setConnectionManager(cm)
                 .setConnectionManagerShared(true)
+                .setSSLSocketFactory(factory)
                 .setDefaultRequestConfig(requestConfig)
                 .build();
     }

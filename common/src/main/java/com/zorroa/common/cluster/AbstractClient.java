@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.KeyStore;
 
 /**
@@ -21,13 +20,7 @@ public class AbstractClient implements Closeable {
     protected KeyStore trustStore = null;
 
     public AbstractClient() {
-        detectTrustStore();
-        this.client = Http.initClient(trustStore);
-    }
-
-    public AbstractClient(KeyStore trustStore) {
-        this.trustStore = trustStore;
-        this.client = Http.initClient(trustStore);
+        this.client = Http.initClient();
     }
 
     public KeyStore getTrustStore() {
@@ -36,24 +29,6 @@ public class AbstractClient implements Closeable {
 
     public LoadBalancer getLoadBalancer() {
         return loadBalancer;
-    }
-
-    private void detectTrustStore() {
-        try {
-            KeyStore trustStore = KeyStore.getInstance("PKCS12");
-            InputStream trustStoreInput = getClass().getResourceAsStream(getClass().getSimpleName() + ".trust");
-            trustStore.load(trustStoreInput, "zorroa" .toCharArray());
-            this.trustStore = trustStore;
-        } catch (Exception e) {
-            logger.warn("Failed to detect trusted analyst store");
-        }
-    }
-    public void setTrustStore(KeyStore trustStore) {
-        this.trustStore = trustStore;
-        if (this.client != null) {
-            close();
-            this.client = Http.initClient(trustStore);
-        }
     }
 
     @Override

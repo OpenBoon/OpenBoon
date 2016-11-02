@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AnalystClient;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.repository.AnalystDao;
-import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.security.KeyStore;
 import java.util.List;
 
 /**
@@ -24,11 +21,11 @@ public class AnalystServiceImpl implements AnalystService {
     @Autowired
     AnalystDao analystDao;
 
+    @Autowired
+    ApplicationProperties properties;
+
     @Value("${archivist.scheduler.maxQueueSize}")
     private int maxQueueSize;
-
-    @Value("${server.ssl.trust-store}")
-    private String trustStorePath;
 
     @Override
     public Analyst get(String url) {
@@ -52,31 +49,17 @@ public class AnalystServiceImpl implements AnalystService {
 
     @Override
     public AnalystClient getAnalystClient(String host) {
-        KeyStore trustStore = getTrustStore();
-        AnalystClient client = new AnalystClient(trustStore);
+        AnalystClient client = new AnalystClient();
         client.getLoadBalancer().addHost(host);
         return client;
     }
 
     @Override
     public AnalystClient getAnalystClient() {
-        KeyStore trustStore = getTrustStore();
-        AnalystClient client = new AnalystClient(trustStore);
+        AnalystClient client = new AnalystClient();
         for (Analyst a : analystDao.getActive(new Pager(1, 5), maxQueueSize)) {
             client.getLoadBalancer().addHost(a.getUrl());
         }
         return client;
-    }
-
-    private KeyStore getTrustStore() {
-        try {
-            KeyStore trustStore = KeyStore.getInstance("PKCS12");
-            InputStream trustStoreInput = new FileInputStream(trustStorePath);
-            trustStore.load(trustStoreInput, "zorroa".toCharArray());
-            return trustStore;
-        } catch (Exception e) {
-            throw new ArchivistException("Failed to acquire SSL client");
-        }
-
     }
 }
