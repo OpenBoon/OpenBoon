@@ -29,8 +29,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Created by chambers on 6/9/16.
  */
@@ -78,10 +76,6 @@ public class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                 .and()
                 .httpBasic()
-                    .authenticationEntryPoint((request, response, exception) -> {
-                        response.setHeader("WWW-Authenticate", "FormBased");
-                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
-                    })
                 .and().headers().frameOptions().disable()
                 .and()
                 .sessionManagement()
