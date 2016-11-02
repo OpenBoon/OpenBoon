@@ -79,7 +79,7 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index() {
-        return "redirect:/gui";
+        return "index";
     }
 
     @RequestMapping("/gui")
