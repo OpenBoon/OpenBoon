@@ -51,3 +51,46 @@ Remember to update the Analyst(s) application.properties to utilize HTTPS when t
 analyst.master.host = https://archivist:8066
 ```
 
+### Self Signed Python Client
+
+The Python client cannot read Java's keystore format, so to support the python client in this configuration
+you must export the public key into a PEM file and store it in 'shared/certs/zorroa.pem'
+
+To export the cert in PEM format, use the openssl tool.
+
+```
+openssl pkcs12 -in zorroa.p12 -nokeys -out zorroa.pem
+```
+
+Set the ZORROA_CERT_PATH environment variable to the absolute path containing the zorroa.pem file,
+along with the archivist URL.  Note the trailing / in the URL.
+
+```
+export ZORROA_ARCHIVIST_URL="https://archivist:8066/"
+export ZORROA_CERT_PATH="/vol/zorroa/shared/certs"
+```
+
+## Signed Cert
+
+Once you have obtained all relevant files from your digital cert provider you must convert them into
+the pkcs12 format using OpenSSL.
+
+```
+openssl pkcs12 -export -in zorroa.crt -inkey zorroa.key -out zorroa.p12 -name zorroa.com -CAfile intermediate_sha2.crt -caname root
+```
+
+Similar to self signed, you then add this to both your Archivist and Analyst application.properties.
+
+```
+server.ssl.enabled = true
+server.ssl.key-store = certs/zorroa.p12
+server.ssl.key-store-password = zorroa
+server.ssl.key-store-type = PKCS12
+server.ssl.key-alias = zorroa
+```
+
+Remember to update the Analyst(s) application.properties to utilize HTTPS when talking to the archivist.
+
+```
+analyst.master.host = https://archivist:8066
+```
