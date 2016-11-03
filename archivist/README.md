@@ -75,6 +75,10 @@ export ZORROA_CERT_PATH="/vol/zorroa/shared/certs"
 Once you have obtained all relevant files from your digital cert provider you must convert them into
 the pkcs12 format using OpenSSL.
 
+The official Zorroa.com cert can be found here:
+
+   * https://github.com/Zorroa/ssl-cert
+
 ```
 openssl pkcs12 -export -in zorroa.crt -inkey zorroa.key -out zorroa.p12 -name zorroa.com -CAfile intermediate_sha2.crt -caname root
 ```
@@ -89,8 +93,8 @@ server.ssl.key-store-type = PKCS12
 server.ssl.key-alias = zorroa
 ```
 
-Remember to update the Analyst(s) application.properties to utilize HTTPS when talking to the archivist.
+Remember to update the Analyst(s) application.properties to utilize HTTPS when talking to the archivist.  With a signed cert, you must set the host name to the FQDN.
 
 ```
-analyst.master.host = https://archivist:8066
+analyst.master.host = https://archivist.zorroa.com:8066
 ```
