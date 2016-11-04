@@ -83,23 +83,41 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         refreshIndex();
     }
 
+    private static final String[] sharedPathProperties = {
+            "archivist.path.shared",
+            "archivist.path.ofs",
+            "archivist.path.exports",
+            "archivist.path.plugins",
+            "archivist.path.models",
+            "archivist.path.backups",
+            "archivist.path.logs",
+            "archivist.path.docs",
+            "archivist.path.certs"
+    };
+
     public void createSharedPaths() {
-        properties.getMap("zorroa.cluster.").forEach((k,v)-> {
-            if (k.contains(".path.")) {
-                File dir = new File((String)v);
-                boolean result = dir.mkdirs();
-                if (!result) {
-                    try {
-                        dir.setLastModified(System.currentTimeMillis());
-                    } catch (Exception e) {
-                    }
-                    if (!dir.exists()) {
-                        throw new RuntimeException("Failed to setup shared storage directory '" +
-                                dir + "', could not make directory and it does not exist.");
-                    }
+        for (String prop: sharedPathProperties) {
+            String value = properties.getString(prop);
+            File dir = new File(value);
+            if (dir.exists()) {
+                continue;
+            }
+            if (!dir.isDirectory()) {
+                throw new RuntimeException("Unable to create dir '" + value + "', a file is in the way.");
+            }
+
+            boolean result = dir.mkdirs();
+            if (!result) {
+                try {
+                    dir.setLastModified(System.currentTimeMillis());
+                } catch (Exception e) {
+                }
+                if (!dir.exists()) {
+                    throw new RuntimeException("Failed to setup shared storage directory '" +
+                            dir + "', could not make directory and it does not exist.");
                 }
             }
-        });
+        }
     }
 
     public void refreshIndex() {
