@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -41,9 +42,19 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             folder.setDyhiId((Integer)dyhi);
         }
 
+        String dyhiField = rs.getString("str_dyhi_field");
         String search = rs.getString("json_search");
+        if (search == null && dyhiField != null) {
+            search = "{}";
+        }
+        /**
+         * The dyhi field is added to the search on the fly, not baked in.
+         */
         if (search != null) {
             folder.setSearch(Json.deserialize(search, AssetSearch.class));
+            if (dyhiField != null) {
+                folder.getSearch().addToFilter().addToExists(dyhiField);
+            }
         }
 
         /*
@@ -169,25 +180,50 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         return getAfterCreate(id);
     }
 
-    private static final String UPDATE = JdbcUtils.update("folder", "pk_folder",
-            "time_modified",
-            "user_modified",
-            "pk_parent",
-            "str_name",
-            "bool_recursive",
-            "json_search");
+    private static final String[] UPDATE = {
+            JdbcUtils.update("folder", "pk_folder",
+                    "time_modified",
+                    "user_modified",
+                    "pk_parent",
+                    "str_name",
+                    "bool_recursive",
+                    "json_search"),
+
+            JdbcUtils.update("folder", "pk_folder",
+                    "time_modified",
+                    "user_modified",
+                    "pk_parent",
+                    "str_name",
+                    "bool_recursive")
+    };
 
     @Override
     public boolean update(int id, Folder folder) {
         Preconditions.checkNotNull(folder.getParentId(), "Parent folder cannot be null");
-        return jdbc.update(UPDATE,
-                System.currentTimeMillis(),
-                SecurityUtils.getUser().getId(),
-                folder.getParentId(),
-                folder.getName(),
-                folder.isRecursive(),
-                Json.serializeToString(folder.getSearch(), null),
-                folder.getId()) == 1;
+
+        /**
+         * Skip updating the search if its a dyhi so the exists statement
+         * doesn't get automatically updated.  Its also
+         */
+        if (isDyHi(id)) {
+            return jdbc.update(UPDATE[1],
+                    System.currentTimeMillis(),
+                    SecurityUtils.getUser().getId(),
+                    folder.getParentId(),
+                    folder.getName(),
+                    folder.isRecursive(),
+                    folder.getId()) == 1;
+        }
+        else {
+            return jdbc.update(UPDATE[0],
+                    System.currentTimeMillis(),
+                    SecurityUtils.getUser().getId(),
+                    folder.getParentId(),
+                    folder.getName(),
+                    folder.isRecursive(),
+                    Json.serializeToString(folder.getSearch(), null),
+                    folder.getId()) == 1;
+        }
     }
 
     @Override
@@ -207,8 +243,13 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
-    public boolean setDyHierarchyRoot(Folder folder, boolean value) {
-        return jdbc.update("UPDATE folder SET bool_dyhi_root=? WHERE pk_folder=?", value, folder.getId()) == 1;
+    public boolean setDyHierarchyRoot(Folder folder,  String field) {
+        return jdbc.update("UPDATE folder SET bool_dyhi_root=1, str_dyhi_field=? WHERE pk_folder=?", field, folder.getId()) == 1;
+    }
+
+    @Override
+    public boolean removeDyHierarchyRoot(Folder folder) {
+        return jdbc.update("UPDATE folder SET bool_dyhi_root=0,str_dyhi_field=null WHERE pk_folder=?", folder.getId()) == 1;
     }
 
     @Override
@@ -297,5 +338,23 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
      */
     private Folder getAfterCreate(int id) {
         return jdbc.queryForObject(GET.concat(" WHERE pk_folder=?"), MAPPER, id);
+    }
+
+    private boolean isDyHi(int id) {
+        SqlRowSet row = jdbc.queryForRowSet("SELECT pk_dyhi, bool_dyhi_root FROM folder WHERE pk_folder=?", id);
+        try {
+            row.next();
+
+            if (row.getBoolean("bool_dyhi_root")) {
+                return true;
+            }
+            if (row.getString("pk_dyhi") != null) {
+                return true;
+            }
+        } catch (Exception e) {
+            //ignore
+        }
+        return false;
+
     }
 }

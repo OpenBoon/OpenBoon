@@ -73,6 +73,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     @Transactional
     public boolean update(int id, DyHierarchy spec) {
         DyHierarchy current = dyHierarchyDao.get(id);
+
         if (!dyHierarchyDao.update(id, spec)) {
             return false;
         }
@@ -94,6 +95,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
          */
         String field = updated.getLevel(0).getField();
         folderService.setDyHierarchyRoot(folderNew, field);
+
         /*
          * If this returns true, the dyhi was working, it should stop
          * pretty quickly.  Other transactions should be blocked at

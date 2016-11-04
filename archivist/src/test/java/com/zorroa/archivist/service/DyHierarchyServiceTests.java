@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetSearch;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 7/14/16.
@@ -134,5 +136,58 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
         refreshIndex();
         dyhiService.generate(agg);
+    }
+
+    @Test
+    public void testUpdate() {
+        Folder folder = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchySpec spec = new DyHierarchySpec();
+        spec.setFolderId(folder.getId());
+        spec.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Day),
+                        new DyHierarchyLevel("source.type.raw"),
+                        new DyHierarchyLevel("source.extension.raw"),
+                        new DyHierarchyLevel("source.filename.raw")));
+        DyHierarchy dyhi = dyhiService.create(spec);
+        folder = folderService.get(folder.getId());
+        assertTrue(folder.getSearch().getFilter().getExists().contains("source.date"));
+
+        dyhi.setLevels(ImmutableList.of(
+                new DyHierarchyLevel("source.type.raw"),
+                new DyHierarchyLevel("source.extension.raw"),
+                new DyHierarchyLevel("source.filename.raw")));
+        dyhiService.update(dyhi.getId(), dyhi);
+        folder = folderService.get(folder.getId());
+        assertTrue(folder.getSearch().getFilter().getExists().contains("source.type.raw"));
+    }
+
+    @Test
+    public void testUpdateWithSmartQuery() {
+        FolderSpec fspec = new FolderSpec("foo").setSearch(new AssetSearch("beer"));
+        Folder folder = folderService.create(fspec, false);
+        DyHierarchySpec spec = new DyHierarchySpec();
+        spec.setFolderId(folder.getId());
+        spec.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Day),
+                        new DyHierarchyLevel("source.type.raw"),
+                        new DyHierarchyLevel("source.extension.raw"),
+                        new DyHierarchyLevel("source.filename.raw")));
+        DyHierarchy dyhi = dyhiService.create(spec);
+        folder = folderService.get(folder.getId());
+        assertTrue(folder.getSearch().getFilter().getExists().contains("source.date"));
+        assertEquals("beer", folder.getSearch().getQuery());
+        assertEquals(1, folder.getSearch().getFilter().getExists().size());
+
+        dyhi.setLevels(ImmutableList.of(
+                new DyHierarchyLevel("source.type.raw"),
+                new DyHierarchyLevel("source.extension.raw"),
+                new DyHierarchyLevel("source.filename.raw")));
+        dyhiService.update(dyhi.getId(), dyhi);
+        folder = folderService.get(folder.getId());
+        assertTrue(folder.getSearch().getFilter().getExists().contains("source.type.raw"));
+        assertEquals(1, folder.getSearch().getFilter().getExists().size());
+        assertEquals("beer", folder.getSearch().getQuery());
     }
 }

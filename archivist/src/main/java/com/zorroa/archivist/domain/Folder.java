@@ -36,6 +36,7 @@ public class Folder implements Loggable<Integer> {
     private long timeModified;
     private boolean recursive;
     private boolean dyhiRoot;
+    private String dyhiField;
 
     private Acl acl;
 
@@ -148,6 +149,15 @@ public class Folder implements Loggable<Integer> {
 
     public Folder setAcl(Acl acl) {
         this.acl = acl;
+        return this;
+    }
+
+    public String getDyhiField() {
+        return dyhiField;
+    }
+
+    public Folder setDyhiField(String dyhiField) {
+        this.dyhiField = dyhiField;
         return this;
     }
 

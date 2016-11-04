@@ -39,7 +39,9 @@ public interface FolderDao {
 
     boolean hasAccess(Folder folder, Access access);
 
-    boolean setDyHierarchyRoot(Folder folder, boolean value);
+    boolean setDyHierarchyRoot(Folder folder, String field);
+
+    boolean removeDyHierarchyRoot(Folder folder);
 
     void setAcl(int folder, Acl acl);
 

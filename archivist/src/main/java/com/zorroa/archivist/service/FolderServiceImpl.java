@@ -17,7 +17,6 @@ import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.MessageType;
-import com.zorroa.sdk.search.AssetSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,29 +63,12 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder, String attribute) {
-        /**
-         * TODO: blow away entire search until we have a way to
-         * save original search.
-         */
-        folder.setSearch(null);
-        folderDao.update(folder.getId(), folder);
-        return folderDao.setDyHierarchyRoot(folder, false);
+        return folderDao.removeDyHierarchyRoot(folder);
     }
 
     @Override
     public boolean setDyHierarchyRoot(Folder folder, String attribute) {
-        /**
-         * Adds the first attribute to the exists query.  This augments the existing
-         * smart query on the folder.
-         */
-        AssetSearch search = folder.getSearch();
-        if (search == null) {
-            search = new AssetSearch();
-        }
-        search.addToFilter().addToExists(attribute);
-        folder.setSearch(search);
-        folderDao.update(folder.getId(), folder);
-        return folderDao.setDyHierarchyRoot(folder, true);
+        return folderDao.setDyHierarchyRoot(folder, attribute);
     }
 
     @Override
