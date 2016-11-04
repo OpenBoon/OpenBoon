@@ -92,5 +92,5 @@ server.ssl.key-alias = zorroa
 Remember to update the Analyst(s) application.properties to utilize HTTPS when talking to the archivist.
 
 ```
-analyst.master.host = https://archivist:8066
+analyst.master.host = https://archivist.zorroa.com:8066
 ```
