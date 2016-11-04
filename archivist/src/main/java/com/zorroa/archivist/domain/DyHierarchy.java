@@ -25,9 +25,9 @@ public class DyHierarchy implements Loggable<Integer> {
     private Integer folderId;
 
     /**
-     * The user that created the aggregation.
+     * The user that created the dyhi.
      */
-    private String userCreated;
+    private UserBase user;
 
     /**
      * The time the aggregation was created;
@@ -48,12 +48,12 @@ public class DyHierarchy implements Loggable<Integer> {
         return this;
     }
 
-    public String getUserCreated() {
-        return userCreated;
+    public UserBase getUser() {
+        return user;
     }
 
-    public DyHierarchy setUserCreated(String userCreated) {
-        this.userCreated = userCreated;
+    public DyHierarchy setUser(UserBase user) {
+        this.user = user;
         return this;
     }
 

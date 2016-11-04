@@ -67,8 +67,8 @@ public class ExportController {
          * Don't let people download other people's exports, as its not possible
          * to know if they have access to each individual file.
          */
-        if (!job.getUserCreated().equals(SecurityUtils.getUsername())) {
-            throw new ArchivistReadException("Invalid export " + job.getUserCreated() + " / " + SecurityUtils.getUsername());
+        if (job.getUser().getId() != SecurityUtils.getUser().getId()) {
+            throw new ArchivistReadException("Invalid export for " +  SecurityUtils.getUsername());
         }
         if (!job.getState().equals(JobState.Finished)) {
             throw new ArchivistReadException("Export is not complete.");

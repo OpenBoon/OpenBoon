@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +30,11 @@ public class UserDaoCache {
                 }
             });
 
-    public User getUser(int id) {
+    public UserBase getUser(int id) {
         try {
             return cachedUserName.get(id);
         } catch (Exception e) {
-            return new User().setUsername("unknown").setId(0);
+            return new UserBase().setUsername("unknown").setId(0);
         }
     }
 }

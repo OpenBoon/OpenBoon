@@ -6,8 +6,8 @@ package com.zorroa.archivist.domain;
 public class Note {
 
     private String id;
-    private User user;
     private int userId;
+    private UserBase user;
     private String text;
     private String asset;
     private long timeCreated;
@@ -30,11 +30,11 @@ public class Note {
         return this;
     }
 
-    public User getUser() {
+    public UserBase getUser() {
         return user;
     }
 
-    public Note setUser(User user) {
+    public Note setUser(UserBase user) {
         this.user = user;
         return this;
     }

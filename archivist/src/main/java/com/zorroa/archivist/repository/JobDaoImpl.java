@@ -12,6 +12,7 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.util.Json;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,9 @@ import java.util.List;
  */
 @Repository
 public class JobDaoImpl extends AbstractDao implements JobDao {
+
+    @Autowired
+    UserDaoCache userDaoCache;
 
     private static final String INSERT =
             JdbcUtils.insert("job",
@@ -79,7 +83,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         job.setTimeStarted(rs.getLong("time_started"));
         job.setTimeUpdated(rs.getLong("time_updated"));
         job.setType(PipelineType.values()[rs.getInt("int_type")]);
-        job.setUserCreated(resolveUser(rs.getInt("int_user_created")));
+        job.setUser(userDaoCache.getUser(rs.getInt("int_user_created")));
         job.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
 
         Job.Stats a = new Job.Stats();

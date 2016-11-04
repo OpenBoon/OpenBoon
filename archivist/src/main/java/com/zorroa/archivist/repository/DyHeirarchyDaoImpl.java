@@ -11,6 +11,7 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -25,6 +26,9 @@ import java.util.Set;
  */
 @Repository
 public class DyHeirarchyDaoImpl extends AbstractDao implements DyHierarchyDao {
+
+    @Autowired
+    UserDaoCache userDaoCache;
 
     /**
      * The current list of working dyhi processes.
@@ -60,7 +64,7 @@ public class DyHeirarchyDaoImpl extends AbstractDao implements DyHierarchyDao {
         h.setFolderId(rs.getInt("pk_folder"));
         h.setId(rs.getInt("pk_dyhi"));
         h.setTimeCreated(rs.getLong("time_created"));
-        h.setUserCreated(resolveUser(rs.getInt("int_user_created")));
+        h.setUser(userDaoCache.getUser(rs.getInt("int_user_created")));
         h.setLevels(Json.deserialize(rs.getString("json_levels"),
                 new TypeReference<List<DyHierarchyLevel>>() {}));
         h.setWorking(WORKING.contains(h));

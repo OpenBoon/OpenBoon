@@ -15,7 +15,7 @@ public class Job implements JobId {
     private int id;
     private String name;
     private PipelineType type;
-    private String userCreated;
+    private UserBase user;
     private JobState state;
     private Map<String, Object> args;
 
@@ -52,12 +52,12 @@ public class Job implements JobId {
         return this;
     }
 
-    public String getUserCreated() {
-        return userCreated;
+    public UserBase getUser() {
+        return user;
     }
 
-    public Job setUserCreated(String userCreated) {
-        this.userCreated = userCreated;
+    public Job setUser(UserBase user) {
+        this.user = user;
         return this;
     }
 

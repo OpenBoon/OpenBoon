@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,12 +22,15 @@ import java.util.List;
 @Repository
 public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
+    @Autowired
+    UserDaoCache userDaoCache;
+
+
     private final RowMapper<Folder> MAPPER = (rs, row) -> {
         Folder folder = new Folder();
         folder.setId(rs.getInt("pk_folder"));
         folder.setName(rs.getString("str_name"));
-        folder.setUserCreated(resolveUser(rs.getInt("user_created")));
-        folder.setUserModified(resolveUser(rs.getInt("user_modified")));
+        folder.setUser(userDaoCache.getUser(rs.getInt("user_created")));
         folder.setRecursive(rs.getBoolean("bool_recursive"));
         folder.setTimeCreated(rs.getLong("time_created"));
         folder.setTimeModified(rs.getLong("time_modified"));

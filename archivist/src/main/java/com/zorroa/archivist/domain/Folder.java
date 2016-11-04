@@ -30,8 +30,7 @@ public class Folder implements Loggable<Integer> {
     private Integer parentId;
     private Integer dyhiId;
     private String name;
-    private String userCreated;
-    private String userModified;
+    private UserBase user;
     private long timeCreated;
     private long timeModified;
     private boolean recursive;
@@ -71,21 +70,12 @@ public class Folder implements Loggable<Integer> {
         return this;
     }
 
-    public String getUserCreated() {
-        return userCreated;
+    public UserBase getUser() {
+        return user;
     }
 
-    public Folder setUserCreated(String userCreated) {
-        this.userCreated = userCreated;
-        return this;
-    }
-
-    public String getUserModified() {
-        return userModified;
-    }
-
-    public Folder setUserModified(String userModified) {
-        this.userModified = userModified;
+    public Folder setUser(UserBase user) {
+        this.user = user;
         return this;
     }
 

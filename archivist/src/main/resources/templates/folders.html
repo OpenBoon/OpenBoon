@@ -31,7 +31,7 @@
 
                         </td>
                         <td class="vert-align col-xs-6" th:text="${child.name}"/>
-                        <td class="vert-align" th:text="${child.userCreated}"></td>
+                        <td class="vert-align" th:text="${child.user.username}"></td>
                         <td class="vert-align" th:text="${#dates.format(child.timeCreated, 'dd MMM yyyy')}"></td>
                         <td class="td-asset-count"><i class="fa fa-spinner fa-spin fa-fw"></i></td>
                     </tr>

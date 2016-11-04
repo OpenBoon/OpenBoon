@@ -76,7 +76,7 @@ public class FolderControllerTests extends MockMvcTest {
 
         assertEquals(folder.getId(), folder2.getId());
         assertEquals(folder.getParentId(), folder2.getParentId());
-        assertEquals(folder.getUserCreated(), folder2.getUserCreated());
+        assertEquals(folder.getUser(), folder2.getUser());
         assertEquals(folder.getName(), folder2.getName());
     }
 
