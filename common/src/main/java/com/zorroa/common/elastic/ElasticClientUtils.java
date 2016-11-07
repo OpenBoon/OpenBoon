@@ -232,7 +232,8 @@ public class ElasticClientUtils {
      */
     public static String getFieldType(Client client, String index, String type, String field) {
         ClusterState cs = client.admin().cluster().prepareState().execute().actionGet().getState();
-        IndexMetaData imd = cs.getMetaData().index(index);
+        IndexMetaData imd =
+                cs.getMetaData().getAliasAndIndexLookup().get(index).getIndices().get(0);
         MappingMetaData mmd = imd.mapping(type);
         CompressedXContent source = mmd.source();
         try {
