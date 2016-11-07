@@ -1,10 +1,17 @@
 package com.zorroa.common.elastic;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteStreams;
 import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.cluster.ClusterState;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.cluster.metadata.MappingMetaData;
+import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.slf4j.Logger;
@@ -212,5 +219,39 @@ public class ElasticClientUtils {
         }
         logger.info("Loading latest elastic version: {}", latestVerionNumber);
         return latestVersion;
+    }
+
+    /**
+     * Return the elastic type for any field.
+     *
+     * @param client
+     * @param index
+     * @param type
+     * @param field
+     * @return
+     */
+    public static String getFieldType(Client client, String index, String type, String field) {
+        ClusterState cs = client.admin().cluster().prepareState().execute().actionGet().getState();
+        IndexMetaData imd = cs.getMetaData().index(index);
+        MappingMetaData mmd = imd.mapping(type);
+        CompressedXContent source = mmd.source();
+        try {
+
+            JsonNode mappingNode = new ObjectMapper().readTree(source.uncompressed());
+            JsonNode propertiesNode = mappingNode.get("asset");
+
+            for (String f: Splitter.on('.').split(field)) {
+                propertiesNode = propertiesNode.get("properties").get(f);
+            }
+
+            if (propertiesNode != null) {
+                return propertiesNode.get("type").asText();
+            }
+
+        } catch (Exception e) {
+            logger.warn("Failed to determine type of field: {}, assuming string.", field);
+        }
+
+        return "string";
     }
 }
