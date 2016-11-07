@@ -70,11 +70,9 @@ public class DyHierarchyGuiController {
                 DyHierarchy dyhi = dyHierarchyService.get(folder);
                 if (spec.getLevels().isEmpty()) {
                     dyHierarchyService.delete(dyhi);
-                    logger.info("Deleting dhhi");
                     return "redirect:/gui/folders/" + folder.getParentId();
                 }
                 else {
-                    logger.info("updatinh dhyi");
                     dyHierarchyService.update(dyhi.getId(), dyhi.setLevels(spec.getLevels()));
                 }
             }
@@ -110,7 +108,6 @@ public class DyHierarchyGuiController {
             if (!JdbcUtils.isValid(type)) {
                 throw new RuntimeException("The type cannot be null");
             }
-            logger.info("Found type: {}, validating", type);
             DyHierarchyLevelType lt = DyHierarchyLevelType.valueOf(type);
             if (lt == null) {
                 throw new RuntimeException("Invalid level type: " + type);
@@ -119,9 +116,6 @@ public class DyHierarchyGuiController {
             String field = form.getField().get(i);
             if (!JdbcUtils.isValid(field)) {
                 throw new RuntimeException("The field cannot be null or empty");
-            }
-            if (!field.endsWith(".raw") && lt.equals(DyHierarchyLevelType.Attr)) {
-                field = field.concat(".raw");
             }
             level.setType(lt);
             level.setField(field);

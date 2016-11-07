@@ -225,6 +225,13 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                     .setSize(0);
 
             /**
+             * Fix the field name to take into account raw.
+             */
+            for (DyHierarchyLevel level: dyhi.getLevels()) {
+                resolveFieldName(level);
+            }
+
+            /**
              * Build a nested list of Elastic aggregations.
              */
             AggregationBuilder terms = elasticAggregationBuilder(dyhi.getLevels().get(0), 0);
@@ -246,6 +253,9 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             logger.info("{} created by {}, {} folders", dyhi, SecurityUtils.getUsername(), folders.count);
             return folders.count;
         }
+        catch (Exception e) {
+            logger.warn("Failed to generate dynamic hierarchy,", e);
+        }
         finally {
             if (!dyHierarchyDao.isWorking(dyhi)) {
                 /*
@@ -260,6 +270,8 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 dyHierarchyDao.setWorking(dyhi, false);
             }
         }
+
+        return 0;
     }
 
     private AggregationBuilder elasticAggregationBuilder(DyHierarchyLevel level, int idx) {
@@ -451,5 +463,18 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             }
             return search;
         }
+    }
+
+    private void resolveFieldName(DyHierarchyLevel level) {
+        if (level.getField().endsWith(".raw") || !level.getType().equals(DyHierarchyLevelType.Attr)) {
+            return;
+        }
+
+        String type = ElasticClientUtils.getFieldType(client, "archivist", "asset", level.getField());
+        if (!type.equals("string")) {
+            return;
+        }
+
+        level.setField(level.getField().concat(".raw"));
     }
 }
