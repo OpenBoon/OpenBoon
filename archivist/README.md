@@ -83,6 +83,9 @@ The official Zorroa.com cert can be found here:
 openssl pkcs12 -export -in zorroa.crt -inkey zorroa.key -out zorroa.p12 -name zorroa.com -CAfile intermediate_sha2.crt -caname root
 ```
 
+When generating the .p12 file, you will be asked for a password, which must match the 
+server.ssl.key-store-password application property listed below.
+
 Similar to self signed, you then add this to both your Archivist and Analyst application.properties.
 
 ```
