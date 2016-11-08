@@ -26,6 +26,7 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -73,6 +74,7 @@ public class MultipleWebSecurityConfig {
                 .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
                 .antMatcher("/api/**")
                     .authorizeRequests()
+                    .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .httpBasic()
