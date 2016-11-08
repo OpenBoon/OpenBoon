@@ -102,9 +102,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
             if (dir.exists()) {
                 continue;
             }
-            if (!dir.isDirectory()) {
-                throw new RuntimeException("Unable to create dir '" + value + "', a file is in the way.");
-            }
 
             boolean result = dir.mkdirs();
             if (!result) {
