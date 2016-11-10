@@ -32,6 +32,8 @@ def main():
 		base_dir = "%s-%s" % (app_name, get_version())
 
 	cleanup(base_dir)
+
+        print ("copying data into: " + str(base_dir) + "/")
 	shutil.copytree("%s/resources/config" % (os.path.dirname(__file__)), base_dir + "/config")
 	shutil.copytree("%s/resources/bin" % os.path.dirname(__file__), base_dir + "/bin")
 
@@ -40,6 +42,7 @@ def main():
 	shutil.copy(jarFile, "%s/lib" % base_dir)
 
 	if args.compress:
+                print "compressing..."
 		tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
 		tar.add(base_dir)
 		tar.close()
@@ -54,8 +57,10 @@ def cleanup(base_dir):
 		pass
 
 def get_version():
+        dir_path = os.path.dirname(os.path.realpath(__file__)) 
+
 	cmd = ["java", "-cp", "../target/%s.jar" % app_name, "com.zorroa.%s.Version" % app_name]
-	output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0].strip()
+	output = subprocess.Popen(cmd, stdout=subprocess.PIPE, cwd=dir_path).communicate()[0].strip()
 	return output
 
 if __name__ == '__main__':
