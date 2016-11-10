@@ -83,6 +83,8 @@ public class ImportGuiController {
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
         model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("searchImportForm", new SearchImportForm());
+        model.addAttribute("serverImportForm", new ServerImportForm());
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", true);
