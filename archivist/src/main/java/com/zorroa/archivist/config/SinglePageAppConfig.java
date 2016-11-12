@@ -1,6 +1,8 @@
 package com.zorroa.archivist.config;
 
 import com.google.common.collect.ImmutableSet;
+import com.zorroa.common.config.ApplicationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -22,6 +24,10 @@ import java.util.Set;
 @Configuration
 public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
 
+
+    @Autowired
+    ApplicationProperties properties;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
@@ -36,7 +42,7 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
         /**
          * The react index.html file
          */
-        private final Resource index = new FileSystemResource("web/curator/index.html");
+        private final Resource index;
 
         /**
          * All the file types served by react...not sure we need this.
@@ -47,6 +53,11 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
          *These are basically endpoints on the server we can't use in react.
          */
         private final Set<String> ignoredPaths = ImmutableSet.of("api", "gui", "health", "login", "logout");
+
+        public PushStateResourceResolver() {
+            index = new FileSystemResource(properties.getString("archivist.path.home") + "/web/curator/index.html");
+        }
+
 
         @Override
         public Resource resolveResource(HttpServletRequest request, String requestPath, List<? extends Resource> locations, ResourceResolverChain chain) {
