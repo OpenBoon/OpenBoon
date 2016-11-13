@@ -70,7 +70,7 @@ public class FileSystemController {
 
         AntPathMatcher apm = new AntPathMatcher();
         String id = "proxy/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path));
-        BufferedImage image = ImageIO.read(objectFileSystem.get(id).getFile());
+        BufferedImage image = ImageIO.read(objectFileSystem.get(id).getFile().getCanonicalFile());
         String ext = FileUtils.extension(path);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         ImageIO.write(imageService.watermark(image), ext, bao);
