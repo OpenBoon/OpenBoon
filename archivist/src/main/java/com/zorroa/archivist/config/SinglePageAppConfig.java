@@ -14,7 +14,7 @@ import org.springframework.web.servlet.resource.ResourceResolverChain;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
@@ -30,8 +30,10 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        Path curator = properties.getPath("archivist.path.home").resolve("web/curator");
+
         registry.addResourceHandler("/**")
-                .addResourceLocations(Paths.get("web/curator").toUri().toString())
+                .addResourceLocations(curator.toUri().toString())
                 .resourceChain(false)
                 .addResolver(new PushStateResourceResolver());
         super.addResourceHandlers(registry);

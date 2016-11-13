@@ -102,6 +102,8 @@ public class MultipleWebSecurityConfig {
                 .authorizeRequests()
                     .antMatchers("/gui/**").authenticated()
                     .antMatchers("/docs/**").permitAll()
+                    .antMatchers("/signin/**").permitAll()
+                    .antMatchers("/signout/**").permitAll()
                     .antMatchers("/health/**").permitAll()
                     .antMatchers("/cluster/**").permitAll()
                     .antMatchers("/console/**").hasAuthority("user::admin")
