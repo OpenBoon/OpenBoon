@@ -36,6 +36,7 @@ def main():
         print ("copying data into: " + str(base_dir) + "/")
 	shutil.copytree("%s/resources/config" % (os.path.dirname(__file__)), base_dir + "/config")
 	shutil.copytree("%s/resources/bin" % os.path.dirname(__file__), base_dir + "/bin")
+	shutil.copytree("%s/../web" % os.path.dirname(__file__), base_dir + "/web")
 
 	os.mkdir("%s/plugins" % base_dir)
 	os.mkdir("%s/lib" % base_dir)
