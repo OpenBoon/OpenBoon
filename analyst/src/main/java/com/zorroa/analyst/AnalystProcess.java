@@ -17,11 +17,11 @@ public class AnalystProcess {
     private TaskState newState = null;
     private Queue<ZpsScript> processQueue;
     private int processCount = 1;
-    private Object taskId;
+    private Integer taskId;
 
     public AnalystProcess() {}
 
-    public AnalystProcess(Object taskId) {
+    public AnalystProcess(Integer taskId) {
         this.taskId = taskId;
     }
 
@@ -80,7 +80,7 @@ public class AnalystProcess {
         return taskId;
     }
 
-    public AnalystProcess setTaskId(Object taskId) {
+    public AnalystProcess setTaskId(Integer taskId) {
         this.taskId = taskId;
         return this;
     }
