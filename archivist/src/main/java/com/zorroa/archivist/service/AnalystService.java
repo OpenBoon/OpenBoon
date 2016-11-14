@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AnalystClient;
-import com.zorroa.sdk.domain.Analyst;
+import com.zorroa.common.domain.Analyst;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 

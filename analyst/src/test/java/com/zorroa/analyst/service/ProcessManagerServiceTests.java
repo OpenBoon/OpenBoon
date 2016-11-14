@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.analyst.AnalystProcess;
+import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStop;
 import com.zorroa.common.domain.TaskState;
@@ -47,7 +48,7 @@ public class ProcessManagerServiceTests extends AbstractTest {
         assertEquals(TaskState.Success, proc.get().getNewState());
     }
 
-    @Test
+    @Test(expected = ClusterException.class)
     public void testExecuteSameTask() throws IOException, ExecutionException, InterruptedException {
         ZpsScript zps = ZpsScript.load(new File("../unittest/resources/scripts/sleep.zps"));
         processManager.execute(new ExecuteTaskStart(task, 3, 3)

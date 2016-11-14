@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AnalystClient;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.repository.AnalystDao;
-import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.springframework.beans.factory.annotation.Autowired;

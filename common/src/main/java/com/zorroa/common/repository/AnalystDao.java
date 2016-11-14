@@ -1,6 +1,10 @@
 package com.zorroa.common.repository;
 
-import com.zorroa.sdk.domain.*;
+import com.zorroa.common.domain.Analyst;
+import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystUpdateBuilder;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 
 import java.util.List;
 

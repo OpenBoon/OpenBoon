@@ -2,9 +2,9 @@ package com.zorroa.common.repository;
 
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
-import com.zorroa.sdk.domain.Analyst;
-import com.zorroa.sdk.domain.AnalystBuilder;
-import com.zorroa.sdk.domain.AnalystState;
+import com.zorroa.common.domain.Analyst;
+import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystState;
 import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;

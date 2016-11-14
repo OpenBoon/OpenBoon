@@ -1,8 +1,8 @@
 package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.service.AnalystService;
+import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.repository.ClusterSettingsDao;
-import com.zorroa.sdk.domain.Analyst;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.springframework.beans.factory.annotation.Autowired;

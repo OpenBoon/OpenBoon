@@ -2,9 +2,14 @@ package com.zorroa.common.repository;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.zorroa.common.domain.Analyst;
+import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystState;
+import com.zorroa.common.domain.AnalystUpdateBuilder;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.index.query.QueryBuilder;

@@ -7,10 +7,10 @@ import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystState;
+import com.zorroa.common.domain.AnalystUpdateBuilder;
 import com.zorroa.common.repository.AnalystDao;
-import com.zorroa.sdk.domain.AnalystBuilder;
-import com.zorroa.sdk.domain.AnalystState;
-import com.zorroa.sdk.domain.AnalystUpdateBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +52,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Autowired
     Executor analyzeThreadPool;
+
+    @Autowired
+    ProcessManagerService processManagerService;
 
     private String url;
     private String id;
