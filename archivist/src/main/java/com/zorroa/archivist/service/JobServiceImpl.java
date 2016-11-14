@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * A service for creating and manipulating jobs.
@@ -296,5 +297,8 @@ public class JobServiceImpl implements JobService {
         return taskDao.getAll(job, page);
     }
 
-
+    @Override
+    public int updatePingTime(List<Integer> taskIds) {
+        return taskDao.updatePingTime(taskIds);
+    }
 }

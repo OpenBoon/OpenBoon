@@ -62,4 +62,10 @@ public interface TaskDao {
     long countByJob(int job);
 
     Path getLogFilePath(int id);
+
+    /**
+     * Update's a tasks ping time.
+     * @param taskIds
+     */
+    int updatePingTime(List<Integer> taskIds);
 }

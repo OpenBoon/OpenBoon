@@ -12,6 +12,7 @@ import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +41,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "json_script",
                 "int_order",
                 "time_created",
-                "time_state_change");
+                "time_state_change",
+                "time_ping");
 
     @Override
     public Task create(TaskSpec task) {
@@ -62,6 +65,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             ps.setInt(6, 1);
             ps.setLong(7, time);
             ps.setLong(8, time);
+            ps.setLong(9, time);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -121,6 +125,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         fields.add("int_state=?");
         values.add(value.ordinal());
         fields.add("time_state_change=?");
+        values.add(time);
+        fields.add("time_ping=?");
         values.add(time);
 
         if (STOPPERS.contains(value)) {
@@ -298,7 +304,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "AND " +
                 "task.int_state IN (1, 2) " +
             "AND " +
-                "task.time_state_change < ? " +
+                "task.time_updated < ? " +
             "LIMIT ? ";
 
     @Override
@@ -371,5 +377,24 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     @Override
     public Path getLogFilePath(int id) {
         return jdbc.queryForObject(GET_LOG_PATH, LOG_PATH_MAPPER, id);
+    }
+
+    private static final String UPDATE_PING = "UPDATE task SET time_ping=? WHERE pk_task=?";
+
+    @Override
+    public int updatePingTime(List<Integer> taskIds) {
+        final long time = System.currentTimeMillis();
+        return jdbc.batchUpdate(UPDATE_PING, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setLong(1, time);
+                ps.setInt(2, taskIds.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return taskIds.size();
+            }
+        }).length;
     }
 }

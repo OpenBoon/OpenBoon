@@ -5,6 +5,8 @@ import com.zorroa.common.domain.*;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 
+import java.util.List;
+
 /**
  * Created by chambers on 6/24/16.
  */
@@ -116,4 +118,6 @@ public interface JobService {
     PagedList<Job> getAll(Pager page, JobFilter filter);
 
     PagedList<Task> getAllTasks(int job, Pager page);
+
+    int updatePingTime(List<Integer> taskIds);
 }
