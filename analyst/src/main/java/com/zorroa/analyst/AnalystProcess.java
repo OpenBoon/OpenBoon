@@ -17,8 +17,13 @@ public class AnalystProcess {
     private TaskState newState = null;
     private Queue<ZpsScript> processQueue;
     private int processCount = 1;
+    private Object taskId;
 
     public AnalystProcess() {}
+
+    public AnalystProcess(Object taskId) {
+        this.taskId = taskId;
+    }
 
     public Process getProcess() {
         return process;
@@ -68,6 +73,15 @@ public class AnalystProcess {
 
     public AnalystProcess incrementProcessCount() {
         processCount++;
+        return this;
+    }
+
+    public Object getTaskId() {
+        return taskId;
+    }
+
+    public AnalystProcess setTaskId(Object taskId) {
+        this.taskId = taskId;
         return this;
     }
 }

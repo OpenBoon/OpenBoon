@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
+import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AssetDao;
@@ -116,14 +117,15 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
     @Override
     public Future<AnalystProcess> execute(ExecuteTaskStart task, boolean async) {
-        AnalystProcess p = processMap.putIfAbsent(task.getTask().getTaskId(), new AnalystProcess());
+        AnalystProcess p = processMap.putIfAbsent(task.getTask().getTaskId(),
+                new AnalystProcess(task.getTask().getTaskId()));
         if (p != null) {
             /**
              * Not sure if we should return null here, or an exception.  Nothing gets
              * thrown back to the archivist, it doesn't care if the task doesn't execute.
              */
             logger.warn("The task {} is already queued or executing.", task.getTaskId());
-            return null;
+            throw new ClusterException("The task is already queued or executing.");
         }
 
         if (async) {
