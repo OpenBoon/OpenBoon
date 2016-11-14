@@ -2,6 +2,7 @@ package com.zorroa.common.repository;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.google.common.collect.Lists;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystBuilder;
 import com.zorroa.common.domain.AnalystState;
@@ -12,10 +13,14 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -73,6 +78,25 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
         return elastic.count(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setQuery(QueryBuilders.matchAllQuery()));
+    }
+
+    @Override
+    public List<Integer> getRunningTaskIds() {
+        SearchResponse sr = client.prepareSearch(getIndex())
+                .setTypes(getType())
+                .setSize(0)
+                .setQuery(QueryBuilders.matchAllQuery())
+                .addAggregation(AggregationBuilders.terms("tasks").field("taskIds"))
+                .get();
+
+        List<Integer> result = Lists.newArrayList();
+
+        Terms tasks = sr.getAggregations().get("tasks");
+        for (Terms.Bucket entry : tasks.getBuckets()) {
+            result.add(((Long)entry.getKey()).intValue());
+        }
+        Collections.sort(result);
+        return result;
     }
 
     @Override

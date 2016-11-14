@@ -23,6 +23,7 @@ public class Analyst {
     private int threadsUsed;
     private int queueSize;
     private long updatedTime;
+    private List<Integer> taskIds;
 
     public String getId() {
         return id;
@@ -138,6 +139,15 @@ public class Analyst {
 
     public Analyst setUpdatedTime(long updatedTime) {
         this.updatedTime = updatedTime;
+        return this;
+    }
+
+    public List<Integer> getTaskIds() {
+        return taskIds;
+    }
+
+    public Analyst setTaskIds(List<Integer> taskIds) {
+        this.taskIds = taskIds;
         return this;
     }
 

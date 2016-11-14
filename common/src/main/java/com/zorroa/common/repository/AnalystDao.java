@@ -20,6 +20,8 @@ public interface AnalystDao {
 
     long count();
 
+    List<Integer> getRunningTaskIds();
+
     PagedList<Analyst> getAll(Pager paging);
 
     List<Analyst> getActive(Pager paging);

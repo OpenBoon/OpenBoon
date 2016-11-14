@@ -14,6 +14,7 @@ public class AnalystUpdateBuilder {
     private int threadsUsed;
     private int queueSize;
     private long updatedTime;
+    private List<Integer> taskIds;
 
     public long getUpdatedTime() {
         return updatedTime;
@@ -67,6 +68,15 @@ public class AnalystUpdateBuilder {
 
     public AnalystUpdateBuilder setLoad(List<Float> load) {
         this.load = load;
+        return this;
+    }
+
+    public List<Integer> getTaskIds() {
+        return taskIds;
+    }
+
+    public AnalystUpdateBuilder setTaskIds(List<Integer> taskIds) {
+        this.taskIds = taskIds;
         return this;
     }
 }
