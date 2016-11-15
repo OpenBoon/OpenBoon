@@ -1,6 +1,7 @@
 package com.zorroa.analyst.service;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -147,6 +148,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setQueueSize(e.getQueue().size());
             builder.setThreadsUsed(e.getActiveCount());
             builder.setMetrics(fixedMdata);
+            builder.setTaskIds(ImmutableList.of());
             id = analystDao.register(builder);
             registered = true;
         }
