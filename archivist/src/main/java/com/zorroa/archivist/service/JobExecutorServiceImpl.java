@@ -126,6 +126,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             return;
         }
 
+        int taskCount = 0;
         Stopwatch timer = Stopwatch.createStarted();
         try {
             if (ArchivistConfiguration.unittest) {
@@ -142,6 +143,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
                         logger.debug("Starting: {}", Json.prettyString(task));
                     }
                     if (jobService.setTaskQueued(task)) {
+                        taskCount++;
                         dispatchQueue.execute(()-> {
                             try {
                                 analysts.execute(task);
@@ -163,7 +165,9 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
         }
         finally {
             beingScheduled.set(false);
-            logger.info("scheduling finished in {}ms", timer.elapsed(TimeUnit.MILLISECONDS));
+            if (taskCount > 0) {
+                logger.info("scheduled {} tasks in {}ms", taskCount, timer.elapsed(TimeUnit.MILLISECONDS));
+            }
         }
     }
 
