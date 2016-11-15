@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class AnalystServiceTests extends AbstractTest {
 
     AnalystBuilder ping;
-    String id = "f4f4fad5-7870-574d-9f84-ce52aeaa2229";
+
     @Before
     public void init() {
         ping = sendAnalystPing();
@@ -37,7 +37,8 @@ public class AnalystServiceTests extends AbstractTest {
 
     @Test
     public void testGetById() {
-        Analyst a = analystService.get(id);
-        assertEquals(ping.getUrl(), a.getUrl());
+        Analyst a1 = analystService.get(ping.getUrl());
+        Analyst a2 = analystService.get(a1.getId());
+        assertEquals(a1.getUrl(), a2.getUrl());
     }
 }

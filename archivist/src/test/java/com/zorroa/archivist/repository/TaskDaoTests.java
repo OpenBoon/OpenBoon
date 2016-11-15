@@ -182,10 +182,11 @@ public class TaskDaoTests extends AbstractTest {
     private void updateState(final long time, TaskState state) {
         jdbc.update(connection -> {
             PreparedStatement ps =
-                    connection.prepareStatement("UPDATE task SET time_state_change=?, int_state=? WHERE pk_task=?");
+                    connection.prepareStatement("UPDATE task SET time_ping=?, time_state_change=?, int_state=? WHERE pk_task=?");
             ps.setLong(1, time);
-            ps.setInt(2, state.ordinal());
-            ps.setInt(3, task.getTaskId());
+            ps.setLong(2, time);
+            ps.setInt(3, state.ordinal());
+            ps.setInt(4, task.getTaskId());
             return ps;
         });
     }
