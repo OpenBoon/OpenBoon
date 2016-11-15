@@ -36,7 +36,7 @@ public class AnalystDaoTests extends AbstractTest {
         builder.setMetrics(Maps.newHashMap());
         builder.setArch("osx");
         builder.setStartedTime(System.currentTimeMillis());
-        id = analystDao.register(builder);
+        id = analystDao.register("bilbo", builder);
         refreshIndex();
     }
 
@@ -56,7 +56,7 @@ public class AnalystDaoTests extends AbstractTest {
         builder.setArch("osx");
         builder.setStartedTime(System.currentTimeMillis());
 
-        String id = analystDao.register(builder);
+        String id = analystDao.register("charmander", builder);
         refreshIndex();
         Analyst a1 = analystDao.get(id);
         Analyst a2 = analystDao.get(builder.getUrl());

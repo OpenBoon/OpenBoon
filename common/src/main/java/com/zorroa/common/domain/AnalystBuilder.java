@@ -5,22 +5,12 @@ package com.zorroa.common.domain;
  */
 public class AnalystBuilder extends AnalystUpdateBuilder {
 
-    private String url;
     private boolean data;
     private long startedTime;
     private AnalystState state;
     private int threadCount;
     private String arch;
     private String os;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public AnalystBuilder setUrl(String url) {
-        this.url = url;
-        return this;
-    }
 
     public boolean isData() {
         return data;

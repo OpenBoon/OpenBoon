@@ -12,7 +12,7 @@ import java.util.List;
  * Created by chambers on 6/16/16.
  */
 public interface AnalystDao {
-    String register(AnalystBuilder builder);
+    String register(String id, AnalystBuilder builder);
 
     void update(String id, AnalystUpdateBuilder builder);
 

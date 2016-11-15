@@ -1,10 +1,12 @@
 package com.zorroa.analyst.service;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
 import com.zorroa.common.config.ApplicationProperties;
@@ -12,6 +14,7 @@ import com.zorroa.common.domain.AnalystBuilder;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.domain.AnalystUpdateBuilder;
 import com.zorroa.common.repository.AnalystDao;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +23,14 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +66,12 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)  {
+        determineUniqueId();
+        determineExternalHttpInterface();
+        startAsync();
+    }
+
+    private void determineExternalHttpInterface() {
         String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
         String addr = "127.0.0.1";
 
@@ -86,7 +93,33 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         System.setProperty("server.address", addr);
 
         logger.info("External {} interface: {}", protocol, url);
-        startAsync();
+    }
+
+    public void determineUniqueId() {
+        File keyFile =new File("analyst.key");
+        if (!keyFile.exists()) {
+            try {
+                Files.write(UUID.randomUUID().toString().replace("-", "").getBytes(), keyFile);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to write unique key to file: " + keyFile.getName(), e);
+            }
+        }
+
+        try {
+            id = Files.readFirstLine(keyFile, Charsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to read unique key from file: " + keyFile.getName(), e);
+        }
+
+        if (id == null) {
+            throw new RuntimeException("Unable to determine analyst ID");
+        }
+
+        if (!StringUtils.isAlphanumeric(id) || id.length() > 32) {
+            throw new RuntimeException("Invalid analyst id: '" +
+                    id + "', must be alpha numeric string of 32 chars or less.");
+        }
+        logger.info("Analyst ID: {}", id);
     }
 
     @Override
@@ -149,11 +182,12 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setThreadsUsed(e.getActiveCount());
             builder.setMetrics(fixedMdata);
             builder.setTaskIds(ImmutableList.of());
-            id = analystDao.register(builder);
+            id = analystDao.register(id, builder);
             registered = true;
         }
         else if (id != null) {
             AnalystUpdateBuilder update = new AnalystUpdateBuilder();
+            update.setUrl(url);
             update.setUpdatedTime(System.currentTimeMillis());
             update.setState(AnalystState.UP);
             update.setLoad(load);

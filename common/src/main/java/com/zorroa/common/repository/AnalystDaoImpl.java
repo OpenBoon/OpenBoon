@@ -41,8 +41,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public String register(AnalystBuilder builder)  {
-        String id = uuidGenerator.generate(builder.getUrl()).toString();
+    public String register(String id, AnalystBuilder builder)  {
         byte[] doc = Json.serialize(builder);
         return elastic.index(client.prepareIndex(getIndex(), getType(), id)
                 .setSource(doc)

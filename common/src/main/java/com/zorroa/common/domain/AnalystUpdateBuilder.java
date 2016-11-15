@@ -8,6 +8,7 @@ import java.util.Map;
  */
 public class AnalystUpdateBuilder {
 
+    private String url;
     private AnalystState state;
     private List<Float> load;
     private Map<String, Object> metrics;
@@ -15,6 +16,15 @@ public class AnalystUpdateBuilder {
     private int queueSize;
     private long updatedTime;
     private List<Integer> taskIds;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public AnalystUpdateBuilder setUrl(String url) {
+        this.url = url;
+        return this;
+    }
 
     public long getUpdatedTime() {
         return updatedTime;
