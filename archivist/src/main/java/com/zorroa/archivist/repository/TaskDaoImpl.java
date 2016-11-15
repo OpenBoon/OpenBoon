@@ -304,7 +304,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "AND " +
                 "task.int_state IN (1, 2) " +
             "AND " +
-                "task.time_updated < ? " +
+                "task.time_ping < ? " +
             "LIMIT ? ";
 
     @Override
@@ -383,6 +383,10 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
     @Override
     public int updatePingTime(List<Integer> taskIds) {
+        if (taskIds.isEmpty()) {
+            return 0;
+        }
+
         final long time = System.currentTimeMillis();
         return jdbc.batchUpdate(UPDATE_PING, new BatchPreparedStatementSetter() {
             @Override
