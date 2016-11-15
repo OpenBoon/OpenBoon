@@ -25,9 +25,7 @@ public class SpringApplicationProperties implements ApplicationProperties {
 
     public SpringApplicationProperties() { }
 
-    public <T> T get(String key, Class<T> type) {
-        return (T) env.getProperty(key, type);
-    }
+    public <T> T get(String key, Class<T> type) { return env.getProperty(key, type); }
 
     public <T> T get(String key, T def) {
         T val = (T) env.getProperty(key, def.getClass());
@@ -42,7 +40,7 @@ public class SpringApplicationProperties implements ApplicationProperties {
         if (result == null) {
             throw new ApplicationPropertiesException("Configuration key not found: '" + key + "'");
         }
-        return result;
+        return result.trim();
     }
 
     public String getString(String key, String def) {
@@ -50,7 +48,7 @@ public class SpringApplicationProperties implements ApplicationProperties {
         if (result == null) {
             return def;
         }
-        return result;
+        return result.trim();
     }
 
     @Override
@@ -64,7 +62,7 @@ public class SpringApplicationProperties implements ApplicationProperties {
         if (result == null) {
             throw new ApplicationPropertiesException("Configuration key not found: '" + key + "'");
         }
-        return FileUtils.normalize(Paths.get(result));
+        return FileUtils.normalize(Paths.get(result.trim()));
     }
 
     @Override
@@ -73,7 +71,7 @@ public class SpringApplicationProperties implements ApplicationProperties {
         if (result == null) {
             return path;
         }
-        return FileUtils.normalize(Paths.get(result));
+        return FileUtils.normalize(Paths.get(result.trim()));
     }
 
     public int getInt(String key) {
@@ -106,7 +104,6 @@ public class SpringApplicationProperties implements ApplicationProperties {
         } catch (Throwable t) {
             return def;
         }
-
     }
 
     public double getDouble(String key, double def) {
