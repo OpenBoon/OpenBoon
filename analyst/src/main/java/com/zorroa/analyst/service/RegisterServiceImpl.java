@@ -158,6 +158,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             update.setQueueSize(e.getQueue().size());
             update.setThreadsUsed(e.getActiveCount());
             update.setMetrics(fixedMdata);
+            update.setTaskIds(processManagerService.getTaskIds());
             analystDao.update(id, update);
         }
 

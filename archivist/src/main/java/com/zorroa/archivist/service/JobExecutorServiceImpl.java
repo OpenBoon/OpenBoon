@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.util.concurrent.AbstractScheduledService;
@@ -12,6 +13,7 @@ import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
+import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
@@ -50,6 +52,9 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
     @Autowired
     AnalystService analystService;
+
+    @Autowired
+    AnalystDao analystDao;
 
     @Autowired
     TaskDao taskDao;
@@ -95,8 +100,16 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
     @Override
     protected void runOneIteration() throws Exception {
-        schedule();
-        checkForExpired();
+        /**
+         * Note that, if this function throws then scheduling will stop
+         * so just in case we're not letting anything bubble up from here.
+         */
+        try {
+            schedule();
+            checkForExpired();
+        } catch (Exception e) {
+            logger.warn("Job executor failed to schedule tasks, ", e);
+        }
     }
 
     @Override
@@ -113,6 +126,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             return;
         }
 
+        Stopwatch timer = Stopwatch.createStarted();
         try {
             if (ArchivistConfiguration.unittest) {
                 unittestSchedule();
@@ -148,8 +162,8 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             logger.warn("Failed to run schedule,", e);
         }
         finally {
-            logger.debug("scheduling finished.");
             beingScheduled.set(false);
+            logger.info("scheduling finished in {}ms", timer.elapsed(TimeUnit.MILLISECONDS));
         }
     }
 
@@ -216,7 +230,8 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
      * TODO: may need to verify with analyst that its still around.
      */
     public void checkForExpired() {
-        List<Task> expired = taskDao.getOrphanTasks(10, 30, TimeUnit.MINUTES);
+        jobService.updatePingTime(analystDao.getRunningTaskIds());
+        List<Task> expired = taskDao.getOrphanTasks(1, 30, TimeUnit.MINUTES);
         if (!expired.isEmpty()) {
             logger.warn("Found {} expired tasks!", expired.size());
             for (Task task : expired) {

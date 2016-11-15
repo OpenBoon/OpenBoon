@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -58,6 +59,11 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
      * Maintains a list of running processes.
      */
     private final ConcurrentMap<Integer, AnalystProcess> processMap = Maps.newConcurrentMap();
+
+    @Override
+    public List<Integer> getTaskIds() {
+        return ImmutableList.copyOf(processMap.keySet());
+    }
 
     @Override
     public boolean stopTask(ExecuteTaskStop stop) {
