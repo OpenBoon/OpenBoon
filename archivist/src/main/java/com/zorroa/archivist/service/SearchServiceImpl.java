@@ -190,6 +190,12 @@ public class SearchServiceImpl implements SearchService {
             request.setAggregations(getAggregations(search));
         }
 
+        if (search.getPostFilter() != null) {
+            BoolQueryBuilder query = QueryBuilders.boolQuery();
+            applyFilterToQuery(search.getPostFilter(), query);
+            request.setPostFilter(query);
+        }
+
         if (search.getScroll()!= null) {
             if (search.getScroll().getTimeout() != null) {
                 request.setScroll(search.getScroll().getTimeout());
