@@ -36,6 +36,7 @@ public class AnalystDaoTests extends AbstractTest {
         builder.setMetrics(Maps.newHashMap());
         builder.setArch("osx");
         builder.setStartedTime(System.currentTimeMillis());
+        builder.setUpdatedTime(System.currentTimeMillis());
         id = analystDao.register("bilbo", builder);
         refreshIndex();
     }
@@ -79,5 +80,24 @@ public class AnalystDaoTests extends AbstractTest {
 
         List<Integer> taskIds = analystDao.getRunningTaskIds();
         assertEquals(taskIds, builder.getTaskIds());
+    }
+
+    @Test
+    public void testGetUnresponsive() throws InterruptedException {
+        List<Analyst> result = analystDao.getUnresponsive(10, 1000);
+        assertEquals(0, result.size());
+
+        Thread.sleep(1000);
+        result = analystDao.getUnresponsive(10, 1000);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    public void testSetState()  {
+        List<Analyst> all = analystDao.getActive(Pager.first());
+        assertEquals(1, all.size());
+        analystDao.setState(id, AnalystState.DOWN);
+        all = analystDao.getActive(Pager.first());
+        assertEquals(0, all.size());
     }
 }

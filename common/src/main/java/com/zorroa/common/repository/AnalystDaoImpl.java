@@ -2,6 +2,7 @@ package com.zorroa.common.repository;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystBuilder;
@@ -57,6 +58,14 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 .get();
     }
 
+    @Override
+    public void setState(String id, AnalystState state) {
+        client.prepareUpdate(getIndex(), getType(), id)
+                .setDoc(ImmutableMap.of("state", state.ordinal()))
+                .setRefresh(true)
+                .get();
+    }
+
     private static final JsonRowMapper<Analyst> MAPPER =
             (id, version, source) -> Json.deserialize(source, Analyst.class).setId(id);
 
@@ -105,6 +114,20 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 .setSize(page.getSize())
                 .setFrom(page.getFrom())
                 .setQuery(QueryBuilders.matchAllQuery()), page, MAPPER);
+    }
+
+    @Override
+    public List<Analyst> getUnresponsive(int limit, long duration) {
+        QueryBuilder query =
+                QueryBuilders.boolQuery()
+                        .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()))
+                        .must(QueryBuilders.rangeQuery("updatedTime").lt(System.currentTimeMillis() - duration));
+
+        return elastic.query(client.prepareSearch(getIndex())
+                .setTypes(getType())
+                .setSize(limit)
+                .setFrom(0)
+                .setQuery(query), MAPPER);
     }
 
     @Override

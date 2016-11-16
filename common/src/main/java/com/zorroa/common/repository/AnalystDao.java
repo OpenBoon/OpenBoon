@@ -2,6 +2,7 @@ package com.zorroa.common.repository;
 
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.domain.AnalystUpdateBuilder;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -16,6 +17,8 @@ public interface AnalystDao {
 
     void update(String id, AnalystUpdateBuilder builder);
 
+    void setState(String id, AnalystState state);
+
     Analyst get(String id);
 
     long count();
@@ -23,6 +26,16 @@ public interface AnalystDao {
     List<Integer> getRunningTaskIds();
 
     PagedList<Analyst> getAll(Pager paging);
+
+    /**
+     * Return a list of analysts that are in the UP state but are not updating
+     * their data at regular intervals.
+     *
+     * @param limit
+     * @param duration
+     * @return
+     */
+    List<Analyst> getUnresponsive(int limit, long duration);
 
     List<Analyst> getActive(Pager paging);
 
