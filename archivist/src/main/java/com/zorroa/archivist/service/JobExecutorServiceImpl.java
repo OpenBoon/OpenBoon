@@ -105,8 +105,9 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
          * so just in case we're not letting anything bubble up from here.
          */
         try {
+            checkForUnresponsiveAnalysts();
+            checkForExpiredTasks();
             schedule();
-            checkForExpired();
         } catch (Exception e) {
             logger.warn("Job executor failed to schedule tasks, ", e);
         }
@@ -233,7 +234,21 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
      *
      * TODO: may need to verify with analyst that its still around.
      */
-    public void checkForExpired() {
+    public void checkForUnresponsiveAnalysts() {
+        long timeout = properties.getInt("archivist.maintenance.analyst.inactiveTimeoutSeconds") * 1000L;
+        for (Analyst a: analystDao.getUnresponsive(25, timeout)) {
+            logger.warn("Setting analyst {}/{} to DOWN state", a.getUrl(), a.getId());
+            analystDao.setState(a.getId(), AnalystState.DOWN);
+        }
+    }
+
+    /**
+     * Look for tasks that have been queued or running for 30 minutes and reset them
+     * back to waiting.
+     *
+     * TODO: may need to verify with analyst that its still around.
+     */
+    public void checkForExpiredTasks() {
         jobService.updatePingTime(analystDao.getRunningTaskIds());
         List<Task> expired = taskDao.getOrphanTasks(1, 30, TimeUnit.MINUTES);
         if (!expired.isEmpty()) {
