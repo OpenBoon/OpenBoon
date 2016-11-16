@@ -246,6 +246,9 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
 
     @Override
     public void updateTaskStateCounts(TaskId task, TaskState newState, TaskState expect) {
+        if (newState.equals(expect)) {
+            return;
+        }
         /**
          * TODO: implement as a trigger!
          */

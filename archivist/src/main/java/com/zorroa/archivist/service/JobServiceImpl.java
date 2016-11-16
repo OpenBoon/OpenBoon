@@ -237,6 +237,10 @@ public class JobServiceImpl implements JobService {
          */
         TaskState oldState = taskDao.getState(task, true);
 
+        if (oldState.equals(newState)) {
+            return false;
+        }
+
         if (taskDao.setState(task, newState, expect)) {
             jobDao.updateTaskStateCounts(task, newState, oldState);
             return true;
