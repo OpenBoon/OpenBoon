@@ -69,14 +69,6 @@ public class JobServiceTests extends AbstractTest {
     }
 
     @Test
-    public void cancelAndRestart() {
-        assertTrue(jobService.cancel(job));
-        assertFalse(jobService.cancel(job));
-        assertTrue(jobService.restart(job));
-        assertFalse(jobService.restart(job));
-    }
-
-    @Test
     public void setTaskState() {
 
         assertEquals(0, job.getCounts().getTasksRunning());

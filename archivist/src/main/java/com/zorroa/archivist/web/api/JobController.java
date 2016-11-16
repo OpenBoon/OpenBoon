@@ -4,6 +4,7 @@ import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobFilter;
 import com.zorroa.archivist.domain.JobSpecV;
+import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.PagedList;
@@ -26,14 +27,17 @@ public class JobController {
     @Autowired
     JobService jobService;
 
+    @Autowired
+    JobExecutorService jobExecutorService;
+
     @RequestMapping(value="/api/v1/jobs/{id}/_cancel", method = RequestMethod.PUT)
     public Object cancel(@PathVariable Integer id) throws IOException {
-        return HttpUtils.status("job", id, "cancel", jobService.cancel(() -> id));
+        return HttpUtils.status("job", id, "cancel", jobExecutorService.cancelJob(() -> id));
     }
 
     @RequestMapping(value="/api/v1/jobs/{id}/_restart", method = RequestMethod.PUT)
     public Object restart(@PathVariable Integer id) throws IOException {
-        return HttpUtils.status("job", id, "restart", jobService.restart(() -> id));
+        return HttpUtils.status("job", id, "restart", jobExecutorService.restartJob(() -> id));
     }
 
     @RequestMapping(value="/api/v1/jobs/{id}", method = RequestMethod.GET)

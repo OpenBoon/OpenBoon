@@ -176,28 +176,6 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean cancel(JobId job) {
-        if (jobDao.setState(job, JobState.Cancelled, JobState.Active)) {
-            event.afterCommit(()->
-                    message.broadcast(new Message("JOB_CANCELED",
-                            ImmutableMap.of("id", job.getJobId()))));
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean restart(JobId job) {
-        if (jobDao.setState(job, JobState.Active, JobState.Cancelled)) {
-            event.afterCommit(()->
-                    message.broadcast(new Message("JOB_RESTARTED",
-                            ImmutableMap.of("id", job.getJobId()))));
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean createParentDepend(TaskId task) {
         return taskDao.createParentDepend(task);
     }
@@ -230,6 +208,17 @@ public class JobServiceImpl implements JobService {
     @Override
     public Job get(int id) {
         return jobDao.get(id);
+    }
+
+    @Override
+    public boolean setJobState(JobId job, JobState newState, JobState oldState) {
+        boolean result = jobDao.setState(job, newState, oldState);
+        if (result) {
+            event.afterCommit(()->
+                    message.broadcast(new Message("JOB_CANCELED",
+                            ImmutableMap.of("id", job.getJobId()))));
+        }
+        return result;
     }
 
     @Override

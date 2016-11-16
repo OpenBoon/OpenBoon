@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.common.domain.ExecuteTaskResponse;
+import com.zorroa.common.domain.JobId;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -23,4 +24,8 @@ public interface JobExecutorService {
 
     @Async
     void skipTask(Task task);
+
+    boolean cancelJob(JobId job);
+
+    boolean restartJob(JobId job);
 }

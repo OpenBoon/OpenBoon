@@ -3,11 +3,14 @@ package com.zorroa.archivist.service;
 import com.google.common.base.Stopwatch;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.domain.Task;
+import com.zorroa.archivist.domain.TaskFilter;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -280,6 +283,22 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
         else {
             jobService.setTaskState(task, TaskState.Skipped);
         }
+    }
+
+    @Override
+    public boolean cancelJob(JobId job) {
+        boolean result = jobService.setJobState(job, JobState.Cancelled, JobState.Active);
+
+        for (Task task: taskDao.getAll(job.getJobId(),
+                new TaskFilter().setStates(ImmutableSet.of(TaskState.Queued, TaskState.Running)))) {
+            skipTask(task);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean restartJob(JobId job) {
+        return jobService.setJobState(job, JobState.Active, JobState.Cancelled);
     }
 
     public void killRunningTaskOnAnalyst(Task task, TaskState newState) {

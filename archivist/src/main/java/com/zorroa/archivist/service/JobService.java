@@ -23,22 +23,6 @@ public interface JobService {
      */
     Job launch(JobSpec spec);
 
-    /**
-     * Cancel the given job.  The job can be restarted.
-     *
-     * @param job
-     * @return
-     */
-    boolean cancel(JobId job);
-
-    /**
-     * Restart a canceled job.
-     *
-     * @param job
-     * @return
-     */
-    boolean restart(JobId job);
-
     boolean createParentDepend(TaskId task);
 
     Task expand(ExecuteTaskExpand task);
@@ -58,6 +42,16 @@ public interface JobService {
      * @return
      */
     Job get(int id);
+
+    /**
+     * Set the state of a given job.
+     *
+     * @param job
+     * @param newState
+     * @param oldState
+     * @return
+     */
+    boolean setJobState(JobId job, JobState newState, JobState oldState);
 
     boolean setTaskState(TaskId task, TaskState newState);
 

@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 7/12/16.
@@ -144,4 +146,24 @@ public class JobExecutorServiceTests extends AbstractTest {
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(1, dependCount);
     }
+
+    @Test
+    public void cancelAndRestart() {
+        JobSpec spec = new JobSpec();
+        spec.setName("foo-bar");
+        spec.setType(PipelineType.Import);
+
+        TaskSpec tspec = new TaskSpec();
+        tspec.setScript(new ZpsScript());
+        tspec.setName("a task");
+        spec.setTasks(Lists.newArrayList(tspec));
+
+        Job job = jobService.launch(spec);
+
+        assertTrue(jobExecutorService.cancelJob(job));
+        assertFalse(jobExecutorService.cancelJob(job));
+        assertTrue(jobExecutorService.restartJob(job));
+        assertFalse(jobExecutorService.restartJob(job));
+    }
+
 }
