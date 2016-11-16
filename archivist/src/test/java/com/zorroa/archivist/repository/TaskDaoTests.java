@@ -219,10 +219,10 @@ public class TaskDaoTests extends AbstractTest {
     }
 
     @Test
-    public void testUpdatePingTime() {
+    public void testUpdatePingTime() throws InterruptedException {
         long timeA = jdbc.queryForObject(
                 "SELECT time_ping FROM task WHERE pk_task=?", Long.class, task.getTaskId());
-
+        Thread.sleep(100);
         taskDao.updatePingTime(ImmutableList.of(task.getTaskId()));
 
         long timeB = jdbc.queryForObject(
