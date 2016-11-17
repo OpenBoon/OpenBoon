@@ -37,14 +37,13 @@ public class ApiExceptionHandler {
         } catch (ArchivistException e) {
             throw e;
         } catch (EmptyResultDataAccessException e) {
-            logStackTrace(e);
             throw new MissingElementException(e.getMessage());
         }
         catch (DataIntegrityViolationException e) {
-            logStackTrace(e);
             throw new DuplicateElementException(e.getMessage());
         }
         catch (Exception e) {
+            logStackTrace(e);
             throw new ArchivistException(e);
         }
     }
