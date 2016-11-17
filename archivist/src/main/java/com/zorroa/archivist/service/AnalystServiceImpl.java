@@ -7,7 +7,6 @@ import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +22,6 @@ public class AnalystServiceImpl implements AnalystService {
 
     @Autowired
     ApplicationProperties properties;
-
-    @Value("${archivist.scheduler.maxQueueSize}")
-    private int maxQueueSize;
 
     @Override
     public Analyst get(String url) {
@@ -57,7 +53,10 @@ public class AnalystServiceImpl implements AnalystService {
     @Override
     public AnalystClient getAnalystClient() {
         AnalystClient client = new AnalystClient();
-        for (Analyst a : analystDao.getActive(new Pager(1, 5), maxQueueSize)) {
+        for (Analyst a : analystDao.getReady(Pager.first(10))) {
+            if (a.getUrl() == null) {
+                continue;
+            }
             client.getLoadBalancer().addHost(a.getUrl());
         }
         return client;

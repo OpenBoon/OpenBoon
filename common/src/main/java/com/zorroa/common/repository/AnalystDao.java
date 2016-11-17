@@ -39,5 +39,5 @@ public interface AnalystDao {
 
     List<Analyst> getActive(Pager paging);
 
-    List<Analyst> getActive(Pager paging, int maxQueueSize);
+    List<Analyst> getReady(Pager paging);
 }

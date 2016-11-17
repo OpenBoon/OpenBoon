@@ -1,9 +1,9 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.ArchivistConfiguration;
@@ -19,8 +19,6 @@ import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.processor.SharedData;
-import com.zorroa.sdk.util.Json;
-import org.apache.http.HttpHost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +28,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.*;
 
 /**
  * JobExecutorService is responsible for pulling tasks out of elastic and
@@ -77,22 +71,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     @Autowired
     UserDao userDao;
 
-    /**
-     * Will be true if the scheduler is working.
-     */
-    private final AtomicBoolean beingScheduled = new AtomicBoolean(false);
-
-    /**
-     * A place to queue up requests to run the scheduler when a job
-     * is expanded.  Never run the scheduler from more than 1 thread.
-     */
-    private final ExecutorService scheduleNow = Executors.newSingleThreadExecutor();
-
-    /**
-     * A thread pool for sending out tasks so we don't block the scheduler
-     * on network I/O.
-     */
-    private final ExecutorService dispatchQueue = Executors.newFixedThreadPool(4);
+    private final ExecutorService commandQueue = Executors.newSingleThreadExecutor();
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -110,69 +89,25 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
         try {
             checkForUnresponsiveAnalysts();
             checkForExpiredTasks();
-            schedule();
         } catch (Exception e) {
             logger.warn("Job executor failed to schedule tasks, ", e);
         }
     }
 
     @Override
-    public void queueSchedule() {
-        if (!beingScheduled.get()) {
-            scheduleNow.execute(() -> schedule());
-        }
+    public Future<List<ExecuteTaskStart>> queueWaitingTasks(ExecuteTaskRequest req) {
+        return commandQueue.submit(() -> getWaitingTasks(req));
     }
 
     @Override
-    public void schedule() {
-
-        if (!beingScheduled.compareAndSet(false, true)) {
-            return;
-        }
-
-        int taskCount = 0;
-        Stopwatch timer = Stopwatch.createStarted();
-        try {
-            if (ArchivistConfiguration.unittest) {
-                unittestSchedule();
-            } else {
-                AnalystClient analysts = analystService.getAnalystClient();
-                if (!analysts.getLoadBalancer().hasHosts()) {
-                    logger.debug("No analysts available for running tasks.");
-                    return;
-                }
-
-                for (ExecuteTaskStart task : taskDao.getWaiting(10)) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Starting: {}", Json.prettyString(task));
-                    }
-                    if (jobService.setTaskQueued(task)) {
-                        taskCount++;
-                        dispatchQueue.execute(()-> {
-                            try {
-                                analysts.execute(task);
-                                HttpHost host = analysts.getLoadBalancer().lastHost();
-                                if (host != null) {
-                                    jobService.setHost(task, host.toString());
-                                }
-                            } catch (Exception e) {
-                                logger.warn("Failed to dispatch task: ", e);
-                                jobService.setTaskState(task, TaskState.Waiting, TaskState.Queued);
-                            }
-                        });
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // don't let this function exit with an exception.
-            logger.warn("Failed to run schedule,", e);
-        }
-        finally {
-            beingScheduled.set(false);
-            if (taskCount > 0) {
-                logger.info("scheduled {} tasks in {}ms", taskCount, timer.elapsed(TimeUnit.MILLISECONDS));
+    public List<ExecuteTaskStart> getWaitingTasks(ExecuteTaskRequest req) {
+        List<ExecuteTaskStart> result = Lists.newArrayListWithCapacity(req.getCount());
+        for (ExecuteTaskStart task : taskDao.getWaiting(req.getCount())) {
+            if (jobService.setTaskQueued(task, req.getUrl())) {
+                result.add(task);
             }
         }
+        return result;
     }
 
     private final Cache<Integer, SynchronousQueue<Object>> returnQueue = CacheBuilder.newBuilder()
@@ -199,7 +134,6 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     @Override
     public Object waitOnResponse(Job job) {
         returnQueue.put(job.getId(), new SynchronousQueue<>());
-        queueSchedule();
 
         /*
          * Wait for the job to complete and submit and object.
@@ -208,26 +142,6 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             return returnQueue.asMap().get(job.getId()).poll(30, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             throw new ArchivistReadException("Failed waiting on response, ", e);
-        }
-    }
-
-    /**
-     * Called by unit tests.
-     */
-    public void unittestSchedule() {
-        for (ExecuteTaskStart task: taskDao.getWaiting(10)) {
-            logger.debug("SCHEDULE");
-            logger.debug("{}", Json.prettyString(task));
-            logger.debug("SCHEDULE");
-
-            if (!jobService.setTaskState(task, TaskState.Queued, TaskState.Waiting)) {
-                throw new RuntimeException("Failed to queue task");
-            }
-
-            if (!jobService.setTaskState(task, TaskState.Running, TaskState.Queued)) {
-                logger.warn("Failed to set task running: {}", task);
-                throw new RuntimeException("Failed to run task");
-            }
         }
     }
 
@@ -315,6 +229,6 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(10, 5, TimeUnit.SECONDS);
+        return Scheduler.newFixedRateSchedule(10, 2, TimeUnit.SECONDS);
     }
 }

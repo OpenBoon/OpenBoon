@@ -259,6 +259,15 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public boolean setTaskQueued(TaskId script, String host) {
+        if (setTaskState(script, TaskState.Queued, TaskState.Waiting)) {
+            taskDao.setHost(script, host);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean setTaskCompleted(ExecuteTaskStopped result) {
         TaskState newState = result.getNewState();
         if (setTaskState(result, newState, TaskState.Running, TaskState.Queued)) {

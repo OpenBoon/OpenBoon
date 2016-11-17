@@ -119,6 +119,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             throw new RuntimeException("Invalid analyst id: '" +
                     id + "', must be alpha numeric string of 32 chars or less.");
         }
+        System.setProperty("analyst.id", id);
         logger.info("Analyst ID: {}", id);
     }
 
@@ -182,6 +183,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setThreadsUsed(e.getActiveCount());
             builder.setMetrics(fixedMdata);
             builder.setTaskIds(ImmutableList.of());
+            builder.setRemainingCapacity(e.getQueue().remainingCapacity());
             id = analystDao.register(id, builder);
             registered = true;
         }
@@ -193,6 +195,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             update.setLoad(load);
             update.setQueueSize(e.getQueue().size());
             update.setThreadsUsed(e.getActiveCount());
+            update.setRemainingCapacity(e.getQueue().remainingCapacity());
             update.setMetrics(fixedMdata);
             update.setTaskIds(processManagerService.getTaskIds());
             analystDao.update(id, update);

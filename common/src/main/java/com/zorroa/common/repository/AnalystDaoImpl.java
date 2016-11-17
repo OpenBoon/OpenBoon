@@ -145,11 +145,11 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public List<Analyst> getActive(Pager paging, int maxQueueSize) {
+    public List<Analyst> getReady(Pager paging) {
         QueryBuilder query =
                 QueryBuilders.boolQuery()
                         .must(QueryBuilders.termQuery("state", AnalystState.UP.ordinal()))
-                        .must(QueryBuilders.rangeQuery("queueSize").lt(maxQueueSize));
+                        .must(QueryBuilders.rangeQuery("remainingCapacity").gt(0));
 
         return elastic.query(client.prepareSearch(getIndex())
                 .setTypes(getType())

@@ -6,6 +6,7 @@ import org.apache.http.HttpHost;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -25,10 +26,10 @@ public class LoadBalancer {
     private Strategy strategy = Strategy.RoundRobin;
     private final AtomicInteger requestCount = new AtomicInteger();
 
-    private final List<HttpHost> hosts =  Lists.newArrayList();
-    private final List<HttpHost> downHosts =  Lists.newArrayList();
+    private final List<HttpHost> hosts =  Collections.synchronizedList(Lists.newArrayList());
+    private final List<HttpHost> downHosts = Collections.synchronizedList(Lists.newArrayList());
 
-    private final Map<Long, HttpHost> lastHost = Maps.newHashMap();
+    private final Map<Long, HttpHost> lastHost = Maps.newConcurrentMap();
 
     public LoadBalancer() {
     }
@@ -62,6 +63,14 @@ public class LoadBalancer {
         HttpHost _host = new HttpHost(host, port, protocol.toString());
         hosts.add(_host);
         return _host;
+    }
+
+    public boolean removeLastHost() {
+        HttpHost host = lastHost.get(Thread.currentThread().getId());
+        if (host == null) {
+            return false;
+        }
+        return hosts.remove(host);
     }
 
     public HttpHost lastHost() {

@@ -4,19 +4,15 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.ExecuteTask;
-import com.zorroa.common.domain.ExecuteTaskExpand;
-import com.zorroa.common.domain.ExecuteTaskStopped;
-import com.zorroa.common.domain.TaskState;
+import com.zorroa.archivist.repository.TaskDao;
+import com.zorroa.common.domain.*;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 7/12/16.
@@ -28,6 +24,9 @@ public class JobExecutorServiceTests extends AbstractTest {
 
     @Autowired
     JobService jobService;
+
+    @Autowired
+    TaskDao taskDao;
 
     @Test
     public void testEndToEndScheduleWithExpand() {
@@ -45,7 +44,8 @@ public class JobExecutorServiceTests extends AbstractTest {
         assertEquals(0, job.getCounts().getTasksRunning());
         assertEquals(0, job.getCounts().getTasksQueued());
         assertEquals(1, job.getCounts().getTasksWaiting());
-        jobExecutorService.schedule();
+
+        unittestSchedule();
 
         job = jobService.get(job.getJobId());
         assertEquals(1, job.getCounts().getTasksRunning());
@@ -164,6 +164,26 @@ public class JobExecutorServiceTests extends AbstractTest {
         assertFalse(jobExecutorService.cancelJob(job));
         assertTrue(jobExecutorService.restartJob(job));
         assertFalse(jobExecutorService.restartJob(job));
+    }
+
+    /**
+     * Called by unit tests.
+     */
+    public void unittestSchedule() {
+        for (ExecuteTaskStart task: taskDao.getWaiting(10)) {
+            logger.debug("SCHEDULE");
+            logger.debug("{}", Json.prettyString(task));
+            logger.debug("SCHEDULE");
+
+            if (!jobService.setTaskState(task, TaskState.Queued, TaskState.Waiting)) {
+                throw new RuntimeException("Failed to queue task");
+            }
+
+            if (!jobService.setTaskState(task, TaskState.Running, TaskState.Queued)) {
+                logger.warn("Failed to set task running: {}", task);
+                throw new RuntimeException("Failed to run task");
+            }
+        }
     }
 
 }

@@ -37,6 +37,7 @@ public class AnalystDaoTests extends AbstractTest {
         builder.setArch("osx");
         builder.setStartedTime(System.currentTimeMillis());
         builder.setUpdatedTime(System.currentTimeMillis());
+        builder.setRemainingCapacity(1);
         id = analystDao.register("bilbo", builder);
         refreshIndex();
     }

@@ -14,6 +14,7 @@ public class AnalystUpdateBuilder {
     private Map<String, Object> metrics;
     private int threadsUsed;
     private int queueSize;
+    private int remainingCapacity;
     private long updatedTime;
     private List<Integer> taskIds;
 
@@ -87,6 +88,15 @@ public class AnalystUpdateBuilder {
 
     public AnalystUpdateBuilder setTaskIds(List<Integer> taskIds) {
         this.taskIds = taskIds;
+        return this;
+    }
+
+    public int getRemainingCapacity() {
+        return remainingCapacity;
+    }
+
+    public AnalystUpdateBuilder setRemainingCapacity(int remainingCapacity) {
+        this.remainingCapacity = remainingCapacity;
         return this;
     }
 }

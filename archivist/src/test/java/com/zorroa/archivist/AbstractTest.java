@@ -314,6 +314,7 @@ public abstract class AbstractTest {
         ping.setOs("test");
         ping.setArch("test_x86-64");
         ping.setThreadCount(2);
+        ping.setRemainingCapacity(1);
         return ping;
     }
 }

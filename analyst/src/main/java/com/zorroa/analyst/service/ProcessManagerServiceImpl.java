@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
@@ -18,6 +18,8 @@ import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -34,7 +36,8 @@ import java.util.concurrent.*;
  * Created by chambers on 2/8/16.
  */
 @Component
-public class ProcessManagerServiceImpl implements ProcessManagerService {
+public class ProcessManagerServiceImpl extends AbstractScheduledService
+        implements ProcessManagerService, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(ProcessManagerServiceImpl.class);
 
@@ -48,7 +51,7 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
     ApplicationProperties properties;
 
     @Autowired
-    ListeningExecutorService analyzeExecutor;
+    ThreadPoolExecutor analyzeExecutor;
 
     /**
      * Executor for handling task manipulation commands.
@@ -123,8 +126,14 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
 
     @Override
     public Future<AnalystProcess> execute(ExecuteTaskStart task, boolean async) {
+
+        /**
+         * The processes is added to the map first, this is because we also keep track
+         * of queued processes.
+         */
         AnalystProcess p = processMap.putIfAbsent(task.getTask().getTaskId(),
                 new AnalystProcess(task.getTask().getTaskId()));
+
         if (p != null) {
             /**
              * Not sure if we should return null here, or an exception.  Nothing gets
@@ -135,7 +144,12 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
         }
 
         if (async) {
-            return analyzeExecutor.submit(() -> execute(task));
+            try {
+                return analyzeExecutor.submit(() -> execute(task));
+            } catch (RejectedExecutionException ex){
+                processMap.remove(task.getTaskId());
+                throw new ClusterException("Analyst already has too many tasks queued.");
+            }
         }
         else {
             final AnalystProcess result = execute(task);
@@ -411,5 +425,44 @@ public class ProcessManagerServiceImpl implements ProcessManagerService {
                     .setSuccessCount(reaction.getStats().getSuccessCount())
                     .setWarningCount(reaction.getStats().getWarningCount()));
         }
+    }
+
+    @Override
+    protected void runOneIteration() throws Exception {
+        if (Application.isUnitTest()) {
+            return;
+        }
+
+        int total = analyzeExecutor.getQueue().remainingCapacity();
+        if (total < 1) {
+            return;
+        }
+
+        List<ExecuteTaskStart> tasks = archivistClient.queueNextTasks(new ExecuteTaskRequest()
+                .setId(System.getProperty("analyst.id"))
+                .setUrl(System.getProperty("server.url"))
+                .setCount(total));
+
+        if (!tasks.isEmpty()) {
+            for (ExecuteTaskStart task : tasks) {
+                try {
+                    execute(task, true);
+                } catch (Exception e) {
+                    logger.warn("Failed to queue task: {}", task, e);
+                    archivistClient.rejectTask(new ExecuteTaskStopped(
+                            task.getTask(), TaskState.Waiting));
+                }
+            }
+        }
+    }
+
+    @Override
+    protected Scheduler scheduler() {
+        return Scheduler.newFixedRateSchedule(5, 1, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        startAsync();
     }
 }

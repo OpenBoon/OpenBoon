@@ -7,6 +7,7 @@ import com.zorroa.common.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,5 +71,24 @@ public class ArchivistClient extends AbstractClient {
      */
     public void reportTaskStopped(ExecuteTaskStopped result) {
         Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_stopped", result);
+    }
+
+    /**
+     * Obtain enough tasks to fill the queue.
+     *
+     * @param req
+     */
+    public List<ExecuteTaskStart> queueNextTasks(ExecuteTaskRequest req) {
+        return Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_queue", req,
+                new TypeReference<List<ExecuteTaskStart>>() {});
+    }
+
+    /**
+     * Obtain enough tasks to fill the queue.
+     *
+     * @param req
+     */
+    public void rejectTask(ExecuteTaskStopped req) {
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/task/_reject", req);
     }
 }

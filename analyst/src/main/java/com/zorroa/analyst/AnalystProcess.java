@@ -76,7 +76,7 @@ public class AnalystProcess {
         return this;
     }
 
-    public Object getTaskId() {
+    public Integer getTaskId() {
         return taskId;
     }
 

@@ -20,8 +20,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 /**
  * Created by chambers on 2/12/16.
@@ -80,6 +79,7 @@ public class ApplicationConfig {
 
     @Bean
     public ThreadPoolExecutor analyzeThreadPool() {
+        int maxQueueSize = properties.getInt("analyst.executor.maxQueueSize");
         int threads = properties.getInt("analyst.executor.threads");
         if (threads == 0) {
             threads = Runtime.getRuntime().availableProcessors();
@@ -87,10 +87,15 @@ public class ApplicationConfig {
         else if (threads < 0) {
             threads = Runtime.getRuntime().availableProcessors() / 2;
         }
-        System.setProperty("analyst.executor.threads", String.valueOf(threads));
 
-        logger.info("Starting analyst with {} analyze threads", threads);
-        return (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
+        System.setProperty("analyst.executor.threads", String.valueOf(threads));
+        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>(maxQueueSize);
+
+        ThreadPoolExecutor tp = new ThreadPoolExecutor(threads, threads, 30,
+                TimeUnit.MINUTES, linkedBlockingDeque,
+                new ThreadPoolExecutor.AbortPolicy());
+
+        return tp;
     }
 
     @Bean

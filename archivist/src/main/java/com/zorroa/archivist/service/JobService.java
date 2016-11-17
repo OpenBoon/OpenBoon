@@ -81,6 +81,8 @@ public interface JobService {
      */
     boolean setTaskQueued(TaskId script);
 
+    boolean setTaskQueued(TaskId script, String host);
+
     /**
      * Update the task state to finished or succeeded based on the exit status.
      *

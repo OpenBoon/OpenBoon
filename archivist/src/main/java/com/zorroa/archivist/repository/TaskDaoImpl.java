@@ -269,7 +269,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "AND " +
                 "task.int_depend_count = 0 " +
             "ORDER BY " +
-                "task.int_order ASC LIMIT ? ";
+                "task.pk_task ASC LIMIT ? ";
     @Override
     public List<ExecuteTaskStart> getWaiting(int limit) {
         return jdbc.query(GET_WAITING, EXECUTE_TASK_MAPPER, limit);

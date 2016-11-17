@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.cluster;
 
+import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.domain.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,7 +71,6 @@ public class ClusterController {
     @RequestMapping(value="/cluster/v1/task/_expand", method=RequestMethod.POST)
     public void expand(@RequestBody ExecuteTaskExpand expand) {
         jobService.expand(expand);
-        jobExecutorService.queueSchedule();
     }
 
     /**
@@ -92,4 +93,27 @@ public class ClusterController {
         jobService.setTaskCompleted(result);
     }
 
+    /**
+     * Task was completed.
+     *
+     * @return
+     */
+    @RequestMapping(value="/cluster/v1/task/_queue", method=RequestMethod.POST)
+    public List<ExecuteTaskStart> queue(@RequestBody ExecuteTaskRequest req) {
+        try {
+            return jobExecutorService.queueWaitingTasks(req).get();
+        } catch (Exception e) {
+            return ImmutableList.of();
+        }
+    }
+
+    /**
+     * Task was completed.
+     *
+     * @return
+     */
+    @RequestMapping(value="/cluster/v1/task/_reject", method=RequestMethod.POST)
+    public void reject(@RequestBody ExecuteTaskStopped result) {
+        jobService.setTaskState(result, TaskState.Waiting, TaskState.Queued);
+    }
 }
