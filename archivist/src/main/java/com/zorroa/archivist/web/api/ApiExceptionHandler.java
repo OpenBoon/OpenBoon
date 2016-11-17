@@ -34,6 +34,8 @@ public class ApiExceptionHandler {
     public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
         try {
             return pjp.proceed();
+        } catch (ArchivistException e) {
+            throw e;
         } catch (EmptyResultDataAccessException e) {
             logStackTrace(e);
             throw new MissingElementException(e.getMessage());
