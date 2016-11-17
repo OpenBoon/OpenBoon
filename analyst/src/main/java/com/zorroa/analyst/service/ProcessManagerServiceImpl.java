@@ -438,21 +438,25 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             return;
         }
 
-        List<ExecuteTaskStart> tasks = archivistClient.queueNextTasks(new ExecuteTaskRequest()
-                .setId(System.getProperty("analyst.id"))
-                .setUrl(System.getProperty("server.url"))
-                .setCount(total));
+        try {
+            List<ExecuteTaskStart> tasks = archivistClient.queueNextTasks(new ExecuteTaskRequest()
+                    .setId(System.getProperty("analyst.id"))
+                    .setUrl(System.getProperty("server.url"))
+                    .setCount(total));
 
-        if (!tasks.isEmpty()) {
-            for (ExecuteTaskStart task : tasks) {
-                try {
-                    execute(task, true);
-                } catch (Exception e) {
-                    logger.warn("Failed to queue task: {}", task, e);
-                    archivistClient.rejectTask(new ExecuteTaskStopped(
-                            task.getTask(), TaskState.Waiting));
+            if (!tasks.isEmpty()) {
+                for (ExecuteTaskStart task : tasks) {
+                    try {
+                        execute(task, true);
+                    } catch (Exception e) {
+                        logger.warn("Failed to queue task: {}", task, e);
+                        archivistClient.rejectTask(new ExecuteTaskStopped(
+                                task.getTask(), TaskState.Waiting));
+                    }
                 }
             }
+        } catch (Exception e) {
+            logger.warn("Unable to contact Archivist for scheduling op, " + e.getMessage());
         }
     }
 
