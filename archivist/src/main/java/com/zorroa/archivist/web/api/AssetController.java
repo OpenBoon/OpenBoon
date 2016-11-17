@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.Note;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
+import com.zorroa.archivist.web.MultipartFileSender;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
@@ -23,21 +24,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 public class AssetController {
@@ -65,33 +62,27 @@ public class AssetController {
     @Autowired
     LogService logService;
 
-    /**
-     * Stream the given asset ID.
-     *
-     * @param response
-     * @return
-     * @throws ExecutionException
-     * @throws FileNotFoundException
-     */
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<InputStreamResource> streamAsset(@PathVariable String id, HttpServletResponse response) throws ExecutionException, IOException {
+    public void streamAsset(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         Asset asset = assetService.get(id);
 
-        /**
-         * Checks to see if the user can export this asset.
-         */
         if (!SecurityUtils.hasPermission("export", asset)) {
             throw new AccessDeniedException("export access denied");
         }
 
         logService.log(LogSpec.build(LogAction.Export, "asset", asset.getId()));
-
         File path = new File(asset.getAttr("source.path", String.class));
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf(asset.getAttr("source.mediaType", String.class)))
-                .contentLength(asset.getAttr("source.fileSize", Long.class))
-                .body(new InputStreamResource(new FileInputStream(path)));
+
+        try {
+            MultipartFileSender.fromPath(path.toPath())
+                    .with(request)
+                    .with(response)
+                    .setContentType(asset.getAttr("source.mediaType", String.class))
+                    .serveResource();
+        } catch (Exception e) {
+            logger.warn("MultipartFileSender failed, " + id);
+        }
     }
 
     @RequestMapping(value="/api/v1/assets/{id}/notes", method=RequestMethod.GET)
