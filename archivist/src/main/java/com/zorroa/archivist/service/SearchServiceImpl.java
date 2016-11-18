@@ -260,10 +260,10 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQuery(AssetSearch search) {
-        return getQuery(search, true);
+        return getQuery(search, true, false);
     }
 
-    private QueryBuilder getQuery(AssetSearch search, boolean perms) {
+    private QueryBuilder getQuery(AssetSearch search, boolean perms, boolean postFilter) {
         if (search == null) {
             return QueryBuilders.filteredQuery(
                     QueryBuilders.matchAllQuery(), SecurityUtils.getPermissionsFilter());
@@ -282,6 +282,18 @@ public class SearchServiceImpl implements SearchService {
         if (filter != null) {
             applyFilterToQuery(filter, query);
         }
+
+        // Folders apply their post filter, but the main search
+        // applies the post filter in the SearchRequest.
+        // Aggs will be limited to the folders (correct), but
+        // not to the filters in the top-level search.
+        if (postFilter) {
+            filter = search.getPostFilter();
+            if (filter != null) {
+                applyFilterToQuery(filter, query);
+            }
+        }
+
         return query;
     }
 
@@ -314,7 +326,7 @@ public class SearchServiceImpl implements SearchService {
                  * to smart folders, unless its to the smart query itself.
                  */
                 if (folder.getSearch() != null) {
-                    staticBool.should(getQuery(folder.getSearch(), false));
+                    staticBool.should(getQuery(folder.getSearch(), false, true));
                 }
 
                 /**
