@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -134,6 +135,28 @@ public class AssetDaoTests extends AbstractTest {
         assertEquals(0, links.size());
     }
 
+    @Test
+    public void testAppendPermission() {
+        assertTrue(assetDao.appendPermission("read", 1,
+                ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
+        Asset a = assetDao.get(asset1.getId());
+        assertEquals(ImmutableList.of(1), a.getAttr("permissions.read", List.class));
+    }
+
+    @Test
+    public void testRemovePermission() {
+        assertTrue(assetDao.appendPermission("read", 1,
+                ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
+
+        Asset a = assetDao.get(asset1.getId());
+        assertEquals(ImmutableList.of(1), a.getAttr("permissions.read", List.class));
+
+        assertTrue(assetDao.removePermission("read", 1,
+                ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
+
+        a = assetDao.get(asset1.getId());
+        assertEquals(ImmutableList.of(), a.getAttr("permissions.read", List.class));
+    }
     @Test
     public void testUpdate() {
         Map<String, Object> attrs = Maps.newHashMap();

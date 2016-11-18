@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.TestSearchResult;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.archivist.domain.UserSettings;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
@@ -28,8 +26,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AssetControllerTests extends MockMvcTest {
@@ -563,5 +560,75 @@ public class AssetControllerTests extends MockMvcTest {
         ArrayList<Map<String, Object>> hitAssets = (ArrayList<Map<String, Object>>)hits.get("hits");
         Map<String, Object> doc = (Map<String, Object>)hitAssets.get(0);
         assertEquals(asset.getId(), doc.get("_id"));
+    }
+
+    @Test
+    public void testAppendPermissions() throws Exception {
+
+        Permission p = userService.getPermission("user::admin");
+
+        MockHttpSession session = user();
+        addTestAssets("set04/standard");
+
+        ArrayList<String> assetIds = new ArrayList<>();
+        PagedList<Asset> assets = assetDao.getAll(Pager.first());
+        Asset asset = assets.get(0);
+        assetIds.add(asset.getId());
+
+        AssetPermissionUpdate apu = new AssetPermissionUpdate();
+        apu.setId(p.getId());
+        apu.setAssetIds(assetIds);
+        apu.setType("read");
+
+        MvcResult result = mvc.perform(post("/api/v1/assets/_permissions")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(apu)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        List<String> success = (List) json.get("success");
+        List<String> failed = (List) json.get("failed");
+
+        assertTrue(success.contains(assetIds.get(0)));
+        assertTrue(failed.isEmpty());
+    }
+
+    @Test
+    public void testRemovePermissions() throws Exception {
+
+        Permission p = userService.getPermission("user::admin");
+
+        MockHttpSession session = user();
+        addTestAssets("set04/standard");
+
+        ArrayList<String> assetIds = new ArrayList<>();
+        PagedList<Asset> assets = assetDao.getAll(Pager.first());
+        Asset asset = assets.get(0);
+        assetIds.add(asset.getId());
+
+        assetService.appendPermission("read", p.getId(),assetIds);
+
+        AssetPermissionUpdate apu = new AssetPermissionUpdate();
+        apu.setId(p.getId());
+        apu.setAssetIds(assetIds);
+        apu.setType("read");
+
+        MvcResult result = mvc.perform(delete("/api/v1/assets/_permissions")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(apu)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        List<String> success = (List) json.get("success");
+        List<String> failed = (List) json.get("failed");
+
+        assertTrue(success.contains(assetIds.get(0)));
+        assertTrue(failed.isEmpty());
     }
 }

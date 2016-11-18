@@ -1,6 +1,7 @@
 package com.zorroa.common.repository;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.common.elastic.AbstractElasticDao;
@@ -22,6 +23,7 @@ import org.elasticsearch.script.ScriptService;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,11 +65,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (Source source : sources) {
             String id = source.getId();
-            /**
-             * _tmp contains tmp data created by the generator
-             * which is not added to the asset.
-             */
-            source.removeAttr("_tmp");
             bulkRequest.add(prepareUpsert(source, id));
         }
 
@@ -258,6 +255,82 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
         return assets.get(0);
     }
+
+    private static final Set<String> PERM_TYPES = ImmutableSet.of("read", "write", "export");
+
+    @Override
+    public Map<String, List<Object>> removePermission(String type, int permId, List<String> assets) {
+        type = type.toLowerCase();
+        if (!PERM_TYPES.contains(type)) {
+            throw new IllegalArgumentException("Invalid permission type: " + type);
+        }
+
+        Map<String,Object> link = ImmutableMap.of("type", type, "id", permId);
+        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        for (String id: assets) {
+            UpdateRequestBuilder updateBuilder = client.prepareUpdate(getIndex(), getType(), id);
+            updateBuilder.setScript(new Script("remove_permission",
+                    ScriptService.ScriptType.INDEXED, "groovy",
+                    link));
+            bulkRequest.add(updateBuilder);
+        }
+
+        Map<String, List<Object>> result = Maps.newHashMapWithExpectedSize(assets.size());
+        result.put("success", Lists.newArrayList());
+        result.put("failed", Lists.newArrayList());
+
+        BulkResponse bulk = bulkRequest.setRefresh(true).get();
+        for (BulkItemResponse rsp:  bulk.getItems()) {
+            if (rsp.isFailed()) {
+                result.get("failed").add(ImmutableMap.of("id", rsp.getId(), "error", rsp.getFailureMessage()));
+                logger.warn("Failed to remove permission: {}",
+                        rsp.getFailureMessage(), rsp.getFailure().getCause());
+            }
+            else {
+                result.get("success").add(rsp.getId());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, List<Object>> appendPermission(String type, int permId, List<String> assets) {
+        type = type.toLowerCase();
+        if (!PERM_TYPES.contains(type)) {
+            throw new IllegalArgumentException("Invalid permission type: " + type);
+        }
+
+        Map<String, Object> link = ImmutableMap.of("type", type, "id", permId);
+        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        for (String id: assets) {
+            UpdateRequestBuilder updateBuilder = client.prepareUpdate(getIndex(), getType(), id);
+
+            updateBuilder.setScript(new Script("append_permission",
+                    ScriptService.ScriptType.INDEXED, "groovy",
+                    link));
+
+            bulkRequest.add(updateBuilder);
+        }
+
+        Map<String, List<Object>> result = Maps.newHashMapWithExpectedSize(assets.size());
+        result.put("success", Lists.newArrayList());
+        result.put("failed", Lists.newArrayList());
+
+        BulkResponse bulk = bulkRequest.setRefresh(true).get();
+        for (BulkItemResponse rsp:  bulk.getItems()) {
+            if (rsp.isFailed()) {
+                result.get("failed").add(ImmutableMap.of("id", rsp.getId(), "error", rsp.getFailureMessage()));
+                logger.warn("Failed to add permission {}",
+                        rsp.getFailureMessage(), rsp.getFailure().getCause());
+            }
+            else {
+                result.get("success").add(rsp.getId());
+            }
+        }
+
+        return result;
+    }
+
 
     @Override
     public PagedList<Asset> getAll(String id, String timeout) {

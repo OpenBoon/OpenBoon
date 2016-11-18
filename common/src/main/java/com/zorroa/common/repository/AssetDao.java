@@ -13,6 +13,10 @@ public interface AssetDao {
 
     Asset get(String id);
 
+    Map<String, List<Object>> removePermission(String type, int permId, List<String> assets);
+
+    Map<String, List<Object>> appendPermission(String type, int permId, List<String> assets);
+
     /**
      * Return the next page of an asset scroll.
      *

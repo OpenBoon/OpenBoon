@@ -2,6 +2,7 @@ package com.zorroa.archivist.web.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.domain.AssetPermissionUpdate;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.Note;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -183,5 +185,31 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     public DocumentIndexResult index(@RequestBody IndexAssetRequest req) throws IOException {
         return assetService.index(req.sources, req.link);
+    }
+
+    /**
+     * Remove a permission from a list of assets.
+     *
+     * @param change
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/api/v1/assets/_permissions", method=RequestMethod.DELETE)
+    public Object removePermission(
+            @Valid @RequestBody AssetPermissionUpdate change) throws Exception {
+        return assetService.removePermission(change.getType(), change.getId(), change.getAssetIds());
+    }
+
+    /**
+     * Add a permission to a list of assets.
+     *
+     * @param change
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/api/v1/assets/_permissions", method=RequestMethod.POST)
+    public Object appendPermission(
+            @Valid  @RequestBody AssetPermissionUpdate change) throws Exception {
+        return assetService.appendPermission(change.getType(), change.getId(), change.getAssetIds());
     }
 }

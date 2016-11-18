@@ -7,6 +7,7 @@ package com.zorroa.archivist.web.api;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
+import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,9 @@ public class PermissionController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AssetService assetService;
 
     /**
      * Get a particular permission record.
@@ -54,7 +58,7 @@ public class PermissionController {
     }
 
     /**
-     * Delete a  permission.
+     * Delete a permission.
      */
     @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable String id) {

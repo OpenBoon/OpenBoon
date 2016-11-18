@@ -36,6 +36,10 @@ public interface AssetService {
     Map<String, List<Object>> removeLink(String type, String value, List<String> assets);
     Map<String, List<Object>> appendLink(String type, String value, List<String> assets);
 
+    Map<String, List<Object>> removePermission(String type, int value, List<String> assets);
+
+    Map<String, List<Object>> appendPermission(String type, int value, List<String> assets);
+
     boolean exists(Path path);
 
     /**

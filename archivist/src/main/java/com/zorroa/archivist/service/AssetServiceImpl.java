@@ -99,6 +99,16 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    public Map<String, List<Object>> removePermission(String type, int value, List<String> assets) {
+        return assetDao.removePermission(type, value, assets);
+    }
+
+    @Override
+    public Map<String, List<Object>> appendPermission(String type, int value, List<String> assets) {
+        return assetDao.appendPermission(type, value, assets);
+    }
+
+    @Override
     public boolean exists(Path path) {
         return assetDao.exists(path);
     }
