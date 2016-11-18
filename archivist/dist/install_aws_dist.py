@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-    install_dist.py
+    install_aws_dist.py
 
     This script takes an already built (tar) dist package for a given
     Archivist / Analyst and copies it up to a given AWS host.
@@ -9,11 +9,11 @@
     directory for you.
 
     Example:
-    install_dist.py --server_path_file
+    install_aws_dist.py --server_path_file
     ~/Zorroa/repos/zorroa-server/archivist/dist/archivist-0.31.0.tar.gz
     --aws_host 52.91.27.225 --debug --verbose --aws_user computeruser
-
 """
+
 import argparse
 import getpass
 import os
