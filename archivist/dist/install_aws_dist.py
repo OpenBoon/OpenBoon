@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 """
-    install_dist.py
+    install_aws_dist.py
 
-    This script takes an already built (tar) dist package for a given 
+    This script takes an already built (tar) dist package for a given
     Archivist / Analyst and copies it up to a given AWS host.
 
     After copying the tar, it'll uncompress it in a specified
     directory for you.
 
     Example:
-    install_dist.py --server_path_file 
+    install_aws_dist.py --server_path_file
     ~/Zorroa/repos/zorroa-server/archivist/dist/archivist-0.31.0.tar.gz
     --aws_host 52.91.27.225 --debug --verbose --aws_user computeruser
-
 """
+
 import argparse
 import getpass
 import os
@@ -23,7 +23,7 @@ from scp import SCPClient
 import textwrap
 
 
-# ------------------------------------------------------------------------- 
+# -------------------------------------------------------------------------
 # Global Variables
 #
 DEBUG = False
@@ -32,9 +32,86 @@ VERBOSE = False
 AWS_USER = "computeruser"
 AWS_PATH = "/home/computeruser"
 
+COPY_SHARED = False
+SHARED_PLUGINS_PATH = "../../../zorroa-plugin-sdk/dist"
+AWS_SHARED_PLUGINS_PATH = "/zorroa-data/plugins_shared"
+SHARED_PLUGINS = ['lang-java-plugin.zip', 'zorroa-core-plugin.zip',
+                  'zorroa-demo-plugin.zip']
+
 # -------------------------------------------------------------------------
 # Functions
-# 
+#
+
+
+# ------------------------------
+def check_shared_plugins(shared_plugins_path):
+    """
+    Checks to see if we have a dist package for our plugins build and
+    ready for upload.  Input is the path to the directory.
+
+    Returns True if so and False if not
+    """
+
+    if DEBUG:
+        print "[DEBUG] check_shared_plugins"
+
+    for plugin in SHARED_PLUGINS:
+        temp = shared_plugins_path + "/" + plugin
+        if not os.path.isfile(temp):
+            print "NO " + temp + " file.  exiting"
+            return False
+
+    return True
+
+
+# ------------------------------
+def copy_shared_plugins(shared_plugins_path,
+                        aws_shared_plugins_path,
+                        aws_user, aws_host, password):
+    """
+    Copies the shared plugins to the AWS host
+
+    Returns True if successful, False if not.
+    """
+
+    if DEBUG:
+        print "[DEBUG] in copy_shared_plugins"
+
+    # check to see if directory is already there
+    command = "test -d " + str(aws_shared_plugins_path)
+    result = run_remote_command(command, aws_host, aws_user, password)
+    if DEBUG:
+        print "[DEBUG] does the aws_shared_plugins_path exist?: " + \
+              str(result)
+
+    if (result == 1):
+        # no directory, lets create it
+        command = "mkdir -p " + str(aws_shared_plugins_path)
+        result = run_remote_command(command, aws_host, aws_user, password)
+        if DEBUG:
+            print "[DEBUG] result from: " + str(command) + " is: " + \
+                   str(result)
+
+        if (result >= 1):
+            print "Problem creating shared plugins directory"
+            sys.exit(1)
+
+    # directory is there, so lets copy
+    for plugin in SHARED_PLUGINS:
+        temp = shared_plugins_path + "/" + plugin
+
+        if VERBOSE:
+            print "[DEBUG] copying: " + str(temp)
+
+        result = copy_file(temp, aws_shared_plugins_path, aws_user,
+                           aws_host, password)
+
+        if (result >= 1):
+            print "Error copying: " + temp + " result: " + str(result)
+            return False
+
+    return True
+
 
 # ------------------------------
 def check_dist_package(server_file):
@@ -57,7 +134,7 @@ def check_dist_package(server_file):
         return False
 
     file_extension = os.path.splitext(server_file)[1]
-    if (file_extension != ".gz"): 
+    if (file_extension != ".gz"):
         print "File is not a gz: " + str(server_file) + " " + \
                str(file_extension)
         print "make sure you created the dist package with --compress"
@@ -66,18 +143,18 @@ def check_dist_package(server_file):
     return True
 
 
-# ------------------------------ 
+# ------------------------------
 def check_already_installed(aws_path, aws_host, aws_user, password,
                             filename_version, filename):
     """
     check to see if the given path already has an archivist or
     analyst there.
-    
+
     return if it does or not
     """
 
     # check to see if the symlink is there
-    cmd = "test -L " + str(aws_path) + "/" + str(filename) 
+    cmd = "test -L " + str(aws_path) + "/" + str(filename)
     result = run_remote_command(cmd, aws_host, aws_user, password)
 
     if (result == 1):
@@ -92,7 +169,7 @@ def check_already_installed(aws_path, aws_host, aws_user, password,
             if DEBUG:
                 print "[DEBUG] no directory."
 
-            # no symlink, no dir, means this will be a new install 
+            # no symlink, no dir, means this will be a new install
             return(False)
 
         else:
@@ -123,9 +200,10 @@ def check_already_installed(aws_path, aws_host, aws_user, password,
             # yes sym link, and yes directory.  definitely already there.
             return(True)
 
-# ------------------------------ 
-def save_config_files(aws_path, aws_host, aws_user, password, 
-        filename_version):
+
+# ------------------------------
+def save_config_files(aws_path, aws_host, aws_user, password,
+                      filename_version):
     """
     save any files needed for an upgrade
     return 0 if successful, 1 if error
@@ -135,7 +213,7 @@ def save_config_files(aws_path, aws_host, aws_user, password,
         print "[DEBUG] saving config files"
 
     # copy the config files
-    cmd = "cp -r " +str(aws_path) + "/" + str(filename_version) + \
+    cmd = "cp -r " + str(aws_path) + "/" + str(filename_version) + \
           "/config" + " /tmp/zorroa"
 
     if DEBUG:
@@ -144,9 +222,10 @@ def save_config_files(aws_path, aws_host, aws_user, password,
     result = run_remote_command(cmd, aws_host, aws_user, password)
     return(result)
 
-# ------------------------------ 
-def restore_config_files(aws_path, aws_host, aws_user, password, 
-        filename_version):
+
+# ------------------------------
+def restore_config_files(aws_path, aws_host, aws_user, password,
+                         filename_version):
     """
     restore any files needed for an upgrade
     return 0 if successful, 1 if error
@@ -157,7 +236,7 @@ def restore_config_files(aws_path, aws_host, aws_user, password,
 
     # copy the config files
     cmd = "cp -f /tmp/zorroa/* " + str(aws_path) + "/" + \
-           str(filename_version) + "/config" 
+          str(filename_version) + "/config"
 
     if DEBUG:
         print "[DEBUG] cmd: " + str(cmd)
@@ -166,9 +245,9 @@ def restore_config_files(aws_path, aws_host, aws_user, password,
     return(result)
 
 
-# ------------------------------ 
-def rm_config_files(aws_path, aws_host, aws_user, password): 
-    
+# ------------------------------
+def rm_config_files(aws_path, aws_host, aws_user, password):
+
     """
     remove temp files needed for an upgrade
     return 0 if successful, 1 if error
@@ -187,10 +266,10 @@ def rm_config_files(aws_path, aws_host, aws_user, password):
     return(result)
 
 
-# ------------------------------ 
+# ------------------------------
 def rm_file(aws_path, aws_host, aws_user, password, filename):
     """
-    remove a given file we have 
+    remove a given file we have
     return 0 if successful, 1 if error
     """
 
@@ -206,7 +285,7 @@ def rm_file(aws_path, aws_host, aws_user, password, filename):
     return(result)
 
 
-# ------------------------------ 
+# ------------------------------
 def createSSHClient(server, port, user, password):
     """
     helper function that creates an SSH client
@@ -217,27 +296,28 @@ def createSSHClient(server, port, user, password):
     client.load_system_host_keys()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(server, port, user, password)
-    return client 
+    return client
 
 
-# ------------------------------ 
-def splitext(path): 
+# ------------------------------
+def splitext(path):
     """
-    helper function for getting a filename 
+    helper function for getting a filename
     """
 
     for ext in ['.tar.gz', '.tar.bz2']:
         if path.endswith(ext):
             return path[:-len(ext)], path[-len(ext):]
-    return os.path.splitext(path) 
+    return os.path.splitext(path)
 
-# ------------------------------ 
+
+# ------------------------------
 def copy_file(server_file, aws_path, aws_user, aws_host, password):
     """
     Copy a file from localhost to remote host using ssh/scp
     returns 0 on success an 1 on failure
     """
-    
+
     if DEBUG:
         print "[DEBUG] copy_file"
 
@@ -264,9 +344,9 @@ def copy_file(server_file, aws_path, aws_user, aws_host, password):
     return(0)
 
 
-# ------------------------------ 
+# ------------------------------
 def run_remote_command(command, aws_host, aws_user, password):
-    """ 
+    """
     Run a given command on a remote host via ssh
     TODO: should return the success/failure value of the cmd
     """
@@ -286,9 +366,8 @@ def run_remote_command(command, aws_host, aws_user, password):
         if VERBOSE:
             print "Error with ssh credentials."
         return(1)
-    
 
-    try: 
+    try:
         if DEBUG:
             print "[DEBUG] sshClient connecting"
         ssh.connect(hostname=aws_host, username=aws_user, password=password)
@@ -300,7 +379,7 @@ def run_remote_command(command, aws_host, aws_user, password):
         exit_status = stdout.channel.recv_exit_status()
         if VERBOSE:
             for line in stdout:
-                print '[stdout] ' + line.strip('\n') 
+                print '[stdout] ' + line.strip('\n')
 
         ssh.close()
         if DEBUG:
@@ -313,7 +392,7 @@ def run_remote_command(command, aws_host, aws_user, password):
         return(1)
 
 
-# ------------------------------ 
+# ------------------------------
 def do_print_help():
     """
     help message when --help is passed
@@ -333,8 +412,8 @@ What does this script do:
      after install.
 
   3) We copy the server_path_file to the AWS_HOST and put it
-     in the AWS_PATH directory.  
- 
+     in the AWS_PATH directory.
+
   4) We uncompress the server_path_file on the AWS_HOST.
   5) We create a symlink pointing to the directory.
 
@@ -344,38 +423,41 @@ What does this script do:
 
 Some examples of usage:
 
- install_dist.py 
+ install_aws_dist.py
      --server_path_file
        ~/repos/zorroa-server/archivist/dist/archivist-0.32.0.tar.gz
     --aws_host 52.91.27.225
+    --copy_plugins
+    --aws_shared_plugins_path "/zorroa-data/plugins_shared/foo"
     --verbose
-    --debug 
+    --debug
 
- * this copies archivist-0.32.0.tar.gz to AWS_PATH 
+ * this copies archivist-0.32.0.tar.gz to AWS_PATH
    (default is /home/computeruser)
- * uncompresses it there, and makes a symlink for 'archivist' to 
+ * uncompresses it there, and makes a symlink for 'archivist' to
    point to 'archivist-0.32.0'
+ * enabled the copy_plugins to copy the shared plugins
+ * plugins get copied to the aws_shared_plugins_path
+   * note that when you run the server, you'll need to make sure
+     you're pointing to this path.
 
 
 
- install_dist.py
+ install_aws_dist.py
      --server_path_file
        ~/repos/zorroa-server/archivist/dist/archivist-0.32.0.tar.gz
     --aws_host 52.91.27.225
     --aws_path /tmp
     --aws_user bob
     --verbose
-    --debug 
+    --debug
 
 
- * instead of the default path on the aws_host (/home/computeruser), 
+ * instead of the default path on the aws_host (/home/computeruser),
    use /tmp
 
 
 """)
-
-
-
 
 
 # -------------------------------------------------------------------------
@@ -409,21 +491,39 @@ def main():
 
     parser.add_argument('--aws_host',
                         type=str,
-			required=True,
+                        required=True,
                         help='AWS HOST to install (IP Address)')
 
     parser.add_argument('--aws_user',
                         type=str,
-			default=AWS_USER,
+                        default=AWS_USER,
                         help='AWS user - defaults to ' + AWS_USER)
 
     parser.add_argument('--aws_path',
                         type=str,
-			default=AWS_PATH,
+                        default=AWS_PATH,
                         help='AWS install path - defaults to ' + AWS_PATH)
 
+    parser.add_argument('--copy_plugins',
+                        action='store_true',
+                        help='copy shared plugins too - defaults to ' +
+                             str(COPY_SHARED))
 
-    args = parser.parse_args() 
+    parser.add_argument('--shared_plugins_path',
+                        type=str,
+                        default=SHARED_PLUGINS_PATH,
+                        help=textwrap.dedent('''\
+                             path to the shared plugins source
+                             defaults to: ''') + SHARED_PLUGINS_PATH)
+
+    parser.add_argument('--aws_shared_plugins_path',
+                        type=str,
+                        default=AWS_SHARED_PLUGINS_PATH,
+                        help=textwrap.dedent('''\
+                             AWS install path for shared plugins
+                             defaults to: ''') + AWS_SHARED_PLUGINS_PATH)
+
+    args = parser.parse_args()
 
     if args.verbose:
         # set the global variable
@@ -435,31 +535,31 @@ def main():
 
     if args.debug:
         print "[DEBUG] VERBOSE: ", args.verbose
-        print "[DEBUG] DEBUG: ", args.debug 
+        print "[DEBUG] DEBUG: ", args.debug
         print "[DEBUG] SERVER_PATH_FILE: ", args.server_path_file
         print "[DEBUG] AWS_HOST: ", args.aws_host
         print "[DEBUG] AWS_USER: ", args.aws_user
         print "[DEBUG] AWS_PATH: ", args.aws_path
-        print "[DEBUG] run_server: ", args.run_server
-
+        print "[DEBUG] copy_plugins: ", args.copy_plugins
+        print "[DEBUG] shared_plugins_path: ", args.shared_plugins_path
+        print "[DEBUG] aws_shared_path: ", args.aws_shared_plugins_path
         DEBUG = args.debug
 
-    # --------------------------------------- 
+    # ---------------------------------------
     # check to see if we have a dist package.
     result = check_dist_package(args.server_path_file)
     if VERBOSE:
         print "check_dist_package result: " + str(result)
 
-    if (result == False):
+    if (result is False):
         print "returned False from check_dist_package.  exiting"
         sys.exit(1)
 
-
-    # --------------------------------------- 
+    # ---------------------------------------
     # get the password, we prompt instead of hardcode
     # and do some general stuff
     print "Please input the password for the " + str(args.aws_user) + \
-            " user:"
+          " user:"
     password = getpass.getpass()
 
     # this will not work on windows
@@ -469,23 +569,22 @@ def main():
     filename_version = splitext(server_file)[0]
     filename, version = filename_version.split('-')
 
-
-    # --------------------------------------- 
+    # ---------------------------------------
     # check to see if we have software already installed
-    # in the given path.  (upgrade) 
-    upgrade_result = check_already_installed(args.aws_path, 
+    # in the given path.  (upgrade)
+    upgrade_result = check_already_installed(args.aws_path,
                                              args.aws_host,
-                                             args.aws_user, 
+                                             args.aws_user,
                                              password,
-                                             filename_version, 
+                                             filename_version,
                                              filename)
 
-    if (upgrade_result == True):
+    if (upgrade_result is True):
         if VERBOSE:
             print "Existing Zorroa Server software!  Do upgrade"
 
         # first remove the symlink
-        result = rm_file(args.aws_path, args.aws_host, args.aws_user, 
+        result = rm_file(args.aws_path, args.aws_host, args.aws_user,
                          password, filename)
 
         # preserve the configs
@@ -496,8 +595,7 @@ def main():
         if VERBOSE:
             print "New Zorroa Server Software install"
 
-        
-    # --------------------------------------- 
+    # ---------------------------------------
     # copy the file
     result = copy_file(args.server_path_file, args.aws_path, args.aws_user,
                        args.aws_host, password)
@@ -509,44 +607,68 @@ def main():
         print "returned error from copy_file.  exiting"
         sys.exit(1)
 
-
-    # --------------------------------------- 
+    # ---------------------------------------
     # take the dist package, and uncompress it
     cmd = "tar xvfpz " + args.aws_path + "/" + server_file + " -C " + \
           args.aws_path
-    result = run_remote_command(cmd, args.aws_host, args.aws_user, 
+    result = run_remote_command(cmd, args.aws_host, args.aws_user,
                                 password)
-	
+
     if VERBOSE:
         print "run_remote_command tar result: " + str(result)
 
-
-    # --------------------------------------- 
+    # ---------------------------------------
     # if it was an upgrade, restore the config files
-    if (upgrade_result == True):
+    if (upgrade_result is True):
         # copy over the config files
         result = restore_config_files(args.aws_path, args.aws_host,
-                                   args.aws_user, password,
-                                   filename_version)
+                                      args.aws_user, password,
+                                      filename_version)
 
         # cleanup tmp dir
-        result = rm_config_files(args.aws_path, args.aws_host, 
+        result = rm_config_files(args.aws_path, args.aws_host,
                                  args.aws_user, password)
 
-
-
-
-    # --------------------------------------- 
-    # lets make a simple symlink 
+    # ---------------------------------------
+    # lets make a simple symlink
     cmd = "ln -s " + args.aws_path + "/" + str(filename_version) + \
           " " + args.aws_path + "/" + str(filename)
-    result = run_remote_command(cmd, args.aws_host, args.aws_user, 
+    result = run_remote_command(cmd, args.aws_host, args.aws_user,
                                 password)
-	
+
     if VERBOSE:
         print "run_remote_command symlink result: " + str(result)
 
+    # ---------------------------------------
+    # lets see if we need to copy the shared plugins
+    if (args.copy_plugins):
+        # first see if we have the source .zips
+        result = check_shared_plugins(args.shared_plugins_path)
+        if DEBUG:
+            print "check_shared_plugins result: " + str(result)
 
+        if (result is False):
+            print "returned error from check_shared_plugins, exiting"
+            sys.exit(1)
+
+        # source files are there, so lets copy them
+        result = copy_shared_plugins(args.shared_plugins_path,
+                                     args.aws_shared_plugins_path,
+                                     args.aws_user, args.aws_host,
+                                     password)
+        if DEBUG:
+            print "copy_shared_plugins result: " + str(result)
+
+        if (result is False):
+            print "returned error from copy_shared_plugins.  exiting"
+            sys.exit(1)
+
+    # ---------------------------------------
+    # program is finished
+    if VERBOSE:
+        print "done."
+
+    sys.exit(0)
 
 
 # -------------------------------------------------------------------------
