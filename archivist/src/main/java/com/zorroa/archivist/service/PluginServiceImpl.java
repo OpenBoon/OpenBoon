@@ -275,9 +275,12 @@ public class PluginServiceImpl implements PluginService {
         }
         List<ProcessorRef> result = Lists.newArrayListWithCapacity(refs.size());
         for (ProcessorRef ref: refs) {
-            result.add(processorDao.getRef(ref.getClassName())
+            ProcessorRef ref2 = processorDao.getRef(ref.getClassName())
                     .setArgs(ref.getArgs())
-                    .addToFilters(ref.getFilters()));
+                    .addToFilters(ref.getFilters())
+                    .setExecute(ref.getExecute());
+            result.add(ref2);
+            ref2.setExecute(getProcessorRefs(ref2.getExecute()));
         }
         return result;
     }
