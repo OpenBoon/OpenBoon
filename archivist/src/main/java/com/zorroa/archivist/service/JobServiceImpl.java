@@ -45,9 +45,6 @@ public class JobServiceImpl implements JobService {
     MessagingService message;
 
     @Autowired
-    DyHierarchyService dyHierarchyService;
-
-    @Autowired
     TransactionEventManager event;
 
     @Autowired

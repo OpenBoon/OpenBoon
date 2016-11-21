@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class FolderDaoImpl extends AbstractDao implements FolderDao {
@@ -123,6 +126,13 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public List<Folder> getChildren(Folder folder) {
         return getChildren(folder.getId());
+    }
+
+
+    @Override
+    public Set<Integer> getAllIds(DyHierarchy dyhi) {
+        return ImmutableSet.copyOf(
+                jdbc.queryForList("SELECT pk_folder FROM folder WHERE pk_dyhi=?", Integer.class, dyhi.getId()));
     }
 
     @Override
@@ -238,6 +248,22 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public boolean delete(Folder folder) {
         return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) ==1;
+    }
+
+    @Override
+    public int deleteAll(Collection<Integer> ids) {
+        if (ids.isEmpty()) {
+            return 0;
+        }
+        /**
+         * The list has to be sorted from lowest to highest.  A parent folder will
+         * always have a lower ID than child folders.  Hopefully this is enough
+         * for a clean delete.
+         */
+        List<Integer> sorted = Lists.newArrayList(ids);
+        Collections.sort(sorted);
+        return jdbc.update("DELETE FROM folder WHERE " + JdbcUtils.in("pk_folder", ids.size()),
+                sorted.toArray());
     }
 
     @Override

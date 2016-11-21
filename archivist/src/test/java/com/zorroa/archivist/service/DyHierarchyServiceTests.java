@@ -1,8 +1,12 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
 import org.junit.Before;
@@ -76,6 +80,28 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
         dyhiService.generate(agg);
     }
+
+    @Test
+    public void testDeleteEmptyFolders() {
+        Folder f = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchy agg = new DyHierarchy();
+        agg.setFolderId(f.getId());
+        agg.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.type.raw"),
+                        new DyHierarchyLevel("source.extension.raw")));
+
+        dyhiService.generate(agg);
+
+        PagedList<Asset> assets = assetService.getAll(Pager.first(100));
+        for (Asset asset: assets) {
+            assetService.update(asset.getId(), ImmutableMap.of("source",
+                    ImmutableMap.of("extension", "abc")));
+        }
+        refreshIndex();
+        dyhiService.generate(agg);
+    }
+
 
     @Test
     public void testGenerateDateHierarchy() {

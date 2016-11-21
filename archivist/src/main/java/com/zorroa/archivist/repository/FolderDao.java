@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface FolderDao {
 
@@ -21,6 +22,8 @@ public interface FolderDao {
 
     List<Folder> getChildren(Folder folder);
 
+    Set<Integer> getAllIds(DyHierarchy dyhi);
+
     boolean exists(int parentId, String name);
 
     int count();
@@ -36,6 +39,8 @@ public interface FolderDao {
     int deleteAll(DyHierarchy dyhi);
 
     boolean delete(Folder folder);
+
+    int deleteAll(Collection<Integer> ids);
 
     boolean hasAccess(Folder folder, Access access);
 

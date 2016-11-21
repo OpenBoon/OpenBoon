@@ -4,6 +4,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.DyHierarchyDao;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -250,6 +252,16 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             queue.add(new Tuple(srb.get().getAggregations(), 0));
             createDynamicHierarchy(queue, folders);
 
+            /**
+             * Delete all unmarked folders.
+             */
+            Set<Integer> unusedFolders = Sets.difference(folderService.getAllIds(dyhi), folders.folderIds);
+            try {
+                folderService.deleteAll(unusedFolders);
+            } catch (Exception e) {
+                logger.warn("Failed to delete unused folders: {}, {}", unusedFolders, e);
+            }
+
             logger.info("{} created by {}, {} folders", dyhi, SecurityUtils.getUsername(), folders.count);
             return folders.count;
         }
@@ -368,6 +380,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
         public final DyHierarchy dyhi;
         private Stack<Folder> stack = new Stack<>();
         public int count = 0;
+        public final Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(50);
 
         public FolderStack(Folder root, DyHierarchy dyhi) {
             this.dyhi = dyhi;
@@ -408,6 +421,8 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                     .setSearch(search), true);
             count++;
             stack.push(folder);
+            // Make note of the folder ID.
+            folderIds.add(folder.getId());
             return folder;
         }
 

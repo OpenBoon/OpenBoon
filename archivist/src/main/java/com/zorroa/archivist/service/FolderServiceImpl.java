@@ -27,10 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -140,6 +137,11 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public Set<Integer> getAllIds(DyHierarchy dyhi) {
+        return folderDao.getAllIds(dyhi);
+    }
+
+    @Override
     public List<Folder> getChildren(Folder folder) {
         return folderDao.getChildren(folder);
     }
@@ -167,6 +169,11 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public int deleteAll(DyHierarchy dyhi) {
         return folderDao.deleteAll(dyhi);
+    }
+
+    @Override
+    public int deleteAll(Collection<Integer> ids) {
+        return folderDao.deleteAll(ids);
     }
 
     @Override

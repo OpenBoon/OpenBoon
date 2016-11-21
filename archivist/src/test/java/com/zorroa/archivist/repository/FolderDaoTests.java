@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
@@ -10,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -17,6 +19,9 @@ public class FolderDaoTests extends AbstractTest {
 
     @Autowired
     FolderDao folderDao;
+
+    @Autowired
+    DyHierarchyDao dyHierarchyDao;
 
     @Test
     public void testCreateAndGet() throws IOException {
@@ -152,5 +157,34 @@ public class FolderDaoTests extends AbstractTest {
         builder = new FolderSpec("bar", folder1);
         Folder folder2 = folderDao.create(builder);
         assertTrue(folderDao.exists(folder1.getId(), "bar"));
+    }
+
+    @Test
+    public void testGetAllIds() {
+        FolderSpec spec1 = new FolderSpec("foo");
+        Folder folder1 = folderDao.create(spec1);
+
+        DyHierarchySpec spec = new DyHierarchySpec().setFolderId(folder1.getId());
+        spec.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.type.raw"),
+                        new DyHierarchyLevel("source.extension.raw")));
+        DyHierarchy dyhi = dyHierarchyDao.create(spec);
+
+        FolderSpec spec2 = new FolderSpec("bar").setDyhiId(dyhi.getId());
+        Folder folder2 = folderDao.create(spec2);
+        Set<Integer> ids = folderDao.getAllIds(dyhi);
+        assertTrue(ids.contains(folder2.getId()));
+    }
+    @Test
+    public void testDeleteAllById() {
+
+        FolderSpec spec1 = new FolderSpec("foo");
+        Folder folder1 = folderDao.create(spec1);
+
+        FolderSpec spec2 = new FolderSpec("bar");
+        Folder folder2 = folderDao.create(spec2);
+
+        assertEquals(2, folderDao.deleteAll(Lists.newArrayList(folder1.getId(), folder2.getId())));
     }
 }
