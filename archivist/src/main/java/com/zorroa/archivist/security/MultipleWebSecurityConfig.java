@@ -55,7 +55,6 @@ public class MultipleWebSecurityConfig {
             config.addAllowedOrigin("http://localhost:8080");
             config.addAllowedHeader("*");
             config.addAllowedMethod("*");
-            config.addAllowedHeader("*");
             config.addAllowedMethod("OPTIONS");
             config.addAllowedMethod("HEAD");
             config.addAllowedMethod("GET");
@@ -63,6 +62,7 @@ public class MultipleWebSecurityConfig {
             config.addAllowedMethod("POST");
             config.addAllowedMethod("DELETE");
             config.addAllowedMethod("PATCH");
+            config.addExposedHeader("content-range, content-length, accept-ranges");
             source.registerCorsConfiguration("/**", config);
             return new CorsFilter(source);
         }

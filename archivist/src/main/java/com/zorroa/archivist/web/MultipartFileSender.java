@@ -203,7 +203,7 @@ public class MultipartFileSender {
         }
 
         // Initialize response.
-        response.reset();
+
         response.setBufferSize(DEFAULT_BUFFER_SIZE);
         response.setHeader("Content-Type", contentType);
         response.setHeader("Content-Disposition", disposition + ";filename=\"" + fileName + "\"");
