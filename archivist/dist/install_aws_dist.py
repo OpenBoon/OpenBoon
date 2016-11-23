@@ -34,7 +34,6 @@ AWS_PATH = "/home/computeruser"
 
 COPY_SHARED = False
 SHARED_PLUGINS_PATH = "../../../zorroa-plugin-sdk/dist"
-AWS_SHARED_PLUGINS_PATH = "/zorroa-data/plugins_shared"
 SHARED_PLUGINS = ['lang-java-plugin.zip', 'zorroa-core-plugin.zip',
                   'zorroa-demo-plugin.zip']
 
@@ -345,6 +344,34 @@ def copy_file(server_file, aws_path, aws_user, aws_host, password):
 
 
 # ------------------------------
+def stop_server(server_name, aws_host, aws_user, password):
+    """
+    Stop the remote archivist and analyst jvm processes
+    """
+
+    if DEBUG:
+        print "[DEBUG] stop_server"
+
+    cmd = "pkill -f " + server_name
+    result = run_remote_command(cmd, aws_host, aws_user, password)
+    return(result)
+
+
+# ------------------------------
+def start_server(cwd, server_cmd, aws_host, aws_user, password):
+    """
+    Start the server
+    """
+
+    if DEBUG:
+        print "[DEBUG] start_server"
+
+    cmd = "cd " + cwd + "; " + server_cmd 
+    result = run_remote_command(cmd, aws_host, aws_user, password)
+    return(result)
+
+
+# ------------------------------
 def run_remote_command(command, aws_host, aws_user, password):
     """
     Run a given command on a remote host via ssh
@@ -480,6 +507,14 @@ def main():
                         action='store_true',
                         help='debug flag')
 
+    parser.add_argument('--stop_server',
+                        action='store_true',
+                        help='stop remote server')
+
+    parser.add_argument('--start_server',
+                        action='store_true',
+                        help='start remote server')
+
     parser.add_argument('--help_examples',
                         action='store_true',
                         help='print detailed help message')
@@ -498,6 +533,10 @@ def main():
                         type=str,
                         default=AWS_USER,
                         help='AWS user - defaults to ' + AWS_USER)
+
+    parser.add_argument('--aws_password',
+                        type=str,
+                        help='AWS password')
 
     parser.add_argument('--aws_path',
                         type=str,
@@ -518,10 +557,9 @@ def main():
 
     parser.add_argument('--aws_shared_plugins_path',
                         type=str,
-                        default=AWS_SHARED_PLUGINS_PATH,
                         help=textwrap.dedent('''\
                              AWS install path for shared plugins
-                             defaults to: ''') + AWS_SHARED_PLUGINS_PATH)
+                             defaults to archivist/plugins'''))
 
     args = parser.parse_args()
 
@@ -558,9 +596,11 @@ def main():
     # ---------------------------------------
     # get the password, we prompt instead of hardcode
     # and do some general stuff
-    print "Please input the password for the " + str(args.aws_user) + \
-          " user:"
-    password = getpass.getpass()
+    password = args.aws_password
+    if not password:
+        print "Please input the password for the " + str(args.aws_user) + \
+              " user:"
+        password = getpass.getpass()
 
     # this will not work on windows
     server_file = os.path.basename(args.server_path_file)
@@ -568,6 +608,18 @@ def main():
     # lets get the version info, and filename
     filename_version = splitext(server_file)[0]
     filename, version = filename_version.split('-')
+
+    # stop the remote server
+    if args.stop_server:
+        result = stop_server(filename, args.aws_host, args.aws_user, password)
+
+        if DEBUG:
+            print "stop_server result: " + str(result)
+
+        if (result is False):
+            print "returned error from stop_server.  exiting"
+            sys.exit(1)
+
 
     # ---------------------------------------
     # check to see if we have software already installed
@@ -651,9 +703,16 @@ def main():
             print "returned error from check_shared_plugins, exiting"
             sys.exit(1)
 
+        # compute the plugin path on the aws host
+        aws_shared_plugins_path = args.aws_shared_plugins_path
+        if not aws_shared_plugins_path:
+            aws_shared_plugins_path = args.aws_path + "/" + str(filename_version) + "/plugins"
+        if DEBUG:
+            print "plugins copying to: " + aws_shared_plugins_path
+
         # source files are there, so lets copy them
         result = copy_shared_plugins(args.shared_plugins_path,
-                                     args.aws_shared_plugins_path,
+                                     aws_shared_plugins_path,
                                      args.aws_user, args.aws_host,
                                      password)
         if DEBUG:
@@ -662,6 +721,19 @@ def main():
         if (result is False):
             print "returned error from copy_shared_plugins.  exiting"
             sys.exit(1)
+
+    if args.start_server:
+        server_dir = args.aws_path + "/" + filename
+        server_cmd = "bin/" + filename + " >& " + filename + ".log &"
+        result = start_server(server_dir, server_cmd, args.aws_host, args.aws_user, password)
+
+        if DEBUG:
+            print "start_server result: " + str(result)
+
+        if (result is False):
+            print "returned error from start_server.  exiting"
+            sys.exit(1)
+
 
     # ---------------------------------------
     # program is finished
