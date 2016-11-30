@@ -67,10 +67,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
                 "str_lastname",
                 "bool_enabled",
                 "hmac_key",
-                "json_settings");
+                "json_settings",
+                "str_source");
 
     @Override
-    public User create(UserSpec builder) {
+    public User create(UserSpec builder, String source) {
         Preconditions.checkNotNull(builder.getUsername(), "The Username cannot be null");
         Preconditions.checkNotNull(builder.getPassword(), "The Password cannot be null");
         builder.setPassword(SecurityUtils.createPasswordHash(builder.getPassword()));
@@ -87,10 +88,15 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setBoolean(6, true);
             ps.setObject(7, UUID.randomUUID());
             ps.setString(8, "{}");
+            ps.setString(9, source);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
         return get(id);
+    }
+
+    public User create(UserSpec builder) {
+        return create(builder, "local");
     }
 
     @Override
@@ -140,7 +146,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public String getPassword(String username) {
-        return jdbc.queryForObject("SELECT str_password FROM user WHERE str_username=? AND bool_enabled=?",
+        return jdbc.queryForObject("SELECT str_password FROM user WHERE str_username=? AND bool_enabled=? AND str_source='local'",
             String.class, username, true);
     }
 

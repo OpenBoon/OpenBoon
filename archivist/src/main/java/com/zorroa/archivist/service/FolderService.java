@@ -1,9 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Acl;
-import com.zorroa.archivist.domain.DyHierarchy;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -74,7 +71,7 @@ public interface FolderService {
 
     Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds);
 
-    Map<String, List<Object>>removeAssets(Folder folder, List<String> assetIds);
+    Map<String, List<Object>> removeAssets(Folder folder, List<String> assetIds);
 
     /**
      * Asynchronously creata a new folder.  Return a future in case
@@ -85,9 +82,14 @@ public interface FolderService {
      * @return
      */
     Future<Folder> submitCreate(Folder parent, FolderSpec spec, boolean mightExist);
+
     Future<Folder> submitCreate(FolderSpec spec, boolean mightExist);
 
     Folder create(FolderSpec spec);
+
     Folder create(FolderSpec spec, boolean mightExist);
+
     Folder create(Folder parent, FolderSpec spec, boolean mightExist);
+
+    void createUserFolder(User user, Permission perm);
 }

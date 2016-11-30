@@ -38,7 +38,7 @@ public class FolderDaoTests extends AbstractTest {
         String name = "test";
         FolderSpec builder = new FolderSpec(name);
         Folder folder1 = folderDao.create(builder);
-        Folder folder2 = folderDao.get(Folder.ROOT_ID, name);
+        Folder folder2 = folderDao.get(Folder.ROOT_ID, name, false);
         assertEquals(folder1, folder1);
     }
 
@@ -83,7 +83,7 @@ public class FolderDaoTests extends AbstractTest {
         authenticate("admin");
         assertFalse(SecurityUtils.hasPermission("group::administrator"));
 
-        Folder pub = folderDao.get(0, "Users");
+        Folder pub = folderDao.get(Folder.ROOT_ID, "Users", false);
         Folder f1 = folderDao.create(new FolderSpec("level1", pub));
         Folder f2 = folderDao.create(new FolderSpec("level2", pub));
         Folder f3 = folderDao.create(new FolderSpec("level3", pub));

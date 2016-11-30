@@ -82,11 +82,16 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
-    public Folder get(int parent, String name) {
+    public Folder get(int parent, String name, boolean ignorePerms) {
         try {
-            return jdbc.queryForObject(
-                    appendReadAccess(GET + " WHERE pk_parent=? and str_name=?"), MAPPER,
-                    appendAclArgs(parent, name));
+            if (ignorePerms) {
+                return jdbc.queryForObject(GET + " WHERE pk_parent=? and str_name=?", MAPPER, parent, name);
+            }
+            else {
+                return jdbc.queryForObject(
+                        appendReadAccess(GET + " WHERE pk_parent=? and str_name=?"), MAPPER,
+                        appendAclArgs(parent, name));
+            }
         } catch (EmptyResultDataAccessException e ) {
             throw new EmptyResultDataAccessException(String.format("Failed to find folder, parent: %s name: %s",
                     parent, name), 1);
@@ -95,7 +100,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public Folder get(Folder parent, String name) {
-        return get(parent.getId(), name);
+        return get(parent.getId(), name, false);
     }
 
     @Override
@@ -171,7 +176,13 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public Folder create(FolderSpec spec) {
         long time = System.currentTimeMillis();
-        int user = SecurityUtils.getUser().getId();
+        int user;
+        if (spec.getCreatedUser() != null) {
+            user = spec.getCreatedUser().getId();
+        }
+        else {
+            user = SecurityUtils.getUser().getId();
+        }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {

@@ -61,35 +61,37 @@ public class LogSpec {
 
     public static final LogSpec build(LogAction action, AssetSearch search) {
         return new LogSpec()
-                .setUser(SecurityUtils.getUser())
+                .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setSearch(search);
     }
 
     public static final LogSpec build(String action, Loggable target) {
         return new LogSpec()
-                .setUser(SecurityUtils.getUser())
+                .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
 
     public static final LogSpec build(LogAction action, Loggable target) {
         return new LogSpec()
-                .setUser(SecurityUtils.getUser())
+                .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
     public static final LogSpec build(LogAction action, String type, Object ... id) {
         return new LogSpec()
-                .setUser(SecurityUtils.getUser())
+                .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(ImmutableMap.of(type, new Object[] {id}));
     }
 
     public LogSpec setUser(User user) {
-        this.user = ImmutableMap.of(
-                "username", user.getUsername(),
-                "id", user.getId());
+        if (user != null) {
+            this.user = ImmutableMap.of(
+                    "username", user.getUsername(),
+                    "id", user.getId());
+        }
         return this;
     }
 

@@ -58,9 +58,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     LogService logService;
 
+    private static final String SOURCE_LOCAL = "local";
+
     @Override
     public User create(UserSpec builder) {
-        User user = userDao.create(builder);
+        return create(builder, SOURCE_LOCAL);
+    }
+
+    @Override
+    public User create(UserSpec builder, String source) {
+        User user = userDao.create(builder, source);
 
         /*
          * Grab the preset, if any.
@@ -79,8 +86,10 @@ public class UserServiceImpl implements UserService {
         if (preset!=null && preset.getPermissionIds() != null) {
             perms.addAll(permissionDao.getAll(preset.getPermissionIds().toArray(new Integer[]{})));
         }
-        setPermissions(user, perms);
 
+        if (!perms.isEmpty()) {
+            setPermissions(user, perms);
+        }
         /*
          * Create and add permission for this specific user.
          */
@@ -89,18 +98,14 @@ public class UserServiceImpl implements UserService {
         userDao.addPermission(user, userPerm, true);
 
         /*
-         * Add the user's home folder
+         * Create the users home folder.
          */
-        Folder userRoot = folderService.get(Folder.ROOT_ID, "Users");
-        folderService.create(new FolderSpec()
-                .setName(user.getUsername())
-                .setParentId(userRoot.getId())
-                .setAcl(new Acl().addEntry(userPerm, Access.Read, Access.Write)), false);
+        folderService.createUserFolder(user, userPerm);
 
-        txem.afterCommitSync(() -> {
+        txem.afterCommit(() -> {
             messagingService.broadcast(new Message("USER_CREATE", user));
             logService.log(LogSpec.build(LogAction.Create, user));
-        });
+        }, true);
 
         return userDao.get(user.getId());
     }

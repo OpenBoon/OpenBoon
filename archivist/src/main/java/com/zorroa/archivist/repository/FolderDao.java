@@ -10,7 +10,7 @@ public interface FolderDao {
 
     Folder get(int id);
 
-    Folder get(int parent, String name);
+    Folder get(int parent, String name, boolean ignorePerms);
 
     Folder get(Folder parent, String name);
 

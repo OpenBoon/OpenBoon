@@ -40,6 +40,8 @@ public interface UserDao {
 
     User create(UserSpec builder);
 
+    User create(UserSpec builder, String source);
+
     List<User> getAllWithSession();
 
     long getCount();

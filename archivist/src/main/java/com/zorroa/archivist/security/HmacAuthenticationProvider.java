@@ -2,6 +2,7 @@ package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserAuthed;
 import com.zorroa.archivist.service.UserService;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class HmacAuthenticationProvider implements AuthenticationProvider {
 
             if (crypted.equals(msgCrypt)) {
                 User user = userService.get(username);
-                return new UsernamePasswordAuthenticationToken(user, "",
+                return new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",
                         InternalPermission.upcast(userService.getPermissions(user)));
             }
             else {

@@ -3,6 +3,7 @@ package com.zorroa.archivist;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.security.JdbcSessionRegistry;
+import com.zorroa.archivist.security.UserDetailsPopulator;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
@@ -113,4 +114,13 @@ public class ArchivistConfiguration {
                 .build();
     }
 
+    /**
+     * Handles conversion of LDAP properties to a UserAuthed object
+     * as well as permission loading.
+     * @return
+     */
+    @Bean
+    public UserDetailsPopulator userDetailsPopulator() {
+        return new UserDetailsPopulator();
+    }
 }

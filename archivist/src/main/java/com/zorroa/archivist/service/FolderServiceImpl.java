@@ -85,7 +85,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public Folder get(int parent, String name) {
-        return folderDao.get(parent, name);
+        return folderDao.get(parent, name, false);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class FolderServiceImpl implements FolderService {
         // Just throw the exception to the caller,don't return null
         // as none of the other 'get' functions do.
         for (String name : Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
-            current = folderDao.get(parentId, name);
+            current = folderDao.get(parentId, name, false);
             parentId = current.getId();
         }
         return current;
@@ -148,7 +148,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean update(int id, Folder folder) {
-        if (!SecurityUtils.hasPermission(folderDao.getAcl(id),  Access.Write)) {
+        if (!SecurityUtils.hasPermission(folderDao.getAcl(id), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
         Folder current = folderDao.get(id);
@@ -179,7 +179,7 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public boolean delete(Folder folder) {
 
-        if (!SecurityUtils.hasPermission(folder.getAcl(),  Access.Write)) {
+        if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
@@ -187,7 +187,7 @@ public class FolderServiceImpl implements FolderService {
          * Delete all children in reverse order.
          */
         List<Folder> children = getAllDescendants(folder, false);
-        for (int i=children.size(); --i >= 0;) {
+        for (int i = children.size(); --i >= 0; ) {
             if (folderDao.delete(children.get(i))) {
                 transactionEventManager.afterCommitSync(() -> {
                     invalidate(folder);
@@ -208,7 +208,7 @@ public class FolderServiceImpl implements FolderService {
         return result;
     }
 
-    @Transactional(propagation=Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds) {
         if (assetIds.size() >= 1024) {
             throw new ArchivistWriteException("Cannot have more than 1024 assets in a folder");
@@ -230,10 +230,10 @@ public class FolderServiceImpl implements FolderService {
         return result;
     }
 
-    @Transactional(propagation=Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public Map<String, List<Object>> removeAssets(Folder folder, List<String> assetIds) {
 
-        if (!SecurityUtils.hasPermission(folder.getAcl(),  Access.Write)) {
+        if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
 
@@ -245,15 +245,15 @@ public class FolderServiceImpl implements FolderService {
         return result;
     }
 
-    private void invalidate(Folder folder, Integer ... additional) {
+    private void invalidate(Folder folder, Integer... additional) {
         if (folder != null) {
-            if (folder.getParentId()!= null) {
+            if (folder.getParentId() != null) {
                 childCache.invalidate(folder.getParentId());
             }
             childCache.invalidate(folder.getId());
         }
 
-        for (Integer id: additional) {
+        for (Integer id : additional) {
             if (id == null) {
                 continue;
             }
@@ -298,7 +298,7 @@ public class FolderServiceImpl implements FolderService {
      */
     private void getChildFoldersRecursive(List<Folder> result, Queue<Folder> toQuery, boolean forSearch) {
 
-        while(true) {
+        while (true) {
             Folder current = toQuery.poll();
             if (current == null) {
                 return;
@@ -320,7 +320,7 @@ public class FolderServiceImpl implements FolderService {
 
                 List<Folder> children = childCache.get(current.getId())
                         .stream()
-                        .filter(f-> SecurityUtils.hasPermission(f.getAcl(), Access.Read))
+                        .filter(f -> SecurityUtils.hasPermission(f.getAcl(), Access.Read))
                         .collect(Collectors.toList());
 
                 if (children == null || children.isEmpty()) {
@@ -351,9 +351,10 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public Folder create(Folder parent, FolderSpec spec, boolean mightExist) {
 
-        if (!SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
+        if (SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
             throw new AccessDeniedException("You cannot make changes to this folder");
         }
+
         Folder result;
         if (mightExist) {
             try {
@@ -362,13 +363,11 @@ public class FolderServiceImpl implements FolderService {
                 result = folderDao.create(spec);
                 emitFolderCreated(result);
             }
-        }
-        else {
+        } else {
             try {
                 result = folderDao.create(spec);
                 emitFolderCreated(result);
-            }
-            catch (DuplicateKeyException e) {
+            } catch (DuplicateKeyException e) {
                 result = get(spec.getParentId(), spec.getName());
             }
         }
@@ -394,5 +393,14 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public Folder create(FolderSpec spec) {
         return create(folderDao.get(spec.getParentId()), spec, false);
+    }
+
+    @Override
+    public void createUserFolder(User user, Permission perm) {
+        Folder rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true);
+        folderDao.create(new FolderSpec(user)
+                .setName(user.getUsername())
+                .setParentId(rootFolder.getId())
+                .setAcl(new Acl().addEntry(perm, Access.Read, Access.Write)));
     }
 }

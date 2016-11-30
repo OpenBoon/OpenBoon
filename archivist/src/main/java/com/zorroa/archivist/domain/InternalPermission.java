@@ -15,4 +15,8 @@ public class InternalPermission extends Permission implements GrantedAuthority, 
     public static List<InternalPermission> upcast(Collection<Permission> perms) {
         return perms.stream().map(p -> (InternalPermission) p).collect(Collectors.toList());
     }
+
+    public static List<GrantedAuthority> upcastToAuthority(Collection<Permission> perms) {
+        return perms.stream().map(p -> (GrantedAuthority) p).collect(Collectors.toList());
+    }
 }

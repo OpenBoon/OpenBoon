@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.service.LogService;
+import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.authentication.BindAuthenticator;
+import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
+import org.springframework.security.ldap.search.FilterBasedLdapUserSearch;
+import org.springframework.security.ldap.search.LdapUserSearch;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -36,6 +42,12 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class MultipleWebSecurityConfig {
 
+    @Autowired
+    ApplicationProperties properties;
+
+    @Autowired
+    UserDetailsPopulator userDetailsPopulator;
+
     private static final Logger logger = LoggerFactory.getLogger(MultipleWebSecurityConfig.class);
 
     @Configuration
@@ -47,6 +59,7 @@ public class MultipleWebSecurityConfig {
 
         @Autowired
         SessionRegistry sessionRegistry;
+
 
         public CorsFilter corsFilter() {
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -132,7 +145,9 @@ public class MultipleWebSecurityConfig {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, LogService logService) throws Exception {
+
         auth
+                .authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator))
                 .authenticationProvider(authenticationProvider())
                 .authenticationProvider(hmacAuthenticationProvider())
                 .authenticationEventPublisher(authenticationEventPublisher(logService));
@@ -159,11 +174,11 @@ public class MultipleWebSecurityConfig {
                 try {
                     logService.log(new LogSpec()
                             .setAction(LogAction.Login)
-                            .setUser((User) authentication.getPrincipal()));
+                            .setUser((User)authentication.getPrincipal()));
                 } catch (Exception e) {
                     // If we throw here, the authentication fails, so if we can't log
                     // it then nobody can login.  Sorry L337 hackers
-                    logger.warn("Failed log log user authentication", e);
+                    logger.warn("Failed to log user authentication", e);
                     throw new SecurityException(e);
                 }
             }
@@ -189,6 +204,25 @@ public class MultipleWebSecurityConfig {
     @Bean
     public AuthenticationProvider hmacAuthenticationProvider() {
         return new HmacAuthenticationProvider();
+    }
+
+    @Bean
+    @Autowired
+    public AuthenticationProvider ldapAuthenticationProvider(UserDetailsPopulator populator) throws Exception {
+        String url = properties.getString("archivist.security.ldap.url");
+        String base = properties.getString("archivist.security.ldap.base");
+        String filter = properties.getString("archivist.security.ldap.filter");
+
+        DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(url);
+        contextSource.setBase(base);
+        contextSource.afterPropertiesSet();
+        LdapUserSearch ldapUserSearch = new FilterBasedLdapUserSearch("", filter, contextSource);
+        BindAuthenticator bindAuthenticator = new BindAuthenticator(contextSource);
+        bindAuthenticator.setUserSearch(ldapUserSearch);
+        LdapAuthenticationProvider ldapAuthenticationProvider =
+                new LdapAuthenticationProvider(bindAuthenticator, populator);
+        ldapAuthenticationProvider.setUserDetailsContextMapper(populator);
+        return ldapAuthenticationProvider;
     }
 
     @Bean

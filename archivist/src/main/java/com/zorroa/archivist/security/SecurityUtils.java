@@ -2,10 +2,7 @@ package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.Access;
-import com.zorroa.archivist.domain.Acl;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
@@ -49,12 +46,21 @@ public class SecurityUtils {
         }
     }
 
-    public static User getUser() {
+    public static UserAuthed getUser() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             throw new AuthenticationCredentialsNotFoundException("No login credentials specified");
         }
         else {
-            return ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        }
+    }
+
+    public static UserAuthed getUserOrNull() {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            return null;
+        }
+        else {
+            return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         }
     }
 

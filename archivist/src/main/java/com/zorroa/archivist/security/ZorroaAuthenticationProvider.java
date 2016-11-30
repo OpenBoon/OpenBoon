@@ -3,6 +3,7 @@ package com.zorroa.archivist.security;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.InternalPermission;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserAuthed;
 import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,17 +35,17 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
             storedPassword = userService.getPassword(username);
             user = userService.get(username);
         } catch (Exception e) {
-            logger.warn("failed to find user: {}", username, e);
             throw new BadCredentialsException("Invalid username or password");
         }
 
         if (!BCrypt.checkpw(authentication.getCredentials().toString(), storedPassword)) {
-            logger.warn("password authentication failed for user: {}", username);
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        return new UsernamePasswordAuthenticationToken(user, "",
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",
                 InternalPermission.upcast(userService.getPermissions(user)));
+        return auth;
     }
 
     private static final Set<Class<?>> SUPPORTED_AUTHENTICATION =
