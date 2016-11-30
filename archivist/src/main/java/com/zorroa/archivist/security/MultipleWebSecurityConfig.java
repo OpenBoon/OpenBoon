@@ -146,8 +146,10 @@ public class MultipleWebSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, LogService logService) throws Exception {
 
+        if (properties.getBoolean("archivist.security.ldap.enabled")) {
+            auth.authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator));
+        }
         auth
-                .authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator))
                 .authenticationProvider(authenticationProvider())
                 .authenticationProvider(hmacAuthenticationProvider())
                 .authenticationEventPublisher(authenticationEventPublisher(logService));
