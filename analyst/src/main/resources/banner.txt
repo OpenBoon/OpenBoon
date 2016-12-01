@@ -4,4 +4,4 @@ __________
  /     /(  <_> )  | \/|  | \(  <_> ) __ \_
 /_______ \____/|__|   |__|   \____(____  /
         \/                             \/
-        The Analyst
+The Analyst - v${pom.version} - build ${git.commit.id.abbrev} by ${user.name} on ${timestamp}

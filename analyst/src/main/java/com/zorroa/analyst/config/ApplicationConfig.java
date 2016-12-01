@@ -17,6 +17,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -60,24 +61,6 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public InfoEndpoint infoEndpoint() {
-        final Map<String, Object> map = new LinkedHashMap<>();
-        map.put("description", "Zorroa Analyst Server");
-        map.put("project", "zorroa-analyst");
-        Properties props = new Properties();
-        try {
-            props.load(new ClassPathResource("META-INF/maven/com.zorroa/analyst/pom.properties").getInputStream());
-            map.put("version", props.getProperty("version"));
-        } catch (Exception e) {
-            map.put("version", "test");
-            if (!Application.isUnitTest()) {
-                logger.warn("Failed to load version info,", e);
-            }
-        }
-        return new InfoEndpoint(ImmutableMap.of("build", map));
-    }
-
-    @Bean
     public ThreadPoolExecutor analyzeThreadPool() {
         int maxQueueSize = properties.getInt("analyst.executor.maxQueueSize");
         int threads = properties.getInt("analyst.executor.threads");
@@ -102,5 +85,22 @@ public class ApplicationConfig {
     @Autowired
     public ListeningExecutorService analyzeExecutor(ThreadPoolExecutor analyzeThreadPool) {
         return MoreExecutors.listeningDecorator(analyzeThreadPool);
+    }
+
+    @Bean
+    public InfoEndpoint infoEndpoint() throws IOException {
+        final Map<String, Object> map = new LinkedHashMap<>();
+        map.put("description", "Zorroa Analyst Server");
+        map.put("project", "zorroa-analyst");
+
+        Properties props = new Properties();
+        props.load(new ClassPathResource("version.properties").getInputStream());
+        map.put("version", props.getProperty("build.version"));
+        map.put("date", props.getProperty("build.date"));
+        map.put("user", props.getProperty("build.user"));
+        map.put("commit",props.getProperty("build.id"));
+        map.put("branch",props.getProperty("build.branch"));
+        map.put("dirty",props.getProperty("build.dirty"));
+        return new InfoEndpoint(ImmutableMap.of("build", map));
     }
 }

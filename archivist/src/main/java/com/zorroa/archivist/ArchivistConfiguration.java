@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -68,19 +69,19 @@ public class ArchivistConfiguration {
     }
 
     @Bean
-    public InfoEndpoint infoEndpoint() {
+    public InfoEndpoint infoEndpoint() throws IOException {
         final Map<String, Object> map = new LinkedHashMap<>();
         map.put("description", "Zorroa Archivist Server");
         map.put("project", "zorroa-archivist");
+
         Properties props = new Properties();
-        try {
-            props.load(new ClassPathResource("META-INF/maven/com.zorroa/archivist/pom.properties").getInputStream());
-            map.put("version", props.getProperty("version"));
-        } catch (Exception e) {
-            if (!ArchivistConfiguration.unittest) {
-                logger.warn("Failed to load version info,", e);
-            }
-        }
+        props.load(new ClassPathResource("version.properties").getInputStream());
+        map.put("version", props.getProperty("build.version"));
+        map.put("date", props.getProperty("build.date"));
+        map.put("user", props.getProperty("build.user"));
+        map.put("commit",props.getProperty("build.id"));
+        map.put("branch",props.getProperty("build.branch"));
+        map.put("dirty",props.getProperty("build.dirty"));
         return new InfoEndpoint(ImmutableMap.of("build", map));
     }
 
