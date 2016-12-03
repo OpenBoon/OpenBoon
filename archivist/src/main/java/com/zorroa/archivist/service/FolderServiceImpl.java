@@ -14,6 +14,7 @@ import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.MessageType;
@@ -351,8 +352,8 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public Folder create(Folder parent, FolderSpec spec, boolean mightExist) {
 
-        if (SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
-            throw new AccessDeniedException("You cannot make changes to this folder");
+        if (!SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
+            throw new ArchivistException("You cannot make changes to this folder");
         }
 
         Folder result;
