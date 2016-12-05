@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.collect.Maps;
+
 import java.util.Map;
 
 /**
@@ -31,7 +33,12 @@ public class UserSettings {
     /**
      * All settings related to display of metadata.
      */
-    private Metadata metadata;
+    private Map<String, Object> metadata;
+
+    public UserSettings() {
+        this.search = new Search();
+        this.metadata = Maps.newHashMap();
+    }
 
     public Search getSearch() {
         return search;
@@ -42,11 +49,11 @@ public class UserSettings {
         return this;
     }
 
-    public Metadata getMetadata() {
+    public Map<String,Object> getMetadata() {
         return metadata;
     }
 
-    public UserSettings setMetadata(Metadata metadata) {
+    public UserSettings setMetadata(Map<String, Object> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -70,16 +77,5 @@ public class UserSettings {
             this.queryFields = queryFields;
             return this;
         }
-    }
-
-    /**
-     * All metadata related display setting.  This mostly revolves around
-     * what attributes to display in the metadata window.
-     *
-     * This class is currently a place holder until the structure of this
-     * setting is known.
-     */
-    public static class Metadata {
-
     }
 }
