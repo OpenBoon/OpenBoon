@@ -57,7 +57,8 @@ public class ElasticConfig {
                         .put("discovery.zen.fd.ping_retries", 10)
                         .put("discovery.zen.ping.multicast.enabled", false)
                         .putArray("discovery.zen.ping.unicast.hosts", archivistHost)
-                        .put("node.data", properties.getBoolean("analyst.index.data"));
+                        .put("node.data", properties.getBoolean("analyst.index.data"))
+                        .put("action.auto_create_index", "-archivist*");
 
         if (Application.isUnitTest()) {
             logger.info("Elastic in unit test mode");

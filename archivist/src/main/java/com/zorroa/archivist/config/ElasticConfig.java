@@ -1,13 +1,10 @@
 package com.zorroa.archivist.config;
 
-import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
-import com.zorroa.common.elastic.ZorroaNode;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,9 +58,7 @@ public class ElasticConfig {
             builder.put("node.local", true);
         }
 
-        Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
-        node.start();
-        return node.client();
+        return ElasticClientUtils.initializeClient(builder);
     }
 
 }
