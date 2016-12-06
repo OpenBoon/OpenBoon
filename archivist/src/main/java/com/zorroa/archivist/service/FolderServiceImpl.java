@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.TrashFolderDao;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -43,6 +44,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     FolderDao folderDao;
+
+    @Autowired
+    TrashFolderDao trashFolderDao;
 
     @Autowired
     AssetDao assetDao;
@@ -178,6 +182,72 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public TrashedFolderOp trash(Folder folder) {
+
+        if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
+            throw new ArchivistWriteException("You don't have the permissions to delete this folder");
+        }
+
+        /**
+         * Don't allow trashing of dyhi folders
+         */
+        if (folder.isDyhiRoot() || folder.getDyhiId() != null) {
+            throw new ArchivistWriteException("Cannot deleted dynamic hierarchy folder.");
+        }
+
+        /**
+         * The Operation ID keeps track of all folders deleted by this specific
+         * transaction.
+         */
+        String op = UUID.randomUUID().toString();
+
+        List<Folder> children = getAllDescendants(folder, false);
+        int order = 0;
+
+        for (int i = children.size(); --i >= 0; ) {
+            Folder child = children.get(i);
+
+            if (!SecurityUtils.hasPermission(child.getAcl(), Access.Write)) {
+                throw new ArchivistWriteException("You don't have the permissions to delete the subfolder " + child.getName());
+            }
+
+            if (folderDao.delete(child)) {
+                order++;
+                trashFolderDao.create(child, op, false, order);
+                transactionEventManager.afterCommit(() -> {
+                    invalidate(folder);
+                    logService.log(LogSpec.build(LogAction.Delete, folder));
+                }, false);
+            }
+        }
+
+        boolean result = folderDao.delete(folder);
+        if (result) {
+            order++;
+            int id = trashFolderDao.create(folder, op, true, order);
+            return new TrashedFolderOp(id, op, order);
+        }
+        else {
+            throw new ArchivistWriteException("Failed to trash the given folder, already deleted.");
+        }
+    }
+
+    @Override
+    public TrashedFolderOp restore(TrashedFolder tf) {
+        List<TrashedFolder> folders = trashFolderDao.getAll(tf.getOpId());
+
+        int count = 0;
+        for (TrashedFolder folder: folders) {
+            folderDao.create(folder);
+            count++;
+        }
+
+        trashFolderDao.removeAll(tf.getOpId());
+        return new TrashedFolderOp(tf.getId(), tf.getOpId(), count);
+    }
+
+    @Deprecated
+    @Override
     public boolean delete(Folder folder) {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
@@ -192,7 +262,6 @@ public class FolderServiceImpl implements FolderService {
             if (folderDao.delete(children.get(i))) {
                 transactionEventManager.afterCommitSync(() -> {
                     invalidate(folder);
-                    messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
                     logService.log(LogSpec.build(LogAction.Delete, folder));
                 });
             }
@@ -202,7 +271,6 @@ public class FolderServiceImpl implements FolderService {
         if (result) {
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(folder);
-                messagingService.broadcast(new Message(MessageType.FOLDER_DELETE, folder));
                 logService.log(LogSpec.build(LogAction.Delete, folder));
             });
         }
@@ -403,5 +471,30 @@ public class FolderServiceImpl implements FolderService {
                 .setName(user.getUsername())
                 .setParentId(rootFolder.getId())
                 .setAcl(new Acl().addEntry(perm, Access.Read, Access.Write)));
+    }
+
+    @Override
+    public List<TrashedFolder> getTrashedFolders() {
+        return trashFolderDao.getAll(SecurityUtils.getUser().getId());
+    }
+
+    @Override
+    public List<TrashedFolder> getTrashedFolders(Folder folder) {
+        return trashFolderDao.getAll(folder, SecurityUtils.getUser().getId());
+    }
+
+    @Override
+    public TrashedFolder getTrashedFolder(int id) {
+        return trashFolderDao.get(id, SecurityUtils.getUser().getId());
+    }
+
+    @Override
+    public int emptyTrash() {
+        return trashFolderDao.removeAll(SecurityUtils.getUser().getId());
+    }
+
+    @Override
+    public int trashCount() {
+        return trashFolderDao.count(SecurityUtils.getUser().getId());
     }
 }

@@ -205,6 +205,39 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         return getAfterCreate(id);
     }
 
+    private static final String RESTORE =
+            JdbcUtils.insert("folder",
+                    "pk_folder",
+                    "pk_parent",
+                    "str_name",
+                    "user_created",
+                    "time_created",
+                    "bool_recursive",
+                    "user_modified",
+                    "time_modified",
+                    "json_search");
+    @Override
+    public Folder create(TrashedFolder spec) {
+        long time = System.currentTimeMillis();
+
+        jdbc.update(connection -> {
+            PreparedStatement ps =
+                    connection.prepareStatement(RESTORE);
+            ps.setInt(1, spec.getFolderId());
+            ps.setInt(2, spec.getParentId() == null ?  Folder.ROOT_ID : spec.getParentId());
+            ps.setString(3, spec.getName());
+            ps.setInt(4, spec.getUser().getId());
+            ps.setLong(5, time);
+            ps.setBoolean(6, spec.isRecursive());
+            ps.setInt(7, spec.getUserDeleted().getId());
+            ps.setLong(8, time);
+            ps.setString(9, Json.serializeToString(spec.getSearch(), null));
+            return ps;
+        });
+
+        return getAfterCreate(spec.getFolderId());
+    }
+
     private static final String[] UPDATE = {
             JdbcUtils.update("folder", "pk_folder",
                     "time_modified",

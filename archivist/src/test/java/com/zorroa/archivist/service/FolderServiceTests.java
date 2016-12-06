@@ -3,15 +3,15 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.Access;
-import com.zorroa.archivist.domain.Acl;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderSpec;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.TrashFolderDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.access.AccessDeniedException;
 
@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 
 public class FolderServiceTests extends AbstractTest {
+
+    @Autowired
+    TrashFolderDao trashFolderDao;
 
     @Before
     public void init() {
@@ -286,5 +289,59 @@ public class FolderServiceTests extends AbstractTest {
         folder = folderService.get(folder.getId());
         assertNull(folder.getSearch());
         assertFalse(folder.isDyhiRoot());
+    }
+
+    @Test
+    public void testTrashFolder() {
+        int count = folderService.count();
+
+        Folder folder1 = folderService.create(new FolderSpec("folder1"));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
+        assertEquals(count+2, folderService.count());
+
+        TrashedFolderOp result = folderService.trash(folder1);
+
+        // Deleted 2 folders
+        assertEquals(2, result.getCount());
+        // count back to normal
+        assertEquals(count, folderService.count());
+    }
+
+    @Test
+    public void getTrashedFolder() {
+        Folder folder1 = folderService.create(new FolderSpec("folder1"));
+        TrashedFolderOp result = folderService.trash(folder1);
+        TrashedFolder tf = folderService.getTrashedFolder(result.getTrashFolderId());
+        logger.info(Json.serializeToString(tf));
+    }
+
+    @Test
+    public void restoreFolder() {
+
+        Folder folder1 = folderService.create(new FolderSpec("folder1"));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
+        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2.getId()));
+        TrashedFolderOp result = folderService.trash(folder1);
+
+        // Deleted 2 folders
+        assertEquals(3, result.getCount());
+
+        assertEquals(3, folderService.restore(
+                folderService.getTrashedFolder(result.getTrashFolderId())).getCount());
+    }
+
+    @Test
+    public void emptyTrash() {
+
+        Folder folder1 = folderService.create(new FolderSpec("folder1"));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
+        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2.getId()));
+        TrashedFolderOp result = folderService.trash(folder1);
+
+        // Deleted 2 folders
+        assertEquals(3, result.getCount());
+        assertEquals(3, folderService.emptyTrash());
+
+        assertEquals(0, (int) jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash", Integer.class));
     }
 }

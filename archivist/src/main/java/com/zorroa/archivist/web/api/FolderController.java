@@ -76,7 +76,7 @@ public class FolderController {
     @RequestMapping(value="/api/v1/folders/{id}", method=RequestMethod.DELETE)
     public Object delete(@PathVariable int id) {
         Folder folder = folderService.get(id);
-        return HttpUtils.deleted("folders", id, folderService.delete(folder));
+        return HttpUtils.deleted("folders", id, folderService.trash(folder).getCount() > 0);
     }
 
     @RequestMapping(value="/api/v1/folders/{id}/folders", method=RequestMethod.GET)

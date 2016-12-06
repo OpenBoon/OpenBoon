@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.security.UnitTestAuthentication;
@@ -50,6 +51,11 @@ public abstract class MockMvcTest extends AbstractTest {
     protected <T> T deserialize(MvcResult result, Class<T> type) {
         return Json.deserialize(result.getResponse().getContentAsByteArray(), type);
     }
+
+    protected <T> T deserialize(MvcResult result, TypeReference<T> type) {
+        return Json.deserialize(result.getResponse().getContentAsByteArray(), type);
+    }
+
 
     /**
      * @return a session for an employee with the id 2.

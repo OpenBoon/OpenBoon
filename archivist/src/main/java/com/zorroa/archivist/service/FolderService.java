@@ -57,6 +57,10 @@ public interface FolderService {
 
     int deleteAll(Collection<Integer> ids);
 
+    TrashedFolderOp trash(Folder folder);
+
+    TrashedFolderOp restore(TrashedFolder tf);
+
     boolean delete(Folder folder);
 
     int deleteAll(DyHierarchy dyhi);
@@ -92,4 +96,30 @@ public interface FolderService {
     Folder create(Folder parent, FolderSpec spec, boolean mightExist);
 
     void createUserFolder(User user, Permission perm);
+
+    /**
+     * Return all trashed folders for the current user.
+     * @return
+     */
+    List<TrashedFolder> getTrashedFolders();
+
+    /**
+     * Return deleted child folders in the given folder for the current user.
+     *
+     * @param folder
+     * @return
+     */
+    List<TrashedFolder> getTrashedFolders(Folder folder);
+
+    /**
+     * Get a trashed folder by its unique Id.
+     *
+     * @param id
+     * @return
+     */
+    TrashedFolder getTrashedFolder(int id);
+
+    int emptyTrash();
+
+    int trashCount();
 }
