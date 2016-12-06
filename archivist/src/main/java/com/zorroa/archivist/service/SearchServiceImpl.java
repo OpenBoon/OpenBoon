@@ -478,6 +478,14 @@ public class SearchServiceImpl implements SearchService {
                 query.must(scriptFilterBuilder);
             }
         }
+
+        if (filter.getHamming() != null) {
+            QueryBuilder hammingScript = QueryBuilders.scriptQuery(new Script(
+                    "hammingDistance", ScriptService.ScriptType.INLINE, "native",
+                    ImmutableMap.of("field", filter.getHamming().getField(),
+                            "hash", filter.getHamming().getHash())));
+            query.must(hammingScript);
+        }
     }
 
     @Override
