@@ -12,6 +12,7 @@ import org.springframework.validation.FieldError;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +51,10 @@ public class HttpUtils {
 
     public static Map<String, Object> count(Number count) {
         return ImmutableMap.of("count", count);
+    }
+
+    public static Map<String, Object> counts(List<Long> counts) {
+        return ImmutableMap.of("counts", counts);
     }
 
     public static Map<String, Object> deleted(String type, Object id, boolean result) {
