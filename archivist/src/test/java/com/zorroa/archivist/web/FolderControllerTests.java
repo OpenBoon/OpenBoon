@@ -137,17 +137,26 @@ public class FolderControllerTests extends MockMvcTest {
     public void testUpdate() throws Exception {
         MockHttpSession session = user();
 
-        FolderSpec builder = new FolderSpec(folder).setName("TestFolder9000");
-        MvcResult result = mvc.perform(put("/api/v1/folders/" + folder.getId())
+        MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(builder)))
+                .content(Json.serialize(new FolderSpec("TestFolder1"))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Folder updatedFolder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Folder>() {});
+
+        result = mvc.perform(put("/api/v1/folders/" + folder.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(updatedFolder)))
                 .andExpect(status().isOk())
                 .andReturn();
 
         Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertEquals(builder.getName(), folder2.getName());
+        assertEquals(updatedFolder.getName(), folder2.getName());
         assertEquals(folder.getParentId(), folder2.getParentId());
     }
 

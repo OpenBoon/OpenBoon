@@ -202,7 +202,6 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         }, keyHolder);
 
         int id = keyHolder.getKey().intValue();
-        setAcl(id, spec.getAcl());
         return getAfterCreate(id);
     }
 

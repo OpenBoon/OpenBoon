@@ -3,6 +3,7 @@ package com.zorroa.archivist.security;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
@@ -19,6 +20,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Collection;
 import java.util.Set;
+
+import static com.google.common.collect.Sets.intersection;
 
 public class SecurityUtils {
 
@@ -99,7 +102,7 @@ public class SecurityUtils {
         if (hasPermission("group::administrator")) {
             return true;
         }
-        return !Sets.intersection(permIds, SecurityUtils.getPermissionIds()).isEmpty();
+        return !intersection(permIds, SecurityUtils.getPermissionIds()).isEmpty();
     }
 
     /**
@@ -175,6 +178,47 @@ public class SecurityUtils {
             ps.getExport().add(p.getId());
         }
         source.setAttr("permissions", ps);
+    }
+
+    /**
+     * Return true if the user can set the new ACL.
+     *
+     * This function checks to ensure that A user isn't taking away access they have by accident.
+     *
+     * @param newAcl
+     * @param oldAcl
+     */
+    public static void canSetAclOnFolder(Acl newAcl, Acl oldAcl, boolean created) {
+        if (hasPermission("group::administrator")) {
+            return;
+        }
+
+        if (created) {
+            if(!SecurityUtils.hasPermission(newAcl, Access.Read)) {
+                throw new ArchivistWriteException("You cannot create a folder without read access to it.");
+            }
+        }
+        else {
+            /**
+             * Here we check to to see if you have read/write/export access already
+             * and we don't let you take away access from yourself.
+             */
+            boolean hasRead = SecurityUtils.hasPermission(oldAcl, Access.Read);
+            boolean hasWrite = SecurityUtils.hasPermission(oldAcl, Access.Write);
+            boolean hasExport = SecurityUtils.hasPermission(oldAcl, Access.Export);
+
+            if (hasRead && !SecurityUtils.hasPermission(newAcl, Access.Read)) {
+                throw new ArchivistWriteException("You cannot remove read access from yourself.");
+            }
+
+            if (hasWrite && !SecurityUtils.hasPermission(newAcl, Access.Write)) {
+                throw new ArchivistWriteException("You cannot remove write access from yourself.");
+            }
+
+            if (hasExport && !SecurityUtils.hasPermission(newAcl, Access.Export)) {
+                throw new ArchivistWriteException("You cannot remove export access from yourself.");
+            }
+        }
     }
 
 }

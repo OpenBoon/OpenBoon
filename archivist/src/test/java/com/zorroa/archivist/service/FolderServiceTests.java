@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.TrashFolderDao;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -13,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,9 @@ public class FolderServiceTests extends AbstractTest {
 
     @Autowired
     TrashFolderDao trashFolderDao;
+
+    @Autowired
+    FolderDao folderDao;
 
     @Before
     public void init() {
@@ -43,7 +47,6 @@ public class FolderServiceTests extends AbstractTest {
 
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
-
     }
 
     @Test
@@ -84,15 +87,58 @@ public class FolderServiceTests extends AbstractTest {
         assertFalse(results.get("success").isEmpty());
     }
 
-
-    @Test(expected=EmptyResultDataAccessException.class)
+    @Test
     public void testSetAcl() {
-
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
 
         folderService.setAcl(folder, new Acl().addEntry(
+                userService.getPermission("group::manager"),
+                Access.Read, Access.Write, Access.Export), false);
+        folderService.get(folder.getId());
+    }
+
+    @Test(expected=ArchivistWriteException.class)
+    public void testSetAclFailure() {
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+        folderService.get(folder.getId());
+
+        /**
+         * Since we have all permissions now, this should fail because we
+         * are taking away write/export permissions from ourself.
+         */
+        folderService.setAcl(folder, new Acl().addEntry(
+                userService.getPermission("group::manager"),
+                Access.Read), false);
+        folderService.get(folder.getId());
+    }
+
+    @Test(expected=ArchivistWriteException.class)
+    public void testSetAclFailureDoesntHavePermission() {
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+        folderService.get(folder.getId());
+
+        /**
+         * Since we have all permissions now, this should fail because we
+         * are taking away write/export permissions from ourself.
+         */
+        folderService.setAcl(folder, new Acl().addEntry(
+                userService.getPermission("group::administrator"),
+                Access.Read), false);
+        folderService.get(folder.getId());
+    }
+
+    @Test(expected=EmptyResultDataAccessException.class)
+    public void testGetFolderWithoutAcl() {
+
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+        folderService.get(folder.getId());
+
+        folderDao.setAcl(folder.getId(), new Acl().addEntry(
                 userService.getPermission("group::administrator"), Access.Read));
         folderService.get(folder.getId());
     }
@@ -100,33 +146,40 @@ public class FolderServiceTests extends AbstractTest {
     @Test(expected=EmptyResultDataAccessException.class)
     public void testCreateWithReadAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Read));
         Folder folder = folderService.create(builder);
+        folderDao.setAcl(folder.getId(),
+                new Acl().addEntry(userService.getPermission("group::administrator"), Access.Read));
         folderService.get(folder.getId());
     }
 
-    @Test(expected=AccessDeniedException.class)
+    @Test(expected=ArchivistWriteException.class)
     public void testAddAssetsWithWriteAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
         Folder folder = folderService.create(builder);
+        Acl acl = new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write);
+        folderDao.setAcl(folder.getId(), acl);
+        folder.setAcl(acl);
+
         folderService.addAssets(folder, assetService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
     }
 
-    @Test(expected=AccessDeniedException.class)
+    @Test(expected=ArchivistWriteException.class)
     public void testDeleteFolderWithWriteAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
         Folder folder = folderService.create(builder);
+        Acl acl = new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write);
+        folder.setAcl(acl);
+        folderDao.setAcl(folder.getId(), acl);
         folderService.delete(folder);
     }
 
-    @Test(expected=AccessDeniedException.class)
+    @Test(expected=ArchivistWriteException.class)
     public void testUpdateFolderWithWriteAcl() {
         FolderSpec builder = new FolderSpec("Folder");
-        builder.setAcl(new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
         Folder folder = folderService.create(builder);
+        folderDao.setAcl(folder.getId(),
+                new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
         folderService.update(folder.getId(), folder.setName("biblo"));
     }
 

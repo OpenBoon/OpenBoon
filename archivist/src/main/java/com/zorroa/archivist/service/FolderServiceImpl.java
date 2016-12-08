@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,9 +71,9 @@ public class FolderServiceImpl implements FolderService {
     public boolean setDyHierarchyRoot(Folder folder, String attribute) {
         return folderDao.setDyHierarchyRoot(folder, attribute);
     }
-
     @Override
-    public void setAcl(Folder folder, Acl acl) {
+    public void setAcl(Folder folder, Acl acl, boolean created) {
+        SecurityUtils.canSetAclOnFolder(acl, folder.getAcl(), created);
         folderDao.setAcl(folder.getId(), acl);
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
@@ -154,12 +153,12 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public boolean update(int id, Folder folder) {
         if (!SecurityUtils.hasPermission(folderDao.getAcl(id), Access.Write)) {
-            throw new AccessDeniedException("You cannot make changes to this folder");
+            throw new ArchivistWriteException("You cannot make changes to this folder");
         }
         Folder current = folderDao.get(id);
         boolean result = folderDao.update(id, folder);
         if (result) {
-            setAcl(folder, folder.getAcl());
+            setAcl(folder, folder.getAcl(), false);
 
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(current, current.getParentId());
@@ -251,7 +250,7 @@ public class FolderServiceImpl implements FolderService {
     public boolean delete(Folder folder) {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
-            throw new AccessDeniedException("You cannot make changes to this folder");
+            throw new ArchivistWriteException("You cannot make changes to this folder");
         }
 
         /**
@@ -284,7 +283,7 @@ public class FolderServiceImpl implements FolderService {
         }
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
-            throw new AccessDeniedException("You cannot make changes to this folder");
+            throw new ArchivistWriteException("You cannot make changes to this folder");
         }
 
         if (folder.getSearch() != null) {
@@ -303,7 +302,7 @@ public class FolderServiceImpl implements FolderService {
     public Map<String, List<Object>> removeAssets(Folder folder, List<String> assetIds) {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
-            throw new AccessDeniedException("You cannot make changes to this folder");
+            throw new ArchivistWriteException("You cannot make changes to this folder");
         }
 
         Map<String, List<Object>> result = assetDao.removeLink("folder", folder.getId(), assetIds);
@@ -430,11 +429,13 @@ public class FolderServiceImpl implements FolderService {
                 result = get(spec.getParentId(), spec.getName());
             } catch (EmptyResultDataAccessException e) {
                 result = folderDao.create(spec);
+                setAcl(result, spec.getAcl(), true);
                 emitFolderCreated(result);
             }
         } else {
             try {
                 result = folderDao.create(spec);
+                setAcl(result, spec.getAcl(), true);
                 emitFolderCreated(result);
             } catch (DuplicateKeyException e) {
                 result = get(spec.getParentId(), spec.getName());
@@ -467,10 +468,10 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public void createUserFolder(User user, Permission perm) {
         Folder rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true);
-        folderDao.create(new FolderSpec(user)
+        Folder folder = folderDao.create(new FolderSpec(user)
                 .setName(user.getUsername())
-                .setParentId(rootFolder.getId())
-                .setAcl(new Acl().addEntry(perm, Access.Read, Access.Write)));
+                .setParentId(rootFolder.getId()));
+        folderDao.setAcl(folder.getId(), new Acl().addEntry(perm, Access.Read, Access.Write));
     }
 
     @Override

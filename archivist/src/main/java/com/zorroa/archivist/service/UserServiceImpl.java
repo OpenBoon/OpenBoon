@@ -314,6 +314,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removePermissions(User user, Collection<Permission> perms) {
+        /**
+         * Check to see if the permissions we are
+         */
         for (Permission p: perms) {
             // Don't allow removal of user permission.
             if (PERMANENT_TYPES.contains(p.getType())) {

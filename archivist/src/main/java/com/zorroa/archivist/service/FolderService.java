@@ -71,7 +71,7 @@ public interface FolderService {
 
     boolean setDyHierarchyRoot(Folder folder, String attribute);
 
-    void setAcl(Folder folder, Acl acl);
+    void setAcl(Folder folder, Acl acl, boolean created);
 
     Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds);
 
