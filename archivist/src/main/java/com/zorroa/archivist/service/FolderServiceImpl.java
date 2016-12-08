@@ -9,9 +9,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.repository.TrashFolderDao;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.PermissionDao;
+import com.zorroa.archivist.repository.TrashFolderDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AssetDao;
@@ -64,13 +64,22 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder, String attribute) {
-        return folderDao.removeDyHierarchyRoot(folder);
+        boolean result = folderDao.removeDyHierarchyRoot(folder);
+        transactionEventManager.afterCommit(() -> {
+            invalidate(folder);
+        });
+        return result;
     }
 
     @Override
     public boolean setDyHierarchyRoot(Folder folder, String attribute) {
-        return folderDao.setDyHierarchyRoot(folder, attribute);
+        boolean result = folderDao.setDyHierarchyRoot(folder, attribute);
+        transactionEventManager.afterCommit(() -> {
+            invalidate(folder);
+        });
+        return result;
     }
+
     @Override
     public void setAcl(Folder folder, Acl acl, boolean created) {
         SecurityUtils.canSetAclOnFolder(acl, folder.getAcl(), created);
@@ -349,7 +358,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     private final LoadingCache<Integer, List<Folder>> childCache = CacheBuilder.newBuilder()
-            .maximumSize(10000)
+            .maximumSize(5000)
             .expireAfterWrite(1, TimeUnit.DAYS)
             .build(new CacheLoader<Integer, List<Folder>>() {
                 public List<Folder> load(Integer key) throws Exception {

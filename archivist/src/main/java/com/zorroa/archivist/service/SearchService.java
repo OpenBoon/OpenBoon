@@ -10,6 +10,7 @@ import com.zorroa.sdk.search.AssetSuggestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +20,8 @@ import java.util.Set;
 public interface SearchService {
     SearchResponse search(AssetSearch builder);
     long count(AssetSearch builder);
+
+    List<Long> count(List<Integer> ids, AssetSearch search);
 
     long count(Folder folder);
 

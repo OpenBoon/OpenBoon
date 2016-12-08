@@ -1,10 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
@@ -45,10 +42,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -96,6 +90,42 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public long count(AssetSearch builder) {
         return buildSearch(builder).setSize(0).get().getHits().getTotalHits();
+    }
+
+    @Override
+    public List<Long> count(List<Integer> ids, AssetSearch search) {
+        List<Long> counts = Lists.newArrayListWithCapacity(ids.size());
+        if (search != null) {
+            // Replace any existing folders with each folder to get count.
+            // FIXME: Use aggregation for simple folders.
+            AssetFilter filter = search.getFilter();
+            if (filter == null) {
+                filter = new AssetFilter();
+            }
+            Map<String, List<Object>> links = filter.getLinks();
+            if (links == null) {
+                links = Maps.newHashMap();
+            }
+            for (Integer id : ids) {
+                links.put("folder", Arrays.asList(id));
+                filter.setLinks(links);
+                search.setFilter(filter);
+                long count = count(search);
+                counts.add(count);
+            }
+        } else {
+            for (Integer id : ids) {
+                try {
+                    long count = count(folderService.get(id));
+                    counts.add(count);
+                } catch (Exception ignore) {
+                    // probably don't have access to the folder.
+                    counts.add(0L);
+                }
+            }
+        }
+
+        return counts;
     }
 
     @Override

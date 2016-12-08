@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.api;
 
-import com.google.common.collect.Lists;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
@@ -8,17 +7,13 @@ import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.MessagingService;
 import com.zorroa.archivist.service.SearchService;
-import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class FolderController {
@@ -62,33 +57,7 @@ public class FolderController {
 
     @RequestMapping(value="/api/v1/folders/_assetCounts", method=RequestMethod.POST)
     public Object countAssets(@RequestBody FolderAssetCountsRequest req) {
-        List<Long> counts = Lists.newArrayListWithCapacity(req.ids.size());
-        if (req.search != null) {
-            // Replace any existing folders with each folder to get count.
-            // FIXME: Use aggregation for simple folders.
-            AssetSearch search = req.search;
-            AssetFilter filter = search.getFilter();
-            if (filter == null) {
-                filter = new AssetFilter();
-            }
-            Map<String, List<Object>> links = filter.getLinks();
-            if (links == null) {
-                links = new HashMap<String, List<Object>>();
-            }
-            for (Integer id : req.ids) {
-                links.put("folder", Arrays.asList(id));
-                filter.setLinks(links);
-                search.setFilter(filter);
-                long count = searchService.count(search);
-                counts.add(count);
-            }
-        } else {
-            for (Integer id : req.ids) {
-                long count = searchService.count(folderService.get(id));
-                counts.add(count);
-            }
-        }
-        return HttpUtils.counts(counts);
+        return HttpUtils.counts(searchService.count(req.ids, req.search));
     }
 
     @RequestMapping(value="/api/v1/folders/_path/**", method=RequestMethod.GET)
