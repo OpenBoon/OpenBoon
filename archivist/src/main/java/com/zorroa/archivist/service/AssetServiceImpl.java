@@ -6,12 +6,12 @@ import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
@@ -119,7 +119,7 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = assetDao.get(assetId);
         Set<Integer> write = asset.getAttr("permissions.write", Set.class);
         if (!SecurityUtils.hasPermission(write)) {
-            throw new AccessDeniedException("You cannot make changes to this asset.");
+            throw new ArchivistWriteException("You cannot make changes to this asset.");
         }
 
         long version = assetDao.update(assetId, attrs);

@@ -9,6 +9,8 @@ import com.zorroa.archivist.domain.Note;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.web.MultipartFileSender;
+import com.zorroa.sdk.client.exception.ArchivistReadException;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
@@ -26,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,7 +71,7 @@ public class AssetController {
         Asset asset = assetService.get(id);
 
         if (!SecurityUtils.hasPermission("export", asset)) {
-            throw new AccessDeniedException("export access denied");
+            throw new ArchivistReadException("export access denied");
         }
 
         logService.log(LogSpec.build(LogAction.Export, "asset", asset.getId()));
@@ -169,7 +170,7 @@ public class AssetController {
     public Object update(@RequestBody Map<String, Object> attrs, @PathVariable String id) throws IOException {
         Asset asset = assetService.get(id);
         if (!SecurityUtils.hasPermission("write", asset)) {
-            throw new AccessDeniedException("export access denied");
+            throw new ArchivistWriteException("export access denied");
         }
 
 
