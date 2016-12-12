@@ -14,6 +14,9 @@ public class UserBase {
     private String lastName;
     private String email;
 
+    private int permissionId;
+    private int homeFolderId;
+
     public int getId() {
         return id;
     }
@@ -56,6 +59,24 @@ public class UserBase {
 
     public UserBase setEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public int getPermissionId() {
+        return permissionId;
+    }
+
+    public UserBase setPermissionId(int permissionId) {
+        this.permissionId = permissionId;
+        return this;
+    }
+
+    public int getHomeFolderId() {
+        return homeFolderId;
+    }
+
+    public UserBase setHomeFolderId(int homeFolderId) {
+        this.homeFolderId = homeFolderId;
         return this;
     }
 

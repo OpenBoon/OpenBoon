@@ -22,6 +22,7 @@ public class SecurityUtilsTest extends AbstractTest {
     @Test
     public void testHasPermissionWithAcl() {
         // Get the perms we have
+        authenticate("user");
         List<Integer> perms = ImmutableList.copyOf(SecurityUtils.getPermissionIds());
 
         // Create an ACL and add a Read permission

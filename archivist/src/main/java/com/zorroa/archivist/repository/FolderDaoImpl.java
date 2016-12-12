@@ -177,13 +177,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public Folder create(FolderSpec spec) {
         long time = System.currentTimeMillis();
-        int user;
-        if (spec.getCreatedUser() != null) {
-            user = spec.getCreatedUser().getId();
-        }
-        else {
-            user = SecurityUtils.getUser().getId();
-        }
+        int user = SecurityUtils.getUser().getId();
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {

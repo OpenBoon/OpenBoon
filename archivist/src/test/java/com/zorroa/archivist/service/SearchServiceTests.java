@@ -17,7 +17,10 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
-import com.zorroa.sdk.search.*;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.search.ColorFilter;
+import com.zorroa.sdk.search.Scroll;
 import org.junit.Test;
 
 import java.io.File;
@@ -31,6 +34,7 @@ import static org.junit.Assert.*;
  * Created by chambers on 10/30/15.
  */
 public class SearchServiceTests extends AbstractTest {
+
 
     @Test
     public void testSearchPermissionsMiss() throws IOException {

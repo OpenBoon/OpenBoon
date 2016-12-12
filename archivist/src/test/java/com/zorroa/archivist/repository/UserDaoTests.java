@@ -42,6 +42,8 @@ public class UserDaoTests extends AbstractTest {
         builder.setUsername("test");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
+        builder.setHomeFolderId(0);
+        builder.setUserPermissionId(permissionDao.get("group", "manager").getId());
         user = userDao.create(builder);
     }
 
@@ -59,26 +61,30 @@ public class UserDaoTests extends AbstractTest {
         builder.setUsername("test2");
         builder.setPassword("test2");
         builder.setEmail("test@test.com");
+        builder.setHomeFolderId(0);
+        builder.setUserPermissionId(permissionDao.get("group", "manager").getId());
         user = userDao.create(builder);
         assertEquals(++count, userDao.getCount());
     }
 
     @Test
     public void testAll() {
-        assertEquals(3, userDao.getAll().size());
+        assertEquals(4, userDao.getAll().size());
 
         UserSpec builder = new UserSpec();
         builder.setUsername("foo");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
+        builder.setHomeFolderId(0);
+        builder.setUserPermissionId(permissionDao.get("group", "manager").getId());
         userDao.create(builder);
 
-        assertEquals(4, userDao.getAll().size());
+        assertEquals(5, userDao.getAll().size());
     }
 
     @Test
     public void testAllPageable() {
-        assertEquals(3, userDao.getAll(Pager.first()).size());
+        assertEquals(4, userDao.getAll(Pager.first()).size());
         assertEquals(0, userDao.getAll(new Pager(2, 4)).size());
     }
 

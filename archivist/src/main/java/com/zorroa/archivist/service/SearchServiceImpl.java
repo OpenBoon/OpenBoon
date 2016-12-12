@@ -294,14 +294,20 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQuery(AssetSearch search, boolean perms, boolean postFilter) {
+        QueryBuilder permsQuery = SecurityUtils.getPermissionsFilter();
         if (search == null) {
-            return QueryBuilders.filteredQuery(
-                    QueryBuilders.matchAllQuery(), SecurityUtils.getPermissionsFilter());
+            if (permsQuery == null) {
+                return QueryBuilders.matchAllQuery();
+            }
+            else {
+                return QueryBuilders.filteredQuery(
+                        QueryBuilders.matchAllQuery(), permsQuery);
+            }
         }
 
         BoolQueryBuilder query = QueryBuilders.boolQuery();
-        if (perms) {
-            query.must(SecurityUtils.getPermissionsFilter());
+        if (perms && permsQuery != null) {
+            query.must(permsQuery);
         }
 
         if (search.isQuerySet()) {

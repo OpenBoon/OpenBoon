@@ -149,9 +149,4 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
          */
         return jdbc.update("DELETE FROM permission WHERE pk_permission=? AND bool_immutable=0", perm.getId()) == 1;
     }
-
-    @Override
-    public boolean delete(User user) {
-        return jdbc.update("DELETE FROM permission WHERE str_type='user' AND str_name=?", user.getUsername()) == 1;
-    }
 }

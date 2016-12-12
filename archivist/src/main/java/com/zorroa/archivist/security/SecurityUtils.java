@@ -134,14 +134,11 @@ public class SecurityUtils {
     }
 
     public static QueryBuilder getPermissionsFilter() {
-        OrQueryBuilder result = QueryBuilders.orQuery();
-        MissingQueryBuilder part1 = QueryBuilders.missingQuery("permissions.search");
-        TermsQueryBuilder part2 = QueryBuilders.termsQuery("permissions.search",
+        if (hasPermission("group::administrator")) {
+            return null;
+        }
+        return QueryBuilders.termsQuery("permissions.search",
                 SecurityUtils.getPermissionIds());
-
-        result.add(part1);
-        result.add(part2);
-        return result;
     }
 
     public static void setWritePermissions(Source source, Collection<Permission> perms) {

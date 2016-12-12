@@ -427,7 +427,6 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public Folder create(Folder parent, FolderSpec spec, boolean mightExist) {
-
         if (!SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
             throw new ArchivistException("You cannot make changes to this folder");
         }
@@ -475,12 +474,13 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public void createUserFolder(User user, Permission perm) {
+    public Folder createUserFolder(String username, Permission perm) {
         Folder rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true);
-        Folder folder = folderDao.create(new FolderSpec(user)
-                .setName(user.getUsername())
+        Folder folder = folderDao.create(new FolderSpec()
+                .setName(username)
                 .setParentId(rootFolder.getId()));
         folderDao.setAcl(folder.getId(), new Acl().addEntry(perm, Access.Read, Access.Write));
+        return folder;
     }
 
     @Override

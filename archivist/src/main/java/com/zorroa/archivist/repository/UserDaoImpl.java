@@ -68,7 +68,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
                 "bool_enabled",
                 "hmac_key",
                 "json_settings",
-                "str_source");
+                "str_source",
+                "pk_permission",
+                "pk_folder");
 
     @Override
     public User create(UserSpec builder, String source) {
@@ -89,6 +91,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             ps.setObject(7, UUID.randomUUID());
             ps.setString(8, "{}");
             ps.setString(9, source);
+            ps.setInt(10, builder.getUserPermissionId());
+            ps.setInt(11, builder.getHomeFolderId());
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -139,9 +143,13 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public boolean update(User user, UserProfileUpdate builder) {
-        logger.info("updating user");
         return jdbc.update(UPDATE, builder.getEmail(), builder.getFirstName(),
                 builder.getLastName(), user.getId()) == 1;
+    }
+
+    @Override
+    public boolean delete(User user) {
+        return jdbc.update("DELETE FROM user WHERE pk_user=?", user.getId()) == 1;
     }
 
     @Override

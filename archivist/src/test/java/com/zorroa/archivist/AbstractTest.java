@@ -208,6 +208,16 @@ public abstract class AbstractTest {
         userBuilder.setUsername("user");
         userBuilder.setPassword("user");
         userService.create(userBuilder);
+
+        UserSpec managerBuilder = new UserSpec();
+        managerBuilder.setEmail("manager@zorroa.com");
+        managerBuilder.setFirstName("Bob");
+        managerBuilder.setLastName("Manager");
+        managerBuilder.setUsername("manager");
+        managerBuilder.setPassword("manager");
+        User manager = userService.create(managerBuilder);
+        userService.addPermissions(manager, Lists.newArrayList(
+                userService.getPermission("group::manager")));
     }
 
     /**

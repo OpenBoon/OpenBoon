@@ -42,6 +42,4 @@ public interface PermissionDao {
     List<Permission> getAll(Integer[] ids);
 
     boolean delete(Permission perm);
-
-    boolean delete(User user);
 }

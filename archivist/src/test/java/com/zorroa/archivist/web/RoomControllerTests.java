@@ -408,7 +408,7 @@ public class RoomControllerTests extends MockMvcTest {
 
     @Test
     public void testGetAssets() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
 
         Source source = new Source(new File(getTestImagePath() + "/beer_kettle_01.jpg"));
         AssetUtils.addKeywords(source, "source", "bender");

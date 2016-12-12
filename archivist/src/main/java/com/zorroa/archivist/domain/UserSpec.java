@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,6 +20,11 @@ public class UserSpec {
 
     private Integer[] permissionIds;
     private Integer userPresetId;
+
+    @JsonIgnore
+    private int homeFolderId;
+    @JsonIgnore
+    private int userPermissionId;
 
     public UserSpec() {
     }
@@ -91,6 +97,24 @@ public class UserSpec {
 
     public UserSpec setUserPresetId(Integer userPresetId) {
         this.userPresetId = userPresetId;
+        return this;
+    }
+
+    public int getHomeFolderId() {
+        return homeFolderId;
+    }
+
+    public UserSpec setHomeFolderId(int homeFolderId) {
+        this.homeFolderId = homeFolderId;
+        return this;
+    }
+
+    public int getUserPermissionId() {
+        return userPermissionId;
+    }
+
+    public UserSpec setUserPermissionId(int userPermissionId) {
+        this.userPermissionId = userPermissionId;
         return this;
     }
 }

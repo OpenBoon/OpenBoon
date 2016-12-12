@@ -95,7 +95,7 @@ public interface FolderService {
 
     Folder create(Folder parent, FolderSpec spec, boolean mightExist);
 
-    void createUserFolder(User user, Permission perm);
+    Folder createUserFolder(String username, Permission perm);
 
     /**
      * Return all trashed folders for the current user.

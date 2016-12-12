@@ -44,7 +44,7 @@ public class UserServiceTests extends AbstractTest {
          * personal permission and the user group
          */
         List<Permission> perms = userService.getPermissions(user);
-        assertEquals(2, perms.size());
+        assertEquals(3, perms.size());
         assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
         assertTrue(userService.hasPermission(user, userService.getPermission("user::test")));
         assertFalse(userService.hasPermission(user, userService.getPermission("group::developer")));

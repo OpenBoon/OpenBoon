@@ -67,6 +67,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserSpec builder, String source) {
+        Permission userPerm = permissionDao.create(
+                new PermissionSpec("user", builder.getUsername()), true);
+        Folder userFolder = folderService.createUserFolder(
+                builder.getUsername(), userPerm);
+
+        builder.setHomeFolderId(userFolder.getId());
+        builder.setUserPermissionId(userPerm.getId());
+
         User user = userDao.create(builder, source);
 
         /*
@@ -90,17 +98,9 @@ public class UserServiceImpl implements UserService {
         if (!perms.isEmpty()) {
             setPermissions(user, perms);
         }
-        /*
-         * Create and add permission for this specific user.
-         */
-        Permission userPerm = permissionDao.create(
-                new PermissionSpec("user", builder.getUsername()), true);
-        userDao.addPermission(user, userPerm, true);
 
-        /*
-         * Create the users home folder.
-         */
-        folderService.createUserFolder(user, userPerm);
+        userDao.addPermission(user, userPerm, true);
+        userDao.addPermission(user, permissionDao.get("group", "everyone"), true);
 
         txem.afterCommit(() -> {
             messagingService.broadcast(new Message("USER_CREATE", user));
@@ -175,6 +175,32 @@ public class UserServiceImpl implements UserService {
     public boolean update(User user, UserProfileUpdate form) {
         boolean result = userDao.update(user, form);
         if (result) {
+            txem.afterCommitSync(() -> {
+                messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
+                logService.log(LogSpec.build(LogAction.Update, user));
+            });
+        }
+        return result;
+    }
+
+    @Override
+    public boolean delete(User user) {
+        boolean result = userDao.delete(user);
+        if (result) {
+            try {
+                permissionDao.delete(permissionDao.get(user.getPermissionId()));
+            }
+            catch (Exception e) {
+                logger.warn("Failed to delete user permission for {}", user);
+            }
+
+            try {
+                folderService.delete(folderService.get(user.getHomeFolderId()));
+            }
+            catch (Exception e) {
+                logger.warn("Failed to delete home folder for {}", user);
+            }
+
             txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
                 logService.log(LogSpec.build(LogAction.Update, user));

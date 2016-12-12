@@ -142,7 +142,7 @@ public class PermissionDaoTests extends AbstractTest {
         /*
          * There are 3 active users in this test: admin, user, and test.
          */
-        assertEquals(3, perms.size());
+        assertEquals(4, perms.size());
     }
 
     @Test
@@ -163,15 +163,6 @@ public class PermissionDaoTests extends AbstractTest {
          */
         assertFalse(permissionDao.delete(permissionDao.get("group::manager")));
         assertTrue(permissionDao.delete(permissionDao.get("project::avatar")));
-    }
-
-    @Test
-    public void testDeleteByUser() {
-        /*
-         * User permissions are deleted by user.
-         */
-        assertTrue(permissionDao.delete(user));
-        assertFalse(permissionDao.delete(user));
     }
 
     @Test

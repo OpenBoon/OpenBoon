@@ -40,6 +40,8 @@ public interface UserService {
 
     boolean update(User user, UserProfileUpdate builder);
 
+    boolean delete(User user);
+
     boolean updateSettings(User user, UserSettings settings);
 
     boolean setEnabled(User user, boolean value);

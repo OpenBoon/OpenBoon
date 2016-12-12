@@ -357,7 +357,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFolderSearchFilter() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
 
         addTestAssets("set04/standard");
 
@@ -397,7 +397,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testEmptySearch() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
 
         addTestAssets("set04/standard");
 
@@ -418,7 +418,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFromSize() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
 
         addTestAssets("set04/standard");
 
@@ -441,7 +441,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFilterExists() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
         addTestAssets("set04/canyon");
 
         AssetSearch search = new AssetSearch(new AssetFilter().addToExists("source.path"));
@@ -462,7 +462,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFilterMissing() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
         addTestAssets("set04/canyon");
 
         AssetSearch search = new AssetSearch(new AssetFilter().addToMissing("unknown"));
@@ -482,7 +482,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFilterRange() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
 
         addTestAssets("set04/standard");
 
@@ -510,7 +510,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFilterScript() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
         addTestAssets("set01");
 
         String text = "doc['source.fileSize'].value == size";
@@ -536,7 +536,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Test
     public void testFilterAsset() throws Exception {
-        MockHttpSession session = user();
+        MockHttpSession session = admin();
 
         addTestAssets("set04/standard");
 

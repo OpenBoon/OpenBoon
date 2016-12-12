@@ -81,7 +81,7 @@ public class FolderDaoTests extends AbstractTest {
 
     @Test
     public void testGetChildrenInsecure() {
-        authenticate("admin");
+        authenticate("user");
         assertFalse(SecurityUtils.hasPermission("group::administrator"));
 
         Folder pub = folderDao.get(Folder.ROOT_ID, "Users", false);
@@ -92,13 +92,13 @@ public class FolderDaoTests extends AbstractTest {
                 userService.getPermission("group::administrator")));
 
         assertFalse(folderDao.hasAccess(f3, Access.Read));
-        assertEquals(5, folderDao.getChildrenInsecure(pub.getId()).size());
+        assertEquals(6, folderDao.getChildrenInsecure(pub.getId()).size());
         assertEquals(3, folderDao.getChildren(pub.getId()).size());
     }
 
     @Test
     public void testHasAccess() throws IOException {
-        authenticate("admin");
+        authenticate("user");
         FolderSpec builder = new FolderSpec("test");
         Folder folder1 = folderDao.create(builder);
         assertTrue(folderDao.hasAccess(folder1, Access.Read));

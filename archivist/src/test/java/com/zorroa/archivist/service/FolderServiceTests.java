@@ -101,6 +101,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testSetAclFailure() {
+        authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
@@ -117,6 +118,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testSetAclFailureDoesntHavePermission() {
+        authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
@@ -133,7 +135,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testGetFolderWithoutAcl() {
-
+        authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
@@ -145,6 +147,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testCreateWithReadAcl() {
+        authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),
@@ -154,6 +157,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testAddAssetsWithWriteAcl() {
+        authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         Acl acl = new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write);
@@ -166,6 +170,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testDeleteFolderWithWriteAcl() {
+        authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         Acl acl = new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write);
@@ -176,6 +181,7 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testUpdateFolderWithWriteAcl() {
+        authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),

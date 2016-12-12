@@ -34,9 +34,11 @@ public class FolderControllerTests extends MockMvcTest {
 
     Folder folder;
 
+    MockHttpSession session;
+
     @Before
     public void init() throws Exception {
-        MockHttpSession session = user();
+        session = admin();
 
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
@@ -51,7 +53,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testCreate() throws Exception {
-        MockHttpSession session = user();
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -65,7 +66,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testGet() throws Exception {
-        MockHttpSession session = user();
         MvcResult result = mvc.perform(get("/api/v1/folders/" + folder.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -82,7 +82,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testGetByPath() throws Exception {
-        MockHttpSession session = user();
         MvcResult result = mvc.perform(get("/api/v1/folders/_path/Users")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -97,7 +96,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testExitsByPath() throws Exception {
-        MockHttpSession session = user();
         MvcResult result = mvc.perform(get("/api/v1/folders/_exists/Users")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -109,7 +107,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testExitsByPathFailure() throws Exception {
-        MockHttpSession session = user();
         MvcResult result = mvc.perform(get("/api/v1/folders/_exists/blah")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -121,7 +118,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testGetAll() throws Exception {
-        MockHttpSession session = user();
         MvcResult result = mvc.perform(get("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -135,7 +131,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testUpdate() throws Exception {
-        MockHttpSession session = user();
 
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
@@ -162,7 +157,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testDelete() throws Exception {
-        MockHttpSession session = user();
 
         mvc.perform(post("/api/v1/folders")
                 .session(session)
@@ -204,7 +198,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testChildren() throws Exception {
-        MockHttpSession session = user();
 
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
@@ -262,6 +255,7 @@ public class FolderControllerTests extends MockMvcTest {
     @Test
     public void testAddAsset() throws Exception {
         authenticate();
+
         addTestAssets("set04/standard");
         PagedList<Asset> assets = assetDao.getAll(Pager.first());
 

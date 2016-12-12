@@ -22,6 +22,8 @@ public interface UserDao {
 
     List<User> getAll(Room room);
 
+    boolean delete(User user);
+
     String getPassword(String username);
 
     boolean setSettings(User user, UserSettings settings);

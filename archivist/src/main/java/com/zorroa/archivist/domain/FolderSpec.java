@@ -21,8 +21,6 @@ public class FolderSpec {
 
     private Acl acl;
 
-    private User createdUser;
-
     /**
      * A smart folder search recurses into all child folders.
      */
@@ -30,10 +28,6 @@ public class FolderSpec {
 
     // For the JSON MAPPER we need a simple ctor
     public FolderSpec() {}
-
-    public FolderSpec(User user) {
-        this.createdUser = user;
-    }
 
     public FolderSpec(Folder folder) {
         this.parentId =  folder.getParentId();
@@ -109,10 +103,6 @@ public class FolderSpec {
     public FolderSpec setDyhiId(Integer dyhiId) {
         this.dyhiId = dyhiId;
         return this;
-    }
-
-    public User getCreatedUser() {
-        return createdUser;
     }
 
     @Override
