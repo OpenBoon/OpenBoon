@@ -115,7 +115,7 @@ public class ExportServiceImpl implements ExportService {
             jspec.setName(String.format("export by %s", SecurityUtils.getUsername()));
         }
         else {
-            jspec.setName(String.format("export %s ", spec.getName()));
+            jspec.setName(spec.getName());
         }
 
         jobDao.nextId(jspec);
