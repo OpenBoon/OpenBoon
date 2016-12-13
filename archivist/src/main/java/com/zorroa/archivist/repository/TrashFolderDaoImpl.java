@@ -148,12 +148,7 @@ public class TrashFolderDaoImpl extends AbstractDao implements TrashFolderDao {
         return jdbc.queryForList(
                 "SELECT pk_folder_trash FROM folder_trash WHERE user_deleted=? ORDER BY int_order DESC", Integer.class, user);
     }
-
-    /*
-     * Note: all the removeAll function implementations are intentionally inefficient to satisfy requirements
-     * in the curator.
-     */
-
+    
     @Override
     public List<Integer> removeAll(String opId) {
         List<Integer> ids = getAllIds(opId);
