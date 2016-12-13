@@ -1,11 +1,13 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.TrashedFolder;
 import com.zorroa.archivist.domain.TrashedFolderOp;
 import com.zorroa.archivist.repository.TrashFolderDao;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +32,11 @@ public class TrashFolderControllerTests extends MockMvcTest {
     @Autowired
     TrashFolderDao trashFolderDao;
 
+    Folder folder1;
+
     @Before
     public void init() {
-        Folder folder1 = folderService.create(new FolderSpec("test1"));
+        folder1 = folderService.create(new FolderSpec("test1"));
         Folder folder2 = folderService.create(new FolderSpec("test2", folder1.getId()));
         folderService.create(new FolderSpec("test3", folder2.getId()));
         deleteOp = folderService.trash(folder1);
@@ -43,8 +47,9 @@ public class TrashFolderControllerTests extends MockMvcTest {
         int exists = jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE str_name='test1'", Integer.class);
         assertEquals(0, exists);
 
-        MvcResult result = mvc.perform(post("/api/v1/trash/" + deleteOp.getTrashFolderId() + "/_restore")
+        MvcResult result = mvc.perform(post("/api/v1/trash/_restore")
                 .session(admin())
+                .content("[" + + deleteOp.getTrashFolderId() + "]")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -57,7 +62,7 @@ public class TrashFolderControllerTests extends MockMvcTest {
         int exists = jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash", Integer.class);
         assertEquals(3, exists);
 
-        MvcResult result = mvc.perform(delete("/api/v1/trash/_empty")
+        MvcResult result = mvc.perform(delete("/api/v1/trash")
                 .session(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -69,6 +74,26 @@ public class TrashFolderControllerTests extends MockMvcTest {
         List<TrashedFolder> folders = trashFolderDao.getAll(admin().getId());
         assertEquals(0, folders.size());
     }
+
+    @Test
+    public void testEmptySpecificFolders() throws Exception {
+        int exists = jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash", Integer.class);
+        assertEquals(3, exists);
+
+        MvcResult result = mvc.perform(delete("/api/v1/trash")
+                .session(admin())
+                .content(Json.serializeToString(Lists.newArrayList(folder1.getId())))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> data = deserialize(result, Map.class);
+        assertTrue((Boolean) data.get("success"));
+
+        List<TrashedFolder> folders = trashFolderDao.getAll(admin().getId());
+        assertEquals(0, folders.size());
+    }
+
 
     @Test
     public void testGetAll() throws Exception {

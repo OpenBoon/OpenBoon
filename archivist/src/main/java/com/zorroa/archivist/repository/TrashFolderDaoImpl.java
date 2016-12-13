@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Folder;
@@ -8,15 +9,15 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by chambers on 12/2/16.
@@ -148,37 +149,51 @@ public class TrashFolderDaoImpl extends AbstractDao implements TrashFolderDao {
                 "SELECT pk_folder_trash FROM folder_trash WHERE user_deleted=? ORDER BY int_order DESC", Integer.class, user);
     }
 
+    /*
+     * Note: all the removeAll function implementations are intentionally inefficient to satisfy requirements
+     * in the curator.
+     */
+
     @Override
     public List<Integer> removeAll(String opId) {
         List<Integer> ids = getAllIds(opId);
-        jdbc.batchUpdate("DELETE FROM folder_trash WHERE pk_folder_trash=?", new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setInt(1, ids.get(i));
-            }
+        if (jdbc.update("DELETE FROM folder_trash WHERE str_opid=?", opId) == ids.size()) {
+            return ids;
+        }
+        else {
+            List<Integer> leftOver = getAllIds(opId);
+            leftOver.removeAll(ids);
+            return leftOver;
+        }
+    }
 
-            @Override
-            public int getBatchSize() {
-                return ids.size();
+    @Override
+    public List<Integer> removeAll(List<Integer> ids, int user) {
+        Set<String> opIds = Sets.newHashSet();
+        for (int id: ids) {
+            try {
+                TrashedFolder folder = get(id, user);
+                if (!opIds.contains(folder.getOpId())) {
+                    opIds.add(folder.getOpId());
+                    removeAll(folder.getOpId());
+                }
+            } catch (EmptyResultDataAccessException e) {
+                logger.warn("Unable to find trash folder id: {}", id);
             }
-        });
+        }
         return ids;
     }
 
     @Override
     public List<Integer> removeAll(int user) {
         List<Integer> ids = getAllIds(user);
-        jdbc.batchUpdate("DELETE FROM folder_trash WHERE pk_folder_trash=?", new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setInt(1, ids.get(i));
-            }
-
-            @Override
-            public int getBatchSize() {
-                return ids.size();
-            }
-        });
-        return ids;
+        if (jdbc.update("DELETE FROM folder_trash WHERE user_deleted=?", user) == ids.size()) {
+            return ids;
+        }
+        else {
+            List<Integer> leftOver = getAllIds(user);
+            leftOver.removeAll(ids);
+            return leftOver;
+        }
     }
 }

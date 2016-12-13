@@ -121,5 +121,7 @@ public interface FolderService {
 
     List<Integer> emptyTrash();
 
+    List<Integer> emptyTrash(List<Integer> ids);
+
     int trashCount();
 }

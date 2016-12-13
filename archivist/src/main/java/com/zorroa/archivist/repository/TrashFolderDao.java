@@ -48,5 +48,7 @@ public interface TrashFolderDao {
      */
     List<Integer> removeAll(String opid);
 
+    List<Integer> removeAll(List<Integer> ids, int user);
+
     List<Integer> removeAll(int userId);
 }
