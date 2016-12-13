@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.api;
 
-import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.TrashedFolder;
 import com.zorroa.archivist.domain.TrashedFolderOp;
@@ -49,8 +48,8 @@ public class TrashFolderController {
 
     @RequestMapping(value="/api/v1/trash/_empty", method=RequestMethod.DELETE)
     public Object empty() {
-        int result = folderService.emptyTrash();
-        return ImmutableMap.of("type", "TrashedFolder", "success", result >0, "count", result);
+        List<Integer> result = folderService.emptyTrash();
+        return HttpUtils.deleted("TrashedFolder", result, !result.isEmpty());
     }
 
     @RequestMapping(value="/api/v1/trash/_count", method=RequestMethod.GET)

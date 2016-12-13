@@ -35,6 +35,10 @@ public interface TrashFolderDao {
      */
     List<TrashedFolder> getAll(String opId);
 
+    List<Integer> getAllIds(String opId);
+
+    List<Integer> getAllIds(int user);
+
     /**
      * Delete's all folders from a given OP.  Returns the number of
      * trash folders deleted.
@@ -42,7 +46,7 @@ public interface TrashFolderDao {
      * @param opid
      * @return
      */
-    int removeAll(String opid);
+    List<Integer> removeAll(String opid);
 
-    int removeAll(int userId);
+    List<Integer> removeAll(int userId);
 }

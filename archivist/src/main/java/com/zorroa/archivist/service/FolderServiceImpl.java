@@ -499,7 +499,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public int emptyTrash() {
+    public List<Integer> emptyTrash() {
         return trashFolderDao.removeAll(SecurityUtils.getUser().getId());
     }
 

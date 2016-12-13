@@ -399,7 +399,7 @@ public class FolderServiceTests extends AbstractTest {
 
         // Deleted 2 folders
         assertEquals(3, result.getCount());
-        assertEquals(3, folderService.emptyTrash());
+        assertEquals(3, folderService.emptyTrash().size());
 
         assertEquals(0, (int) jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash", Integer.class));
     }

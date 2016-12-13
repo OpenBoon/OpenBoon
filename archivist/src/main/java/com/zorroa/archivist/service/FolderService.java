@@ -119,7 +119,7 @@ public interface FolderService {
      */
     TrashedFolder getTrashedFolder(int id);
 
-    int emptyTrash();
+    List<Integer> emptyTrash();
 
     int trashCount();
 }
