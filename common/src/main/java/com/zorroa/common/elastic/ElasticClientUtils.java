@@ -14,6 +14,8 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
+import org.elasticsearch.script.expression.ExpressionPlugin;
+import org.elasticsearch.script.groovy.GroovyPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -42,12 +44,18 @@ public class ElasticClientUtils {
         /*
          * Make sure groovy indexed scripts are always enabled.
          */
-        builder.put("script.engine.groovy.indexed.update", true);
         builder.put("path.plugins", "{path.home}/es-plugins");
         builder.put("index.unassigned.node_left.delayed_timeout", "5m");
+        builder.put("script.inline", true);
+        builder.put("script.indexed", true);
+        builder.put("script.engine.expression.indexed.update", true);
+        builder.put("script.engine.groovy.indexed.update", true);
 
         Node node = new ZorroaNode(builder.build(),
-                ImmutableSet.of(HammingDistancePlugin.class, ArchivistDateScriptPlugin.class));
+                ImmutableSet.of(HammingDistancePlugin.class,
+                        ArchivistDateScriptPlugin.class,
+                        ExpressionPlugin.class,
+                        GroovyPlugin.class));
         node.start();
         return node.client();
     }

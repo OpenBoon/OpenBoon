@@ -138,6 +138,16 @@
             <artifactId>elasticsearch</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.elasticsearch.module</groupId>
+            <artifactId>lang-groovy</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.module</groupId>
+            <artifactId>lang-expression</artifactId>
+        </dependency>
+
         <!-- Elastic is faster with this library -->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -153,7 +163,6 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.4.6</version>
         </dependency>
 
         <dependency>
