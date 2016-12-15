@@ -1,13 +1,10 @@
 package com.zorroa.common;
 
-import com.google.common.collect.ImmutableSet;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.SpringApplicationProperties;
-import com.zorroa.common.elastic.ArchivistDateScriptPlugin;
-import com.zorroa.common.elastic.ZorroaNode;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,7 +42,6 @@ public class UnitTestConfiguration {
                         .put("discovery.zen.ping.multicast.enabled", false)
                         .put("discovery.zen.fd.ping_timeout", "3s")
                         .put("discovery.zen.fd.ping_retries", 10)
-                        .put("script.engine.groovy.indexed.update", true)
                         .put("node.data", properties.getBoolean("zorroa.cluster.index.data", true))
                         .put("node.master", properties.getBoolean("zorroa.cluster.index.master", true))
                         .put("path.plugins", "{path.home}/es-plugins");
@@ -55,8 +51,6 @@ public class UnitTestConfiguration {
         builder.put("index.translog.disable_flush", true);
         builder.put("node.local", true);
 
-        Node node = new ZorroaNode(builder.build(), ImmutableSet.of(ArchivistDateScriptPlugin.class));
-        node.start();
-        return node.client();
+        return ElasticClientUtils.initializeClient(builder);
     }
 }

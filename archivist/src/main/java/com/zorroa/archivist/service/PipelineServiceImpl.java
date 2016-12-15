@@ -67,7 +67,7 @@ public class PipelineServiceImpl implements PipelineService {
             message.broadcast(new Message("PIPELINE_CREATE",
                     ImmutableMap.of("id", p.getId())));
             if (SecurityUtils.getAuthentication() != null) {
-                logService.log(LogSpec.build(LogAction.Create, p));
+                logService.logAsync(LogSpec.build(LogAction.Create, p));
             }
         });
         return p;
@@ -111,7 +111,7 @@ public class PipelineServiceImpl implements PipelineService {
             event.afterCommit(() -> {
                 message.broadcast(new Message("PIPELINE_UPDATE",
                         ImmutableMap.of("id", id)));
-                logService.log(LogSpec.build(LogAction.Update, "pipeline", id));
+                logService.logAsync(LogSpec.build(LogAction.Update, "pipeline", id));
             });
         }
         return result;
@@ -124,7 +124,7 @@ public class PipelineServiceImpl implements PipelineService {
             event.afterCommit(() -> {
                 message.broadcast(new Message("PIPELINE_DELETE",
                         ImmutableMap.of("id", id)));
-                logService.log(LogSpec.build(LogAction.Delete, "pipeline", id));
+                logService.logAsync(LogSpec.build(LogAction.Delete, "pipeline", id));
             });
         }
         return result;

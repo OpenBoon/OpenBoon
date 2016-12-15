@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
         txem.afterCommit(() -> {
             messagingService.broadcast(new Message("USER_CREATE", user));
-            logService.log(LogSpec.build(LogAction.Create, user));
+            logService.logAsync(LogSpec.build(LogAction.Create, user));
         }, true);
 
         return userDao.get(user.getId());
@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
         if (result) {
             txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
-                logService.log(LogSpec.build(LogAction.Update, user));
+                logService.logAsync(LogSpec.build(LogAction.Update, user));
             });
         }
         return result;
@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
 
             txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_UPDATE", get(user.getId())));
-                logService.log(LogSpec.build(LogAction.Update, user));
+                logService.logAsync(LogSpec.build(LogAction.Update, user));
             });
         }
         return result;
@@ -215,7 +215,7 @@ public class UserServiceImpl implements UserService {
         if (result) {
             txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("USER_SETTINGS", get(user.getId())));
-                logService.log(LogSpec.build(LogAction.Update, user));
+                logService.logAsync(LogSpec.build(LogAction.Update, user));
             });
         }
         return result;
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
                 Message msg = new Message(value ? "USER_ENABLED": "USER_DISABLED", user);
                 txem.afterCommitSync(() -> {
                     messagingService.broadcast(msg);
-                    logService.log(LogSpec.build(value ? "enable" : "disable", user));
+                    logService.logAsync(LogSpec.build(value ? "enable" : "disable", user));
                 });
             }
         }
@@ -319,7 +319,7 @@ public class UserServiceImpl implements UserService {
                 p->!PERMANENT_TYPES.contains(p.getType())).collect(Collectors.toList());
         userDao.setPermissions(user, filtered);
         txem.afterCommitSync(() -> {
-            logService.log(LogSpec.build("set_permission", user)
+            logService.logAsync(LogSpec.build("set_permission", user)
                     .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
         });
     }
@@ -333,7 +333,7 @@ public class UserServiceImpl implements UserService {
             userDao.addPermission(user, p, false);
         }
         txem.afterCommitSync(() -> {
-            logService.log(LogSpec.build("add_permission", user)
+            logService.logAsync(LogSpec.build("add_permission", user)
                     .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
         });
     }
@@ -351,7 +351,7 @@ public class UserServiceImpl implements UserService {
             userDao.removePermission(user, p);
         }
         txem.afterCommitSync(() -> {
-            logService.log(LogSpec.build("remove_permission", user)
+            logService.logAsync(LogSpec.build("remove_permission", user)
                     .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
         });
     }
@@ -366,7 +366,7 @@ public class UserServiceImpl implements UserService {
         Permission perm = permissionDao.create(builder, false);
         txem.afterCommitSync(() -> {
             messagingService.broadcast(new Message("PERMISSION_CREATE", builder));
-            logService.log(LogSpec.build(LogAction.Create, perm));
+            logService.logAsync(LogSpec.build(LogAction.Create, perm));
         });
         return perm;
     }
@@ -387,7 +387,7 @@ public class UserServiceImpl implements UserService {
         if (result) {
             txem.afterCommitSync(() -> {
                 messagingService.broadcast(new Message("PERMISSION_DELETE", permission));
-                logService.log(LogSpec.build(LogAction.Delete, permission));
+                logService.logAsync(LogSpec.build(LogAction.Delete, permission));
             });
         }
         return result;

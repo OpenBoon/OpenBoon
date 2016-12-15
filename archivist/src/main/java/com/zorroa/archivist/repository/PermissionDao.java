@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.domain.User;
@@ -21,7 +22,11 @@ public interface PermissionDao {
 
     Permission get(int id);
 
+    int getId(String name);
+
     Permission get(String authority);
+
+    Acl resolveAcl(Acl acl);
 
     List<Permission> getAll();
 

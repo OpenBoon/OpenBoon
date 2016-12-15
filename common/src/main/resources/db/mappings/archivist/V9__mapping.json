@@ -145,7 +145,7 @@
         },
         "permissions": {
           "properties": {
-            "search": {
+            "read": {
               "type": "integer",
               "index": "not_analyzed"
             },

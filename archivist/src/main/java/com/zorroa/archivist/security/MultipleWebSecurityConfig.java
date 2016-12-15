@@ -174,7 +174,7 @@ public class MultipleWebSecurityConfig {
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
                 try {
-                    logService.log(new LogSpec()
+                    logService.logAsync(new LogSpec()
                             .setAction(LogAction.Login)
                             .setUser((User)authentication.getPrincipal()));
                 } catch (Exception e) {
@@ -190,8 +190,8 @@ public class MultipleWebSecurityConfig {
                     AuthenticationException exception,
                     Authentication authentication) {
                 logger.info("Failed to authenticate: {}", authentication);
-                logService.log(new LogSpec()
-                        .setAction(LogAction.Login_Failure)
+                logService.logAsync(new LogSpec()
+                        .setAction(LogAction.LoginFailure)
                         .setMessage(authentication.getPrincipal().toString() + " failed to login, reason "
                         + exception.getMessage()));
             }

@@ -84,8 +84,6 @@ public class ElasticClientUtils {
     public static void createIndexedScripts(Client client) {
         createRemoveLinkScript(client);
         createAppendLinkScript(client);
-        createAppendPermissionScript(client);
-        createRemovePermissionScript(client);
     }
 
     private static final String REMOVE_SCRIPT =
@@ -119,41 +117,6 @@ public class ElasticClientUtils {
         client.preparePutIndexedScript()
                 .setScriptLang("groovy")
                 .setId("append_link")
-                .setSource(script)
-                .get();
-    }
-
-    private static final String REMOVE_PERM_SCRIPT =
-            "if (ctx._source.permissions == null) { return; }; "+
-                    "if (ctx._source.permissions[type] == null) { return; }; "+
-                    "ctx._source.permissions[type].removeIf({i-> i==id});";
-
-    public static void createRemovePermissionScript(Client client) {
-        Map<String, Object> script = ImmutableMap.of(
-                "script", REMOVE_PERM_SCRIPT,
-                "params", ImmutableMap.of("type", "type", "id", "id"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("remove_permission")
-                .setSource(script)
-                .get();
-    }
-
-    private static final String APPEND_PERM_SCRIPT =
-            "if (ctx._source.permissions == null) { ctx._source.permissions = [:]; };  " +
-                    "if (ctx._source.permissions[type] == null) { ctx._source.permissions[type] = []; };" +
-                    "ctx._source.permissions[type] += id; "+
-                    "ctx._source.permissions[type] = ctx._source.permissions[type].unique();";
-
-    public static void createAppendPermissionScript(Client client) {
-        Map<String, Object> script = ImmutableMap.of(
-                "script", APPEND_PERM_SCRIPT,
-                "params", ImmutableMap.of("type", "type", "id", "id"));
-
-        client.preparePutIndexedScript()
-                .setScriptLang("groovy")
-                .setId("append_permission")
                 .setSource(script)
                 .get();
     }

@@ -176,7 +176,7 @@ public class ImportServiceImpl implements ImportService {
                 .setName("Frame Generator"));
 
         transactionEventManager.afterCommitSync(() -> {
-            logService.log(LogSpec.build(LogAction.Create, "import", job.getJobId()));
+            logService.logAsync(LogSpec.build(LogAction.Create, "import", job.getJobId()));
         });
 
         return job;

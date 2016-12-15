@@ -29,7 +29,7 @@ public class LogControllerTests extends MockMvcTest {
 
     @Before
     public void init() throws InterruptedException {
-        logService.log(new LogSpec().setAction("test").setMessage("A log test"));
+        logService.logAsync(new LogSpec().setAction("test").setMessage("A log test"));
         Thread.sleep(1100);
         refreshIndex();
     }

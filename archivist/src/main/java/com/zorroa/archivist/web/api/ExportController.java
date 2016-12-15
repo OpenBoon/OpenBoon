@@ -93,6 +93,6 @@ public class ExportController {
         for (Asset asset : searchService.scanAndScroll(search, 10000)) {
             ids.add(asset.getId());
         }
-        logService.log(LogSpec.build(LogAction.Export, "asset", ids.toArray()));
+        logService.logAsync(LogSpec.build(LogAction.Export, "asset", ids.toArray()));
     }
 }

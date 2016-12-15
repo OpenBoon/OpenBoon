@@ -86,7 +86,7 @@ public class FolderServiceImpl implements FolderService {
         folderDao.setAcl(folder.getId(), acl);
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
-            logService.log(LogSpec.build(LogAction.Update, folder)
+            logService.logAsync(LogSpec.build(LogAction.Update, folder)
                     .setMessage("permissions changed"));
         });
     }
@@ -173,7 +173,7 @@ public class FolderServiceImpl implements FolderService {
                 invalidate(current, current.getParentId());
                 messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
                         get(folder.getId())));
-                logService.log(LogSpec.build(LogAction.Update, folder));
+                logService.logAsync(LogSpec.build(LogAction.Update, folder));
             });
         }
         return result;
@@ -224,7 +224,7 @@ public class FolderServiceImpl implements FolderService {
                 trashFolderDao.create(child, op, false, order);
                 transactionEventManager.afterCommit(() -> {
                     invalidate(folder);
-                    logService.log(LogSpec.build(LogAction.Delete, folder));
+                    logService.logAsync(LogSpec.build(LogAction.Delete, folder));
                 }, false);
             }
         }
@@ -270,7 +270,7 @@ public class FolderServiceImpl implements FolderService {
             if (folderDao.delete(children.get(i))) {
                 transactionEventManager.afterCommitSync(() -> {
                     invalidate(folder);
-                    logService.log(LogSpec.build(LogAction.Delete, folder));
+                    logService.logAsync(LogSpec.build(LogAction.Delete, folder));
                 });
             }
         }
@@ -279,7 +279,7 @@ public class FolderServiceImpl implements FolderService {
         if (result) {
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(folder);
-                logService.log(LogSpec.build(LogAction.Delete, folder));
+                logService.logAsync(LogSpec.build(LogAction.Delete, folder));
             });
         }
         return result;
@@ -303,7 +303,7 @@ public class FolderServiceImpl implements FolderService {
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
                 ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
-        logService.log(LogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
+        logService.logAsync(LogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
         return result;
     }
 
@@ -318,7 +318,7 @@ public class FolderServiceImpl implements FolderService {
         invalidate(folder);
         messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
                 ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));
-        logService.log(LogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
+        logService.logAsync(LogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
         return result;
     }
 
@@ -458,7 +458,7 @@ public class FolderServiceImpl implements FolderService {
         transactionEventManager.afterCommitSync(() -> {
             invalidate(null, folder.getParentId());
             messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
-            logService.log(LogSpec.build(LogAction.Create, folder));
+            logService.logAsync(LogSpec.build(LogAction.Create, folder));
         });
     }
 

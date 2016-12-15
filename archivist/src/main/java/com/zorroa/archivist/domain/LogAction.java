@@ -12,5 +12,6 @@ public enum LogAction {
     Export,
     Import,
     Login,
-    Login_Failure
+    LoginFailure,
+    BulkUpdate
 }

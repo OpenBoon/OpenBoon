@@ -1,7 +1,9 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetSearch;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -36,10 +38,6 @@ public interface AssetService {
     Map<String, List<Object>> removeLink(String type, String value, List<String> assets);
     Map<String, List<Object>> appendLink(String type, String value, List<String> assets);
 
-    Map<String, List<Object>> removePermission(String type, int value, List<String> assets);
-
-    Map<String, List<Object>> appendPermission(String type, int value, List<String> assets);
-
     boolean exists(Path path);
 
     /**
@@ -51,4 +49,8 @@ public interface AssetService {
      * @return
      */
     long update(String id, Map<String, Object> attrs);
+
+    void setPermissionsAsync(AssetSearch search, Acl acl);
+
+    void setPermissions(AssetSearch search, Acl acl);
 }

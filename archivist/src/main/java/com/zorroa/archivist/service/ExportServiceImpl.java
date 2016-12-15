@@ -198,7 +198,7 @@ public class ExportServiceImpl implements ExportService {
          * downloads the export, that actually logs it as an exported asset.
          */
         transactionEventManager.afterCommitSync(() -> {
-            logService.log(LogSpec.build(LogAction.Create,
+            logService.logAsync(LogSpec.build(LogAction.Create,
                     "export", job.getJobId()));
         });
 

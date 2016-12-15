@@ -77,7 +77,7 @@ public class IngestServiceImpl implements IngestService {
             if (i.isAutomatic()) { schedule(i); }
             message.broadcast(new Message("INGEST_CREATE",
                     ImmutableMap.of("id", i.getId())));
-            logService.log(LogSpec.build(LogAction.Create, i));
+            logService.logAsync(LogSpec.build(LogAction.Create, i));
         });
 
         if (spec.isRunNow()) {
@@ -114,7 +114,7 @@ public class IngestServiceImpl implements IngestService {
                 schedule(ingestDao.get(id));
                 message.broadcast(new Message("INGEST_UPDATE",
                         ImmutableMap.of("id", id)));
-                logService.log(LogSpec.build(LogAction.Update, "ingest", id));
+                logService.logAsync(LogSpec.build(LogAction.Update, "ingest", id));
             });
         }
         return result;
@@ -127,7 +127,7 @@ public class IngestServiceImpl implements IngestService {
             event.afterCommit(() -> {
                 message.broadcast(new Message("INGEST_DELETE",
                         ImmutableMap.of("id", id)));
-                logService.log(LogSpec.build(LogAction.Delete, "ingest", id));
+                logService.logAsync(LogSpec.build(LogAction.Delete, "ingest", id));
             });
         }
         return result;

@@ -160,7 +160,7 @@ public class SearchServiceImpl implements SearchService {
                 .setQuery(getQuery(search))
                 .setSize(100).execute().actionGet();
 
-        if (rsp.getHits().getTotalHits() > maxResults) {
+        if (maxResults > 0 && rsp.getHits().getTotalHits() > maxResults) {
             throw new ArchivistReadException("Asset search has returned more than " + maxResults + " results.");
         }
         return new ScanAndScrollAssetIterator(client, rsp);
@@ -187,7 +187,7 @@ public class SearchServiceImpl implements SearchService {
          * number is 1, then log the search.
          */
         if (isSearchLogged(page, search)) {
-            logService.log(new LogSpec().build(LogAction.Search, search));
+            logService.logAsync(new LogSpec().build(LogAction.Search, search));
         }
 
         if (search.getScroll() != null) {
@@ -206,7 +206,11 @@ public class SearchServiceImpl implements SearchService {
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        return assetDao.getAll(id, timeout);
+        PagedList<Asset> result =  assetDao.getAll(id, timeout);
+        if (result.size() == 0) {
+            client.prepareClearScroll().addScrollId(id);
+        }
+        return result;
     }
 
     private SearchRequestBuilder buildSearch(AssetSearch search) {
@@ -294,6 +298,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQuery(AssetSearch search, boolean perms, boolean postFilter) {
+
         QueryBuilder permsQuery = SecurityUtils.getPermissionsFilter();
         if (search == null) {
             if (permsQuery == null) {

@@ -38,7 +38,7 @@ public class FilterServiceImpl implements FilterService {
     public Filter create(FilterSpec spec) {
         Filter filter = filterDao.create(spec);
         transactionEventManager.afterCommitSync(() -> {
-            logService.log(LogSpec.build(LogAction.Create,
+            logService.logAsync(LogSpec.build(LogAction.Create,
                     "filter", filter.getId()));
         });
 

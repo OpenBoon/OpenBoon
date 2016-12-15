@@ -7,8 +7,9 @@ import com.google.common.base.MoreObjects;
  */
 public class AclEntry {
 
-    public int permissionId;
+    public Integer permissionId;
     public int access;
+    public String permission;
 
     public AclEntry() { }
 
@@ -33,11 +34,11 @@ public class AclEntry {
             this.access = this.access + a.getValue();
         }
     }
-    public int getPermissionId() {
+    public Integer getPermissionId() {
         return permissionId;
     }
 
-    public void setPermissionId(int permissionId) {
+    public void setPermissionId(Integer permissionId) {
         this.permissionId = permissionId;
     }
 
@@ -47,6 +48,15 @@ public class AclEntry {
 
     public void setAccess(int access) {
         this.access = access;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public AclEntry setPermission(String permission) {
+        this.permission = permission;
+        return this;
     }
 
     @Override

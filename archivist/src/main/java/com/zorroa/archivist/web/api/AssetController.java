@@ -2,13 +2,14 @@ package com.zorroa.archivist.web.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.domain.AssetPermissionUpdate;
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.Note;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.web.MultipartFileSender;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
@@ -74,7 +75,7 @@ public class AssetController {
             throw new ArchivistReadException("export access denied");
         }
 
-        logService.log(LogSpec.build(LogAction.Export, "asset", asset.getId()));
+        logService.logAsync(LogSpec.build(LogAction.Export, "asset", asset.getId()));
         File path = new File(asset.getAttr("source.path", String.class));
 
         try {
@@ -188,29 +189,19 @@ public class AssetController {
         return assetService.index(req.sources, req.link);
     }
 
-    /**
-     * Remove a permission from a list of assets.
-     *
-     * @param change
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value="/api/v1/assets/_permissions", method=RequestMethod.DELETE)
-    public Object removePermission(
-            @Valid @RequestBody AssetPermissionUpdate change) throws Exception {
-        return assetService.removePermission(change.getType(), change.getId(), change.getAssetIds());
+    public static class SetPermissionsRequest {
+        public AssetSearch search;
+        public Acl acl;
+
+    }
+    @RequestMapping(value="/api/v1/assets/_permissions", method=RequestMethod.PUT)
+    public void setPermissions(
+            @Valid @RequestBody SetPermissionsRequest req) throws Exception {
+        assetService.setPermissionsAsync(req.search, req.acl);
     }
 
-    /**
-     * Add a permission to a list of assets.
-     *
-     * @param change
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value="/api/v1/assets/_permissions", method=RequestMethod.POST)
-    public Object appendPermission(
-            @Valid  @RequestBody AssetPermissionUpdate change) throws Exception {
-        return assetService.appendPermission(change.getType(), change.getId(), change.getAssetIds());
+    @RequestMapping(value="/api/v1/refresh", method=RequestMethod.PUT)
+    public void refresh() {
+        ElasticClientUtils.refreshIndex(client, 0);
     }
 }

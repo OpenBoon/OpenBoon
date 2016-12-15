@@ -21,7 +21,7 @@ public class LogDaoTests extends AbstractTest {
 
     @Before
     public void init() throws InterruptedException {
-        logService.log(new LogSpec().setAction("test").setMessage("A test message"));
+        logService.logAsync(new LogSpec().setAction("test").setMessage("A test message"));
         Thread.sleep(1100);
         refreshIndex();
     }
