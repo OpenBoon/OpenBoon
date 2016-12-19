@@ -4,7 +4,7 @@ if [ "x$ARCHIVIST_MIN_MEM" = "x" ]; then
     ARCHIVIST_MIN_MEM=256m
 fi
 if [ "x$ARCHIVIST_MAX_MEM" = "x" ]; then
-    ARCHIVIST_MAX_MEM=3g
+    ARCHIVIST_MAX_MEM=2g
 fi
 if [ "x$ARCHIVIST_HEAP_SIZE" != "x" ]; then
     ARCHIVIST_MIN_MEM=$ARCHIVIST_HEAP_SIZE
@@ -52,12 +52,6 @@ if [ "x$ARCHIVIST_USE_GC_LOGGING" != "x" ]; then
   JAVA_OPTS="$JAVA_OPTS -XX:+PrintGCApplicationStoppedTime"
   JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/elasticsearch/gc.log"
 fi
-
-# Causes the JVM to dump its heap on OutOfMemory.
-JAVA_OPTS="$JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError"
-# The path to the heap dump location, note directory must exists and have enough
-# space for a full heap dump.
-#JAVA_OPTS="$JAVA_OPTS -XX:HeapDumpPath=$ARCHIVIST_HOME/logs/heapdump.hprof"
 
 # Disables explicit GC
 JAVA_OPTS="$JAVA_OPTS -XX:+DisableExplicitGC"
