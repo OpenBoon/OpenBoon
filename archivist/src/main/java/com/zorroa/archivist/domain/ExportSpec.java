@@ -17,10 +17,15 @@ public class ExportSpec {
     private String name;
 
     /**
-     *
+     * The search for the assets to include in the export.
      */
     @NotEmpty
     private AssetSearch search;
+
+    /**
+     * An optional list of fields to export with the data into a CSV file.
+     */
+    private List<String> fields;
 
     /**
      * A custom pipeline to run the assets through. Can be null.
@@ -66,6 +71,15 @@ public class ExportSpec {
 
     public ExportSpec setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public List<String> getFields() {
+        return fields;
+    }
+
+    public ExportSpec setFields(List<String> fields) {
+        this.fields = fields;
         return this;
     }
 }

@@ -120,7 +120,7 @@ public class ExportServiceImpl implements ExportService {
 
         jobDao.nextId(jspec);
         Path exportRoot = getExportPath(jspec);
-        Path zipFile = exportRoot.resolve("zorroa_export.zip");
+        Path zipFile = exportRoot.resolve(jspec.getName() + ".zip");
 
         jspec.putToArgs("exportId", jspec.getJobId());
         jspec.putToArgs("outputRoot", exportRoot.toString());
@@ -172,10 +172,11 @@ public class ExportServiceImpl implements ExportService {
          * modifications by the user.  Finally a CompressSource is appended.  All
          * of this is run inline to the generator.
          */
+        String dstDirectory = exportRoot.resolve("tmp").toString();
         execute.add(new ProcessorRef()
                 .setClassName("com.zorroa.core.processor.CopySource")
                 .setLanguage("java")
-                .setArgs(ImmutableMap.of("dstDirectory", exportRoot.resolve("tmp").toString())));
+                .setArgs(ImmutableMap.of("dstDirectory", dstDirectory)));
 
         if (spec.getPipelineId() != null) {
             for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
@@ -183,10 +184,20 @@ public class ExportServiceImpl implements ExportService {
             }
         }
 
+        if (spec.getFields() != null) {
+            execute.add(new ProcessorRef()
+                    .setClassName("com.zorroa.core.processor.MetadataExporter")
+                    .setLanguage("java")
+                    .setArgs(ImmutableMap.of("fields", new String[]{"source.path"},
+                            "dstFile", dstDirectory + "/" + jspec.getName() + ".csv")));
+        }
+
         execute.add(new ProcessorRef()
-                .setClassName("com.zorroa.core.processor.CompressSource")
+                .setClassName("com.zorroa.core.processor.CompressDirectory")
                 .setLanguage("java")
-                .setArgs(ImmutableMap.of("dstFile", zipFile.toString())));
+                .setArgs(ImmutableMap.of("dstFile", zipFile.toString(),
+                        "srcDirectory", dstDirectory,
+                        "zipEntryRoot", jspec.getName())));
 
         jobService.createTask(new TaskSpec()
                 .setJobId(job.getJobId())
