@@ -34,16 +34,16 @@ public class UnitTestConfiguration {
 
         org.elasticsearch.common.settings.Settings.Builder builder =
                 Settings.settingsBuilder()
-                        .put("path.home", properties.getString("zorroa.cluster.index.path.home"))
+                        .put("path.home", "unittest")
                         .put("cluster.name", "zorroa")
                         .put("node.name", "common")
                         .put("client.transport.sniff", true)
-                        .put("transport.tcp.port", properties.getInt("zorroa.cluster.index.port"))
+                        .put("transport.tcp.port", 9600)
                         .put("discovery.zen.ping.multicast.enabled", false)
                         .put("discovery.zen.fd.ping_timeout", "3s")
                         .put("discovery.zen.fd.ping_retries", 10)
-                        .put("node.data", properties.getBoolean("zorroa.cluster.index.data", true))
-                        .put("node.master", properties.getBoolean("zorroa.cluster.index.master", true))
+                        .put("node.data", true)
+                        .put("node.master", true)
                         .put("path.plugins", "{path.home}/es-plugins");
 
 
