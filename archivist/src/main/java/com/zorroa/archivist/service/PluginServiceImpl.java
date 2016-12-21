@@ -139,7 +139,6 @@ public class PluginServiceImpl implements PluginService {
          * If the plugin is a new version or just a new plugin then we register
          * the other stuff.
         */
-        logger.info("new or changed: {}", newOrChanged);
         if (newOrChanged) {
             registerProcessors(plugin, spec);
             registerPipelines(plugin, spec);
@@ -196,7 +195,6 @@ public class PluginServiceImpl implements PluginService {
             return;
         }
 
-        logger.info("Deleting all processors");
         processorDao.deleteAll(plugin);
 
         for (ProcessorSpec spec: pspec.getProcessors()) {
@@ -209,8 +207,6 @@ public class PluginServiceImpl implements PluginService {
             catch (EmptyResultDataAccessException e) {
                 // ignore
             }
-
-            logger.info("adding spec:{}" ,spec);
             processorDao.create(plugin, spec);
         }
     }
