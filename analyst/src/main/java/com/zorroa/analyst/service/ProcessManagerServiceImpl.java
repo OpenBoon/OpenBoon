@@ -300,7 +300,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
 
     public String determineLanguagePlugin(ZpsScript script) {
         if (script.getGenerate() != null && !script.getGenerate().isEmpty()) {
-            return script.getExecute().get(0).getLanguage();
+            return script.getGenerate().get(0).getLanguage();
         }
         else if (script.getExecute()!= null && !script.getExecute().isEmpty()) {
             return script.getExecute().get(0).getLanguage();
