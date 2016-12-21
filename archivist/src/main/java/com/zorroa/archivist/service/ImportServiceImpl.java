@@ -8,18 +8,28 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.zps.ZpsScript;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,6 +62,9 @@ public class ImportServiceImpl implements ImportService {
 
     @Autowired
     LogService logService;
+
+    @Autowired
+    ApplicationProperties properties;
 
     @Override
     public PagedList<Job> getAll(Pager page) {
@@ -109,16 +122,81 @@ public class ImportServiceImpl implements ImportService {
     }
 
     @Override
-    public Job create(ImportSpec spec) {
+    public Job create(UploadImportSpec spec) {
 
         JobSpec jspec = new JobSpec();
         jspec.setType(Import);
-        if (spec.getName() == null) {
-            jspec.setName(String.format("import by %s", SecurityUtils.getUsername()));
+        jspec.setName(determineJobName(spec.getName()));
+
+        Job job = jobService.launch(jspec);
+
+        // Setup generator
+        List<ProcessorRef> generators = Lists.newArrayList();
+        try {
+            Path importPath = copyUploadedFiles(job, spec.getFiles());
+            generators.add(new ProcessorRef()
+                    .setClassName("com.zorroa.core.generator.FileSystemGenerator")
+                    .setLanguage("java")
+                    .setArg("path", importPath.toString()));
+
+        } catch (IOException e) {
+            logger.warn("Failed to copy uploaded files:", e);
+            throw new ArchivistWriteException("Failed to copy uploaded files, unexpected :" + e.getMessage());
         }
-        else {
-            jspec.setName(String.format("import ", spec.getName()));
-        }
+
+        // Setup execute
+        List<ProcessorRef> execute = Lists.newArrayList();
+
+        /*
+         * The first node is an expand collector which allows us to execute in parallel.
+         */
+        execute.add(
+                new ProcessorRef()
+                        .setClassName("com.zorroa.core.collector.ExpandCollector")
+                        .setLanguage("java"));
+        /*
+         * Get the processors for the user supplied pipeline if.
+         */
+        List<ProcessorRef> pipeline = pipelineService.getProcessors(
+                spec.getPipelineId(), ImmutableList.of());
+
+        /*
+         * Append the index document collector to add stuff to the DB.
+         */
+        pipeline.add(
+                new ProcessorRef()
+                        .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
+                        .setLanguage("java")
+                        .setArgs(ImmutableMap.of("importId", job.getJobId())));
+
+        /*
+         * Set the pipeline as the sub execute to the expand node.
+         */
+        execute.get(0).setExecute(pipeline);
+
+        /*
+         * Now build the script.
+         */
+        ZpsScript script = new ZpsScript();
+        script.setGenerate(generators);
+        script.setExecute(execute);
+
+        jobService.createTask(new TaskSpec().setScript(script)
+                .setJobId(job.getJobId())
+                .setName("Generation via " + generators.get(0).getClassName()));
+
+        transactionEventManager.afterCommitSync(() -> {
+            logService.logAsync(LogSpec.build(LogAction.Create, "import", job.getJobId()));
+        });
+
+        return job;
+    }
+
+    @Override
+    public Job create(ImportSpec spec) {
+        JobSpec jspec = new JobSpec();
+        jspec.setType(Import);
+        jspec.setName(determineJobName(spec.getName()));
 
         /**
          * Create the job.
@@ -158,10 +236,12 @@ public class ImportServiceImpl implements ImportService {
          * Now attach the pipeline to each generator, be sure to validate each processor
          * since they are coming from the user.
          */
-        List<ProcessorRef> generators = Lists.newArrayListWithCapacity(spec.getGenerators().size());
-        for (ProcessorRef m: spec.getGenerators()) {
-            ProcessorRef gen = pluginService.getProcessorRef(m);
-            generators.add(gen);
+        List<ProcessorRef> generators = Lists.newArrayList();
+        if (spec.getGenerators() != null) {
+            for (ProcessorRef m : spec.getGenerators()) {
+                ProcessorRef gen = pluginService.getProcessorRef(m);
+                generators.add(gen);
+            }
         }
 
         /**
@@ -181,4 +261,33 @@ public class ImportServiceImpl implements ImportService {
 
         return job;
     }
+
+    private Path copyUploadedFiles(Job job, List<MultipartFile> files) throws IOException {
+        DateTime time = new DateTime();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY/MM/dd");
+
+        Path dir = properties.getPath("zorroa.cluster.path.imports");
+        dir = dir.resolve(
+                formatter.print(time)).resolve(String.valueOf(job.getId())).toAbsolutePath();
+
+        File dirFile = dir.toFile();
+        if (!dirFile.exists()) {
+            dir.toFile().mkdirs();
+        }
+
+        for (MultipartFile file: files) {
+            Files.copy(file.getInputStream(), dir.resolve(file.getOriginalFilename()));
+        }
+        return dir;
+    }
+
+    private String determineJobName(String name) {
+        if (name == null) {
+            return String.format("import by %s", SecurityUtils.getUsername());
+        }
+        else {
+            return name;
+        }
+    }
+
 }

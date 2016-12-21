@@ -3,6 +3,7 @@ package com.zorroa.archivist.web.api;
 import com.zorroa.archivist.domain.DebugImportSpec;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.UploadImportSpec;
 import com.zorroa.archivist.service.ImportService;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
@@ -27,13 +28,23 @@ public class ImportController {
     @Autowired
     JobExecutorService jobExecutorService;
 
-    @RequestMapping(value="/api/v1/imports", method = RequestMethod.POST)
-    public Object create(@RequestBody ImportSpec spec) throws IOException {
+    /**
+     *
+     * @param spec
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="/api/v1/imports/_upload", method = RequestMethod.POST)
+    public Object upload(UploadImportSpec spec) throws IOException {
         Job job = importService.create(spec);
-        //jobExecutorService.queueSchedule();
         return job;
     }
 
+    @RequestMapping(value="/api/v1/imports", method = RequestMethod.POST)
+    public Object create(@RequestBody ImportSpec spec) throws IOException {
+        Job job = importService.create(spec);
+        return job;
+    }
 
     @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
     @RequestMapping(value="/api/v1/imports/_debug", method = RequestMethod.POST)
