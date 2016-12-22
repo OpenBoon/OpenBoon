@@ -266,7 +266,7 @@ public class ImportServiceImpl implements ImportService {
         DateTime time = new DateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY/MM/dd");
 
-        Path dir = properties.getPath("zorroa.cluster.path.imports");
+        Path dir = properties.getPath("archivist.path.imports");
         dir = dir.resolve(
                 formatter.print(time)).resolve(String.valueOf(job.getId())).toAbsolutePath();
 
@@ -276,7 +276,9 @@ public class ImportServiceImpl implements ImportService {
         }
 
         for (MultipartFile file: files) {
-            Files.copy(file.getInputStream(), dir.resolve(file.getOriginalFilename()));
+            if (!dir.resolve(file.getOriginalFilename()).toFile().exists()) {
+                Files.copy(file.getInputStream(), dir.resolve(file.getOriginalFilename()));
+            }
         }
         return dir;
     }
