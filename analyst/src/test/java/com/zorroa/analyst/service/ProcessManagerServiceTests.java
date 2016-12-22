@@ -2,12 +2,14 @@ package com.zorroa.analyst.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStop;
 import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -64,15 +66,23 @@ public class ProcessManagerServiceTests extends AbstractTest {
         assertNull(proc2);
     }
 
+    /**
+     * This test requires core plugins to be imstalled .
+     *
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Test
     public void testStop() throws IOException, InterruptedException {
-        processManager.execute(new ExecuteTaskStart(1, 1, 1)
+        Future<AnalystProcess> p = processManager.execute(new ExecuteTaskStart(1, 1, 1)
                 .setScript(Json.serializeToString(new ZpsScript()
+                        .setOver(Lists.newArrayList(new Document()))
                         .setExecute(ImmutableList.of(
-                                new ProcessorRef("com.zorroa.analyst.TestSleepProcessor")))))
+                                new ProcessorRef("com.zorroa.core.processor.GroovyScript")
+                                        .setArg("script", "sleep(10000);")))))
                 .setLogPath(Files.createTempFile("analyst", "test").toString()), true);
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         assertTrue(processManager.stopTask(new ExecuteTaskStop(task, 1, 1).setReason("manual kill")));
     }
 
