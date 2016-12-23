@@ -16,6 +16,7 @@ import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -123,8 +124,11 @@ public class JobServiceImpl implements JobService {
         spec.putToEnv("ZORROA_JOB_ID", String.valueOf(spec.getJobId()));
         spec.putToEnv("ZORROA_JOB_TYPE", spec.getType().toString());
         spec.putToEnv("ZORROA_JOB_PATH_ROOT", rootPath.toString());
-        spec.putToEnv("ZORROA_JOB_PATH_IMPORTS", rootPath.resolve("imports").toString());
-        spec.putToEnv("ZORROA_JOB_PATH_EXPORTS", rootPath.resolve("exports").toString());
+
+        for (String dir: CHILD_DIRS) {
+            spec.putToEnv("ZORROA_JOB_PATH_" + StringUtils.upperCase(dir),
+                    rootPath.resolve(dir).toString());
+        }
         /**
          * These options allow jobs to talk back to the archivist.
          */
