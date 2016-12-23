@@ -281,7 +281,6 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                 .add("--plugin-path", properties.getString("zorroa.cluster.path.plugins"))
                 .add("--model-path", properties.getString("zorroa.cluster.path.models"))
                 .add("--ofs-path", properties.getString("zorroa.cluster.path.ofs"))
-                .add("--export-path", properties.getString("zorroa.cluster.path.exports"))
                 .add("--script", writeScript(script).toString());
 
         if (task.getArgs() != null) {
