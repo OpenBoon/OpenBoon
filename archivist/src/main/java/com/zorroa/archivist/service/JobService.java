@@ -5,6 +5,7 @@ import com.zorroa.common.domain.*;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -116,4 +117,6 @@ public interface JobService {
     PagedList<Task> getAllTasks(int job, Pager page);
 
     int updatePingTime(List<Integer> taskIds);
+
+    Path resolveJobRoot(JobSpec spec);
 }

@@ -207,8 +207,8 @@ public class TaskDaoTests extends AbstractTest {
     @Test
     public void testGetLogPath() {
         Path lp = taskDao.getLogFilePath(task.getTaskId());
-        assertTrue(lp.toString().startsWith(
-                properties.getPath("zorroa.cluster.path.shared") + "/logs"));
+        String logPath = jobService.get(task.getJobId()).getRootPath().concat("/logs/");
+        assertTrue(lp.toString().startsWith(logPath));
     }
 
     @Test

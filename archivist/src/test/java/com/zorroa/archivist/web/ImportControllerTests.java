@@ -47,7 +47,7 @@ public class ImportControllerTests extends MockMvcTest {
     public void testUpload() throws Exception {
 
         MockMultipartFile file =
-                new MockMultipartFile("files", "zorroa-test-plugin.zip", "image/jpeg",
+                new MockMultipartFile("files", "faces.jpg", "image/jpeg",
                         new FileInputStream(new File("../unittest/resources/images/set01/faces.jpg")));
 
         UploadImportSpec spec = new UploadImportSpec();

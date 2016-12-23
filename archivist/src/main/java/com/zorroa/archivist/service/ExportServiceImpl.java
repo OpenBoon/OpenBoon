@@ -13,20 +13,15 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
-import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.zps.ZpsScript;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -66,22 +61,6 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     LogService logService;
 
-    SharedData sharedData;
-
-    @PostConstruct
-    public void init() {
-        /**
-         * Create a shared data which contains all the cluster properties.
-         */
-        sharedData = SharedData.builder()
-            .setRootPath(properties.getString("zorroa.cluster.path.shared"))
-            .setModelPath(properties.getString("zorroa.cluster.path.models"))
-            .setOfsPath(properties.getString("zorroa.cluster.path.ofs"))
-            .setPluginPath(properties.getString("zorroa.cluster.path.plugins"))
-            .setExportPath(properties.getString("zorroa.cluster.path.exports"))
-            .build();
-    }
-
     /*
      * Perform the export search to tag all the assets being exported.  We then
      * replace the the search being executed with a search for the assets
@@ -119,7 +98,8 @@ public class ExportServiceImpl implements ExportService {
         }
 
         jobDao.nextId(jspec);
-        Path exportRoot = getExportPath(jspec);
+        Path jobRoot = jobService.resolveJobRoot(jspec);
+        Path exportRoot = jobRoot.resolve("exported");
         Path zipFile = exportRoot.resolve(jspec.getName() + ".zip");
 
         jspec.putToArgs("exportId", jspec.getJobId());
@@ -219,15 +199,5 @@ public class ExportServiceImpl implements ExportService {
     @Override
     public PagedList<Job> getAll(Pager page) {
         return jobService.getAll(page, new JobFilter().setType(PipelineType.Export));
-    }
-
-    private Path getExportPath(JobSpec spec) {
-        DateTime time = new DateTime();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY/MM/dd");
-
-        return sharedData.getExportPath()
-                .resolve(formatter.print(time))
-                .resolve(String.valueOf(spec.getJobId()));
-
     }
 }

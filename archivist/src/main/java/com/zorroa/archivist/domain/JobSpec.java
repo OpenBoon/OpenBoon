@@ -15,8 +15,7 @@ public class JobSpec {
     private Map<String, String> env;
     private String name;
     private PipelineType type;
-    private String logPath;
-
+    private String rootPath;
     private List<TaskSpec> tasks;
 
     public JobSpec() { }
@@ -96,12 +95,12 @@ public class JobSpec {
         return this;
     }
 
-    public String getLogPath() {
-        return logPath;
+    public String getRootPath() {
+        return rootPath;
     }
 
-    public JobSpec setLogPath(String logPath) {
-        this.logPath = logPath;
+    public JobSpec setRootPath(String rootPath) {
+        this.rootPath = rootPath;
         return this;
     }
 }

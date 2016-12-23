@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.common.domain.JobId;
@@ -24,6 +25,13 @@ public class Job implements JobId {
 
     private Counts counts;
     private Stats stats;
+
+    /**
+     * Don't want to expose this to the client side because
+     * would expose risk information.
+     */
+    @JsonIgnore
+    private String rootPath;
 
     public int getId() {
         return id;
@@ -112,6 +120,15 @@ public class Job implements JobId {
 
     public Job setArgs(Map<String, Object> args) {
         this.args = args;
+        return this;
+    }
+
+    public String getRootPath() {
+        return rootPath;
+    }
+
+    public Job setRootPath(String rootPath) {
+        this.rootPath = rootPath;
         return this;
     }
 

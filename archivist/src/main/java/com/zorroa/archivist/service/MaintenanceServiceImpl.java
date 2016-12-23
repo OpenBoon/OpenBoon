@@ -175,6 +175,12 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
             } catch (IOException e) {
                 logger.warn("Failed to delete directory, '" + job.getLogPath() + "', ", e);
             }
+
+            try {
+                FileUtils.deleteDirectory(new File(job.getExportedPath()));
+            } catch (IOException e) {
+                logger.warn("Failed to delete directory, '" + job.getExportedPath() + "', ", e);
+            }
         }
 
         return jobs.size();

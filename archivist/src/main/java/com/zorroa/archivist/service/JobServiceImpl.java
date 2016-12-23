@@ -16,6 +16,9 @@ import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,14 +115,16 @@ public class JobServiceImpl implements JobService {
     @Override
     public Job launch(JobSpec spec) {
         jobDao.nextId(spec);
-        createLogPath(spec);
+        Path rootPath = createSharedPaths(spec);
 
         /**
          * Some basic env vars.
          */
         spec.putToEnv("ZORROA_JOB_ID", String.valueOf(spec.getJobId()));
         spec.putToEnv("ZORROA_JOB_TYPE", spec.getType().toString());
-
+        spec.putToEnv("ZORROA_JOB_PATH_ROOT", rootPath.toString());
+        spec.putToEnv("ZORROA_JOB_PATH_IMPORTS", rootPath.resolve("imports").toString());
+        spec.putToEnv("ZORROA_JOB_PATH_EXPORTS", rootPath.resolve("exports").toString());
         /**
          * These options allow jobs to talk back to the archivist.
          */
@@ -135,41 +140,6 @@ public class JobServiceImpl implements JobService {
         event.afterCommit(()->
                 message.broadcast(new Message("JOB_CREATE", job)));
         return jobDao.get(job.getId());
-    }
-
-    /**
-     * Decorates a base path with the final leaf directories
-     * for a job.
-     *
-     * @param spec
-     * @param basePath
-     * @return
-     */
-    private Path resolveLogPath(JobSpec spec, Path basePath) {
-        return basePath
-                .resolve(spec.getType().toString().toLowerCase())
-                .resolve(String.valueOf(spec.getJobId()));
-
-    }
-
-    private void createLogPath(JobSpec spec) {
-
-        // The local path is the one archivist can see.
-        Path localPath = resolveLogPath(spec,
-                properties.getPath("archivist.path.logs"));
-
-        File localFile = localPath.toFile();
-        if (localFile.exists()) {
-            logger.warn("Log file path exists: {}", localFile);
-        }
-        else {
-            localPath.toFile().mkdirs();
-        }
-
-        // The cluster path is what
-        Path clusterPath = resolveLogPath(spec,
-                properties.getPath("zorroa.cluster.path.logs"));
-        spec.setLogPath(clusterPath.toString());
     }
 
     @Override
@@ -299,5 +269,57 @@ public class JobServiceImpl implements JobService {
     @Override
     public int updatePingTime(List<Integer> taskIds) {
         return taskDao.updatePingTime(taskIds);
+    }
+
+    /**
+     * Takes jobspec with a populated job Id and create a path for the job
+     * to store its data, including logs.
+     *
+     * @param spec
+     * @return
+     */
+    @Override
+    public Path resolveJobRoot(JobSpec spec) {
+        Path basePath = properties.getPath("zorroa.cluster.path.jobs");
+
+        DateTime time = new DateTime();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY/MM/dd");
+
+        return basePath
+                .resolve(spec.getType().toString().toLowerCase())
+                .resolve(formatter.print(time))
+                .resolve(SecurityUtils.getUsername())
+                .resolve(String.valueOf(spec.getJobId()))
+                .toAbsolutePath();
+    }
+
+    /**
+     * The subdirectories made in a job directory.
+     *
+     * logs and tmp get removed by maintenance.
+     * if assets has files its left alone
+     */
+    private String[] CHILD_DIRS = new String[] {
+        "logs",
+        "tmp",
+        "assets",
+        "exported"
+    };
+
+    private Path createSharedPaths(JobSpec spec) {
+        Path rootPath = resolveJobRoot(spec);
+
+        for (String child: CHILD_DIRS) {
+            Path childPath = rootPath.resolve(child);
+
+            File childFile = childPath.toFile();
+            if (childFile.exists()) {
+                logger.warn("Log file path exists: {}", childFile);
+            } else {
+                childFile.mkdirs();
+            }
+        }
+        spec.setRootPath(rootPath.toString());
+        return rootPath;
     }
 }

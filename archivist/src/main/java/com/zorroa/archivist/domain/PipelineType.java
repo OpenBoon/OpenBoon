@@ -6,5 +6,6 @@ package com.zorroa.archivist.domain;
 public enum PipelineType {
     Import,
     Export,
-    Batch
+    Batch,
+    Training
 }

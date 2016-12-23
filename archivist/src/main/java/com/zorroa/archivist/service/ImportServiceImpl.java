@@ -16,9 +16,6 @@ import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.zps.ZpsScript;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -263,24 +260,14 @@ public class ImportServiceImpl implements ImportService {
     }
 
     private Path copyUploadedFiles(Job job, List<MultipartFile> files) throws IOException {
-        DateTime time = new DateTime();
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY/MM/dd");
-
-        Path dir = properties.getPath("archivist.path.imports");
-        dir = dir.resolve(
-                formatter.print(time)).resolve(String.valueOf(job.getId())).toAbsolutePath();
-
-        File dirFile = dir.toFile();
-        if (!dirFile.exists()) {
-            dir.toFile().mkdirs();
-        }
+        Path importPath = Paths.get(job.getRootPath()).resolve("assets");
 
         for (MultipartFile file: files) {
-            if (!dir.resolve(file.getOriginalFilename()).toFile().exists()) {
-                Files.copy(file.getInputStream(), dir.resolve(file.getOriginalFilename()));
+            if (!importPath.resolve(file.getOriginalFilename()).toFile().exists()) {
+                Files.copy(file.getInputStream(), importPath.resolve(file.getOriginalFilename()));
             }
         }
-        return dir;
+        return importPath;
     }
 
     private String determineJobName(String name) {

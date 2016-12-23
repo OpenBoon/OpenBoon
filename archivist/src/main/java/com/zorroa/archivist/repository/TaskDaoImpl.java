@@ -222,8 +222,9 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
     private static final RowMapper<Path> LOG_PATH_MAPPER = (rs, row) ->
             Paths.get(
-                    rs.getString("str_log_path")).resolve(
-                    rs.getString("str_name").replace(' ', '_')
+                    rs.getString("str_root_path"))
+                    .resolve("logs")
+                    .resolve(rs.getString("str_name").replace(' ', '_')
                             .concat(String.format(".%04d.log", rs.getInt("pk_task"))));
 
 
@@ -255,7 +256,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "task.pk_parent, "+
                 "job.json_args,"+
                 "job.json_env, " +
-                "job.str_log_path, " +
+                "job.str_root_path, " +
                 "task.str_name "+
             "FROM " +
                 "task,"+
@@ -360,10 +361,11 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     public long countByJob(int job) {
         return jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE task.pk_job=?", Long.class, job);
     }
+
     private static final String GET_LOG_PATH =
         "SELECT " +
             "task.pk_task,"+
-            "job.str_log_path, " +
+            "job.str_root_path, " +
             "task.str_name "+
         "FROM " +
             "task,"+

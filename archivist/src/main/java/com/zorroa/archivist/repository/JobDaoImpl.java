@@ -37,7 +37,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                     "time_started",
                     "json_args",
                     "json_env",
-                    "str_log_path");
+                    "str_root_path");
 
     @Override
     public Job create(JobSpec spec) {
@@ -58,7 +58,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
             ps.setLong(5, time);
             ps.setString(6, Json.serializeToString(spec.getArgs(), "{}"));
             ps.setString(7, Json.serializeToString(spec.getEnv(), "{}"));
-            ps.setString(8, spec.getLogPath());
+            ps.setString(8, spec.getRootPath());
             return ps;
         });
 
@@ -85,6 +85,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         job.setType(PipelineType.values()[rs.getInt("int_type")]);
         job.setUser(userDaoCache.getUser(rs.getInt("int_user_created")));
         job.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
+        job.setRootPath(rs.getString("str_root_path"));
 
         Job.Stats a = new Job.Stats();
         a.setFrameTotalCount(rs.getInt("int_frame_total_count"));
@@ -129,6 +130,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "job.int_type,"+
                 "job.json_args,"+
                 "job.int_user_created,"+
+                "job.str_root_path,"+
                 "job_stat.int_frame_total_count,"+
                 "job_stat.int_frame_success_count," +
                 "job_stat.int_frame_warning_count,"+

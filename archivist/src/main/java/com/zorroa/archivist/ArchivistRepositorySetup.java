@@ -86,11 +86,10 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     private static final String[] sharedPathProperties = {
             "archivist.path.shared",
             "archivist.path.ofs",
-            "archivist.path.exports",
+            "archivist.path.jobs",
             "archivist.path.plugins",
             "archivist.path.models",
             "archivist.path.backups",
-            "archivist.path.logs",
             "archivist.path.docs",
             "archivist.path.certs"
     };

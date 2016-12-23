@@ -8,7 +8,7 @@ import com.zorroa.common.domain.JobId;
 public class ExpiredJob implements JobId {
 
     private int id;
-    private String logPath;
+    private String rootPath;
 
     public int getId() {
         return id;
@@ -20,11 +20,18 @@ public class ExpiredJob implements JobId {
     }
 
     public String getLogPath() {
-        return logPath;
+        return rootPath.concat("/logs");
+    }
+    public String getExportedPath() {
+        return rootPath.concat("/exported");
     }
 
-    public ExpiredJob setLogPath(String logPath) {
-        this.logPath = logPath;
+    public String getRootPath() {
+        return rootPath;
+    }
+
+    public ExpiredJob setRootPath(String logPath) {
+        this.rootPath = logPath;
         return this;
     }
 

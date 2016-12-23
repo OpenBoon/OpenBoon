@@ -22,14 +22,14 @@ public class MaintenanceDaoImpl extends AbstractDao implements MaintenanceDao {
     private final RowMapper<ExpiredJob> JOB_MAPPER = (rs, row) -> {
         ExpiredJob job = new ExpiredJob();
         job.setId(rs.getInt("pk_job"));
-        job.setLogPath(rs.getString("str_log_path"));
+        job.setRootPath(rs.getString("str_root_path"));
         return job;
     };
 
     private static final String GET_EXPIRED =
             "SELECT " +
                 "job.pk_job, " +
-                "job.str_log_path " +
+                "job.str_root_path " +
             "FROM " +
                 "job,"+
                 "job_count " +
