@@ -1,10 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.ExpiredJob;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobSpec;
-import com.zorroa.archivist.domain.TaskSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.MaintenanceDao;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
@@ -94,5 +91,9 @@ public class MaintenanceServiceTests extends AbstractTest {
                 Integer.class, job.getId()));
         assertEquals(0, (int) jdbc.queryForObject("SELECT COUNT(1) FROM task_stat WHERE pk_job=?",
                 Integer.class, job.getId()));
+
+        Job updateJob = jobService.get(job.getId());
+        assertEquals(JobState.Expired, updateJob.getState());
+
     }
 }

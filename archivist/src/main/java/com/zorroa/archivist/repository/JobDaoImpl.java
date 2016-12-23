@@ -107,7 +107,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
 
         JobState state = JobState.values()[rs.getInt("int_state")];
 
-        if (!state.equals(JobState.Cancelled)) {
+        if (state.equals(JobState.Active)) {
             if (t.getTasksSuccess() + t.getTasksSkipped() == t.getTasksTotal()) {
                 job.setState(JobState.Finished);
             } else {
