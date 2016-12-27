@@ -193,7 +193,11 @@ public class SearchServiceImpl implements SearchService {
         if (search.getScroll() != null) {
             Scroll scroll = search.getScroll();
             if (scroll.getId() != null) {
-                return assetDao.getAll(scroll.getId(), scroll.getTimeout());
+                PagedList<Asset> result = assetDao.getAll(scroll.getId(), scroll.getTimeout());
+                if (result.size() == 0) {
+                    client.prepareClearScroll().addScrollId(scroll.getId());
+                }
+                return result;
             }
         }
 
