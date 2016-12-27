@@ -304,6 +304,26 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(folders.isEmpty());
     }
 
+    @Test(expected=ArchivistWriteException.class)
+    public void testUpdateHierarchyFailure() {
+
+        Folder folder1 = folderService.create(new FolderSpec("test3"));
+        Folder folder1a = folderService.create(new FolderSpec("test3a", folder1));
+        Folder folder1b = folderService.create(new FolderSpec("test3b", folder1a));
+        Folder folder1c = folderService.create(new FolderSpec("test3c", folder1b));
+        folderService.update(folder1.getId(), folder1.setParentId(folder1c.getId()));
+    }
+
+    @Test(expected=ArchivistWriteException.class)
+    public void testUpdateHierarchyFailureSelfAsParent() {
+
+        Folder folder1 = folderService.create(new FolderSpec("test2"));
+        Folder folder1a = folderService.create(new FolderSpec("test2a", folder1));
+        Folder folder1b = folderService.create(new FolderSpec("test2b", folder1a));
+        Folder folder1c = folderService.create(new FolderSpec("test2c", folder1b));
+        folderService.update(folder1.getId(), folder1.setParentId(folder1.getId()));
+    }
+
     @Test
     public void testUpdateRecursive() {
         Folder folder = folderService.create(new FolderSpec("orig"));
@@ -402,5 +422,18 @@ public class FolderServiceTests extends AbstractTest {
         assertEquals(3, folderService.emptyTrash().size());
 
         assertEquals(0, (int) jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash", Integer.class));
+    }
+
+    @Test
+    public void isDescendantOf() {
+
+        Folder folder1 = folderService.create(new FolderSpec("folder1"));
+        Folder folder2 = folderService.create(new FolderSpec("folder2", folder1.getId()));
+        Folder folder3 = folderService.create(new FolderSpec("folder3", folder2.getId()));
+
+        assertTrue(folderService.isDescendantOf(folder3, folder1));
+        assertFalse(folderService.isDescendantOf(folder1, folder3));
+        assertTrue(folderService.isDescendantOf(folder3, folderService.get(0)));
+
     }
 }

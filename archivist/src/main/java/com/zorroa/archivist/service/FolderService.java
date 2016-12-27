@@ -124,4 +124,6 @@ public interface FolderService {
     List<Integer> emptyTrash(List<Integer> ids);
 
     int trashCount();
+
+    boolean isDescendantOf(Folder b, Folder a);
 }

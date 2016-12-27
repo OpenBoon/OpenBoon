@@ -165,6 +165,15 @@ public class FolderServiceImpl implements FolderService {
             throw new ArchivistWriteException("You cannot make changes to this folder");
         }
         Folder current = folderDao.get(id);
+
+        // If we have a new parent, then double check parent
+        if (current.getParentId() != folder.getParentId()) {
+            logger.info("switching parent id");
+            if (isDescendantOf(folderDao.get(folder.getParentId()), current)) {
+                throw new ArchivistWriteException("You cannot move a folder into one of its descendants.");
+            }
+        }
+
         boolean result = folderDao.update(id, folder);
         if (result) {
             setAcl(folder, folder.getAcl(), false);
@@ -512,4 +521,19 @@ public class FolderServiceImpl implements FolderService {
     public int trashCount() {
         return trashFolderDao.count(SecurityUtils.getUser().getId());
     }
+
+    @Override
+    public boolean isDescendantOf(Folder target, Folder moving) {
+        if (target.getId() == moving.getId()) {
+            return true;
+        }
+        while(target.getParentId() != null) {
+            target = folderDao.get(target.getParentId());
+            if (target.getId() == moving.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
