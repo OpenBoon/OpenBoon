@@ -316,8 +316,16 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.redirectErrorStream(true);
 
+        Map<String, String> env = builder.environment();
+
+        Map<String, Object> clusterEnv = properties.getMap("zorroa.cluster.env");
+        if (clusterEnv != null) {
+            for (Map.Entry<String,Object> e: clusterEnv.entrySet()) {
+                env.put(e.getKey(), (String)e.getValue());
+            }
+        }
+
         if (task.getEnv() != null) {
-            Map<String,String> env = builder.environment();
             for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
                 env.put(e.getKey(), e.getValue());
             }
