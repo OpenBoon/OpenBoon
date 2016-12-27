@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by chambers on 7/11/16.
@@ -38,6 +39,12 @@ public class ImportController {
     public Object upload(UploadImportSpec spec) throws IOException {
         Job job = importService.create(spec);
         return job;
+    }
+
+    @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
+    @RequestMapping(value="/api/v1/imports/_suggest", method = RequestMethod.GET)
+    public Object suggest(@RequestBody Map<String,String> body) throws IOException {
+        return importService.suggestImportPath(body.get("path"));
     }
 
     @RequestMapping(value="/api/v1/imports", method = RequestMethod.POST)

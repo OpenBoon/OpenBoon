@@ -1,11 +1,14 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobSpec;
 import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.domain.UploadImportSpec;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.util.FileUtils;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -80,6 +85,25 @@ public class ImportControllerTests extends MockMvcTest {
 
         Job job = deserialize(result, Job.class);
         assertEquals((int) job.getJobId(), job.getId());
+    }
+
+    @Test
+    public void testSuggest() throws Exception {
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(get("/api/v1/imports/_suggest")
+                .session(session)
+                .content(Json.serializeToString(
+                        ImmutableMap.of("path", FileUtils.normalize("../unittest/resources/images/set01"))))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, List<String>> paths = deserialize(result, Map.class);
+        assertTrue(paths.get("files").contains("faces.jpg"));
+        assertTrue(paths.get("files").contains("hyena.jpg"));
+        assertTrue(paths.get("files").contains("toucan.jpg"));
+        assertTrue(paths.get("files").contains("visa.jpg"));
+        assertTrue(paths.get("files").contains("visa12.jpg"));
     }
 
     @Test
