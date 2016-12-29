@@ -68,6 +68,7 @@ public class MultipleWebSecurityConfig {
             config.addAllowedOrigin("http://localhost:8080");
             config.addAllowedHeader("*");
             config.addAllowedMethod("*");
+            config.addExposedHeader("Content-Encoding");
             config.addAllowedMethod("OPTIONS");
             config.addAllowedMethod("HEAD");
             config.addAllowedMethod("GET");
