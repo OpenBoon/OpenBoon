@@ -419,9 +419,6 @@ public class SearchServiceImpl implements SearchService {
         if (JdbcUtils.isValid(search.getQueryFields())) {
             queryFields = search.getQueryFields();
         }
-        else if (JdbcUtils.isValid(SecurityUtils.getUser().getSettings().getSearch())) {
-            queryFields = SecurityUtils.getUser().getSettings().getSearch().getQueryFields();
-        }
 
         if (!JdbcUtils.isValid(queryFields)) {
             queryFields = defaultQueryFields;

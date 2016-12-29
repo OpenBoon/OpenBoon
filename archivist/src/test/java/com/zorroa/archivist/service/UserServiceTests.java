@@ -55,8 +55,7 @@ public class UserServiceTests extends AbstractTest {
         UserPreset presets = userService.createUserPreset(new UserPresetSpec()
                 .setName("defaults")
                 .setPermissionIds(Lists.newArrayList(userService.getPermission("group::manager").getId()))
-                .setSettings(new UserSettings().setSearch(
-                        new UserSettings.Search().setQueryFields(ImmutableMap.of("foo", 1.0f)))));
+                .setSettings(new UserSettings().setSearch(ImmutableMap.of("foo", "bar"))));
 
         UserSpec builder = new UserSpec();
         builder.setUsername("bilbo");
@@ -70,7 +69,7 @@ public class UserServiceTests extends AbstractTest {
         assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
 
         UserSettings settings = user.getSettings();
-        assertTrue(settings.getSearch().getQueryFields().containsKey("foo"));
+        assertEquals("bar", settings.getSearch().get("foo"));
     }
 
     @Test

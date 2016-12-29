@@ -77,48 +77,6 @@ public class AssetControllerTests extends MockMvcTest {
         assertEquals(1, count);
     }
 
-    @Test
-    public void testUserSettingsQueryFieldSearchFailure() throws Exception {
-
-        userService.updateSettings(userService.get("admin"),
-                new UserSettings().setSearch(new UserSettings.Search().setQueryFields(ImmutableMap.of("foo",1.0f))));
-
-        MockHttpSession session = admin();
-        addTestAssets("set04/standard");
-
-        MvcResult result = mvc.perform(post("/api/v3/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(new AssetSearch("beer"))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        PagedList<Asset> assets = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                PagedList.class);
-        assertEquals(0,(long) assets.getPage().getTotalCount());
-    }
-
-    @Test
-    public void testUserSettingsQueryFieldSearch() throws Exception {
-
-        userService.updateSettings(userService.get("admin"),
-                new UserSettings().setSearch(new UserSettings.Search().setQueryFields(
-                        ImmutableMap.of("source.extension",1.0f))));
-
-        MockHttpSession session = admin();
-        addTestAssets("set04/standard");
-
-        MvcResult result = mvc.perform(post("/api/v3/assets/_search")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(new AssetSearch("jpg"))))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        PagedList<Asset> assets = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                PagedList.class);
-        assertEquals(2, (long) assets.getPage().getTotalCount());
-    }
 
     @Test
     public void testCountV2() throws Exception {

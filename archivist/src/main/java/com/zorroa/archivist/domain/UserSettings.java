@@ -28,7 +28,7 @@ public class UserSettings {
     /**
      * All search related settings.
      */
-    private Search search;
+    private Map<String, Object> search;
 
     /**
      * All settings related to display of metadata.
@@ -36,17 +36,8 @@ public class UserSettings {
     private Map<String, Object> metadata;
 
     public UserSettings() {
-        this.search = new Search();
+        this.search = Maps.newHashMap();
         this.metadata = Maps.newHashMap();
-    }
-
-    public Search getSearch() {
-        return search;
-    }
-
-    public UserSettings setSearch(Search search) {
-        this.search = search;
-        return this;
     }
 
     public Map<String,Object> getMetadata() {
@@ -58,24 +49,12 @@ public class UserSettings {
         return this;
     }
 
-    /**
-     * All search related settings.
-     */
-    public static class Search {
+    public Map<String, Object> getSearch() {
+        return search;
+    }
 
-        /**
-         * The fields and their associated boost value, which are used with
-         * a query string query.
-         */
-        private Map<String, Float> queryFields;
-
-        public Map<String, Float> getQueryFields() {
-            return queryFields;
-        }
-
-        public Search setQueryFields(Map<String, Float> queryFields) {
-            this.queryFields = queryFields;
-            return this;
-        }
+    public UserSettings setSearch(Map<String, Object> search) {
+        this.search = search;
+        return this;
     }
 }

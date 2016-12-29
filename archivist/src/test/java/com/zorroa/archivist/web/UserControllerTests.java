@@ -67,8 +67,7 @@ public class UserControllerTests extends MockMvcTest {
     public void testUpdateSettings() throws Exception {
         User user = userService.get("user");
         UserSettings settings = new UserSettings();
-        settings.setSearch(
-                new UserSettings.Search().setQueryFields(ImmutableMap.of("foo", 1.0f)));
+        settings.setSearch(ImmutableMap.of("foo", "bar"));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId() + "/_settings")
@@ -82,8 +81,8 @@ public class UserControllerTests extends MockMvcTest {
                 result.getResponse().getContentAsByteArray(), new TypeReference<StatusResult<User>>() {});
         User updated = sr.object;
         assertEquals(user.getId(), updated.getId());
-        assertNotNull(updated.getSettings().getSearch().getQueryFields());
-        assertEquals(settings.getSearch().getQueryFields(), updated.getSettings().getSearch().getQueryFields());
+        assertNotNull(updated.getSettings().getSearch().get("foo"));
+        assertEquals("bar", updated.getSettings().getSearch().get("foo"));
     }
 
     @Test
