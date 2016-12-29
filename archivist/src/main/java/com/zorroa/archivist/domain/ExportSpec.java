@@ -23,6 +23,11 @@ public class ExportSpec {
     private AssetSearch search;
 
     /**
+     * Export source files.
+     */
+    private boolean includeSource = true;
+
+    /**
      * An optional list of fields to export with the data into a CSV file.
      */
     private List<String> fields;
@@ -36,7 +41,6 @@ public class ExportSpec {
      * Utilize a pre-existing import pipeline.
      */
     protected Integer pipelineId;
-
 
     public AssetSearch getSearch() {
         return search;
@@ -80,6 +84,15 @@ public class ExportSpec {
 
     public ExportSpec setFields(List<String> fields) {
         this.fields = fields;
+        return this;
+    }
+
+    public boolean isIncludeSource() {
+        return includeSource;
+    }
+
+    public ExportSpec setIncludeSource(boolean includeSource) {
+        this.includeSource = includeSource;
         return this;
     }
 }

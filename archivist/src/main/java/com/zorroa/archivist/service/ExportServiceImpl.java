@@ -138,25 +138,19 @@ public class ExportServiceImpl implements ExportService {
                 ImmutableMap.of("search", search)));
 
         /**
-         * First setup the core pipeline for the main task.  We create the
-         * output directory, add the export id, and kick off a search generator.
-         */
-        execute.add(new ProcessorRef()
-                .setClassName("com.zorroa.core.processor.MakeDirectory")
-                .setLanguage("java")
-                .setArgs(ImmutableMap.of("path", exportRoot.toString())));
-
-        /**
          * Now setup the per file export pipeline.  A CopySource processors is
          * prepended in case we need to modify the original source.  Then any
          * modifications by the user.  Finally a CompressSource is appended.  All
          * of this is run inline to the generator.
          */
-        String dstDirectory = exportRoot.resolve("tmp").toString();
-        execute.add(new ProcessorRef()
-                .setClassName("com.zorroa.core.processor.CopySource")
-                .setLanguage("java")
-                .setArgs(ImmutableMap.of("dstDirectory", dstDirectory)));
+        String dstDirectory = exportRoot.resolve("tmp_" + System.currentTimeMillis()).toString();
+
+        if (spec.isIncludeSource()) {
+            execute.add(new ProcessorRef()
+                    .setClassName("com.zorroa.core.processor.CopySource")
+                    .setLanguage("java")
+                    .setArgs(ImmutableMap.of("dstDirectory", dstDirectory)));
+        }
 
         if (spec.getPipelineId() != null) {
             for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
@@ -177,6 +171,7 @@ public class ExportServiceImpl implements ExportService {
                 .setLanguage("java")
                 .setArgs(ImmutableMap.of("dstFile", zipFile.toString(),
                         "srcDirectory", dstDirectory,
+                        "removeSrcDirectory", true,
                         "zipEntryRoot", jspec.getName())));
 
         jobService.createTask(new TaskSpec()
