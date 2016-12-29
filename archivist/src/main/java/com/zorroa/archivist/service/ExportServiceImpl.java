@@ -168,7 +168,7 @@ public class ExportServiceImpl implements ExportService {
             execute.add(new ProcessorRef()
                     .setClassName("com.zorroa.core.processor.MetadataExporter")
                     .setLanguage("java")
-                    .setArgs(ImmutableMap.of("fields", new String[]{"source.path"},
+                    .setArgs(ImmutableMap.of("fields", spec.getFields(),
                             "dstFile", dstDirectory + "/" + jspec.getName() + ".csv")));
         }
 
