@@ -137,7 +137,7 @@ public class SecurityUtils {
         if (hasPermission("group::administrator")) {
             return null;
         }
-        return QueryBuilders.termsQuery("permissions.search",
+        return QueryBuilders.termsQuery("permissions.read",
                 SecurityUtils.getPermissionIds());
     }
 
