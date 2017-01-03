@@ -155,7 +155,6 @@ public class AssetServiceImpl implements AssetService {
 
     private final Executor batchExecutor = SecureSingleThreadExecutor.singleThreadExecutor();
 
-
     /**
      * Updates the assets for a given search with the given permissions.  Only
      * 1 thread is allowed to be updating permissions at a time, so we don't
@@ -223,6 +222,7 @@ public class AssetServiceImpl implements AssetService {
 
                         for (BulkItemResponse bir: response.getItems()) {
                             if (bir.isFailed()) {
+                                logger.warn("update permissions bulk failed: {}",  bir.getFailureMessage());
                                 failure.increment();
                                 logService.log(LogSpec.build(LogAction.Update, bir.getType(), bir.getId())
                                         .setMessage("Update permissions failed," + bir.getFailureMessage())
@@ -248,9 +248,9 @@ public class AssetServiceImpl implements AssetService {
                                 .setUser(user));
                     }
                 })
-                .setBulkActions(5000)
+                .setBulkActions(100)
                 .setFlushInterval(TimeValue.timeValueSeconds(5))
-                .setConcurrentRequests(1)
+                .setConcurrentRequests(0)
                 .build();
 
         for (Asset asset: searchService.scanAndScroll(
@@ -281,10 +281,13 @@ public class AssetServiceImpl implements AssetService {
         }
 
         try {
+            logger.info("Waiting for bulk permission change to complete");
             bulkProcessor.awaitClose(1, TimeUnit.HOURS);
+            String msg = "Bulk update set permissions success: " + success.longValue() + ", failed: " + failure.longValue();
+            logger.info(msg);
             logService.log(new LogSpec()
                     .setUser(user)
-                    .setMessage("Bulk update set permissions success: " + success.longValue() + ", failed: " + failure.longValue())
+                    .setMessage(msg)
                     .setAction(LogAction.BulkUpdate)
                     .setAttrs(ImmutableMap.of("permissions", schema)));
         } catch (InterruptedException e) {
