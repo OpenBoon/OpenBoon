@@ -282,7 +282,7 @@ public class AssetServiceImpl implements AssetService {
 
         try {
             logger.info("Waiting for bulk permission change to complete");
-            bulkProcessor.awaitClose(1, TimeUnit.HOURS);
+            bulkProcessor.awaitClose(30, TimeUnit.SECONDS);
             String msg = "Bulk update set permissions success: " + success.longValue() + ", failed: " + failure.longValue();
             logger.info(msg);
             logService.log(new LogSpec()
