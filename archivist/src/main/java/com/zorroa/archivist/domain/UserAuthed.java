@@ -7,7 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * Created by chambers on 11/28/16.
+ * This class implements spring security's UserDetails interface so its compatible
+ * with their various APIs.
  */
 public class UserAuthed extends User implements UserDetails {
 
@@ -20,14 +21,7 @@ public class UserAuthed extends User implements UserDetails {
     }
 
     public UserAuthed(User user, Collection<? extends GrantedAuthority> authorities) {
-        this.setFirstName(user.getFirstName());
-        this.setLastName(user.getLastName());
-        this.setSettings(user.getSettings());
-        this.setEmail(user.getEmail());
-        this.setEnabled(user.getEnabled());
-        this.setId(user.getId());
-        this.setUsername(user.getUsername());
-        this.setSettings(user.getSettings());
+        super(user);
         this.authorities = authorities;
     }
 

@@ -30,6 +30,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         user.setLastName(rs.getString("str_lastname"));
         user.setEnabled(rs.getBoolean("bool_enabled"));
         user.setSettings(Json.deserialize(rs.getString("json_settings"), UserSettings.class));
+        user.setPermissionId(rs.getInt("pk_permission"));
+        user.setHomeFolderId(rs.getInt("pk_folder"));
         return user;
     };
 

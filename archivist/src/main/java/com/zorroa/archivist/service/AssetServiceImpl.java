@@ -97,6 +97,25 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public DocumentIndexResult index(List<Source> sources, LinkSpec link) {
+        int userPerm = SecurityUtils.getUser().getPermissionId();
+        for (Source source: sources) {
+            try {
+                /**
+                 * Note: the permission is only added if this is a new asset.
+                 * We probably need a better way to determine if this is a new asset or not.
+                 */
+                PermissionSchema current = source.getAttr("permissions", PermissionSchema.class);
+                if (current == null) {
+                    current = new PermissionSchema();
+                    current.addToRead(userPerm);
+                    current.addToWrite(userPerm);
+                    current.addToExport(userPerm);
+                    source.setAttr("permissions", current);
+                }
+            } catch (Exception e) {
+                logger.warn("Asset {} has invalid permission schema.", source.getId());
+            }
+        }
 
         DocumentIndexResult result =  assetDao.index(sources, link);
         if (result.created + result.updated > 0) {
