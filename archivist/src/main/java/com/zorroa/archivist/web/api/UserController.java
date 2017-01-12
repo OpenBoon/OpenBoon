@@ -74,6 +74,10 @@ public class UserController  {
         return userService.create(builder);
     }
 
+    @RequestMapping(value="/api/v1/who")
+    public User getCurrent() {
+        return userService.get(SecurityUtils.getUser().getId());
+    }
 
     @RequestMapping(value="/api/v1/users/{id}")
     public User get(@PathVariable int id) {
