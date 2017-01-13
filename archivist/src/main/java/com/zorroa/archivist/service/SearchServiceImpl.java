@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.*;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Folder;
@@ -43,6 +45,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -249,8 +252,14 @@ public class SearchServiceImpl implements SearchService {
         }
         else {
             if (search.getOrder() != null) {
+                final Map<String, Set<String>> fields = getFields();
                 for (AssetSearchOrder searchOrder : search.getOrder()) {
                     SortOrder sortOrder = searchOrder.getAscending() ? SortOrder.ASC : SortOrder.DESC;
+                    // Make sure to use .raw for strings
+                    if (!searchOrder.getField().endsWith(".raw") &&
+                            fields.get("string").contains(searchOrder.getField()))  {
+                        searchOrder.setField(searchOrder.getField() + ".raw");
+                    }
                     request.addSort(searchOrder.getField(), sortOrder);
                 }
             }
@@ -294,6 +303,9 @@ public class SearchServiceImpl implements SearchService {
         for (Map.Entry<String, Map<String, Object>> entry: search.getAggs().entrySet()) {
             result.put(entry.getKey(), entry.getValue());
         }
+
+
+
         return result;
     }
 
@@ -530,20 +542,38 @@ public class SearchServiceImpl implements SearchService {
         }
     }
 
+    /**
+     * Cache this as much as possible.  We'll eventually want to manually expire this,
+     * but we'll need a new type of Supplier.
+     */
+    private final Supplier<Map<String, Set<String>>> fieldMapCache
+            = Suppliers.memoizeWithExpiration(fieldMapSupplier(), 1, TimeUnit.MINUTES);
+
+    private final Supplier<Map<String, Set<String>>> fieldMapSupplier() {
+        return () -> {
+            Map<String, Set<String>> result = Maps.newHashMap();
+            result.put("string", Sets.newHashSet());
+            result.put("date", Sets.newHashSet());
+            result.put("integer", Sets.newHashSet());
+            result.put("point", Sets.newHashSet());
+
+            ClusterState cs = client.admin().cluster().prepareState().setIndices(alias).execute().actionGet().getState();
+            for (String index: cs.getMetaData().concreteAllOpenIndices()) {
+                IndexMetaData imd = cs.getMetaData().index(index);
+                MappingMetaData mdd = imd.mapping("asset");
+                try {
+                    getList(result, "", mdd.getSourceAsMap());
+                } catch (IOException e) {
+                    throw new ArchivistException(e);
+                }
+            }
+            return result;
+        };
+    }
+
     @Override
     public Map<String, Set<String>> getFields() {
-        Map<String, Set<String>> result = Maps.newHashMapWithExpectedSize(16);
-        ClusterState cs = client.admin().cluster().prepareState().setIndices(alias).execute().actionGet().getState();
-        for (String index: cs.getMetaData().concreteAllOpenIndices()) {
-            IndexMetaData imd = cs.getMetaData().index(index);
-            MappingMetaData mdd = imd.mapping("asset");
-            try {
-                getList(result, "", mdd.getSourceAsMap());
-            } catch (IOException e) {
-                throw new ArchivistException(e);
-            }
-        }
-        return result;
+        return fieldMapCache.get();
     }
 
     private static final Set<String> NAME_TYPE_OVERRRIDES = ImmutableSet.of("point");
