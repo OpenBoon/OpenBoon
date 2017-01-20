@@ -189,6 +189,11 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
     @Override
     protected void runOneIteration() throws Exception {
 
+        if (!properties.getBoolean("archivist.maintenance.backups.enabled")) {
+            logger.debug("Backups have been disabled, skipping");
+            return;
+        }
+
         /**
          * Do a full backup, then remove old backups.
          */
