@@ -12,7 +12,6 @@ import com.zorroa.analyst.Application;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.AnalystBuilder;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.common.domain.AnalystUpdateBuilder;
 import com.zorroa.common.repository.AnalystDao;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -167,39 +166,23 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         Map<String, Object> fixedMdata = Maps.newHashMapWithExpectedSize(mdata.size());
         metrics.invoke().forEach((k,v)-> fixedMdata.put(k.replace('.', '_'), v));
 
-        if (!registered) {
-            AnalystBuilder builder = new AnalystBuilder();
-            builder.setState(AnalystState.UP);
-            builder.setStartedTime(System.currentTimeMillis());
-            builder.setOs(String.format("%s-%s", osBean.getName(), osBean.getVersion()));
-            builder.setThreadCount(properties.getInt("analyst.executor.threads"));
-            builder.setArch(osBean.getArch());
-            builder.setData(properties.getBoolean("analyst.index.data"));
-            builder.setUrl(url);
-            builder.setUpdatedTime(System.currentTimeMillis());
-            builder.setState(AnalystState.UP);
-            builder.setLoad(load);
-            builder.setQueueSize(e.getQueue().size());
-            builder.setThreadsUsed(e.getActiveCount());
-            builder.setMetrics(fixedMdata);
-            builder.setTaskIds(ImmutableList.of());
-            builder.setRemainingCapacity(e.getQueue().remainingCapacity());
-            id = analystDao.register(id, builder);
-            registered = true;
-        }
-        else if (id != null) {
-            AnalystUpdateBuilder update = new AnalystUpdateBuilder();
-            update.setUrl(url);
-            update.setUpdatedTime(System.currentTimeMillis());
-            update.setState(AnalystState.UP);
-            update.setLoad(load);
-            update.setQueueSize(e.getQueue().size());
-            update.setThreadsUsed(e.getActiveCount());
-            update.setRemainingCapacity(e.getQueue().remainingCapacity());
-            update.setMetrics(fixedMdata);
-            update.setTaskIds(processManagerService.getTaskIds());
-            analystDao.update(id, update);
-        }
+        AnalystBuilder builder = new AnalystBuilder();
+        builder.setState(AnalystState.UP);
+        builder.setStartedTime(System.currentTimeMillis());
+        builder.setOs(String.format("%s-%s", osBean.getName(), osBean.getVersion()));
+        builder.setThreadCount(properties.getInt("analyst.executor.threads"));
+        builder.setArch(osBean.getArch());
+        builder.setData(properties.getBoolean("analyst.index.data"));
+        builder.setUrl(url);
+        builder.setUpdatedTime(System.currentTimeMillis());
+        builder.setState(AnalystState.UP);
+        builder.setLoad(load);
+        builder.setQueueSize(e.getQueue().size());
+        builder.setThreadsUsed(e.getActiveCount());
+        builder.setMetrics(fixedMdata);
+        builder.setTaskIds(ImmutableList.of());
+        builder.setRemainingCapacity(e.getQueue().remainingCapacity());
+        id = analystDao.register(id, builder);
 
         return id;
     }

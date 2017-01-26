@@ -3,7 +3,6 @@ package com.zorroa.common.repository;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystBuilder;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.common.domain.AnalystUpdateBuilder;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 
@@ -14,8 +13,6 @@ import java.util.List;
  */
 public interface AnalystDao {
     String register(String id, AnalystBuilder builder);
-
-    void update(String id, AnalystUpdateBuilder builder);
 
     void setState(String id, AnalystState state);
 

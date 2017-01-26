@@ -1,13 +1,10 @@
 package com.zorroa.common.repository;
 
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystBuilder;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.common.domain.AnalystUpdateBuilder;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.domain.PagedList;
@@ -29,8 +26,6 @@ import java.util.List;
  */
 public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
 
-    private NameBasedGenerator uuidGenerator = Generators.nameBasedGenerator();
-
     @Override
     public String getType() {
         return "analyst";
@@ -50,19 +45,11 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public void update(String id, AnalystUpdateBuilder builder) {
-        byte[] doc = Json.serialize(builder);
-        client.prepareUpdate(getIndex(), getType(), id)
-                .setDoc(doc)
-                .setRefresh(true)
-                .get();
-    }
-
-    @Override
     public void setState(String id, AnalystState state) {
         client.prepareUpdate(getIndex(), getType(), id)
                 .setDoc(ImmutableMap.of("state", state.ordinal()))
                 .setRefresh(true)
+                .setRetryOnConflict(5)
                 .get();
     }
 
