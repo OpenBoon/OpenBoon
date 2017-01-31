@@ -16,6 +16,7 @@ import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
+import com.zorroa.sdk.zps.ZpsScript;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -157,10 +158,17 @@ public class JobServiceImpl implements JobService {
             logger.debug("Expanding: {}", Json.prettyString(expand));
         }
 
+        ZpsScript parentScript = Json.deserialize(taskDao.getScript(expand.getParentTaskId()), ZpsScript.class);
+        ZpsScript expandScript = Json.deserialize(expand.getScript(), ZpsScript.class);
+
+        if (expandScript.getExecute() == null) {
+            expandScript.setExecute(parentScript.getExecute());
+        }
+
         TaskSpec spec = new TaskSpec();
         spec.setJobId(expand.getJobId());
         spec.setName(expand.getName());
-        spec.setScript(expand.getScript());
+        spec.setScript(Json.serializeToString(expandScript));
         spec.setParentTaskId(expand.getParentTaskId());
         return createTask(spec);
     }
