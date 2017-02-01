@@ -123,6 +123,8 @@ public abstract class AbstractTest {
 
     protected Set<String> testImages;
 
+    protected Path resources;
+
     public AbstractTest() {
         ArchivistConfiguration.unittest = true;
     }
@@ -218,6 +220,9 @@ public abstract class AbstractTest {
         User manager = userService.create(managerBuilder);
         userService.addPermissions(manager, Lists.newArrayList(
                 userService.getPermission("group::manager")));
+
+
+        resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
     }
 
     /**
@@ -250,11 +255,11 @@ public abstract class AbstractTest {
     }
 
     public Path getTestPath(String subdir) {
-        return Paths.get("../unittest/resources").resolve(subdir).toAbsolutePath();
+        return resources.resolve(subdir);
     }
 
     public Path getTestImagePath(String subdir) {
-        return Paths.get("../unittest/resources/images").resolve(subdir).toAbsolutePath();
+        return resources.resolve("images/" + subdir);
     }
 
     public Path getTestImagePath() {

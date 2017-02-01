@@ -34,9 +34,8 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
     @Before
     public void init() throws ParseException {
-
         for (File f: getTestImagePath("set01").toFile().listFiles()) {
-            if (!f.isFile()) {
+            if (!f.isFile() || f.isHidden()) {
                 continue;
             }
             Source ab = new Source(f);
@@ -45,7 +44,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             assetService.index(ab);
         }
         for (File f: getTestPath("office").toFile().listFiles()) {
-            if (!f.isFile()) {
+            if (!f.isFile() || f.isHidden()) {
                 continue;
             }
             Source ab = new Source(f);
@@ -54,7 +53,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             assetService.index(ab);
         }
         for (File f: getTestPath("video").toFile().listFiles()) {
-            if (!f.isFile()) {
+            if (!f.isFile() || f.isHidden()) {
                 continue;
             }
             Source ab = new Source(f);

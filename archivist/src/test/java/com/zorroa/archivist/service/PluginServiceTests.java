@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -74,7 +73,7 @@ public class PluginServiceTests extends AbstractTest {
 
         int size = pluginService.getAllPlugins().size();
 
-        pluginService.installPlugin(Paths.get("../unittest/resources/plugins/zorroa-test-plugin.zip"));
+        pluginService.installPlugin(resources.resolve("plugins/zorroa-test-plugin.zip"));
         assertEquals(size+1, pluginService.getAllPlugins().size());
     }
 

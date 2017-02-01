@@ -73,10 +73,10 @@ public class ImportServiceImpl implements ImportService {
     public void init() {
         Map<String, Object> vals = properties.getMap("archivist.import.suggest.paths");
         if (vals != null) {
-            for (Object entry:vals.values()) {
-                String path = FileUtils.normalize((String) entry);
+            for (Map.Entry<String,Object> entry: vals.entrySet()) {
+                String path = FileUtils.normalize((String) entry.getValue());
                 pathSuggestFilter.add(path);
-                logger.info("Allowing Imports from {}", path);
+                logger.info("Allowing Imports from '{}' {}", entry.getKey(), entry.getValue());
             }
         }
     }

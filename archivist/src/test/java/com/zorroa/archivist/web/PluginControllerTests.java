@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.File;
 import java.io.FileInputStream;
 
 import static org.junit.Assert.assertEquals;
@@ -30,7 +29,7 @@ public class PluginControllerTests  extends MockMvcTest {
 
         MockMultipartFile plugin =
                 new MockMultipartFile("file", "zorroa-test-plugin.zip", "application/zip",
-                        new FileInputStream(new File("../unittest/resources/plugins/zorroa-test-plugin.zip")));
+                        new FileInputStream(resources.resolve("plugins/zorroa-test-plugin.zip").toFile()));
 
         MockHttpSession session = admin();
 

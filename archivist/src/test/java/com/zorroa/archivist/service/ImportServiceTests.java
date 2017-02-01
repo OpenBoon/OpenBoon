@@ -54,7 +54,8 @@ public class ImportServiceTests extends AbstractTest {
 
     @Test
     public void testPathSuggest() {
-        Map<String, List<String>> paths = importService.suggestImportPath("../unittest/resources/images");
+        Map<String, List<String>> paths = importService.suggestImportPath(
+                resources.resolve("images").toString());
         assertTrue(paths.get("dirs").contains("set01"));
         assertTrue(paths.get("dirs").contains("set02"));
         assertTrue(paths.get("dirs").contains("set03"));

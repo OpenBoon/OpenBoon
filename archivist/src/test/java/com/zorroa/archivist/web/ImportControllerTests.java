@@ -18,7 +18,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +52,7 @@ public class ImportControllerTests extends MockMvcTest {
 
         MockMultipartFile file =
                 new MockMultipartFile("files", "faces.jpg", "image/jpeg",
-                        new FileInputStream(new File("../unittest/resources/images/set01/faces.jpg")));
+                        new FileInputStream(resources.resolve("images/set01/faces.jpg").toFile()));
 
         UploadImportSpec spec = new UploadImportSpec();
         spec.setName("unit test import");
@@ -93,7 +92,7 @@ public class ImportControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(get("/api/v1/imports/_suggest")
                 .session(session)
                 .content(Json.serializeToString(
-                        ImmutableMap.of("path", FileUtils.normalize("../unittest/resources/images/set01"))))
+                        ImmutableMap.of("path", FileUtils.normalize(resources.resolve("images/set01").toString()))))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
