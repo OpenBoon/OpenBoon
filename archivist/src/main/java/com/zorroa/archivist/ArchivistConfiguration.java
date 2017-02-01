@@ -108,11 +108,7 @@ public class ArchivistConfiguration {
 
     @Bean
     public SharedData sharedData() {
-        return SharedData.builder().setRootPath(properties.getString("archivist.path.shared"))
-                .setModelPath(properties.getString("archivist.path.models"))
-                .setOfsPath(properties.getString("archivist.path.ofs"))
-                .setPluginPath(properties.getString("archivist.path.plugins"))
-                .build();
+        return new SharedData(properties.getString("zorroa.cluster.path.shared"));
     }
 
     /**
