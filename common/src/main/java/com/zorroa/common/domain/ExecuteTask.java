@@ -5,6 +5,16 @@ package com.zorroa.common.domain;
  */
 public class ExecuteTask implements TaskId, JobId {
 
+    public static final String scriptPath(String root, String name, int id) {
+        return String.format("%s/scripts/%s.%04d.json",
+                root, name.replaceAll("[\\s\\.\\/\\\\]+", "_"), id);
+    }
+
+    public static final String logPath(String root, String name, int id) {
+        return String.format("%s/logs/%s.%04d.log",
+                root, name.replaceAll("[\\s\\.\\/\\\\]+", "_"), id);
+    }
+
     private Integer taskId;
     private Integer jobId;
     private Integer parentTaskId;

@@ -9,13 +9,11 @@ import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -201,21 +199,6 @@ public class TaskDaoTests extends AbstractTest {
         assertNotNull(task.getJobId());
         assertNotNull(task.getArgs());
         assertNotNull(task.getEnv());
-        assertNotNull(task.getScript());
-    }
-
-    @Test
-    public void testGetLogPath() {
-        Path lp = taskDao.getLogFilePath(task.getTaskId());
-        String logPath = jobService.get(task.getJobId()).getRootPath().concat("/logs/");
-        assertTrue(lp.toString().startsWith(logPath));
-    }
-
-    @Test
-    public void testGetScript() {
-        String script = taskDao.getScript(task.getTaskId());
-        // Just ensure the string parses to a ZpsScript
-        ZpsScript zps = Json.deserialize(script, ZpsScript.class);
     }
 
     @Test

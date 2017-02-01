@@ -35,7 +35,7 @@ public class TaskController {
     @RequestMapping(value = "/api/v1/tasks/{id}/_log", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<InputStreamResource> streamLog(@PathVariable int id) throws ExecutionException, IOException {
-        File logFile = taskDao.getLogFilePath(id).toFile();
+        File logFile = new File(taskDao.getExecutableTask(id).getLogPath());
 
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf("text/plain"))
@@ -58,6 +58,7 @@ public class TaskController {
     @RequestMapping(value = "/api/v1/tasks/{id}/_script", method = RequestMethod.GET)
     @ResponseBody
     public String getScript(@PathVariable int id) throws ExecutionException, IOException {
-        return Json.prettyString(Json.deserialize(taskDao.getScript(id), Object.class));
+        return Json.prettyString(Json.Mapper.readValue(
+                new File(taskDao.getExecutableTask(id).getScriptPath()), Object.class));
     }
 }

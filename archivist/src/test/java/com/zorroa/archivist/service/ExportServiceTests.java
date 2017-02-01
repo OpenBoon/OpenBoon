@@ -16,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -57,7 +59,7 @@ public class ExportServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testCreateWithFields() {
+    public void testCreateWithFields() throws IOException {
         spec = new ExportSpec();
         spec.setName("test");
         spec.setFields(ImmutableList.of("source.mediaType", "source.filename"));
@@ -66,7 +68,9 @@ public class ExportServiceTests extends AbstractTest {
 
         List<ExecuteTaskStart> tasks =
                 jobExecutorService.getWaitingTasks(new ExecuteTaskRequest().setCount(5));
-        ZpsScript script = Json.deserialize(tasks.get(0).getScript(), ZpsScript.class);
+
+        ZpsScript script = Json.Mapper.readValue(
+                new File(tasks.get(0).getScriptPath()), ZpsScript.class);
         for (ProcessorRef ref: script.getExecute()) {
             if (ref.getClassName().endsWith("MetadataExporter")) {
                 assertEquals((List)spec.getFields(),ref.getArgs().get("fields"));

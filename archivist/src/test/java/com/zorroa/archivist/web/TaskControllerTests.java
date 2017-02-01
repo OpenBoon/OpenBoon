@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.FileWriter;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -52,7 +53,7 @@ public class TaskControllerTests extends MockMvcTest {
     public void testStreamLog() throws Exception {
         MockHttpSession session = admin();
 
-        Path logFile = taskDao.getLogFilePath(task.getTaskId());
+        Path logFile = Paths.get(taskDao.getExecutableTask(task.getTaskId()).getLogPath());
         new FileWriter(logFile.toFile()).append("bilbo baggins").close();
 
         MvcResult result = mvc.perform(get("/api/v1/tasks/" + task.getTaskId() + "/_log")

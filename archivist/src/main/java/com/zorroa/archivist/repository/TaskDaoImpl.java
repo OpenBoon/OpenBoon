@@ -18,8 +18,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -38,7 +36,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "pk_parent",
                 "str_name",
                 "int_state",
-                "json_script",
                 "int_order",
                 "time_created",
                 "time_state_change",
@@ -61,11 +58,10 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             ps.setObject(2, task.getParentTaskId());
             ps.setString(3, task.getName() == null ? "subtask" : task.getName());
             ps.setInt(4, TaskState.Waiting.ordinal());
-            ps.setString(5, task.getScript());
-            ps.setInt(6, 1);
+            ps.setInt(5, 1);
+            ps.setLong(6, time);
             ps.setLong(7, time);
             ps.setLong(8, time);
-            ps.setLong(9, time);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -109,10 +105,9 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         return TaskState.values()[jdbc.queryForObject(q, Integer.class, task.getTaskId())];
     }
 
-
     @Override
-    public String getScript(int id) {
-        return jdbc.queryForObject("SELECT json_script FROM task WHERE pk_task=?", String.class, id);
+    public ExecuteTaskStart getExecutableTask(int id) {
+        return jdbc.queryForObject(GET_TASK_TO_EXECUTE + " AND task.pk_task=?", EXECUTE_TASK_MAPPER, id);
     }
 
     @Override
@@ -220,49 +215,43 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         return jdbc.update(SET_DEPEND, child.getParentTaskId(), child.getTaskId()) > 0;
     }
 
-    private static final RowMapper<Path> LOG_PATH_MAPPER = (rs, row) ->
-            Paths.get(
-                    rs.getString("str_root_path"))
-                    .resolve("logs")
-                    .resolve(rs.getString("str_name").replace(' ', '_')
-                            .concat(String.format(".%04d.log", rs.getInt("pk_task"))));
-
-
     private static final RowMapper<ExecuteTaskStart> EXECUTE_TASK_MAPPER = (rs, row) -> {
         /*
          * We don't parse the script here, its not needed as we're just going to
          * turn it back into a string anyway.
          */
         ExecuteTask t = new ExecuteTask();
-        t.setTaskId(rs.getInt(2));
-        t.setJobId(rs.getInt(3));
-        if (rs.getObject(4) != null) {
-            t.setParentTaskId(rs.getInt(4));
+        t.setTaskId(rs.getInt("pk_task"));
+        t.setJobId(rs.getInt("pk_job"));
+        if (rs.getObject("pk_parent") != null) {
+            t.setParentTaskId(rs.getInt("pk_parent"));
         }
 
         ExecuteTaskStart e = new ExecuteTaskStart(t);
-        e.setScript(rs.getString(1));
-        e.setArgs(Json.deserialize(rs.getString(5), Json.GENERIC_MAP));
-        e.setEnv(Json.deserialize(rs.getString(6), Map.class));
-        e.setLogPath(LOG_PATH_MAPPER.mapRow(rs, row).toString());
+        e.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
+        e.setEnv(Json.deserialize(rs.getString("json_env"), Map.class));
+        e.setRootPath(rs.getString("str_root_path"));
+        e.setName(rs.getString("str_name"));
         return e;
     };
 
-    private static final String GET_WAITING =
+    private static final String GET_TASK_TO_EXECUTE =
             "SELECT " +
-                "task.json_script,"+
-                "task.pk_task,"+
-                "task.pk_job, " +
-                "task.pk_parent, "+
-                "job.json_args,"+
-                "job.json_env, " +
-                "job.str_root_path, " +
-                "task.str_name "+
-            "FROM " +
-                "task,"+
-                "job  " +
-            "WHERE " +
-                "task.pk_job = job.pk_job " +
+                    "task.pk_task,"+
+                    "task.pk_job, " +
+                    "task.pk_parent, "+
+                    "job.json_args,"+
+                    "job.json_env, " +
+                    "job.str_root_path, " +
+                    "task.str_name "+
+                "FROM " +
+                    "task,"+
+                    "job  " +
+                "WHERE " +
+                    "task.pk_job = job.pk_job ";
+
+    private static final String GET_WAITING =
+            GET_TASK_TO_EXECUTE +
             "AND " +
                 "job.int_state = 0 " +
             "AND " +
@@ -287,7 +276,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "task.time_stopped,"+
             "task.time_created,"+
             "task.time_state_change,"+
-            "task.json_script,"+
             "task.int_exit_status,"+
             "task.str_host, " +
             "task_stat.int_frame_total_count, " +
@@ -374,12 +362,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "task.pk_job = job.pk_job " +
         "AND " +
             "task.pk_task=?";
-
-
-    @Override
-    public Path getLogFilePath(int id) {
-        return jdbc.queryForObject(GET_LOG_PATH, LOG_PATH_MAPPER, id);
-    }
 
     private static final String UPDATE_PING = "UPDATE task SET time_ping=? WHERE pk_task=?";
 

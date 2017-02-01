@@ -37,5 +37,7 @@ public interface JobDao {
 
     JobState getState(int id);
 
+    String getRootPath(int id);
+
     void updateTaskStateCounts(TaskId task, TaskState value, TaskState expect);
 }

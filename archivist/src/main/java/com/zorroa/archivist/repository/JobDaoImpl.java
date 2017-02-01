@@ -247,6 +247,11 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     }
 
     @Override
+    public String getRootPath(int id) {
+        return jdbc.queryForObject("SELECT str_root_path FROM job WHERE pk_job=?", String.class, id);
+    }
+
+    @Override
     public void updateTaskStateCounts(TaskId task, TaskState newState, TaskState expect) {
         if (newState.equals(expect)) {
             return;

@@ -73,10 +73,9 @@
                     <img class="center-cropped" th:src="@{/api/v1/ofs/__${asset.proxies.smallest.id}__}"/></a>
             </td>
             <td class="vert-align" th:attr="data-id=${asset.id}" data-toggle="modal" data-target="#viewModal" th:text="${asset.getAttr('source.filename')}"></td>
-            <td class="vert-align" th:text="${#strings.substring(asset.getAttr('source.date'), 0, 10)}"></td>
+            <td class="vert-align" th:text="${asset.getAttr('source.date')}"></td>
             <td class="vert-align" th:text="${asset.getAttr('source.mediaType')}"></td>
-            <td class="vert-align"
-                th:text="${T(com.zorroa.sdk.util.FileUtils).byteCountToDisplaySize(asset.getAttr('source.fileSize'))}"></td>
+            <td class="vert-align"></td>
         </tr>
         </tbody>
     </table>

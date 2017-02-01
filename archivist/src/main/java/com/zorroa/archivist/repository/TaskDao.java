@@ -10,7 +10,6 @@ import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +38,7 @@ public interface TaskDao {
 
     TaskState getState(TaskId task, boolean forUpdate);
 
-    String getScript(int id);
+    ExecuteTaskStart getExecutableTask(int id);
 
     boolean setState(TaskId script, TaskState value, TaskState ... expect);
 
@@ -60,8 +59,6 @@ public interface TaskDao {
     Task get(int id);
 
     long countByJob(int job);
-
-    Path getLogFilePath(int id);
 
     /**
      * Update's a tasks ping time.

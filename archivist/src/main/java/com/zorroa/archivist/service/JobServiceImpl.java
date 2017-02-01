@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
@@ -12,6 +13,9 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
+import com.zorroa.sdk.client.exception.ArchivistException;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -28,7 +32,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -74,7 +81,9 @@ public class JobServiceImpl implements JobService {
 
         if (!JdbcUtils.isValid(specv.getScript().getGenerate()) &&
                !JdbcUtils.isValid(specv.getScript().getOver())) {
-            throw new IllegalArgumentException("Script has neither data to iterate over or a generator");
+            // Add 1 empty frame.
+            specv.getScript().setOver(Lists.newArrayList(new Document()));
+            //throw new IllegalArgumentException("Script has neither data to iterate over or a generator");
         }
 
         if (!JdbcUtils.isValid(specv.getScript().getExecute())) {
@@ -158,11 +167,19 @@ public class JobServiceImpl implements JobService {
             logger.debug("Expanding: {}", Json.prettyString(expand));
         }
 
-        ZpsScript parentScript = Json.deserialize(taskDao.getScript(expand.getParentTaskId()), ZpsScript.class);
         ZpsScript expandScript = Json.deserialize(expand.getScript(), ZpsScript.class);
 
         if (expandScript.getExecute() == null) {
-            expandScript.setExecute(parentScript.getExecute());
+            Task parentTask = taskDao.get(expand.getParentTaskId());
+            String root = jobDao.getRootPath(expand.getJobId());
+            try {
+                ZpsScript parentScript = Json.Mapper.readValue(
+                        new File(ExecuteTask.scriptPath(root, parentTask.getName(), parentTask.getTaskId())),
+                        ZpsScript.class);
+                expandScript.setExecute(parentScript.getExecute());
+            } catch (IOException e) {
+                throw new ArchivistWriteException("Expand with inherited execute faileure", e);
+            }
         }
 
         TaskSpec spec = new TaskSpec();
@@ -179,6 +196,19 @@ public class JobServiceImpl implements JobService {
          */
 
         Task task = taskDao.create(spec);
+
+        /**
+         * Write script to disk
+         */
+        String root = jobDao.getRootPath(spec.getJobId());
+        String scriptPath = ExecuteTask.scriptPath(root, task.getName(), task.getTaskId());
+
+        try{
+            Files.write(Paths.get(scriptPath), spec.getScript().getBytes());
+        } catch (IOException e) {
+            throw new ArchivistException("Faled to add task, " + e, e);
+        }
+
         jobDao.incrementWaitingTaskCount(task);
         taskDao.incrementDependCount(task);
         return task;
@@ -315,12 +345,13 @@ public class JobServiceImpl implements JobService {
         "logs",
         "tmp",
         "assets",
-        "exported"
+        "exported",
+        "scripts"
     };
 
     private Path createSharedPaths(JobSpec spec) {
         Path rootPath = resolveJobRoot(spec);
-
+        logger.info("creating shared paths: {}", rootPath);
         for (String child: CHILD_DIRS) {
             Path childPath = rootPath.resolve(child);
 

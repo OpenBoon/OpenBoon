@@ -11,9 +11,9 @@ public class ExecuteTaskStart implements TaskId, JobId {
 
     private Map<String, String> env;
     private Map<String, Object> args;
-    private String script;
-    private String logPath;
+    private String rootPath;
     private ExecuteTask task;
+    private String name;
 
     public ExecuteTaskStart() { }
 
@@ -27,15 +27,6 @@ public class ExecuteTaskStart implements TaskId, JobId {
         this.task = new ExecuteTask(jobId, taskId, parentTaskId);
         this.env = Maps.newHashMap();
         this.args = Maps.newHashMap();
-    }
-
-    public String getScript() {
-        return script;
-    }
-
-    public ExecuteTaskStart setScript(String script) {
-        this.script = script;
-        return this;
     }
 
     public Map<String, String> getEnv() {
@@ -72,13 +63,12 @@ public class ExecuteTaskStart implements TaskId, JobId {
         return this;
     }
 
-    public String getLogPath() {
-        return logPath;
+    public String getScriptPath() {
+        return ExecuteTask.scriptPath(rootPath, name, getTaskId());
     }
 
-    public ExecuteTaskStart setLogPath(String logPath) {
-        this.logPath = logPath;
-        return this;
+    public String getLogPath() {
+        return ExecuteTask.logPath(rootPath, name, getTaskId());
     }
 
     public ExecuteTask getTask() {
@@ -87,6 +77,24 @@ public class ExecuteTaskStart implements TaskId, JobId {
 
     public ExecuteTaskStart setTask(ExecuteTask task) {
         this.task = task;
+        return this;
+    }
+
+    public String getRootPath() {
+        return rootPath;
+    }
+
+    public ExecuteTaskStart setRootPath(String rootPath) {
+        this.rootPath = rootPath;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ExecuteTaskStart setName(String name) {
+        this.name = name;
         return this;
     }
 
