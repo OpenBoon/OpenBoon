@@ -38,7 +38,7 @@ public abstract class AbstractTest {
     public AbstractTest() {
         System.setProperty("zorroa.unittest", "true");
     }
-    
+
     @Before
     public void __init() throws IOException, ClassNotFoundException {
         /**

@@ -1,17 +1,13 @@
 package com.zorroa.analyst.service;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.zorroa.analyst.AbstractTest;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStop;
 import com.zorroa.common.domain.TaskState;
-import com.zorroa.sdk.domain.Document;
-import com.zorroa.sdk.processor.ProcessorRef;
-import com.zorroa.sdk.util.Json;
+import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +31,14 @@ public class ProcessManagerServiceTests extends AbstractTest {
 
     int task = 0;
 
+    public String jobRootPath;
+    public String absoluteShared;
+
     @Before
     public void init() {
         task++;
+        jobRootPath = FileUtils.normalize("../zorroa-test-data");
+        logger.info("{}", jobRootPath);
     }
 
     @Test
@@ -45,8 +46,7 @@ public class ProcessManagerServiceTests extends AbstractTest {
         ZpsScript zps = ZpsScript.load(new File("../unittest/resources/scripts/import.zps"));
         Future<AnalystProcess> proc = processManager.execute(new ExecuteTaskStart(task, 0, 0)
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
-                .setScript(Json.serializeToString(zps))
-                .setLogPath(Files.createTempFile("analyst", "test").toString()), false);
+                .setRootPath(Files.createTempFile("analyst", "test").toString()), false);
         assertEquals(TaskState.Success, proc.get().getNewState());
     }
 
@@ -55,13 +55,11 @@ public class ProcessManagerServiceTests extends AbstractTest {
         ZpsScript zps = ZpsScript.load(new File("../unittest/resources/scripts/sleep.zps"));
         processManager.execute(new ExecuteTaskStart(task, 3, 3)
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
-                .setScript(Json.serializeToString(zps))
-                .setLogPath(Files.createTempFile("analyst", "test").toString()), true);
+                .setRootPath(Files.createTempFile("analyst", "test").toString()), true);
 
         Future<AnalystProcess> proc2 = processManager.execute(new ExecuteTaskStart(task, 3, 3)
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
-                .setScript(Json.serializeToString(zps))
-                .setLogPath(Files.createTempFile("analyst", "test").toString()), false);
+                .setRootPath(Files.createTempFile("analyst", "test").toString()), false);
 
         assertNull(proc2);
     }
@@ -74,16 +72,18 @@ public class ProcessManagerServiceTests extends AbstractTest {
      */
     @Test
     public void testStop() throws IOException, InterruptedException {
+        /*
         Future<AnalystProcess> p = processManager.execute(new ExecuteTaskStart(1, 1, 1)
                 .setScript(Json.serializeToString(new ZpsScript()
                         .setOver(Lists.newArrayList(new Document()))
                         .setExecute(ImmutableList.of(
                                 new ProcessorRef("com.zorroa.core.processor.GroovyScript")
                                         .setArg("script", "sleep(10000);")))))
-                .setLogPath(Files.createTempFile("analyst", "test").toString()), true);
+                .setRootPath(Files.createTempFile("analyst", "test").toString()), true);
 
         Thread.sleep(2000);
         assertTrue(processManager.stopTask(new ExecuteTaskStop(task, 1, 1).setReason("manual kill")));
+        */
     }
 
     @Test

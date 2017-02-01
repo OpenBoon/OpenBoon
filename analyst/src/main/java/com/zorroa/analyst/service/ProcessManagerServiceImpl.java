@@ -13,6 +13,8 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.processor.Reaction;
+import com.zorroa.sdk.processor.SharedData;
+import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
@@ -24,7 +26,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
@@ -200,14 +201,21 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             return proc;
         }
 
-        ZpsScript script = Json.deserialize(task.getScript(), ZpsScript.class);
+        logger.info("loading ZPS script : {}", task.getScriptPath());
+        ZpsScript script;
+        try {
+            script = Json.Mapper.readValue(new File(task.getScriptPath()), ZpsScript.class);
+        } catch (IOException e) {
+            throw new ClusterException("Invalid ZPS script");
+        }
 
+        SharedData shared = new SharedData(properties.getString("zorroa.cluster.path.shared"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_SHARED", shared.getRoot().toString());
+        task.putToEnv("ZORROA_CLUSTER_PATH_CERTS", shared.resolvestr("certs"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_OFS", shared.resolvestr("ofs"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_PLUGINS", shared.resolvestr("plugins"));
+        task.putToEnv("ZORROA_CLUSTER_PATH_MODELS", shared.resolvestr("models"));
         task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_CERTS", properties.getString("zorroa.cluster.path.certs"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_OFS", properties.getString("zorroa.cluster.path.ofs"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_PLUGINS", properties.getString("zorroa.cluster.path.plugins"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_MODELS", properties.getString("zorroa.cluster.path.models"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_SHARED", properties.getString("zorroa.cluster.path.shared"));
 
         int exit = 1;
         Stopwatch timer = Stopwatch.createStarted();
@@ -218,7 +226,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             for(;;) {
                 String lang = determineLanguagePlugin(script);
                 logger.debug("running script with language: {}", lang);
-                String[] command = createCommand(script, task, lang);
+                String[] command = createCommand(task, lang);
                 logger.info("running command: {}", String.join(" ", command));
                 exit = runProcess(command, task, proc);
 
@@ -250,7 +258,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             TaskState newState = exit == 0 ? TaskState.Success : TaskState.Failure;
 
             /**
-             * If the running proces has a new state attached, use that instead.
+             * If the running process has a new state attached, use that instead.
              */
             if (proc.getNewState() == null) {
                 proc.setNewState(newState);
@@ -274,14 +282,12 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         return proc;
     }
 
-    public String[] createCommand(ZpsScript script, ExecuteTaskStart task, String lang) throws IOException {
+    public String[] createCommand(ExecuteTaskStart task, String lang) throws IOException {
+        String absSharedPath =  FileUtils.normalize(properties.getString("zorroa.cluster.path.shared"));
         ImmutableList.Builder<String> b = ImmutableList.<String>builder()
-                .add(String.format("%s/lang-%s/bin/zpsgo", properties.getString("zorroa.cluster.path.plugins"), lang))
-                .add("--shared-path", properties.getString("zorroa.cluster.path.shared"))
-                .add("--plugin-path", properties.getString("zorroa.cluster.path.plugins"))
-                .add("--model-path", properties.getString("zorroa.cluster.path.models"))
-                .add("--ofs-path", properties.getString("zorroa.cluster.path.ofs"))
-                .add("--script", writeScript(script).toString());
+                .add(String.format("%s/plugins/lang-%s/bin/zpsgo", absSharedPath, lang))
+                .add("--shared-path", absSharedPath)
+                .add("--script", task.getScriptPath());
 
         if (task.getArgs() != null) {
             task.getArgs().forEach((k, v) -> {
@@ -289,12 +295,6 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             });
         }
         return b.build().toArray(new String[] {});
-    }
-
-    public Path writeScript(ZpsScript script) throws IOException {
-        Path path = Files.createTempFile("zorroa", "script");
-        Json.Mapper.writeValue(path.toFile(), script);
-        return path;
     }
 
     public String determineLanguagePlugin(ZpsScript script) {
@@ -311,8 +311,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
 
     private static final int NEWLINE = '\n';
 
-    public int runProcess(String[] command, ExecuteTaskStart task, AnalystProcess proc) throws IOException {
-
+    public ProcessBuilder makeProcess(String[] command, ExecuteTaskStart task, AnalystProcess proc) throws IOException {
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.redirectErrorStream(true);
 
@@ -330,6 +329,13 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                 env.put(e.getKey(), e.getValue());
             }
         }
+        return builder;
+    }
+
+    public int runProcess(String[] command, ExecuteTaskStart task, AnalystProcess proc) throws IOException {
+
+        ProcessBuilder builder = makeProcess(command, task, proc);
+        logger.info("running cmd: {}", String.join(" ", builder.command()));
 
         Process process = builder.start();
         synchronized (proc) {
