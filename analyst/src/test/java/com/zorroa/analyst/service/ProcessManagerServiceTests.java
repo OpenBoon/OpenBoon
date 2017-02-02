@@ -7,8 +7,6 @@ import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStop;
 import com.zorroa.common.domain.TaskState;
-import com.zorroa.sdk.util.FileUtils;
-import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -31,59 +30,44 @@ public class ProcessManagerServiceTests extends AbstractTest {
 
     int task = 0;
 
-    public String jobRootPath;
-    public String absoluteShared;
-
     @Before
     public void init() {
         task++;
-        jobRootPath = FileUtils.normalize("../zorroa-test-data");
-        logger.info("{}", jobRootPath);
     }
 
     @Test
     public void testExecute() throws IOException, ExecutionException, InterruptedException {
-        ZpsScript zps = ZpsScript.load(new File("../unittest/resources/scripts/import.zps"));
-        Future<AnalystProcess> proc = processManager.execute(new ExecuteTaskStart(task, 0, 0)
+        ExecuteTaskStart ts = new ExecuteTaskStart(task, 0, 0)
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
-                .setRootPath(Files.createTempFile("analyst", "test").toString()), false);
+                .setName("task")
+                .setRootPath(Files.createTempDirectory("zorroa_analyst_test").toString());
+
+        File dir = new File(ts.getScriptPath()).getParentFile();
+        dir.mkdirs();
+        File logs = new File(ts.getLogPath()).getParentFile();
+        logs.mkdirs();
+
+        Files.copy(resources.resolve("scripts/import.zps"), Paths.get(ts.getScriptPath()));
+        Future<AnalystProcess> proc = processManager.execute(ts, false);
         assertEquals(TaskState.Success, proc.get().getNewState());
     }
 
     @Test(expected = ClusterException.class)
     public void testExecuteSameTask() throws IOException, ExecutionException, InterruptedException {
-        ZpsScript zps = ZpsScript.load(new File("../unittest/resources/scripts/sleep.zps"));
-        processManager.execute(new ExecuteTaskStart(task, 3, 3)
+        ExecuteTaskStart ts = new ExecuteTaskStart(task, 0, 0)
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
-                .setRootPath(Files.createTempFile("analyst", "test").toString()), true);
+                .setName("task")
+                .setRootPath(Files.createTempDirectory("zorroa_analyst_test").toString());
 
-        Future<AnalystProcess> proc2 = processManager.execute(new ExecuteTaskStart(task, 3, 3)
-                .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
-                .setRootPath(Files.createTempFile("analyst", "test").toString()), false);
+        File dir = new File(ts.getScriptPath()).getParentFile();
+        dir.mkdirs();
+
+        Files.copy(resources.resolve("scripts/import.zps"), Paths.get(ts.getScriptPath()));
+
+        processManager.execute(ts, true);
+        Future<AnalystProcess> proc2 = processManager.execute(ts,false);
 
         assertNull(proc2);
-    }
-
-    /**
-     * This test requires core plugins to be imstalled .
-     *
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    @Test
-    public void testStop() throws IOException, InterruptedException {
-        /*
-        Future<AnalystProcess> p = processManager.execute(new ExecuteTaskStart(1, 1, 1)
-                .setScript(Json.serializeToString(new ZpsScript()
-                        .setOver(Lists.newArrayList(new Document()))
-                        .setExecute(ImmutableList.of(
-                                new ProcessorRef("com.zorroa.core.processor.GroovyScript")
-                                        .setArg("script", "sleep(10000);")))))
-                .setRootPath(Files.createTempFile("analyst", "test").toString()), true);
-
-        Thread.sleep(2000);
-        assertTrue(processManager.stopTask(new ExecuteTaskStop(task, 1, 1).setReason("manual kill")));
-        */
     }
 
     @Test

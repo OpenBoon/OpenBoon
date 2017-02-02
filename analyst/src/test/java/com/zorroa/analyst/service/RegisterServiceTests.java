@@ -4,6 +4,7 @@ import com.zorroa.analyst.AbstractTest;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.util.Json;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +20,7 @@ public class RegisterServiceTests extends AbstractTest {
     AnalystDao analystDao;
 
     @Test
+    @Ignore
     public void testRegister() {
         String id = registerService.register();
         refreshIndex();

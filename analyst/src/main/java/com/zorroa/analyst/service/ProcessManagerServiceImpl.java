@@ -206,7 +206,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         try {
             script = Json.Mapper.readValue(new File(task.getScriptPath()), ZpsScript.class);
         } catch (IOException e) {
-            throw new ClusterException("Invalid ZPS script");
+            throw new ClusterException("Invalid ZPS script, " + e, e);
         }
 
         SharedData shared = new SharedData(properties.getString("zorroa.cluster.path.shared"));

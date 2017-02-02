@@ -2,6 +2,7 @@ package com.zorroa.analyst;
 
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
+import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -16,6 +17,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by chambers on 2/17/16.
@@ -35,6 +38,8 @@ public abstract class AbstractTest {
     @Autowired
     protected Client client;
 
+    protected Path resources;
+
     public AbstractTest() {
         System.setProperty("zorroa.unittest", "true");
     }
@@ -48,6 +53,11 @@ public abstract class AbstractTest {
         ElasticClientUtils.deleteAllIndexes(client);
         ElasticClientUtils.createLatestMapping(client, "archivist");
         ElasticClientUtils.createLatestMapping(client, "analyst");
+
+        /**
+         * Setup path to the test resources
+         */
+        resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
     }
 
     public void refreshIndex() {
