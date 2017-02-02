@@ -1,0 +1,7 @@
+#!/usr/bin/python
+"""
+A Fake zpsgo
+"""
+import time
+time.sleep(1)
+
