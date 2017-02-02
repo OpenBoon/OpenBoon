@@ -61,18 +61,40 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     LogService logService;
 
+    /**
+     * A temporary place to stuff parameters detected when the search
+     * is generated.
+     */
+    private class ExportParams {
+
+        AssetSearch search;
+
+        boolean pages = false;
+
+        boolean frames = false;
+    }
+
     /*
      * Perform the export search to tag all the assets being exported.  We then
      * replace the the search being executed with a search for the assets
      * we specifically tagged.
      */
-    private AssetSearch performExportSearch(AssetSearch search, int exportId) {
+    private ExportParams performExportSearch(AssetSearch search, int exportId) {
         search.setFields(new String[] {"source"} );
 
+        ExportParams params = new ExportParams();
         List<String> ids = Lists.newArrayListWithCapacity(64);
         for (Asset asset : searchService.scanAndScroll(search,
                 properties.getInt("archivist.export.maxAssetCount"))) {
             ids.add(asset.getId());
+
+            // Temp stuff
+            if (asset.attrExists("source.clip.page")) {
+                params.pages = true;
+            }
+            if (asset.attrExists("source.clip.frame")) {
+                params.frames = true;
+            }
         }
 
         if (ids.isEmpty()) {
@@ -80,9 +102,9 @@ public class ExportServiceImpl implements ExportService {
         }
 
         assetDao.appendLink("export", String.valueOf(exportId), ids);
-
-        return new AssetSearch().setFilter(
+        params.search = new AssetSearch().setFilter(
                 new AssetFilter().addToLinks("export", String.valueOf(exportId)));
+        return params;
     }
 
     @Override
@@ -132,10 +154,10 @@ public class ExportServiceImpl implements ExportService {
          * we get the exact assets during the export and new data
          * added that might match their search change the export.
          */
-        AssetSearch search = performExportSearch(spec.getSearch(), job.getJobId());
+        ExportParams params = performExportSearch(spec.getSearch(), job.getJobId());
         generate.add(pluginService.getProcessorRef(
                 "com.zorroa.core.generator.AssetSearchGenerator",
-                ImmutableMap.of("search", search)));
+                ImmutableMap.of("search", params.search)));
 
         /**
          * Now setup the per file export pipeline.  A CopySource processors is
@@ -150,6 +172,14 @@ public class ExportServiceImpl implements ExportService {
                     .setClassName("com.zorroa.core.processor.CopySource")
                     .setLanguage("java")
                     .setArgs(ImmutableMap.of("dstDirectory", dstDirectory)));
+        }
+
+        if (params.pages) {
+            execute.add(new ProcessorRef()
+                    .setClassName("com.zorroa.core.processor.PdfPageExporter")
+                    .setLanguage("java")
+                    .setArgs(ImmutableMap.of("dstFile",
+                            dstDirectory  + "/" + jspec.getName() + ".pdf")));
         }
 
         if (spec.getPipelineId() != null) {
