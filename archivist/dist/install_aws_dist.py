@@ -37,6 +37,9 @@ SHARED_PLUGINS_PATH = "../../../zorroa-plugin-sdk/dist"
 SHARED_PLUGINS = ['lang-java-plugin.zip', 'zorroa-core-plugin.zip',
                   'zorroa-demo-plugin.zip']
 
+PYTHON_PLUGINS_PATH = "../../../zorroa-python-sdk/dist"
+PYTHON_PLUGINS = ['spe-plugin.zip', 'lang-python-plugin.zip', 'zorroa-py-core-plugin.zip']
+
 # -------------------------------------------------------------------------
 # Functions
 #
@@ -64,7 +67,7 @@ def check_shared_plugins(shared_plugins_path):
 
 
 # ------------------------------
-def copy_shared_plugins(shared_plugins_path,
+def copy_shared_plugins(shared_plugins, shared_plugins_path,
                         aws_shared_plugins_path,
                         aws_user, aws_host, password):
     """
@@ -96,7 +99,7 @@ def copy_shared_plugins(shared_plugins_path,
             sys.exit(1)
 
     # directory is there, so lets copy
-    for plugin in SHARED_PLUGINS:
+    for plugin in shared_plugins:
         temp = shared_plugins_path + "/" + plugin
 
         if VERBOSE:
@@ -291,7 +294,9 @@ def createSSHClient(server, port, user, password):
     returns the ssh client
     """
 
+    paramiko.util.log_to_file("filename.log")
     client = paramiko.SSHClient()
+
     client.load_system_host_keys()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(server, port, user, password)
@@ -543,6 +548,20 @@ def main():
                         default=AWS_PATH,
                         help='AWS install path - defaults to ' + AWS_PATH)
 
+    parser.add_argument('--archivist_server',
+                        type=str,
+                        default='',
+                        help=textwrap.dedent('''\
+                            server running the archivist (http://x.x.x.x:8066) 
+                            Use to add analysts to an existing archivist server'''))
+
+    parser.add_argument('--shared_path',
+                        type=str,
+                        default='',
+                        help=textwrap.dedent('''\
+                            path to the shared folder for the archivist.
+                            Point to somewhere in a shared volume (/zorroa-data/...) to avoid running out of space'''))
+
     parser.add_argument('--copy_plugins',
                         action='store_true',
                         help='copy shared plugins too - defaults to ' +
@@ -554,6 +573,13 @@ def main():
                         help=textwrap.dedent('''\
                              path to the shared plugins source
                              defaults to: ''') + SHARED_PLUGINS_PATH)
+
+    parser.add_argument('--python_plugins_path',
+                        type=str,
+                        default=PYTHON_PLUGINS_PATH,
+                        help=textwrap.dedent('''\
+                             path to the python plugins source
+                             defaults to: ''') + PYTHON_PLUGINS_PATH)
 
     parser.add_argument('--aws_shared_plugins_path',
                         type=str,
@@ -578,8 +604,10 @@ def main():
         print "[DEBUG] AWS_HOST: ", args.aws_host
         print "[DEBUG] AWS_USER: ", args.aws_user
         print "[DEBUG] AWS_PATH: ", args.aws_path
+        print "[DEBUG] ARCHIVIST_SERVER: ", args.archivist_server
         print "[DEBUG] copy_plugins: ", args.copy_plugins
         print "[DEBUG] shared_plugins_path: ", args.shared_plugins_path
+        print "[DEBUG] python_plugins_path: ", args.python_plugins_path
         print "[DEBUG] aws_shared_path: ", args.aws_shared_plugins_path
         DEBUG = args.debug
 
@@ -646,6 +674,7 @@ def main():
     else:
         if VERBOSE:
             print "New Zorroa Server Software install"
+        
 
     # ---------------------------------------
     # copy the file
@@ -681,6 +710,17 @@ def main():
         result = rm_config_files(args.aws_path, args.aws_host,
                                  args.aws_user, password)
 
+    else:
+
+        # Set the path to the shared folder, if specified
+        if args.shared_path is not '':
+            cmd = "echo -e 'archivist.path.shared = " + args.shared_path + "' >> " + str(args.aws_path) + "/" + str(filename_version) + "/config/application.properties"
+            result = run_remote_command(cmd, args.aws_host, args.aws_user, password)
+    
+    if args.archivist_server != '':
+        cmd = "echo 'analyst.master.host = " + args.archivist_server + "\nanalyst.executor.threads = 2\nanalyst.index.data=false' >> " + str(args.aws_path) + "/" + str(filename_version) + "/config/application.properties"
+        result = run_remote_command(cmd, args.aws_host, args.aws_user, password)
+
     # ---------------------------------------
     # lets make a simple symlink
     cmd = "ln -s " + args.aws_path + "/" + str(filename_version) + \
@@ -711,7 +751,7 @@ def main():
             print "plugins copying to: " + aws_shared_plugins_path
 
         # source files are there, so lets copy them
-        result = copy_shared_plugins(args.shared_plugins_path,
+        result = copy_shared_plugins(SHARED_PLUGINS, args.shared_plugins_path,
                                      aws_shared_plugins_path,
                                      args.aws_user, args.aws_host,
                                      password)
@@ -721,7 +761,18 @@ def main():
         if (result is False):
             print "returned error from copy_shared_plugins.  exiting"
             sys.exit(1)
+        
+        result = copy_shared_plugins(PYTHON_PLUGINS, args.python_plugins_path,
+                                     aws_shared_plugins_path,
+                                     args.aws_user, args.aws_host,
+                                     password)
+        if DEBUG:
+            print "copy_shared_plugins result: " + str(result)
 
+        if (result is False):
+            print "returned error from copy_shared_plugins trying to copy python plugns.  exiting"
+            sys.exit(1)
+        
     if args.start_server:
         server_dir = args.aws_path + "/" + filename
         server_cmd = "bin/" + filename + " >& " + filename + ".log &"
