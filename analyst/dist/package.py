@@ -56,10 +56,11 @@ def cleanup(base_dir):
 		pass
 
 def get_version():
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-
-	cmd = ["java", "-cp", "../target/%s.jar" % app_name, "com.zorroa.%s.Version" % app_name]
-	output = subprocess.Popen(cmd, stdout=subprocess.PIPE, cwd=dir_path).communicate()[0].strip()
+        #dir_path = os.path.dirname(os.path.realpath(__file__))
+	#cmd = ["java", "-cp", "../target/%s.jar" % app_name, "com.zorroa.%s.Version" % app_name]
+	#output = subprocess.Popen(cmd, stdout=subprocess.PIPE, cwd=dir_path).communicate()[0].strip()
+	cmd = 'cd /home/computeruser/zorroa-server; echo $(mvn -q -Dexec.executable="echo" -Dexec.args=\'${project.version}\' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)'
+	output = os.popen(cmd).read()[:-1]
 	return output
 
 if __name__ == '__main__':
