@@ -3,7 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
@@ -25,7 +25,7 @@ public class AnalystControllerTests extends MockMvcTest {
     @Autowired
     AnalystService analystService;
 
-    AnalystBuilder ping;
+    AnalystSpec ping;
 
     @Before
     public void init() {

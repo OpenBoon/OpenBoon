@@ -11,7 +11,6 @@ import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
-import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
@@ -41,9 +40,6 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         implements ProcessManagerService, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(ProcessManagerServiceImpl.class);
-
-    @Autowired
-    AssetDao assetDao;
 
     @Autowired
     ArchivistClient archivistClient;

@@ -3,7 +3,7 @@ package com.zorroa.common.repository;
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
@@ -23,11 +23,11 @@ public class AnalystDaoTests extends AbstractTest {
     AnalystDao analystDao;
 
     String id;
-    AnalystBuilder builder;
+    AnalystSpec builder;
 
     @Before
     public void init() {
-        builder = new AnalystBuilder();
+        builder = new AnalystSpec();
         builder.setState(AnalystState.UP);
         builder.setUrl("http://127.0.0.2:8099");
         builder.setQueueSize(1);
@@ -48,7 +48,7 @@ public class AnalystDaoTests extends AbstractTest {
     @Test
     public void testRegister() {
 
-        AnalystBuilder builder = new AnalystBuilder();
+        AnalystSpec builder = new AnalystSpec();
         builder.setState(AnalystState.UP);
         builder.setUrl("http://127.0.0.2:8099");
         builder.setQueueSize(1);

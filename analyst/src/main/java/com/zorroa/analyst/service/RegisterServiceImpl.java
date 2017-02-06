@@ -9,10 +9,10 @@ import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
+import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.common.repository.AnalystDao;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +43,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     private static final Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
 
     @Autowired
-    AnalystDao analystDao;
-
-    @Autowired
     ApplicationProperties properties;
 
     @Autowired
@@ -56,6 +53,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Autowired
     ProcessManagerService processManagerService;
+
+    @Autowired
+    ArchivistClient archivistClient;
 
     private String url;
     private String id;
@@ -166,7 +166,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         Map<String, Object> fixedMdata = Maps.newHashMapWithExpectedSize(mdata.size());
         metrics.invoke().forEach((k,v)-> fixedMdata.put(k.replace('.', '_'), v));
 
-        AnalystBuilder builder = new AnalystBuilder();
+        AnalystSpec builder = new AnalystSpec();
         builder.setState(AnalystState.UP);
         builder.setStartedTime(System.currentTimeMillis());
         builder.setOs(String.format("%s-%s", osBean.getName(), osBean.getVersion()));
@@ -182,8 +182,8 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         builder.setMetrics(fixedMdata);
         builder.setTaskIds(ImmutableList.of());
         builder.setRemainingCapacity(e.getQueue().remainingCapacity());
-        id = analystDao.register(id, builder);
-
+        builder.setId(id);
+        archivistClient.register(builder);
         return id;
     }
 

@@ -3,7 +3,7 @@ package com.zorroa.common.domain;
 /**
  * Created by chambers on 6/16/16.
  */
-public class AnalystBuilder extends AnalystUpdateBuilder {
+public class AnalystSpec extends AnalystUpdateSpec {
 
     private boolean data;
     private long startedTime;
@@ -11,12 +11,22 @@ public class AnalystBuilder extends AnalystUpdateBuilder {
     private int threadCount;
     private String arch;
     private String os;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public AnalystSpec setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public boolean isData() {
         return data;
     }
 
-    public AnalystBuilder setData(boolean data) {
+    public AnalystSpec setData(boolean data) {
         this.data = data;
         return this;
     }
@@ -25,7 +35,7 @@ public class AnalystBuilder extends AnalystUpdateBuilder {
         return state;
     }
 
-    public AnalystBuilder setState(AnalystState state) {
+    public AnalystSpec setState(AnalystState state) {
         this.state = state;
         return this;
     }
@@ -34,7 +44,7 @@ public class AnalystBuilder extends AnalystUpdateBuilder {
         return threadCount;
     }
 
-    public AnalystBuilder setThreadCount(int threadCount) {
+    public AnalystSpec setThreadCount(int threadCount) {
         this.threadCount = threadCount;
         return this;
     }
@@ -43,7 +53,7 @@ public class AnalystBuilder extends AnalystUpdateBuilder {
         return arch;
     }
 
-    public AnalystBuilder setArch(String arch) {
+    public AnalystSpec setArch(String arch) {
         this.arch = arch;
         return this;
     }
@@ -52,7 +62,7 @@ public class AnalystBuilder extends AnalystUpdateBuilder {
         return os;
     }
 
-    public AnalystBuilder setOs(String os) {
+    public AnalystSpec setOs(String os) {
         this.os = os;
         return this;
     }
@@ -61,7 +71,7 @@ public class AnalystBuilder extends AnalystUpdateBuilder {
         return startedTime;
     }
 
-    public AnalystBuilder setStartedTime(long startedTime) {
+    public AnalystSpec setStartedTime(long startedTime) {
         this.startedTime = startedTime;
         return this;
     }

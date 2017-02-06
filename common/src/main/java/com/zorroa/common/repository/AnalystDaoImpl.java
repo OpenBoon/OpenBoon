@@ -3,7 +3,7 @@ package com.zorroa.common.repository;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
@@ -37,7 +37,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public String register(String id, AnalystBuilder builder)  {
+    public String register(String id, AnalystSpec builder)  {
         byte[] doc = Json.serialize(builder);
         return elastic.index(client.prepareIndex(getIndex(), getType(), id)
                 .setSource(doc)

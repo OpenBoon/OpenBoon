@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class AnalystServiceTests extends AbstractTest {
 
-    AnalystBuilder ping;
+    AnalystSpec ping;
 
     @Before
     public void init() {

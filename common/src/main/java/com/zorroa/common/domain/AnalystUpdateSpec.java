@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by chambers on 6/16/16.
  */
-public class AnalystUpdateBuilder {
+public class AnalystUpdateSpec {
 
     private String url;
     private AnalystState state;
@@ -22,7 +22,7 @@ public class AnalystUpdateBuilder {
         return url;
     }
 
-    public AnalystUpdateBuilder setUrl(String url) {
+    public AnalystUpdateSpec setUrl(String url) {
         this.url = url;
         return this;
     }
@@ -31,7 +31,7 @@ public class AnalystUpdateBuilder {
         return updatedTime;
     }
 
-    public AnalystUpdateBuilder setUpdatedTime(long updatedTime) {
+    public AnalystUpdateSpec setUpdatedTime(long updatedTime) {
         this.updatedTime = updatedTime;
         return this;
     }
@@ -40,7 +40,7 @@ public class AnalystUpdateBuilder {
         return state;
     }
 
-    public AnalystUpdateBuilder setState(AnalystState state) {
+    public AnalystUpdateSpec setState(AnalystState state) {
         this.state = state;
         return this;
     }
@@ -49,7 +49,7 @@ public class AnalystUpdateBuilder {
         return metrics;
     }
 
-    public AnalystUpdateBuilder setMetrics(Map<String, Object> metrics) {
+    public AnalystUpdateSpec setMetrics(Map<String, Object> metrics) {
         this.metrics = metrics;
         return this;
     }
@@ -58,7 +58,7 @@ public class AnalystUpdateBuilder {
         return threadsUsed;
     }
 
-    public AnalystUpdateBuilder setThreadsUsed(int threadsUsed) {
+    public AnalystUpdateSpec setThreadsUsed(int threadsUsed) {
         this.threadsUsed = threadsUsed;
         return this;
     }
@@ -67,7 +67,7 @@ public class AnalystUpdateBuilder {
         return queueSize;
     }
 
-    public AnalystUpdateBuilder setQueueSize(int queueSize) {
+    public AnalystUpdateSpec setQueueSize(int queueSize) {
         this.queueSize = queueSize;
         return this;
     }
@@ -77,7 +77,7 @@ public class AnalystUpdateBuilder {
         return load;
     }
 
-    public AnalystUpdateBuilder setLoad(List<Float> load) {
+    public AnalystUpdateSpec setLoad(List<Float> load) {
         this.load = load;
         return this;
     }
@@ -86,7 +86,7 @@ public class AnalystUpdateBuilder {
         return taskIds;
     }
 
-    public AnalystUpdateBuilder setTaskIds(List<Integer> taskIds) {
+    public AnalystUpdateSpec setTaskIds(List<Integer> taskIds) {
         this.taskIds = taskIds;
         return this;
     }
@@ -95,7 +95,7 @@ public class AnalystUpdateBuilder {
         return remainingCapacity;
     }
 
-    public AnalystUpdateBuilder setRemainingCapacity(int remainingCapacity) {
+    public AnalystUpdateSpec setRemainingCapacity(int remainingCapacity) {
         this.remainingCapacity = remainingCapacity;
         return this;
     }

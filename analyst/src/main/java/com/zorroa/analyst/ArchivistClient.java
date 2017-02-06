@@ -29,6 +29,16 @@ public class ArchivistClient extends AbstractClient {
     }
 
     /**
+     * Register an analyst with the archivist.
+     *
+     * @param spec
+     */
+    public void register(AnalystSpec spec) {
+        Http.post(client, loadBalancer.nextHost(), "/cluster/v1/analyst/_register",  spec);
+    }
+
+
+    /**
      * Send back a response
      *
      * @param response

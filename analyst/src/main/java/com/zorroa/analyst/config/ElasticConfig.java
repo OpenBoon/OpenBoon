@@ -31,6 +31,9 @@ public class ElasticConfig {
     @Bean
     @Autowired
     public Client elastic(ArchivistClient archivist) throws IOException {
+        if (!properties.getBoolean("analyst.index.data")) {
+            return null;
+        }
 
         Random rand = new Random(System.nanoTime());
         int number = rand.nextInt(99999);
@@ -70,7 +73,6 @@ public class ElasticConfig {
         else {
             logger.info("Connecting to elastic master: {}", archivistHost);
         }
-
         return ElasticClientUtils.initializeClient(builder);
     }
 }

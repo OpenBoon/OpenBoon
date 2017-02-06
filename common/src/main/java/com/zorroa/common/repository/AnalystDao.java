@@ -1,7 +1,7 @@
 package com.zorroa.common.repository;
 
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -12,7 +12,7 @@ import java.util.List;
  * Created by chambers on 6/16/16.
  */
 public interface AnalystDao {
-    String register(String id, AnalystBuilder builder);
+    String register(String id, AnalystSpec builder);
 
     void setState(String id, AnalystState state);
 

@@ -11,7 +11,7 @@ import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.AnalystBuilder;
+import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.common.repository.AnalystDao;
@@ -313,15 +313,15 @@ public abstract class AbstractTest {
 
     public void refreshIndex(long sleep) { ElasticClientUtils.refreshIndex(client, sleep); }
 
-    public AnalystBuilder sendAnalystPing() {
-        AnalystBuilder ab = getAnalystBuilder();
+    public AnalystSpec sendAnalystPing() {
+        AnalystSpec ab = getAnalystBuilder();
         analystDao.register("analyst01", ab);
         refreshIndex();
         return ab;
     }
 
-    public AnalystBuilder getAnalystBuilder() {
-        AnalystBuilder ping = new AnalystBuilder();
+    public AnalystSpec getAnalystBuilder() {
+        AnalystSpec ping = new AnalystSpec();
         ping.setUrl("https://192.168.100.100:8080");
         ping.setData(false);
         ping.setState(AnalystState.UP);
