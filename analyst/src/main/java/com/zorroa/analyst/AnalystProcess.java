@@ -1,5 +1,6 @@
 package com.zorroa.analyst;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Queues;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -25,19 +26,23 @@ public class AnalystProcess {
         this.taskId = taskId;
     }
 
+    @JsonIgnore
     public Process getProcess() {
         return process;
     }
 
+    @JsonIgnore
     public AnalystProcess setProcess(Process process) {
         this.process = process;
         return this;
     }
 
+    @JsonIgnore
     public Path getLogFile() {
         return logFile;
     }
 
+    @JsonIgnore
     public AnalystProcess setLogFile(Path logFile) {
         this.logFile = logFile;
         return this;

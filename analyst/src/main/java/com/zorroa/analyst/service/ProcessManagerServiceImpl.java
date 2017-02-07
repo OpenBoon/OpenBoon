@@ -27,6 +27,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -59,6 +60,11 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
      * Maintains a list of running processes.
      */
     private final ConcurrentMap<Integer, AnalystProcess> processMap = Maps.newConcurrentMap();
+
+    @Override
+    public Collection<AnalystProcess> getProcesses() {
+        return processMap.values();
+    }
 
     @Override
     public List<Integer> getTaskIds() {
@@ -219,11 +225,12 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             if (!Application.isUnitTest()) {
                 archivistClient.reportTaskStarted(new ExecuteTaskStarted(task.getTask()));
             }
+            String scriptPath = task.getScriptPath();
             for(;;) {
                 String lang = determineLanguagePlugin(script);
+
                 logger.debug("running script with language: {}", lang);
-                String[] command = createCommand(task, lang);
-                logger.info("running command: {}", String.join(" ", command));
+                String[] command = createCommand(task, scriptPath, lang);
                 exit = runProcess(command, task, proc);
 
                 if (exit != 0) {
@@ -234,9 +241,14 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                 if (next == null) {
                     break;
                 }
-                logger.info("Running next script");
+
                 script = next;
                 proc.incrementProcessCount();
+                scriptPath = task.getScriptPath() + "." + proc.getProcessCount();
+
+                logger.info("Writing next script {}", scriptPath);
+                Files.deleteIfExists(Paths.get(scriptPath));
+                Json.Mapper.writeValue(new File(scriptPath), script);
             }
 
         } catch (Exception e) {
@@ -278,12 +290,12 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         return proc;
     }
 
-    public String[] createCommand(ExecuteTaskStart task, String lang) throws IOException {
+    public String[] createCommand(ExecuteTaskStart task, String scriptPath, String lang) throws IOException {
         String absSharedPath =  FileUtils.normalize(properties.getString("zorroa.cluster.path.shared"));
         ImmutableList.Builder<String> b = ImmutableList.<String>builder()
                 .add(String.format("%s/plugins/lang-%s/bin/zpsgo", absSharedPath, lang))
                 .add("--shared-path", absSharedPath)
-                .add("--script", task.getScriptPath());
+                .add("--script", scriptPath);
 
         if (task.getArgs() != null) {
             task.getArgs().forEach((k, v) -> {
@@ -374,7 +386,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                     sb.append(line);
                 } else if (line.startsWith(ZpsScript.PREFIX)) {
                     buffer = true;
-                    sb = new StringBuilder(8096);
+                    sb = new StringBuilder(1024 * 1024);
                 }
                 else {
                     logStream.write(line.getBytes());
