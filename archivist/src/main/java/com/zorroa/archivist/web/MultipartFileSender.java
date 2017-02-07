@@ -212,6 +212,7 @@ public class MultipartFileSender {
         response.setHeader("ETag", fileName);
         response.setDateHeader("Last-Modified", lastModified);
         response.setDateHeader("Expires", System.currentTimeMillis() + DEFAULT_EXPIRE_TIME);
+        response.setHeader("Cache-Control", "Public");
 
         // Send requested file (part(s)) to client ------------------------------------------------
 
