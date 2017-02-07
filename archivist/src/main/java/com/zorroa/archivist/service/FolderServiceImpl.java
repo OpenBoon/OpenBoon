@@ -73,6 +73,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean setDyHierarchyRoot(Folder folder, String attribute) {
+        if (folder.getId() == 0) {
+            throw new ArchivistWriteException("You cannot make changes to the root folder");
+        }
         boolean result = folderDao.setDyHierarchyRoot(folder, attribute);
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
@@ -164,11 +167,14 @@ public class FolderServiceImpl implements FolderService {
         if (!SecurityUtils.hasPermission(folderDao.getAcl(id), Access.Write)) {
             throw new ArchivistWriteException("You cannot make changes to this folder");
         }
-        Folder current = folderDao.get(id);
 
+        if (id == 0 || folder.getId() == 0) {
+            throw new ArchivistWriteException("You cannot make changes to the root folder");
+        }
+
+        Folder current = folderDao.get(id);
         // If we have a new parent, then double check parent
         if (current.getParentId() != folder.getParentId()) {
-            logger.info("switching parent id");
             if (isDescendantOf(folderDao.get(folder.getParentId()), current)) {
                 throw new ArchivistWriteException("You cannot move a folder into one of its descendants.");
             }
@@ -203,6 +209,10 @@ public class FolderServiceImpl implements FolderService {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
             throw new ArchivistWriteException("You don't have the permissions to delete this folder");
+        }
+
+        if (folder.getId() == 0) {
+            throw new ArchivistWriteException("You cannot make changes to the root folder");
         }
 
         /**
@@ -269,6 +279,10 @@ public class FolderServiceImpl implements FolderService {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
             throw new ArchivistWriteException("You cannot make changes to this folder");
+        }
+
+        if (folder.getId() == 0) {
+            throw new ArchivistWriteException("You cannot make changes to the root folder");
         }
 
         /**
