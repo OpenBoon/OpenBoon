@@ -47,14 +47,6 @@ public abstract class AbstractTest {
     @Before
     public void __init() throws IOException, ClassNotFoundException {
         /**
-         * For analyst, this is only done for unit tests.  In production, the
-         * archivist handles creating the index and the mapping.
-         */
-        ElasticClientUtils.deleteAllIndexes(client);
-        ElasticClientUtils.createLatestMapping(client, "archivist");
-        ElasticClientUtils.createLatestMapping(client, "analyst");
-
-        /**
          * Setup path to the test resources
          */
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
