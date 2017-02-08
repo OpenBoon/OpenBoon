@@ -15,53 +15,54 @@ app_name = "analyst"
 
 def main():
 
-	parser = argparse.ArgumentParser()
-	parser.add_argument("--root", help="The base output directory.  Defaults to %s-<version> in the current directory." % app_name)
-	parser.add_argument("--rebuild", action="store_true", help="Rebuild the jar file");
-	parser.add_argument("--compress", action="store_true", help="Compress into a tar.gz file and remove the root directory")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", help="The base output directory.  Defaults to %s-<version> in the current directory." % app_name)
+    parser.add_argument("--rebuild", action="store_true", help="Rebuild the jar file");
+    parser.add_argument("--compress", action="store_true", help="Compress into a tar.gz file and remove the root directory")
 
-	args = parser.parse_args()
+    args = parser.parse_args()
 
-	jarFile = "%s/../target/%s.jar" % (os.path.dirname(__file__), app_name)
-	if not os.path.exists(jarFile) or args.rebuild:
-		subprocess.call(["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s/../pom.xml" % os.path.dirname(__file__)], shell=False)
+    jarFile = "%s/../target/%s.jar" % (os.path.dirname(__file__), app_name)
+    if not os.path.exists(jarFile) or args.rebuild:
+        subprocess.call(["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s/../pom.xml" % os.path.dirname(__file__)], shell=False)
 
-	if args.root:
-		base_dir = args.root
-	else:
-		base_dir = "%s-%s" % (app_name, get_version())
+    if args.root:
+        base_dir = args.root
+    else:
+        base_dir = "%s-%s" % (app_name, get_version())
 
-	cleanup(base_dir)
+    cleanup(base_dir)
 
-        print ("copying data into: " + str(base_dir) + "/") 
-	shutil.copytree("%s/resources/config" % (os.path.dirname(__file__)), base_dir + "/config")
-	shutil.copytree("%s/resources/bin" % os.path.dirname(__file__), base_dir + "/bin")
+    print ("copying data into: " + str(base_dir) + "/")
+    shutil.copytree("%s/resources/config" % (os.path.dirname(__file__)), base_dir + "/config")
+    shutil.copytree("%s/resources/bin" % os.path.dirname(__file__), base_dir + "/bin")
 
-	os.mkdir("%s/lib" % base_dir)
-	shutil.copy(jarFile, "%s/lib" % base_dir)
+    os.mkdir("%s/lib" % base_dir)
+    shutil.copy(jarFile, "%s/lib" % base_dir)
 
-	if args.compress:
-                print "compressing..."
-		tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
-		tar.add(base_dir)
-		tar.close()
-		cleanup(base_dir)
+    if args.compress:
+        print "compressing..."
+        tar = tarfile.open("%s.tar.gz" % base_dir, "w:gz")
+        tar.add(base_dir)
+        tar.close()
+        cleanup(base_dir)
 
 def cleanup(base_dir):
-	try:
-		print "removing " + base_dir
-		shutil.rmtree(base_dir)
-	except OSError, e:
-		# Just ignore this if its not there
-		pass
+    try:
+        print "removing " + base_dir
+        shutil.rmtree(base_dir)
+    except OSError, e:
+        # Just ignore this if its not there
+        pass
 
 def get_version():
-        #dir_path = os.path.dirname(os.path.realpath(__file__))
-	#cmd = ["java", "-cp", "../target/%s.jar" % app_name, "com.zorroa.%s.Version" % app_name]
-	#output = subprocess.Popen(cmd, stdout=subprocess.PIPE, cwd=dir_path).communicate()[0].strip()
-	cmd = 'cd /home/computeruser/zorroa-server; echo $(mvn -q -Dexec.executable="echo" -Dexec.args=\'${project.version}\' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)'
-	output = os.popen(cmd).read()[:-1]
-	return output
+    cmd = ["unzip", "-p", "../target/%s.jar" % app_name, "META-INF/maven/com.zorroa/%s/pom.properties" % app_name]
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE, cwd=dir_path).communicate()[0]
+    for line in output.split('\n'):
+        if "version" in line:
+            return line.split("=")[1]
+    return "unknown"
 
 if __name__ == '__main__':
-	main()
+    main()
