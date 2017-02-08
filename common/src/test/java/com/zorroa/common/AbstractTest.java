@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -113,5 +114,14 @@ public abstract class AbstractTest {
             }
         }
         return ret && path.delete();
+    }
+
+    public String getMappingType(Map<String,Object> mapping, String path) {
+        for (String e: path.split("\\.")) {
+            mapping = (Map<String,Object>) mapping.get("properties");
+            mapping = (Map<String,Object>) mapping.get(e);
+        }
+        logger.info("{}", mapping.get("type"));
+        return mapping.get("type").toString();
     }
 }

@@ -189,6 +189,7 @@
       "dynamic_templates": [
         {
           "shape_template": {
+            "match_pattern": "regex",
             "match": "^.+Shape$|^shape$",
             "mapping": {
               "type": "geo_shape"
@@ -197,8 +198,8 @@
         },
         {
           "point_template": {
+            "match_pattern": "regex",
             "match": "^.+Point|^point$",
-            "match_mapping_type": "double",
             "mapping": {
               "type": "geo_point"
             }
