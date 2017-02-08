@@ -20,22 +20,24 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 # keep it lower case because it's used for paths below
 BASE=analyst
 
-# PATH to the executable
-# later for distribution we can sym-link to a base dir 
-SERVER=/home/computeruser/$BASE/bin/$BASE
+# the user we run the server as, and were the software is installed to
+SERVER_RUN_USER=computeruser
 
-# This is the pid file (using start-stop-daemon(8) to generate)
-SERVER_PIDFILE=/var/run/$BASE.pid
+# the base path to where the server software is located
+BASE_PATH=/home/$SERVER_RUN_USER/$BASE
+
+# PATH to the executable
+SERVER=$BASE_PATH/bin/$BASE
+
+# This is the pidfile that our application generates when run with -d
+SERVER_PIDFILE=$BASE_PATH/run/$BASE.pid
 
 # by default LOG file is set in the application.properties
 # if running the the server with a -d then this is ignored
-SERVER_LOGFILE=/var/log/$BASE.log
-
-SERVER_RUN_USER=computeruser
+SERVER_LOGFILE=$BASE_PATH/logs/$BASE.log
 
 # -d will run the server in daemon mode
-#SERVER_OPTS=""
-SERVER_OPTS="-d"
+SERVER_OPTS="-d --pidfile=$SERVER_PIDFILE"
 
 SERVER_DESC="Zorroa $BASE" 
 ###  end configurable settings
@@ -43,10 +45,6 @@ SERVER_DESC="Zorroa $BASE"
 # Get lsb functions
 . /lib/lsb/init-functions
 
-# see if there are any custom system wide values
-#if [ -f /etc/default/$BASE ]; then
-#	. /etc/default/$BASE
-#fi
 
 # Check if the server is present
 if [ ! -x $SERVER ]; then
@@ -61,8 +59,9 @@ case "$1" in
 		start-stop-daemon --start \
 			--exec "$SERVER" \
 			--pidfile "$SERVER_PIDFILE" \
-			--make-pidfile \
 			--user "$SERVER_RUN_USER" \
+                        --chuid "$SERVER_RUN_USER" \
+                        --group "$SERVER_RUN_USER" \
 			-- \
 				$SERVER_OPTS \
 				>> "$SERVER_LOGFILE" 2>&1
