@@ -22,7 +22,7 @@ BASE=archivist
 
 # PATH to the executable
 # later for distribution we can sym-link to a base dir 
-SERVER=/home/computeruser/zorroa-server/$BASE/dist/$BASE-0.33.0/bin/$BASE
+SERVER=/home/computeruser/$BASE/bin/$BASE
 
 # This is the pid file (using start-stop-daemon(8) to generate)
 SERVER_PIDFILE=/var/run/$BASE.pid
