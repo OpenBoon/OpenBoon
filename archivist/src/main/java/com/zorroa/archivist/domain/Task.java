@@ -24,6 +24,10 @@ public class Task implements TaskId {
 
     private Stats stats;
 
+    public int getId() {
+        return taskId;
+    }
+
     @Override
     public Integer getTaskId() {
         return taskId;
