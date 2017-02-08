@@ -7,11 +7,15 @@ set -e
 # Required-Stop:      
 # Default-Start:      2 3 4 5
 # Default-Stop:       0 1 6
-# Short-Description:  Create lightweight, portable, self-sufficient containers.
+# Short-Description:  Create lightweight, portable, self-sufficient 
+#                     containers.
 # Description:
 #  A Generic start script for running either Zorroa's archivist or analyst
 #  You must specifiy which you want 
 #  This uses the start-stop-daemon command
+#  To install, copy this file to /etc/init.d  
+#              sudo update-rc.d <script> defaults
+#              sudo update-rc.d <script> enable
 ### END INIT INFO
 
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
