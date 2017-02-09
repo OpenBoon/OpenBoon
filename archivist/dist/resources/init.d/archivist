@@ -59,7 +59,8 @@ fi
 
 case "$1" in
 	start)
-		# we don't use --background if we pass -d above
+                ulimit -n 65536
+		# we don't use --background if we pass -d above 
 		start-stop-daemon --start \
 			--exec "$SERVER" \
 			--pidfile "$SERVER_PIDFILE" \
