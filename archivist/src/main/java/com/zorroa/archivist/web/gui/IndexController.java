@@ -66,9 +66,6 @@ public class IndexController {
     SearchService searchService;
 
     @Autowired
-    AssetService assetService;
-
-    @Autowired
     UserService userService;
 
     @Autowired
