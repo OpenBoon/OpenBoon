@@ -1,7 +1,6 @@
 package com.zorroa.common.repository;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.common.elastic.AbstractElasticDao;
@@ -23,7 +22,6 @@ import org.elasticsearch.script.ScriptService;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,13 +42,13 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         Asset result = new Asset();
         result.setId(id);
         result.setDocument(data);
+        result.setType("asset");
         return result;
     };
 
     @Override
     public Asset index(Source source, LinkSpec sourceLink) {
-        String id = source.getId();
-        UpdateRequestBuilder upsert = prepareUpsert(source, id);
+        UpdateRequestBuilder upsert = prepareUpsert(source);
         return new Asset(upsert.get().getId(), source.getDocument());
     }
 
@@ -65,7 +63,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (Source source : sources) {
             String id = source.getId();
-            bulkRequest.add(prepareUpsert(source, id));
+            bulkRequest.add(prepareUpsert(source));
         }
 
         BulkResponse bulk = bulkRequest.get();
@@ -82,6 +80,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                     result.warnings++;
                     retries.add(sources.get(index));
                 } else {
+                    logger.warn("Failed to index {}, {}", update.getId(), message);
                     result.logs.add(new StringBuilder(1024).append(
                             message).append(",").append(asset.getPath()).toString());
                     result.errors++;
@@ -110,11 +109,10 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         return result;
     }
 
-    private UpdateRequestBuilder prepareUpsert(Source source, String id) {
+    private UpdateRequestBuilder prepareUpsert(Source source) {
         byte[] doc = Json.serialize(source.getDocument());
-        return client.prepareUpdate(getIndex(), "asset", id)
+        return client.prepareUpdate(getIndex(), source.getType(), source.getId())
                 .setDoc(doc)
-                .setId(id)
                 .setUpsert(doc);
     }
 
