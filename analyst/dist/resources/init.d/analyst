@@ -63,6 +63,7 @@ case "$1" in
 		start-stop-daemon --start \
 			--exec "$SERVER" \
 			--pidfile "$SERVER_PIDFILE" \
+                        --chdir "$BASE_PATH" \
 			--user "$SERVER_RUN_USER" \
                         --chuid "$SERVER_RUN_USER" \
                         --group "$SERVER_RUN_USER" \
