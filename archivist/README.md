@@ -22,6 +22,11 @@ shared file system contains these top level entries:
 By default the Zorroa system ships configured for unsecured HTTP.  To enable HTTPS you
 must first decide if your doing a self signed or signed SSL cert.
 
+  * just a note, the key-store-password listed below is incorrect.  correct key-store-password
+    has been placed into LastPass
+
+
+
 ## Self Signed Cert
 
 To generate a self signed cert keystore, use Java's keytool.
