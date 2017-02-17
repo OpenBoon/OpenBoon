@@ -4,7 +4,7 @@ if [ "x$ANALYST_MIN_MEM" = "x" ]; then
     ANALYST_MIN_MEM=256m
 fi
 if [ "x$ANALYST_MAX_MEM" = "x" ]; then
-    ANALYST_MAX_MEM=2g
+    ANALYST_MAX_MEM=1g
 fi
 if [ "x$ANALYST_HEAP_SIZE" != "x" ]; then
     ANALYST_MIN_MEM=$ANALYST_HEAP_SIZE
