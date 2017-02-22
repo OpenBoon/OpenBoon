@@ -345,41 +345,39 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
 
         ProcessBuilder builder = makeProcess(command, task, proc);
         logger.info("running cmd: {}", String.join(" ", builder.command()));
-
         Process process = builder.start();
-        synchronized (proc) {
-            if (proc.getNewState() == null) {
-                proc.setProcess(process);
-                proc.setLogFile(Paths.get(task.getLogPath()));
-            }
-            else {
-                logger.warn("The task {} state was changed to: {}", task.getTask().getTaskId(),
-                        proc.getNewState());
-                return 1;
-            }
-        }
 
-        LineReader reader = new LineReader(new InputStreamReader(process.getInputStream()));
-        StringBuilder sb = new StringBuilder(1024 * 1024);
-        boolean buffer = false;
-        String line;
-        int exit = 1;
-
-        try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()), proc.getProcessCount() > 1)) {
-            for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
-                if (e.getKey().equals("ZORROA_HMAC_KEY")) {
-                    continue;
+        try {
+            synchronized (proc) {
+                if (proc.getNewState() == null) {
+                    proc.setProcess(process);
+                    proc.setLogFile(Paths.get(task.getLogPath()));
+                } else {
+                    logger.warn("The task {} state was changed to: {}", task.getTask().getTaskId(),
+                            proc.getNewState());
+                    return 1;
                 }
-                logStream.write(new StringBuilder(256)
-                        .append("ENV: ")
-                        .append(e.getKey())
-                        .append("=")
-                        .append(e.getValue())
-                        .toString().getBytes());
-                logStream.write(NEWLINE);
             }
 
-            try {
+            LineReader reader = new LineReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder sb = new StringBuilder(1024 * 1024);
+            boolean buffer = false;
+            String line;
+
+            try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()), proc.getProcessCount() > 1)) {
+                for (Map.Entry<String, String> e : task.getEnv().entrySet()) {
+                    if (e.getKey().equals("ZORROA_HMAC_KEY")) {
+                        continue;
+                    }
+                    logStream.write(new StringBuilder(256)
+                            .append("ENV: ")
+                            .append(e.getKey())
+                            .append("=")
+                            .append(e.getValue())
+                            .toString().getBytes());
+                    logStream.write(NEWLINE);
+                }
+
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith(ZpsScript.SUFFIX)) {
                         /**
@@ -406,12 +404,15 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                         logStream.flush();
                     }
                 }
-            } catch (Exception e) {
-                logger.warn("Failed to process output from task {}, {}", task.getTaskId(),
-                        task.getScriptPath());
             }
+        } catch (Exception e) {
+            logger.warn("Failed to process output from task {}, {}", task.getTaskId(),
+                    task.getScriptPath());
+            // Make sure to kill process just in case
+            process.destroyForcibly();
         }
         finally {
+            int exit;
             try {
                 exit = process.waitFor();
             } catch (InterruptedException e) {
