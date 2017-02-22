@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.google.common.io.LineReader;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.analyst.Application;
@@ -277,7 +278,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             }
 
             /**
-             * Remove from procoess map
+             * Remove from process map
              */
             processMap.remove(task.getTask().getTaskId());
 
@@ -358,10 +359,11 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             }
         }
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        StringBuilder sb = null;
+        LineReader reader = new LineReader(new InputStreamReader(process.getInputStream()));
+        StringBuilder sb = new StringBuilder(1024 * 1024);
         boolean buffer = false;
         String line;
+        int exit = 1;
 
         try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()), proc.getProcessCount() > 1)) {
             for (Map.Entry<String, String> e: task.getEnv().entrySet()) {
@@ -376,39 +378,57 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                         .toString().getBytes());
                 logStream.write(NEWLINE);
             }
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith(ZpsScript.SUFFIX)) {
-                    processBuffer(sb, task, logStream, proc);
-                    logStream.write(NEWLINE);
-                    buffer = false;
-                    sb.setLength(0);
-                } else if (buffer) {
-                    sb.append(line);
-                } else if (line.startsWith(ZpsScript.PREFIX)) {
-                    buffer = true;
-                    sb = new StringBuilder(1024 * 1024);
+
+            try {
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith(ZpsScript.SUFFIX)) {
+                        /**
+                         * The buffer cannot be parsed for some reason, we'll just fail the task.
+                         */
+                        try {
+                            processBuffer(sb, task, logStream, proc);
+                        } catch (Exception e) {
+                            logger.warn("Failed to process buffer, failing task: ", e);
+                            process.destroyForcibly();
+                            break;
+                        }
+
+                        buffer = false;
+                        logStream.write(NEWLINE);
+                    } else if (buffer) {
+                        sb.append(line);
+                    } else if (line.startsWith(ZpsScript.PREFIX)) {
+                        buffer = true;
+                        sb.setLength(0);
+                    } else {
+                        logStream.write(line.getBytes());
+                        logStream.write(NEWLINE);
+                        logStream.flush();
+                    }
                 }
-                else {
-                    logStream.write(line.getBytes());
-                    logStream.write(NEWLINE);
-                }
+            } catch (Exception e) {
+                logger.warn("Failed to process output from task {}, {}", task.getTaskId(),
+                        task.getScriptPath());
             }
         }
-
-        int exit;
-        try {
-            exit = process.waitFor();
-        } catch (InterruptedException e) {
-            logger.warn("Process interrupted: ", e);
-            exit = 1;
+        finally {
+            try {
+                exit = process.waitFor();
+            } catch (InterruptedException e) {
+                logger.warn("Process interrupted: ", e);
+                exit = 1;
+            }
+            return exit;
         }
-        return exit;
     }
 
     public void processBuffer(StringBuilder sb, ExecuteTaskStart start, FileOutputStream log, AnalystProcess process) throws IOException {
         String scriptText = sb.toString();
 
-        // Double check it can be serialized.
+        /**
+         * Parse the string into a Reaction.  If it doesn't parse, an exception is thrown
+         * out to the I/O loop, which is handled there.
+         */
         Reaction reaction = Json.deserialize(scriptText, Reaction.class);
 
         if (reaction.getNextProcess() != null) {
