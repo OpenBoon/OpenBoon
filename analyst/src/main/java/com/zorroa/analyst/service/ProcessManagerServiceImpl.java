@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.google.common.io.Closeables;
 import com.google.common.io.LineReader;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.AnalystProcess;
@@ -24,7 +25,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -343,84 +347,124 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
 
     public int runProcess(String[] command, ExecuteTaskStart task, AnalystProcess proc) throws IOException {
 
-        ProcessBuilder builder = makeProcess(command, task, proc);
-        logger.info("running cmd: {}", String.join(" ", builder.command()));
-        Process process = builder.start();
+        int exit = 1;
+        Process process = null;
+        FileOutputStream logStream = null;
+        String error = null;
+        Stopwatch timer = Stopwatch.createStarted();
+
+        /**
+         * Synchronized around the cached Process object, if a new state has not been set
+         *  (like cancel/killed, then the process can start). The Synchronized ensures
+         *  that canceling the proc happens serially.
+         */
+        synchronized (proc) {
+            if (proc.getNewState() == null) {
+                ProcessBuilder builder = makeProcess(command, task, proc);
+                logger.info("running cmd: {}", String.join(" ", builder.command()));
+                process = builder.start();
+                proc.setProcess(process);
+                proc.setLogFile(Paths.get(task.getLogPath()));
+            } else {
+                logger.warn("The task {} state was changed to: {}", task.getTask().getTaskId(),
+                        proc.getNewState());
+                return 13;
+            }
+        }
 
         try {
-            synchronized (proc) {
-                if (proc.getNewState() == null) {
-                    proc.setProcess(process);
-                    proc.setLogFile(Paths.get(task.getLogPath()));
-                } else {
-                    logger.warn("The task {} state was changed to: {}", task.getTask().getTaskId(),
-                            proc.getNewState());
-                    return 1;
-                }
-            }
 
+            /**
+             * Once the process is started, open the log file.
+             */
+            logStream = new FileOutputStream(new File(task.getLogPath()), proc.getProcessCount() > 1);
             LineReader reader = new LineReader(new InputStreamReader(process.getInputStream()));
             StringBuilder sb = new StringBuilder(1024 * 1024);
             boolean buffer = false;
             String line;
 
-            try (FileOutputStream logStream = new FileOutputStream(new File(task.getLogPath()), proc.getProcessCount() > 1)) {
-                for (Map.Entry<String, String> e : task.getEnv().entrySet()) {
-                    if (e.getKey().equals("ZORROA_HMAC_KEY")) {
-                        continue;
-                    }
-                    logStream.write(new StringBuilder(256)
-                            .append("ENV: ")
-                            .append(e.getKey())
-                            .append("=")
-                            .append(e.getValue())
-                            .toString().getBytes());
-                    logStream.write(NEWLINE);
+            for (Map.Entry<String, String> e : task.getEnv().entrySet()) {
+                if (e.getKey().equals("ZORROA_HMAC_KEY")) {
+                    continue;
                 }
+                logStream.write(new StringBuilder(256)
+                        .append("ENV: ")
+                        .append(e.getKey())
+                        .append("=")
+                        .append(e.getValue())
+                        .toString().getBytes());
+                logStream.write(NEWLINE);
+            }
 
-                while ((line = reader.readLine()) != null) {
-                    if (line.startsWith(ZpsScript.SUFFIX)) {
-                        /**
-                         * The buffer cannot be parsed for some reason, we'll just fail the task.
-                         */
-                        try {
-                            processBuffer(sb, task, logStream, proc);
-                        } catch (Exception e) {
-                            logger.warn("Failed to process buffer, failing task: ", e);
-                            process.destroyForcibly();
-                            break;
-                        }
-
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(ZpsScript.SUFFIX)) {
+                    /**
+                     * The buffer cannot be parsed for some reason, we'll just fail the task.
+                     */
+                    try {
+                        processBuffer(sb, task, logStream, proc);
                         buffer = false;
                         logStream.write(NEWLINE);
-                    } else if (buffer) {
-                        sb.append(line);
-                    } else if (line.startsWith(ZpsScript.PREFIX)) {
-                        buffer = true;
-                        sb.setLength(0);
-                    } else {
-                        logStream.write(line.getBytes());
-                        logStream.write(NEWLINE);
-                        logStream.flush();
+                    } catch (Exception e) {
+                        logger.warn("Failed to process buffer, unexpected ", e);
+                        error = e.getMessage();
+                        process.destroyForcibly();
+                        break;
                     }
+                } else if (buffer) {
+                    sb.append(line);
+                } else if (line.startsWith(ZpsScript.PREFIX)) {
+                    buffer = true;
+                    sb.setLength(0);
+                } else {
+                    logStream.write(line.getBytes());
+                    logStream.write(NEWLINE);
+                    logStream.flush();
                 }
             }
+
         } catch (Exception e) {
-            logger.warn("Failed to process output from task {}, {}", task.getTaskId(),
+            logger.warn("Unexpected error while running process {}, {}", task.getTaskId(),
                     task.getScriptPath());
-            // Make sure to kill process just in case
-            process.destroyForcibly();
+            error = e.getMessage();
+            if (process != null) {
+                // Make sure to kill process just in case
+                process.destroyForcibly();
+            }
         }
         finally {
-            int exit;
-            try {
-                exit = process.waitFor();
-            } catch (InterruptedException e) {
-                logger.warn("Process interrupted: ", e);
-                exit = 1;
+
+            if (process != null) {
+                try {
+                    exit = process.waitFor();
+                } catch (InterruptedException e) {
+                    logger.warn("Process interrupted: ", e);
+                }
             }
-            return exit;
+            if (logStream != null) {
+                try {
+                    writeFooter(timer, task, logStream, error, exit);
+                } catch (Exception e) {
+                    logger.warn("Error writing footer, ", e);
+                }
+                Closeables.close(logStream, true);
+            }
         }
+
+        return exit;
+    }
+
+    public void writeFooter(Stopwatch timer, ExecuteTaskStart task, FileOutputStream logStream, String error, int exit) throws IOException {
+        logStream.write("##################################\n".getBytes());
+        logStream.write(String.format("Duration: %.2f minutes\n", timer.elapsed(TimeUnit.SECONDS) / 60.0).getBytes());
+        logStream.write(String.format("Log: %s\n", task.getLogPath()).getBytes());
+        logStream.write(String.format("Script: %s\n", task.getScriptPath()).getBytes());
+        logStream.write(String.format("Exit Status: %d\n", exit).getBytes());
+        if (error != null) {
+            logStream.write(String.format("Error: %s\n", error).getBytes());
+        }
+        logStream.write("##################################\n".getBytes());
+        logStream.flush();
     }
 
     public void processBuffer(StringBuilder sb, ExecuteTaskStart start, FileOutputStream log, AnalystProcess process) throws IOException {
@@ -441,11 +485,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             logger.info("Processing expand from job: {}", start.getTask().getJobId());
             ZpsScript script = reaction.getExpand();
 
-            log.write(ZpsScript.PREFIX.getBytes());
-            log.write(NEWLINE);
-            log.write(Json.prettyString(script).getBytes());
-            log.write(NEWLINE);
-            log.write(ZpsScript.SUFFIX.getBytes());
+            log.write(String.format("Expanding with %d tasks\n", script.getOver().size()).getBytes());
 
             ExecuteTaskExpand st = new ExecuteTaskExpand();
             st.setScript(Json.serializeToString(script));
