@@ -16,7 +16,7 @@ public class AnalystProcess {
     private Process process = null;
     private Path logFile = null;
     private TaskState newState = null;
-    private Queue<ZpsScript> processQueue;
+    private Queue<ZpsScript> processQueue = Queues.newLinkedBlockingQueue();
     private int processCount = 1;
     private Integer taskId;
 
@@ -58,9 +58,6 @@ public class AnalystProcess {
     }
 
     public AnalystProcess addToNextProcess(ZpsScript next) {
-        if (this.processQueue == null) {
-            this.processQueue = Queues.newArrayDeque();
-        }
         this.processQueue.add(next);
         return this;
     }
