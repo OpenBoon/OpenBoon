@@ -406,7 +406,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                         buffer = false;
                         logStream.write(NEWLINE);
                     } catch (Exception e) {
-                        logger.warn("Failed to process buffer, unexpected ", e);
+                        logger.warn("Failed to process buffer {}, unexpected ", sb.toString(), e);
                         error = e.getMessage();
                         process.destroyForcibly();
                         break;
