@@ -540,6 +540,25 @@ public class SearchServiceImpl implements SearchService {
                             "hash", filter.getHamming().getHash())));
             query.must(hammingScript);
         }
+
+        // Recursively add bool sub-filters for must, must_not and should
+        if (filter.getMust() != null) {
+            BoolQueryBuilder must = QueryBuilders.boolQuery();
+            this.applyFilterToQuery(filter.getMust(), must);
+            query.must(must);
+        }
+
+        if (filter.getMustNot() != null) {
+            BoolQueryBuilder mustNot = QueryBuilders.boolQuery();
+            this.applyFilterToQuery(filter.getMustNot(), mustNot);
+            query.mustNot(mustNot);
+        }
+
+        if (filter.getShould() != null) {
+            BoolQueryBuilder should = QueryBuilders.boolQuery();
+            this.applyFilterToQuery(filter.getShould(), should);
+            query.should(should);
+        }
     }
 
     /**
