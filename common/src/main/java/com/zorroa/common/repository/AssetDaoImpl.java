@@ -62,7 +62,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         for (Source source : sources) {
-            String id = source.getId();
             bulkRequest.add(prepareUpsert(source));
         }
 
