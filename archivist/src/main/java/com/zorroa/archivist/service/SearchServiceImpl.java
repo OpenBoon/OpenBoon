@@ -543,21 +543,27 @@ public class SearchServiceImpl implements SearchService {
 
         // Recursively add bool sub-filters for must, must_not and should
         if (filter.getMust() != null) {
-            BoolQueryBuilder must = QueryBuilders.boolQuery();
-            this.applyFilterToQuery(filter.getMust(), must);
-            query.must(must);
+            for (AssetFilter f : filter.getMust()) {
+                BoolQueryBuilder must = QueryBuilders.boolQuery();
+                this.applyFilterToQuery(f, must);
+                query.must(must);
+            }
         }
 
         if (filter.getMustNot() != null) {
-            BoolQueryBuilder mustNot = QueryBuilders.boolQuery();
-            this.applyFilterToQuery(filter.getMustNot(), mustNot);
-            query.mustNot(mustNot);
+            for (AssetFilter f : filter.getMustNot()) {
+                BoolQueryBuilder mustNot = QueryBuilders.boolQuery();
+                this.applyFilterToQuery(f, mustNot);
+                query.mustNot(mustNot);
+            }
         }
 
         if (filter.getShould() != null) {
-            BoolQueryBuilder should = QueryBuilders.boolQuery();
-            this.applyFilterToQuery(filter.getShould(), should);
-            query.should(should);
+            for (AssetFilter f : filter.getShould()) {
+                BoolQueryBuilder should = QueryBuilders.boolQuery();
+                this.applyFilterToQuery(f, should);
+                query.should(should);
+            }
         }
     }
 

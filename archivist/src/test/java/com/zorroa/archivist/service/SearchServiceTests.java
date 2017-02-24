@@ -403,7 +403,7 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(source2);
         refreshIndex();
 
-        AssetFilter filter = new AssetFilter().setMust(new AssetFilter().addToTerms("superhero", "captain"));
+        AssetFilter filter = new AssetFilter().setMust(ImmutableList.of(new AssetFilter().addToTerms("superhero", "captain")));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -420,7 +420,7 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(source2);
         refreshIndex();
 
-        AssetFilter filter = new AssetFilter().setMustNot(new AssetFilter().addToTerms("superhero", "captain"));
+        AssetFilter filter = new AssetFilter().setMustNot(ImmutableList.of(new AssetFilter().addToTerms("superhero", "captain")));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -437,7 +437,7 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(source2);
         refreshIndex();
 
-        AssetFilter filter = new AssetFilter().setShould(new AssetFilter().addToTerms("superhero", "captain"));
+        AssetFilter filter = new AssetFilter().setShould(ImmutableList.of(new AssetFilter().addToTerms("superhero", "captain")));
         AssetSearch search = new AssetSearch().setFilter(filter);
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
