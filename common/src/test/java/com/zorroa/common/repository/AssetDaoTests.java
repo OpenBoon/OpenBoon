@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -143,5 +144,28 @@ public class AssetDaoTests extends AbstractTest {
         Asset asset2 = assetDao.get(asset1.getId());
         assertEquals(100, (int) asset2.getAttr("foo.bar"));
     }
+
+    @Test
+    public void testRetryBrokenFields() throws InterruptedException { {
+        List<Source> assets = ImmutableList.of(
+                new Source(getTestImagePath("set01/standard/faces.jpg")));
+        assets.get(0).setAttr("foo.bar", "2017/10/10");
+        DocumentIndexResult result  = assetDao.index(assets, null);
+        refreshIndex();
+
+        List<Source> next = ImmutableList.of(
+                new Source(getTestImagePath("set01/standard/hyena.jpg")),
+                new Source(getTestImagePath("set01/standard/toucan.jpg")),
+                new Source(getTestImagePath("set01/standard/visa.jpg")),
+                new Source(getTestImagePath("set01/standard/visa12.jpg")));
+        for (Source s: next) {
+            s.setAttr("foo.bar", 1000);
+        }
+        result = assetDao.index(next, null);
+
+        assertEquals(4, result.created);
+        assertEquals(4, result.warnings);
+        assertEquals(1, result.retries);
+    }}
 
 }

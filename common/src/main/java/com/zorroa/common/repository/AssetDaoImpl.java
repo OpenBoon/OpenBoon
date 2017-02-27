@@ -66,12 +66,10 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         }
 
         BulkResponse bulk = bulkRequest.get();
-
         List<String> created = Lists.newArrayList();
 
         int index = 0;
         for (BulkItemResponse response : bulk) {
-            UpdateResponse update = response.getResponse();
             if (response.isFailed()) {
                 String message = response.getFailure().getMessage();
                 Source asset = sources.get(index);
@@ -79,16 +77,19 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                     result.warnings++;
                     retries.add(sources.get(index));
                 } else {
-                    logger.warn("Failed to index {}, {}", update.getId(), message);
+                    logger.warn("Failed to index {}, {}", response.getId(), message);
                     result.logs.add(new StringBuilder(1024).append(
                             message).append(",").append(asset.getPath()).toString());
                     result.errors++;
                 }
-            } else if (update.isCreated()) {
-                created.add(update.getId());
-                result.created++;
             } else {
-                result.updated++;
+                UpdateResponse update = response.getResponse();
+                if (update.isCreated()) {
+                    created.add(update.getId());
+                    result.created++;
+                } else {
+                    result.updated++;
+                }
             }
             index++;
         }
@@ -134,7 +135,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         for (Pattern pattern: RECOVERABLE_BULK_ERRORS) {
             Matcher matcher = pattern.matcher(error);
             if (matcher.find()) {
-                logger.warn("Removing broken field: {}, {}", matcher.group(1), error);
+                logger.warn("Removing broken field from {}: {}, {}", asset.getId(), matcher.group(1), error);
                 return asset.removeAttr(matcher.group(1));
             }
         }
