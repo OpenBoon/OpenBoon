@@ -390,4 +390,55 @@ public class SearchServiceTests extends AbstractTest {
                                 ImmutableMap.of("field", "source.fileSize"))));
         assertEquals(1, page.getAggregations().size());
     }
+
+    @Test
+    public void testMustSearch() throws IOException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+
+        assetService.index(source1);
+        assetService.index(source2);
+        refreshIndex();
+
+        AssetFilter filter = new AssetFilter().setMust(ImmutableList.of(new AssetFilter().addToTerms("superhero", "captain")));
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testMustNotSearch() throws IOException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+
+        assetService.index(source1);
+        assetService.index(source2);
+        refreshIndex();
+
+        AssetFilter filter = new AssetFilter().setMustNot(ImmutableList.of(new AssetFilter().addToTerms("superhero", "captain")));
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testShouldSearch() throws IOException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+
+        assetService.index(source1);
+        assetService.index(source2);
+        refreshIndex();
+
+        AssetFilter filter = new AssetFilter().setShould(ImmutableList.of(new AssetFilter().addToTerms("superhero", "captain")));
+        AssetSearch search = new AssetSearch().setFilter(filter);
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+    }
 }
