@@ -31,10 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -528,8 +525,11 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
         }
     }
 
+    Set<DyHierarchyLevelType> FORCE_RAW_TYPES = EnumSet.of(DyHierarchyLevelType.Attr,
+            DyHierarchyLevelType.Path);
+
     private void resolveFieldName(DyHierarchyLevel level) {
-        if (level.getField().endsWith(".raw") || !level.getType().equals(DyHierarchyLevelType.Attr)) {
+        if (level.getField().endsWith(".raw") || !FORCE_RAW_TYPES.contains(level.getType())) {
             return;
         }
 
