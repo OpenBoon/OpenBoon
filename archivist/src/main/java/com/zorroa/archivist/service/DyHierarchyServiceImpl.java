@@ -1,10 +1,8 @@
 package com.zorroa.archivist.service;
 
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
-import com.google.common.collect.Sets;
+import com.google.common.base.Splitter;
+import com.google.common.collect.*;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.DyHierarchyDao;
@@ -28,6 +26,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +62,9 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
     @Autowired
     TransactionEventManager transactionEventManager;
+
+    @Value("${archivist.dyhi.maxFoldersPerLevel}")
+    private Integer maxFoldersPerLevel;
 
     private final AtomicLong runAllTimer = new AtomicLong(System.currentTimeMillis());
 
@@ -292,7 +294,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             case Attr:
                 TermsBuilder terms = AggregationBuilders.terms(String.valueOf(idx));
                 terms.field(level.getField());
-                terms.size(1024);
+                terms.size(maxFoldersPerLevel);
                 return terms;
             case Year:
                 DateHistogramBuilder year = AggregationBuilders.dateHistogram(String.valueOf(idx));
@@ -315,6 +317,11 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 day.format("d");
                 day.minDocCount(1);
                 return day;
+            case Path:
+                TermsBuilder pathTerms = AggregationBuilders.terms(String.valueOf(idx));
+                pathTerms.field(level.getField());
+                pathTerms.size(maxFoldersPerLevel);
+                return pathTerms;
         }
 
         return null;
@@ -354,24 +361,43 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 return;
             }
 
+            boolean popit = true;
+
             String value;
             switch (level.getType()) {
                 case Attr:
                     value = bucket.getKeyAsString();
                     value = value.replace('/', '_');
+                    folders.push(value, level, null);
+                    break;
+                case Path:
+                    value = bucket.getKeyAsString();
+                    String delimiter = level.getOptions().getOrDefault("delimiter", "/").toString();
+
+                    folders.stash();
+                    popit = false;
+                    for (String val: new PathIterator(value, delimiter)) {
+                        String name = Iterables.getLast(Splitter.on(delimiter).omitEmptyStrings().splitToList(val));
+                        folders.push(name, level, val);
+                    }
                     break;
                 default:
                     value = bucket.getKeyAsString();
+                    folders.push(value, level, null);
                     break;
             }
-            folders.push(value, level);
 
             Aggregations child = bucket.getAggregations();
             if (child.asList().size() > 0) {
                 queue.add(new Tuple(child, depth + 1));
                 createDynamicHierarchy(queue, folders);
             }
-            folders.pop();
+            if (popit) {
+                folders.pop();
+            }
+            else {
+                folders.unstash();
+            }
         }
     }
 
@@ -379,12 +405,28 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
         public final DyHierarchy dyhi;
         private Stack<Folder> stack = new Stack<>();
+        private Stack<Folder> stash = new Stack<>();
         public int count = 0;
         public final Set<Integer> folderIds = Sets.newHashSetWithExpectedSize(50);
+        public final Folder root;
 
         public FolderStack(Folder root, DyHierarchy dyhi) {
             this.dyhi = dyhi;
             this.stack.push(root);
+            this.root = root;
+        }
+
+        /**
+         * Stash the current stack as the new root.
+         */
+        public void stash() {
+            stash.clear();
+            stash.addAll(stack);
+        }
+
+        public void unstash() {
+            stack.clear();
+            stack.addAll(stash);
         }
 
         public void pop() {
@@ -399,9 +441,9 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
          * @param level
          * @return
          */
-        public Folder push(String value, DyHierarchyLevel level) {
+        public Folder push(String value, DyHierarchyLevel level, String queryValue) {
             Folder parent = stack.peek();
-            AssetSearch search = getSearch(value, level);
+            AssetSearch search = getSearch(queryValue == null ? value : queryValue, level);
 
             /*
              * The parent search is merged into the current folder's search.
@@ -419,6 +461,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                     .setRecursive(false)
                     .setDyhiId(dyhi.getId())
                     .setSearch(search), true);
+
             count++;
             stack.push(folder);
             // Make note of the folder ID.
@@ -474,6 +517,11 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                     search.addToFilter().addToScripts(new AssetScript(
                             String.format("doc['%s'].getDayOfMonth() == value", level.getField()),
                             ImmutableMap.of("value", Integer.valueOf(value))));
+                    break;
+                case Path:
+                    // chop off trailing /
+                    value = value.substring(0, value.length()-1);
+                    search.addToFilter().addToTerms(level.getField(), ImmutableList.of(value));
                     break;
             }
             return search;

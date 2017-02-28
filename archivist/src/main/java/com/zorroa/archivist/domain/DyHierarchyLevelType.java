@@ -22,5 +22,10 @@ public enum DyHierarchyLevelType {
     /**
      * The day, formatted as 'd'
      */
-    Day
+    Day,
+
+    /**
+     * A Path of some type with a delimiter.
+     */
+    Path
 }
