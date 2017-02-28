@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.LogAction;
@@ -14,10 +15,12 @@ import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
 import com.zorroa.sdk.util.Json;
+import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
@@ -28,12 +31,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -66,6 +73,9 @@ public class AssetController {
     @Autowired
     LogService logService;
 
+    @Autowired
+    ImageService imageService;
+
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
     public void streamAsset(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -92,6 +102,65 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/notes", method=RequestMethod.GET)
     public List<Note> getNotes(@PathVariable String id) throws IOException {
         return noteService.getAll(id);
+    }
+
+    /**
+     * A table for converting the proxy type to a media type, which is required
+     * to serve the proxy images properly.
+     */
+    private final Map<String, MediaType> MEDIA_TYPES = ImmutableMap.of(
+            "gif", MediaType.IMAGE_GIF,
+            "jpg", MediaType.IMAGE_JPEG,
+            "png", MediaType.IMAGE_PNG);
+
+    @RequestMapping(value="/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}", method=RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> getClosestProxy(@PathVariable String id, @PathVariable(required=false) String size) throws IOException {
+        try {
+            String[] wh = size.split("x");
+            ProxySchema proxies = assetService.get(id).getProxies();
+            Proxy proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1]));
+            ByteArrayOutputStream output = imageService.watermark(proxy);
+
+            return ResponseEntity.ok()
+                    .contentType(MEDIA_TYPES.get(proxy.getFormat()))
+                    .contentLength(output.size())
+                    .header("Cache-Control", "public")
+                    .body(new InputStreamResource(new ByteArrayInputStream(output.toByteArray(), 0, output.size())));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value="/api/v1/assets/{id}/proxies/largest", method=RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> getLargestProxy(@PathVariable String id) throws IOException {
+        try {
+            ProxySchema proxies = assetService.get(id).getProxies();
+            Proxy proxy = proxies.getLargest();
+            ByteArrayOutputStream output = imageService.watermark(proxy);
+            return ResponseEntity.ok()
+                    .contentType(MEDIA_TYPES.get(proxy.getFormat()))
+                    .contentLength(output.size())
+                    .header("Cache-Control", "public")
+                    .body(new InputStreamResource(new ByteArrayInputStream(output.toByteArray(), 0, output.size())));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value="/api/v1/assets/{id}/proxies/smallest", method=RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> getSmallestProxy(@PathVariable String id) throws IOException {
+        try {
+            ProxySchema proxies = assetService.get(id).getProxies();
+            Proxy proxy = proxies.getSmallest();
+            ByteArrayOutputStream output = imageService.watermark(proxy);
+            return ResponseEntity.ok()
+                    .contentType(MEDIA_TYPES.get(proxy.getFormat()))
+                    .contentLength(output.size())
+                    .header("Cache-Control", "public")
+                    .body(new InputStreamResource(new ByteArrayInputStream(output.toByteArray(), 0, output.size())));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }
     }
 
     @RequestMapping(value="/api/v2/assets/_search", method=RequestMethod.POST)

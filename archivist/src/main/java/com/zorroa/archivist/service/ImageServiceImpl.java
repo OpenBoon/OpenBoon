@@ -1,11 +1,17 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.sdk.domain.Proxy;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Created by chambers on 7/8/16.
@@ -29,9 +35,32 @@ public class ImageServiceImpl implements ImageService {
     private String watermarkFontName;
     private Font watermarkFont;
 
+    @Autowired
+    ObjectFileSystem objectFileSystem;
+
     @PostConstruct
     public void init() {
         watermarkFont = new Font(watermarkFontName, Font.PLAIN, watermarkFontSize);
+    }
+
+
+    @Override
+    public ByteArrayOutputStream watermark(Proxy proxy) throws IOException {
+        BufferedImage image = ImageIO.read(objectFileSystem.get(proxy.getId())
+                .getFile().getAbsoluteFile());
+
+        /**
+         * Override toByteArray to return the same buffer rather
+         * than a copy, 50% memory savings.
+         */
+        final ByteArrayOutputStream output = new ByteArrayOutputStream() {
+            @Override
+            public synchronized byte[] toByteArray() {
+                return this.buf;
+            }
+        };
+        ImageIO.write(image, proxy.getFormat(), output);
+        return output;
     }
 
     @Override
