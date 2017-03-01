@@ -540,7 +540,7 @@ public class SearchServiceImpl implements SearchService {
             FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(ScoreFunctionBuilders.scriptFunction(new Script(
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
                     ImmutableMap.of("field", filter.getHamming().getField(),
-                            "hash", filter.getHamming().getHash()))));
+                            "hashes", filter.getHamming().getHashes()))));
             fsqb.setMinScore(filter.getHamming().getMinScore());
             query.must(fsqb);
         }

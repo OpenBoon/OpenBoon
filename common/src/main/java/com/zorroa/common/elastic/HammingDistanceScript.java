@@ -5,6 +5,7 @@ import org.elasticsearch.script.AbstractFloatSearchScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,19 +16,34 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     private static final Logger logger = LoggerFactory.getLogger(HammingDistanceScript.class);
 
     private final String field;
-    private final String hash;
+    private final List<String> hashes;
     private final int length;
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
         field = (String) params.get("field");
-        hash = (String) params.get("hash");
-        length = hash == null ? 0: hash.length();
+        hashes = (List<String>) params.get("hashes");
+        if (hashes == null || hashes.size() == 0) {
+            length = 0;
+        }
+        else {
+            /**
+             * Sample the length just 1 time.  All of the hashes should
+             * have the same length.
+             */
+            length = hashes.get(0).length();
+            for (String hash: hashes) {
+                if (hash.length() != length) {
+                    throw new IllegalArgumentException(
+                            "HammingDistanceScript hashes must all be of the same length");
+                }
+            }
+        }
     }
 
     private int hammingDistance(String lhs, String rhs) {
         int distance = length;
-        for (int i = 0, l = lhs.length(); i < l; i++) {
+        for (int i = 0, l = length; i < l; i++) {
             if (lhs.charAt(i) != rhs.charAt(i)) {
                 distance--;
             }
@@ -39,11 +55,17 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     @Override
     public float runAsFloat() {
         String fieldValue = ((ScriptDocValues.Strings) doc().get(field)).getValue();
-        if(hash == null || fieldValue == null || fieldValue.length() != hash.length()){
+        if(fieldValue == null || length == 0) {
             return 0.0f;
         }
 
-        int distance =  hammingDistance(fieldValue, hash);
+        int distance = 0;
+        for (String hash: hashes) {
+            if (fieldValue.length() != length) {
+                continue;
+            }
+            distance += hammingDistance(fieldValue, hash);
+        }
         return distance;
     }
 }

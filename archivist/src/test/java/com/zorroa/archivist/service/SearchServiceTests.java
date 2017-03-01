@@ -466,5 +466,11 @@ public class SearchServiceTests extends AbstractTest {
                 new AssetFilter().setHamming(
                         new HammingDistanceFilter("ccccccaf", "test.hash1.raw", 2)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
+
+        search = new AssetSearch(
+                new AssetFilter().setHamming(
+                        new HammingDistanceFilter(Lists.newArrayList("afafafaf","adadadad"),
+                                "test.hash1.raw", 12)));
+        assertEquals(2, searchService.search(search).getHits().getTotalHits());
     }
 }
