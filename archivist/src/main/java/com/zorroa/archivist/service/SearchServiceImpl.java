@@ -542,6 +542,8 @@ public class SearchServiceImpl implements SearchService {
                     ImmutableMap.of("field", filter.getHamming().getField(),
                             "hashes", filter.getHamming().getHashes()))));
             fsqb.setMinScore(filter.getHamming().getMinScore());
+            fsqb.scoreMode("max");
+            fsqb.boostMode("max");
             query.must(fsqb);
         }
 
