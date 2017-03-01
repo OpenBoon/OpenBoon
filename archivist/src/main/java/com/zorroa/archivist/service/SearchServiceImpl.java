@@ -29,6 +29,8 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.sort.SortOrder;
@@ -327,6 +329,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         BoolQueryBuilder query = QueryBuilders.boolQuery();
+
         if (perms && permsQuery != null) {
             query.must(permsQuery);
         }
@@ -534,11 +537,12 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (filter.getHamming() != null) {
-            QueryBuilder hammingScript = QueryBuilders.scriptQuery(new Script(
+            FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(ScoreFunctionBuilders.scriptFunction(new Script(
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
                     ImmutableMap.of("field", filter.getHamming().getField(),
-                            "hash", filter.getHamming().getHash())));
-            query.must(hammingScript);
+                            "hash", filter.getHamming().getHash()))));
+            fsqb.setMinScore(filter.getHamming().getMinScore());
+            query.must(fsqb);
         }
 
         // Recursively add bool sub-filters for must, must_not and should
