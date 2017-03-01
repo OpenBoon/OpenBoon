@@ -539,7 +539,7 @@ public class SearchServiceImpl implements SearchService {
         if (filter.getHamming() != null) {
             FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(ScoreFunctionBuilders.scriptFunction(new Script(
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
-                    ImmutableMap.of("field", filter.getHamming().getField(),
+                    ImmutableMap.of("field", dotRawMe(filter.getHamming().getField()),
                             "hashes", filter.getHamming().getHashes()))));
             fsqb.setMinScore(filter.getHamming().getMinScore());
             fsqb.scoreMode("max");
@@ -647,5 +647,18 @@ public class SearchServiceImpl implements SearchService {
             defaultQueryFields = builder.build();
         }
         logger.info("Default search fields: {}", defaultQueryFields);
+    }
+
+    /**
+     * If a field doesn't end with .raw, concat .raw
+     *
+     * @param field
+     * @return
+     */
+    private static String dotRawMe(String field) {
+        if (field.endsWith(".raw")) {
+            return field;
+        }
+        return field.concat(".raw");
     }
 }
