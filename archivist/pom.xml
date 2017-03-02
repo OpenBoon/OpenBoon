@@ -137,6 +137,13 @@
             <artifactId>lang-expression</artifactId>
         </dependency>
 
+        <!-- 2.5x faster at loading jpegs in watermark case -->
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-jpeg</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
         <!-- Elastic is faster with this library -->
         <dependency>
             <groupId>net.java.dev.jna</groupId>

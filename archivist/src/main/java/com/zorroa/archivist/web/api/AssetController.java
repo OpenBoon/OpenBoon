@@ -1,7 +1,6 @@
 package com.zorroa.archivist.web.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.LogAction;
@@ -39,8 +38,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -104,28 +101,13 @@ public class AssetController {
         return noteService.getAll(id);
     }
 
-    /**
-     * A table for converting the proxy type to a media type, which is required
-     * to serve the proxy images properly.
-     */
-    private final Map<String, MediaType> MEDIA_TYPES = ImmutableMap.of(
-            "gif", MediaType.IMAGE_GIF,
-            "jpg", MediaType.IMAGE_JPEG,
-            "png", MediaType.IMAGE_PNG);
-
     @RequestMapping(value="/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}", method=RequestMethod.GET)
     public ResponseEntity<InputStreamResource> getClosestProxy(@PathVariable String id, @PathVariable(required=false) String size) throws IOException {
         try {
             String[] wh = size.split("x");
             ProxySchema proxies = assetService.get(id).getProxies();
             Proxy proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1]));
-            ByteArrayOutputStream output = imageService.watermark(proxy);
-
-            return ResponseEntity.ok()
-                    .contentType(MEDIA_TYPES.get(proxy.getFormat()))
-                    .contentLength(output.size())
-                    .header("Cache-Control", "public")
-                    .body(new InputStreamResource(new ByteArrayInputStream(output.toByteArray(), 0, output.size())));
+            return imageService.serveImage(proxy);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());
         }
@@ -136,12 +118,7 @@ public class AssetController {
         try {
             ProxySchema proxies = assetService.get(id).getProxies();
             Proxy proxy = proxies.getLargest();
-            ByteArrayOutputStream output = imageService.watermark(proxy);
-            return ResponseEntity.ok()
-                    .contentType(MEDIA_TYPES.get(proxy.getFormat()))
-                    .contentLength(output.size())
-                    .header("Cache-Control", "public")
-                    .body(new InputStreamResource(new ByteArrayInputStream(output.toByteArray(), 0, output.size())));
+            return imageService.serveImage(proxy);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());
         }
@@ -152,12 +129,7 @@ public class AssetController {
         try {
             ProxySchema proxies = assetService.get(id).getProxies();
             Proxy proxy = proxies.getSmallest();
-            ByteArrayOutputStream output = imageService.watermark(proxy);
-            return ResponseEntity.ok()
-                    .contentType(MEDIA_TYPES.get(proxy.getFormat()))
-                    .contentLength(output.size())
-                    .header("Cache-Control", "public")
-                    .body(new InputStreamResource(new ByteArrayInputStream(output.toByteArray(), 0, output.size())));
+            return imageService.serveImage(proxy);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());
         }

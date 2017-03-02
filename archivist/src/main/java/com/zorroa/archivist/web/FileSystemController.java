@@ -9,17 +9,16 @@ import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -62,7 +61,7 @@ public class FileSystemController {
 
     @RequestMapping(value = "/api/v1/ofs/proxy/**", method = RequestMethod.GET, produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE })
     @ResponseBody
-    public byte[] getProxy(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResponseEntity<InputStreamResource> getProxy(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Cache-Control", "public");
 
         String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
@@ -70,10 +69,6 @@ public class FileSystemController {
 
         AntPathMatcher apm = new AntPathMatcher();
         String id = "proxy/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path));
-        BufferedImage image = ImageIO.read(objectFileSystem.get(id).getFile().getCanonicalFile());
-        String ext = FileUtils.extension(path);
-        ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        ImageIO.write(imageService.watermark(image), ext, bao);
-        return bao.toByteArray();
+        return imageService.serveImage(objectFileSystem.get(id).getFile());
     }
 }
