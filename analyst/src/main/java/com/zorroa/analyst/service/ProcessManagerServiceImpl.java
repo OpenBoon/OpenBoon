@@ -21,6 +21,7 @@ import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -55,6 +56,9 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
 
     @Autowired
     ThreadPoolExecutor analyzeExecutor;
+
+    @Value("${analyst.executor.enabled}")
+    boolean executeEnabled;
 
     /**
      * Executor for handling task manipulation commands.
@@ -549,6 +553,8 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        startAsync();
+        if (executeEnabled) {
+            startAsync();
+        }
     }
 }
