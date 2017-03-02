@@ -16,40 +16,43 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     private static final Logger logger = LoggerFactory.getLogger(HammingDistanceScript.class);
 
     private final String field;
+    private final int[][] bitwiseHashes;
     private final List<String> hashes;
+    private final boolean bitwise;
     private final int length;
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
+
         field = (String) params.get("field");
+        bitwise = (boolean) params.getOrDefault("bitwise", false);
         hashes = (List<String>) params.get("hashes");
-        if (hashes == null || hashes.size() == 0) {
-            length = 0;
+        length = hashes.get(0).length();
+
+        if (hashes == null || hashes.isEmpty()) {
+            bitwiseHashes = null;
+            return;
         }
-        else {
-            /**
-             * Sample the length just 1 time.  All of the hashes should
-             * have the same length.
-             */
-            length = hashes.get(0).length();
-            for (String hash: hashes) {
+
+        /**
+         * Initialize for bitwise mode which pre-caches the passed in hex
+         * as arrays of integers.
+         */
+        if (bitwise) {
+            this.bitwiseHashes = new int[hashes.size()][length / 2];
+            for (int i=0; i<hashes.size(); i++) {
+                String hash = hashes.get(i);
                 if (hash.length() != length) {
                     throw new IllegalArgumentException(
                             "HammingDistanceScript hashes must all be of the same length");
                 }
+                // pre-cache this so we don't do the conversion on every hit.
+                this.bitwiseHashes[i] = hexToDecimalArray(hash);
             }
         }
-    }
-
-    private int hammingDistance(String lhs, String rhs) {
-        int distance = length;
-        for (int i = 0, l = length; i < l; i++) {
-            if (lhs.charAt(i) != rhs.charAt(i)) {
-                distance--;
-            }
+        else {
+            bitwiseHashes = null;
         }
-
-        return distance;
     }
 
     @Override
@@ -60,12 +63,62 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         }
 
         int distance = 0;
-        for (String hash: hashes) {
-            if (fieldValue.length() != length) {
-                continue;
+
+        if (bitwise) {
+            final int[] fieldValueBytes = hexToDecimalArray(fieldValue);
+            for (int[] hash: bitwiseHashes) {
+                if (fieldValueBytes.length != hash.length) {
+                    continue;
+                }
+                distance += bitwiseHammingDistance(fieldValueBytes, hash);
             }
-            distance += hammingDistance(fieldValue, hash);
+        }
+        else {
+            final int fieldLength = fieldValue.length();
+            for (String hash: hashes) {
+                if (fieldLength != length) {
+                    continue;
+                }
+                distance += hammingDistance(fieldValue, hash, length);
+            }
         }
         return distance;
+    }
+
+    public final static int hammingDistance(final String lhs, final String rhs, int length) {
+        int distance = length;
+        for (int i = 0, l = length; i < l; i++) {
+            if (lhs.charAt(i) != rhs.charAt(i)) {
+                distance--;
+            }
+        }
+        return distance;
+    }
+
+    public final static int bitwiseHammingDistance(final int[] lhs, final int[] rhs) {
+        int distance = 0;
+        for (int i = 0, l = lhs.length; i < l; i++) {
+            int z = lhs[i] ^ rhs[i];
+            //while (z > 0) {
+            //    distance += 1;
+            //    z &= z-1;
+            //}
+            distance +=hammingWeight(z);
+        }
+        return (lhs.length * 8) - distance;
+    }
+
+    public final static int hammingWeight(int i) {
+        i = i - ((i >>> 1) & 0x55555555);
+        i = (i & 0x33333333) + ((i >>> 2) & 0x33333333);
+        return (((i + (i >>> 4)) & 0x0F0F0F0F) * 0x01010101) >>> 24;
+    }
+
+    public final static int[] hexToDecimalArray(final String value) {
+        int[] result = new int[value.length() / 2];
+        for (int i = 0, l = value.length(); i < l; i=i+2) {
+            result[i/2] = Integer.parseInt(value.substring(i, i+2), 16);
+        }
+        return result;
     }
 }

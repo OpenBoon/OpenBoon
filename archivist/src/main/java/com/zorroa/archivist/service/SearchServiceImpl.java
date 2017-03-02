@@ -537,13 +537,14 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (filter.getHamming() != null) {
+
             FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(ScoreFunctionBuilders.scriptFunction(new Script(
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
                     ImmutableMap.of("field", dotRawMe(filter.getHamming().getField()),
-                            "hashes", filter.getHamming().getHashes()))));
+                            "hashes", filter.getHamming().getHashes(),
+                            "bitwise", filter.getHamming().isBitwise()))));
             fsqb.setMinScore(filter.getHamming().getMinScore());
             fsqb.scoreMode("max");
-            fsqb.boostMode("max");
             query.must(fsqb);
         }
 

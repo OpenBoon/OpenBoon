@@ -18,6 +18,7 @@ import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.search.*;
+import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
 
 import java.io.File;
@@ -454,7 +455,8 @@ public class SearchServiceTests extends AbstractTest {
 
         AssetSearch search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("afafafaf", "test.hash1.raw", 5)));
+                        new HammingDistanceFilter("afafafaf", "test.hash1.raw", 8)));
+
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
@@ -479,6 +481,28 @@ public class SearchServiceTests extends AbstractTest {
                         new HammingDistanceFilter(Lists.newArrayList("afafafaf","adadadad"),
                                 "test.hash1", 12)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testBitwiseHammingDistanceFilter() throws IOException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+        source1.setAttr("test.hash1", "55");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+        source2.setAttr("test.hash1", "00");
+
+        assetService.index(ImmutableList.of(source1, source2));
+        refreshIndex();
+
+        AssetSearch search = new AssetSearch(
+                new AssetFilter().setHamming(
+                        new HammingDistanceFilter("FF", "test.hash1.raw", 1).setBitwise(true)));
+
+        for (SearchHit hit: searchService.search(search).getHits()) {
+            assertEquals(4, hit.getScore(), 0);
+        }
     }
 
     @Test
