@@ -409,9 +409,6 @@ def run_remote_command(command, aws_host, aws_user, password):
 
         stdin, stdout, stderr = ssh.exec_command(str(command))
         exit_status = stdout.channel.recv_exit_status()
-        if VERBOSE:
-            for line in stdout:
-                print '[stdout] ' + line.strip('\n')
 
         ssh.close()
         if DEBUG:
@@ -775,7 +772,7 @@ def main():
         
     if args.start_server:
         server_dir = args.aws_path + "/" + filename
-        server_cmd = "bin/" + filename + " >& " + filename + ".log &"
+        server_cmd = "bin/" + filename + " -d "
         result = start_server(server_dir, server_cmd, args.aws_host, args.aws_user, password)
 
         if DEBUG:
