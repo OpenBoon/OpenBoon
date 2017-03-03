@@ -15,7 +15,9 @@ import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.client.Client;
@@ -276,9 +278,16 @@ public abstract class AbstractTest {
             if (f.isFile()) {
                 if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
                     Source b = new Source(f);
-                    b.setAttr("user.rating", 4);
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
                     AssetUtils.addKeywords(b, "source", b.getAttr("source.filename", String.class));
+
+                    List<Proxy> proxies = Lists.newArrayList();
+                    proxies.add(new Proxy().setHeight(100).setWidth(100));
+                    proxies.add(new Proxy().setHeight(200).setWidth(200));
+                    proxies.add(new Proxy().setHeight(300).setWidth(300));
+
+                    ProxySchema p = new ProxySchema();
+                    p.setProxies(proxies);
                     result.add(b);
                 }
             }

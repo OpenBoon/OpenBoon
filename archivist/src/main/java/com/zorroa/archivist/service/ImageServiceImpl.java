@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by chambers on 7/8/16.
@@ -95,6 +100,11 @@ public class ImageServiceImpl implements ImageService {
         return output;
     }
 
+    /**
+     * The pattern used to define text replacements in the watermark texts
+     */
+    private static final Pattern PATTERN = Pattern.compile("#\\[(.*?)\\]");
+
     @Override
     public BufferedImage watermark(BufferedImage src) {
 
@@ -102,10 +112,18 @@ public class ImageServiceImpl implements ImageService {
             return src;
         }
 
-        // Replace variables in the watermarkTemplte once we have session & asset
-        String text = watermarkTemplate;
+        Map<String, String> replacements = ImmutableMap.of(
+            "USER", SecurityUtils.getUsername(),
+            "DATE", new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-        // Draw AA text composited on top of the image
+        StringBuffer sb = new StringBuffer(watermarkTemplate.length() * 2);
+        Matcher m = PATTERN.matcher(watermarkTemplate);
+        while (m.find()) {
+            m.appendReplacement(sb, replacements.get(m.group(1)));
+        }
+        m.appendTail(sb);
+        String text = sb.toString();
+
         // FIXME: Wrap strings that are too long
         Graphics2D g2d = src.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
