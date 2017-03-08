@@ -529,6 +529,6 @@ public class SearchServiceTests extends AbstractTest {
          * score, to result in a score higher than the hamming score.
          */
         float score = searchService.search(search).getHits().hits()[0].getScore();
-        assertTrue(score > 8);
+        assertTrue(score >= 8);
     }
 }

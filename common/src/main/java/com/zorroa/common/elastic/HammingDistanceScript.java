@@ -20,6 +20,7 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     private final List<String> hashes;
     private final boolean bitwise;
     private final int length;
+    private final int minScore;
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
@@ -28,6 +29,7 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         bitwise = (boolean) params.getOrDefault("bitwise", false);
         hashes = (List<String>) params.get("hashes");
         length = hashes.get(0).length();
+        minScore = (int) params.getOrDefault("minScore", 1);
 
         if (hashes == null || hashes.isEmpty()) {
             bitwiseHashes = null;
@@ -75,14 +77,19 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         }
         else {
             final int fieldLength = fieldValue.length();
-            for (String hash: hashes) {
+            for (String hash : hashes) {
                 if (fieldLength != length) {
                     continue;
                 }
                 distance += hammingDistance(fieldValue, hash, length);
             }
         }
-        return distance;
+
+        /*
+         * If distance >= minScore then return minScore, otherwise
+         * return 0.
+         */
+        return distance >= minScore ? distance : 0;
     }
 
     public final static int hammingDistance(final String lhs, final String rhs, int length) {
