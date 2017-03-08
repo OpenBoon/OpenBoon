@@ -40,6 +40,7 @@ def main():
 
     os.mkdir("%s/plugins" % base_dir)
     os.mkdir("%s/lib" % base_dir)
+    os.mkdir("%s/logs" % base_dir)
     shutil.copy(jarFile, "%s/lib" % base_dir)
 
     if args.compress:
