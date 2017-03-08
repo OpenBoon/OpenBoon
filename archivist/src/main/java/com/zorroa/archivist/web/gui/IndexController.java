@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
@@ -74,11 +72,6 @@ public class IndexController {
     @Autowired
     Validator validator;
 
-    @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
-
     @RequestMapping("/gui")
     public String index(Model model) {
         standardModel(model);
@@ -88,17 +81,6 @@ public class IndexController {
         model.addAttribute("analystCount", analystService.getCount());
         model.addAttribute("user", SecurityUtils.getUser());
         return "overview";
-    }
-
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
-
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest req) throws ServletException {
-        req.logout();
-        return "redirect:/login?logout";
     }
 
     @RequestMapping("/gui/permissions")

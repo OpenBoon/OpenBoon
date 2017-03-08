@@ -29,6 +29,7 @@ import org.springframework.security.ldap.authentication.LdapAuthenticationProvid
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch;
 import org.springframework.security.ldap.search.LdapUserSearch;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
@@ -86,6 +87,11 @@ public class MultipleWebSecurityConfig {
             http
                 .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
+                .antMatcher("/api/v1/log*")
+                    .authorizeRequests().antMatchers(
+                            "/api/v1/login","/api/v1/logout").permitAll()
+                    .anyRequest().authenticated()
+                .and()
                 .antMatcher("/api/**")
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isCorsRequest).permitAll()
@@ -114,33 +120,30 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .authorizeRequests()
-                    .antMatchers("/gui/**").authenticated()
+                    .antMatchers("/").authenticated()
+                    .antMatchers("/gui/**").hasAuthority("group::administrator")
                     .antMatchers("/docs/**").permitAll()
                     .antMatchers("/signin/**").permitAll()
                     .antMatchers("/signout/**").permitAll()
                     .antMatchers("/health/**").permitAll()
                     .antMatchers("/cluster/**").permitAll()
-                    .antMatchers("/console/**").hasAuthority("user::admin")
-                .and()
-                .formLogin()
-                    .loginPage("/login").permitAll()
-                    .failureUrl("/login?error").permitAll()
-                    .defaultSuccessUrl("/gui")
-                    .permitAll()
+                    .antMatchers("/console/**").hasAuthority("group::administrator")
                 .and()
                     .exceptionHandling()
-                    .accessDeniedPage("/login")
+                    .accessDeniedPage("/signin")
+                    .authenticationEntryPoint(
+                            new LoginUrlAuthenticationEntryPoint("/signin"))
                 .and().headers().frameOptions().disable()
                 .and()
                     .sessionManagement()
                     .maximumSessions(10)
                     .sessionRegistry(sessionRegistry)
-                    .expiredUrl("/login")
+                    .expiredUrl("/signin")
                     .and()
                 .and()
                     .csrf().disable()
                 .logout().logoutRequestMatcher(
-                new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").permitAll();
+                new AntPathRequestMatcher("/signout")).logoutSuccessUrl("/signin").permitAll();
         }
     }
 
