@@ -8,6 +8,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.ResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
@@ -24,19 +25,24 @@ import java.util.Set;
 @Configuration
 public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
 
-
     @Autowired
     ApplicationProperties properties;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         Path curator = properties.getPath("archivist.path.home").resolve("web/curator");
-
         registry.addResourceHandler("/**")
                 .addResourceLocations(curator.toUri().toString())
                 .resourceChain(false)
                 .addResolver(new PushStateResourceResolver());
         super.addResourceHandlers(registry);
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("redirect:/index.html");
+        // put in front of the thymeleaf resolver
+        registry.setOrder(-1);
     }
 
     private class PushStateResourceResolver implements ResourceResolver {
@@ -59,7 +65,6 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
         public PushStateResourceResolver() {
             index = new FileSystemResource(properties.getString("archivist.path.home") + "/web/curator/index.html");
         }
-
 
         @Override
         public Resource resolveResource(HttpServletRequest request, String requestPath, List<? extends Resource> locations, ResourceResolverChain chain) {
