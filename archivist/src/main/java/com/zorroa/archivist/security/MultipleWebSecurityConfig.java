@@ -87,11 +87,6 @@ public class MultipleWebSecurityConfig {
             http
                 .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
-                .antMatcher("/api/v1/log*")
-                    .authorizeRequests().antMatchers(
-                            "/api/v1/login","/api/v1/logout").permitAll()
-                    .anyRequest().authenticated()
-                .and()
                 .antMatcher("/api/**")
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isCorsRequest).permitAll()
