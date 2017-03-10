@@ -510,6 +510,17 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                     .setErrorCount(reaction.getStats().getErrorCount())
                     .setSuccessCount(reaction.getStats().getSuccessCount())
                     .setWarningCount(reaction.getStats().getWarningCount()));
+            if (reaction.getStats().getSkipped()!= null) {
+                for (String path: reaction.getStats().getSkipped()) {
+                    logger.info("SKIPPED:{}", path);
+                }
+            }
+
+            if (reaction.getStats().getErrored()!= null) {
+                for (String path : reaction.getStats().getErrored()) {
+                    logger.info("ERROR:{}", path);
+                }
+            }
         }
     }
 
