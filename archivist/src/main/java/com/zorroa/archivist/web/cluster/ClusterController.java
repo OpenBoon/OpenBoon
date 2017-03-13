@@ -1,10 +1,10 @@
 package com.zorroa.archivist.web.cluster;
 
 import com.google.common.collect.ImmutableList;
+import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.domain.*;
-import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.common.repository.ClusterSettingsDao;
 import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class ClusterController {
     JobService jobService;
 
     @Autowired
-    AnalystDao analystDao;
+    AnalystService analystService;
 
     @RequestMapping(value="/cluster/v1/settings", method= RequestMethod.GET)
     public Map<String, Object> getConfig() {
@@ -45,7 +45,7 @@ public class ClusterController {
 
     @RequestMapping(value="/cluster/v1/analyst/_register", method=RequestMethod.POST)
     public void register(@RequestBody AnalystSpec builder) {
-        analystDao.register(builder.getId(), builder);
+        analystService.register(builder.getId(), builder);
     }
 
     /**

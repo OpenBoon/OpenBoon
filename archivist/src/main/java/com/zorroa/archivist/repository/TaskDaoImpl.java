@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -289,9 +290,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             GET_TASKS +
             "JOIN job ON task.pk_job = job.pk_job " +
             "WHERE " +
-                "job.int_state = 0 " +
-            "AND " +
-                "task.int_state IN (1, 2) " +
+                "task.int_state IN (" + TaskState.Running.ordinal() + "," +  TaskState.Queued.ordinal() + ") " +
             "AND " +
                 "task.time_ping < ? " +
             "LIMIT ? ";
@@ -371,6 +370,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             return 0;
         }
 
+        Collections.sort(taskIds);
         final long time = System.currentTimeMillis();
         return jdbc.batchUpdate(UPDATE_PING, new BatchPreparedStatementSetter() {
             @Override

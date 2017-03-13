@@ -166,8 +166,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
      * TODO: may need to verify with analyst that its still around.
      */
     public void checkForExpiredTasks() {
-        jobService.updatePingTime(analystDao.getRunningTaskIds());
-        List<Task> expired = taskDao.getOrphanTasks(1, 30, TimeUnit.MINUTES);
+        List<Task> expired = taskDao.getOrphanTasks(10, 5, TimeUnit.MINUTES);
         if (!expired.isEmpty()) {
             logger.warn("Found {} expired tasks!", expired.size());
             for (Task task : expired) {
@@ -205,7 +204,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
         for (Task task: taskDao.getAll(job.getJobId(),
                 new TaskFilter().setStates(ImmutableSet.of(TaskState.Queued, TaskState.Running)))) {
-            skipTask(task);
+            retryTask(task);
         }
         return result;
     }
