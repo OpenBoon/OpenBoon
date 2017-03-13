@@ -1,5 +1,7 @@
 package com.zorroa.common.domain;
 
+import java.util.List;
+
 /**
  * Created by chambers on 6/16/16.
  */
@@ -12,6 +14,7 @@ public class AnalystSpec extends AnalystUpdateSpec {
     private String arch;
     private String os;
     private String id;
+    private List<Integer> taskIds;
 
     public String getId() {
         return id;
@@ -73,6 +76,17 @@ public class AnalystSpec extends AnalystUpdateSpec {
 
     public AnalystSpec setStartedTime(long startedTime) {
         this.startedTime = startedTime;
+        return this;
+    }
+
+    @Override
+    public List<Integer> getTaskIds() {
+        return taskIds;
+    }
+
+    @Override
+    public AnalystSpec setTaskIds(List<Integer> taskIds) {
+        this.taskIds = taskIds;
         return this;
     }
 }

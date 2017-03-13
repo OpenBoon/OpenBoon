@@ -183,6 +183,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         builder.setTaskIds(ImmutableList.of());
         builder.setRemainingCapacity(e.getQueue().remainingCapacity());
         builder.setId(id);
+        builder.setTaskIds(processManagerService.getTaskIds());
         archivistClient.register(builder);
         return id;
     }
