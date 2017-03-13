@@ -2,7 +2,6 @@ package com.zorroa.analyst.web;
 
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.analyst.service.ProcessManagerService;
-import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,11 +20,6 @@ public class ProcessManagerController {
 
     @Autowired
     ProcessManagerService processManager;
-
-    @RequestMapping(value="/api/v1/task/_execute", method=RequestMethod.POST)
-    public void executeTask(@RequestBody ExecuteTaskStart task) throws Throwable {
-        processManager.execute(task, true);
-    }
 
     @RequestMapping(value="/api/v1/task/_stop", method=RequestMethod.POST)
     public void stopTask(@RequestBody ExecuteTaskStop task) throws Throwable {
