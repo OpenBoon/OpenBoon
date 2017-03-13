@@ -62,7 +62,6 @@ public class ApplicationConfig {
 
     @Bean
     public ThreadPoolExecutor analyzeThreadPool() {
-        int maxQueueSize = properties.getInt("analyst.executor.maxQueueSize");
         int threads = properties.getInt("analyst.executor.threads");
         if (threads == 0) {
             threads = Runtime.getRuntime().availableProcessors();
@@ -72,7 +71,7 @@ public class ApplicationConfig {
         }
 
         System.setProperty("analyst.executor.threads", String.valueOf(threads));
-        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>(maxQueueSize);
+        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>(threads);
 
         ThreadPoolExecutor tp = new ThreadPoolExecutor(threads, threads, 30,
                 TimeUnit.MINUTES, linkedBlockingDeque,

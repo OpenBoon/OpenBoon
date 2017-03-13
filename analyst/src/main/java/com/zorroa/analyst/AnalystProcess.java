@@ -2,6 +2,7 @@ package com.zorroa.analyst;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Queues;
+import com.zorroa.common.domain.ExecuteTask;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.zps.ZpsScript;
 
@@ -15,15 +16,16 @@ public class AnalystProcess {
 
     private Process process = null;
     private Path logFile = null;
-    private TaskState newState = null;
+    private volatile TaskState newState = null;
     private Queue<ZpsScript> processQueue = Queues.newLinkedBlockingQueue();
     private int processCount = 1;
-    private Integer taskId;
+    private ExecuteTask task;
 
-    public AnalystProcess() {}
+    public AnalystProcess() {
+    }
 
-    public AnalystProcess(Integer taskId) {
-        this.taskId = taskId;
+    public AnalystProcess(ExecuteTask task) {
+        this.task = task;
     }
 
     @JsonIgnore
@@ -78,12 +80,14 @@ public class AnalystProcess {
         return this;
     }
 
-    public Integer getTaskId() {
-        return taskId;
+    public ExecuteTask getTask() {
+        return task;
     }
 
-    public AnalystProcess setTaskId(Integer taskId) {
-        this.taskId = taskId;
+    public AnalystProcess setTask(ExecuteTask task) {
+        this.task = task;
         return this;
     }
 }
+
+

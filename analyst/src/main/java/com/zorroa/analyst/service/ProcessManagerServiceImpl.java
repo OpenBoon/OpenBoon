@@ -1,6 +1,5 @@
 package com.zorroa.analyst.service;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -61,6 +60,12 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
     boolean executeEnabled;
 
     /**
+     * Before a process is started or stopped, the process lock must be obtained
+     * so some checks can be made if the process can be started or not.
+     */
+    private final Object processLock = new Object();
+
+    /**
      * Executor for handling task manipulation commands.
      */
     private final ExecutorService asyncCommandExecutor = Executors.newSingleThreadExecutor();
@@ -81,59 +86,98 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
     }
 
     @Override
-    public boolean stopTask(ExecuteTaskStop stop) {
-        int taskId = stop.getTask().getTaskId();
-        /**
-         * Set to true if we actually kill the process.
-         */
-        boolean result = false;
-        AnalystProcess p = processMap.remove(stop.getTask().getTaskId());
+    public boolean stopTask(AnalystProcess p, TaskState newState, String reason) {
+        boolean processKilled = false;
+        Stopwatch timer = Stopwatch.createStarted();
 
-        if (p == null) {
-            logger.warn("Attempted to stop task {}, was not queued or running.", taskId);
-        }
-        else {
-            try {
-                synchronized (p) {
-                    p.setNewState(stop.getNewState());
-                    // If the process is null, the process never started
-                    if (p.getProcess() != null) {
-                        p.getProcess().destroyForcibly().waitFor();
-                        result = true;
-                    } else {
-                        logger.warn("The process for task {} never started.", taskId);
+        try {
+            while(true) {
+                // If the process is null, the process never started
+                if (p.getProcess() != null) {
+                    for (int i = 0; i < 5; i++) {
+                        processKilled = p.getProcess().destroyForcibly().waitFor(5, TimeUnit.SECONDS);
+                        if (processKilled) {
+                            logger.info("Process {} was killed, try #{}", p.getTask().getTaskId(), i+1);
+                            p.setNewState(newState);
+                            break;
+                        } else {
+                            logger.warn("Failed to kill process: {}, try #{}", p.getTask().getTaskId(), i+1);
+                        }
                     }
-                }
 
-                if (p.getLogFile() != null) {
-                    Files.write(p.getLogFile(), ImmutableList.of("Process killed, reason: " + stop.getReason()),
-                            StandardOpenOption.APPEND);
-                }
+                    if (p.getLogFile() != null) {
+                        if (processKilled) {
+                            Files.write(p.getLogFile(), ImmutableList.of("Process killed, reason: " + reason),
+                                    StandardOpenOption.APPEND);
+                        }
+                        else {
+                            Files.write(p.getLogFile(), ImmutableList.of("Attempt to kill process failed."),
+                                    StandardOpenOption.APPEND);
+                        }
+                    }
+                    // Break out of infinite loop.
+                    break;
+                } else {
 
-            } catch (Exception e) {
-                logger.warn("Failed to kill task {}", taskId, e);
-                /**
-                 * In this case, we don't report the task as stopped.
-                 */
-                return false;
+                    if (p.getNewState() != null) {
+                        // Another thread has set a new state
+                        logger.warn("The task {} had it's new state set by another thread.", p.getTask());
+                        break;
+                    }
+
+                    if (!processMap.containsKey(p.getTask().getTaskId())) {
+                        logger.warn("Something else kill the running task: {}", p.getTask());
+                        break;
+                    }
+
+                    if (timer.elapsed(TimeUnit.SECONDS) >= 60) {
+                        logger.warn("Waited 60 seconds for task {} to start, never started", p.getTask());
+                        break;
+                    }
+
+                    logger.warn("The task: {} does not having a process yet, waiting.", p.getTask());
+                    /*
+                     * The process has not started yet, we'll wait till it starts to kill it.
+                     * This should fix a race condition where if you kill a task when no process, the process
+                     * will run anyway.
+                     */
+                    Thread.sleep(1000);
+                }
             }
+        } catch (Exception e) {
+            logger.warn("Failed to kill task {}", p.getTask(), e);
         }
 
-        /**
-         * Report the task as stopped, even if we didn't stop the task.
-         */
-        if (!Application.isUnitTest()) {
-            archivistClient.reportTaskStopped(new ExecuteTaskStopped(stop.getTask())
-                    .setNewState(stop.getNewState()));
-        }
-        return result;
+        return processKilled;
     }
 
     @Override
     public void asyncStopTask(ExecuteTaskStop task) {
         asyncCommandExecutor.execute(() -> {
-            stopTask(task);
+            synchronized (processLock) {
+                AnalystProcess p = processMap.get(task.getTaskId());
+                if (p == null) {
+                    logger.warn("Attmepted to stop non-existing process for task: {}", task);
+                }
+                else {
+                    stopTask(p, task.getNewState(), task.getReason());
+                }
+            }
         });
+    }
+
+    @Override
+    public void stopAllTasks() {
+        synchronized (processLock) {
+            /**
+             * Shutdown the thread pool so no more tasks can get queued.
+             */
+            analyzeExecutor.shutdown();
+
+            for (Map.Entry<Integer, AnalystProcess> entry : processMap.entrySet()) {
+                stopTask(entry.getValue(), TaskState.Waiting, "All tasks killed by server shutdown");
+            }
+        }
     }
 
     @Override
@@ -143,8 +187,8 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
          * The processes is added to the map first, this is because we also keep track
          * of queued processes.
          */
-        AnalystProcess p = processMap.putIfAbsent(task.getTask().getTaskId(),
-                new AnalystProcess(task.getTask().getTaskId()));
+        AnalystProcess p = processMap.putIfAbsent(
+                task.getTask().getTaskId(), new AnalystProcess(task.getTask()));
 
         if (p != null) {
             /**
@@ -160,7 +204,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                 return analyzeExecutor.submit(() -> execute(task));
             } catch (RejectedExecutionException ex){
                 processMap.remove(task.getTaskId());
-                throw new ClusterException("Analyst already has too many tasks queued.");
+                throw new ClusterException("Failed to queue task for execution, " + ex.getMessage());
             }
         }
         else {
@@ -195,107 +239,119 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         }
     }
 
-    private AnalystProcess execute(ExecuteTaskStart task) {
-        Preconditions.checkNotNull(task.getTask().getTaskId(), "Task ID cannot be null");
-        Preconditions.checkNotNull(task.getTask().getJobId(), "Job ID cannot be null");
+    private boolean isTaskValid(AnalystProcess proc) {
+        if (analyzeExecutor.isShutdown()) {
+            logger.warn("The analyst is shutting down and longer excepting tasks, {}", proc.getTask());
+            return false;
+        }
 
+        if (proc == null) {
+            logger.warn("No process record exists for task: {}", proc.getTask());
+            return false;
+        }
+
+        return true;
+    }
+
+    private AnalystProcess execute(ExecuteTaskStart task) {
         int taskId = task.getTask().getTaskId();
 
         AnalystProcess proc = processMap.get(task.getTask().getTaskId());
-        if (proc == null) {
-            logger.warn("No process record exists for task: {}", task);
-            return proc;
-        }
-
-        if (proc.getNewState() != null) {
-            logger.warn("A new state was already set for the task: {}", task);
-            return proc;
-        }
-
-        logger.info("loading ZPS script : {}", task.getScriptPath());
-        ZpsScript script;
         try {
-            script = Json.Mapper.readValue(new File(task.getScriptPath()), ZpsScript.class);
-        } catch (IOException e) {
-            throw new ClusterException("Invalid ZPS script, " + e, e);
-        }
-
-        SharedData shared = new SharedData(properties.getString("zorroa.cluster.path.shared"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_SHARED", shared.getRoot().toString());
-        task.putToEnv("ZORROA_CLUSTER_PATH_CERTS", shared.resolvestr("certs"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_OFS", shared.resolvestr("ofs"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_PLUGINS", shared.resolvestr("plugins"));
-        task.putToEnv("ZORROA_CLUSTER_PATH_MODELS", shared.resolvestr("models"));
-        task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
-
-        int exit = 1;
-        Stopwatch timer = Stopwatch.createStarted();
-        try {
-            if (!Application.isUnitTest()) {
-                archivistClient.reportTaskStarted(new ExecuteTaskStarted(task.getTask()));
+            if (!isTaskValid(proc)) {
+                return proc;
             }
-            String scriptPath = task.getScriptPath();
-            for(;;) {
-                String lang = determineLanguagePlugin(script);
 
-                logger.debug("running script with language: {}", lang);
-                String[] command = createCommand(task, scriptPath, lang);
-                exit = runProcess(command, task, proc);
+            logger.info("loading ZPS script : {}", task.getScriptPath());
+            ZpsScript script;
+            try {
+                script = Json.Mapper.readValue(new File(task.getScriptPath()), ZpsScript.class);
+            } catch (IOException e) {
+                throw new ClusterException("Invalid ZPS script, " + e, e);
+            }
 
-                if (exit != 0) {
-                    break;
+            SharedData shared = new SharedData(properties.getString("zorroa.cluster.path.shared"));
+            task.putToEnv("ZORROA_CLUSTER_PATH_SHARED", shared.getRoot().toString());
+            task.putToEnv("ZORROA_CLUSTER_PATH_CERTS", shared.resolvestr("certs"));
+            task.putToEnv("ZORROA_CLUSTER_PATH_OFS", shared.resolvestr("ofs"));
+            task.putToEnv("ZORROA_CLUSTER_PATH_PLUGINS", shared.resolvestr("plugins"));
+            task.putToEnv("ZORROA_CLUSTER_PATH_MODELS", shared.resolvestr("models"));
+            task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
+
+            int exit = 1;
+            Stopwatch timer = Stopwatch.createStarted();
+            try {
+                if (!Application.isUnitTest()) {
+                    archivistClient.reportTaskStarted(new ExecuteTaskStarted(task.getTask()));
+                }
+                String scriptPath = task.getScriptPath();
+                for (; ; ) {
+                    String lang = determineLanguagePlugin(script);
+
+                    if (!isTaskValid(proc)) {
+                        return proc;
+                    }
+
+                    logger.debug("running script with language: {}", lang);
+                    String[] command = createCommand(task, scriptPath, lang);
+                    exit = runProcess(command, task, proc);
+
+                    if (exit != 0) {
+                        break;
+                    }
+
+                    ZpsScript next = proc.nextProcess();
+                    if (next == null) {
+                        break;
+                    }
+
+                    script = next;
+                    proc.incrementProcessCount();
+                    scriptPath = task.getScriptPath() + "." + proc.getProcessCount();
+
+                    logger.info("Writing next script {}", scriptPath);
+                    Files.deleteIfExists(Paths.get(scriptPath));
+                    Json.Mapper.writeValue(new File(scriptPath), script);
                 }
 
-                ZpsScript next = proc.nextProcess();
-                if (next == null) {
-                    break;
+            } catch (Exception e) {
+                // don't throw anything, just log
+                logger.warn("Failed to execute process: ", e);
+                exit = 1;
+            } finally {
+                logger.info("Task {} stopped, exit status: {} in {}ms", taskId, exit,
+                        timer.stop().elapsed(TimeUnit.MILLISECONDS));
+
+                /**
+                 * Set the new task state based on the exit value of the process.
+                 */
+                TaskState newState = exit == 0 ? TaskState.Success : TaskState.Failure;
+
+                /**
+                 * If the running process has a new state attached, use that instead.
+                 */
+
+                if (proc.getNewState() == null) {
+                    logger.info("Setting newstate of finished task to: {}", newState);
+                    proc.setNewState(newState);
                 }
 
-                script = next;
-                proc.incrementProcessCount();
-                scriptPath = task.getScriptPath() + "." + proc.getProcessCount();
 
-                logger.info("Writing next script {}", scriptPath);
-                Files.deleteIfExists(Paths.get(scriptPath));
-                Json.Mapper.writeValue(new File(scriptPath), script);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Completed {}", Json.prettyString(script));
+                }
+
+                if (!Application.isUnitTest()) {
+                    archivistClient.reportTaskStopped(new ExecuteTaskStopped(task.getTask())
+                            .setNewState(proc.getNewState()));
+                }
             }
-
-        } catch (Exception e) {
-            // don't throw anything, just log
-            logger.warn("Failed to execute process: ", e);
-            exit=1;
-        }
-        finally {
-            logger.info("Task {} stopped, exit status: {} in {}ms", taskId, exit,
-                timer.stop().elapsed(TimeUnit.MILLISECONDS));
-
+        } finally {
             /**
-             * Set the new task state based on the exit value of the process.
-             */
-            TaskState newState = exit == 0 ? TaskState.Success : TaskState.Failure;
-
-            /**
-             * If the running process has a new state attached, use that instead.
-             */
-            if (proc.getNewState() == null) {
-                proc.setNewState(newState);
-            }
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("Completed {}", Json.prettyString(script));
-            }
-
-            /**
-             * Remove from process map
+             * If this process returns in any way, the process has to be removed from process map.
              */
             processMap.remove(task.getTask().getTaskId());
-
-            if (!Application.isUnitTest()) {
-                archivistClient.reportTaskStopped(new ExecuteTaskStopped(task.getTask())
-                        .setNewState(proc.getNewState()));
-            }
         }
-
         return proc;
     }
 
@@ -362,18 +418,16 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
          *  (like cancel/killed, then the process can start). The Synchronized ensures
          *  that canceling the proc happens serially.
          */
-        synchronized (proc) {
-            if (proc.getNewState() == null) {
-                ProcessBuilder builder = makeProcess(command, task, proc);
-                logger.info("running cmd: {}", String.join(" ", builder.command()));
-                process = builder.start();
-                proc.setProcess(process);
-                proc.setLogFile(Paths.get(task.getLogPath()));
-            } else {
-                logger.warn("The task {} state was changed to: {}", task.getTask().getTaskId(),
-                        proc.getNewState());
-                return 13;
-            }
+        if (proc.getNewState() == null) {
+            ProcessBuilder builder = makeProcess(command, task, proc);
+            logger.info("running cmd: {}", String.join(" ", builder.command()));
+            process = builder.start();
+            proc.setProcess(process);
+            proc.setLogFile(Paths.get(task.getLogPath()));
+        } else {
+            logger.warn("The task {} state was changed to: {}", task.getTask().getTaskId(),
+                    proc.getNewState());
+            return 13;
         }
 
         try {
@@ -530,8 +584,12 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             return;
         }
 
-        int total = analyzeExecutor.getQueue().remainingCapacity();
-        if (total < 1) {
+        if (analyzeExecutor.isShutdown()) {
+            return;
+        }
+
+        int threads = properties.getInt("analyst.executor.threads");
+        if (analyzeExecutor.getActiveCount() >= threads) {
             return;
         }
 
@@ -539,7 +597,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             List<ExecuteTaskStart> tasks = archivistClient.queueNextTasks(new ExecuteTaskRequest()
                     .setId(System.getProperty("analyst.id"))
                     .setUrl(System.getProperty("server.url"))
-                    .setCount(total));
+                    .setCount(threads - analyzeExecutor.getActiveCount()));
 
             if (!tasks.isEmpty()) {
                 for (ExecuteTaskStart task : tasks) {

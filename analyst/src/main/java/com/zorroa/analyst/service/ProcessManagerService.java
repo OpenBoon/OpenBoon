@@ -3,6 +3,7 @@ package com.zorroa.analyst.service;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.ExecuteTaskStop;
+import com.zorroa.common.domain.TaskState;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +18,11 @@ public interface ProcessManagerService {
 
     List<Integer> getTaskIds();
 
-    boolean stopTask(ExecuteTaskStop task);
+    boolean stopTask(AnalystProcess p, TaskState newstate, String reason);
 
     void asyncStopTask(ExecuteTaskStop task);
+
+    void stopAllTasks();
 
     Future<AnalystProcess> execute(ExecuteTaskStart script, boolean async);
 

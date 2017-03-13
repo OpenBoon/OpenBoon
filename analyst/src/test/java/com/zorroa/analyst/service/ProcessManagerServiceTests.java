@@ -5,7 +5,6 @@ import com.zorroa.analyst.AbstractTest;
 import com.zorroa.analyst.AnalystProcess;
 import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.domain.ExecuteTaskStart;
-import com.zorroa.common.domain.ExecuteTaskStop;
 import com.zorroa.common.domain.TaskState;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,8 @@ import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Note: we currently only create the mapping in Archivist.
@@ -68,10 +68,5 @@ public class ProcessManagerServiceTests extends AbstractTest {
         Future<AnalystProcess> proc2 = processManager.execute(ts,false);
 
         assertNull(proc2);
-    }
-
-    @Test
-    public void testStopFailure() throws IOException, InterruptedException {
-        assertFalse(processManager.stopTask(new ExecuteTaskStop(task, 2, 2).setReason("manual kill")));
     }
 }
