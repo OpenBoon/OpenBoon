@@ -18,6 +18,7 @@
                 <th>Name</th>
                 <th>Owner</th>
                 <th>Date</th>
+                <th>Running</th>
                 <th>Errors</th>
                 <th>Progress</th>
             </tr>
@@ -31,6 +32,7 @@
                 <td class="vert-align" th:text="${job.name}"></td>
                 <td class="vert-align" th:text="${job.user.username}"></td>
                 <td class="vert-align" th:text="${#dates.format(job.timeStarted, 'dd MMM yyyy HH:mm')}"></td>
+                <td class="vert-align" th:text="${job.counts.tasksRunning}"></td>
                 <td class="vert-align" th:text="${job.stats.frameErrorCount}"></td>
                 <td class="col-md-4 vert-align">
                     <div th:include="fragments/job :: progress"/>
