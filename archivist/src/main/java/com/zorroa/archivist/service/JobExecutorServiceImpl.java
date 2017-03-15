@@ -146,8 +146,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     }
 
     /**
-     * Look for tasks that have been queued or running for 30 minutes and reset them
-     * back to waiting.
+     * Look for analysts that we have not heard from in some time
      *
      * TODO: may need to verify with analyst that its still around.
      */
@@ -160,18 +159,20 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     }
 
     /**
-     * Look for tasks that have been queued or running for 30 minutes and reset them
-     * back to waiting.
+     * Look for tasks that have been queued or running without a ping from an analyst.
      *
      * TODO: may need to verify with analyst that its still around.
      */
     public void checkForExpiredTasks() {
-        List<Task> expired = taskDao.getOrphanTasks(10, 5, TimeUnit.MINUTES);
+        List<Task> expired = taskDao.getOrphanTasks(10, 3, TimeUnit.MINUTES);
         if (!expired.isEmpty()) {
             logger.warn("Found {} expired tasks!", expired.size());
             for (Task task : expired) {
                 logger.warn("resetting task {} to Waiting", task.getTaskId());
                 jobService.setTaskState(task, TaskState.Waiting);
+                /**
+                 * TODO: contact analyst and kill
+                 */
             }
         }
     }
