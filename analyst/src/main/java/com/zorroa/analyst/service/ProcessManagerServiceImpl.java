@@ -611,7 +611,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                 }
             }
         } catch (Exception e) {
-            logger.warn("Unable to contact Archivist for scheduling op, " + e.getMessage());
+            logger.warn("Unable to contact Archivist for scheduling op, {}", e.getMessage());
         }
     }
 
