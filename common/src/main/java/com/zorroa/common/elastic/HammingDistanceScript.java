@@ -26,7 +26,8 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         super();
 
         field = (String) params.get("field");
-        bitwise = (boolean) params.getOrDefault("bitwise", false);
+        // If the field name ends with "bit", then we assume a bitwise hash
+        bitwise = (boolean) field.toLowerCase().endsWith( "bit.raw" ) || field.toLowerCase().endsWith( "bit" );
         hashes = (List<String>) params.get("hashes");
         length = hashes.get(0).length();
         minScore = (int) params.getOrDefault("minScore", 1);
@@ -74,6 +75,8 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
                 }
                 distance += bitwiseHammingDistance(fieldValueBytes, hash);
             }
+            // Normalize the returned distance to 0-100.0
+            distance *= 100.0f / (4 * length * hashes.size());
         }
         else {
             final int fieldLength = fieldValue.length();
@@ -83,6 +86,8 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
                 }
                 distance += hammingDistance(fieldValue, hash, length);
             }
+            // Normalize the returned distance to 0-100.0
+            distance *= 100.0f / (15 * length * hashes.size());
         }
 
         /*
@@ -93,11 +98,9 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     }
 
     public final static int hammingDistance(final String lhs, final String rhs, int length) {
-        int distance = length;
+        int distance = 15 * length;
         for (int i = 0, l = length; i < l; i++) {
-            if (lhs.charAt(i) != rhs.charAt(i)) {
-                distance--;
-            }
+            distance -= Math.abs(lhs.charAt(i) - rhs.charAt(i));
         }
         return distance;
     }
