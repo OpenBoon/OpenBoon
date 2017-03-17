@@ -27,7 +27,7 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
 
         field = (String) params.get("field");
         // If the field name ends with "bit", then we assume a bitwise hash
-        bitwise = (boolean) field.toLowerCase().endsWith( "bit.raw" ) || field.toLowerCase().endsWith( "bit" );
+        bitwise = field.toLowerCase().endsWith( "bit.raw" ) || field.toLowerCase().endsWith( "bit" );
         hashes = (List<String>) params.get("hashes");
         length = hashes.get(0).length();
         minScore = (int) params.getOrDefault("minScore", 1);

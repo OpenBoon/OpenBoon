@@ -26,9 +26,9 @@ public class HammingDistanceScriptTests extends AbstractTest {
 
     @Test
     public void testHamming() {
-        assertEquals(1,
+        assertEquals(29,
                 HammingDistanceScript.hammingDistance("AB", "AC", 2));
-        assertEquals(4,
+        assertEquals(112,
                 HammingDistanceScript.hammingDistance("AFAFAFAF", "ADADADAD", 8));
     }
 
