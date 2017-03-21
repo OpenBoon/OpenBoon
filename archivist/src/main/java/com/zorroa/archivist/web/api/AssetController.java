@@ -1,6 +1,8 @@
 package com.zorroa.archivist.web.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.LogAction;
@@ -18,6 +20,7 @@ import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
+import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.get.GetResponse;
@@ -40,6 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,23 +77,45 @@ public class AssetController {
     @Autowired
     ImageService imageService;
 
+    /**
+     * Ability to make certain file extensions to other, more
+     * web supported alternatives.
+     */
+    private static final Map<String, List<List<String>>>
+            PREFERRED_FORMATS = ImmutableMap.of("mov",
+                ImmutableList.of(
+                        ImmutableList.of("mp4", "video/mp4"),
+                        ImmutableList.of("ogv", "video/ogg")));
+
+    public String[] getPreferredFormat(Asset asset) {
+        String path = asset.getAttr("source.path", String.class);
+        String ext = FileUtils.extension(path);
+        List<List<String>> preferred = PREFERRED_FORMATS.get(ext);
+        if (preferred != null) {
+            for (List<String> e: preferred) {
+                String newPath = path.substring(0, path.length() - (ext.length()+1)) + "." + e.get(0);
+                if (new File(newPath).exists()) {
+                    return new String[] { newPath, e.get(1)};
+                }
+            }
+        }
+        return new String[] {path, asset.getAttr("source.mediaType", String.class)};
+    }
+
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
     public void streamAsset(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         Asset asset = assetService.get(id);
-
         if (!SecurityUtils.hasPermission("export", asset)) {
             throw new ArchivistReadException("export access denied");
         }
-
         logService.logAsync(LogSpec.build(LogAction.Export, "asset", asset.getId()));
-        File path = new File(asset.getAttr("source.path", String.class));
 
+        String[] format = getPreferredFormat(asset);
         try {
-            MultipartFileSender.fromPath(path.toPath())
+            MultipartFileSender.fromPath(Paths.get(format[0]))
                     .with(request)
                     .with(response)
-                    .setContentType(asset.getAttr("source.mediaType", String.class))
+                    .setContentType(format[1])
                     .serveResource();
         } catch (Exception e) {
             logger.warn("MultipartFileSender failed, " + id);
