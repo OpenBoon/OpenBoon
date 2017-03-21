@@ -140,6 +140,8 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
                     try {
                         Thread.sleep(1000);
                         register();
+                        logger.info("Reconnected to archivist on {}",
+                                archivistClient.getLoadBalancer().lastHost());
                         return;
                     } catch (InterruptedException ignore) {
                         return;
@@ -149,7 +151,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
                             logger.debug("Failed to register as worker node ", ex);
                         }
                         else {
-                            logger.warn("Failed to register as worker node " + ex.getMessage());
+                            logger.warn("Failed to register as worker node {}", ex.getMessage());
                         }
                     }
                 }
