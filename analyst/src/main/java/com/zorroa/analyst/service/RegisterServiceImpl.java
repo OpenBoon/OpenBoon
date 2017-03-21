@@ -145,7 +145,12 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
                         return;
                     }
                     catch (Exception ex) {
-                        logger.warn("Failed to register as worker node, ", ex);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Failed to register as worker node ", ex);
+                        }
+                        else {
+                            logger.warn("Failed to register as worker node " + ex.getMessage());
+                        }
                     }
                 }
             }
