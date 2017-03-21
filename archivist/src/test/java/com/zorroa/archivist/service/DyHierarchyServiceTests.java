@@ -41,6 +41,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             Source ab = new Source(f);
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"));
+            ab.setAttr("paths", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"));
             assetService.index(ab);
         }
         for (File f: getTestPath("office").toFile().listFiles()) {
@@ -65,6 +66,29 @@ public class DyHierarchyServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testGenerateWithMultiplePaths() {
+        Folder f = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchy agg = new DyHierarchy();
+        agg.setFolderId(f.getId());
+        agg.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("paths.raw", DyHierarchyLevelType.Path)));
+        int result = dyhiService.generate(agg);
+
+        Folder folder = folderService.get("/foo/foo/bar");
+        assertEquals(5, searchService.count(folder.getSearch()));
+
+        folder = folderService.get("/foo/bing/bang");
+        assertEquals(5, searchService.count(folder.getSearch()));
+
+        folder = folderService.get("/foo/foo/shoe");
+        assertEquals(5, searchService.count(folder.getSearch()));
+
+        folder = folderService.get("/foo/foo");
+        assertEquals(5, searchService.count(folder.getSearch()));
+    }
+
+    @Test
     public void testGenerateWithPath() {
         Folder f = folderService.create(new FolderSpec("foo"), false);
         DyHierarchy agg = new DyHierarchy();
@@ -77,6 +101,12 @@ public class DyHierarchyServiceTests extends AbstractTest {
         int result = dyhiService.generate(agg);
 
         Folder folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data/video/m4v");
+        assertEquals(1, searchService.count(folder.getSearch()));
+
+        folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data");
+        assertEquals(1, searchService.count(folder.getSearch()));
+
+        folder = folderService.get("/foo/video");
         assertEquals(1, searchService.count(folder.getSearch()));
     }
 

@@ -516,9 +516,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                             ImmutableMap.of("value", Integer.valueOf(value))));
                     break;
                 case Path:
-                    // chop off trailing /
-                    value = value.substring(0, value.length()-1);
-                    search.addToFilter().addToTerms(level.getField(), ImmutableList.of(value));
+                    search.addToFilter().addToPrefix(level.getField(), ImmutableMap.of("prefix", value));
                     break;
             }
             return search;

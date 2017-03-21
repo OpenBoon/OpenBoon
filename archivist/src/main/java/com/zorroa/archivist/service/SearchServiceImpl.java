@@ -484,6 +484,13 @@ public class SearchServiceImpl implements SearchService {
             }
         }
 
+        if (filter.getPrefix() != null) {
+            for (Map.Entry<String, Map<String,Object>> e : filter.getPrefix().entrySet()) {
+                QueryBuilder prefixFilter = QueryBuilders.prefixQuery(e.getKey(), (String) e.getValue().get("prefix"));
+                query.must(prefixFilter);
+            }
+        }
+
         if (filter.getExists() != null) {
             for (String term : filter.getExists()) {
                 QueryBuilder existsFilter = QueryBuilders.existsQuery(term);
@@ -537,7 +544,6 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (filter.getHamming() != null) {
-
             FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(ScoreFunctionBuilders.scriptFunction(new Script(
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
                     ImmutableMap.of("field", dotRawMe(filter.getHamming().getField()),
