@@ -516,15 +516,16 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                             ImmutableMap.of("value", Integer.valueOf(value))));
                     break;
                 case Path:
-                    search.addToFilter().addToPrefix(level.getField(), ImmutableMap.of("prefix", value));
+                    // chop off trailing /
+                    value = value.substring(0, value.length()-1);
+                    search.addToFilter().addToTerms(level.getField(), ImmutableList.of(value));
                     break;
             }
             return search;
         }
     }
 
-    Set<DyHierarchyLevelType> FORCE_RAW_TYPES = EnumSet.of(DyHierarchyLevelType.Attr,
-            DyHierarchyLevelType.Path);
+    Set<DyHierarchyLevelType> FORCE_RAW_TYPES = EnumSet.of(DyHierarchyLevelType.Attr);
 
     private void resolveFieldName(DyHierarchyLevel level) {
         if (level.getField().endsWith(".raw") || !FORCE_RAW_TYPES.contains(level.getType())) {

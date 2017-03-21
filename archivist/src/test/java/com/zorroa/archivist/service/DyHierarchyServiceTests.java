@@ -9,6 +9,7 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
             Source ab = new Source(f);
             ab.setAttr("source.date",
                     new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse("04-07-2014 11:22:33"));
-            ab.setAttr("paths", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"));
+            ab.setAttr("tree.path", ImmutableList.of("/foo/bar/", "/bing/bang/", "/foo/shoe/"));
             assetService.index(ab);
         }
         for (File f: getTestPath("office").toFile().listFiles()) {
@@ -72,10 +73,11 @@ public class DyHierarchyServiceTests extends AbstractTest {
         agg.setFolderId(f.getId());
         agg.setLevels(
                 ImmutableList.of(
-                        new DyHierarchyLevel("paths.raw", DyHierarchyLevelType.Path)));
+                        new DyHierarchyLevel("tree.path", DyHierarchyLevelType.Path)));
         int result = dyhiService.generate(agg);
 
         Folder folder = folderService.get("/foo/foo/bar");
+        logger.info("{}", Json.serializeToString(folder.getSearch()));
         assertEquals(5, searchService.count(folder.getSearch()));
 
         folder = folderService.get("/foo/bing/bang");
@@ -96,14 +98,18 @@ public class DyHierarchyServiceTests extends AbstractTest {
         agg.setLevels(
                 ImmutableList.of(
                         new DyHierarchyLevel("source.type.raw"),
-                        new DyHierarchyLevel("source.directory.raw", DyHierarchyLevelType.Path),
+                        new DyHierarchyLevel("source.directory", DyHierarchyLevelType.Path),
                         new DyHierarchyLevel("source.extension.raw")));
         int result = dyhiService.generate(agg);
 
         Folder folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data/video/m4v");
         assertEquals(1, searchService.count(folder.getSearch()));
 
+        folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data/video");
+        assertEquals(1, searchService.count(folder.getSearch()));
+
         folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data");
+        logger.info("{}", Json.serializeToString(folder.getSearch()));
         assertEquals(1, searchService.count(folder.getSearch()));
 
         folder = folderService.get("/foo/video");
