@@ -54,7 +54,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     private static final JsonRowMapper<Analyst> MAPPER =
-            (id, version, source) -> Json.deserialize(source, Analyst.class).setId(id);
+            (id, version, score, source) -> Json.deserialize(source, Analyst.class).setId(id);
 
     @Override
     public Analyst get(String id) {

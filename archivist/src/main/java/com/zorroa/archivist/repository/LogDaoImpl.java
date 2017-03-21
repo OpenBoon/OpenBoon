@@ -64,7 +64,7 @@ public class LogDaoImpl extends AbstractElasticDao implements LogDao {
         }
 
         PagedList<Map<String,Object>> result =  elastic.page(req, page,
-                    (id, version, source) -> {
+                    (id, version, score, source) -> {
                         Map<String,Object> r =  Json.deserialize(source, Json.GENERIC_MAP);
                         r.put("id", id);
                         return r;

@@ -37,10 +37,11 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         return "archivist";
     }
 
-    private static final JsonRowMapper<Asset> MAPPER = (id, version, source) -> {
+    private static final JsonRowMapper<Asset> MAPPER = (id, version, score, source) -> {
         Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
         Asset result = new Asset();
         result.setId(id);
+        result.setScore(score);
         result.setDocument(data);
         result.setType("asset");
         return result;

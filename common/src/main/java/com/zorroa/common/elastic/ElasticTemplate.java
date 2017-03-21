@@ -49,7 +49,7 @@ public class ElasticTemplate {
                     "Expected 1 '" + type + "' of id '" + id + "'", 0);
         }
         try {
-            return mapper.mapRow(r.getId(), r.getVersion(), r.getSourceAsBytes());
+            return mapper.mapRow(r.getId(), r.getVersion(), 0, r.getSourceAsBytes());
         } catch (Exception e) {
             throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
         }
@@ -62,7 +62,7 @@ public class ElasticTemplate {
         }
         SearchHit hit = r.getHits().getAt(0);
         try {
-            return mapper.mapRow(hit.getId(), hit.getVersion(), hit.source());
+            return mapper.mapRow(hit.getId(), hit.getVersion(), hit.score(), hit.source());
         } catch (Exception e) {
             throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
         }
@@ -78,7 +78,7 @@ public class ElasticTemplate {
         List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
         for (SearchHit hit: r.getHits()) {
             try {
-                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+                result.add(mapper.mapRow(hit.getId(), hit.getVersion(),hit.score(), hit.source()));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }
@@ -92,7 +92,7 @@ public class ElasticTemplate {
 
         for (SearchHit hit: r.getHits()) {
             try {
-                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }
@@ -106,9 +106,9 @@ public class ElasticTemplate {
         final SearchResponse r = ssrb.get();
 
         final List<T> list = Lists.newArrayListWithCapacity(r.getHits().getHits().length);
-        for (SearchHit hit: r.getHits()) {
+        for (SearchHit hit: r.getHits().getHits()) {
             try {
-                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }
@@ -125,9 +125,9 @@ public class ElasticTemplate {
 
         final SearchResponse r = builder.get();
         final List<T> list = Lists.newArrayListWithCapacity(r.getHits().getHits().length);
-        for (SearchHit hit: r.getHits()) {
+        for (SearchHit hit: r.getHits().getHits()) {
             try {
-                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.source()));
+                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }

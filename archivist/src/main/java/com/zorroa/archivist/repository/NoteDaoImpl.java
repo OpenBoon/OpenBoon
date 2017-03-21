@@ -40,7 +40,7 @@ public class NoteDaoImpl extends AbstractElasticDao implements NoteDao {
         return get(rsp.getId());
     }
 
-    private final JsonRowMapper<Note> MAPPER = (id, version, source) -> {
+    private final JsonRowMapper<Note> MAPPER = (id, version, score, source) -> {
         Note note = Json.Mapper.readValue(source, Note.class);
         note.setId(id);
         note.setUser(userDaoCache.getUser(note.getUserId()));

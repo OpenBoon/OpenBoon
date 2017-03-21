@@ -188,6 +188,24 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testTermSearch() throws IOException {
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addKeywords("source", "captain", "america");
+
+        assetService.index(source);
+        refreshIndex();
+
+        int count = 0;
+        for (Asset a: searchService.search(Pager.first(), new AssetSearch().setFilter(
+                new AssetFilter().addToTerms("keywords.source", "captain")))) {
+            assertTrue(a.getScore() > 0);
+            count++;
+        }
+        assertTrue(count > 0);
+    }
+
+    @Test
     public void testSmartFolderAndStaticFolderMixture() throws IOException {
 
         FolderSpec builder = new FolderSpec("Avengers");

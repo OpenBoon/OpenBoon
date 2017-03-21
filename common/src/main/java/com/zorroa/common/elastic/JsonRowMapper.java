@@ -13,6 +13,6 @@ package com.zorroa.common.elastic;
  */
 public interface JsonRowMapper<T> {
 
-     T mapRow(String id, long version, byte[] sourceO) throws Exception;
+     T mapRow(String id, long version, float score, byte[] sourceO) throws Exception;
 
 }
