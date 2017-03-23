@@ -32,7 +32,7 @@ public class UserDaoCache {
 
     public UserBase getUser(int id) {
         try {
-            return cachedUserName.get(id);
+            return cachedUserName.get(id).setSettings(null);
         } catch (Exception e) {
             return new UserBase().setUsername("unknown").setId(0);
         }
