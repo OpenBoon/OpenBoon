@@ -19,6 +19,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -263,6 +265,11 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public PagedList<Asset> getAll(Pager page, SearchRequestBuilder search) {
         return elastic.page(search, page, MAPPER);
+    }
+
+    @Override
+    public void getAll(Pager page, SearchRequestBuilder search, OutputStream stream) throws IOException {
+        elastic.page(search, page, MAPPER, stream);
     }
 
     @Override

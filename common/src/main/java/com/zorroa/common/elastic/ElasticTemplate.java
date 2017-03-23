@@ -1,5 +1,8 @@
 package com.zorroa.common.elastic;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.common.collect.Lists;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -24,6 +27,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class ElasticTemplate {
@@ -86,21 +90,6 @@ public class ElasticTemplate {
         return result;
     }
 
-    public <T> List<T> query(SearchRequestBuilder builder, JsonRowMapper<T> mapper) {
-        final SearchResponse r = builder.get();
-        List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
-
-        for (SearchHit hit: r.getHits()) {
-            try {
-                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
-            } catch (Exception e) {
-                throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
-            }
-        }
-
-        return result;
-    }
-
     public <T> PagedList<T> scroll(String id, String timeout, JsonRowMapper<T> mapper) {
         SearchScrollRequestBuilder ssrb = client.prepareSearchScroll(id).setScroll(timeout);
         final SearchResponse r = ssrb.get();
@@ -120,6 +109,22 @@ public class ElasticTemplate {
 
         return result;
     }
+
+    public <T> List<T> query(SearchRequestBuilder builder, JsonRowMapper<T> mapper) {
+        final SearchResponse r = builder.get();
+        List<T> result = Lists.newArrayListWithCapacity((int) r.getHits().getTotalHits());
+
+        for (SearchHit hit : r.getHits()) {
+            try {
+                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
+            } catch (Exception e) {
+                throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
+            }
+        }
+
+        return result;
+    }
+
     public <T> PagedList<T> page(SearchRequestBuilder builder, Pager paging, JsonRowMapper<T> mapper) {
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
 
@@ -151,6 +156,61 @@ public class ElasticTemplate {
         }
 
         return result;
+    }
+
+    public void page(SearchRequestBuilder builder, Pager paging, JsonRowMapper<?> mapper, OutputStream out) throws IOException {
+
+        builder.setSize(paging.getSize()).setFrom(paging.getFrom());
+        final SearchResponse r = builder.get();
+
+        JsonFactory factory = new JsonFactory();
+        JsonGenerator generator = factory.createGenerator(out, JsonEncoding.UTF8);
+        generator.setCodec(Json.Mapper);
+        generator.writeStartObject();
+        generator.writeArrayFieldStart("list");
+
+        for (SearchHit hit: r.getHits().getHits()) {
+            generator.writeStartObject();
+            try {
+                generator.writeStringField("id", hit.getId());
+                generator.writeStringField("type", hit.getType());
+                generator.writeNumberField("score", hit.score());
+                generator.writeObjectField("document", hit.getSource());
+
+            } catch (Exception e) {
+                // Can't really let this escape since we're streaming directly to client.
+                logger.warn("Failed to parse record {}", e.getMessage(), e);
+            }
+            finally {
+                generator.writeEndObject();
+
+            }
+        }
+        generator.writeEndArray();
+
+        paging.setTotalCount(r.getHits().getTotalHits());
+        generator.writeObjectField("page", paging);
+
+        if (r.getAggregations() != null) {
+            try {
+                InternalAggregations aggregations = (InternalAggregations) r.getAggregations();
+                XContentBuilder jsonBuilder = XContentFactory.jsonBuilder();
+                aggregations.toXContent(jsonBuilder, ToXContent.EMPTY_PARAMS);
+
+                String json = jsonBuilder.string();
+
+                generator.writeRaw(",");
+                generator.writeRaw("\"aggregations\":");
+                generator.writeRaw(json.substring(14));
+
+            } catch (IOException e) {
+                logger.warn("Failed to deserialize aggregations.", e);
+            }
+        }
+
+        generator.writeEndObject();
+        generator.flush();
+        generator.close();
     }
 
     /**

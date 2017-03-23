@@ -38,6 +38,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -171,6 +172,11 @@ public class AssetController {
     @RequestMapping(value="/api/v3/assets/_search", method=RequestMethod.POST)
     public PagedList<Asset> searchV3(@RequestBody AssetSearch search) throws IOException {
         return searchService.search(new Pager(search.getFrom(), search.getSize(), 0), search);
+    }
+
+    @RequestMapping(value="/api/v4/assets/_search", method=RequestMethod.POST)
+    public void searchV4(@RequestBody AssetSearch search, ServletOutputStream out) throws IOException {
+        searchService.search(new Pager(search.getFrom(), search.getSize(), 0), search, out);
     }
 
     @RequestMapping(value="/api/v1/assets/_fields", method=RequestMethod.GET)
