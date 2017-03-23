@@ -1,6 +1,5 @@
 package com.zorroa.common.elastic;
 
-import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.common.collect.Lists;
@@ -164,27 +163,19 @@ public class ElasticTemplate {
         final SearchResponse r = builder.get();
 
         JsonFactory factory = new JsonFactory();
-        JsonGenerator generator = factory.createGenerator(out, JsonEncoding.UTF8);
+        JsonGenerator generator = factory.createGenerator(out);
+
         generator.setCodec(Json.Mapper);
         generator.writeStartObject();
         generator.writeArrayFieldStart("list");
 
         for (SearchHit hit: r.getHits().getHits()) {
             generator.writeStartObject();
-            try {
-                generator.writeStringField("id", hit.getId());
-                generator.writeStringField("type", hit.getType());
-                generator.writeNumberField("score", hit.score());
-                generator.writeObjectField("document", hit.getSource());
-
-            } catch (Exception e) {
-                // Can't really let this escape since we're streaming directly to client.
-                logger.warn("Failed to parse record {}", e.getMessage(), e);
-            }
-            finally {
-                generator.writeEndObject();
-
-            }
+            generator.writeStringField("id", hit.getId());
+            generator.writeStringField("type", hit.getType());
+            generator.writeNumberField("score", hit.score());
+            generator.writeObjectField("document", hit.getSource());
+            generator.writeEndObject();
         }
         generator.writeEndArray();
 
@@ -209,7 +200,6 @@ public class ElasticTemplate {
         }
 
         generator.writeEndObject();
-        generator.flush();
         generator.close();
     }
 
