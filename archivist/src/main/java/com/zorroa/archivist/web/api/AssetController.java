@@ -240,11 +240,23 @@ public class AssetController {
         return assetService.get(path.get("path"));
     }
 
+
+    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.DELETE)
+    public Object delete(@PathVariable String id) throws IOException {
+        Asset asset = assetService.get(id);
+        if (!SecurityUtils.hasPermission("write", asset)) {
+            throw new ArchivistWriteException("delete access denied");
+        }
+
+        boolean result = assetService.delete(id);
+        return HttpUtils.deleted("asset", id, result);
+    }
+
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     public Object update(@RequestBody Map<String, Object> attrs, @PathVariable String id) throws IOException {
         Asset asset = assetService.get(id);
         if (!SecurityUtils.hasPermission("write", asset)) {
-            throw new ArchivistWriteException("export access denied");
+            throw new ArchivistWriteException("update access denied");
         }
 
 

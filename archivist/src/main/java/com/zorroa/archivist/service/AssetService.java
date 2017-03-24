@@ -50,6 +50,8 @@ public interface AssetService {
      */
     long update(String id, Map<String, Object> attrs);
 
+    boolean delete(String id);
+
     void setPermissionsAsync(AssetSearch search, Acl acl);
 
     void setPermissions(AssetSearch search, Acl acl);

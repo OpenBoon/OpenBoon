@@ -169,6 +169,13 @@ public class AssetDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testDelete() {
+        assertTrue(assetDao.delete(asset1.getId()));
+        refreshIndex();
+        assertFalse(assetDao.delete(asset1.getId()));
+    }
+
+    @Test
     public void testRetryBrokenFields() throws InterruptedException { {
         List<Source> assets = ImmutableList.of(
                 new Source(getTestImagePath("set01/standard/faces.jpg")));

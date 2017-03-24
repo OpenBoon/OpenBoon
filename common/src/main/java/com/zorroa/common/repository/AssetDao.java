@@ -13,6 +13,8 @@ import java.util.Map;
 
 public interface AssetDao {
 
+    boolean delete(String id);
+
     Asset get(String id);
 
     /**

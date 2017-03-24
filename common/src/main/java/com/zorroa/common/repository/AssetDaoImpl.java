@@ -223,6 +223,11 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
+    public boolean delete(String id) {
+        return client.prepareDelete(getIndex(),getType(),id).get().isFound();
+    }
+
+    @Override
     public Asset get(String id) {
         return elastic.queryForObject(id, MAPPER);
     }
