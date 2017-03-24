@@ -119,15 +119,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setUpsert(doc);
     }
 
-    private UpdateRequestBuilder prepareUpsert(Source source, String id, String type) {
-        byte[] doc = Json.serialize(source.getDocument());
-        return client.prepareUpdate(getIndex(), type, id)
-                .setDoc(doc)
-                .setId(id)
-                .setUpsert(doc);
-    }
-
-
     private static final Pattern[] RECOVERABLE_BULK_ERRORS = new Pattern[] {
             Pattern.compile("^MapperParsingException\\[failed to parse \\[(.*?)\\]\\];"),
             Pattern.compile("\"term in field=\"(.*?)\"\""),
