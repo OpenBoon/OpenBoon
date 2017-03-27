@@ -38,7 +38,9 @@ SERVER_PIDFILE=$BASE_PATH/run/$BASE.pid
 
 # by default LOG file is set in the application.properties
 # if running the the server with a -d then this is ignored
-SERVER_LOGFILE=$BASE_PATH/logs/$BASE.log
+# * commented out.  if you pipe, and there isn't the log file to
+# * begin with, you'll get a file owned by root and server won't start
+#SERVER_LOGFILE=$BASE_PATH/logs/$BASE.log
 
 # -d will run the server in daemon mode
 SERVER_OPTS="-d --pidfile=$SERVER_PIDFILE"
@@ -66,10 +68,10 @@ case "$1" in
 			--pidfile "$SERVER_PIDFILE" \
 			--user "$SERVER_RUN_USER" \
                         --chuid "$SERVER_RUN_USER" \
+                        --chdir "$BASE_PATH" \
                         --group "$SERVER_RUN_USER" \
-			-- \
-				$SERVER_OPTS \
-				>> "$SERVER_LOGFILE" 2>&1
+			-- $SERVER_OPTS \
+                        >> /dev/null 2>&1
 
 		log_end_msg $?
 		;;
