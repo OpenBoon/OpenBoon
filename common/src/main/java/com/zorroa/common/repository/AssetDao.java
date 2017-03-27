@@ -4,12 +4,16 @@ import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
 
 public interface AssetDao {
+
+    boolean delete(String id);
 
     Asset get(String id);
 
@@ -30,6 +34,8 @@ public interface AssetDao {
      * @return
      */
     PagedList<Asset> getAll(Pager page, SearchRequestBuilder search);
+
+    void getAll(Pager page, SearchRequestBuilder search, OutputStream stream) throws IOException;
 
     /**
      * Get all assets by page.

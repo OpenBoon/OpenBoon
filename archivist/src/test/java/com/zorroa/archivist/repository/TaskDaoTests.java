@@ -1,7 +1,7 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
@@ -206,7 +206,7 @@ public class TaskDaoTests extends AbstractTest {
         long timeA = jdbc.queryForObject(
                 "SELECT time_ping FROM task WHERE pk_task=?", Long.class, task.getTaskId());
         Thread.sleep(100);
-        taskDao.updatePingTime(ImmutableList.of(task.getTaskId()));
+        taskDao.updatePingTime(Lists.newArrayList(task.getTaskId()));
 
         long timeB = jdbc.queryForObject(
                 "SELECT time_ping FROM task WHERE pk_task=?", Long.class, task.getTaskId());

@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -208,6 +209,20 @@ public class SearchServiceImpl implements SearchService {
 
         return assetDao.getAll(page, buildSearch(search));
     }
+
+    @Override
+    public void search(Pager page, AssetSearch search, OutputStream stream) throws IOException {
+        /**
+         * If the search is not empty (its a valid search) and the page
+         * number is 1, then log the search.
+         */
+        if (isSearchLogged(page, search)) {
+            logService.logAsync(new LogSpec().build(LogAction.Search, search));
+        }
+
+        assetDao.getAll(page, buildSearch(search), stream);
+    }
+
 
     @Override
     public PagedList<Asset> scroll(String id, String timeout) {

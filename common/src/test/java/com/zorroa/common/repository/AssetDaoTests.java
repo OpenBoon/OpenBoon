@@ -1,5 +1,6 @@
 package com.zorroa.common.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -9,11 +10,16 @@ import com.zorroa.sdk.domain.DocumentIndexResult;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -62,8 +68,25 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetAllBySearchRequest() {
-        PagedList<Asset> assets = assetDao.getAll(Pager.first(10));
+        SearchRequestBuilder builder = client.prepareSearch("archivist");
+        builder.setQuery(QueryBuilders.matchAllQuery());
+        PagedList<Asset> assets = assetDao.getAll(Pager.first(10), builder);
         assertEquals(1, assets.getList().size());
+    }
+
+    @Test
+    public void testGetAllBySearchRequestIntoStream() throws IOException {
+        assetDao.index(new Source(getTestImagePath("set01/standard/faces.jpg")), null);
+        refreshIndex();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        SearchRequestBuilder builder = client.prepareSearch("archivist");
+        builder.setQuery(QueryBuilders.matchAllQuery());
+        builder.addAggregation(AggregationBuilders.terms("path").field("source.path"));
+        assetDao.getAll(Pager.first(10), builder, stream);
+        logger.info(stream.toString());
+        PagedList<Asset> result = Json.deserialize(stream.toString(), new TypeReference<PagedList<Asset>>() {});
+        assertEquals(2, result.getList().size());
     }
 
     @Test
@@ -143,6 +166,13 @@ public class AssetDaoTests extends AbstractTest {
         assetDao.update(asset1.getId(), attrs);
         Asset asset2 = assetDao.get(asset1.getId());
         assertEquals(100, (int) asset2.getAttr("foo.bar"));
+    }
+
+    @Test
+    public void testDelete() {
+        assertTrue(assetDao.delete(asset1.getId()));
+        refreshIndex();
+        assertFalse(assetDao.delete(asset1.getId()));
     }
 
     @Test

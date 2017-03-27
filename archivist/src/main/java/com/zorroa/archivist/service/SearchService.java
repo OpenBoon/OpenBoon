@@ -10,6 +10,8 @@ import com.zorroa.sdk.search.AssetSuggestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +39,8 @@ public interface SearchService {
      * @return
      */
     PagedList<Asset> search(Pager page, AssetSearch search);
+
+    void search(Pager page, AssetSearch search, OutputStream stream) throws IOException;
 
     /**
      * Return the next page of an asset scroll.

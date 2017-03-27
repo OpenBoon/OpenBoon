@@ -172,6 +172,11 @@ public class AssetServiceImpl implements AssetService {
         return version;
     }
 
+    @Override
+    public boolean delete(String assetId) {
+        return assetDao.delete(assetId);
+    }
+
     private final Executor batchExecutor = SecureSingleThreadExecutor.singleThreadExecutor();
 
     /**

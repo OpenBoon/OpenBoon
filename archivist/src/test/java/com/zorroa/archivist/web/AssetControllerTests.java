@@ -215,6 +215,28 @@ public class AssetControllerTests extends MockMvcTest {
         }
     }
 
+
+    @Test
+    public void testDelete() throws Exception {
+
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+        refreshIndex();
+
+        PagedList<Asset> assets = assetDao.getAll(Pager.first());
+        for (Asset asset: assets) {
+            MvcResult result = mvc.perform(delete("/api/v1/assets/" + asset.getId())
+                    .session(session)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                    new TypeReference<Map<String, Object>>() {});
+            assertEquals(true, json.get("success"));
+            assertEquals("delete", json.get("op"));
+        }
+    }
+
     @Test
     public void testGetV2() throws Exception {
 

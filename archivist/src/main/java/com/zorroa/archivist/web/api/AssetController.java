@@ -38,6 +38,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -173,6 +174,11 @@ public class AssetController {
         return searchService.search(new Pager(search.getFrom(), search.getSize(), 0), search);
     }
 
+    @RequestMapping(value="/api/v4/assets/_search", method=RequestMethod.POST)
+    public void searchV4(@RequestBody AssetSearch search, ServletOutputStream out) throws IOException {
+        searchService.search(new Pager(search.getFrom(), search.getSize(), 0), search, out);
+    }
+
     @RequestMapping(value="/api/v1/assets/_fields", method=RequestMethod.GET)
     public Map<String, Set<String>> getFields() throws IOException {
         return searchService.getFields();
@@ -234,11 +240,23 @@ public class AssetController {
         return assetService.get(path.get("path"));
     }
 
+
+    @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.DELETE)
+    public Object delete(@PathVariable String id) throws IOException {
+        Asset asset = assetService.get(id);
+        if (!SecurityUtils.hasPermission("write", asset)) {
+            throw new ArchivistWriteException("delete access denied");
+        }
+
+        boolean result = assetService.delete(id);
+        return HttpUtils.deleted("asset", id, result);
+    }
+
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     public Object update(@RequestBody Map<String, Object> attrs, @PathVariable String id) throws IOException {
         Asset asset = assetService.get(id);
         if (!SecurityUtils.hasPermission("write", asset)) {
-            throw new ArchivistWriteException("export access denied");
+            throw new ArchivistWriteException("update access denied");
         }
 
 
