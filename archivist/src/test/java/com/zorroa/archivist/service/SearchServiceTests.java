@@ -15,14 +15,17 @@ import com.zorroa.sdk.domain.Color;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.schema.LinkSchema;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.search.*;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -312,6 +315,42 @@ public class SearchServiceTests extends AbstractTest {
 
         assertEquals(1, searchService.search(
                 new AssetSearch("zipzoom")).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testSearchResponseFields() throws IOException {
+
+        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        Source.addKeywords("source", "zoolander");
+        LinkSchema links = Source.getAttr("links");
+        links.addLink("folder", 123);
+        links.addLink("folder", 456);
+        Source.setAttr("links", links);
+        assetService.index(Source);
+        refreshIndex();
+
+        SearchResponse response = searchService.search(new AssetSearch("zoolandar"));
+        assertEquals(1, response.getHits().getTotalHits());
+        Map<String, Object> doc = response.getHits().getAt(0).getSource();
+        ArrayList<Integer> folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
+        assertEquals(2, folders.size());
+
+        response = searchService.search(new AssetSearch("zoolandar").setFields(new String[]{"keywords*"}));
+        assertEquals(1, response.getHits().getTotalHits());
+        doc = response.getHits().getAt(0).getSource();
+        assertNull(doc.get("links"));
+
+        response = searchService.search(new AssetSearch("zoolandar").setFields(new String[]{"links.folder"}));
+        assertEquals(1, response.getHits().getTotalHits());
+        doc = response.getHits().getAt(0).getSource();
+        folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
+        assertEquals(2, folders.size());
+
+        response = searchService.search(new AssetSearch("zoolandar").setFields(new String[]{"links*"}));
+        assertEquals(1, response.getHits().getTotalHits());
+        doc = response.getHits().getAt(0).getSource();
+        folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
+        assertEquals(2, folders.size());
     }
 
     @Test
