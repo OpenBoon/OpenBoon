@@ -563,8 +563,7 @@ public class SearchServiceImpl implements SearchService {
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
                     ImmutableMap.of("field", dotRawMe(filter.getHamming().getField()),
                             "hashes", filter.getHamming().getHashes(),
-                            "minScore", filter.getHamming().getMinScore(),
-                            "bitwise", filter.getHamming().isBitwise()))));
+                            "minScore", filter.getHamming().getMinScore()))));
             fsqb.setMinScore(filter.getHamming().getMinScore());
             fsqb.scoreMode("max");
             fsqb.boostMode("replace");
