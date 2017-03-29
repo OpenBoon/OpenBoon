@@ -501,42 +501,42 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilter() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1", "afafafaf");
+        source1.setAttr("test.hash1.byte", "afafafaf");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1", "adadadad");
+        source2.setAttr("test.hash1.byte", "adadadad");
 
-        assetService.index(ImmutableList.of(source1, source2));
+        assetService.index(ImmutableList.of(source2, source1));
         refreshIndex();
 
         AssetSearch search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("afafafaf", "test.hash1.raw", 8)));
+                        new HammingDistanceFilter("afafafaf", "test.hash1.byte.raw", 94)));
 
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("afafafaf", "test.hash1.raw", 4)));
+                        new HammingDistanceFilter("afafafaf", "test.hash1.byte.raw", 4)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("ccccccaf", "test.hash1.raw", 2)));
+                        new HammingDistanceFilter("ccccccaf", "test.hash1.byte.raw", 88)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
                 new AssetFilter().setHamming(
                         new HammingDistanceFilter(Lists.newArrayList("afafafaf","adadadad"),
-                                "test.hash1.raw", 12)));
+                                "test.hash1.byte.raw", 12)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
         // no .raw
         search = new AssetSearch(
                 new AssetFilter().setHamming(
                         new HammingDistanceFilter(Lists.newArrayList("afafafaf","adadadad"),
-                                "test.hash1", 12)));
+                                "test.hash1.byte", 12)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
     }
 
@@ -544,21 +544,21 @@ public class SearchServiceTests extends AbstractTest {
     public void testBitwiseHammingDistanceFilter() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1", "55");
+        source1.setAttr("test.hash1.bit", "55");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1", "00");
+        source2.setAttr("test.hash1.bit", "00");
 
         assetService.index(ImmutableList.of(source1, source2));
         refreshIndex();
 
         AssetSearch search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("FF", "test.hash1.raw", 1).setBitwise(true)));
+                        new HammingDistanceFilter("FF", "test.hash1.bit.raw", 1)));
 
         for (SearchHit hit: searchService.search(search).getHits()) {
-            assertEquals(4, hit.getScore(), 0);
+            assertEquals(50, hit.getScore(), 0);
         }
     }
 
@@ -566,12 +566,12 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilterWithQuery() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1", "afafafaf");
+        source1.setAttr("test.hash1.byte", "afafafaf");
         source1.addKeywords("foo", "bar");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1", "adadadad");
+        source2.setAttr("test.hash1.byte", "adadadad");
         source1.addKeywords("foo", "bing");
 
         assetService.index(ImmutableList.of(source1, source2));
@@ -579,13 +579,13 @@ public class SearchServiceTests extends AbstractTest {
 
         AssetSearch search = new AssetSearch("bar");
         search.setFilter(new AssetFilter().setHamming(
-                new HammingDistanceFilter("afafafaf", "test.hash1.raw", 8)));
+                new HammingDistanceFilter("afafafaf", "test.hash1.byte.raw", 8)));
 
         /**
          * The score from the hamming distance is combined with the query
          * score, to result in a score higher than the hamming score.
          */
         float score = searchService.search(search).getHits().hits()[0].getScore();
-        assertTrue(score >= 8);
+        assertTrue(score >= 100);
     }
 }
