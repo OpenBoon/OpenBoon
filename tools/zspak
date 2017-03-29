@@ -1,0 +1,115 @@
+#!/usr/bin/env python
+"""
+Zorroa Server Pack
+"""
+import os
+import shutil
+import argparse
+import json
+import subprocess
+import logging
+
+logger = logging.getLogger(__name__)
+
+def create_build_dir(args):
+    if args.outdir:
+        build_dir = os.path.join(args.outdir, args.template)
+    else:
+        build_dir = os.path.abspath(os.path.join(args.dist, "build", args.template))
+    logger.info("BuildDir: %s" % build_dir)
+    if args.clean and os.path.exists(build_dir):
+        logger.warn("Removing build dir: %s" % build_dir)
+        shutil.rmtree(build_dir)
+    args.build_dir = build_dir
+    args.template_dir = os.path.join(args.dist, "templates")
+    args.rebuild_dir_struct = not os.path.exists(build_dir)
+
+def copy_base_template(args):
+    src = os.path.join(args.template_dir, "_base")
+    logger.info("copy %s -> %s" % (src, args.build_dir))
+    shutil.copytree(src, args.build_dir)
+
+def copy_jar_lib(args, settings):
+    src = os.path.join(os.path.dirname(args.dist), "target", settings["jar"])
+    if args.build or not os.path.exists(src):
+        logger.info("Rebuilding jar....")
+        pom_file = os.path.join(os.path.dirname(args.dist), "pom.xml")
+        subprocess.call(["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s" % pom_file], shell=False)
+    dst_dir = os.path.join(args.build_dir, "lib")
+    logger.info("copy %s -> %s" % (src, dst_dir))
+    shutil.copy(src, dst_dir)
+
+def run_commands(args, settings):
+    repl = {
+        "%{build_dir}": args.build_dir,
+        "%{src_home}": args.src
+    }
+    for cmd in settings["commands"]:
+        new_cmd = []
+        for p in cmd:
+            for k,v in repl.items():
+                p = p.replace(k, v)
+            new_cmd.append(p)
+        subprocess.call(new_cmd, shell=False)
+
+def copy_bin_scripts(args, settings):
+    scripts = [
+        "start",
+        "start.in.sh",
+        "sysv_init.sh"
+    ]
+    replace = {
+        "%{application}": settings["application"],
+        "%{jar}": settings["jar"]
+    }
+    tools_dir = os.path.dirname(__file__)
+    for script in scripts:
+        src = os.path.join(tools_dir, script)
+        dst = os.path.join(args.build_dir, "bin", script.replace("start", settings["application"]))
+        logger.info("copy %s -> %s" % (src, dst))
+        shutil.copy(src, dst)
+
+        in_txt = ""
+        with open(dst, "r") as in_file:
+            in_txt = in_file.read()
+        for k,v in replace.items():
+            in_txt = in_txt.replace(k, v)
+        with open(dst, 'w') as out_file:
+            out_file.write(in_txt)
+
+def run_app(args, settings):
+    script = os.path.join(args.build_dir, "bin", settings["application"])
+    os.execvp(script, [script])
+
+def handle_args(args, settings):
+    create_build_dir(args)
+    if args.rebuild_dir_struct:
+        copy_base_template(args)
+        run_commands(args, settings)
+        copy_bin_scripts(args, settings)
+    copy_jar_lib(args, settings)
+    if args.run:
+        run_app(args, settings)
+
+def main():
+    parser = argparse.ArgumentParser(prog="zspak")
+    parser.add_argument("dist", help="The path to the dist directory")
+    parser.add_argument("template", help="The template to use for the build")
+
+    parser.add_argument("-c", "--clean", action="store_true", help="Delete the existing build if any.")
+    parser.add_argument("-b", "--build", action="store_true", help="Rebuild server libraray")
+    parser.add_argument("-r", "--run", action="store_true", help="Run server")
+    parser.add_argument("-o", "--outdir", help="Name of directory to store output")
+    parser.add_argument("-s", "--src",
+                        default=os.environ.get("HOME") + "/src", help="Set the zorroa src checkout home.")
+
+    args = parser.parse_args()
+    settings = json.load(open(args.dist + "/settings.json", "r"))
+    handle_args(args, settings)
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    main()
+
+
+
