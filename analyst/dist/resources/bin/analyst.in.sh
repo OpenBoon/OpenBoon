@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export JAVA_TOOL_OPTIONS="-Djava.security.egd=file:/dev/./urandom"
+
 if [ "x$ANALYST_MIN_MEM" = "x" ]; then
     ANALYST_MIN_MEM=256m
 fi
