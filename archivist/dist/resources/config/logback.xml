@@ -9,7 +9,7 @@
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
         <!-- daily rollover -->
         <fileNamePattern>${LOG_PATH}/archivist.%d{yyyy-MM-dd}.log</fileNamePattern>
-        <maxHistory>30</maxHistory>
+        <maxHistory>7</maxHistory>
     </rollingPolicy>
   </appender>
 
