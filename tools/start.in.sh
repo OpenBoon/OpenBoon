@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# For Oracle Driver or any other software that uses /dev/random
+# Using /dev/urandom is a lot faster
+export JAVA_TOOL_OPTIONS="-Djava.security.egd=file:/dev/./urandom"
+
 # FOR ELASTIC NODES:
 # min and max heap sizes should be set to the same value to avoid
 # stop-the-world GC pauses during resize, and so that we can lock the
