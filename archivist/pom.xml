@@ -192,12 +192,6 @@
         </dependency>
 
         <dependency>
-            <groupId>net.redhogs.cronparser</groupId>
-            <artifactId>cron-parser-core</artifactId>
-            <version>2.9</version>
-        </dependency>
-
-        <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
