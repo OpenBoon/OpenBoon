@@ -78,6 +78,18 @@ def copy_bin_scripts(args, settings):
         with open(dst, 'w') as out_file:
             out_file.write(in_txt)
 
+def make_build_directories(args, settings):
+    dirs = settings.get("dirs")
+    if not dirs:
+        return
+    for d in dirs:
+        fd = os.path.join(args.build_dir, d)
+        logger.info("Making dir: %s" % fd)
+        try:
+            os.makedirs(fd)
+        except OSError:
+            pass
+
 def run_app(args, settings):
     script = os.path.join(args.build_dir, "bin", settings["application"])
     os.execvp(script, [script])
@@ -86,6 +98,7 @@ def handle_args(args, settings):
     create_build_dir(args)
     if args.rebuild_dir_struct:
         copy_base_template(args)
+        make_build_directories(args, settings)
         run_commands(args, settings)
         copy_bin_scripts(args, settings)
     copy_jar_lib(args, settings)
