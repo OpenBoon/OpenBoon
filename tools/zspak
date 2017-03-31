@@ -50,6 +50,7 @@ def run_commands(args, settings):
             for k,v in repl.items():
                 p = p.replace(k, v)
             new_cmd.append(p)
+        logger.info("running: %s" % new_cmd)
         subprocess.call(new_cmd, shell=False)
 
 def copy_bin_scripts(args, settings):
