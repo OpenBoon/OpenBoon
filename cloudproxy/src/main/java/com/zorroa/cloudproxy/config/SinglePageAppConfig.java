@@ -67,7 +67,7 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
         private final Set<String> ignoredPaths = ImmutableSet.of("api", "gui", "health", "login", "logout");
 
         public PushStateResourceResolver() {
-            index = new FileSystemResource(root.resolve(directory).resolve("index.html").toString());
+            index = new FileSystemResource(root.resolve("index.html").toString());
         }
 
         @Override
