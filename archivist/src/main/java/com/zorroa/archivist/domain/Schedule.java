@@ -1,8 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import net.redhogs.cronparser.CronExpressionDescriptor;
-
-import java.text.ParseException;
 import java.util.Objects;
 
 /**
@@ -63,13 +60,6 @@ public class Schedule {
         return this;
     }
 
-    public String getDescription() {
-        try {
-            return CronExpressionDescriptor.getDescription(String.join(" ", minute, hour, day, month, weekday));
-        } catch (ParseException e) {
-            return "Invalid Schedule";
-        }
-    }
     public String toString() {
         return String.join(" ", minute, hour, day, month, weekday);
     }
