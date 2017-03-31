@@ -37,6 +37,8 @@ public interface PluginService {
 
     ProcessorRef getProcessorRef(ProcessorRef ref);
 
+    List<ProcessorRef> getProcessorRefs(int pipelineId);
+
     List<ProcessorRef> getProcessorRefs(List<ProcessorRef> refs);
 
     List<Processor> getAllProcessors(ProcessorFilter filter);

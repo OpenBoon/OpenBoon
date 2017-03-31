@@ -268,6 +268,11 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
+    public List<ProcessorRef> getProcessorRefs(int pipelineId) {
+        return getProcessorRefs(pipelineDao.get(pipelineId).getProcessors());
+    }
+
+    @Override
     public List<ProcessorRef> getProcessorRefs(List<ProcessorRef> refs) {
         if (refs == null) {
             return null;

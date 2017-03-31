@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zorroa.common.domain.JobId;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -48,6 +49,7 @@ public class TaskSpec implements JobId {
         return this;
     }
 
+    @JsonIgnore
     public TaskSpec setScript(ZpsScript script) {
         this.script = Json.serializeToString(script, "{}");
         return this;

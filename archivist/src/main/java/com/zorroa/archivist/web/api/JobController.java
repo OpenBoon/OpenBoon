@@ -1,9 +1,8 @@
 package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobFilter;
-import com.zorroa.archivist.domain.JobSpecV;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
@@ -38,6 +37,15 @@ public class JobController {
     @RequestMapping(value="/api/v1/jobs/{id}/_restart", method = RequestMethod.PUT)
     public Object restart(@PathVariable Integer id) throws IOException {
         return HttpUtils.status("job", id, "restart", jobExecutorService.restartJob(() -> id));
+    }
+
+    @RequestMapping(value="/api/v1/jobs/{id}/_append", method = RequestMethod.POST)
+    public Object append(@RequestBody TaskSpecV spec) throws IOException {
+        Job job = jobService.get(spec.getJobId());
+        if (job.getUser().getId() != SecurityUtils.getUser().getId()) {
+            throw new IllegalArgumentException("Invalid user for appending to job");
+        }
+        return jobService.createTask(spec);
     }
 
     @RequestMapping(value="/api/v1/jobs/{id}", method = RequestMethod.GET)

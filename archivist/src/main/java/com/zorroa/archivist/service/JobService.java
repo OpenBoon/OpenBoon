@@ -29,6 +29,15 @@ public interface JobService {
     Task expand(ExecuteTaskExpand task);
 
     /**
+     * Create a new task with a validated TaskSpecV.  The validated spec
+     * can only reference a pipeline.
+     *
+     * @param spec
+     * @return
+     */
+    Task createTask(TaskSpecV spec);
+
+    /**
      * Create a new task.
      *
      * @param script

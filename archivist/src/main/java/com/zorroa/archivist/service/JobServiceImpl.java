@@ -19,6 +19,7 @@ import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.apache.commons.lang3.StringUtils;
@@ -87,16 +88,14 @@ public class JobServiceImpl implements JobService {
         }
 
         if (!JdbcUtils.isValid(specv.getScript().getExecute())) {
-            throw new IllegalArgumentException("Script has no execute clause.");
+            //throw new IllegalArgumentException("Script has no execute clause.");
+            specv.getScript().setExecute(Lists.newArrayList());
         }
 
-        /**
-         * Validates processors actually exists.
-         */
-        specv.getScript().setGenerate(
-                pluginService.getProcessorRefs(specv.getScript().getGenerate()));
         specv.getScript().setExecute(
                 pluginService.getProcessorRefs(specv.getScript().getExecute()));
+        specv.getScript().setGenerate(
+                pluginService.getProcessorRefs(specv.getScript().getGenerate()));
 
         TaskSpec tspec = new TaskSpec();
         tspec.setName(specv.getName());
@@ -178,7 +177,7 @@ public class JobServiceImpl implements JobService {
                         ZpsScript.class);
                 expandScript.setExecute(parentScript.getExecute());
             } catch (IOException e) {
-                throw new ArchivistWriteException("Expand with inherited execute faileure", e);
+                throw new ArchivistWriteException("Expand with inherited execute failure", e);
             }
         }
 
@@ -190,11 +189,50 @@ public class JobServiceImpl implements JobService {
         return createTask(spec);
     }
 
-    public Task createTask(TaskSpec spec) {
+    @Override
+    public Task createTask(TaskSpecV spec) {
         /**
          * Create the first task which is just the script itself.
          */
 
+        TaskSpec ts = new TaskSpec();
+        ts.setName(spec.getName());
+        ts.setJobId(spec.getJobId());
+        ts.setParentTaskId(null);
+
+        ZpsScript script = new ZpsScript();
+        script.setOver(spec.getDocs());
+        script.setExecute(pluginService.getProcessorRefs(spec.getPipelineId()));
+        script.getExecute().add( new ProcessorRef()
+                .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
+                .setLanguage("java")
+                .setArgs(ImmutableMap.of("importId", ts.getJobId())));
+
+        Task task = taskDao.create(ts);
+
+        /**
+         * Write script to disk
+         */
+        String root = jobDao.getRootPath(spec.getJobId());
+        String scriptPath = ExecuteTask.scriptPath(root, task.getName(), task.getTaskId());
+        try {
+            Json.Mapper.writeValue(Paths.get(scriptPath).toFile(), script);
+        } catch (IOException e) {
+            throw new ArchivistException("Failed to add task, " + e, e);
+        }
+
+        jobDao.incrementWaitingTaskCount(task);
+        taskDao.incrementDependCount(task);
+        return task;
+    }
+
+    public Task createTask(TaskSpec spec) {
+
+        /**
+         * Create the first task which is just the script itself.
+         */
+
+        logger.info("Adding task to job: {}", spec);
         Task task = taskDao.create(spec);
 
         /**
@@ -203,10 +241,10 @@ public class JobServiceImpl implements JobService {
         String root = jobDao.getRootPath(spec.getJobId());
         String scriptPath = ExecuteTask.scriptPath(root, task.getName(), task.getTaskId());
 
-        try{
+        try {
             Files.write(Paths.get(scriptPath), spec.getScript().getBytes());
         } catch (IOException e) {
-            throw new ArchivistException("Faled to add task, " + e, e);
+            throw new ArchivistException("Failed to add task, " + e, e);
         }
 
         jobDao.incrementWaitingTaskCount(task);

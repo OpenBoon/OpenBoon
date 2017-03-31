@@ -16,7 +16,7 @@ public class UploadImportSpec {
     private String name;
 
     /**
-     * Utilize a pre-existing pipeline.  This could be the name or a numeric id.
+     * Utilize a pre-existing pipeline.
      */
     public Integer pipelineId;
 
