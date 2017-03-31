@@ -1,0 +1,44 @@
+{
+  "inline": false,
+  "type": "import",
+  "generate": [
+    {
+      "className": "com.zorroa.core.generator.FileSystemGenerator",
+      "language": "java",
+      "args": {
+        "path": {
+          "_expr_": "_ctx.globals.path",
+          "_language_": "groovy"
+        }
+      }
+    }
+  ],
+  "execute": [
+    {
+      "className": "com.zorroa.core.processor.SkipFrameScript",
+      "language": "java",
+      "args": {
+        "script": "new File(_doc.getAttr('source.path')).lastModified() > Long.valueOf(_ctx.globals.cutOffTime);"
+      }
+    },
+    {
+      "className": "com.zorroa.core.collector.ExpandCollector",
+      "language": "java",
+      "args": { },
+      "execute": [
+        {
+          "className": "com.zorroa.core.processor.ProxyIngestor",
+          "language": "java",
+          "args": { },
+          "filters": [ ]
+        },
+        {
+          "className": "com.zorroa.core.collector.CloudProxyCollector",
+          "language": "java",
+          "args": { },
+          "filters": []
+        }
+      ]
+    }
+  ]
+}

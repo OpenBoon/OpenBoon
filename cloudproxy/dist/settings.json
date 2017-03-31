@@ -1,0 +1,11 @@
+{
+  "application": "cloudproxy",
+  "jar": "cloudproxy.jar",
+  "pom": "../pom.xml",
+
+  "commands": [
+    ["unzip","%{src_home}/zorroa-plugin-sdk/dist/lang-java-plugin.zip", "-d", "%{build_dir}/shared/plugins"],
+    ["unzip","%{src_home}/zorroa-plugin-sdk/dist/zorroa-core-plugin.zip", "-d", "%{build_dir}/shared/plugins"]
+  ]
+
+}

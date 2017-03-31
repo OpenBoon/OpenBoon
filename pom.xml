@@ -21,6 +21,7 @@
         <module>common</module>
         <module>archivist</module>
         <module>analyst</module>
+        <module>cloudproxy</module>
     </modules>
 
     <dependencyManagement>

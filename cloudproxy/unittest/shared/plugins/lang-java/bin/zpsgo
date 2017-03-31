@@ -1,0 +1,4 @@
+#/bin/sh
+echo “$@“
+echo "Work dir: ${ZORROA_WORK_DIR}"
+env >> ${ZORROA_WORK_DIR}/env

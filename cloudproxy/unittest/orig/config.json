@@ -1,0 +1,10 @@
+{
+  "startNow" : false,
+  "archivistUrl" : "https://nohost.com",
+  "hmacKey" : "100-100-100-100",
+  "authUser" : "remote_user",
+  "paths" : [ "/foo" ],
+  "schedule" : "0 12 12 12 12 ?",
+  "threads" : 4,
+  "pipelineId" : 22
+}
