@@ -27,6 +27,12 @@
       "args": { },
       "execute": [
         {
+          "className": "com.zorroa.core.processor.ImageIngestor",
+          "language": "java",
+          "args": { },
+          "filters": [ ]
+        },
+        {
           "className": "com.zorroa.core.processor.ProxyIngestor",
           "language": "java",
           "args": { },
