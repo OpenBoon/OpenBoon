@@ -49,6 +49,10 @@ public class HttpUtils {
         return ImmutableMap.of("type", type, "id", id, "op", op, "success", success);
     }
 
+    public static Map<String, Object> status(String type, String op, boolean success) {
+        return ImmutableMap.of("type", type, "op", op, "success", success);
+    }
+
     public static Map<String, Object> count(Number count) {
         return ImmutableMap.of("count", count);
     }

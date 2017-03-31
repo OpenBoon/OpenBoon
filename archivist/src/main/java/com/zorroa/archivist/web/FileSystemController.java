@@ -1,9 +1,11 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.repository.AssetDao;
+import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;
@@ -15,12 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,5 +75,41 @@ public class FileSystemController {
         AntPathMatcher apm = new AntPathMatcher();
         String id = "proxy/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path));
         return imageService.serveImage(objectFileSystem.get(id).getFile());
+    }
+
+    public static class ProxyUpload {
+        public List<MultipartFile> files;
+
+        public List<MultipartFile> getFiles() {
+            return files;
+        }
+
+        public ProxyUpload setFiles(List<MultipartFile> files) {
+            this.files = files;
+            return this;
+        }
+    }
+
+    @RequestMapping(value="/api/v1/ofs/proxy", method = RequestMethod.POST)
+    public Object proxyUpload(ProxyUpload upload) throws IOException {
+        logger.info("Acccepting proxy upload");
+        if (upload.getFiles() == null || upload.getFiles().isEmpty()) {
+            logger.warn("no files/proxies uploaded");
+            return HttpUtils.status("proxy", "upload", false);
+        }
+
+        try {
+            for (MultipartFile file : upload.getFiles()) {
+                String id = "proxy/" + file.getOriginalFilename();
+                ObjectFile of = objectFileSystem.get(id);
+                of.mkdirs();
+                logger.info("copying proxy {}", of.getFile().toPath());
+                Files.copy(file.getInputStream(), of.getFile().toPath());
+            }
+            return HttpUtils.status("proxy", "upload", true);
+        } catch (Exception e) {
+            logger.warn("Failed to upload proxies", e);
+        }
+        return HttpUtils.status("proxy", "upload", false);
     }
 }
