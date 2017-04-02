@@ -36,6 +36,7 @@ public class Folder implements Loggable<Integer> {
     private boolean recursive;
     private boolean dyhiRoot;
     private String dyhiField;
+    private int childCount;
 
     private Acl acl;
 
@@ -164,6 +165,15 @@ public class Folder implements Loggable<Integer> {
 
         Folder other = (Folder) o;
         return id == other.getId();
+    }
+
+    public int getChildCount() {
+        return childCount;
+    }
+
+    public Folder setChildCount(int childCount) {
+        this.childCount = childCount;
+        return this;
     }
 
     @Override

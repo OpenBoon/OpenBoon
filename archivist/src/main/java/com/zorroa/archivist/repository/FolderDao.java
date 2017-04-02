@@ -22,7 +22,7 @@ public interface FolderDao {
 
     List<Folder> getChildren(Folder folder);
 
-    Set<Integer> getAllIds(DyHierarchy dyhi);
+    List<Integer> getAllIds(DyHierarchy dyhi);
 
     boolean exists(int parentId, String name);
 

@@ -254,7 +254,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             /**
              * Delete all unmarked folders.
              */
-            Set<Integer> unusedFolders = Sets.difference(folderService.getAllIds(dyhi), folders.folderIds);
+            Set<Integer> unusedFolders = Sets.difference(ImmutableSet.copyOf(folderService.getAllIds(dyhi)), folders.folderIds);
             try {
                 folderService.deleteAll(unusedFolders);
             } catch (Exception e) {

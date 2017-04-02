@@ -12,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -25,13 +24,30 @@ public class FolderDaoTests extends AbstractTest {
     DyHierarchyDao dyHierarchyDao;
 
     @Test
-    public void testCreateAndGet() throws IOException {
+    public void testCreateAndGet()  {
         String name = "Foobar the folder";
         FolderSpec builder = new FolderSpec(name);
         Folder folder1 = folderDao.create(builder);
 
         Folder folder2 = folderDao.get(folder1.getId());
         assertEquals(folder2.getName(), name);
+    }
+
+    @Test
+    public void testChildCount() throws IOException {
+        String name = "Foobar the folder";
+        FolderSpec builder1 = new FolderSpec(name);
+        Folder folder1 = folderDao.create(builder1);
+        assertEquals(0, folder1.getChildCount());
+
+        FolderSpec builder2 = new FolderSpec(name + "2", folder1);
+        Folder folder2 = folderDao.create(builder2);
+        folder1 = folderDao.get(folder1.getId());
+        assertEquals(1, folder1.getChildCount());
+
+        folderDao.delete(folder2);
+        folder1 = folderDao.get(folder1.getId());
+        assertEquals(0, folder1.getChildCount());
     }
 
     @Test
@@ -146,6 +162,30 @@ public class FolderDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testUpdateWithMove() {
+        FolderSpec spec1 = new FolderSpec("f1", Folder.ROOT_ID);
+        Folder f1 = folderDao.create(spec1);
+
+        FolderSpec spec2 = new FolderSpec("f2", Folder.ROOT_ID);
+        Folder f2 = folderDao.create(spec2);
+
+        Folder root = folderDao.get(Folder.ROOT_ID);
+        int rootCount = root.getChildCount();
+
+        assertEquals(0, f1.getChildCount());
+        assertEquals(0, f2.getChildCount());
+
+        f2.setParentId(f1.getId());
+        folderDao.update(f2.getId(), f2);
+
+        f1 = folderDao.get(f1.getId());
+        assertEquals(1, f1.getChildCount());
+
+        root = folderDao.get(Folder.ROOT_ID);
+        assertEquals(rootCount -1, root.getChildCount());
+    }
+
+    @Test
     public void testDelete() {
         int count = folderDao.getChildren(Folder.ROOT_ID).size();
         Folder f = folderDao.create(new FolderSpec("test"));
@@ -185,9 +225,10 @@ public class FolderDaoTests extends AbstractTest {
 
         FolderSpec spec2 = new FolderSpec("bar").setDyhiId(dyhi.getId());
         Folder folder2 = folderDao.create(spec2);
-        Set<Integer> ids = folderDao.getAllIds(dyhi);
+        List<Integer> ids = folderDao.getAllIds(dyhi);
         assertTrue(ids.contains(folder2.getId()));
     }
+
     @Test
     public void testDeleteAllById() {
 

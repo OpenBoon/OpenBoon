@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
 
 public interface FolderService {
@@ -30,7 +29,7 @@ public interface FolderService {
      */
     List<Folder> getAll(Collection<Integer> ids);
 
-    Set<Integer> getAllIds(DyHierarchy dyhi);
+    List<Integer> getAllIds(DyHierarchy dyhi);
 
     List<Folder> getChildren(Folder folder);
 

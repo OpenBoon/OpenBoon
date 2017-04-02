@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
@@ -21,7 +20,6 @@ import java.sql.PreparedStatement;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class FolderDaoImpl extends AbstractDao implements FolderDao {
@@ -39,6 +37,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         folder.setTimeCreated(rs.getLong("time_created"));
         folder.setTimeModified(rs.getLong("time_modified"));
         folder.setDyhiRoot(rs.getBoolean("bool_dyhi_root"));
+        folder.setChildCount(rs.getInt("int_child_count"));
 
         Object parent = rs.getObject("pk_parent");
         if (parent != null) {
@@ -136,9 +135,8 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
 
     @Override
-    public Set<Integer> getAllIds(DyHierarchy dyhi) {
-        return ImmutableSet.copyOf(
-                jdbc.queryForList("SELECT pk_folder FROM folder WHERE pk_dyhi=?", Integer.class, dyhi.getId()));
+    public List<Integer> getAllIds(DyHierarchy dyhi) {
+        return jdbc.queryForList("SELECT pk_folder FROM folder WHERE pk_dyhi=?", Integer.class, dyhi.getId());
     }
 
     @Override
@@ -285,7 +283,10 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public boolean delete(Folder folder) {
-        return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) ==1;
+        if (jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.getId()) == 1) {
+            return true;
+        }
+        return false;
     }
 
     @Override

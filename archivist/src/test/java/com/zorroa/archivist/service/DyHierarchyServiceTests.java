@@ -215,6 +215,39 @@ public class DyHierarchyServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testDyhiChildCounts() {
+        Folder folder = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchySpec spec = new DyHierarchySpec();
+        spec.setFolderId(folder.getId());
+        spec.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)));
+
+        DyHierarchy dyhi = dyhiService.create(spec);
+        folder = folderService.get(folder.getId());
+        assertTrue(folder.getSearch().getFilter().getExists().contains("source.date"));
+
+        folder = folderService.get(folder.getId());
+        assertEquals(3, folder.getChildCount());
+    }
+
+    @Test
+    public void testDeleteDyhi() {
+        Folder folder = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchySpec spec = new DyHierarchySpec();
+        spec.setFolderId(folder.getId());
+        spec.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)));
+
+        DyHierarchy dyhi = dyhiService.create(spec);
+        folder = folderService.get(folder.getId());
+        dyhiService.delete(dyhi);
+        folder = folderService.get(folder.getId());
+        assertEquals(0, folder.getChildCount());
+    }
+
+    @Test
     public void testUpdate() {
         Folder folder = folderService.create(new FolderSpec("foo"), false);
         DyHierarchySpec spec = new DyHierarchySpec();

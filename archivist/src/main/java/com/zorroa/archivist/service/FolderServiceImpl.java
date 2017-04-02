@@ -153,7 +153,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public Set<Integer> getAllIds(DyHierarchy dyhi) {
+    public List<Integer> getAllIds(DyHierarchy dyhi) {
         return folderDao.getAllIds(dyhi);
     }
 
