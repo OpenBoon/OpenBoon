@@ -93,8 +93,8 @@ public class ImportTask {
                         Json.Mapper.writeValue(scriptPath.toFile(), expand);
 
                         ZpsTask zpsTask = new ZpsTask()
-                                .setArgs(Maps.newHashMap())
-                                .setEnv(Maps.newHashMap())
+                                .setArgs(zpsTask.getArgs())
+                                .setEnv(zpsTask.getEnv())
                                 .setScriptPath(scriptPath.toString());
                         zpsExecutor = new MetaZpsExecutor(zpsTask, new SharedData(sharedPath));
                         zpsExecutor.execute();
