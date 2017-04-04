@@ -12,7 +12,7 @@ public class Settings {
     private String hmacKey;
     private String authUser;
     private List<String> paths;
-    private String schedule;
+    private String schedule;        // Cron string
     private int threads = 1;
     private Integer pipelineId;
 
