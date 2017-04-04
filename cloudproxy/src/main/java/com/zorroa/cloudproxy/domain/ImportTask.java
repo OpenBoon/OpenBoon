@@ -141,7 +141,9 @@ public class ImportTask {
     private class ReactionHandler implements ZpsReactionHandler {
         @Override
         public void handle(ZpsTask zpsTask, SharedData sharedData, Reaction reaction) {
-            expand(reaction.getExpand());
+            if (reaction.getExpand() != null) {
+                expand(reaction.getExpand());
+            }
         }
     }
 }
