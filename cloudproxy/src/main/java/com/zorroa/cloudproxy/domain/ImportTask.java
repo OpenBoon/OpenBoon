@@ -35,6 +35,8 @@ public class ImportTask {
     private Path workDir;
     private Settings props;
     private ImportStats lastRun;
+    private Map<String, Object> args;
+    private Map<String, String> env;
 
     private MetaZpsExecutor zpsExecutor;
     private ThreadPoolExecutor threadPool;
@@ -46,19 +48,20 @@ public class ImportTask {
         this.props = configProps;
         this.lastRun = lastRun;
         this.workDir = this.sharedPath.resolve("jobs/" + UUID.randomUUID().toString());
+
+        args = Maps.newHashMap();
+        args.put("path", props.getPaths().get(0));
+        args.put("cutOffTime", lastRun.getStartTime());
+
+        env = Maps.newHashMap();
+        env.put("ZORROA_ARCHIVIST_URL", props.getArchivistUrl());
+        env.put("ZORROA_HMAC_KEY", props.getHmacKey());
+        env.put("ZORROA_USER", props.getAuthUser());
+        env.put("ZORROA_WORK_DIR", workDir.toString());
     }
 
     public void start() {
         try {
-            Map<String, Object> args = Maps.newHashMap();
-            args.put("path", props.getPaths().get(0));
-            args.put("cutOffTime", lastRun.getStartTime());
-
-            Map<String,String> env = Maps.newHashMap();
-            env.put("ZORROA_ARCHIVIST_URL", props.getArchivistUrl());
-            env.put("ZORROA_HMAC_KEY", props.getHmacKey());
-            env.put("ZORROA_USER", props.getAuthUser());
-            env.put("ZORROA_WORK_DIR", workDir.toString());
 
             FileUtils.makedirs(workDir);
 
@@ -93,8 +96,8 @@ public class ImportTask {
                         Json.Mapper.writeValue(scriptPath.toFile(), expand);
 
                         ZpsTask zpsTask = new ZpsTask()
-                                .setArgs(zpsTask.getArgs())
-                                .setEnv(zpsTask.getEnv())
+                                .setArgs(args)
+                                .setEnv(env)
                                 .setScriptPath(scriptPath.toString());
                         zpsExecutor = new MetaZpsExecutor(zpsTask, new SharedData(sharedPath));
                         zpsExecutor.execute();
