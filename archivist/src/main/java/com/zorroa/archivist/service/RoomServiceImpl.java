@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.repository.RoomDao;
 import com.zorroa.archivist.repository.SessionDao;
@@ -34,9 +33,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     TransactionEventManager transactionEventManager;
-
-    @Autowired
-    MessagingService messagingService;
 
     @Override
     public Room get(long id) {
@@ -77,11 +73,6 @@ public class RoomServiceImpl implements RoomService {
             return false;
         }
         boolean result = roomDao.join(room, session);
-        if (result) {
-            transactionEventManager.afterCommit(()->
-                    messagingService.sendToRoom(room, new Message(MessageType.ROOM_USER_JOINED,
-                            ImmutableMap.of("userId", session.getUserId()))));
-        }
         return result;
     }
 
@@ -96,11 +87,6 @@ public class RoomServiceImpl implements RoomService {
             return false;
         }
         boolean result = roomDao.leave(room, session);
-        if (result) {
-            transactionEventManager.afterCommit(()->
-                    messagingService.sendToRoom(room, new Message(MessageType.ROOM_USER_LEFT,
-                            ImmutableMap.of("userId", session.getUserId()))));
-        }
         return result;
     }
 
@@ -112,10 +98,6 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public boolean update(Room room, RoomUpdateBuilder updater) {
         boolean result = roomDao.update(room, updater);
-        transactionEventManager.afterCommit(()-> {
-            messagingService.sendToRoom(getActiveRoom(), new Message(MessageType.ROOM_UPDATED,
-                    ImmutableMap.of("roomId", room.getId())));
-        });
         return result;
     }
 
@@ -132,10 +114,6 @@ public class RoomServiceImpl implements RoomService {
         }
         if (room != null) {
             int version = roomDao.setSelection(room, selection);
-            transactionEventManager.afterCommit(() -> {
-                messagingService.sendToRoom(room, new Message(MessageType.ROOM_SELECTION_UPDATE,
-                        ImmutableMap.of("roomId", room.getId(), "version", version, "selection", selection)));
-            });
             return version;
         }
         else {
@@ -143,8 +121,6 @@ public class RoomServiceImpl implements RoomService {
             SessionAttrs attrs = session.getAttrs();
             attrs.setSelection(selection);
             sessionDao.setAttrs(session, attrs);
-            messagingService.sendToActiveRoom(new Message(MessageType.ROOM_SELECTION_UPDATE,
-                    ImmutableMap.of("version", -1, "selection", selection)));
             return -1;
         }
     }
@@ -152,10 +128,6 @@ public class RoomServiceImpl implements RoomService {
     public int setSearch(Room room, AssetSearch search) {
         if (room != null) {
             int version = roomDao.setSearch(room, search);
-            transactionEventManager.afterCommit(() -> {
-                messagingService.sendToRoom(room, new Message(MessageType.ROOM_SEARCH_UPDATE,
-                        ImmutableMap.of("roomId", room.getId(), "version", version, "search", search)));
-            });
             return version;
         }
         else {
@@ -163,10 +135,6 @@ public class RoomServiceImpl implements RoomService {
             SessionAttrs attrs = session.getAttrs();
             attrs.setSearch(search);
             sessionDao.setAttrs(session, attrs);
-            transactionEventManager.afterCommit(() -> {
-                messagingService.sendToActiveRoom(new Message(MessageType.ROOM_SEARCH_UPDATE,
-                        ImmutableMap.of("version", -1, "search", search)));
-            });
             return -1;
         }
     }

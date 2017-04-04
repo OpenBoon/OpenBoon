@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
-import com.zorroa.archivist.service.MessagingService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.sdk.search.AssetSearch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class FolderController {
 
     @Autowired
     SearchService searchService;
-
-    @Autowired
-    MessagingService messagingService;
 
     @RequestMapping(value="/api/v1/folders", method=RequestMethod.POST)
     public Folder create(@RequestBody FolderSpec spec) {

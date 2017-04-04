@@ -92,9 +92,6 @@ public abstract class AbstractTest {
     protected AnalystService analystService;
 
     @Autowired
-    protected MessagingService messagingService;
-
-    @Autowired
     protected LogDao eventLogDao;
 
     @Autowired

@@ -51,9 +51,6 @@ public class AssetServiceImpl implements AssetService {
     PermissionDao permissionDao;
 
     @Autowired
-    MessagingService messagingService;
-
-    @Autowired
     DyHierarchyService dyHierarchyService;
 
     @Autowired
@@ -163,11 +160,6 @@ public class AssetServiceImpl implements AssetService {
         }
 
         long version = assetDao.update(assetId, attrs);
-        messagingService.broadcast(new Message(MessageType.ASSET_UPDATE,
-                ImmutableMap.of(
-                        "assetId", assetId,
-                        "version", version,
-                        "source", attrs)));
         logService.logAsync(LogSpec.build(LogAction.Update, "asset", assetId));
         return version;
     }

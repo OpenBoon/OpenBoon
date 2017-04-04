@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.LogAction;
@@ -10,7 +9,6 @@ import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
@@ -43,9 +41,6 @@ public class PipelineServiceImpl implements PipelineService {
     PipelineDao pipelineDao;
 
     @Autowired
-    MessagingService message;
-
-    @Autowired
     TransactionEventManager event;
 
     @Autowired
@@ -64,8 +59,6 @@ public class PipelineServiceImpl implements PipelineService {
 
         Pipeline p = pipelineDao.create(spec);
         event.afterCommit(()-> {
-            message.broadcast(new Message("PIPELINE_CREATE",
-                    ImmutableMap.of("id", p.getId())));
             if (SecurityUtils.getAuthentication() != null) {
                 logService.logAsync(LogSpec.build(LogAction.Create, p));
             }
@@ -109,8 +102,6 @@ public class PipelineServiceImpl implements PipelineService {
         boolean result = pipelineDao.update(id, spec);
         if (result) {
             event.afterCommit(() -> {
-                message.broadcast(new Message("PIPELINE_UPDATE",
-                        ImmutableMap.of("id", id)));
                 logService.logAsync(LogSpec.build(LogAction.Update, "pipeline", id));
             });
         }
@@ -122,8 +113,6 @@ public class PipelineServiceImpl implements PipelineService {
         boolean result = pipelineDao.delete(id);
         if (result) {
             event.afterCommit(() -> {
-                message.broadcast(new Message("PIPELINE_DELETE",
-                        ImmutableMap.of("id", id)));
                 logService.logAsync(LogSpec.build(LogAction.Delete, "pipeline", id));
             });
         }

@@ -16,7 +16,6 @@ import com.zorroa.common.domain.*;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Document;
-import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
@@ -53,9 +52,6 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     TaskDao taskDao;
-
-    @Autowired
-    MessagingService message;
 
     @Autowired
     TransactionEventManager event;
@@ -150,8 +146,6 @@ public class JobServiceImpl implements JobService {
                 createTask(tspec.setJobId(job.getJobId()));
             }
         }
-        event.afterCommit(()->
-                message.broadcast(new Message("JOB_CREATE", job)));
         return jobDao.get(job.getId());
     }
 
@@ -260,11 +254,6 @@ public class JobServiceImpl implements JobService {
     @Override
     public boolean setJobState(JobId job, JobState newState, JobState oldState) {
         boolean result = jobDao.setState(job, newState, oldState);
-        if (result) {
-            event.afterCommit(()->
-                    message.broadcast(new Message("JOB_CANCELED",
-                            ImmutableMap.of("id", job.getJobId()))));
-        }
         return result;
     }
 

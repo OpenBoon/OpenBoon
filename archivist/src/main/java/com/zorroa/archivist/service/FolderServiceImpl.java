@@ -5,7 +5,6 @@ import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.zorroa.archivist.domain.*;
@@ -17,8 +16,6 @@ import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
-import com.zorroa.sdk.domain.Message;
-import com.zorroa.sdk.domain.MessageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +49,6 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     PermissionDao permissionDao;
-
-    @Autowired
-    MessagingService messagingService;
 
     @Autowired
     TransactionEventManager transactionEventManager;
@@ -186,8 +180,6 @@ public class FolderServiceImpl implements FolderService {
 
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(current, current.getParentId());
-                messagingService.broadcast(new Message(MessageType.FOLDER_UPDATE,
-                        get(folder.getId())));
                 logService.logAsync(LogSpec.build(LogAction.Update, folder));
             });
         }
@@ -324,8 +316,6 @@ public class FolderServiceImpl implements FolderService {
 
         Map<String, List<Object>> result = assetDao.appendLink("folder", folder.getId(), assetIds);
         invalidate(folder);
-        messagingService.broadcast(new Message(MessageType.FOLDER_ADD_ASSETS,
-                ImmutableMap.of("added", result, "assetIds", assetIds, "folderId", folder.getId())));
         logService.logAsync(LogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
         return result;
     }
@@ -339,8 +329,6 @@ public class FolderServiceImpl implements FolderService {
 
         Map<String, List<Object>> result = assetDao.removeLink("folder", folder.getId(), assetIds);
         invalidate(folder);
-        messagingService.broadcast(new Message(MessageType.FOLDER_REMOVE_ASSETS,
-                ImmutableMap.of("removed", result, "assetIds", assetIds, "folderId", folder.getId())));
         logService.logAsync(LogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
         return result;
     }
@@ -480,7 +468,6 @@ public class FolderServiceImpl implements FolderService {
     private void emitFolderCreated(Folder folder) {
         transactionEventManager.afterCommitSync(() -> {
             invalidate(null, folder.getParentId());
-            messagingService.broadcast(new Message(MessageType.FOLDER_CREATE, folder));
             logService.logAsync(LogSpec.build(LogAction.Create, folder));
         });
     }

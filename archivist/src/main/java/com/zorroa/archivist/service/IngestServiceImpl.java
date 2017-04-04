@@ -1,12 +1,10 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.IngestDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.sdk.domain.Message;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
@@ -36,9 +34,6 @@ public class IngestServiceImpl implements IngestService {
 
     @Autowired
     IngestDao ingestDao;
-
-    @Autowired
-    MessagingService message;
 
     @Autowired
     TransactionEventManager event;
@@ -75,8 +70,6 @@ public class IngestServiceImpl implements IngestService {
 
         event.afterCommit(()-> {
             if (i.isAutomatic()) { schedule(i); }
-            message.broadcast(new Message("INGEST_CREATE",
-                    ImmutableMap.of("id", i.getId())));
             logService.logAsync(LogSpec.build(LogAction.Create, i));
         });
 
@@ -112,8 +105,6 @@ public class IngestServiceImpl implements IngestService {
         if (result) {
             event.afterCommit(() -> {
                 schedule(ingestDao.get(id));
-                message.broadcast(new Message("INGEST_UPDATE",
-                        ImmutableMap.of("id", id)));
                 logService.logAsync(LogSpec.build(LogAction.Update, "ingest", id));
             });
         }
@@ -125,8 +116,6 @@ public class IngestServiceImpl implements IngestService {
         boolean result = ingestDao.delete(id);
         if (result) {
             event.afterCommit(() -> {
-                message.broadcast(new Message("INGEST_DELETE",
-                        ImmutableMap.of("id", id)));
                 logService.logAsync(LogSpec.build(LogAction.Delete, "ingest", id));
             });
         }
