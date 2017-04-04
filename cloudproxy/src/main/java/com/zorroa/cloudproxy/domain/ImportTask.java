@@ -52,6 +52,7 @@ public class ImportTask {
         args = Maps.newHashMap();
         args.put("path", props.getPaths().get(0));
         args.put("cutOffTime", lastRun.getStartTime());
+        args.put("pipelineId", props.getPipelineId());
 
         env = Maps.newHashMap();
         env.put("ZORROA_ARCHIVIST_URL", props.getArchivistUrl());
