@@ -1,6 +1,7 @@
 package com.zorroa.cloudproxy.config;
 
 import com.google.common.collect.ImmutableSet;
+import com.zorroa.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -34,7 +35,7 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        root = Paths.get(home).resolve(directory);
+        root = FileUtils.normalize(Paths.get(home).resolve(directory));
         registry.addResourceHandler("/**")
                 .addResourceLocations(root.toUri().toString())
                 .resourceChain(false)
