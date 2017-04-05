@@ -195,8 +195,8 @@ public class MigrationServiceImpl implements MigrationService {
                             logger.warn("Bulk index failure, ", failure);
                         }
                     })
-                    .setBulkActions(500)
-                    .setBulkSize(new ByteSizeValue(500, ByteSizeUnit.MB))
+                    .setBulkActions(100)
+                    .setBulkSize(new ByteSizeValue(50, ByteSizeUnit.MB))
                     .setFlushInterval(TimeValue.timeValueSeconds(10))
                     .setConcurrentRequests(1)
                     .build();
