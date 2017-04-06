@@ -69,6 +69,10 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
 
         if (bitwise) {
             final int[] fieldValueBytes = hexToDecimalArray(fieldValue);
+            if (fieldValueBytes == null) {
+                return 0.0f;
+            }
+
             for (int[] hash: bitwiseHashes) {
                 if (fieldValueBytes.length != hash.length) {
                     continue;
@@ -127,7 +131,12 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     public final static int[] hexToDecimalArray(final String value) {
         int[] result = new int[value.length() / 2];
         for (int i = 0, l = value.length(); i < l; i=i+2) {
-            result[i/2] = Integer.parseInt(value.substring(i, i+2), 16);
+            try {
+                result[i / 2] = Integer.parseInt(value.substring(i, i + 2), 16);
+            } catch (IndexOutOfBoundsException e) {
+                logger.warn("Failed to calculate hex array, {} - odd length {}", value, value.length());
+                return null;
+            }
         }
         return result;
     }
