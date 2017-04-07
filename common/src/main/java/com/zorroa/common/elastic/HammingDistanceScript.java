@@ -63,14 +63,8 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         if(fieldValue == null || length == 0) {
             return 0.0f;
         }
-
-        List<String> multiVals = (((ScriptDocValues.Strings) doc().get(field)).getValues());
-        if (multiVals.size() > 1) {
-            logger.warn("Multiple hash values: {}", multiVals);
-        }
-
+        
         int distance = 0;
-
         if (bitwise) {
             final int[] fieldValueBytes = hexToDecimalArray(fieldValue);
             if (fieldValueBytes == null) {
