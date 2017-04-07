@@ -66,7 +66,7 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
 
         List<String> multiVals = (((ScriptDocValues.Strings) doc().get(field)).getValues());
         if (multiVals.size() > 1) {
-            logger.warn("Multiple hash values: {}", smultiVals);
+            logger.warn("Multiple hash values: {}", multiVals);
         }
 
         int distance = 0;
