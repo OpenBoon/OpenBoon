@@ -24,11 +24,12 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
-        field = forceRaw((String) params.get("field"));
+        field = (String) params.get("field");
         bitwise = field.endsWith( ".bit.raw");
         hashes = (List<String>) params.get("hashes");
         length = hashes.get(0).length();
         minScore = (int) params.getOrDefault("minScore", 1);
+        logger.info("Performing hamming on field {}", field);
 
         if (hashes == null || hashes.isEmpty()) {
             bitwiseHashes = null;
@@ -61,6 +62,11 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         String fieldValue = ((ScriptDocValues.Strings) doc().get(field)).getValue();
         if(fieldValue == null || length == 0) {
             return 0.0f;
+        }
+
+        List<String> multiVals = (((ScriptDocValues.Strings) doc().get(field)).getValues());
+        if (multiVals.size() > 1) {
+            logger.warn("Multiple hash values: {}", smultiVals);
         }
 
         int distance = 0;
@@ -111,10 +117,6 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         int distance = 0;
         for (int i = 0, l = lhs.length; i < l; i++) {
             int z = lhs[i] ^ rhs[i];
-            //while (z > 0) {
-            //    distance += 1;
-            //    z &= z-1;
-            //}
             distance +=hammingWeight(z);
         }
         return (lhs.length * 8) - distance;
@@ -127,22 +129,20 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     }
 
     public final static int[] hexToDecimalArray(final String value) {
-        int[] result = new int[value.length() / 2];
-        for (int i = 0, l = value.length(); i < l; i=i+2) {
+        final int len = value.length();
+        if (len % 2 != 0) {
+            logger.warn("Invalid bitwise hash {}, length: {}", value, len);
+            return null;
+        }
+        int[] result = new int[len / 2];
+        for (int i = 0, l = len; i < l; i=i+2) {
             try {
                 result[i / 2] = Integer.parseInt(value.substring(i, i + 2), 16);
-            } catch (IndexOutOfBoundsException e) {
-                logger.warn("Failed to calculate hex array, {} - odd length {}", value, value.length());
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid HEX value {}", value);
                 return null;
             }
         }
         return result;
-    }
-
-    public String forceRaw(String field) {
-        if (!field.endsWith(".raw")) {
-            field = field + ".raw";
-        }
-        return field;
     }
 }
