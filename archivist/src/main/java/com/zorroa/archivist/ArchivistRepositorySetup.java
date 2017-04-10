@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +29,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     @Autowired
     Client client;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     @Autowired
     MigrationService migrationService;
