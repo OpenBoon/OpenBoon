@@ -76,7 +76,7 @@ ANALYST_HOME=`dirname "$SCRIPT"`/..
 
 # make ANALYST_HOME absolute
 ANALYST_HOME=`cd "$ANALYST_HOME"; pwd`
-
+cd ${ANALYST_HOME}
 
 # If an include wasn't specified in the environment, then search for one...
 if [ "x$ANALYST_INCLUDE" = "x" ]; then

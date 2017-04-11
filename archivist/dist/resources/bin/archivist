@@ -76,7 +76,7 @@ ARCHIVIST_HOME=`dirname "$SCRIPT"`/..
 
 # make archivist_HOME absolute
 ARCHIVIST_HOME=`cd "$ARCHIVIST_HOME"; pwd`
-
+cd ${ARCHIVIST_HOME}
 
 # If an include wasn't specified in the environment, then search for one...
 if [ "x$ARCHIVIST_INCLUDE" = "x" ]; then
