@@ -22,6 +22,8 @@ public interface UserService {
 
     User get(int id);
 
+    User getByEmail(String email);
+
     boolean exists(String username);
 
     List<User> getAll();
@@ -92,4 +94,9 @@ public interface UserService {
     boolean updateUserPreset(int id, UserPreset preset);
     UserPreset createUserPreset(UserPresetSpec preset);
     boolean deleteUserPreset(UserPreset preset);
+
+    String sendPasswordResetEmail(User user);
+
+    User resetPassword(String token, String password);
+
 }

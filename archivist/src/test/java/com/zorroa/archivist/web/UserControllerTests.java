@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.util.NestedServletException;
@@ -33,6 +34,38 @@ public class UserControllerTests extends MockMvcTest {
     @Test
     public void testLogin() throws Exception {
         mvc.perform(post("/api/v1/login").session(admin())).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testSendPasswordRecoveryEmail() throws Exception {
+        User user = userService.get("user");
+        userService.sendPasswordResetEmail(user);
+
+        SecurityContextHolder.getContext().setAuthentication(null);
+        MvcResult result = mvc.perform(post("/api/v1/send-password-reset-email")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ImmutableMap.of("email", "user@zorroa.com"))))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    public void testResetPassword() throws Exception {
+        User user = userService.get("user");
+        String token = userService.sendPasswordResetEmail(user);
+
+        SecurityContextHolder.getContext().setAuthentication(null);
+        MvcResult result = mvc.perform(post("/api/v1/reset-password")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("X-Archivist-Recovery-Token", token)
+                .content(Json.serialize(ImmutableMap.of(
+                        "username", "user", "password", "bob"))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        User user2 = Json.deserialize(
+                result.getResponse().getContentAsByteArray(), User.class);
+        assertEquals(user, user2);
     }
 
     @Test

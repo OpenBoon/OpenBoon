@@ -12,8 +12,10 @@ import org.springframework.validation.FieldError;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Utility functions for any shared HTTP based code.
@@ -80,5 +82,38 @@ public class HttpUtils {
         }
         sb.delete(sb.length()-2, sb.length()-1);
         return sb.toString();
+    }
+
+    private static final char[] SYMBOLS;
+    static {
+        StringBuilder tmp = new StringBuilder();
+        for (char ch = '0'; ch <= '9'; ++ch)
+            tmp.append(ch);
+        for (char ch = 'a'; ch <= 'z'; ++ch)
+            tmp.append(ch);
+        SYMBOLS = tmp.toString().toCharArray();
+    }
+
+    public static final String randomString(int length) {
+        Random random = new Random();
+        char[] buf = new char[length];
+        for (int i=0; i<length; i++) {
+            buf[i] = SYMBOLS[random.nextInt(SYMBOLS.length)];
+        }
+        return new String(buf);
+    }
+
+    public static final String getHostname() {
+        String hostname = "localhost";
+        try {
+            hostname = InetAddress.getLocalHost().getHostName();
+        } catch (Exception ignore1) {
+            try {
+                hostname = InetAddress.getLocalHost().getHostAddress();
+            } catch (Exception ignore2) {
+
+            }
+        }
+        return hostname;
     }
 }

@@ -12,7 +12,12 @@ import java.util.List;
 public interface UserDao {
 
     User get(int id);
+
     User get(String username);
+
+    User getByEmail(String email);
+
+    User getByToken(String token);
 
     List<User> getAll();
 
@@ -33,6 +38,10 @@ public interface UserDao {
     boolean setPassword(User user, String password);
 
     boolean exists(String name);
+
+    String setEnablePasswordRecovery(User user);
+
+    boolean resetPassword(User user, String token, String password);
 
     boolean setEnabled(User user, boolean value);
 

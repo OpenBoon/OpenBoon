@@ -6,7 +6,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 /**
  * Created by chambers on 1/21/16.
  */
-public class HmacAuthentication  extends AbstractAuthenticationToken  {
+public class HmacAuthentication extends AbstractAuthenticationToken  {
 
     private String username;
     private String data;

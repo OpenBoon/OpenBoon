@@ -58,6 +58,21 @@ public class UserController  {
         req.logout();
     }
 
+    @RequestMapping(value="/api/v1/reset-password", method=RequestMethod.POST)
+    public User resetPasswordAndLogin() throws ServletException {
+        return userService.get(SecurityUtils.getUser().getId());
+    }
+
+    public static class SendForgotPasswordEmailRequest {
+        public String email;
+    }
+
+    @RequestMapping(value="/api/v1/send-password-reset-email", method=RequestMethod.POST)
+    public Object sendPasswordRecoveryEmail(@RequestBody SendForgotPasswordEmailRequest req) throws ServletException {
+        User user = userService.getByEmail(req.email);
+        userService.sendPasswordResetEmail(user);
+        return HttpUtils.status("send-password-reset-email", "update", true);
+    }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
     @RequestMapping(value="/api/v1/users")

@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -43,6 +44,16 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public User get(String username) {
         return jdbc.queryForObject("SELECT * FROM user WHERE str_username=?", MAPPER, username);
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return jdbc.queryForObject("SELECT * FROM user WHERE str_email=?", MAPPER, email);
+    }
+
+    @Override
+    public User getByToken(String token) {
+        return jdbc.queryForObject("SELECT * FROM user WHERE str_reset_pass_token=? LIMIT 1", MAPPER, token);
     }
 
     private static final String GET_ALL =
@@ -129,6 +140,35 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         return jdbc.update(
                 "UPDATE user SET str_password=? WHERE pk_user=?",
                 SecurityUtils.createPasswordHash(password), user.getId()) == 1;
+    }
+
+    @Override
+    public String setEnablePasswordRecovery(User user) {
+        String token = HttpUtils.randomString(64);
+        jdbc.update(
+                "UPDATE user SET str_reset_pass_token=?, time_reset_pass=? WHERE pk_user=?",
+                token, System.currentTimeMillis(), user.getId());
+        return token;
+    }
+
+    private static final String RESET_PASSWORD =
+        "UPDATE " +
+            "user " +
+        "SET " +
+            "str_password=?,"+
+            "str_reset_pass_token=null " +
+        "WHERE " +
+            "pk_user=? " +
+        "AND " +
+            "str_reset_pass_token=? " +
+        "AND " +
+            "? - time_reset_pass < 300000 ";
+
+    @Override
+    public boolean resetPassword(User user, String token, String password) {
+        boolean result = jdbc.update(RESET_PASSWORD, SecurityUtils.createPasswordHash(password),
+                user.getId(), token, System.currentTimeMillis()) == 1;
+        return result;
     }
 
     @Override

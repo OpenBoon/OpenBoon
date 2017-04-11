@@ -61,6 +61,10 @@ public class MultipleWebSecurityConfig {
         @Autowired
         SessionRegistry sessionRegistry;
 
+        @Bean
+        public ResetPasswordSecurityFilter resetPasswordSecurityFilter() {
+            return new ResetPasswordSecurityFilter();
+        }
 
         public CorsFilter corsFilter() {
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -86,9 +90,12 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
                 .antMatcher("/api/**")
                     .authorizeRequests()
+                    .antMatchers("/api/v1/reset-password").permitAll()
+                    .antMatchers("/api/v1/send-password-reset-email").permitAll()
                     .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                     .anyRequest().authenticated()
                 .and()

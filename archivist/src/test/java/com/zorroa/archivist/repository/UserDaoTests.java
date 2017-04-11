@@ -184,4 +184,28 @@ public class UserDaoTests extends AbstractTest {
         assertTrue(perms.contains(p));
     }
 
+    @Test
+    public void testGetUserByPasswordToken() {
+        String token = userDao.setEnablePasswordRecovery(user);
+        User user2 = userDao.getByToken(token);
+        assertEquals(user, user2);
+    }
+
+    @Test
+    public void testSetForgotPassword() {
+        String token = userDao.setEnablePasswordRecovery(user);
+        assertEquals(64, token.length());
+        assertEquals(token,
+                jdbc.queryForObject("SELECT str_reset_pass_token FROM user WHERE pk_user=?",
+                        String.class, user.getId()));
+    }
+
+    @Test
+    public void testSetResetPassword() {
+        assertFalse(userDao.resetPassword(user, "ABC123", "FOO"));
+        String token = userDao.setEnablePasswordRecovery(user);
+
+        assertFalse(userDao.resetPassword(user,"BAD_TOKEN", "FOO"));
+        assertTrue(userDao.resetPassword(user, token, "FOO"));
+    }
 }

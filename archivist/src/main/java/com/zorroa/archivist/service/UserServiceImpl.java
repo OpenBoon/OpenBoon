@@ -2,17 +2,22 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +40,9 @@ public class UserServiceImpl implements UserService {
     final static Set<String> PERMANENT_TYPES = ImmutableSet.of("user", "internal");
 
     @Autowired
+    MailSender mailSender;
+
+    @Autowired
     UserDao userDao;
 
     @Autowired
@@ -51,6 +59,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     TransactionEventManager txem;
+
+    @Autowired
+    ApplicationProperties properties;
 
     @Autowired
     LogService logService;
@@ -114,6 +125,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User get(int id) {
         return userDao.get(id);
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return userDao.getByEmail(email);
     }
 
     @Override
@@ -406,5 +422,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUserPreset(UserPreset preset) {
         return userPresetDao.delete(preset.getPresetId());
+    }
+
+    @Override
+    public String sendPasswordResetEmail(User user) {
+        String token = userDao.setEnablePasswordRecovery(user);
+        if (token != null) {
+
+            String email = user.getEmail();
+            if (ArchivistConfiguration.unittest) {
+                email = System.getProperty("user.name") + "@zorroa.com";
+            }
+
+            String host = properties.getString("server.address",
+                    HttpUtils.getHostname()) + ":" + properties.getInt("server.port");
+
+            StringBuilder text = new StringBuilder(1024);
+            text.append("Hello ");
+            text.append(email);
+            text.append(",\n\nClick on the link below to change your Zorroa login credentials.");
+            text.append("\n\nhttp://" + host + "/password?token=" + token);
+            text.append("\n\nIf you are not trying to change your Zorroa login credentials, please ignore this email.");
+
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setTo(email);
+            msg.setFrom("no-reply@zoroa.com");
+            msg.setSubject("Zorroa Account Verification");
+            msg.setText(text.toString());
+            mailSender.send(msg);
+        }
+        return token;
+    }
+
+    @Override
+    public User resetPassword(String token, String password) {
+        User user = userDao.getByToken(token);
+        if (userDao.resetPassword(user, token, password)) {
+            return user;
+        }
+        return null;
     }
 }
