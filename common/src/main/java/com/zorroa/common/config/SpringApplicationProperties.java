@@ -1,6 +1,7 @@
 package com.zorroa.common.config;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.sdk.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,12 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertySource;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -49,6 +53,37 @@ public class SpringApplicationProperties implements ApplicationProperties {
             return def;
         }
         return result.trim();
+    }
+
+    @Override
+    public List<String> getList(String key) {
+        String value = getString(key);
+        if (value.startsWith("file:")) {
+            try {
+                List<String> result = Lists.newArrayList();
+                String path = value.split(":")[1];
+                try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        line = line.trim();
+                        if (line.isEmpty()) {
+                            continue;
+                        }
+                        if (line.startsWith("#")) {
+                            continue;
+                        }
+                        result.add(line);
+                    }
+                }
+                return result;
+            } catch (Exception e) {
+                throw new ApplicationPropertiesException(
+                        "Invalid file for '" + key + "', " + e.getMessage(), e);
+            }
+        }
+        else {
+            return Splitter.on(",").trimResults().omitEmptyStrings().splitToList(value);
+        }
     }
 
     @Override

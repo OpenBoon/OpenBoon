@@ -1,5 +1,6 @@
 package com.zorroa.common.config;
 
+import com.google.common.collect.ImmutableList;
 import com.zorroa.common.UnitTestConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -44,6 +46,12 @@ public class SpringApplicationPropertiesTests {
     public void testGetString() {
         assertEquals("abc", properties.getString("test.prop.string"));
         assertEquals("bar", properties.getString("test.prop.string_foo", "bar"));
+    }
+
+    @Test
+    public void getListInFile() {
+        List<String> items = properties.getList("test.list");
+        assertEquals(ImmutableList.of("pencil", "pen", "marker"), items);
     }
 
     @Test
