@@ -5,6 +5,5 @@ package com.zorroa.analyst.service;
  */
 public interface RegisterService {
 
-
-    String register();
+    String register(String url);
 }

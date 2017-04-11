@@ -14,7 +14,6 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
-import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
@@ -33,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -46,9 +46,6 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         implements ProcessManagerService, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(ProcessManagerServiceImpl.class);
-
-    @Autowired
-    ArchivistClient archivistClient;
 
     @Autowired
     ApplicationProperties properties;
@@ -74,6 +71,10 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
      * Maintains a list of running processes.
      */
     private final ConcurrentMap<Integer, AnalystProcess> processMap = Maps.newConcurrentMap();
+
+    private List<String> hostList;
+
+    private long hostListLoadedTime = 0;
 
     @Override
     public Collection<AnalystProcess> getProcesses() {
@@ -188,7 +189,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
          * of queued processes.
          */
         AnalystProcess p = processMap.putIfAbsent(
-                task.getTask().getTaskId(), new AnalystProcess(task.getTask()));
+                task.getTask().getTaskId(), new AnalystProcess(task));
 
         if (p != null) {
             /**
@@ -270,19 +271,18 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                 throw new ClusterException("Invalid ZPS script, " + e, e);
             }
 
-            SharedData shared = new SharedData(properties.getString("zorroa.cluster.path.shared"));
+            SharedData shared = new SharedData(task.getSharedPath());
             task.putToEnv("ZORROA_CLUSTER_PATH_SHARED", shared.getRoot().toString());
-            task.putToEnv("ZORROA_CLUSTER_PATH_CERTS", shared.resolvestr("certs"));
             task.putToEnv("ZORROA_CLUSTER_PATH_OFS", shared.resolvestr("ofs"));
             task.putToEnv("ZORROA_CLUSTER_PATH_PLUGINS", shared.resolvestr("plugins"));
             task.putToEnv("ZORROA_CLUSTER_PATH_MODELS", shared.resolvestr("models"));
-            task.putToEnv("ZORROA_ARCHIVIST_URL", properties.getString("analyst.master.host"));
+            task.putToEnv("ZORROA_ARCHIVIST_URL", task.getArchivistHost());
 
             int exit = 1;
             Stopwatch timer = Stopwatch.createStarted();
             try {
                 if (!Application.isUnitTest()) {
-                    archivistClient.reportTaskStarted(new ExecuteTaskStarted(task.getTask()));
+                    proc.getClient().reportTaskStarted(new ExecuteTaskStarted(task.getTask()));
                 }
                 String scriptPath = task.getScriptPath();
                 for (; ; ) {
@@ -293,7 +293,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                     }
 
                     logger.debug("running script with language: {}", lang);
-                    String[] command = createCommand(task, scriptPath, lang);
+                    String[] command = createCommand(shared, task, scriptPath, lang);
                     exit = runProcess(command, task, proc);
 
                     if (exit != 0) {
@@ -342,7 +342,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                 }
 
                 if (!Application.isUnitTest()) {
-                    archivistClient.reportTaskStopped(new ExecuteTaskStopped(task.getTask())
+                    proc.getClient().reportTaskStopped(new ExecuteTaskStopped(task.getTask())
                             .setNewState(proc.getNewState()));
                 }
             }
@@ -355,11 +355,11 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         return proc;
     }
 
-    public String[] createCommand(ExecuteTaskStart task, String scriptPath, String lang) throws IOException {
-        String absSharedPath =  FileUtils.normalize(properties.getString("zorroa.cluster.path.shared"));
+    public String[] createCommand(SharedData shared, ExecuteTaskStart task, String scriptPath, String lang) throws IOException {
+        String rootPath = shared.getRoot().toString();
         ImmutableList.Builder<String> b = ImmutableList.<String>builder()
-                .add(String.format("%s/plugins/lang-%s/bin/zpsgo", absSharedPath, lang))
-                .add("--shared-path", absSharedPath)
+                .add(String.format("%s/plugins/lang-%s/bin/zpsgo", rootPath, lang))
+                .add("--shared-path", rootPath)
                 .add("--script", scriptPath);
 
         if (task.getArgs() != null) {
@@ -550,17 +550,17 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
             st.setParentTaskId(start.getTask().getTaskId());
             st.setJobId(start.getTask().getJobId());
             st.setName(script.getName());
-            archivistClient.expand(st);
+            process.getClient().expand(st);
         }
 
         if (reaction.getResponse() != null) {
             logger.info("Processing response from task: {}", Json.serializeToString(start.getTask()));
             ExecuteTaskResponse rsp = new ExecuteTaskResponse(start.getTask(), reaction.getResponse());
-            archivistClient.respond(rsp);
+            process.getClient().respond(rsp);
         }
 
         if (reaction.getStats() != null) {
-            archivistClient.reportTaskStats(new ExecuteTaskStats(start.getTask())
+            process.getClient().reportTaskStats(new ExecuteTaskStats(start.getTask())
                     .setErrorCount(reaction.getStats().getErrorCount())
                     .setSuccessCount(reaction.getStats().getSuccessCount())
                     .setWarningCount(reaction.getStats().getWarningCount()));
@@ -575,6 +575,15 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                     logger.info("ERROR:{}", path);
                 }
             }
+        }
+    }
+
+    public synchronized void syncHostList() {
+        if (System.currentTimeMillis() - hostListLoadedTime > 5000) {
+            List<String> hosts = properties.getList("analyst.master.host");
+            Collections.shuffle(hosts);
+            hostList = ImmutableList.copyOf(hosts);
+            hostListLoadedTime = System.currentTimeMillis();
         }
     }
 
@@ -594,24 +603,32 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         }
 
         try {
-            List<ExecuteTaskStart> tasks = archivistClient.queueNextTasks(new ExecuteTaskRequest()
-                    .setId(System.getProperty("analyst.id"))
-                    .setUrl(System.getProperty("server.url"))
-                    .setCount(threads - analyzeExecutor.getActiveCount()));
+            syncHostList();
+            for (String url: hostList) {
+                try {
+                    ArchivistClient client = new ArchivistClient(url);
+                    List<ExecuteTaskStart> tasks = client.queueNextTasks(new ExecuteTaskRequest()
+                            .setId(System.getProperty("analyst.id"))
+                            .setUrl(System.getProperty("server.url"))
+                            .setCount(threads - analyzeExecutor.getActiveCount()));
 
-            if (!tasks.isEmpty()) {
-                for (ExecuteTaskStart task : tasks) {
-                    try {
-                        execute(task, true);
-                    } catch (Exception e) {
-                        logger.warn("Failed to queue task: {}", task, e);
-                        archivistClient.rejectTask(new ExecuteTaskStopped(
-                                task.getTask(), TaskState.Waiting));
+                    if (!tasks.isEmpty()) {
+                        for (ExecuteTaskStart task : tasks) {
+                            try {
+                                execute(task, true);
+                            } catch (Exception e) {
+                                logger.warn("Failed to queue task: {}", task, e);
+                                client.rejectTask(new ExecuteTaskStopped(
+                                        task.getTask(), TaskState.Waiting));
+                            }
+                        }
                     }
+                } catch (Exception e) {
+                    logger.warn("Unable to contact Archivist for scheduling op, {}", e.getMessage());
                 }
             }
         } catch (Exception e) {
-            logger.warn("Unable to contact Archivist for scheduling op, {}", e.getMessage());
+            logger.warn("Unable to determine Archivist host list, {}", e.getMessage());
         }
     }
 

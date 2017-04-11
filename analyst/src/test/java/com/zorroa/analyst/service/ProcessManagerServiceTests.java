@@ -40,6 +40,8 @@ public class ProcessManagerServiceTests extends AbstractTest {
         ExecuteTaskStart ts = new ExecuteTaskStart(task, 0, 0)
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
                 .setName("task")
+                .setSharedPath("../unittest/shared")
+                .setArchivistHost("http://localhost:8066")
                 .setRootPath(Files.createTempDirectory("zorroa_analyst_test").toString());
 
         File dir = new File(ts.getScriptPath()).getParentFile();
@@ -57,6 +59,8 @@ public class ProcessManagerServiceTests extends AbstractTest {
         ExecuteTaskStart ts = new ExecuteTaskStart(task, 0, 0)
                 .setArgs(ImmutableMap.of("path", "../unittest/resources/images/set01"))
                 .setName("task")
+                .setSharedPath("../unittest/shared")
+                .setArchivistHost("http://localhost:8066")
                 .setRootPath(Files.createTempDirectory("zorroa_analyst_test").toString());
 
         File dir = new File(ts.getScriptPath()).getParentFile();

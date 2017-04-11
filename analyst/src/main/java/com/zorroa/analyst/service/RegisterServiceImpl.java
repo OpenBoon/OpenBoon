@@ -1,11 +1,9 @@
 package com.zorroa.analyst.service;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
@@ -23,13 +21,11 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -54,48 +50,17 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     @Autowired
     ProcessManagerService processManagerService;
 
-    @Autowired
-    ArchivistClient archivistClient;
-
-    private String url;
     private String id;
     private List<Float> load = Lists.newArrayList();
-
-    private boolean registered = false;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)  {
         determineUniqueId();
-        determineExternalHttpInterface();
         startAsync();
     }
 
-    private void determineExternalHttpInterface() {
-        String protocol = properties.getBoolean("server.ssl.enabled") ? "https" : "http";
-        String addr = "127.0.0.1";
-
-        try {
-            addr = getIpAddress();
-        } catch (IOException e) {
-            logger.warn("Failure determining local IP address", e);
-        }
-
-        String existingUrl = properties.getString("server.url", null);
-        if (existingUrl != null) {
-            url = existingUrl;
-        }
-        else {
-            url = protocol + "://" + addr + ":" + properties.getInt("server.port");
-        }
-
-        System.setProperty("server.url", url);
-        System.setProperty("server.address", addr);
-
-        logger.info("External {} interface: {}", protocol, url);
-    }
-
     public void determineUniqueId() {
-        File keyFile =new File("analyst.key");
+        File keyFile = new File(properties.getString("analyst.key.file"));
         if (!keyFile.exists()) {
             try {
                 Files.write(UUID.randomUUID().toString().replace("-", "").getBytes(), keyFile);
@@ -127,35 +92,19 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         if (Application.isUnitTest()) {
             return;
         }
+
         try {
-            register();
-        } catch (Exception e) {
-            logger.warn("Failed to register as worker node, ", e);
-            /*
-             * If the analyst hasn't registered at least once, then increase
-             * the rate at which we try to register.
-             */
-            if (!registered) {
-                for (;;) {
-                    try {
-                        Thread.sleep(1000);
-                        register();
-                        logger.info("Reconnected to archivist on {}",
-                                archivistClient.getLoadBalancer().lastHost());
-                        return;
-                    } catch (InterruptedException ignore) {
-                        return;
-                    }
-                    catch (Exception ex) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Failed to register as worker node ", ex);
-                        }
-                        else {
-                            logger.warn("Failed to register as worker node {}", ex.getMessage());
-                        }
-                    }
+            List<String> urls = properties.getList("analyst.master.host");
+            for (String url: urls) {
+                try {
+                    register(url);
+                } catch (Exception e) {
+                    logger.warn("Failed to register with archivist: {}, {}", url, e.getMessage());
                 }
             }
+        }
+        catch (Exception e) {
+            logger.warn("Unable to determine archivist master list: {}", e.getMessage(), e);
         }
     }
 
@@ -164,7 +113,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         // TODO: set the state of the analyst to shutdown
     }
 
-    public String register() {
+    public String register(String url) {
+
+        ArchivistClient client = new ArchivistClient(url);
 
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
         ThreadPoolExecutor e = (ThreadPoolExecutor) analyzeThreadPool;
@@ -191,48 +142,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         builder.setRemainingCapacity(e.getQueue().remainingCapacity());
         builder.setId(id);
         builder.setTaskIds(processManagerService.getTaskIds());
-        archivistClient.register(builder);
+        client.register(builder);
         return id;
     }
-
-    public String getIpAddress() throws IOException {
-
-        String ip = properties.getString("server.address", null);
-        if (ip != null && !ip.isEmpty()) {
-            return ip;
-        }
-
-        Set<String> allowedDevices = Sets.newHashSet();
-        String deviceString = properties.getString("server.devices", null);
-        if (deviceString != null) {
-            allowedDevices.addAll(Splitter.on(",").trimResults().splitToList(deviceString));
-        }
-
-        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-        while (networkInterfaces.hasMoreElements()) {
-            NetworkInterface ni = networkInterfaces.nextElement();
-            if (!ni.isUp()) {
-                continue;
-            }
-            if (!allowedDevices.isEmpty()) {
-                if (!allowedDevices.contains(ni.getName())) {
-                    continue;
-                }
-            }
-            Enumeration<InetAddress> nias = ni.getInetAddresses();
-            while (nias.hasMoreElements()) {
-                InetAddress ia = nias.nextElement();
-                if (!ia.isLinkLocalAddress()
-                        && !ia.isLoopbackAddress()
-                        && ia instanceof Inet4Address) {
-                    return ia.getHostAddress().toString();
-                }
-            }
-        }
-
-        return InetAddress.getLocalHost().getHostAddress();
-    }
-
 
     @Override
     protected Scheduler scheduler() {

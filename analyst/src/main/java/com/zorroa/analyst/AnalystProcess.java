@@ -2,7 +2,7 @@ package com.zorroa.analyst;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Queues;
-import com.zorroa.common.domain.ExecuteTask;
+import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.zps.ZpsScript;
 
@@ -19,13 +19,12 @@ public class AnalystProcess {
     private volatile TaskState newState = null;
     private Queue<ZpsScript> processQueue = Queues.newLinkedBlockingQueue();
     private int processCount = 1;
-    private ExecuteTask task;
+    private ExecuteTaskStart task;
+    private ArchivistClient client;
 
-    public AnalystProcess() {
-    }
-
-    public AnalystProcess(ExecuteTask task) {
+    public AnalystProcess(ExecuteTaskStart task) {
         this.task = task;
+        this.client = new ArchivistClient(task.getArchivistHost());
     }
 
     @JsonIgnore
@@ -80,12 +79,21 @@ public class AnalystProcess {
         return this;
     }
 
-    public ExecuteTask getTask() {
+    public ExecuteTaskStart getTask() {
         return task;
     }
 
-    public AnalystProcess setTask(ExecuteTask task) {
+    public AnalystProcess setTask(ExecuteTaskStart task) {
         this.task = task;
+        return this;
+    }
+
+    public ArchivistClient getClient() {
+        return client;
+    }
+
+    public AnalystProcess setClient(ArchivistClient client) {
+        this.client = client;
         return this;
     }
 }

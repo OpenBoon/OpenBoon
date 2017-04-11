@@ -3,10 +3,7 @@ package com.zorroa.analyst.config;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-import com.zorroa.analyst.Application;
-import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.repository.ClusterSettingsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,10 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chambers on 2/12/16.
@@ -34,31 +34,6 @@ public class ApplicationConfig {
 
     @Autowired
     ApplicationProperties properties;
-
-    @Bean
-    public ArchivistClient archivist() throws Exception {
-        ArchivistClient client = new ArchivistClient(properties.getString("analyst.master.host"));
-
-        if (!Application.isUnitTest()) {
-            logger.info("Loading configuration from {}", properties.getString("analyst.master.host"));
-            while(true) {
-                try {
-                    Map<String, String> settings = client.getClusterSettings();
-                    settings.forEach((k, v) -> {
-                        k = k.replace(ClusterSettingsDao.DELIMITER, ".");
-                        System.setProperty(k, v);
-                        logger.info("setting property: {}={}", k, v);
-                    });
-                    break;
-                } catch (Exception e) {
-                    logger.warn("Waiting for archivist to start....: {}", e.getMessage());
-                    Thread.sleep(1000);
-                }
-            }
-        }
-
-        return client;
-    }
 
     @Bean
     public ThreadPoolExecutor analyzeThreadPool() {

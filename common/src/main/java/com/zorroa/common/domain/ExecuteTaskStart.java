@@ -12,6 +12,8 @@ public class ExecuteTaskStart implements TaskId, JobId {
     private Map<String, String> env;
     private Map<String, Object> args;
     private String rootPath;
+    private String sharedPath;
+    private String archivistHost;
     private ExecuteTask task;
     private String name;
 
@@ -95,6 +97,24 @@ public class ExecuteTaskStart implements TaskId, JobId {
 
     public ExecuteTaskStart setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getSharedPath() {
+        return sharedPath;
+    }
+
+    public ExecuteTaskStart setSharedPath(String sharedPath) {
+        this.sharedPath = sharedPath;
+        return this;
+    }
+
+    public String getArchivistHost() {
+        return archivistHost;
+    }
+
+    public ExecuteTaskStart setArchivistHost(String archivistHost) {
+        this.archivistHost = archivistHost;
         return this;
     }
 

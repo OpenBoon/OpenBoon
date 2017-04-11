@@ -2,22 +2,27 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.ExecuteTask;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -31,16 +36,31 @@ import java.util.concurrent.TimeUnit;
 @Repository
 public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
+    @Autowired
+    SharedData shared;
+
+    @Autowired
+    ApplicationProperties properties;
+
+    private String talkbackUrl;
+    private String sharedPath;
+
+    @PostConstruct
+    public void init() {
+        talkbackUrl = HttpUtils.getUrl(properties);
+        sharedPath = shared.getRoot().toString();
+    }
+
     private static final String INSERT =
             JdbcUtils.insert("task",
-                "pk_job",
-                "pk_parent",
-                "str_name",
-                "int_state",
-                "int_order",
-                "time_created",
-                "time_state_change",
-                "time_ping");
+                    "pk_job",
+                    "pk_parent",
+                    "str_name",
+                    "int_state",
+                    "int_order",
+                    "time_created",
+                    "time_state_change",
+                    "time_ping");
 
     @Override
     public Task create(TaskSpec task) {
@@ -216,7 +236,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         return jdbc.update(SET_DEPEND, child.getParentTaskId(), child.getTaskId()) > 0;
     }
 
-    private static final RowMapper<ExecuteTaskStart> EXECUTE_TASK_MAPPER = (rs, row) -> {
+    private final RowMapper<ExecuteTaskStart> EXECUTE_TASK_MAPPER = (rs, row) -> {
         /*
          * We don't parse the script here, its not needed as we're just going to
          * turn it back into a string anyway.
@@ -233,6 +253,9 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         e.setEnv(Json.deserialize(rs.getString("json_env"), Map.class));
         e.setRootPath(rs.getString("str_root_path"));
         e.setName(rs.getString("str_name"));
+        e.setSharedPath(sharedPath);
+        e.setArchivistHost(talkbackUrl);
+
         return e;
     };
 

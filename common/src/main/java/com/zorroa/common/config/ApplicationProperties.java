@@ -1,6 +1,7 @@
 package com.zorroa.common.config;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -28,4 +29,5 @@ public interface ApplicationProperties {
     double min(String key, double value);
     Properties getProperties(String prefix);
     Properties getProperties(String prefix, boolean includePrefix);
+    List<String> getList(String key);
 }

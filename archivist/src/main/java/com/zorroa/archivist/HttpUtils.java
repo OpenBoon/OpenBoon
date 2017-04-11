@@ -1,6 +1,7 @@
 package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -115,5 +116,18 @@ public class HttpUtils {
             }
         }
         return hostname;
+    }
+
+    public static final String getUrl(ApplicationProperties properties) {
+        StringBuilder url = new StringBuilder(256);
+        url.append("http");
+        if (properties.getBoolean("server.ssl.enabled")) {
+            url.append("s");
+        }
+        url.append("://");
+        url.append(properties.getString("server.address", getHostname()));
+        url.append(":");
+        url.append(properties.getInt("server.port"));
+        return url.toString();
     }
 }

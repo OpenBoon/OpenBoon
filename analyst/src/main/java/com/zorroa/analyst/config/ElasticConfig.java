@@ -1,7 +1,6 @@
 package com.zorroa.analyst.config;
 
 import com.zorroa.analyst.Application;
-import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URI;
 import java.util.Random;
 
 /**
@@ -29,8 +27,7 @@ public class ElasticConfig {
     ApplicationProperties properties;
 
     @Bean
-    @Autowired
-    public Client elastic(ArchivistClient archivist) throws IOException {
+    public Client elastic() throws IOException {
         if (!properties.getBoolean("analyst.index.data")) {
             return null;
         }
@@ -39,11 +36,8 @@ public class ElasticConfig {
         int number = rand.nextInt(99999);
 
         String hostName = InetAddress.getLocalHost().getHostName();
-
         String nodeName = String.format("%s_%05d", hostName, number);
-        String archivistHost = String.format("%s:%d",
-                URI.create(properties.getString("analyst.master.host")).getHost(),
-                properties.getInt("zorroa.cluster.index.port"));
+        String elasticMaster = properties.getString("analyst.index.host");
 
         Settings.Builder builder =
                 Settings.settingsBuilder()
@@ -59,7 +53,7 @@ public class ElasticConfig {
                         .put("discovery.zen.fd.ping_timeout", "3s")
                         .put("discovery.zen.fd.ping_retries", 10)
                         .put("discovery.zen.ping.multicast.enabled", false)
-                        .putArray("discovery.zen.ping.unicast.hosts", archivistHost)
+                        .putArray("discovery.zen.ping.unicast.hosts", elasticMaster)
                         .put("node.data", properties.getBoolean("analyst.index.data"))
                         .put("action.auto_create_index", "-archivist*");
 
@@ -71,7 +65,7 @@ public class ElasticConfig {
             builder.put("node.local", true);
         }
         else {
-            logger.info("Connecting to elastic master: {}", archivistHost);
+            logger.info("Connecting to elastic master: {}", elasticMaster);
         }
         return ElasticClientUtils.initializeClient(builder);
     }
