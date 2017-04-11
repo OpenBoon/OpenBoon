@@ -13,12 +13,21 @@ import java.util.List;
  */
 @Component
 public class FilesystemServiceImpl implements FilesystemService {
-    public List<FilesystemEntry> get(String path) {
+    public List<FilesystemEntry> get(String path, List<String> hidden) {
         File folder = new File(path);
         File[] files = folder.listFiles();
         ArrayList<FilesystemEntry> entries = Lists.newArrayList();
         for (int i = 0; i < files.length; i++) {
-            entries.add(new FilesystemEntry(files[i]));
+            if (files[i].isHidden()) continue;
+            boolean skip = false;
+            for (int j = 0; j < hidden.size(); ++j) {
+                if (files[i].getAbsolutePath().matches(hidden.get(j))) {
+                    skip = true;
+                    break;
+                }
+            }
+            if (!skip)
+                entries.add(new FilesystemEntry(files[i]));
         }
         return entries;
     }
