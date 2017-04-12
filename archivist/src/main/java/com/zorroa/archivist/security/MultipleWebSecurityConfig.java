@@ -90,7 +90,7 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(resetPasswordSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter.class)
                 .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
                 .antMatcher("/api/**")
                     .authorizeRequests()
@@ -108,7 +108,6 @@ public class MultipleWebSecurityConfig {
                 .and()
                 .and()
                 .csrf().disable();
-
             }
     }
 
