@@ -75,8 +75,8 @@ public class ResetPasswordSecurityFilter extends GenericFilterBean {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
-                } catch (IOException ex) {
-                    throw ex;
+                } catch (IOException ignore) {
+                    //ignore
                 }
             }
         }
