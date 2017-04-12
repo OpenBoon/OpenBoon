@@ -22,10 +22,8 @@ APP_NAME="%{application}"
 
 # determine home
 APP_HOME=`dirname "$SCRIPT"`/..
-
-# make HOME absolute
-APP_HOME=`cd "$APP_HOME"; pwd`
 cd ${APP_HOME}
+APP_HOME=`pwd`
 
 # If an include wasn't specified in the environment, then search for one...
 if [ "x$APP_INCLUDE" = "x" ]; then

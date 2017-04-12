@@ -1,1 +1,2 @@
-archivist*
+build/*
+templates/_base/web/curator

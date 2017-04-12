@@ -1,0 +1,19 @@
+{
+  "application": "archivist",
+  "jar": "archivist.jar",
+  "commands": [
+  ],
+  "dirs": [
+    "bin",
+    "lib",
+    "config",
+    "db",
+    "tomcat",
+    "plugins",
+    "web",
+    "logs",
+    "shared/plugins",
+    "shared/ofs",
+    "shared/jobs"
+  ]
+}

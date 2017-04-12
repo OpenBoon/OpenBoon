@@ -65,7 +65,7 @@ def copy_jar_lib(args, settings):
     src = os.path.join(os.path.dirname(os.path.abspath(args.dist)), "target", settings["jar"])
     if args.build or not os.path.exists(src):
         logger.info("Rebuilding jar....")
-        pom_file = os.path.join(os.path.dirname(args.dist), settings["pom"])
+        pom_file = os.path.join(os.path.dirname(args.dist), "pom.xml")
         cmd =["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s" % pom_file]
         logger.info("running: %s" % cmd)
         subprocess.call(cmd, shell=False)
