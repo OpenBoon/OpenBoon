@@ -26,8 +26,40 @@ def create_build_dir(args):
 
 def copy_base_template(args):
     src = os.path.join(args.template_dir, "_base")
-    logger.info("copy %s -> %s" % (src, args.build_dir))
+    logger.info("copy: %s -> %s" % (src, args.build_dir))
     shutil.copytree(src, args.build_dir)
+
+def copy_sub_template(args):
+    """
+    Overlay files
+    :param args: 
+    :return: 
+    """
+    src = os.path.join(args.template_dir, args.template)
+    if not os.path.exists(src):
+        return
+    for root, dirs, files in os.walk(src):
+        for fname in files:
+            if fname.startswith("APPEND-"):
+                append_to_existing_file(args, root, fname)
+            else:
+                overwrite_existing_file(args, root, fname)
+
+def overwrite_existing_file(args, root, fname):
+    src_file = os.path.join(root, fname)
+    dst_file = os.path.join(args.build_dir, root.split("/" + args.template + "/")[1], fname)
+    logger.info("copy: %s -> %s" % (src_file, dst_file))
+    shutil.copy(src_file, dst_file)
+
+def append_to_existing_file(args, root, fname):
+    src_file = os.path.join(root, fname)
+    dst_file = fname.split("APPEND-")[1]
+    dst_file = os.path.join(args.build_dir, root.split("/" + args.template + "/")[1], dst_file)
+    logger.info("append: %s -> %s" % (src_file, dst_file))
+    with open(src_file) as f1:
+        lines = f1.readlines()
+        with open(dst_file, "a") as f2:
+            f2.writelines(lines)
 
 def copy_jar_lib(args, settings):
     src = os.path.join(os.path.dirname(os.path.abspath(args.dist)), "target", settings["jar"])
@@ -69,7 +101,7 @@ def copy_bin_scripts(args, settings):
     for script in scripts:
         src = os.path.join(tools_dir, script)
         dst = os.path.join(args.build_dir, "bin", script.replace("start", settings["application"]))
-        logger.info("copy %s -> %s" % (src, dst))
+        logger.info("copy: %s -> %s" % (src, dst))
         shutil.copy(src, dst)
 
         in_txt = ""
@@ -86,7 +118,7 @@ def make_build_directories(args, settings):
         return
     for d in dirs:
         fd = os.path.join(args.build_dir, d)
-        logger.info("Making dir: %s" % fd)
+        logger.info("mkdir: %s" % fd)
         try:
             os.makedirs(fd)
         except OSError:
@@ -101,6 +133,7 @@ def handle_args(args, settings):
     if args.rebuild_dir_struct:
         copy_base_template(args)
         make_build_directories(args, settings)
+        copy_sub_template(args)
         run_commands(args, settings)
         copy_bin_scripts(args, settings)
     copy_jar_lib(args, settings)
@@ -109,9 +142,9 @@ def handle_args(args, settings):
 
 def main():
     parser = argparse.ArgumentParser(prog="zspak")
-    parser.add_argument("dist", help="The path to the dist directory")
     parser.add_argument("template", help="The template to use for the build")
 
+    parser.add_argument("-d", "--dist", default="./dist", help="Path to dist directory, defaults to looking for ./dist")
     parser.add_argument("-c", "--clean", action="store_true", help="Delete the existing build if any.")
     parser.add_argument("-b", "--build", action="store_true", help="Rebuild server libraray")
     parser.add_argument("-r", "--run", action="store_true", help="Run server")
