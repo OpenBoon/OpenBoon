@@ -9,6 +9,7 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.util.Json;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -53,7 +54,13 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User getByToken(String token) {
-        return jdbc.queryForObject("SELECT * FROM user WHERE str_reset_pass_token=? LIMIT 1", MAPPER, token);
+        try {
+            return jdbc.queryForObject(
+                    "SELECT * FROM user WHERE str_reset_pass_token=? AND " +
+                            "? - time_reset_pass < 300000 LIMIT 1 ", MAPPER, token, System.currentTimeMillis());
+        } catch (EmptyResultDataAccessException e) {
+            throw new EmptyResultDataAccessException("This password change token has expired.", 1);
+        }
     }
 
     private static final String GET_ALL =
@@ -160,14 +167,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         "WHERE " +
             "pk_user=? " +
         "AND " +
-            "str_reset_pass_token=? " +
-        "AND " +
-            "? - time_reset_pass < 300000 ";
+            "str_reset_pass_token=?";
 
     @Override
     public boolean resetPassword(User user, String token, String password) {
         boolean result = jdbc.update(RESET_PASSWORD, SecurityUtils.createPasswordHash(password),
-                user.getId(), token, System.currentTimeMillis()) == 1;
+                user.getId(), token) == 1;
         return result;
     }
 
@@ -209,7 +214,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public boolean generateHmacKey(String username) {
         UUID key = UUID.randomUUID();
-        logger.info("generated key {} for {}", key, username);
         boolean result = jdbc.update("UPDATE user SET hmac_key=? WHERE str_username=? AND bool_enabled=?",
                 key, username, true) == 1;
         return result;
