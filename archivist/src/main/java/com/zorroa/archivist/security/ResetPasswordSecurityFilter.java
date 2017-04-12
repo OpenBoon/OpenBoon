@@ -40,7 +40,7 @@ public class ResetPasswordSecurityFilter extends GenericFilterBean {
         String token = req.getHeader("X-Archivist-Recovery-Token");
         if (token != null && req.getMethod().equals("POST")) {
             ResetPasswordRequest form = getBody(req);
-            if (form.isValid()) {
+            if (form != null && form.isValid()) {
                 User user = userService.resetPassword(token, form.getPassword());
                 if (user != null) {
                     SecurityContextHolder.getContext().setAuthentication(
@@ -53,7 +53,6 @@ public class ResetPasswordSecurityFilter extends GenericFilterBean {
 
     public static ResetPasswordRequest getBody(HttpServletRequest request) throws IOException {
 
-        String body = null;
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedReader = null;
 
@@ -69,8 +68,9 @@ public class ResetPasswordSecurityFilter extends GenericFilterBean {
             } else {
                 stringBuilder.append("");
             }
+            return Json.deserialize(stringBuilder.toString(), ResetPasswordRequest.class);
         } catch (IOException ex) {
-            throw ex;
+            logger.warn("Error reading request body stream, stream already closed, {}", ex.getMessage());
         } finally {
             if (bufferedReader != null) {
                 try {
@@ -81,9 +81,8 @@ public class ResetPasswordSecurityFilter extends GenericFilterBean {
             }
         }
 
-        return Json.deserialize(stringBuilder.toString(), ResetPasswordRequest.class);
+        return null;
     }
-
 
     public static class ResetPasswordRequest {
         private String password;
