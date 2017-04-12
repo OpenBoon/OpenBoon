@@ -67,7 +67,12 @@ public class ApiExceptionHandler {
         }
 
         sb.append("User: ");
-        sb.append(SecurityUtils.getUsername());
+        try {
+            sb.append(SecurityUtils.getUsername());
+        } catch (Exception ex) {
+            // handle the unauthorized case
+            sb.append("UNAUTHORIZED");
+        }
         sb.append("\n");
         logger.warn(sb.toString());
     }
