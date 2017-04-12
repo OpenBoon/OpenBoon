@@ -149,10 +149,9 @@ def main():
     parser.add_argument("-b", "--build", action="store_true", help="Rebuild server libraray")
     parser.add_argument("-r", "--run", action="store_true", help="Run server")
     parser.add_argument("-o", "--outdir", help="Name of directory to store output")
-    parser.add_argument("-s", "--src",
-                        default=os.environ.get("HOME") + "/src", help="Set the zorroa src checkout home.")
 
     args = parser.parse_args()
+    args.src = os.path.abspath(args.dist + "/../../../")
     settings = json.load(open(args.dist + "/settings.json", "r"))
     handle_args(args, settings)
 
