@@ -1,2 +1,2 @@
 #!/bin/bash
-../tools/zspak -b -r "$@" ../cloudproxy/dist local-server
+../tools/zspak -b -r "$@" local
