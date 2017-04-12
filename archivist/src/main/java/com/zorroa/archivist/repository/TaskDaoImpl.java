@@ -2,11 +2,10 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.NetworkEnvironment;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.ExecuteTask;
 import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.TaskId;
@@ -40,14 +39,12 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     SharedData shared;
 
     @Autowired
-    ApplicationProperties properties;
+    NetworkEnvironment networkEnv;
 
-    private String talkbackUrl;
     private String sharedPath;
 
     @PostConstruct
     public void init() {
-        talkbackUrl = HttpUtils.getUrl(properties);
         sharedPath = shared.getRoot().toString();
     }
 
@@ -254,7 +251,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         e.setRootPath(rs.getString("str_root_path"));
         e.setName(rs.getString("str_name"));
         e.setSharedPath(sharedPath);
-        e.setArchivistHost(talkbackUrl);
+        e.setArchivistHost(networkEnv.getUri().toString());
 
         return e;
     };

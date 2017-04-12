@@ -7,10 +7,8 @@ import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSettings;
-import com.zorroa.archivist.web.api.UserController;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,9 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebAppConfiguration
 public class UserControllerTests extends MockMvcTest {
-
-    @Autowired
-    UserController userController;
 
     @Test
     public void testLogin() throws Exception {

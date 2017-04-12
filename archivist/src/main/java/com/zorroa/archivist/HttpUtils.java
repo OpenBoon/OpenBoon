@@ -1,8 +1,17 @@
 package com.zorroa.archivist;
 
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.util.FileUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
@@ -14,9 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import static com.zorroa.archivist.domain.NetworkEnvironment.ON_PREM;
 
 /**
  * Utility functions for any shared HTTP based code.
@@ -104,21 +116,56 @@ public class HttpUtils {
         return new String(buf);
     }
 
-    public static final String getHostname() {
-        String hostname = "localhost";
-        try {
-            hostname = InetAddress.getLocalHost().getHostName();
-        } catch (Exception ignore1) {
-            try {
-                hostname = InetAddress.getLocalHost().getHostAddress();
-            } catch (Exception ignore2) {
+    public static String getLocation() {
+        Region region = Regions.getCurrentRegion();
+        if (region == null) {
+            return ON_PREM;
+        }
+        else {
+            return region.getName();
+        }
+    }
 
+    public static final String getHostname() {
+        String hostname = null;
+
+        if (!getLocation().equals(ON_PREM)) {
+
+            RequestConfig.Builder requestBuilder = RequestConfig.custom();
+            requestBuilder = requestBuilder.setConnectTimeout(1000);
+            requestBuilder = requestBuilder.setConnectionRequestTimeout(1000);
+
+            try (CloseableHttpClient httpClient = HttpClientBuilder.create()
+                    .setDefaultRequestConfig(requestBuilder.build()).build()) {
+
+                HttpResponse response = httpClient.execute(new HttpGet(
+                        "http://169.254.169.254/latest/meta-data/public-ipv4"));
+                HttpEntity entity = response.getEntity();
+                hostname = EntityUtils.toString(entity, "UTF-8");
+            } catch (IOException e) {
+                throw new RuntimeException("AWS detected but unable to determine public interface", e);
             }
         }
+
+        if (hostname == null) {
+            try {
+                hostname = InetAddress.getLocalHost().getHostName();
+            } catch (Exception ignore1) {
+                try {
+                    hostname = InetAddress.getLocalHost().getHostAddress();
+                } catch (Exception ignore2) {
+
+                }
+            }
+            if (hostname == null) {
+                throw new RuntimeException("Unable to determine public interface");
+            }
+        }
+
         return hostname;
     }
 
-    public static final String getUrl(ApplicationProperties properties) {
+    public static final URI getUrl(ApplicationProperties properties) {
         StringBuilder url = new StringBuilder(256);
         url.append("http");
         if (properties.getBoolean("server.ssl.enabled")) {
@@ -128,6 +175,6 @@ public class HttpUtils {
         url.append(properties.getString("server.address", getHostname()));
         url.append(":");
         url.append(properties.getInt("server.port"));
-        return url.toString();
+        return URI.create(url.toString());
     }
 }
