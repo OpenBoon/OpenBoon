@@ -30,11 +30,13 @@ def copy_base_template(args):
     shutil.copytree(src, args.build_dir)
 
 def copy_jar_lib(args, settings):
-    src = os.path.join(os.path.dirname(args.dist), "target", settings["jar"])
+    src = os.path.join(os.path.dirname(os.path.abspath(args.dist)), "target", settings["jar"])
     if args.build or not os.path.exists(src):
         logger.info("Rebuilding jar....")
-        pom_file = os.path.join(os.path.dirname(args.dist), "pom.xml")
-        subprocess.call(["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s" % pom_file], shell=False)
+        pom_file = os.path.join(os.path.dirname(args.dist), settings["pom"])
+        cmd =["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s" % pom_file]
+        logger.info("running: %s" % cmd)
+        subprocess.call(cmd, shell=False)
     dst_dir = os.path.join(args.build_dir, "lib")
     logger.info("copy %s -> %s" % (src, dst_dir))
     shutil.copy(src, dst_dir)
