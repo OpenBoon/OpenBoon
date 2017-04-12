@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -41,6 +42,9 @@ public class ApiExceptionHandler {
         }
         catch (DataIntegrityViolationException e) {
             throw new DuplicateElementException(e.getMessage());
+        }
+        catch (UncategorizedSQLException e) {
+            throw new ArchivistException("Backend query failure, see archivist log for more details");
         }
         catch (Exception e) {
             logStackTrace(e);
