@@ -60,7 +60,7 @@ public class UserDaoTests extends AbstractTest {
         UserSpec builder = new UserSpec();
         builder.setUsername("test2");
         builder.setPassword("test2");
-        builder.setEmail("test@test.com");
+        builder.setEmail("shizzle@test.com");
         builder.setHomeFolderId(0);
         builder.setUserPermissionId(permissionDao.get("group", "manager").getId());
         user = userDao.create(builder);
@@ -74,7 +74,7 @@ public class UserDaoTests extends AbstractTest {
         UserSpec builder = new UserSpec();
         builder.setUsername("foo");
         builder.setPassword("test");
-        builder.setEmail("test@test.com");
+        builder.setEmail("mcbizzile@test.com");
         builder.setHomeFolderId(0);
         builder.setUserPermissionId(permissionDao.get("group", "manager").getId());
         userDao.create(builder);
