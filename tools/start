@@ -23,7 +23,7 @@ APP_NAME="%{application}"
 # determine home
 APP_HOME=`dirname "$SCRIPT"`/..
 cd ${APP_HOME}
-APP_HOME=`pwd`
+export APP_HOME=`pwd`
 
 # If an include wasn't specified in the environment, then search for one...
 if [ "x$APP_INCLUDE" = "x" ]; then
