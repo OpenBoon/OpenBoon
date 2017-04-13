@@ -5,10 +5,10 @@
       <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
     </encoder>
 
-    <file>${LOG_PATH}/analyst.log</file>
+    <file>${APP_HOME}/logs/analyst.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
         <!-- daily rollover -->
-        <fileNamePattern>${LOG_PATH}/analyst.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <fileNamePattern>${APP_HOME}/logs/analyst.%d{yyyy-MM-dd}.log</fileNamePattern>
         <maxHistory>30</maxHistory>
     </rollingPolicy>
   </appender>
