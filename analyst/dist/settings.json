@@ -1,0 +1,13 @@
+{
+  "application": "analyst",
+  "jar": "analyst.jar",
+  "commands": [
+  ],
+  "dirs": [
+    "bin",
+    "lib",
+    "config",
+    "tomcat",
+    "logs"
+  ]
+}
