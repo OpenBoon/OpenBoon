@@ -126,8 +126,12 @@ public class HttpUtils {
         }
     }
 
-    public static final String getHostname() {
-        String hostname = null;
+    public static final String getHostname(ApplicationProperties properties) {
+
+        String hostname = properties.getString("server.fqdn", null);
+        if (hostname != null) {
+            return hostname;
+        }
 
         if (!getLocation().equals(ON_PREM)) {
 
@@ -172,7 +176,7 @@ public class HttpUtils {
             url.append("s");
         }
         url.append("://");
-        url.append(properties.getString("server.address", getHostname()));
+        url.append(properties.getString("server.address", getHostname(properties)));
         url.append(":");
         url.append(properties.getInt("server.port"));
         return URI.create(url.toString());
