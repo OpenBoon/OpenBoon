@@ -32,13 +32,21 @@ def copy_base_template(args):
 def copy_sub_template(args):
     """
     Overlay files
-    :param args: 
-    :return: 
+    :param args:
+    :return:
     """
     src = os.path.join(args.template_dir, args.template)
     if not os.path.exists(src):
         return
     for root, dirs, files in os.walk(src):
+        for d in dirs:
+            try:
+                dst_dir = os.path.join(args.build_dir, root.split("/" + args.template + "/")[1] + "/" + d)
+            except:
+                dst_dir = os.path.join(args.build_dir, d)
+            print "dir: %s" % dst_dir
+            if not os.path.exists(dst_dir):
+                os.makedirs(dst_dir)
         for fname in files:
             if fname.startswith("APPEND-"):
                 append_to_existing_file(args, root, fname)
@@ -48,6 +56,8 @@ def copy_sub_template(args):
 def overwrite_existing_file(args, root, fname):
     src_file = os.path.join(root, fname)
     dst_file = os.path.join(args.build_dir, root.split("/" + args.template + "/")[1], fname)
+    if not os.path.exists(root):
+        os.makedirs(root)
     logger.info("copy: %s -> %s" % (src_file, dst_file))
     shutil.copy(src_file, dst_file)
 
@@ -133,9 +143,9 @@ def handle_args(args, settings):
     if args.rebuild_dir_struct:
         copy_base_template(args)
         make_build_directories(args, settings)
+        copy_bin_scripts(args, settings)
         copy_sub_template(args)
         run_commands(args, settings)
-        copy_bin_scripts(args, settings)
     copy_jar_lib(args, settings)
     if args.run:
         run_app(args, settings)
