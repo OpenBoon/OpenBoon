@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def create_build_dir(args):
     if args.outdir:
-        build_dir = os.path.join(args.outdir, args.template)
+        build_dir = args.outdir
     else:
         build_dir = os.path.abspath(os.path.join(args.dist, "build", args.template))
     logger.info("BuildDir: %s" % build_dir)
@@ -148,7 +148,7 @@ def main():
     parser.add_argument("-c", "--clean", action="store_true", help="Delete the existing build if any.")
     parser.add_argument("-b", "--build", action="store_true", help="Rebuild server libraray")
     parser.add_argument("-r", "--run", action="store_true", help="Run server")
-    parser.add_argument("-o", "--outdir", help="Name of directory to store output")
+    parser.add_argument("-o", "--outdir", help="Path to directory to store output")
 
     args = parser.parse_args()
     args.src = os.path.abspath(args.dist + "/../../../")
