@@ -34,7 +34,6 @@ public class ImportTask {
     private Path sharedPath;
     private Path workDir;
     private Settings props;
-    private ImportStats lastRun;
     private Map<String, Object> args;
     private Map<String, String> env;
 
@@ -42,16 +41,15 @@ public class ImportTask {
     private ThreadPoolExecutor threadPool;
 
     public ImportTask(String scriptPath,
-                      String sharedPath, Settings configProps, ImportStats lastRun) {
+                      String sharedPath, Settings configProps, long cutoffTime) {
         this.zpsScript = Paths.get(scriptPath);
         this.sharedPath = Paths.get(sharedPath);
         this.props = configProps;
-        this.lastRun = lastRun;
         this.workDir = this.sharedPath.resolve("jobs/" + UUID.randomUUID().toString());
 
         args = Maps.newHashMap();
         args.put("path", props.getPaths().get(0));
-        args.put("cutOffTime", lastRun.getStartTime());
+        args.put("cutOffTime", cutoffTime);
         args.put("pipelineId", props.getPipelineId());
 
         env = Maps.newHashMap();

@@ -87,7 +87,7 @@ public class SchedulerServiceImpl implements SchedulerService, ApplicationListen
 
         ImportStats lastRun = configService.getImportStats();
         String scriptFile = configPath + "/script.zps";
-        ImportTask task = new ImportTask(scriptFile, sharedPath, configProps, lastRun);
+        ImportTask task = new ImportTask(scriptFile, sharedPath, configProps, lastRun.getStartTime());
         try {
             lastRun.setStartTime(System.currentTimeMillis());
             configService.saveImportStats(lastRun);
