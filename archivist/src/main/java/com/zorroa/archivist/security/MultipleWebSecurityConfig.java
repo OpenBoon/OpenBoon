@@ -70,7 +70,6 @@ public class MultipleWebSecurityConfig {
                 .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter.class)
                 .addFilterBefore(new CorsCredentialsFilter(), ChannelProcessingFilter.class)
                 .antMatcher("/api/**")
-                    .httpBasic().and()
                     .authorizeRequests()
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
@@ -78,6 +77,7 @@ public class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                 .and().headers().frameOptions().disable()
                 .and()
+                .httpBasic().and()
                 .sessionManagement()
                 .maximumSessions(10)
                 .sessionRegistry(sessionRegistry)
@@ -97,6 +97,7 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .authorizeRequests()
+                    .antMatchers("/").authenticated()
                     .antMatchers("/gui/**").hasAuthority("group::administrator")
                     .antMatchers("/docs/**").permitAll()
                     .antMatchers("/signin/**").permitAll()
