@@ -32,10 +32,7 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 /**
  * Created by chambers on 6/9/16.
@@ -66,40 +63,19 @@ public class MultipleWebSecurityConfig {
             return new ResetPasswordSecurityFilter();
         }
 
-        public CorsFilter corsFilter() {
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            CorsConfiguration config = new CorsConfiguration();
-            config.setAllowCredentials(true);
-            config.addAllowedOrigin("http://localhost:8080");
-            config.addAllowedHeader("*");
-            config.addAllowedMethod("*");
-            config.addExposedHeader("Content-Encoding");
-            config.addAllowedMethod("OPTIONS");
-            config.addAllowedMethod("HEAD");
-            config.addAllowedMethod("GET");
-            config.addAllowedMethod("PUT");
-            config.addAllowedMethod("POST");
-            config.addAllowedMethod("DELETE");
-            config.addAllowedMethod("PATCH");
-            config.addExposedHeader("content-range, content-length, accept-ranges");
-            source.registerCorsConfiguration("/**", config);
-            return new CorsFilter(source);
-        }
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter.class)
-                .addFilterBefore(corsFilter(), ChannelProcessingFilter.class)
+                .addFilterBefore(new CorsCredentialsFilter(), ChannelProcessingFilter.class)
                 .antMatcher("/api/**")
+                    .httpBasic().and()
                     .authorizeRequests()
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
                     .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                     .anyRequest().authenticated()
-                .and()
-                .httpBasic()
                 .and().headers().frameOptions().disable()
                 .and()
                 .sessionManagement()
@@ -121,7 +97,6 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .authorizeRequests()
-                    .antMatchers("/").authenticated()
                     .antMatchers("/gui/**").hasAuthority("group::administrator")
                     .antMatchers("/docs/**").permitAll()
                     .antMatchers("/signin/**").permitAll()
