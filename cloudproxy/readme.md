@@ -8,10 +8,10 @@ From the cloudproxy directory:
 
 For Linux:
 
-'''../tools/zspak linux -c -b'''
+```../tools/zspak linux -c -b```
 
 For OSX:
 
-'''../tools/zspak osx -c -b'''
+```../tools/zspak osx -c -b```
 
 The builds appear in the 'dist/build' directory.
