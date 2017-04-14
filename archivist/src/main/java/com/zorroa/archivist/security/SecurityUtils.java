@@ -44,8 +44,13 @@ public class SecurityUtils {
             throw new AuthenticationCredentialsNotFoundException("No login credentials specified");
         }
         else {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return user.getUsername();
+            try {
+                User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                return user.getUsername();
+            } catch (ClassCastException e) {
+                throw new AuthenticationCredentialsNotFoundException("Invalid login creds for: " +
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            }
         }
     }
 
@@ -54,7 +59,12 @@ public class SecurityUtils {
             throw new AuthenticationCredentialsNotFoundException("No login credentials specified");
         }
         else {
-            return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            try {
+                return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            } catch (ClassCastException e) {
+                throw new AuthenticationCredentialsNotFoundException("Invalid login creds for: " +
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            }
         }
     }
 
@@ -63,7 +73,12 @@ public class SecurityUtils {
             return null;
         }
         else {
-            return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            try {
+                return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            } catch (ClassCastException e) {
+                throw new AuthenticationCredentialsNotFoundException("Invalid login creds for: " +
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            }
         }
     }
 
