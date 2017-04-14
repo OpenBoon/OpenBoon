@@ -52,6 +52,11 @@ public class ImportTask {
         args.put("cutOffTime", cutoffTime);
         args.put("pipelineId", props.getPipelineId());
 
+        logger.info("starting task");
+        logger.info("Path: {}", props.getPaths().get(0));
+        logger.info("CutOFf: {}", cutoffTime);
+        logger.info("pipelineId: {}", props.getPipelineId());
+
         env = Maps.newHashMap();
         env.put("ZORROA_ARCHIVIST_URL", props.getArchivistUrl());
         env.put("ZORROA_HMAC_KEY", props.getHmacKey());
