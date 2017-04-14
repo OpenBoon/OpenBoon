@@ -86,6 +86,9 @@ public class SchedulerServiceImpl implements SchedulerService, ApplicationListen
         }
 
         ImportStats lastRun = configService.getImportStats();
+        logger.info("Last run: {}", lastRun.getStartTime());
+        logger.info("Next run: {}", lastRun.getNextTime());
+
         String scriptFile = configPath + "/script.zps";
         ImportTask task = new ImportTask(scriptFile, sharedPath, configProps, lastRun.getStartTime());
         try {
@@ -96,9 +99,6 @@ public class SchedulerServiceImpl implements SchedulerService, ApplicationListen
             try {
                 lastRun = configService.getImportStats();
                 lastRun.setFinishTime(System.currentTimeMillis());
-                configService.saveImportStats(lastRun);
-
-                logger.info("Saving last run...");
                 configService.saveImportStats(lastRun);
             } catch (Exception e) {
                 logger.warn("Failed to save last run data, ", e);
