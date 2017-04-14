@@ -17,10 +17,7 @@ import java.io.IOException;
  */
 public class CorsCredentialsFilter extends GenericFilterBean {
 
-
     private static final Logger logger = LoggerFactory.getLogger(CorsCredentialsFilter.class);
-
-
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
