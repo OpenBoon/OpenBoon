@@ -18,7 +18,7 @@
       "className": "com.zorroa.core.processor.SkipFrameScript",
       "language": "java",
       "args": {
-        "script": "new File(_doc.getAttr('source.path')).lastModified() > Long.valueOf(_ctx.globals.cutOffTime);"
+        "script": "new File(_doc.getAttr('source.path')).lastModified() < Long.valueOf(_ctx.globals.cutOffTime);"
       }
     },
     {
