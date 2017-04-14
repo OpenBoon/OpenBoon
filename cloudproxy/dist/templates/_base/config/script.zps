@@ -43,7 +43,7 @@
           "language": "java",
           "args": {
             "pipelineId": {
-              "_expr_": "_ctx.globals.pipelineId",
+              "_expr_": "return Integer.valueOf(_ctx.globals.pipelineId)",
               "_language_": "groovy"
             }
           },
