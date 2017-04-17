@@ -45,6 +45,19 @@ public class UserControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testSendOnboardEmail() throws Exception {
+        User user = userService.get("user");
+        userService.sendOnboardEmail(user);
+
+        SecurityContextHolder.getContext().setAuthentication(null);
+        MvcResult result = mvc.perform(post("/api/v1/send-onboard-email")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ImmutableMap.of("email", "user@zorroa.com"))))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
     public void testResetPassword() throws Exception {
         User user = userService.get("user");
         String token = userService.sendPasswordResetEmail(user);
