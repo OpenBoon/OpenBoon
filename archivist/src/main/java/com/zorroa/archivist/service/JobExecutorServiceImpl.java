@@ -12,13 +12,11 @@ import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskFilter;
 import com.zorroa.archivist.repository.TaskDao;
-import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
-import com.zorroa.sdk.processor.SharedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,19 +55,10 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     TaskDao taskDao;
 
     @Autowired
-    AssetService assetService;
-
-    @Autowired
     JobService jobService;
 
     @Autowired
     ApplicationProperties properties;
-
-    @Autowired
-    SharedData sharedData;
-
-    @Autowired
-    UserDao userDao;
 
     private final ExecutorService commandQueue = Executors.newSingleThreadExecutor();
 

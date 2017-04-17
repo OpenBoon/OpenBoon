@@ -10,7 +10,6 @@ import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.sdk.client.exception.ArchivistException;
@@ -54,16 +53,10 @@ public class JobServiceImpl implements JobService {
     TaskDao taskDao;
 
     @Autowired
-    TransactionEventManager event;
-
-    @Autowired
     UserDao userDao;
 
     @Autowired
     ApplicationProperties properties;
-
-    @Autowired
-    AnalystService analystService;
 
     @Autowired
     PluginService pluginService;
