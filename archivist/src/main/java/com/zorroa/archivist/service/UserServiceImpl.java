@@ -10,9 +10,12 @@ import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.sdk.domain.*;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -23,11 +26,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -440,8 +442,13 @@ public class UserServiceImpl implements UserService {
             text.append("\n\n" + url);
             text.append("\n\nIf you are not trying to change your Zorroa login credentials, please ignore this email.");
 
-            String htmlMsg = getTextResourceFile("emails/Onboarding.html");
-            htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server");
+            String htmlMsg = null;
+            try {
+                htmlMsg = getTextResourceFile("emails/Onboarding.html");
+                htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server");
+            } catch (IOException e) {
+                logger.warn("Failed to open HTML template for onboarding. Sending text only.", e);
+            }
             sendHTMLEmail(user, "Zorroa Account Verification", text.toString(), htmlMsg);
         }
         return token;
@@ -460,11 +467,16 @@ public class UserServiceImpl implements UserService {
             text.append(",\n\nClick on the link below to import your assets.");
             text.append("\n\n" + url);
 
-            String htmlMsg = getTextResourceFile("emails/Onboarding.html");
-            htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getFirstName());
-            htmlMsg = htmlMsg.replace("*|FILE_SERVER_URL|*", url + "&source=file_server");
-            htmlMsg = htmlMsg.replace("*|MY_COMPUTER_URL|*", url + "&source=my_computer");
-            htmlMsg = htmlMsg.replace("*|CLOUD_SOURCE_URL|*", url + "&source=cloud");
+            String htmlMsg = null;
+            try {
+                htmlMsg = getTextResourceFile("emails/Onboarding.html");
+                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getFirstName());
+                htmlMsg = htmlMsg.replace("*|FILE_SERVER_URL|*", url + "&source=file_server");
+                htmlMsg = htmlMsg.replace("*|MY_COMPUTER_URL|*", url + "&source=my_computer");
+                htmlMsg = htmlMsg.replace("*|CLOUD_SOURCE_URL|*", url + "&source=cloud");
+            } catch (IOException e) {
+                logger.warn("Failed to open HTML template for onboarding, Sending text only.", e);
+            }
             sendHTMLEmail(user, "Welcome to Zorroa", text.toString(), htmlMsg);
         }
         return token;
@@ -483,7 +495,12 @@ public class UserServiceImpl implements UserService {
             helper.setFrom("noreply@zorroa.com");
             helper.setTo(email);
             helper.setSubject(subject);
-            helper.setText(text, htmlMsg);
+            if (htmlMsg != null) {
+                helper.setText(text, htmlMsg);
+            }
+            else {
+                helper.setText(text);
+            }
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -491,22 +508,9 @@ public class UserServiceImpl implements UserService {
         mailSender.send(mimeMessage);
     }
 
-    private String getTextResourceFile(String fileName) {
-        StringBuilder result = new StringBuilder("");
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
-
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                result.append(line).append("\n");
-            }
-            scanner.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
+    private String getTextResourceFile(String fileName) throws IOException {
+        Resource resource = new ClassPathResource(fileName);
+        return FileUtils.readFileToString(resource.getFile(), Charset.defaultCharset());
     }
 
     @Override
