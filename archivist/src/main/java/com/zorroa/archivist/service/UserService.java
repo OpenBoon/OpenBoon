@@ -95,9 +95,9 @@ public interface UserService {
     UserPreset createUserPreset(UserPresetSpec preset);
     boolean deleteUserPreset(UserPreset preset);
 
-    String sendPasswordResetEmail(User user);
+    PasswordResetToken sendPasswordResetEmail(User user);
 
-    String sendOnboardEmail(User user);
+    PasswordResetToken sendOnboardEmail(User user);
 
     User resetPassword(String token, String password);
 

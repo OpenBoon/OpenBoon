@@ -430,10 +430,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String sendPasswordResetEmail(User user) {
-        String token = userDao.setEnablePasswordRecovery(user);
+    public PasswordResetToken sendPasswordResetEmail(User user) {
+        PasswordResetToken token = new PasswordResetToken(userDao.setEnablePasswordRecovery(user));
         if (token != null) {
-            String url = networkEnv.getUri().toString() + "/password?token=" + token;
+            String url = networkEnv.getUri().toString() + "/password?token=" + token.toString();
 
             StringBuilder text = new StringBuilder(1024);
             text.append("Hello ");
@@ -450,16 +450,21 @@ public class UserServiceImpl implements UserService {
             } catch (IOException e) {
                 logger.warn("Failed to open HTML template for onboarding. Sending text only.", e);
             }
-            sendHTMLEmail(user, "Zorroa Account Verification", text.toString(), htmlMsg);
+            try {
+                sendHTMLEmail(user, "Zorroa Account Verification", text.toString(), htmlMsg);
+            } catch (MessagingException e) {
+                logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e);
+            }
         }
         return token;
     }
 
     @Override
-    public String sendOnboardEmail(User user) {
-        String token = userDao.setEnablePasswordRecovery(user);
+    public PasswordResetToken sendOnboardEmail(User user) {
+        PasswordResetToken token = new PasswordResetToken(userDao.setEnablePasswordRecovery(user));
+
         if (token != null) {
-            String url = networkEnv.getUri().toString() + "/onboard?token=" + token;
+            String url = networkEnv.getUri().toString() + "/onboard?token=" + token.toString();
 
             StringBuilder text = new StringBuilder(1024);
             text.append("Hello ");
@@ -478,35 +483,36 @@ public class UserServiceImpl implements UserService {
             } catch (IOException e) {
                 logger.warn("Failed to open HTML template for onboarding, Sending text only.", e);
             }
-            sendHTMLEmail(user, "Welcome to Zorroa", text.toString(), htmlMsg);
+
+            try {
+                sendHTMLEmail(user, "Welcome to Zorroa", text.toString(), htmlMsg);
+                token.setEmailSent(true);
+            } catch (MessagingException e) {
+                logger.warn("Email for sendOnboardEmail not sent, unexpected ", e);
+            }
         }
         return token;
     }
 
-    private void sendHTMLEmail(User user, String subject, String text, String htmlMsg) {
+    private void sendHTMLEmail(User user, String subject, String text, String htmlMsg) throws MessagingException {
         String email = user.getEmail();
         if (ArchivistConfiguration.unittest) {
             email = System.getProperty("user.name") + "@zorroa.com";
         }
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = null;
-        try {
-            helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
-            helper.setFrom("noreply@zorroa.com");
-            helper.setTo(email);
-            helper.setSubject(subject);
-            if (htmlMsg != null) {
-                helper.setText(text, htmlMsg);
-            }
-            else {
-                helper.setText(text);
-            }
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
+        helper.setFrom("noreply@zorroa.com");
+        helper.setTo(email);
+        helper.setSubject(subject);
+        if (htmlMsg != null) {
+            helper.setText(text, htmlMsg);
         }
-
+        else {
+            helper.setText(text);
+        }
         mailSender.send(mimeMessage);
+
     }
 
     private String getTextResourceFile(String fileName) throws IOException {

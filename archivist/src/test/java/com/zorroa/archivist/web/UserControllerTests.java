@@ -3,10 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserProfileUpdate;
-import com.zorroa.archivist.domain.UserSettings;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -59,12 +56,13 @@ public class UserControllerTests extends MockMvcTest {
     @Test
     public void testResetPassword() throws Exception {
         User user = userService.get("user");
-        String token = userService.sendPasswordResetEmail(user);
+        PasswordResetToken token = userService.sendPasswordResetEmail(user);
+        assertTrue(token.isEmailSent());
 
         SecurityContextHolder.getContext().setAuthentication(null);
         MvcResult result = mvc.perform(post("/api/v1/reset-password")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header("X-Archivist-Recovery-Token", token)
+                .header("X-Archivist-Recovery-Token", token.getToken())
                 .content(Json.serialize(ImmutableMap.of(
                         "username", "user", "password", "bob"))))
                 .andExpect(status().isOk())
