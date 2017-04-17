@@ -1,7 +1,9 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import com.google.common.io.CharStreams;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
@@ -10,12 +12,10 @@ import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.sdk.domain.*;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,7 +27,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -510,8 +510,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getTextResourceFile(String fileName) throws IOException {
-        Resource resource = new ClassPathResource(fileName);
-        return FileUtils.readFileToString(resource.getFile(), Charset.defaultCharset());
+        return CharStreams.toString(new InputStreamReader(
+                new ClassPathResource(fileName).getInputStream(), Charsets.UTF_8));
     }
 
     @Override
