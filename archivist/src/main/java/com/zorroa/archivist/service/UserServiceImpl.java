@@ -452,6 +452,7 @@ public class UserServiceImpl implements UserService {
             }
             try {
                 sendHTMLEmail(user, "Zorroa Account Verification", text.toString(), htmlMsg);
+                token.setEmailSent(true);
             } catch (MessagingException e) {
                 logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e);
             }
