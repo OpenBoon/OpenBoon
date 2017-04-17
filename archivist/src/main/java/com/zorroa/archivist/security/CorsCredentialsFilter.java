@@ -44,9 +44,9 @@ public class CorsCredentialsFilter extends GenericFilterBean {
         else {
             rsp.addHeader("Access-Control-Expose-Headers", "Content-Encoding, content-range, content-length, accept-ranges");
             rsp.addHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE");
-            rsp.addHeader("Access-Control-Allow-Headers", "authorization, content-type, x-requested-with");
+            rsp.addHeader("Access-Control-Allow-Headers", "authorization, content-type, x-requested-with, X-Archivist-Recovery-Token");
             rsp.addHeader("Access-Control-Allow-Credentials", "true");
-            String origin = req.getHeader("origin");
+            tring origin = req.getHeader("origin");
             if (origin == null) {
                 origin = "http://localhost:8066";
             }
