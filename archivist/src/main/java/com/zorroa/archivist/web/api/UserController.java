@@ -33,9 +33,24 @@ public class UserController  {
     @Autowired
     Validator validator;
 
+    @Deprecated
     @RequestMapping(value="/api/v1/generate_api_key", method=RequestMethod.POST)
+    public String generate_api_key_V1() {
+        return userService.generateHmacKey(SecurityUtils.getUsername());
+    }
+
+    @RequestMapping(value="/api/v1/api-key", method=RequestMethod.POST)
     public String generate_api_key() {
         return userService.generateHmacKey(SecurityUtils.getUsername());
+    }
+
+    @RequestMapping(value="/api/v1/api-key")
+    public String get_api_key() {
+        try {
+            return userService.getHmacKey(SecurityUtils.getUsername());
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     /**
