@@ -54,10 +54,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User getByToken(String token) {
+        long expireTime = 30 * 60 * 1000;
         try {
             return jdbc.queryForObject(
                     "SELECT * FROM user WHERE str_reset_pass_token=? AND " +
-                            "? - time_reset_pass < 300000 LIMIT 1 ", MAPPER, token, System.currentTimeMillis());
+                            "? - time_reset_pass < ? LIMIT 1 ",
+                    MAPPER, token, System.currentTimeMillis(), expireTime);
         } catch (EmptyResultDataAccessException e) {
             throw new EmptyResultDataAccessException("This password change token has expired.", 1);
         }
