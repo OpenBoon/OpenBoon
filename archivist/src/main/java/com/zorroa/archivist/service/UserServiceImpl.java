@@ -444,7 +444,7 @@ public class UserServiceImpl implements UserService {
 
             String htmlMsg = null;
             try {
-                htmlMsg = getTextResourceFile("emails/Onboarding.html");
+                htmlMsg = getTextResourceFile("emails/PasswordReset.html");
                 htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server");
                 htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getUsername());
             } catch (IOException e) {
