@@ -446,7 +446,7 @@ public class UserServiceImpl implements UserService {
             try {
                 htmlMsg = getTextResourceFile("emails/Onboarding.html");
                 htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server");
-                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getFirstName());
+                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getUsername());
             } catch (IOException e) {
                 logger.warn("Failed to open HTML template for onboarding. Sending text only.", e);
             }
@@ -471,7 +471,7 @@ public class UserServiceImpl implements UserService {
             String htmlMsg = null;
             try {
                 htmlMsg = getTextResourceFile("emails/Onboarding.html");
-                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getFirstName());
+                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getUsername());
                 htmlMsg = htmlMsg.replace("*|FILE_SERVER_URL|*", url + "&source=file_server");
                 htmlMsg = htmlMsg.replace("*|MY_COMPUTER_URL|*", url + "&source=my_computer");
                 htmlMsg = htmlMsg.replace("*|CLOUD_SOURCE_URL|*", url + "&source=cloud");
