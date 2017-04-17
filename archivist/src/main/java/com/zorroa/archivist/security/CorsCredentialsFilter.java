@@ -35,7 +35,7 @@ public class CorsCredentialsFilter extends GenericFilterBean {
         }
         logger.info("-------------------------------");
         */
-        
+
         String auth = req.getHeader("authorization");
         if (auth != null) {
             rsp.addHeader("Access-Control-Allow-Credentials", "true");
@@ -46,7 +46,11 @@ public class CorsCredentialsFilter extends GenericFilterBean {
             rsp.addHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE");
             rsp.addHeader("Access-Control-Allow-Headers", "authorization, content-type, x-requested-with");
             rsp.addHeader("Access-Control-Allow-Credentials", "true");
-            rsp.addHeader("Access-Control-Allow-Origin", req.getHeader("origin"));
+            String origin = req.getHeader("origin");
+            if (origin == null) {
+                origin = "http://localhost:8066";
+            }
+            rsp.addHeader("Access-Control-Allow-Origin", origin);
             if (req.getMethod().equals("OPTIONS")) {
                 rsp.addHeader("Access-Control-Max-Age", "3600");
             }
