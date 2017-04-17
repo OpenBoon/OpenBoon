@@ -47,7 +47,6 @@ public class UserControllerTests extends MockMvcTest {
     @Test
     public void testSendOnboardEmail() throws Exception {
         User user = userService.get("user");
-        userService.sendOnboardEmail(user);
 
         SecurityContextHolder.getContext().setAuthentication(null);
         MvcResult result = mvc.perform(post("/api/v1/send-onboard-email")
