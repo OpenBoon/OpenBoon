@@ -73,6 +73,7 @@ public class MultipleWebSecurityConfig {
                     .authorizeRequests()
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
+                    .antMatchers("/api/v1/send-onboard-email").permitAll()
                     .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                     .anyRequest().authenticated()
                 .and().headers().frameOptions().disable()

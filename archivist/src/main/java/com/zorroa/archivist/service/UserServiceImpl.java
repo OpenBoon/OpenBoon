@@ -10,17 +10,24 @@ import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.sdk.domain.*;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +45,7 @@ public class UserServiceImpl implements UserService {
     final static Set<String> PERMANENT_TYPES = ImmutableSet.of("user", "internal");
 
     @Autowired
-    MailSender mailSender;
+    JavaMailSender mailSender;
 
     @Autowired
     NetworkEnvironment networkEnv;
@@ -426,28 +433,85 @@ public class UserServiceImpl implements UserService {
     public String sendPasswordResetEmail(User user) {
         String token = userDao.setEnablePasswordRecovery(user);
         if (token != null) {
-
-            String email = user.getEmail();
-            if (ArchivistConfiguration.unittest) {
-                email = System.getProperty("user.name") + "@zorroa.com";
-            }
+            String url = networkEnv.getUri().toString() + "/password?token=" + token;
 
             StringBuilder text = new StringBuilder(1024);
             text.append("Hello ");
-            text.append(email);
+            text.append(user.getFirstName());
             text.append(",\n\nClick on the link below to change your Zorroa login credentials.");
-            text.append("\n\n" + networkEnv.getUri().toString() + "/password?token=" + token);
+            text.append("\n\n" + url);
             text.append("\n\nIf you are not trying to change your Zorroa login credentials, please ignore this email.");
 
-            SimpleMailMessage msg = new SimpleMailMessage();
-            msg.setTo(email);
-            msg.setReplyTo("noreply@zoroa.com");
-            msg.setFrom("noreply@zoroa.com");
-            msg.setSubject("Zorroa Account Verification");
-            msg.setText(text.toString());
-            mailSender.send(msg);
+            String htmlMsg = null;
+            try {
+                htmlMsg = getTextResourceFile("emails/Onboarding.html");
+                htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server");
+                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getFirstName());
+            } catch (IOException e) {
+                logger.warn("Failed to open HTML template for onboarding. Sending text only.", e);
+            }
+            sendHTMLEmail(user, "Zorroa Account Verification", text.toString(), htmlMsg);
         }
         return token;
+    }
+
+    @Override
+    public String sendOnboardEmail(User user) {
+        String token = userDao.setEnablePasswordRecovery(user);
+        if (token != null) {
+            String url = networkEnv.getUri().toString() + "/onboard?token=" + token;
+
+            StringBuilder text = new StringBuilder(1024);
+            text.append("Hello ");
+            text.append(user.getFirstName());
+            text.append(",\n\nWelcome to Zorroa. Let's get your stuff!");
+            text.append(",\n\nClick on the link below to import your assets.");
+            text.append("\n\n" + url);
+
+            String htmlMsg = null;
+            try {
+                htmlMsg = getTextResourceFile("emails/Onboarding.html");
+                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getFirstName());
+                htmlMsg = htmlMsg.replace("*|FILE_SERVER_URL|*", url + "&source=file_server");
+                htmlMsg = htmlMsg.replace("*|MY_COMPUTER_URL|*", url + "&source=my_computer");
+                htmlMsg = htmlMsg.replace("*|CLOUD_SOURCE_URL|*", url + "&source=cloud");
+            } catch (IOException e) {
+                logger.warn("Failed to open HTML template for onboarding, Sending text only.", e);
+            }
+            sendHTMLEmail(user, "Welcome to Zorroa", text.toString(), htmlMsg);
+        }
+        return token;
+    }
+
+    private void sendHTMLEmail(User user, String subject, String text, String htmlMsg) {
+        String email = user.getEmail();
+        if (ArchivistConfiguration.unittest) {
+            email = System.getProperty("user.name") + "@zorroa.com";
+        }
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = null;
+        try {
+            helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
+            helper.setFrom("noreply@zorroa.com");
+            helper.setTo(email);
+            helper.setSubject(subject);
+            if (htmlMsg != null) {
+                helper.setText(text, htmlMsg);
+            }
+            else {
+                helper.setText(text);
+            }
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(mimeMessage);
+    }
+
+    private String getTextResourceFile(String fileName) throws IOException {
+        Resource resource = new ClassPathResource(fileName);
+        return FileUtils.readFileToString(resource.getFile(), Charset.defaultCharset());
     }
 
     @Override

@@ -74,6 +74,13 @@ public class UserController  {
         return HttpUtils.status("send-password-reset-email", "update", true);
     }
 
+    @RequestMapping(value="/api/v1/send-onboard-email", method=RequestMethod.POST)
+    public Object sendOnboardEmail(@RequestBody SendForgotPasswordEmailRequest req) throws ServletException {
+        User user = userService.getByEmail(req.email);
+        userService.sendOnboardEmail(user);
+        return HttpUtils.status("send-onboard-email", "update", true);
+    }
+
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
     @RequestMapping(value="/api/v1/users")
     public List<User> getAll() {

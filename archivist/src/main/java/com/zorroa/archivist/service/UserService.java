@@ -97,6 +97,8 @@ public interface UserService {
 
     String sendPasswordResetEmail(User user);
 
+    String sendOnboardEmail(User user);
+
     User resetPassword(String token, String password);
 
 }
