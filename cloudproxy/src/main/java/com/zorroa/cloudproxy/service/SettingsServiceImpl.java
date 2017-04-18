@@ -24,7 +24,7 @@ public class SettingsServiceImpl implements SettingsService {
     @Value("${cloudproxy.paths.config}")
     private String configPath;
 
-    private String settigsFile;
+    private String settingsFile;
     private String statsFile;
 
     private Settings configSettings;
@@ -35,16 +35,16 @@ public class SettingsServiceImpl implements SettingsService {
     @PostConstruct
     public void init() {
         Json.Mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        settigsFile = configPath + "/config.json";
+        settingsFile = configPath + "/config.json";
         statsFile = configPath + "/stats.json";
         loadConfig();
     }
 
     @Override
     public Settings saveSettings(Settings props) throws IOException {
-        Json.Mapper.writeValue(new File(settigsFile), props);
+        Json.Mapper.writeValue(new File(settingsFile), props);
         configSettings = props;
-        logger.info("New configuration saved to: {}", settigsFile);
+        logger.info("New configuration saved to: {}", settingsFile);
         return props;
     }
 
@@ -57,8 +57,8 @@ public class SettingsServiceImpl implements SettingsService {
      * Looks for configuration files are being setup via web interface.
      */
     public Settings loadConfig() {
-        logger.info("loading configuration: {}", settigsFile);
-        File file = new File(settigsFile);
+        logger.info("loading configuration: {}", settingsFile);
+        File file = new File(settingsFile);
         if (!file.exists()) {
             return null;
         }
