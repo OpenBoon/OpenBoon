@@ -50,9 +50,7 @@ public class DyhierarchyControllerTests  extends MockMvcTest {
                         new DyHierarchyLevel("source.type.raw"),
                         new DyHierarchyLevel("source.extension.raw"),
                         new DyHierarchyLevel("source.filename.raw")));
-
-        String req = Json.prettyString(spec);
-        logger.info(req);
+        
         MvcResult result = mvc.perform(post("/api/v1/dyhi")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
