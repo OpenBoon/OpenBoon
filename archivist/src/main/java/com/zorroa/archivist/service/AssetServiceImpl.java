@@ -116,7 +116,7 @@ public class AssetServiceImpl implements AssetService {
 
         DocumentIndexResult result =  assetDao.index(sources, link);
         if (result.created + result.updated > 0) {
-            dyHierarchyService.submitGenerateAll(false);
+            dyHierarchyService.submitGenerateAll(true);
         }
         return result;
     }

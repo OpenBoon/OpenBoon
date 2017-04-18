@@ -32,9 +32,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -68,7 +66,14 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     /**
      * Only a single thread can be generating hierarchies currently.
      */
-    private final ExecutorService dyhiExecute = Executors.newFixedThreadPool(1);
+    private final ThreadPoolExecutor dyhiExecute;
+
+    public DyHierarchyServiceImpl() {
+        dyhiExecute = new ThreadPoolExecutor(1, 1, 1, TimeUnit.HOURS,
+                new LinkedBlockingDeque<>(25));
+        dyhiExecute.setRejectedExecutionHandler((r, executor) ->
+                logger.warn("Too many dynamic hierarchies queued, rejecting."));
+    }
 
     @Override
     @Transactional
@@ -182,21 +187,20 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     }
 
     @Override
-    public void submitGenerateAll(boolean force) {
+    public void submitGenerateAll(final boolean refresh) {
         /**
          * If there was already a generateAll submitted, no need
-         * to submit agin.
+         * to submit again.
          */
-        if (!force && System.currentTimeMillis() - runAllTimer.get() < 5000) {
+        if (System.currentTimeMillis() - runAllTimer.get() < 1000) {
             return;
         }
-        if (force) {
-            ElasticClientUtils.refreshIndex(client);
-        }
-        runAllTimer.set(System.currentTimeMillis());
-        for (DyHierarchy dyhi: dyHierarchyDao.getAll()) {
-            dyhiExecute.submit(() -> generate(dyhi));
-        }
+        dyhiExecute.submit(() -> {
+            if (refresh) {
+                ElasticClientUtils.refreshIndex(client);
+            }
+            generateAll();
+        });
     }
 
     @Override

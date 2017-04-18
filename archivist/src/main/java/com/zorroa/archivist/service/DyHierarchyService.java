@@ -43,9 +43,9 @@ public interface DyHierarchyService {
      * is throttled to a reasonable rate.  To bypass the throttle, set the
      * 'force' argument to true.
      *
-     * @param force
+     * @param refresh
      */
-    void submitGenerateAll(boolean force);
+    void submitGenerateAll(boolean refresh);
 
     /**
      * Generate a dynamic hierarchy.
