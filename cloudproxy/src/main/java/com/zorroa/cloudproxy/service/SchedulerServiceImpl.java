@@ -1,7 +1,7 @@
 package com.zorroa.cloudproxy.service;
 
 import com.zorroa.cloudproxy.domain.ImportTask;
-import com.zorroa.cloudproxy.domain.ImportStats;
+import com.zorroa.cloudproxy.domain.ImportStatus;
 import com.zorroa.cloudproxy.domain.Settings;
 import com.zorroa.sdk.util.FileUtils;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class SchedulerServiceImpl implements SchedulerService, ApplicationListen
         if (trigger == null) {
             return null;
         }
-        ImportStats stats = configService.getImportStats();
+        ImportStatus stats = configService.getImportStats();
         SimpleTriggerContext ctx = new SimpleTriggerContext();
         ctx.update(new Date(stats.getStartTime() > 0 ? stats.getStartTime(): System.currentTimeMillis()),
                 new Date(stats.getStartTime()),
@@ -85,7 +85,7 @@ public class SchedulerServiceImpl implements SchedulerService, ApplicationListen
             return null;
         }
 
-        ImportStats lastRun = configService.getImportStats();
+        ImportStatus lastRun = configService.getImportStats();
         logger.info("Last run: {}", lastRun.getStartTime());
         logger.info("Next run: {}", lastRun.getNextTime());
 

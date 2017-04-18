@@ -1,7 +1,7 @@
 package com.zorroa.cloudproxy.service;
 
 import com.zorroa.cloudproxy.domain.Settings;
-import com.zorroa.cloudproxy.domain.ImportStats;
+import com.zorroa.cloudproxy.domain.ImportStatus;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ public interface SettingsService {
 
     Settings getSettings();
 
-    boolean saveImportStats(ImportStats last);
+    boolean saveImportStats(ImportStatus last);
 
-    ImportStats getImportStats();
+    ImportStatus getImportStats();
 }

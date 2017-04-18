@@ -2,7 +2,7 @@ package com.zorroa.cloudproxy.service;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.zorroa.cloudproxy.domain.Settings;
-import com.zorroa.cloudproxy.domain.ImportStats;
+import com.zorroa.cloudproxy.domain.ImportStatus;
 import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,7 @@ public class SettingsServiceImpl implements SettingsService {
     }
 
     @Override
-    public boolean saveImportStats(ImportStats last) {
+    public boolean saveImportStats(ImportStatus last) {
         try {
             Json.Mapper.writeValue(new File(statsFile), last);
             return true;
@@ -84,7 +84,7 @@ public class SettingsServiceImpl implements SettingsService {
     }
 
     @Override
-    public ImportStats getImportStats() {
+    public ImportStatus getImportStats() {
         File file = new File(statsFile);
         if (!file.exists()) {
             logger.warn("Import stats file does not exist!");
@@ -92,7 +92,7 @@ public class SettingsServiceImpl implements SettingsService {
         }
 
         try {
-            return Json.Mapper.readValue(file, ImportStats.class);
+            return Json.Mapper.readValue(file, ImportStatus.class);
         } catch (IOException e) {
             logger.warn("Unable to load last run data, unexpected error: ", e);
         }

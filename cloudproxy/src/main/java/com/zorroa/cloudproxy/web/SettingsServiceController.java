@@ -1,6 +1,6 @@
 package com.zorroa.cloudproxy.web;
 
-import com.zorroa.cloudproxy.domain.ImportStats;
+import com.zorroa.cloudproxy.domain.ImportStatus;
 import com.zorroa.cloudproxy.domain.Settings;
 import com.zorroa.cloudproxy.service.SchedulerService;
 import com.zorroa.cloudproxy.service.SettingsService;
@@ -36,8 +36,8 @@ public class SettingsServiceController {
     }
 
     @RequestMapping(value="/api/v1/stats", method= RequestMethod.GET)
-    public ImportStats stats() throws IOException {
-        ImportStats stats = configService.getImportStats();
+    public ImportStatus stats() throws IOException {
+        ImportStatus stats = configService.getImportStats();
         Date nextRunTime = schedulerService.getNextRunTime();
         if (nextRunTime != null) {
             stats.setNextTime(nextRunTime.getTime());

@@ -3,7 +3,7 @@ package com.zorroa.cloudproxy.service;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.cloudproxy.AbstractTest;
 import com.zorroa.cloudproxy.domain.Settings;
-import com.zorroa.cloudproxy.domain.ImportStats;
+import com.zorroa.cloudproxy.domain.ImportStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test
     public void getImportStats() {
-        ImportStats last = settingsService.getImportStats();
+        ImportStatus last = settingsService.getImportStats();
         assertEquals(0, last.getStartTime());
         assertEquals(0, last.getFinishTime());
     }
