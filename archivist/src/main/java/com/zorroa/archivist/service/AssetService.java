@@ -55,4 +55,6 @@ public interface AssetService {
     void setPermissionsAsync(AssetSearch search, Acl acl);
 
     void setPermissions(AssetSearch search, Acl acl);
+
+    Map<String, Object> getMapping();
 }

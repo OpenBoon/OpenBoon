@@ -71,4 +71,5 @@ public interface AssetDao {
      */
     DocumentIndexResult index(List<Source> sources, LinkSpec sourceLink);
 
+    Map<String, Object> getMapping();
 }

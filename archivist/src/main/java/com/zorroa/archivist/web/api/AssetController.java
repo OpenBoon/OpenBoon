@@ -184,6 +184,11 @@ public class AssetController {
         return searchService.getFields();
     }
 
+    @RequestMapping(value="/api/v1/assets/_mapping", method=RequestMethod.GET)
+    public Map<String,Object> getMapping() throws IOException {
+        return assetService.getMapping();
+    }
+
     @RequestMapping(value="/api/v2/assets/_aggregate", method=RequestMethod.POST)
     public void aggregate(@RequestBody AssetAggregateBuilder aggregation, HttpServletResponse httpResponse) throws IOException {
         httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);

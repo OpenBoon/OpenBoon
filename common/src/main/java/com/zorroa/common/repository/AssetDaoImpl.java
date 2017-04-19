@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
+import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
@@ -15,6 +16,9 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.cluster.ClusterState;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
@@ -276,5 +280,22 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), page, MAPPER);
 
+    }
+
+    @Override
+    public Map<String, Object> getMapping() {
+        ClusterState cs = client.admin().cluster().prepareState().setIndices(
+                getIndex()).execute().actionGet().getState();
+        // Should only be one concrete index.
+        for (String index: cs.getMetaData().concreteAllOpenIndices()) {
+            IndexMetaData imd = cs.getMetaData().index(index);
+            MappingMetaData mdd = imd.mapping("asset");
+            try {
+                return mdd.getSourceAsMap();
+            } catch (IOException e) {
+                throw new ArchivistException(e);
+            }
+        }
+        return ImmutableMap.of();
     }
 }

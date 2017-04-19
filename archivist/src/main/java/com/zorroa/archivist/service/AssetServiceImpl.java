@@ -313,4 +313,9 @@ public class AssetServiceImpl implements AssetService {
                     .setAction(LogAction.BulkUpdate));
         }
     }
+
+    @Override
+    public Map<String, Object> getMapping() {
+        return assetDao.getMapping();
+    }
 }
