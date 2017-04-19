@@ -1,13 +1,7 @@
 package com.zorroa.cloudproxy.service;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.zorroa.cloudproxy.domain.ImportStatus;
-import com.zorroa.cloudproxy.domain.ImportTask;
 import com.zorroa.cloudproxy.domain.Settings;
-import com.zorroa.sdk.client.ArchivistClient;
-import com.zorroa.sdk.util.FileUtils;
-import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +13,8 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Created by chambers on 3/24/17.
@@ -46,11 +36,14 @@ public class SchedulerServiceImpl implements SchedulerService, ApplicationListen
     @Autowired
     SettingsService configService;
 
+    @Autowired
+    ImportTaskService importTaskService;
+
     ThreadPoolTaskScheduler cronScheduler;
 
     CronTrigger trigger;
 
-    List<Future<ImportTask>> pendingTasks = Collections.synchronizedList(Lists.newArrayList());
+    ScheduledFuture scheduledTask = null;
 
     public SchedulerServiceImpl() {
         cronScheduler = makeScheduler();
@@ -63,102 +56,56 @@ public class SchedulerServiceImpl implements SchedulerService, ApplicationListen
         }
         ImportStatus stats = configService.getImportStats();
         SimpleTriggerContext ctx = new SimpleTriggerContext();
-        ctx.update(new Date(stats.getStartTime() > 0 ? stats.getStartTime(): System.currentTimeMillis()),
-                new Date(stats.getStartTime()),
-                new Date(stats.getFinishTime()));
+
+        long startTime = stats.getStartTime() != null ? stats.getStartTime(): System.currentTimeMillis();
+        long finishTime = stats.getFinishTime() != null ? stats.getFinishTime() : 0;
+
+        ctx.update(new Date(startTime), new Date(startTime), new Date(finishTime));
         return trigger.nextExecutionTime(ctx);
     }
 
     @Override
-    public void reloadAndRestart(boolean allowStartNow) {
+    public synchronized void reloadAndRestart(boolean allowStartNow) {
 
         Settings configProps = configService.getSettings();
         if (configProps == null) {
             return;
         }
 
-        /**
-         * Cancel all pending tasks.
+        /*
+         * Cancel the scheduled task.
          */
-        for (Future<ImportTask> future: pendingTasks) {
-            future.cancel(true);
+        if (scheduledTask != null) {
+            scheduledTask.cancel(true);
         }
-        pendingTasks.clear();
 
         /**
-         * Apply the schedule.
+         * Cancels all tasks and waits for them to complete.
+         */
+        importTaskService.cancelAllTasks();
+
+        /**
+         * Add in the new scheduled task.
          */
         if (configProps.getSchedule() != null) {
             logger.info("Creating schedule using: {}", configProps.getSchedule());
             trigger = new CronTrigger(configProps.getSchedule());
-            Future task = cronScheduler.schedule(()-> executeImportTask(true), trigger);
-            pendingTasks.add(task);
+            scheduledTask = cronScheduler.schedule(()-> {
+                // Skip if its already running.
+                if (!importTaskService.isImportTaskRunning()) {
+                    importTaskService.submitImportTask(false);
+                }
+            }, trigger);
         }
 
+        /**
+         * Start a task if startNow is selected.
+         */
         if (allowStartNow && configProps.isStartNow()) {
-            Future task = cronScheduler.submit(()-> executeImportTask(true));
-            pendingTasks.add(task);
+            logger.info("Start now selected, starting");
+            cronScheduler.submit(()->
+                    importTaskService.submitImportTask(false));
         }
-    }
-
-    @Override
-    public ImportTask executeImportTask(boolean cleanup) {
-
-        Settings configProps = configService.getSettings();
-        if (configProps == null) {
-            return null;
-        }
-
-        ImportStatus nextRun = configService.getImportStats();
-        logger.info("Last run: {}", nextRun.getStartTime());
-        logger.info("Next run: {}", nextRun.getNextTime());
-
-        String scriptFile = configPath + "/script.zps";
-        try {
-
-            /**
-             * Set some system props that the archivist client can grab.
-             */
-            System.setProperty("zorroa.hmac.key", configProps.getHmacKey());
-            System.setProperty("zorroa.user", configProps.getAuthUser());
-
-            ArchivistClient client = new ArchivistClient();
-            Map<String, Object> job = client.getConnection().post("/api/v1/jobs",
-                    ImmutableMap.of(
-                            "name", "CloudProxyImport",
-                            "type", "Import",
-                            "script", new ZpsScript()), Map.class);
-
-            nextRun.setStartTime(System.currentTimeMillis());
-            nextRun.setLastJobId(nextRun.getCurrentJobId());
-            nextRun.setCurrentJobId((Integer) job.get("jobId"));
-            nextRun.setActive(true);
-            configService.saveImportStats(nextRun);
-
-            ImportTask task = new ImportTask(scriptFile, sharedPath, configProps, nextRun);
-            task.start();
-
-            return task;
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to start cloud proxy process, ", e);
-        }
-        finally {
-            logger.info("Task is complete");
-            try {
-                ImportStatus lastRun = configService.getImportStats();
-                lastRun.setFinishTime(System.currentTimeMillis());
-                lastRun.setActive(false);
-                configService.saveImportStats(lastRun);
-            } catch (Exception e) {
-                logger.warn("Failed to save last run data, ", e);
-            }
-        }
-    }
-
-    @Override
-    public void cleanupImportTaskWorkDir(ImportTask task) throws FileNotFoundException {
-        logger.info("Deleting work dir: {}", task.getWorkDir());
-        FileUtils.deleteRecursive(task.getWorkDir().toFile());
     }
 
     private static final ThreadPoolTaskScheduler makeScheduler() {

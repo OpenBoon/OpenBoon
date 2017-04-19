@@ -1,6 +1,8 @@
 package com.zorroa.cloudproxy.domain;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
@@ -16,9 +18,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by chambers on 3/27/17.
@@ -30,40 +35,38 @@ public class ImportTask {
     private Path zpsScript;
     private Path sharedPath;
     private Path workDir;
-    private Settings props;
     private Map<String, Object> args;
     private Map<String, String> env;
+    private AtomicBoolean canceled = new AtomicBoolean(false);
+    private Set<MetaZpsExecutor> executors = Collections.synchronizedSet(Sets.newHashSet());
 
-    private MetaZpsExecutor zpsExecutor;
-    private AssetExecutor threadPool;
+    private ImportExecutor threadPool;
 
     public ImportTask(String scriptPath,
-                      String sharedPath, Settings configProps, ImportStatus status) {
+                      String sharedPath,
+                      Settings props,
+                      Map<String, Object> args) {
         this.zpsScript = Paths.get(scriptPath);
         this.sharedPath = Paths.get(sharedPath);
-        this.props = configProps;
         this.workDir = this.sharedPath.resolve("jobs/" + UUID.randomUUID().toString());
-        this.threadPool = new AssetExecutor(props.getThreads());
-        args = Maps.newHashMap();
-        args.put("path", props.getPaths().get(0));
-        args.put("cutOffTime", status.getStartTime());
-        args.put("pipelineId", props.getPipelineId());
-        args.put("jobId", status.getCurrentJobId());
+        this.threadPool = new ImportExecutor(props.getThreads());
 
-        logger.info("starting task");
-        logger.info("Path: {}", props.getPaths().get(0));
-        logger.info("CutOFf: {}", status.getStartTime());
-        logger.info("pipelineId: {}", props.getPipelineId());
-        logger.info("jobId: {}", status.getCurrentJobId());
+        logger.info("Starting task");
+        for (Map.Entry<String, Object> e: args.entrySet()) {
+            logger.info("ARG {}={}", e.getKey(), e.getValue());
+        }
 
-        env = Maps.newHashMap();
-        env.put("ZORROA_ARCHIVIST_URL", props.getArchivistUrl());
-        env.put("ZORROA_HMAC_KEY", props.getHmacKey());
-        env.put("ZORROA_USER", props.getAuthUser());
-        env.put("ZORROA_WORK_DIR", workDir.toString());
+        this.args = args;
+
+        this.env = Maps.newHashMap();
+        this.env.put("ZORROA_ARCHIVIST_URL", props.getArchivistUrl());
+        this.env.put("ZORROA_HMAC_KEY", props.getHmacKey());
+        this.env.put("ZORROA_USER", props.getAuthUser());
+        this.env.put("ZORROA_WORK_DIR", workDir.toString());
     }
 
     public void start() {
+        MetaZpsExecutor zpsExecutor = null;
         try {
             FileUtils.makedirs(workDir);
             ZpsTask zpsTask = new ZpsTask()
@@ -73,6 +76,7 @@ public class ImportTask {
 
             zpsExecutor = new MetaZpsExecutor(zpsTask, new SharedData(sharedPath));
             zpsExecutor.addReactionHandler(new ReactionHandler());
+            executors.add(zpsExecutor);
             logger.info("Executing ZPS script");
             zpsExecutor.execute();
 
@@ -82,13 +86,42 @@ public class ImportTask {
         catch (Exception e) {
             logger.warn("Failed to execute:", e);
         }
+        finally {
+            if (zpsExecutor != null) {
+                executors.remove(zpsExecutor);
+            }
+        }
+    }
+
+    public void cancel() {
+        if (canceled.compareAndSet(false, true)) {
+            logger.info("Canceling running ZPS script");
+
+            for (MetaZpsExecutor mze: executors) {
+                mze.cancel();
+            }
+            logger.info("Forcing shutdown of ImportTask threads for job #{}", args.get("jobId"));
+            threadPool.shutdownNow();
+        }
+    }
+
+    public Map<String,Object> getProgress() {
+        return ImmutableMap.of(
+                "total", threadPool.getTaskCount(),
+                "completed", threadPool.getCompletedTaskCount(),
+                "progress", threadPool.getCompletedTaskCount() / (double) threadPool.getTaskCount());
     }
 
     private void expand(ZpsScript expand) {
+        if (canceled.get()) {
+            return;
+        }
+
         for (;;) {
             try {
                 threadPool.execute(() -> {
                     Path scriptPath = null;
+                    MetaZpsExecutor zpsExecutor = null;
                     try {
                         if (expand.getOver() != null) {
                             logger.info("Processing {} assets", expand.getOver().size());
@@ -101,12 +134,16 @@ public class ImportTask {
                                 .setEnv(env)
                                 .setScriptPath(scriptPath.toString());
                         zpsExecutor = new MetaZpsExecutor(zpsTask, new SharedData(sharedPath));
+                        executors.add(zpsExecutor);
                         zpsExecutor.execute();
                     }
                     catch (Exception e) {
                         logger.warn("Failed to process assets, unexepected", e);
                     }
                     finally {
+                        if (zpsExecutor != null) {
+                            executors.remove(zpsExecutor);
+                        }
                         if (scriptPath != null) {
                             try {
                                 Files.delete(scriptPath);

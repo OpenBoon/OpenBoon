@@ -29,8 +29,8 @@ public class SettingsServiceTests extends AbstractTest {
     @Test
     public void getImportStats() {
         ImportStatus last = settingsService.getImportStats();
-        assertEquals(0, last.getStartTime());
-        assertEquals(0, last.getFinishTime());
+        assertEquals(null, last.getStartTime());
+        assertEquals(null, last.getFinishTime());
     }
 
     @Test

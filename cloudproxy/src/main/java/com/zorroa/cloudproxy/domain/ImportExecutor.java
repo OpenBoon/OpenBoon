@@ -9,10 +9,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by chambers on 4/19/17.
  */
-public class AssetExecutor  extends ThreadPoolExecutor {
+public class ImportExecutor extends ThreadPoolExecutor {
 
-    public AssetExecutor(int threads) {
-        super(threads, threads, 60, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
+    public ImportExecutor(int threads) {
+        super(threads, threads, 60, TimeUnit.MINUTES, new LinkedBlockingQueue<>(100));
         this.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("ASSET_WORKER-%d").build());
         this.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
     }

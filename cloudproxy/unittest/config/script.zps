@@ -15,17 +15,16 @@
   ],
   "execute": [
     {
-      "className": "com.zorroa.core.processor.SkipFrameScript",
-      "language": "java",
-      "args": {
-        "script": "new File(_doc.getAttr('source.path')).lastModified() > _ctx.globals.cutOffTime;"
-      }
-    },
-    {
       "className": "com.zorroa.core.collector.ExpandCollector",
       "language": "java",
       "args": { },
       "execute": [
+        {
+          "className": "com.zorroa.core.processor.ImageIngestor",
+          "language": "java",
+          "args": { },
+          "filters": [ ]
+        },
         {
           "className": "com.zorroa.core.processor.ProxyIngestor",
           "language": "java",

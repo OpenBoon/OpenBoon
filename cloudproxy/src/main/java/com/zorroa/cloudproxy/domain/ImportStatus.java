@@ -1,31 +1,34 @@
 package com.zorroa.cloudproxy.domain;
 
+import java.util.Map;
+
 /**
  * Created by chambers on 3/28/17.
  */
 public class ImportStatus {
 
-    private long finishTime = 0;
-    private long startTime = 0;
+    private Long finishTime;
+    private Long startTime;
     private Long nextTime;
     private Boolean active;
     private Integer currentJobId;
-    private Integer lastJobId;
 
-    public long getFinishTime() {
+    private Map<String, Object> progress;
+
+    public Long getFinishTime() {
         return finishTime;
     }
 
-    public ImportStatus setFinishTime(long finishTime) {
+    public ImportStatus setFinishTime(Long finishTime) {
         this.finishTime = finishTime;
         return this;
     }
 
-    public long getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
 
-    public ImportStatus setStartTime(long startTime) {
+    public ImportStatus setStartTime(Long startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -57,12 +60,12 @@ public class ImportStatus {
         return this;
     }
 
-    public Integer getLastJobId() {
-        return lastJobId;
+    public Map<String, Object> getProgress() {
+        return progress;
     }
 
-    public ImportStatus setLastJobId(Integer lastJobId) {
-        this.lastJobId = lastJobId;
+    public ImportStatus setProgress(Map<String, Object> progress) {
+        this.progress = progress;
         return this;
     }
 }
