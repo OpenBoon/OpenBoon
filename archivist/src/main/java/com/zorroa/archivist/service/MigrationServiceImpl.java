@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Migration;
 import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.repository.MigrationDao;
@@ -33,6 +34,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -119,7 +121,7 @@ public class MigrationServiceImpl implements MigrationService {
         final boolean newIndexExists = client.admin().indices().prepareExists(newIndex).get().isExists();
 
         /**
-         * If we alread have the current version then return.
+         * If we already have the current version then return.
          */
         if (props.getVersion() == m.getVersion() && newIndexExists) {
             logger.info("'{}' mapping V{} is the current version", m.getName(), m.getVersion());
@@ -249,10 +251,9 @@ public class MigrationServiceImpl implements MigrationService {
     private static final Pattern MAPPING_NAMING_CONV = Pattern.compile("^V(\\d+)__(.*?).json$");
 
     public ElasticMigrationProperties getLatestVersion(Migration m) throws IOException {
-        ElasticMigrationProperties result = new ElasticMigrationProperties();
-
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(getClass().getClassLoader());
         Resource[] resources = resolver.getResources(m.getPath());
+        List<ElasticMigrationProperties> allVersions = Lists.newArrayList();
         for (Resource resource : resources) {
 
             Matcher matcher = MAPPING_NAMING_CONV.matcher(resource.getFilename());
@@ -261,28 +262,40 @@ public class MigrationServiceImpl implements MigrationService {
                 continue;
             }
 
+            ElasticMigrationProperties emp = new ElasticMigrationProperties();
             int version = Integer.valueOf(matcher.group(1));
+            logger.info("Found embedded mapping in {} version {}", m.getPath(), version);
+
             Map<String, Object> mapping = Json.Mapper.readValue(resource.getInputStream(), Json.GENERIC_MAP);
+            emp.setMapping(mapping);
+            emp.setVersion(version);
 
-            result.setMapping(mapping);
-            result.setVersion(version);
-
+            /**
+             * Only versions with the migration header are added.
+             */
             if (mapping.containsKey("migration")) {
                 Map<String, Boolean> props = Json.Mapper.convertValue(mapping.get("migration"),
                         new TypeReference<Map<String, Boolean>>(){});
 
                 if (props.get("reindex")) {
-                    result.setReindex(true);
+                    emp.setReindex(true);
                 }
                 if (props.get("reingest")) {
-                    result.setReingest(true);
+                    emp.setReingest(true);
                 }
+                allVersions.add(emp);
             }
             else {
                 logger.warn("Unable to find version/migration info in mapping {}", resource.getFilename());
             }
         }
 
+        if (allVersions.isEmpty()) {
+            throw new IOException("Failed to find latest mapping for migration " + m.getPath());
+        }
+
+        Collections.sort(allVersions, (o1, o2) -> Integer.compare(o2.getVersion(), o1.getVersion()));
+        ElasticMigrationProperties result = allVersions.get(0);
         logger.info("latest '{}' mapping ver: {} (source='{}')", m.getName(), result.getVersion(), m.getPath());
         return result;
     }
