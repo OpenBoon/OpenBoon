@@ -172,6 +172,11 @@ public class FolderServiceImpl implements FolderService {
             if (isDescendantOf(folderDao.get(folder.getParentId()), current)) {
                 throw new ArchivistWriteException("You cannot move a folder into one of its descendants.");
             }
+
+            if (folder.getDyhiId() != null) {
+                throw new ArchivistWriteException("You cannot move a DyHi folder");
+            }
+
         }
 
         boolean result = folderDao.update(id, folder);
