@@ -103,8 +103,12 @@ public class FileSystemController {
                 String id = "proxy/" + file.getOriginalFilename();
                 ObjectFile of = objectFileSystem.get(id);
                 of.mkdirs();
-                logger.info("copying proxy {}", of.getFile().toPath());
-                Files.copy(file.getInputStream(), of.getFile().toPath());
+
+                File dstFile = of.getFile();
+                if (!dstFile.exists()) {
+                    logger.info("copying proxy {}", dstFile.toPath());
+                    Files.copy(file.getInputStream(), dstFile.toPath());
+                }
             }
             return HttpUtils.status("proxy", "upload", true);
         } catch (Exception e) {
