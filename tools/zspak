@@ -84,7 +84,9 @@ def copy_jar_lib(args, settings):
         pom_file = os.path.join(os.path.dirname(args.dist), "pom.xml")
         cmd =["mvn", "package", "-Dmaven.test.skip=true", "-f", "%s" % pom_file]
         logger.info("running: %s" % cmd)
-        subprocess.call(cmd, shell=False)
+        ret = subprocess.call(cmd, shell=False)
+        if ret != 0:
+            raise RuntimeError("Failed to compile java library!!");
     dst_dir = os.path.join(args.build_dir, "lib")
     logger.info("copy %s -> %s" % (src, dst_dir))
     shutil.copy(src, dst_dir)
