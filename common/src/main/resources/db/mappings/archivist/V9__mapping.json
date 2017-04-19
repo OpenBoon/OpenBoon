@@ -175,7 +175,8 @@
         {
           "path_template": {
             "match_pattern": "regex",
-            "match": "^.+Path|^path$|^directory$",
+            "match_mapping_type": "string",
+            "match": "^*.+Path|^path$|^directory$",
             "mapping": {
               "type": "string",
               "analyzer": "path_analyzer",
