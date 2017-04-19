@@ -18,10 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chambers on 3/27/17.
@@ -38,24 +35,26 @@ public class ImportTask {
     private Map<String, String> env;
 
     private MetaZpsExecutor zpsExecutor;
-    private ThreadPoolExecutor threadPool;
+    private AssetExecutor threadPool;
 
     public ImportTask(String scriptPath,
-                      String sharedPath, Settings configProps, long cutoffTime) {
+                      String sharedPath, Settings configProps, ImportStatus status) {
         this.zpsScript = Paths.get(scriptPath);
         this.sharedPath = Paths.get(sharedPath);
         this.props = configProps;
         this.workDir = this.sharedPath.resolve("jobs/" + UUID.randomUUID().toString());
-
+        this.threadPool = new AssetExecutor(props.getThreads());
         args = Maps.newHashMap();
         args.put("path", props.getPaths().get(0));
-        args.put("cutOffTime", cutoffTime);
+        args.put("cutOffTime", status.getStartTime());
         args.put("pipelineId", props.getPipelineId());
+        args.put("jobId", status.getCurrentJobId());
 
         logger.info("starting task");
         logger.info("Path: {}", props.getPaths().get(0));
-        logger.info("CutOFf: {}", cutoffTime);
+        logger.info("CutOFf: {}", status.getStartTime());
         logger.info("pipelineId: {}", props.getPipelineId());
+        logger.info("jobId: {}", status.getCurrentJobId());
 
         env = Maps.newHashMap();
         env.put("ZORROA_ARCHIVIST_URL", props.getArchivistUrl());
@@ -66,9 +65,7 @@ public class ImportTask {
 
     public void start() {
         try {
-
             FileUtils.makedirs(workDir);
-
             ZpsTask zpsTask = new ZpsTask()
                     .setArgs(args)
                     .setEnv(env)
@@ -76,11 +73,11 @@ public class ImportTask {
 
             zpsExecutor = new MetaZpsExecutor(zpsTask, new SharedData(sharedPath));
             zpsExecutor.addReactionHandler(new ReactionHandler());
-            threadPool = new ThreadPoolExecutor(Math.max(1, props.getThreads()), Math.max(1, props.getThreads()),
-                    60, TimeUnit.MINUTES, new LinkedBlockingDeque<>(100));
-            threadPool.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+            logger.info("Executing ZPS script");
             zpsExecutor.execute();
 
+            logger.info("Waiting for import task process to complete.");
+            threadPool.waitForCompletion();
         }
         catch (Exception e) {
             logger.warn("Failed to execute:", e);

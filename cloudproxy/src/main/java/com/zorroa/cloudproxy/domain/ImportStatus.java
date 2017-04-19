@@ -38,4 +38,31 @@ public class ImportStatus {
         this.nextTime = nextTime;
         return this;
     }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public ImportStatus setActive(Boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public Integer getCurrentJobId() {
+        return currentJobId;
+    }
+
+    public ImportStatus setCurrentJobId(Integer currentJobId) {
+        this.currentJobId = currentJobId;
+        return this;
+    }
+
+    public Integer getLastJobId() {
+        return lastJobId;
+    }
+
+    public ImportStatus setLastJobId(Integer lastJobId) {
+        this.lastJobId = lastJobId;
+        return this;
+    }
 }

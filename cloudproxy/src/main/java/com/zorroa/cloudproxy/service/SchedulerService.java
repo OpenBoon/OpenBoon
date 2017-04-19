@@ -17,7 +17,7 @@ public interface SchedulerService {
     /**
      * Start a task in the foreground.
      */
-    ImportTask startImportTask(boolean cleanup);
+    ImportTask executeImportTask(boolean cleanup);
 
     void cleanupImportTaskWorkDir(ImportTask task) throws FileNotFoundException;
 }
