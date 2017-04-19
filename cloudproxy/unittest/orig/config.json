@@ -1,0 +1,8 @@
+{
+  "authUser": "admin",
+  "hmacKey": "00000000-0000-0000-0000-000000000000",
+  "startNow": false,
+  "archivistUrl": "http://localhost:8066",
+  "paths": ["../../zorroa-test-data/images"],
+  "pipelineId": 1
+}
