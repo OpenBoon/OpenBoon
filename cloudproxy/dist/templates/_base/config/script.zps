@@ -35,6 +35,10 @@
           "className": "com.zorroa.core.collector.CloudProxyCollector",
           "language": "java",
           "args": {
+            "jobId": {
+              "_expr_": "return Integer.valueOf(_ctx.globals.jobId)",
+              "_language_": "groovy"
+            },
             "pipelineId": {
               "_expr_": "return Integer.valueOf(_ctx.globals.pipelineId)",
               "_language_": "groovy"
