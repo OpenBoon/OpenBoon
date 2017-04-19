@@ -28,9 +28,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
@@ -141,12 +139,9 @@ public class MigrationServiceImpl implements MigrationService {
          */
         TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(Propagation.REQUIRES_NEW.ordinal());
-        boolean updated = tt.execute(new TransactionCallback<Boolean>() {
-            @Override
-            public Boolean doInTransaction(TransactionStatus transactionStatus) {
-                boolean result = migrationDao.setVersion(m, props.getVersion());
-                return result;
-            }
+        boolean updated = tt.execute(transactionStatus -> {
+            boolean result = migrationDao.setVersion(m, props.getVersion());
+            return result;
         });
 
         if (!updated) {
