@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.domain.Room;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,8 +23,6 @@ public interface UserDao {
     String getHmacKey(String username);
 
     boolean generateHmacKey(String username);
-
-    List<User> getAll(Room room);
 
     boolean delete(User user);
 

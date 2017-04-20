@@ -84,10 +84,7 @@ public abstract class AbstractTest {
 
     @Autowired
     protected AssetService assetService;
-
-    @Autowired
-    protected RoomService roomService;
-
+    
     @Autowired
     protected AnalystService analystService;
 

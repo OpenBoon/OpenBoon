@@ -241,7 +241,6 @@ public class UserServiceImpl implements UserService {
 
         if (result) {
             if (result) {
-                Message msg = new Message(value ? "USER_ENABLED": "USER_DISABLED", user);
                 txem.afterCommitSync(() -> {
                     logService.logAsync(LogSpec.build(value ? "enable" : "disable", user));
                 });
@@ -249,11 +248,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
-    }
-
-    @Override
-    public List<User> getAll(Room room) {
-        return userDao.getAll(room);
     }
 
     @Override

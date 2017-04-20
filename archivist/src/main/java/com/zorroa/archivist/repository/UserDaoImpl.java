@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -219,25 +218,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         boolean result = jdbc.update("UPDATE user SET hmac_key=? WHERE str_username=? AND bool_enabled=?",
                 key, username, true) == 1;
         return result;
-    }
-
-    private static final String GET_ALL_BY_ROOM =
-        "SELECT " +
-            "user.* " +
-        "FROM " +
-            "user,session,map_session_to_room m " +
-        "WHERE " +
-            "session.pk_session = m.pk_session " +
-        "AND " +
-            "m.pk_room = ? " +
-        "AND " +
-            "session.pk_user = user.pk_user " +
-        "ORDER BY "+
-            "user.str_username ASC";
-
-    @Override
-    public List<User> getAll(Room room) {
-        return jdbc.query(GET_ALL_BY_ROOM, MAPPER, room.getId());
     }
 
     private static final String GET_ALL_WITH_SESSION =

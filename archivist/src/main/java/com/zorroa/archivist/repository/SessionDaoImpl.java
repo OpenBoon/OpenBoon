@@ -2,7 +2,6 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.Session;
 import com.zorroa.sdk.domain.SessionAttrs;
 import com.zorroa.sdk.util.Json;
@@ -89,13 +88,6 @@ public class SessionDaoImpl extends AbstractDao implements SessionDao {
     @Override
     public List<Session> getAll(User user) {
         return jdbc.query(GET + " WHERE user.pk_user=?", MAPPER, user.getId());
-    }
-
-    @Override
-    public List<Session> getAll(Room room) {
-        return jdbc.query(GET + " INNER JOIN map_session_to_room m ON (m.pk_session=session.pk_session) " +
-                        "WHERE m.pk_room=?",
-                MAPPER, room.getId());
     }
 
     @Override

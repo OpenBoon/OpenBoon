@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.Session;
 
 import java.util.Collection;
@@ -47,8 +46,6 @@ public interface UserService {
     boolean updateSettings(User user, UserSettings settings);
 
     boolean setEnabled(User user, boolean value);
-
-    List<User> getAll(Room room);
 
     Session getActiveSession();
 

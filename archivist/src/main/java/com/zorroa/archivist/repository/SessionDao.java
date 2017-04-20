@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.domain.User;
-import com.zorroa.sdk.domain.Room;
 import com.zorroa.sdk.domain.Session;
 import com.zorroa.sdk.domain.SessionAttrs;
 
@@ -12,8 +11,6 @@ import java.util.List;
  */
 public interface SessionDao {
     Session create(User user, String cookie);
-
-    List<Session> getAll(Room room);
 
     boolean delete(String cookie);
 

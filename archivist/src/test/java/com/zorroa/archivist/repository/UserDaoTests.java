@@ -7,9 +7,6 @@ import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.domain.Room;
-import com.zorroa.sdk.domain.RoomBuilder;
-import com.zorroa.sdk.domain.Session;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +24,6 @@ public class UserDaoTests extends AbstractTest {
 
     @Autowired
     PermissionDao permissionDao;
-
-    @Autowired
-    RoomDao roomDao;
 
     @Autowired
     SessionDao sessionDao;
@@ -135,22 +129,6 @@ public class UserDaoTests extends AbstractTest {
     public void testExists() {
         assertTrue(userDao.exists(user.getUsername()));
         assertFalse(userDao.exists("sibawitzawis"));
-    }
-
-    @Test
-    public void testGetUsers() {
-
-        RoomBuilder bld = new RoomBuilder();
-        bld.setName("the room");
-        bld.setVisible(true);
-        Room room = roomDao.create(bld);
-
-        Session session = sessionDao.create(userDao.get(1), "1");
-        roomDao.join(room, session);
-
-        List<User> users = userDao.getAll(room);
-        assertEquals(1, users.size());
-        assertTrue(users.contains(userDao.get(1)));
     }
 
     @Test
