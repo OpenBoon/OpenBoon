@@ -301,7 +301,7 @@
                         </goals>
                         <configuration>
                             <executable>/bin/rm</executable>
-                            <commandlineArgs>-rf db unittest</commandlineArgs>
+                            <commandlineArgs>-rf unittest ../unittest/shared/ofs ../unittest/shared/jobs</commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>
