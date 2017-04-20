@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
@@ -48,9 +47,6 @@ public class ImportServiceImpl implements ImportService {
 
     @Autowired
     JobService jobService;
-
-    @Autowired
-    JobDao jobDao;
 
     @Autowired
     PipelineService pipelineService;
@@ -117,6 +113,11 @@ public class ImportServiceImpl implements ImportService {
             throw new IllegalArgumentException("Must set either a path or search query.");
         }
 
+        if (spec.getPipelineId() == null &&  spec.getPipeline() == null) {
+            Pipeline pl = pipelineService.getStandard();
+            spec.setPipelineId(pl.getId());
+        }
+
         List<ProcessorRef> pipeline = pipelineService.getProcessors(
                 spec.getPipelineId(), spec.getPipeline());
         pipeline.add(new ProcessorRef("com.zorroa.core.processor.ReturnResponse"));
@@ -169,11 +170,19 @@ public class ImportServiceImpl implements ImportService {
                 new ProcessorRef()
                         .setClassName("com.zorroa.core.collector.ExpandCollector")
                         .setLanguage("java"));
+
+        /*
+         * Default to standard pipeline.
+         */
+        if (spec.getPipelineId() == null) {
+            Pipeline pl = pipelineService.getStandard();
+            spec.setPipelineId(pl.getId());
+        }
+
         /*
          * Get the processors for the user supplied pipeline if.
          */
-        List<ProcessorRef> pipeline = pipelineService.getProcessors(
-                spec.getPipelineId(), ImmutableList.of());
+        List<ProcessorRef> pipeline = pipelineService.getProcessors(spec.getPipelineId(), ImmutableList.of());
 
         /*
          * Append the index document collector to add stuff to the DB.
@@ -231,6 +240,11 @@ public class ImportServiceImpl implements ImportService {
         /**
          * Resolve the user supplied pipeline.
          */
+        if (spec.getPipelineId() == null &&  spec.getPipeline() == null) {
+            Pipeline pl = pipelineService.getStandard();
+            spec.setPipelineId(pl.getId());
+        }
+
         List<ProcessorRef> pipeline = pipelineService.getProcessors(
                 spec.getPipelineId(), spec.getPipeline());
         /**

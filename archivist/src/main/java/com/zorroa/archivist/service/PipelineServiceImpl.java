@@ -77,6 +77,11 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
+    public Pipeline getStandard() {
+        return pipelineDao.getStandard();
+    }
+
+    @Override
     public boolean exists(String name) {
         return pipelineDao.exists(name);
     }

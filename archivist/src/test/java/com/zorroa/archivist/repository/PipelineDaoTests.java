@@ -32,6 +32,7 @@ public class PipelineDaoTests extends AbstractTest {
         spec.setProcessors(Lists.newArrayList());
         spec.setName("Zorroa Test");
         spec.setDescription("A test pipeline");
+        spec.setStandard(true);
         pipeline = pipelineDao.create(spec);
     }
 
@@ -44,6 +45,16 @@ public class PipelineDaoTests extends AbstractTest {
 
     @Test
     public void testDelete() {
+        // cant' delete the standard
+        assertFalse(pipelineService.delete(pipeline.getId()));
+        // Add new standard
+        PipelineSpecV spec = new PipelineSpecV();
+        spec.setType(PipelineType.Import);
+        spec.setProcessors(Lists.newArrayList());
+        spec.setName("ZorroaStandard");
+        spec.setDescription("A test pipeline");
+        spec.setStandard(true);
+        pipelineDao.create(spec);
         assertTrue(pipelineService.delete(pipeline.getId()));
         assertFalse(pipelineService.delete(pipeline.getId()));
     }
@@ -102,6 +113,5 @@ public class PipelineDaoTests extends AbstractTest {
     public void testGetStandard() {
         Pipeline p = pipelineDao.getStandard();
         assertEquals("Zorroa Test", p.getName());
-
     }
 }

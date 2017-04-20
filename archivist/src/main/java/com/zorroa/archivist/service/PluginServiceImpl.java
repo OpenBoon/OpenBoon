@@ -161,7 +161,11 @@ public class PluginServiceImpl implements PluginService {
             try {
                 // remove the old one
                 pipeline = pipelineDao.get(pl.getName());
-                pipelineDao.delete(pipeline.getId());
+                boolean result = pipelineDao.delete(pipeline.getId());
+                if (!result) {
+                    // its the standard pipeline, just ignore for now
+                    continue;
+                }
             }
             catch (EmptyResultDataAccessException e) {
                 // ignore

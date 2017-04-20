@@ -18,6 +18,8 @@ public interface PipelineService {
 
     Pipeline get(String name);
 
+    Pipeline getStandard();
+
     boolean exists(String s);
 
     List<Pipeline> getAll();

@@ -20,7 +20,6 @@ public class TaskSpecV implements JobId {
     @NotEmpty
     private List<Document> docs;
 
-    @NotEmpty
     private Integer pipelineId;
 
     public TaskSpecV() { }

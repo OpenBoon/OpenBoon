@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
+import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -54,6 +55,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    PipelineDao pipelineDao;
 
     @Autowired
     ApplicationProperties properties;
@@ -178,9 +182,14 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Task createTask(TaskSpecV spec) {
+
         /**
-         * Create the first task which is just the script itself.
+         * Use the standard pipeline if one is not set.
          */
+        if (spec.getPipelineId() == null) {
+            Pipeline pl = pipelineDao.getStandard();
+            spec.setPipelineId(pl.getId());
+        }
 
         TaskSpec ts = new TaskSpec();
         ts.setName(spec.getName());
