@@ -5,4 +5,5 @@ import com.zorroa.archivist.domain.PipelineSpecV;
 
 public interface PipelineDao extends GenericNamedDao<Pipeline, PipelineSpecV> {
 
+    Pipeline getStandard();
 }

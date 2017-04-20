@@ -26,6 +26,17 @@ public class PipelineSpecV {
     @NotEmpty
     private String description;
 
+    private boolean standard = false;
+
+    public boolean isStandard() {
+        return standard;
+    }
+
+    public PipelineSpecV setStandard(boolean standard) {
+        this.standard = standard;
+        return this;
+    }
+
     public List<ProcessorRef> getProcessors() {
         return processors;
     }

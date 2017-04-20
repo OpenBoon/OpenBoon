@@ -21,6 +21,8 @@ public interface PluginService {
 
     Plugin installPlugin(Path zipFilePath);
 
+    void installBundledPipelines();
+
     PagedList<Plugin> getAllPlugins(Pager page);
     List<Plugin> getAllPlugins();
     Plugin getPlugin(String name);

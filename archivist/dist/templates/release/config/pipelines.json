@@ -1,0 +1,59 @@
+[
+  {
+    "type" : 0,
+    "standard": true,
+    "name" : "Import Pipeline",
+    "description" : "Minimal import with similarity, color and face",
+    "processors" : [ {
+      "className" : "com.zorroa.core.processor.ImageIngestor",
+      "args" : { },
+      "language" : "java",
+      "filters" : [ {
+        "expr" : "_doc.source.extension.toLowerCase() ==~/jpg|jpeg|png|tif|tiff|gif|bmp|cin|dds|dpx|fits|hdr|ico|iff|exr|pnm|psd|rla|sgi|pic|tga|dpx|raw|kdc|mrw|srw|pef|raf|srf|arw|orf|nef|cr2|dng|crw|zfile/",
+        "drop" : false
+      } ]
+    }, {
+      "className" : "com.zorroa.core.processor.VideoIngestor",
+      "args" : { },
+      "language" : "java",
+      "filters" : [ {
+        "expr" : "_doc.source.type == 'video'",
+        "drop" : false
+      } ]
+    }, {
+      "className" : "com.zorroa.core.processor.PdfIngestor",
+      "args" : { },
+      "language" : "java",
+      "filters" : [ {
+        "expr" : "_doc.source.extension == 'pdf'",
+        "drop" : false
+      } ]
+    }, {
+      "className" : "com.zorroa.core.processor.ProxyIngestor",
+      "args" : { },
+      "language" : "java",
+      "filters" : [ ]
+    }, {
+      "className" : "com.zorroa.core.processor.FilePathIngestor",
+      "args" : { },
+      "language" : "java",
+      "filters" : [ ]
+    }, {
+      "className" : "zorroa_py_core.image.ColorAnalysis",
+      "args" : { },
+      "language" : "python",
+      "filters" : [ ]
+    }, {
+      "className" : "zorroa_py_core.HaarDetector.HaarDetector",
+      "args" : { },
+      "language" : "python",
+      "filters" : [ ]
+    }, {
+      "className" : "zorroa_py_core.tflow.TensorFlowHash",
+      "args" : { },
+      "language" : "python",
+      "filters" : [ ]
+    } ],
+    "targetType" : "pipeline"
+  }
+]

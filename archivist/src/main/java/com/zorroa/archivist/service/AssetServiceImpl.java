@@ -265,7 +265,7 @@ public class AssetServiceImpl implements AssetService {
                     }
                 })
                 .setBulkActions(100)
-                .setFlushInterval(TimeValue.timeValueSeconds(5))
+                .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build();
 

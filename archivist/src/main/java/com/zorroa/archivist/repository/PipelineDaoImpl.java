@@ -37,7 +37,8 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
                     "str_name",
                     "int_type",
                     "json_processors",
-                    "str_description");
+                    "str_description",
+                    "bool_standard");
 
     @Override
     public Pipeline create(PipelineSpecV spec) {
@@ -50,6 +51,18 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
                     spec.getType() + " pipeline created by " + SecurityUtils.getUsername());
         }
 
+
+        if (spec.isStandard()) {
+            jdbc.update("UPDATE pipeline SET bool_standard=0 WHERE bool_standard=1");
+        }
+
+        /*
+         * If there are no pipelines, then this one is the standard.
+         */
+        if (count() == 0) {
+            spec.setStandard(true);
+        }
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
@@ -58,10 +71,20 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
             ps.setInt(2, spec.getType().ordinal());
             ps.setString(3, Json.serializeToString(spec.getProcessors(), "[]"));
             ps.setString(4, spec.getDescription());
+            ps.setBoolean(5, spec.isStandard());
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
         return get(id);
+    }
+
+    @Override
+    public Pipeline getStandard() {
+        try {
+            return jdbc.queryForObject("SELECT * FROM pipeline WHERE bool_standard=1 LIMIT 1", MAPPER);
+        } catch(EmptyResultDataAccessException e) {
+            throw new EmptyResultDataAccessException("Failed to find a standard pipeline", 1);
+        }
     }
 
     @Override
@@ -110,17 +133,23 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
                     "str_name",
                     "int_type",
                     "json_processors",
-                    "str_description");
+                    "str_description",
+                    "bool_standard");
 
     @Override
     public boolean update(int id, Pipeline spec) {
+        // Unset standard if its set.
+        if (spec.isStandard()) {
+            jdbc.update("UPDATE pipeline SET bool_standard=0 WHERE bool_standard=1");
+        }
         return jdbc.update(UPDATE, spec.getName(), spec.getType().ordinal(),
-                Json.serializeToString(spec.getProcessors()), spec.getDescription(), id) == 1;
+                Json.serializeToString(spec.getProcessors()), spec.getDescription(),
+                spec.isStandard(), id) == 1;
     }
 
     @Override
     public boolean delete(int id) {
-        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=?", id) == 1;
+        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=? AND bool_standard=0", id) == 1;
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
+import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.repository.PluginDao;
 import com.zorroa.archivist.repository.ProcessorDao;
 import com.zorroa.sdk.plugins.PluginSpec;
@@ -17,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 6/30/16.
@@ -32,6 +34,9 @@ public class PluginServiceTests extends AbstractTest {
 
     @Autowired
     ProcessorDao processorDao;
+
+    @Autowired
+    PipelineDao pipelineDao;
 
     Plugin plugin;
     PluginSpec spec;
@@ -82,5 +87,14 @@ public class PluginServiceTests extends AbstractTest {
         ProcessorRef ref = pluginService.getProcessorRef("com.foo.Bar");
         assertEquals("java", ref.getLanguage());
         assertEquals("com.foo.Bar", ref.getClassName());
+    }
+
+    @Test
+    public void testInstallBundledPipelines() {
+        assertFalse(pipelineDao.exists("Import Pipeline"));
+        pluginService.installBundledPipelines();
+        assertTrue(pipelineDao.exists("Import Pipeline"));
+        Pipeline pl = pipelineDao.getStandard();
+        assertEquals("Import Pipeline", pl.getName());
     }
 }

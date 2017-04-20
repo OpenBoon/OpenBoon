@@ -97,4 +97,11 @@ public class PipelineDaoTests extends AbstractTest {
     public void testRefresh() {
         assertEquals(pipeline, pipelineDao.refresh(pipeline));
     }
+
+    @Test
+    public void testGetStandard() {
+        Pipeline p = pipelineDao.getStandard();
+        assertEquals("Zorroa Test", p.getName());
+
+    }
 }

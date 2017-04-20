@@ -27,6 +27,8 @@ public class Pipeline implements Loggable<Integer> {
 
     private String description;
 
+    private boolean standard;
+
     @NotNull
     private List<ProcessorRef> processors;
 
@@ -99,6 +101,15 @@ public class Pipeline implements Loggable<Integer> {
 
     public Pipeline setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public boolean isStandard() {
+        return standard;
+    }
+
+    public Pipeline setStandard(boolean standard) {
+        this.standard = standard;
         return this;
     }
 }

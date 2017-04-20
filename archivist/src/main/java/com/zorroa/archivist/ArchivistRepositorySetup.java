@@ -71,6 +71,11 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
          * Register plugins.
          */
         pluginService.installAndRegisterAllPlugins();
+
+        // We register these manually in unittests
+        if (!ArchivistConfiguration.unittest) {
+            pluginService.installBundledPipelines();
+        }
     }
 
     public void setupDataSources() throws IOException {

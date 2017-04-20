@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
@@ -13,6 +14,7 @@ import com.zorroa.sdk.plugins.*;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
+import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.util.StringUtils;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -51,6 +54,9 @@ public class PluginServiceImpl implements PluginService {
 
     @Autowired
     PipelineDao pipelineDao;
+
+    @Autowired
+    PipelineService pipelineService;
 
     @Autowired
     Client client;
@@ -186,6 +192,40 @@ public class PluginServiceImpl implements PluginService {
 
         for (PluginSpec spec: pluginRegistry.getPlugins()) {
             createPluginRecord(spec);
+        }
+    }
+
+    @Override
+    public void installBundledPipelines() {
+
+        Path path = properties.getPath("archivist.path.home").resolve("config/pipelines.json");
+        File file = path.toFile();
+        if (!file.exists()) {
+            logger.info("No bundled pipelines, skipping");
+        }
+
+        try {
+            List<Pipeline> pipelines = Json.Mapper.readValue(path.toFile(),
+                    new TypeReference<List<Pipeline>>() {});
+            for (Pipeline pl: pipelines) {
+                if (pipelineDao.exists(pl.getName())) {
+                    continue;
+                }
+                try {
+                    logger.info("Installing bundled pipeline: {}, standard={}", pl.getName(), pl.isStandard());
+                    pipelineDao.create(new PipelineSpecV()
+                            .setStandard(pl.isStandard())
+                            .setName(pl.getName())
+                            .setDescription(pl.getDescription())
+                            .setProcessors(pl.getProcessors().stream().map(
+                                    ref -> getProcessorRef(ref)).collect(Collectors.toList()))
+                            .setType(pl.getType()));
+                } catch (EmptyResultDataAccessException e) {
+                    logger.warn("Failed to register pipeline: {}", pl, e);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Unable to register bundled pipeline file", e);
         }
     }
 
