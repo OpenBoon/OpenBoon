@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # For Oracle Driver or any other software that uses /dev/random
 # Using /dev/urandom is a lot faster
 export JAVA_TOOL_OPTIONS="-Djava.security.egd=file:/dev/./urandom"
@@ -42,3 +41,11 @@ JAVA_OPTS="$JAVA_OPTS -XX:+DisableExplicitGC"
 
 # Ensure UTF-8 encoding by default (e.g. filenames)
 JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8"
+
+# Unset Zorroa client env vars in case they cause troubles with
+# defaults when using the JAVA SDK client.
+unset ZORROA_USER
+unset ZORROA_ARCHIVIST_URL
+unset ZORROA_HMAC_PATH
+unset ZORROA_HMAC_KEY
+unset ZORROA_USER
