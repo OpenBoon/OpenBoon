@@ -13,5 +13,6 @@ public enum LogAction {
     Import,
     Login,
     LoginFailure,
-    BulkUpdate
+    BulkUpdate,
+    View
 }

@@ -12,9 +12,9 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.web.MultipartFileSender;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
@@ -70,13 +70,28 @@ public class AssetController {
     SearchService searchService;
 
     @Autowired
-    AnalystService analystService;
-
-    @Autowired
     LogService logService;
 
     @Autowired
     ImageService imageService;
+
+    @Autowired
+    ObjectFileSystem ofs;
+
+    /**
+     * Describes a file to stream.
+     */
+    private static class StreamFile {
+        public String path;
+        public String mimeType;
+        public boolean proxy;
+
+        public StreamFile(String path, String mimeType, boolean proxy) {
+            this.path = path;
+            this.mimeType = mimeType;
+            this.proxy = proxy;
+        }
+    }
 
     /**
      * Ability to make certain file extensions to other, more
@@ -88,35 +103,60 @@ public class AssetController {
                         ImmutableList.of("mp4", "video/mp4"),
                         ImmutableList.of("ogv", "video/ogg")));
 
-    public String[] getPreferredFormat(Asset asset) {
-        String path = asset.getAttr("source.path", String.class);
-        String ext = FileUtils.extension(path);
-        List<List<String>> preferred = PREFERRED_FORMATS.get(ext);
-        if (preferred != null) {
-            for (List<String> e: preferred) {
-                String newPath = path.substring(0, path.length() - (ext.length()+1)) + "." + e.get(0);
-                if (new File(newPath).exists()) {
-                    return new String[] { newPath, e.get(1)};
+    /**
+     * We could try to detect it using something like Tika but
+     * there are only a couple types.
+     */
+    private static final Map<String,String> PROXY_MIME_LOOKUP =
+            ImmutableMap.of("png", "image/png",
+                            "jpg", "image/jpeg");
+
+    public StreamFile getPreferredFormat(Asset asset, boolean streamProxy) {
+        if (streamProxy) {
+            return getProxyStream(asset);
+        }
+        else {
+            String path = asset.getAttr("source.path", String.class);
+            String ext = FileUtils.extension(path);
+            List<List<String>> preferred = PREFERRED_FORMATS.get(ext);
+            if (preferred != null) {
+                for (List<String> e : preferred) {
+                    String newPath = path.substring(0, path.length() - (ext.length() + 1)) + "." + e.get(0);
+                    if (new File(newPath).exists()) {
+                        return new StreamFile(newPath, e.get(1), false);
+                    }
                 }
             }
+
+            if (new File(path).exists()) {
+                return new StreamFile(path,
+                        asset.getAttr("source.mediaType", String.class), false);
+            } else {
+                return getProxyStream(asset);
+            }
         }
-        return new String[] {path, asset.getAttr("source.mediaType", String.class)};
+    }
+
+    public StreamFile getProxyStream(Asset asset) {
+        Proxy largestProxy = asset.getProxies().getLargest();
+        return new StreamFile(
+                ofs.get(largestProxy.getId()).getFile().toString(),
+                PROXY_MIME_LOOKUP.getOrDefault(largestProxy.getFormat(),
+                        "application/octet-stream"), true);
     }
 
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
     public void streamAsset(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Asset asset = assetService.get(id);
-        if (!SecurityUtils.hasPermission("export", asset)) {
-            throw new ArchivistReadException("export access denied");
-        }
-        logService.logAsync(LogSpec.build(LogAction.Export, "asset", asset.getId()));
+        StreamFile format = getPreferredFormat(asset,
+                !SecurityUtils.hasPermission("export", asset));
+        logService.logAsync(LogSpec.build(LogAction.View, "asset", asset.getId()));
 
-        String[] format = getPreferredFormat(asset);
         try {
-            MultipartFileSender.fromPath(Paths.get(format[0]))
+            MultipartFileSender.fromPath(Paths.get(format.path))
                     .with(request)
                     .with(response)
-                    .setContentType(format[1])
+                    .setContentType(format.mimeType)
                     .serveResource();
         } catch (Exception e) {
             logger.warn("MultipartFileSender failed, " + id);

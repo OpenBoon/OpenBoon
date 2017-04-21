@@ -541,4 +541,20 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> doc = (Map<String, Object>)hitAssets.get(0);
         assertEquals(asset.getId(), doc.get("_id"));
     }
+
+    @Test
+    public void testStream() throws Exception {
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+        refreshIndex();
+
+        PagedList<Asset> assets = assetService.getAll(Pager.first());
+
+        String url = String.format("/api/v1/assets/%s/_stream", assets.get(0).getId());
+        MvcResult result = mvc.perform(get(url)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
 }
