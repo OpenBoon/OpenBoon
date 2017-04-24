@@ -21,6 +21,8 @@ public class Command {
     private long errorCount = 0;
     private String message;
 
+    private Long duration;
+
     public int getId() {
         return id;
     }
@@ -107,6 +109,15 @@ public class Command {
 
     public Command setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public Command setDuration(Long duration) {
+        this.duration = duration;
         return this;
     }
 

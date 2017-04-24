@@ -42,6 +42,15 @@ public class CommandDaoImpl extends AbstractDao implements CommandDao {
         c.setSuccessCount(rs.getLong("int_success_count"));
         c.setErrorCount(rs.getLong("int_error_count"));
         c.setMessage(rs.getString("str_message"));
+
+        long startTime = rs.getLong("time_started");
+        if (startTime != 0) {
+            long stopTime = rs.getLong("time_stopped");
+            if (stopTime == 0) {
+                stopTime = System.currentTimeMillis();
+            }
+            c.setDuration(stopTime - startTime);
+        }
         return c;
     };
 
