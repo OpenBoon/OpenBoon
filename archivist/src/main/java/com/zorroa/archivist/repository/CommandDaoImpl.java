@@ -44,12 +44,12 @@ public class CommandDaoImpl extends AbstractDao implements CommandDao {
         c.setMessage(rs.getString("str_message"));
 
         long startTime = rs.getLong("time_started");
-        if (startTime != 0) {
+        if (startTime > 0) {
             long stopTime = rs.getLong("time_stopped");
-            if (stopTime == 0) {
+            if (stopTime <= 0) {
                 stopTime = System.currentTimeMillis();
             }
-            c.setDuration(stopTime - startTime);
+            c.setDuration(Math.max(0, stopTime - startTime));
         }
         return c;
     };
