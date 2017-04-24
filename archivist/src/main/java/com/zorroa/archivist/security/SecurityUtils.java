@@ -96,12 +96,15 @@ public class SecurityUtils {
 
     public static boolean hasPermission(String ... perms) {
         ImmutableSet<String> _perms = ImmutableSet.copyOf(perms);
-        Collection<? extends GrantedAuthority> authorities =
-                SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
-        for (GrantedAuthority g: authorities) {
-            if (_perms.contains(g.getAuthority())) {
-                return true;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+            if (authorities != null) {
+                for (GrantedAuthority g : authorities) {
+                    if (_perms.contains(g.getAuthority())) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
