@@ -206,6 +206,7 @@ public class PluginServiceImpl implements PluginService {
         File file = path.toFile();
         if (!file.exists()) {
             logger.info("No bundled pipelines, skipping");
+            return;
         }
 
         try {
