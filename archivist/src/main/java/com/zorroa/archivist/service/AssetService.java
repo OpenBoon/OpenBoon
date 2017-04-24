@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Acl;
+import com.zorroa.archivist.domain.Command;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
@@ -52,9 +53,7 @@ public interface AssetService {
 
     boolean delete(String id);
 
-    void setPermissionsAsync(AssetSearch search, Acl acl);
-
-    void setPermissions(AssetSearch search, Acl acl);
+    void setPermissions(Command command, AssetSearch search, Acl acl);
 
     Map<String, Object> getMapping();
 }

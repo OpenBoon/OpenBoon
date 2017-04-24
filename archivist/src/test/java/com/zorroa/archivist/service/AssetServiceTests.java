@@ -1,10 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.Access;
-import com.zorroa.archivist.domain.Acl;
-import com.zorroa.archivist.domain.AclEntry;
-import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -16,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 9/1/16.
@@ -26,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class AssetServiceTests extends AbstractTest {
 
     @Autowired
-    AssetService assetService;
+    CommandService commandService;
 
     @Before
     public void init() {
@@ -49,9 +44,25 @@ public class AssetServiceTests extends AbstractTest {
         Permission p = userService.getPermission("user::user");
         Acl acl = new Acl();
         acl.add(new AclEntry(p.getId(), Access.Read));
-        assetService.setPermissions(new AssetSearch(), acl);
-        Thread.sleep(3000);
 
+        CommandSpec spec = new CommandSpec();
+        spec.setType(CommandType.UpdateAssetPermissions);
+        spec.setArgs(new Object[] {
+                new AssetSearch(),
+                acl
+        });
+
+        Command cmd = commandService.submit(spec);
+        commandService.run(commandService.refresh(cmd));
+
+        for(;;) {
+            Thread.sleep(200);
+            cmd = commandService.refresh(cmd);
+            if (cmd.getState().equals(JobState.Finished)) {
+                logger.info("Command {} finished", cmd);
+                break;
+            }
+        }
         refreshIndex();
 
         PagedList<Asset> assets = assetService.getAll(Pager.first());
@@ -66,5 +77,6 @@ public class AssetServiceTests extends AbstractTest {
         assertTrue(schema.getRead().contains(p.getId()));
         assertFalse(schema.getWrite().contains(p.getId()));
         assertFalse(schema.getExport().contains(p.getId()));
+
     }
 }

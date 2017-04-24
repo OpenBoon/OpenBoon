@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.domain.Acl;
-import com.zorroa.archivist.domain.LogAction;
-import com.zorroa.archivist.domain.LogSpec;
-import com.zorroa.archivist.domain.Note;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.web.MultipartFileSender;
@@ -77,6 +74,9 @@ public class AssetController {
 
     @Autowired
     ObjectFileSystem ofs;
+
+    @Autowired
+    CommandService commandService;
 
     /**
      * Describes a file to stream.
@@ -325,9 +325,15 @@ public class AssetController {
 
     }
     @RequestMapping(value="/api/v1/assets/_permissions", method=RequestMethod.PUT)
-    public void setPermissions(
+    public Command setPermissions(
             @Valid @RequestBody SetPermissionsRequest req) throws Exception {
-        assetService.setPermissionsAsync(req.search, req.acl);
+        CommandSpec spec = new CommandSpec();
+        spec.setType(CommandType.UpdateAssetPermissions);
+        spec.setArgs(new Object[] {
+                req.search,
+                req.acl
+        });
+        return commandService.submit(spec);
     }
 
     @RequestMapping(value="/api/v1/refresh", method=RequestMethod.PUT)

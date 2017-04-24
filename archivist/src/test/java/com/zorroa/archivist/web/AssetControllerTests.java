@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.TestSearchResult;
-import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.web.api.AssetController;
+import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.common.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
@@ -32,11 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AssetControllerTests extends MockMvcTest {
 
     @Autowired
-    AssetController assetController;
-
-    @Autowired
     AssetDao assetDao;
-
 
     @Test
     public void testGetFields() throws Exception {

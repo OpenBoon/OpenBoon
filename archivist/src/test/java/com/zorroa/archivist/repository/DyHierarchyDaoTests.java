@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.service.DyHierarchyService;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
@@ -20,9 +19,6 @@ import static org.junit.Assert.assertEquals;
  * Created by chambers on 7/15/16.
  */
 public class DyHierarchyDaoTests extends AbstractTest {
-
-    @Autowired
-    DyHierarchyService dyHierarchyService;
 
     @Autowired
     DyHierarchyDao dyHierarchyDao;

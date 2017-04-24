@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.SecureSingleThreadExecutor;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.CommandDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.repository.AssetDao;
@@ -30,9 +30,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.LongAdder;
 
 /**
  *
@@ -46,6 +44,9 @@ public class AssetServiceImpl implements AssetService {
 
     @Autowired
     AssetDao assetDao;
+
+    @Autowired
+    CommandDao commandDao;
 
     @Autowired
     PermissionDao permissionDao;
@@ -169,26 +170,16 @@ public class AssetServiceImpl implements AssetService {
         return assetDao.delete(assetId);
     }
 
-    private final Executor batchExecutor = SecureSingleThreadExecutor.singleThreadExecutor();
-
-    /**
-     * Updates the assets for a given search with the given permissions.  Only
-     * 1 thread is allowed to be updating permissions at a time, so we don't
-     * get conflicts if people submit to conflicting operations.
-     *
-     * @param search
-     * @param acl
-     */
     @Override
-    public void setPermissionsAsync(AssetSearch search, Acl acl) {
-        batchExecutor.execute(() -> setPermissions(search, acl));
-    }
-
-    @Override
-    public void setPermissions(AssetSearch search, Acl acl) {
+    public void setPermissions(Command command, AssetSearch search, Acl acl) {
 
         if (!SecurityUtils.hasPermission("group::manager", "group::share", "group::administrator")) {
             throw new ArchivistWriteException("You dot not have the privileges to share assets.");
+        }
+
+        final long totalCount = searchService.count(search);
+        if (totalCount == 0) {
+            return;
         }
 
         PermissionSchema schema = new PermissionSchema();
@@ -216,8 +207,6 @@ public class AssetServiceImpl implements AssetService {
             }
         }
 
-        final LongAdder success = new LongAdder();
-        final LongAdder failure = new LongAdder();
         final User user = SecurityUtils.getUser();
 
         logger.info("{} Setting permissions: {}", user.getUsername(), Json.serializeToString(schema));
@@ -236,32 +225,24 @@ public class AssetServiceImpl implements AssetService {
                                           BulkRequest request,
                                           BulkResponse response) {
 
+                        int failureCount = 0;
+                        int successCount = 0;
                         for (BulkItemResponse bir: response.getItems()) {
                             if (bir.isFailed()) {
                                 logger.warn("update permissions bulk failed: {}",  bir.getFailureMessage());
-                                failure.increment();
-                                logService.log(LogSpec.build(LogAction.Update, bir.getType(), bir.getId())
-                                        .setMessage("Update permissions failed," + bir.getFailureMessage())
-                                        .setUser(user));
+                                failureCount++;
                             }
                             else {
-                                success.increment();
-                                logService.log(LogSpec.build(LogAction.Update, bir.getType(), bir.getId())
-                                        .setMessage("Update permissions")
-                                        .setUser(user));
+                                successCount++;
                             }
                         }
+                        commandDao.updateProgress(command, totalCount, successCount, failureCount);
                     }
 
                     @Override
                     public void afterBulk(long executionId,
                                           BulkRequest request,
                                           Throwable thrown) {
-                        logService.log(new LogSpec()
-                                .setAction(LogAction.Update)
-                                .setType("asset")
-                                .setMessage("Update permissions failed " + thrown.getMessage())
-                                .setUser(user));
                     }
                 })
                 .setBulkActions(100)
@@ -298,12 +279,10 @@ public class AssetServiceImpl implements AssetService {
 
         try {
             logger.info("Waiting for bulk permission change to complete");
-            bulkProcessor.awaitClose(30, TimeUnit.SECONDS);
-            String msg = "Bulk update set permissions success: " + success.longValue() + ", failed: " + failure.longValue();
-            logger.info(msg);
+            bulkProcessor.awaitClose(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
             logService.log(new LogSpec()
                     .setUser(user)
-                    .setMessage(msg)
+                    .setMessage("Bulk permission change complete.")
                     .setAction(LogAction.BulkUpdate)
                     .setAttrs(ImmutableMap.of("permissions", schema)));
         } catch (InterruptedException e) {

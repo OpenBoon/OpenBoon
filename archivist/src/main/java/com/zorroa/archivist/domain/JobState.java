@@ -25,5 +25,10 @@ public enum JobState {
     /**
      * Job is expired and no longer restartable.
      */
-    Expired
+    Expired,
+
+    /**
+     * Job is waiting to run.
+     */
+    Waiting
 }
