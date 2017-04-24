@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.CommandDao;
 import com.zorroa.archivist.repository.PermissionDao;
@@ -182,8 +181,8 @@ public class AssetServiceImpl implements AssetService {
             return;
         }
 
-        PermissionSchema schema = new PermissionSchema();
-        Set<Integer> remove = Sets.newHashSet();
+        PermissionSchema add = new PermissionSchema();
+        PermissionSchema remove = new PermissionSchema();
 
         /**
          * Convert the ACL to a PermissionSchema.
@@ -191,23 +190,28 @@ public class AssetServiceImpl implements AssetService {
         for (AclEntry entry: permissionDao.resolveAcl(acl)) {
 
             if ((entry.getAccess() & 1) != 0) {
-                schema.addToRead(entry.getPermissionId());
+                add.addToRead(entry.getPermissionId());
+            }
+            else {
+                remove.addToRead(entry.getPermissionId());
             }
 
             if ((entry.getAccess() & 2) != 0) {
-                schema.addToWrite(entry.getPermissionId());
+                add.addToWrite(entry.getPermissionId());
+            }
+            else {
+                remove.addToWrite(entry.getPermissionId());
             }
 
             if ((entry.getAccess() & 4) != 0) {
-                schema.addToExport(entry.getPermissionId());
+                add.addToExport(entry.getPermissionId());
             }
-
-            if (entry.getAccess() == 0) {
-                remove.add(entry.getPermissionId());
+            else {
+                remove.addToExport(entry.getPermissionId());
             }
         }
 
-        logger.info("Setting permissions: {}", Json.serializeToString(schema));
+        logger.info("Adding permissions: {}", Json.serializeToString(add));
         logger.info("Removing permissions: {}", Json.serializeToString(remove));
 
         LongAdder totalSuccess = new LongAdder();
@@ -265,16 +269,16 @@ public class AssetServiceImpl implements AssetService {
             /**
              * Add all permissions specified by ACL
              */
-            current.getRead().addAll(schema.getRead());
-            current.getWrite().addAll(schema.getWrite());
-            current.getExport().addAll(schema.getExport());
+            current.getRead().addAll(add.getRead());
+            current.getWrite().addAll(add.getWrite());
+            current.getExport().addAll(add.getExport());
 
             /**
              * Remove all permissions set to 0 in ACL.
              */
-            current.getRead().removeAll(remove);
-            current.getWrite().removeAll(remove);
-            current.getExport().removeAll(remove);
+            current.getRead().removeAll(remove.getRead());
+            current.getWrite().removeAll(remove.getWrite());
+            current.getExport().removeAll(remove.getExport());
 
             update.setDoc(Json.serializeToString(ImmutableMap.of("permissions", current)));
             bulkProcessor.add(update.request());
@@ -287,7 +291,7 @@ public class AssetServiceImpl implements AssetService {
                     .setUser(command.getUser())
                     .setMessage("Bulk permission change complete.")
                     .setAction(LogAction.BulkUpdate)
-                    .setAttrs(ImmutableMap.of("permissions", schema)));
+                    .setAttrs(ImmutableMap.of("permissions", add)));
         } catch (InterruptedException e) {
             logService.log(new LogSpec()
                     .setUser(command.getUser())
