@@ -102,7 +102,7 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
 
         } finally {
             if (started) {
-                commandDao.stop(cmd);
+                commandDao.stop(cmd, failureMessage);
             }
         }
         return commandDao.refresh(cmd);
