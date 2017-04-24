@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  *
@@ -59,6 +60,9 @@ public class AssetServiceImpl implements AssetService {
 
     @Autowired
     SearchService searchService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     Client client;
@@ -173,10 +177,6 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public void setPermissions(Command command, AssetSearch search, Acl acl) {
 
-        if (!SecurityUtils.hasPermission("group::manager", "group::share", "group::administrator")) {
-            throw new ArchivistWriteException("You dot not have the privileges to share assets.");
-        }
-
         final long totalCount = searchService.count(search);
         if (totalCount == 0) {
             return;
@@ -207,10 +207,11 @@ public class AssetServiceImpl implements AssetService {
             }
         }
 
-        final User user = SecurityUtils.getUser();
+        logger.info("Setting permissions: {}", Json.serializeToString(schema));
+        logger.info("Removing permissions: {}", Json.serializeToString(remove));
 
-        logger.info("{} Setting permissions: {}", user.getUsername(), Json.serializeToString(schema));
-        logger.info("{} Removing permissions: {}", user.getUsername(), Json.serializeToString(remove));
+        LongAdder totalSuccess = new LongAdder();
+        LongAdder totalFailed = new LongAdder();
 
         BulkProcessor bulkProcessor = BulkProcessor.builder(
                 client,
@@ -237,6 +238,8 @@ public class AssetServiceImpl implements AssetService {
                             }
                         }
                         commandDao.updateProgress(command, totalCount, successCount, failureCount);
+                        totalSuccess.add(successCount);
+                        totalFailed.add(failureCount);
                     }
 
                     @Override
@@ -278,19 +281,22 @@ public class AssetServiceImpl implements AssetService {
         }
 
         try {
-            logger.info("Waiting for bulk permission change to complete");
+            logger.info("Waiting for bulk permission change to complete on {} assets.", totalCount);
             bulkProcessor.awaitClose(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
             logService.log(new LogSpec()
-                    .setUser(user)
+                    .setUser(command.getUser())
                     .setMessage("Bulk permission change complete.")
                     .setAction(LogAction.BulkUpdate)
                     .setAttrs(ImmutableMap.of("permissions", schema)));
         } catch (InterruptedException e) {
             logService.log(new LogSpec()
-                    .setUser(user)
+                    .setUser(command.getUser())
                     .setMessage("Bulk update failure setting permissions on assets, interrupted.")
                     .setAction(LogAction.BulkUpdate));
         }
+
+        logger.info("Bulk permission change complete, total: {} success: {} failed: {}",
+                totalCount, totalSuccess.longValue(), totalFailed.longValue());
     }
 
     @Override

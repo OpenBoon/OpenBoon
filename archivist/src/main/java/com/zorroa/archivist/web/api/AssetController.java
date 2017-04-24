@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
@@ -324,6 +325,8 @@ public class AssetController {
         public Acl acl;
 
     }
+
+    @PreAuthorize("hasAuthority('group::share') || hasAuthority('group::administrator')")
     @RequestMapping(value="/api/v1/assets/_permissions", method=RequestMethod.PUT)
     public Command setPermissions(
             @Valid @RequestBody SetPermissionsRequest req) throws Exception {

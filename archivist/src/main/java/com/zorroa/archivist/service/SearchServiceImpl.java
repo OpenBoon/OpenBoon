@@ -241,7 +241,7 @@ public class SearchServiceImpl implements SearchService {
 
         SearchRequestBuilder request = client.prepareSearch(alias)
                 .setTypes("asset")
-                .setPreference(SecurityUtils.getCookieId())
+                .setPreference(SecurityUtils.getUsername())
                 .setQuery(getQuery(search));
 
         if (search.getAggs() != null) {

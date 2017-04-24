@@ -86,7 +86,7 @@ public class LogSpec {
                 .setTarget(ImmutableMap.of(type, new Object[] {id}));
     }
 
-    public LogSpec setUser(User user) {
+    public LogSpec setUser(UserBase user) {
         if (user != null) {
             this.user = ImmutableMap.of(
                     "username", user.getUsername(),

@@ -5,7 +5,9 @@ import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Command;
 import com.zorroa.archivist.domain.CommandSpec;
+import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.repository.CommandDao;
+import com.zorroa.archivist.security.InternalAuthentication;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.search.AssetSearch;
@@ -13,6 +15,7 @@ import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,6 +34,9 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
 
     @Autowired
     AssetService assetService;
+
+    @Autowired
+    UserService userService;
 
     @PostConstruct
     public void init() {
@@ -79,6 +85,15 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
         String failureMessage = null;
         boolean started = false;
         try {
+
+            /**
+             * Switch thread to user who made the request.
+             */
+            User user = userService.get(cmd.getUser().getId());
+
+            SecurityContextHolder.getContext().setAuthentication(new InternalAuthentication(user,
+                    userService.getPermissions(user)));
+
             started = commandDao.start(cmd);
             if (started) {
                 switch (cmd.getType()) {
@@ -101,6 +116,7 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
             logger.warn("Failed to execute command {}, unexpected: ", cmd, e);
 
         } finally {
+            SecurityContextHolder.clearContext();
             if (started) {
                 commandDao.stop(cmd, failureMessage);
             }
@@ -123,6 +139,6 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(30, 1, TimeUnit.SECONDS);
+        return Scheduler.newFixedRateSchedule(20, 1, TimeUnit.SECONDS);
     }
 }
