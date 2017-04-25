@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -122,6 +123,11 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
             }
         }
         return commandDao.refresh(cmd);
+    }
+
+    @Override
+    public List<Command> getPendingByUser() {
+        return commandDao.getPendingByUser();
     }
 
     @Override

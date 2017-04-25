@@ -88,6 +88,13 @@ public class CommandDaoImpl extends AbstractDao implements CommandDao {
     }
 
     @Override
+    public List<Command> getPendingByUser() {
+        return jdbc.query(GET.concat(
+                "WHERE pk_user=? AND int_state IN (?,?) ORDER BY int_state, pk_command"), MAPPER,
+                SecurityUtils.getUser().getId(), JobState.Active.ordinal(), JobState.Waiting.ordinal());
+    }
+
+    @Override
     public Command refresh(Command object) {
         return get(object.getId());
     }

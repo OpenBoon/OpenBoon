@@ -76,6 +76,30 @@ public class CommandDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testGetPendingByUser() {
+        List<Command> all = commandDao.getPendingByUser();
+        assertEquals(1, all.size());
+
+        // Create a new one
+        CommandSpec spec = new CommandSpec();
+        spec.setType(CommandType.UpdateAssetPermissions);
+        spec.setArgs(new Object[] {
+                new AssetSearch().setQuery("foo"),
+                new Acl().addEntry(userService.getPermission("group::manager"), Access.Read)
+        });
+        Command cmd = commandDao.create(spec);
+
+        all = commandDao.getPendingByUser();
+        assertEquals(2, all.size());
+
+        // Now our new command should be first in the list.
+        assertTrue(commandDao.start(cmd));
+        all = commandDao.getPendingByUser();
+        assertEquals(cmd.getId(), all.get(0).getId());
+
+    }
+
+    @Test
     public void testUpdateProgress() {
         assertTrue(commandDao.updateProgress(command, 100, 10, 0));
         assertEquals(0.1, commandDao.refresh(command).getProgress(), 0.01);

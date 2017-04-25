@@ -3,10 +3,14 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.domain.Command;
 import com.zorroa.archivist.domain.CommandSpec;
 
+import java.util.List;
+
 /**
  * Created by chambers on 4/21/17.
  */
 public interface CommandDao extends GenericDao<Command, CommandSpec> {
+
+    List<Command> getPendingByUser();
 
     Command getNext();
 

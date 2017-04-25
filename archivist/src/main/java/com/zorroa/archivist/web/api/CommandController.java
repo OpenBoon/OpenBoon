@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by chambers on 4/24/17.
  */
@@ -21,8 +23,13 @@ public class CommandController {
     @Autowired
     CommandService commandService;
 
-    @RequestMapping(value="/api/v1/commands/{id:\\d+}", method= RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/commands/{id:\\d+}", method = RequestMethod.GET)
     public Command get(@PathVariable int id) {
         return commandService.get(id);
+    }
+
+    @RequestMapping(value = "/api/v1/commands", method = RequestMethod.GET)
+    public List<Command> getPending() {
+        return commandService.getPendingByUser();
     }
 }
