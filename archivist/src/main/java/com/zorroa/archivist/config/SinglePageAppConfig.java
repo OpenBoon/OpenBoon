@@ -30,7 +30,7 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path curator = properties.getPath("archivist.path.home").resolve("web/curator");
+        Path curator = properties.getPath("archivist.path.curator");
         registry.addResourceHandler("/**")
                 .addResourceLocations(curator.toUri().toString())
                 .resourceChain(false)
