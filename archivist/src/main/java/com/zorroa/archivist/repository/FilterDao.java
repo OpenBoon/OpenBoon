@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.FilterSpec;
 
@@ -9,5 +10,5 @@ import com.zorroa.archivist.domain.FilterSpec;
 public interface FilterDao extends GenericDao<Filter, FilterSpec> {
 
 
-
+    Acl getAcl(int id);
 }

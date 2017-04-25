@@ -64,6 +64,9 @@ public class AssetServiceImpl implements AssetService {
     UserService userService;
 
     @Autowired
+    FilterService filterService;
+
+    @Autowired
     Client client;
 
     @Override
@@ -88,7 +91,16 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public Asset index(Source source, LinkSpec link) {
-        return assetDao.index(source, link);
+        PermissionSchema perms = source.getAttr("permissions", PermissionSchema.class);
+        if (perms == null) {
+            filterService.applyPermissionSchema(source);
+        }
+        else {
+            source.removeAttr("permissions");
+        }
+        Asset asset = assetDao.index(source, link);
+        dyHierarchyService.submitGenerateAll(true);
+        return asset;
     }
 
     @Override
@@ -98,23 +110,23 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public DocumentIndexResult index(List<Source> sources, LinkSpec link) {
-        int userPerm = SecurityUtils.getUser().getPermissionId();
         for (Source source: sources) {
             try {
                 /**
-                 * Note: the permission is only added if this is a new asset.
-                 * We probably need a better way to determine if this is a new asset or not.
+                 * If an asset has no permission schema, then run it through the filters.
+                 * Otherwise, we remove the permissions from the doc since they cannot
+                 * be set from a processor.
                  */
-                PermissionSchema current = source.getAttr("permissions", PermissionSchema.class);
-                if (current == null) {
-                    current = new PermissionSchema();
-                    current.addToRead(userPerm);
-                    current.addToWrite(userPerm);
-                    current.addToExport(userPerm);
-                    source.setAttr("permissions", current);
+                PermissionSchema perms = source.getAttr("permissions", PermissionSchema.class);
+                if (perms == null) {
+                    filterService.applyPermissionSchema(source);
+                }
+                else {
+                    source.removeAttr("permissions");
                 }
             } catch (Exception e) {
                 logger.warn("Asset {} has invalid permission schema.", source.getId());
+                source.removeAttr("permissions");
             }
         }
 

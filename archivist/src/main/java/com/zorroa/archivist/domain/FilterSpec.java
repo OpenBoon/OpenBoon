@@ -1,8 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import com.zorroa.sdk.search.AssetSearch;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import java.util.List;
 
 /**
  * Created by chambers on 8/9/16.
@@ -14,17 +13,11 @@ public class FilterSpec {
 
     private boolean enabled = true;
 
-    private boolean matchAll = true;
+    @NotEmpty
+    private AssetSearch search;
 
-    /**
-     * Can optionally be populated with matchers.
-     */
-    private List<MatcherSpec> matchers;
-
-    /**
-     * Can optionally be populated with actions.
-     */
-    private List<ActionSpec> actions;
+    @NotEmpty
+    private Acl acl;
 
     public String getDescription() {
         return description;
@@ -32,24 +25,6 @@ public class FilterSpec {
 
     public FilterSpec setDescription(String description) {
         this.description = description;
-        return this;
-    }
-
-    public List<MatcherSpec> getMatchers() {
-        return matchers;
-    }
-
-    public FilterSpec setMatchers(List<MatcherSpec> matchers) {
-        this.matchers = matchers;
-        return this;
-    }
-
-    public List<ActionSpec> getActions() {
-        return actions;
-    }
-
-    public FilterSpec setActions(List<ActionSpec> actions) {
-        this.actions = actions;
         return this;
     }
 
@@ -62,14 +37,21 @@ public class FilterSpec {
         return this;
     }
 
-    public boolean isMatchAll() {
-        return matchAll;
+    public AssetSearch getSearch() {
+        return search;
     }
 
-    public FilterSpec setMatchAll(boolean matchAll) {
-        this.matchAll = matchAll;
+    public FilterSpec setSearch(AssetSearch search) {
+        this.search = search;
         return this;
     }
 
+    public Acl getAcl() {
+        return acl;
+    }
 
+    public FilterSpec setAcl(Acl acl) {
+        this.acl = acl;
+        return this;
+    }
 }

@@ -1,20 +1,29 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.domain.Filter;
-import com.zorroa.archivist.domain.FilterSpec;
-import com.zorroa.archivist.domain.LogAction;
-import com.zorroa.archivist.domain.LogSpec;
+import com.google.common.collect.ImmutableMap;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FilterDao;
+import com.zorroa.archivist.repository.PermissionDao;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.schema.PermissionSchema;
+import com.zorroa.sdk.util.Json;
+import org.elasticsearch.action.percolate.PercolateResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chambers on 8/9/16.
@@ -34,15 +43,85 @@ public class FilterServiceImpl implements FilterService {
     @Autowired
     LogService logService;
 
+    @Autowired
+    SearchService searchService;
+
+    @Autowired
+    PermissionDao permissionDao;
+
+    @Autowired
+    Client client;
+
+    @Value("${zorroa.cluster.index.alias}")
+    private String alias;
+
     @Override
     public Filter create(FilterSpec spec) {
+        // Resolve any names in the ACL.
+        spec.setAcl(permissionDao.resolveAcl(spec.getAcl()));
+        if (spec.getAcl().isEmpty()) {
+            throw new ArchivistWriteException("Cannot have empty ACL when creating a filter");
+        }
+
         Filter filter = filterDao.create(spec);
+        SearchRequestBuilder esearch = searchService.buildSearch(spec.getSearch());
+        client.prepareIndex(alias, ".percolator", filter.getName())
+                .setSource(esearch.toString())
+                .setRefresh(true)
+                .execute().actionGet();
+
         transactionEventManager.afterCommitSync(() -> {
             logService.logAsync(LogSpec.build(LogAction.Create,
                     "filter", filter.getId()));
         });
-
         return filter;
+    }
+
+    @Override
+    public Acl getMatchedAcls(Document doc) {
+        Map<String, Object> req = ImmutableMap.of("doc", doc.getDocument());
+        PercolateResponse response = client.preparePercolate()
+                .setIndices(alias)
+                .setDocumentType("asset")
+                .setSource(Json.prettyString(req))
+                .execute().actionGet();
+
+        Acl result = new Acl();
+        for(PercolateResponse.Match match : response) {
+            int id = Integer.valueOf(match.getId().toString().split("_")[1]);
+            result.addAll(filterDao.getAcl(id));
+        }
+        return result;
+    }
+
+    @Override
+    public void applyPermissionSchema(Document doc) {
+        Acl acl = getMatchedAcls(doc);
+        PermissionSchema add = new PermissionSchema();
+
+        /**
+         * Convert the ACL to a PermissionSchema.
+         */
+        for (AclEntry entry: acl) {
+
+            if ((entry.getAccess() & 1) != 0) {
+                add.addToRead(entry.getPermissionId());
+            }
+
+            if ((entry.getAccess() & 2) != 0) {
+                add.addToWrite(entry.getPermissionId());
+            }
+
+            if ((entry.getAccess() & 4) != 0) {
+                add.addToExport(entry.getPermissionId());
+            }
+        }
+
+        int userPerm = SecurityUtils.getUser().getPermissionId();
+        add.addToRead(userPerm);
+        add.addToWrite(userPerm);
+        add.addToExport(userPerm);
+        doc.setAttr("permissions", add);
     }
 
     @Override

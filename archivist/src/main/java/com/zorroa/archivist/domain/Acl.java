@@ -18,6 +18,13 @@ public class Acl extends ForwardingList<AclEntry> {
         this.delegate = Lists.newArrayList();
     }
 
+    public Acl addAll(Acl acl) {
+        for (AclEntry entry: acl) {
+            delegate.add(entry);
+        }
+        return this;
+    }
+
     public Acl addEntry(Permission perm, Access... access) {
         this.delegate.add(new AclEntry(perm, access));
         return this;

@@ -1,10 +1,13 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.FilterSpec;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -20,7 +23,8 @@ import java.util.List;
 public class FilterDaoImpl extends AbstractDao implements FilterDao {
 
     private static final String INSERT =
-            JdbcUtils.insert("filter", "str_description", "bool_match_all", "bool_enabled");
+            JdbcUtils.insert("filter",
+                    "str_description", "json_search", "json_acl", "bool_enabled");
 
     @Override
     public Filter create(FilterSpec spec) {
@@ -29,8 +33,9 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
             PreparedStatement ps =
                     connection.prepareStatement(INSERT, new String[]{"pk_filter"});
             ps.setString(1, spec.getDescription());
-            ps.setBoolean(2, spec.isMatchAll());
-            ps.setBoolean(3, spec.isEnabled());
+            ps.setString(2, Json.serializeToString(spec.getSearch()));
+            ps.setString(3, Json.serializeToString(spec.getAcl()));
+            ps.setBoolean(4, spec.isEnabled());
             return ps;
         }, keyHolder);
 
@@ -43,7 +48,9 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
         f.setId(rs.getInt("pk_filter"));
         f.setDescription(rs.getString("str_description"));
         f.setEnabled(rs.getBoolean("bool_enabled"));
-        f.setMatchAll(rs.getBoolean("bool_match_all"));
+        f.setSearch(Json.deserialize(rs.getString("json_search"), AssetSearch.class));
+        f.setAcl(Json.deserialize(rs.getString("json_acl"), Acl.class));
+        f.setEnabled(rs.getBoolean("bool_enabled"));
         return f;
     };
 
@@ -52,7 +59,8 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
                 "pk_filter,"+
                 "str_description,"+
                 "bool_enabled, " +
-                "bool_match_all " +
+                "json_search, "+
+                "json_acl " +
             "FROM " +
                 "filter ";
 
@@ -66,6 +74,13 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
         return get(object.getId());
     }
 
+
+    @Override
+    public Acl getAcl(int id) {
+        return Json.deserialize(jdbc.queryForObject(
+                "SELECT json_acl FROM filter WHERE pk_filter=?", String.class, id), Acl.class);
+    }
+
     @Override
     public List<Filter> getAll() {
         return jdbc.query(GET, MAPPER);
@@ -74,7 +89,7 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
     @Override
     public PagedList<Filter> getAll(Pager page) {
         return new PagedList(page.setTotalCount(count()),
-                jdbc.query(GET.concat(" ORDER BY str_description LIMIT ? OFFSET ?"),
+                jdbc.query(GET.concat(" ORDER BY pk_filter LIMIT ? OFFSET ?"),
                         MAPPER, page.getSize(), page.getFrom()));
 
     }

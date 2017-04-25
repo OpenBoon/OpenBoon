@@ -7,6 +7,7 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;
 
@@ -50,6 +51,8 @@ public interface SearchService {
      * @return
      */
     PagedList<Asset> scroll(String id, String timeout);
+
+    SearchRequestBuilder buildSearch(AssetSearch search);
 
     Map<String, Set<String>> getFields();
 }

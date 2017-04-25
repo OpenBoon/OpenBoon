@@ -237,7 +237,8 @@ public class SearchServiceImpl implements SearchService {
         return result;
     }
 
-    private SearchRequestBuilder buildSearch(AssetSearch search) {
+    @Override
+    public SearchRequestBuilder buildSearch(AssetSearch search) {
 
         SearchRequestBuilder request = client.prepareSearch(alias)
                 .setTypes("asset")

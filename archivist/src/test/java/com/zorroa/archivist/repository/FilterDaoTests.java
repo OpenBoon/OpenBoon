@@ -1,8 +1,10 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Filter;
 import com.zorroa.archivist.domain.FilterSpec;
+import com.zorroa.sdk.search.AssetSearch;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,8 @@ public class FilterDaoTests extends AbstractTest {
         spec = new FilterSpec();
         spec.setDescription("A Filter");
         spec.setEnabled(false);
-        spec.setMatchAll(false);
+        spec.setSearch(new AssetSearch());
+        spec.setAcl(new Acl());
         filter = filterDao.create(spec);
     }
 
@@ -33,7 +36,6 @@ public class FilterDaoTests extends AbstractTest {
     public void testCreate() {
         assertEquals(spec.getDescription(), filter.getDescription());
         assertEquals(spec.isEnabled(), filter.isEnabled());
-        assertEquals(spec.isMatchAll(), filter.isMatchAll());
     }
 
     @Test
@@ -63,7 +65,8 @@ public class FilterDaoTests extends AbstractTest {
         FilterSpec s2= new FilterSpec();
         s2.setDescription("A Filter");
         s2.setEnabled(false);
-        s2.setMatchAll(false);
+        spec.setSearch(new AssetSearch());
+        spec.setAcl(new Acl());
         filter = filterDao.create(s2);
 
         assertEquals(count+1, filterDao.getAll().size());

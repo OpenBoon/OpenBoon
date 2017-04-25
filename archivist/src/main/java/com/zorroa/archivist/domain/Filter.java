@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import com.zorroa.sdk.search.AssetSearch;
+
 import java.util.Objects;
 
 /**
@@ -9,8 +11,9 @@ public class Filter {
 
     private int id;
     private boolean enabled;
-    private boolean matchAll;
     private String description;
+    private AssetSearch search;
+    private Acl acl;
 
     public int getId() {
         return id;
@@ -39,13 +42,26 @@ public class Filter {
         return this;
     }
 
-    public boolean isMatchAll() {
-        return matchAll;
+    public AssetSearch getSearch() {
+        return search;
     }
 
-    public Filter setMatchAll(boolean matchAll) {
-        this.matchAll = matchAll;
+    public Filter setSearch(AssetSearch search) {
+        this.search = search;
         return this;
+    }
+
+    public Acl getAcl() {
+        return acl;
+    }
+
+    public Filter setAcl(Acl acl) {
+        this.acl = acl;
+        return this;
+    }
+
+    public String getName() {
+        return "filter_" + id;
     }
 
     @Override
