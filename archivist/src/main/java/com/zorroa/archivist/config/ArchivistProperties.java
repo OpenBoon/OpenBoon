@@ -1,7 +1,7 @@
 package com.zorroa.archivist.config;
 
-import com.zorroa.archivist.HttpUtils;
-import com.zorroa.archivist.domain.NetworkEnvironment;
+import com.zorroa.common.config.NetworkEnvironment;
+import com.zorroa.common.config.NetworkEnvironmentUtils;
 import com.zorroa.common.config.SpringApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +18,6 @@ public class ArchivistProperties extends SpringApplicationProperties {
 
     @Bean
     public NetworkEnvironment getNetworkEnvironment() {
-        NetworkEnvironment env = new NetworkEnvironment();
-        env.setUri(HttpUtils.getUrl(this));
-        env.setLocation(HttpUtils.getLocation());
-
-        logger.info("External URI: {}", env.getUri());
-        logger.info("Location: {}", env.getLocation());
-        return env;
+        return NetworkEnvironmentUtils.getNetworkEnvironment(this);
     }
 }

@@ -11,6 +11,7 @@ import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.cluster.ClusterException;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.common.domain.*;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
@@ -52,6 +53,9 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
 
     @Autowired
     ThreadPoolExecutor analyzeExecutor;
+
+    @Autowired
+    NetworkEnvironment networkEnvironment;
 
     @Value("${analyst.executor.enabled}")
     boolean executeEnabled;
@@ -609,7 +613,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                     ArchivistClient client = new ArchivistClient(url);
                     List<ExecuteTaskStart> tasks = client.queueNextTasks(new ExecuteTaskRequest()
                             .setId(System.getProperty("analyst.id"))
-                            .setUrl(System.getProperty("server.url"))
+                            .setUrl(networkEnvironment.getUri().toString())
                             .setCount(threads - analyzeExecutor.getActiveCount()));
 
                     if (!tasks.isEmpty()) {

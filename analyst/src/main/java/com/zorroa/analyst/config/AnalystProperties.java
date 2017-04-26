@@ -1,6 +1,11 @@
 package com.zorroa.analyst.config;
 
+import com.zorroa.common.config.NetworkEnvironment;
+import com.zorroa.common.config.NetworkEnvironmentUtils;
 import com.zorroa.common.config.SpringApplicationProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -9,4 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AnalystProperties extends SpringApplicationProperties {
 
+    private static final Logger logger = LoggerFactory.getLogger(AnalystProperties.class);
+
+    @Bean
+    public NetworkEnvironment getNetworkEnvironment() {
+        return NetworkEnvironmentUtils.getNetworkEnvironment(this);
+    }
 }

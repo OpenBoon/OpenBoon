@@ -1,4 +1,6 @@
-package com.zorroa.archivist.domain;
+package com.zorroa.common.config;
+
+import com.google.common.base.MoreObjects;
 
 import java.net.URI;
 
@@ -11,6 +13,18 @@ public class NetworkEnvironment {
 
     private URI uri;
     private String location;
+    private String app;
+
+    public NetworkEnvironment() {}
+
+    public String getApp() {
+        return app;
+    }
+
+    public NetworkEnvironment setApp(String app) {
+        this.app = app;
+        return this;
+    }
 
     public URI getUri() {
         return uri;
@@ -42,7 +56,14 @@ public class NetworkEnvironment {
         return !location.equals(ON_PREM);
     }
 
+    @Override
     public String toString() {
-        return "<Archivist: " + uri.toString() + ">";
+        return MoreObjects.toStringHelper(this)
+                .add("app", app)
+                .add("uri", uri)
+                .add("location", location)
+                .toString();
     }
+
+
 }

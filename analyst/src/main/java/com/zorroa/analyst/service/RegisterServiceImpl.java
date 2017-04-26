@@ -9,6 +9,7 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.ArchivistClient;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Autowired
     ProcessManagerService processManagerService;
+
+    @Autowired
+    NetworkEnvironment networkEnvironment;
 
     private String id;
     private List<Float> load = Lists.newArrayList();
@@ -131,7 +135,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         builder.setThreadCount(properties.getInt("analyst.executor.threads"));
         builder.setArch(osBean.getArch());
         builder.setData(properties.getBoolean("analyst.index.data"));
-        builder.setUrl(url);
+        builder.setUrl(networkEnvironment.getUri().toString());
         builder.setUpdatedTime(System.currentTimeMillis());
         builder.setState(AnalystState.UP);
         builder.setLoad(load);

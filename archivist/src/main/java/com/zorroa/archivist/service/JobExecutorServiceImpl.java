@@ -17,6 +17,7 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
+import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,10 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
     @Override
     public List<ExecuteTaskStart> getWaitingTasks(ExecuteTaskRequest req) {
+        if (req.getUrl() == null) {
+            throw new ArchivistWriteException("Failed to query for tasks, return URL is null. " +
+                    "Analyst may be badly configured");
+        }
         List<ExecuteTaskStart> result = Lists.newArrayListWithCapacity(req.getCount());
         for (ExecuteTaskStart task : taskDao.getWaiting(req.getCount())) {
             if (jobService.setTaskQueued(task, req.getUrl())) {
