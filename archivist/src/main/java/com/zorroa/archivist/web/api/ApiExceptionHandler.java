@@ -36,14 +36,18 @@ public class ApiExceptionHandler {
         try {
             return pjp.proceed();
         } catch (ArchivistException e) {
+            logStackTrace(e);
             throw e;
         } catch (EmptyResultDataAccessException e) {
+            logStackTrace(e);
             throw new MissingElementException(e.getMessage());
         }
         catch (DataIntegrityViolationException e) {
+            logStackTrace(e);
             throw new DuplicateElementException(e.getMessage());
         }
         catch (UncategorizedSQLException e) {
+            logStackTrace(e);
             throw new ArchivistException("Backend query failure, see archivist log for more details");
         }
         catch (Exception e) {
