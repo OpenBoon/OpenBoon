@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -28,16 +29,20 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     public Permission create(PermissionSpec builder, boolean immutable) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbc.update(connection -> {
-            PreparedStatement ps =
-                    connection.prepareStatement(INSERT, new String[]{"pk_permission"});
-            ps.setString(1, builder.getName());
-            ps.setString(2, builder.getType());
-            ps.setString(3, builder.getDescription() == null
-                    ? String.format("%s permission", builder.getName()) : builder.getDescription());
-            ps.setBoolean(4, immutable);
-            return ps;
-        }, keyHolder);
+        try {
+            jdbc.update(connection -> {
+                PreparedStatement ps =
+                        connection.prepareStatement(INSERT, new String[]{"pk_permission"});
+                ps.setString(1, builder.getName());
+                ps.setString(2, builder.getType());
+                ps.setString(3, builder.getDescription() == null
+                        ? String.format("%s permission", builder.getName()) : builder.getDescription());
+                ps.setBoolean(4, immutable);
+                return ps;
+            }, keyHolder);
+        } catch (DuplicateKeyException e) {
+            throw new DuplicateKeyException("The permission " + builder.getName() + " already exists");
+        }
 
         int id = keyHolder.getKey().intValue();
         return get(id);

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.sdk.client.exception.DuplicateElementException;
 import org.junit.Test;
 
 import java.util.List;
@@ -48,6 +49,20 @@ public class UserServiceTests extends AbstractTest {
         assertTrue(userService.hasPermission(user, userService.getPermission("group::manager")));
         assertTrue(userService.hasPermission(user, userService.getPermission("user::test")));
         assertFalse(userService.hasPermission(user, userService.getPermission("group::developer")));
+    }
+
+    @Test(expected=DuplicateElementException.class)
+    public void createDuplicateUser() {
+        UserSpec builder = new UserSpec();
+        builder.setUsername("test");
+        builder.setPassword("123password");
+        builder.setEmail("test@test.com");
+        builder.setFirstName("Bilbo");
+        builder.setLastName("Baggings");
+        builder.setPermissions(
+                userService.getPermission("group::manager"));
+        userService.create(builder);
+        userService.create(builder);
     }
 
     @Test

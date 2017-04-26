@@ -11,6 +11,7 @@ import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.sdk.client.exception.DuplicateElementException;
 import com.zorroa.sdk.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +81,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserSpec builder, String source) {
+
+        if (userDao.exists(builder.getUsername())) {
+            throw new DuplicateElementException("The user '" +
+                    builder.getUsername()+ "' already exists.");
+        }
+
         Permission userPerm = permissionDao.create(
                 new PermissionSpec("user", builder.getUsername()), true);
         Folder userFolder = folderService.createUserFolder(

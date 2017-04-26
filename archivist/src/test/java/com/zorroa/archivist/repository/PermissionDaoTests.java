@@ -8,6 +8,7 @@ import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
 
@@ -52,6 +53,15 @@ public class PermissionDaoTests extends AbstractTest {
         Permission p = permissionDao.create(b, false);
         assertEquals(p.getName(), b.getName());
         assertEquals(p.getDescription(), b.getDescription());
+    }
+
+    @Test(expected=DuplicateKeyException.class)
+    public void testCreateDuplicate() {
+        PermissionSpec b = new PermissionSpec("group", "test");
+        b.setDescription("test");
+
+        permissionDao.create(b, false);
+        permissionDao.create(b, false);
     }
 
     @Test
