@@ -32,8 +32,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * DyHierarchyServiceImpl is responsible for the generation of dynamic hierarchies.
@@ -61,8 +63,6 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     @Value("${archivist.dyhi.maxFoldersPerLevel}")
     private Integer maxFoldersPerLevel;
 
-    private final AtomicLong runAllTimer = new AtomicLong(System.currentTimeMillis());
-
     /**
      * Only a single thread can be generating hierarchies currently.
      */
@@ -70,9 +70,8 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
     public DyHierarchyServiceImpl() {
         dyhiExecute = new ThreadPoolExecutor(1, 1, 1, TimeUnit.HOURS,
-                new LinkedBlockingDeque<>(25));
-        dyhiExecute.setRejectedExecutionHandler((r, executor) ->
-                logger.warn("Too many dynamic hierarchies queued, rejecting."));
+                new LinkedBlockingDeque<>(2));
+        dyhiExecute.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
     }
 
     @Override
@@ -192,20 +191,19 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
          * If there was already a generateAll submitted, no need
          * to submit again.
          */
-        if (System.currentTimeMillis() - runAllTimer.get() < 1000) {
-            return;
-        }
         dyhiExecute.submit(() -> {
             if (refresh) {
                 ElasticClientUtils.refreshIndex(client);
             }
-            generateAll();
+            for (DyHierarchy dyhi: dyHierarchyDao.getAll()) {
+                generate(dyhi);
+            }
         });
     }
 
     @Override
     public Future<Integer> submitGenerate(DyHierarchy dyhi) {
-       return dyhiExecute.submit(() -> generate(dyhi));
+        return dyhiExecute.submit(() -> generate(dyhi));
     }
 
     @Override

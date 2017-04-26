@@ -61,9 +61,6 @@ public class AssetServiceImpl implements AssetService {
     SearchService searchService;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     FilterService filterService;
 
     @Autowired
