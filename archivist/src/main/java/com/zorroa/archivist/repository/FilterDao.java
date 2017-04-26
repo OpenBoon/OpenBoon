@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.FilterSpec;
  */
 public interface FilterDao extends GenericDao<Filter, FilterSpec> {
 
-
     Acl getAcl(int id);
+
+    boolean setEnabled(int id, boolean value);
 }

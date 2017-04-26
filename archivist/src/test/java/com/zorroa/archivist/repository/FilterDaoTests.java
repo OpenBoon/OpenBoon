@@ -58,6 +58,12 @@ public class FilterDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testSetEnabled() {
+        filterDao.setEnabled(filter.getId(), false);
+        assertEquals(0, filterDao.getAll().size());
+    }
+
+    @Test
     public void testGetAll() {
         long count = filterDao.count();
         assertEquals(count, filterDao.getAll().size());

@@ -22,5 +22,11 @@ public interface FilterService {
 
     List<Filter> getAll();
 
+    Filter get(int id);
+
+    boolean delete(Filter filter);
+
+    boolean setEnabled(Filter filter, boolean value);
+
     PagedList<Filter> getPaged(Pager page);
 }

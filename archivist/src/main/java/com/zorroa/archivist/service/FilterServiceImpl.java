@@ -12,6 +12,7 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.util.Json;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.percolate.PercolateResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
@@ -64,11 +65,7 @@ public class FilterServiceImpl implements FilterService {
         }
 
         Filter filter = filterDao.create(spec);
-        SearchRequestBuilder esearch = searchService.buildSearch(spec.getSearch());
-        client.prepareIndex(alias, ".percolator", filter.getName())
-                .setSource(esearch.toString())
-                .setRefresh(true)
-                .execute().actionGet();
+        createPecolator(filter);
 
         transactionEventManager.afterCommitSync(() -> {
             logService.logAsync(LogSpec.build(LogAction.Create,
@@ -130,7 +127,51 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
+    public Filter get(int id) {
+        return filterDao.get(id);
+    }
+
+    @Override
+    public boolean delete(Filter filter) {
+        return filterDao.delete(filter.getId());
+    }
+
+    @Override
+    public boolean setEnabled(Filter filter, boolean value) {
+        boolean result = filterDao.setEnabled(filter.getId(), value);
+        // If we're disabling
+        if (!value) {
+            deletePecolator(filter);
+        }
+        else {
+            createPecolator(filter);
+        }
+        return result;
+    }
+
+    @Override
     public PagedList<Filter> getPaged(Pager page) {
         return filterDao.getAll(page);
     }
+
+    private void deletePecolator(Filter filter) {
+        DeleteResponse rsp = client.prepareDelete(alias,
+                ".percolator", filter.getName()).get("30s");
+        if (!rsp.isFound()) {
+            logger.warn("Could not find filter percolator: {}", filter.getName());
+        }
+    }
+
+    /**
+     * Create a pecolator for the filter.
+     * @param filter
+     */
+    private void createPecolator(Filter filter) {
+        SearchRequestBuilder es = searchService.buildSearch(filter.getSearch());
+        client.prepareIndex(alias, ".percolator", filter.getName())
+                .setSource(es.toString())
+                .setRefresh(true)
+                .execute().actionGet("1m");
+    }
+
 }

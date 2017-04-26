@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class FilterServiceTests extends AbstractTest {
 
     @Autowired
-    FilterService filterSevice;
+    FilterService filterService;
 
     Asset asset;
     Filter filter;
@@ -37,7 +37,7 @@ public class FilterServiceTests extends AbstractTest {
                 userService.getPermission("group::share"), Access.Read));
         spec.setSearch(new AssetSearch(new AssetFilter().addToTerms("origin.service", "local")));
         spec.setDescription("share");
-        filter = filterSevice.create(spec);
+        filter = filterService.create(spec);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class FilterServiceTests extends AbstractTest {
 
     @Test
     public void testGetMatchedAcls() {
-        Acl acl = filterSevice.getMatchedAcls(asset);
+        Acl acl = filterService.getMatchedAcls(asset);
         assertEquals(1, acl.size());
         assertTrue(filter.getAcl().hasAccess( userService.getPermission("group::share"), Access.Read));
     }

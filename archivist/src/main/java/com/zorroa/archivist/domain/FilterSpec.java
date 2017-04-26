@@ -3,6 +3,8 @@ package com.zorroa.archivist.domain;
 import com.zorroa.sdk.search.AssetSearch;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by chambers on 8/9/16.
  */
@@ -11,13 +13,14 @@ public class FilterSpec {
     @NotEmpty
     private String description;
 
-    private boolean enabled = true;
-
-    @NotEmpty
+    @NotNull
     private AssetSearch search;
 
     @NotEmpty
     private Acl acl;
+
+    // Optional, default is true.
+    private boolean enabled = true;
 
     public String getDescription() {
         return description;

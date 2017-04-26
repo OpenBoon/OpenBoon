@@ -83,15 +83,14 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
 
     @Override
     public List<Filter> getAll() {
-        return jdbc.query(GET, MAPPER);
+        return jdbc.query(GET.concat("WHERE bool_enabled=1"), MAPPER);
     }
 
     @Override
     public PagedList<Filter> getAll(Pager page) {
         return new PagedList(page.setTotalCount(count()),
-                jdbc.query(GET.concat(" ORDER BY pk_filter LIMIT ? OFFSET ?"),
+                jdbc.query(GET.concat(" WHERE bool_enabled=1 ORDER BY pk_filter LIMIT ? OFFSET ?"),
                         MAPPER, page.getSize(), page.getFrom()));
-
     }
 
     @Override
@@ -102,6 +101,12 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
     @Override
     public boolean delete(int id) {
         return jdbc.update("DELETE FROM filter WHERE pk_filter=?", id) == 1;
+    }
+
+    @Override
+    public boolean setEnabled(int id, boolean value) {
+        return jdbc.update("UPDATE filter SET bool_enabled=? WHERE pk_filter=? AND bool_enabled=?",
+                value, id, !value) == 1;
     }
 
     @Override
