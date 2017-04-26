@@ -67,7 +67,9 @@ public class ExportServiceTests extends AbstractTest {
         job = exportService.create(spec);
 
         List<ExecuteTaskStart> tasks =
-                jobExecutorService.getWaitingTasks(new ExecuteTaskRequest().setCount(5));
+                jobExecutorService.getWaitingTasks(new ExecuteTaskRequest()
+                        .setCount(5)
+                        .setUrl("http://localhost:8066"));
 
         ZpsScript script = Json.Mapper.readValue(
                 new File(tasks.get(0).getScriptPath()), ZpsScript.class);
