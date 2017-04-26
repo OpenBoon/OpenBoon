@@ -8,6 +8,7 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -77,8 +78,16 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
 
     @Override
     public Acl getAcl(int id) {
-        return Json.deserialize(jdbc.queryForObject(
-                "SELECT json_acl FROM filter WHERE pk_filter=?", String.class, id), Acl.class);
+        try {
+            return Json.deserialize(jdbc.queryForObject(
+                    "SELECT json_acl FROM filter WHERE pk_filter=? AND bool_enabled=1", String.class, id), Acl.class);
+        } catch (EmptyResultDataAccessException e) {
+            /**
+             * If somehow a disabled filter still has a percolator, then an EmptyResultDataAccessException
+             * will be thrown here, and we return an empty ACL.
+             */
+            return new Acl();
+        }
     }
 
     @Override
@@ -111,6 +120,6 @@ public class FilterDaoImpl extends AbstractDao implements FilterDao {
 
     @Override
     public long count() {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM filter", Long.class);
+        return jdbc.queryForObject("SELECT COUNT(1) FROM filter WHERE bool_enabled=1", Long.class);
     }
 }

@@ -19,11 +19,11 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -104,5 +104,20 @@ public class FilterControllerTests extends MockMvcTest {
         assertEquals(spec.getDescription(), filter.getDescription());
         assertTrue(filter.getSearch().getFilter().getTerms().containsKey("origin.service"));
         assertTrue(filter.getAcl().hasAccess( userService.getPermission("group::share"), Access.Read));
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        testCreate();
+
+        MockHttpSession session = admin();
+        MvcResult result = mvc.perform(delete("/api/v1/filters/" + filter.getId())
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> status  = Json.Mapper.readValue(result.getResponse().getContentAsString(), Map.class);
+        assertTrue((boolean) status.get("success"));
     }
 }

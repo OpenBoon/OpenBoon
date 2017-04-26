@@ -26,7 +26,7 @@ public class FilterDaoTests extends AbstractTest {
     public void init() {
         spec = new FilterSpec();
         spec.setDescription("A Filter");
-        spec.setEnabled(false);
+        spec.setEnabled(true);
         spec.setSearch(new AssetSearch());
         spec.setAcl(new Acl());
         filter = filterDao.create(spec);
@@ -68,9 +68,8 @@ public class FilterDaoTests extends AbstractTest {
         long count = filterDao.count();
         assertEquals(count, filterDao.getAll().size());
 
-        FilterSpec s2= new FilterSpec();
+        FilterSpec s2 = new FilterSpec();
         s2.setDescription("A Filter");
-        s2.setEnabled(false);
         spec.setSearch(new AssetSearch());
         spec.setAcl(new Acl());
         filter = filterDao.create(s2);
