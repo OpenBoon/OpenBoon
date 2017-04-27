@@ -113,7 +113,7 @@ public class ImportServiceImpl implements ImportService {
             throw new IllegalArgumentException("Must set either a path or search query.");
         }
 
-        if (spec.getPipelineId() == null &&  spec.getPipeline() == null) {
+        if (!isValidPipeline(spec.getPipelineId()) &&  spec.getPipeline() == null) {
             Pipeline pl = pipelineService.getStandard();
             spec.setPipelineId(pl.getId());
         }
@@ -174,7 +174,7 @@ public class ImportServiceImpl implements ImportService {
         /*
          * Default to standard pipeline.
          */
-        if (spec.getPipelineId() == null) {
+        if (!isValidPipeline(spec.getPipelineId())) {
             Pipeline pl = pipelineService.getStandard();
             spec.setPipelineId(pl.getId());
         }
@@ -240,7 +240,7 @@ public class ImportServiceImpl implements ImportService {
         /**
          * Resolve the user supplied pipeline.
          */
-        if (spec.getPipelineId() == null &&  spec.getPipeline() == null) {
+        if (!isValidPipeline(spec.getPipelineId()) &&  spec.getPipeline() == null) {
             Pipeline pl = pipelineService.getStandard();
             spec.setPipelineId(pl.getId());
         }
@@ -363,6 +363,24 @@ public class ImportServiceImpl implements ImportService {
         else {
             return name;
         }
+    }
+
+    /**
+     * Return true of the Object is a valid pipeline, which is
+     * a number > 0 or a string.
+     *
+     * @param value
+     * @return
+     */
+    private boolean isValidPipeline(Object value) {
+        if (value == null) {
+            return false;
+        }
+        if (value instanceof Number) {
+            return ((Integer)value) > 0;
+        }
+
+        return true;
     }
 
 }
