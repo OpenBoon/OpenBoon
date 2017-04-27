@@ -30,6 +30,7 @@ import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Register this process with the archivist.
@@ -91,6 +92,8 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         logger.info("Analyst ID: {}", id);
     }
 
+    private final AtomicBoolean connected = new AtomicBoolean(false);
+
     @Override
     protected void runOneIteration() {
         if (Application.isUnitTest()) {
@@ -102,8 +105,13 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             for (String url: urls) {
                 try {
                     register(url);
+                    if (connected.compareAndSet(false, true)) {
+                        logger.info("Registered with {}", url);
+                    }
                 } catch (Exception e) {
-                    logger.warn("Failed to register with archivist: {}, {}", url, e.getMessage());
+                    if (connected.compareAndSet(false, true)) {
+                        logger.warn("Failed to register with archivist: {}, {}", url, e.getMessage());
+                    }
                 }
             }
         }

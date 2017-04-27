@@ -618,11 +618,7 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                             .setId(System.getProperty("analyst.id"))
                             .setUrl(networkEnvironment.getUri().toString())
                             .setCount(threads - analyzeExecutor.getActiveCount()));
-
-                    if (connected.compareAndSet(false, true)) {
-                        logger.info("Connected to Archivist: {}", url);
-                    }
-
+                    connected.set(true);
                     if (!tasks.isEmpty()) {
                         for (ExecuteTaskStart task : tasks) {
                             try {
