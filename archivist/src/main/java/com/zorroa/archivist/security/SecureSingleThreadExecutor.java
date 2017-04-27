@@ -1,4 +1,4 @@
-package com.zorroa.archivist;
+package com.zorroa.archivist.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

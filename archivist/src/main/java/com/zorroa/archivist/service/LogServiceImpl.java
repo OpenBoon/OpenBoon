@@ -1,6 +1,6 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.SecureSingleThreadExecutor;
+import com.zorroa.archivist.security.SecureSingleThreadExecutor;
 import com.zorroa.archivist.domain.LogSearch;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.User;

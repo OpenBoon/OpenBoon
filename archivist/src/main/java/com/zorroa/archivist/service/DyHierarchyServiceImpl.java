@@ -6,6 +6,7 @@ import com.google.common.collect.*;
 import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.DyHierarchyDao;
+import com.zorroa.archivist.security.SecureRunnable;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.elastic.ElasticClientUtils;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -191,19 +193,29 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
          * If there was already a generateAll submitted, no need
          * to submit again.
          */
-        dyhiExecute.submit(() -> {
-            if (refresh) {
-                ElasticClientUtils.refreshIndex(client);
-            }
-            for (DyHierarchy dyhi: dyHierarchyDao.getAll()) {
-                generate(dyhi);
-            }
-        });
+        if (ArchivistConfiguration.unittest) {
+            generateAll();
+        }
+        else {
+            dyhiExecute.submit(new SecureRunnable(() -> {
+                if (refresh) {
+                    ElasticClientUtils.refreshIndex(client);
+                }
+                generateAll();
+            }, SecurityContextHolder.getContext()));
+        }
     }
 
     @Override
-    public Future<Integer> submitGenerate(DyHierarchy dyhi) {
-        return dyhiExecute.submit(() -> generate(dyhi));
+    public Future submitGenerate(DyHierarchy dyhi) {
+        if (ArchivistConfiguration.unittest) {
+            generate(dyhi);
+            return null;
+        }
+        else {
+            return dyhiExecute.submit(new SecureRunnable(() -> generate(dyhi),
+                    SecurityContextHolder.getContext()));
+        }
     }
 
     @Override
