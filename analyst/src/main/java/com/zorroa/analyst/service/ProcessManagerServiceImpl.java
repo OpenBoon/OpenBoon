@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -591,6 +592,8 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
         }
     }
 
+    private AtomicBoolean connected = new AtomicBoolean(false);
+
     @Override
     protected void runOneIteration() throws Exception {
         if (Application.isUnitTest()) {
@@ -616,6 +619,10 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                             .setUrl(networkEnvironment.getUri().toString())
                             .setCount(threads - analyzeExecutor.getActiveCount()));
 
+                    if (connected.compareAndSet(false, true)) {
+                        logger.info("Connected to Archivist: {}", url);
+                    }
+
                     if (!tasks.isEmpty()) {
                         for (ExecuteTaskStart task : tasks) {
                             try {
@@ -628,7 +635,9 @@ public class ProcessManagerServiceImpl extends AbstractScheduledService
                         }
                     }
                 } catch (Exception e) {
-                    logger.warn("Unable to contact Archivist for scheduling op, {}", e.getMessage());
+                    if (connected.compareAndSet(true, false)) {
+                        logger.warn("Unable to contact {} for scheduling op, {}", url, e.getMessage());
+                    }
                 }
             }
         } catch (Exception e) {
