@@ -410,12 +410,14 @@ public class SearchServiceImpl implements SearchService {
                  */
                 if (folder.getDyhiId() == null && !folder.isDyhiRoot()) {
                     childFolders.add(String.valueOf(folder.getId()));
+                    if (childFolders.size() >= 1024) {
+                        break;
+                    }
                 }
             }
 
             if (!childFolders.isEmpty()) {
-                List<String> subList = childFolders.stream().limit(1024).collect(Collectors.toList());
-                staticBool.should(QueryBuilders.termsQuery("links.folder", subList));
+                staticBool.should(QueryBuilders.termsQuery("links.folder", childFolders));
             }
         }
 
