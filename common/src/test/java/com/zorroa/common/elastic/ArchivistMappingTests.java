@@ -35,19 +35,6 @@ public class ArchivistMappingTests extends AbstractTest {
     @Autowired
     AssetDao assetDao;
 
-    @Test
-    public void testBinaryMapping() throws IOException {
-        client.prepareIndex("archivist", "asset")
-                .setSource(ImmutableMap.of("location", ImmutableMap.of("binary",
-                        new int[] { 1, 127, -127, -10, 64} )))
-                .get();
-        refreshIndex();
-
-        ClusterState cs = client.admin().cluster().prepareState().setIndices("archivist").execute().actionGet().getState();
-        IndexMetaData imd = cs.getMetaData().index("archivist");
-        MappingMetaData mdd = imd.mapping("asset");
-        assertEquals("byte", getMappingType(mdd.getSourceAsMap(), "location.binary"));
-    }
 
     /**
      * Test to ensure the mapping handles geo points.
