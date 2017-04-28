@@ -393,7 +393,7 @@ public class SearchServiceImpl implements SearchService {
             List<Integer> folders = links.get("folder")
                     .stream().map(f->Integer.valueOf(f.toString())).collect(Collectors.toList());
 
-            Set<String> childFolders = Sets.newHashSet();
+            Set<String> childFolders = Sets.newHashSetWithExpectedSize(64);
             for (Folder folder : folderService.getAllDescendants(
                     folderService.getAll(folders), true, true)) {
 
@@ -414,7 +414,8 @@ public class SearchServiceImpl implements SearchService {
             }
 
             if (!childFolders.isEmpty()) {
-                staticBool.should(QueryBuilders.termsQuery("links.folder", childFolders));
+                List<String> subList = childFolders.stream().limit(1024).collect(Collectors.toList());
+                staticBool.should(QueryBuilders.termsQuery("links.folder", subList));
             }
         }
 
