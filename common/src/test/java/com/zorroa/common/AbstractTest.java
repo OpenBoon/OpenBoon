@@ -119,7 +119,13 @@ public abstract class AbstractTest {
     public String getMappingType(Map<String,Object> mapping, String path) {
         for (String e: path.split("\\.")) {
             mapping = (Map<String,Object>) mapping.get("properties");
+            if (mapping == null) {
+                return null;
+            }
             mapping = (Map<String,Object>) mapping.get(e);
+            if (mapping == null) {
+                return null;
+            }
         }
         logger.info("{}", mapping.get("type"));
         return mapping.get("type").toString();
