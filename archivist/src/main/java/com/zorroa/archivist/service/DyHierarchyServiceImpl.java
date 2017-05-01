@@ -379,22 +379,23 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 case Attr:
                     value = bucket.getKeyAsString();
                     value = value.replace('/', '_');
-                    folders.push(value, level, null);
+                    folders.push(value, level, null, null);
                     break;
                 case Path:
                     value = bucket.getKeyAsString();
                     String delimiter = level.getOptions().getOrDefault("delimiter", "/").toString();
 
+                    Folder peek = folders.peek();
                     folders.stash();
                     popit = false;
                     for (String val: new PathIterator(value, delimiter)) {
                         String name = Iterables.getLast(Splitter.on(delimiter).omitEmptyStrings().splitToList(val));
-                        folders.push(name, level, val);
+                        folders.push(name, level, val, peek);
                     }
                     break;
                 default:
                     value = bucket.getKeyAsString();
-                    folders.push(value, level, null);
+                    folders.push(value, level, null, null);
                     break;
             }
 
@@ -444,6 +445,15 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             stack.pop();
         }
 
+        public Folder peek() {
+            try {
+                return stack.peek();
+            }
+            catch (NullPointerException e) {
+            }
+            return null;
+        }
+
         /**
          * Create a folder at a given level and pushes the result
          * onto the stack.
@@ -452,14 +462,19 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
          * @param level
          * @return
          */
-        public Folder push(String value, DyHierarchyLevel level, String queryValue) {
+        public Folder push(String value, DyHierarchyLevel level, String queryValue, Folder searchParent) {
             Folder parent = stack.peek();
             AssetSearch search = getSearch(queryValue == null ? value : queryValue, level);
 
             /*
              * The parent search is merged into the current folder's search.
              */
-            if (parent.getSearch() != null) {
+            if (searchParent != null) {
+                if (searchParent.getSearch() != null) {
+                    search.getFilter().merge(searchParent.getSearch().getFilter());
+                }
+            }
+            else if (parent.getSearch() != null) {
                 search.getFilter().merge(parent.getSearch().getFilter());
             }
 

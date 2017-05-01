@@ -102,8 +102,10 @@ public class DyHierarchyServiceTests extends AbstractTest {
                         new DyHierarchyLevel("source.extension.raw")));
         int result = dyhiService.generate(agg);
 
+        // Video aggs
         Folder folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data/video/m4v");
         assertEquals(1, searchService.count(folder.getSearch()));
+        assertEquals(1, folder.getSearch().getFilter().getTerms().get("source.directory").size());
 
         folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data/video");
         assertEquals(1, searchService.count(folder.getSearch()));
