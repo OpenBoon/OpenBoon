@@ -1,7 +1,8 @@
 {
   "migration": {
     "reindex": true,
-    "reingest": false
+    "reingest": false,
+    "patch": 1
   },
   "settings": {
     "index": {
@@ -186,6 +187,15 @@
                   "index": "not_analyzed"
                 }
               }
+            }
+          }
+        },
+        {
+          "binary_template": {
+            "match_mapping_type": "long",
+            "match": "binary",
+            "mapping": {
+              "type": "byte"
             }
           }
         },

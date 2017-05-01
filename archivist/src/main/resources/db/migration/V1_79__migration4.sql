@@ -1,0 +1,11 @@
+
+ALTER TABLE migration ADD COLUMN int_patch INTEGER NOT NULL DEFAULT 0;
+
+
+
+
+
+
+
+
+

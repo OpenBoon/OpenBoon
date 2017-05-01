@@ -23,4 +23,8 @@ public interface MigrationDao {
      * @return
      */
     boolean setVersion(Migration m, int version);
+
+    boolean setVersion(Migration m, int version, int patch);
+
+    boolean setPatch(Migration m, int patch);
 }

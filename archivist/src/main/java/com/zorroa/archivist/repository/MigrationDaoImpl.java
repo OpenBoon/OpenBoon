@@ -20,6 +20,7 @@ public class MigrationDaoImpl extends AbstractDao implements MigrationDao {
         m.setType(MigrationType.values()[rs.getInt("int_type")]);
         m.setPath(rs.getString("str_path"));
         m.setVersion(rs.getInt("int_version"));
+        m.setPatch(rs.getInt("int_patch"));
         return m;
     };
 
@@ -29,7 +30,8 @@ public class MigrationDaoImpl extends AbstractDao implements MigrationDao {
                 "str_name,"+
                 "int_type,"+
                 "str_path,"+
-                "int_version " +
+                "int_version, " +
+                "int_patch "+
             "FROM "+
                 "migration ";
 
@@ -47,5 +49,17 @@ public class MigrationDaoImpl extends AbstractDao implements MigrationDao {
     public boolean setVersion(Migration m, int version) {
         return jdbc.update("UPDATE migration SET int_version=? WHERE pk_migration=? AND int_version!=?",
                 version, m.getId(), version) == 1;
+    }
+
+    @Override
+    public boolean setVersion(Migration m, int version, int patch) {
+        return jdbc.update("UPDATE migration SET int_version=?, int_patch=? WHERE pk_migration=?",
+                version, patch, m.getId()) == 1;
+    }
+
+    @Override
+    public boolean setPatch(Migration m, int patch) {
+        return jdbc.update("UPDATE migration SET int_patch=? WHERE pk_migration=? AND int_patch!=?",
+                patch, m.getId(), patch) == 1;
     }
 }

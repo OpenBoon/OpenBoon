@@ -2,6 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.Migration;
 import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.repository.MigrationDao;
@@ -119,10 +120,11 @@ public class MigrationServiceImpl implements MigrationService {
         final boolean newIndexExists = client.admin().indices().prepareExists(newIndex).get().isExists();
 
         /**
-         * If we already have the current version then return.
+         * If we already have the current version then check for patch versions.
          */
         if (props.getVersion() == m.getVersion() && newIndexExists) {
             logger.info("'{}' mapping V{} is the current version", m.getName(), m.getVersion());
+            applyMappingPatches(m);
             return;
         }
 
@@ -140,7 +142,7 @@ public class MigrationServiceImpl implements MigrationService {
         TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(Propagation.REQUIRES_NEW.ordinal());
         boolean updated = tt.execute(transactionStatus -> {
-            boolean result = migrationDao.setVersion(m, props.getVersion());
+            boolean result = migrationDao.setVersion(m, props.getVersion(), props.getPatch());
             return result;
         });
 
@@ -245,6 +247,61 @@ public class MigrationServiceImpl implements MigrationService {
 
     private static final Pattern MAPPING_NAMING_CONV = Pattern.compile("^V(\\d+)__(.*?).json$");
 
+    private static final Pattern MAPPING_PATCH_CONV = Pattern.compile("^V(\\d+)\\.(\\d)+__(.*?).json$");
+
+    public void applyMappingPatches(Migration m) {
+        Map<Integer, Map<String,Object>> mappingPatches = Maps.newHashMap();
+        try {
+            ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(getClass().getClassLoader());
+            Resource[] resources = resolver.getResources(m.getPath());
+            for (Resource resource : resources) {
+                Matcher matcher = MAPPING_PATCH_CONV.matcher(resource.getFilename());
+                if (!matcher.matches()) {
+                    continue;
+                }
+
+                int majorVersion = Integer.valueOf(matcher.group(1));
+                int patchVersion = Integer.valueOf(matcher.group(2));
+
+                if (majorVersion != m.getVersion()) {
+                    continue;
+                }
+
+                // Check if its been already applied
+                if (patchVersion <= m.getPatch()) {
+                    logger.info("Patch {}.{} has already been applied", majorVersion, patchVersion);
+                    continue;
+                }
+
+                mappingPatches.put(patchVersion, Json.Mapper.readValue(resource.getInputStream(),
+                        Json.GENERIC_MAP));
+            }
+        } catch (Exception e) {
+            logger.warn("Unable to location elastic migration patch files", e);
+            return;
+        }
+
+        /**
+         * TODO: patches can only be applied to assets right now.
+         */
+        List<Integer> keys = Lists.newArrayList(mappingPatches.keySet());
+        Collections.sort(keys);
+        logger.info("Applying {} patch versions to {}", keys.size(), m);
+        for (Integer key: keys) {
+            try {
+                client.admin()
+                        .indices()
+                        .preparePutMapping(m.getName())
+                        .setType("asset")
+                        .setSource(mappingPatches.get(key))
+                        .get();
+                migrationDao.setPatch(m, key);
+            } catch (Exception e) {
+                logger.warn("Failed to apply elastic mapping patch version: {}", m, e);
+            }
+        }
+    }
+
     public ElasticMigrationProperties getLatestVersion(Migration m) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(getClass().getClassLoader());
         Resource[] resources = resolver.getResources(m.getPath());
@@ -253,7 +310,6 @@ public class MigrationServiceImpl implements MigrationService {
 
             Matcher matcher = MAPPING_NAMING_CONV.matcher(resource.getFilename());
             if (!matcher.matches()) {
-                logger.warn("'{}' is not using the proper naming convention.", resource.getFilename());
                 continue;
             }
 
@@ -269,15 +325,19 @@ public class MigrationServiceImpl implements MigrationService {
              * Only versions with the migration header are added.
              */
             if (mapping.containsKey("migration")) {
-                Map<String, Boolean> props = Json.Mapper.convertValue(mapping.get("migration"),
-                        new TypeReference<Map<String, Boolean>>(){});
+                Map<String, Object> props = Json.Mapper.convertValue(mapping.get("migration"),
+                        new TypeReference<Map<String, Object>>(){});
 
-                if (props.get("reindex")) {
-                    emp.setReindex(true);
+                Boolean reindex = (Boolean) props.get("reindex");
+                if (reindex != null) {
+                    emp.setReindex(reindex);
                 }
-                if (props.get("reingest")) {
-                    emp.setReingest(true);
+
+                Integer patch = (Integer) props.get("patch");
+                if (patch != null) {
+                    emp.setPatch(patch);
                 }
+
                 allVersions.add(emp);
             }
             else {
@@ -299,6 +359,7 @@ public class MigrationServiceImpl implements MigrationService {
         private int version = 1;
         private boolean reindex = false;
         private boolean reingest = false;
+        private int patch = 0;
         private Map<String, Object> mapping;
 
         public int getVersion() {
@@ -342,6 +403,15 @@ public class MigrationServiceImpl implements MigrationService {
 
         public ElasticMigrationProperties setMapping(Map<String, Object> mapping) {
             this.mapping = mapping;
+            return this;
+        }
+
+        public int getPatch() {
+            return patch;
+        }
+
+        public ElasticMigrationProperties setPatch(int patch) {
+            this.patch = patch;
             return this;
         }
     }

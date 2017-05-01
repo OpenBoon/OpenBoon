@@ -1,0 +1,14 @@
+{
+  "dynamic_templates": [
+    {
+      "binary_template": {
+        "match_mapping_type": "long",
+        "match": "binary",
+        "mapping": {
+          "type": "byte"
+        }
+      }
+    }
+  ]
+}
+
