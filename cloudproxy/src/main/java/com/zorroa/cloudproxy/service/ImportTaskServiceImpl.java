@@ -90,6 +90,7 @@ public class ImportTaskServiceImpl implements ImportTaskService {
          */
         System.setProperty("zorroa.hmac.key", configProps.getHmacKey());
         System.setProperty("zorroa.user", configProps.getAuthUser());
+        System.setProperty("zorroa.archivist.url", configProps.getArchivistUrl());
 
         ArchivistClient client = new ArchivistClient();
         Map<String, Object> job = client.getConnection().post("/api/v1/jobs",
