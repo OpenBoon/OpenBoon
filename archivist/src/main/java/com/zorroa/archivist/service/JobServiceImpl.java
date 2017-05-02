@@ -162,6 +162,7 @@ public class JobServiceImpl implements JobService {
 
         if (expandScript.getExecute() == null) {
             Task parentTask = taskDao.get(expand.getParentTaskId());
+            // inherit order from the parent.
             taskOrder = parentTask.getOrder();
             String root = jobDao.getRootPath(expand.getJobId());
             try {
@@ -198,6 +199,7 @@ public class JobServiceImpl implements JobService {
         ts.setName(spec.getName());
         ts.setJobId(spec.getJobId());
         ts.setParentTaskId(null);
+        ts.setOrder(Task.ORDER_DEFAULT);
 
         ZpsScript script = new ZpsScript();
         script.setOver(spec.getDocs());

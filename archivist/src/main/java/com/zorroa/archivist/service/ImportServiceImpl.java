@@ -18,6 +18,7 @@ import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,6 +63,9 @@ public class ImportServiceImpl implements ImportService {
 
     @Autowired
     ApplicationProperties properties;
+
+    @Value("${archivist.import.priority}")
+    int taskPriority;
 
     List<String> pathSuggestFilter = Lists.newArrayList();
 
@@ -131,6 +135,7 @@ public class ImportServiceImpl implements ImportService {
         Job job = jobService.launch(jspec);
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
+                .setOrder(Task.ORDER_INTERACTIVE)
                 .setName("Path Generation"));
 
 
@@ -207,6 +212,7 @@ public class ImportServiceImpl implements ImportService {
 
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
+                .setOrder(taskPriority)
                 .setName("Generation via " + generators.get(0).getClassName()));
 
         transactionEventManager.afterCommitSync(() -> {
@@ -282,6 +288,7 @@ public class ImportServiceImpl implements ImportService {
 
         jobService.createTask(new TaskSpec().setScript(script)
                 .setJobId(job.getJobId())
+                .setOrder(taskPriority)
                 .setName("Frame Generator"));
 
         transactionEventManager.afterCommitSync(() -> {

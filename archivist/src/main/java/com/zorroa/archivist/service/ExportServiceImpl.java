@@ -19,6 +19,7 @@ import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +61,9 @@ public class ExportServiceImpl implements ExportService {
 
     @Autowired
     LogService logService;
+
+    @Value("${archivist.export.priority}")
+    int taskPriority;
 
     /**
      * A temporary place to stuff parameters detected when the search
@@ -207,7 +211,7 @@ public class ExportServiceImpl implements ExportService {
         jobService.createTask(new TaskSpec()
                 .setJobId(job.getJobId())
                 .setName("Setup and Generation")
-                .setOrder(5)
+                .setOrder(taskPriority)
                 .setScript(script));
 
         /**

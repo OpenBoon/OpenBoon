@@ -11,7 +11,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 public class Task implements TaskId {
 
     public static final int ORDER_DEFAULT = 10;
-    public static final int ORDER_EXPORT = 5;
+    public static final int ORDER_INTERACTIVE = -1;
 
     private Integer taskId;
     private Integer parentId;
