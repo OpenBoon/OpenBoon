@@ -207,6 +207,7 @@ public class ExportServiceImpl implements ExportService {
         jobService.createTask(new TaskSpec()
                 .setJobId(job.getJobId())
                 .setName("Setup and Generation")
+                .setOrder(5)
                 .setScript(script));
 
         /**

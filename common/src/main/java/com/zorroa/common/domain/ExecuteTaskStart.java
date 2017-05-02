@@ -16,6 +16,7 @@ public class ExecuteTaskStart implements TaskId, JobId {
     private String archivistHost;
     private ExecuteTask task;
     private String name;
+    private int order;
 
     public ExecuteTaskStart() { }
 
@@ -131,5 +132,14 @@ public class ExecuteTaskStart implements TaskId, JobId {
     @Override
     public Integer getJobId() {
         return task.getJobId();
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public ExecuteTaskStart setOrder(int order) {
+        this.order = order;
+        return this;
     }
 }

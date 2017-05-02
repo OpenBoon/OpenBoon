@@ -158,9 +158,11 @@ public class JobServiceImpl implements JobService {
         }
 
         ZpsScript expandScript = Json.deserialize(expand.getScript(), ZpsScript.class);
+        Integer taskOrder = Task.ORDER_DEFAULT;
 
         if (expandScript.getExecute() == null) {
             Task parentTask = taskDao.get(expand.getParentTaskId());
+            taskOrder = parentTask.getOrder();
             String root = jobDao.getRootPath(expand.getJobId());
             try {
                 ZpsScript parentScript = Json.Mapper.readValue(
@@ -177,6 +179,7 @@ public class JobServiceImpl implements JobService {
         spec.setName(expand.getName());
         spec.setScript(Json.serializeToString(expandScript));
         spec.setParentTaskId(expand.getParentTaskId());
+        spec.setOrder(taskOrder);
         return createTask(spec);
     }
 

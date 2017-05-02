@@ -10,6 +10,9 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
  */
 public class Task implements TaskId {
 
+    public static final int ORDER_DEFAULT = 10;
+    public static final int ORDER_EXPORT = 5;
+
     private Integer taskId;
     private Integer parentId;
     private Integer jobId;
@@ -21,6 +24,7 @@ public class Task implements TaskId {
     private long timeCreated;
     private long timeStateChange;
     private int exitStatus;
+    private int order;
 
     private Stats stats;
 
@@ -131,6 +135,15 @@ public class Task implements TaskId {
 
     public Task setParentId(Integer parentId) {
         this.parentId = parentId;
+        return this;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public Task setOrder(int order) {
+        this.order = order;
         return this;
     }
 

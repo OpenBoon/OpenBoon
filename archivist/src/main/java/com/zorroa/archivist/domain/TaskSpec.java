@@ -14,8 +14,10 @@ public class TaskSpec implements JobId {
     private Integer jobId;
     private Integer parentTaskId;
     private String script;
+    private int order = Task.ORDER_DEFAULT;
 
-    public TaskSpec() { }
+    public TaskSpec() {
+    }
 
     public TaskSpec(int jobId, String name) {
         this.jobId = jobId;
@@ -63,4 +65,15 @@ public class TaskSpec implements JobId {
         this.parentTaskId = parentTaskId;
         return this;
     }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public TaskSpec setOrder(int order) {
+        this.order = order;
+        return this;
+    }
 }
+
+

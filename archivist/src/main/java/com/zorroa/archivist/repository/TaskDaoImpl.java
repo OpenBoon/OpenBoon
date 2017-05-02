@@ -76,7 +76,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             ps.setObject(2, task.getParentTaskId());
             ps.setString(3, task.getName() == null ? "subtask" : task.getName());
             ps.setInt(4, TaskState.Waiting.ordinal());
-            ps.setInt(5, 1);
+            ps.setInt(5, task.getOrder());
             ps.setLong(6, time);
             ps.setLong(7, time);
             ps.setLong(8, time);
@@ -246,6 +246,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }
 
         ExecuteTaskStart e = new ExecuteTaskStart(t);
+        e.setOrder(rs.getInt("int_order"));
         e.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
         e.setEnv(Json.deserialize(rs.getString("json_env"), Map.class));
         e.setRootPath(rs.getString("str_root_path"));
@@ -261,6 +262,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                     "task.pk_task,"+
                     "task.pk_job, " +
                     "task.pk_parent, "+
+                    "task.int_order,"+
                     "job.json_args,"+
                     "job.json_env, " +
                     "job.str_root_path, " +
@@ -280,6 +282,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "AND " +
                 "task.int_depend_count = 0 " +
             "ORDER BY " +
+                "task.int_order ASC, " +
                 "task.pk_task ASC LIMIT ? ";
     @Override
     public List<ExecuteTaskStart> getWaiting(int limit) {
@@ -293,6 +296,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "task.pk_job,"+
             "task.str_name,"+
             "task.int_state,"+
+            "task.int_order,"+
             "task.time_started,"+
             "task.time_stopped,"+
             "task.time_created,"+
@@ -334,6 +338,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         task.setTimeStarted(rs.getLong("time_started"));
         task.setTimeStopped(rs.getLong("time_stopped"));
         task.setTimeStateChange(rs.getLong("time_state_change"));
+        task.setOrder(rs.getInt("int_order"));
 
         Task.Stats s = new Task.Stats();
         s.setFrameErrorCount(rs.getInt("int_frame_error_count"));

@@ -101,6 +101,28 @@ public class TaskDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testGetWaitingTaskOrder() {
+        assertEquals(1, taskDao.getWaiting(5).size());
+
+        for (int i=10; i>0; i--) {
+            tspec = new TaskSpec();
+            tspec.setName("a task " + i);
+            tspec.setScript(new ZpsScript());
+            tspec.setJobId(job.getJobId());
+            tspec.setOrder(i);
+            task = jobService.createTask(tspec);
+        }
+
+        int[] expected = { 1,2,3,4,5,6,7,8,9,10,10};
+        int i = 0;
+        for (ExecuteTaskStart start : taskDao.getWaiting(11)) {
+            assertEquals(expected[i], start.getOrder());
+            i++;
+        }
+    }
+
+
+    @Test
     public void getAllByFilter() {
         for (int i=0; i<10; i++) {
             TaskSpec spec = new TaskSpec();
