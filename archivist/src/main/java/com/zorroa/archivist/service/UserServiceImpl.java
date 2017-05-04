@@ -436,12 +436,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public PasswordResetToken sendPasswordResetEmail(User user) {
         PasswordResetToken token = new PasswordResetToken(userDao.setEnablePasswordRecovery(user));
+
         if (token != null) {
+            String name = user.getFirstName() == null ? user.getUsername() : user.getFirstName();
             String url = networkEnv.getUri().toString() + "/password?token=" + token.toString();
 
             StringBuilder text = new StringBuilder(1024);
             text.append("Hello ");
-            text.append(user.getFirstName());
+            text.append(name);
             text.append(",\n\nClick on the link below to change your Zorroa login credentials.");
             text.append("\n\n" + url);
             text.append("\n\nIf you are not trying to change your Zorroa login credentials, please ignore this email.");
@@ -450,7 +452,7 @@ public class UserServiceImpl implements UserService {
             try {
                 htmlMsg = getTextResourceFile("emails/PasswordReset.html");
                 htmlMsg = htmlMsg.replace("*|RESET_PASSWORD_URL|*", url + "&source=file_server");
-                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getUsername());
+                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", name);
             } catch (IOException e) {
                 logger.warn("Failed to open HTML template for onboarding. Sending text only.", e);
             }
@@ -467,13 +469,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public PasswordResetToken sendOnboardEmail(User user) {
         PasswordResetToken token = new PasswordResetToken(userDao.setEnablePasswordRecovery(user));
+        String name = user.getFirstName() == null ? user.getUsername() : user.getFirstName();
 
         if (token != null) {
             String url = networkEnv.getUri().toString() + "/onboard?token=" + token.toString();
 
             StringBuilder text = new StringBuilder(1024);
             text.append("Hello ");
-            text.append(user.getFirstName());
+            text.append(name);
             text.append(",\n\nWelcome to Zorroa. Let's get your stuff!");
             text.append(",\n\nClick on the link below to import your assets.");
             text.append("\n\n" + url);
@@ -481,7 +484,7 @@ public class UserServiceImpl implements UserService {
             String htmlMsg = null;
             try {
                 htmlMsg = getTextResourceFile("emails/Onboarding.html");
-                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", user.getUsername());
+                htmlMsg = htmlMsg.replace("*|FIRST_NAME|*", name);
                 htmlMsg = htmlMsg.replace("*|FILE_SERVER_URL|*", url + "&source=file_server");
                 htmlMsg = htmlMsg.replace("*|MY_COMPUTER_URL|*", url + "&source=my_computer");
                 htmlMsg = htmlMsg.replace("*|CLOUD_SOURCE_URL|*", url + "&source=cloud");
@@ -507,7 +510,8 @@ public class UserServiceImpl implements UserService {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
-        helper.setFrom("noreply@zorroa.com");
+        helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>");
+        helper.setReplyTo("Zorroa Account Bot <noreply@zorroa.com>");
         helper.setTo(email);
         helper.setSubject(subject);
         if (htmlMsg != null) {
