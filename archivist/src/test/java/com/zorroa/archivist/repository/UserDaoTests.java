@@ -25,9 +25,6 @@ public class UserDaoTests extends AbstractTest {
     @Autowired
     PermissionDao permissionDao;
 
-    @Autowired
-    SessionDao sessionDao;
-
     User user;
 
     @Before
@@ -45,6 +42,14 @@ public class UserDaoTests extends AbstractTest {
     public void testGet() {
         User user2 = userDao.get(user.getId());
         assertEquals(user.getId(), user2.getId());
+    }
+
+    @Test
+    public void testGetByUsername() {
+        User user2 = userDao.get(user.getUsername());
+        User user3 = userDao.get(user.getEmail());
+        assertEquals(user2.getId(), user3.getId());
+        assertEquals(user2.toString(), user3.toString());
     }
 
     @Test
@@ -91,6 +96,9 @@ public class UserDaoTests extends AbstractTest {
     public void testGetPassword() {
         // The crypted password
         String hashed = userDao.getPassword(user.getUsername());
+        String hashed2 = userDao.getPassword(user.getEmail());
+        assertEquals(hashed, hashed2);
+
         assertTrue(hashed.startsWith("$"));
 
         // try to authenticate it.

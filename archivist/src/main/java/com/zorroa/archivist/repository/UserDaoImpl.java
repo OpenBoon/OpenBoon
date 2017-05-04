@@ -43,7 +43,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User get(String username) {
-        return jdbc.queryForObject("SELECT * FROM user WHERE str_username=?", MAPPER, username);
+        return jdbc.queryForObject("SELECT * FROM user WHERE str_username=? OR str_email=?",
+                MAPPER, username, username);
     }
 
     @Override
@@ -202,8 +203,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public String getPassword(String username) {
-        return jdbc.queryForObject("SELECT str_password FROM user WHERE str_username=? AND bool_enabled=? AND str_source='local'",
-            String.class, username, true);
+        return jdbc.queryForObject("SELECT str_password FROM user WHERE (str_username=? OR str_email=?) AND bool_enabled=? AND str_source='local'",
+            String.class, username, username, true);
     }
 
     @Override
