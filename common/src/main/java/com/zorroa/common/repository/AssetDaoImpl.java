@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,6 +43,11 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     public String getIndex() {
         return "archivist";
     }
+
+    /**
+     * Allows us to flush the first batch.
+     */
+    private final AtomicBoolean flushNow = new AtomicBoolean(true);
 
     private static final JsonRowMapper<Asset> MAPPER = (id, version, score, source) -> {
         Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
@@ -68,6 +74,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         List<Source> retries = Lists.newArrayList();
 
         BulkRequestBuilder bulkRequest = client.prepareBulk();
+        bulkRequest.setRefresh(flushNow.compareAndSet(true, false));
+
         for (Source source : sources) {
             bulkRequest.add(prepareUpsert(source));
         }
