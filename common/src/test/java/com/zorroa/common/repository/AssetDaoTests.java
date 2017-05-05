@@ -120,9 +120,12 @@ public class AssetDaoTests extends AbstractTest {
         Source source2 = new Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"));
 
         DocumentIndexResult result = assetDao.index(ImmutableList.of(source1, source2), null);
-        refreshIndex();
         assertEquals(1, result.created);
         assertEquals(1, result.updated);
+
+        result = assetDao.index(ImmutableList.of(source1, source2), null);
+        assertEquals(0, result.created);
+        assertEquals(2, result.updated);
     }
 
     @Test

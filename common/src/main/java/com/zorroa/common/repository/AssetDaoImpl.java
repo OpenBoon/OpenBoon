@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +47,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     /**
      * Allows us to flush the first batch.
      */
-    private final AtomicBoolean flushNow = new AtomicBoolean(true);
+    private final AtomicLong flushTime = new AtomicLong(0);
 
     private static final JsonRowMapper<Asset> MAPPER = (id, version, score, source) -> {
         Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
@@ -72,9 +72,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             return result;
         }
         List<Source> retries = Lists.newArrayList();
-
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        bulkRequest.setRefresh(flushNow.compareAndSet(true, false));
+
+        /**
+         * Force a refresh if we haven't for a while.
+         */
+        final long time = System.currentTimeMillis();
+        if (time - flushTime.getAndSet(time) > 30000) {
+            bulkRequest.setRefresh(true);
+        }
 
         for (Source source : sources) {
             bulkRequest.add(prepareUpsert(source));
