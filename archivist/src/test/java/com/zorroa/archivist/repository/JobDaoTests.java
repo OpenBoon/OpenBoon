@@ -69,6 +69,30 @@ public class JobDaoTests extends AbstractTest {
         assertFalse(jobDao.setState(job, JobState.Finished, JobState.Active));
     }
 
+    String cols =
+            "job_count.int_task_total_count=?,"+
+            "job_count.int_task_completed_count=?,"+
+            "job_count.int_task_state_queued_count=?,"+
+            "job_count.int_task_state_waiting_count=?,"+
+            "job_count.int_task_state_running_count=?,"+
+            "job_count.int_task_state_success_count=?,"+
+            "job_count.int_task_state_failure_count=?, " +
+            "job_count.int_task_state_skipped_count=? ";
+
+    @Test
+    public void testPsuedoStates() {
+        jdbc.update("UPDATE job_count SET " + cols + " WHERE pk_job=?",
+                10, 0, 0, 0, 0, 5, 4, 1, job.getId());
+        Job j = jobDao.get(job.getJobId());
+        assertEquals(JobState.Finished, j.getState());
+
+        jdbc.update("UPDATE job_count SET " + cols + " WHERE pk_job=?",
+                10, 1, 1, 0, 0, 5, 0, 3, job.getId());
+        j = jobDao.get(job.getJobId());
+        assertEquals(JobState.Active, j.getState());
+    }
+
+
     @Test
     public void testIncrementStats() {
         jobDao.incrementStats(job.getJobId(), 1, 2, 3);
