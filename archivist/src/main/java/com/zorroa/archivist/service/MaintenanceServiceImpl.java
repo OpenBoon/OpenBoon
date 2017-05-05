@@ -5,7 +5,7 @@ package com.zorroa.archivist.service;
  */
 
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.ExpiredJob;
 import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.repository.JobDao;

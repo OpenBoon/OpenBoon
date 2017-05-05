@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security;
 
-import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.LogSpec;
 import com.zorroa.archivist.domain.User;
@@ -104,7 +104,6 @@ public class MultipleWebSecurityConfig {
                     .antMatchers("/signin/**").permitAll()
                     .antMatchers("/signout/**").permitAll()
                     .antMatchers("/health/**").permitAll()
-                    .antMatchers("/cluster/**").permitAll()
                     .antMatchers("/console/**").hasAuthority("group::administrator")
                 .and()
                     .exceptionHandling()

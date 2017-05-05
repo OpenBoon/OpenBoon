@@ -3,7 +3,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.*;
-import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.DyHierarchyDao;
 import com.zorroa.archivist.security.SecureRunnable;

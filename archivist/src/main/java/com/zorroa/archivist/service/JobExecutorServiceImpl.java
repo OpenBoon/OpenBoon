@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.AnalystClient;
-import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.domain.Task;

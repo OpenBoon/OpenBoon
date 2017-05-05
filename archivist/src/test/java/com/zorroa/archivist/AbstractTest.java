@@ -2,6 +2,7 @@ package com.zorroa.archivist;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
@@ -84,7 +85,7 @@ public abstract class AbstractTest {
 
     @Autowired
     protected AssetService assetService;
-    
+
     @Autowired
     protected AnalystService analystService;
 

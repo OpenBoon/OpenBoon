@@ -1,5 +1,6 @@
 package com.zorroa.archivist;
 
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.common.config.ApplicationProperties;

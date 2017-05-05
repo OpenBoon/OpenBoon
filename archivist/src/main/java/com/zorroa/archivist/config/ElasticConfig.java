@@ -1,6 +1,5 @@
 package com.zorroa.archivist.config;
 
-import com.zorroa.archivist.ArchivistConfiguration;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import org.elasticsearch.client.Client;

@@ -1,7 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.archivist.ArchivistConfiguration;
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Command;
 import com.zorroa.archivist.domain.CommandSpec;
