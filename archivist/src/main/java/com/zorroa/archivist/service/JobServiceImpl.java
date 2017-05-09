@@ -190,7 +190,7 @@ public class JobServiceImpl implements JobService {
         /**
          * Use the standard pipeline if one is not set.
          */
-        if (spec.getPipelineId() == null) {
+        if (spec.getPipelineId() == null || spec.getPipelineId() <= 0) {
             Pipeline pl = pipelineDao.getStandard();
             spec.setPipelineId(pl.getId());
         }
