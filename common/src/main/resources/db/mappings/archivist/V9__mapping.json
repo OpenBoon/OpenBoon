@@ -209,6 +209,15 @@
           }
         },
         {
+          "binary_template": {
+            "match_mapping_type": "string",
+            "match": "content",
+            "mapping": {
+              "type": "string"
+            }
+          }
+        },
+        {
           "color_template": {
             "path_match": "*.colors",
             "mapping": {
