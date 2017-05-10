@@ -239,14 +239,20 @@ public class FolderServiceImpl implements FolderService {
                 order++;
                 trashFolderDao.create(child, op, false, order);
                 transactionEventManager.afterCommit(() -> {
-                    invalidate(folder);
-                    logService.logAsync(LogSpec.build(LogAction.Delete, folder));
+                    invalidate(child);
+                    logService.logAsync(LogSpec.build(LogAction.Delete, child));
                 }, false);
             }
         }
 
         boolean result = folderDao.delete(folder);
+
         if (result) {
+            transactionEventManager.afterCommit(() -> {
+                invalidate(folder);
+                logService.logAsync(LogSpec.build(LogAction.Delete, folder));
+            }, false);
+
             order++;
             int id = trashFolderDao.create(folder, op, true, order);
             return new TrashedFolderOp(id, op, order);
