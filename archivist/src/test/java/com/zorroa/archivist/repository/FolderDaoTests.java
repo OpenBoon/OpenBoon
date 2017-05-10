@@ -96,6 +96,24 @@ public class FolderDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testsetDyHierarchyRoot() {
+        String name = "Foobar the folder";
+        FolderSpec builder = new FolderSpec(name);
+        Folder folder = folderDao.create(builder);
+        assertTrue(folderDao.setDyHierarchyRoot(folder, "source.extension"));
+    }
+
+    @Test
+    public void removeDyHierarchyRoot() {
+        String name = "Foobar the folder";
+        FolderSpec builder = new FolderSpec(name);
+        Folder folder = folderDao.create(builder);
+        assertTrue(folderDao.setDyHierarchyRoot(folder, "source.extension"));
+        assertTrue(folderDao.removeDyHierarchyRoot(folder));
+    }
+
+
+    @Test
     public void testGetChildrenInsecure() {
         authenticate("user");
         assertFalse(SecurityUtils.hasPermission("group::administrator"));
