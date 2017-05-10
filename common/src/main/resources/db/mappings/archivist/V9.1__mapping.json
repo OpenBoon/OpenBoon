@@ -1,11 +1,20 @@
 {
   "dynamic_templates": [
     {
-      "binary_template": {
+      "byte_template": {
         "match_mapping_type": "long",
-        "match": "binary",
+        "match": "_byte",
         "mapping": {
           "type": "byte"
+        }
+      }
+    },
+    {
+      "short_template": {
+        "match_mapping_type": "long",
+        "match": "_short",
+        "mapping": {
+          "type": "short"
         }
       }
     }
