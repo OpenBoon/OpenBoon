@@ -91,6 +91,28 @@ public class DyHierarchyServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testGenerateAttrWithSlash() {
+        Folder f = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchy agg = new DyHierarchy();
+        agg.setFolderId(f.getId());
+        agg.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.directory.raw")));
+        int result = dyhiService.generate(agg);
+
+        for (Folder child: folderService.getChildren(f)) {
+            logger.info("{}", child.getName());
+        }
+
+        // Video aggs
+        Folder folder1 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_video");
+        Folder folder2 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_office");
+        Folder folder3 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_images_set01");
+        logger.info("{}", Json.prettyString(folder1.getSearch()));
+        assertEquals(1, searchService.count(folder1.getSearch()));
+    }
+
+    @Test
     public void testGenerateWithPath() {
         Folder f = folderService.create(new FolderSpec("foo"), false);
         DyHierarchy agg = new DyHierarchy();

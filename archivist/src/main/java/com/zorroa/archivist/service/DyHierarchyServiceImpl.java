@@ -375,11 +375,12 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             boolean popit = true;
 
             String value;
+            String name;
             switch (level.getType()) {
                 case Attr:
                     value = bucket.getKeyAsString();
-                    value = value.replace('/', '_');
-                    folders.push(value, level, null, null);
+                    name = value.replace('/', '_');
+                    folders.push(name, level, value, null);
                     break;
                 case Path:
                     value = bucket.getKeyAsString();
@@ -389,7 +390,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                     folders.stash();
                     popit = false;
                     for (String val: new PathIterator(value, delimiter)) {
-                        String name = Iterables.getLast(Splitter.on(delimiter).omitEmptyStrings().splitToList(val));
+                        name = Iterables.getLast(Splitter.on(delimiter).omitEmptyStrings().splitToList(val));
                         folders.push(name, level, val, peek);
                     }
                     break;
