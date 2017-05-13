@@ -18,6 +18,7 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
     private final String field;
     private final int[][] bitwiseHashes;
     private final List<String> hashes;
+    private final List<Float> weights;
     private final boolean bitwise;
     private final int length;
     private final int minScore;
@@ -28,12 +29,18 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         bitwise = field.endsWith( ".bit.raw");
         hashes = (List<String>) params.get("hashes");
         length = hashes.get(0).length();
+        weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
-        logger.info("Performing hamming on field {}", field);
+        logger.info("Performing hamming on field {} with weights {}", field, weights);
 
         if (hashes == null || hashes.isEmpty()) {
             bitwiseHashes = null;
             return;
+        }
+
+        if (weights.size() > 0 && weights.size() != hashes.size()) {
+            throw new IllegalArgumentException(
+                    "HammingDistanceScript weights must align with hashes");
         }
 
         /**
@@ -71,22 +78,26 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
                 return 0.0f;
             }
 
-            for (int[] hash: bitwiseHashes) {
+            for (int i = 0; i < bitwiseHashes.length; ++i) {
+                int[] hash = bitwiseHashes[i];
                 if (fieldValueBytes.length != hash.length) {
                     continue;
                 }
-                distance += bitwiseHammingDistance(fieldValueBytes, hash);
+                float weight = weights != null && weights.size() == bitwiseHashes.length ? weights.get(i) : 1;
+                distance += weight * bitwiseHammingDistance(fieldValueBytes, hash);
             }
             // Normalize the returned distance to 0-100.0
             distance *= 100.0f / (4 * length * hashes.size());
         }
         else {
             final int fieldLength = fieldValue.length();
-            for (String hash : hashes) {
+            for (int i = 0; i < hashes.size(); ++i) {
                 if (fieldLength != length) {
                     continue;
                 }
-                distance += hammingDistance(fieldValue, hash, length);
+                String hash = hashes.get(i);
+                float weight = weights != null && weights.size() == bitwiseHashes.length ? weights.get(i) : 1;
+                distance += weight * hammingDistance(fieldValue, hash, length);
             }
             // Normalize the returned distance to 0-100.0
             distance *= 100.0f / (15 * length * hashes.size());
