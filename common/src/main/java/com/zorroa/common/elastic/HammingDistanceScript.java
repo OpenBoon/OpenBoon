@@ -31,7 +31,7 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         length = hashes.get(0).length();
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
-        logger.info("Performing hamming on field {} with weights {}", field, weights);
+        logger.info("Performing hamming on field {} with weights {}", field, weights.size());
 
         if (hashes == null || hashes.isEmpty()) {
             bitwiseHashes = null;
@@ -96,7 +96,7 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
                     continue;
                 }
                 String hash = hashes.get(i);
-                float weight = weights != null && weights.size() == bitwiseHashes.length ? weights.get(i) : 1;
+                float weight = weights != null && weights.size() == hashes.size() ? weights.get(i) : 1;
                 distance += weight * hammingDistance(fieldValue, hash, length);
             }
             // Normalize the returned distance to 0-100.0
