@@ -463,9 +463,8 @@ public class SearchServiceImpl implements SearchService {
 
         queryFields.forEach((k,v)-> qstring.field(k, v));
         qstring.allowLeadingWildcard(false);
-        //qstring.lenient(true);
-        //qstring.fuzziness(Fuzziness.AUTO);
-        logger.info("{}", qstring);
+        // ignores qstring errors
+        qstring.lenient(true);
         return qstring;
     }
 
