@@ -1,0 +1,268 @@
+{
+  "migration": {
+    "reindex": true,
+    "reingest": false,
+    "patch": 1
+  },
+  "settings": {
+    "index": {
+      "query": {
+        "default_field": "keywords.all"
+      }
+    },
+    "analysis": {
+      "analyzer": {
+        "default": {
+          "tokenizer": "keyword",
+          "filter": [
+            "trim",
+            "delimiter_filter",
+            "lowercase",
+            "porter_stem"
+          ]
+        },
+        "case_sensitive": {
+          "tokenizer": "keyword",
+          "filter": [
+            "trim",
+            "delimiter_filter"
+          ]
+        },
+        "path_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "path_tokenizer"
+        },
+        "package_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "package_tokenizer"
+        },
+        "trim_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "keyword",
+          "filter" : ["trim"]
+        }
+      },
+      "filter": {
+        "delimiter_filter": {
+          "type": "word_delimiter",
+          "preserve_original": "true"
+        }
+      },
+      "tokenizer": {
+        "path_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "/"
+        },
+        "package_tokenizer" : {
+          "type": "path_hierarchy",
+          "delimiter": "."
+        },
+        "ngram_tokenizer": {
+          "type": "edgeNGram",
+          "min_gram": 3,
+          "max_gram": 32,
+          "token_chars": ["letter", "digit"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "asset": {
+      "_all": {
+        "enabled": false
+      },
+      "dynamic": true,
+      "dynamic_date_formats": [
+        "yyyy/MM/dd HH:mm:ss Z",
+        "yyyy/MM/dd Z",
+        "yyyy/MM/dd HH:mm:ss",
+        "yyyy/MM/dd",
+        "yyyy-MM-dd HH:mm:ss Z",
+        "yyyy-MM-dd Z",
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyy-MM-dd",
+        "MM/dd/yyyy",
+        "MM-dd-yyyy"
+      ],
+      "_timestamp": {
+        "enabled": true
+      },
+      "properties": {
+        "keywords": {
+          "dynamic": true,
+          "properties": {
+            "suggest": {
+              "type": "completion",
+              "analyzer": "simple",
+              "search_analyzer": "simple",
+              "payloads": false
+            },
+            "all": {
+              "type": "string",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
+        "links": {
+          "properties": {
+          }
+        },
+        "permissions": {
+          "properties": {
+            "read": {
+              "type": "integer",
+              "index": "not_analyzed"
+            },
+            "export": {
+              "type": "integer",
+              "index": "not_analyzed"
+            },
+            "write": {
+              "type": "integer",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "colors": {
+          "type": "nested",
+          "properties": {
+            "red": {
+              "type": "integer"
+            },
+            "green": {
+              "type": "integer"
+            },
+            "blue": {
+              "type": "integer"
+            },
+            "hue": {
+              "type": "float"
+            },
+            "saturation": {
+              "type": "float"
+            },
+            "brightness": {
+              "type": "float"
+            },
+            "ratio": {
+              "type": "float"
+            }
+          }
+        }
+      },
+      "dynamic_templates": [
+        {
+          "shape_template": {
+            "match_pattern": "regex",
+            "match": "^.+Shape$|^shape$",
+            "mapping": {
+              "type": "geo_shape"
+            }
+          }
+        },
+        {
+          "point_template": {
+            "match_pattern": "regex",
+            "match": "^.+Point|^point$",
+            "mapping": {
+              "type": "geo_point"
+            }
+          }
+        },
+        {
+          "path_template": {
+            "match_pattern": "regex",
+            "match_mapping_type": "string",
+            "match": "^*.+Path|^path$|^directory$",
+            "mapping": {
+              "type": "string",
+              "analyzer": "path_analyzer",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "byte_template": {
+            "match_mapping_type": "long",
+            "match": "_byte",
+            "mapping": {
+              "type": "byte"
+            }
+          }
+        },
+        {
+          "short_template": {
+            "match_mapping_type": "long",
+            "match": "_short",
+            "mapping": {
+              "type": "short"
+            }
+          }
+        },
+        {
+          "binary_template": {
+            "match_mapping_type": "string",
+            "match": "content",
+            "mapping": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "color_template": {
+            "path_match": "*.colors",
+            "mapping": {
+              "type": "nested"
+            }
+          }
+        },
+        {
+          "link_template": {
+            "match": "links.*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        {
+          "date_template": {
+            "match": "*",
+            "match_mapping_type": "date",
+            "mapping": {
+              "type": "date",
+              "index": "not_analyzed",
+              "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
+            }
+          }
+        },
+        {
+          "string_template": {
+            "match": "*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
