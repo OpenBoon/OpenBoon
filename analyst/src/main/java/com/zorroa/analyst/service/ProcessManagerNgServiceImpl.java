@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.analyst.AnalystUtil;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.cluster.ClusterProcess;
 import com.zorroa.common.cluster.client.ClusterException;
@@ -142,15 +141,6 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                 return;
             }
 
-            /*
-            task.putToEnv("ZORROA_CLUSTER_PATH_SHARED", shared.getRoot().toString());
-            task.putToEnv("ZORROA_CLUSTER_PATH_OFS", shared.resolvestr("ofs"));
-            task.putToEnv("ZORROA_CLUSTER_PATH_PLUGINS", shared.resolvestr("plugins"));
-            task.putToEnv("ZORROA_CLUSTER_PATH_MODELS", shared.resolvestr("models"));
-            task.putToEnv("ZORROA_ARCHIVIST_URL", task.getArchivistHost());
-
-             */
-
             saveTempZpsScript(task);
             createLogDirectory(task);
 
@@ -212,8 +202,13 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         }
 
         if (reaction.getResponse() != null) {
-            client.reportTaskResult(process.getId(),
-                    new TaskResultT().setResult(Json.serialize(reaction.getResponse())));
+            if (!Application.isUnitTest()) {
+                client.reportTaskResult(process.getId(),
+                        new TaskResultT().setResult(Json.serialize(reaction.getResponse())));
+            }
+            else {
+                logger.info("Reacted with response: {}", reaction.getResponse());
+            }
         }
 
 
@@ -222,15 +217,25 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             ExpandT expand = new ExpandT();
             expand.setScript(Json.serialize(script));
             expand.setName(script.getName());
-            client.expand(process.getId(), expand);
+            if (!Application.isUnitTest()) {
+                client.expand(process.getId(), expand);
+            }
+            else {
+                logger.info("Reacted with expand: {}", reaction.getExpand());
+            }
         }
 
         if (reaction.getStats() != null) {
             Reaction.TaskStats stats = reaction.getStats();
-            client.reportTaskStats(process.getId(), new TaskStatsT()
+            if (!Application.isUnitTest()) {
+                client.reportTaskStats(process.getId(), new TaskStatsT()
                         .setErrorCount(stats.getErrorCount())
                         .setSuccessCount(stats.getSuccessCount())
                         .setWarningCount(stats.getWarningCount()));
+            }
+            else {
+                logger.info("Reacted with stats: {}", reaction.getStats());
+            }
         }
 
     }
@@ -280,7 +285,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             syncHostList();
             for (String url: hostList) {
 
-                String addr = AnalystUtil.convertUriToClusterAddr(url);
+                String addr = MasterServerClient.convertUriToClusterAddr(url);
                 MasterServerClient client = new MasterServerClient(addr);
                 List<TaskStartT> tasks = Lists.newArrayList();
                 try {

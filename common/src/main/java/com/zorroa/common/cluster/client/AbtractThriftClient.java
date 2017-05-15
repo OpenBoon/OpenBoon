@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
+import java.net.URI;
 
 /**
  * Created by chambers on 5/9/17.
@@ -33,6 +34,7 @@ public abstract class AbtractThriftClient implements Closeable {
     }
 
     public AbtractThriftClient(String address) {
+        address = convertUriToClusterAddr(address);
         String[] parts = address.split(":");
         this.host = parts[0];
         this.port = parts.length == 1 ? getDefaultPort() : Integer.valueOf(parts[1]);
@@ -80,6 +82,8 @@ public abstract class AbtractThriftClient implements Closeable {
 
     private static final long backOffms = 100;
 
+    private static final int logNthFailure = 10;
+
     public abstract class Reconnect<T> {
         private final boolean idempotent;
 
@@ -102,9 +106,9 @@ public abstract class AbtractThriftClient implements Closeable {
                             return wrap();
                         }
                     } catch (TTransportException e) {
-                        backoff(Math.min(tryCount, 20) * backOffms);
+                        backoff(Math.min(tryCount, logNthFailure) * backOffms);
                         tryCount++;
-                        if (tryCount % 20 == 0) {
+                        if (tryCount % logNthFailure == 0) {
                             logger.warn("{} FAILED to connect to {}:{} after {} tries, still retrying.",
                                     getClass(), host, port, tryCount);
                         }
@@ -118,6 +122,40 @@ public abstract class AbtractThriftClient implements Closeable {
                             getClass(), host, port, tryCount);
                 }
             }
+        }
+    }
+
+    public static final String convertUriToClusterAddr(String uri) {
+        /**
+         * Backwards compatible with archivist 0.34
+         */
+        if (uri.startsWith("http")) {
+            URI u = URI.create(uri);
+            int port = u.getPort();
+            if (port == 8066) {
+                port = port-1;
+            }
+            return u.getHost().concat(":").concat(String.valueOf(port));
+        }
+        else {
+            return uri;
+        }
+    }
+
+    public static final String convertUriToClusterAddr(String uri, int port) {
+        /**
+         * Backwards compatible with archivist 0.34
+         */
+        if (uri.startsWith("http")) {
+            URI u = URI.create(uri);
+            int _port = u.getPort();
+            if (port == _port) {
+                port = port-1;
+            }
+            return u.getHost().concat(":").concat(String.valueOf(port));
+        }
+        else {
+            return uri;
         }
     }
 }

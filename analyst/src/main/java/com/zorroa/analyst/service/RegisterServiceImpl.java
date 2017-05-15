@@ -32,8 +32,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.zorroa.analyst.AnalystUtil.convertUriToClusterAddr;
-
 /**
  * Register this process with the archivist.
  */
@@ -129,7 +127,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     public String register(String url) {
 
-        MasterServerClient client = new MasterServerClient(convertUriToClusterAddr(url));
+        MasterServerClient client = new MasterServerClient(url);
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
         ThreadPoolExecutor e = (ThreadPoolExecutor) analyzeThreadPool;
 

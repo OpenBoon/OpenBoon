@@ -37,16 +37,6 @@ public class MasterServerClient extends AbtractThriftClient {
         }
     }
 
-    public void expand(AnalystT node) {
-        new Reconnect<Void>() {
-            @Override
-            protected Void wrap() throws TException {
-                service.ping(node);
-                return null;
-            }
-        }.execute();
-    }
-
     public void ping(AnalystT node) {
         new Reconnect<Void>(true) {
             @Override
