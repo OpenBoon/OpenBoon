@@ -14,6 +14,7 @@ public class NetworkEnvironment {
     private URI uri;
     private String location;
     private String app;
+    private int clusterPort;
 
     public NetworkEnvironment() {}
 
@@ -50,6 +51,19 @@ public class NetworkEnvironment {
     public NetworkEnvironment setLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    public int getClusterPort() {
+        return clusterPort;
+    }
+
+    public NetworkEnvironment setClusterPort(int clusterPort) {
+        this.clusterPort = clusterPort;
+        return this;
+    }
+
+    public String getClusterAddr() {
+        return getHostname().concat(":") + clusterPort;
     }
 
     public boolean isCloud() {

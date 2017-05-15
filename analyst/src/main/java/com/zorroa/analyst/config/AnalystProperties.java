@@ -18,6 +18,6 @@ public class AnalystProperties extends SpringApplicationProperties {
 
     @Bean
     public NetworkEnvironment getNetworkEnvironment() {
-        return NetworkEnvironmentUtils.getNetworkEnvironment(this);
+        return NetworkEnvironmentUtils.getNetworkEnvironment("analyst", this);
     }
 }

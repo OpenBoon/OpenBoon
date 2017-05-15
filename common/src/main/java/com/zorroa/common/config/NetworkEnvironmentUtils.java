@@ -25,13 +25,15 @@ public class NetworkEnvironmentUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(NetworkEnvironmentUtils.class);
 
-    public static NetworkEnvironment getNetworkEnvironment(ApplicationProperties properties) {
+    public static NetworkEnvironment getNetworkEnvironment(String app, ApplicationProperties properties) {
         NetworkEnvironment env = new NetworkEnvironment();
-        env.setApp("analyst");
+        env.setApp(app);
         env.setUri(NetworkEnvironmentUtils.getUrl(properties));
         env.setLocation(NetworkEnvironmentUtils.getLocation(properties));
+        env.setClusterPort(properties.getInt("cluster.server.port"));
 
         logger.info("External URI: {}", env.getUri());
+        logger.info("Cluster {}", env.getClusterAddr());
         logger.info("Location: {}", env.getLocation());
         return env;
     }

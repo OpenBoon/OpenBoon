@@ -72,9 +72,10 @@ public class ApplicationConfig {
         map.put("version", props.getProperty("build.version"));
         map.put("date", props.getProperty("build.date"));
         map.put("user", props.getProperty("build.user"));
-        map.put("commit",props.getProperty("build.id"));
-        map.put("branch",props.getProperty("build.branch"));
-        map.put("dirty",props.getProperty("build.dirty"));
+        map.put("commit", props.getProperty("build.id"));
+        map.put("branch", props.getProperty("build.branch"));
+        map.put("dirty", props.getProperty("build.dirty"));
         return new InfoEndpoint(ImmutableMap.of("build", map));
     }
+
 }
