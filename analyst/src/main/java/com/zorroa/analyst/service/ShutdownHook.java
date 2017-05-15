@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 public class ShutdownHook implements ApplicationListener<ContextClosedEvent> {
 
     @Autowired
-    ProcessManagerService processManagerService;
+    ProcessManagerNgService processManagerNgService;
 
     @Override
     public void onApplicationEvent(ContextClosedEvent contextClosedEvent) {
-        processManagerService.stopAllTasks();
+        processManagerNgService.killAllTasks();
     }
 }

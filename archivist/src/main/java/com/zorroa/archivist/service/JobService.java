@@ -1,7 +1,10 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.cluster.thrift.ExpandT;
+import com.zorroa.common.domain.JobId;
+import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 
@@ -26,7 +29,7 @@ public interface JobService {
 
     boolean createParentDepend(TaskId task);
 
-    Task expand(ExecuteTaskExpand task);
+    Task expand(Task task, ExpandT expand);
 
     /**
      * Create a new task with a validated TaskSpecV.  The validated spec
@@ -86,21 +89,13 @@ public interface JobService {
     /**
      * Set the task state to queued.
      *
-     * @param script
      * @return
      */
-    boolean setTaskQueued(TaskId script);
+    boolean setTaskQueued(TaskId id);
 
     boolean setTaskQueued(TaskId script, String host);
 
-    /**
-     * Update the task state to finished or succeeded based on the exit status.
-     *
-     * @param result
-     * @return
-     */
-    boolean setTaskCompleted(ExecuteTaskStopped result);
-
+    boolean setTaskCompleted(Task task, int exitStatus);
     /**
      * Increment asset related stats.
      *

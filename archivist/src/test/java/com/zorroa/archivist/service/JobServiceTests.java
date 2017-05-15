@@ -3,8 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.common.domain.ExecuteTask;
-import com.zorroa.common.domain.ExecuteTaskStopped;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.Pager;
@@ -65,10 +63,7 @@ public class JobServiceTests extends AbstractTest {
     public void setTaskCompleted() {
         assertTrue(jobService.setTaskQueued(task));
         assertTrue(jobService.setTaskState(task, TaskState.Running, TaskState.Queued));
-        assertTrue(jobService.setTaskCompleted(
-                new ExecuteTaskStopped(
-                    new ExecuteTask(job.getJobId(), task.getTaskId()))
-                        .setNewState(TaskState.Success)));
+        assertTrue(jobService.setTaskCompleted(task, 0));
         assertEquals(JobState.Finished, jobService.get(task.getJobId()).getState());
     }
 

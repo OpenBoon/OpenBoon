@@ -108,7 +108,7 @@ public class ArchivistConfiguration {
 
     @Bean
     public SharedData sharedData() {
-        return new SharedData(properties.getString("zorroa.cluster.path.shared"));
+        return new SharedData(properties.getString("archivist.path.shared"));
     }
 
     /**

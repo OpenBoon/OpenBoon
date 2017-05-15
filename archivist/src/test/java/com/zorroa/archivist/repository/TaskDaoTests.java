@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
-import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -115,7 +115,7 @@ public class TaskDaoTests extends AbstractTest {
 
         int[] expected = { 1,2,3,4,5,6,7,8,9,10,10};
         int i = 0;
-        for (ExecuteTaskStart start : taskDao.getWaiting(11)) {
+        for (TaskStartT start : taskDao.getWaiting(11)) {
             assertEquals(expected[i], start.getOrder());
             i++;
         }
@@ -213,13 +213,13 @@ public class TaskDaoTests extends AbstractTest {
 
     @Test
     public void testGetWaiting() {
-        List<ExecuteTaskStart> waiting = taskDao.getWaiting(5);
+        List<TaskStartT> waiting = taskDao.getWaiting(5);
         assertEquals(1, waiting.size());
 
-        ExecuteTaskStart task = waiting.get(0);
+        TaskStartT task = waiting.get(0);
         assertNotNull(task.getLogPath());
-        assertNotNull(task.getJobId());
-        assertNotNull(task.getArgs());
+        assertNotNull(task.getId());
+        assertNotNull(task.getArgMap());
         assertNotNull(task.getEnv());
     }
 

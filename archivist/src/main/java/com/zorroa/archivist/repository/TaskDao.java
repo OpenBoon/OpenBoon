@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
@@ -38,7 +38,7 @@ public interface TaskDao {
 
     TaskState getState(TaskId task, boolean forUpdate);
 
-    ExecuteTaskStart getExecutableTask(int id);
+    TaskStartT getExecutableTask(int id);
 
     boolean setState(TaskId script, TaskState value, TaskState ... expect);
 
@@ -48,7 +48,7 @@ public interface TaskDao {
 
     boolean createParentDepend(TaskId child);
 
-    List<ExecuteTaskStart> getWaiting(int limit);
+    List<TaskStartT> getWaiting(int limit);
 
     List<Task> getOrphanTasks(int limit, long duration, TimeUnit unit);
 

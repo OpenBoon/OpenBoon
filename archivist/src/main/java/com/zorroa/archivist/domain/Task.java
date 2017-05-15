@@ -25,6 +25,8 @@ public class Task implements TaskId {
     private long timeStateChange;
     private int exitStatus;
     private int order;
+    private String scriptPath;
+    private String logPath;
 
     private Stats stats;
 
@@ -208,6 +210,24 @@ public class Task implements TaskId {
             this.frameTotalCount = frameTotalCount;
             return this;
         }
+    }
+
+    public String getScriptPath() {
+        return scriptPath;
+    }
+
+    public Task setScriptPath(String scriptPath) {
+        this.scriptPath = scriptPath;
+        return this;
+    }
+
+    public String getLogPath() {
+        return logPath;
+    }
+
+    public Task setLogPath(String logPath) {
+        this.logPath = logPath;
+        return this;
     }
 
     @Override

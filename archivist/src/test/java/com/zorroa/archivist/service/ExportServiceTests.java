@@ -4,8 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.ExportSpec;
 import com.zorroa.archivist.domain.Job;
-import com.zorroa.common.domain.ExecuteTaskRequest;
-import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.Source;
@@ -48,7 +47,6 @@ public class ExportServiceTests extends AbstractTest {
 
     @Test
     public void testCreate() {
-
         spec = new ExportSpec();
         spec.setName("test");
         spec.setSearch(new AssetSearch().setQuery("cats"));
@@ -66,11 +64,8 @@ public class ExportServiceTests extends AbstractTest {
         spec.setSearch(new AssetSearch().setQuery("cats"));
         job = exportService.create(spec);
 
-        List<ExecuteTaskStart> tasks =
-                jobExecutorService.getWaitingTasks(new ExecuteTaskRequest()
-                        .setCount(5)
-                        .setUrl("http://localhost:8066"));
-
+        List<TaskStartT> tasks =
+                jobExecutorService.getWaitingTasks("localhost:8065", 5);
         ZpsScript script = Json.Mapper.readValue(
                 new File(tasks.get(0).getScriptPath()), ZpsScript.class);
         for (ProcessorRef ref: script.getExecute()) {

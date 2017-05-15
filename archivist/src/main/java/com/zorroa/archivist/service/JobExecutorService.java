@@ -2,9 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.Task;
-import com.zorroa.common.domain.ExecuteTaskRequest;
-import com.zorroa.common.domain.ExecuteTaskResponse;
-import com.zorroa.common.domain.ExecuteTaskStart;
+import com.zorroa.common.cluster.thrift.TaskResultT;
+import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.domain.JobId;
 import org.springframework.scheduling.annotation.Async;
 
@@ -16,11 +15,11 @@ import java.util.concurrent.Future;
  */
 public interface JobExecutorService {
 
-    Future<List<ExecuteTaskStart>> queueWaitingTasks(ExecuteTaskRequest req);
+    Future<List<TaskStartT>> queueWaitingTasks(String url, int count);
 
-    List<ExecuteTaskStart> getWaitingTasks(ExecuteTaskRequest req);
+    List<TaskStartT> getWaitingTasks(String url, int count);
 
-    void handleResponse(ExecuteTaskResponse response);
+    void handleResponse(Task task, TaskResultT response);
 
     Object waitOnResponse(Job job) throws InterruptedException;
 

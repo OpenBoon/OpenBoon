@@ -28,6 +28,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 public class ElasticTemplate {
 
@@ -186,13 +187,12 @@ public class ElasticTemplate {
             try {
                 InternalAggregations aggregations = (InternalAggregations) r.getAggregations();
                 XContentBuilder jsonBuilder = XContentFactory.jsonBuilder();
+                jsonBuilder.startObject();
                 aggregations.toXContent(jsonBuilder, ToXContent.EMPTY_PARAMS);
-
                 String json = jsonBuilder.string();
+                generator.writeObjectField("aggregations",
+                        Json.deserialize(json, Map.class).get("aggregations"));
 
-                generator.writeRaw(",");
-                generator.writeRaw("\"aggregations\":");
-                generator.writeRaw(json.substring(14));
 
             } catch (IOException e) {
                 logger.warn("Failed to deserialize aggregations.", e);

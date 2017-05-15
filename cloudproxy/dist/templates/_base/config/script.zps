@@ -40,7 +40,7 @@
               "_language_": "groovy"
             },
             "pipelineId": {
-              "_expr_": "return Integer.valueOf(_ctx.globals.pipelineId)",
+              "_expr_": "return _ctx.globals.pipelineId == null ? -1 : Integer.valueOf(_ctx.globals.pipelineId)",
               "_language_": "groovy"
             }
           },

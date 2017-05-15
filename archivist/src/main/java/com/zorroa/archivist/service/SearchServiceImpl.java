@@ -26,7 +26,6 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
-import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
@@ -430,7 +429,12 @@ public class SearchServiceImpl implements SearchService {
          * Note: fuzzy defaults to true.
          */
         String query = search.getQuery();
-        boolean fuzzy = search.getFuzzy() != null ? search.getFuzzy() : true;
+
+        /**
+         * Default fuzzy to off.
+         **/
+        boolean fuzzy = search.getFuzzy() != null ? search.getFuzzy() : false;
+
         if (fuzzy && query != null) {
             StringBuilder sb = new StringBuilder(query.length() + 10);
             for (String part: Splitter.on(" ").omitEmptyStrings().trimResults().split(query)) {
@@ -447,7 +451,6 @@ public class SearchServiceImpl implements SearchService {
         }
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
-
         Map<String, Float> queryFields = null;
 
         if (JdbcUtils.isValid(search.getQueryFields())) {
@@ -460,8 +463,9 @@ public class SearchServiceImpl implements SearchService {
 
         queryFields.forEach((k,v)-> qstring.field(k, v));
         qstring.allowLeadingWildcard(false);
-        qstring.lenient(true);
-        qstring.fuzziness(Fuzziness.AUTO);
+        //qstring.lenient(true);
+        //qstring.fuzziness(Fuzziness.AUTO);
+        logger.info("{}", qstring);
         return qstring;
     }
 

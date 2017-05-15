@@ -7,11 +7,11 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
-import com.zorroa.analyst.ArchivistClient;
+import com.zorroa.common.cluster.client.MasterServerClient;
+import com.zorroa.common.cluster.thrift.AnalystT;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.NetworkEnvironment;
-import com.zorroa.common.domain.AnalystSpec;
-import com.zorroa.common.domain.AnalystState;
+import com.zorroa.sdk.util.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +32,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.zorroa.analyst.AnalystUtil.convertUriToClusterAddr;
+
 /**
  * Register this process with the archivist.
  */
@@ -50,7 +52,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     Executor analyzeThreadPool;
 
     @Autowired
-    ProcessManagerService processManagerService;
+    ProcessManagerNgService processManagerNgService;
 
     @Autowired
     NetworkEnvironment networkEnvironment;
@@ -127,8 +129,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     public String register(String url) {
 
-        ArchivistClient client = new ArchivistClient(url);
-
+        MasterServerClient client = new MasterServerClient(convertUriToClusterAddr(url));
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
         ThreadPoolExecutor e = (ThreadPoolExecutor) analyzeThreadPool;
 
@@ -136,25 +137,26 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         Map<String, Object> fixedMdata = Maps.newHashMapWithExpectedSize(mdata.size());
         metrics.invoke().forEach((k,v)-> fixedMdata.put(k.replace('.', '_'), v));
 
-        AnalystSpec builder = new AnalystSpec();
-        builder.setState(AnalystState.UP);
-        builder.setStartedTime(System.currentTimeMillis());
+        AnalystT builder = new AnalystT();
         builder.setOs(String.format("%s-%s", osBean.getName(), osBean.getVersion()));
         builder.setThreadCount(properties.getInt("analyst.executor.threads"));
         builder.setArch(osBean.getArch());
         builder.setData(properties.getBoolean("analyst.index.data"));
         builder.setUrl(networkEnvironment.getUri().toString());
         builder.setUpdatedTime(System.currentTimeMillis());
-        builder.setState(AnalystState.UP);
-        builder.setLoad(load);
         builder.setQueueSize(e.getQueue().size());
         builder.setThreadsUsed(e.getActiveCount());
-        builder.setMetrics(fixedMdata);
         builder.setTaskIds(ImmutableList.of());
-        builder.setRemainingCapacity(e.getQueue().remainingCapacity());
         builder.setId(id);
-        builder.setTaskIds(processManagerService.getTaskIds());
-        client.register(builder);
+        builder.setTaskIds(processManagerNgService.getTaskIds());
+        builder.setLoadAvg(osBean.getSystemLoadAverage());
+        builder.setMetrics(Json.serialize(fixedMdata));
+
+        try {
+            client.ping(builder);
+        } finally {
+            client.close();
+        }
         return id;
     }
 

@@ -319,7 +319,8 @@ public abstract class AbstractTest {
 
     public AnalystSpec sendAnalystPing() {
         AnalystSpec ab = getAnalystBuilder();
-        analystDao.register("analyst01", ab);
+        ab.setId("ab");
+        analystDao.register(ab);
         refreshIndex();
         return ab;
     }
@@ -329,11 +330,9 @@ public abstract class AbstractTest {
         ping.setUrl("https://192.168.100.100:8080");
         ping.setData(false);
         ping.setState(AnalystState.UP);
-        ping.setStartedTime(System.currentTimeMillis());
         ping.setOs("test");
         ping.setArch("test_x86-64");
         ping.setThreadCount(2);
-        ping.setRemainingCapacity(1);
         return ping;
     }
 }

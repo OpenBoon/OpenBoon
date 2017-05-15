@@ -11,6 +11,7 @@ import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.cluster.thrift.ExpandT;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.*;
 import com.zorroa.sdk.client.exception.ArchivistException;
@@ -152,23 +153,19 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Task expand(ExecuteTaskExpand expand) {
+    public Task expand(Task parent, ExpandT expand) {
         if (logger.isDebugEnabled()) {
             logger.debug("Expanding: {}", Json.prettyString(expand));
         }
 
         ZpsScript expandScript = Json.deserialize(expand.getScript(), ZpsScript.class);
-        Integer taskOrder = Task.ORDER_DEFAULT;
 
+        /*
+         * If the expand script is null, inherit the execute from the parent task.
+         */
         if (expandScript.getExecute() == null) {
-            Task parentTask = taskDao.get(expand.getParentTaskId());
-            // inherit order from the parent.
-            taskOrder = parentTask.getOrder();
-            String root = jobDao.getRootPath(expand.getJobId());
             try {
-                ZpsScript parentScript = Json.Mapper.readValue(
-                        new File(ExecuteTask.scriptPath(root, parentTask.getName(), parentTask.getTaskId())),
-                        ZpsScript.class);
+                ZpsScript parentScript = Json.Mapper.readValue(parent.getScriptPath(), ZpsScript.class);
                 expandScript.setExecute(parentScript.getExecute());
             } catch (IOException e) {
                 throw new ArchivistWriteException("Expand with inherited execute failure", e);
@@ -176,11 +173,11 @@ public class JobServiceImpl implements JobService {
         }
 
         TaskSpec spec = new TaskSpec();
-        spec.setJobId(expand.getJobId());
+        spec.setJobId(parent.getJobId());
         spec.setName(expand.getName());
         spec.setScript(Json.serializeToString(expandScript));
-        spec.setParentTaskId(expand.getParentTaskId());
-        spec.setOrder(taskOrder);
+        spec.setOrder(parent.getOrder());
+        spec.setParentTaskId(parent.getTaskId());
         return createTask(spec);
     }
 
@@ -214,10 +211,8 @@ public class JobServiceImpl implements JobService {
         /**
          * Write script to disk
          */
-        String root = jobDao.getRootPath(spec.getJobId());
-        String scriptPath = ExecuteTask.scriptPath(root, task.getName(), task.getTaskId());
         try {
-            Json.Mapper.writeValue(Paths.get(scriptPath).toFile(), script);
+            Json.Mapper.writeValue(new File(task.getScriptPath()), script);
         } catch (IOException e) {
             throw new ArchivistException("Failed to add task, " + e, e);
         }
@@ -232,18 +227,9 @@ public class JobServiceImpl implements JobService {
         /**
          * Create the first task which is just the script itself.
          */
-
-        logger.info("Adding task to job: {}", spec);
         Task task = taskDao.create(spec);
-
-        /**
-         * Write script to disk
-         */
-        String root = jobDao.getRootPath(spec.getJobId());
-        String scriptPath = ExecuteTask.scriptPath(root, task.getName(), task.getTaskId());
-
         try {
-            Files.write(Paths.get(scriptPath), spec.getScript().getBytes());
+            Files.write(Paths.get(task.getScriptPath()), spec.getScript().getBytes());
         } catch (IOException e) {
             throw new ArchivistException("Failed to add task, " + e, e);
         }
@@ -311,11 +297,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean setTaskCompleted(ExecuteTaskStopped result) {
-        TaskState newState = result.getNewState();
-        if (setTaskState(result, newState, TaskState.Running, TaskState.Queued)) {
+    public boolean setTaskCompleted(Task task, int exitStatus) {
+        TaskState newState = exitStatus != 0 ? TaskState.Failure : TaskState.Success;
+        if (setTaskState(task, newState, TaskState.Running, TaskState.Queued)) {
             if (newState.equals(TaskState.Success)) {
-                logger.info("decremented {} depend counts" , taskDao.decrementDependCount(result));
+                logger.info("decremented {} depend counts" , taskDao.decrementDependCount(task));
             }
             return true;
         }

@@ -5,7 +5,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobState;
@@ -13,8 +12,15 @@ import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskFilter;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.cluster.client.WorkerNodeClient;
+import com.zorroa.common.cluster.thrift.TaskKillT;
+import com.zorroa.common.cluster.thrift.TaskResultT;
+import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.domain.Analyst;
+import com.zorroa.common.domain.AnalystState;
+import com.zorroa.common.domain.JobId;
+import com.zorroa.common.domain.TaskState;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
@@ -85,19 +91,20 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     }
 
     @Override
-    public Future<List<ExecuteTaskStart>> queueWaitingTasks(ExecuteTaskRequest req) {
-        return commandQueue.submit(() -> getWaitingTasks(req));
+    public Future<List<TaskStartT>> queueWaitingTasks(String url, int count) {
+        return commandQueue.submit(() -> getWaitingTasks(url, count));
     }
 
     @Override
-    public List<ExecuteTaskStart> getWaitingTasks(ExecuteTaskRequest req) {
-        if (req.getUrl() == null) {
+    public List<TaskStartT> getWaitingTasks(String url, int count) {
+        if (url == null) {
             throw new ArchivistWriteException("Failed to query for tasks, return URL is null. " +
                     "Analyst may be badly configured");
         }
-        List<ExecuteTaskStart> result = Lists.newArrayListWithCapacity(req.getCount());
-        for (ExecuteTaskStart task : taskDao.getWaiting(req.getCount())) {
-            if (jobService.setTaskQueued(task, req.getUrl())) {
+
+        List<TaskStartT> result = Lists.newArrayListWithCapacity(count);
+        for (TaskStartT task : taskDao.getWaiting(count)) {
+            if (jobService.setTaskQueued(taskDao.get(task.id), url)) {
                 result.add(task);
             }
         }
@@ -110,18 +117,18 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             .build();
 
     @Override
-    public void handleResponse(ExecuteTaskResponse response) {
-        logger.info("Processing job response, id:{}, data:{}", response.getJobId(), response.getResponse());
+    public void handleResponse(Task task, TaskResultT response) {
+        logger.info("Processing job response, id:{}", task.getJobId());
         try {
-            SynchronousQueue<Object> queue = returnQueue.asMap().get(response.getJobId());
+            SynchronousQueue<Object> queue = returnQueue.asMap().get(task.getJobId());
             if (queue == null) {
-                logger.warn("Synchronous queue expired for job: {}", response.getJobId());
+                logger.warn("Synchronous queue expired for job: {}", task.getJobId());
                 return;
             }
-            queue.offer(response.getResponse(), 30, TimeUnit.SECONDS);
+            queue.offer(response.getResult(), 30, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             logger.warn("Waiting thread disappeared for job response ID: {}",
-                    response.getJobId(), e);
+                    task.getJobId(), e);
         }
     }
 
@@ -210,12 +217,12 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     }
 
     public void killRunningTaskOnAnalyst(Task task, TaskState newState) {
-        AnalystClient client = analystService.getAnalystClient(task.getHost());
+        WorkerNodeClient client = new WorkerNodeClient(task.getHost());
         try {
             logger.info("Killing runinng task: {}", task);
-            client.stop(new ExecuteTaskStop(new ExecuteTask(task.getJobId(), task.getTaskId(), task.getParentTaskId()) )
-                    .setNewState(newState)
-                    .setReason("Stopped by " + SecurityUtils.getUsername()));
+            client.kill(new TaskKillT().setId(task.getTaskId())
+                    .setReason("Manually killed  by " + SecurityUtils.getUsername())
+                    .setUser(SecurityUtils.getUsername()));
         } catch (Exception e) {
             logger.warn("Failed to kill running task an analyst {}", task.getHost());
         }

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service;
 
-import com.zorroa.archivist.AnalystClient;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.Analyst;
@@ -29,9 +28,11 @@ public class AnalystServiceImpl implements AnalystService {
     ApplicationProperties properties;
 
     @Override
-    public void register(String id, AnalystSpec spec) {
-        analystDao.register(id, spec);
-        taskDao.updatePingTime(spec.getTaskIds());
+    public void register(AnalystSpec spec) {
+        analystDao.register(spec);
+        if (spec.getTaskIds() != null) {
+            taskDao.updatePingTime(spec.getTaskIds());
+        }
     }
 
     @Override
@@ -52,24 +53,5 @@ public class AnalystServiceImpl implements AnalystService {
     @Override
     public PagedList<Analyst> getAll(Pager paging) {
         return analystDao.getAll(paging);
-    }
-
-    @Override
-    public AnalystClient getAnalystClient(String host) {
-        AnalystClient client = new AnalystClient();
-        client.getLoadBalancer().addHost(host);
-        return client;
-    }
-
-    @Override
-    public AnalystClient getAnalystClient() {
-        AnalystClient client = new AnalystClient();
-        for (Analyst a : analystDao.getReady(Pager.first(10))) {
-            if (a.getUrl() == null) {
-                continue;
-            }
-            client.getLoadBalancer().addHost(a.getUrl());
-        }
-        return client;
     }
 }

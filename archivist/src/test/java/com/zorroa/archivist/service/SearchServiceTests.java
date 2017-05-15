@@ -329,28 +329,64 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(Source);
         refreshIndex();
 
-        SearchResponse response = searchService.search(new AssetSearch("zoolandar"));
+        SearchResponse response = searchService.search(new AssetSearch("zoolander"));
         assertEquals(1, response.getHits().getTotalHits());
         Map<String, Object> doc = response.getHits().getAt(0).getSource();
         ArrayList<Integer> folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
         assertEquals(2, folders.size());
 
-        response = searchService.search(new AssetSearch("zoolandar").setFields(new String[]{"keywords*"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"keywords*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
         assertNull(doc.get("links"));
 
-        response = searchService.search(new AssetSearch("zoolandar").setFields(new String[]{"links.folder"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"links.folder"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
         folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
         assertEquals(2, folders.size());
 
-        response = searchService.search(new AssetSearch("zoolandar").setFields(new String[]{"links*"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"links*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
         folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
         assertEquals(2, folders.size());
+    }
+
+    @Test
+    public void testSimpleQuery() throws IOException {
+
+        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        Source.addKeywords("source", "zoolander");
+        assetService.index(Source);
+        refreshIndex();
+
+        assertEquals(1, searchService.search(
+                new AssetSearch("zoo*").setFuzzy(false)).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testMinusQuery() throws IOException {
+
+        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        Source.addKeywords("source", "zoolander", "beer");
+        assetService.index(Source);
+        refreshIndex();
+
+        assertEquals(0, searchService.search(
+                new AssetSearch("zoo* -beer").setFuzzy(true)).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testOrQuery() throws IOException {
+
+        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        Source.addKeywords("source", "zoolander", "beer");
+        assetService.index(Source);
+        refreshIndex();
+
+        assertEquals(1, searchService.search(
+                new AssetSearch("zoolander OR cat").setFuzzy(false)).getHits().getTotalHits());
     }
 
     @Test
@@ -371,12 +407,12 @@ public class SearchServiceTests extends AbstractTest {
          * Handles the case where the client specified ~
          */
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander~");
+        Source.addKeywords("source", "zoolander");
         assetService.index(Source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar").setFuzzy(true)).getHits().getTotalHits());
+                new AssetSearch("zoolandar~").setFuzzy(true)).getHits().getTotalHits());
     }
 
     @Test

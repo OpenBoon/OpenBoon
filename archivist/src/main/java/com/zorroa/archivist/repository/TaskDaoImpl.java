@@ -5,9 +5,8 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
+import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.NetworkEnvironment;
-import com.zorroa.common.domain.ExecuteTask;
-import com.zorroa.common.domain.ExecuteTaskStart;
 import com.zorroa.common.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
@@ -124,7 +123,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     }
 
     @Override
-    public ExecuteTaskStart getExecutableTask(int id) {
+    public TaskStartT getExecutableTask(int id) {
         return jdbc.queryForObject(GET_TASK_TO_EXECUTE + " AND task.pk_task=?", EXECUTE_TASK_MAPPER, id);
     }
 
@@ -233,28 +232,31 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         return jdbc.update(SET_DEPEND, child.getParentTaskId(), child.getTaskId()) > 0;
     }
 
-    private final RowMapper<ExecuteTaskStart> EXECUTE_TASK_MAPPER = (rs, row) -> {
+    private final RowMapper<TaskStartT> EXECUTE_TASK_MAPPER = (rs, row) -> {
         /*
          * We don't parse the script here, its not needed as we're just going to
          * turn it back into a string anyway.
          */
-        ExecuteTask t = new ExecuteTask();
-        t.setTaskId(rs.getInt("pk_task"));
+        String workDir = rs.getString("str_root_path");
+
+        TaskStartT t = new TaskStartT();
+        t.setId(rs.getInt("pk_task"));
         t.setJobId(rs.getInt("pk_job"));
+        t.setName(rs.getString("str_name"));
         if (rs.getObject("pk_parent") != null) {
-            t.setParentTaskId(rs.getInt("pk_parent"));
+            t.setParent(rs.getInt("pk_parent"));
         }
 
-        ExecuteTaskStart e = new ExecuteTaskStart(t);
-        e.setOrder(rs.getInt("int_order"));
-        e.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
-        e.setEnv(Json.deserialize(rs.getString("json_env"), Map.class));
-        e.setRootPath(rs.getString("str_root_path"));
-        e.setName(rs.getString("str_name"));
-        e.setSharedPath(sharedPath);
-        e.setArchivistHost(networkEnv.getUri().toString());
+        t.setEnv(Json.deserialize(rs.getString("json_env"), Map.class));
+        t.setArgMap(rs.getString("json_args").getBytes());
 
-        return e;
+        t.setWorkDir(workDir);
+        t.setSharedDir(sharedPath);
+        t.setMasterHost(networkEnv.getClusterAddr());
+        t.setScriptPath(scriptPath(workDir, t.getName(), t.getId()));
+        t.setLogPath(logPath(workDir, t.getName(), t.getId()));
+        t.setOrder(rs.getInt("int_order"));
+        return t;
     };
 
     private static final String GET_TASK_TO_EXECUTE =
@@ -285,7 +287,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "task.int_order ASC, " +
                 "task.pk_task ASC LIMIT ? ";
     @Override
-    public List<ExecuteTaskStart> getWaiting(int limit) {
+    public List<TaskStartT> getWaiting(int limit) {
         return jdbc.query(GET_WAITING, EXECUTE_TASK_MAPPER, limit);
     }
 
@@ -306,13 +308,17 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "task_stat.int_frame_total_count, " +
             "task_stat.int_frame_success_count,"+
             "task_stat.int_frame_error_count,"+
-            "task_stat.int_frame_warning_count " +
+            "task_stat.int_frame_warning_count, " +
+            "job.str_root_path " +
+
         "FROM " +
-            "task JOIN task_stat ON task.pk_task = task_stat.pk_task " ;
+            "task " +
+                "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
+                "JOIN job ON task.pk_job = job.pk_job ";
+
 
     private static final String GET_QUEUED =
             GET_TASKS +
-            "JOIN job ON task.pk_job = job.pk_job " +
             "WHERE " +
                 "task.int_state IN (" + TaskState.Running.ordinal() + "," +  TaskState.Queued.ordinal() + ") " +
             "AND " +
@@ -339,6 +345,10 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         task.setTimeStopped(rs.getLong("time_stopped"));
         task.setTimeStateChange(rs.getLong("time_state_change"));
         task.setOrder(rs.getInt("int_order"));
+
+        String workDir = rs.getString("str_root_path");
+        task.setScriptPath(scriptPath(workDir, task.getName(), task.getId()));
+        task.setLogPath(logPath(workDir, task.getName(), task.getId()));
 
         Task.Stats s = new Task.Stats();
         s.setFrameErrorCount(rs.getInt("int_frame_error_count"));
@@ -409,5 +419,15 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 return taskIds.size();
             }
         }).length;
+    }
+
+    public static final String scriptPath(String root, String name, int id) {
+        return String.format("%s/scripts/%s.%04d.json",
+                root, name.replaceAll("[\\s\\.\\/\\\\]+", "_"), id);
+    }
+
+    public static final String logPath(String root, String name, int id) {
+        return String.format("%s/logs/%s.%04d.log",
+                root, name.replaceAll("[\\s\\.\\/\\\\]+", "_"), id);
     }
 }

@@ -1,4 +1,4 @@
-package com.zorroa.common.cluster;
+package com.zorroa.common.cluster.client;
 
 /**
  * Created by chambers on 11/11/16.

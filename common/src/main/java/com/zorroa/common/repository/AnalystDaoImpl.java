@@ -37,9 +37,9 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
-    public String register(String id, AnalystSpec builder)  {
-        byte[] doc = Json.serialize(builder);
-        return elastic.index(client.prepareIndex(getIndex(), getType(), id)
+    public String register(AnalystSpec spec)  {
+        byte[] doc = Json.serialize(spec);
+        return elastic.index(client.prepareIndex(getIndex(), getType(), spec.getId())
                 .setSource(doc)
                 .setOpType(IndexRequest.OpType.INDEX));
     }

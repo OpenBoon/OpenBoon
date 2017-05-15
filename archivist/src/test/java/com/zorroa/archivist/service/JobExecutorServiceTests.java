@@ -5,7 +5,10 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.TaskDao;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.cluster.thrift.ExpandT;
+import com.zorroa.common.cluster.thrift.TaskStartT;
+import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -57,9 +60,9 @@ public class JobExecutorServiceTests extends AbstractTest {
                 .setClassName("foo")
                 .setLanguage("java")));
 
-        jobService.expand(new ExecuteTaskExpand(job.getJobId(), null)
+        jobService.expand(jobService.getAllTasks(job.getJobId(), Pager.first()).get(0), new ExpandT()
                 .setName("foo")
-                .setScript(Json.serializeToString(expand)));
+                .setScript(Json.serializeToString(expand).getBytes()));
 
         job = jobService.get(job.getJobId());
         assertEquals(1, job.getCounts().getTasksRunning());
@@ -92,8 +95,8 @@ public class JobExecutorServiceTests extends AbstractTest {
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(1, dependCount);
 
-        jobService.setTaskCompleted(new ExecuteTaskStopped(
-                    new ExecuteTask(task1.getJobId(), task1.getTaskId()), TaskState.Success));
+        jobService.setTaskCompleted(task1, 0);
+
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(0, dependCount);
@@ -129,22 +132,19 @@ public class JobExecutorServiceTests extends AbstractTest {
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(2, dependCount);
 
-        jobService.setTaskCompleted(new ExecuteTaskStopped(new ExecuteTask()
-                .setTaskId(task1.getTaskId())
-                .setJobId(task1.getJobId()), TaskState.Success));
+        jobService.setTaskCompleted(task1, 0);
 
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
         assertEquals(1, dependCount);
 
         jobService.setTaskState(task3, TaskState.Running, TaskState.Waiting);
-        jobService.setTaskCompleted(new ExecuteTaskStopped(new ExecuteTask()
-                .setTaskId(task3.getTaskId())
-                .setJobId(task3.getJobId()), TaskState.Success));
+
+        jobService.setTaskCompleted(task3, 0);
 
         dependCount = jdbc.queryForObject(
                 "SELECT SUM(int_depend_count) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
-        assertEquals(1, dependCount);
+        assertEquals(0, dependCount);
     }
 
     @Test
@@ -170,16 +170,17 @@ public class JobExecutorServiceTests extends AbstractTest {
      * Called by unit tests.
      */
     public void unittestSchedule() {
-        for (ExecuteTaskStart task: taskDao.getWaiting(10)) {
+        for (TaskStartT task: taskDao.getWaiting(10)) {
             logger.debug("SCHEDULE");
             logger.debug("{}", Json.prettyString(task));
             logger.debug("SCHEDULE");
 
-            if (!jobService.setTaskState(task, TaskState.Queued, TaskState.Waiting)) {
+            Task t = taskDao.get(task.id);
+            if (!jobService.setTaskState(t, TaskState.Queued, TaskState.Waiting)) {
                 throw new RuntimeException("Failed to queue task");
             }
 
-            if (!jobService.setTaskState(task, TaskState.Running, TaskState.Queued)) {
+            if (!jobService.setTaskState(t, TaskState.Running, TaskState.Queued)) {
                 logger.warn("Failed to set task running: {}", task);
                 throw new RuntimeException("Failed to run task");
             }
