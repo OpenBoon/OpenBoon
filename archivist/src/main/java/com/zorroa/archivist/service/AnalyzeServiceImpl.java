@@ -54,6 +54,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     PipelineService pipelineService;
 
     @Autowired
+    PluginService pluginService;
+
+    @Autowired
     NetworkEnvironment network;
 
     @Override
@@ -63,11 +66,29 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         script.setInline(true);
         script.setStrict(true);
 
+        script.setExecute(pipelineService.getProcessors(spec.getPipelineId(), spec.getPipeline()));
+        String lang = script.getExecute().get(0).getLanguage();
+
+        if (lang.equals("python")) {
+            script.getExecute().add(pluginService.getProcessorRef("zorroa_py_core.document.PyReturnResponse"));
+        }
+        else {
+            script.getExecute().add(pluginService.getProcessorRef("com.zorroa.core.processor.ReturnResponse"));
+        }
+
         if (files != null) {
-            script.setGenerate(ImmutableList.of(new ProcessorRef()
-                    .setClassName("com.zorroa.core.generator.FileListGenerator")
-                    .setLanguage("java")
-                    .setArg("paths", copyUploadedFiles(files))));
+            if (lang.equals("python")) {
+                script.setGenerate(ImmutableList.of(new ProcessorRef()
+                        .setClassName("zorroa_py_core.generators.PyFileGenerator")
+                        .setLanguage("python")
+                        .setArg("paths", copyUploadedFiles(files))));
+
+            } else {
+                script.setGenerate(ImmutableList.of(new ProcessorRef()
+                        .setClassName("com.zorroa.core.generator.FileListGenerator")
+                        .setLanguage("java")
+                        .setArg("paths", copyUploadedFiles(files))));
+            }
         }
         else if (spec.getAsset() != null) {
             Asset asset = assetService.get(spec.getAsset());
@@ -77,8 +98,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             throw new ArchivistException("No file or asset specified");
         }
 
-        script.setExecute(pipelineService.getProcessors(spec.getPipelineId(), spec.getPipeline()));
-        script.getExecute().add(new ProcessorRef("com.zorroa.core.processor.ReturnResponse"));
+
 
         List<Analyst> analysts = analystService.getActive();
         for (Analyst analyst: analysts) {
@@ -95,8 +115,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                         .setSharedDir(sharedData.getRoot().toString())
                         .setScript(Json.serialize(script)));
 
-                // The ReturnResponse object returns a list.
-                return Json.deserialize(resultT.getResult(), List.class);
+                if (resultT.getResult() != null) {
+                    // The ReturnResponse object returns a list.
+                    return Json.deserialize(resultT.getResult(), List.class);
+                }
+                else {
+                    throw new ArchivistException("No response object was set");
+                }
 
             } catch (ClusterConnectionException e) {
                 logger.warn("Unable to connect to analyst: {}", e.getMessage());
