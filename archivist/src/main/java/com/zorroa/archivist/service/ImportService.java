@@ -14,8 +14,6 @@ public interface ImportService {
 
     PagedList<Job> getAll(Pager page);
 
-    Job create(DebugImportSpec spec);
-
     Job create(UploadImportSpec spec);
 
     /**

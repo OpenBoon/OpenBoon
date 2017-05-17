@@ -56,12 +56,20 @@ public class WorkerRpcServiceImpl implements WorkerRpcService {
 
     @Override
     public TaskResultT executeTask(TaskStartT task) throws CusterExceptionT, TException {
-        return null;
+        try {
+            return processManagerNgService.executeClusterTask(task);
+        } catch (Exception e) {
+            throw new CusterExceptionT(1, "execute task failed: " + e.getMessage());
+        }
     }
 
     @Override
     public void kill(TaskKillT kill) throws CusterExceptionT, TException {
-        processManagerNgService.kill(kill);
+        try {
+            processManagerNgService.kill(kill);
+        } catch (Exception e) {
+            throw new CusterExceptionT(1, "kill task failed: " + e.getMessage());
+        }
     }
 
     @Override

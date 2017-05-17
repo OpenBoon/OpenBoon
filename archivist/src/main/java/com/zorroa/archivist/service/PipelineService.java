@@ -31,4 +31,6 @@ public interface PipelineService {
     boolean delete(int id);
 
     List<ProcessorRef> getProcessors(Object pipelineId, List<ProcessorRef> custom);
+
+    boolean isValidPipelineId(Object value);
 }

@@ -10,7 +10,6 @@ import com.zorroa.common.cluster.client.ClusterException;
 import com.zorroa.common.cluster.client.MasterServerClient;
 import com.zorroa.common.cluster.thrift.*;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
@@ -26,13 +25,16 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by chambers on 5/5/17.
@@ -48,9 +50,6 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     @Autowired
     ThreadPoolExecutor analyzeExecutor;
-
-    @Autowired
-    NetworkEnvironment networkEnvironment;
 
     /**
      * Executor for handling task manipulation commands that
@@ -86,15 +85,9 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
     }
 
     @Override
-    public ClusterProcess executeClusterTask(TaskStartT task) {
+    public TaskResultT executeClusterTask(TaskStartT task) throws IOException {
         ClusterProcess p = new ClusterProcess(task);
-        if (processMap.putIfAbsent(task.getId(), p) != null) {
-            logger.warn("The task {} is already queued or executing.", task);
-            throw new ClusterException("The task is already queued or executing.");
-        }
-
-        runClusterProcess(p);
-        return p;
+        return runClusterProcess(p);
     }
 
     @Override
@@ -131,17 +124,19 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     }
 
-    private void runClusterProcess(ClusterProcess proc) {
+    private TaskResultT runClusterProcess(ClusterProcess proc) throws IOException {
         TaskStartT task = proc.getTask();
-
+        AtomicReference<TaskResultT> result = new AtomicReference<>(new TaskResultT());
+        File tmpScript = null;
         int exitStatus = -1;
+
         try {
 
             if (!passesPreflightChecks(proc)) {
-                return;
+                return null;
             }
 
-            saveTempZpsScript(task);
+            tmpScript = saveTempZpsScript(task);
             createLogDirectory(task);
 
             ZpsTask zpsTask = new ZpsTask();
@@ -154,30 +149,41 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             MetaZpsExecutor zps = new MetaZpsExecutor(zpsTask,
                     new SharedData(task.getSharedDir()));
             zps.addReactionHandler((zpsTask1, sharedData, reaction) -> {
-                handleZpsReaction(zpsTask1 ,sharedData, reaction);
+                if (reaction.getResponse() != null) {
+                    result.set(new TaskResultT()
+                            .setResult(Json.serialize(reaction.getResponse())));
+                } else {
+                    handleZpsReaction(zpsTask1, sharedData, reaction);
+                }
             });
+
             proc.setZpsExecutor(zps);
             if (!passesPreflightChecks(proc)) {
-                return;
+                return null;
             }
 
-            logger.info("setting task to started: {}", task.getId());
-            if (!Application.isUnitTest()) {
+            if (task.getId() > 0) {
+                logger.info("setting task to started: {}", task.getId());
                 proc.getClient().reportTaskStarted(task.getId());
             }
             exitStatus = zps.execute();
             proc.setExitStatus(exitStatus);
 
         } finally {
-            if (processMap.remove(proc.getId()) != null) {
-                if (!Application.isUnitTest()) {
-                    TaskStopT stop = new TaskStopT();
-                    stop.setExitStatus(exitStatus);
-                    proc.getClient().reportTaskStopped(task.getId(), stop);
-                    proc.getClient().close();
-                }
+            if (tmpScript != null) {
+                tmpScript.delete();
+            }
+            // interactive tasks are not in the process map.
+            if (processMap.remove(task.getId()) != null && task.getId() > 0) {
+                logger.info("setting task to stopped: {}", task.getId());
+                TaskStopT stop = new TaskStopT();
+                stop.setExitStatus(exitStatus);
+                proc.getClient().reportTaskStopped(task.getId(), stop);
+                proc.getClient().close();
             }
         }
+
+        return result.get();
     }
 
     private void createLogDirectory(TaskStartT task) {
@@ -200,17 +206,6 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         if (process.isKilled()) {
             return;
         }
-
-        if (reaction.getResponse() != null) {
-            if (!Application.isUnitTest()) {
-                client.reportTaskResult(process.getId(),
-                        new TaskResultT().setResult(Json.serialize(reaction.getResponse())));
-            }
-            else {
-                logger.info("Reacted with response: {}", reaction.getResponse());
-            }
-        }
-
 
         if (reaction.getExpand() != null) {
             ZpsScript script = reaction.getExpand();
@@ -240,8 +235,18 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     }
 
-    private void saveTempZpsScript(TaskStartT task) {
+    private File saveTempZpsScript(TaskStartT task) throws IOException {
+        if (task.getScriptPath() != null) {
+            return null;
+        }
 
+        File temp = File.createTempFile(UUID.randomUUID().toString(), ".json");
+        try (FileOutputStream fos = new FileOutputStream(temp)) {
+            fos.write(task.getScript());
+            fos.close();
+            task.setScriptPath(temp.toString());
+        }
+        return temp;
     }
 
     private boolean passesPreflightChecks(ClusterProcess proc) {

@@ -126,7 +126,7 @@ public class PipelineServiceImpl implements PipelineService {
 
     @Override
     public  List<ProcessorRef> getProcessors(Object pipelineId, List<ProcessorRef> custom) {
-        List<ProcessorRef> result = Lists.newArrayList();
+        List<ProcessorRef> result = Lists.newArrayListWithCapacity(12);
 
         if (JdbcUtils.isValid(custom)) {
             for (ProcessorRef ref: custom) {
@@ -136,16 +136,40 @@ public class PipelineServiceImpl implements PipelineService {
         else if (pipelineId != null) {
             if (pipelineId instanceof Number) {
                 Number pid = (Number) pipelineId;
-                for (ProcessorRef ref : get(pid.intValue()).getProcessors()) {
-                    result.add(pluginService.getProcessorRef(ref));
-                }
+                result.addAll(pluginService.getProcessorRefs(pid.intValue()));
             }
             else {
-                for (ProcessorRef ref: get((String)pipelineId).getProcessors()) {
-                    result.add(pluginService.getProcessorRef(ref));
-                }
+                Pipeline p = get((String) pipelineId);
+                result.addAll(pluginService.getProcessorRefs(p.getId()));
             }
         }
+        else {
+            Pipeline p = getStandard();
+            result.addAll(pluginService.getProcessorRefs(p.getId()));
+        }
         return result;
+    }
+
+    /**
+     * Return true of the Object is a valid pipeline identifier, which is
+     * a number > 0 or a string.
+     *
+     * @param value
+     * @return
+     */
+    @Override
+    public boolean isValidPipelineId(Object value) {
+        if (value == null) {
+            return false;
+        }
+        if (value instanceof Number) {
+            return ((Integer)value) > 0;
+        }
+
+        if (value instanceof String) {
+            return true;
+        }
+
+        return false;
     }
 }

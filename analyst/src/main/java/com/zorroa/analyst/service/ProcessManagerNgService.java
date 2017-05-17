@@ -2,8 +2,10 @@ package com.zorroa.analyst.service;
 
 import com.zorroa.analyst.cluster.ClusterProcess;
 import com.zorroa.common.cluster.thrift.TaskKillT;
+import com.zorroa.common.cluster.thrift.TaskResultT;
 import com.zorroa.common.cluster.thrift.TaskStartT;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
 public interface ProcessManagerNgService {
 
     ClusterProcess queueClusterTask(TaskStartT task);
-    ClusterProcess executeClusterTask(TaskStartT task);
+    TaskResultT executeClusterTask(TaskStartT task) throws IOException;
 
     List<Integer> getTaskIds();
 

@@ -140,7 +140,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         builder.setThreadCount(properties.getInt("analyst.executor.threads"));
         builder.setArch(osBean.getArch());
         builder.setData(properties.getBoolean("analyst.index.data"));
-        builder.setUrl(networkEnvironment.getUri().toString());
+        builder.setUrl(networkEnvironment.getClusterAddr());
         builder.setUpdatedTime(System.currentTimeMillis());
         builder.setQueueSize(e.getQueue().size());
         builder.setThreadsUsed(e.getActiveCount());

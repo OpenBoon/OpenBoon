@@ -1,0 +1,123 @@
+package com.zorroa.archivist.service;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.AnalyzeSpec;
+import com.zorroa.common.cluster.client.ClusterConnectionException;
+import com.zorroa.common.cluster.client.WorkerNodeClient;
+import com.zorroa.common.cluster.thrift.TaskResultT;
+import com.zorroa.common.cluster.thrift.TaskStartT;
+import com.zorroa.common.config.NetworkEnvironment;
+import com.zorroa.common.domain.Analyst;
+import com.zorroa.sdk.client.exception.ArchivistException;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.filesystem.ObjectFile;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
+import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.processor.SharedData;
+import com.zorroa.sdk.util.FileUtils;
+import com.zorroa.sdk.util.Json;
+import com.zorroa.sdk.zps.ZpsScript;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+/**
+ * Created by chambers on 5/15/17.
+ */
+@Component
+public class AnalyzeServiceImpl implements AnalyzeService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImportServiceImpl.class);
+
+    @Autowired
+    AnalystService analystService;
+
+    @Autowired
+    SharedData sharedData;
+
+    @Autowired
+    ObjectFileSystem ofs;
+
+    @Autowired
+    AssetService assetService;
+
+    @Autowired
+    PipelineService pipelineService;
+
+    @Autowired
+    NetworkEnvironment network;
+
+    @Override
+    public Object analyze(AnalyzeSpec spec, MultipartFile[] files) throws IOException {
+
+        ZpsScript script = new ZpsScript();
+        script.setInline(true);
+        script.setStrict(true);
+
+        if (files != null) {
+            script.setGenerate(ImmutableList.of(new ProcessorRef()
+                    .setClassName("com.zorroa.core.generator.FileListGenerator")
+                    .setLanguage("java")
+                    .setArg("paths", copyUploadedFiles(files))));
+        }
+        else if (spec.getAsset() != null) {
+            Asset asset = assetService.get(spec.getAsset());
+            script.setOver(ImmutableList.of(asset));
+        }
+        else {
+            throw new ArchivistException("No file or asset specified");
+        }
+
+        script.setExecute(pipelineService.getProcessors(spec.getPipelineId(), spec.getPipeline()));
+        script.getExecute().add(new ProcessorRef("com.zorroa.core.processor.ReturnResponse"));
+
+        List<Analyst> analysts = analystService.getActive();
+        for (Analyst analyst: analysts) {
+            try {
+                WorkerNodeClient client = new WorkerNodeClient(analyst.getUrl());
+                // Skip over analyst if it happens to be down.
+                client.setMaxRetries(5);
+                TaskResultT resultT = client.executeTask(new TaskStartT()
+                        .setArgMap(Json.serialize(spec.getArgs()))
+                        .setEnv(ImmutableMap.of())
+                        .setMasterHost(network.getClusterAddr())
+                        .setName("execute")
+                        .setOrder(-1000)
+                        .setSharedDir(sharedData.getRoot().toString())
+                        .setScript(Json.serialize(script)));
+
+                // The ReturnResponse object returns a list.
+                return Json.deserialize(resultT.getResult(), List.class);
+
+            } catch (ClusterConnectionException e) {
+                logger.warn("Unable to connect to analyst: {}", e.getMessage());
+            }
+        }
+
+        throw new ArchivistException("Unable to find a suitable analyst.");
+    }
+
+    private List<String> copyUploadedFiles(MultipartFile[] files) throws IOException {
+        List<String> result = Lists.newArrayListWithCapacity(files.length);
+        for (MultipartFile file: files) {
+            ObjectFile ofile = ofs.prepare("tmp", file.getOriginalFilename() + file.getSize(),
+                    FileUtils.extension(file.getOriginalFilename()));
+            Path path = ofile.getFile().toPath();
+
+            if (!ofile.exists()) {
+                Files.copy(file.getInputStream(), path);
+            }
+            result.add(path.toString());
+        }
+        return result;
+    }
+}

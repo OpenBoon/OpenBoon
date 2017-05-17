@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -12,7 +11,6 @@ import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
-import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
@@ -32,7 +30,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.zorroa.archivist.domain.PipelineType.Import;
 
@@ -84,62 +81,6 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public PagedList<Job> getAll(Pager page) {
         return jobService.getAll(page, new JobFilter().setType(PipelineType.Import));
-    }
-
-    @Override
-    public Job create(DebugImportSpec spec) {
-        String syncId = UUID.randomUUID().toString();
-        JobSpec jspec = new JobSpec();
-        jspec.putToArgs("syncId", syncId);
-        jspec.setType(Import);
-
-        List<ProcessorRef> generator;
-        if (JdbcUtils.isValid(spec.getPath())) {
-            jspec.setName(String.format("debugging import by %s (file=%s)",
-                    SecurityUtils.getUsername(), FileUtils.filename(spec.getPath())));
-
-            generator = ImmutableList.of(
-                    new ProcessorRef("com.zorroa.core.generator.FileListGenerator")
-                            .setArg("paths", ImmutableList.of(spec.getPath())));
-        }
-        else if (JdbcUtils.isValid(spec.getQuery())) {
-            jspec.setName(String.format("debugging import by %s (search=%s)",
-                    SecurityUtils.getUsername(), spec.getQuery()));
-
-            AssetSearch search = new AssetSearch();
-            search.setQuery(spec.getQuery());
-            search.setSize(1);
-            generator = ImmutableList.of(
-                    new ProcessorRef("com.zorroa.core.generator.AssetSearchGenerator")
-                            .setArg("search", search));
-        }
-        else {
-            throw new IllegalArgumentException("Must set either a path or search query.");
-        }
-
-        if (!isValidPipeline(spec.getPipelineId()) &&  spec.getPipeline() == null) {
-            Pipeline pl = pipelineService.getStandard();
-            spec.setPipelineId(pl.getId());
-        }
-
-        List<ProcessorRef> pipeline = pipelineService.getProcessors(
-                spec.getPipelineId(), spec.getPipeline());
-        pipeline.add(new ProcessorRef("com.zorroa.core.processor.ReturnResponse"));
-
-        ZpsScript script = new ZpsScript();
-        script.setGenerate(generator);
-        script.setExecute(pipeline);
-        script.setInline(true);
-        script.setStrict(true);
-
-        Job job = jobService.launch(jspec);
-        jobService.createTask(new TaskSpec().setScript(script)
-                .setJobId(job.getJobId())
-                .setOrder(Task.ORDER_INTERACTIVE)
-                .setName("Path Generation"));
-
-
-        return job;
     }
 
     @Override

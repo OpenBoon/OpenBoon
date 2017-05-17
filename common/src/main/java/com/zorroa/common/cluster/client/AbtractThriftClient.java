@@ -28,6 +28,12 @@ public abstract class AbtractThriftClient implements Closeable {
     protected int port;
     protected boolean connected = false;
 
+    /**
+     * Maximum # of retries before a ClusterConnectionException is thrown.
+     * -1 to disable and try....forever.
+     */
+    private int maxRetries = -1;
+
     public AbtractThriftClient(String host, int port) {
         this.host = host;
         this.port = port;
@@ -53,6 +59,15 @@ public abstract class AbtractThriftClient implements Closeable {
             connected = true;
         }
         return protocol;
+    }
+
+    public int getMaxRetries() {
+        return maxRetries;
+    }
+
+    public AbtractThriftClient setMaxRetries(int maxRetries) {
+        this.maxRetries = maxRetries;
+        return this;
     }
 
     @Override
@@ -112,6 +127,12 @@ public abstract class AbtractThriftClient implements Closeable {
                             logger.warn("{} FAILED to connect to {}:{} after {} tries, still retrying.",
                                     getClass(), host, port, tryCount);
                         }
+                        if (tryCount >= maxRetries && maxRetries > 0) {
+                            throw new ClusterConnectionException("Failed to connect to " +
+                                    host + ":" + port + ", " + tryCount + " tries");
+                        }
+                    } catch (ClusterException e) {
+                        throw e;
                     } catch (Exception e) {
                         throw new ClusterException(e);
                     }
@@ -133,23 +154,6 @@ public abstract class AbtractThriftClient implements Closeable {
             URI u = URI.create(uri);
             int port = u.getPort();
             if (port == 8066) {
-                port = port-1;
-            }
-            return u.getHost().concat(":").concat(String.valueOf(port));
-        }
-        else {
-            return uri;
-        }
-    }
-
-    public static final String convertUriToClusterAddr(String uri, int port) {
-        /**
-         * Backwards compatible with archivist 0.34
-         */
-        if (uri.startsWith("http")) {
-            URI u = URI.create(uri);
-            int _port = u.getPort();
-            if (port == _port) {
                 port = port-1;
             }
             return u.getHost().concat(":").concat(String.valueOf(port));

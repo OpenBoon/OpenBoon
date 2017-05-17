@@ -127,7 +127,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 .setTypes(getType())
                 .setSize(paging.getSize())
                 .setFrom(paging.getFrom())
-                .addSort("queueSize", SortOrder.ASC)
+                .addSort("loadAvg", SortOrder.ASC)
                 .setQuery(query), MAPPER);
     }
 

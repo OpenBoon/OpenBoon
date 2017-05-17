@@ -54,4 +54,6 @@ public class AnalystServiceImpl implements AnalystService {
     public PagedList<Analyst> getAll(Pager paging) {
         return analystDao.getAll(paging);
     }
+
+
 }

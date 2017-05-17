@@ -84,7 +84,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         ElasticClientUtils.createIndexedScripts(client);
         ElasticClientUtils.createEventLogTemplate(client);
         createSharedPaths();
-        writeClusterConfiguration();
         refreshIndex();
     }
 
@@ -96,9 +95,5 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
     public void refreshIndex() {
         logger.info("Refreshing Elastic Indexes");
         ElasticClientUtils.refreshIndex(client);
-    }
-
-    public void writeClusterConfiguration() {
-        clusterSettingsDao.save(properties);
     }
 }

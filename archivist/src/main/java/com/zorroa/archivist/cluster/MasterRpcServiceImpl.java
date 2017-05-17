@@ -104,24 +104,36 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
 
     @Override
     public void reportTaskStarted(int id) throws CusterExceptionT, TException {
+        if (id < 1) {
+            return;
+        }
         Task t = taskDao.get(id);
         jobService.setTaskState(t, TaskState.Running, TaskState.Queued);
     }
 
     @Override
     public void reportTaskStopped(int id, TaskStopT result) throws CusterExceptionT, TException {
+        if (id < 1) {
+            return;
+        }
         Task t = taskDao.get(id);
         jobService.setTaskCompleted(t, result.getExitStatus());
     }
 
     @Override
     public void reportTaskRejected(int id, String reason) throws CusterExceptionT, TException {
+        if (id < 1) {
+            return;
+        }
         Task t = taskDao.get(id);
         jobService.setTaskState(t, TaskState.Waiting, TaskState.Queued);
     }
 
     @Override
     public void reportTaskStats(int id, TaskStatsT stats) throws CusterExceptionT, TException {
+        if (id < 1) {
+            return;
+        }
         Task t = taskDao.get(id);
         jobService.incrementJobStats(t.getJobId(), stats.getSuccessCount(),
                 stats.getErrorCount(), stats.getWarningCount());
