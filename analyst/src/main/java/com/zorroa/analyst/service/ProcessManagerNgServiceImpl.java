@@ -162,7 +162,6 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             }
 
             if (task.getId() > 0) {
-                logger.info("setting task to started: {}", task.getId());
                 proc.getClient().reportTaskStarted(task.getId());
             }
             exitStatus = zps.execute();
@@ -174,7 +173,6 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             }
             // interactive tasks are not in the process map.
             if (processMap.remove(task.getId()) != null && task.getId() > 0) {
-                logger.info("setting task to stopped: {}", task.getId());
                 TaskStopT stop = new TaskStopT();
                 stop.setExitStatus(exitStatus);
                 proc.getClient().reportTaskStopped(task.getId(), stop);
