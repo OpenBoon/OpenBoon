@@ -30,7 +30,7 @@ public class NetworkEnvironmentUtils {
         env.setApp(app);
         env.setUri(NetworkEnvironmentUtils.getUrl(properties));
         env.setLocation(NetworkEnvironmentUtils.getLocation(properties));
-        env.setClusterPort(properties.getInt("cluster.server.port"));
+        env.setClusterPort(properties.getInt(app + ".cluster.command.port"));
 
         logger.info("External URI: {}", env.getUri());
         logger.info("Cluster {}", env.getClusterAddr());

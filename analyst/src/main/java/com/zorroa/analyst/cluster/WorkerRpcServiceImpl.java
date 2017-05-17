@@ -30,7 +30,7 @@ public class WorkerRpcServiceImpl implements WorkerRpcService {
     private TServer server;
     private Executor thread = Executors.newSingleThreadExecutor();
 
-    @Value("${cluster.server.port}")
+    @Value("${analyst.cluster.command.port}")
     int port;
 
     @PostConstruct

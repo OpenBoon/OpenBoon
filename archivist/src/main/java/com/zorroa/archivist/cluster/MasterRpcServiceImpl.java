@@ -51,8 +51,7 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
     @Autowired
     TaskDao taskDao;
 
-
-    @Value("${cluster.server.port}")
+    @Value("${archivist.cluster.command.port}")
     int port;
 
     private TNonblockingServerSocket transport;
