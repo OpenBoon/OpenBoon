@@ -79,6 +79,8 @@ public class SearchServiceImpl implements SearchService {
     private Map<String, Float> defaultQueryFields =
             ImmutableMap.of("keywords.all", 1.0f, "keywords.all.raw", 2.0f);
 
+    private Map<String, SortOrder> defaultSortFields = Maps.newLinkedHashMap();
+
     @PostConstruct
     public void init() {
         initializeDefaultQueryFields();
@@ -281,13 +283,12 @@ public class SearchServiceImpl implements SearchService {
                 }
             }
             else {
-                /**
-                 * The default sort, if we are not using scroll, is first
-                 * by score, then by date (newest first), then tie breaker is
-                 * doc id.
-                 */
+                // The default sort is always by score, so people can't
+                // screw it up too badly.
                 request.addSort(SortParseElement.SCORE_FIELD_NAME, SortOrder.DESC);
-                request.addSort("_timestamp", SortOrder.DESC);
+                for (Map.Entry<String, SortOrder> entry: defaultSortFields.entrySet()) {
+                    request.addSort(entry.getKey(), entry.getValue());
+                }
             }
         }
         return request;
@@ -689,6 +690,22 @@ public class SearchServiceImpl implements SearchService {
             defaultQueryFields = builder.build();
         }
         logger.info("Default search fields: {}", defaultQueryFields);
+
+        /**
+         * Setup default sort.
+         */
+        defaultSortFields = Maps.newLinkedHashMap();
+        List<String> sortFields =
+                properties.getList("archivist.search.sortFields");
+
+        for (String field: sortFields) {
+            List<String> e = Splitter.on(":").omitEmptyStrings().trimResults().splitToList(field);
+            if (e.size() != 2) {
+                logger.warn("Failed to add default sort option: {}, to many values.(should be field:direction)", field);
+            }
+            defaultSortFields.put(e.get(0), SortOrder.valueOf(e.get(1)));
+        }
+        logger.info("Default sort fields: {}", defaultSortFields);
     }
 
     /**
