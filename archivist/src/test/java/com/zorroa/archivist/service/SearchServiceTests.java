@@ -416,17 +416,14 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testDoubleFuzzySearch() throws IOException {
-        /**
-         * Handles the case where the client specified ~
-         */
+    public void testManualFuzzySearch() throws IOException {
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.addKeywords("source", "zoolander");
         assetService.index(Source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar~").setFuzzy(true)).getHits().getTotalHits());
+                new AssetSearch("zoolandar~").setFuzzy(false)).getHits().getTotalHits());
     }
 
     @Test
