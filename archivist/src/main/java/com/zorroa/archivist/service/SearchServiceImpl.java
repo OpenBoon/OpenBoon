@@ -426,9 +426,10 @@ public class SearchServiceImpl implements SearchService {
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
 
         /**
-         * Note: fuzzy defaults to true.
+         * Note: fuzzy defaults to false.
          */
         String query = search.getQuery();
+
 
         /**
          * Default fuzzy to off.
@@ -439,6 +440,14 @@ public class SearchServiceImpl implements SearchService {
             StringBuilder sb = new StringBuilder(query.length() + 10);
             for (String part: Splitter.on(" ").omitEmptyStrings().trimResults().split(query)) {
                 sb.append(part);
+                /*
+                 * Append the fuzzy search character to words ending with
+                 * alphanumeric characters, excluding ES logical keywords.
+                 */
+                if (!part.matches(".*[a-zA-Z0-9]$") ||
+                        part.matches("^.*?(AND|OR|NOT).*$")) {
+                    continue;
+                }
                 if (part.endsWith("~")) {
                     sb.append(" ");
                 }
@@ -570,6 +579,7 @@ public class SearchServiceImpl implements SearchService {
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
                     ImmutableMap.of("field", dotRawMe(filter.getHamming().getField()),
                             "hashes", filter.getHamming().getHashes(),
+                            "weights", filter.getHamming().getWeights(),
                             "minScore", filter.getHamming().getMinScore()))));
             fsqb.setMinScore(filter.getHamming().getMinScore());
             fsqb.scoreMode("max");
