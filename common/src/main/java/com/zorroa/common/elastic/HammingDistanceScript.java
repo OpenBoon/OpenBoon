@@ -31,14 +31,13 @@ public class HammingDistanceScript extends AbstractFloatSearchScript {
         length = hashes.get(0).length();
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
-        logger.info("Performing hamming on field {} with weights {}", field, weights.size());
 
         if (hashes == null || hashes.isEmpty()) {
             bitwiseHashes = null;
             return;
         }
 
-        if (weights.size() > 0 && weights.size() != hashes.size()) {
+        if (weights != null && weights.size() != hashes.size()) {
             throw new IllegalArgumentException(
                     "HammingDistanceScript weights must align with hashes");
         }
