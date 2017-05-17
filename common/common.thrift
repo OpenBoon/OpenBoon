@@ -1,4 +1,4 @@
-namespace java com.zorroa.common.cluster2.thrift
+namespace java com.zorroa.common.cluster.thrift
 
 typedef map<string,string> Attrs;
 
