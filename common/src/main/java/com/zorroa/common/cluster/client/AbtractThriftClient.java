@@ -49,9 +49,13 @@ public abstract class AbtractThriftClient implements Closeable {
     public TProtocol connect() throws TException {
         if (!connected) {
             socket = new TSocket(host, port);
-            socket.setTimeout(10000);
             socket.setConnectTimeout(10000);
-            socket.setSocketTimeout(5000);
+
+            /**
+             * TODO: deal with these.
+             */
+            //socket.setTimeout(10000);
+            //socket.setSocketTimeout(5000);
 
             transport = new TFramedTransport(socket);
             protocol = new TCompactProtocol(transport);
@@ -122,8 +126,7 @@ public abstract class AbtractThriftClient implements Closeable {
                         }
                     } catch (TTransportException e) {
                         backoff(Math.min(tryCount, logNthFailure) * backOffms);
-                        tryCount++;
-                        if (tryCount % logNthFailure == 0) {
+                        if (tryCount == 1 || tryCount % logNthFailure == 0) {
                             logger.warn("{} FAILED to connect to {}:{} after {} tries, still retrying.",
                                     getClass(), host, port, tryCount);
                         }
@@ -131,6 +134,7 @@ public abstract class AbtractThriftClient implements Closeable {
                             throw new ClusterConnectionException("Failed to connect to " +
                                     host + ":" + port + ", " + tryCount + " tries");
                         }
+                        tryCount++;
                     } catch (ClusterException e) {
                         throw e;
                     } catch (Exception e) {
