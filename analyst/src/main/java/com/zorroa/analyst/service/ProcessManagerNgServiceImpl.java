@@ -150,8 +150,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                     new SharedData(task.getSharedDir()));
             zps.addReactionHandler((zpsTask1, sharedData, reaction) -> {
                 if (reaction.getResponse() != null) {
-                    result.set(new TaskResultT()
-                            .setResult(Json.serialize(reaction.getResponse())));
+                    result.get().setResult(Json.serialize(reaction.getResponse()));
                 } else {
                     handleZpsReaction(zpsTask1, sharedData, reaction);
                 }
