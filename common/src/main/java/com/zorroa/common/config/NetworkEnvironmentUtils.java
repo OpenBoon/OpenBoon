@@ -30,10 +30,11 @@ public class NetworkEnvironmentUtils {
         env.setApp(app);
         env.setUri(NetworkEnvironmentUtils.getUrl(properties));
         env.setLocation(NetworkEnvironmentUtils.getLocation(properties));
-        env.setClusterPort(properties.getInt(app + ".cluster.command.port"));
+        env.setClusterAddr(getInternalHostname() + ":" +
+                properties.getInt(app + ".cluster.command.port"));
 
         logger.info("External URI: {}", env.getUri());
-        logger.info("Cluster {}", env.getClusterAddr());
+        logger.info("Cluster: {}", env.getClusterAddr());
         logger.info("Location: {}", env.getLocation());
         return env;
     }
@@ -49,6 +50,25 @@ public class NetworkEnvironmentUtils {
         } else {
             return ON_PREM;
         }
+    }
+
+    public static final String getInternalHostname() {
+        String hostname = null;
+
+        try {
+            hostname = InetAddress.getLocalHost().getHostName();
+        } catch (Exception ignore1) {
+            try {
+                hostname = InetAddress.getLocalHost().getHostAddress();
+            } catch (Exception ignore2) {
+
+            }
+        }
+        if (hostname == null) {
+            throw new RuntimeException("Unable to determine public interface");
+        }
+        return hostname;
+
     }
 
     public static final String getHostname(ApplicationProperties properties) {
