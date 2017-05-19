@@ -2,7 +2,7 @@
   "migration": {
     "reindex": true,
     "reingest": false,
-    "patch": 1
+    "patch": 2
   },
   "settings": {
     "index": {
