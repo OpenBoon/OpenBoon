@@ -289,6 +289,8 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
                 String addr = MasterServerClient.convertUriToClusterAddr(url);
                 MasterServerClient client = new MasterServerClient(addr);
+                client.setMaxRetries(10);
+
                 List<TaskStartT> tasks = Lists.newArrayList();
                 try {
                     tasks = client.queuePendingTasks(addr, threads - analyzeExecutor.getActiveCount());

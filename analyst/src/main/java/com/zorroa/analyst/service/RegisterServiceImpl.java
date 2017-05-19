@@ -92,7 +92,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         logger.info("Analyst ID: {}", id);
     }
 
-    private final AtomicBoolean connected = new AtomicBoolean(false);
+    private final Map<String, AtomicBoolean> connected = Maps.newHashMap();
 
     @Override
     protected void runOneIteration() {
@@ -103,13 +103,19 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         try {
             List<String> urls = properties.getList("analyst.master.host");
             for (String url: urls) {
+                if (!connected.containsKey(url)) {
+                    connected.put(url, new AtomicBoolean(false));
+                }
+            }
+            for (String url: urls) {
+                AtomicBoolean success = connected.getOrDefault("url", new AtomicBoolean(false));
                 try {
                     register(url);
-                    if (connected.compareAndSet(false, true)) {
+                    if (success.compareAndSet(false, true)) {
                         logger.info("Registered with {}", url);
                     }
                 } catch (Exception e) {
-                    if (connected.compareAndSet(false, true)) {
+                    if (success.compareAndSet(false, true)) {
                         logger.warn("Failed to register with archivist: {}, {}", url, e.getMessage());
                     }
                 }
@@ -128,6 +134,8 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     public String register(String url) {
 
         MasterServerClient client = new MasterServerClient(url);
+        client.setMaxRetries(10);
+
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
         ThreadPoolExecutor e = (ThreadPoolExecutor) analyzeThreadPool;
 
