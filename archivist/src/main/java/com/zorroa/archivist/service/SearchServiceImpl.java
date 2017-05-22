@@ -19,7 +19,6 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.*;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
@@ -309,7 +308,7 @@ public class SearchServiceImpl implements SearchService {
                 .setTypes("asset")
                 .setQuery(getQuery(builder.getSearch()))
                 .setAggregations(builder.getAggregations())
-                .setSearchType(SearchType.COUNT);
+                .setSize(0);
         return aggregation;
     }
 

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.net.URI;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by chambers on 5/9/17.
@@ -26,7 +27,7 @@ public abstract class AbtractThriftClient implements Closeable {
 
     protected String host;
     protected int port;
-    protected boolean connected = false;
+    protected AtomicBoolean connected = new AtomicBoolean(false);
 
     /**
      * Maximum # of retries before a ClusterConnectionException is thrown.
@@ -47,7 +48,7 @@ public abstract class AbtractThriftClient implements Closeable {
     }
 
     public TProtocol connect() throws TException {
-        if (!connected) {
+        if (!connected.get()) {
             socket = new TSocket(host, port);
             socket.setConnectTimeout(10000);
 
@@ -60,7 +61,7 @@ public abstract class AbtractThriftClient implements Closeable {
             transport = new TFramedTransport(socket);
             protocol = new TCompactProtocol(transport);
             transport.open();
-            connected = true;
+            connected.set(true);
         }
         return protocol;
     }
@@ -82,7 +83,7 @@ public abstract class AbtractThriftClient implements Closeable {
     }
 
     public boolean isConnected() {
-        return connected;
+        return connected.get();
     }
 
     public void backoff(long millis) {
@@ -100,8 +101,6 @@ public abstract class AbtractThriftClient implements Closeable {
     private final Object lock = new Object();
 
     private static final long backOffms = 100;
-
-    private static final int logNthFailure = 10;
 
     public abstract class Reconnect<T> {
         private final boolean idempotent;
@@ -125,15 +124,16 @@ public abstract class AbtractThriftClient implements Closeable {
                             return wrap();
                         }
                     } catch (TTransportException e) {
-                        backoff(Math.min(tryCount, logNthFailure) * backOffms);
-                        if (tryCount == 1 || tryCount % logNthFailure == 0) {
-                            logger.warn("{} FAILED to connect to {}:{} after {} tries, still retrying.",
-                                    getClass(), host, port, tryCount);
+                        if (connected.compareAndSet(true, false)) {
+                            logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",
+                                    getClass(), host, port, maxRetries);
                         }
+
                         if (tryCount >= maxRetries && maxRetries > 0) {
                             throw new ClusterConnectionException("Failed to connect to " +
                                     host + ":" + port + ", " + tryCount + " tries");
                         }
+                        backoff(Math.min(tryCount, 10) * backOffms);
                         tryCount++;
                     } catch (ClusterException e) {
                         throw e;

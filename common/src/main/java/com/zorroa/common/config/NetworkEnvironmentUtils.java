@@ -28,14 +28,16 @@ public class NetworkEnvironmentUtils {
     public static NetworkEnvironment getNetworkEnvironment(String app, ApplicationProperties properties) {
         NetworkEnvironment env = new NetworkEnvironment();
         env.setApp(app);
-        env.setUri(NetworkEnvironmentUtils.getUrl(properties));
+        env.setPublicUri(NetworkEnvironmentUtils.getPublicUrl(properties));
+        env.setPrivateUri(NetworkEnvironmentUtils.getPrivateUrl(properties));
         env.setLocation(NetworkEnvironmentUtils.getLocation(properties));
-        env.setClusterAddr(getInternalHostname() + ":" +
-                properties.getInt(app + ".cluster.command.port"));
+        env.setClusterPort(properties.getInt(app + ".cluster.command.port"));
 
-        logger.info("External URI: {}", env.getUri());
-        logger.info("Cluster: {}", env.getClusterAddr());
+        logger.info("--- NETWORK ENVIRONMENT ---");
         logger.info("Location: {}", env.getLocation());
+        logger.info("External URI: {}", env.getPublicUri());
+        logger.info("Internal URI: {}", env.getPrivateUri());
+        logger.info("ClusterAddr: {}", env.getClusterAddr());
         return env;
     }
 
@@ -52,7 +54,7 @@ public class NetworkEnvironmentUtils {
         }
     }
 
-    public static final String getInternalHostname() {
+    public static final String getPrivateHostname(ApplicationProperties properties) {
         String hostname = null;
 
         try {
@@ -71,9 +73,14 @@ public class NetworkEnvironmentUtils {
 
     }
 
-    public static final String getHostname(ApplicationProperties properties) {
+    public static final String getPublicHostname(ApplicationProperties properties) {
 
         String hostname = properties.getString("server.fqdn", null);
+        if (hostname != null) {
+            return hostname;
+        }
+
+        hostname = properties.getString("server.address", null);
         if (hostname != null) {
             return hostname;
         }
@@ -96,34 +103,32 @@ public class NetworkEnvironmentUtils {
             }
         }
 
-        if (hostname == null) {
-            try {
-                hostname = InetAddress.getLocalHost().getHostName();
-            } catch (Exception ignore1) {
-                try {
-                    hostname = InetAddress.getLocalHost().getHostAddress();
-                } catch (Exception ignore2) {
-
-                }
-            }
-            if (hostname == null) {
-                throw new RuntimeException("Unable to determine public interface");
-            }
-        }
-
-        return hostname;
+        // Fall back on private hostname
+        return getPrivateHostname(properties);
     }
 
-    public static final URI getUrl(ApplicationProperties properties) {
+    private static final URI getUrl(String host, int port, boolean ssl) {
         StringBuilder url = new StringBuilder(256);
         url.append("http");
-        if (properties.getBoolean("server.ssl.enabled")) {
+        if (ssl) {
             url.append("s");
         }
         url.append("://");
-        url.append(properties.getString("server.address", getHostname(properties)));
+        url.append(host);
         url.append(":");
-        url.append(properties.getInt("server.port"));
+        url.append(port);
         return URI.create(url.toString());
+    }
+
+    public static final URI getPrivateUrl(ApplicationProperties properties) {
+        return getUrl(getPrivateHostname(properties),
+                properties.getInt("server.port"),
+                properties.getBoolean("server.ssl.enabled"));
+    }
+
+    public static final URI getPublicUrl(ApplicationProperties properties) {
+        return getUrl(getPublicHostname(properties),
+                properties.getInt("server.port"),
+                properties.getBoolean("server.ssl.enabled"));
     }
 }

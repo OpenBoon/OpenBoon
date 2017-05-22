@@ -11,12 +11,35 @@ public class NetworkEnvironment {
 
     public static final String ON_PREM = "on-prem";
 
-    private URI uri;
+    /**
+     * The REST API interface used by external clients.
+     */
+    private URI publicUri;
+
+    /**
+     * The REST API interface used by internal clients. (might be the same)
+     */
+    private URI privateUri;
+
+    /**
+     * The communication port.
+     */
+    private int clusterPort;
+
     private String location;
     private String app;
-    private String clusterAddr;
 
     public NetworkEnvironment() {}
+
+    /**
+     * The cluster communication address (host:port) which is a
+     * combination of the private URI host and cluster port.
+     *
+     * @return
+     */
+    public String getClusterAddr() {
+        return privateUri.getHost() + ":" + clusterPort;
+    }
 
     public String getApp() {
         return app;
@@ -27,21 +50,22 @@ public class NetworkEnvironment {
         return this;
     }
 
-    public URI getUri() {
-        return uri;
+    public URI getPublicUri() {
+        return publicUri;
     }
 
-    public NetworkEnvironment setUri(URI uri) {
-        this.uri = uri;
+    public NetworkEnvironment setPublicUri(URI publicUri) {
+        this.publicUri = publicUri;
         return this;
     }
 
-    public String getHostname() {
-        return uri.getHost();
+    public URI getPrivateUri() {
+        return privateUri;
     }
 
-    public int getPort() {
-        return uri.getPort();
+    public NetworkEnvironment setPrivateUri(URI privateUri) {
+        this.privateUri = privateUri;
+        return this;
     }
 
     public String getLocation() {
@@ -57,12 +81,12 @@ public class NetworkEnvironment {
         return !location.equals(ON_PREM);
     }
 
-    public String getClusterAddr() {
-        return clusterAddr;
+    public int getClusterPort() {
+        return clusterPort;
     }
 
-    public NetworkEnvironment setClusterAddr(String clusterAddr) {
-        this.clusterAddr = clusterAddr;
+    public NetworkEnvironment setClusterPort(int clusterPort) {
+        this.clusterPort = clusterPort;
         return this;
     }
 
@@ -70,7 +94,7 @@ public class NetworkEnvironment {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("app", app)
-                .add("uri", uri)
+                .add("uri", publicUri)
                 .add("location", location)
                 .toString();
     }

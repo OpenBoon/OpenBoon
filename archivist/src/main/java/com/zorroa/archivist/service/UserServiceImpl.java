@@ -439,7 +439,7 @@ public class UserServiceImpl implements UserService {
 
         if (token != null) {
             String name = user.getFirstName() == null ? user.getUsername() : user.getFirstName();
-            String url = networkEnv.getUri().toString() + "/password?token=" + token.toString();
+            String url = networkEnv.getPublicUri().toString() + "/password?token=" + token.toString();
 
             StringBuilder text = new StringBuilder(1024);
             text.append("Hello ");
@@ -472,7 +472,7 @@ public class UserServiceImpl implements UserService {
         String name = user.getFirstName() == null ? user.getUsername() : user.getFirstName();
 
         if (token != null) {
-            String url = networkEnv.getUri().toString() + "/onboard?token=" + token.toString();
+            String url = networkEnv.getPublicUri().toString() + "/onboard?token=" + token.toString();
 
             StringBuilder text = new StringBuilder(1024);
             text.append("Hello ");

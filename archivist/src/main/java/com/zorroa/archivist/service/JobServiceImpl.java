@@ -13,7 +13,10 @@ import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.cluster.thrift.ExpandT;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.domain.*;
+import com.zorroa.common.config.NetworkEnvironment;
+import com.zorroa.common.domain.JobId;
+import com.zorroa.common.domain.TaskId;
+import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Document;
@@ -65,6 +68,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     PluginService pluginService;
+
+    @Autowired
+    NetworkEnvironment networkEnv;
 
     /**
      * Launch a validated JobSpec provided by REST endpoint.
@@ -135,6 +141,7 @@ public class JobServiceImpl implements JobService {
         /**
          * These options allow jobs to talk back to the archivist.
          */
+        spec.putToEnv("ZORROA_ARCHIVIST_URL", networkEnv.getPrivateUri().toString());
         spec.putToEnv("ZORROA_USER", SecurityUtils.getUsername());
         spec.putToEnv("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
 
