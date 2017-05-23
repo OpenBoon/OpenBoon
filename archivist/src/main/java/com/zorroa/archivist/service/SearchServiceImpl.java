@@ -460,6 +460,10 @@ public class SearchServiceImpl implements SearchService {
         }
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
+        // Set the analyzer to whitespace, which breaks up the query by whitespace.
+        // https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-whitespace-analyzer.html
+        qstring.analyzer("whitespace");
+        
         Map<String, Float> queryFields = null;
 
         if (JdbcUtils.isValid(search.getQueryFields())) {
