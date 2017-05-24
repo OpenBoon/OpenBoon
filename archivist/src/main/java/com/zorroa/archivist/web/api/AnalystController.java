@@ -2,7 +2,6 @@ package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.common.repository.ClusterSettingsDao;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ public class AnalystController {
 
     @Autowired
     AnalystService analystService;
-
-    @Autowired
-    ClusterSettingsDao clusterConfigDao;
 
     @RequestMapping(value="/api/v1/analysts", method=RequestMethod.GET)
     public PagedList<Analyst> getAll(

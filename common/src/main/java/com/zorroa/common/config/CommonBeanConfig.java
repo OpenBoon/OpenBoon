@@ -20,6 +20,4 @@ public class CommonBeanConfig {
         return new AnalystDaoImpl();
     }
 
-    @Bean
-    public ClusterSettingsDao clusterConfigDao() { return new ClusterSettingsDaoImpl(); }
 }

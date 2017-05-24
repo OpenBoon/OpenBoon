@@ -3,9 +3,7 @@ package com.zorroa.archivist;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.service.MigrationService;
 import com.zorroa.archivist.service.PluginService;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.common.repository.ClusterSettingsDao;
 import com.zorroa.sdk.processor.SharedData;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
@@ -33,12 +31,6 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
 
     @Autowired
     MigrationService migrationService;
-
-    @Autowired
-    ClusterSettingsDao clusterSettingsDao;
-
-    @Autowired
-    ApplicationProperties properties;
 
     @Autowired
     SharedData sharedData;
