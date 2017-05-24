@@ -42,7 +42,7 @@ public class FilterServiceImpl implements FilterService {
     TransactionEventManager transactionEventManager;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Autowired
     SearchService searchService;
@@ -68,7 +68,7 @@ public class FilterServiceImpl implements FilterService {
         createPecolator(filter);
 
         transactionEventManager.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build(LogAction.Create,
+            logService.logAsync(UserLogSpec.build(LogAction.Create,
                     "filter", filter.getId()));
         });
         return filter;

@@ -67,16 +67,6 @@ public class MasterServerClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void reportTaskResult(int id, TaskResultT result) {
-        new Reconnect<Void>(true) {
-            @Override
-            protected Void wrap() throws TException {
-                service.reportTaskResult(id, result);
-                return null;
-            }
-        }.execute();
-    }
-
     public void reportTaskRejected(int id, String reason) {
         new Reconnect<Void>(true) {
             @Override
@@ -92,6 +82,16 @@ public class MasterServerClient extends AbtractThriftClient {
             @Override
             protected Void wrap() throws TException {
                 service.reportTaskStats(id, stats);
+                return null;
+            }
+        }.execute();
+    }
+
+    public void reportTaskErrors(int id, List<TaskErrorT> errors) {
+        new Reconnect<Void>(false) {
+            @Override
+            protected Void wrap() throws TException {
+                service.reportTaskErrors(id, errors);
                 return null;
             }
         }.execute();

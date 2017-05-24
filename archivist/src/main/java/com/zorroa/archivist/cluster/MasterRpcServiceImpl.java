@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.service.AnalystService;
+import com.zorroa.archivist.service.EventLogService;
 import com.zorroa.archivist.service.JobExecutorService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.common.cluster.thrift.*;
@@ -51,6 +52,9 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
     @Autowired
     TaskDao taskDao;
 
+    @Autowired
+    EventLogService eventLogService;
+
     @Value("${archivist.cluster.command.port}")
     int port;
 
@@ -84,21 +88,28 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
 
     @Override
     public void ping(AnalystT node) throws TException {
-        AnalystSpec spec = new AnalystSpec();
-        spec.setId(node.getId());
-        spec.setArch(node.getArch());
-        spec.setOs(node.getOs());
-        spec.setData(node.isData());
-        spec.setUpdatedTime(System.currentTimeMillis());
-        spec.setThreadCount(node.getThreadCount());
-        spec.setState(AnalystState.UP);
-        spec.setTaskIds(node.getTaskIds());
-        spec.setLoadAvg(node.getLoadAvg());
-        spec.setUrl(node.getUrl());
-        spec.setQueueSize(node.getQueueSize());
-        spec.setThreadsUsed(node.getThreadsUsed());
-        spec.setMetrics(Json.deserialize(node.getMetrics(), Json.GENERIC_MAP));
-        analystService.register(spec);
+        try {
+            AnalystSpec spec = new AnalystSpec();
+            spec.setId(node.getId());
+            spec.setArch(node.getArch());
+            spec.setOs(node.getOs());
+            spec.setData(node.isData());
+            spec.setUpdatedTime(System.currentTimeMillis());
+            spec.setThreadCount(node.getThreadCount());
+            spec.setState(AnalystState.UP);
+            spec.setTaskIds(node.getTaskIds());
+            spec.setLoadAvg(node.getLoadAvg());
+            spec.setUrl(node.getUrl());
+            spec.setQueueSize(node.getQueueSize());
+            spec.setThreadsUsed(node.getThreadsUsed());
+            spec.setMetrics(Json.deserialize(node.getMetrics(), Json.GENERIC_MAP));
+            analystService.register(spec);
+        } catch (Exception e) {
+            /**
+             * Don't let this bubble out back to analyst.
+             */
+            logger.warn("Error processing analyst ping, {}", node, e);
+        }
     }
 
     @Override
@@ -106,8 +117,15 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
         if (id < 1) {
             return;
         }
-        Task t = taskDao.get(id);
-        jobService.setTaskState(t, TaskState.Running, TaskState.Queued);
+        try {
+            Task t = taskDao.get(id);
+            jobService.setTaskState(t, TaskState.Running, TaskState.Queued);
+        } catch (Exception e) {
+            /**
+             * Don't let this bubble out back to analyst.
+             */
+            logger.warn("Error reporting task started: ", e);
+        }
     }
 
     @Override
@@ -115,8 +133,15 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
         if (id < 1) {
             return;
         }
-        Task t = taskDao.get(id);
-        jobService.setTaskCompleted(t, result.getExitStatus());
+        try {
+            Task t = taskDao.get(id);
+            jobService.setTaskCompleted(t, result.getExitStatus());
+        } catch (Exception e) {
+            /**
+             * Don't let this bubble out back to analyst.
+             */
+            logger.warn("Error reporting task stopped: ", e);
+        }
     }
 
     @Override
@@ -124,8 +149,15 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
         if (id < 1) {
             return;
         }
-        Task t = taskDao.get(id);
-        jobService.setTaskState(t, TaskState.Waiting, TaskState.Queued);
+        try {
+            Task t = taskDao.get(id);
+            jobService.setTaskState(t, TaskState.Waiting, TaskState.Queued);
+        } catch (Exception e) {
+            /**
+             * Don't let this bubble out back to analyst.
+             */
+            logger.warn("Error reporting task rejected: ", e);
+        }
     }
 
     @Override
@@ -133,16 +165,31 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
         if (id < 1) {
             return;
         }
-        Task t = taskDao.get(id);
-        jobService.incrementJobStats(t.getJobId(), stats.getSuccessCount(),
-                stats.getErrorCount(), stats.getWarningCount());
-        jobService.incrementTaskStats(t.getTaskId(), stats.getSuccessCount(),
-                stats.getErrorCount(), stats.getWarningCount());
+        try {
+            Task t = taskDao.get(id);
+            jobService.incrementJobStats(t.getJobId(), stats.getSuccessCount(),
+                    stats.getErrorCount(), stats.getWarningCount());
+            jobService.incrementTaskStats(t.getTaskId(), stats.getSuccessCount(),
+                    stats.getErrorCount(), stats.getWarningCount());
+        } catch (Exception e) {
+            /**
+             * Don't let this bubble out back to analyst.
+             */
+            logger.warn("Error reporting task rejected: ", e);
+        }
     }
 
     @Override
-    public void reportTaskResult(int id, TaskResultT result) throws CusterExceptionT, TException {
-
+    public void reportTaskErrors(int id, List<TaskErrorT> errors) throws CusterExceptionT, TException {
+        try {
+            Task t = taskDao.get(id);
+            eventLogService.logAsync(t, errors);
+        } catch (Exception e) {
+            /**
+             * Don't let this bubble out back to analyst.
+             */
+            logger.warn("Error reporting task rejected: ", e);
+        }
     }
 
     @Override
@@ -157,7 +204,14 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
 
     @Override
     public void expand(int id, ExpandT expand) throws CusterExceptionT, TException {
-        Task t = taskDao.get(id);
-        jobService.expand(t, expand);
+        try {
+            Task t = taskDao.get(id);
+            jobService.expand(t, expand);
+        } catch (Exception e) {
+            /**
+             * Don't let this bubble out back to analyst.
+             */
+            logger.warn("Error expanding job, parent task {}", id, e);
+        }
     }
 }

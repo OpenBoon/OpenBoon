@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
-import com.zorroa.archivist.repository.LogDao;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -29,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -90,13 +88,7 @@ public abstract class AbstractTest {
     protected AnalystService analystService;
 
     @Autowired
-    protected LogDao eventLogDao;
-
-    @Autowired
     protected ApplicationProperties properties;
-
-    @Autowired
-    ApplicationContext applicationContext;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -175,27 +167,6 @@ public abstract class AbstractTest {
         migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true);
         archivistRepositorySetup.setupDataSources();
         refreshIndex();
-
-        /**
-         * TODO: fix this for elastic 1.7
-         */
-        /*
-        for (SnapshotInfo info : getSnapshotInfos()) {
-            DeleteSnapshotRequestBuilder builder = new DeleteSnapshotRequestBuilder(client.admin().cluster());
-            builder.setRepository(snapshotRepoName).setSnapshot(info.name());
-
-            builder.execute().actionGet();
-        }
-
-        // Delete any previously restored index
-        try {
-            DeleteIndexRequestBuilder deleteBuilder = new DeleteIndexRequestBuilder(client.admin().indices(), "restored_archivist_01");
-            deleteBuilder.execute().actionGet();
-        } catch (IndexMissingException e) {
-            logger.info("No existing snapshot to delete");
-        }
-
-        */
 
         /**
          * Adds in a test, non privileged user.

@@ -3,7 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.LogAction;
-import com.zorroa.archivist.domain.LogSpec;
+import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.repository.PipelineDao;
@@ -44,7 +44,7 @@ public class PipelineServiceImpl implements PipelineService {
     TransactionEventManager event;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Override
     public Pipeline create(PipelineSpecV spec) {
@@ -60,7 +60,7 @@ public class PipelineServiceImpl implements PipelineService {
         Pipeline p = pipelineDao.create(spec);
         event.afterCommit(()-> {
             if (SecurityUtils.getAuthentication() != null) {
-                logService.logAsync(LogSpec.build(LogAction.Create, p));
+                logService.logAsync(UserLogSpec.build(LogAction.Create, p));
             }
         });
         return p;
@@ -107,7 +107,7 @@ public class PipelineServiceImpl implements PipelineService {
         boolean result = pipelineDao.update(id, spec);
         if (result) {
             event.afterCommit(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Update, "pipeline", id));
+                logService.logAsync(UserLogSpec.build(LogAction.Update, "pipeline", id));
             });
         }
         return result;
@@ -118,7 +118,7 @@ public class PipelineServiceImpl implements PipelineService {
         boolean result = pipelineDao.delete(id);
         if (result) {
             event.afterCommit(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Delete, "pipeline", id));
+                logService.logAsync(UserLogSpec.build(LogAction.Delete, "pipeline", id));
             });
         }
         return result;

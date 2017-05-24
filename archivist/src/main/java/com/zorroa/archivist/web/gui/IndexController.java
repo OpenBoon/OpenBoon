@@ -58,7 +58,7 @@ public class IndexController {
     FolderService folderService;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Autowired
     SearchService searchService;
@@ -263,7 +263,7 @@ public class IndexController {
                          @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
 
-        LogSearch search = new LogSearch();
+        EventLogSearch search = new EventLogSearch();
         if (query != null) {
             search.setQuery(parseQueryParam(query));
         }
@@ -275,7 +275,7 @@ public class IndexController {
 
         Pager paging = new Pager(page);
         model.addAttribute("search", search);
-        model.addAttribute("logs", logService.search(search, paging));
+        model.addAttribute("logs", logService.getAll("user", search, paging));
         model.addAttribute("page", paging);
         model.addAttribute("query", query);
         return "logs";
@@ -290,7 +290,7 @@ public class IndexController {
      */
     private Map<String, Map<String, Object>> parseQueryParam(String query) {
         if (query == null || query.isEmpty()) {
-            return LogSearch.DEFAULT_QUERY;
+            return EventLogSearch.DEFAULT_QUERY;
         }
         Map<String, Map<String, Object>> result = Maps.newHashMap();
         for (String phrase : Splitter.on(",").trimResults().omitEmptyStrings().split(query)) {

@@ -60,7 +60,7 @@ public class ExportServiceImpl implements ExportService {
     TransactionEventManager transactionEventManager;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Value("${archivist.export.priority}")
     int taskPriority;
@@ -219,7 +219,7 @@ public class ExportServiceImpl implements ExportService {
          * downloads the export, that actually logs it as an exported asset.
          */
         transactionEventManager.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build(LogAction.Create,
+            logService.logAsync(UserLogSpec.build(LogAction.Create,
                     "export", job.getJobId()));
         });
 

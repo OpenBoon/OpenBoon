@@ -75,12 +75,8 @@ public class NetworkEnvironmentUtils {
 
     public static final String getPublicHostname(ApplicationProperties properties) {
 
-        String hostname = properties.getString("server.fqdn", null);
-        if (hostname != null) {
-            return hostname;
-        }
-
-        hostname = properties.getString("server.address", null);
+        String hostname = properties.getString("server.fqdn",
+                properties.getString("server.address", null));
         if (hostname != null) {
             return hostname;
         }
@@ -101,6 +97,10 @@ public class NetworkEnvironmentUtils {
             } catch (IOException e) {
                 throw new RuntimeException("AWS detected but unable to determine public interface", e);
             }
+        }
+
+        if (hostname != null) {
+            return hostname;
         }
 
         // Fall back on private hostname

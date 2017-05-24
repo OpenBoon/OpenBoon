@@ -98,9 +98,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             throw new ArchivistException("No file or asset specified");
         }
 
-
-
         List<Analyst> analysts = analystService.getActive();
+        if (analysts.isEmpty()) {
+            throw new ArchivistException("Unable to find a suitable analyst.");
+        }
+
         for (Analyst analyst: analysts) {
             try {
                 WorkerNodeClient client = new WorkerNodeClient(analyst.getUrl());
@@ -117,7 +119,9 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
                 if (resultT.getResult() != null) {
                     // The ReturnResponse object returns a list.
-                    return Json.deserialize(resultT.getResult(), List.class);
+                    return ImmutableMap.of("assets",
+                            Json.deserialize(resultT.getResult(), List.class),
+                            "errors", resultT.getErrors());
                 }
                 else {
                     throw new ArchivistException("No response object was set");
@@ -128,7 +132,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
         }
 
-        throw new ArchivistException("Unable to find a suitable analyst.");
+        throw new ArchivistException("All analysts timed out.");
     }
 
     private List<String> copyUploadedFiles(MultipartFile[] files) throws IOException {

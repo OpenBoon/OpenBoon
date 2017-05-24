@@ -3,11 +3,10 @@ package com.zorroa.archivist.web.api;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.service.EventLogService;
 import com.zorroa.archivist.service.ExportService;
 import com.zorroa.archivist.service.JobService;
-import com.zorroa.archivist.service.LogService;
 import com.zorroa.archivist.service.SearchService;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.search.AssetFilter;
@@ -37,10 +36,7 @@ public class ExportController {
     SearchService searchService;
 
     @Autowired
-    LogService logService;
-
-    @Autowired
-    ApplicationProperties properties;
+    EventLogService logService;
 
     @RequestMapping(value="/api/v1/exports", method= RequestMethod.POST)
     public Object create(@RequestBody ExportSpec spec) {
@@ -93,6 +89,6 @@ public class ExportController {
         for (Asset asset : searchService.scanAndScroll(search, 10000)) {
             ids.add(asset.getId());
         }
-        logService.logAsync(LogSpec.build(LogAction.Export, "asset", ids.toArray()));
+        logService.logAsync(UserLogSpec.build(LogAction.Export, "asset", ids.toArray()));
     }
 }

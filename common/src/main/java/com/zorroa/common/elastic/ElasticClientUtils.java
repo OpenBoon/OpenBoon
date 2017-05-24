@@ -6,7 +6,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteStreams;
-import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -18,7 +17,6 @@ import org.elasticsearch.script.expression.ExpressionPlugin;
 import org.elasticsearch.script.groovy.GroovyPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -67,12 +65,11 @@ public class ElasticClientUtils {
      * @throws IOException
      */
     public static void createEventLogTemplate(Client client) throws IOException {
-        ClassPathResource resource = new ClassPathResource("eventlog-template.json");
-        byte[] source = ByteStreams.toByteArray(resource.getInputStream());
-        PutIndexTemplateResponse rsp = client.admin().indices()
-                .preparePutTemplate("eventlog").setSource(source).get();
-        if (!rsp.isAcknowledged()) {
-            logger.warn("Creating eventlog template not acked");
+        try {
+            client.admin().indices()
+                    .prepareDeleteTemplate("eventlog").get();
+        } catch (Exception e) {
+            logger.warn("Did not delete old eventlog template");
         }
     }
 

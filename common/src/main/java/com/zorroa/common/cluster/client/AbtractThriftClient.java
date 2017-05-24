@@ -116,35 +116,35 @@ public abstract class AbtractThriftClient implements Closeable {
 
         public T execute() {
             int tryCount = 1;
-            try {
-                for (; ; ) {
-                    try {
-                        synchronized (lock) {
-                            reconnect();
-                            return wrap();
-                        }
-                    } catch (TTransportException e) {
-                        if (connected.compareAndSet(true, false)) {
-                            logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",
-                                    getClass(), host, port, maxRetries);
-                        }
 
-                        if (tryCount >= maxRetries && maxRetries > 0) {
-                            throw new ClusterConnectionException("Failed to connect to " +
-                                    host + ":" + port + ", " + tryCount + " tries");
+            for (; ; ) {
+                try {
+                    synchronized (lock) {
+                        reconnect();
+                        T result = wrap();
+                        if (tryCount > 1) {
+                            logger.warn("{} RECONNECTED to {}:{} after {} tries.",
+                                    getClass(), host, port, tryCount);
                         }
-                        backoff(Math.min(tryCount, 10) * backOffms);
-                        tryCount++;
-                    } catch (ClusterException e) {
-                        throw e;
-                    } catch (Exception e) {
-                        throw new ClusterException(e);
+                        return result;
                     }
-                }
-            } finally {
-                if (tryCount > 1) {
-                    logger.warn("{} RECONNECTED to {}:{} after {} tries.",
-                            getClass(), host, port, tryCount);
+
+                } catch (TTransportException e) {
+                    if (connected.compareAndSet(true, false)) {
+                        logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",
+                                getClass(), host, port, maxRetries);
+                    }
+
+                    if (tryCount >= maxRetries && maxRetries > 0) {
+                        throw new ClusterConnectionException("Failed to connect to " +
+                                host + ":" + port + ", " + tryCount + " tries");
+                    }
+                    backoff(Math.min(tryCount, 10) * backOffms);
+                    tryCount++;
+                } catch (ClusterException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw new ClusterException(e);
                 }
             }
         }

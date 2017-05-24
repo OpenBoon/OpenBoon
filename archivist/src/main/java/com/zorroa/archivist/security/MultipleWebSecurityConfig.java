@@ -2,9 +2,9 @@ package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.LogAction;
-import com.zorroa.archivist.domain.LogSpec;
+import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.service.LogService;
+import com.zorroa.archivist.service.EventLogService;
 import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,7 +125,7 @@ public class MultipleWebSecurityConfig {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, LogService logService) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth, EventLogService logService) throws Exception {
 
         if (properties.getBoolean("archivist.security.ldap.enabled")) {
             auth.authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator));
@@ -145,7 +145,7 @@ public class MultipleWebSecurityConfig {
 
     @Bean
     @Autowired
-    public AuthenticationEventPublisher authenticationEventPublisher(LogService logService) {
+    public AuthenticationEventPublisher authenticationEventPublisher(EventLogService logService) {
 
         return new AuthenticationEventPublisher() {
 
@@ -155,7 +155,7 @@ public class MultipleWebSecurityConfig {
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
                 try {
-                    logService.logAsync(new LogSpec()
+                    logService.logAsync(new UserLogSpec()
                             .setAction(LogAction.Login)
                             .setUser((User)authentication.getPrincipal()));
                 } catch (Exception e) {
@@ -171,7 +171,7 @@ public class MultipleWebSecurityConfig {
                     AuthenticationException exception,
                     Authentication authentication) {
                 logger.info("Failed to authenticate: {}", authentication);
-                logService.logAsync(new LogSpec()
+                logService.logAsync(new UserLogSpec()
                         .setAction(LogAction.LoginFailure)
                         .setMessage(authentication.getPrincipal().toString() + " failed to login, reason "
                         + exception.getMessage()));

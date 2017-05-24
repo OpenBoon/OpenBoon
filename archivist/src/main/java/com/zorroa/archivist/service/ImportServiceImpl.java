@@ -56,7 +56,7 @@ public class ImportServiceImpl implements ImportService {
     TransactionEventManager transactionEventManager;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Autowired
     ApplicationProperties properties;
@@ -157,7 +157,7 @@ public class ImportServiceImpl implements ImportService {
                 .setName("Generation via " + generators.get(0).getClassName()));
 
         transactionEventManager.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build(LogAction.Create, "import", job.getJobId()));
+            logService.logAsync(UserLogSpec.build(LogAction.Create, "import", job.getJobId()));
         });
 
         return job;
@@ -233,7 +233,7 @@ public class ImportServiceImpl implements ImportService {
                 .setName("Frame Generator"));
 
         transactionEventManager.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build(LogAction.Create, "import", job.getJobId()));
+            logService.logAsync(UserLogSpec.build(LogAction.Create, "import", job.getJobId()));
         });
 
         return job;

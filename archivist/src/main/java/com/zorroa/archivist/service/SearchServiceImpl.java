@@ -7,7 +7,7 @@ import com.google.common.collect.*;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
-import com.zorroa.archivist.domain.LogSpec;
+import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.repository.AssetDao;
@@ -17,6 +17,7 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.*;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
@@ -64,7 +65,7 @@ public class SearchServiceImpl implements SearchService {
     FolderService folderService;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Value("${zorroa.cluster.index.alias}")
     private String alias;
@@ -193,7 +194,7 @@ public class SearchServiceImpl implements SearchService {
          * number is 1, then log the search.
          */
         if (isSearchLogged(page, search)) {
-            logService.logAsync(new LogSpec().build(LogAction.Search, search));
+            logService.logAsync(new UserLogSpec().build(LogAction.Search, search));
         }
 
         if (search.getScroll() != null) {
@@ -217,7 +218,7 @@ public class SearchServiceImpl implements SearchService {
          * number is 1, then log the search.
          */
         if (isSearchLogged(page, search)) {
-            logService.logAsync(new LogSpec().build(LogAction.Search, search));
+            logService.logAsync(new UserLogSpec().build(LogAction.Search, search));
         }
 
         assetDao.getAll(page, buildSearch(search), stream);
@@ -423,6 +424,9 @@ public class SearchServiceImpl implements SearchService {
         query.must(staticBool);
     }
 
+    private static final Set<String> IGNORE_ES_RESERVED =
+            ImmutableSet.of("AND", "OR", "NOT");
+
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
 
         /**
@@ -444,8 +448,8 @@ public class SearchServiceImpl implements SearchService {
                  * Append the fuzzy search character to words ending with
                  * alphanumeric characters, excluding ES logical keywords.
                  */
-                if (!part.matches(".*[a-zA-Z0-9]$") ||
-                        part.matches("^.*?(AND|OR|NOT).*$")) {
+                if (!StringUtils.isAlphanumeric(part)||
+                    IGNORE_ES_RESERVED.contains(part)) {
                     continue;
                 }
                 if (part.endsWith("~")) {
@@ -463,7 +467,7 @@ public class SearchServiceImpl implements SearchService {
         // Set the analyzer to whitespace, which breaks up the query by whitespace.
         // https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-whitespace-analyzer.html
         qstring.analyzer("whitespace");
-        
+
         Map<String, Float> queryFields = null;
 
         if (JdbcUtils.isValid(search.getQueryFields())) {

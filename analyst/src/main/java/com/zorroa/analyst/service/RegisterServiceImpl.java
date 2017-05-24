@@ -108,7 +108,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
                 }
             }
             for (String url: urls) {
-                AtomicBoolean success = connected.getOrDefault("url", new AtomicBoolean(false));
+                AtomicBoolean success = connected.get(url);
                 try {
                     register(url);
                     if (success.compareAndSet(false, true)) {

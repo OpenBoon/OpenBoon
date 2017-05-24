@@ -14,6 +14,7 @@ import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.MetaZpsExecutor;
+import com.zorroa.sdk.zps.ZpsError;
 import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 import org.slf4j.Logger;
@@ -149,8 +150,18 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             MetaZpsExecutor zps = new MetaZpsExecutor(zpsTask,
                     new SharedData(task.getSharedDir()));
             zps.addReactionHandler((zpsTask1, sharedData, reaction) -> {
-                if (reaction.getResponse() != null) {
-                    result.get().setResult(Json.serialize(reaction.getResponse()));
+
+                /**
+                 * If the task is interactive, then response and errors
+                 * are handled here.
+                 */
+                if (task.getId() == 0) {
+                    if (reaction.getResponse() != null) {
+                        result.get().setResult(Json.serialize(reaction.getResponse()));
+                    }
+                    else if (reaction.getError() != null) {
+                        result.get().addToErrors(newTaskError(reaction.getError()));
+                    }
                 } else {
                     handleZpsReaction(zpsTask1, sharedData, reaction);
                 }
@@ -202,6 +213,14 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
         if (process.isKilled()) {
             return;
+        }
+
+        /**
+         * TODO: queue up a bunch here.
+         */
+        if (reaction.getError() != null) {
+            client.reportTaskErrors(zpsTask.getId(), ImmutableList.of(
+                    newTaskError(reaction.getError())));
         }
 
         if (reaction.getExpand() != null) {
@@ -268,6 +287,34 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         }
     }
 
+    /**
+     * Convert the ZpsError into a TaskErrorT that can be
+     * sent to the archivist.
+     *
+     * @param zpsError
+     * @return
+     */
+    private TaskErrorT newTaskError(ZpsError zpsError) {
+        TaskErrorT error = new TaskErrorT();
+        error.setMessage(zpsError.getMessage());
+        error.setPhase(zpsError.getPhase());
+        error.setProcessor(zpsError.getProcessor());
+        error.setSkipped(zpsError.isSkipped());
+        error.setFile(zpsError.getFile());
+        error.setClassName(zpsError.getClassName());
+        error.setMethod(zpsError.getMethod());
+        error.setLineNumber(zpsError.getLineNumber());
+        error.setTimestamp(System.currentTimeMillis());
+
+        if (zpsError.getOrigin() != null) {
+            error.setId(zpsError.getId());
+            error.setOriginService(zpsError.getOrigin().getService());
+            error.setOriginPath(zpsError.getOrigin().getPath());
+            error.setPath(zpsError.getPath());
+        }
+        return error;
+    }
+
     @Override
     protected void runOneIteration() throws Exception {
         if (Application.isUnitTest()) {
@@ -290,7 +337,6 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                 String addr = MasterServerClient.convertUriToClusterAddr(url);
                 MasterServerClient client = new MasterServerClient(addr);
                 client.setMaxRetries(10);
-
                 List<TaskStartT> tasks = Lists.newArrayList();
                 try {
                     tasks = client.queuePendingTasks(addr, threads - analyzeExecutor.getActiveCount());

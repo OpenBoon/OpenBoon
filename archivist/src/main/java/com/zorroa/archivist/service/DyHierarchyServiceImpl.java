@@ -54,7 +54,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     FolderService folderService;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Autowired
     Client client;
@@ -116,7 +116,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
          * Queue up an event where after this transaction commits.
          */
         transactionEventManager.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build(LogAction.Update, updated));
+            logService.logAsync(UserLogSpec.build(LogAction.Update, updated));
             folderService.deleteAll(current);
             submitGenerate(dyHierarchyDao.get(current.getId()));
         });
@@ -138,7 +138,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 folderService.deleteAll(dyhi);
             }
             transactionEventManager.afterCommitSync(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Delete, dyhi));
+                logService.logAsync(UserLogSpec.build(LogAction.Delete, dyhi));
             });
             return true;
         }
@@ -162,7 +162,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
              * after this method returns.
              */
             transactionEventManager.afterCommitSync(()-> {
-                logService.logAsync(LogSpec.build(LogAction.Create, dyhi));
+                logService.logAsync(UserLogSpec.build(LogAction.Create, dyhi));
                 submitGenerate(dyhi);
             });
         }

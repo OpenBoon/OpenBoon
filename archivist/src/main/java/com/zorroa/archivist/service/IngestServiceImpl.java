@@ -42,7 +42,7 @@ public class IngestServiceImpl implements IngestService {
     ImportService importService;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     private final ThreadPoolTaskScheduler scheduler =  new ThreadPoolTaskScheduler();
 
@@ -70,7 +70,7 @@ public class IngestServiceImpl implements IngestService {
 
         event.afterCommit(()-> {
             if (i.isAutomatic()) { schedule(i); }
-            logService.logAsync(LogSpec.build(LogAction.Create, i));
+            logService.logAsync(UserLogSpec.build(LogAction.Create, i));
         });
 
         if (spec.isRunNow()) {
@@ -105,7 +105,7 @@ public class IngestServiceImpl implements IngestService {
         if (result) {
             event.afterCommit(() -> {
                 schedule(ingestDao.get(id));
-                logService.logAsync(LogSpec.build(LogAction.Update, "ingest", id));
+                logService.logAsync(UserLogSpec.build(LogAction.Update, "ingest", id));
             });
         }
         return result;
@@ -116,7 +116,7 @@ public class IngestServiceImpl implements IngestService {
         boolean result = ingestDao.delete(id);
         if (result) {
             event.afterCommit(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Delete, "ingest", id));
+                logService.logAsync(UserLogSpec.build(LogAction.Delete, "ingest", id));
             });
         }
         return result;

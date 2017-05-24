@@ -55,7 +55,7 @@ public class AssetServiceImpl implements AssetService {
     DyHierarchyService dyHierarchyService;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Autowired
     SearchService searchService;
@@ -173,7 +173,7 @@ public class AssetServiceImpl implements AssetService {
         }
 
         long version = assetDao.update(assetId, attrs);
-        logService.logAsync(LogSpec.build(LogAction.Update, "asset", assetId));
+        logService.logAsync(UserLogSpec.build(LogAction.Update, "asset", assetId));
         return version;
     }
 
@@ -296,13 +296,13 @@ public class AssetServiceImpl implements AssetService {
         try {
             logger.info("Waiting for bulk permission change to complete on {} assets.", totalCount);
             bulkProcessor.awaitClose(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-            logService.log(new LogSpec()
+            logService.log(new UserLogSpec()
                     .setUser(command.getUser())
                     .setMessage("Bulk permission change complete.")
                     .setAction(LogAction.BulkUpdate)
                     .setAttrs(ImmutableMap.of("permissions", add)));
         } catch (InterruptedException e) {
-            logService.log(new LogSpec()
+            logService.log(new UserLogSpec()
                     .setUser(command.getUser())
                     .setMessage("Bulk update failure setting permissions on assets, interrupted.")
                     .setAction(LogAction.BulkUpdate));

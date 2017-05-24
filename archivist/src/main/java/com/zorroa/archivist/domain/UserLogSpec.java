@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * LogSpec defines log entry properties.
  */
-public class LogSpec {
+public class UserLogSpec {
 
     private final long timestamp = System.currentTimeMillis();
 
@@ -55,38 +55,38 @@ public class LogSpec {
 
     private Map<String,Object> attrs;
 
-    public LogSpec() {
+    public UserLogSpec() {
 
     }
 
-    public static final LogSpec build(LogAction action, AssetSearch search) {
-        return new LogSpec()
+    public static final UserLogSpec build(LogAction action, AssetSearch search) {
+        return new UserLogSpec()
                 .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setSearch(search);
     }
 
-    public static final LogSpec build(String action, Loggable target) {
-        return new LogSpec()
+    public static final UserLogSpec build(String action, Loggable target) {
+        return new UserLogSpec()
                 .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
 
-    public static final LogSpec build(LogAction action, Loggable target) {
-        return new LogSpec()
+    public static final UserLogSpec build(LogAction action, Loggable target) {
+        return new UserLogSpec()
                 .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
-    public static final LogSpec build(LogAction action, String type, Object ... id) {
-        return new LogSpec()
+    public static final UserLogSpec build(LogAction action, String type, Object ... id) {
+        return new UserLogSpec()
                 .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(ImmutableMap.of(type, new Object[] {id}));
     }
 
-    public LogSpec setUser(UserBase user) {
+    public UserLogSpec setUser(UserBase user) {
         if (user != null) {
             this.user = ImmutableMap.of(
                     "username", user.getUsername(),
@@ -95,7 +95,7 @@ public class LogSpec {
         return this;
     }
 
-    public LogSpec setTarget(Loggable target) {
+    public UserLogSpec setTarget(Loggable target) {
         this.target = ImmutableMap.of(
                 target.getTargetType(), new Object[] {target.getTargetId() });
         return this;
@@ -105,12 +105,12 @@ public class LogSpec {
         return action;
     }
 
-    public LogSpec setAction(String action) {
+    public UserLogSpec setAction(String action) {
         this.action = action;
         return this;
     }
 
-    public LogSpec setAction(LogAction action) {
+    public UserLogSpec setAction(LogAction action) {
         this.action = action.toString().toLowerCase();
         return this;
     }
@@ -119,12 +119,12 @@ public class LogSpec {
         return query;
     }
 
-    public LogSpec setQuery(Set<String> query) {
+    public UserLogSpec setQuery(Set<String> query) {
         this.query = query;
         return this;
     }
 
-    public LogSpec setSearch(AssetSearch search) {
+    public UserLogSpec setSearch(AssetSearch search) {
         this.query = Sets.newHashSet();
         if (search.isQuerySet()) {
             this.query.add(search.getQuery());
@@ -149,7 +149,7 @@ public class LogSpec {
         return message;
     }
 
-    public LogSpec setMessage(String message) {
+    public UserLogSpec setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -158,7 +158,7 @@ public class LogSpec {
         return user;
     }
 
-    public LogSpec setUser(Map<String, Object> user) {
+    public UserLogSpec setUser(Map<String, Object> user) {
         this.user = user;
         return this;
     }
@@ -167,7 +167,7 @@ public class LogSpec {
         return target;
     }
 
-    public LogSpec setTarget(Map<String, Object[]> target) {
+    public UserLogSpec setTarget(Map<String, Object[]> target) {
         this.target = target;
         return this;
     }
@@ -176,7 +176,7 @@ public class LogSpec {
         return type;
     }
 
-    public LogSpec setType(String type) {
+    public UserLogSpec setType(String type) {
         this.type = type;
         return this;
     }
@@ -185,12 +185,12 @@ public class LogSpec {
         return attrs;
     }
 
-    public LogSpec setAttrs(Map<String, Object> attrs) {
+    public UserLogSpec setAttrs(Map<String, Object> attrs) {
         this.attrs = attrs;
         return this;
     }
 
-    public LogSpec putToAttrs(String key, Object value) {
+    public UserLogSpec putToAttrs(String key, Object value) {
         if (this.attrs == null) {
             this.attrs = Maps.newHashMap();
         }

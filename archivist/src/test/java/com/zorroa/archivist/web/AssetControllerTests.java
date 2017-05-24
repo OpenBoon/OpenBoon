@@ -73,6 +73,23 @@ public class AssetControllerTests extends MockMvcTest {
         assertEquals(1, count);
     }
 
+    @Test
+    public void testSearchV3() throws Exception {
+
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+
+        MvcResult result = mvc.perform(post("/api/v3/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(new AssetSearch("O'Malley"))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        logger.info("{}", json);
+    }
 
     @Test
     public void testCountV2() throws Exception {

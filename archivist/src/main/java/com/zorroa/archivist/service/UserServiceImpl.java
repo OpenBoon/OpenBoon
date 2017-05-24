@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     TransactionEventManager txem;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     private static final String SOURCE_LOCAL = "local";
 
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
         userDao.addPermission(user, permissionDao.get("group", "everyone"), true);
 
         txem.afterCommit(() -> {
-            logService.logAsync(LogSpec.build(LogAction.Create, user));
+            logService.logAsync(UserLogSpec.build(LogAction.Create, user));
         }, true);
 
         return userDao.get(user.getId());
@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
         boolean result = userDao.update(user, form);
         if (result) {
             txem.afterCommitSync(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Update, user));
+                logService.logAsync(UserLogSpec.build(LogAction.Update, user));
             });
         }
         return result;
@@ -228,7 +228,7 @@ public class UserServiceImpl implements UserService {
             }
 
             txem.afterCommitSync(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Update, user));
+                logService.logAsync(UserLogSpec.build(LogAction.Update, user));
             });
         }
         return result;
@@ -239,7 +239,7 @@ public class UserServiceImpl implements UserService {
         boolean result = userDao.setSettings(user, settings);
         if (result) {
             txem.afterCommitSync(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Update, user));
+                logService.logAsync(UserLogSpec.build(LogAction.Update, user));
             });
         }
         return result;
@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
         if (result) {
             if (result) {
                 txem.afterCommitSync(() -> {
-                    logService.logAsync(LogSpec.build(value ? "enable" : "disable", user));
+                    logService.logAsync(UserLogSpec.build(value ? "enable" : "disable", user));
                 });
             }
         }
@@ -336,7 +336,7 @@ public class UserServiceImpl implements UserService {
                 p->!PERMANENT_TYPES.contains(p.getType())).collect(Collectors.toList());
         userDao.setPermissions(user, filtered);
         txem.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build("set_permission", user)
+            logService.logAsync(UserLogSpec.build("set_permission", user)
                     .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
         });
     }
@@ -350,7 +350,7 @@ public class UserServiceImpl implements UserService {
             userDao.addPermission(user, p, false);
         }
         txem.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build("add_permission", user)
+            logService.logAsync(UserLogSpec.build("add_permission", user)
                     .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
         });
     }
@@ -368,7 +368,7 @@ public class UserServiceImpl implements UserService {
             userDao.removePermission(user, p);
         }
         txem.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build("remove_permission", user)
+            logService.logAsync(UserLogSpec.build("remove_permission", user)
                     .putToAttrs("perms", perms.stream().map(ps->ps.getName()).collect(Collectors.toList())));
         });
     }
@@ -382,7 +382,7 @@ public class UserServiceImpl implements UserService {
     public Permission createPermission(PermissionSpec builder) {
         Permission perm = permissionDao.create(builder, false);
         txem.afterCommitSync(() -> {
-            logService.logAsync(LogSpec.build(LogAction.Create, perm));
+            logService.logAsync(UserLogSpec.build(LogAction.Create, perm));
         });
         return perm;
     }
@@ -402,7 +402,7 @@ public class UserServiceImpl implements UserService {
         boolean result = permissionDao.delete(permission);
         if (result) {
             txem.afterCommitSync(() -> {
-                logService.logAsync(LogSpec.build(LogAction.Delete, permission));
+                logService.logAsync(UserLogSpec.build(LogAction.Delete, permission));
             });
         }
         return result;

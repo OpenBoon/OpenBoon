@@ -54,7 +54,7 @@ public class FolderServiceImpl implements FolderService {
     TransactionEventManager transactionEventManager;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder, String attribute) {
@@ -83,7 +83,7 @@ public class FolderServiceImpl implements FolderService {
         folderDao.setAcl(folder.getId(), acl);
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
-            logService.logAsync(LogSpec.build(LogAction.Update, folder)
+            logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
                     .setMessage("permissions changed"));
         });
     }
@@ -185,7 +185,7 @@ public class FolderServiceImpl implements FolderService {
 
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(current, current.getParentId());
-                logService.logAsync(LogSpec.build(LogAction.Update, folder));
+                logService.logAsync(UserLogSpec.build(LogAction.Update, folder));
             });
         }
         return result;
@@ -240,7 +240,7 @@ public class FolderServiceImpl implements FolderService {
                 trashFolderDao.create(child, op, false, order);
                 transactionEventManager.afterCommit(() -> {
                     invalidate(child);
-                    logService.logAsync(LogSpec.build(LogAction.Delete, child));
+                    logService.logAsync(UserLogSpec.build(LogAction.Delete, child));
                 }, false);
             }
         }
@@ -250,7 +250,7 @@ public class FolderServiceImpl implements FolderService {
         if (result) {
             transactionEventManager.afterCommit(() -> {
                 invalidate(folder);
-                logService.logAsync(LogSpec.build(LogAction.Delete, folder));
+                logService.logAsync(UserLogSpec.build(LogAction.Delete, folder));
             }, false);
 
             order++;
@@ -296,7 +296,7 @@ public class FolderServiceImpl implements FolderService {
             if (folderDao.delete(children.get(i))) {
                 transactionEventManager.afterCommitSync(() -> {
                     invalidate(folder);
-                    logService.logAsync(LogSpec.build(LogAction.Delete, folder));
+                    logService.logAsync(UserLogSpec.build(LogAction.Delete, folder));
                 });
             }
         }
@@ -305,7 +305,7 @@ public class FolderServiceImpl implements FolderService {
         if (result) {
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(folder);
-                logService.logAsync(LogSpec.build(LogAction.Delete, folder));
+                logService.logAsync(UserLogSpec.build(LogAction.Delete, folder));
             });
         }
         return result;
@@ -327,7 +327,7 @@ public class FolderServiceImpl implements FolderService {
 
         Map<String, List<Object>> result = assetDao.appendLink("folder", folder.getId(), assetIds);
         invalidate(folder);
-        logService.logAsync(LogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
+        logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
         return result;
     }
 
@@ -340,7 +340,7 @@ public class FolderServiceImpl implements FolderService {
 
         Map<String, List<Object>> result = assetDao.removeLink("folder", folder.getId(), assetIds);
         invalidate(folder);
-        logService.logAsync(LogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
+        logService.logAsync(UserLogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
         return result;
     }
 
@@ -479,7 +479,7 @@ public class FolderServiceImpl implements FolderService {
     private void emitFolderCreated(Folder folder) {
         transactionEventManager.afterCommitSync(() -> {
             invalidate(null, folder.getParentId());
-            logService.logAsync(LogSpec.build(LogAction.Create, folder));
+            logService.logAsync(UserLogSpec.build(LogAction.Create, folder));
         });
     }
 

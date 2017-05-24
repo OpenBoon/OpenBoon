@@ -68,7 +68,7 @@ public class AssetController {
     SearchService searchService;
 
     @Autowired
-    LogService logService;
+    EventLogService logService;
 
     @Autowired
     ImageService imageService;
@@ -151,7 +151,7 @@ public class AssetController {
         Asset asset = assetService.get(id);
         StreamFile format = getPreferredFormat(asset,
                 !SecurityUtils.hasPermission("export", asset));
-        logService.logAsync(LogSpec.build(LogAction.View, "asset", asset.getId()));
+        logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.getId()));
 
         try {
             MultipartFileSender.fromPath(Paths.get(format.path))

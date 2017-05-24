@@ -2,7 +2,6 @@ package com.zorroa.common;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.CommonBeanConfig;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.processor.Source;
@@ -40,9 +39,6 @@ import java.util.Set;
 public abstract class AbstractTest {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    protected ApplicationProperties applicationProperties;
 
     @Autowired
     protected Client client;
