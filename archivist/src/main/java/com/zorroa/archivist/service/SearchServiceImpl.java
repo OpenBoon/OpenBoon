@@ -17,7 +17,6 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.*;
-import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
@@ -69,6 +68,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Value("${zorroa.cluster.index.alias}")
     private String alias;
+
+    @Value("${archivist.search.queryAnalyzer}")
+    private String defaultQueryAnalyzer;
 
     @Autowired
     Client client;
@@ -424,52 +426,19 @@ public class SearchServiceImpl implements SearchService {
         query.must(staticBool);
     }
 
-    private static final Set<String> IGNORE_ES_RESERVED =
-            ImmutableSet.of("AND", "OR", "NOT");
-
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
 
         /**
          * Note: fuzzy defaults to false.
          */
         String query = search.getQuery();
-
-
-        /**
-         * Default fuzzy to off.
-         **/
-        boolean fuzzy = search.getFuzzy() != null ? search.getFuzzy() : false;
-
-        if (fuzzy && query != null) {
-            StringBuilder sb = new StringBuilder(query.length() + 10);
-            for (String part: Splitter.on(" ").omitEmptyStrings().trimResults().split(query)) {
-                sb.append(part);
-                /*
-                 * Append the fuzzy search character to words ending with
-                 * alphanumeric characters, excluding ES logical keywords.
-                 */
-                if (!StringUtils.isAlphanumeric(part)||
-                    IGNORE_ES_RESERVED.contains(part)) {
-                    continue;
-                }
-                if (part.endsWith("~")) {
-                    sb.append(" ");
-                }
-                else {
-                    sb.append("~ ");
-                }
-            }
-            sb.deleteCharAt(sb.length()-1);
-            query = sb.toString();
-        }
+        String queryAnalyzer = search.getQueryAnalyzer() == null ? defaultQueryAnalyzer :
+            search.getQueryAnalyzer();
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
-        // Set the analyzer to whitespace, which breaks up the query by whitespace.
-        // https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-whitespace-analyzer.html
-        qstring.analyzer("whitespace");
+        qstring.analyzer(queryAnalyzer);
 
         Map<String, Float> queryFields = null;
-
         if (JdbcUtils.isValid(search.getQueryFields())) {
             queryFields = search.getQueryFields();
         }
@@ -482,6 +451,7 @@ public class SearchServiceImpl implements SearchService {
         qstring.allowLeadingWildcard(false);
         // ignores qstring errors
         qstring.lenient(true);
+
         return qstring;
     }
 

@@ -329,24 +329,24 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(Source);
         refreshIndex();
 
-        SearchResponse response = searchService.search(new AssetSearch("zoolandar").setFuzzy(true));
+        SearchResponse response = searchService.search(new AssetSearch("zoolander"));
         assertEquals(1, response.getHits().getTotalHits());
         Map<String, Object> doc = response.getHits().getAt(0).getSource();
         ArrayList<Integer> folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
         assertEquals(2, folders.size());
 
-        response = searchService.search(new AssetSearch("zoolandar").setFuzzy(true).setFields(new String[]{"keywords*"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"keywords*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
         assertNull(doc.get("links"));
 
-        response = searchService.search(new AssetSearch("zoolandar").setFuzzy(true).setFields(new String[]{"links.folder"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"links.folder"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
         folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
         assertEquals(2, folders.size());
 
-        response = searchService.search(new AssetSearch("zoolandar").setFuzzy(true).setFields(new String[]{"links*"}));
+        response = searchService.search(new AssetSearch("zoolander").setFields(new String[]{"links*"}));
         assertEquals(1, response.getHits().getTotalHits());
         doc = response.getHits().getAt(0).getSource();
         folders = (ArrayList<Integer>)((Map<String, Object>)doc.get("links")).get("folder");
@@ -362,7 +362,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoo*").setFuzzy(false)).getHits().getTotalHits());
+                new AssetSearch("zoo*")).getHits().getTotalHits());
     }
 
     @Test
@@ -375,7 +375,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("O'Malley").setFuzzy(false)).getHits().getTotalHits());
+                new AssetSearch("O'Malley")).getHits().getTotalHits());
     }
 
     @Test
@@ -387,7 +387,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(0, searchService.search(
-                new AssetSearch("zoo* -beer").setFuzzy(true)).getHits().getTotalHits());
+                new AssetSearch("zoo* -beer")).getHits().getTotalHits());
     }
 
     @Test
@@ -399,7 +399,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolander OR cat").setFuzzy(false)).getHits().getTotalHits());
+                new AssetSearch("zoolander OR cat")).getHits().getTotalHits());
     }
 
     @Test
@@ -411,7 +411,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar").setFuzzy(true)).getHits().getTotalHits());
+                new AssetSearch("zoolandar~")).getHits().getTotalHits());
     }
 
     @Test
@@ -423,9 +423,9 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(0, searchService.search(
-                new AssetSearch("zoolandar").setFuzzy(false)).getHits().getTotalHits());
+                new AssetSearch("zoolandar")).getHits().getTotalHits());
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolander").setFuzzy(false)).getHits().getTotalHits());
+                new AssetSearch("zoolander")).getHits().getTotalHits());
     }
 
     @Test
@@ -436,7 +436,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar~").setFuzzy(false)).getHits().getTotalHits());
+                new AssetSearch("zoolandar~")).getHits().getTotalHits());
     }
 
     @Test
