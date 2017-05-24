@@ -2,8 +2,8 @@ package com.zorroa.archivist.security;
 
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.LogAction;
-import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.service.EventLogService;
 import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
@@ -22,7 +22,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
@@ -55,9 +54,6 @@ public class MultipleWebSecurityConfig {
 
         private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
-        @Autowired
-        SessionRegistry sessionRegistry;
-
         @Bean
         public ResetPasswordSecurityFilter resetPasswordSecurityFilter() {
             return new ResetPasswordSecurityFilter();
@@ -79,20 +75,12 @@ public class MultipleWebSecurityConfig {
                 .and().headers().frameOptions().disable()
                 .and()
                 .httpBasic().and()
-                .sessionManagement()
-                .maximumSessions(10)
-                .sessionRegistry(sessionRegistry)
-                .and()
-                .and()
                 .csrf().disable();
             }
     }
 
     @Configuration
     public static class FormSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        @Autowired
-        SessionRegistry sessionRegistry;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -113,12 +101,11 @@ public class MultipleWebSecurityConfig {
                 .and().headers().frameOptions().disable()
                 .and()
                     .sessionManagement()
-                    .maximumSessions(10)
-                    .sessionRegistry(sessionRegistry)
+                    .maximumSessions(5)
                     .expiredUrl("/signin")
                     .and()
                 .and()
-                    .csrf().disable()
+                .csrf().disable()
                 .logout().logoutRequestMatcher(
                 new AntPathRequestMatcher("/signout")).logoutSuccessUrl("/signin").permitAll();
         }
@@ -206,10 +193,5 @@ public class MultipleWebSecurityConfig {
                 new LdapAuthenticationProvider(bindAuthenticator, populator);
         ldapAuthenticationProvider.setUserDetailsContextMapper(populator);
         return ldapAuthenticationProvider;
-    }
-
-    @Bean
-    public SessionRegistry sessionRegistry() {
-        return new JdbcSessionRegistry();
     }
 }
