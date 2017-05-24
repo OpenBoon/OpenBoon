@@ -19,13 +19,17 @@ import com.zorroa.sdk.schema.LinkSchema;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.search.*;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -403,18 +407,6 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testFuzzySearch() throws IOException {
-
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander");
-        assetService.index(Source);
-        refreshIndex();
-
-        assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar~")).getHits().getTotalHits());
-    }
-
-    @Test
     public void testExactSearch() throws IOException {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
@@ -668,6 +660,27 @@ public class SearchServiceTests extends AbstractTest {
 
         long hits = searchService.search(search).getHits().totalHits();
         assertEquals(0, hits);
+    }
 
+    @Test
+    public void testAnalyze() {
+        List<String> terms = searchService.analyzeQuery(new AssetSearch("cats dogs"));
+        assertEquals(ImmutableList.of("cats", "dogs"), terms);
+    }
+
+    @Test
+    public void testQueryIsAnalyzed() throws IOException {
+
+        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        Source.addKeywords("source", "zoolander");
+        assetService.index(Source);
+        refreshIndex();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        searchService.search(Pager.first(), new AssetSearch("dog cat"), stream);
+
+        Map<String, Object> result = Json.Mapper.readValue(new ByteArrayInputStream(stream.toByteArray()),
+                Json.GENERIC_MAP);
+        assertEquals(ImmutableList.of("dog", "cat"), (List) result.get("queryTerms"));
     }
 }

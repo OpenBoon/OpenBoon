@@ -282,8 +282,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public void getAll(Pager page, SearchRequestBuilder search, OutputStream stream) throws IOException {
-        elastic.page(search, page, MAPPER, stream);
+    public void getAll(Pager page, SearchRequestBuilder search, OutputStream stream, Map<String, Object> attrs) throws IOException {
+        elastic.page(search, page, stream, attrs);
     }
 
     @Override

@@ -158,7 +158,7 @@ public class ElasticTemplate {
         return result;
     }
 
-    public void page(SearchRequestBuilder builder, Pager paging, JsonRowMapper<?> mapper, OutputStream out) throws IOException {
+    public void page(SearchRequestBuilder builder, Pager paging, OutputStream out, Map<String, Object> attrs) throws IOException {
 
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
         final SearchResponse r = builder.get();
@@ -168,6 +168,10 @@ public class ElasticTemplate {
 
         generator.setCodec(Json.Mapper);
         generator.writeStartObject();
+        for (Map.Entry<String,Object> e: attrs.entrySet()) {
+            generator.writeObjectField(e.getKey(), e.getValue());
+        }
+
         generator.writeArrayFieldStart("list");
 
         for (SearchHit hit: r.getHits().getHits()) {

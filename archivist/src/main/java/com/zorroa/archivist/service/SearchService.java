@@ -55,4 +55,6 @@ public interface SearchService {
     SearchRequestBuilder buildSearch(AssetSearch search);
 
     Map<String, Set<String>> getFields();
+
+    List<String> analyzeQuery(AssetSearch search);
 }

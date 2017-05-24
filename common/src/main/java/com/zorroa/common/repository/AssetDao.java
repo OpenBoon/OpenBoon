@@ -35,7 +35,7 @@ public interface AssetDao {
      */
     PagedList<Asset> getAll(Pager page, SearchRequestBuilder search);
 
-    void getAll(Pager page, SearchRequestBuilder search, OutputStream stream) throws IOException;
+    void getAll(Pager page, SearchRequestBuilder search, OutputStream stream, Map<String, Object> attrs) throws IOException;
 
     /**
      * Get all assets by page.

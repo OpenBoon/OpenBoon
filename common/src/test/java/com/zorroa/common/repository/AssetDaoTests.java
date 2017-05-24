@@ -83,7 +83,7 @@ public class AssetDaoTests extends AbstractTest {
         SearchRequestBuilder builder = client.prepareSearch("archivist");
         builder.setQuery(QueryBuilders.matchAllQuery());
         builder.addAggregation(AggregationBuilders.terms("path").field("source.path"));
-        assetDao.getAll(Pager.first(10), builder, stream);
+        assetDao.getAll(Pager.first(10), builder, stream, ImmutableMap.of());
         logger.info(stream.toString());
         PagedList<Asset> result = Json.deserialize(stream.toString(), new TypeReference<PagedList<Asset>>() {});
         assertEquals(2, result.getList().size());

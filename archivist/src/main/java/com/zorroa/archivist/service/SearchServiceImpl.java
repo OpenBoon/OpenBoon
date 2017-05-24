@@ -223,7 +223,12 @@ public class SearchServiceImpl implements SearchService {
             logService.logAsync(new UserLogSpec().build(LogAction.Search, search));
         }
 
-        assetDao.getAll(page, buildSearch(search), stream);
+        /**
+         * If a query is set, analyze it.
+         */
+        List<String> terms = analyzeQuery(search);
+
+        assetDao.getAll(page, buildSearch(search), stream, ImmutableMap.of("queryTerms", terms));
     }
 
 
@@ -432,11 +437,12 @@ public class SearchServiceImpl implements SearchService {
          * Note: fuzzy defaults to false.
          */
         String query = search.getQuery();
-        String queryAnalyzer = search.getQueryAnalyzer() == null ? defaultQueryAnalyzer :
-            search.getQueryAnalyzer();
+        if (search.getQueryAnalyzer() == null) {
+            search.setQueryAnalyzer(defaultQueryAnalyzer);
+        }
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
-        qstring.analyzer(queryAnalyzer);
+        qstring.analyzer(search.getQueryAnalyzer());
 
         Map<String, Float> queryFields = null;
         if (JdbcUtils.isValid(search.getQueryFields())) {
@@ -683,6 +689,21 @@ public class SearchServiceImpl implements SearchService {
             defaultSortFields.put(e.get(0), SortOrder.valueOf(e.get(1)));
         }
         logger.info("Default sort fields: {}", defaultSortFields);
+    }
+
+    @Override
+    public List<String> analyzeQuery(AssetSearch search) {
+        if (search.getQuery() == null || search.getQuery().isEmpty()) {
+            return ImmutableList.of();
+        }
+        if (search.getQueryAnalyzer() == null) {
+            search.setQueryAnalyzer(defaultQueryAnalyzer);
+        }
+        return client.admin().indices().prepareAnalyze(
+                search.getQuery())
+                .setIndex("archivist")
+                .setAnalyzer(search.getQueryAnalyzer())
+                .get().getTokens().stream().map(e->e.getTerm()).collect(Collectors.toList());
     }
 
     /**
