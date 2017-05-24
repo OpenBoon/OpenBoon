@@ -57,7 +57,7 @@ struct TaskErrorT {
 
 struct TaskResultT {
     1:binary result,
-    2:list<TaskErrorT> errors
+    2:list<TaskErrorT> errors = []
 }
 
 struct TaskKillT {
