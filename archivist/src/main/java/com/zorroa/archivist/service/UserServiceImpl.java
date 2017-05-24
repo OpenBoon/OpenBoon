@@ -7,7 +7,6 @@ import com.google.common.io.CharStreams;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PermissionDao;
-import com.zorroa.archivist.repository.SessionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -15,7 +14,6 @@ import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.sdk.client.exception.DuplicateElementException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.domain.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -56,9 +53,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
-
-    @Autowired
-    SessionDao sessionDao;
 
     @Autowired
     PermissionDao permissionDao;
@@ -258,21 +252,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
-    }
-
-    @Override
-    public Session getActiveSession() {
-        return sessionDao.get(RequestContextHolder.currentRequestAttributes().getSessionId());
-    }
-
-    @Override
-    public Session getSession(String cookieId) {
-        return sessionDao.get(cookieId);
-    }
-
-    @Override
-    public Session getSession(long id) {
-        return sessionDao.get(id);
     }
 
     @Override
