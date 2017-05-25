@@ -186,9 +186,10 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public void installAndRegisterAllPlugins() {
-
+        pluginRegistry.setInstalledVersions(pluginDao.getInstalledVersions());
         pluginRegistry.installAllPlugins(
                 properties.split("archivist.path.pluginSearchPath", ":"));
+
         pluginRegistry.loadInstalledPlugins();
 
         for (PluginSpec spec: pluginRegistry.getPlugins()) {

@@ -1,19 +1,24 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.plugins.PluginSpec;
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chambers on 8/16/16.
@@ -106,6 +111,19 @@ public class PluginDaoImpl extends AbstractDao implements PluginDao {
     @Override
     public List<Plugin> getAll() {
         return jdbc.query(GET, MAPPER);
+    }
+
+    @Override
+    public Map<String, String> getInstalledVersions() {
+        Map<String,String> result = Maps.newHashMap();
+        jdbc.query("SELECT str_name, str_md5 FROM plugin", new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                result.put(rs.getString("str_name"),
+                        rs.getString("str_md5"));
+            }
+        });
+        return result;
     }
 
     @Override
