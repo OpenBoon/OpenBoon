@@ -76,6 +76,11 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
     }
 
     @Override
+    public boolean delete(Analyst a) {
+        return client.prepareDelete(getIndex(), getType(), a.getId()).get().isFound();
+    }
+
+    @Override
     public List<Integer> getRunningTaskIds() {
         SearchResponse sr = client.prepareSearch(getIndex())
                 .setTypes(getType())
@@ -101,6 +106,20 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 .setSize(page.getSize())
                 .setFrom(page.getFrom())
                 .setQuery(QueryBuilders.matchAllQuery()), page, MAPPER);
+    }
+
+    @Override
+    public List<Analyst> getExpired(int limit, long duration) {
+        QueryBuilder query =
+                QueryBuilders.boolQuery()
+                        .must(QueryBuilders.termQuery("state", AnalystState.DOWN.ordinal()))
+                        .must(QueryBuilders.rangeQuery("updatedTime").lt(System.currentTimeMillis() - duration));
+
+        return elastic.query(client.prepareSearch(getIndex())
+                .setTypes(getType())
+                .setSize(limit)
+                .setFrom(0)
+                .setQuery(query), MAPPER);
     }
 
     @Override

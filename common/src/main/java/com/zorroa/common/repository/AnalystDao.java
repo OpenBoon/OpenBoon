@@ -20,9 +20,13 @@ public interface AnalystDao {
 
     long count();
 
+    boolean delete(Analyst a);
+
     List<Integer> getRunningTaskIds();
 
     PagedList<Analyst> getAll(Pager paging);
+
+    List<Analyst> getExpired(int limit, long duration);
 
     /**
      * Return a list of analysts that are in the UP state but are not updating

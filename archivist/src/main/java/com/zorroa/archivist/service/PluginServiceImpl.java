@@ -56,9 +56,6 @@ public class PluginServiceImpl implements PluginService {
     PipelineDao pipelineDao;
 
     @Autowired
-    PipelineService pipelineService;
-
-    @Autowired
     Client client;
 
     @Autowired

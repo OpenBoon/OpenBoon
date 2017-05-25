@@ -1,8 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.MaintenanceDao;
+import com.zorroa.common.domain.AnalystSpec;
+import com.zorroa.common.domain.AnalystState;
+import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,9 @@ public class MaintenanceServiceTests extends AbstractTest {
 
     @Autowired
     JobService jobService;
+
+    @Autowired
+    AnalystDao analystDao;
 
     @Test
     public void testBackup() throws IOException {
@@ -96,4 +103,23 @@ public class MaintenanceServiceTests extends AbstractTest {
         assertEquals(JobState.Expired, updateJob.getState());
 
     }
+
+    @Test
+    public void testRemoveExpiredAnalysts() {
+        assertEquals(0, maintenanceService.removeExpiredAnalysts());
+
+        AnalystSpec spec = new AnalystSpec();
+        spec.setId("bilbo");
+        spec.setState(AnalystState.DOWN);
+        spec.setUrl("http://127.0.0.2:8099");
+        spec.setQueueSize(1);
+        spec.setMetrics(Maps.newHashMap());
+        spec.setArch("osx");
+        spec.setUpdatedTime(1);
+        String id = analystDao.register(spec);
+        refreshIndex();
+
+        assertEquals(1, maintenanceService.removeExpiredAnalysts());
+    }
+
 }

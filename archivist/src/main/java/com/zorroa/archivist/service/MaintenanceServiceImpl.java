@@ -11,6 +11,8 @@ import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.MaintenanceDao;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.domain.Analyst;
+import com.zorroa.common.repository.AnalystDao;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -44,6 +46,9 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
 
     @Autowired
     JobDao jobDao;
+
+    @Autowired
+    AnalystDao analystDao;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -187,6 +192,20 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
     }
 
     @Override
+    public int removeExpiredAnalysts() {
+        int result = 0;
+        long expireTimeMillis = TimeUnit.HOURS.toMillis(
+                properties.getInt("archivist.maintenance.analyst.expireHours"));
+
+        for (Analyst a: analystDao.getExpired(10, expireTimeMillis)) {
+            if (analystDao.delete(a)) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    @Override
     protected void runOneIteration() throws Exception {
 
         if (!properties.getBoolean("archivist.maintenance.backups.enabled")) {
@@ -204,6 +223,11 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
          * Remove old job data
          */
         removeExpiredJobData();
+
+        /**
+         * Remove expired analysts
+         */
+        removeExpiredAnalysts();
     }
 
     @Override

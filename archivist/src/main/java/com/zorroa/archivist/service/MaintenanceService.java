@@ -52,4 +52,6 @@ public interface MaintenanceService {
      * the number of jobs processed.
      */
     int removeExpiredJobData(long olderThan);
+
+    int removeExpiredAnalysts();
 }

@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.repository.TaskDao;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.repository.AnalystDao;
@@ -23,9 +22,6 @@ public class AnalystServiceImpl implements AnalystService {
 
     @Autowired
     TaskDao taskDao;
-
-    @Autowired
-    ApplicationProperties properties;
 
     @Override
     public void register(AnalystSpec spec) {

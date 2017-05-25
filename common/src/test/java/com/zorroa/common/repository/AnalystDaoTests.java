@@ -5,6 +5,7 @@ import com.zorroa.common.AbstractTest;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
+import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 7/28/16.
@@ -63,6 +66,30 @@ public class AnalystDaoTests extends AbstractTest {
         assertEquals(a1.getUrl(), a2.getUrl());
     }
 
+    @Test
+    public void testGetExpired() {
+        List<Analyst> result = analystDao.getExpired(10, 1000);
+        assertEquals(0, result.size());
+
+        builder.setState(AnalystState.DOWN);
+        builder.setUpdatedTime(System.currentTimeMillis() - 5000);
+        analystDao.register(builder);
+        refreshIndex();
+
+        result = analystDao.getExpired(10, 4999);
+        assertEquals(1, result.size());
+
+        result = analystDao.getExpired(10, 5100);
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testDelete() {
+        PagedList<Analyst> all = analystDao.getAll(Pager.first());
+        assertEquals(1, all.size());
+        assertTrue(analystDao.delete(all.get(0)));
+        assertFalse(analystDao.delete(all.get(0)));
+    }
 
     @Test
     public void testGetUnresponsive() throws InterruptedException {
