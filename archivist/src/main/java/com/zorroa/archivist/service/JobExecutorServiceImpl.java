@@ -19,7 +19,7 @@ import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.common.domain.JobId;
+import com.zorroa.archivist.domain.JobId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.common.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;

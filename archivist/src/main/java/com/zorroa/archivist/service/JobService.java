@@ -2,8 +2,8 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.*;
 import com.zorroa.common.cluster.thrift.ExpandT;
-import com.zorroa.common.domain.JobId;
-import com.zorroa.common.domain.TaskId;
+import com.zorroa.archivist.domain.JobId;
+import com.zorroa.archivist.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;

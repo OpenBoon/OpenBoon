@@ -1,9 +1,9 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.domain.EventLogSearch;
+import com.zorroa.archivist.domain.TaskId;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
-import com.zorroa.common.domain.TaskId;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 

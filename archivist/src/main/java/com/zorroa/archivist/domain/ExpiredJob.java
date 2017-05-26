@@ -1,7 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.common.domain.JobId;
-
 /**
  * Created by chambers on 9/28/16.
  */

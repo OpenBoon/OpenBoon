@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.TaskSpec;
 import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.NetworkEnvironment;
-import com.zorroa.common.domain.TaskId;
+import com.zorroa.archivist.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;

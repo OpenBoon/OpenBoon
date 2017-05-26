@@ -1,6 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.common.domain.JobId;
 import com.zorroa.sdk.domain.Document;
 import org.hibernate.validator.constraints.NotEmpty;
 

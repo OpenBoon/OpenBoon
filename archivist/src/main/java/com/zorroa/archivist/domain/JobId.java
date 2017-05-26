@@ -1,4 +1,4 @@
-package com.zorroa.common.domain;
+package com.zorroa.archivist.domain;
 
 /**
  * Created by chambers on 7/18/16.

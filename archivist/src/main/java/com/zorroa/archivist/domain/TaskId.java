@@ -1,4 +1,4 @@
-package com.zorroa.common.domain;
+package com.zorroa.archivist.domain;
 
 /**
  * The minimal propertied needed to be considered a task.

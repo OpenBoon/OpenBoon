@@ -4,7 +4,7 @@ import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.common.cluster.thrift.TaskResultT;
 import com.zorroa.common.cluster.thrift.TaskStartT;
-import com.zorroa.common.domain.JobId;
+import com.zorroa.archivist.domain.JobId;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
