@@ -34,6 +34,8 @@ public abstract class AbtractThriftClient implements Closeable {
      * -1 to disable and try....forever.
      */
     private int maxRetries = -1;
+    private int connectTimeout = 3000;
+    private int socketTimeout = -1;
 
     public AbtractThriftClient(String host, int port) {
         this.host = host;
@@ -50,13 +52,14 @@ public abstract class AbtractThriftClient implements Closeable {
     public TProtocol connect() throws TException {
         if (!connected.get()) {
             socket = new TSocket(host, port);
-            socket.setConnectTimeout(10000);
 
-            /**
-             * TODO: deal with these.
-             */
-            //socket.setTimeout(10000);
-            //socket.setSocketTimeout(5000);
+            if (connectTimeout > 0) {
+                socket.setConnectTimeout(connectTimeout);
+            }
+
+            if (socketTimeout > 0) {
+                socket.setSocketTimeout(socketTimeout);
+            }
 
             transport = new TFramedTransport(socket);
             protocol = new TCompactProtocol(transport);
@@ -92,6 +95,24 @@ public abstract class AbtractThriftClient implements Closeable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public AbtractThriftClient setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    public int getSocketTimeout() {
+        return socketTimeout;
+    }
+
+    public AbtractThriftClient setSocketTimeout(int socketTimeout) {
+        this.socketTimeout = socketTimeout;
+        return this;
     }
 
     public abstract void reconnect() throws TException;

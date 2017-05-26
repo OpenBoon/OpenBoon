@@ -18,6 +18,13 @@ public class ClusterProcess {
     public ClusterProcess(TaskStartT task) {
         this.task = task;
         this.client = new MasterServerClient(task.getMasterHost());
+
+        // Retry forever
+        this.client.setMaxRetries(-1);
+        // Timeout read/writes after 10 seconds.
+        this.client.setSocketTimeout(10000);
+        // Time connection after 2 seconds.
+        this.client.setConnectTimeout(2000);
     }
 
     public TaskStartT getTask() {

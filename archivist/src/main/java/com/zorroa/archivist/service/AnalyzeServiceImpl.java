@@ -106,8 +106,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         for (Analyst analyst: analysts) {
             try {
                 WorkerNodeClient client = new WorkerNodeClient(analyst.getUrl());
-                // Skip over analyst if it happens to be down.
-                client.setMaxRetries(5);
+                // Never retry so we don' accidently run the same command.
+                client.setMaxRetries(0);
+                client.setConnectTimeout(1000);
+                // Wait up to 120 seconds for result.
+                client.setSocketTimeout(120 * 1000);
+
                 TaskResultT resultT = client.executeTask(new TaskStartT()
                         .setArgMap(Json.serialize(spec.getArgs()))
                         .setEnv(ImmutableMap.of())

@@ -1,11 +1,11 @@
 package com.zorroa.analyst.service;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.cluster.ClusterProcess;
+import com.zorroa.common.cluster.client.ClusterConnectionException;
 import com.zorroa.common.cluster.client.ClusterException;
 import com.zorroa.common.cluster.client.MasterServerClient;
 import com.zorroa.common.cluster.thrift.*;
@@ -336,19 +336,24 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
                 String addr = MasterServerClient.convertUriToClusterAddr(url);
                 MasterServerClient client = new MasterServerClient(addr);
-                client.setMaxRetries(10);
-                List<TaskStartT> tasks = Lists.newArrayList();
+                client.setMaxRetries(0);
+                client.setSocketTimeout(2000);
+                client.setConnectTimeout(2000);
+
                 try {
-                    tasks = client.queuePendingTasks(addr, threads - analyzeExecutor.getActiveCount());
-                } catch (Exception e) {
-                    logger.warn("Unable to contact {} for scheduling op, {}", url, e.getMessage());
+                    List<TaskStartT> tasks = client.queuePendingTasks(addr, threads - analyzeExecutor.getActiveCount());
+                    for (TaskStartT task: tasks) {
+                        queueClusterTask(task);
+                    }
+                } catch (ClusterConnectionException e) {
+                    // ignore this, host is probably down.
+                }
+                catch (Exception e) {
+                    logger.warn("Failed to contact {} for scheduling op, unexpected {}",
+                            addr, e.getMessage(), e);
                 }
                 finally {
                     client.close();
-                }
-
-                for (TaskStartT task: tasks) {
-                    queueClusterTask(task);
                 }
             }
         } catch (Exception e) {

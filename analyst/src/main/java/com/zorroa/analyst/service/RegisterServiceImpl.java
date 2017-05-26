@@ -2,7 +2,6 @@ package com.zorroa.analyst.service;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
@@ -27,9 +26,7 @@ import java.lang.management.OperatingSystemMXBean;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -56,7 +53,18 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     NetworkEnvironment networkEnvironment;
 
     private String id;
-    private List<Float> load = Lists.newArrayList();
+    private ExecutorService registerPool;
+    private BlockingQueue<Runnable> queue;
+
+    public RegisterServiceImpl() {
+        /**
+         * Setup a bounded threadpool for pinging archivists
+         */
+        queue = new LinkedBlockingDeque<>(250);
+        registerPool = new ThreadPoolExecutor(4, 4, 300,
+            TimeUnit.SECONDS, queue, new ThreadPoolExecutor.AbortPolicy());
+
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)  {
@@ -108,16 +116,10 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
                 }
             }
             for (String url: urls) {
-                AtomicBoolean success = connected.get(url);
                 try {
-                    register(url);
-                    if (success.compareAndSet(false, true)) {
-                        logger.info("Registered with {}", url);
-                    }
+                    registerPool.execute(() -> register(url));
                 } catch (Exception e) {
-                    if (success.compareAndSet(false, true)) {
-                        logger.warn("Failed to register with archivist: {}, {}", url, e.getMessage());
-                    }
+                    logger.warn("Unable to queue archivist register command, queue is full, {}", e.getMessage());
                 }
             }
         }
@@ -133,35 +135,48 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     public String register(String url) {
 
-        MasterServerClient client = new MasterServerClient(url);
-        client.setMaxRetries(10);
-
-        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-        ThreadPoolExecutor e = (ThreadPoolExecutor) analyzeThreadPool;
-
-        Map<String, Object> mdata = metrics.invoke();
-        Map<String, Object> fixedMdata = Maps.newHashMapWithExpectedSize(mdata.size());
-        metrics.invoke().forEach((k,v)-> fixedMdata.put(k.replace('.', '_'), v));
-
-        AnalystT builder = new AnalystT();
-        builder.setOs(String.format("%s-%s", osBean.getName(), osBean.getVersion()));
-        builder.setThreadCount(properties.getInt("analyst.executor.threads"));
-        builder.setArch(osBean.getArch());
-        builder.setData(properties.getBoolean("analyst.index.data"));
-        builder.setUrl(networkEnvironment.getClusterAddr());
-        builder.setUpdatedTime(System.currentTimeMillis());
-        builder.setQueueSize(e.getQueue().size());
-        builder.setThreadsUsed(e.getActiveCount());
-        builder.setTaskIds(ImmutableList.of());
-        builder.setId(id);
-        builder.setTaskIds(processManagerNgService.getTaskIds());
-        builder.setLoadAvg(osBean.getSystemLoadAverage());
-        builder.setMetrics(Json.serialize(fixedMdata));
-
         try {
-            client.ping(builder);
-        } finally {
-            client.close();
+            OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+            ThreadPoolExecutor e = (ThreadPoolExecutor) analyzeThreadPool;
+
+            Map<String, Object> mdata = metrics.invoke();
+            Map<String, Object> fixedMdata = Maps.newHashMapWithExpectedSize(mdata.size());
+            metrics.invoke().forEach((k, v) -> fixedMdata.put(k.replace('.', '_'), v));
+
+            AnalystT builder = new AnalystT();
+            builder.setOs(String.format("%s-%s", osBean.getName(), osBean.getVersion()));
+            builder.setThreadCount(properties.getInt("analyst.executor.threads"));
+            builder.setArch(osBean.getArch());
+            builder.setData(properties.getBoolean("analyst.index.data"));
+            builder.setUrl(networkEnvironment.getClusterAddr());
+            builder.setUpdatedTime(System.currentTimeMillis());
+            builder.setQueueSize(e.getQueue().size());
+            builder.setThreadsUsed(e.getActiveCount());
+            builder.setTaskIds(ImmutableList.of());
+            builder.setId(id);
+            builder.setTaskIds(processManagerNgService.getTaskIds());
+            builder.setLoadAvg(osBean.getSystemLoadAverage());
+            builder.setMetrics(Json.serialize(fixedMdata));
+
+            AtomicBoolean success = connected.get(url);
+            MasterServerClient client = new MasterServerClient(url);
+            try {
+                client.setMaxRetries(0);
+                client.setConnectTimeout(2000);
+                client.setSocketTimeout(2000);
+                client.ping(builder);
+                if (success.compareAndSet(false, true)) {
+                    logger.info("Registered with {}", url);
+                }
+            } catch (Exception ex) {
+                if (success.compareAndSet(true, false)) {
+                    logger.warn("Lost connection to archivist {}", url);
+                }
+            } finally {
+                client.close();
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to register with {}", url, e);
         }
         return id;
     }
@@ -171,3 +186,4 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         return Scheduler.newFixedRateSchedule(1, 15, TimeUnit.SECONDS);
     }
 }
+
