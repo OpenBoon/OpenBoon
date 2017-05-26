@@ -54,6 +54,9 @@ public class MultipleWebSecurityConfig {
 
         private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
+        @Autowired
+        ApplicationProperties properties;
+
         @Bean
         public ResetPasswordSecurityFilter resetPasswordSecurityFilter() {
             return new ResetPasswordSecurityFilter();
@@ -62,7 +65,8 @@ public class MultipleWebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .addFilterBefore(new HmacSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new HmacSecurityFilter(
+                        properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter.class)
                 .addFilterBefore(new CorsCredentialsFilter(), ChannelProcessingFilter.class)
                 .antMatcher("/api/**")
@@ -117,10 +121,12 @@ public class MultipleWebSecurityConfig {
         if (properties.getBoolean("archivist.security.ldap.enabled")) {
             auth.authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator));
         }
+        if (properties.getBoolean("archivist.security.hmac.enabled")) {
+            auth.authenticationProvider(hmacAuthenticationProvider());
+        }
         auth
-                .authenticationProvider(authenticationProvider())
-                .authenticationProvider(hmacAuthenticationProvider())
-                .authenticationEventPublisher(authenticationEventPublisher(logService));
+            .authenticationProvider(authenticationProvider())
+            .authenticationEventPublisher(authenticationEventPublisher(logService));
 
         /**
          * If its a unit test we add our rubber stamp authenticator.

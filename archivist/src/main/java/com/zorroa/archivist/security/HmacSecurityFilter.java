@@ -16,12 +16,18 @@ import java.io.IOException;
  */
 public class HmacSecurityFilter extends GenericFilterBean {
 
+    private final boolean enabled;
+
+    public HmacSecurityFilter(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         /**
          * At this point we have to extract the crypted data.
          */
-        if (isAuthenticationRequired()) {
+        if (enabled && isAuthenticationRequired()) {
 
             HttpServletRequest req = (HttpServletRequest) servletRequest;
             if (req.getHeader("X-Archivist-Hmac") != null) {
