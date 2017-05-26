@@ -41,6 +41,8 @@ public interface AssetService {
 
     boolean exists(Path path);
 
+    boolean exists(String id);
+
     /**
      * Update the given assetId with the supplied Map of attributes.  Return
      * the new version number of the asset.

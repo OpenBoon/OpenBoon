@@ -242,6 +242,11 @@ public class AssetController {
         return HttpUtils.count(searchService.count(search));
     }
 
+    @RequestMapping(value="/api/v1/assets/{id}/_exists", method=RequestMethod.GET)
+    public Object exists(@PathVariable String id) throws IOException {
+        return HttpUtils.exists(id, assetService.exists(id));
+    }
+
     @RequestMapping(value="/api/v2/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     public String suggest(@RequestBody AssetSuggestBuilder search) throws IOException {
         SuggestResponse response = searchService.suggest(search);

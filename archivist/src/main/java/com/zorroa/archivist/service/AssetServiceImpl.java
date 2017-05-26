@@ -154,6 +154,11 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    public boolean exists(String id) {
+        return assetDao.exists(id);
+    }
+
+    @Override
     public long update(String assetId, Map<String, Object> attrs) {
 
         Asset asset = assetDao.get(assetId);

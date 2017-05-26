@@ -61,6 +61,12 @@ public class AssetDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testExistsById() {
+        assertTrue(assetDao.exists(asset1.getId()));
+        assertFalse(assetDao.exists("abc"));
+    }
+
+    @Test
     public void testGetAll() {
         PagedList<Asset> assets = assetDao.getAll(Pager.first(10));
         assertEquals(1, assets.getList().size());

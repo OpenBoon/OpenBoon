@@ -66,6 +66,10 @@ public class HttpUtils {
         return ImmutableMap.of("counts", counts);
     }
 
+    public static Map<String, Object> exists(Object id, boolean value) {
+        return ImmutableMap.of("exists", value, "id", id);
+    }
+
     public static Map<String, Object> deleted(String type, Object id, boolean result) {
         return ImmutableMap.of("type", type, "id", id, "op", "delete", "success", result);
     }

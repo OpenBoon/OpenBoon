@@ -47,6 +47,8 @@ public interface AssetDao {
 
     boolean exists(Path path);
 
+    boolean exists(String id);
+
     Asset get(Path path);
 
     Map<String, List<Object>> removeLink(String type, Object value, List<String> assets);

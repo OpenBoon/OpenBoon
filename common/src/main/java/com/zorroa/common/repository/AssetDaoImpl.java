@@ -253,9 +253,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public boolean exists(Path path) {
         return client.prepareSearch(getIndex())
+                .setFetchSource(false)
                 .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString()))
                 .setSize(0)
                 .get().getHits().getTotalHits() > 0;
+    }
+
+    @Override
+    public boolean exists(String id) {
+        return client.prepareGet(getIndex(), "asset", id).setFetchSource(false).get().isExists();
     }
 
     @Override
