@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,9 +26,6 @@ public abstract class MockMvcTest extends AbstractTest {
     @Autowired
     protected FilterChainProxy springSecurityFilterChain;
 
-    @Autowired
-    SessionRegistry sessionRegistry;
-
     protected MockMvc mvc;
 
     @Before
@@ -44,7 +40,7 @@ public abstract class MockMvcTest extends AbstractTest {
     private MockHttpSession buildSession(Authentication authentication) {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, new MockSecurityContext(authentication));
-        sessionRegistry.registerNewSession(session.getId(), authentication.getPrincipal());
+
         return session;
     }
 
