@@ -156,7 +156,7 @@ public abstract class AbtractThriftClient implements Closeable {
                                 getClass(), host, port, maxRetries);
                     }
 
-                    if (tryCount >= maxRetries && maxRetries > 0) {
+                    if (tryCount >= maxRetries && maxRetries >= 0) {
                         throw new ClusterConnectionException("Failed to connect to " +
                                 host + ":" + port + ", " + tryCount + " tries");
                     }
