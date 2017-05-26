@@ -1,0 +1,7 @@
+
+CREATE TABLE startup (
+  pk_startup INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  time_started BIGINT NOT NULL,
+  str_version VARCHAR(16) NOT NULL
+);
+
