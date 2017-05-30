@@ -1,4 +1,4 @@
-package com.zorroa.common.repository;
+package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -17,6 +17,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 /**
  * Created by chambers on 6/16/16.
  */
+@Repository
 public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
 
     @Override

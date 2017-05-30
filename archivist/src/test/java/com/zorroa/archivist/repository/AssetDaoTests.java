@@ -1,10 +1,10 @@
-package com.zorroa.common.repository;
+package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.zorroa.common.AbstractTest;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.DocumentIndexResult;
 import com.zorroa.sdk.domain.PagedList;

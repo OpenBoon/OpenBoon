@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.CommandDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.repository.AssetDao;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;

@@ -7,7 +7,7 @@ import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.repository.AssetDao;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;

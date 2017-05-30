@@ -1,4 +1,4 @@
-package com.zorroa.common.repository;
+package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -22,6 +22,7 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,6 +33,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Repository
 public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override

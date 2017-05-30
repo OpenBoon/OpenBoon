@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.JobService;
-import com.zorroa.common.repository.AssetDao;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;

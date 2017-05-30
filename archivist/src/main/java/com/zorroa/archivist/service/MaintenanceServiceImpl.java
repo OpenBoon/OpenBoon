@@ -12,7 +12,7 @@ import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.MaintenanceDao;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.archivist.repository.AnalystDao;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

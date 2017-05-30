@@ -1,4 +1,4 @@
-package com.zorroa.common.repository;
+package com.zorroa.archivist.repository;
 
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystSpec;

@@ -6,6 +6,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteStreams;
+import com.zorroa.sdk.client.exception.ArchivistException;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -255,5 +256,21 @@ public class ElasticClientUtils {
         }
 
         return "string";
+    }
+
+    public static Map<String, Object> getMapping(Client client, String alias, String type) {
+        ClusterState cs = client.admin().cluster().prepareState().setIndices(
+                alias).execute().actionGet().getState();
+        // Should only be one concrete index.
+        for (String index: cs.getMetaData().concreteAllOpenIndices()) {
+            IndexMetaData imd = cs.getMetaData().index(index);
+            MappingMetaData mdd = imd.mapping(type);
+            try {
+                return mdd.getSourceAsMap();
+            } catch (IOException e) {
+                throw new ArchivistException(e);
+            }
+        }
+        return ImmutableMap.of();
     }
 }

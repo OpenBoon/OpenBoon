@@ -10,7 +10,7 @@ import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.common.repository.AssetDao;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.domain.Asset;

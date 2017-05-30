@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.MaintenanceDao;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

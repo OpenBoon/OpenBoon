@@ -3,7 +3,7 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystSpec;
-import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.springframework.beans.factory.annotation.Autowired;

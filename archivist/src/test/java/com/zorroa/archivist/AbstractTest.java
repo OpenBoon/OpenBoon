@@ -14,7 +14,7 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.ProxySchema;

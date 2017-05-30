@@ -21,7 +21,7 @@ import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.archivist.domain.JobId;
 import com.zorroa.common.domain.TaskState;
-import com.zorroa.common.repository.AnalystDao;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
-package com.zorroa.common.repository;
+package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Maps;
-import com.zorroa.common.AbstractTest;
+import com.zorroa.archivist.AbstractTest;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 7/28/16.
