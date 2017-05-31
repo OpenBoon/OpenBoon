@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.archivist.service.PluginService;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,9 +20,6 @@ import java.util.List;
 @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
 @RestController
 public class PluginController {
-
-    @Autowired
-    ApplicationProperties properties;
 
     @Autowired
     PluginService pluginService;
