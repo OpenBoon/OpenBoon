@@ -5,6 +5,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.*;
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.UserLogSpec;
@@ -78,14 +79,11 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     ApplicationProperties properties;
 
-    private Map<String, Float> defaultQueryFields =
-            ImmutableMap.of("keywords.all", 1.0f, "keywords.all.raw", 2.0f);
-
     private Map<String, SortOrder> defaultSortFields = Maps.newLinkedHashMap();
 
     @PostConstruct
     public void init() {
-        initializeDefaultQueryFields();
+        initializeDefaultQuerySettings();
     }
 
     @Override
@@ -341,6 +339,7 @@ public class SearchServiceImpl implements SearchService {
     private QueryBuilder getQuery(AssetSearch search, boolean perms, boolean postFilter) {
 
         QueryBuilder permsQuery = SecurityUtils.getPermissionsFilter();
+        logger.info("permsquery: {}", permsQuery);
         if (search == null) {
             if (permsQuery == null) {
                 return QueryBuilders.matchAllQuery();
@@ -443,21 +442,19 @@ public class SearchServiceImpl implements SearchService {
 
         QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
         qstring.analyzer(search.getQueryAnalyzer());
+        qstring.allowLeadingWildcard(false);
+        qstring.lenient(true); // ignores qstring errors
 
-        Map<String, Float> queryFields = null;
+        Map<String, Float> queryFields;
         if (JdbcUtils.isValid(search.getQueryFields())) {
             queryFields = search.getQueryFields();
         }
-
-        if (!JdbcUtils.isValid(queryFields)) {
-            queryFields = defaultQueryFields;
+        else {
+            queryFields = getQueryFields();
         }
-
-        queryFields.forEach((k,v)-> qstring.field(k, v));
-        qstring.allowLeadingWildcard(false);
-        // ignores qstring errors
-        qstring.lenient(true);
-
+        queryFields.forEach((k,v)-> {
+            qstring.field(k, v);
+            qstring.field(k + ".raw", v);});
         return qstring;
     }
 
@@ -604,22 +601,40 @@ public class SearchServiceImpl implements SearchService {
      * but we'll need a new type of Supplier.
      */
     private final Supplier<Map<String, Set<String>>> fieldMapCache
-            = Suppliers.memoizeWithExpiration(fieldMapSupplier(), 1, TimeUnit.MINUTES);
+            = Suppliers.memoizeWithExpiration(fieldMapSupplier(), 1,
+            ArchivistConfiguration.unittest ? TimeUnit.NANOSECONDS : TimeUnit.MINUTES);
 
     private final Supplier<Map<String, Set<String>>> fieldMapSupplier() {
         return () -> {
+
             Map<String, Set<String>> result = Maps.newHashMap();
             result.put("string", Sets.newHashSet());
             result.put("date", Sets.newHashSet());
             result.put("integer", Sets.newHashSet());
+            result.put("long", Sets.newHashSet());
             result.put("point", Sets.newHashSet());
+            result.put("keywords-auto", Sets.newHashSet());
+            result.put("keywords", Sets.newHashSet());
+
+            boolean autoKeywords = properties.getBoolean("archivist.search.keywords.auto.enabled");
+            Set<String> autoKeywordFieldNames = null;
+            if (autoKeywords) {
+                autoKeywordFieldNames = ImmutableSet.copyOf(
+                        properties.getList("archivist.search.keywords.auto.fieldNames"));
+            }
+
+            Map<String, Object> fields = properties.getMap(PROP_PREFIX_KEYWORD_FIELD);
+            if (fields != null) {
+                fields.forEach((k, v) -> result.get("keywords").add(
+                        k.replace(PROP_PREFIX_KEYWORD_FIELD, "")));
+            }
 
             ClusterState cs = client.admin().cluster().prepareState().setIndices(alias).execute().actionGet().getState();
             for (String index: cs.getMetaData().concreteAllOpenIndices()) {
                 IndexMetaData imd = cs.getMetaData().index(index);
                 MappingMetaData mdd = imd.mapping("asset");
                 try {
-                    getList(result, "", mdd.getSourceAsMap());
+                    getList(result, "", mdd.getSourceAsMap(), autoKeywordFieldNames);
                 } catch (IOException e) {
                     throw new ArchivistException(e);
                 }
@@ -635,7 +650,7 @@ public class SearchServiceImpl implements SearchService {
 
     private static final Set<String> NAME_TYPE_OVERRRIDES = ImmutableSet.of("point");
 
-    private static void getList(Map<String, Set<String>> result, String fieldName, Map<String, Object> mapProperties) {
+    private void getList(Map<String, Set<String>> result, String fieldName, Map<String, Object> mapProperties, Set<String> autoKeywordFieldNames) {
         Map<String, Object> map = (Map<String, Object>) mapProperties.get("properties");
         for (String key : map.keySet()) {
             Map<String, Object> item = (Map<String, Object>) map.get(key);
@@ -645,35 +660,53 @@ public class SearchServiceImpl implements SearchService {
                 if (NAME_TYPE_OVERRRIDES.contains(key)) {
                     type = key;
                 }
+
                 Set<String> fields = result.get(type);
                 if (fields == null) {
                     fields = new TreeSet<>();
                     result.put(type, fields);
                 }
-                fields.add(String.join("", fieldName, key));
+                String fqfn = String.join("", fieldName, key);
+                fields.add(fqfn);
+
+                /*
+                 * If the last part of the field is set as an auto-keywords field
+                 * then it gets added to the keywords-auto list.
+                 */
+                if (autoKeywordFieldNames.contains(key.toLowerCase()) || autoKeywordFieldNames.contains(fqfn)) {
+                    result.get("keywords-auto").add(fqfn);
+                }
+
+
             } else {
-                getList(result, String.join("", fieldName, key, "."), item);
+                getList(result, String.join("", fieldName, key, "."), item, autoKeywordFieldNames);
             }
         }
     }
 
-    private void initializeDefaultQueryFields() {
-        Map<String, Object> queryFieldProps =
-                properties.getMap("archivist.search.queryFields");
+    /**
+     * The properties prefix used to define keywords fields.
+     */
+    private static final String PROP_PREFIX_KEYWORD_FIELD = "archivist.search.keywords.field.";
 
-        if (!queryFieldProps.isEmpty()) {
-            /**
-             * Using ImmutableMap.Builder to ensure this default cannot
-             * be modified by accident.
-             */
-            ImmutableMap.Builder<String, Float> builder = ImmutableMap.builder();
-            queryFieldProps.forEach((k,v)-> builder.put(
-                    k.replace("archivist.search.queryFields.",""),
+    @Override
+    public Map<String, Float> getQueryFields() {
+
+        Set<String> autoFields = getFields().get("keywords-auto");
+        Map<String, Object> fields = properties.getMap(PROP_PREFIX_KEYWORD_FIELD);
+
+        ImmutableMap.Builder<String, Float> builder = ImmutableMap.builder();
+        if (fields != null) {
+            fields.forEach((k, v) -> builder.put(
+                    k.replace(PROP_PREFIX_KEYWORD_FIELD, ""),
                     Float.valueOf(v.toString())));
-            defaultQueryFields = builder.build();
         }
-        logger.info("Default search fields: {}", defaultQueryFields);
 
+        autoFields.forEach(v->builder.put(v, 1.0f));
+        return builder.build();
+    }
+
+    private void initializeDefaultQuerySettings() {
         /**
          * Setup default sort.
          */

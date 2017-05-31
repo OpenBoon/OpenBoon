@@ -56,5 +56,7 @@ public interface SearchService {
 
     Map<String, Set<String>> getFields();
 
+    Map<String, Float> getQueryFields();
+
     List<String> analyzeQuery(AssetSearch search);
 }

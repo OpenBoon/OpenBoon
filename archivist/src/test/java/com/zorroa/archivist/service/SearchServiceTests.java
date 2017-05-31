@@ -44,12 +44,13 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testSearchPermissionsMiss() throws IOException {
 
+        authenticate("user");
         Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
 
         SecurityUtils.setReadPermissions(source, Lists.newArrayList(perm));
-        Asset asset1 = assetService.index(source);
-        refreshIndex(100);
+        assetService.index(source);
+        refreshIndex();
 
         AssetSearch search = new AssetSearch().setQuery("beer");
         assertEquals(0, searchService.search(search).getHits().getTotalHits());
@@ -434,9 +435,11 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void getFields() {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
+        source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
+
+        assetService.index(source);
         refreshIndex();
 
         Map<String, Set<String>> fields = searchService.getFields();
@@ -444,8 +447,8 @@ public class SearchServiceTests extends AbstractTest {
         assertTrue(fields.get("string").size() > 0);
         assertTrue(fields.get("integer").size() > 0);
         assertTrue(fields.get("point").size() > 0);
+        assertTrue(fields.get("keywords-auto").contains("foo.keywords"));
     }
-
 
     @Test
     public void testColorSearch() {

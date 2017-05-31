@@ -49,7 +49,7 @@ public class ExportServiceTests extends AbstractTest {
     public void testCreate() {
         spec = new ExportSpec();
         spec.setName("test");
-        spec.setSearch(new AssetSearch().setQuery("cat"));
+        spec.setSearch(new AssetSearch().setQuery("cats"));
         job = exportService.create(spec);
         int count = jdbc.queryForObject(
                 "SELECT COUNT(1) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
@@ -61,7 +61,7 @@ public class ExportServiceTests extends AbstractTest {
         spec = new ExportSpec();
         spec.setName("test");
         spec.setFields(ImmutableList.of("source.mediaType", "source.filename"));
-        spec.setSearch(new AssetSearch().setQuery("cat"));
+        spec.setSearch(new AssetSearch().setQuery("cats"));
         job = exportService.create(spec);
 
         List<TaskStartT> tasks =
