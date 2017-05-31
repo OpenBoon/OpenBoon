@@ -339,7 +339,6 @@ public class SearchServiceImpl implements SearchService {
     private QueryBuilder getQuery(AssetSearch search, boolean perms, boolean postFilter) {
 
         QueryBuilder permsQuery = SecurityUtils.getPermissionsFilter();
-        logger.info("permsquery: {}", permsQuery);
         if (search == null) {
             if (permsQuery == null) {
                 return QueryBuilders.matchAllQuery();
