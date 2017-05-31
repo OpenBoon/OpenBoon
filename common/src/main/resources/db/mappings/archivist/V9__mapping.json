@@ -17,8 +17,7 @@
           "filter": [
             "trim",
             "delimiter_filter",
-            "lowercase",
-            "porter_stem"
+            "lowercase"
           ]
         },
         "case_sensitive": {
