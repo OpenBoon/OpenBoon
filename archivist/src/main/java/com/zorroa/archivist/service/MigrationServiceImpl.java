@@ -136,6 +136,15 @@ public class MigrationServiceImpl implements MigrationService {
         }
 
         /**
+         * The index we have is newer, so don't downgrrade
+         */
+        if (m.getVersion() > props.getVersion()) {
+            logger.warn("Version {} is higher than version {}, not downgrading.",
+                    m.getVersion(), props.getVersion());
+            return;
+        }
+
+        /**
          * For unit tests, suspend the unit test transaction and execute the update
          * in a separate transaction, that we're not starting at V1 every time.
          */
@@ -153,6 +162,7 @@ public class MigrationServiceImpl implements MigrationService {
 
         if (newIndexExists) {
             logger.warn("New index '{}' already exists, may not be latest version", newIndex);
+            client.admin().indices().prepareOpen(newIndex).get();
             return;
         }
 
@@ -241,7 +251,10 @@ public class MigrationServiceImpl implements MigrationService {
         /**
          * Now close the old index so we don't waste time on it.
          */
-        client.admin().indices().prepareClose(oldIndex);
+        if (oldIndexExists) {
+            logger.info("Closing index: {}", oldIndex);
+            client.admin().indices().prepareClose(oldIndex).get();
+        }
     }
 
 
