@@ -188,7 +188,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
     @Override
     public int decrementDependCount(TaskId finishedTask) {
-        logger.info("decrementing: task:{} parent:{}", finishedTask.getTaskId(), finishedTask.getParentTaskId());
         // Decrement tasks depending on both ourself and our parent.
         int count = jdbc.update(DECREMENT_DEPEND, finishedTask.getTaskId());
         if (finishedTask.getParentTaskId() != null) {

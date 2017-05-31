@@ -305,6 +305,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public boolean setTaskCompleted(Task task, int exitStatus) {
+        logger.info("Task {} [{}] completed on host '{}' exit status: {}", task.getName(),
+            task.getId(), task.getHost(), exitStatus);
         TaskState newState = exitStatus != 0 ? TaskState.Failure : TaskState.Success;
         if (setTaskState(task, newState, TaskState.Running, TaskState.Queued)) {
             if (newState.equals(TaskState.Success)) {
