@@ -310,7 +310,7 @@ public class JobServiceImpl implements JobService {
         TaskState newState = exitStatus != 0 ? TaskState.Failure : TaskState.Success;
         if (setTaskState(task, newState, TaskState.Running, TaskState.Queued)) {
             if (newState.equals(TaskState.Success)) {
-                logger.info("decremented {} depend counts" , taskDao.decrementDependCount(task));
+                taskDao.decrementDependCount(task);
             }
             return true;
         }
