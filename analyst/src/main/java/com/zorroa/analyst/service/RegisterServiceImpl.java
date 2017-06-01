@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Register this process with the archivist.
@@ -55,6 +54,12 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     private String id;
     private ExecutorService registerPool;
     private BlockingQueue<Runnable> queue;
+    private final Map<String, ConnectionState> connected = Maps.newConcurrentMap();
+
+    private enum ConnectionState {
+        SUCCESS,
+        FAIL
+    }
 
     public RegisterServiceImpl() {
         /**
@@ -100,8 +105,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
         logger.info("Analyst ID: {}", id);
     }
 
-    private final Map<String, AtomicBoolean> connected = Maps.newHashMap();
-
     @Override
     protected void runOneIteration() {
         if (Application.isUnitTest()) {
@@ -110,11 +113,6 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
         try {
             List<String> urls = properties.getList("analyst.master.host");
-            for (String url: urls) {
-                if (!connected.containsKey(url)) {
-                    connected.put(url, new AtomicBoolean(false));
-                }
-            }
             for (String url: urls) {
                 try {
                     registerPool.execute(() -> register(url));
@@ -158,19 +156,22 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setLoadAvg(osBean.getSystemLoadAverage());
             builder.setMetrics(Json.serialize(fixedMdata));
 
-            AtomicBoolean success = connected.get(url);
+            ConnectionState success = connected.get(url);
             MasterServerClient client = new MasterServerClient(url);
             try {
                 client.setMaxRetries(0);
                 client.setConnectTimeout(2000);
                 client.setSocketTimeout(2000);
                 client.ping(builder);
-                if (success.compareAndSet(false, true)) {
+                if (!ConnectionState.SUCCESS.equals(success)) {
                     logger.info("Registered with {}", url);
+                    connected.put(url, ConnectionState.SUCCESS);
                 }
+
             } catch (Exception ex) {
-                if (success.compareAndSet(true, false)) {
-                    logger.warn("Lost connection to archivist {}", url);
+                if (!ConnectionState.FAIL.equals(success)) {
+                    logger.warn("No connection to archivist {}", url);
+                    connected.put(url, ConnectionState.FAIL);
                 }
             } finally {
                 client.close();
