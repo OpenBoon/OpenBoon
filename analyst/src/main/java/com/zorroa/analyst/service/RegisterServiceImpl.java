@@ -156,20 +156,20 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setLoadAvg(osBean.getSystemLoadAverage());
             builder.setMetrics(Json.serialize(fixedMdata));
 
-            ConnectionState success = connected.get(url);
+            ConnectionState state = connected.get(url);
             MasterServerClient client = new MasterServerClient(url);
             try {
                 client.setMaxRetries(0);
                 client.setConnectTimeout(2000);
                 client.setSocketTimeout(2000);
                 client.ping(builder);
-                if (!ConnectionState.SUCCESS.equals(success)) {
+                if (!ConnectionState.SUCCESS.equals(state)) {
                     logger.info("Registered with {}", url);
                     connected.put(url, ConnectionState.SUCCESS);
                 }
 
             } catch (Exception ex) {
-                if (!ConnectionState.FAIL.equals(success)) {
+                if (!ConnectionState.FAIL.equals(state)) {
                     logger.warn("No connection to archivist {}", url);
                     connected.put(url, ConnectionState.FAIL);
                 }
