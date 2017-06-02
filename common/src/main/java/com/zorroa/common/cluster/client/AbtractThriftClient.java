@@ -152,8 +152,10 @@ public abstract class AbtractThriftClient implements Closeable {
 
                 } catch (TTransportException e) {
                     if (connected.compareAndSet(true, false)) {
-                        logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",
-                                getClass(), host, port, maxRetries);
+                        if (maxRetries > 0) {
+                            logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",
+                                    getClass(), host, port, maxRetries);
+                        }
                     }
 
                     if (tryCount >= maxRetries && maxRetries >= 0) {
