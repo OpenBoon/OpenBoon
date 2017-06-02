@@ -6,9 +6,10 @@ import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
  * Created by chambers on 5/30/17.
  */
 @Service
-public class SettingsServiceImpl implements SettingsService {
+public class SettingsServiceImpl implements SettingsService, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsServiceImpl.class);
 
@@ -34,8 +35,8 @@ public class SettingsServiceImpl implements SettingsService {
         WHITELIST.put("archivist\\.search\\.queryAnalyzer", String.class);
     }
 
-    @PostConstruct
-    public void init() {
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         /**
          * Restore the runtime settings.
          */
