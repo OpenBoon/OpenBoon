@@ -43,6 +43,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
                     "str_description",
                     "json_display",
                     "json_filters",
+                    "json_file_types",
                     "time_created",
                     "time_modified");
 
@@ -72,8 +73,9 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             ps.setString(6, spec.getDescription() == null ? shortName : spec.getDescription());
             ps.setString(7, Json.serializeToString(spec.getDisplay(), "[]"));
             ps.setString(8, Json.serializeToString(spec.getFilters(), "[]"));
-            ps.setLong(9, time);
+            ps.setString(9,Json.serializeToString(spec.getFileTypes(), "[]"));
             ps.setLong(10, time);
+            ps.setLong(11, time);
             return ps;
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
@@ -90,6 +92,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         p.setDescription(rs.getString("str_description"));
         p.setDisplay(Json.deserialize(rs.getString("json_display"), new TypeReference<List<Map<String, Object>>>() {}));
         p.setFilters(Json.deserialize(rs.getString("json_filters"), Json.LIST_OF_STRINGS));
+        p.setFileTypes(Json.deserialize(rs.getString("json_file_types"), Json.SET_OF_STRINGS));
         p.setPluginId(rs.getInt("pk_plugin"));
         p.setPluginLanguage(rs.getString("plugin_lang"));
         p.setPluginVersion(rs.getString("plugin_ver"));
@@ -107,6 +110,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             "processor.str_description,"+
             "processor.json_display,"+
             "processor.json_filters, " +
+            "processor.json_file_types,"+
             "plugin.pk_plugin, "+
             "plugin.str_name AS plugin_name, "+
             "plugin.str_lang AS plugin_lang, " +
@@ -178,8 +182,8 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         ProcessorRef ref = new ProcessorRef();
         ref.setClassName(rs.getString("str_name"));
         ref.setLanguage(rs.getString("plugin_lang"));
+        ref.setFileTypes(Json.deserialize(rs.getString("json_file_types"), Json.SET_OF_STRINGS));
         ref.setFilters(Lists.newArrayList());
-
         List<String> filters = Json.deserialize(rs.getString("json_filters"), Json.LIST_OF_STRINGS);
         for (String filt: filters) {
             ref.getFilters().add(new com.zorroa.sdk.processor.ProcessorFilter(filt));
@@ -191,6 +195,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         "SELECT " +
             "processor.str_name,"+
             "processor.json_filters, "+
+            "processor.json_file_types,"+
             "plugin.str_lang AS plugin_lang " +
         "FROM " +
             "processor INNER JOIN plugin ON ( processor.pk_plugin = plugin.pk_plugin ) " +

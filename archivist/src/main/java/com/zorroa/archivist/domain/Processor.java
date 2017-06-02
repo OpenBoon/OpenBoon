@@ -5,6 +5,7 @@ import com.google.common.base.MoreObjects;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by chambers on 8/16/16.
@@ -15,6 +16,7 @@ public class Processor {
 
     private int id;
     private List<String> filters;
+    private Set<String> fileTypes;
     private String description;
     private String name;
     private String shortName;
@@ -134,6 +136,15 @@ public class Processor {
 
     public Processor setPluginId(int pluginId) {
         this.pluginId = pluginId;
+        return this;
+    }
+
+    public Set<String> getFileTypes() {
+        return fileTypes;
+    }
+
+    public Processor setFileTypes(Set<String> fileTypes) {
+        this.fileTypes = fileTypes;
         return this;
     }
 
