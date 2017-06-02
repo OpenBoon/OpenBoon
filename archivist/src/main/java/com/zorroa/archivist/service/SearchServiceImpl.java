@@ -268,7 +268,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (search.getFields() != null) {
-            request.setFetchSource(search.getFields(), new String[] {} );
+            request.setFetchSource(search.getFields(), new String[] {"content"} );
         }
 
         if (search.getScroll() != null) {
