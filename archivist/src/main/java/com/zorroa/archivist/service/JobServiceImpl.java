@@ -172,7 +172,7 @@ public class JobServiceImpl implements JobService {
          */
         if (expandScript.getExecute() == null) {
             try {
-                ZpsScript parentScript = Json.Mapper.readValue(parent.getScriptPath(), ZpsScript.class);
+                ZpsScript parentScript = Json.Mapper.readValue(new File(parent.getScriptPath()), ZpsScript.class);
                 expandScript.setExecute(parentScript.getExecute());
             } catch (IOException e) {
                 throw new ArchivistWriteException("Expand with inherited execute failure", e);
