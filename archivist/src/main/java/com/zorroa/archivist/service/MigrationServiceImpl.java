@@ -134,11 +134,7 @@ public class MigrationServiceImpl implements MigrationService {
         if (!oldIndexExists && !newIndexExists) {
             logger.info("No indexes exist, {} will be created", newIndex);
         }
-
-        /**
-         * The index we have is newer, so don't downgrrade
-         */
-        if (m.getVersion() > props.getVersion()) {
+        else if (m.getVersion() > props.getVersion()) {
             logger.warn("Version {} is higher than version {}, not downgrading.",
                     m.getVersion(), props.getVersion());
             return;
