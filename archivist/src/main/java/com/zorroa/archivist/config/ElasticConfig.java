@@ -49,7 +49,8 @@ public class ElasticConfig {
                         .put("script.engine.groovy.indexed.update", true)
                         .put("node.data", properties.getBoolean("archivist.index.data"))
                         .put("node.master", properties.getBoolean("archivist.index.master"))
-                        .put("path.plugins", "{path.home}/es-plugins");
+                        .put("path.plugins", "{path.home}/es-plugins")
+                        .put("action.auto_create_index",  "-arch*,+.scripts,-*");
 
         if (ArchivistConfiguration.unittest) {
             builder.put("index.refresh_interval", "1s");

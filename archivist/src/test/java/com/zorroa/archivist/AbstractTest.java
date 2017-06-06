@@ -125,10 +125,6 @@ public abstract class AbstractTest {
 
     @Before
     public void setup() throws IOException {
-        /**
-         * Before we can do anything reliably we need a logged in user.
-         */
-        authenticate();
 
         /*
           * Now that folders are created using what is essentially a nested transaction,
@@ -167,6 +163,11 @@ public abstract class AbstractTest {
         migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true);
         archivistRepositorySetup.setupDataSources();
         refreshIndex();
+
+        /**
+         * Before we can do anything reliably we need a logged in user.
+         */
+        authenticate();
 
         /**
          * Adds in a test, non privileged user.
