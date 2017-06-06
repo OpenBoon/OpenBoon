@@ -2,7 +2,7 @@
   "migration": {
     "reindex": true,
     "reingest": false,
-    "patch": 2
+    "patch": 3
   },
   "settings": {
     "index": {
@@ -25,6 +25,14 @@
           "filter": [
             "trim",
             "delimiter_filter"
+          ]
+        },
+        "content": {
+          "tokenizer": "standard",
+          "filter": [
+            "trim",
+            "lowercase",
+            "stop"
           ]
         },
         "path_analyzer" : {
@@ -213,6 +221,7 @@
             "match_mapping_type": "string",
             "match": "content",
             "mapping": {
+              "analyzer": "content",
               "type": "string"
             }
           }

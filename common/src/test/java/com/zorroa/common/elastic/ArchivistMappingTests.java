@@ -2,6 +2,7 @@ package com.zorroa.common.elastic;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.common.AbstractTest;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.Source;
@@ -98,6 +99,31 @@ public class ArchivistMappingTests extends AbstractTest {
         assertEquals("path_analyzer", doc.getAttr("properties.test.properties.fooPath.analyzer"));
 
     }
+
+    @Test
+    public void testContentMapping() throws ExecutionException, InterruptedException, IOException {
+
+        Source source = new Source(getTestImagePath("set01/standard/faces.jpg"));
+        source.setAttr("test.content", "the cat ran into the bar");
+
+        client.prepareIndex("archivist", "asset", source.getId())
+                .setSource(Json.serialize(source.getDocument()))
+                .setRefresh(true)
+                .get();
+
+        TermVectorsResponse tv = client.prepareTermVectors()
+                .setIndex("archivist")
+                .setType("asset")
+                .setId(source.getId())
+                .setSelectedFields("test.content")
+                .setOffsets(true)
+                .setPositions(true)
+                .setTermStatistics(true)
+                .setFieldStatistics(true)
+                .execute().get();
+        assertEquals(Lists.newArrayList("bar", "cat", "ran"), getTerms(tv));
+    }
+
 
     public List<String> getTerms(TermVectorsResponse resp) throws IOException {
         List<String> termStrings = new ArrayList<>();
