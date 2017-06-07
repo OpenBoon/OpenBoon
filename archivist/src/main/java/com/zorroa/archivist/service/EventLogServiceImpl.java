@@ -29,6 +29,9 @@ public class EventLogServiceImpl implements EventLogService {
     private static final Logger logger = LoggerFactory.getLogger(EventLogServiceImpl.class);
 
     @Autowired
+    JobService jobService;
+
+    @Autowired
     EventLogDao eventLogDao;
 
     private final Executor executor = SecureSingleThreadExecutor.singleThreadExecutor();
@@ -59,6 +62,8 @@ public class EventLogServiceImpl implements EventLogService {
     @Override
     public void log(Task task, List<TaskErrorT> errors) {
         eventLogDao.create(task, errors);
+        jobService.incrementJobStats(task.getJobId(), 0, errors.size(), 0);
+        jobService.incrementTaskStats(task.getTaskId(), 0, errors.size(), 0);
     }
 
     @Override
