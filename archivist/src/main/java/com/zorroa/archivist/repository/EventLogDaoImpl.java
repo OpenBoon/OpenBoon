@@ -1,10 +1,11 @@
 package com.zorroa.archivist.repository;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.EventLogSearch;
 import com.zorroa.archivist.domain.TaskId;
 import com.zorroa.archivist.domain.UserLogSpec;
+import com.zorroa.common.cluster.thrift.StackElementT;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
 import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
@@ -75,12 +76,16 @@ public class EventLogDaoImpl extends AbstractElasticDao implements EventLogDao {
             entry.put("phase", error.getPhase());
             entry.put("timestamp", error.getTimestamp());
 
-            Map<String,Object> stack = Maps.newHashMap();
-            stack.put("className", error.getClassName());
-            stack.put("file", error.getFile());
-            stack.put("lineNumber", error.getLineNumber());
-            stack.put("method", error.getMethod());
-            entry.put("stackTrace", ImmutableList.of(stack));
+            List<Map<String,Object>> stackTrace = Lists.newArrayList();
+            for (StackElementT e: error.getStack()) {
+                Map<String,Object> stack = Maps.newHashMap();
+                stack.put("className", e.getClassName());
+                stack.put("file", e.getFile());
+                stack.put("lineNumber", e.getLineNumber());
+                stack.put("method", e.getMethod());
+                stackTrace.add(stack);
+            }
+            entry.put("stackTrace", stackTrace);
 
             bulkRequest.add(client.prepareIndex("job_logs", "entry")
                     .setSource(entry));

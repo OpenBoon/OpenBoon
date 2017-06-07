@@ -5,8 +5,10 @@ import com.zorroa.archivist.domain.EventLogSearch;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.service.EventLogService;
+import com.zorroa.common.cluster.thrift.StackElementT;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
 import com.zorroa.sdk.util.Json;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -68,13 +70,15 @@ public class EventLogControllerTests extends MockMvcTest {
         error.setPath("/bar/bing");
         error.setTimestamp(System.currentTimeMillis());
         error.setOriginPath("/shoe");
-        error.setLineNumber(10);
-        error.setClassName("com.zorroa.core.plugins.Processor");
-        error.setFile("Processor.class");
         error.setOriginService("test");
         error.setPhase("process");
         error.setSkipped(true);
         error.setMessage("There was a failure");
+        error.setStack(Lists.newArrayList(new StackElementT()
+                .setClassName("com.zorroa.core.plugins.Processor")
+                .setMethod("foo")
+                .setLineNumber(10)
+                .setFile("Processor.class")));
 
         logService.log(task, ImmutableList.of(error));
         refreshIndex();

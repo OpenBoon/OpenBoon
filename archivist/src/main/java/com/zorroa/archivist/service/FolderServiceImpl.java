@@ -8,12 +8,11 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.FolderDao;
-import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.TrashFolderDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
-import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.slf4j.Logger;
@@ -46,9 +45,6 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     AssetDao assetDao;
-
-    @Autowired
-    PermissionDao permissionDao;
 
     @Autowired
     TransactionEventManager transactionEventManager;

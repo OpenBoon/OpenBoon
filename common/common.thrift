@@ -48,10 +48,7 @@ struct TaskErrorT {
     6:string processor,
     7:string phase,
     8:bool skipped,
-    9:string file,
-    10:string className,
-    11:string method,
-    12:i32 lineNumber,
+    9:list<StackElementT> stack,
     13:i64 timestamp
 }
 

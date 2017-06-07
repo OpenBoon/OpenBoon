@@ -300,11 +300,13 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         error.setPhase(zpsError.getPhase());
         error.setProcessor(zpsError.getProcessor());
         error.setSkipped(zpsError.isSkipped());
-        error.setFile(zpsError.getFile());
-        error.setClassName(zpsError.getClassName());
-        error.setMethod(zpsError.getMethod());
-        error.setLineNumber(zpsError.getLineNumber());
         error.setTimestamp(System.currentTimeMillis());
+
+        error.setStack(ImmutableList.of(new StackElementT()
+                .setClassName(zpsError.getClassName())
+                .setFile(zpsError.getFile())
+                .setLineNumber(zpsError.getLineNumber())
+                .setMethod(zpsError.getMethod())));
 
         if (zpsError.getOrigin() != null) {
             error.setId(zpsError.getId());

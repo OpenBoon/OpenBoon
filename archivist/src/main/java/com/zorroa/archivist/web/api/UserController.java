@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
@@ -29,9 +28,6 @@ public class UserController  {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    Validator validator;
 
     @Deprecated
     @RequestMapping(value="/api/v1/generate_api_key", method=RequestMethod.POST)

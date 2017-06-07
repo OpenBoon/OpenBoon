@@ -3,9 +3,12 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.AnalyzeSpec;
 import com.zorroa.common.cluster.client.ClusterConnectionException;
 import com.zorroa.common.cluster.client.WorkerNodeClient;
+import com.zorroa.common.cluster.thrift.StackElementT;
+import com.zorroa.common.cluster.thrift.TaskErrorT;
 import com.zorroa.common.cluster.thrift.TaskResultT;
 import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.NetworkEnvironment;
@@ -29,6 +32,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chambers on 5/15/17.
@@ -123,12 +127,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
                 if (resultT.getResult() != null) {
                     // The ReturnResponse object returns a list.
-                    return ImmutableMap.of("assets",
+                    return ImmutableMap.of("list",
                             Json.deserialize(resultT.getResult(), List.class),
-                            "errors", resultT.getErrors());
+                            "errors", makeRestFriendly(resultT.getErrors()));
                 }
                 else {
-                    throw new ArchivistException("No response object was set");
+                    return ImmutableMap.of(
+                            "errors", makeRestFriendly(resultT.getErrors()));
                 }
 
             } catch (ClusterConnectionException e) {
@@ -153,4 +158,34 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         }
         return result;
     }
+
+    private List<Map<String,Object>> makeRestFriendly(List<TaskErrorT> errors) {
+        List<Map<String,Object>> result = Lists.newArrayListWithCapacity(errors.size());
+        for (TaskErrorT error: errors) {
+            Map<String, Object> entry = Maps.newHashMap();
+            entry.put("message", error.getMessage());
+            entry.put("service", error.getOriginService());
+            entry.put("skipped", error.isSkipped());
+            entry.put("path", error.getPath());
+            entry.put("assetId", error.getId());
+            entry.put("processor", error.getProcessor());
+            entry.put("phase", error.getPhase());
+            entry.put("timestamp", error.getTimestamp());
+
+            List<Map<String,Object>> stackTrace = Lists.newArrayList();
+            entry.put("stackTrace", stackTrace);
+
+            for (StackElementT e: error.getStack()) {
+                Map<String,Object> stack = Maps.newHashMap();
+                stack.put("className", e.getClassName());
+                stack.put("file", e.getFile());
+                stack.put("lineNumber", e.getLineNumber());
+                stack.put("method", e.getMethod());
+                stackTrace.add(stack);
+            }
+            result.add(entry);
+        }
+        return result;
+    }
+
 }

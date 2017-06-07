@@ -78,7 +78,10 @@ public class MultipleWebSecurityConfig {
                     .anyRequest().authenticated()
                 .and().headers().frameOptions().disable()
                 .and()
-                .httpBasic().and()
+                .httpBasic()
+                .and()
+                .sessionManagement()
+                .and()
                 .csrf().disable();
             }
     }
