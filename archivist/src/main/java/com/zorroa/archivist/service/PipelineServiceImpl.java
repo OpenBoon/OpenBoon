@@ -15,6 +15,7 @@ import com.zorroa.sdk.processor.ProcessorRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -144,8 +145,12 @@ public class PipelineServiceImpl implements PipelineService {
             }
         }
         else {
-            Pipeline p = getStandard();
-            result.addAll(pluginService.getProcessorRefs(p.getId()));
+            try {
+                Pipeline p = getStandard();
+                result.addAll(pluginService.getProcessorRefs(p.getId()));
+            } catch (EmptyResultDataAccessException ignore) {
+                // If there1 is no standard, its just an empty pipeline.
+            }
         }
         return result;
     }

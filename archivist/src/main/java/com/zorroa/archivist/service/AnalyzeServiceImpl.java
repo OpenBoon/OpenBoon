@@ -71,7 +71,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         script.setStrict(true);
 
         script.setExecute(pipelineService.getProcessors(spec.getPipelineId(), spec.getPipeline()));
-        String lang = script.getExecute().get(0).getLanguage();
+        String lang;
+        try {
+            lang = script.getExecute().get(0).getLanguage();
+        } catch (IndexOutOfBoundsException ignore) {
+            // an empty pipeline, just ignore it
+            lang = "java";
+        }
 
         if (lang.equals("python")) {
             script.getExecute().add(pluginService.getProcessorRef("zorroa_py_core.document.PyReturnResponse"));
