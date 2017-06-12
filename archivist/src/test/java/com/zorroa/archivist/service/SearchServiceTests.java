@@ -645,27 +645,6 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testBitwiseHammingDistanceInvalidData() throws IOException {
-        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1.bit", "0fafafaz");
-
-        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
-        source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1.bit", "0dadada");
-
-        assetService.index(ImmutableList.of(source1, source2));
-        refreshIndex();
-
-        AssetSearch search = new AssetSearch();
-        search.setFilter(new AssetFilter().setHamming(
-                new HammingDistanceFilter("0fafafaf", "test.hash1.bit", 8)));
-
-        long hits = searchService.search(search).getHits().totalHits();
-        assertEquals(0, hits);
-    }
-
-    @Test
     public void testAnalyze() {
         List<String> terms = searchService.analyzeQuery(new AssetSearch("cats dogs"));
         assertEquals(ImmutableList.of("cats", "dogs"), terms);

@@ -556,7 +556,7 @@ public class SearchServiceImpl implements SearchService {
 
         if (filter.getHamming() != null) {
             Map<String, Object> args = Maps.newHashMap();
-            args.put("field", dotRawMe(filter.getHamming().getField()));
+            args.put("field", filter.getHamming().getField());
             args.put("hashes", filter.getHamming().getHashes());
             args.put("minScore", filter.getHamming().getMinScore());
             if (filter.getHamming().getWeights() != null) args.put("weights", filter.getHamming().getWeights());

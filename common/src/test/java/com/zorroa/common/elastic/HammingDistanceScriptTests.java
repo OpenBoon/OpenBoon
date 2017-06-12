@@ -1,9 +1,14 @@
 package com.zorroa.common.elastic;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
+import org.apache.lucene.index.SortedNumericDocValues;
+import org.apache.lucene.util.BytesRef;
 import org.junit.Test;
 
-import static com.zorroa.common.elastic.HammingDistanceScript.hexToDecimalArray;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,33 +17,70 @@ import static org.junit.Assert.assertEquals;
 public class HammingDistanceScriptTests extends AbstractTest {
 
     @Test
-    public void testBitwiseHamming() {
-        assertEquals(0, HammingDistanceScript.bitwiseHammingDistance(
-                new int[] { 255 }, new int[] { 0 }));
-        assertEquals(8, HammingDistanceScript.bitwiseHammingDistance(
-                new int[] { 255 }, new int[] { 255 }));
+    public void testCharHammingIdenticalMatch() {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("field", "charHash");
+        map.put("hashes", ImmutableList.of("AAAA"));
 
-        assertEquals(7, HammingDistanceScript.bitwiseHammingDistance(
-                hexToDecimalArray("AF"), hexToDecimalArray("AE")));
-        assertEquals(14, HammingDistanceScript.bitwiseHammingDistance(
-                hexToDecimalArray("AFCC"), hexToDecimalArray("AECD")));
+        HammingDistanceScript script = new HammingDistanceScript(map);
+        double score = script.charHashesComparison(new BytesRef("AAAA".getBytes()));
+        assertEquals(100, score, 0);
     }
 
     @Test
-    public void testHamming() {
-        assertEquals(29,
-                HammingDistanceScript.hammingDistance("AB", "AC", 2));
-        assertEquals(112,
-                HammingDistanceScript.hammingDistance("AFAFAFAF", "ADADADAD", 8));
+    public void testCharHammingHalfMatch() {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("field", "charHash");
+        map.put("hashes", ImmutableList.of("AAAA"));
+
+        HammingDistanceScript script = new HammingDistanceScript(map);
+        double score = script.charHashesComparison(new BytesRef("AAPP".getBytes()));
+        assertEquals(50, score, 0);
     }
 
     @Test
-    public void testHammingWeight() {
-        assertEquals(8, HammingDistanceScript.hammingWeight(255));
-        assertEquals(1, HammingDistanceScript.hammingWeight(1));
-        assertEquals(2, HammingDistanceScript.hammingWeight(3));
-        assertEquals(3, HammingDistanceScript.hammingWeight(7));
-        assertEquals(1, HammingDistanceScript.hammingWeight(8));
+    public void testNumericHammingIdenticalMatch() {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("field", "hash._byte");
+        map.put("hashes", ImmutableList.of(ImmutableList.of(1,1,1,1)));
+
+        HammingDistanceScript script = new HammingDistanceScript(map);
+        double score = script.numericHashesComparison(new LDocValues(1,1,1,1));
+        assertEquals(100, score, 0);
+    }
+
+    @Test
+    public void testNumericHammingRoughHalfMatch() {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("field", "hash._byte");
+        map.put("hashes", ImmutableList.of(ImmutableList.of(127, -128, 127, -128)));
+
+        HammingDistanceScript script = new HammingDistanceScript(map);
+        double score = script.numericHashesComparison(new LDocValues(0,0,0,0));
+        assertEquals(50, score, 0);
+    }
+
+    /**
+     * An impl of a wrapper class ElasticSearch uses.  We use this in
+     * the plugin to avoid copying values
+     */
+    public static class LDocValues extends SortedNumericDocValues {
+        Number[] values;
+        public LDocValues(Number ... values) {
+            this.values = values;
+        }
+        @Override
+        public void setDocument(int i) {
+
+        }
+        @Override
+        public long valueAt(int i) {
+            return values[i].longValue();
+        }
+        @Override
+        public int count() {
+            return values.length;
+        }
     }
 
 }
