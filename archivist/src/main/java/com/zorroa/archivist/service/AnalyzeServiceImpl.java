@@ -116,7 +116,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         for (Analyst analyst: analysts) {
             try {
                 WorkerNodeClient client = new WorkerNodeClient(analyst.getUrl());
-                // Never retry so we don' accidently run the same command.
+                // Never retry so we don't accidentally run the same command.
                 client.setMaxRetries(0);
                 client.setConnectTimeout(1000);
                 // Wait up to 120 seconds for result.
