@@ -92,7 +92,7 @@ public class ImportGuiController {
         }
 
         ImportSpec spec = new ImportSpec();
-        spec.setName("server import by " + SecurityUtils.getUsername());
+        spec.setName(serverImportForm.getName());
         spec.setPipelineId(serverImportForm.getPipelineId());
         List<ProcessorRef> generators = Lists.newArrayList();
 

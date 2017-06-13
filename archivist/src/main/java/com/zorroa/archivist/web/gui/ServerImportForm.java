@@ -11,6 +11,9 @@ import java.util.List;
 public class ServerImportForm {
 
     @NotEmpty
+    private String name;
+
+    @NotEmpty
     private List<String> paths;
 
     @NotNull
@@ -31,6 +34,15 @@ public class ServerImportForm {
 
     public ServerImportForm setPipelineId(Integer pipelineId) {
         this.pipelineId = pipelineId;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ServerImportForm setName(String name) {
+        this.name = name;
         return this;
     }
 }
