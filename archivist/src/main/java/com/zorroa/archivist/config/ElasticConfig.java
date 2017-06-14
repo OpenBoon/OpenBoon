@@ -2,8 +2,11 @@ package com.zorroa.archivist.config;
 
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
+import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +15,15 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Path;
 
 /**
  * Created by chambers on 8/10/16.
  */
 @Configuration
 public class ElasticConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(ElasticConfig.class);
 
     @Autowired
     ApplicationProperties properties;
@@ -51,6 +57,11 @@ public class ElasticConfig {
                         .put("node.master", properties.getBoolean("archivist.index.master"))
                         .put("path.plugins", "{path.home}/es-plugins")
                         .put("action.auto_create_index",  "-arch*,+.scripts,-*");
+
+        if (properties.getBoolean("archivist.maintenance.backups.enabled")) {
+            Path path = FileUtils.normalize(properties.getPath("archivist.path.backups").resolve("index"));
+            builder.putArray("path.repo", path.toString());
+        }
 
         if (ArchivistConfiguration.unittest) {
             builder.put("index.refresh_interval", "1s");

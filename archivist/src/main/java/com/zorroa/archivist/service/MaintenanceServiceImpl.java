@@ -4,16 +4,21 @@ package com.zorroa.archivist.service;
  * Created by chambers on 4/21/16.
  */
 
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.ExpiredJob;
 import com.zorroa.archivist.domain.JobState;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.MaintenanceDao;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.Analyst;
-import com.zorroa.archivist.repository.AnalystDao;
 import org.apache.commons.io.FileUtils;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.repositories.RepositoryMissingException;
+import org.elasticsearch.snapshots.SnapshotInfo;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -24,8 +29,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -50,6 +57,21 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
     @Autowired
     AnalystDao analystDao;
 
+    @Autowired
+    Client client;
+
+    Path snapshotRepositoryRoot;
+
+    String repositoryName = "archivist";
+
+    @PostConstruct
+    public void init() {
+        snapshotRepositoryRoot =
+                properties.getPath("archivist.path.backups")
+                        .resolve("index");
+        createElasticSnapshotRepository();
+    }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         /**
@@ -60,9 +82,70 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
         }
     }
 
+    public void createElasticSnapshotRepository() {
+        boolean exists = false;
+        try {
+            client.admin().cluster().prepareGetRepositories(repositoryName).get();
+            exists = true;
+        } catch (RepositoryMissingException e) {
+            // ignore
+        }
+
+        if (!exists) {
+            logger.info("Creating snapshot repository '{}' at '{}'", repositoryName, snapshotRepositoryRoot);
+            client.admin().cluster().preparePutRepository(repositoryName)
+                    .setType("fs")
+                    .setSettings(ImmutableMap.of(
+                            "compress", true,
+                            "location", snapshotRepositoryRoot.toString())).get();
+        }
+        else {
+            logger.info("Snapshot repository already exists");
+        }
+    }
+
+    public void createElasticSnapshot() {
+
+        DateTime time = new DateTime();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd");
+        String snapshotName = formatter.print(time);
+
+        boolean snapshotExists = false;
+        try {
+            List<SnapshotInfo> snapshots =
+                    client.admin().cluster().prepareGetSnapshots(repositoryName).get().getSnapshots();
+            for(SnapshotInfo snapshot :snapshots) {
+                if (snapshotName.equals(snapshot.name())) {
+                    snapshotExists = true;
+                    break;
+                }
+            }
+
+        } catch (RepositoryMissingException e) {
+            logger.warn("Snapshot repository '{}', does not exist, cannot take snapshot", repositoryName, e);
+            return;
+        }
+
+        if (!snapshotExists) {
+            logger.info("creating snapshot: {}",snapshotName);
+            try {
+                Stopwatch stopwatch = Stopwatch.createStarted();
+                client.admin().cluster()
+                        .prepareCreateSnapshot(repositoryName, snapshotName)
+                        .setWaitForCompletion(true).get();
+                logger.info("created snapshot '{}' in {}", snapshotName, stopwatch);
+            } catch (Exception e) {
+                logger.warn("Failed to create snapshot {}", snapshotName, e);
+            }
+        }
+    }
+
     @Override
     public File getNextAutomaticBackupFile() {
-        String path = properties.getString("archivist.path.backups");
+        Path path = properties.getPath("archivist.path.backups").resolve("h2");
+        if (!path.toFile().exists()) {
+            path.toFile().mkdirs();
+        }
         DateTime time = new DateTime();
         DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd");
 
@@ -100,6 +183,39 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
         maintenanceDao.backup(file);
     }
 
+    public int removeExpiredElasticSnapshots() {
+        LocalDate now = LocalDate.now();
+        try {
+            int olderThanDays = properties.getInt("archivist.maintenance.backups.expireDays");
+            List<SnapshotInfo> snapshots =
+                    client.admin().cluster().prepareGetSnapshots(repositoryName).get().getSnapshots();
+            for(SnapshotInfo snapshot :snapshots) {
+                String snapshotName = snapshot.name();
+                String strDate[] = snapshotName.split("-");
+                LocalDate date = LocalDate.of(
+                        Integer.valueOf(strDate[0]),
+                        Integer.valueOf(strDate[1]),
+                        Integer.valueOf(strDate[2]));
+
+                long daysBetween = DAYS.between(date, now);
+                logger.info("Snapshot {} ({}) is {} days old", snapshotName, date, daysBetween);
+
+                if (daysBetween > olderThanDays) {
+                    logger.info("Removing snapshot: {}", snapshotName);
+                    try {
+                        client.admin().cluster().prepareDeleteSnapshot(repositoryName, snapshotName).get();
+                    } catch (Exception e) {
+                        logger.warn("Failed to delete snapshot '{}', ", snapshotName, e);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            logger.warn("Failed to remove expired job data, ", e);
+        }
+        return 0;
+    }
+
     @Override
     public int removeExpiredBackups() {
         try {
@@ -116,8 +232,8 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
         LocalDate now = LocalDate.now();
 
         int result = 0;
-        String path = properties.getString("archivist.path.backups");
-        for (File file: new File(path).listFiles()) {
+        Path path = properties.getPath("archivist.path.backups").resolve("h2");
+        for (File file: path.toFile().listFiles()) {
             try {
                 String strDate[] = file.getName().split("_")[1].split("\\.")[0].split("-");
                 LocalDate date = LocalDate.of(
@@ -214,6 +330,17 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
         }
 
         /**
+         * ElasticSearch
+         */
+
+        createElasticSnapshot();
+        removeExpiredElasticSnapshots();
+
+        /**
+         * H2
+         */
+
+        /**
          * Do a full backup, then remove old backups.
          */
         automaticBackup();
@@ -232,6 +359,6 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(10, 60, TimeUnit.MINUTES);
+        return Scheduler.newFixedRateSchedule(1, 60, TimeUnit.MINUTES);
     }
 }

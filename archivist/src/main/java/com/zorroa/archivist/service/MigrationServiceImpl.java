@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.Migration;
 import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.repository.MigrationDao;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequestBuilder;
@@ -19,6 +20,7 @@ import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.repositories.RepositoryMissingException;
 import org.elasticsearch.search.SearchHit;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +49,9 @@ import java.util.regex.Pattern;
 public class MigrationServiceImpl implements MigrationService {
 
     private static final Logger logger = LoggerFactory.getLogger(MigrationServiceImpl.class);
+
+    @Autowired
+    ApplicationProperties properties;
 
     @Autowired
     MigrationDao migrationDao;
@@ -79,6 +85,11 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Override
     public void processMigrations(List<Migration> migrations, boolean force) {
+
+        String snapshotName = System.getenv("ARCHIVIST_RESTORE_INDEX");
+        if (snapshotName != null) {
+            restoreSnapshot(snapshotName);
+        }
 
         /**
          * TODO: Don't let ingests run during migrations.
@@ -362,6 +373,59 @@ public class MigrationServiceImpl implements MigrationService {
         ElasticMigrationProperties result = allVersions.get(0);
         logger.info("latest '{}' mapping ver: {} (source='{}')", m.getName(), result.getVersion(), m.getPath());
         return result;
+    }
+
+    private void restoreSnapshot(String name) {
+        /*
+         * Additional info:
+         * https://www.elastic.co/guide/en/elasticsearch/reference/2.4/modules-snapshots.html
+         */
+
+        File file =  properties.getPath("archivist.path.backups")
+                .resolve("index").resolve("snap-" + name + ".dat").toFile();
+
+        boolean snapshotExists = file.exists();
+        if (!snapshotExists) {
+            throw new RuntimeException("Invalid snapshot name " + name + ", a snapshot file does" +
+                    "not exist: " + file.toString());
+        }
+
+        logger.warn("Restoring from snapshot: {}", name);
+        try {
+            client.admin().indices().prepareClose("_all").get();
+        } catch (Exception e) {
+            logger.warn("Failed to close all indexes, this is probably OK", e);
+        }
+
+        try {
+            client.admin().cluster().prepareRestoreSnapshot("archivist", name).get();
+        } catch (RepositoryMissingException rme) {
+            /*
+             * If the index folder was deleted then we lost the snapshot, so we make an entry
+             * for the same one and then try to restore it.
+             */
+            /**
+             * TODO: I think we have to iterate through all snapshots and re-create
+             * records for them.
+             */
+            try {
+                logger.info("Recreating snapshot record for: {}", name);
+                client.admin().cluster().prepareCreateSnapshot("archivist", name).get();
+
+                logger.warn("Restoring from snapshot: {}", name);
+                client.admin().cluster().prepareRestoreSnapshot("archivist", name).get();
+            } catch (Exception e) {
+                logger.warn("Failed to recover and restore snapshot: ", e);
+            }
+        }
+    }
+
+    private boolean snapshotExists(String name) {
+        File file =  properties.getPath("archivist.path.backups")
+                .resolve("index").resolve(name).toFile();
+        boolean exists = file.exists();
+        logger.info("Elastic snapshot exists: {}, '{}'", exists, file);
+        return exists;
     }
 
     private static class ElasticMigrationProperties {
