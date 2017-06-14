@@ -2,7 +2,7 @@
   "migration": {
     "reindex": true,
     "reingest": false,
-    "patch": 3
+    "patch": 4
   },
   "settings": {
     "index": {
@@ -222,6 +222,16 @@
             "match": "content",
             "mapping": {
               "analyzer": "content",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "hash_template": {
+            "match_mapping_type": "string",
+            "match": "hash",
+            "mapping": {
+              "index": "not_analyzed",
               "type": "string"
             }
           }

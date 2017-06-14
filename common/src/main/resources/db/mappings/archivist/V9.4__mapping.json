@@ -1,0 +1,15 @@
+{
+  "dynamic_templates": [
+    {
+      "hash_template": {
+        "match_mapping_type": "string",
+        "match": "hash",
+        "mapping": {
+          "index": "not_analyzed",
+          "type": "string"
+        }
+      }
+    }
+  ]
+}
+
