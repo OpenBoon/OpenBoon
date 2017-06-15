@@ -34,7 +34,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public HammingDistanceScript(Map<String, Object> params) {
         super();
         field = (String) params.get("field");
-        header = field.endsWith( ".hash") || field.startsWith("similarity.");
+        header = (field.endsWith( ".hash") || field.startsWith("similarity.")) && !field.endsWith("byte");
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
         resolution = 15;
