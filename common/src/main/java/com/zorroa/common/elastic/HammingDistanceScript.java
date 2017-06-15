@@ -39,7 +39,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         minScore = (int) params.getOrDefault("minScore", 1);
         resolution = 15;
 
-        if (!field.endsWith(".raw")) {
+        if (!header && !field.endsWith(".raw")) {
             field = field.concat(".raw");
         }
 
