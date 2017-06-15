@@ -39,24 +39,15 @@ public class HammingDistanceScriptTests extends AbstractTest {
     }
 
     @Test
-    public void testNumericHammingIdenticalMatch() {
+    public void testHashHeaderResolution() {
         Map<String, Object> map = Maps.newHashMap();
-        map.put("field", "hash._byte");
-        map.put("hashes", ImmutableList.of(ImmutableList.of(1,1,1,1)));
+        map.put("field", "foo.hash");
+        map.put("hashes", ImmutableList.of("0020FAAAA"));
 
         HammingDistanceScript script = new HammingDistanceScript(map);
-        double score = script.numericHashesComparison(new LDocValues(1,1,1,1));
-        assertEquals(100, score, 0);
-    }
+        assertEquals(15, script.getResolution());
 
-    @Test
-    public void testNumericHammingRoughHalfMatch() {
-        Map<String, Object> map = Maps.newHashMap();
-        map.put("field", "hash._byte");
-        map.put("hashes", ImmutableList.of(ImmutableList.of(127, -128, 127, -128)));
-
-        HammingDistanceScript script = new HammingDistanceScript(map);
-        double score = script.numericHashesComparison(new LDocValues(0,0,0,0));
+        double score = script.charHashesComparison(new BytesRef("0020FAAPP".getBytes()));
         assertEquals(50, score, 0);
     }
 

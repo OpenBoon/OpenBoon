@@ -9,6 +9,16 @@
           "type": "string"
         }
       }
+    },
+    {
+      "similarity": {
+        "match_mapping_type": "string",
+        "path_match": "similarity.*",
+        "mapping": {
+          "index": "not_analyzed",
+          "type": "string"
+        }
+      }
     }
   ]
 }

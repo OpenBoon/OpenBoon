@@ -1,6 +1,6 @@
 package com.zorroa.common.elastic;
 
-import org.apache.lucene.index.SortedNumericDocValues;
+import com.amazonaws.util.CollectionUtils;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.script.AbstractDoubleSearchScript;
 import org.slf4j.Logger;
@@ -20,49 +20,54 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     private static final double NORM = 100.0;
 
     private String field;
-    private List<List<Integer>> intHashes;
     private List<String> charHashes;
     private List<Float> weights;
-    private int length;
-    private int numHashes;
-    private int resolution;
-    private final int minScore;
-    private final boolean numeric;
+    private int length = 0;
+    private int numHashes = 0;
+    private int resolution = 0;
+    private int minScore = 0;
+    private boolean header = false;
+    private char version = 0;
+    private int headerSize = 0;
     private final double possibleScore;
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
-
         field = (String) params.get("field");
-        numeric = field.endsWith( "._byte");
+        header = field.endsWith( ".hash") || field.startsWith("similarity.");
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
+        resolution = 15;
 
-        if (numeric) {
-            intHashes = (List<List<Integer>>) params.get("hashes");
-            resolution = 255;
-            if (intHashes == null || intHashes.isEmpty()) {
-                numHashes = 0;
-                length = 0;
-            }
-            else {
-                numHashes = intHashes.size();
-                length = intHashes.get(0).size();
-            }
+        if (!field.endsWith(".raw")) {
+            field = field.concat(".raw");
         }
-        else {
-            if (!field.endsWith(".raw")) {
-                field = field.concat(".raw");
-            }
-            resolution = 15;
-            charHashes = (List<String>) params.get("hashes");
-            if (charHashes == null || charHashes.isEmpty()) {
-                numHashes = 0;
-                length = 0;
-            }
-            else {
-                numHashes = charHashes.size();
-                length = charHashes.get(0).length();
+
+        charHashes = (List<String>) params.get("hashes");
+        if (!CollectionUtils.isNullOrEmpty(charHashes)) {
+            String hash = charHashes.get(0);
+            numHashes = charHashes.size();
+            length = hash.length();
+
+            /**
+             * TODO: more sophisticated header parsing.
+             *
+             * There are 2 fields every has leads with:
+             * 1 char: version
+             * 2 chars: position of data (called "headerSize" here)
+             *
+             * A version 0 hash has 1 field, resolution.
+             */
+            if (header) {
+                version = hash.charAt(0);
+
+                // +4 on the headerSize to take into account the header size byte.
+                headerSize = Integer.parseInt(hash.substring(1, 3), 16) + 3;
+
+                if (version <= 0) {
+                    // Resolution is the next byte.
+                    resolution = Integer.parseInt(hash.substring(3, 5), 16);
+                }
             }
         }
 
@@ -76,7 +81,8 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
                     "HammingDistanceScript weights must align with hashes");
         }
 
-        possibleScore = resolution * length * numHashes;
+        // To get the proper score, we subtract header size from the length here.
+        possibleScore = resolution * (length - headerSize) * numHashes;
     }
 
     @Override
@@ -85,43 +91,21 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
             return 0;
         }
 
-        double score;
-        if (numeric)  {
-            score = numericHashesComparison(
-                    docFieldLongs(field).getInternalValues());
-        }
-        else {
-            score = charHashesComparison(
+        double score = charHashesComparison(
                     docFieldStrings(field).getBytesValue());
-        }
         return score >= minScore ? score : 0;
     }
 
     public final double charHashesComparison(BytesRef fieldValue) {
         long score = 0;
 
-        final int fieldLength = fieldValue.length;
+        byte ver = fieldValue.bytes[0];
         for (int i = 0; i < numHashes; ++i) {
-            if (fieldLength != length) {
-                continue;
-            }
             String hash = charHashes.get(i);
-            score += weights.get(i) * hammingDistance(fieldValue, hash);
-        }
-
-        return normalize(score);
-    }
-
-    public final double numericHashesComparison(SortedNumericDocValues fieldValue) {
-        long score = 0;
-
-        for (int i = 0; i < numHashes; ++i) {
-            if (fieldValue.count() != length) {
+            if (ver != hash.charAt(0)) {
                 continue;
             }
-
-            List<Integer> hash = intHashes.get(i);
-            score+= weights.get(i) * hammingDistance(fieldValue, hash);
+            score += weights.get(i) * hammingDistance(fieldValue, hash);
         }
 
         return normalize(score);
@@ -132,19 +116,15 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         return score;
     }
 
-    public final long hammingDistance(final SortedNumericDocValues lhs, final List<Integer> rhs) {
+    public final long hammingDistance(final BytesRef lhs, final String rhs) {
         long score = 0;
-        for (int i=0; i < length; i++) {
-            score += Math.abs(lhs.valueAt(i) - rhs.get(i));
+        for (int i = headerSize; i < length; i++) {
+            score += Math.abs(lhs.bytes[i] - rhs.charAt(i));
         }
         return score;
     }
 
-    public final long hammingDistance(final BytesRef lhs, final String rhs) {
-        long score = 0;
-        for (int i = 0; i < length; i++) {
-            score += Math.abs(lhs.bytes[i] - rhs.charAt(i));
-        }
-        return score;
+    public int getResolution() {
+        return resolution;
     }
 }
