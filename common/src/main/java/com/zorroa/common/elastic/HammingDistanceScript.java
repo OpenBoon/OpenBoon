@@ -34,7 +34,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public HammingDistanceScript(Map<String, Object> params) {
         super();
         field = (String) params.get("field");
-        header = (field.endsWith( ".hash") || field.startsWith("similarity.")) && !field.endsWith("byte");
+        header = hasHeader(field);
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
         resolution = 15;
@@ -128,5 +128,15 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
     public int getResolution() {
         return resolution;
+    }
+
+    private boolean hasHeader(String field) {
+        if (field.endsWith(".raw") || field.endsWith(".byte")) {
+            return false;
+        }
+        if (field.endsWith(".hash") || field.startsWith("similarity.")) {
+            return true;
+        }
+        return false;
     }
 }
