@@ -61,7 +61,9 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
             if (header) {
                 version = hash.charAt(0);
 
-                // +4 on the headerSize to take into account the header size byte.
+                // +3 on the headerSize to take into account the version
+                // and the headerSize itself. The headerSize is basically
+                // where the data begins.
                 headerSize = Integer.parseInt(hash.substring(1, 3), 16) + 3;
 
                 if (version <= 0) {
