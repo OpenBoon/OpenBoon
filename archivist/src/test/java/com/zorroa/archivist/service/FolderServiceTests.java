@@ -1,11 +1,11 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
-import com.zorroa.archivist.repository.TrashFolderDao;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 public class FolderServiceTests extends AbstractTest {
 
     @Autowired
-    TrashFolderDao trashFolderDao;
+    DyHierarchyService dyhiService;
 
     @Autowired
     FolderDao folderDao;
@@ -347,6 +347,18 @@ public class FolderServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testDeleteWithDyhi() {
+        Folder folder = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchySpec spec = new DyHierarchySpec();
+        spec.setFolderId(folder.getId());
+        spec.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)));
+        dyhiService.create(spec);
+        assertTrue(folderService.delete(folder));
+    }
+
+    @Test
     public void setDyHierarchyTest() {
         Folder folder = folderService.create(new FolderSpec("root"));
         folderService.setDyHierarchyRoot(folder, "source.file");
@@ -364,7 +376,7 @@ public class FolderServiceTests extends AbstractTest {
         folder = folderService.get(folder.getId());
         assertTrue(folder.getSearch().getFilter().getExists().contains("source.file"));
 
-        folderService.removeDyHierarchyRoot(folder, "source.file");
+        folderService.removeDyHierarchyRoot(folder);
         folder = folderService.get(folder.getId());
         assertNull(folder.getSearch());
         assertFalse(folder.isDyhiRoot());

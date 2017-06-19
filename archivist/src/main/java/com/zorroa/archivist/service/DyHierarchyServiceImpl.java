@@ -93,7 +93,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
         Folder folderOld = folderService.get(current.getFolderId());
         Folder folderNew = folderService.get(updated.getFolderId());
         if (folderOld != folderNew ) {
-            folderService.removeDyHierarchyRoot(folderOld, current.getLevel(0).getField());
+            folderService.removeDyHierarchyRoot(folderOld);
         }
 
         /*
@@ -130,7 +130,7 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
         if (dyHierarchyDao.delete(dyhi.getId())) {
             Folder folder = folderService.get(dyhi.getFolderId());
-            folderService.removeDyHierarchyRoot(folder, dyhi.getLevel(0).getField());
+            folderService.removeDyHierarchyRoot(folder);
 
             if (dyHierarchyDao.setWorking(dyhi, false)) {
                 logger.info("DyHi {} was running, will wait on folders to be removed.");

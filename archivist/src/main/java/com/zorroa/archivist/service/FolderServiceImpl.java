@@ -41,6 +41,9 @@ public class FolderServiceImpl implements FolderService {
     FolderDao folderDao;
 
     @Autowired
+    DyHierarchyService dyHierarchyService;
+
+    @Autowired
     TrashFolderDao trashFolderDao;
 
     @Autowired
@@ -53,7 +56,7 @@ public class FolderServiceImpl implements FolderService {
     EventLogService logService;
 
     @Override
-    public boolean removeDyHierarchyRoot(Folder folder, String attribute) {
+    public boolean removeDyHierarchyRoot(Folder folder) {
         boolean result = folderDao.removeDyHierarchyRoot(folder);
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
@@ -207,13 +210,19 @@ public class FolderServiceImpl implements FolderService {
         if (folder.getId() == 0) {
             throw new ArchivistWriteException("You cannot make changes to the root folder");
         }
-
         /**
          * Don't allow trashing of dyhi folders
          */
-        if (folder.isDyhiRoot() || folder.getDyhiId() != null) {
+        if (folder.getDyhiId() != null) {
             throw new ArchivistWriteException("Cannot deleted dynamic hierarchy folder.");
         }
+
+        if (folder.isDyhiRoot()) {
+            removeDyHierarchyRoot(folder);
+
+
+        }
+
 
         /**
          * The Operation ID keeps track of all folders deleted by this specific
@@ -282,6 +291,10 @@ public class FolderServiceImpl implements FolderService {
 
         if (folder.getId() == 0) {
             throw new ArchivistWriteException("You cannot make changes to the root folder");
+        }
+
+        if (folder.isDyhiRoot()) {
+            dyHierarchyService.delete(dyHierarchyService.get(folder));
         }
 
         /**

@@ -66,7 +66,7 @@ public interface FolderService {
 
     Folder get(String path);
 
-    boolean removeDyHierarchyRoot(Folder folder, String attribute);
+    boolean removeDyHierarchyRoot(Folder folder);
 
     boolean setDyHierarchyRoot(Folder folder, String attribute);
 

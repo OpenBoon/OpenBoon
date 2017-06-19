@@ -3,7 +3,6 @@ package com.zorroa.archivist.web.api;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.archivist.service.AssetService;
 import com.zorroa.archivist.service.FolderService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.sdk.search.AssetSearch;
@@ -19,9 +18,6 @@ public class FolderController {
 
     @Autowired
     FolderService folderService;
-
-    @Autowired
-    AssetService assetService;
 
     @Autowired
     SearchService searchService;
