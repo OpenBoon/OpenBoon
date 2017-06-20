@@ -95,7 +95,6 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
         double score = charHashesComparison(
                     docFieldStrings(field).getBytesValue());
-        logger.info("score: {}", score);
         return score >= minScore ? score : 0;
     }
 
