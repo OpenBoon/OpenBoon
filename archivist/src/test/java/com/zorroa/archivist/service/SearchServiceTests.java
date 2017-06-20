@@ -581,33 +581,7 @@ public class SearchServiceTests extends AbstractTest {
                         new HammingDistanceFilter("APAPAPAP", "test.hash1.byte.raw", 20)));
 
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
-
-
-
-        /*
-        search = new AssetSearch(
-                new AssetFilter().setHamming(
-                        new HammingDistanceFilter("afafafaf", "test.hash1.byte.raw", 4)));
-        assertEquals(2, searchService.search(search).getHits().getTotalHits());
-
-        search = new AssetSearch(
-                new AssetFilter().setHamming(
-                        new HammingDistanceFilter("ccccccaf", "test.hash1.byte.raw", 88)));
-        assertEquals(1, searchService.search(search).getHits().getTotalHits());
-
-        search = new AssetSearch(
-                new AssetFilter().setHamming(
-                        new HammingDistanceFilter(Lists.newArrayList("afafafaf","adadadad"),
-                                "test.hash1.byte.raw", 12)));
-        assertEquals(2, searchService.search(search).getHits().getTotalHits());
-
-        // no .raw
-        search = new AssetSearch(
-                new AssetFilter().setHamming(
-                        new HammingDistanceFilter(Lists.newArrayList("afafafaf","adadadad"),
-                                "test.hash1.byte", 12)));
-        assertEquals(2, searchService.search(search).getHits().getTotalHits());
-        */
+        
     }
 
     @Test
