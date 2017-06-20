@@ -10,6 +10,7 @@ import com.zorroa.sdk.search.AssetSuggestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;
+import org.elasticsearch.index.query.QueryBuilder;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -53,6 +54,8 @@ public interface SearchService {
     PagedList<Asset> scroll(String id, String timeout);
 
     SearchRequestBuilder buildSearch(AssetSearch search);
+
+    QueryBuilder getQuery(AssetSearch search);
 
     Map<String, Set<String>> getFields();
 

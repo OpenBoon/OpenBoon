@@ -55,6 +55,9 @@ public class AssetServiceImpl implements AssetService {
     DyHierarchyService dyHierarchyService;
 
     @Autowired
+    TaxonomyService taxonomyService;
+
+    @Autowired
     EventLogService logService;
 
     @Autowired
@@ -130,6 +133,7 @@ public class AssetServiceImpl implements AssetService {
         DocumentIndexResult result =  assetDao.index(sources, link);
         if (result.created + result.updated > 0) {
             dyHierarchyService.submitGenerateAll(true);
+            taxonomyService.runAllAsync();
         }
         return result;
     }

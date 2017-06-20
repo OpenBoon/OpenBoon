@@ -159,6 +159,7 @@ public class SearchServiceImpl implements SearchService {
         return buildAggregate(builder).get();
     }
 
+
     @Override
     public Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults) {
         SearchResponse rsp = client.prepareSearch(alias)
@@ -332,7 +333,8 @@ public class SearchServiceImpl implements SearchService {
         return result;
     }
 
-    private QueryBuilder getQuery(AssetSearch search) {
+    @Override
+    public QueryBuilder getQuery(AssetSearch search) {
         return getQuery(search, true, false);
     }
 
@@ -398,31 +400,38 @@ public class SearchServiceImpl implements SearchService {
             List<Integer> folders = links.get("folder")
                     .stream().map(f->Integer.valueOf(f.toString())).collect(Collectors.toList());
 
-            Set<String> childFolders = Sets.newHashSetWithExpectedSize(64);
-            for (Folder folder : folderService.getAllDescendants(
-                    folderService.getAll(folders), true, true)) {
+            boolean recursive = filter.getRecursive() == null ? true : filter.getRecursive();
 
-                /**
-                 * Not going to allow people to add assets manually
-                 * to smart folders, unless its to the smart query itself.
-                 */
-                if (folder.getSearch() != null) {
-                    staticBool.should(getQuery(folder.getSearch(), false, true));
-                }
+            if (recursive) {
+                Set<String> childFolders = Sets.newHashSetWithExpectedSize(64);
+                for (Folder folder : folderService.getAllDescendants(
+                        folderService.getAll(folders), true, true)) {
 
-                /**
-                 * We don't allow dyhi folders to have manual entries.
-                 */
-                if (folder.getDyhiId() == null && !folder.isDyhiRoot()) {
-                    childFolders.add(String.valueOf(folder.getId()));
-                    if (childFolders.size() >= 1024) {
-                        break;
+                    /**
+                     * Not going to allow people to add assets manually
+                     * to smart folders, unless its to the smart query itself.
+                     */
+                    if (folder.getSearch() != null) {
+                        staticBool.should(getQuery(folder.getSearch(), false, true));
+                    }
+
+                    /**
+                     * We don't allow dyhi folders to have manual entries.
+                     */
+                    if (folder.getDyhiId() == null && !folder.isDyhiRoot()) {
+                        childFolders.add(String.valueOf(folder.getId()));
+                        if (childFolders.size() >= 1024) {
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (!childFolders.isEmpty()) {
-                staticBool.should(QueryBuilders.termsQuery("links.folder", childFolders));
+                if (!childFolders.isEmpty()) {
+                    staticBool.should(QueryBuilders.termsQuery("links.folder", childFolders));
+                }
+            }
+            else {
+                staticBool.should(QueryBuilders.termsQuery("links.folder", folders));
             }
         }
 

@@ -140,8 +140,10 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder = folderService.create(builder);
         folderService.get(folder.getId());
 
+        // use the DAO so don't fail the remove access from self check.
         folderDao.setAcl(folder.getId(), new Acl().addEntry(
                 userService.getPermission("group::administrator"), Access.Read));
+        folderService.invalidate(folder);
         folderService.get(folder.getId());
     }
 
@@ -446,6 +448,18 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(folderService.isDescendantOf(folder3, folder1));
         assertFalse(folderService.isDescendantOf(folder1, folder3));
         assertTrue(folderService.isDescendantOf(folder3, folderService.get(0)));
+
+    }
+
+    @Test
+    public void getAnscestors() {
+
+        Folder folder1 = folderService.create(new FolderSpec("f1"));
+        Folder folder2 = folderService.create(new FolderSpec("f2", folder1.getId()));
+        Folder folder3 = folderService.create(new FolderSpec("f3", folder2.getId()));
+
+        List<Folder> folders = folderService.getAllAncestors(folder3, true, false);
+        logger.info("{}", folders);
 
     }
 }

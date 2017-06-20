@@ -18,6 +18,9 @@ import static org.junit.Assert.*;
 public class FolderDaoTests extends AbstractTest {
 
     @Autowired
+    TaxonomyDao taxonomyDao;
+
+    @Autowired
     FolderDao folderDao;
 
     @Autowired
@@ -101,6 +104,17 @@ public class FolderDaoTests extends AbstractTest {
         FolderSpec builder = new FolderSpec(name);
         Folder folder = folderDao.create(builder);
         assertTrue(folderDao.setDyHierarchyRoot(folder, "source.extension"));
+    }
+
+    @Test
+    public void testSetTaxonomyRoot() {
+        String name = "Foobar the folder";
+        FolderSpec builder = new FolderSpec(name);
+        Folder folder = folderDao.create(builder);
+
+        Taxonomy tax = taxonomyDao.create(new TaxonomySpec(folder));
+        assertTrue(folderDao.setTaxonomyRoot(folder, tax));
+        assertFalse(folderDao.setTaxonomyRoot(folder, tax));
     }
 
     @Test

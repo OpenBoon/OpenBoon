@@ -41,6 +41,7 @@ public class Folder implements Loggable<Integer> {
     private Acl acl;
 
     private AssetSearch search;
+    private boolean taxonomyRoot;
 
     public Folder() { }
 
@@ -149,6 +150,15 @@ public class Folder implements Loggable<Integer> {
 
     public Folder setDyhiField(String dyhiField) {
         this.dyhiField = dyhiField;
+        return this;
+    }
+
+    public boolean isTaxonomyRoot() {
+        return taxonomyRoot;
+    }
+
+    public Folder setTaxonomyRoot(boolean taxonomyRoot) {
+        this.taxonomyRoot = taxonomyRoot;
         return this;
     }
 

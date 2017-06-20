@@ -38,6 +38,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         folder.setTimeModified(rs.getLong("time_modified"));
         folder.setDyhiRoot(rs.getBoolean("bool_dyhi_root"));
         folder.setChildCount(rs.getInt("int_child_count"));
+        folder.setTaxonomyRoot(rs.getBoolean("bool_tax_root"));
 
         Object parent = rs.getObject("pk_parent");
         if (parent != null) {
@@ -309,6 +310,11 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     public boolean hasAccess(Folder folder, Access access) {
         return jdbc.queryForObject(appendAccess("SELECT COUNT(1) FROM folder WHERE pk_folder=?", access),
                 Integer.class, appendAclArgs(folder.getId())) > 0;
+    }
+
+    @Override
+    public boolean setTaxonomyRoot(Folder folder, Taxonomy tax) {
+        return jdbc.update("UPDATE folder SET bool_tax_root=1 WHERE pk_folder=? AND bool_tax_root=0", folder.getId()) == 1;
     }
 
     @Override

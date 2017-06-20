@@ -43,6 +43,14 @@ public interface FolderService {
      */
     List<Folder> getAllDescendants(Collection<Folder> startFolders, boolean includeStartFolders, boolean forSearch);
 
+    void invalidate(Folder folder, Integer... additional);
+
+    boolean isInTaxonomy(Folder folder);
+
+    Taxonomy getParentTaxonomy(Folder folder);
+
+    List<Folder> getAllAncestors(Folder folder, boolean includeStart, boolean taxOnly);
+
     /**
      * Return a recursive list of all descendant folders from the current folder.
      *

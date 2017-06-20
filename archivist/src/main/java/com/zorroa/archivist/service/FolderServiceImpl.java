@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +41,9 @@ public class FolderServiceImpl implements FolderService {
     DyHierarchyService dyHierarchyService;
 
     @Autowired
+    TaxonomyService taxonomyService;
+
+    @Autowired
     TrashFolderDao trashFolderDao;
 
     @Autowired
@@ -54,6 +54,24 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     EventLogService logService;
+
+    private final LoadingCache<Integer, List<Folder>> childCache = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .expireAfterWrite(1, TimeUnit.DAYS)
+            .build(new CacheLoader<Integer, List<Folder>>() {
+                public List<Folder> load(Integer key) throws Exception {
+                    return folderDao.getChildrenInsecure(key);
+                }
+            });
+
+    private final LoadingCache<Integer, Folder> folderCache = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .expireAfterWrite(1, TimeUnit.DAYS)
+            .build(new CacheLoader<Integer, Folder>() {
+                public Folder load(Integer key) throws Exception {
+                    return folderDao.get(key);
+                }
+            });
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder) {
@@ -89,7 +107,17 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public Folder get(int id) {
-        return folderDao.get(id);
+        Folder f;
+        try {
+            f = folderCache.get(id);
+            if (!SecurityUtils.hasPermission(f.getAcl(), Access.Read)) {
+                throw new EmptyResultDataAccessException("Failed to find folder: " +id, 1);
+            }
+            return f;
+
+        } catch (Exception e) {
+            throw new EmptyResultDataAccessException("Failed to find folder: " +id, 1);
+        }
     }
 
     @Override
@@ -166,7 +194,6 @@ public class FolderServiceImpl implements FolderService {
         }
 
         Folder current = folderDao.get(id);
-        // If we have a new parent, then double check parent
         if (current.getParentId() != folder.getParentId()) {
             if (isDescendantOf(folderDao.get(folder.getParentId()), current)) {
                 throw new ArchivistWriteException("You cannot move a folder into one of its descendants.");
@@ -175,7 +202,6 @@ public class FolderServiceImpl implements FolderService {
             if (folder.getDyhiId() != null) {
                 throw new ArchivistWriteException("You cannot move a DyHi folder");
             }
-
         }
 
         boolean result = folderDao.update(id, folder);
@@ -185,6 +211,11 @@ public class FolderServiceImpl implements FolderService {
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(current, current.getParentId());
                 logService.logAsync(UserLogSpec.build(LogAction.Update, folder));
+
+                Taxonomy tax = getParentTaxonomy(folder);
+                if (tax != null) {
+                    taxonomyService.tagTaxonomy(tax, folder, true);
+                }
             });
         }
         return result;
@@ -337,6 +368,12 @@ public class FolderServiceImpl implements FolderService {
         Map<String, List<Object>> result = assetDao.appendLink("folder", folder.getId(), assetIds);
         invalidate(folder);
         logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
+
+        Taxonomy tax = getParentTaxonomy(folder);
+        if (tax != null) {
+            taxonomyService.tagTaxonomyAsync(tax, folder, true);
+        }
+
         return result;
     }
 
@@ -353,12 +390,15 @@ public class FolderServiceImpl implements FolderService {
         return result;
     }
 
-    private void invalidate(Folder folder, Integer... additional) {
+    @Override
+    public void invalidate(Folder folder, Integer... additional) {
         if (folder != null) {
             if (folder.getParentId() != null) {
                 childCache.invalidate(folder.getParentId());
+                folderCache.invalidate(folder.getParentId());
             }
             childCache.invalidate(folder.getId());
+            folderCache.invalidate(folder.getId());
         }
 
         for (Integer id : additional) {
@@ -366,7 +406,53 @@ public class FolderServiceImpl implements FolderService {
                 continue;
             }
             childCache.invalidate(id);
+            folderCache.invalidate(id);
         }
+    }
+
+    @Override
+    public boolean isInTaxonomy(Folder folder) {
+        if (folder.isTaxonomyRoot()) {
+            return true;
+        }
+        while(folder.getParentId() != 0) {
+            folder = get(folder.getParentId());
+            if (folder.isTaxonomyRoot()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Taxonomy getParentTaxonomy(Folder folder) {
+        if (folder.isTaxonomyRoot()) {
+            return taxonomyService.getTaxonomy(folder);
+        }
+        while(folder.getParentId() != 0) {
+            folder = get(folder.getParentId());
+            if (folder.isTaxonomyRoot()) {
+                return taxonomyService.getTaxonomy(folder);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Folder> getAllAncestors(Folder folder, boolean includeStart, boolean taxOnly) {
+        List<Folder> result = Lists.newArrayList();
+        if (includeStart) {
+            result.add(folder);
+        }
+        Folder start = folder;
+        while(start.getParentId() != 0) {
+            start = get(start.getParentId());
+            result.add(start);
+            if (start.isTaxonomyRoot() && taxOnly) {
+                break;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -387,15 +473,6 @@ public class FolderServiceImpl implements FolderService {
         getChildFoldersRecursive(result, queue, forSearch);
         return result;
     }
-
-    private final LoadingCache<Integer, List<Folder>> childCache = CacheBuilder.newBuilder()
-            .maximumSize(5000)
-            .expireAfterWrite(1, TimeUnit.DAYS)
-            .build(new CacheLoader<Integer, List<Folder>>() {
-                public List<Folder> load(Integer key) throws Exception {
-                    return folderDao.getChildrenInsecure(key);
-                }
-            });
 
     /**
      * A non-recursion based search for finding all child folders
@@ -435,7 +512,8 @@ public class FolderServiceImpl implements FolderService {
                     continue;
                 }
 
-                toQuery.addAll(children);
+                toQuery.addAll(children.stream().filter(f->f.getChildCount() > 0)
+                        .collect(Collectors.toList()));
                 result.addAll(children);
 
             } catch (Exception e) {
@@ -489,6 +567,13 @@ public class FolderServiceImpl implements FolderService {
         transactionEventManager.afterCommitSync(() -> {
             invalidate(null, folder.getParentId());
             logService.logAsync(UserLogSpec.build(LogAction.Create, folder));
+
+            if (folder.getDyhiId() == null && folder.getSearch() != null) {
+                Taxonomy tax = getParentTaxonomy(folder);
+                if (tax != null) {
+                    taxonomyService.tagTaxonomy(tax, folder, true);
+                }
+            }
         });
     }
 

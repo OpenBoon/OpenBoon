@@ -4,7 +4,6 @@ import com.zorroa.archivist.domain.*;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public interface FolderDao {
 
@@ -45,6 +44,8 @@ public interface FolderDao {
     int deleteAll(Collection<Integer> ids);
 
     boolean hasAccess(Folder folder, Access access);
+
+    boolean setTaxonomyRoot(Folder folder, Taxonomy tax);
 
     boolean setDyHierarchyRoot(Folder folder, String field);
 

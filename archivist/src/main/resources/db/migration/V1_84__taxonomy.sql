@@ -1,0 +1,8 @@
+
+CREATE TABLE taxonomy (
+  pk_taxonomy INTEGER PRIMARY KEY AUTO_INCREMENT,
+  pk_folder INTEGER NOT NULL REFERENCES folder
+);
+
+ALTER TABLE folder ADD COLUMN bool_tax_root BOOLEAN NOT NULL DEFAULT 0;
+
