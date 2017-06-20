@@ -104,8 +104,15 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         byte ver = fieldValue.bytes[0];
         for (int i = 0; i < numHashes; ++i) {
             String hash = charHashes.get(i);
-            if (header && ver != hash.charAt(0)) {
-                continue;
+            if (header) {
+                if (ver != hash.charAt(0)) {
+                    continue;
+                }
+            }
+            else {
+                if (fieldValue.length != hash.length()) {
+                    continue;
+                }
             }
             score += (weights.get(i) * hammingDistance(fieldValue, hash));
         }
