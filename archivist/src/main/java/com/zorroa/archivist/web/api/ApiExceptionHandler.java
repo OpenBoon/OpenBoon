@@ -51,6 +51,7 @@ public class ApiExceptionHandler {
             throw new ArchivistException("Backend query failure, see archivist log for more details");
         }
         catch (Exception e) {
+            logger.warn("Unexpected exception, ", e);
             logStackTrace(e);
             throw new ArchivistException(e);
         }
