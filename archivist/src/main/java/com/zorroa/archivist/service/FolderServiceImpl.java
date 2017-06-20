@@ -25,7 +25,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -351,7 +354,7 @@ public class FolderServiceImpl implements FolderService {
         return result;
     }
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds) {
         if (assetIds.size() >= 1024) {
             throw new ArchivistWriteException("Cannot have more than 1024 assets in a folder");

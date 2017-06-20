@@ -126,7 +126,12 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     @Override
     public void runAllAsync() {
-        executor.schedule(()->runAll(), 5, TimeUnit.SECONDS);
+        if (ArchivistConfiguration.unittest) {
+            runAll();
+        }
+        else {
+            executor.schedule(() -> runAll(), 5, TimeUnit.SECONDS);
+        }
     }
 
     @Override
@@ -138,7 +143,12 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     @Override
     public void tagTaxonomyAsync(Taxonomy tax, Folder start, boolean force) {
-        executor.schedule(()->tagTaxonomy(tax, start, force), 5, TimeUnit.SECONDS);
+        if (ArchivistConfiguration.unittest) {
+            tagTaxonomy(tax, start, force);
+        }
+        else {
+            executor.schedule(() -> tagTaxonomy(tax, start, force), 5, TimeUnit.SECONDS);
+        }
     }
 
     @Override
@@ -205,9 +215,12 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                     .build();
 
 
-            AssetSearch search = new AssetSearch(new AssetFilter()
-                    .addToTerms("links.folder", folder.getId())
-                    .setRecursive(false));
+            AssetSearch search = folder.getSearch();
+            if (search == null) {
+                search = new AssetSearch(new AssetFilter()
+                        .addToTerms("links.folder", folder.getId())
+                        .setRecursive(false));
+            }
 
             // If it is not a force, then skip over fields already written.
             if (!force) {

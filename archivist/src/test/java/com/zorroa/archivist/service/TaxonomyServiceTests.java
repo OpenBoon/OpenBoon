@@ -22,6 +22,9 @@ public class TaxonomyServiceTests extends AbstractTest {
     @Autowired
     TaxonomyService taxonomyService;
 
+    @Autowired
+    FolderService folderService;
+
     @Test
     public void testCreate() {
 
