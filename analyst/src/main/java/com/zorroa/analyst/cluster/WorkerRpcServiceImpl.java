@@ -64,7 +64,7 @@ public class WorkerRpcServiceImpl implements WorkerRpcService {
     }
 
     @Override
-    public void kill(TaskKillT kill) throws CusterExceptionT, TException {
+    public void killTask(TaskKillT kill) throws CusterExceptionT, TException {
         try {
             processManagerNgService.kill(kill);
         } catch (Exception e) {

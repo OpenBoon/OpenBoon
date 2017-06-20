@@ -61,7 +61,7 @@ struct TaskKillT {
     1:i32 id,
     2:i32 jobId,
     3:string user,
-    5:string reason
+    4:string reason
 }
 
 struct TaskStatsT {
@@ -102,6 +102,6 @@ service MasterServerService {
 
 service WorkerNodeService {
     TaskResultT executeTask(1:TaskStartT task) throws (1:CusterExceptionT e),
-    void kill(1:TaskKillT kill) throws (1:CusterExceptionT e),
+    void killTask(1:TaskKillT task) throws (1:CusterExceptionT e),
     void killAll() throws (1:CusterExceptionT e)
 }

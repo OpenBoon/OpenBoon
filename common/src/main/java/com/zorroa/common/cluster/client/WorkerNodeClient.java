@@ -41,11 +41,11 @@ public class WorkerNodeClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void kill(TaskKillT kill) {
+    public void killTask(TaskKillT kill) {
         new Reconnect<Void>() {
             @Override
             protected Void wrap() throws TException {
-                service.kill(kill);
+                service.killTask(kill);
                 return null;
             }
         }.execute();
