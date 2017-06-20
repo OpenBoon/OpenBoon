@@ -2,10 +2,7 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobSpec;
-import com.zorroa.archivist.domain.PipelineType;
-import com.zorroa.archivist.domain.UploadImportSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
@@ -38,6 +35,7 @@ public class ImportControllerTests extends MockMvcTest {
 
     JobSpec spec;
     Job job;
+    Pipeline p;
 
     @Before
     public void init() {
@@ -45,6 +43,15 @@ public class ImportControllerTests extends MockMvcTest {
         spec.setName("foo-bar");
         spec.setType(PipelineType.Import);
         job = jobService.launch(spec);
+
+
+        PipelineSpecV spec = new PipelineSpecV()
+                .setDescription("foo")
+                .setName("foo")
+                .setProcessors(ImmutableList.of())
+                .setStandard(true)
+                .setType(PipelineType.Import);
+        p = pipelineService.create(spec);
     }
 
     @Test
@@ -57,7 +64,7 @@ public class ImportControllerTests extends MockMvcTest {
         UploadImportSpec spec = new UploadImportSpec();
         spec.setName("unit test import");
         spec.setFiles(ImmutableList.of(file));
-        spec.setPipelineId(pipelineService.get("Zorroa Example (Vision)").getId());
+        spec.setPipelineId(p.getId());
 
         MockHttpSession session = admin();
 

@@ -581,7 +581,7 @@ public class SearchServiceTests extends AbstractTest {
                         new HammingDistanceFilter("APAPAPAP", "test.hash1.byte.raw", 20)));
 
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
-        
+
     }
 
     @Test
