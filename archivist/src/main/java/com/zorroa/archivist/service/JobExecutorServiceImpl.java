@@ -53,9 +53,6 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
     private static final Logger logger = LoggerFactory.getLogger(JobExecutorServiceImpl.class);
 
     @Autowired
-    AnalystService analystService;
-
-    @Autowired
     AnalystDao analystDao;
 
     @Autowired
@@ -220,11 +217,11 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
         WorkerNodeClient client = new WorkerNodeClient(task.getHost());
         try {
             logger.info("Killing runinng task: {}", task);
-            client.kill(new TaskKillT().setId(task.getTaskId())
+            client.killTask(new TaskKillT().setId(task.getTaskId())
                     .setReason("Manually killed  by " + SecurityUtils.getUsername())
                     .setUser(SecurityUtils.getUsername()));
         } catch (Exception e) {
-            logger.warn("Failed to kill running task an analyst {}", task.getHost());
+            logger.warn("Failed to kill running task an analyst {}", task.getHost(), e);
         }
     }
 
