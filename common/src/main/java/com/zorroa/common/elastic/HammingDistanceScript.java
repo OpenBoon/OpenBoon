@@ -28,8 +28,9 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     private int minScore = 0;
     private boolean header = false;
     private char version = 0;
-    private int headerSize = 0;
+    private int dataPos = 0;
     private final double possibleScore;
+    private final double singleScore;
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
@@ -61,10 +62,8 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
             if (header) {
                 version = hash.charAt(0);
 
-                // +3 on the headerSize to take into account the version
-                // and the headerSize itself. The headerSize is basically
-                // where the data begins.
-                headerSize = Integer.parseInt(hash.substring(1, 3), 16) + 3;
+                // The start position of the data.
+                dataPos = Integer.parseInt(hash.substring(1, 3), 16);
 
                 if (version <= 0) {
                     // Resolution is the next byte.
@@ -84,7 +83,8 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         }
 
         // To get the proper score, we subtract header size from the length here.
-        possibleScore = resolution * (length - headerSize) * numHashes;
+        singleScore = resolution * (length - dataPos);
+        possibleScore = singleScore * numHashes;
     }
 
     @Override
@@ -95,11 +95,12 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
         double score = charHashesComparison(
                     docFieldStrings(field).getBytesValue());
+        logger.info("score: {}", score);
         return score >= minScore ? score : 0;
     }
 
     public final double charHashesComparison(BytesRef fieldValue) {
-        long score = 0;
+        double score = 0;
 
         byte ver = fieldValue.bytes[0];
         for (int i = 0; i < numHashes; ++i) {
@@ -107,21 +108,20 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
             if (ver != hash.charAt(0)) {
                 continue;
             }
-            score += weights.get(i) * hammingDistance(fieldValue, hash);
+            score += (weights.get(i) * hammingDistance(fieldValue, hash));
         }
-
         return normalize(score);
     }
 
     public final double normalize(double score) {
-        score = (possibleScore - score) * NORM / possibleScore;
+        score = (score / possibleScore) * NORM;
         return score;
     }
 
-    public final long hammingDistance(final BytesRef lhs, final String rhs) {
-        long score = 0;
-        for (int i = headerSize; i < length; i++) {
-            score += Math.abs(lhs.bytes[i] - rhs.charAt(i));
+    public final double hammingDistance(final BytesRef lhs, final String rhs) {
+        double score = singleScore;
+        for (int i = dataPos; i < length; i++) {
+            score -= Math.abs(lhs.bytes[i] - rhs.charAt(i));
         }
         return score;
     }
