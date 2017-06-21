@@ -97,11 +97,11 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public final double charHashesComparison(BytesRef fieldValue) {
         double score = 0;
 
-        byte ver = fieldValue.bytes[0];
+        byte ver = fieldValue.bytes[1];
         for (int i = 0; i < numHashes; ++i) {
             String hash = charHashes.get(i);
             if (header) {
-                if (ver != hash.charAt(0)) {
+                if (ver != hash.charAt(1)) {
                     continue;
                 }
             }
