@@ -437,6 +437,7 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
+        source.setAttr("foo.byte", "AAFFGG");
 
         assetService.index(source);
         refreshIndex();
@@ -446,6 +447,7 @@ public class SearchServiceTests extends AbstractTest {
         assertTrue(fields.get("string").size() > 0);
         assertTrue(fields.get("integer").size() > 0);
         assertTrue(fields.get("point").size() > 0);
+        assertTrue(fields.get("hash").size() > 0);
         assertTrue(fields.get("keywords-auto").contains("foo.keywords"));
     }
 
