@@ -383,6 +383,23 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testQuotedString() throws IOException {
+
+        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        Source.addKeywords("source", "O bummer");
+        assetService.index(Source);
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.addKeywords("source", "O bummer again");
+        assetService.index(source2);
+
+        refreshIndex();
+
+        assertEquals(2, searchService.search(
+                new AssetSearch("\"O bummer\"")).getHits().getTotalHits());
+    }
+
+    @Test
     public void testMinusQuery() throws IOException {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));

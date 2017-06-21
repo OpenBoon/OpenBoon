@@ -460,9 +460,21 @@ public class SearchServiceImpl implements SearchService {
         else {
             queryFields = getQueryFields();
         }
-        queryFields.forEach((k,v)-> {
-            qstring.field(k, v);
-            qstring.field(k + ".raw", v);});
+
+        if (query.startsWith("\"") && query.endsWith("\"")) {
+            for (Map.Entry<String,Float> field: queryFields.entrySet()) {
+                // phrases cannot match .raw
+                if (!field.getKey().endsWith(".raw")) {
+                    qstring.field(field.getKey(),field.getValue());
+                }
+            }
+        }
+        else {
+            queryFields.forEach((k, v) -> {
+                qstring.field(k, v);
+            });
+        }
+
         return qstring;
     }
 
