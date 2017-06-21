@@ -253,10 +253,7 @@ public class FolderServiceImpl implements FolderService {
 
         if (folder.isDyhiRoot()) {
             removeDyHierarchyRoot(folder);
-
-
         }
-
 
         /**
          * The Operation ID keeps track of all folders deleted by this specific

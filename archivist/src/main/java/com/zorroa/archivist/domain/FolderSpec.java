@@ -5,6 +5,7 @@ import com.zorroa.sdk.search.AssetSearch;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 import java.util.Objects;
 
 public class FolderSpec {
@@ -20,6 +21,8 @@ public class FolderSpec {
     private AssetSearch search;
 
     private Acl acl;
+
+    private Map<String, Object> attrs;
 
     /**
      * A smart folder search recurses into all child folders.
@@ -102,6 +105,15 @@ public class FolderSpec {
 
     public FolderSpec setDyhiId(Integer dyhiId) {
         this.dyhiId = dyhiId;
+        return this;
+    }
+
+    public Map<String, Object> getAttrs() {
+        return attrs;
+    }
+
+    public FolderSpec setAttrs(Map<String, Object> attrs) {
+        this.attrs = attrs;
         return this;
     }
 

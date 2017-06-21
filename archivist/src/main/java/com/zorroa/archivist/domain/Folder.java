@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.zorroa.sdk.search.AssetSearch;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Folder implements Loggable<Integer> {
@@ -42,6 +43,7 @@ public class Folder implements Loggable<Integer> {
 
     private AssetSearch search;
     private boolean taxonomyRoot;
+    private Map<String, Object> attrs;
 
     public Folder() { }
 
@@ -159,6 +161,15 @@ public class Folder implements Loggable<Integer> {
 
     public Folder setTaxonomyRoot(boolean taxonomyRoot) {
         this.taxonomyRoot = taxonomyRoot;
+        return this;
+    }
+
+    public Map<String, Object> getAttrs() {
+        return attrs;
+    }
+
+    public Folder setAttrs(Map<String, Object> attrs) {
+        this.attrs = attrs;
         return this;
     }
 

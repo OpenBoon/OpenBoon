@@ -2,6 +2,8 @@ package com.zorroa.archivist.domain;
 
 import com.zorroa.sdk.search.AssetSearch;
 
+import java.util.Map;
+
 /**
  * Created by chambers on 12/2/16.
  */
@@ -20,6 +22,7 @@ public class TrashedFolder {
     private boolean recursive;
     private Acl acl;
     private AssetSearch search;
+    private Map<String, Object> attrs;
 
     public UserBase getUserDeleted() {
         return userDeleted;
@@ -135,6 +138,15 @@ public class TrashedFolder {
 
     public TrashedFolder setSearch(AssetSearch search) {
         this.search = search;
+        return this;
+    }
+
+    public Map<String, Object> getAttrs() {
+        return attrs;
+    }
+
+    public TrashedFolder setAttrs(Map<String, Object> attrs) {
+        this.attrs = attrs;
         return this;
     }
 }

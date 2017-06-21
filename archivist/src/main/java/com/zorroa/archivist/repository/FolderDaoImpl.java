@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class FolderDaoImpl extends AbstractDao implements FolderDao {
@@ -51,15 +52,22 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
         }
 
         String dyhiField = rs.getString("str_dyhi_field");
+
+        String attrs = rs.getString("json_attrs");
+        if (attrs != null) {
+            folder.setAttrs(Json.deserialize(attrs, Map.class));
+        }
+
         String search = rs.getString("json_search");
         if (search == null && dyhiField != null) {
             search = "{}";
         }
-        /**
-         * The dyhi field is added to the search on the fly, not baked in.
-         */
+
         if (search != null) {
             folder.setSearch(Json.deserialize(search, AssetSearch.class));
+            /**
+             * The dyhi field is added to the search on the fly, not baked in.
+             */
             if (dyhiField != null) {
                 folder.getSearch().addToFilter().addToExists(dyhiField);
             }
@@ -171,7 +179,8 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     "user_modified",
                     "time_modified",
                     "json_search",
-                    "pk_dyhi");
+                    "pk_dyhi",
+                    "json_attrs");
 
     @Override
     public Folder create(FolderSpec spec) {
@@ -191,6 +200,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             ps.setLong(7, time);
             ps.setString(8, Json.serializeToString(spec.getSearch(), null));
             ps.setObject(9, spec.getDyhiId());
+            ps.setString(10, Json.serializeToString(spec.getAttrs(), "{}"));
             return ps;
         }, keyHolder);
 
@@ -208,7 +218,8 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     "bool_recursive",
                     "user_modified",
                     "time_modified",
-                    "json_search");
+                    "json_search",
+                    "json_attrs");
     @Override
     public Folder create(TrashedFolder spec) {
         long time = System.currentTimeMillis();
@@ -225,6 +236,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
             ps.setInt(7, spec.getUserDeleted().getId());
             ps.setLong(8, time);
             ps.setString(9, Json.serializeToString(spec.getSearch(), null));
+            ps.setString(10, Json.serializeToString(spec.getAttrs(), "{}"));
             return ps;
         });
 
@@ -238,14 +250,16 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     "pk_parent",
                     "str_name",
                     "bool_recursive",
-                    "json_search"),
+                    "json_search",
+                    "json_attrs"),
 
             JdbcUtils.update("folder", "pk_folder",
                     "time_modified",
                     "user_modified",
                     "pk_parent",
                     "str_name",
-                    "bool_recursive")
+                    "bool_recursive",
+                    "json_attrs")
     };
 
     @Override
@@ -263,6 +277,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     folder.getParentId(),
                     folder.getName(),
                     folder.isRecursive(),
+                    Json.serializeToString(folder.getAttrs(), "{}"),
                     folder.getId()) == 1;
         }
         else {
@@ -273,6 +288,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     folder.getName(),
                     folder.isRecursive(),
                     Json.serializeToString(folder.getSearch(), null),
+                    Json.serializeToString(folder.getAttrs(), "{}"),
                     folder.getId()) == 1;
         }
     }

@@ -158,10 +158,13 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             start = folderService.get(tax.getFolderId());
         }
 
+        List<Integer> folders = Lists.newArrayList();
+        long updateTime = System.currentTimeMillis();
+
         LongAdder assetTotal = new LongAdder();
         LongAdder folderTotal = new LongAdder();
 
-        String field = String.format("zorroa.taxonomy.tax%d.keywords", tax.getTaxonomyId());
+        String rootField = String.format("zorroa.taxonomy.tax%d", tax.getTaxonomyId());
 
         /**
          * TODO: Going to change this to be more efficient by keeping track of the stack.
@@ -225,7 +228,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             // If it is not a force, then skip over fields already written.
             if (!force) {
                 search.getFilter().setMustNot(ImmutableList.of(
-                        new AssetFilter().addToExists(field)));
+                        new AssetFilter().addToExists(rootField)));
             }
 
             SearchResponse rsp = client.prepareSearch("archivist")
@@ -237,8 +240,13 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
 
             Document doc = new Document();
-            doc.setAttr(field, keywords);
+            doc.setAttr(rootField,
+                    ImmutableMap.of(
+                            "keywords", keywords,
+                            "updatedTime", updateTime,
+                            "folderId",folder.getId()));
 
+            folders.add(folder.getId());
             while (true) {
                 for (SearchHit hit : rsp.getHits().getHits()) {
                     bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
@@ -259,5 +267,12 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         return ImmutableMap.of(
                 "assetCount", assetTotal.longValue(),
                 "folderCount", folderTotal.longValue());
+    }
+
+    @Override
+    public void untagTaxonomy(Taxonomy tax, List<Integer> folders, long updatedTime) {
+
+
+
     }
 }

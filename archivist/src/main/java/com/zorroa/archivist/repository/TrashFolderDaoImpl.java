@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -43,7 +44,8 @@ public class TrashFolderDaoImpl extends AbstractDao implements TrashFolderDao {
                     "user_deleted",
                     "time_deleted",
                     "bool_primary",
-                    "int_order");
+                    "int_order",
+                    "json_attrs");
 
     @Override
     public int create(Folder folder, String opid, boolean primary, int order) {
@@ -68,6 +70,7 @@ public class TrashFolderDaoImpl extends AbstractDao implements TrashFolderDao {
             ps.setLong(12, time);
             ps.setBoolean(13, primary);
             ps.setInt(14, order);
+            ps.setString(15, Json.serializeToString(folder.getAttrs(), "{}"));
             return ps;
         }, keyHolder);
 
@@ -101,6 +104,9 @@ public class TrashFolderDaoImpl extends AbstractDao implements TrashFolderDao {
         if (aclString != null) {
             folder.setAcl( Json.deserialize(aclString, Acl.class));
         }
+
+        String attrs = rs.getString("json_attrs");
+        folder.setAttrs(Json.deserialize(attrs, Map.class));
 
         return folder;
     };
@@ -148,7 +154,7 @@ public class TrashFolderDaoImpl extends AbstractDao implements TrashFolderDao {
         return jdbc.queryForList(
                 "SELECT pk_folder_trash FROM folder_trash WHERE user_deleted=? ORDER BY int_order DESC", Integer.class, user);
     }
-    
+
     @Override
     public List<Integer> removeAll(String opId) {
         List<Integer> ids = getAllIds(opId);

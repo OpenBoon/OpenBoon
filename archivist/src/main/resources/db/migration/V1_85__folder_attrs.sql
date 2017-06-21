@@ -1,0 +1,3 @@
+
+ALTER TABLE folder ADD COLUMN json_attrs TEXT NOT NULL DEFAULT '{}';
+ALTER TABLE folder_trash ADD COLUMN json_attrs TEXT NOT NULL DEFAULT '{}';
