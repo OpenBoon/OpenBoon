@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -240,6 +241,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
         UpdateResponse response = updateBuilder.get();
         return response.getVersion();
+    }
+
+    @Override
+    public void removeFields(String assetId, Set<String> fields, boolean refresh) {
+        client.prepareUpdate(getIndex(), getType(), assetId)
+                .setScript(new Script("for (f in fields) { ctx._source.remove(f); };",
+                        ScriptService.ScriptType.INLINE, "groovy", ImmutableMap.of("fields", fields)))
+                .setRefresh(refresh)
+                .get();
     }
 
     @Override

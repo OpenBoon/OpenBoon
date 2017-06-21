@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.DocumentIndexResult;
@@ -182,6 +183,13 @@ public class AssetDaoTests extends AbstractTest {
         assertTrue(assetDao.delete(asset1.getId()));
         refreshIndex();
         assertFalse(assetDao.delete(asset1.getId()));
+    }
+
+    @Test
+    public void testRemoveFields() {
+        assetDao.removeFields(asset1.getId(), Sets.newHashSet("source"), true);
+        Asset a = assetDao.get(asset1.getId());
+        assertFalse(a.attrExists("source"));
     }
 
     @Test

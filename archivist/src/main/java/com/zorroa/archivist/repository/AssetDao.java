@@ -9,9 +9,12 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public interface AssetDao {
+
+    void removeFields(String assetId, Set<String> fields, boolean refresh);
 
     boolean delete(String id);
 

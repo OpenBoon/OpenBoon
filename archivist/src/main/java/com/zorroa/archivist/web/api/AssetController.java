@@ -315,6 +315,12 @@ public class AssetController {
         return HttpUtils.updated("asset", id, true, assetService.get(id));
     }
 
+    @RequestMapping(value="/api/v1/assets/{id}/_fields", method=RequestMethod.DELETE)
+    public Object removeFields(@RequestBody Set<String> fields, @PathVariable String id) throws IOException {
+        assetService.removeFields(id, fields);
+        return HttpUtils.updated("asset", id, true, ImmutableMap.of());
+    }
+
     public static class IndexAssetRequest {
         public List<Source> sources;
         public LinkSpec link;

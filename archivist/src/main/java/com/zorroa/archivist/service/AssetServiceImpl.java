@@ -143,6 +143,11 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    public void removeFields(String id, Set<String> fields) {
+        assetDao.removeFields(id ,fields, false);
+    }
+
+    @Override
     public Map<String, List<Object>> removeLink(String type, String value, List<String> assets) {
         return assetDao.removeLink(type, value, assets);
     }

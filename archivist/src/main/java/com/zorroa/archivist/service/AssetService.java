@@ -9,6 +9,7 @@ import com.zorroa.sdk.search.AssetSearch;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface AssetService {
 
@@ -35,6 +36,8 @@ public interface AssetService {
      */
     DocumentIndexResult index(List<Source> sources, LinkSpec link);
     DocumentIndexResult index(List<Source> sources);
+
+    void removeFields(String id, Set<String> fields);
 
     Map<String, List<Object>> removeLink(String type, String value, List<String> assets);
     Map<String, List<Object>> appendLink(String type, String value, List<String> assets);
