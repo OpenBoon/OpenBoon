@@ -35,18 +35,14 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public HammingDistanceScript(Map<String, Object> params) {
         super();
         field = (String) params.get("field");
-        header = hasHeader(field);
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
         resolution = 15;
 
-        if (!header && !field.endsWith(".raw")) {
-            field = field.concat(".raw");
-        }
-
         charHashes = (List<String>) params.get("hashes");
         if (!CollectionUtils.isNullOrEmpty(charHashes)) {
             String hash = charHashes.get(0);
+            header = hash.charAt(0) == '#';
             numHashes = charHashes.size();
             length = hash.length();
 
@@ -60,14 +56,14 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
              * A version 0 hash has 1 field, resolution.
              */
             if (header) {
-                version = hash.charAt(0);
+                version = hash.charAt(1);
 
                 // The start position of the data.
-                dataPos = Integer.parseInt(hash.substring(1, 3), 16);
+                dataPos = Integer.parseInt(hash.substring(2, 4), 16);
 
                 if (version <= 0) {
                     // Resolution is the next byte.
-                    resolution = Integer.parseInt(hash.substring(3, 5), 16);
+                    resolution = Integer.parseInt(hash.substring(4, 6), 16);
                 }
             }
         }
@@ -134,15 +130,5 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
     public int getResolution() {
         return resolution;
-    }
-
-    private boolean hasHeader(String field) {
-        if (field.endsWith(".raw") || field.endsWith(".byte")) {
-            return false;
-        }
-        if (field.endsWith(".hash") || field.startsWith("similarity.")) {
-            return true;
-        }
-        return false;
     }
 }

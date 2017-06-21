@@ -42,12 +42,12 @@ public class HammingDistanceScriptTests extends AbstractTest {
     public void testHashHeaderResolution() {
         Map<String, Object> map = Maps.newHashMap();
         map.put("field", "foo.hash");
-        map.put("hashes", ImmutableList.of("0050FAAAA"));
+        map.put("hashes", ImmutableList.of("#0060FAAAA"));
 
         HammingDistanceScript script = new HammingDistanceScript(map);
         assertEquals(15, script.getResolution());
 
-        double score = script.charHashesComparison(new BytesRef("0050FAAPP".getBytes()));
+        double score = script.charHashesComparison(new BytesRef("#0060FAAPP".getBytes()));
         assertEquals(50, score, 0);
     }
 
