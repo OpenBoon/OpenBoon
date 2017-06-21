@@ -2,9 +2,9 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.JobService;
-import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;
@@ -23,6 +23,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
@@ -62,6 +63,27 @@ public class FileSystemController {
             File f = new File(FileUtils.normalize(file));
             return ImmutableMap.of("result", f.exists());
         }
+    }
+
+    @RequestMapping(value = "/api/v1/ofs/{type}/**", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<InputStreamResource> getFile(@PathVariable String type, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Cache-Control", "public");
+
+        String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+
+        AntPathMatcher apm = new AntPathMatcher();
+        String id = type + "/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path));
+        ObjectFile file = objectFileSystem.get(id);
+
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(Files.size(file.getFile().toPath()))
+                .body(new InputStreamResource(new FileInputStream(file.getFile())));
     }
 
     @RequestMapping(value = "/api/v1/ofs/proxy/**", method = RequestMethod.GET, produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE })
