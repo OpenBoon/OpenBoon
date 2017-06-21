@@ -437,13 +437,13 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
-        String exactSuffix = "";
+        boolean raw = false;
 
         String query = search.getQuery();
         QueryStringQueryBuilder qstring;
 
         if (query.startsWith("\"") && query.endsWith("\"")) {
-            exactSuffix = ".raw";
+            raw = true;
             qstring = QueryBuilders.queryStringQuery(query.substring(1, query.lastIndexOf('"')));
         }
         else {
@@ -465,9 +465,13 @@ public class SearchServiceImpl implements SearchService {
         }
 
         for (Map.Entry<String,Float> f: queryFields.entrySet()) {
-            qstring.field(f.getKey() + exactSuffix, f.getValue());
+            String field = f.getKey();
+            if (raw) {
+                field = dotRawMe(field);
+            }
+            qstring.field(field, f.getValue());
+
         }
-        logger.info("{}", qstring);
         return qstring;
     }
 
