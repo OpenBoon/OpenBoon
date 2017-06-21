@@ -3,7 +3,8 @@
     {
       "hash_template": {
         "match_mapping_type": "string",
-        "match": "hash",
+        "match_pattern": "regex",
+        "match": "hash|byte",
         "mapping": {
           "index": "not_analyzed",
           "type": "string"

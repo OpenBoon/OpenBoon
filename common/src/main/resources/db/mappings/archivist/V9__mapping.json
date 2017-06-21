@@ -199,24 +199,6 @@
           }
         },
         {
-          "byte_template": {
-            "match_mapping_type": "long",
-            "match": "_byte",
-            "mapping": {
-              "type": "byte"
-            }
-          }
-        },
-        {
-          "short_template": {
-            "match_mapping_type": "long",
-            "match": "_short",
-            "mapping": {
-              "type": "short"
-            }
-          }
-        },
-        {
           "binary_template": {
             "match_mapping_type": "string",
             "match": "content",
@@ -229,7 +211,8 @@
         {
           "hash_template": {
             "match_mapping_type": "string",
-            "match": "hash",
+            "match_pattern": "regex",
+            "match": "hash|byte",
             "mapping": {
               "index": "not_analyzed",
               "type": "string"
