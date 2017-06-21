@@ -568,17 +568,17 @@ public class SearchServiceTests extends AbstractTest {
 
         search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.byte.raw", 100)));
+                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.byte", 100)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.byte.raw", 50)));
+                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.byte", 50)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
                 new AssetFilter().setHamming(
-                        new HammingDistanceFilter("APAPAPAP", "test.hash1.byte.raw", 20)));
+                        new HammingDistanceFilter("APAPAPAP", "test.hash1.byte", 20)));
 
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
@@ -601,7 +601,7 @@ public class SearchServiceTests extends AbstractTest {
 
         AssetSearch search = new AssetSearch("bar");
         search.setFilter(new AssetFilter().setHamming(
-                new HammingDistanceFilter("afafafaf", "test.hash1.byte.raw", 8)));
+                new HammingDistanceFilter("afafafaf", "test.hash1.byte", 8)));
 
         /**
          * The score from the hamming distance is combined with the query
