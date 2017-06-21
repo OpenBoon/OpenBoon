@@ -344,7 +344,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                 MasterServerClient client = new MasterServerClient(addr);
                 client.setMaxRetries(0);
                 client.setSocketTimeout(2000);
-                client.setConnectTimeout(2000);
+                client.setConnectTimeout(500);
 
                 try {
                     List<TaskStartT> tasks = client.queuePendingTasks(
@@ -370,7 +370,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(5, 1, TimeUnit.SECONDS);
+        return Scheduler.newFixedRateSchedule(5000, 500, TimeUnit.MILLISECONDS);
     }
 
     @Override
