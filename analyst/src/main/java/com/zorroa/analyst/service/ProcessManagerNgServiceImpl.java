@@ -10,6 +10,7 @@ import com.zorroa.common.cluster.client.ClusterException;
 import com.zorroa.common.cluster.client.MasterServerClient;
 import com.zorroa.common.cluster.thrift.*;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
@@ -51,6 +52,9 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     @Autowired
     ThreadPoolExecutor analyzeExecutor;
+
+    @Autowired
+    NetworkEnvironment networkEnvironment;
 
     /**
      * Executor for handling task manipulation commands that
@@ -343,7 +347,8 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                 client.setConnectTimeout(2000);
 
                 try {
-                    List<TaskStartT> tasks = client.queuePendingTasks(addr, threads - analyzeExecutor.getActiveCount());
+                    List<TaskStartT> tasks = client.queuePendingTasks(
+                            networkEnvironment.getClusterAddr(), threads - analyzeExecutor.getActiveCount());
                     for (TaskStartT task: tasks) {
                         queueClusterTask(task);
                     }
