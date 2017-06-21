@@ -217,7 +217,7 @@ public class FolderServiceImpl implements FolderService {
 
                 Taxonomy tax = getParentTaxonomy(folder);
                 if (tax != null) {
-                    taxonomyService.tagTaxonomy(tax, folder, true);
+                    taxonomyService.tagTaxonomy(tax, folder, folder.getSearch() != null);
                 }
             });
         }
@@ -374,7 +374,7 @@ public class FolderServiceImpl implements FolderService {
 
         Taxonomy tax = getParentTaxonomy(folder);
         if (tax != null) {
-            taxonomyService.tagTaxonomyAsync(tax, folder, true);
+            taxonomyService.tagTaxonomyAsync(tax, folder, false);
         }
 
         return result;
