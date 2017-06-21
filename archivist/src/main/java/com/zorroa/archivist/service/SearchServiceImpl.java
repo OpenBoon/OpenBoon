@@ -412,6 +412,7 @@ public class SearchServiceImpl implements SearchService {
                      * to smart folders, unless its to the smart query itself.
                      */
                     if (folder.getSearch() != null) {
+                        folder.getSearch().setAggs(null);
                         staticBool.should(getQuery(folder.getSearch(), false, true));
                     }
 
