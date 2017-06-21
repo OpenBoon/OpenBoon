@@ -656,7 +656,7 @@ public class SearchServiceImpl implements SearchService {
         return fieldMapCache.get();
     }
 
-    private static final Set<String> NAME_TYPE_OVERRRIDES = ImmutableSet.of("point");
+    private static final Set<String> NAME_TYPE_OVERRRIDES = ImmutableSet.of("point", "hash", "byte");
 
     private void getList(Map<String, Set<String>> result, String fieldName, Map<String, Object> mapProperties, Set<String> autoKeywordFieldNames) {
         Map<String, Object> map = (Map<String, Object>) mapProperties.get("properties");
