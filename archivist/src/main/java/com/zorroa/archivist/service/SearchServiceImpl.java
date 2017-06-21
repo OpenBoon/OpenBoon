@@ -70,9 +70,6 @@ public class SearchServiceImpl implements SearchService {
     @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
-    @Value("${archivist.search.queryAnalyzer}")
-    private String defaultQueryAnalyzer;
-
     @Autowired
     Client client;
 
@@ -440,17 +437,22 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
+        String exactSuffix = "";
 
-        /**
-         * Note: fuzzy defaults to false.
-         */
         String query = search.getQuery();
-        if (search.getQueryAnalyzer() == null) {
-            search.setQueryAnalyzer(defaultQueryAnalyzer);
+        QueryStringQueryBuilder qstring;
+
+        if (query.startsWith("\"") && query.endsWith("\"")) {
+            exactSuffix = ".raw";
+            qstring = QueryBuilders.queryStringQuery(query.substring(1, query.lastIndexOf('"')));
+        }
+        else {
+            qstring = QueryBuilders.queryStringQuery(query);
         }
 
-        QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(query);
-        qstring.analyzer(search.getQueryAnalyzer());
+        if (search.getQueryAnalyzer() != null) {
+            qstring.analyzer(search.getQueryAnalyzer());
+        }
         qstring.allowLeadingWildcard(false);
         qstring.lenient(true); // ignores qstring errors
 
@@ -462,20 +464,10 @@ public class SearchServiceImpl implements SearchService {
             queryFields = getQueryFields();
         }
 
-        if (query.startsWith("\"") && query.endsWith("\"")) {
-            for (Map.Entry<String,Float> field: queryFields.entrySet()) {
-                // phrases cannot match .raw
-                if (!field.getKey().endsWith(".raw")) {
-                    qstring.field(field.getKey(),field.getValue());
-                }
-            }
+        for (Map.Entry<String,Float> f: queryFields.entrySet()) {
+            qstring.field(f.getKey() + exactSuffix, f.getValue());
         }
-        else {
-            queryFields.forEach((k, v) -> {
-                qstring.field(k, v);
-            });
-        }
-
+        logger.info("{}", qstring);
         return qstring;
     }
 
@@ -751,9 +743,7 @@ public class SearchServiceImpl implements SearchService {
         if (search.getQuery() == null || search.getQuery().isEmpty()) {
             return ImmutableList.of();
         }
-        if (search.getQueryAnalyzer() == null) {
-            search.setQueryAnalyzer(defaultQueryAnalyzer);
-        }
+
         return client.admin().indices().prepareAnalyze(
                 search.getQuery())
                 .setIndex("archivist")

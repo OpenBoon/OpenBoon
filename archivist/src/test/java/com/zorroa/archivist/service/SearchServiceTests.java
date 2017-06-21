@@ -385,18 +385,18 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testQuotedString() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "O bummer");
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.setAttr("test.keywords", "ironMan17313.jpg");
+        assetService.index(source);
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
-        source2.addKeywords("source", "O bummer again");
+        source2.setAttr("test.keywords", "ironMan17314.jpg");
         assetService.index(source2);
 
         refreshIndex();
 
-        assertEquals(2, searchService.search(
-                new AssetSearch("\"O bummer\"")).getHits().getTotalHits());
+        assertEquals(1, searchService.search(
+                new AssetSearch("\"ironMan17313.jpg\"")).getHits().getTotalHits());
     }
 
     @Test
@@ -631,8 +631,16 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testAnalyzeFilenameAsQueryString() throws IOException {
+        assertEquals(ImmutableList.of("ironman17314.jpg", "iron", "man", "17314", "jpg"),
+                searchService.analyzeQuery(new AssetSearch("ironMan17314.jpg")));
+    }
+
+
+    @Test
     public void testAnalyze() {
-        List<String> terms = searchService.analyzeQuery(new AssetSearch("cats dogs"));
+        List<String> terms = searchService.analyzeQuery(new AssetSearch("cats dogs")
+                .setQueryAnalyzer("simple"));
         assertEquals(ImmutableList.of("cats", "dogs"), terms);
     }
 
@@ -645,7 +653,8 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        searchService.search(Pager.first(), new AssetSearch("dog cat"), stream);
+        searchService.search(Pager.first(), new AssetSearch("dog cat")
+                .setQueryAnalyzer("standard"), stream);
 
         Map<String, Object> result = Json.Mapper.readValue(new ByteArrayInputStream(stream.toByteArray()),
                 Json.GENERIC_MAP);
