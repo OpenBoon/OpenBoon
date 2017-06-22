@@ -52,7 +52,7 @@ public class TaxonomyControllerTests extends MockMvcTest {
 
         Folder f = folderService.create(new FolderSpec().setName("bob").setParentId(0));
         TaxonomySpec spec = new TaxonomySpec(f);
-        Taxonomy tax = taxonomyService.createTaxonomy(spec);
+        Taxonomy tax = taxonomyService.create(spec);
 
         MvcResult result = mvc.perform(delete("/api/v1/taxonomy/" + tax.getTaxonomyId())
                 .session(session)

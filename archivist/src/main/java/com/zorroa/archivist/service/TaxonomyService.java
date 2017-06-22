@@ -11,13 +11,13 @@ import java.util.Map;
  */
 public interface TaxonomyService {
 
-    boolean deleteTaxonomy(Taxonomy tax);
+    boolean delete(Taxonomy tax);
 
-    Taxonomy createTaxonomy(TaxonomySpec spec);
+    Taxonomy create(TaxonomySpec spec);
 
-    Taxonomy getTaxonomy(int id);
+    Taxonomy get(int id);
 
-    Taxonomy getTaxonomy(Folder folder);
+    Taxonomy get(Folder folder);
 
     void runAllAsync();
 

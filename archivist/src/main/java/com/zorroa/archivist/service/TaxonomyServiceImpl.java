@@ -72,7 +72,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     Set<String> EXCLUDE_FOLDERS = ImmutableSet.of("Library", "Users");
 
     @Override
-    public boolean deleteTaxonomy(Taxonomy tax) {
+    public boolean delete(Taxonomy tax) {
         if (taxonomyDao.delete(tax.getTaxonomyId())) {
             untagTaxonomyAsync(tax, 0);
             return true;
@@ -81,7 +81,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     }
 
     @Override
-    public Taxonomy createTaxonomy(TaxonomySpec spec) {
+    public Taxonomy create(TaxonomySpec spec) {
         Folder folder = folderService.get(spec.getFolderId());
         List<Folder> ancestors = folderService.getAllAncestors(folder, true, true);
         for (Folder an: ancestors) {
@@ -116,12 +116,12 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     }
 
     @Override
-    public Taxonomy getTaxonomy(int id) {
+    public Taxonomy get(int id) {
         return taxonomyDao.get(id);
     }
 
     @Override
-    public Taxonomy getTaxonomy(Folder folder) {
+    public Taxonomy get(Folder folder) {
         return taxonomyDao.get(folder);
     }
 

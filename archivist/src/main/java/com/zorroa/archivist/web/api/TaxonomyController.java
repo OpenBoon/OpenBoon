@@ -24,26 +24,26 @@ public class TaxonomyController {
     @ResponseBody
     @RequestMapping(value="/api/v1/taxonomy", method = RequestMethod.POST)
     public Object create(@RequestBody TaxonomySpec tspec) {
-        return taxonomyService.createTaxonomy(tspec);
+        return taxonomyService.create(tspec);
     }
 
     @ResponseBody
     @RequestMapping(value="/api/v1/taxonomy/{id}", method = RequestMethod.GET)
     public Taxonomy get(@PathVariable int id) {
-        return taxonomyService.getTaxonomy(id);
+        return taxonomyService.get(id);
     }
 
     @ResponseBody
     @RequestMapping(value="/api/v1/taxonomy/_folder/{id}", method = RequestMethod.GET)
     public Taxonomy getByFolder(@PathVariable int id) {
         Folder folder = folderService.get(id);
-        return taxonomyService.getTaxonomy(folder);
+        return taxonomyService.get(folder);
     }
 
     @ResponseBody
     @RequestMapping(value="/api/v1/taxonomy/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable int id) {
-        Taxonomy tax = taxonomyService.getTaxonomy(id);
-        return HttpUtils.deleted("taxonomy", id, taxonomyService.deleteTaxonomy(tax));
+        Taxonomy tax = taxonomyService.get(id);
+        return HttpUtils.deleted("taxonomy", id, taxonomyService.delete(tax));
     }
 }

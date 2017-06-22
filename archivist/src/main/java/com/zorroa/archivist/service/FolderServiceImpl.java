@@ -430,12 +430,12 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public Taxonomy getParentTaxonomy(Folder folder) {
         if (folder.isTaxonomyRoot()) {
-            return taxonomyService.getTaxonomy(folder);
+            return taxonomyService.get(folder);
         }
         while(folder.getParentId() != 0) {
             folder = get(folder.getParentId());
             if (folder.isTaxonomyRoot()) {
-                return taxonomyService.getTaxonomy(folder);
+                return taxonomyService.get(folder);
             }
         }
         return null;

@@ -43,7 +43,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         refreshIndex();
 
         folderService.addAssets(folder4, Lists.newArrayList(d.getId()));
-        taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
+        taxonomyService.create(new TaxonomySpec(folder1));
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -54,8 +54,8 @@ public class TaxonomyServiceTests extends AbstractTest {
         Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
         Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
 
-        taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
-        taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
+        taxonomyService.create(new TaxonomySpec(folder1));
+        taxonomyService.create(new TaxonomySpec(folder1));
     }
 
 
@@ -67,31 +67,31 @@ public class TaxonomyServiceTests extends AbstractTest {
         Folder folder3 = folderService.create(new FolderSpec("klingon", folder1.getId()));
         Folder folder4 = folderService.create(new FolderSpec("federation", folder1.getId()));
 
-        taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
-        taxonomyService.createTaxonomy(new TaxonomySpec(folder3));
+        taxonomyService.create(new TaxonomySpec(folder1));
+        taxonomyService.create(new TaxonomySpec(folder3));
     }
 
     @Test
     public void testGet() {
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Taxonomy tax1 = taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
-        Taxonomy tax2 = taxonomyService.getTaxonomy(tax1.getTaxonomyId());
+        Taxonomy tax1 = taxonomyService.create(new TaxonomySpec(folder1));
+        Taxonomy tax2 = taxonomyService.get(tax1.getTaxonomyId());
         assertEquals(tax1, tax2);
     }
 
     @Test
     public void testGetByFolder() {
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Taxonomy tax1 = taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
-        Taxonomy tax2 = taxonomyService.getTaxonomy(folder1);
+        Taxonomy tax1 = taxonomyService.create(new TaxonomySpec(folder1));
+        Taxonomy tax2 = taxonomyService.get(folder1);
         assertEquals(tax1, tax2);
     }
 
     @Test
     public void testUntagTaxonomy() {
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Taxonomy tax1 = taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
-        Taxonomy tax2 = taxonomyService.getTaxonomy(folder1);
+        Taxonomy tax1 = taxonomyService.create(new TaxonomySpec(folder1));
+        Taxonomy tax2 = taxonomyService.get(folder1);
 
         String field ="zorroa.taxonomy.tax" + tax2.getTaxonomyId();
 
@@ -114,8 +114,8 @@ public class TaxonomyServiceTests extends AbstractTest {
     @Test
     public void testDeleteTaxonomy() {
         Folder folder1 = folderService.create(new FolderSpec("ships"));
-        Taxonomy tax1 = taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
-        assertTrue(taxonomyService.deleteTaxonomy(tax1));
-        assertFalse(taxonomyService.deleteTaxonomy(tax1));
+        Taxonomy tax1 = taxonomyService.create(new TaxonomySpec(folder1));
+        assertTrue(taxonomyService.delete(tax1));
+        assertFalse(taxonomyService.delete(tax1));
     }
 }
