@@ -10,6 +10,9 @@ import java.util.Map;
  * Created by chambers on 6/17/17.
  */
 public interface TaxonomyService {
+
+    boolean deleteTaxonomy(Taxonomy tax);
+
     Taxonomy createTaxonomy(TaxonomySpec spec);
 
     Taxonomy getTaxonomy(int id);

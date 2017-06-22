@@ -16,8 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 6/19/17.
@@ -110,5 +109,13 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Asset a = assetService.get(d.getId());
         assertNull(null, a.getAttr(field));
+    }
+
+    @Test
+    public void testDeleteTaxonomy() {
+        Folder folder1 = folderService.create(new FolderSpec("ships"));
+        Taxonomy tax1 = taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
+        assertTrue(taxonomyService.deleteTaxonomy(tax1));
+        assertFalse(taxonomyService.deleteTaxonomy(tax1));
     }
 }

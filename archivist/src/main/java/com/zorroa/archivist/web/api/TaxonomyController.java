@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.api;
 
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.Taxonomy;
 import com.zorroa.archivist.domain.TaxonomySpec;
@@ -37,5 +38,12 @@ public class TaxonomyController {
     public Taxonomy getByFolder(@PathVariable int id) {
         Folder folder = folderService.get(id);
         return taxonomyService.getTaxonomy(folder);
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/api/v1/taxonomy/{id}", method = RequestMethod.DELETE)
+    public Object delete(@PathVariable int id) {
+        Taxonomy tax = taxonomyService.getTaxonomy(id);
+        return HttpUtils.deleted("taxonomy", id, taxonomyService.deleteTaxonomy(tax));
     }
 }

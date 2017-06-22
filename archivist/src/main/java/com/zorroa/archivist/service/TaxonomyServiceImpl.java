@@ -10,7 +10,6 @@ import com.zorroa.archivist.domain.Taxonomy;
 import com.zorroa.archivist.domain.TaxonomySpec;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.TaxonomyDao;
-import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.elastic.CountingBulkListener;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
@@ -63,9 +62,6 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     SearchService searchService;
 
     @Autowired
-    TransactionEventManager transactionEventManager;
-
-    @Autowired
     Client client;
 
     /**
@@ -74,6 +70,15 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     Set<String> EXCLUDE_FOLDERS = ImmutableSet.of("Library", "Users");
+
+    @Override
+    public boolean deleteTaxonomy(Taxonomy tax) {
+        if (taxonomyDao.delete(tax.getTaxonomyId())) {
+            untagTaxonomyAsync(tax, 0);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public Taxonomy createTaxonomy(TaxonomySpec spec) {

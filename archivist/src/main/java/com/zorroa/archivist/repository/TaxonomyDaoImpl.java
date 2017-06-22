@@ -80,7 +80,7 @@ public class TaxonomyDaoImpl extends AbstractDao implements TaxonomyDao {
 
     @Override
     public boolean delete(int id) {
-        return false;
+        return jdbc.update("DELETE FROM taxonomy WHERE pk_taxonomy=?", id) == 1;
     }
 
     @Override
