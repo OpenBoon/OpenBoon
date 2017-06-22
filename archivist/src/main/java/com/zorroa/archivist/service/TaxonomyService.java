@@ -4,7 +4,6 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.Taxonomy;
 import com.zorroa.archivist.domain.TaxonomySpec;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,5 +24,7 @@ public interface TaxonomyService {
 
     Map<String, Long> tagTaxonomy(Taxonomy tax, Folder start, boolean force);
 
-    void untagTaxonomy(Taxonomy tax, List<Integer> folders, long updatedTime);
+    void untagTaxonomyAsync(Taxonomy tax, long updatedTime);
+
+    Map<String, Long> untagTaxonomy(Taxonomy tax, long updatedTime);
 }

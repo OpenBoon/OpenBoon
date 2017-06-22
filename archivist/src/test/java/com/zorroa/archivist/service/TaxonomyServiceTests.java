@@ -1,18 +1,23 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Taxonomy;
 import com.zorroa.archivist.domain.TaxonomySpec;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.processor.Source;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by chambers on 6/19/17.
@@ -26,7 +31,7 @@ public class TaxonomyServiceTests extends AbstractTest {
     FolderService folderService;
 
     @Test
-    public void testCreate() {
+    public void testCreateAndRur() {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
         Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
@@ -81,5 +86,29 @@ public class TaxonomyServiceTests extends AbstractTest {
         Taxonomy tax1 = taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
         Taxonomy tax2 = taxonomyService.getTaxonomy(folder1);
         assertEquals(tax1, tax2);
+    }
+
+    @Test
+    public void testUntagTaxonomy() {
+        Folder folder1 = folderService.create(new FolderSpec("ships"));
+        Taxonomy tax1 = taxonomyService.createTaxonomy(new TaxonomySpec(folder1));
+        Taxonomy tax2 = taxonomyService.getTaxonomy(folder1);
+
+        String field ="zorroa.taxonomy.tax" + tax2.getTaxonomyId();
+
+        Source d = new Source();
+        d.setId("abc123");
+        d.setAttr(field,
+                ImmutableMap.of("timestamp", 0));
+        assetService.index(ImmutableList.of(d));
+        refreshIndex();
+
+        Map<String, Long> result = taxonomyService.untagTaxonomy(tax1, System.currentTimeMillis());
+        assertEquals(1, result.get("assetCount").longValue());
+        assertEquals(0, result.get("errorCount").longValue());
+        refreshIndex();
+
+        Asset a = assetService.get(d.getId());
+        assertNull(null, a.getAttr(field));
     }
 }

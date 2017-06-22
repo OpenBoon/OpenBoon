@@ -11,18 +11,20 @@ import com.zorroa.archivist.domain.TaxonomySpec;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.TaxonomyDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.common.elastic.CountingBulkListener;
+import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import org.elasticsearch.action.bulk.BulkProcessor;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
@@ -98,14 +100,8 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             folderService.invalidate(folder);
             folder.setTaxonomyRoot(true);
 
-            if (ArchivistConfiguration.unittest) {
-                tagTaxonomy(tax, folder, true);
-            } else {
-                transactionEventManager.afterCommitSync(() -> {
-                    executor.execute(() -> tagTaxonomy(tax, folder, true));
-                });
-            }
-
+            // force is false because there won't be folders with this tax id.
+            tagTaxonomyAsync(tax, folder, false);
             return tax;
         }
         else {
@@ -158,11 +154,10 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             start = folderService.get(tax.getFolderId());
         }
 
-        List<Integer> folders = Lists.newArrayList();
         long updateTime = System.currentTimeMillis();
 
-        LongAdder assetTotal = new LongAdder();
         LongAdder folderTotal = new LongAdder();
+        LongAdder assetTotal = new LongAdder();
 
         String rootField = String.format("zorroa.taxonomy.tax%d", tax.getTaxonomyId());
 
@@ -189,28 +184,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                 break;
             }
 
+            CountingBulkListener cbl = new CountingBulkListener();
             BulkProcessor bulkProcessor = BulkProcessor.builder(
-                    client,
-                    new BulkProcessor.Listener() {
-                        @Override
-                        public void beforeBulk(long executionId,
-                                               BulkRequest request) {
-                        }
-
-                        @Override
-                        public void afterBulk(long executionId,
-                                              BulkRequest request,
-                                              BulkResponse response) {
-                            assetTotal.add(response.getItems().length);
-                        }
-
-                        @Override
-                        public void afterBulk(long executionId,
-                                              BulkRequest request,
-                                              Throwable failure) {
-                            logger.warn("Failed bulk taxonomy", failure);
-                        }
-                    })
+                    client, cbl)
                     .setBulkActions(1000)
                     .setBulkSize(new ByteSizeValue(50, ByteSizeUnit.MB))
                     .setFlushInterval(TimeValue.timeValueSeconds(10))
@@ -243,10 +219,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             doc.setAttr(rootField,
                     ImmutableMap.of(
                             "keywords", keywords,
-                            "updatedTime", updateTime,
+                            "timestamp", updateTime,
                             "folderId",folder.getId()));
 
-            folders.add(folder.getId());
             while (true) {
                 for (SearchHit hit : rsp.getHits().getHits()) {
                     bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
@@ -259,20 +234,90 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                     break;
                 }
             }
-            bulkProcessor.close();
+            try {
+                bulkProcessor.awaitClose(60, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+
+            }
+            assetTotal.add(cbl.getSuccessCount());
         }
+
+        if (force) {
+            untagTaxonomyAsync(tax, updateTime);
+        }
+
         logger.info("Taxonomy {} executed, {} assets updated in {} folders",
                 tax.getFolderId(), assetTotal.longValue(), folderTotal.intValue());
 
         return ImmutableMap.of(
                 "assetCount", assetTotal.longValue(),
-                "folderCount", folderTotal.longValue());
+                "folderCount", folderTotal.longValue(),
+                "timestamp", updateTime);
     }
 
     @Override
-    public void untagTaxonomy(Taxonomy tax, List<Integer> folders, long updatedTime) {
+    public void untagTaxonomyAsync(Taxonomy tax, long timestamp) {
+        if (ArchivistConfiguration.unittest) {
+            untagTaxonomy(tax, timestamp);
+        }
+        else {
+            executor.schedule(() ->  untagTaxonomy(tax, timestamp), 5, TimeUnit.SECONDS);
+        }
+    }
 
+    @Override
+    public Map<String, Long> untagTaxonomy(Taxonomy tax, long timestamp) {
+        logger.info("Untagging assets not tagged: {}", tax);
+        ElasticClientUtils.refreshIndex(client, 1);
 
+        CountingBulkListener cbl = new CountingBulkListener();
+        BulkProcessor bulkProcessor = BulkProcessor.builder(
+                client, cbl)
+                .setBulkActions(1000)
+                .setBulkSize(new ByteSizeValue(50, ByteSizeUnit.MB))
+                .setFlushInterval(TimeValue.timeValueSeconds(10))
+                .setConcurrentRequests(0)
+                .build();
 
+        String name = String.format("tax%d", tax.getTaxonomyId());
+        String field = String.format("zorroa.taxonomy.tax%d.timestamp", tax.getTaxonomyId());
+
+        AssetSearch search = new AssetSearch();
+        search.setFilter(new AssetFilter()
+                .addToExists(field)
+                .setMustNot(ImmutableList.of(new AssetFilter().addToTerms(field, timestamp))));
+
+        SearchResponse rsp = client.prepareSearch("archivist")
+                .setScroll(new TimeValue(60000))
+                .setFetchSource(false)
+                .addSort("_doc", SortOrder.ASC)
+                .setQuery(searchService.getQuery(search))
+                .setSize(100).execute().actionGet();
+
+        Script script = new Script("ctx._source.zorroa.taxonomy.remove(name)",
+                ScriptService.ScriptType.INLINE, "groovy", ImmutableMap.of("name", name));
+
+        while (true) {
+            for (SearchHit hit : rsp.getHits().getHits()) {
+                bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
+                        .setScript(script).request());
+            }
+
+            rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
+                    new TimeValue(60000)).execute().actionGet();
+
+            if (rsp.getHits().getHits().length == 0) {
+                break;
+            }
+        }
+
+        bulkProcessor.close();
+        logger.info("Untagged: {} success:{} errors: {}", tax,
+                cbl.getSuccessCount(), cbl.getErrorCount());
+
+        return ImmutableMap.of(
+                "assetCount", cbl.getSuccessCount(),
+                "errorCount", cbl.getErrorCount(),
+                "timestamp", timestamp);
     }
 }

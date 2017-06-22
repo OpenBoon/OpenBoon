@@ -217,7 +217,10 @@ public class FolderServiceImpl implements FolderService {
 
                 Taxonomy tax = getParentTaxonomy(folder);
                 if (tax != null) {
-                    taxonomyService.tagTaxonomy(tax, folder, folder.getSearch() != null);
+                    /**
+                     * In this case we force tag/untag the taxonomy.
+                     */
+                    taxonomyService.tagTaxonomyAsync(tax, folder, true);
                 }
             });
         }
