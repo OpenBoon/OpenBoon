@@ -41,6 +41,14 @@ public class TaxonomyController {
     }
 
     @ResponseBody
+    @RequestMapping(value="/api/v1/taxonomy/{id}/_retag", method = RequestMethod.GET)
+    public Object execute(@PathVariable int id) {
+        Taxonomy tax = taxonomyService.get(id);
+        taxonomyService.tagTaxonomyAsync(tax, null, true);
+        return HttpUtils.status("taxonomy", "retag", true);
+    }
+
+    @ResponseBody
     @RequestMapping(value="/api/v1/taxonomy/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable int id) {
         Taxonomy tax = taxonomyService.get(id);
