@@ -109,7 +109,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
         Folder folder2 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_office");
         Folder folder3 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_images_set01");
         logger.info("{}", Json.prettyString(folder1.getSearch()));
-        assertEquals(1, searchService.count(folder1.getSearch()));
+        assertEquals(2, searchService.count(folder1.getSearch()));
     }
 
     @Test
