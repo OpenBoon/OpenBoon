@@ -9,9 +9,9 @@ import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.UserLogSpec;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.domain.Asset;
@@ -437,25 +437,6 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private QueryBuilder getQueryStringQuery(AssetSearch search) {
-        boolean raw = false;
-
-        String query = search.getQuery();
-        QueryStringQueryBuilder qstring;
-
-        if (query.startsWith("\"") && query.endsWith("\"")) {
-            raw = true;
-            qstring = QueryBuilders.queryStringQuery(query.substring(1, query.lastIndexOf('"')));
-        }
-        else {
-            qstring = QueryBuilders.queryStringQuery(query);
-        }
-
-        if (search.getQueryAnalyzer() != null) {
-            qstring.analyzer(search.getQueryAnalyzer());
-        }
-        qstring.allowLeadingWildcard(false);
-        qstring.lenient(true); // ignores qstring errors
-
         Map<String, Float> queryFields;
         if (JdbcUtils.isValid(search.getQueryFields())) {
             queryFields = search.getQueryFields();
@@ -464,17 +445,15 @@ public class SearchServiceImpl implements SearchService {
             queryFields = getQueryFields();
         }
 
+        QueryStringQueryBuilder qstring = QueryBuilders.queryStringQuery(search.getQuery());
+        qstring.allowLeadingWildcard(false);
+        qstring.lenient(true); // ignores qstring errors
         for (Map.Entry<String,Float> f: queryFields.entrySet()) {
-            String field = f.getKey();
-            if (raw) {
-                field = dotRawMe(field);
-            }
-            qstring.field(field, f.getValue());
-
+            qstring.field(f.getKey(), f.getValue());
         }
         return qstring;
-    }
 
+    }
 
     /**
      * Apply the given filter to the overall boolean query.
@@ -751,7 +730,6 @@ public class SearchServiceImpl implements SearchService {
         return client.admin().indices().prepareAnalyze(
                 search.getQuery())
                 .setIndex("archivist")
-                .setAnalyzer(search.getQueryAnalyzer())
                 .get().getTokens().stream().map(e->e.getTerm()).collect(Collectors.toList());
     }
 
