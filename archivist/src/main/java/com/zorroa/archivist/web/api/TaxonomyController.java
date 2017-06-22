@@ -44,6 +44,6 @@ public class TaxonomyController {
     @RequestMapping(value="/api/v1/taxonomy/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable int id) {
         Taxonomy tax = taxonomyService.get(id);
-        return HttpUtils.deleted("taxonomy", id, taxonomyService.delete(tax));
+        return HttpUtils.deleted("taxonomy", id, taxonomyService.delete(tax, true));
     }
 }

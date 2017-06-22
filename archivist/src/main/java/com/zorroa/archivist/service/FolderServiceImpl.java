@@ -284,13 +284,28 @@ public class FolderServiceImpl implements FolderService {
             }
         }
 
+        Taxonomy tax = getParentTaxonomy(folder);
+        if (folder.isTaxonomyRoot()) {
+            taxonomyService.delete(tax, false);
+        }
+
         boolean result = folderDao.delete(folder);
 
         if (result) {
             transactionEventManager.afterCommit(() -> {
                 invalidate(folder);
                 logService.logAsync(UserLogSpec.build(LogAction.Delete, folder));
-            }, false);
+            }, false );
+
+            transactionEventManager.afterCommit(() -> {
+                if (folder.isTaxonomyRoot()) {
+                    taxonomyService.untagTaxonomyAsync(tax, 0);
+                }
+                else {
+                    taxonomyService.untagTaxonomyFoldersAsync(tax, children);
+                    taxonomyService.untagTaxonomyFoldersAsync(tax, Lists.newArrayList(folder));
+                }
+            }, true);
 
             order++;
             int id = trashFolderDao.create(folder, op, true, order);
@@ -380,7 +395,7 @@ public class FolderServiceImpl implements FolderService {
         return result;
     }
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public Map<String, List<Object>> removeAssets(Folder folder, List<String> assetIds) {
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
@@ -388,8 +403,14 @@ public class FolderServiceImpl implements FolderService {
         }
 
         Map<String, List<Object>> result = assetDao.removeLink("folder", folder.getId(), assetIds);
-        invalidate(folder);
         logService.logAsync(UserLogSpec.build("remove_assets", folder).putToAttrs("assetIds", assetIds));
+        invalidate(folder);
+
+        Taxonomy tax = getParentTaxonomy(folder);
+        if (tax != null) {
+            taxonomyService.untagTaxonomyFoldersAsync(tax, folder, assetIds);
+        }
+
         return result;
     }
 

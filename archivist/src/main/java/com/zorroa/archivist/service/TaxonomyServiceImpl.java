@@ -19,13 +19,12 @@ import com.zorroa.sdk.search.AssetSearch;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.unit.ByteSizeUnit;
-import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.SortParseElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +38,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 6/17/17.
@@ -71,10 +71,22 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     Set<String> EXCLUDE_FOLDERS = ImmutableSet.of("Library", "Users");
 
+    /**
+     * Number of entries to write at one time.
+     */
+    private static final int BULK_SIZE = 100;
+
+    /**
+     * Number of assets to pull on each page.
+     */
+    private static final int PAGE_SIZE = 100;
+
     @Override
-    public boolean delete(Taxonomy tax) {
+    public boolean delete(Taxonomy tax, boolean untag) {
         if (taxonomyDao.delete(tax.getTaxonomyId())) {
-            untagTaxonomyAsync(tax, 0);
+            if (untag) {
+                untagTaxonomyAsync(tax, 0);
+            }
             return true;
         }
         return false;
@@ -192,8 +204,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             CountingBulkListener cbl = new CountingBulkListener();
             BulkProcessor bulkProcessor = BulkProcessor.builder(
                     client, cbl)
-                    .setBulkActions(1000)
-                    .setBulkSize(new ByteSizeValue(50, ByteSizeUnit.MB))
+                    .setBulkActions(BULK_SIZE)
                     .setFlushInterval(TimeValue.timeValueSeconds(10))
                     .setConcurrentRequests(0)
                     .build();
@@ -215,9 +226,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             SearchResponse rsp = client.prepareSearch("archivist")
                     .setScroll(new TimeValue(60000))
                     .setFetchSource(false)
-                    .addSort("_doc", SortOrder.ASC)
+                    .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
                     .setQuery(searchService.getQuery(search))
-                    .setSize(100).execute().actionGet();
+                    .setSize(PAGE_SIZE).execute().actionGet();
 
 
             Document doc = new Document();
@@ -227,22 +238,21 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                             "timestamp", updateTime,
                             "folderId",folder.getId()));
 
-            while (true) {
-                for (SearchHit hit : rsp.getHits().getHits()) {
-                    bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
-                            .setDoc(doc.getDocument()).request());
-                }
-
-                rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
-                        new TimeValue(60000)).execute().actionGet();
-                if (rsp.getHits().getHits().length == 0) {
-                    break;
-                }
-            }
             try {
-                bulkProcessor.awaitClose(60, TimeUnit.MINUTES);
-            } catch (InterruptedException e) {
+                do {
+                    for (SearchHit hit : rsp.getHits().getHits()) {
+                        bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
+                                .setDoc(doc.getDocument()).request());
+                    }
+                    rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
+                            new TimeValue(60000)).execute().actionGet();
 
+                } while (rsp.getHits().getHits().length != 0);
+            } catch (Exception e) {
+                logger.warn("Failed to tag taxonomy assets: {}", tax);
+            }
+            finally {
+                bulkProcessor.close();
             }
             assetTotal.add(cbl.getSuccessCount());
         }
@@ -271,6 +281,109 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     }
 
     @Override
+    public void untagTaxonomyFoldersAsync(Taxonomy tax, List<Folder> folders) {
+        if (ArchivistConfiguration.unittest) {
+            untagTaxonomyFolders(tax, folders);
+        }
+        else {
+            executor.schedule(() -> untagTaxonomyFolders(tax, folders), 5, TimeUnit.SECONDS);
+        }
+    }
+
+    @Override
+    public void untagTaxonomyFoldersAsync(Taxonomy tax, Folder folder, List<String> assets) {
+        if (ArchivistConfiguration.unittest) {
+            untagTaxonomyFolders(tax, folder, assets);
+        }
+        else {
+            executor.schedule(() -> untagTaxonomyFolders(tax, folder, assets), 5, TimeUnit.SECONDS);
+        }
+    }
+
+    @Override
+    public void untagTaxonomyFolders(Taxonomy tax, Folder folder, List<String> assets) {
+        logger.warn("Untagging {} on {} assets {}", tax, folder, assets);
+
+        CountingBulkListener cbl = new CountingBulkListener();
+        BulkProcessor bulkProcessor = BulkProcessor.builder(
+                client, cbl)
+                .setBulkActions(BULK_SIZE)
+                .setFlushInterval(TimeValue.timeValueSeconds(10))
+                .setConcurrentRequests(0)
+                .build();
+
+        String name = "tax" + tax.getTaxonomyId();
+        String field = "zorroa.taxonomy." + name;
+
+        AssetSearch search = new AssetSearch();
+        search.setFilter(new AssetFilter()
+                .addToExists(field)
+                .addToTerms("_id", assets)
+                .addToTerms(field + ".folderId", folder.getId()));
+
+        SearchResponse rsp = client.prepareSearch("archivist")
+                .setScroll(new TimeValue(60000))
+                .setFetchSource(false)
+                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
+                .setQuery(searchService.getQuery(search))
+                .setSize(PAGE_SIZE).execute().actionGet();
+
+        Script script = new Script("ctx._source.zorroa.taxonomy.remove(name)",
+                ScriptService.ScriptType.INLINE, "groovy", ImmutableMap.of("name", name));
+
+        processBulk(bulkProcessor, rsp, script);
+
+        bulkProcessor.close();
+        logger.info("Untagged: {} success:{} errors: {}", tax,
+                cbl.getSuccessCount(), cbl.getErrorCount());
+
+    }
+
+    @Override
+    public void untagTaxonomyFolders(Taxonomy tax,  List<Folder> folders) {
+        logger.warn("Untaggng {} on {} folders", tax, folders.size());
+
+        List<Integer> folderIds = folders.stream().map(
+                f->f.getId()).collect(Collectors.toList());
+
+        ElasticClientUtils.refreshIndex(client, 1);
+        for (List<Integer> list: Lists.partition(folderIds, 500)) {
+
+            CountingBulkListener cbl = new CountingBulkListener();
+            BulkProcessor bulkProcessor = BulkProcessor.builder(
+                    client, cbl)
+                    .setBulkActions(BULK_SIZE)
+                    .setFlushInterval(TimeValue.timeValueSeconds(10))
+                    .setConcurrentRequests(0)
+                    .build();
+
+            String name = "tax" + tax.getTaxonomyId();
+            String field = "zorroa.taxonomy." + name;
+
+            AssetSearch search = new AssetSearch();
+            search.setFilter(new AssetFilter()
+                    .addToExists(field)
+                    .addToTerms(field + ".folderId", list));
+
+            SearchResponse rsp = client.prepareSearch("archivist")
+                    .setScroll(new TimeValue(60000))
+                    .setFetchSource(false)
+                    .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
+                    .setQuery(searchService.getQuery(search))
+                    .setSize(PAGE_SIZE).execute().actionGet();
+
+            Script script = new Script("ctx._source.zorroa.taxonomy.remove(name)",
+                    ScriptService.ScriptType.INLINE, "groovy", ImmutableMap.of("name", name));
+
+            processBulk(bulkProcessor, rsp, script);
+
+            bulkProcessor.close();
+            logger.info("Untagged: {} success:{} errors: {}", tax,
+                    cbl.getSuccessCount(), cbl.getErrorCount());
+        }
+    }
+
+    @Override
     public Map<String, Long> untagTaxonomy(Taxonomy tax, long timestamp) {
         logger.info("Untagging assets not tagged: {}", tax);
         ElasticClientUtils.refreshIndex(client, 1);
@@ -278,8 +391,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         CountingBulkListener cbl = new CountingBulkListener();
         BulkProcessor bulkProcessor = BulkProcessor.builder(
                 client, cbl)
-                .setBulkActions(1000)
-                .setBulkSize(new ByteSizeValue(50, ByteSizeUnit.MB))
+                .setBulkActions(BULK_SIZE)
                 .setFlushInterval(TimeValue.timeValueSeconds(10))
                 .setConcurrentRequests(0)
                 .build();
@@ -295,28 +407,15 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         SearchResponse rsp = client.prepareSearch("archivist")
                 .setScroll(new TimeValue(60000))
                 .setFetchSource(false)
-                .addSort("_doc", SortOrder.ASC)
+                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
                 .setQuery(searchService.getQuery(search))
-                .setSize(100).execute().actionGet();
+                .setSize(PAGE_SIZE).execute().actionGet();
 
         Script script = new Script("ctx._source.zorroa.taxonomy.remove(name)",
                 ScriptService.ScriptType.INLINE, "groovy", ImmutableMap.of("name", name));
 
-        while (true) {
-            for (SearchHit hit : rsp.getHits().getHits()) {
-                bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
-                        .setScript(script).request());
-            }
+        processBulk(bulkProcessor, rsp, script);
 
-            rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
-                    new TimeValue(60000)).execute().actionGet();
-
-            if (rsp.getHits().getHits().length == 0) {
-                break;
-            }
-        }
-
-        bulkProcessor.close();
         logger.info("Untagged: {} success:{} errors: {}", tax,
                 cbl.getSuccessCount(), cbl.getErrorCount());
 
@@ -324,5 +423,28 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                 "assetCount", cbl.getSuccessCount(),
                 "errorCount", cbl.getErrorCount(),
                 "timestamp", timestamp);
+    }
+
+
+    private void processBulk(BulkProcessor bulkProcessor, SearchResponse rsp, Script script) {
+        try {
+            do {
+                for (SearchHit hit : rsp.getHits().getHits()) {
+                    bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
+                            .setScript(script).request());
+                }
+
+                rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
+                        new TimeValue(60000)).execute().actionGet();
+
+            } while (rsp.getHits().getHits().length != 0);
+
+        } catch (Exception e) {
+            logger.warn("Failed to untag taxonomy assets, ", e);
+
+        }
+        finally {
+            bulkProcessor.close();
+        }
     }
 }

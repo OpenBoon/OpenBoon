@@ -10,6 +10,8 @@ import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +31,9 @@ public class FolderServiceTests extends AbstractTest {
 
     @Autowired
     FolderDao folderDao;
+
+    @Autowired
+    TaxonomyService taxonomyService;
 
     @Before
     public void init() {
@@ -85,6 +90,37 @@ public class FolderServiceTests extends AbstractTest {
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
         assertTrue(results.get("failed").isEmpty());
         assertFalse(results.get("success").isEmpty());
+    }
+
+    @Test
+    public void testRemoveAssetFromTaxonomyFolder() {
+
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+        taxonomyService.create(new TaxonomySpec(folder));
+        folder = folderService.get(folder.getId());
+
+        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+        refreshIndex();
+
+        assertEquals(2, searchService.search(new AssetSearch(
+                new AssetFilter().addToTerms("links.folder", folder.getId()))).getHits().getTotalHits());
+        assertEquals(2, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
+
+        assertTrue(results.get("failed").isEmpty());
+        assertFalse(results.get("success").isEmpty());
+
+        results = folderService.removeAssets(folder, assetService.getAll(
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+        assertTrue(results.get("failed").isEmpty());
+        assertFalse(results.get("success").isEmpty());
+        refreshIndex();
+
+        assertEquals(0, searchService.search(new AssetSearch(
+                new AssetFilter().addToTerms("links.folder", folder.getId()))).getHits().getTotalHits());
+        assertEquals(0, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
+
     }
 
     @Test
