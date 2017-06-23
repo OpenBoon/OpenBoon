@@ -25,6 +25,8 @@ import static com.google.common.collect.Sets.intersection;
 
 public class SecurityUtils {
 
+    public static final  String ADMIN_GROUP = "group::administrator";
+
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
 
     public static String createPasswordHash(String plainPassword) {
@@ -117,7 +119,7 @@ public class SecurityUtils {
         if (permIds == null || permIds.isEmpty()) {
             return true;
         }
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(ADMIN_GROUP)) {
             return true;
         }
         return !intersection(permIds, SecurityUtils.getPermissionIds()).isEmpty();
@@ -136,7 +138,7 @@ public class SecurityUtils {
         if (acl == null) {
             return true;
         }
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(ADMIN_GROUP)) {
             return true;
         }
         return acl.hasAccess(getPermissionIds(), access);
@@ -152,7 +154,7 @@ public class SecurityUtils {
     }
 
     public static QueryBuilder getPermissionsFilter() {
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(ADMIN_GROUP)) {
             return null;
         }
         return QueryBuilders.termsQuery("permissions.read",
@@ -204,7 +206,7 @@ public class SecurityUtils {
      * @param oldAcl
      */
     public static void canSetAclOnFolder(Acl newAcl, Acl oldAcl, boolean created) {
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(ADMIN_GROUP)) {
             return;
         }
 
