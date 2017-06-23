@@ -19,7 +19,6 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -43,12 +42,6 @@ public class IndexController {
     IngestService ingestService;
 
     @Autowired
-    JobService jobService;
-
-    @Autowired
-    ImportService importService;
-
-    @Autowired
     AnalystService analystService;
 
     @Autowired
@@ -68,9 +61,6 @@ public class IndexController {
 
     @Autowired
     HealthEndpoint healthEndpoint;
-
-    @Autowired
-    Validator validator;
 
     @RequestMapping("/gui")
     public String index(Model model) {
