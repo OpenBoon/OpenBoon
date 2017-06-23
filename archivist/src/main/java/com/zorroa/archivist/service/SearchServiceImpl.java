@@ -254,7 +254,7 @@ public class SearchServiceImpl implements SearchService {
 
         if (search.getPostFilter() != null) {
             BoolQueryBuilder query = QueryBuilders.boolQuery();
-            applyFilterToQuery(search.getPostFilter(), query);
+            applyFilterToQuery(search.getPostFilter(), query, Sets.newHashSet());
             request.setPostFilter(query);
         }
 
@@ -331,10 +331,10 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public QueryBuilder getQuery(AssetSearch search) {
-        return getQuery(search, true, false);
+        return getQuery(search, Sets.newHashSet(), true, false);
     }
 
-    private QueryBuilder getQuery(AssetSearch search, boolean perms, boolean postFilter) {
+    private QueryBuilder getQuery(AssetSearch search, Set<Integer> linkedFolders, boolean perms, boolean postFilter) {
 
         QueryBuilder permsQuery = SecurityUtils.getPermissionsFilter();
         if (search == null) {
@@ -359,7 +359,7 @@ public class SearchServiceImpl implements SearchService {
 
         AssetFilter filter = search.getFilter();
         if (filter != null) {
-            applyFilterToQuery(filter, query);
+            applyFilterToQuery(filter, query, linkedFolders);
         }
 
         // Folders apply their post filter, but the main search
@@ -369,14 +369,14 @@ public class SearchServiceImpl implements SearchService {
         if (postFilter) {
             filter = search.getPostFilter();
             if (filter != null) {
-                applyFilterToQuery(filter, query);
+                applyFilterToQuery(filter, query, linkedFolders);
             }
         }
 
         return query;
     }
 
-    private void linkQuery(BoolQueryBuilder query, AssetFilter filter) {
+    private void linkQuery(BoolQueryBuilder query, AssetFilter filter, Set<Integer> linkedFolders) {
 
         BoolQueryBuilder staticBool = QueryBuilders.boolQuery();
 
@@ -393,15 +393,24 @@ public class SearchServiceImpl implements SearchService {
          */
         if (links.containsKey("folder")) {
 
-            List<Integer> folders = links.get("folder")
-                    .stream().map(f->Integer.valueOf(f.toString())).collect(Collectors.toList());
+            Set<Integer> folders = links.get("folder")
+                    .stream()
+                    .map(f->Integer.valueOf(f.toString()))
+                    .filter(f->!linkedFolders.contains(f))
+                    .collect(Collectors.toSet());
 
             boolean recursive = filter.getRecursive() == null ? true : filter.getRecursive();
 
             if (recursive) {
-                Set<String> childFolders = Sets.newHashSetWithExpectedSize(64);
+                Set<Integer> childFolders = Sets.newHashSetWithExpectedSize(64);
+
                 for (Folder folder : folderService.getAllDescendants(
                         folderService.getAll(folders), true, true)) {
+
+                    if (linkedFolders.contains(folder.getId())) {
+                        continue;
+                    }
+                    linkedFolders.add(folder.getId());
 
                     /**
                      * Not going to allow people to add assets manually
@@ -409,14 +418,14 @@ public class SearchServiceImpl implements SearchService {
                      */
                     if (folder.getSearch() != null) {
                         folder.getSearch().setAggs(null);
-                        staticBool.should(getQuery(folder.getSearch(), false, true));
+                        staticBool.should(getQuery(folder.getSearch(), linkedFolders, false, true));
                     }
 
                     /**
                      * We don't allow dyhi folders to have manual entries.
                      */
                     if (folder.getDyhiId() == null && !folder.isDyhiRoot()) {
-                        childFolders.add(String.valueOf(folder.getId()));
+                        childFolders.add(folder.getId());
                         if (childFolders.size() >= 1024) {
                             break;
                         }
@@ -461,10 +470,10 @@ public class SearchServiceImpl implements SearchService {
      * @param query;
      * @return
      */
-    private void applyFilterToQuery(AssetFilter filter, BoolQueryBuilder query) {
+    private void applyFilterToQuery(AssetFilter filter, BoolQueryBuilder query, Set<Integer> linkedFolders) {
 
         if (filter.getLinks() != null) {
-            linkQuery(query, filter);
+            linkQuery(query, filter, linkedFolders);
         }
 
         if (filter.getColors() != null) {
@@ -569,7 +578,7 @@ public class SearchServiceImpl implements SearchService {
         if (filter.getMust() != null) {
             for (AssetFilter f : filter.getMust()) {
                 BoolQueryBuilder must = QueryBuilders.boolQuery();
-                this.applyFilterToQuery(f, must);
+                this.applyFilterToQuery(f, must, linkedFolders);
                 query.must(must);
             }
         }
@@ -577,7 +586,7 @@ public class SearchServiceImpl implements SearchService {
         if (filter.getMustNot() != null) {
             for (AssetFilter f : filter.getMustNot()) {
                 BoolQueryBuilder mustNot = QueryBuilders.boolQuery();
-                this.applyFilterToQuery(f, mustNot);
+                this.applyFilterToQuery(f, mustNot, linkedFolders);
                 query.mustNot(mustNot);
             }
         }
@@ -585,7 +594,7 @@ public class SearchServiceImpl implements SearchService {
         if (filter.getShould() != null) {
             for (AssetFilter f : filter.getShould()) {
                 BoolQueryBuilder should = QueryBuilders.boolQuery();
-                this.applyFilterToQuery(f, should);
+                this.applyFilterToQuery(f, should, linkedFolders);
                 query.should(should);
             }
         }
