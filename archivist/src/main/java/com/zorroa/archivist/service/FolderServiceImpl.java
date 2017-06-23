@@ -536,8 +536,7 @@ public class FolderServiceImpl implements FolderService {
                     continue;
                 }
 
-                toQuery.addAll(children.stream().filter(f->f.getChildCount() > 0)
-                        .collect(Collectors.toList()));
+                toQuery.addAll(children);
                 result.addAll(children);
 
             } catch (Exception e) {

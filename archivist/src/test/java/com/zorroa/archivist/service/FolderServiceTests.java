@@ -124,6 +124,17 @@ public class FolderServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testCountAssetSmartFolder() {
+        FolderSpec builder = new FolderSpec("Folder");
+        Folder folder = folderService.create(builder);
+        folderService.update(folder.getId(), folder.setSearch(new AssetSearch("jpg")));
+        assertEquals(2, searchService.count(folderService.get(folder.getId())));
+
+        folderService.update(folder.getId(), folder.setSearch(new AssetSearch("wdsdsdsdsds")));
+        assertEquals(0, searchService.count(folderService.get(folder.getId())));
+    }
+
+    @Test
     public void testSetAcl() {
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);

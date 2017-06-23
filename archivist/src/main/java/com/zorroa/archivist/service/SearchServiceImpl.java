@@ -135,13 +135,12 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public long count(Folder folder) {
         AssetSearch search = folder.getSearch();
-        if (search != null && search.getFilter() != null) {
-            search.getFilter().addToLinks("folder", String.valueOf(folder.getId()));
+        if (search == null) {
+            search = new AssetSearch();
+            search.addToFilter().addToLinks("folder", folder.getId());
             return count(search);
         }
         else {
-            search = new AssetSearch();
-            search.addToFilter().addToLinks("folder", String.valueOf(folder.getId()));
             return count(search);
         }
     }
