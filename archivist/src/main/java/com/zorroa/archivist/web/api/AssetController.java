@@ -160,7 +160,7 @@ public class AssetController {
                     .setContentType(format.mimeType)
                     .serveResource();
         } catch (Exception e) {
-            logger.warn("MultipartFileSender failed, " + id);
+            logger.warn("MultipartFileSender failed on {}, unexpected {}", id, e.getMessage());
         }
     }
 

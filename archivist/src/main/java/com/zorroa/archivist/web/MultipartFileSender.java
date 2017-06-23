@@ -27,7 +27,7 @@ public class MultipartFileSender {
 
     private static final Logger logger = LoggerFactory.getLogger(MultipartFileSender.class);
 
-    private static final int DEFAULT_BUFFER_SIZE = 20480;
+    private static final int DEFAULT_BUFFER_SIZE = 16384;
     private static final long DEFAULT_EXPIRE_TIME = 604800000L;
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
 
@@ -136,6 +136,7 @@ public class MultipartFileSender {
 
         // Validate and process Range and If-Range headers.
         String range = request.getHeader("Range");
+        logger.info("range: {}  if-range: {}", range, request.getHeader("If-Range"));
         if (range != null) {
 
             // Range header should match format "bytes=n-n,n-n,n-n...". If not, then return 416.
@@ -207,7 +208,6 @@ public class MultipartFileSender {
         response.setBufferSize(DEFAULT_BUFFER_SIZE);
         response.setHeader("Content-Type", contentType);
         response.setHeader("Content-Disposition", disposition + ";filename=\"" + fileName + "\"");
-        logger.debug("Content-Disposition : {}", disposition);
         response.setHeader("Accept-Ranges", "bytes");
         response.setHeader("ETag", fileName);
         response.setDateHeader("Last-Modified", lastModified);
@@ -233,7 +233,7 @@ public class MultipartFileSender {
 
                 // Return single part of file.
                 Range r = ranges.get(0);
-                logger.debug("Return 1 part of file : from ({}) to ({})", r.start, r.end);
+                logger.info("Return 1 part of file : from ({}) to ({})", r.start, r.end);
                 response.setContentType(contentType);
                 response.setHeader("Content-Range", "bytes " + r.start + "-" + r.end + "/" + r.total);
                 response.setHeader("Content-Length", String.valueOf(r.length));
