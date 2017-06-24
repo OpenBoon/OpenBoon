@@ -297,15 +297,16 @@ public class FolderServiceImpl implements FolderService {
                 logService.logAsync(UserLogSpec.build(LogAction.Delete, folder));
             }, false );
 
-            transactionEventManager.afterCommit(() -> {
-                if (folder.isTaxonomyRoot()) {
-                    taxonomyService.untagTaxonomyAsync(tax, 0);
-                }
-                else {
-                    taxonomyService.untagTaxonomyFoldersAsync(tax, children);
-                    taxonomyService.untagTaxonomyFoldersAsync(tax, Lists.newArrayList(folder));
-                }
-            }, true);
+            if (tax != null) {
+                transactionEventManager.afterCommit(() -> {
+                    if (folder.isTaxonomyRoot()) {
+                        taxonomyService.untagTaxonomyAsync(tax, 0);
+                    } else {
+                        taxonomyService.untagTaxonomyFoldersAsync(tax, children);
+                        taxonomyService.untagTaxonomyFoldersAsync(tax, Lists.newArrayList(folder));
+                    }
+                }, true);
+            }
 
             order++;
             int id = trashFolderDao.create(folder, op, true, order);
