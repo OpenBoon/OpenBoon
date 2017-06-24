@@ -7,7 +7,10 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +30,7 @@ public class MultipartFileSender {
 
     private static final Logger logger = LoggerFactory.getLogger(MultipartFileSender.class);
 
-    private static final int DEFAULT_BUFFER_SIZE = 16384;
+    private static final int DEFAULT_BUFFER_SIZE = 1024 * 8;
     private static final long DEFAULT_EXPIRE_TIME = 604800000L;
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
 
@@ -136,7 +139,6 @@ public class MultipartFileSender {
 
         // Validate and process Range and If-Range headers.
         String range = request.getHeader("Range");
-        logger.info("range: {}  if-range: {}", range, request.getHeader("If-Range"));
         if (range != null) {
 
             // Range header should match format "bytes=n-n,n-n,n-n...". If not, then return 416.
@@ -216,9 +218,12 @@ public class MultipartFileSender {
 
         // Send requested file (part(s)) to client ------------------------------------------------
 
+
+        RandomAccessFile inputFile = null;
+
         // Prepare streams.
-        try (InputStream input = new BufferedInputStream(Files.newInputStream(filepath));
-             OutputStream output = response.getOutputStream()) {
+        try (OutputStream output = response.getOutputStream()) {
+            inputFile = new RandomAccessFile(file, "r");
 
             if (ranges.isEmpty() || ranges.get(0) == full) {
 
@@ -227,20 +232,20 @@ public class MultipartFileSender {
                 response.setContentType(contentType);
                 response.setHeader("Content-Range", "bytes " + full.start + "-" + full.end + "/" + full.total);
                 response.setHeader("Content-Length", String.valueOf(full.length));
-                Range.copy(input, output, length, full.start, full.length);
+                Range.copy(inputFile, output, full.start, full.length);
 
             } else if (ranges.size() == 1) {
 
                 // Return single part of file.
                 Range r = ranges.get(0);
-                logger.info("Return 1 part of file : from ({}) to ({})", r.start, r.end);
+                logger.debug("part of file : from ({}) to ({})", r.start, r.end);
                 response.setContentType(contentType);
                 response.setHeader("Content-Range", "bytes " + r.start + "-" + r.end + "/" + r.total);
                 response.setHeader("Content-Length", String.valueOf(r.length));
                 response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); // 206.
 
                 // Copy single part range.
-                Range.copy(input, output, length, r.start, r.length);
+                Range.copy(inputFile, output, r.start, r.length);
 
             } else {
 
@@ -261,7 +266,7 @@ public class MultipartFileSender {
                     sos.println("Content-Range: bytes " + r.start + "-" + r.end + "/" + r.total);
 
                     // Copy single part range of multi part range.
-                    Range.copy(input, output, length, r.start, r.length);
+                    Range.copy(inputFile, output, r.start, r.length);
                 }
 
                 // End with multipart boundary.
@@ -269,7 +274,11 @@ public class MultipartFileSender {
                 sos.println("--" + MULTIPART_BOUNDARY + "--");
             }
         }
-
+        finally {
+            if (inputFile != null) {
+                inputFile.close();
+            }
+        }
     }
 
     private static class Range {
@@ -296,27 +305,27 @@ public class MultipartFileSender {
             return (substring.length() > 0) ? Long.parseLong(substring) : -1;
         }
 
-        private static void copy(InputStream input, OutputStream output, long inputSize, long start, long length) throws IOException {
+        private static void copy(RandomAccessFile input, OutputStream output, long start, long length)
+                throws IOException
+        {
             byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
             int read;
 
-            if (inputSize == length) {
+            if (input.length() == length) {
                 // Write full range.
                 while ((read = input.read(buffer)) > 0) {
                     output.write(buffer, 0, read);
-                    output.flush();
                 }
             } else {
-                input.skip(start);
+                // Write partial range.
+                input.seek(start);
                 long toRead = length;
 
-                while ((read = input.read(buffer)) > 0) {
+                while ((read = input.read(buffer)) != -1) {
                     if ((toRead -= read) > 0) {
                         output.write(buffer, 0, read);
-                        output.flush();
                     } else {
                         output.write(buffer, 0, (int) toRead + read);
-                        output.flush();
                         break;
                     }
                 }
