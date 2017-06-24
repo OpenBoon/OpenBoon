@@ -223,7 +223,7 @@ public class MultipartFileSender {
 
         // Prepare streams.
         try (OutputStream output = response.getOutputStream()) {
-            inputFile = new RandomAccessFile(file, "r");
+            inputFile = new RandomAccessFile(filepath.toFile(), "r");
 
             if (ranges.isEmpty() || ranges.get(0) == full) {
 
