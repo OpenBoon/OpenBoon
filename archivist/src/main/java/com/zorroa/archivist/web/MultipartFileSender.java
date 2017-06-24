@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -218,12 +217,9 @@ public class MultipartFileSender {
 
         // Send requested file (part(s)) to client ------------------------------------------------
 
-
-        RandomAccessFile inputFile = null;
-
         // Prepare streams.
-        try (OutputStream output = response.getOutputStream()) {
-            inputFile = new RandomAccessFile(filepath.toFile(), "r");
+        try (ServletOutputStream output = response.getOutputStream();
+             RandomAccessFile inputFile = new RandomAccessFile(filepath.toFile(), "r")) {
 
             if (ranges.isEmpty() || ranges.get(0) == full) {
 
@@ -253,30 +249,22 @@ public class MultipartFileSender {
                 response.setContentType("multipart/byteranges; boundary=" + MULTIPART_BOUNDARY);
                 response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); // 206.
 
-                // Cast back to ServletOutputStream to get the easy println methods.
-                ServletOutputStream sos = (ServletOutputStream) output;
-
                 // Copy multi part range.
                 for (Range r : ranges) {
                     logger.debug("Return multi part of file : from ({}) to ({})", r.start, r.end);
                     // Add multipart boundary and header fields for every range.
-                    sos.println();
-                    sos.println("--" + MULTIPART_BOUNDARY);
-                    sos.println("Content-Type: " + contentType);
-                    sos.println("Content-Range: bytes " + r.start + "-" + r.end + "/" + r.total);
+                    output.println();
+                    output.println("--" + MULTIPART_BOUNDARY);
+                    output.println("Content-Type: " + contentType);
+                    output.println("Content-Range: bytes " + r.start + "-" + r.end + "/" + r.total);
 
                     // Copy single part range of multi part range.
                     Range.copy(inputFile, output, r.start, r.length);
                 }
 
                 // End with multipart boundary.
-                sos.println();
-                sos.println("--" + MULTIPART_BOUNDARY + "--");
-            }
-        }
-        finally {
-            if (inputFile != null) {
-                inputFile.close();
+                output.println();
+                output.println("--" + MULTIPART_BOUNDARY + "--");
             }
         }
     }
@@ -305,7 +293,7 @@ public class MultipartFileSender {
             return (substring.length() > 0) ? Long.parseLong(substring) : -1;
         }
 
-        private static void copy(RandomAccessFile input, OutputStream output, long start, long length)
+        private static void copy(RandomAccessFile input, ServletOutputStream output, long start, long length)
                 throws IOException
         {
             byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
