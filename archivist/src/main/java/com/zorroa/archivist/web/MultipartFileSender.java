@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -228,7 +230,7 @@ public class MultipartFileSender {
                 response.setContentType(contentType);
                 response.setHeader("Content-Range", "bytes " + full.start + "-" + full.end + "/" + full.total);
                 response.setHeader("Content-Length", String.valueOf(full.length));
-                Range.copy(inputFile, output, full.start, full.length);
+                Range.copy2(inputFile, output, full.start, full.length);
 
             } else if (ranges.size() == 1) {
 
@@ -241,7 +243,7 @@ public class MultipartFileSender {
                 response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); // 206.
 
                 // Copy single part range.
-                Range.copy(inputFile, output, r.start, r.length);
+                Range.copy2(inputFile, output, r.start, r.length);
 
             } else {
 
@@ -259,7 +261,7 @@ public class MultipartFileSender {
                     output.println("Content-Range: bytes " + r.start + "-" + r.end + "/" + r.total);
 
                     // Copy single part range of multi part range.
-                    Range.copy(inputFile, output, r.start, r.length);
+                    Range.copy2(inputFile, output, r.start, r.length);
                 }
 
                 // End with multipart boundary.
@@ -291,6 +293,37 @@ public class MultipartFileSender {
         public static long sublong(String value, int beginIndex, int endIndex) {
             String substring = value.substring(beginIndex, endIndex);
             return (substring.length() > 0) ? Long.parseLong(substring) : -1;
+        }
+
+        private static void copy2(RandomAccessFile input, ServletOutputStream output, long start, long length)
+                throws IOException
+        {
+            FileChannel channel = input.getChannel();
+            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+            ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+
+            int read;
+            if (input.length() == length) {
+                while ((read = channel.read(byteBuffer)) != -1) {
+                    output.write(buffer, 0, read);
+                    byteBuffer.clear();
+                }
+            }
+            else {
+                input.seek(start);
+                long toRead = length;
+
+                while ((read = channel.read(byteBuffer)) != -1) {
+                    if ((toRead -= read) > 0) {
+                        output.write(buffer, 0, read);
+                        byteBuffer.clear();
+                    } else {
+                        output.write(buffer, 0, (int) toRead + read);
+                        byteBuffer.clear();
+                        break;
+                    }
+                }
+            }
         }
 
         private static void copy(RandomAccessFile input, ServletOutputStream output, long start, long length)
