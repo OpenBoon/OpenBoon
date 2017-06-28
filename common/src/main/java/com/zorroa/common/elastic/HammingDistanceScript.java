@@ -96,6 +96,12 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
     public final double charHashesComparison(BytesRef fieldValue) {
         double score = 0;
+        if (fieldValue == null) {
+            return 0;
+        }
+        if (fieldValue.bytes == null) {
+            return 0;
+        }
 
         byte ver = fieldValue.bytes[1];
         for (int i = 0; i < numHashes; ++i) {
