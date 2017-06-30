@@ -35,6 +35,10 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public HammingDistanceScript(Map<String, Object> params) {
         super();
         field = (String) params.get("field");
+        // Nothing should be raw.
+        if (field.endsWith(".raw")) {
+            field = field.replaceAll("\\.raw$", "");
+        }
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
         resolution = 15;
@@ -137,4 +141,5 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public int getResolution() {
         return resolution;
     }
+    public String getField() { return field; }
 }
