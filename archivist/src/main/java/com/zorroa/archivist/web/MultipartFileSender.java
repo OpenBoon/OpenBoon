@@ -325,33 +325,6 @@ public class MultipartFileSender {
                 }
             }
         }
-
-        private static void copy(RandomAccessFile input, ServletOutputStream output, long start, long length)
-                throws IOException
-        {
-            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-            int read;
-
-            if (input.length() == length) {
-                // Write full range.
-                while ((read = input.read(buffer)) > 0) {
-                    output.write(buffer, 0, read);
-                }
-            } else {
-                // Write partial range.
-                input.seek(start);
-                long toRead = length;
-
-                while ((read = input.read(buffer)) != -1) {
-                    if ((toRead -= read) > 0) {
-                        output.write(buffer, 0, read);
-                    } else {
-                        output.write(buffer, 0, (int) toRead + read);
-                        break;
-                    }
-                }
-            }
-        }
     }
     private static class HttpUtils {
 
