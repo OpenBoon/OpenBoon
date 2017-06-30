@@ -116,6 +116,16 @@ public class TaxonomyServiceTests extends AbstractTest {
         Folder folder1 = folderService.create(new FolderSpec("ships"));
         Taxonomy tax1 = taxonomyService.create(new TaxonomySpec(folder1));
         assertTrue(folderService.get(folder1.getId()).isTaxonomyRoot());
+
+        String field ="zorroa.taxonomy.tax" + tax1.getTaxonomyId();
+
+        Source d = new Source();
+        d.setId("abc123");
+        d.setAttr(field,
+                ImmutableMap.of("timestamp", System.currentTimeMillis()));
+        assetService.index(ImmutableList.of(d));
+        refreshIndex();
+
         assertTrue(taxonomyService.delete(tax1, true));
         assertFalse(taxonomyService.delete(tax1, true));
         assertFalse(folderService.get(folder1.getId()).isTaxonomyRoot());

@@ -242,7 +242,8 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                     ImmutableMap.of(
                             "keywords", keywords,
                             "timestamp", updateTime,
-                            "folderId",folder.getId()));
+                            "folderId",folder.getId(),
+                            "taxId", tax.getTaxonomyId()));
 
             int batchCounter = 1;
             try {
@@ -287,6 +288,16 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         }
         else {
             executor.schedule(() ->  untagTaxonomy(tax, timestamp), 5, TimeUnit.SECONDS);
+        }
+    }
+
+    @Override
+    public void untagTaxonomyAsync(Taxonomy tax) {
+        if (ArchivistConfiguration.unittest) {
+            untagTaxonomy(tax);
+        }
+        else {
+            executor.schedule(() ->  untagTaxonomy(tax), 5, TimeUnit.SECONDS);
         }
     }
 
@@ -391,6 +402,44 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             logger.info("Untagged: {} success:{} errors: {}", tax,
                     cbl.getSuccessCount(), cbl.getErrorCount());
         }
+    }
+
+    @Override
+    public Map<String, Long> untagTaxonomy(Taxonomy tax) {
+        logger.info("Untagging entire taxonomy {}", tax);
+        CountingBulkListener cbl = new CountingBulkListener();
+        BulkProcessor bulkProcessor = BulkProcessor.builder(
+                client, cbl)
+                .setBulkActions(BULK_SIZE)
+                .setFlushInterval(TimeValue.timeValueSeconds(10))
+                .setConcurrentRequests(0)
+                .build();
+
+        String name = String.format("tax%d", tax.getTaxonomyId());
+        String field = String.format("zorroa.taxonomy.%s.taxId", name, tax.getTaxonomyId());
+
+        AssetSearch search = new AssetSearch();
+        search.setFilter(new AssetFilter()
+                .setMustNot(ImmutableList.of(new AssetFilter().addToTerms(field, tax.getTaxonomyId()))));
+
+        SearchResponse rsp = client.prepareSearch("archivist")
+                .setScroll(new TimeValue(60000))
+                .setFetchSource(false)
+                .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
+                .setQuery(searchService.getQuery(search))
+                .setSize(PAGE_SIZE).execute().actionGet();
+
+        Script script = new Script("ctx._source.zorroa.taxonomy.remove(name)",
+                ScriptService.ScriptType.INLINE, "groovy", ImmutableMap.of("name", name));
+
+        processBulk(bulkProcessor, rsp, script);
+
+        logger.info("Untagged: {} success:{} errors: {}", tax,
+                cbl.getSuccessCount(), cbl.getErrorCount());
+
+        return ImmutableMap.of(
+                "assetCount", cbl.getSuccessCount(),
+                "errorCount", cbl.getErrorCount());
     }
 
     @Override

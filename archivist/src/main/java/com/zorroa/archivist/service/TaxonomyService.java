@@ -30,6 +30,8 @@ public interface TaxonomyService {
 
     void untagTaxonomyAsync(Taxonomy tax, long updatedTime);
 
+    void untagTaxonomyAsync(Taxonomy tax);
+
     void untagTaxonomyFoldersAsync(Taxonomy tax, List<Folder> folders);
 
     void untagTaxonomyFoldersAsync(Taxonomy tax, Folder folder, List<String> assets);
@@ -37,6 +39,8 @@ public interface TaxonomyService {
     void untagTaxonomyFolders(Taxonomy tax, Folder folder, List<String> assets);
 
     void untagTaxonomyFolders(Taxonomy tax, List<Folder> folders);
+
+    Map<String, Long> untagTaxonomy(Taxonomy tax);
 
     Map<String, Long> untagTaxonomy(Taxonomy tax, long updatedTime);
 }
