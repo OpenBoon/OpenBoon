@@ -29,6 +29,7 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
      */
     private static final Map<String, Class<?>> WHITELIST = Maps.newHashMap();
     static {
+        WHITELIST.put("archivist\\.search\\.keywords\\.suggest\\.fields", String.class);
         WHITELIST.put("archivist\\.search\\.keywords\\.field\\..+", Double.class);
         WHITELIST.put("archivist\\.search\\.keywords\\.auto\\.enabled", Boolean.class);
         WHITELIST.put("archivist\\.search\\.keywords\\.auto\\.fieldNames", String.class);

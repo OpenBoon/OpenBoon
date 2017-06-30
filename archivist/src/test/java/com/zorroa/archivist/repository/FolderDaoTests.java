@@ -113,8 +113,11 @@ public class FolderDaoTests extends AbstractTest {
         Folder folder = folderDao.create(builder);
 
         Taxonomy tax = taxonomyDao.create(new TaxonomySpec(folder));
-        assertTrue(folderDao.setTaxonomyRoot(folder, tax));
-        assertFalse(folderDao.setTaxonomyRoot(folder, tax));
+        assertTrue(folderDao.setTaxonomyRoot(folder, true));
+        assertFalse(folderDao.setTaxonomyRoot(folder, true));
+
+        assertTrue(folderDao.setTaxonomyRoot(folder, false));
+        assertFalse(folderDao.setTaxonomyRoot(folder, false));
     }
 
     @Test

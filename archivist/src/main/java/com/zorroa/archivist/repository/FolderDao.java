@@ -45,7 +45,7 @@ public interface FolderDao {
 
     boolean hasAccess(Folder folder, Access access);
 
-    boolean setTaxonomyRoot(Folder folder, Taxonomy tax);
+    boolean setTaxonomyRoot(Folder folder, boolean value);
 
     boolean setDyHierarchyRoot(Folder folder, String field);
 

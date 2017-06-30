@@ -329,8 +329,9 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     }
 
     @Override
-    public boolean setTaxonomyRoot(Folder folder, Taxonomy tax) {
-        return jdbc.update("UPDATE folder SET bool_tax_root=1 WHERE pk_folder=? AND bool_tax_root=0", folder.getId()) == 1;
+    public boolean setTaxonomyRoot(Folder folder, boolean value) {
+        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_folder=? AND bool_tax_root=?",
+                value, folder.getId(), !value) == 1;
     }
 
     @Override

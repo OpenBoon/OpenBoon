@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -84,6 +85,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     @Override
     public boolean delete(Taxonomy tax, boolean untag) {
         if (taxonomyDao.delete(tax.getTaxonomyId())) {
+            Folder folder = folderDao.get(tax.getFolderId());
+            folderDao.setTaxonomyRoot(folder, false);
+            folderService.invalidate(folder);
             if (untag) {
                 untagTaxonomyAsync(tax, 0);
             }
@@ -112,7 +116,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             throw new ArchivistWriteException("This folder cannot hold a taxonomy.");
         }
 
-        boolean result = folderDao.setTaxonomyRoot(folder, tax);
+        boolean result = folderDao.setTaxonomyRoot(folder, true);
         if (result) {
             folderService.invalidate(folder);
             folder.setTaxonomyRoot(true);
@@ -166,6 +170,8 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     @Override
     public Map<String, Long> tagTaxonomy(Taxonomy tax, Folder start, boolean force) {
+
+        logger.info("Tagging taxonomy: {}", tax);
 
         if (start == null) {
             start = folderService.get(tax.getFolderId());
@@ -223,13 +229,13 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                         new AssetFilter().addToExists(rootField)));
             }
 
+            Stopwatch timer = Stopwatch.createStarted();
             SearchResponse rsp = client.prepareSearch("archivist")
                     .setScroll(new TimeValue(60000))
                     .setFetchSource(false)
-                    .addSort(SortParseElement.DOC_FIELD_NAME, SortOrder.ASC)
                     .setQuery(searchService.getQuery(search))
                     .setSize(PAGE_SIZE).execute().actionGet();
-
+            logger.info("tagging taxonomy {} batch 1 : {}", tax, timer);
 
             Document doc = new Document();
             doc.setAttr(rootField,
@@ -238,6 +244,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                             "timestamp", updateTime,
                             "folderId",folder.getId()));
 
+            int batchCounter = 1;
             try {
                 do {
                     for (SearchHit hit : rsp.getHits().getHits()) {
@@ -246,6 +253,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                     }
                     rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
                             new TimeValue(60000)).execute().actionGet();
+                    batchCounter++;
+                    logger.info("tagging {} batch {} : {}", tax, batchCounter, timer);
+
 
                 } while (rsp.getHits().getHits().length != 0);
             } catch (Exception e) {

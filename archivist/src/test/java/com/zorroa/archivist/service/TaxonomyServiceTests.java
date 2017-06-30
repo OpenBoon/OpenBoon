@@ -115,8 +115,10 @@ public class TaxonomyServiceTests extends AbstractTest {
     public void testDeleteTaxonomy() {
         Folder folder1 = folderService.create(new FolderSpec("ships"));
         Taxonomy tax1 = taxonomyService.create(new TaxonomySpec(folder1));
+        assertTrue(folderService.get(folder1.getId()).isTaxonomyRoot());
         assertTrue(taxonomyService.delete(tax1, true));
         assertFalse(taxonomyService.delete(tax1, true));
+        assertFalse(folderService.get(folder1.getId()).isTaxonomyRoot());
     }
 
     @Test
