@@ -560,8 +560,9 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (filter.getHamming() != null) {
+
             Map<String, Object> args = Maps.newHashMap();
-            args.put("field", filter.getHamming().getField());
+            args.put("field", getHammingField(filter.getHamming().getField()));
             args.put("hashes", filter.getHamming().getHashes());
             args.put("minScore", filter.getHamming().getMinScore());
             if (filter.getHamming().getWeights() != null) args.put("weights", filter.getHamming().getWeights());
@@ -687,6 +688,14 @@ public class SearchServiceImpl implements SearchService {
                 getList(result, String.join("", fieldName, key, "."), item, autoKeywordFieldNames);
             }
         }
+    }
+
+    private String getHammingField(String field) {
+        Set<String> hashFields = getFields().get("hash");
+        if (field != null && hashFields.contains(field)) {
+            return field;
+        }
+        return properties.getString("archivist.search.similarity.fieldName");
     }
 
     /**
