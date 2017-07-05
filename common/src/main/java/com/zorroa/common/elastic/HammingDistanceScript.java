@@ -1,5 +1,6 @@
 package com.zorroa.common.elastic;
 
+import com.google.common.collect.Lists;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.script.AbstractDoubleSearchScript;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 12/6/16.
@@ -22,78 +22,105 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
     private String field;
     private String fieldDotRaw;
-    private List<String> charHashes;
-    private List<Float> weights;
+    private final List<String> charHashes;
+    private final List<Float> weights;
     private int length = 0;
-    private int numHashes = 0;
-    private int resolution = 0;
     private int minScore = 0;
-    private boolean header = false;
-    private char version = 0;
-    private int dataPos = 0;
+    private int resolution;
+    private final boolean header;
+    private final char version;
+    private final int dataPos;
+    private final int numHashes;
     private final double possibleScore;
     private final double singleScore;
 
     public HammingDistanceScript(Map<String, Object> params) {
         super();
         field = (String) params.get("field");
-        // Nothing should be raw.
         if (field.endsWith(".raw")) {
             field = field.replaceAll("\\.raw$", "");
         }
         fieldDotRaw = field + ".raw";
-        weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
         resolution = 15;
 
-        charHashes = (List<String>) params.get("hashes");
+        List<String> _hashes = (List<String>) params.get("hashes");
+        List<Float> _weights = (List<Float>) params.get("weights");
 
-        if (charHashes != null) {
-            // filter out null entries, then check for emptiness
-            charHashes = charHashes.stream().filter(s->s!= null).collect(Collectors.toList());
-            numHashes = charHashes.size();
-
-            if (!charHashes.isEmpty()) {
-                String hash = charHashes.get(0);
-                header = hash.charAt(0) == '#';
-                length = hash.length();
-
-                /**
-                 * TODO: more sophisticated header parsing.
-                 *
-                 * There are 2 fields every has leads with:
-                 * 1 char: version
-                 * 2 chars: position of data (called "headerSize" here)
-                 *
-                 * A version 0 hash has 1 field, resolution.
-                 */
-                if (header) {
-                    version = hash.charAt(1);
-
-                    // The start position of the data.
-                    dataPos = Integer.parseInt(hash.substring(2, 4), 16);
-
-                    if (version <= 0) {
-                        // Resolution is the next byte.
-                        resolution = Integer.parseInt(hash.substring(4, 6), 16);
-                    }
-                }
-            }
+        if (_hashes == null) {
+            throw new IllegalArgumentException(
+                    "Hashes/Weights cannot be null");
         }
 
-        if (weights == null) {
-            weights = Collections.nCopies(numHashes, 1.0f);
+        if (_weights == null) {
+            _weights = Collections.nCopies(_hashes.size(), 1.0f);
         }
 
-        // Need 1 weight per hash.
-        if (weights.size() != numHashes) {
+        if (_hashes.size() != _weights.size()) {
             throw new IllegalArgumentException(
                     "HammingDistanceScript weights must align with hashes");
         }
 
-        // To get the proper score, we subtract header size from the length here.
-        singleScore = resolution * (length - dataPos);
-        possibleScore = singleScore * numHashes;
+        /**
+         * Go through all the values and remove
+         * the null values.
+         */
+        charHashes = Lists.newArrayList();
+        weights = Lists.newArrayList();
+        for (int i=0; i<_hashes.size(); i++) {
+            String hash = _hashes.get(i);
+            if (hash == null || hash.isEmpty()) {
+                continue;
+            }
+            charHashes.add(hash);
+            weights.add(_weights.get(i));
+        }
+
+        /**
+         * If there are no valid hashes left, initialize to defaults
+         */
+        if (charHashes.isEmpty()) {
+            singleScore = possibleScore = numHashes = dataPos = version = 0;
+            header = false;
+            return;
+        }
+        else {
+            /**
+             * Use the first hash to determine if there is a header.
+             */
+            String hash = charHashes.get(0);
+            header = hash.charAt(0) == '#';
+            length = hash.length();
+            numHashes = charHashes.size();
+
+            /**
+             * TODO: more sophisticated header parsing.
+             *
+             * There are 2 fields every has leads with:
+             * 1 char: version
+             * 2 chars: position of data (called "headerSize" here)
+             *
+             * A version 0 hash has 1 field, resolution.
+             */
+            if (header) {
+                version = hash.charAt(1);
+
+                // The start position of the data.
+                dataPos = Integer.parseInt(hash.substring(2, 4), 16);
+
+                if (version <= 0) {
+                    // Resolution is the next byte.
+                    resolution = Integer.parseInt(hash.substring(4, 6), 16);
+                }
+            } else {
+                version = 0;
+                dataPos = 0;
+            }
+
+            // To get the proper score, we subtract header size from the length here.
+            singleScore = resolution * (length - dataPos);
+            possibleScore = singleScore * numHashes;
+        }
     }
 
     /**
@@ -126,7 +153,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
             return NO_SCORE;
         }
 
-        if (fieldValue.length == 0) {
+        if (fieldValue == null || fieldValue.length == 0) {
             return NO_SCORE;
         }
 
