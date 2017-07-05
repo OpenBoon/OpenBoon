@@ -49,7 +49,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
         if (_hashes == null) {
             throw new IllegalArgumentException(
-                    "Hashes/Weights cannot be null");
+                    "Hashes cannot be null");
         }
 
         if (_weights == null) {
@@ -62,8 +62,9 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         }
 
         /**
-         * Go through all the values and remove
-         * the null values.
+         * Go through all the values and remove the null
+         * values and populate the charHashes and
+         * weights fields with valid values.
          */
         charHashes = Lists.newArrayList();
         weights = Lists.newArrayList();
