@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.search.AssetSearch;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -23,6 +24,12 @@ public class FolderSpec {
     private Acl acl;
 
     private Map<String, Object> attrs;
+
+    /**
+     * Only used locally, don't accept over the wire.
+     */
+    @JsonIgnore
+    private Integer userId;
 
     /**
      * A smart folder search recurses into all child folders.
@@ -114,6 +121,15 @@ public class FolderSpec {
 
     public FolderSpec setAttrs(Map<String, Object> attrs) {
         this.attrs = attrs;
+        return this;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public FolderSpec setUserId(Integer userId) {
+        this.userId = userId;
         return this;
     }
 

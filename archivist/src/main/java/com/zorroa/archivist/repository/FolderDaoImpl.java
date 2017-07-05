@@ -185,7 +185,11 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public Folder create(FolderSpec spec) {
         long time = System.currentTimeMillis();
-        int user = SecurityUtils.getUser().getId();
+
+        if (spec.getUserId() == null) {
+            int user = SecurityUtils.getUser().getId();
+            spec.setUserId(user);
+        }
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(connection -> {
@@ -193,10 +197,10 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     connection.prepareStatement(INSERT, new String[]{"pk_folder"});
             ps.setInt(1, spec.getParentId() == null ?  Folder.ROOT_ID : spec.getParentId());
             ps.setString(2, spec.getName());
-            ps.setInt(3, user);
+            ps.setInt(3, spec.getUserId());
             ps.setLong(4, time);
             ps.setBoolean(5, spec.isRecursive());
-            ps.setInt(6, user);
+            ps.setInt(6, spec.getUserId());
             ps.setLong(7, time);
             ps.setString(8, Json.serializeToString(spec.getSearch(), null));
             ps.setObject(9, spec.getDyhiId());

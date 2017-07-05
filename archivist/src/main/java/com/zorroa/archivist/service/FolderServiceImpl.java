@@ -11,6 +11,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.TrashFolderDao;
+import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.sdk.client.exception.ArchivistException;
@@ -51,6 +52,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     AssetDao assetDao;
+
+    @Autowired
+    UserDao userDao;
 
     @Autowired
     TransactionEventManager transactionEventManager;
@@ -614,10 +618,13 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public Folder createUserFolder(String username, Permission perm) {
+        User adminUser = userDao.get("admin");
+
         Folder rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true);
         Folder folder = folderDao.create(new FolderSpec()
                 .setName(username)
-                .setParentId(rootFolder.getId()));
+                .setParentId(rootFolder.getId())
+                .setUserId(adminUser.getId()));
         folderDao.setAcl(folder.getId(), new Acl().addEntry(perm, Access.Read, Access.Write));
         return folder;
     }
