@@ -1,6 +1,5 @@
 package com.zorroa.common.elastic;
 
-import com.amazonaws.util.CollectionUtils;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.script.AbstractDoubleSearchScript;
 import org.slf4j.Logger;
@@ -9,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by chambers on 12/6/16.
@@ -44,30 +44,36 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         resolution = 15;
 
         charHashes = (List<String>) params.get("hashes");
-        if (!CollectionUtils.isNullOrEmpty(charHashes)) {
-            String hash = charHashes.get(0);
-            header = hash.charAt(0) == '#';
+
+        if (charHashes != null) {
+            // filter out null entries, then check for emptiness
+            charHashes = charHashes.stream().filter(s->s!= null).collect(Collectors.toList());
             numHashes = charHashes.size();
-            length = hash.length();
 
-            /**
-             * TODO: more sophisticated header parsing.
-             *
-             * There are 2 fields every has leads with:
-             * 1 char: version
-             * 2 chars: position of data (called "headerSize" here)
-             *
-             * A version 0 hash has 1 field, resolution.
-             */
-            if (header) {
-                version = hash.charAt(1);
+            if (!charHashes.isEmpty()) {
+                String hash = charHashes.get(0);
+                header = hash.charAt(0) == '#';
+                length = hash.length();
 
-                // The start position of the data.
-                dataPos = Integer.parseInt(hash.substring(2, 4), 16);
+                /**
+                 * TODO: more sophisticated header parsing.
+                 *
+                 * There are 2 fields every has leads with:
+                 * 1 char: version
+                 * 2 chars: position of data (called "headerSize" here)
+                 *
+                 * A version 0 hash has 1 field, resolution.
+                 */
+                if (header) {
+                    version = hash.charAt(1);
 
-                if (version <= 0) {
-                    // Resolution is the next byte.
-                    resolution = Integer.parseInt(hash.substring(4, 6), 16);
+                    // The start position of the data.
+                    dataPos = Integer.parseInt(hash.substring(2, 4), 16);
+
+                    if (version <= 0) {
+                        // Resolution is the next byte.
+                        resolution = Integer.parseInt(hash.substring(4, 6), 16);
+                    }
                 }
             }
         }
@@ -89,27 +95,36 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
 
     @Override
     public double runAsDouble() {
-        if (possibleScore == 0) {
-            return 0;
-        }
-
         double score = charHashesComparison(
                     docFieldStrings(field).getBytesValue());
         return score >= minScore ? score : 0;
     }
 
+    /**
+     * Returned if it is impossible to calculate a score.
+     */
+    private static final double NO_SCORE = 0;
+
     public final double charHashesComparison(BytesRef fieldValue) {
         double score = 0;
+
+        if (possibleScore == 0) {
+            return NO_SCORE;
+        }
+
         if (fieldValue == null) {
-            return 0;
+            return NO_SCORE;
         }
         if (fieldValue.bytes == null) {
-            return 0;
+            return NO_SCORE;
         }
 
         byte ver = fieldValue.bytes[1];
         for (int i = 0; i < numHashes; ++i) {
             String hash = charHashes.get(i);
+            if (hash == null) {
+                continue;
+            }
             if (header) {
                 if (ver != hash.charAt(1)) {
                     continue;
@@ -142,4 +157,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         return resolution;
     }
     public String getField() { return field; }
+    public int getNumHashes() {
+        return numHashes;
+    }
 }

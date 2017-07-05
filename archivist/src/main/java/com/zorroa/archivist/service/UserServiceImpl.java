@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
 
         Permission userPerm = permissionDao.create(
                 new PermissionSpec("user", builder.getUsername()), true);
+
         Folder userFolder = folderService.createUserFolder(
                 builder.getUsername(), userPerm);
 

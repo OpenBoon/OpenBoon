@@ -1,6 +1,7 @@
 package com.zorroa.common.elastic;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.common.AbstractTest;
 import org.apache.lucene.index.SortedNumericDocValues;
@@ -25,6 +26,27 @@ public class HammingDistanceScriptTests extends AbstractTest {
         HammingDistanceScript script = new HammingDistanceScript(map);
         double score = script.charHashesComparison(new BytesRef("AAAA".getBytes()));
         assertEquals(100, score, 0);
+    }
+
+    @Test
+    public void testCharHammingNullValues() {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("field", "charHash");
+        map.put("hashes", Lists.newArrayList("AAAA", null, "BBBB"));
+
+        HammingDistanceScript script = new HammingDistanceScript(map);
+        assertEquals(2, script.getNumHashes());
+    }
+
+    @Test
+    public void testCharHammingWithAllNullValues() {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("field", "charHash");
+        map.put("hashes", Lists.newArrayList(null, null, null));
+
+        HammingDistanceScript script = new HammingDistanceScript(map);
+        double score = script.charHashesComparison(new BytesRef("AAAA".getBytes()));
+        assertEquals(0, score, 0);
     }
 
     @Test
