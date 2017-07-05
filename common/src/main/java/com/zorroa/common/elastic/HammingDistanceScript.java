@@ -1,6 +1,7 @@
 package com.zorroa.common.elastic;
 
 import org.apache.lucene.util.BytesRef;
+import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.script.AbstractDoubleSearchScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     private static final double NORM = 100.0;
 
     private String field;
+    private String fieldDotRaw;
     private List<String> charHashes;
     private List<Float> weights;
     private int length = 0;
@@ -39,6 +41,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         if (field.endsWith(".raw")) {
             field = field.replaceAll("\\.raw$", "");
         }
+        fieldDotRaw = field + ".raw";
         weights = (List<Float>) params.get("weights");
         minScore = (int) params.getOrDefault("minScore", 1);
         resolution = 15;
@@ -93,29 +96,37 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         possibleScore = singleScore * numHashes;
     }
 
-    @Override
-    public double runAsDouble() {
-        double score = charHashesComparison(
-                    docFieldStrings(field).getBytesValue());
-        return score >= minScore ? score : 0;
-    }
-
     /**
-     * Returned if it is impossible to calculate a score.
+     * Returned if it is impossible to calculate a score
      */
     private static final double NO_SCORE = 0;
 
+
+    @Override
+    public double runAsDouble() {
+        ScriptDocValues.Strings strings;
+
+        if (doc().containsKey(fieldDotRaw)) {
+            strings = docFieldStrings(fieldDotRaw);
+        }
+        else if (doc().containsKey(field)) {
+            strings = docFieldStrings(field);
+        }
+        else {
+            return NO_SCORE;
+        }
+
+        double score = charHashesComparison(strings.getBytesValue());
+        return score >= minScore ? score : 0;
+    }
+
     public final double charHashesComparison(BytesRef fieldValue) {
         double score = 0;
-
         if (possibleScore == 0) {
             return NO_SCORE;
         }
 
-        if (fieldValue == null) {
-            return NO_SCORE;
-        }
-        if (fieldValue.bytes == null) {
+        if (fieldValue.length == 0) {
             return NO_SCORE;
         }
 

@@ -593,6 +593,47 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testHammingDistanceFilterWithEmptyValue() throws IOException, InterruptedException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+        source1.setAttr("test.hash1.jimbo", "");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+
+        assetService.index(ImmutableList.of(source2, source1));
+        refreshIndex();
+
+        AssetSearch search;
+
+        search = new AssetSearch(
+                new AssetFilter().setHamming(
+                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.jimbo", 100)));
+        assertEquals(0, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testHammingDistanceFilterWithWrongMapping() throws IOException, InterruptedException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+        source1.setAttr("test.hash1.jimbo", "AFAFAFAF");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+        source2.setAttr("test.hash1.jimbo", "ADADADAD");
+
+        assetService.index(ImmutableList.of(source2, source1));
+        refreshIndex();
+
+        AssetSearch search;
+
+        search = new AssetSearch(
+                new AssetFilter().setHamming(
+                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.jimbo", 100)));
+        assertEquals(1, searchService.search(search).getHits().getTotalHits());
+    }
+
+    @Test
     public void testHammingDistanceFilter() throws IOException, InterruptedException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
