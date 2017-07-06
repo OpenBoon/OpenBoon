@@ -16,11 +16,11 @@ public class TriggerUpdateFolderChildCount extends TriggerAdapter {
     @Override
     public void fire(Connection conn, ResultSet oldRow, ResultSet newRow) throws SQLException {
 
-        if(newRow.getObject("pk_parent") == null) {
+        if (newRow.getObject("pk_parent") == null) {
             return;
         }
 
-        if(oldRow.getObject("pk_parent") == null) {
+        if (oldRow.getObject("pk_parent") == null) {
             return;
         }
 
