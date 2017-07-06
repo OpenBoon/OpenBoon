@@ -63,6 +63,12 @@ public class FolderDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testGetRootFolder() throws IOException {
+        Folder folder2 = folderDao.get(Folder.ROOT_ID);
+        assertNull(folder2.getParentId());
+    }
+
+    @Test
     public void testGetAll() throws IOException {
         Folder folder1 = folderDao.create(new FolderSpec("test1"));
         Folder folder2 = folderDao.create(new FolderSpec("test2"));

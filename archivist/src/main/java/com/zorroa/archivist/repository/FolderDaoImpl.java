@@ -269,6 +269,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public boolean update(int id, Folder folder) {
         Preconditions.checkNotNull(folder.getParentId(), "Parent folder cannot be null");
+        Preconditions.checkArgument(folder.getId() >0 , "Cannot modify root folder");
 
         /**
          * Skip updating the search if its a dyhi so the exists statement
@@ -334,18 +335,18 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public boolean setTaxonomyRoot(Folder folder, boolean value) {
-        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_folder=? AND bool_tax_root=?",
+        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_folder=? AND bool_tax_root=? AND pk_folder!=0",
                 value, folder.getId(), !value) == 1;
     }
 
     @Override
     public boolean setDyHierarchyRoot(Folder folder,  String field) {
-        return jdbc.update("UPDATE folder SET bool_recursive=0, bool_dyhi_root=1, str_dyhi_field=? WHERE pk_folder=?", field, folder.getId()) == 1;
+        return jdbc.update("UPDATE folder SET bool_recursive=0, bool_dyhi_root=1, str_dyhi_field=? WHERE pk_folder=? AND pk_folder!=0", field, folder.getId()) == 1;
     }
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder) {
-        return jdbc.update("UPDATE folder SET bool_recursive=1, bool_dyhi_root=0,str_dyhi_field=null WHERE pk_folder=?", folder.getId()) == 1;
+        return jdbc.update("UPDATE folder SET bool_recursive=1, bool_dyhi_root=0,str_dyhi_field=null WHERE pk_folder=? AND pk_folder!=0", folder.getId()) == 1;
     }
 
     @Override
