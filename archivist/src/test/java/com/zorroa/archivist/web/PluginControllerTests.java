@@ -3,12 +3,10 @@ package com.zorroa.archivist.web;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.FileInputStream;
 
@@ -19,10 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by chambers on 7/1/16.
  */
 public class PluginControllerTests  extends MockMvcTest {
-
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
     @Test
     public void testPluginUpload() throws Exception {
