@@ -1,20 +1,42 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.Maps;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Splitter;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.Setting;
+import com.zorroa.archivist.domain.SettingsFilter;
 import com.zorroa.archivist.repository.SettingsDao;
+import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
+import com.zorroa.sdk.client.exception.MissingElementException;
+import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
- * Created by chambers on 5/30/17.
+ * Provides a clear picture of all settings on the server.
  */
 @Service
 public class SettingsServiceImpl implements SettingsService, ApplicationListener<ContextRefreshedEvent> {
@@ -22,19 +44,32 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
     private static final Logger logger = LoggerFactory.getLogger(SettingsServiceImpl.class);
 
     @Autowired
+    ApplicationProperties properties;
+
+    @Autowired
     SettingsDao settingsDao;
+
+    // a memoizer would be nicer but no good ones that allow manual invalidation
+    private final LoadingCache<Integer, List<Setting>> settingsCache = CacheBuilder.newBuilder()
+            .maximumSize(2)
+            .initialCapacity(2)
+            .concurrencyLevel(1)
+            .expireAfterWrite(1, TimeUnit.DAYS)
+            .build(new CacheLoader<Integer, List<Setting>>() {
+                public List<Setting> load(Integer key) throws Exception {
+                    return settingsProvider();
+                }
+            });
 
     /**
      * A whitelist of property names that can be set via the API.
      */
-    private static final Map<String, Class<?>> WHITELIST = Maps.newHashMap();
-    static {
-        WHITELIST.put("archivist\\.search\\.keywords\\.suggest\\.fields", String.class);
-        WHITELIST.put("archivist\\.search\\.keywords\\.field\\..+", Double.class);
-        WHITELIST.put("archivist\\.search\\.keywords\\.auto\\.enabled", Boolean.class);
-        WHITELIST.put("archivist\\.search\\.keywords\\.auto\\.fieldNames", String.class);
-        WHITELIST.put("archivist\\.search\\.queryAnalyzer", String.class);
-    }
+    private static final Map<String, TypeReference> WHITELIST =
+            ImmutableMap.<String, TypeReference>builder()
+        .put("archivist.search.keywords.static.fields", new TypeReference<Map<String,Float>>() {})
+        .put("archivist.search.keywords.auto.fields", new TypeReference<String>() {})
+        .put("archivist.search.keywords.auto.enabled", new TypeReference<Boolean>() {})
+        .build();
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -48,37 +83,147 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
     }
 
     @Override
-    public void setAll(Map<String, Object> values) {
-        for (Map.Entry<String, Object> entry: values.entrySet()) {
-            if (!isValid(entry.getKey(), entry.getValue())) {
-                throw new ArchivistWriteException("Invalid setting: '" +
-                        entry.getKey() + ", either type or setting is not allowed.");
+    public int setAll(Map<String, String> values) {
+        int result = 0;
+        for (Map.Entry<String, String> entry: values.entrySet()) {
+            if (set(entry.getKey(), entry.getValue(), false)) {
+                result++;
             }
+        }
+        settingsCache.invalidateAll();
+        return result;
+    }
 
-            if (entry.getValue() == null) {
-                settingsDao.unset(entry.getKey());
-                System.clearProperty(entry.getKey());
-            }
-            else {
-                String value = String.valueOf(entry.getValue());
-                settingsDao.set(entry.getKey(), value);
-                System.setProperty(entry.getKey(), value);
-            }
+    @Override
+    public List<Setting> getAll(SettingsFilter filter) {
+        try {
+            return settingsCache.get(0).stream()
+                    .filter(s->filter.matches(s))
+                    .limit(filter.getCount())
+                    .collect(Collectors.toList());
+        } catch (ExecutionException e) {
+            throw new ArchivistReadException(e);
         }
     }
 
     @Override
-    public Map<String, String> getAll() {
-        return settingsDao.getAll();
+    public List<Setting> getAll() {
+        return getAll(new SettingsFilter());
     }
 
     @Override
-    public boolean isValid(String key, Object value) {
-        for (Map.Entry<String, Class<?>> pattern: WHITELIST.entrySet()) {
-            if (Pattern.matches(pattern.getKey(), key) && pattern.getValue().isInstance(value)) {
-                return true;
+    public Setting get(String key) {
+        SettingsFilter filter = new SettingsFilter();
+        filter.setCount(1);
+        filter.setNames(ImmutableSet.of(key));
+        try {
+            return getAll(filter).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            throw new MissingElementException("Setting not found: " + key, e);
+        }
+    }
+
+    @Override
+    public void checkValid(String key, String value) {
+        for (Map.Entry<String, TypeReference> pattern: WHITELIST.entrySet()) {
+            if (pattern.getKey().equals(key)) {
+                try {
+                    Json.deserialize(value, pattern.getValue());
+                    return;
+                } catch (Exception e ){
+                    throw new ArchivistWriteException(
+                            "Invalid value for " + key + ", invalid type.");
+                }
             }
         }
-        return false;
+        throw new ArchivistWriteException(
+                "Failed to set value for key " + key + ", invalid key.");
+    }
+
+    @Override
+    public boolean set(String key, String value) {
+        return set(key, value, true);
+    }
+
+    public boolean set(String key, String value, boolean invalidate) {
+        checkValid(key, value);
+
+        boolean result;
+        if (value == null) {
+            result = settingsDao.unset(key);
+            System.clearProperty(key);
+        }
+        else {
+            result = settingsDao.set(key, value);
+            System.setProperty(key, value);
+        }
+        if (invalidate) {
+            settingsCache.invalidateAll();
+        }
+        return result;
+    }
+
+    private boolean isLive(String key) {
+        return WHITELIST.keySet().contains(key);
+    }
+
+    public List<Setting> settingsProvider() {
+
+        Resource resource = new ClassPathResource("/application.properties");
+        List<Setting> result = Lists.newArrayListWithExpectedSize(64);
+
+        String description = null;
+        String category = null;
+        String property;
+        String value;
+        String line;
+
+        try (
+                InputStreamReader isr = new InputStreamReader(resource.getInputStream(), Charset.forName("UTF-8"));
+                BufferedReader br = new BufferedReader(isr)
+        ) {
+            while ((line = br.readLine()) != null) {
+
+                if (line.isEmpty()) {
+                    continue;
+                } else if (line.startsWith("###")) {
+                    if (description != null) {
+                        description = description.concat(line.substring(3));
+                    } else {
+                        description = line.substring(3);
+                    }
+                    description = description.trim();
+                } else if (line.startsWith("##")) {
+                    category = line.substring(2).trim();
+
+                } else if (!line.startsWith("#") && line.contains("=")) {
+                    List<String> e = Splitter.on('=').trimResults().omitEmptyStrings().splitToList(line);
+                    property = e.get(0);
+                    if (property.contains("password") || property.contains("secret")) {
+                        value = "<HIDDEN>";
+                    } else {
+                        try {
+                            value = e.get(1);
+                        } catch (IndexOutOfBoundsException ex) {
+                            value = null;
+                        }
+                    }
+
+                    Setting s = new Setting();
+                    s.setName(property);
+                    s.setDefaultValue(value);
+                    s.setCurrentValue(properties.getString(property));
+                    s.setLive(isLive(property));
+                    s.setCategory(category);
+                    s.setDescription(description);
+                    result.add(s);
+
+                    description = null;
+                }
+            }
+        } catch (IOException e) {
+            logger.warn("Failed to read default properties file,", e);
+        }
+        return result;
     }
 }

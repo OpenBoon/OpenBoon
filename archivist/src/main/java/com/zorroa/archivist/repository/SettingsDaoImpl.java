@@ -27,8 +27,8 @@ public class SettingsDaoImpl extends AbstractDao implements SettingsDao {
 
 
     @Override
-    public void set(String key, Object value) {
-        jdbc.update(MERGE, key, String.valueOf(value));
+    public boolean set(String key, Object value) {
+        return jdbc.update(MERGE, key, String.valueOf(value)) == 1;
     }
 
     @Override

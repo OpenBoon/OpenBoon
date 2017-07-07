@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public interface SettingsDao {
 
-    void set(String key, Object value);
+    boolean set(String key, Object value);
 
     boolean unset(String key);
 
