@@ -96,6 +96,22 @@ public class SecurityUtils {
         return hasPermission(perms);
     }
 
+    /**
+     * Return true if the current user can export an asset.
+     *
+     * @param field
+     * @param asset
+     * @return
+     */
+    public static boolean canExport(Asset asset) {
+        if (hasPermission("group::export")) {
+            return true;
+        }
+
+        Set<Integer> perms = asset.getAttr("permissions.export", Json.SET_OF_INTS);
+        return hasPermission(perms);
+    }
+
     public static boolean hasPermission(String ... perms) {
         ImmutableSet<String> _perms = ImmutableSet.copyOf(perms);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -149,9 +149,8 @@ public class AssetController {
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
     public void streamAsset(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Asset asset = assetService.get(id);
-        StreamFile format = getPreferredFormat(asset,
-                !SecurityUtils.hasPermission("export", asset));
-        logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.getId()));
+        boolean canExport = SecurityUtils.canExport(asset);
+        StreamFile format = getPreferredFormat(asset, !canExport);
 
         try {
             MultipartFileSender.fromPath(Paths.get(format.path))
@@ -159,6 +158,9 @@ public class AssetController {
                     .with(response)
                     .setContentType(format.mimeType)
                     .serveResource();
+            if (canExport) {
+                logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.getId()));
+            }
         } catch (Exception e) {
             logger.warn("MultipartFileSender failed on {}, unexpected {}", id, e.getMessage());
         }
