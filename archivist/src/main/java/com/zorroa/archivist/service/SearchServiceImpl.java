@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Splitter;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -18,6 +19,7 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.*;
+import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
@@ -625,7 +627,7 @@ public class SearchServiceImpl implements SearchService {
             Set<String> autoKeywordFieldNames = null;
             if (autoKeywords) {
                 autoKeywordFieldNames = ImmutableSet.copyOf(
-                        properties.getList("archivist.search.keywords.auto.fieldNames"));
+                        properties.getList("archivist.search.keywords.auto.fields"));
             }
 
             Map<String, Object> fields = properties.getMap(PROP_PREFIX_KEYWORD_FIELD);
@@ -690,26 +692,26 @@ public class SearchServiceImpl implements SearchService {
         }
     }
 
-    private static final Set<String> EMPTY_SET = ImmutableSet.of();
-
     /**
      * The properties prefix used to define keywords fields.
      */
-    private static final String PROP_PREFIX_KEYWORD_FIELD = "archivist.search.keywords.field.";
+    private static final String PROP_PREFIX_KEYWORD_FIELD = "archivist.search.keywords.static.fields";
 
     @Override
     public Map<String, Float> getQueryFields() {
 
         Set<String> autoFields = getFields().get("keywords-auto");
-        Map<String, Object> fields = properties.getMap(PROP_PREFIX_KEYWORD_FIELD);
+        String staticFieldsJson = properties.getString(PROP_PREFIX_KEYWORD_FIELD);
 
-        ImmutableMap.Builder<String, Float> builder = ImmutableMap.builder();
-        if (fields != null) {
-            fields.forEach((k, v) -> builder.put(
-                    k.replace(PROP_PREFIX_KEYWORD_FIELD, ""),
-                    Float.valueOf(v.toString())));
+        ImmutableMap.Builder < String, Float > builder = ImmutableMap.builder();
+        if (JdbcUtils.isValid(staticFieldsJson)) {
+            try {
+                builder.putAll(Json.deserialize(staticFieldsJson,
+                        new TypeReference<Map<String, Float>>() {}));
+            } catch (Exception e) {
+                logger.warn("Failed to parse static field setting: {}", staticFieldsJson);
+            }
         }
-
         autoFields.forEach(v->builder.put(v, 1.0f));
         return builder.build();
     }
