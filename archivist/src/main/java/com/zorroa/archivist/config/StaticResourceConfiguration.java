@@ -39,6 +39,8 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
     public ServletRegistrationBean h2servletRegistration() {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
         registrationBean.addUrlMappings("/console/*");
+        registrationBean.addInitParameter("webAllowOthers",
+            properties.getString("archivist.datasource.primary.console.open", "false"));
         return registrationBean;
     }
 
