@@ -414,6 +414,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void sendSharedLinkEmail(User fromUser, User toUser, SharedLink link) {
+
+        String toName = toUser.getFirstName() == null ? toUser.getUsername() : toUser.getFirstName();
+        String fromName = fromUser.getFirstName() == null ? fromUser.getUsername() : fromUser.getFirstName();
+        String url = networkEnv.getPublicUri().toString() + "/search?id=" + link.getId();
+
+        StringBuilder text = new StringBuilder(1024);
+        text.append("Hello ");
+        text.append(toName);
+        text.append(",\n\n");
+        text.append(fromName);
+        text.append(" has sent you a link.");
+        text.append("\n\n" + url);
+
+        String htmlMsg = null;
+        try {
+            htmlMsg = getTextResourceFile("emails/SharedLink.html");
+            htmlMsg = htmlMsg.replace("*|URL|*", url);
+            htmlMsg = htmlMsg.replace("*|TO_USER|*", toName);
+            htmlMsg = htmlMsg.replace("*|FROM_USER|*", fromName);
+        } catch (IOException e) {
+            logger.warn("Failed to open HTML template for sharing links.. Sending text only.", e);
+        }
+        try {
+            sendHTMLEmail(toUser, fromName + " has shared a link with you.", text.toString(), htmlMsg);
+        } catch (MessagingException e) {
+            logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e);
+        }
+    }
+
+    @Override
     public PasswordResetToken sendPasswordResetEmail(User user) {
         PasswordResetToken token = new PasswordResetToken(userDao.setEnablePasswordRecovery(user));
 

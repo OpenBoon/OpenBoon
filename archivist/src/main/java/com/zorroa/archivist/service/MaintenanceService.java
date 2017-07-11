@@ -54,4 +54,6 @@ public interface MaintenanceService {
     int removeExpiredJobData(long olderThan);
 
     int removeExpiredAnalysts();
+
+    int removeExpiredSharedLinks();
 }

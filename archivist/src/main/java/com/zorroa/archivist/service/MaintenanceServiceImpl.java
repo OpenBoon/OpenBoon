@@ -13,6 +13,7 @@ import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.repository.MaintenanceDao;
+import com.zorroa.archivist.repository.SharedLinkDao;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.Analyst;
 import org.apache.commons.io.FileUtils;
@@ -56,6 +57,9 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
 
     @Autowired
     AnalystDao analystDao;
+
+    @Autowired
+    SharedLinkDao sharedLinkDao;
 
     @Autowired
     Client client;
@@ -325,6 +329,15 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
     }
 
     @Override
+    public int removeExpiredSharedLinks() {
+        int result = sharedLinkDao.deleteExpired(System.currentTimeMillis());
+        if (result > 0) {
+            logger.info("deleted {} shared link records", result);
+        }
+        return result;
+    }
+
+    @Override
     protected void runOneIteration() throws Exception {
 
         if (!properties.getBoolean("archivist.maintenance.backups.enabled")) {
@@ -358,6 +371,12 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
          * Remove expired analysts
          */
         removeExpiredAnalysts();
+
+        /**
+         * Remove expired shared links.
+         */
+        removeExpiredSharedLinks();
+
     }
 
     @Override

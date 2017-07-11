@@ -85,6 +85,8 @@ public interface UserService {
     UserPreset createUserPreset(UserPresetSpec preset);
     boolean deleteUserPreset(UserPreset preset);
 
+    void sendSharedLinkEmail(User fromUser, User toUser, SharedLink link);
+
     PasswordResetToken sendPasswordResetEmail(User user);
 
     PasswordResetToken sendOnboardEmail(User user);
