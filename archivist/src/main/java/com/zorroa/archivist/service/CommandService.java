@@ -16,6 +16,12 @@ public interface CommandService {
 
     Command refresh(Command cmd);
 
+    boolean setRunningCommand(Command cmd);
+
+    boolean cancelRunningCommand(Command cmd);
+
+    boolean cancel(Command cmd);
+
     Command run(Command cmd);
 
     List<Command> getPendingByUser();

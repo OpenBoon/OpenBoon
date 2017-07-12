@@ -18,5 +18,7 @@ public interface CommandDao extends GenericDao<Command, CommandSpec> {
 
     boolean stop(Command cmd, String msg);
 
+    boolean cancel(Command cmd, String msg);
+
     boolean updateProgress(Command cmd, long total, long incrementSuccess, long incrementError);
 }

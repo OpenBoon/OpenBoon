@@ -2,12 +2,10 @@ package com.zorroa.archivist.service;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.config.ArchivistConfiguration;
-import com.zorroa.archivist.domain.Acl;
-import com.zorroa.archivist.domain.Command;
-import com.zorroa.archivist.domain.CommandSpec;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.CommandDao;
 import com.zorroa.archivist.security.InternalAuthentication;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.search.AssetSearch;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A dedicated system for running internal tasks which should be run in serial.
@@ -38,6 +37,8 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
 
     @Autowired
     UserService userService;
+
+    AtomicReference<Command> runningCommand = new AtomicReference<>();
 
     @PostConstruct
     public void init() {
@@ -82,21 +83,54 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
     public Command refresh(Command cmd) { return commandDao.get(cmd.getId());}
 
     @Override
+    public boolean setRunningCommand(Command cmd) {
+        if (runningCommand.get() == null) {
+            runningCommand.set(cmd);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean cancelRunningCommand(Command cmd) {
+        Command currentCommand = runningCommand.get();
+        if (currentCommand != null && currentCommand.getId() == cmd.getId()) {
+            if (!currentCommand.getState().equals(JobState.Cancelled)) {
+                currentCommand.setState(JobState.Cancelled);
+                logger.info("{} canceled running {}", SecurityUtils.getUsername(), currentCommand);
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean cancel(Command cmd) {
+        if (commandDao.cancel(cmd, "Command canceled by " + SecurityUtils.getUsername())) {
+            cancelRunningCommand(cmd);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Command run(Command cmd) {
         String failureMessage = null;
         boolean started = false;
+
         try {
 
             /**
              * Switch thread to user who made the request.
              */
             User user = userService.get(cmd.getUser().getId());
-
             SecurityContextHolder.getContext().setAuthentication(new InternalAuthentication(user,
                     userService.getPermissions(user)));
 
             started = commandDao.start(cmd);
             if (started) {
+                setRunningCommand(cmd);
                 switch (cmd.getType()) {
                     case UpdateAssetPermissions:
                         Acl acl = Json.Mapper.convertValue(cmd.getArgs().get(1), Acl.class);
@@ -108,6 +142,9 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
                             assetService.setPermissions(cmd, search, acl);
                         }
                         break;
+                    case Sleep:
+                        logger.info("Sleeping...");
+                        Thread.sleep(Json.Mapper.convertValue(cmd.getArgs().get(0), Long.class));
                     default:
                         logger.warn("Unknown command type: {}", cmd.getType());
                 }
@@ -119,6 +156,7 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
         } finally {
             SecurityContextHolder.clearContext();
             if (started) {
+                runningCommand.set(null);
                 commandDao.stop(cmd, failureMessage);
             }
         }

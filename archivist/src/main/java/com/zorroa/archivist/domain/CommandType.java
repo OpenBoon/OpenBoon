@@ -7,7 +7,8 @@ import com.zorroa.sdk.search.AssetSearch;
  */
 public enum CommandType {
 
-    UpdateAssetPermissions(AssetSearch.class, Acl.class);
+    UpdateAssetPermissions(AssetSearch.class, Acl.class),
+    Sleep(Long.class);
 
     Class[] argTypes;
 

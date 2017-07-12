@@ -148,6 +148,12 @@ public class CommandDaoImpl extends AbstractDao implements CommandDao {
                 System.currentTimeMillis(), JobState.Finished.ordinal(), msg, cmd.getId(), JobState.Active.ordinal()) > 0;
     }
 
+    @Override
+    public boolean cancel(Command cmd, String msg) {
+        return jdbc.update("UPDATE command SET time_stopped=?, int_state=?, str_message=? WHERE pk_command=?",
+                System.currentTimeMillis(), JobState.Cancelled.ordinal(), msg, cmd.getId()) > 0;
+    }
+
     private static final String UPDATE_PROGRESS =
             "UPDATE " +
                 "command " +

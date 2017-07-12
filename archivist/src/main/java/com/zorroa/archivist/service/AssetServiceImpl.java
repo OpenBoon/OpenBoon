@@ -2,10 +2,10 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.CommandDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
@@ -18,7 +18,6 @@ import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.unit.TimeValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -239,6 +239,7 @@ public class AssetServiceImpl implements AssetService {
 
         LongAdder totalSuccess = new LongAdder();
         LongAdder totalFailed = new LongAdder();
+        AtomicBoolean error = new AtomicBoolean(false);
 
         BulkProcessor bulkProcessor = BulkProcessor.builder(
                 client,
@@ -273,15 +274,26 @@ public class AssetServiceImpl implements AssetService {
                     public void afterBulk(long executionId,
                                           BulkRequest request,
                                           Throwable thrown) {
+                        error.set(true);
+                        logger.warn("Failed to set permissions, ", thrown);
                     }
                 })
-                .setBulkActions(100)
-                .setFlushInterval(TimeValue.timeValueSeconds(10))
+                .setBulkActions(1000)
                 .setConcurrentRequests(0)
                 .build();
 
         for (Asset asset: searchService.scanAndScroll(
                 search.setFields(new String[] {"permissions"}), 0)) {
+
+            if (command.getState().equals(JobState.Cancelled)) {
+                logger.warn("setPermissions was canceled");
+                break;
+            }
+
+            if (error.get()) {
+                logger.warn("Encountered error while setting permissions, exiting");
+                break;
+            }
 
             UpdateRequestBuilder update = client.prepareUpdate("archivist", "asset", asset.getId());
             PermissionSchema current = asset.getAttr("permissions", PermissionSchema.class);

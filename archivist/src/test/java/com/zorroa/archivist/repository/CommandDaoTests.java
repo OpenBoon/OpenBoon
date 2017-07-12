@@ -76,6 +76,13 @@ public class CommandDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testCancel() {
+        assertTrue(commandDao.start(command));
+        assertTrue(commandDao.cancel(command, "Canceled"));
+        assertNull(commandDao.getNext());
+    }
+
+    @Test
     public void testGetPendingByUser() {
         List<Command> all = commandDao.getPendingByUser();
         assertEquals(1, all.size());
