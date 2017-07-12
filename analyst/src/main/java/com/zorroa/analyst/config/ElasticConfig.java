@@ -28,7 +28,11 @@ public class ElasticConfig {
 
     @Bean
     public Client elastic() throws IOException {
-        if (!properties.getBoolean("analyst.index.data")) {
+        /**
+         * If we're not master or data, the no need to even start elastic.
+         */
+        if (!properties.getBoolean("analyst.index.data") &&
+                !properties.getBoolean("analyst.index.master")) {
             return null;
         }
 
@@ -45,7 +49,8 @@ public class ElasticConfig {
                         .put("path.data", properties.getString("analyst.path.index"))
                         .put("path.home", properties.getString("analyst.path.home"))
                         .put("node.name", nodeName)
-                        .put("node.master", false)
+                        .put("node.master", properties.getBoolean("analyst.index.master"))
+                        .put("node.data", properties.getBoolean("analyst.index.data"))
                         .put("cluster.routing.allocation.disk.threshold_enabled", false)
                         .put("http.enabled", "false")
                         .put("network.host", "0.0.0.0")
@@ -54,7 +59,6 @@ public class ElasticConfig {
                         .put("discovery.zen.fd.ping_retries", 10)
                         .put("discovery.zen.ping.multicast.enabled", false)
                         .putArray("discovery.zen.ping.unicast.hosts", elasticMaster)
-                        .put("node.data", properties.getBoolean("analyst.index.data"))
                         .put("action.auto_create_index", "-archivist*");
 
         if (Application.isUnitTest()) {
