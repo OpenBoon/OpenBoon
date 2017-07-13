@@ -23,9 +23,10 @@ import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -41,7 +42,7 @@ import java.util.concurrent.atomic.LongAdder;
  *
  */
 @Component
-public class AssetServiceImpl implements AssetService {
+public class AssetServiceImpl implements AssetService, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
 
@@ -72,30 +73,11 @@ public class AssetServiceImpl implements AssetService {
     @Autowired
     Client client;
 
-    PermissionSchema defaultPerms;
+    PermissionSchema defaultPerms = new PermissionSchema();
 
-    @PostConstruct
-    public void init() {
-        defaultPerms = new PermissionSchema();
-
-        List<String> defaultReadPerms =
-                properties.getList("archivist.security.permissions.defaultRead");
-        List<String> defaultWritePerms =
-                properties.getList("archivist.security.permissions.defaultWrite");
-        List<String> defaultExportPerms =
-                properties.getList("archivist.security.permissions.defaultExport");
-
-        for(Permission p: permissionDao.getAll(defaultReadPerms)) {
-            defaultPerms.addToRead(p.getId());
-        }
-
-        for(Permission p: permissionDao.getAll(defaultWritePerms)) {
-            defaultPerms.addToWrite(p.getId());
-        }
-
-        for(Permission p: permissionDao.getAll(defaultExportPerms)) {
-            defaultPerms.addToExport(p.getId());
-        }
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        setDefaultPermissions();
     }
 
     @Override
@@ -422,4 +404,26 @@ public class AssetServiceImpl implements AssetService {
     public Map<String, Object> getMapping() {
         return assetDao.getMapping();
     }
+
+    private void setDefaultPermissions() {
+        List<String> defaultReadPerms =
+                properties.getList("archivist.security.permissions.defaultRead");
+        List<String> defaultWritePerms =
+                properties.getList("archivist.security.permissions.defaultWrite");
+        List<String> defaultExportPerms =
+                properties.getList("archivist.security.permissions.defaultExport");
+
+        for(Permission p: permissionDao.getAll(defaultReadPerms)) {
+            defaultPerms.addToRead(p.getId());
+        }
+
+        for(Permission p: permissionDao.getAll(defaultWritePerms)) {
+            defaultPerms.addToWrite(p.getId());
+        }
+
+        for(Permission p: permissionDao.getAll(defaultExportPerms)) {
+            defaultPerms.addToExport(p.getId());
+        }
+    }
+
 }
