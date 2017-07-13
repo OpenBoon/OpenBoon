@@ -338,7 +338,6 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         public void backoff() {
             client.close();
             backoffTill = System.currentTimeMillis() + (60 * 1000);
-            logger.info("Backing off of {} till {}", client.getHost(), backoffTill);
         }
     }
 
