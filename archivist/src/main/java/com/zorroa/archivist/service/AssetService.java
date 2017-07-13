@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Command;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.nio.file.Path;
@@ -24,18 +23,8 @@ public interface AssetService {
      */
     PagedList<Asset> getAll(Pager page);
 
-    Asset index(Source source, LinkSpec link);
-    Asset index(Source source);
-    /**
-     * Index the given list of sources, optionally attaching the given
-     * source link to created assets.
-     *
-     * @param sources
-     * @param link
-     * @return
-     */
-    DocumentIndexResult index(List<Source> sources, LinkSpec link);
-    DocumentIndexResult index(List<Source> sources);
+    AssetIndexResult index(AssetIndexSpec spec);
+    Asset index(Document doc);
 
     void removeFields(String id, Set<String> fields);
 

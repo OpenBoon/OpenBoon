@@ -2,7 +2,6 @@ package com.zorroa.archivist.repository;
 
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Plugin;
-import com.zorroa.archivist.service.PluginService;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.plugins.PluginSpec;
 import org.apache.commons.codec.digest.Md5Crypt;
@@ -25,9 +24,6 @@ public class PluginDaoTests extends AbstractTest {
 
     @Autowired
     PluginDao pluginDao;
-
-    @Autowired
-    PluginService pluginService;
 
     Plugin plugin;
     PluginSpec spec;

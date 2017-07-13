@@ -9,13 +9,8 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
-import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.Color;
-import com.zorroa.sdk.domain.PagedList;
-import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
-import com.zorroa.sdk.schema.LinkSchema;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.search.*;
@@ -46,9 +41,9 @@ public class SearchServiceTests extends AbstractTest {
         authenticate("user");
         Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-
-        SecurityUtils.setReadPermissions(source, Lists.newArrayList(perm));
+        source.addToPermissions("group:test", 1);
         assetService.index(source);
+
         refreshIndex();
 
         AssetSearch search = new AssetSearch().setQuery("beer");
@@ -62,12 +57,9 @@ public class SearchServiceTests extends AbstractTest {
         Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
-        /*
-         * Add a permission from the current user to the asset.
-         */
-        SecurityUtils.setReadPermissions(source, Lists.newArrayList(userService.getPermissions(SecurityUtils.getUser()).get(0)));
+        source.addToPermissions("group::everyone", 1);
         assetService.index(source);
-        refreshIndex(100);
+        refreshIndex();
 
         AssetSearch search = new AssetSearch().setQuery("captain");
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
@@ -324,13 +316,11 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testSearchResponseFields() throws IOException {
 
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.addKeywords("source", "zoolander");
-        LinkSchema links = Source.getAttr("links");
-        links.addLink("folder", 123);
-        links.addLink("folder", 456);
-        Source.setAttr("links", links);
-        assetService.index(Source);
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addKeywords("source", "zoolander");
+        source.addToLinks("folder", 123);
+        source.addToLinks("folder", 456);
+        assetService.index(source);
         refreshIndex();
 
         SearchResponse response = searchService.search(new AssetSearch("zoolander"));
@@ -601,7 +591,7 @@ public class SearchServiceTests extends AbstractTest {
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
 
-        assetService.index(ImmutableList.of(source2, source1));
+        assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search;
@@ -622,7 +612,7 @@ public class SearchServiceTests extends AbstractTest {
         source2.setAttr("superhero", "loki");
         source2.setAttr("test.hash1.jimbo", "ADADADAD");
 
-        assetService.index(ImmutableList.of(source2, source1));
+        assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search;
@@ -643,7 +633,7 @@ public class SearchServiceTests extends AbstractTest {
         source2.setAttr("superhero", "loki");
         source2.setAttr("test.hash1.byte", "ADADADAD");
 
-        assetService.index(ImmutableList.of(source2, source1));
+        assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search;
@@ -678,7 +668,7 @@ public class SearchServiceTests extends AbstractTest {
         source2.setAttr("test.hash1.byte", "adadadad");
         source1.addKeywords("foo", "bing");
 
-        assetService.index(ImmutableList.of(source1, source2));
+        assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search = new AssetSearch("bar");

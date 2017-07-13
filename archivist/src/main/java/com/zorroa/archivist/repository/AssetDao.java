@@ -1,7 +1,6 @@
 package com.zorroa.archivist.repository;
 
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Source;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 
 import java.io.IOException;
@@ -48,6 +47,8 @@ public interface AssetDao {
      */
     PagedList<Asset> getAll(Pager page);
 
+    Map<String, Object> getProtectedFields(String id);
+
     boolean exists(Path path);
 
     boolean exists(String id);
@@ -60,21 +61,14 @@ public interface AssetDao {
 
     long update(String assetId, Map<String, Object> attrs);
 
-    /**
-     * Index the given source.  If an asset is created, attach a source link.
-     * @param source
-     * @param sourceLink
-     * @return
-     */
-    Asset index(Source source, LinkSpec sourceLink);
+    Asset index(Document source);
 
     /**
      * Index the given sources.  If any assets are created, attach a source link.
      * @param sources
-     * @param sourceLink
      * @return
      */
-    DocumentIndexResult index(List<Source> sources, LinkSpec sourceLink);
+    AssetIndexResult index(List<Document> sources);
 
     Map<String, Object> getMapping();
 }

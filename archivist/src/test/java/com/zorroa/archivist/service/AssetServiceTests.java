@@ -1,10 +1,12 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.search.AssetSearch;
 import org.junit.Before;
@@ -36,6 +38,88 @@ public class AssetServiceTests extends AbstractTest {
             assertEquals(a.getId(),
                     assetService.get(Paths.get(a.getAttr("source.path", String.class))).getId());
         }
+    }
+
+    @Test
+    public void testIndexWithLink() throws InterruptedException {
+        Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
+        builder.addToLinks("foo", 1);
+
+        Asset asset1 = assetService.index(builder);
+        assertEquals(ImmutableList.of(1),
+                asset1.getAttr("links.foo"));
+    }
+
+    @Test
+    public void testIndexWithPermission() throws InterruptedException {
+        Permission p = userService.getPermission("group::everyone");
+
+        Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
+        builder.addToPermissions("group::everyone", 7);
+
+        Asset asset1 = assetService.index(builder);
+        assertEquals(ImmutableList.of(p.getId()),
+                asset1.getAttr("permissions.read"));
+
+        assertEquals(ImmutableList.of(p.getId()),
+                asset1.getAttr("permissions.write"));
+
+        assertEquals(ImmutableList.of(p.getId()),
+                asset1.getAttr("permissions.export"));
+    }
+
+    @Test
+    public void testIndexWithReadOnlyPermission() throws InterruptedException {
+        Permission p = userService.getPermission("group::everyone");
+
+        Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
+        builder.addToPermissions("group::everyone", 1);
+
+        Asset asset1 = assetService.index(builder);
+        assertEquals(ImmutableList.of(p.getId()),
+                asset1.getAttr("permissions.read"));
+
+        assertNotEquals(ImmutableList.of(p.getId()),
+                asset1.getAttr("permissions.write"));
+
+        assertNotEquals(ImmutableList.of(p.getId()),
+                asset1.getAttr("permissions.export"));
+    }
+
+    @Test
+    public void testIndexRemovePermissions() throws InterruptedException {
+        Permission p = userService.getPermission("group::everyone");
+
+        Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
+        builder.addToPermissions("group::everyone", 7);
+        Asset asset1 = assetService.index(builder);
+        refreshIndex();
+
+        Source builder2 = new Source(getTestImagePath("set01/toucan.jpg"));
+        builder.addToPermissions("group::everyone", 1);
+        Asset asset2 = assetService.index(builder);
+
+        // Should only end up with read.
+        assertEquals(ImmutableList.of(p.getId()),
+                asset2.getAttr("permissions.read"));
+
+        assertNotEquals(ImmutableList.of(p.getId()),
+                asset2.getAttr("permissions.write"));
+
+        assertNotEquals(ImmutableList.of(p.getId()),
+                asset2.getAttr("permissions.export"));
+
+        Asset asset3 = assetService.get(asset2.getId());
+
+        // Should only end up with read.
+        assertEquals(ImmutableList.of(p.getId()),
+                asset3.getAttr("permissions.read"));
+
+        assertNotEquals(ImmutableList.of(p.getId()),
+                asset3.getAttr("permissions.write"));
+
+        assertNotEquals(ImmutableList.of(p.getId()),
+                asset3.getAttr("permissions.export"));
     }
 
     @Test

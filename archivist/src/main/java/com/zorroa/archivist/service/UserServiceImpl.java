@@ -1,6 +1,9 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.base.Charsets;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.io.CharStreams;
@@ -12,6 +15,7 @@ import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.sdk.client.exception.DuplicateElementException;
+import com.zorroa.sdk.client.exception.MissingElementException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
@@ -32,6 +36,8 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -296,13 +302,28 @@ public class UserServiceImpl implements UserService {
         return permissionDao.getAll().stream().map(p->p.getFullName()).collect(Collectors.toList());
     }
 
+    private final LoadingCache<String, Permission> permissionCache = CacheBuilder.newBuilder()
+            .maximumSize(100)
+            .initialCapacity(100)
+            .concurrencyLevel(4)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build(new CacheLoader<String, Permission>() {
+                public Permission load(String key) throws Exception {
+                    if (key.contains(Permission.JOIN)) {
+                        return permissionDao.get(key);
+                    }
+                    else {
+                        return permissionDao.get(Integer.valueOf(key));
+                    }
+                }
+            });
+
     @Override
     public Permission getPermission(String id) {
-        if (id.contains(Permission.JOIN)) {
-            return permissionDao.get(id);
-        }
-        else {
-            return permissionDao.get(Integer.valueOf(id));
+        try {
+            return permissionCache.get(id);
+        } catch (ExecutionException e) {
+            throw new MissingElementException("The permission " + id + " does not exist");
         }
     }
 
@@ -353,6 +374,7 @@ public class UserServiceImpl implements UserService {
         });
     }
 
+    // CACHE
     @Override
     public Permission getPermission(int id) {
         return permissionDao.get(id);

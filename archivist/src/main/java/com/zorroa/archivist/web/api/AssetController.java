@@ -12,7 +12,6 @@ import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
-import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
@@ -323,14 +322,9 @@ public class AssetController {
         return HttpUtils.updated("asset", id, true, ImmutableMap.of());
     }
 
-    public static class IndexAssetRequest {
-        public List<Source> sources;
-        public LinkSpec link;
-    }
-
     @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-    public DocumentIndexResult index(@RequestBody IndexAssetRequest req) throws IOException {
-        return assetService.index(req.sources, req.link);
+    public AssetIndexResult index(@RequestBody AssetIndexSpec spec) throws IOException {
+        return assetService.index(spec);
     }
 
     public static class SetPermissionsRequest {

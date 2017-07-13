@@ -9,6 +9,7 @@ import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +58,11 @@ public class FilterServiceTests extends AbstractTest {
     }
 
     @Test
+    @Ignore
     public void testPermissionSchemaApplied() {
+
+        // deprecated feature.
+
         // Reindex after the filter is created.
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Asset asset = assetService.index(source);

@@ -46,5 +46,7 @@ public interface PermissionDao {
 
     List<Permission> getAll(Integer[] ids);
 
+    List<Permission> getAll(List<String> names);
+
     boolean delete(Permission perm);
 }

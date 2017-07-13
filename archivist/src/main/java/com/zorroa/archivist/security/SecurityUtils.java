@@ -189,18 +189,6 @@ public class SecurityUtils {
         source.setAttr("permissions", ps);
     }
 
-    public static void setReadPermissions(Source source, Collection<Permission> perms) {
-        PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
-        if (ps == null) {
-            ps = new PermissionSchema();
-        }
-        ps.getRead().clear();
-        for (Permission p : perms) {
-            ps.getRead().add(p.getId());
-        }
-        source.setAttr("permissions", ps);
-    }
-
     public static void setExportPermissions(Source source, Collection<Permission> perms) {
         PermissionSchema ps = source.getAttr("permissions", PermissionSchema.class);
         if (ps == null) {

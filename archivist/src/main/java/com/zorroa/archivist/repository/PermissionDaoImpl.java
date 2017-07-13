@@ -23,7 +23,8 @@ import java.util.List;
 public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     private static final String INSERT =
-            JdbcUtils.insert("permission", "str_name", "str_type", "str_description", "bool_immutable");
+            JdbcUtils.insert("permission",
+                    "str_name", "str_type", "str_description", "bool_immutable", "str_authority");
 
     @Override
     public Permission create(PermissionSpec builder, boolean immutable) {
@@ -38,6 +39,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
                 ps.setString(3, builder.getDescription() == null
                         ? String.format("%s permission", builder.getName()) : builder.getDescription());
                 ps.setBoolean(4, immutable);
+                ps.setString(5, builder.getType() + "::" + builder.getName());
                 return ps;
             }, keyHolder);
         } catch (DuplicateKeyException e) {
@@ -50,8 +52,9 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public Permission update(Permission permission) {
-        jdbc.update("UPDATE permission SET str_type=?, str_name=?,str_description=? WHERE pk_permission=? AND bool_immutable=?",
-                permission.getType(), permission.getName(), permission.getDescription(), permission.getId(), false);
+        String authority = String.join(Permission.JOIN, permission.getType(), permission.getName());
+        jdbc.update("UPDATE permission SET str_type=?, str_name=?,str_description=?,str_authority=? WHERE pk_permission=? AND bool_immutable=?",
+                permission.getType(), permission.getName(), permission.getDescription(), authority, permission.getId(), false);
         return get(permission.getId());
     }
 
@@ -172,6 +175,16 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
         }
         return jdbc.query("SELECT * FROM permission WHERE "
                 + JdbcUtils.in("pk_permission", ids.length), MAPPER, ids);
+    }
+
+    @Override
+    public List<Permission> getAll(List<String> names) {
+        if (names == null || names.isEmpty()) {
+            return Lists.newArrayListWithCapacity(1);
+        }
+
+        return jdbc.query("SELECT * FROM permission WHERE "
+                + JdbcUtils.in("str_authority", names.size()), MAPPER, names.toArray());
     }
 
     @Override

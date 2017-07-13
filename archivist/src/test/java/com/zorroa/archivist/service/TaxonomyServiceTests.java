@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Folder;
@@ -39,7 +38,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(ImmutableList.of(d));
+        assetService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder4, Lists.newArrayList(d.getId()));
@@ -97,9 +96,14 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        d.setAttr(field,
-                ImmutableMap.of("timestamp", 0));
-        assetService.index(ImmutableList.of(d));
+        assetService.index(d);
+        refreshIndex();
+        /**
+         * We can't index an asset with zorroa namespace, but for now we can update
+         * it to make these test work.  In the future we might need to override cleaning
+         * the asset so its easier to set values fo testing.
+         */
+        assetService.update("abc123", ImmutableMap.of(field +".timestamp", 0));
         refreshIndex();
 
         Map<String, Long> result = taxonomyService.untagTaxonomy(tax1, System.currentTimeMillis());
@@ -123,7 +127,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         d.setId("abc123");
         d.setAttr(field,
                 ImmutableMap.of("timestamp", System.currentTimeMillis()));
-        assetService.index(ImmutableList.of(d));
+        assetService.index(d);
         refreshIndex();
 
         assertTrue(taxonomyService.delete(tax1, true));
@@ -139,7 +143,7 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         Source d = new Source();
         d.setId("abc123");
-        assetService.index(ImmutableList.of(d));
+        assetService.index(d);
         refreshIndex();
 
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));

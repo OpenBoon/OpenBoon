@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -7,7 +8,6 @@ import com.zorroa.common.elastic.AbstractElasticDao;
 import com.zorroa.common.elastic.JsonRowMapper;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -63,18 +63,18 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     @Override
-    public Asset index(Source source, LinkSpec sourceLink) {
-        UpdateRequestBuilder upsert = prepareUpsert(source);
-        return new Asset(upsert.get().getId(), source.getDocument());
+    public Asset index(Document source) {
+        AssetIndexResult result =  index(ImmutableList.of(source));
+        return get(source.getId());
     }
 
     @Override
-    public DocumentIndexResult index(List<Source> sources, LinkSpec sourceLink) {
-        DocumentIndexResult result = new DocumentIndexResult();
+    public AssetIndexResult index(List<Document> sources) {
+        AssetIndexResult result = new AssetIndexResult();
         if (sources.isEmpty()) {
             return result;
         }
-        List<Source> retries = Lists.newArrayList();
+        List<Document> retries = Lists.newArrayList();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
 
         /**
@@ -85,35 +85,34 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             bulkRequest.setRefresh(true);
         }
 
-        for (Source source : sources) {
+        for (Document source : sources) {
             bulkRequest.add(prepareUpsert(source));
         }
 
         BulkResponse bulk = bulkRequest.get();
-        List<String> created = Lists.newArrayList();
 
         int index = 0;
         for (BulkItemResponse response : bulk) {
             if (response.isFailed()) {
                 String message = response.getFailure().getMessage();
-                Source asset = sources.get(index);
+                Document asset = sources.get(index);
                 if (removeBrokenField(asset, message)) {
                     result.warnings++;
                     retries.add(sources.get(index));
                 } else {
                     logger.warn("Failed to index {}, {}", response.getId(), message);
                     result.logs.add(new StringBuilder(1024).append(
-                            message).append(",").append(asset.getPath()).toString());
+                            message).append(",").toString());
                     result.errors++;
                 }
             } else {
                 UpdateResponse update = response.getResponse();
                 if (update.isCreated()) {
-                    created.add(update.getId());
                     result.created++;
                 } else {
                     result.updated++;
                 }
+                result.addToAssetIds(update.getId());
             }
             index++;
         }
@@ -123,17 +122,18 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
          */
         if (!retries.isEmpty()) {
             result.retries++;
-            result.add(index(retries, sourceLink));
+            result.add(index(retries));
         }
 
+        /**
         if (!created.isEmpty() && sourceLink != null) {
             appendLink(sourceLink.getType(), sourceLink.getId(), created);
         }
-
+        */
         return result;
     }
 
-    private UpdateRequestBuilder prepareUpsert(Source source) {
+    private UpdateRequestBuilder prepareUpsert(Document source) {
         byte[] doc = Json.serialize(source.getDocument());
         return client.prepareUpdate(getIndex(), source.getType(), source.getId())
                 .setDoc(doc)
@@ -146,7 +146,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             Pattern.compile("mapper \\[(.*?)\\] of different type")
     };
 
-    private boolean removeBrokenField(Source asset, String error) {
+    private boolean removeBrokenField(Document asset, String error) {
         for (Pattern pattern: RECOVERABLE_BULK_ERRORS) {
             Matcher matcher = pattern.matcher(error);
             if (matcher.find()) {
@@ -260,6 +260,35 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public Asset get(String id) {
         return elastic.queryForObject(id, MAPPER);
+    }
+
+    @Override
+    public Map<String, Object> getProtectedFields(String id) {
+        try {
+            /*
+             * Have to use a search here because using the get API
+             * with fields will fail if the asset doesn't have the
+             * fields.
+             */
+            Map<String, Object> result =  client.prepareGet(getIndex(), getType(), id)
+                    .setFetchSource(new String[] {"permissions", "links"}, new String[] {})
+                    .get().getSource();
+            if (result == null) {
+                return Maps.newHashMapWithExpectedSize(2);
+            }
+            else {
+                return result;
+            }
+            /*
+            return client.prepareSearch(getIndex()).setQuery(
+                    QueryBuilders.idsQuery("asset").addIds(id))
+                    .setSize(1)
+                    .setFetchSource(new String[] {"permissions", "links"}, new String[] {})
+                    .get().getHits().getAt(0).getSource();
+                    */
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return Maps.newHashMapWithExpectedSize(2);
+        }
     }
 
     @Override

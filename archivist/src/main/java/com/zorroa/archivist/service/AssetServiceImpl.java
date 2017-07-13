@@ -1,14 +1,16 @@
 package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.CommandDao;
 import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.schema.LinkSchema;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
@@ -23,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -64,10 +67,36 @@ public class AssetServiceImpl implements AssetService {
     SearchService searchService;
 
     @Autowired
-    FilterService filterService;
+    ApplicationProperties properties;
 
     @Autowired
     Client client;
+
+    PermissionSchema defaultPerms;
+
+    @PostConstruct
+    public void init() {
+        defaultPerms = new PermissionSchema();
+
+        List<String> defaultReadPerms =
+                properties.getList("archivist.security.permissions.defaultRead");
+        List<String> defaultWritePerms =
+                properties.getList("archivist.security.permissions.defaultWrite");
+        List<String> defaultExportPerms =
+                properties.getList("archivist.security.permissions.defaultExport");
+
+        for(Permission p: permissionDao.getAll(defaultReadPerms)) {
+            defaultPerms.addToRead(p.getId());
+        }
+
+        for(Permission p: permissionDao.getAll(defaultWritePerms)) {
+            defaultPerms.addToWrite(p.getId());
+        }
+
+        for(Permission p: permissionDao.getAll(defaultExportPerms)) {
+            defaultPerms.addToExport(p.getId());
+        }
+    }
 
     @Override
     public Asset get(String id) {
@@ -90,56 +119,107 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public Asset index(Source source, LinkSpec link) {
-        PermissionSchema perms = source.getAttr("permissions", PermissionSchema.class);
-        if (perms == null) {
-            filterService.applyPermissionSchema(source);
+    public Asset index(Document doc) {
+        AssetIndexResult result = index(new AssetIndexSpec(doc));
+        if (result.getAssetIds().size() == 1) {
+            return get(result.getAssetIds().get(0));
         }
         else {
-            source.removeAttr("permissions");
+            throw new ArchivistWriteException("Failed to index asset." +
+                    Json.serializeToString(result.getLogs()));
         }
-        Asset asset = assetDao.index(source, link);
-        dyHierarchyService.submitGenerateAll(true);
-        return asset;
     }
 
-    @Override
-    public Asset index(Source source) {
-        return index(source, null);
-    }
+    /**
+     * Namespaces that are only populated via the API.  IF people manipulate these
+     * wrong via the asset API then it would corrupt the asset.
+     */
+    private static final Set<String> PROTECTED_NS = ImmutableSet.of(
+            "permissions", "zorroa", "links");
 
     @Override
-    public DocumentIndexResult index(List<Source> sources, LinkSpec link) {
-        for (Source source: sources) {
-            try {
+    public AssetIndexResult index(AssetIndexSpec spec) {
+
+        /**
+         * Clear out any protected name spaces, this lets us ensure people
+         * can't manipulate them with the attr API.
+         *
+         * There is no guarantee the document is the full document, so we can't
+         * modify the permissions/links right here since the might not exist,
+         * and if they do exist we'll remove them so they don't overwrite
+         * the proper value.
+         */
+        for (Document source: spec.getSources()) {
+            for (String ns: PROTECTED_NS) {
+                source.removeAttr(ns);
+            }
+
+            Map<String, Object> protectedValues =
+                    assetDao.getProtectedFields(source.getId());
+
+            PermissionSchema perms = Json.Mapper.convertValue(
+                    protectedValues.getOrDefault("permissions", ImmutableMap.of()), PermissionSchema.class);
+
+            if (source.getPermissions()!= null) {
+
+                for (Map.Entry<String, Integer> entry : source.getPermissions().entrySet()) {
+                    try {
+                        // This is cached.
+                        Permission perm = permissionDao.get(entry.getKey());
+                        if ((entry.getValue() & 1) == 1) {
+                            perms.addToRead(perm.getId());
+                        }
+                        else {
+                            perms.removeFromRead(perm.getId());
+                        }
+
+                        if ((entry.getValue() & 2) == 2) {
+                            perms.addToWrite(perm.getId());
+                        }
+                        else {
+                            perms.removeFromWrite(perm.getId());
+                        }
+
+                        if ((entry.getValue() & 4) == 4) {
+                            perms.addToExport(perm.getId());
+                        }
+                        else {
+                            perms.removeFromExport(perm.getId());
+                        }
+                    } catch (Exception e) {
+                        logger.warn("Permission not found: {}", entry.getKey());
+                    }
+                }
+                source.setAttr("permissions", perms);
+            }
+            else if (perms.isEmpty()) {
                 /**
-                 * If an asset has no permission schema, then run it through the filters.
-                 * Otherwise, we remove the permissions from the doc since they cannot
-                 * be set from a processor.
+                 * If the source didn't come with any permissions and the current perms
+                 * on the asset are empty, we apply the default permissions.
                  */
-                PermissionSchema perms = source.getAttr("permissions", PermissionSchema.class);
-                if (perms == null) {
-                    filterService.applyPermissionSchema(source);
+                source.setAttr("permissions", defaultPerms);
+            }
+
+            if (source.getLinks() != null) {
+                LinkSchema links = Json.Mapper.convertValue(
+                        protectedValues.getOrDefault("links", ImmutableMap.of()), LinkSchema.class);
+                for (Tuple<String, Object> link: source.getLinks()) {
+                    links.addLink(link.getLeft(), link.getRight());
                 }
-                else {
-                    source.removeAttr("permissions");
-                }
-            } catch (Exception e) {
-                logger.warn("Asset {} has invalid permission schema.", source.getId());
-                source.removeAttr("permissions");
+                source.setAttr("links", links);
             }
         }
 
-        DocumentIndexResult result =  assetDao.index(sources, link);
+        AssetIndexResult result = assetDao.index(spec.getSources());
         if (result.created + result.updated > 0) {
+
+            /**
+             * TODO: make these 1 thread pool
+             */
             dyHierarchyService.submitGenerateAll(true);
             taxonomyService.runAllAsync();
         }
         return result;
-    }
-
-    public DocumentIndexResult index(List<Source> sources) {
-        return index(sources, null);
     }
 
     @Override

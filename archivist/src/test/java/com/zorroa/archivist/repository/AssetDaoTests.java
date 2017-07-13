@@ -6,10 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.DocumentIndexResult;
-import com.zorroa.sdk.domain.PagedList;
-import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -38,7 +35,7 @@ public class AssetDaoTests extends AbstractTest {
     @Before
     public void init() {
         Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        asset1 = assetDao.index(builder, null);
+        asset1 = assetDao.index(builder);
         refreshIndex();
     }
 
@@ -83,7 +80,7 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetAllBySearchRequestIntoStream() throws IOException {
-        assetDao.index(new Source(getTestImagePath("set01/standard/faces.jpg")), null);
+        assetDao.index(new Source(getTestImagePath("set01/standard/faces.jpg")));
         refreshIndex();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -98,11 +95,11 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetAllScroll() {
-        assetDao.index(new Source(getTestImagePath("set01/standard/faces.jpg")), null);
-        assetDao.index(new Source(getTestImagePath("set01/standard/hyena.jpg")), null);
-        assetDao.index(new Source(getTestImagePath("set01/standard/toucan.jpg")), null);
-        assetDao.index(new Source(getTestImagePath("set01/standard/visa.jpg")), null);
-        assetDao.index(new Source(getTestImagePath("set01/standard/visa12.jpg")), null);
+        assetDao.index(new Source(getTestImagePath("set01/standard/faces.jpg")));
+        assetDao.index(new Source(getTestImagePath("set01/standard/hyena.jpg")));
+        assetDao.index(new Source(getTestImagePath("set01/standard/toucan.jpg")));
+        assetDao.index(new Source(getTestImagePath("set01/standard/visa.jpg")));
+        assetDao.index(new Source(getTestImagePath("set01/standard/visa12.jpg")));
         refreshIndex();
 
         SearchRequestBuilder req = client.prepareSearch("archivist")
@@ -126,11 +123,11 @@ public class AssetDaoTests extends AbstractTest {
         Source source1 = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
         Source source2 = new Source(getTestImagePath("set04/standard/new_zealand_wellington_harbour.jpg"));
 
-        DocumentIndexResult result = assetDao.index(ImmutableList.of(source1, source2), null);
+        AssetIndexResult result = assetDao.index(ImmutableList.of(source1, source2));
         assertEquals(1, result.created);
         assertEquals(1, result.updated);
 
-        result = assetDao.index(ImmutableList.of(source1, source2), null);
+        result = assetDao.index(ImmutableList.of(source1, source2));
         assertEquals(0, result.created);
         assertEquals(2, result.updated);
     }
@@ -186,6 +183,14 @@ public class AssetDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testGetProtectedFields() {
+        Map<String, Object> v = assetDao.getProtectedFields("a");
+        assertNotNull(v);
+        v = assetDao.getProtectedFields(asset1.getId());
+        assertNotNull(v);
+    }
+
+    @Test
     public void testRemoveFields() {
         assetDao.removeFields(asset1.getId(), Sets.newHashSet("source"), true);
         Asset a = assetDao.get(asset1.getId());
@@ -194,21 +199,21 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testRetryBrokenFields() throws InterruptedException { {
-        List<Source> assets = ImmutableList.of(
+        List<Document> assets = ImmutableList.of(
                 new Source(getTestImagePath("set01/standard/faces.jpg")));
         assets.get(0).setAttr("foo.bar", "2017/10/10");
-        DocumentIndexResult result  = assetDao.index(assets, null);
+        AssetIndexResult result  = assetDao.index(assets);
         refreshIndex();
 
-        List<Source> next = ImmutableList.of(
+        List<Document> next = ImmutableList.of(
                 new Source(getTestImagePath("set01/standard/hyena.jpg")),
                 new Source(getTestImagePath("set01/standard/toucan.jpg")),
                 new Source(getTestImagePath("set01/standard/visa.jpg")),
                 new Source(getTestImagePath("set01/standard/visa12.jpg")));
-        for (Source s: next) {
+        for (Document s: next) {
             s.setAttr("foo.bar", 1000);
         }
-        result = assetDao.index(next, null);
+        result = assetDao.index(next);
 
         assertEquals(4, result.created);
         assertEquals(4, result.warnings);

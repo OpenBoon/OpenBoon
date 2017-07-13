@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
@@ -118,6 +119,12 @@ public class PermissionDaoTests extends AbstractTest {
     public void testGetAll() {
         List<Permission> perms = permissionDao.getAll();
         assertTrue(perms.size() > 0);
+    }
+
+    @Test
+    public void testGetAllByNames() {
+        List<Permission> perms = permissionDao.getAll(ImmutableList.of("user::admin", "group::everyone"));
+        assertEquals(2, perms.size());
     }
 
     @Test
