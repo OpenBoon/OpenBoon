@@ -8,7 +8,8 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.util.Json;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -16,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Collection;
 import java.util.Set;
@@ -35,10 +35,6 @@ public class SecurityUtils {
 
     public static Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-    public static String getCookieId() {
-        return RequestContextHolder.currentRequestAttributes().getSessionId();
     }
 
     public static String getUsername() {
@@ -99,7 +95,6 @@ public class SecurityUtils {
     /**
      * Return true if the current user can export an asset.
      *
-     * @param field
      * @param asset
      * @return
      */

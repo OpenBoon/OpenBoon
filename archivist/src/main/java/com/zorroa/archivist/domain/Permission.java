@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
 /**
  * Created by chambers on 10/27/15.
  */
-public class Permission implements Loggable<Integer>, Serializable {
+public class Permission implements Loggable<Integer>, Serializable, GrantedAuthority {
 
     public static final String JOIN = "::";
 
@@ -66,7 +67,7 @@ public class Permission implements Loggable<Integer>, Serializable {
 
     @JsonIgnore
     public String getAuthority() {
-        return new StringBuilder(64).append(type).append("::").append(name).toString();
+        return new StringBuilder(64).append(type).append(JOIN).append(name).toString();
     }
 
     @Override
