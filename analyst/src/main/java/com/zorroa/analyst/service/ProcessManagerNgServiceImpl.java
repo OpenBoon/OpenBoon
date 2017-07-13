@@ -66,6 +66,10 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
      */
     private final ExecutorService asyncCommandExecutor = Executors.newSingleThreadExecutor();
 
+    /**
+     * The amount of time between polling the archivist.
+     */
+    private static final long POLL_TIME_MS = 5000;
 
     @Value("${analyst.executor.enabled}")
     boolean executeEnabled;
@@ -404,7 +408,8 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(5000, 2500, TimeUnit.MILLISECONDS);
+        return Scheduler.newFixedRateSchedule(
+                POLL_TIME_MS, POLL_TIME_MS, TimeUnit.MILLISECONDS);
     }
 
     @Override
