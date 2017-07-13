@@ -115,6 +115,14 @@ public abstract class AbtractThriftClient implements Closeable {
         return this;
     }
 
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
     public abstract void reconnect() throws TException;
 
     public abstract int getDefaultPort();
@@ -151,6 +159,7 @@ public abstract class AbtractThriftClient implements Closeable {
                     }
 
                 } catch (TTransportException e) {
+
                     if (connected.compareAndSet(true, false)) {
                         if (maxRetries > 0) {
                             logger.warn("{} FAILED to connect to {}:{}, retrying for {} times.",

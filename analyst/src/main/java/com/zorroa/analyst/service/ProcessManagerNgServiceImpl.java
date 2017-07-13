@@ -1,5 +1,8 @@
 package com.zorroa.analyst.service;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
@@ -321,6 +324,36 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         return error;
     }
 
+    private static final class Connection {
+        public MasterServerClient client;
+        public long backoffTill = 0;
+
+        public Connection(MasterServerClient client) {
+            this.client = client;
+        }
+        public void backoff() {
+            client.close();
+            backoffTill = System.currentTimeMillis() + (60 * 1000);
+            logger.info("Backing off of {} till {}", client.getHost(), backoffTill);
+        }
+    }
+
+    private final LoadingCache<String, Connection> connectioncCache = CacheBuilder.newBuilder()
+            .maximumSize(1000)
+            .initialCapacity(100)
+            .concurrencyLevel(1)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build(new CacheLoader<String, Connection>() {
+                public Connection load(String addr) throws Exception {
+                    MasterServerClient client = new MasterServerClient(addr);
+                    client.setMaxRetries(0);
+                    client.setSocketTimeout(2000);
+                    client.setConnectTimeout(1000);
+                    return new Connection(client);
+
+                }
+            });
+
     @Override
     protected void runOneIteration() throws Exception {
         if (Application.isUnitTest()) {
@@ -341,26 +374,27 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             for (String url: hostList) {
 
                 String addr = MasterServerClient.convertUriToClusterAddr(url);
-                MasterServerClient client = new MasterServerClient(addr);
-                client.setMaxRetries(0);
-                client.setSocketTimeout(2000);
-                client.setConnectTimeout(500);
+                Connection conn = connectioncCache.get(addr);
+
+                if (conn.backoffTill > System.currentTimeMillis()) {
+                    continue;
+                }
 
                 try {
-                    List<TaskStartT> tasks = client.queuePendingTasks(
+                    List<TaskStartT> tasks = conn.client.queuePendingTasks(
                             networkEnvironment.getClusterAddr(), threads - analyzeExecutor.getActiveCount());
+
                     for (TaskStartT task: tasks) {
                         queueClusterTask(task);
                     }
                 } catch (ClusterConnectionException e) {
+                    conn.backoff();
                     // ignore this, host is probably down.
                 }
                 catch (Exception e) {
+                    conn.backoff();
                     logger.warn("Failed to contact {} for scheduling op, unexpected {}",
                             addr, e.getMessage(), e);
-                }
-                finally {
-                    client.close();
                 }
             }
         } catch (Exception e) {
@@ -370,7 +404,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(5000, 500, TimeUnit.MILLISECONDS);
+        return Scheduler.newFixedRateSchedule(5000, 2500, TimeUnit.MILLISECONDS);
     }
 
     @Override
