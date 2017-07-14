@@ -383,10 +383,13 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                 if (conn.backoffTill > System.currentTimeMillis()) {
                     continue;
                 }
-
+                int count = threads - analyzeExecutor.getActiveCount();
+                if (count <= 0) {
+                    continue;
+                }
                 try {
                     List<TaskStartT> tasks = conn.client.queuePendingTasks(
-                            networkEnvironment.getClusterAddr(), threads - analyzeExecutor.getActiveCount());
+                            networkEnvironment.getClusterAddr(), count);
 
                     if (!tasks.isEmpty()) {
                         logger.info("Obtained {} tasks from {}", tasks.size(), addr);
