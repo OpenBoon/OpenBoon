@@ -162,7 +162,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(
+        return Scheduler.newFixedDelaySchedule(
                 5, 30, TimeUnit.SECONDS);
     }
 }

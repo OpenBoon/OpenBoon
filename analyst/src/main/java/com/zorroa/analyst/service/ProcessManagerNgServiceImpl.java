@@ -415,7 +415,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(
+        return Scheduler.newFixedDelaySchedule(
                 POLL_TIME_MS, POLL_TIME_MS, TimeUnit.MILLISECONDS);
     }
 
