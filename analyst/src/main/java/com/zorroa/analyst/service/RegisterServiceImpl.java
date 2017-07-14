@@ -1,9 +1,7 @@
 package com.zorroa.analyst.service;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.google.common.io.Files;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.analyst.Application;
 import com.zorroa.common.cluster.client.MasterServerClient;
@@ -11,7 +9,6 @@ import com.zorroa.common.cluster.thrift.AnalystT;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.sdk.util.Json;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.util.List;
@@ -78,29 +74,11 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     }
 
     public void determineUniqueId() {
-        File keyFile = new File(properties.getString("analyst.key.file"));
-        if (!keyFile.exists()) {
-            try {
-                Files.write(UUID.randomUUID().toString().replace("-", "").getBytes(), keyFile);
-            } catch (Exception e) {
-                throw new RuntimeException("Unable to write unique key to file: " + keyFile.getName(), e);
-            }
-        }
-
-        try {
-            id = Files.readFirstLine(keyFile, Charsets.UTF_8);
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to read unique key from file: " + keyFile.getName(), e);
-        }
-
+        id = UUID.nameUUIDFromBytes(networkEnvironment.getPublicUri().toASCIIString().getBytes()).toString();
         if (id == null) {
             throw new RuntimeException("Unable to determine analyst ID");
         }
 
-        if (!StringUtils.isAlphanumeric(id) || id.length() > 32) {
-            throw new RuntimeException("Invalid analyst id: '" +
-                    id + "', must be alpha numeric string of 32 chars or less.");
-        }
         System.setProperty("analyst.id", id);
         logger.info("Analyst ID: {}", id);
     }
