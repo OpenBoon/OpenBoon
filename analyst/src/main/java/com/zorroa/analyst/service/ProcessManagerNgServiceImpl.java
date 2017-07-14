@@ -352,7 +352,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                     MasterServerClient client = new MasterServerClient(addr);
                     client.setMaxRetries(0);
                     client.setSocketTimeout(2000);
-                    client.setConnectTimeout(1000);
+                    client.setConnectTimeout(2000);
                     return new Connection(client);
 
                 }
