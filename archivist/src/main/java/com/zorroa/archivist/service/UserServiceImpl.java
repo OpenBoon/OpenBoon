@@ -15,7 +15,6 @@ import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.sdk.client.exception.DuplicateElementException;
-import com.zorroa.sdk.client.exception.MissingElementException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
@@ -23,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -323,7 +323,7 @@ public class UserServiceImpl implements UserService {
         try {
             return permissionCache.get(id);
         } catch (ExecutionException e) {
-            throw new MissingElementException("The permission " + id + " does not exist");
+            throw new EmptyResultDataAccessException("The permission " + id + " does not exist", 1);
         }
     }
 

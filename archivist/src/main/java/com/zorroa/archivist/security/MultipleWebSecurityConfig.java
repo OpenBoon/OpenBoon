@@ -45,6 +45,9 @@ public class MultipleWebSecurityConfig {
     @Autowired
     UserDetailsPopulator userDetailsPopulator;
 
+    @Autowired
+    UserDetailsPluginWrapper userDetailsPluginWrapper;
+
     private static final Logger logger = LoggerFactory.getLogger(MultipleWebSecurityConfig.class);
 
     @Configuration
@@ -122,7 +125,7 @@ public class MultipleWebSecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth, EventLogService logService) throws Exception {
 
         if (properties.getBoolean("archivist.security.ldap.enabled")) {
-            auth.authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator));
+            auth.authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator, userDetailsPluginWrapper));
         }
         if (properties.getBoolean("archivist.security.hmac.enabled")) {
             auth.authenticationProvider(hmacAuthenticationProvider());
@@ -187,7 +190,7 @@ public class MultipleWebSecurityConfig {
 
     @Bean
     @Autowired
-    public AuthenticationProvider ldapAuthenticationProvider(UserDetailsPopulator populator) throws Exception {
+    public AuthenticationProvider ldapAuthenticationProvider(UserDetailsPopulator populator, UserDetailsPluginWrapper userDetailsPluginWrapper) throws Exception {
         String url = properties.getString("archivist.security.ldap.url");
         String base = properties.getString("archivist.security.ldap.base");
         String filter = properties.getString("archivist.security.ldap.filter");
@@ -199,7 +202,7 @@ public class MultipleWebSecurityConfig {
         BindAuthenticator bindAuthenticator = new BindAuthenticator(contextSource);
         bindAuthenticator.setUserSearch(ldapUserSearch);
         LdapAuthenticationProvider ldapAuthenticationProvider =
-                new LdapAuthenticationProvider(bindAuthenticator, populator);
+                new LdapAuthenticationProvider(bindAuthenticator, userDetailsPluginWrapper);
         ldapAuthenticationProvider.setUserDetailsContextMapper(populator);
         return ldapAuthenticationProvider;
     }

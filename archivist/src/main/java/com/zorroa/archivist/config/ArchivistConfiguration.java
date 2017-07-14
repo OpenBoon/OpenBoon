@@ -2,12 +2,15 @@ package com.zorroa.archivist.config;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.security.UserDetailsPluginWrapper;
 import com.zorroa.archivist.security.UserDetailsPopulator;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.filesystem.UUIDFileSystem;
 import com.zorroa.sdk.processor.SharedData;
+import com.zorroa.security.UserDetailsPlugin;
+import org.apache.commons.lang3.StringUtils;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,4 +116,27 @@ public class ArchivistConfiguration {
     public UserDetailsPopulator userDetailsPopulator() {
         return new UserDetailsPopulator();
     }
+
+    @Bean
+    public UserDetailsPluginWrapper userDetailsPluginWrapper() {
+        String pluginClassName =
+                properties.getString("archivist.security.ldap.userDetailsPlugin").trim();
+
+        UserDetailsPlugin plugin = null;
+        if (!StringUtils.isBlank(pluginClassName)) {
+            plugin = instantiate(pluginClassName, UserDetailsPlugin.class);
+        }
+        return new UserDetailsPluginWrapper(plugin);
+    }
+
+    public static <T> T instantiate(final String className, final Class<T> type){
+        try{
+            return type.cast(Class.forName(className).newInstance());
+        } catch(InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e){
+            throw new IllegalStateException(e);
+        }
+    }
+
 }

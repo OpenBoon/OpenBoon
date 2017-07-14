@@ -1,11 +1,13 @@
 package com.zorroa.archivist.service;
 
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystSpec;
-import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @Service
 public class AnalystServiceImpl implements AnalystService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AnalystServiceImpl.class);
 
     @Autowired
     AnalystDao analystDao;
@@ -28,6 +32,7 @@ public class AnalystServiceImpl implements AnalystService {
         analystDao.register(spec);
         if (spec.getTaskIds() != null) {
             taskDao.updatePingTime(spec.getTaskIds());
+            logger.info("updated {} task Ids", spec.getTaskIds().size());
         }
     }
 
