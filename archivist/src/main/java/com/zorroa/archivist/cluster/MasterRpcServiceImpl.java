@@ -27,16 +27,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Component
-public class MasterRpcServiceImpl implements MasterRpcService, MasterServerService.Iface {
+public class MasterRpcServiceImpl implements MasterRpcService, MasterServerService.Iface, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(MasterRpcServiceImpl.class);
 
@@ -61,25 +62,6 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
     private TNonblockingServerSocket transport;
     private TServer server;
     private Executor thread = Executors.newSingleThreadExecutor();
-
-    @PostConstruct
-    public void start() {
-        try {
-            transport = new TNonblockingServerSocket(port);
-            TThreadedSelectorServer.Args args = new TThreadedSelectorServer.Args(transport);
-            args.maxReadBufferBytes = 1024 * 1024 * 10;
-            args.processor(new MasterServerService.Processor<MasterServerService.Iface>(this))
-                .workerThreads(4)
-                .selectorThreads(1)
-                .protocolFactory(new TCompactProtocol.Factory())
-                .transportFactory(new TFramedTransport.Factory());
-            server = new TThreadedSelectorServer(args);
-            thread.execute(() -> server.serve());
-
-        } catch (TTransportException e) {
-            throw new RuntimeException("Unable to start thrift server " + e, e);
-        }
-    }
 
     @PreDestroy
     public void stop() {
@@ -212,6 +194,25 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
              * Don't let this bubble out back to analyst.
              */
             logger.warn("Error expanding job, parent task {}", id, e);
+        }
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        try {
+            transport = new TNonblockingServerSocket(port);
+            TThreadedSelectorServer.Args args = new TThreadedSelectorServer.Args(transport);
+            args.maxReadBufferBytes = 1024 * 1024 * 10;
+            args.processor(new MasterServerService.Processor<MasterServerService.Iface>(this))
+                    .workerThreads(4)
+                    .selectorThreads(1)
+                    .protocolFactory(new TCompactProtocol.Factory())
+                    .transportFactory(new TFramedTransport.Factory());
+            server = new TThreadedSelectorServer(args);
+            thread.execute(() -> server.serve());
+
+        } catch (TTransportException e) {
+            throw new RuntimeException("Unable to start thrift server " + e, e);
         }
     }
 }
