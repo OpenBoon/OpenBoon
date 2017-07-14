@@ -74,7 +74,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
     @Value("${analyst.executor.enabled}")
     boolean executeEnabled;
 
-    private final ConcurrentMap<Integer, ClusterProcess> processMap = Maps.newConcurrentMap();
+    private volatile ConcurrentMap<Integer, ClusterProcess> processMap = Maps.newConcurrentMap();
 
     private List<String> hostList;
 
@@ -92,6 +92,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             logger.warn("The task {} is already queued or executing.", task);
             throw new ClusterException("The task is already queued or executing.");
         }
+        logger.info("Submitting task to execute: {}, total tasks {}", task.getId(), processMap.size());
         analyzeExecutor.submit(()->runClusterProcess(process));
         return process;
     }
@@ -386,6 +387,10 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                 try {
                     List<TaskStartT> tasks = conn.client.queuePendingTasks(
                             networkEnvironment.getClusterAddr(), threads - analyzeExecutor.getActiveCount());
+
+                    if (!tasks.isEmpty()) {
+                        logger.info("Obtained {} tasks from {}", tasks.size(), addr);
+                    }
 
                     for (TaskStartT task: tasks) {
                         queueClusterTask(task);
