@@ -230,6 +230,6 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(10, 2, TimeUnit.SECONDS);
+        return Scheduler.newFixedDelaySchedule(10, 2, TimeUnit.SECONDS);
     }
 }

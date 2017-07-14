@@ -183,6 +183,6 @@ public class CommandServiceImpl  extends AbstractScheduledService implements Com
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(20, 1, TimeUnit.SECONDS);
+        return Scheduler.newFixedDelaySchedule(20, 1, TimeUnit.SECONDS);
     }
 }

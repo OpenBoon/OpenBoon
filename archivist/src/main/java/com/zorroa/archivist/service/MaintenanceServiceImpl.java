@@ -381,6 +381,6 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
 
     @Override
     protected Scheduler scheduler() {
-        return Scheduler.newFixedRateSchedule(1, 60, TimeUnit.MINUTES);
+        return Scheduler.newFixedDelaySchedule(1, 60, TimeUnit.MINUTES);
     }
 }
