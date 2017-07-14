@@ -284,7 +284,9 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                 "task.int_depend_count = 0 " +
             "ORDER BY " +
                 "task.int_order ASC, " +
-                "task.pk_task ASC LIMIT ? ";
+                "task.pk_task ASC " +
+            "LIMIT ? ";
+
     @Override
     public List<TaskStartT> getWaiting(int limit) {
         return jdbc.query(GET_WAITING, EXECUTE_TASK_MAPPER, limit);
@@ -382,19 +384,6 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     public long countByJob(int job) {
         return jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE task.pk_job=?", Long.class, job);
     }
-
-    private static final String GET_LOG_PATH =
-        "SELECT " +
-            "task.pk_task,"+
-            "job.str_root_path, " +
-            "task.str_name "+
-        "FROM " +
-            "task,"+
-            "job " +
-        "WHERE " +
-            "task.pk_job = job.pk_job " +
-        "AND " +
-            "task.pk_task=?";
 
     private static final String UPDATE_PING = "UPDATE task SET time_ping=? WHERE pk_task=?";
 

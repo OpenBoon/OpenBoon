@@ -2,14 +2,13 @@ package com.zorroa.archivist.service;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.zorroa.archivist.config.ArchivistConfiguration;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobState;
-import com.zorroa.archivist.domain.Task;
-import com.zorroa.archivist.domain.TaskFilter;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.cluster.client.WorkerNodeClient;
@@ -19,9 +18,7 @@ import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.archivist.domain.JobId;
 import com.zorroa.common.domain.TaskState;
-import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.slf4j.Logger;
@@ -98,12 +95,18 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             throw new ArchivistWriteException("Failed to query for tasks, return URL is null. " +
                     "Analyst may be badly configured");
         }
+        if (count < 1) {
+            return ImmutableList.of();
+        }
 
         List<TaskStartT> result = Lists.newArrayListWithCapacity(count);
         for (TaskStartT task : taskDao.getWaiting(count)) {
             if (jobService.setTaskQueued(taskDao.get(task.id), url)) {
                 result.add(task);
             }
+        }
+        if (!result.isEmpty()) {
+            logger.info("{} asking for {} tasks, returned {}", url, count, result.size());
         }
         return result;
     }
@@ -162,7 +165,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
      * TODO: may need to verify with analyst that its still around.
      */
     public void checkForExpiredTasks() {
-        List<Task> expired = taskDao.getOrphanTasks(10, 3, TimeUnit.MINUTES);
+        List<Task> expired = taskDao.getOrphanTasks(10, 10, TimeUnit.MINUTES);
         if (!expired.isEmpty()) {
             logger.warn("Found {} expired tasks!", expired.size());
             for (Task task : expired) {
