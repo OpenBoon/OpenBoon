@@ -36,7 +36,6 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -322,7 +321,7 @@ public class UserServiceImpl implements UserService {
     public Permission getPermission(String id) {
         try {
             return permissionCache.get(id);
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             throw new EmptyResultDataAccessException("The permission " + id + " does not exist", 1);
         }
     }
@@ -348,7 +347,9 @@ public class UserServiceImpl implements UserService {
             if (PERMANENT_TYPES.contains(p.getType())) {
                 continue;
             }
-            userDao.addPermission(user, p, false);
+            if (!userDao.hasPermission(user, p)) {
+                userDao.addPermission(user, p, false);
+            }
         }
         txem.afterCommitSync(() -> {
             logService.logAsync(UserLogSpec.build("add_permission", user)
