@@ -78,18 +78,20 @@ daemonized=`echo $* | egrep -- '(^-d |-d$| -d |--daemonize$|--daemonize )'`
 app_parms=""
 
 if [ "x$daemonized" = "x" ]; then
-    exec "$JAVA" -jar $JAVA_OPTS $APP_JAVA_OPTS $app_parms \
+    exec "$JAVA" $JAVA_OPTS $APP_JAVA_OPTS $app_parms \
             -Dserver.path.home="$APP_HOME" -D%{application}.path.home="${APP_HOME}" \
             -Des.config="$APP_HOME"/config/elasticsearch.yml \
             -Dspring.config.location="$APP_HOME"/config/ \
-            "$APP_HOME"/lib/${APP_NAME}.jar "$@"
+            -Dloader.path="${APP_HOME}/lib/ext" \
+            -jar "$APP_HOME"/lib/${APP_NAME}.jar "$@"
 else
-    exec "$JAVA" -jar $JAVA_OPTS $APP_JAVA_OPTS $app_parms \
+    exec "$JAVA" $JAVA_OPTS $APP_JAVA_OPTS $app_parms \
         -Dserver.path.home="$APP_HOME" -D%{application}.path.home="${APP_HOME}" \
         -Des.config="$APP_HOME"/config/elasticsearch.yml \
         -Dspring.config.location="$APP_HOME"/config/ \
         -Dlogging.config="$APP_HOME"/config/logback.xml \
-        "$APP_HOME"/lib/${APP_NAME}.jar "$@" <&- &
+        -Dloader.path="${APP_HOME}/lib/ext" \
+        -jar "$APP_HOME"/lib/${APP_NAME}.jar "$@" <&- &
 
     retval=$?
     pid=$!

@@ -157,6 +157,7 @@
                 <configuration>
                     <mainClass>${start-class}</mainClass>
                     <finalName>analyst</finalName>
+                    <layout>ZIP</layout>
                 </configuration>
                 <executions>
                     <execution>

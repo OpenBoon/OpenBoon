@@ -283,6 +283,7 @@
                 <configuration>
                     <mainClass>${start-class}</mainClass>
                     <finalName>archivist</finalName>
+                    <layout>ZIP</layout>
                 </configuration>
                 <executions>
                     <execution>
