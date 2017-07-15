@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chambers on 2/17/16.
@@ -52,6 +53,19 @@ public class SpringApplicationPropertiesTests {
     public void getListInFile() {
         List<String> items = properties.getList("test.list");
         assertEquals(ImmutableList.of("pencil", "pen", "marker"), items);
+    }
+
+    @Test
+    public void getEmptyList() {
+        List<String> items = properties.getList("test.emptyList");
+        assertTrue(items.isEmpty());
+    }
+
+    @Test
+    public void getList() {
+        List<String> items = properties.getList("test.arrayList");
+        assertEquals(3, items.size());
+        assertEquals(ImmutableList.of("a","b","c"), items);
     }
 
     @Test
