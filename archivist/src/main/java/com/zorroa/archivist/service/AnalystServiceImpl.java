@@ -32,8 +32,9 @@ public class AnalystServiceImpl implements AnalystService {
         analystDao.register(spec);
         if (spec.getTaskIds() != null) {
             taskDao.updatePingTime(spec.getTaskIds());
-            /// BUG: pinging tasks not on the archivist.
-            logger.info("updated {} task Ids for {}", spec.getTaskIds(), spec.getUrl());
+            if (logger.isDebugEnabled()) {
+                logger.debug("updated {} task Ids for {}", spec.getTaskIds(), spec.getUrl());
+            }
         }
     }
 
