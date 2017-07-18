@@ -264,8 +264,10 @@ public class IndexController {
                                 ImmutableMap.of("terms",ImmutableMap.of("field", "action"))))));
 
         Pager paging = new Pager(page);
+        search.setFrom(paging.getFrom());
+        search.setSize(paging.getSize());
         model.addAttribute("search", search);
-        model.addAttribute("logs", logService.getAll("user", search, paging));
+        model.addAttribute("logs", logService.getAll("user", search));
         model.addAttribute("page", paging);
         model.addAttribute("query", query);
         return "logs";

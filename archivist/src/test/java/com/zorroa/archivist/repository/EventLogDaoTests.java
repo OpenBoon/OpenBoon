@@ -8,7 +8,6 @@ import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.service.EventLogService;
 import com.zorroa.common.cluster.thrift.StackElementT;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
-import com.zorroa.sdk.domain.Pager;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,11 @@ public class EventLogDaoTests extends AbstractTest {
     @Test
     public void testUserLogEntry() {
         refreshIndex();
-        int count =  logService.getAll("user", new EventLogSearch(), Pager.first()).size();
+        int count =  logService.getAll("user", new EventLogSearch()).size();
         logService.log(new UserLogSpec().setAction("test").setMessage("A test message"));
         refreshIndex();
         assertEquals(count+1,
-                logService.getAll("user",  new EventLogSearch(), Pager.first()).size());
+                logService.getAll("user",  new EventLogSearch()).size());
     }
 
     @Test
@@ -59,7 +58,7 @@ public class EventLogDaoTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(1,
-                logService.getAll("job", new EventLogSearch(), Pager.first()).size());
+                logService.getAll("job", new EventLogSearch()).size());
     }
 
 }

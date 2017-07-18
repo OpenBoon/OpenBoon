@@ -35,11 +35,11 @@ public class EventLogDaoImpl extends AbstractElasticDao implements EventLogDao {
     };
 
     @Override
-    public PagedList<Map<String,Object>> getAll(String type, EventLogSearch search, Pager page) {
+    public PagedList<Map<String,Object>> getAll(String type, EventLogSearch search) {
         SearchRequestBuilder builder = client.prepareSearch(type + getIndex() )
                 .setQuery(search.getQuery())
                 .setAggregations(search.getAggs());
-
+        Pager page = new Pager(search.getFrom(), search.getSize(), 0);
         return elastic.page(builder, page, MAPPER);
     }
 

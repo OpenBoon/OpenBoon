@@ -10,6 +10,10 @@ import java.util.Map;
  */
 public class EventLogSearch {
 
+    private Integer from;
+
+    private Integer size;
+
     private Map<String, Map<String, Object>> query;
 
     private Map<String, Map<String, Object>> aggs = Maps.newHashMap();
@@ -35,6 +39,24 @@ public class EventLogSearch {
 
     public EventLogSearch setAggs(Map<String, Map<String, Object>> aggs) {
         this.aggs = aggs;
+        return this;
+    }
+
+    public Integer getFrom() {
+        return from;
+    }
+
+    public EventLogSearch setFrom(Integer from) {
+        this.from = from;
+        return this;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public EventLogSearch setSize(Integer size) {
+        this.size = size;
         return this;
     }
 }

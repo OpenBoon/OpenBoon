@@ -77,7 +77,7 @@ public class EventLogServiceImpl implements EventLogService {
     }
 
     @Override
-    public PagedList<Map<String,Object>> getAll(String type, EventLogSearch search, Pager page) {
-        return eventLogDao.getAll(type, search, page);
+    public PagedList<Map<String,Object>> getAll(String type, EventLogSearch search) {
+        return eventLogDao.getAll(type, search);
     }
 }

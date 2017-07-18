@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by chambers on 5/19/17.
  */
 public interface EventLogDao {
-    PagedList<Map<String,Object>> getAll(String type, EventLogSearch search, Pager page);
+    PagedList<Map<String,Object>> getAll(String type, EventLogSearch search);
 
     void create(UserLogSpec spec);
 

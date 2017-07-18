@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
 import com.zorroa.sdk.domain.PagedList;
-import com.zorroa.sdk.domain.Pager;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,6 @@ public interface EventLogService {
 
     void logAsync(Task task, List<TaskErrorT> errors);
 
-    PagedList<Map<String,Object>> getAll(String type, EventLogSearch search, Pager page);
+    PagedList<Map<String,Object>> getAll(String type, EventLogSearch search);
 
 }
