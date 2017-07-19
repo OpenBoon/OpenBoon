@@ -301,8 +301,13 @@ public class UserServiceImpl implements UserService {
         return permissionDao.getAll().stream().map(p->p.getFullName()).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean permissionExists(String authority) {
+        return permissionDao.exists(authority);
+    }
+
     private final LoadingCache<String, Permission> permissionCache = CacheBuilder.newBuilder()
-            .maximumSize(100)
+            .maximumSize(200)
             .initialCapacity(100)
             .concurrencyLevel(4)
             .expireAfterWrite(1, TimeUnit.HOURS)

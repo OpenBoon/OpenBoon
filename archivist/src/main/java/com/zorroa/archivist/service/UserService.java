@@ -70,6 +70,8 @@ public interface UserService {
 
     List<String> getPermissionNames();
 
+    boolean permissionExists(String authority);
+
     Permission getPermission(String name);
 
     boolean hasPermission(User user, String type, String name);

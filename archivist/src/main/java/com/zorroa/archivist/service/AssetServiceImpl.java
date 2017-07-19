@@ -71,6 +71,9 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     ApplicationProperties properties;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     Client client;
 
     PermissionSchema defaultPerms = new PermissionSchema();
@@ -147,7 +150,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
                 for (Map.Entry<String, Integer> entry : source.getPermissions().entrySet()) {
                     try {
                         // This is cached.
-                        Permission perm = permissionDao.get(entry.getKey());
+                        Permission perm = userService.getPermission(entry.getKey());
                         if ((entry.getValue() & 1) == 1) {
                             perms.addToRead(perm.getId());
                         }

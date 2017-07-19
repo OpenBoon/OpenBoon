@@ -38,6 +38,8 @@ public interface PermissionDao {
 
     long count(DaoFilter filter);
 
+    boolean exists(String name);
+
     List<Permission> getAll(User user);
 
     List<Permission> getAll(String type);

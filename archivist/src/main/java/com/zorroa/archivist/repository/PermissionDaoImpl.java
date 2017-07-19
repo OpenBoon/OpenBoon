@@ -143,6 +143,12 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
                 Long.class, filter.getValues());
     }
 
+    @Override
+    public boolean exists(String name) {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM permission WHERE str_authority=?",
+                Integer.class, name) == 1;
+    }
+
     private static final String GET_BY_USER =
             "SELECT p.* " +
             "FROM " +

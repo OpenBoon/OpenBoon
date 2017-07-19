@@ -50,6 +50,14 @@ public class PermissionController {
     }
 
     /**
+     * Return all available permissions.
+     */
+    @RequestMapping(value="/api/v1/permissions/_exists/{name}", method = RequestMethod.GET)
+    public Boolean exists(@PathVariable String name) {
+        return userService.permissionExists(name);
+    }
+
+    /**
      * Create a new permission.
      */
     @RequestMapping(value="/api/v1/permissions", method = RequestMethod.POST)

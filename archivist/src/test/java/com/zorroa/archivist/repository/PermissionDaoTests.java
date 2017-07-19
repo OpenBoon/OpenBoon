@@ -74,6 +74,15 @@ public class PermissionDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testExists() {
+        assertFalse(permissionDao.exists("foo::bar"));
+        PermissionSpec b = new PermissionSpec("foo", "bar");
+        b.setDescription("foo bar");
+        Permission p = permissionDao.create(b, true);
+        assertTrue(permissionDao.exists("foo::bar"));
+    }
+
+    @Test
     public void testUpdateUserPermission() {
         assertTrue(permissionDao.updateUserPermission("test", "rambo"));
         assertFalse(userDao.hasPermission(user, "user", "test"));
