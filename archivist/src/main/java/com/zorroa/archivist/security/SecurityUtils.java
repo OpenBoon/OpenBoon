@@ -168,8 +168,8 @@ public class SecurityUtils {
         if (hasPermission(GROUP_ADMIN)) {
             return null;
         }
-        return QueryBuilders.termsQuery("permissions.read",
-                SecurityUtils.getPermissionIds());
+        return QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("permissions.read",
+                SecurityUtils.getPermissionIds()));
     }
 
     public static void setWritePermissions(Source source, Collection<Permission> perms) {

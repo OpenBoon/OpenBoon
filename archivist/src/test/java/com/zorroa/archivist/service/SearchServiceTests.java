@@ -52,7 +52,7 @@ public class SearchServiceTests extends AbstractTest {
 
     @Test
     public void testSearchPermissionsHit() throws IOException {
-        authenticate("admin");
+        authenticate("user");
 
         Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
@@ -61,8 +61,9 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(source);
         refreshIndex();
 
-        AssetSearch search = new AssetSearch().setQuery("captain");
+        AssetSearch search = new AssetSearch();
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
+        assertEquals(1.0, searchService.search(search).getHits().getAt(0).getScore(), 0.0);
     }
 
     @Test
