@@ -55,7 +55,12 @@ public class JdbcUtils {
         sb.append(" SET ");
         for (String col: cols) {
             sb.append(col);
-            sb.append("=?,");
+            if (col.contains("=")) {
+                sb.append(",");
+            }
+            else {
+                sb.append("=?,");
+            }
         }
         sb.deleteCharAt(sb.length()-1);
         sb.append(" WHERE ");

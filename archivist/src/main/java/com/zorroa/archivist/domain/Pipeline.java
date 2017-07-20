@@ -18,6 +18,10 @@ public class Pipeline implements Loggable<Integer> {
      */
     private Integer id;
 
+    private Boolean versionUp;
+
+    private int version;
+
     @NotNull
     private PipelineType type;
 
@@ -65,6 +69,24 @@ public class Pipeline implements Loggable<Integer> {
 
     public Pipeline setProcessors(List<ProcessorRef> processors) {
         this.processors = processors;
+        return this;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public Pipeline setVersion(int version) {
+        this.version = version;
+        return this;
+    }
+
+    public Boolean getVersionUp() {
+        return versionUp;
+    }
+
+    public Pipeline setVersionUp(Boolean versionUp) {
+        this.versionUp = versionUp;
         return this;
     }
 

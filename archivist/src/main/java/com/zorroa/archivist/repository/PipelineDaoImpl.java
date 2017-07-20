@@ -29,6 +29,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
         result.setProcessors(Json.deserialize(rs.getString("json_processors"), ProcessorRef.LIST_OF));
         result.setType(PipelineType.values()[rs.getInt("int_type")]);
         result.setDescription(rs.getString("str_description"));
+        result.setVersion(rs.getInt("int_version"));
         return result;
     };
 
@@ -134,7 +135,8 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
                     "int_type",
                     "json_processors",
                     "str_description",
-                    "bool_standard");
+                    "bool_standard",
+                    "int_version=int_version+?");
 
     @Override
     public boolean update(int id, Pipeline spec) {
@@ -142,9 +144,14 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
         if (spec.isStandard()) {
             jdbc.update("UPDATE pipeline SET bool_standard=0 WHERE bool_standard=1");
         }
+        int incrementVersion = 0;
+        if (spec.getVersionUp() != null && spec.getVersionUp()) {
+            incrementVersion=1;
+        }
+
         return jdbc.update(UPDATE, spec.getName(), spec.getType().ordinal(),
                 Json.serializeToString(spec.getProcessors()), spec.getDescription(),
-                spec.isStandard(), id) == 1;
+                spec.isStandard(), incrementVersion, id) == 1;
     }
 
     @Override

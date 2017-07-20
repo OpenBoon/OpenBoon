@@ -75,6 +75,25 @@ public class PipelineDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testUpdateVersionUp() {
+        Pipeline update = new Pipeline();
+        update.setName("foo");
+        update.setDescription("foo bar");
+        update.setType(PipelineType.Batch);
+        update.setProcessors(Lists.newArrayList(new ProcessorRef().setClassName("bar.Bing")));
+        update.setVersionUp(true);
+
+        assertTrue(pipelineDao.update(pipeline.getId(), update));
+
+        pipeline = pipelineDao.refresh(pipeline);
+        assertEquals(2, pipeline.getVersion());
+
+        assertTrue(pipelineDao.update(pipeline.getId(), update));
+        pipeline = pipelineDao.refresh(pipeline);
+        assertEquals(3, pipeline.getVersion());
+    }
+
+    @Test
     public void testGet() {
         assertEquals(pipeline, pipelineDao.get(pipeline.getId()));
         assertEquals(pipeline, pipelineDao.get(pipeline.getName()));
