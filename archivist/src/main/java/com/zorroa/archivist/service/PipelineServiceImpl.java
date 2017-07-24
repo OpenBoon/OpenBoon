@@ -155,6 +155,28 @@ public class PipelineServiceImpl implements PipelineService {
         return result;
     }
 
+    @Override
+    public List<ProcessorRef> mungePipelines(List<Object> pipelineIds) {
+        List<ProcessorRef> refs = Lists.newArrayListWithCapacity(pipelineIds.size()*3);
+
+        for (Object id: pipelineIds) {
+            Pipeline pipeline;
+            if (id instanceof Number) {
+                pipeline = get((int) id);
+            }
+            else {
+                pipeline = get((String) id);
+            }
+
+            ProcessorRef ref = pluginService.getProcessorRef(
+                    "com.zorroa.core.processor.GroupProcessor");
+            ref.setExecute(pipeline.getProcessors());
+            refs.add(ref);
+        }
+
+        return refs;
+    }
+
     /**
      * Return true of the Object is a valid pipeline identifier, which is
      * a number > 0 or a string.

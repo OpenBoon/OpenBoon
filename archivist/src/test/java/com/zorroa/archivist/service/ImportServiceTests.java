@@ -3,15 +3,14 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.ImportSpec;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +40,29 @@ public class ImportServiceTests extends AbstractTest {
         ImportSpec spec = new ImportSpec();
         spec.setGenerators(ImmutableList.of(
                 new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+        job = importService.create(spec);
+    }
+
+    @Before
+    public void testCreateMultiplePipelines() throws IOException {
+
+        Pipeline p1 = pipelineService.create(new PipelineSpecV()
+                .setName("p1")
+                .setProcessors(ImmutableList.of(
+                        new ProcessorRef("com.zorroa.core.processor.GroupProcessor")))
+                .setDescription("p1")
+                .setType(PipelineType.Import));
+
+        Pipeline p2 = pipelineService.create(new PipelineSpecV()
+                .setName("p2")
+                .setProcessors(ImmutableList.of(
+                        new ProcessorRef("com.zorroa.core.processor.GroupProcessor")))
+                .setDescription("p2")
+                .setType(PipelineType.Import));
+
+        ImportSpec spec = new ImportSpec();
+        spec.setPipelineIds(ImmutableList.of(p1.getId(), p2.getName()));
+        spec.setName("go go go");
         job = importService.create(spec);
     }
 

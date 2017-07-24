@@ -92,7 +92,7 @@ public class IngestServiceImpl implements IngestService {
         }
 
         ImportSpec spec = new ImportSpec();
-        spec.setPipelineId(ingest.getPipelineId());
+        //spec.setPipelineId(ingest.getPipelineId());
         spec.setPipeline(ingest.getPipeline());
         spec.setGenerators(ingest.getGenerators());
         spec.setName("scheduled ingest " + ingest.getName());

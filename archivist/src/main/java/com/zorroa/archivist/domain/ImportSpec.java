@@ -28,9 +28,9 @@ public class ImportSpec {
     public List<ProcessorRef> pipeline;
 
     /**
-     * Utilize a pre-existing pipeline.  This could be the name or a numeric id.
+     * Load given pipeline ids in the give order
      */
-    public Object pipelineId;
+    public List<Object> pipelineIds;
 
     public List<ProcessorRef> getPipeline() {
         return pipeline;
@@ -41,12 +41,12 @@ public class ImportSpec {
         return this;
     }
 
-    public Object getPipelineId() {
-        return pipelineId;
+    public List<Object> getPipelineIds() {
+        return pipelineIds;
     }
 
-    public ImportSpec setPipelineId(Object pipelineId) {
-        this.pipelineId = pipelineId;
+    public ImportSpec setPipelineIds(List<Object> pipelineIds) {
+        this.pipelineIds = pipelineIds;
         return this;
     }
 

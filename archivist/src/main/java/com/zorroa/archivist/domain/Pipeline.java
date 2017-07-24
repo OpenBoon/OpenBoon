@@ -31,6 +31,8 @@ public class Pipeline implements Loggable<Integer> {
 
     private String description;
 
+    private boolean checkpoint;
+
     private boolean standard;
 
     @NotNull
@@ -87,6 +89,15 @@ public class Pipeline implements Loggable<Integer> {
 
     public Pipeline setVersionUp(Boolean versionUp) {
         this.versionUp = versionUp;
+        return this;
+    }
+
+    public boolean isCheckpoint() {
+        return checkpoint;
+    }
+
+    public Pipeline setCheckpoint(boolean checkpoint) {
+        this.checkpoint = checkpoint;
         return this;
     }
 

@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.gui;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.ImportSpec;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -93,7 +94,7 @@ public class ImportGuiController {
 
         ImportSpec spec = new ImportSpec();
         spec.setName(serverImportForm.getName());
-        spec.setPipelineId(serverImportForm.getPipelineId());
+        spec.setPipelineIds(Lists.newArrayList(serverImportForm.getPipelineId()));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         /**
@@ -140,7 +141,7 @@ public class ImportGuiController {
 
         ImportSpec spec = new ImportSpec();
         spec.setName("search import by " + SecurityUtils.getUsername());
-        spec.setPipelineId(searchImportForm.getPipelineId());
+        spec.setPipelineIds(ImmutableList.of(searchImportForm.getPipelineId()));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         String searchJson = searchImportForm.getSearch();

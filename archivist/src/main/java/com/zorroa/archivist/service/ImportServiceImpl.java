@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.zorroa.archivist.JdbcUtils.isValid;
 import static com.zorroa.archivist.domain.PipelineType.Import;
 
 /**
@@ -174,39 +175,27 @@ public class ImportServiceImpl implements ImportService {
          */
         Job job = jobService.launch(jspec);
 
-        List<ProcessorRef> execute = Lists.newArrayList();
-
         /**
-         * Add an ExpandCollector so we generate right into new tasks.
+         * Going to
          */
-        execute.add(
-                new ProcessorRef()
-                        .setClassName("com.zorroa.core.collector.ExpandCollector")
-                        .setLanguage("java"));
+        ProcessorRef expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector");
+        List<ProcessorRef> execute = Lists.newArrayList(expand);
 
-        /**
-         * Resolve the user supplied pipeline.
-         */
-        if (!isValidPipeline(spec.getPipelineId()) &&  spec.getPipeline() == null) {
-            Pipeline pl = pipelineService.getStandard();
-            spec.setPipelineId(pl.getId());
+        if (isValid(spec.getPipelineIds())) {
+            expand.setExecute(pipelineService.mungePipelines(spec.getPipelineIds()));
+        }
+        else {
+            expand.setExecute(pipelineService.getProcessors(null, spec.getPipeline()));
         }
 
-        List<ProcessorRef> pipeline = pipelineService.getProcessors(
-                spec.getPipelineId(), spec.getPipeline());
         /**
          * At the end we add an IndexDocumentCollector to index the results of our job.
          */
-        pipeline.add(
+        expand.addToExecute(
                 new ProcessorRef()
                         .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
                         .setLanguage("java")
                         .setArgs(ImmutableMap.of("importId", job.getJobId())));
-
-        /**
-         * Now finally, attach the pipeline to the expander as a sub execute list.
-         */
-        execute.get(0).setExecute(pipeline);
 
         /**
          * Now attach the pipeline to each generator, be sure to validate each processor
