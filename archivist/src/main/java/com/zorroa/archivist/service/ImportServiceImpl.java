@@ -175,9 +175,7 @@ public class ImportServiceImpl implements ImportService {
          */
         Job job = jobService.launch(jspec);
 
-        /**
-         * Going to
-         */
+
         ProcessorRef expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector");
         List<ProcessorRef> execute = Lists.newArrayList(expand);
 
@@ -185,7 +183,7 @@ public class ImportServiceImpl implements ImportService {
             expand.setExecute(pipelineService.mungePipelines(spec.getPipelineIds()));
         }
         else {
-            expand.setExecute(pipelineService.getProcessors(null, spec.getPipeline()));
+            expand.setExecute(pipelineService.getProcessors(null, spec.getProcessors()));
         }
 
         /**

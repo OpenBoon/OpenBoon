@@ -25,19 +25,19 @@ public class ImportSpec {
     /**
      * A custom pipeline to run the assets through. Can be null.
      */
-    public List<ProcessorRef> pipeline;
+    public List<ProcessorRef> processors;
 
     /**
      * Load given pipeline ids in the give order
      */
     public List<Object> pipelineIds;
 
-    public List<ProcessorRef> getPipeline() {
-        return pipeline;
+    public List<ProcessorRef> getProcessors() {
+        return processors;
     }
 
-    public ImportSpec setPipeline(List<ProcessorRef> pipeline) {
-        this.pipeline = pipeline;
+    public ImportSpec setProcessors(List<ProcessorRef> processors) {
+        this.processors = processors;
         return this;
     }
 
