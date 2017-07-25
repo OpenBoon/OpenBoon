@@ -343,7 +343,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
                         logger.warn("Failed to set permissions, ", thrown);
                     }
                 })
-                .setBulkActions(1000)
+                .setBulkActions(250)
                 .setConcurrentRequests(0)
                 .build();
 
