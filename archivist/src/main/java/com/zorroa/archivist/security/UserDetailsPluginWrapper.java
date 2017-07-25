@@ -54,13 +54,11 @@ public class UserDetailsPluginWrapper implements LdapAuthoritiesPopulator {
             user = userService.create(spec, "LDAP");
         }
 
-        Collection<? extends GrantedAuthority> result;
         if (plugin != null) {
-            result = importFromPlugin(user);
+            importFromPlugin(user);
         }
-        else {
-            result = getNativeAuthorities(user);
-        }
+
+        Collection<? extends GrantedAuthority> result = getNativeAuthorities(user);
         ctx.setAttributeValue("authorities", result);
         ctx.setAttributeValue("user", user);
         return result;
@@ -70,7 +68,7 @@ public class UserDetailsPluginWrapper implements LdapAuthoritiesPopulator {
         return InternalPermission.upcast(userService.getPermissions(user));
     }
 
-    public Collection<? extends GrantedAuthority> importFromPlugin(User user) {
+    public void importFromPlugin(User user) {
         try {
             List<String> groups = plugin.getGroups(user.getUsername());
             List<Permission> result = Lists.newArrayListWithExpectedSize(groups.size());
@@ -88,11 +86,8 @@ public class UserDetailsPluginWrapper implements LdapAuthoritiesPopulator {
             }
 
             userService.addPermissions(user, result);
-            return userService.getPermissions(user);
         } catch (Exception e) {
             logger.warn("failed to transfer authorities ", e);
-            return Lists.newArrayList();
         }
     }
-
 }
