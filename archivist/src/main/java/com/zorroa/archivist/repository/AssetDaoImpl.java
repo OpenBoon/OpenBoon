@@ -12,6 +12,8 @@ import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequestBuilder;
@@ -135,9 +137,16 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private UpdateRequestBuilder prepareUpsert(Document source) {
         byte[] doc = Json.serialize(source.getDocument());
-        return client.prepareUpdate(getIndex(), source.getType(), source.getId())
+
+        IndexRequestBuilder idx = client.prepareIndex(getIndex(), source.getType(), source.getId())
+                .setOpType(source.isReplace() ? IndexRequest.OpType.INDEX :  IndexRequest.OpType.CREATE)
+                .setSource(doc);
+
+        UpdateRequestBuilder upd = client.prepareUpdate(getIndex(), source.getType(), source.getId())
                 .setDoc(doc)
-                .setUpsert(doc);
+                .setUpsert(idx.request());
+
+        return upd;
     }
 
     private static final Pattern[] RECOVERABLE_BULK_ERRORS = new Pattern[] {

@@ -1,10 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.processor.Source;
@@ -173,6 +170,21 @@ public class AssetDaoTests extends AbstractTest {
         assetDao.update(asset1.getId(), attrs);
         Asset asset2 = assetDao.get(asset1.getId());
         assertEquals(100, (int) asset2.getAttr("foo.bar"));
+    }
+
+    @Test
+    public void testBatchIndexWithReplace() {
+
+        Source source1 = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        assetDao.index(Lists.newArrayList(source1));
+
+        source1.removeAttr("keywords");
+        source1.setReplace(true);
+        assetDao.index(Lists.newArrayList(source1));
+        refreshIndex();
+
+        Asset a = assetDao.get(source1.getId());
+        assertTrue(a.attrExists("keywords"));
     }
 
     @Test
