@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.JobDao;
@@ -14,14 +15,14 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.cluster.thrift.ExpandT;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.NetworkEnvironment;
-import com.zorroa.archivist.domain.JobId;
-import com.zorroa.archivist.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.Expand;
+import com.zorroa.sdk.processor.ExpandFrame;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -41,6 +42,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A service for creating and manipulating jobs.
@@ -160,32 +162,73 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Task expand(Task parent, ExpandT expand) {
+    public List<Task> expand(Task parent, ExpandT expand) {
         if (logger.isDebugEnabled()) {
             logger.debug("Expanding: {}", Json.prettyString(expand));
         }
 
-        ZpsScript expandScript = Json.deserialize(expand.getScript(), ZpsScript.class);
+        Expand expandScript = Json.deserialize(expand.getScript(), Expand.class);
+        Map<String, ZpsScript> expandScripts = Maps.newHashMap();
 
-        /*
-         * If the expand script is null, inherit the execute from the parent task.
-         */
+        ZpsScript parentScript = null;
         if (expandScript.getExecute() == null) {
             try {
-                ZpsScript parentScript = Json.Mapper.readValue(new File(parent.getScriptPath()), ZpsScript.class);
-                expandScript.setExecute(parentScript.getExecute());
+                parentScript = Json.Mapper.readValue(new File(parent.getScriptPath()), ZpsScript.class);
             } catch (IOException e) {
                 throw new ArchivistWriteException("Expand with inherited execute failure", e);
             }
         }
 
-        TaskSpec spec = new TaskSpec();
-        spec.setJobId(parent.getJobId());
-        spec.setName(expand.getName());
-        spec.setScript(Json.serializeToString(expandScript));
-        spec.setOrder(parent.getOrder());
-        spec.setParentTaskId(parent.getTaskId());
-        return createTask(spec);
+        if (expandScript.getFrames() != null) {
+            for (ExpandFrame exframe : expandScript.getFrames()) {
+                String key;
+
+                if (exframe.getPipelines() != null) {
+                    key = "pipelines:" + String.join(":", exframe.getPipelines());
+                } else if (parentScript != null) {
+                    key = "parentScript";
+                } else {
+                    key = "suppliedRefs";
+                }
+
+                ZpsScript script = expandScripts.get(key);
+                if (script == null) {
+                    script = new ZpsScript();
+                    expandScripts.put(key, script);
+
+                    if (key == "parentScript") {
+                        script.setExecute(parentScript.getExecute());
+                    } else if (key == "suppliedRefs") {
+                        script.setExecute(expandScript.getExecute());
+                    } else if (key.startsWith("pipelines:")) {
+                        List<ProcessorRef> refs = Lists.newArrayList();
+                        for (String pipelineName : exframe.getPipelines()) {
+                            Pipeline p = pipelineDao.get(pipelineName);
+                            refs.addAll(p.getProcessors());
+                        }
+                        refs.add(new ProcessorRef()
+                                .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
+                                .setLanguage("java")
+                                .setArgs(ImmutableMap.of("importId", parent.getJobId())));
+                        script.setExecute(refs);
+                    }
+                    script.setName(key);
+                }
+                script.addToOver(exframe.getDocument()); }
+        }
+
+        List<Task> tasks = Lists.newArrayListWithCapacity(expandScripts.size());
+        for (ZpsScript scr: expandScripts.values()) {
+            TaskSpec spec = new TaskSpec();
+            spec.setJobId(parent.getJobId());
+            spec.setName(String.format("expand:%s - %d frames / %d processors",
+                scr.getName(), scr.getOverCount(), scr.getExecuteCount()));
+            spec.setScript(Json.serializeToString(scr));
+            spec.setOrder(parent.getOrder());
+            spec.setParentTaskId(parent.getTaskId());
+            tasks.add(createTask(spec));
+        }
+        return tasks;
     }
 
     @Override

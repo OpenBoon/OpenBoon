@@ -29,7 +29,7 @@ public interface JobService {
 
     boolean createParentDepend(TaskId task);
 
-    Task expand(Task task, ExpandT expand);
+    List<Task> expand(Task task, ExpandT expand);
 
     /**
      * Create a new task with a validated TaskSpecV.  The validated spec

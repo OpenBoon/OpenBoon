@@ -8,7 +8,10 @@ import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.common.cluster.thrift.ExpandT;
 import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.domain.TaskState;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.Expand;
+import com.zorroa.sdk.processor.ExpandFrame;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;
@@ -55,10 +58,11 @@ public class JobExecutorServiceTests extends AbstractTest {
         assertEquals(0, job.getCounts().getTasksQueued());
         assertEquals(0, job.getCounts().getTasksWaiting());
 
-        ZpsScript expand = new ZpsScript();
+        Expand expand = new Expand();
         expand.setExecute(ImmutableList.of(new ProcessorRef()
                 .setClassName("foo")
                 .setLanguage("java")));
+        expand.setFrames(ImmutableList.of(new ExpandFrame(new Document())));
 
         jobService.expand(jobService.getAllTasks(job.getJobId(), Pager.first()).get(0), new ExpandT()
                 .setName("foo")

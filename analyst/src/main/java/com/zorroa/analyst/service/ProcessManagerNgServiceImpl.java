@@ -14,12 +14,12 @@ import com.zorroa.common.cluster.client.MasterServerClient;
 import com.zorroa.common.cluster.thrift.*;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.NetworkEnvironment;
+import com.zorroa.sdk.processor.Expand;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.MetaZpsExecutor;
 import com.zorroa.sdk.zps.ZpsError;
-import com.zorroa.sdk.zps.ZpsScript;
 import com.zorroa.sdk.zps.ZpsTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -236,7 +236,8 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         }
 
         if (reaction.getExpand() != null) {
-            ZpsScript script = reaction.getExpand();
+            Expand script = reaction.getExpand();
+
             ExpandT expand = new ExpandT();
             expand.setScript(Json.serialize(script));
             expand.setName(script.getName());
