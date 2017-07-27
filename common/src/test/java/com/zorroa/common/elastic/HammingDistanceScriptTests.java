@@ -25,7 +25,7 @@ public class HammingDistanceScriptTests extends AbstractTest {
 
         HammingDistanceScript script = new HammingDistanceScript(map);
         double score = script.charHashesComparison(new BytesRef("AAAA".getBytes()));
-        assertEquals(100, score, 0);
+        assertEquals(1, score, 0);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class HammingDistanceScriptTests extends AbstractTest {
 
         HammingDistanceScript script = new HammingDistanceScript(map);
         double score = script.charHashesComparison(new BytesRef("AAPP".getBytes()));
-        assertEquals(50, score, 0);
+        assertEquals(.5, score, 0);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class HammingDistanceScriptTests extends AbstractTest {
         assertEquals(15, script.getResolution());
 
         double score = script.charHashesComparison(new BytesRef("#0060FAAPP".getBytes()));
-        assertEquals(50, score, 0);
+        assertEquals(.5, score, 0);
     }
 
     /**

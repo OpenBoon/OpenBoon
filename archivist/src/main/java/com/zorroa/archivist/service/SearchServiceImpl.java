@@ -568,13 +568,20 @@ public class SearchServiceImpl implements SearchService {
             args.put("hashes", filter.getHamming().getHashes());
             args.put("minScore", filter.getHamming().getMinScore());
             if (filter.getHamming().getWeights() != null) args.put("weights", filter.getHamming().getWeights());
-            FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(ScoreFunctionBuilders.scriptFunction(new Script(
+
+            FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(
+                    ScoreFunctionBuilders.scriptFunction(new Script(
                     "hammingDistance", ScriptService.ScriptType.INLINE, "native",
                     args)));
-            fsqb.setMinScore(filter.getHamming().getMinScore());
-            fsqb.scoreMode("max");
+
+            fsqb.setMinScore(filter.getHamming().getMinScore() / 100.0f);
             fsqb.boostMode("replace");
-            query.must(fsqb);
+            fsqb.scoreMode("sum");
+
+            BoolQueryBuilder bq = QueryBuilders.boolQuery();
+            bq.should(QueryBuilders.hasChildQuery("element", fsqb).scoreMode("max"));
+            bq.should(fsqb);
+            query.must(bq);
         }
 
         // Recursively add bool sub-filters for must, must_not and should

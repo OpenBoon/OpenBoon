@@ -137,7 +137,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     private UpdateRequestBuilder prepareUpsert(Document source) {
         byte[] doc = Json.serialize(source.getDocument());
-
         IndexRequestBuilder idx = client.prepareIndex(getIndex(), source.getType(), source.getId())
                 .setOpType(source.isReplace() ? IndexRequest.OpType.INDEX :  IndexRequest.OpType.CREATE)
                 .setSource(doc);
@@ -146,6 +145,10 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setDoc(doc)
                 .setUpsert(idx.request());
 
+        if (source.getParentId()!=null) {
+            idx.setParent(source.getParentId());
+            upd.setParent(source.getParentId());
+        }
         return upd;
     }
 

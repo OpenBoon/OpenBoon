@@ -27,11 +27,14 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.LongAdder;
@@ -78,6 +81,8 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
 
     PermissionSchema defaultPerms = new PermissionSchema();
 
+    Executor executor = Executors.newFixedThreadPool(4);
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         setDefaultPermissions();
@@ -119,8 +124,11 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
      * Namespaces that are only populated via the API.  IF people manipulate these
      * wrong via the asset API then it would corrupt the asset.
      */
-    private static final Set<String> PROTECTED_NS = ImmutableSet.of(
+    private static final Set<String> NS_PROTECTED_API = ImmutableSet.of(
             "permissions", "zorroa", "links");
+
+    private static final Set<String> NS_ELEMENT_REMOVE = ImmutableSet.of(
+            "source", "origin");
 
     @Override
     public AssetIndexResult index(AssetIndexSpec spec) {
@@ -135,8 +143,29 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
          * the proper value.
          */
         for (Document source: spec.getSources()) {
-            for (String ns: PROTECTED_NS) {
-                source.removeAttr(ns);
+
+            /**
+             * Remove parts protected by API.
+             */
+            NS_PROTECTED_API.forEach(n->source.removeAttr(n));
+
+            /**
+             * For elements we remove all the stuff we don't need, including
+             * the file.
+             */
+            if (source.getType().equals("element")) {
+                final String path = source.getAttr("source.path", String.class);
+                executor.execute(() -> {
+                    try {
+                        Files.deleteIfExists(Paths.get(path));
+                    } catch (Exception e) {
+                        logger.warn("Failed to remove element: {}", path);
+                    }
+                });
+
+                NS_ELEMENT_REMOVE.forEach(n -> source.removeAttr(n));
+                source.setReplace(true);
+                continue;
             }
 
             Map<String, Object> protectedValues =
@@ -146,10 +175,8 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
                     protectedValues.getOrDefault("permissions", ImmutableMap.of()), PermissionSchema.class);
 
             if (source.getPermissions()!= null) {
-
                 for (Map.Entry<String, Integer> entry : source.getPermissions().entrySet()) {
                     try {
-                        // This is cached.
                         Permission perm = userService.getPermission(entry.getKey());
                         if ((entry.getValue() & 1) == 1) {
                             perms.addToRead(perm.getId());

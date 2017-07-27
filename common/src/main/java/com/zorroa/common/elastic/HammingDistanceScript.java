@@ -25,7 +25,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     private final List<String> charHashes;
     private final List<Float> weights;
     private int length = 0;
-    private int minScore = 0;
+    private double minScore = 0;
     private int resolution;
     private final boolean header;
     private final char version;
@@ -41,7 +41,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
             field = field.replaceAll("\\.raw$", "");
         }
         fieldDotRaw = field + ".raw";
-        minScore = (int) params.getOrDefault("minScore", 1);
+        minScore = (int) params.getOrDefault("minScore", 1) / NORM;
         resolution = 15;
 
         List<String> _hashes = (List<String>) params.get("hashes");
@@ -145,7 +145,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
         }
 
         double score = charHashesComparison(strings.getBytesValue());
-        return score >= minScore ? score : 0;
+        return score >= minScore ? score : NO_SCORE;
     }
 
     public final double charHashesComparison(BytesRef fieldValue) {
@@ -176,11 +176,12 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
             }
             score += (weights.get(i) * hammingDistance(fieldValue, hash));
         }
-        return normalize(score);
+        score = normalize(score);
+        return score;
     }
 
     public final double normalize(double score) {
-        score = (score / possibleScore) * NORM;
+        score = (score / possibleScore);
         return score;
     }
 

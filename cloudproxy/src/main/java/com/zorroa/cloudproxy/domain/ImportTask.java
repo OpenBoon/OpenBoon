@@ -3,6 +3,7 @@ package com.zorroa.cloudproxy.domain;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.zorroa.sdk.processor.Expand;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
@@ -112,7 +113,7 @@ public class ImportTask {
                 "progress", threadPool.getCompletedTaskCount() / (double) threadPool.getTaskCount());
     }
 
-    private void expand(ZpsScript expand) {
+    private void expand(Expand expand) {
         if (canceled.get()) {
             return;
         }
@@ -123,11 +124,15 @@ public class ImportTask {
                     Path scriptPath = null;
                     MetaZpsExecutor zpsExecutor = null;
                     try {
-                        if (expand.getOver() != null) {
-                            logger.info("Processing {} assets", expand.getOver().size());
+                        if (expand.getFrames() != null) {
+                            logger.info("Processing {} assets", expand.getFrames().size());
                         }
                         scriptPath = workDir.resolve(UUID.randomUUID().toString() + ".zps");
-                        Json.Mapper.writeValue(scriptPath.toFile(), expand);
+                        Json.Mapper.writeValue(scriptPath.toFile(),
+                                new ZpsScript()
+                                        .setOver(expand.getDocuments())
+                                        .setExecute(expand.getExecute())
+                                        .setName(expand.getName()));
 
                         ZpsTask zpsTask = new ZpsTask()
                                 .setArgs(args)
