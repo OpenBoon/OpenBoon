@@ -210,6 +210,20 @@ public class AssetDaoTests extends AbstractTest {
     }
 
     @Test
+    public void testReplace() {
+        Source source1 = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        source1.setReplace(true);
+        AssetIndexResult rsp  = assetDao.index(Lists.newArrayList(source1));
+        assertEquals(rsp.replaced, 1);
+        assertEquals(rsp.created, 0);
+
+        rsp = assetDao.index(Lists.newArrayList(
+                new Source(getTestImagePath("set01/standard/visa12.jpg"))));
+        assertEquals(rsp.replaced, 0);
+        assertEquals(rsp.created, 1);
+    }
+
+    @Test
     public void testRetryBrokenFields() throws InterruptedException { {
         List<Document> assets = ImmutableList.of(
                 new Source(getTestImagePath("set01/standard/faces.jpg")));
