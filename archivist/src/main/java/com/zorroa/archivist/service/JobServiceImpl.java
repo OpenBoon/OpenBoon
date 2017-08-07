@@ -367,9 +367,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public boolean setTaskRunning(Task task) {
-        logger.info("setting task state to running");
         if (setTaskState(task, TaskState.Running, TaskState.Queued)) {
-            logger.info("sucess");
             decrementStats(task);
             return true;
         }
@@ -384,7 +382,6 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void decrementStats(Task task) {
-        logger.info("Resetting stats");
         taskDao.clearStats(task.getTaskId());
         jobDao.decrementStats(task.getJobId(), task.getStats());
     }
