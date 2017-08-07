@@ -184,7 +184,7 @@ public class AssetDaoTests extends AbstractTest {
         refreshIndex();
 
         Asset a = assetDao.get(source1.getId());
-        assertTrue(a.attrExists("keywords"));
+        assertFalse(a.attrExists("keywords"));
     }
 
     @Test

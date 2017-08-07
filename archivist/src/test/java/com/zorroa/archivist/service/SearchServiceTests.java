@@ -5,11 +5,15 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
+import com.zorroa.archivist.Color;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.AssetIndexSpec;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
@@ -681,7 +685,7 @@ public class SearchServiceTests extends AbstractTest {
          * score, to result in a score higher than the hamming score.
          */
         float score = searchService.search(search).getHits().hits()[0].getScore();
-        assertTrue(score >= 100);
+        assertTrue(score >= .5);
     }
 
     @Test
