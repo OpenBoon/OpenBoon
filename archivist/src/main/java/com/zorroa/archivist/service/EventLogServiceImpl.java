@@ -1,16 +1,12 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.config.ArchivistConfiguration;
-import com.zorroa.archivist.domain.EventLogSearch;
-import com.zorroa.archivist.domain.Task;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserLogSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.EventLogDao;
 import com.zorroa.archivist.security.SecureSingleThreadExecutor;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
 import com.zorroa.sdk.domain.PagedList;
-import com.zorroa.sdk.domain.Pager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +58,10 @@ public class EventLogServiceImpl implements EventLogService {
     @Override
     public void log(Task task, List<TaskErrorT> errors) {
         eventLogDao.create(task, errors);
-        jobService.incrementJobStats(task.getJobId(), 0, errors.size(), 0);
-        jobService.incrementTaskStats(task.getTaskId(), 0, errors.size(), 0);
+        TaskStatsAdder adder = new TaskStatsAdder();
+        adder.error = errors.size();
+
+        jobService.incrementStats(task, adder);
     }
 
     @Override

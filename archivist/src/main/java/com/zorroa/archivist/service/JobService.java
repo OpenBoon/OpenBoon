@@ -96,18 +96,23 @@ public interface JobService {
     boolean setTaskQueued(TaskId script, String host);
 
     boolean setTaskCompleted(Task task, int exitStatus);
+
+    boolean setTaskRunning(Task task);
+
+    void incrementStats(TaskId task, TaskStatsAdder adder);
+
+    void decrementStats(Task task);
+
     /**
      * Increment asset related stats.
      *
      * @param id
-     * @param success
-     * @param errors
-     * @param warnings
+     * @param addr
      * @return
      */
-    boolean incrementJobStats(int id, int success, int errors, int warnings);
+    //boolean incrementJobStats(int id, TaskStatsAdder addr);
 
-    boolean incrementTaskStats(int id, int success, int errors, int warnings);
+    //boolean incrementTaskStats(int id, TaskStatsAdder addr);
 
     /**
      * Return a list of jobs matching the given criteria.

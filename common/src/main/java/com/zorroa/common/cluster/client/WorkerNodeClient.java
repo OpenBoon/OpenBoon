@@ -16,10 +16,14 @@ public class WorkerNodeClient extends AbtractThriftClient {
 
     public WorkerNodeClient(String host, int port) {
         super(host, port);
+        this.setMaxRetries(2);
+        this.setConnectTimeout(5000);
     }
 
     public WorkerNodeClient(String address) {
         super(address);
+        this.setMaxRetries(2);
+        this.setConnectTimeout(5000);
     }
 
     public int getDefaultPort() {

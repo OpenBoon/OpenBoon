@@ -23,7 +23,7 @@ public class Job implements JobId {
     private long timeUpdated;
 
     private Counts counts;
-    private Stats stats;
+    private AssetStats stats;
 
     /**
      * Don't want to expose this to the client side because
@@ -95,11 +95,11 @@ public class Job implements JobId {
         return this;
     }
 
-    public Stats getStats() {
+    public AssetStats getStats() {
         return stats;
     }
 
-    public Job setStats(Stats stats) {
+    public Job setStats(AssetStats stats) {
         this.stats = stats;
         return this;
     }
@@ -287,46 +287,5 @@ public class Job implements JobId {
     /**
      * Counts and data related to the jobs output.
      */
-    public static class Stats {
-        private int frameSuccessCount;
-        private int frameErrorCount;
-        private int frameWarningCount;
-        private int frameTotalCount;
 
-        public int getFrameSuccessCount() {
-            return frameSuccessCount;
-        }
-
-        public Stats setFrameSuccessCount(int frameSuccessCount) {
-            this.frameSuccessCount = frameSuccessCount;
-            return this;
-        }
-
-        public int getFrameErrorCount() {
-            return frameErrorCount;
-        }
-
-        public Stats setFrameErrorCount(int frameErrorCount) {
-            this.frameErrorCount = frameErrorCount;
-            return this;
-        }
-
-        public int getFrameWarningCount() {
-            return frameWarningCount;
-        }
-
-        public Stats setFrameWarningCount(int frameWarningCount) {
-            this.frameWarningCount = frameWarningCount;
-            return this;
-        }
-
-        public int getFrameTotalCount() {
-            return frameTotalCount;
-        }
-
-        public Stats setFrameTotalCount(int frameTotalCount) {
-            this.frameTotalCount = frameTotalCount;
-            return this;
-        }
-    }
 }

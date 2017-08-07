@@ -192,11 +192,17 @@ public class TaskDaoTests extends AbstractTest {
 
     @Test
     public void incrementTaskStats() {
-        taskDao.incrementStats(task.getTaskId(), 1, 2, 3);
+        TaskStatsAdder addr = new TaskStatsAdder();
+        addr.create = 1;
+        addr.error = 2;
+        addr.warning = 3;
+
+
+        taskDao.incrementStats(task.getTaskId(), addr);
         task = taskDao.get(task.getTaskId());
-        assertEquals(1, task.getStats().getFrameSuccessCount());
-        assertEquals(2, task.getStats().getFrameErrorCount());
-        assertEquals(3, task.getStats().getFrameWarningCount());
+        assertEquals(1, task.getStats().getAssetCreatedCount());
+        assertEquals(2, task.getStats().getAssetErrorCount());
+        assertEquals(3, task.getStats().getAssetWarningCount());
     }
 
     private void updateState(final long time, TaskState state) {

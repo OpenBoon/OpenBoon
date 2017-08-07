@@ -3,9 +3,10 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.Task;
-import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.archivist.domain.TaskId;
+import com.zorroa.archivist.domain.TaskSpec;
+import com.zorroa.archivist.domain.TaskStatsAdder;
+import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -34,7 +35,9 @@ public interface TaskDao {
 
     boolean setExitStatus(TaskId task, int exitStatus);
 
-    boolean incrementStats(int id, int success, int errors, int warnings);
+    boolean incrementStats(int id, TaskStatsAdder addr);
+
+    boolean clearStats(int id);
 
     TaskState getState(TaskId task, boolean forUpdate);
 

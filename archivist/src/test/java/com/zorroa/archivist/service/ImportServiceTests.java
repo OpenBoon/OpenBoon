@@ -107,9 +107,9 @@ public class ImportServiceTests extends AbstractTest {
         assertEquals(0, job.getCounts().getTasksSuccess());
         assertEquals(0, job.getCounts().getTasksFailure());
 
-        assertEquals(0, job.getStats().getFrameTotalCount());
-        assertEquals(0, job.getStats().getFrameSuccessCount());
-        assertEquals(0, job.getStats().getFrameErrorCount());
-        assertEquals(0, job.getStats().getFrameWarningCount());
+        assertEquals(0, job.getStats().getAssetTotalCount());
+        assertEquals(0, job.getStats().getAssetCreatedCount());
+        assertEquals(0, job.getStats().getAssetErrorCount());
+        assertEquals(0, job.getStats().getAssetWarningCount());
     }
 }

@@ -13,6 +13,7 @@ public class TaskSpec implements JobId {
     private Integer jobId;
     private Integer parentTaskId;
     private String script;
+    private int assetCount = 0;
     private int order = Task.ORDER_DEFAULT;
 
     public TaskSpec() {
@@ -71,6 +72,15 @@ public class TaskSpec implements JobId {
 
     public TaskSpec setOrder(int order) {
         this.order = order;
+        return this;
+    }
+
+    public int getAssetCount() {
+        return assetCount;
+    }
+
+    public TaskSpec setAssetCount(int assetCount) {
+        this.assetCount = assetCount;
         return this;
     }
 }

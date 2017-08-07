@@ -6,6 +6,7 @@ package com.zorroa.archivist.cluster;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Task;
+import com.zorroa.archivist.domain.TaskStatsAdder;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.service.AnalystService;
 import com.zorroa.archivist.service.EventLogService;
@@ -101,7 +102,7 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
         }
         try {
             Task t = taskDao.get(id);
-            jobService.setTaskState(t, TaskState.Running, TaskState.Queued);
+            jobService.setTaskRunning(t);
         } catch (Exception e) {
             /**
              * Don't let this bubble out back to analyst.
@@ -147,12 +148,10 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
         if (id < 1) {
             return;
         }
+        TaskStatsAdder adder = new TaskStatsAdder(stats);
         try {
             Task t = taskDao.get(id);
-            jobService.incrementJobStats(t.getJobId(), stats.getSuccessCount(),
-                    stats.getErrorCount(), stats.getWarningCount());
-            jobService.incrementTaskStats(t.getTaskId(), stats.getSuccessCount(),
-                    stats.getErrorCount(), stats.getWarningCount());
+            jobService.incrementStats(t, adder);
         } catch (Exception e) {
             /**
              * Don't let this bubble out back to analyst.

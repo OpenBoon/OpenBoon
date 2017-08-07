@@ -27,7 +27,7 @@ public class Task implements TaskId {
     private String scriptPath;
     private String logPath;
 
-    private Stats stats;
+    private AssetStats stats;
 
     public int getId() {
         return taskId;
@@ -159,56 +159,13 @@ public class Task implements TaskId {
         }
     }
 
-    public Stats getStats() {
+    public AssetStats getStats() {
         return stats;
     }
 
-    public Task setStats(Stats stats) {
+    public Task setStats(AssetStats stats) {
         this.stats = stats;
         return this;
-    }
-
-    public static class Stats {
-        private int frameSuccessCount;
-        private int frameErrorCount;
-        private int frameWarningCount;
-        private int frameTotalCount;
-
-        public int getFrameSuccessCount() {
-            return frameSuccessCount;
-        }
-
-        public Stats setFrameSuccessCount(int frameSuccessCount) {
-            this.frameSuccessCount = frameSuccessCount;
-            return this;
-        }
-
-        public int getFrameErrorCount() {
-            return frameErrorCount;
-        }
-
-        public Stats setFrameErrorCount(int frameErrorCount) {
-            this.frameErrorCount = frameErrorCount;
-            return this;
-        }
-
-        public int getFrameWarningCount() {
-            return frameWarningCount;
-        }
-
-        public Stats setFrameWarningCount(int frameWarningCount) {
-            this.frameWarningCount = frameWarningCount;
-            return this;
-        }
-
-        public int getFrameTotalCount() {
-            return frameTotalCount;
-        }
-
-        public Stats setFrameTotalCount(int frameTotalCount) {
-            this.frameTotalCount = frameTotalCount;
-            return this;
-        }
     }
 
     public String getScriptPath() {

@@ -77,6 +77,9 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     UserService userService;
 
     @Autowired
+    JobService jobService;
+
+    @Autowired
     Client client;
 
     PermissionSchema defaultPerms = new PermissionSchema();
@@ -223,7 +226,28 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
         }
 
         AssetIndexResult result = assetDao.index(spec.getSources());
-        if (result.created + result.updated > 0) {
+        TaskStatsAdder addr = new TaskStatsAdder(result);
+
+        if (spec.getTaskId() != null && spec.getJobId() != null) {
+            jobService.incrementStats(new TaskId() {
+                @Override
+                public Integer getJobId() {
+                    return spec.getJobId();
+                }
+
+                @Override
+                public Integer getTaskId() {
+                    return spec.getTaskId();
+                }
+
+                @Override
+                public Integer getParentTaskId() {
+                    return null;
+                }
+            }, addr);
+        }
+
+        if (result.created + result.updated + result.replaced > 0) {
 
             /**
              * TODO: make these 1 thread pool

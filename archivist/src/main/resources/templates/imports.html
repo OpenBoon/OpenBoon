@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:class="${job.stats.frameErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:each="job: ${imports}" th:id="${'imports-' + job.id}" th:attr="data-href=${'/gui/imports/' + job.id}">
+            <tr th:class="${job.stats.assetErrorCount > 0 ? 'clickable-row danger' : 'clickable-row'}" th:each="job: ${imports}" th:id="${'imports-' + job.id}" th:attr="data-href=${'/gui/imports/' + job.id}">
                 <td class="vert-align">
                     <div th:include="fragments/job :: state_label"/>
                 </td>
@@ -33,7 +33,7 @@
                 <td class="vert-align" th:text="${job.user.username}"></td>
                 <td class="vert-align" th:text="${#dates.format(job.timeStarted, 'dd MMM yyyy HH:mm')}"></td>
                 <td class="vert-align" th:text="${job.counts.tasksRunning}"></td>
-                <td class="vert-align" th:text="${job.stats.frameErrorCount}"></td>
+                <td class="vert-align" th:text="${job.stats.assetErrorCount}"></td>
                 <td class="col-md-4 vert-align">
                     <div th:include="fragments/job :: progress"/>
                 </td>

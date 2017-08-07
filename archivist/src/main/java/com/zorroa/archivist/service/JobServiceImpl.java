@@ -247,6 +247,7 @@ public class JobServiceImpl implements JobService {
         ts.setJobId(spec.getJobId());
         ts.setParentTaskId(null);
         ts.setOrder(Task.ORDER_DEFAULT);
+        ts.setAssetCount(spec.getDocs() == null ? 0 : spec.getDocs().size());
 
         ZpsScript script = new ZpsScript();
         script.setOver(spec.getDocs());
@@ -273,6 +274,9 @@ public class JobServiceImpl implements JobService {
     }
 
     public Task createTask(TaskSpec spec) {
+
+        ZpsScript script = Json.deserialize(spec.getScript(), ZpsScript.class);
+        spec.setAssetCount(script.getOverCount());
 
         /**
          * Create the first task which is just the script itself.
@@ -360,15 +364,42 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
+
     @Override
-    public boolean incrementJobStats(int id, int success, int errors, int warnings) {
-        return jobDao.incrementStats(id, success, errors, warnings);
+    public boolean setTaskRunning(Task task) {
+        logger.info("setting task state to running");
+        if (setTaskState(task, TaskState.Running, TaskState.Queued)) {
+            logger.info("sucess");
+            decrementStats(task);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public boolean incrementTaskStats(int id, int success, int errors, int warnings) {
-        return taskDao.incrementStats(id, success, errors, warnings);
+    public void incrementStats(TaskId task, TaskStatsAdder adder) {
+        taskDao.incrementStats(task.getTaskId(), adder);
+        jobDao.incrementStats(task.getJobId(), adder);
     }
+
+    @Override
+    public void decrementStats(Task task) {
+        logger.info("Resetting stats");
+        taskDao.clearStats(task.getTaskId());
+        jobDao.decrementStats(task.getJobId(), task.getStats());
+    }
+
+    /*
+    @Override
+    public boolean incrementJobStats(int id, TaskStatsAdder adder) {
+        return jobDao.incrementStats(id, adder);
+    }
+
+    @Override
+    public boolean incrementTaskStats(int id, TaskStatsAdder adder) {
+        return taskDao.incrementStats(id, adder);
+    }
+    */
 
     @Override
     public PagedList<Job> getAll(Pager page, JobFilter filter) {

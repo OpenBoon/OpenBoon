@@ -3,11 +3,9 @@ package com.zorroa.archivist.repository;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.Task;
-import com.zorroa.archivist.domain.TaskSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.NetworkEnvironment;
-import com.zorroa.archivist.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -83,7 +81,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }, keyHolder);
         int id = keyHolder.getKey().intValue();
 
-        jdbc.update("INSERT INTO task_stat (pk_task, pk_job) VALUES (?, ?)", id, task.getJobId());
+        jdbc.update("INSERT INTO task_stat (pk_task, pk_job, int_asset_total_count) VALUES (?, ?, ?)",
+                id, task.getJobId(), task.getAssetCount());
         return get(id);
     }
 
@@ -102,15 +101,34 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "UPDATE " +
                 "task_stat " +
             "SET " +
-                "int_frame_success_count=int_frame_success_count+?," +
-                "int_frame_error_count=int_frame_error_count+?,"+
-                "int_frame_warning_count=int_frame_warning_count+? "+
+                "int_asset_create_count=int_asset_create_count+?," +
+                "int_asset_update_count=int_asset_update_count+?," +
+                "int_asset_warning_count=int_asset_warning_count+?," +
+                "int_asset_error_count=int_asset_error_count+?,"+
+                "int_asset_replace_count=int_asset_replace_count+? "+
             "WHERE " +
                 "pk_task=?";
 
     @Override
-    public boolean incrementStats(int id, int success, int errors, int warnings) {
-        return jdbc.update(INC_STATS, success, errors, warnings, id) == 1;
+    public boolean incrementStats(int id, TaskStatsAdder addr) {
+        return jdbc.update(INC_STATS, addr.create, addr.update, addr.warning, addr.error, addr.replace, id) == 1;
+    }
+
+    private static final String CLEAR_STATS =
+            "UPDATE " +
+                    "task_stat " +
+            "SET " +
+                "int_asset_create_count=0," +
+                "int_asset_update_count=0," +
+                "int_asset_warning_count=0," +
+                "int_asset_error_count=0,"+
+                "int_asset_replace_count=0 "+
+            "WHERE " +
+                    "pk_task=?";
+
+    @Override
+    public boolean clearStats(int id) {
+        return jdbc.update(CLEAR_STATS, id) == 1;
     }
 
     @Override
@@ -247,6 +265,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         }
 
         t.setEnv(Json.deserialize(rs.getString("json_env"), Map.class));
+        t.getEnv().put("ZORROA_TASK_ID", String.valueOf(t.getId()));
+
         t.setArgMap(rs.getString("json_args").getBytes());
 
         t.setWorkDir(workDir);
@@ -306,10 +326,12 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
             "task.time_state_change,"+
             "task.int_exit_status,"+
             "task.str_host, " +
-            "task_stat.int_frame_total_count, " +
-            "task_stat.int_frame_success_count,"+
-            "task_stat.int_frame_error_count,"+
-            "task_stat.int_frame_warning_count, " +
+            "task_stat.int_asset_total_count,"+
+            "task_stat.int_asset_create_count," +
+            "task_stat.int_asset_replace_count,"+
+            "task_stat.int_asset_error_count,"+
+            "task_stat.int_asset_warning_count,"+
+            "task_stat.int_asset_update_count,"+
             "job.str_root_path " +
 
         "FROM " +
@@ -351,11 +373,13 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
         task.setScriptPath(scriptPath(workDir, task.getName(), task.getId()));
         task.setLogPath(logPath(workDir, task.getName(), task.getId()));
 
-        Task.Stats s = new Task.Stats();
-        s.setFrameErrorCount(rs.getInt("int_frame_error_count"));
-        s.setFrameSuccessCount(rs.getInt("int_frame_success_count"));
-        s.setFrameWarningCount(rs.getInt("int_frame_warning_count"));
-        s.setFrameTotalCount(rs.getInt("int_frame_total_count"));
+        AssetStats s = new AssetStats();
+        s.setAssetTotalCount(rs.getInt("int_asset_total_count"));
+        s.setAssetCreatedCount(rs.getInt("int_asset_create_count"));
+        s.setAssetReplacedCount(rs.getInt("int_asset_replace_count"));
+        s.setAssetErrorCount(rs.getInt("int_asset_error_count"));
+        s.setAssetWarningCount(rs.getInt("int_asset_warning_count"));
+        s.setAssetUpdatedCount(rs.getInt("int_asset_update_count"));
         task.setStats(s);
         return task;
     };

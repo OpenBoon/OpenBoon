@@ -1,11 +1,6 @@
 package com.zorroa.archivist.repository;
 
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.archivist.domain.JobFilter;
-import com.zorroa.archivist.domain.JobSpec;
-import com.zorroa.archivist.domain.JobState;
-import com.zorroa.archivist.domain.JobId;
-import com.zorroa.archivist.domain.TaskId;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -29,7 +24,9 @@ public interface JobDao {
 
     long count();
 
-    boolean incrementStats(int id, int success, int errors, int warnings);
+    boolean incrementStats(int id, TaskStatsAdder adder);
+
+    boolean decrementStats(int id, AssetStats stats);
 
     void incrementWaitingTaskCount(JobId job);
 
