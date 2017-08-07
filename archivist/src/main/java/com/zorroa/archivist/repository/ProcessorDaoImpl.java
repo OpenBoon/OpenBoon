@@ -140,7 +140,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public List<Processor> getAll(ProcessorFilter filter) {
-        String q = filter.getQuery(GET, null);
+        String q = filter.getQuery(GET, null) + " ORDER BY processor.str_short_name";
         return jdbc.query(q, MAPPER, filter.getValues());
     }
 
