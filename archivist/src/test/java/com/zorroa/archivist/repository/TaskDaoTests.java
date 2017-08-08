@@ -121,6 +121,16 @@ public class TaskDaoTests extends AbstractTest {
         }
     }
 
+    @Test
+    public void getAllByState() {
+        List<Task> failures = taskDao.getAll(job.getId(), TaskState.Failure);
+        assertEquals(0,failures.size());
+        jdbc.update("UPDATE task SET int_state=? WHERE pk_job=?",
+                TaskState.Failure.ordinal(), job.getId());
+
+        failures = taskDao.getAll(job.getId(), TaskState.Failure);
+        assertFalse(failures.isEmpty());
+    }
 
     @Test
     public void getAllByFilter() {

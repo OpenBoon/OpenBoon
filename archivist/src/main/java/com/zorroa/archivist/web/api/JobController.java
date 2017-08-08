@@ -39,6 +39,12 @@ public class JobController {
         return HttpUtils.status("job", id, "restart", jobExecutorService.restartJob(() -> id));
     }
 
+    @RequestMapping(value="/api/v1/jobs/{id}/_retryAllFailures", method = RequestMethod.PUT)
+    public Object retryAllFailures(@PathVariable Integer id) throws IOException {
+        jobExecutorService.retryAllFailures(() -> id);
+        return HttpUtils.status("job", id, "retry-all-failures", true);
+    }
+
     @RequestMapping(value="/api/v1/jobs/{id}/_append", method = RequestMethod.POST)
     public Object append(@RequestBody TaskSpecV spec) throws IOException {
         Job job = jobService.get(spec.getJobId());

@@ -97,6 +97,8 @@ public interface JobService {
 
     boolean setTaskCompleted(Task task, int exitStatus);
 
+    List<Task> getTasks(int jobId, TaskState state);
+
     boolean setTaskRunning(Task task);
 
     void incrementStats(TaskId task, TaskStatsAdder adder);

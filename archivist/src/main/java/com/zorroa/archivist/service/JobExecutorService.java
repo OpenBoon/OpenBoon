@@ -27,6 +27,9 @@ public interface JobExecutorService {
     void retryTask(Task task);
 
     @Async
+    void retryAllFailures(JobId job);
+
+    @Async
     void skipTask(Task task);
 
     boolean cancelJob(JobId job);

@@ -364,6 +364,10 @@ public class JobServiceImpl implements JobService {
         return false;
     }
 
+    @Override
+    public List<Task> getTasks(int jobId, TaskState state) {
+        return taskDao.getAll(jobId, state);
+    }
 
     @Override
     public boolean setTaskRunning(Task task) {

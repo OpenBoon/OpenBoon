@@ -43,6 +43,7 @@
         <li class="divider"></li>
         <li><a tabindex="-1" id="li-cancel" href="#">Cancel</a></li>
         <li><a tabindex="-1" id="li-restart" href="#">Restart</a></li>
+        <li><a tabindex="-1" id="li-retry-all" href="#">Retry All Failures</a></li>
     </ul>
 </div>
 <script th:inline="javascript" type="text/javascript">
@@ -95,6 +96,18 @@ $(function() {
         });
     }
 
+    function retryAll(job) {
+        $.ajax({
+            url: "/api/v1/jobs/" + job[1] + "/_retryAllFailures",
+            type: "PUT",
+            success: function(result) {
+                if (result["success"]) {
+                    bs_alert("alert-success", "Failures retried");
+                }
+            }
+        });
+    }
+
     $("body").on("contextmenu", "#table tr", function(e) {
         contextMenu.css({
             display: "block",
@@ -126,7 +139,9 @@ $(function() {
         else if (option == "li-restart") {
             restartJob(job);
         }
-
+        else if (option == "li-retry-all") {
+            retryAll(job);
+        }
         hideContextMenu();
     });
 

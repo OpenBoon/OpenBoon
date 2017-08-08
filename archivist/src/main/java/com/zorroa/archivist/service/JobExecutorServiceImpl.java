@@ -193,6 +193,16 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
     @Override
     @Async
+    public void retryAllFailures(JobId job) {
+        for (Task task: jobService.getTasks(job.getJobId(), TaskState.Failure)) {
+            if (jobService.setTaskState(task, TaskState.Waiting)) {
+                jobService.decrementStats(task);
+            }
+        }
+    }
+
+    @Override
+    @Async
     public void skipTask(Task task) {
         if (TaskState.requiresStop(task.getState())) {
             killRunningTaskOnAnalyst(task, TaskState.Skipped);

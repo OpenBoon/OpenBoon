@@ -57,6 +57,8 @@ public interface TaskDao {
 
     PagedList<Task> getAll(int job, Pager page);
 
+    List<Task> getAll(int job, TaskState state);
+
     List<Task> getAll(int job, DaoFilter filter);
 
     Task get(int id);
