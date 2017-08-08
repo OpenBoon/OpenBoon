@@ -185,7 +185,7 @@ public class MultipleWebSecurityConfig {
 
     @Bean
     public AuthenticationProvider hmacAuthenticationProvider() {
-        return new HmacAuthenticationProvider();
+        return new HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"));
     }
 
     @Bean

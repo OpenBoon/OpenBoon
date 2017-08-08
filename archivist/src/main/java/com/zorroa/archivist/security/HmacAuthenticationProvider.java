@@ -28,31 +28,49 @@ public class HmacAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     UserService userService;
 
+    private final boolean trustMode;
+
+    public HmacAuthenticationProvider(boolean trustMode) {
+        this.trustMode = trustMode;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = (String) authentication.getPrincipal();
         String msgClear = (String) authentication.getDetails();
         String msgCrypt = (String) authentication.getCredentials();
 
-        try {
-            Mac mac = Mac.getInstance("HmacSHA1");
-            mac.init(new SecretKeySpec(getKey(username).getBytes(), "HmacSHA1"));
-            String crypted = Hex.encodeHexString(mac.doFinal(msgClear.getBytes()));
-
-            if (crypted.equals(msgCrypt)) {
+        if (trustMode) {
+            try {
                 User user = userService.get(username);
                 return new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",
                         InternalPermission.upcast(userService.getPermissions(user)));
-            }
-            else {
-                logger.warn("password authentication failed for user: {}", username);
+
+            } catch (Exception e) {
+                logger.warn("password authentication failed for user: {}", username, e);
                 throw new BadCredentialsException("Invalid username or password");
             }
+        }
+        else {
+            try {
+                Mac mac = Mac.getInstance("HmacSHA1");
+                mac.init(new SecretKeySpec(getKey(username).getBytes(), "HmacSHA1"));
+                String crypted = Hex.encodeHexString(mac.doFinal(msgClear.getBytes()));
+
+                if (crypted.equals(msgCrypt)) {
+                    User user = userService.get(username);
+                    return new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",
+                            InternalPermission.upcast(userService.getPermissions(user)));
+                } else {
+                    logger.warn("password authentication failed for user: {}", username);
+                    throw new BadCredentialsException("Invalid username or password");
+                }
 
 
-        } catch (Exception e) {
-            logger.warn("password authentication failed for user: {}", username, e);
-            throw new BadCredentialsException("Invalid username or password");
+            } catch (Exception e) {
+                logger.warn("password authentication failed for user: {}", username, e);
+                throw new BadCredentialsException("Invalid username or password");
+            }
         }
     }
 
