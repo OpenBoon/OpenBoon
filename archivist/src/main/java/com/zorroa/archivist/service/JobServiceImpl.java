@@ -368,7 +368,6 @@ public class JobServiceImpl implements JobService {
     @Override
     public boolean setTaskRunning(Task task) {
         if (setTaskState(task, TaskState.Running, TaskState.Queued)) {
-            decrementStats(task);
             return true;
         }
         return false;

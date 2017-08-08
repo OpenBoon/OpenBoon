@@ -185,7 +185,9 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             killRunningTaskOnAnalyst(task, TaskState.Waiting);
         }
         else {
-            jobService.setTaskState(task, TaskState.Waiting);
+            if (jobService.setTaskState(task, TaskState.Waiting)) {
+                jobService.decrementStats(task);
+            }
         }
     }
 
