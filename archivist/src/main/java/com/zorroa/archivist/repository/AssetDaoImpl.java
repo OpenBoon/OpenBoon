@@ -282,11 +282,18 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public void removeFields(String assetId, Set<String> fields, boolean refresh) {
-        client.prepareUpdate(getIndex(), getType(), assetId)
-                .setScript(new Script("for (f in fields) { ctx._source.remove(f); };",
-                        ScriptService.ScriptType.INLINE, "groovy", ImmutableMap.of("fields", fields)))
-                .setRefresh(refresh)
-                .get();
+        Asset asset = get(assetId);
+        for (String a: fields) {
+            asset.removeAttr(a);
+        }
+
+        // Replaces entire asset
+        // Can't edit elements so no need for parent handling.
+        IndexRequestBuilder idx = client.prepareIndex(getIndex(), asset.getType(), asset.getId())
+                .setOpType(IndexRequest.OpType.INDEX)
+                .setSource(asset.getDocument())
+                .setRefresh(true);
+        idx.get();
     }
 
     @Override

@@ -311,7 +311,6 @@ public class AssetController {
             throw new ArchivistWriteException("update access denied");
         }
 
-
         assetService.update(id, attrs);
         return HttpUtils.updated("asset", id, true, assetService.get(id));
     }
@@ -319,7 +318,7 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/_fields", method=RequestMethod.DELETE)
     public Object removeFields(@RequestBody Set<String> fields, @PathVariable String id) throws IOException {
         assetService.removeFields(id, fields);
-        return HttpUtils.updated("asset", id, true, ImmutableMap.of());
+        return HttpUtils.updated("asset", id, true, assetService.get(id));
     }
 
     @RequestMapping(value="/api/v1/assets/_index", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)

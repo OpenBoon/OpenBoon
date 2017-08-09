@@ -2,6 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.CommandDao;
@@ -260,6 +261,8 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
 
     @Override
     public void removeFields(String id, Set<String> fields) {
+        // remove fields from list the can't remove.
+        fields.removeAll(NS_PROTECTED_API);
         assetDao.removeFields(id ,fields, false);
     }
 
@@ -293,16 +296,13 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
             throw new ArchivistWriteException("You cannot make changes to this asset.");
         }
 
+        Map<String, Object> copy = Maps.newHashMap(attrs);
         /**
-         * Remove permissions which are handled with the setPermissions function.
+         * Remove keys which are maintained via other methods.
          */
-        try {
-            attrs.remove("permissions");
-        } catch (java.lang.UnsupportedOperationException e) {
-            // ignore immutable maps from unit test.
-        }
+        NS_PROTECTED_API.forEach(n->copy.remove(n));
 
-        long version = assetDao.update(assetId, attrs);
+        long version = assetDao.update(assetId, copy);
         logService.logAsync(UserLogSpec.build(LogAction.Update, "asset", assetId));
         return version;
     }
