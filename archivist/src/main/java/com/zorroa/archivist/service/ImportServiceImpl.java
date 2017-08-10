@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
@@ -118,18 +117,11 @@ public class ImportServiceImpl implements ImportService {
                         .setClassName("com.zorroa.core.collector.ExpandCollector")
                         .setLanguage("java"));
 
-        /*
-         * Default to standard pipeline.
-         */
-        if (!isValidPipeline(spec.getPipelineId())) {
-            Pipeline pl = pipelineService.getStandard();
-            spec.setPipelineId(pl.getId());
-        }
 
-        /*
-         * Get the processors for the user supplied pipeline if.
-         */
-        List<ProcessorRef> pipeline = pipelineService.getProcessors(spec.getPipelineId(), ImmutableList.of());
+        List<ProcessorRef> pipeline = Lists.newArrayList();
+        if (isValid(spec.getPipelineIds())) {
+            pipeline.addAll(pipelineService.mungePipelines(spec.getPipelineIds()));
+        }
 
         /*
          * Append the index document collector to add stuff to the DB.

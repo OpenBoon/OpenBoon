@@ -18,7 +18,7 @@ public class UploadImportSpec {
     /**
      * Utilize a pre-existing pipeline.
      */
-    public Integer pipelineId;
+    public List<Object> pipelineIds;
 
     /**
      * An option array of assets, uploaded with the form.  These have to be written
@@ -27,12 +27,12 @@ public class UploadImportSpec {
      */
     private List<MultipartFile> files;
 
-    public Integer getPipelineId() {
-        return pipelineId;
+    public List<Object> getPipelineIds() {
+        return pipelineIds;
     }
 
-    public UploadImportSpec setPipelineId(Integer pipelineId) {
-        this.pipelineId = pipelineId;
+    public UploadImportSpec setPipelineIds(List<Object> pipelineIds) {
+        this.pipelineIds = pipelineIds;
         return this;
     }
 
