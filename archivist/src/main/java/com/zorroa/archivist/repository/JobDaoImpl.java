@@ -199,14 +199,15 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
                 "int_asset_update_count=int_asset_update_count+?," +
                 "int_asset_warning_count=int_asset_warning_count+?," +
                 "int_asset_error_count=int_asset_error_count+?,"+
-                "int_asset_replace_count=int_asset_replace_count+? "+
+                "int_asset_replace_count=int_asset_replace_count+?, "+
+                "int_asset_total_count=int_asset_total_count+? "+
             "WHERE " +
                 "pk_job=?";
 
     @Override
     public boolean incrementStats(int id, TaskStatsAdder adder) {
         return jdbc.update(INC_STATS,  adder.create, adder.update,
-                adder.warning, adder.error, adder.replace, id) == 1;
+                adder.warning, adder.error, adder.replace, adder.total, id) == 1;
     }
 
     private static final String DEC_STATS =

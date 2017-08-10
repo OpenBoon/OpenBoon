@@ -217,6 +217,7 @@ public class JobServiceImpl implements JobService {
                 script.addToOver(exframe.getDocument()); }
         }
 
+        int assetTotal = 0;
         List<Task> tasks = Lists.newArrayListWithCapacity(expandScripts.size());
         for (ZpsScript scr: expandScripts.values()) {
             TaskSpec spec = new TaskSpec();
@@ -226,14 +227,17 @@ public class JobServiceImpl implements JobService {
             spec.setScript(Json.serializeToString(scr));
             spec.setOrder(parent.getOrder());
             spec.setParentTaskId(parent.getTaskId());
+            spec.setAssetCount(scr.getOverCount());
             tasks.add(createTask(spec));
+            assetTotal+=scr.getOverCount();
         }
+
+        jobDao.incrementStats(parent.getJobId(), new TaskStatsAdder().setTotal(assetTotal));
         return tasks;
     }
 
     @Override
     public Task createTask(TaskSpecV spec) {
-
         /**
          * Use the standard pipeline if one is not set.
          */
@@ -274,10 +278,6 @@ public class JobServiceImpl implements JobService {
     }
 
     public Task createTask(TaskSpec spec) {
-
-        ZpsScript script = Json.deserialize(spec.getScript(), ZpsScript.class);
-        spec.setAssetCount(script.getOverCount());
-
         /**
          * Create the first task which is just the script itself.
          */
