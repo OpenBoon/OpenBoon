@@ -503,8 +503,9 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (filter.getPrefix() != null) {
+            // models elasticsearch, the Map<String,Object> allows for a boost property
             for (Map.Entry<String, Map<String,Object>> e : filter.getPrefix().entrySet()) {
-                QueryBuilder prefixFilter = QueryBuilders.prefixQuery(e.getKey(), (String) e.getValue().get("prefix"));
+                QueryBuilder prefixFilter = QueryBuilders.prefixQuery(e.getKey(), (String) e.getValue().get("value"));
                 query.must(prefixFilter);
             }
         }
