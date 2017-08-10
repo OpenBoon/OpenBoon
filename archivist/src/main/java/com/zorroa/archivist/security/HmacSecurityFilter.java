@@ -28,9 +28,8 @@ public class HmacSecurityFilter extends GenericFilterBean {
          * At this point we have to extract the crypted data.
          */
         if (enabled && isAuthenticationRequired()) {
-
             HttpServletRequest req = (HttpServletRequest) servletRequest;
-            if (req.getHeader("X-Archivist-Hmac") != null) {
+            if (req.getHeader("X-Archivist-User") != null) {
                 HmacAuthentication token = new HmacAuthentication(
                         req.getHeader("X-Archivist-User"),
                         req.getHeader("X-Archivist-Data"),
