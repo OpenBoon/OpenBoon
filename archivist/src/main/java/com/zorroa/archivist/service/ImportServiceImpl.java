@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.zorroa.archivist.JdbcUtils.isValid;
 import static com.zorroa.archivist.domain.PipelineType.Import;
 
 /**
@@ -84,7 +83,7 @@ public class ImportServiceImpl implements ImportService {
     }
 
     @Override
-    public Job create(UploadImportSpec spec) {
+    public Job create(UploadImportSpec spec, MultipartFile[] files) {
 
         JobSpec jspec = new JobSpec();
         jspec.setType(Import);
@@ -95,7 +94,7 @@ public class ImportServiceImpl implements ImportService {
         // Setup generator
         List<ProcessorRef> generators = Lists.newArrayList();
         try {
-            Path importPath = copyUploadedFiles(job, spec.getFiles());
+            Path importPath = copyUploadedFiles(job, files);
             generators.add(new ProcessorRef()
                     .setClassName("com.zorroa.core.generator.FileSystemGenerator")
                     .setLanguage("java")
@@ -119,9 +118,7 @@ public class ImportServiceImpl implements ImportService {
 
 
         List<ProcessorRef> pipeline = Lists.newArrayList();
-        if (isValid(spec.getPipelineIds())) {
-            pipeline.addAll(pipelineService.mungePipelines(spec.getPipelineIds()));
-        }
+        pipeline.addAll(pipelineService.mungePipelines(spec.getPipelineIds(), null));
 
         /*
          * Append the index document collector to add stuff to the DB.
@@ -170,13 +167,7 @@ public class ImportServiceImpl implements ImportService {
 
         ProcessorRef expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector");
         List<ProcessorRef> execute = Lists.newArrayList(expand);
-
-        if (isValid(spec.getPipelineIds())) {
-            expand.setExecute(pipelineService.mungePipelines(spec.getPipelineIds()));
-        }
-        else {
-            expand.setExecute(pipelineService.getProcessors(null, spec.getProcessors()));
-        }
+        expand.setExecute(pipelineService.mungePipelines(spec.getPipelineIds(), spec.getProcessors()));
 
         /**
          * At the end we add an IndexDocumentCollector to index the results of our job.
@@ -272,7 +263,7 @@ public class ImportServiceImpl implements ImportService {
         }
     }
 
-    private Path copyUploadedFiles(Job job, List<MultipartFile> files) throws IOException {
+    private Path copyUploadedFiles(Job job, MultipartFile[] files) throws IOException {
         Path importPath = Paths.get(job.getRootPath()).resolve("assets");
 
         for (MultipartFile file: files) {

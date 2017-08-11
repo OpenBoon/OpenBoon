@@ -1,7 +1,5 @@
 package com.zorroa.archivist.domain;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 /**
@@ -20,13 +18,6 @@ public class UploadImportSpec {
      */
     public List<Object> pipelineIds;
 
-    /**
-     * An option array of assets, uploaded with the form.  These have to be written
-     * someplace, probably to the OFS for processing but maybe we allow them to be
-     * written into a given path in OFS.
-     */
-    private List<MultipartFile> files;
-
     public List<Object> getPipelineIds() {
         return pipelineIds;
     }
@@ -42,15 +33,6 @@ public class UploadImportSpec {
 
     public UploadImportSpec setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public List<MultipartFile> getFiles() {
-        return files;
-    }
-
-    public UploadImportSpec setFiles(List<MultipartFile> files) {
-        this.files = files;
         return this;
     }
 }

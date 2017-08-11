@@ -70,7 +70,10 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         script.setInline(true);
         script.setStrict(true);
 
-        script.setExecute(pipelineService.getProcessors(spec.getPipelineId(), spec.getPipeline()));
+        List<ProcessorRef> pipeline = Lists.newArrayList();
+        pipeline.addAll(pipelineService.mungePipelines(spec.getPipelineIds(), spec.getProcessors()));
+        script.setExecute(pipeline);
+
         String lang;
         try {
             lang = script.getExecute().get(0).getLanguage();

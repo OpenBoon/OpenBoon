@@ -32,7 +32,7 @@ public interface PipelineService {
 
     List<ProcessorRef> getProcessors(Object pipelineId, List<ProcessorRef> custom);
 
-    List<ProcessorRef> mungePipelines(List<Object> pipelineIds);
+    List<ProcessorRef> mungePipelines(List<Object> pipelineIds, List<ProcessorRef> custom);
 
     boolean isValidPipelineId(Object value);
 }

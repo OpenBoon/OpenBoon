@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -176,6 +177,9 @@ public class AssetController {
             String[] wh = size.split("x");
             ProxySchema proxies = assetService.get(id).getProxies();
             Proxy proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1]));
+            if (proxy == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
             return imageService.serveImage(proxy);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());
@@ -187,6 +191,9 @@ public class AssetController {
         try {
             ProxySchema proxies = assetService.get(id).getProxies();
             Proxy proxy = proxies.getLargest();
+            if (proxy == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
             return imageService.serveImage(proxy);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());
@@ -198,6 +205,9 @@ public class AssetController {
         try {
             ProxySchema proxies = assetService.get(id).getProxies();
             Proxy proxy = proxies.getSmallest();
+            if (proxy == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
             return imageService.serveImage(proxy);
         } catch (Exception e) {
             throw new ResourceNotFoundException(e.getMessage());

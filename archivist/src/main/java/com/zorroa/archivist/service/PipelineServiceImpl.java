@@ -156,25 +156,54 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public List<ProcessorRef> mungePipelines(List<Object> pipelineIds) {
-        List<ProcessorRef> refs = Lists.newArrayListWithCapacity(pipelineIds.size()*3);
+    public List<ProcessorRef> mungePipelines(List<Object> pipelineIds, List<ProcessorRef> processors) {
+        List<ProcessorRef> result = Lists.newArrayListWithCapacity(16);
+        int count = 0;
 
-        for (Object id: pipelineIds) {
-            Pipeline pipeline;
-            if (id instanceof Number) {
-                pipeline = get((int) id);
-            }
-            else {
-                pipeline = get((String) id);
-            }
+        boolean processorsAdded = false;
+        if (pipelineIds != null) {
+            for (Object id : pipelineIds) {
+                Pipeline pipeline;
+                ProcessorRef ref = pluginService.getProcessorRef(
+                        "com.zorroa.core.processor.GroupProcessor");
+                result.add(ref);
 
-            ProcessorRef ref = pluginService.getProcessorRef(
-                    "com.zorroa.core.processor.GroupProcessor");
-            ref.setExecute(pipeline.getProcessors());
-            refs.add(ref);
+                if (id instanceof Number) {
+                    pipeline = get((int) id);
+                    ref.setExecute(pipeline.getProcessors());
+                    count+=ref.getExecute().size();
+                } else if (!processorsAdded && id.equals("#") && processors != null) {
+                    ref.setExecute(pluginService.getProcessorRefs(processors));
+                    count+=ref.getExecute().size();
+                    processorsAdded = true;
+                } else {
+                    pipeline = get((String) id);
+                    ref.setExecute(pipeline.getProcessors());
+                    count+=ref.getExecute().size();
+                }
+            }
         }
 
-        return refs;
+        if (!processorsAdded && processors != null) {
+            ProcessorRef ref = pluginService.getProcessorRef(
+                    "com.zorroa.core.processor.GroupProcessor");
+            ref.setExecute(pluginService.getProcessorRefs(processors));
+            result.add(ref);
+            count+=ref.getExecute().size();
+        }
+
+        if (count == 0) {
+            logger.warn("No processors specified, defaulting to standard");
+            try {
+                Pipeline p = getStandard();
+                result.addAll(pluginService.getProcessorRefs(p.getId()));
+            } catch (EmptyResultDataAccessException ignore) {
+                // If there1 is no standard, its just an empty pipeline.
+            }
+        }
+
+        logger.info("munged {} processors", count);
+        return result;
     }
 
     /**

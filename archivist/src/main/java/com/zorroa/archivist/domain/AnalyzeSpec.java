@@ -19,13 +19,13 @@ public class AnalyzeSpec {
      * Utilize an anonymous pipeline.
      */
     @Nullable
-    private List<ProcessorRef> pipeline;
+    private List<ProcessorRef> processors;
 
     /**
-     * Utilize a pre-existing pipeline.  This could be the name or a numeric id.
+     * Utilize a list of pre-existing pipelines. This could be the name or a numeric id.
      */
     @Nullable
-    private Object pipelineId;
+    private List<Object> pipelineIds;
 
     @Nullable
     private Map<String, Object> args;
@@ -39,21 +39,21 @@ public class AnalyzeSpec {
         return this;
     }
 
-    public List<ProcessorRef> getPipeline() {
-        return pipeline;
+    public List<ProcessorRef> getProcessors() {
+        return processors;
     }
 
-    public AnalyzeSpec setPipeline(List<ProcessorRef> pipeline) {
-        this.pipeline = pipeline;
+    public AnalyzeSpec setProcessors(List<ProcessorRef> processors) {
+        this.processors = processors;
         return this;
     }
 
-    public Object getPipelineId() {
-        return pipelineId;
+    public List<Object> getPipelineIds() {
+        return pipelineIds;
     }
 
-    public AnalyzeSpec setPipelineId(Object pipelineId) {
-        this.pipelineId = pipelineId;
+    public AnalyzeSpec setPipelineIds(List<Object> pipelineIds) {
+        this.pipelineIds = pipelineIds;
         return this;
     }
 
