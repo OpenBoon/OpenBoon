@@ -25,8 +25,10 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        java.io.File path = new java.io.File(FileUtils.normalize(properties.getString("archivist.path.docs") + "/"));
-        registry.addResourceHandler("/docs/**").addResourceLocations(path.toURI().toString()).setCachePeriod(0);
+        java.io.File path = new java.io.File(FileUtils.normalize(
+                properties.getString("archivist.path.docs") + "/"));
+        registry.addResourceHandler("/docs/**").addResourceLocations(
+                path.toURI().toString() + "/").setCachePeriod(0);
 
         /**
          * TODO: for the admin pages, going to move this stuff so we can expose 1 path.

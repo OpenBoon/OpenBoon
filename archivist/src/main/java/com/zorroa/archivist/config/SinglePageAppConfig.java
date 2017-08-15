@@ -60,7 +60,7 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
         /**
          *These are basically endpoints on the server we can't use in react.
          */
-        private final Set<String> ignoredPaths = ImmutableSet.of("api", "gui", "health", "login", "logout");
+        private final Set<String> ignoredPaths = ImmutableSet.of("api", "gui", "health", "login", "logout", "docs");
 
         public PushStateResourceResolver() {
             index = new FileSystemResource(properties.getString("archivist.path.home") + "/web/curator/index.html");
