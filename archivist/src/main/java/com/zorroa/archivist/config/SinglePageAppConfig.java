@@ -40,7 +40,7 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("redirect:/index.html");
+        registry.addViewController("/").setViewName("forward:/index.html");
         // put in front of the thymeleaf resolver
         registry.setOrder(-1);
     }
