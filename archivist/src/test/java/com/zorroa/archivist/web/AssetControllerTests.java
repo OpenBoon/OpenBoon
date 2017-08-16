@@ -129,31 +129,7 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
         assertEquals(3, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
     }
-
-    @Test
-    public void testAggregationScriptV2() throws Exception {
-        authenticate("admin", true);
-        MockHttpSession session = admin();
-        addTestAssets("set04/agg");
-
-        Map<String, Object> scriptParams = new HashMap<>();
-        scriptParams.put("field", "source.date");
-        scriptParams.put("interval", "year");
-        AssetAggregateBuilder aab = new AssetAggregateBuilder().setName("Years").setScript(new AssetScript().setScript("archivistDate").setParams(scriptParams));
-        MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(aab)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
-        Map<String, Object> years = (Map<String, Object>) aggs.get("Years");
-        assertEquals(1, ((ArrayList<Map<String, Object>>) years.get("buckets")).size());
-    }
-
+    
     @Test
     public void testSuggest() throws Exception {
 
