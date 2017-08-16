@@ -1,1 +1,2 @@
-analyst-*
+build/*
+templates/_base/web/curator
