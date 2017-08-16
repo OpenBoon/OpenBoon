@@ -153,12 +153,6 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public SearchResponse aggregate(AssetAggregateBuilder builder) {
-        return buildAggregate(builder).get();
-    }
-
-
-    @Override
     public Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults) {
         SearchResponse rsp = client.prepareSearch(alias)
                 .setScroll(new TimeValue(60000))
@@ -306,15 +300,6 @@ public class SearchServiceImpl implements SearchService {
         SuggestRequestBuilder suggest = client.prepareSuggest(alias)
                 .addSuggestion(completion);
         return  suggest;
-    }
-
-    private SearchRequestBuilder buildAggregate(AssetAggregateBuilder builder) {
-        SearchRequestBuilder aggregation = client.prepareSearch(alias)
-                .setTypes("asset")
-                .setQuery(getQuery(builder.getSearch()))
-                .setAggregations(builder.getAggregations())
-                .setSize(0);
-        return aggregation;
     }
 
     private Map<String, Object> getAggregations(AssetSearch search) {

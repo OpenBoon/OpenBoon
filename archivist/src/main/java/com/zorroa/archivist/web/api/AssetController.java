@@ -13,7 +13,6 @@ import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.schema.ProxySchema;
-import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
 import com.zorroa.sdk.util.FileUtils;
@@ -239,13 +238,6 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/_mapping", method=RequestMethod.GET)
     public Map<String,Object> getMapping() throws IOException {
         return assetService.getMapping();
-    }
-
-    @RequestMapping(value="/api/v2/assets/_aggregate", method=RequestMethod.POST)
-    public void aggregate(@RequestBody AssetAggregateBuilder aggregation, HttpServletResponse httpResponse) throws IOException {
-        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        SearchResponse response = searchService.aggregate(aggregation);
-        HttpUtils.writeElasticResponse(response, httpResponse);
     }
 
     @RequestMapping(value="/api/v2/assets/_count", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)

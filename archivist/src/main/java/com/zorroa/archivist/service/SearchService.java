@@ -4,7 +4,6 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.search.AssetAggregateBuilder;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -30,7 +29,6 @@ public interface SearchService {
     long count(Folder folder);
 
     SuggestResponse suggest(AssetSuggestBuilder builder);
-    SearchResponse aggregate(AssetAggregateBuilder builder);
     Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults);
 
     /**
