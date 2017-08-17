@@ -1,7 +1,6 @@
 package com.zorroa.archivist.web.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.*;
@@ -15,8 +14,8 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
-import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
+import org.apache.tika.Tika;
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -78,6 +77,8 @@ public class AssetController {
     @Autowired
     CommandService commandService;
 
+    private static final Tika tika = new Tika();
+
     /**
      * Describes a file to stream.
      */
@@ -94,16 +95,6 @@ public class AssetController {
     }
 
     /**
-     * Ability to make certain file extensions to other, more
-     * web supported alternatives.
-     */
-    private static final Map<String, List<List<String>>>
-            PREFERRED_FORMATS = ImmutableMap.of("mov",
-                ImmutableList.of(
-                        ImmutableList.of("mp4", "video/mp4"),
-                        ImmutableList.of("ogv", "video/ogg")));
-
-    /**
      * We could try to detect it using something like Tika but
      * there are only a couple types.
      */
@@ -111,28 +102,28 @@ public class AssetController {
             ImmutableMap.of("png", "image/png",
                             "jpg", "image/jpeg");
 
-    public StreamFile getPreferredFormat(Asset asset, boolean streamProxy) {
+    public StreamFile getPreferredFormat(Asset asset, String preferExt, boolean fallback, boolean streamProxy) {
         if (streamProxy) {
             return getProxyStream(asset);
         }
         else {
             String path = asset.getAttr("source.path", String.class);
-            String ext = FileUtils.extension(path);
-            List<List<String>> preferred = PREFERRED_FORMATS.get(ext);
-            if (preferred != null) {
-                for (List<String> e : preferred) {
-                    String newPath = path.substring(0, path.length() - (ext.length() + 1)) + "." + e.get(0);
-                    if (new File(newPath).exists()) {
-                        return new StreamFile(newPath, e.get(1), false);
-                    }
-                }
+            String mediaType = asset.getAttr("source.mediaType", String.class);
+
+            if (preferExt != null) {
+                path = path.substring(0, path.lastIndexOf('.')+1) + preferExt;
+                mediaType = tika.detect(path);
             }
 
             if (new File(path).exists()) {
-                return new StreamFile(path,
-                        asset.getAttr("source.mediaType", String.class), false);
+                return new StreamFile(path, mediaType,false);
             } else {
-                return getProxyStream(asset);
+                if (fallback) {
+                    return getProxyStream(asset);
+                }
+                else {
+                    return null;
+                }
             }
         }
     }
@@ -146,22 +137,31 @@ public class AssetController {
     }
 
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
-    public void streamAsset(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void streamAsset(@RequestParam(defaultValue="true", required=false) Boolean fallback, @RequestParam(value="ext", required=false) String ext, @PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         Asset asset = assetService.get(id);
         boolean canExport = SecurityUtils.canExport(asset);
-        StreamFile format = getPreferredFormat(asset, !canExport);
+        StreamFile format = getPreferredFormat(asset, ext, fallback, !canExport);
 
-        try {
-            MultipartFileSender.fromPath(Paths.get(format.path))
-                    .with(request)
-                    .with(response)
-                    .setContentType(format.mimeType)
-                    .serveResource();
-            if (canExport) {
-                logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.getId()));
+        /*
+         * Nothing to return...
+         */
+        if (format == null) {
+            response.setStatus(404);
+        }
+        else {
+            try {
+                MultipartFileSender.fromPath(Paths.get(format.path))
+                        .with(request)
+                        .with(response)
+                        .setContentType(format.mimeType)
+                        .serveResource();
+                if (canExport) {
+                    logService.logAsync(UserLogSpec.build(LogAction.View, "asset", asset.getId()));
+                }
+            } catch (Exception e) {
+                logger.warn("MultipartFileSender failed on {}, unexpected {}", id, e.getMessage());
             }
-        } catch (Exception e) {
-            logger.warn("MultipartFileSender failed on {}, unexpected {}", id, e.getMessage());
         }
     }
 
