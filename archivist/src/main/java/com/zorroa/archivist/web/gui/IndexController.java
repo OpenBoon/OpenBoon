@@ -3,10 +3,12 @@ package com.zorroa.archivist.web.gui;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
@@ -24,7 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,6 +66,21 @@ public class IndexController {
 
     @Autowired
     HealthEndpoint healthEndpoint;
+
+    @Autowired
+    ApplicationProperties properties;
+
+    @RequestMapping(value="/docs", method=RequestMethod.GET)
+    public String docIndex(Model model) throws IOException {
+
+        Path root = properties.getPath("archivist.path.docs");
+        List<String> docs = Lists.newArrayList();
+        for (File f: root.toFile().listFiles()) {
+            docs.add(f.getName());
+        }
+        model.addAttribute("docs", docs);
+        return "docs";
+    }
 
     @RequestMapping("/gui")
     public String index(Model model) {
