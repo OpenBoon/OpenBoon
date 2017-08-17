@@ -67,12 +67,12 @@ public class ImportServiceImpl implements ImportService {
 
     @PostConstruct
     public void init() {
-        Map<String, Object> vals = properties.getMap("archivist.import.suggest.paths");
-        if (vals != null) {
-            for (Map.Entry<String,Object> entry: vals.entrySet()) {
-                String path = FileUtils.normalize((String) entry.getValue());
+        List<String> paths = properties.getList("archivist.import.suggest.paths");
+        if (paths != null) {
+            for (String entry: paths) {
+                String path = FileUtils.normalize(entry);
                 pathSuggestFilter.add(path);
-                logger.info("Allowing Imports from '{}' {}", entry.getKey(), entry.getValue());
+                logger.info("Allowing Imports from '{}'", path);
             }
         }
     }
