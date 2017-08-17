@@ -29,7 +29,7 @@ public class SettingsController {
         return settingsService.getAll(filter);
     }
 
-    @RequestMapping(value="/api/v1/settings/{name}", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/settings/{name:.+}", method= RequestMethod.GET)
     public Setting get(@PathVariable String name) {
         return settingsService.get(name);
     }
