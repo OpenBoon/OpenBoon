@@ -50,7 +50,7 @@ public class PermissionController {
     }
 
     /**
-     * Return all available permissions.
+     * Return true if permission exits.
      */
     @RequestMapping(value="/api/v1/permissions/_exists/{name}", method = RequestMethod.GET)
     public Boolean exists(@PathVariable String name) {

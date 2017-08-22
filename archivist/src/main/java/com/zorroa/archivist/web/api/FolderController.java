@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web.api;
 
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.service.FolderService;
@@ -98,6 +99,33 @@ public class FolderController {
     @RequestMapping(value="/api/v1/folders/{id}/folders/{name}", method=RequestMethod.GET)
     public Folder getChild(@PathVariable int id, @PathVariable String name) {
         return folderService.get(id, name);
+    }
+
+    public static class SetPermissionsRequest {
+        public SetPermissionsRequest() { }
+        public Acl acl;
+        public boolean replace = false;
+
+        public Acl getAcl() {
+            return acl;
+        }
+
+        public SetPermissionsRequest setAcl(Acl acl) {
+            this.acl = acl;
+            return this;
+        }
+    }
+
+    @RequestMapping(value="/api/v1/folders/{id}/_permissions", method=RequestMethod.PUT)
+    public Object setPermissions(@PathVariable int id, @RequestBody SetPermissionsRequest req) throws Exception {
+        Folder folder = folderService.get(id);
+        if (req.replace) {
+            folderService.setAcl(folder, req.acl, false);
+        }
+        else {
+            folderService.updateAcl(folder, req.acl);
+        }
+        return folderService.get(folder.getId());
     }
 
     /**

@@ -25,12 +25,22 @@ public class Acl extends ForwardingList<AclEntry> {
         return this;
     }
 
-    public Acl addEntry(Permission perm, Access... access) {
+    public Acl addEntry(Permission perm, Access ... access) {
+        this.delegate.add(new AclEntry(perm.getId(), access));
+        return this;
+    }
+
+    public Acl addEntry(Permission perm, int access) {
+        this.delegate.add(new AclEntry(perm.getId(), access));
+        return this;
+    }
+
+    public Acl addEntry(int perm, int access) {
         this.delegate.add(new AclEntry(perm, access));
         return this;
     }
 
-    public Acl addEntry(int perm, Access... access) {
+    public Acl addEntry(int perm, Access access) {
         this.delegate.add(new AclEntry(perm, access));
         return this;
     }

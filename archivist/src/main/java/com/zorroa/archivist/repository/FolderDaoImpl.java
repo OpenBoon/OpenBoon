@@ -351,17 +351,52 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public void setAcl(int folder, Acl acl) {
-        jdbc.update("DELETE FROM folder_acl WHERE pk_folder=?", folder);
+        setAcl(folder, acl, true);
+    }
+
+    @Override
+    public void updateAcl(int folder, Acl acl) {
+        setAcl(folder, acl, false);
+    }
+
+    @Override
+    public void setAcl(int folder, Acl acl, boolean replace) {
+
         if (acl == null || acl.isEmpty()) {
             return;
         }
-        for (AclEntry entry: acl) {
-            if (entry.getAccess() == 0 || entry.getAccess() > 7) {
-                throw new ArchivistWriteException("Invalid Access level "
-                        + entry.getAccess() + " for permission ID " + entry.getPermissionId());
+
+        if (replace) {
+            jdbc.update("DELETE FROM folder_acl WHERE pk_folder=?", folder);
+            for (AclEntry entry : acl) {
+                if (entry.getAccess() == 0) {
+                    continue;
+                }
+                if (entry.getAccess() > 7) {
+                    throw new ArchivistWriteException("Invalid Access level "
+                            + entry.getAccess() + " for permission ID " + entry.getPermissionId());
+                }
+                jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
+                        entry.getPermissionId(), folder, entry.getAccess());
             }
-            jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
-                    entry.getPermissionId(), folder, entry.getAccess());
+        }
+        else {
+
+            for (AclEntry entry : acl) {
+                if (entry.getAccess() > 7) {
+                    throw new ArchivistWriteException("Invalid Access level "
+                            + entry.getAccess() + " for permission ID " + entry.getPermissionId());
+                }
+                if (entry.getAccess() == 0) {
+                    jdbc.update("DELETE FROM folder_acl WHERE pk_folder=? AND pk_permission=?",
+                            folder, entry.getPermissionId());
+                }
+                else if (jdbc.update("UPDATE folder_acl SET int_access=? WHERE pk_folder=? AND pk_permission=?",
+                        entry.getAccess(), folder, entry.getPermissionId()) != 1) {
+                    jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
+                            entry.getPermissionId(), folder, entry.getAccess());
+                }
+            }
         }
     }
 

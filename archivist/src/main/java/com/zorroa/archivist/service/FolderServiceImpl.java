@@ -8,10 +8,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.repository.FolderDao;
-import com.zorroa.archivist.repository.TrashFolderDao;
-import com.zorroa.archivist.repository.UserDao;
+import com.zorroa.archivist.repository.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.sdk.client.exception.ArchivistException;
@@ -55,6 +52,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    PermissionDao permissionDao;
 
     @Autowired
     TransactionEventManager transactionEventManager;
@@ -104,11 +104,29 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public void setAcl(Folder folder, Acl acl, boolean created) {
         SecurityUtils.canSetAclOnFolder(acl, folder.getAcl(), created);
-        folderDao.setAcl(folder.getId(), acl);
+
+        Acl resolvedAcl = permissionDao.resolveAcl(acl);
+
+        folderDao.setAcl(folder.getId(), resolvedAcl, true);
+
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
             logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
-                    .setMessage("permissions changed"));
+                    .setMessage("permissions set"));
+        });
+    }
+
+    @Override
+    public void updateAcl(Folder folder, Acl acl) {
+        SecurityUtils.canSetAclOnFolder(acl, folder.getAcl(), false);
+
+        Acl resolvedAcl = permissionDao.resolveAcl(acl);
+        folderDao.updateAcl(folder.getId(), resolvedAcl);
+
+        transactionEventManager.afterCommit(() -> {
+            invalidate(folder);
+            logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
+                    .setMessage("permissions updated"));
         });
     }
 
@@ -213,7 +231,6 @@ public class FolderServiceImpl implements FolderService {
 
         boolean result = folderDao.update(id, folder);
         if (result) {
-            setAcl(folder, folder.getAcl(), false);
 
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(current, current.getParentId());
@@ -625,7 +642,7 @@ public class FolderServiceImpl implements FolderService {
                 .setName(username)
                 .setParentId(rootFolder.getId())
                 .setUserId(adminUser.getId()));
-        folderDao.setAcl(folder.getId(), new Acl().addEntry(perm, Access.Read, Access.Write));
+        folderDao.setAcl(folder.getId(), new Acl().addEntry(perm, Access.Read, Access.Write), true);
         return folder;
     }
 

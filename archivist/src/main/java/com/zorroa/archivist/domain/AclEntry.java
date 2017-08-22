@@ -22,7 +22,7 @@ public class AclEntry {
         this.access = access;
     }
 
-    public AclEntry(int permId, Access... access) {
+    public AclEntry(int permId, Access ... access) {
         this.permissionId = permId;
         this.access = 0;
 

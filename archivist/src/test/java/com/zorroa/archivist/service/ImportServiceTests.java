@@ -88,7 +88,7 @@ public class ImportServiceTests extends AbstractTest {
 
     @Test
     public void testPathSuggestFilterd() {
-        Map<String, List<String>> paths = importService.suggestImportPath("/tmp");
+        Map<String, List<String>> paths = importService.suggestImportPath("/shoe");
         assertTrue(paths.get("files").isEmpty());
         assertTrue(paths.get("dirs").isEmpty());
     }

@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import org.springframework.dao.DuplicateKeyException;
@@ -82,9 +81,8 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     @Override
     public int getId(String name) {
         try {
-            String[] parts = name.split(Permission.JOIN);
-            return jdbc.queryForObject("SELECT pk_permission FROM permission WHERE str_name=? AND str_type=?",
-                    Integer.class, parts[1], parts[0]);
+            return jdbc.queryForObject("SELECT pk_permission FROM permission WHERE str_authority=?",
+                    Integer.class, name);
         } catch (EmptyResultDataAccessException e) {
             throw new EmptyResultDataAccessException("Failed to find permission " + name, 1);
         }
@@ -99,15 +97,20 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public Acl resolveAcl(Acl acl){
+        if (acl == null) {
+            return new Acl();
+        }
+
+        Acl result = new Acl();
         for (AclEntry entry: acl) {
             if (entry.getPermissionId() == null) {
-                entry.setPermissionId(getId(entry.getPermission()));
+                result.addEntry(getId(entry.permission), entry.getAccess());
             }
-            if (entry.getPermissionId() == null) {
-                throw new ArchivistException("Failed to resolve ACL, missing permission Id or Access level");
+            else {
+                result.add(entry);
             }
         }
-        return acl;
+        return result;
     }
 
     public static String GET_ALL =

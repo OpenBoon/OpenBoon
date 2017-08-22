@@ -9,6 +9,8 @@ import java.util.concurrent.Future;
 
 public interface FolderService {
 
+    void updateAcl(Folder folder, Acl acl);
+
     Folder get(int id);
 
     Folder get(int parent, String name);

@@ -180,6 +180,40 @@ public class FolderDaoTests extends AbstractTest {
         assertTrue(acl.hasAccess(p.getId(), Access.Read));
     }
 
+    @Test
+    public void testGetAndUpdateAcl() throws IOException {
+        FolderSpec builder = new FolderSpec("test");
+        Folder folder1 = folderDao.create(builder);
+
+        Permission p1 = userService.createPermission(new PermissionSpec("group","foo"));
+        folderDao.setAcl(folder1.getId(), new Acl().addEntry(p1, Access.Read));
+
+        Acl acl = folderDao.getAcl(folder1.getId());
+        assertTrue(acl.hasAccess(p1.getId(), Access.Read));
+
+        Permission p2 = userService.createPermission(new PermissionSpec("group","bar"));
+        folderDao.updateAcl(folder1.getId(), new Acl().addEntry(p2, Access.Read));
+
+        acl = folderDao.getAcl(folder1.getId());
+        assertTrue(acl.hasAccess(p1.getId(), Access.Read));
+        assertTrue(acl.hasAccess(p2.getId(), Access.Read));
+    }
+
+    @Test
+    public void testUpdateExitingAcl() throws IOException {
+        FolderSpec builder = new FolderSpec("test");
+        Folder folder1 = folderDao.create(builder);
+
+        Permission p1 = userService.createPermission(new PermissionSpec("group","foo"));
+        folderDao.setAcl(folder1.getId(), new Acl().addEntry(p1, Access.Read));
+        folderDao.updateAcl(folder1.getId(), new Acl().addEntry(p1, Access.Read, Access.Write));
+
+        Acl acl = folderDao.getAcl(folder1.getId());
+        assertTrue(acl.hasAccess(p1.getId(), Access.Read));
+        assertTrue(acl.hasAccess(p1.getId(), Access.Write));
+        assertFalse(acl.hasAccess(p1.getId(), Access.Export));
+    }
+
     @Test(expected=ArchivistWriteException.class)
     public void testGetAndSetBadAcl() throws IOException {
         FolderSpec builder = new FolderSpec("test");
@@ -187,7 +221,7 @@ public class FolderDaoTests extends AbstractTest {
 
         Permission p = userService.createPermission(new PermissionSpec("group","foo"));
         Acl acl = new Acl();
-        acl.add(new AclEntry(p.getId(), 0));
+        acl.add(new AclEntry(p.getId(), 12));
         folderDao.setAcl(folder1.getId(), acl);
     }
 
