@@ -36,7 +36,7 @@ public class ImportController {
     }
 
     @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
-    @RequestMapping(value="/api/v1/imports/_suggest", method = RequestMethod.GET)
+    @RequestMapping(value="/api/v1/imports/_suggest", method = RequestMethod.POST)
     public Object suggest(@RequestBody Map<String,String> body) throws IOException {
         return importService.suggestImportPath(body.get("path"));
     }
