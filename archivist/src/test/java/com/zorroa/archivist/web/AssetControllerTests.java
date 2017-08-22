@@ -111,26 +111,6 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testAggregationV2() throws Exception {
-        authenticate("admin", true);
-        MockHttpSession session = admin();
-        addTestAssets("set04/agg");
-
-        MvcResult result = mvc.perform(post("/api/v2/assets/_aggregate")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"name\" : \"Keywords\", \"field\" : \"keywords.all.raw\" }".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-        Map<String, Object> aggs = (Map<String, Object>)json.get("aggregations");
-        Map<String, Object> keywords = (Map<String, Object>) aggs.get("Keywords");
-        assertEquals(3, ((ArrayList<Map<String, Object>>) keywords.get("buckets")).size());
-    }
-
-    @Test
     public void testSuggest() throws Exception {
 
         MockHttpSession session = admin();
