@@ -10,14 +10,20 @@ public class AclEntry {
     public Integer permissionId;
     public int access;
     public String permission;
-
     public AclEntry() { }
 
     public AclEntry(Permission perm, Access... access) {
         this(perm.getId(), access);
+        this.setPermission(perm.getName());
     }
 
     public AclEntry(int permId, int access) {
+        this.permissionId = permId;
+        this.access = access;
+    }
+
+    public AclEntry(String name, int permId, int access) {
+        this.permission = name;
         this.permissionId = permId;
         this.access = access;
     }

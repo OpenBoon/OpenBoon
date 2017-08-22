@@ -403,8 +403,8 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
     @Override
     public Acl getAcl(int folder) {
         Acl result = new Acl();
-        jdbc.query("SELECT * FROM folder_acl WHERE pk_folder=?", rs -> {
-            result.add(new AclEntry(rs.getInt("pk_permission"), rs.getInt("int_access")));
+        jdbc.query("SELECT p.str_authority, p.pk_permission, f.int_access FROM folder_acl f,permission p WHERE f.pk_permission = p.pk_permission and f.pk_folder=?", rs -> {
+            result.add(new AclEntry(rs.getString("str_authority"), rs.getInt("pk_permission"), rs.getInt("int_access")));
         }, folder);
         return result;
     }
