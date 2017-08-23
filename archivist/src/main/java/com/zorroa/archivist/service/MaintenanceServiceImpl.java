@@ -340,27 +340,29 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
     @Override
     protected void runOneIteration() throws Exception {
 
-        if (!properties.getBoolean("archivist.maintenance.backups.enabled")) {
-            logger.debug("Backups have been disabled, skipping");
-            return;
+        if (properties.getBoolean("archivist.maintenance.backups.enabled")) {
+
+            /**
+             * ElasticSearch
+             */
+
+            createElasticSnapshot();
+            removeExpiredElasticSnapshots();
+
+            /**
+             * H2
+             */
+
+            /**
+             * Do a full backup, then remove old backups.
+             */
+            automaticBackup();
+            removeExpiredBackups();
+
         }
-
-        /**
-         * ElasticSearch
-         */
-
-        createElasticSnapshot();
-        removeExpiredElasticSnapshots();
-
-        /**
-         * H2
-         */
-
-        /**
-         * Do a full backup, then remove old backups.
-         */
-        automaticBackup();
-        removeExpiredBackups();
+        else {
+            logger.debug("Backups have been disabled, skipping");
+        }
 
         /**
          * Remove old job data
