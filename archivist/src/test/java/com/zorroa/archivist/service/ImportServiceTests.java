@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -72,25 +70,6 @@ public class ImportServiceTests extends AbstractTest {
         spec.setGenerators(ImmutableList.of(new ProcessorRef("foo-bar", "java",
                 ImmutableMap.of("paths", ImmutableList.of("/tmp/foo.jpg")))));
         job = importService.create(spec);
-    }
-
-    @Test
-    public void testPathSuggest() {
-        Map<String, List<String>> paths = importService.suggestImportPath(
-                resources.resolve("images").toString());
-        assertTrue(paths.get("dirs").contains("set01"));
-        assertTrue(paths.get("dirs").contains("set02"));
-        assertTrue(paths.get("dirs").contains("set03"));
-        assertTrue(paths.get("dirs").contains("set04"));
-        assertTrue(paths.get("dirs").contains("set05"));
-        assertTrue(paths.get("files").contains("NOTICE"));
-    }
-
-    @Test
-    public void testPathSuggestFilterd() {
-        Map<String, List<String>> paths = importService.suggestImportPath("/shoe");
-        assertTrue(paths.get("files").isEmpty());
-        assertTrue(paths.get("dirs").isEmpty());
     }
 
     @Test

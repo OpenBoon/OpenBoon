@@ -10,7 +10,6 @@ import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
-import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,15 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static com.zorroa.archivist.domain.PipelineType.Import;
 
@@ -62,20 +57,6 @@ public class ImportServiceImpl implements ImportService {
 
     @Value("${archivist.import.priority}")
     int taskPriority;
-
-    List<String> pathSuggestFilter = Lists.newArrayList();
-
-    @PostConstruct
-    public void init() {
-        List<String> paths = properties.getList("archivist.import.suggest.paths");
-        if (paths != null) {
-            for (String entry: paths) {
-                String path = FileUtils.normalize(entry);
-                pathSuggestFilter.add(path);
-                logger.info("Allowing Imports from '{}'", path);
-            }
-        }
-    }
 
     @Override
     public PagedList<Job> getAll(Pager page) {
@@ -209,60 +190,6 @@ public class ImportServiceImpl implements ImportService {
         return job;
     }
 
-    @Override
-    public Map<String, List<String>> suggestImportPath(String path) {
-        Map<String, List<String>> result = ImmutableMap.of(
-                "dirs", Lists.newArrayList(),
-                "files", Lists.newArrayList());
-
-        /*
-         * Gotta normalize it since we allow relative paths for testing purposes.
-         */
-        path = FileUtils.normalize(path);
-        if (!isPathAllowed(path)) {
-            return result;
-        }
-
-        /*
-         * If there are no filters, we don't allow anything to be returned.
-         * This is the secure default option.
-        */
-
-        try {
-            for (File f : new File(path).listFiles()) {
-                if (f.isHidden()) {
-                    continue;
-                }
-                String t = f.isDirectory() ? "dirs" : "files";
-                result.get(t).add(f.getName());
-            }
-        } catch (Exception e) {
-            return result;
-        }
-
-        Collections.sort(result.get("dirs"));
-        Collections.sort(result.get("files"));
-        return result;
-    }
-
-
-    public boolean isPathAllowed(String path) {
-
-        if (pathSuggestFilter.isEmpty()) {
-            return false;
-        }
-        else {
-            boolean matched = false;
-            for (String filter: pathSuggestFilter) {
-                if (path.startsWith(filter)) {
-                    matched = true;
-                    break;
-                }
-            }
-            return matched;
-        }
-    }
-
     private Path copyUploadedFiles(Job job, MultipartFile[] files) throws IOException {
         Path importPath = Paths.get(job.getRootPath()).resolve("assets");
 
@@ -282,23 +209,4 @@ public class ImportServiceImpl implements ImportService {
             return name;
         }
     }
-
-    /**
-     * Return true of the Object is a valid pipeline, which is
-     * a number > 0 or a string.
-     *
-     * @param value
-     * @return
-     */
-    private boolean isValidPipeline(Object value) {
-        if (value == null) {
-            return false;
-        }
-        if (value instanceof Number) {
-            return ((Integer)value) > 0;
-        }
-
-        return true;
-    }
-
 }

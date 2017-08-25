@@ -2,9 +2,11 @@ package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
+import com.zorroa.archivist.domain.LfsRequest;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.service.ImageService;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.archivist.service.LocalFileSystem;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;
@@ -49,6 +51,9 @@ public class FileSystemController {
 
     @Autowired
     ObjectFileSystem objectFileSystem;
+
+    @Autowired
+    LocalFileSystem localFileSystem;
 
     @Autowired
     JobService jobService;
@@ -137,5 +142,20 @@ public class FileSystemController {
             logger.warn("Failed to upload proxies", e);
         }
         return HttpUtils.status("proxy", "upload", false);
+    }
+
+    @RequestMapping(value="/api/v1/lfs", method = RequestMethod.POST)
+    public Object localFiles(@RequestBody LfsRequest req) throws IOException {
+        return localFileSystem.listFiles(req);
+    }
+
+    @RequestMapping(value="/api/v1/lfs/_suggest", method = RequestMethod.POST)
+    public List<String> localFilesSuggest(@RequestBody LfsRequest req) throws IOException {
+        return localFileSystem.suggest(req);
+    }
+
+    @RequestMapping(value="/api/v1/lfs/_exist", method = RequestMethod.POST)
+    public Object localFileExists(@RequestBody LfsRequest req) throws IOException {
+       return  HttpUtils.exists(req.getPath(), localFileSystem.exists(req));
     }
 }
