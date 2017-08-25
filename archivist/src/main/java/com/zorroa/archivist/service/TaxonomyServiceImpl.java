@@ -241,6 +241,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             doc.setAttr(rootField,
                     ImmutableMap.of(
                             "keywords", keywords,
+                            "suggest", keywords,
                             "timestamp", updateTime,
                             "folderId",folder.getId(),
                             "taxId", tax.getTaxonomyId()));
