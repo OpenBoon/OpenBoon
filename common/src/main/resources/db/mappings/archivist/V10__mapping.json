@@ -199,7 +199,7 @@
           }
         },
         {
-          "binary_template": {
+          "content_template": {
             "match_mapping_type": "string",
             "match": "content",
             "mapping": {
@@ -363,7 +363,7 @@
           }
         },
         {
-          "binary_template": {
+          "content_template": {
             "match_mapping_type": "string",
             "match": "content",
             "mapping": {
