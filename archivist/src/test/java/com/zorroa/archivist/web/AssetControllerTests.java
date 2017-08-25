@@ -111,33 +111,6 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testSuggest() throws Exception {
-
-        MockHttpSession session = admin();
-        List<Source> builders = getTestAssets("set04/canyon");
-        for (Source builder: builders) {
-            AssetUtils.addSuggestKeywords(builder, "source", "reflection");
-        }
-        addTestAssets(builders);
-
-        MvcResult result = mvc.perform(post("/api/v1/assets/_suggest")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"keyword-suggestions\": { \"text\": \"re\", \"completion\": { \"field\":\"keywords.suggest\"}}}".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-
-        Map<String, Object> suggestions = (Map<String, Object>) ((ArrayList<Object>)json.get("keyword-suggestions")).get(0);
-        ArrayList<Object> options = (ArrayList<Object>) suggestions.get("options");
-        Map<String, Object> suggestion = (Map<String, Object>) options.get(0);
-        String text = (String)suggestion.get("text");
-        assertTrue(text.equals("reflection"));
-    }
-
-    @Test
     public void testSuggestV2() throws Exception {
 
         MockHttpSession session = admin();
@@ -162,6 +135,48 @@ public class AssetControllerTests extends MockMvcTest {
         Map<String, Object> suggestion = (Map<String, Object>) options.get(0);
         String text = (String)suggestion.get("text");
         assertTrue(text.equals("reflection"));
+    }
+
+    @Test
+    public void testSuggestV3() throws Exception {
+        MockHttpSession session = admin();
+        List<Source> sources = getTestAssets("set04/canyon");
+        for (Source source: sources) {
+            AssetUtils.addSuggestKeywords(source, "source", "reflection");
+        }
+        addTestAssets(sources);
+
+        MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"text\": \"re\" }".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+        List<String> keywords = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<String>>() {});
+        assertTrue(keywords.contains("reflection"));
+    }
+
+    @Test
+    public void testSuggestV3MultipleFields() throws Exception {
+        MockHttpSession session = admin();
+        List<Source> sources = getTestAssets("set04/canyon");
+        for (Source source: sources) {
+            AssetUtils.addSuggestKeywords(source, "source", "reflection");
+            source.setAttr("thing.suggest", "resume");
+        }
+        addTestAssets(sources);
+
+        MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("{ \"text\": \"re\" }".getBytes()))
+                .andExpect(status().isOk())
+                .andReturn();
+        List<String> keywords = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<List<String>>() {});
+        assertTrue(keywords.contains("reflection"));
+        assertTrue(keywords.contains("resume"));
     }
 
     @Test

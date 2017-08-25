@@ -36,6 +36,8 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.sort.SortParseElement;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,8 +150,47 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public SuggestResponse suggest(AssetSuggestBuilder builder) {
-        return buildSuggest(builder).get();
+    public Set<String> getSuggestTerms(String text) {
+        SuggestRequestBuilder builder = client.prepareSuggest(alias);
+        Set<String> fields = getFields().get("completion");
+        if (!JdbcUtils.isValid(fields)) {
+            return ImmutableSet.of();
+        }
+
+        for (String field : fields) {
+            CompletionSuggestionBuilder completion = new CompletionSuggestionBuilder(field)
+                    .text(text)
+                    .field(field);
+            builder.addSuggestion(completion);
+        }
+
+        Set<String> result = Sets.newTreeSet();
+        Suggest suggest = builder.get().getSuggest();
+        for (String field : fields) {
+            CompletionSuggestion comp =  suggest.getSuggestion(field);
+            if (comp == null) {
+                continue;
+            }
+            for (Suggest.Suggestion.Entry e : comp.getEntries()) {
+                for (Object o: e.getOptions()) {
+                    Suggest.Suggestion.Entry.Option opt = (Suggest.Suggestion.Entry.Option) o;
+                    result.add(opt.getText().toString());
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public SuggestResponse suggest(String text) {
+        SuggestRequestBuilder builder = client.prepareSuggest(alias);
+
+        CompletionSuggestionBuilder completion = new CompletionSuggestionBuilder("completions")
+                .text(text)
+                .field("keywords.suggest");
+        builder.addSuggestion(completion);
+        return builder.get();
     }
 
     @Override
@@ -292,16 +333,6 @@ public class SearchServiceImpl implements SearchService {
         return request;
     }
 
-    private SuggestRequestBuilder buildSuggest(AssetSuggestBuilder builder) {
-        // FIXME: We need to use builder.search in here somehow!
-        CompletionSuggestionBuilder completion = new CompletionSuggestionBuilder("completions")
-                .text(builder.getText())
-                .field("keywords.suggest");
-        SuggestRequestBuilder suggest = client.prepareSuggest(alias)
-                .addSuggestion(completion);
-        return  suggest;
-    }
-
     private Map<String, Object> getAggregations(AssetSearch search) {
         if (search.getAggs() == null) {
             return null;
@@ -310,8 +341,6 @@ public class SearchServiceImpl implements SearchService {
         for (Map.Entry<String, Map<String, Object>> entry: search.getAggs().entrySet()) {
             result.put(entry.getKey(), entry.getValue());
         }
-
-
 
         return result;
     }

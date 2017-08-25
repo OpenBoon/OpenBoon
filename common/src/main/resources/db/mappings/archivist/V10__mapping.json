@@ -199,6 +199,15 @@
           }
         },
         {
+          "suggest_template": {
+            "match_mapping_type": "string",
+            "match": "suggest",
+            "mapping": {
+              "type": "completion"
+            }
+          }
+        },
+        {
           "content_template": {
             "match_mapping_type": "string",
             "match": "content",

@@ -716,4 +716,16 @@ public class SearchServiceTests extends AbstractTest {
                 Json.GENERIC_MAP);
         assertTrue(result.get("queryTerms") != null);
     }
+
+    @Test
+    public void testSuggest() throws IOException {
+
+        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        Source.addSuggestKeywords("source", "zoolander");
+        assetService.index(Source);
+        refreshIndex();
+
+        logger.info("suggest: {}", searchService.getSuggestTerms("zoo"));
+
+    }
 }

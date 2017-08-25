@@ -5,7 +5,6 @@ import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.search.AssetSuggestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.suggest.SuggestResponse;
@@ -28,7 +27,9 @@ public interface SearchService {
 
     long count(Folder folder);
 
-    SuggestResponse suggest(AssetSuggestBuilder builder);
+    SuggestResponse suggest(String text);
+    Set<String> getSuggestTerms(String text);
+
     Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults);
 
     /**

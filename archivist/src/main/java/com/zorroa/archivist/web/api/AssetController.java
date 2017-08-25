@@ -1,6 +1,5 @@
 package com.zorroa.archivist.web.api;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.*;
@@ -14,15 +13,12 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.AssetSuggestBuilder;
-import com.zorroa.sdk.util.Json;
 import org.apache.tika.Tika;
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -251,31 +247,14 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v2/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String suggest(@RequestBody AssetSuggestBuilder search) throws IOException {
-        SuggestResponse response = searchService.suggest(search);
+    public String suggestV2(@RequestBody AssetSuggestBuilder builder) throws IOException {
+        SuggestResponse response = searchService.suggest(builder.getText());
         return response.toString();
     }
 
-    @RequestMapping(value="/api/v1/assets/_suggest", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-    public String suggest(@RequestBody String query) throws IOException {
-        SuggestRequestBuilder builder = client.prepareSuggest(alias);
-        Map<String, Object> json = Json.Mapper.readValue(query,
-                new TypeReference<Map<String, Object>>() {
-                });
-        // Create a top-level suggestion for each top-level dictionary in the request body
-        // TODO: Only handles "completion" suggestions currently
-        for (Map.Entry<String, Object> entry : json.entrySet()) {
-            Map<String, Object> suggestMap = (Map<String, Object>)entry.getValue();
-            String text = (String)suggestMap.get("text");
-            Map<String, String> completionMap = (Map<String, String>)suggestMap.get("completion");
-            String field = completionMap.get("field");
-            CompletionSuggestionBuilder cbuilder = new CompletionSuggestionBuilder(entry.getKey())
-                    .text(text)
-                    .field(field);
-            builder.addSuggestion(cbuilder);
-        }
-        SuggestResponse response = builder.get();
-        return response.toString();
+    @RequestMapping(value="/api/v3/assets/_suggest", method=RequestMethod.POST)
+    public Object suggestV3(@RequestBody AssetSuggestBuilder suggest) throws IOException {
+        return searchService.getSuggestTerms(suggest.getText());
     }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.GET)
