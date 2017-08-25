@@ -266,6 +266,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
         t.setEnv(Json.deserialize(rs.getString("json_env"), Map.class));
         t.getEnv().put("ZORROA_TASK_ID", String.valueOf(t.getId()));
+        t.getEnv().put("ZORROA_USER", rs.getString("str_username"));
+        t.getEnv().put("ZORROA_HMAC_KEY", rs.getString("hmac_key"));
 
         t.setArgMap(rs.getString("json_args").getBytes());
 
@@ -287,12 +289,17 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                     "job.json_args,"+
                     "job.json_env, " +
                     "job.str_root_path, " +
-                    "task.str_name "+
+                    "task.str_name, "+
+                    "user.str_username,"+
+                    "user.hmac_key " +
                 "FROM " +
                     "task,"+
-                    "job  " +
+                    "job,  " +
+                    "user " +
                 "WHERE " +
-                    "task.pk_job = job.pk_job ";
+                    "task.pk_job = job.pk_job " +
+                "AND " +
+                    "job.int_user_created = user.pk_user ";
 
     private static final String GET_WAITING =
             GET_TASK_TO_EXECUTE +

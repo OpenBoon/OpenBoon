@@ -144,8 +144,6 @@ public class JobServiceImpl implements JobService {
          * These options allow jobs to talk back to the archivist.
          */
         spec.putToEnv("ZORROA_ARCHIVIST_URL", networkEnv.getPrivateUri().toString());
-        spec.putToEnv("ZORROA_USER", SecurityUtils.getUsername());
-        spec.putToEnv("ZORROA_HMAC_KEY", userDao.getHmacKey(SecurityUtils.getUsername()));
 
         Job job = jobDao.create(spec);
         if (spec.getTasks() != null) {
