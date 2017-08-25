@@ -25,7 +25,7 @@ import static com.google.common.collect.Sets.intersection;
 
 public class SecurityUtils {
 
-    public static final  String GROUP_ADMIN = "group::administrator";
+    public static final String GROUP_ADMIN = "group::administrator";
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
 
@@ -40,8 +40,7 @@ public class SecurityUtils {
     public static String getUsername() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             throw new AuthenticationCredentialsNotFoundException("No login credentials specified");
-        }
-        else {
+        } else {
             try {
                 User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 return user.getUsername();
@@ -55,8 +54,7 @@ public class SecurityUtils {
     public static UserAuthed getUser() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             throw new AuthenticationCredentialsNotFoundException("No login credentials specified");
-        }
-        else {
+        } else {
             try {
                 return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             } catch (ClassCastException e) {
@@ -69,8 +67,7 @@ public class SecurityUtils {
     public static UserAuthed getUserOrNull() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             return null;
-        }
-        else {
+        } else {
             try {
                 return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             } catch (ClassCastException e) {
@@ -88,7 +85,7 @@ public class SecurityUtils {
      * @return
      */
     public static boolean hasPermission(String field, Asset asset) {
-        Set<Integer> perms = asset.getAttr("permissions."+ field, Json.SET_OF_INTS);
+        Set<Integer> perms = asset.getAttr("permissions." + field, Json.SET_OF_INTS);
         return hasPermission(perms);
     }
 
@@ -105,6 +102,10 @@ public class SecurityUtils {
 
         Set<Integer> perms = asset.getAttr("permissions.export", Json.SET_OF_INTS);
         return hasPermission(perms);
+    }
+
+    public static boolean hasPermission(Collection<String> perms) {
+        return hasPermission(perms.toArray(new String[]{}));
     }
 
     public static boolean hasPermission(String ... perms) {
