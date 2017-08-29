@@ -38,18 +38,18 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User get(int id) {
-        return jdbc.queryForObject("SELECT * FROM user WHERE pk_user=?", MAPPER, id);
+        return jdbc.queryForObject("SELECT * FROM users WHERE pk_user=?", MAPPER, id);
     }
 
     @Override
     public User get(String username) {
-        return jdbc.queryForObject("SELECT * FROM user WHERE str_username=? OR str_email=?",
+        return jdbc.queryForObject("SELECT * FROM users WHERE str_username=? OR str_email=?",
                 MAPPER, username, username);
     }
 
     @Override
     public User getByEmail(String email) {
-        return jdbc.queryForObject("SELECT * FROM user WHERE str_email=?", MAPPER, email);
+        return jdbc.queryForObject("SELECT * FROM users WHERE str_email=?", MAPPER, email);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         long expireTime = 30 * 60 * 1000;
         try {
             return jdbc.queryForObject(
-                    "SELECT * FROM user WHERE str_reset_pass_token=? AND " +
+                    "SELECT * FROM users WHERE str_reset_pass_token=? AND " +
                             "? - time_reset_pass < ? LIMIT 1 ",
                     MAPPER, token, System.currentTimeMillis(), expireTime);
         } catch (EmptyResultDataAccessException e) {
@@ -66,7 +66,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     private static final String GET_ALL =
-            "SELECT * FROM user ORDER BY str_username";
+            "SELECT * FROM users ORDER BY str_username";
 
     @Override
     public List<User> getAll() {
@@ -81,7 +81,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     private static final String INSERT =
-            JdbcUtils.insert("user",
+            JdbcUtils.insert("users",
                 "str_username",
                 "str_password",
                 "str_email",
@@ -127,27 +127,27 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public boolean exists(String name) {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM user WHERE str_username=?", Boolean.class, name);
+        return jdbc.queryForObject("SELECT COUNT(1) FROM users WHERE str_username=?", Boolean.class, name);
     }
 
     @Override
     public boolean setSettings(User user, UserSettings settings) {
         return jdbc.update(
-                "UPDATE user SET json_settings=? WHERE pk_user=?",
+                "UPDATE users SET json_settings=? WHERE pk_user=?",
                 Json.serializeToString(settings, "{}"), user.getId()) == 1;
     }
 
     @Override
     public UserSettings getSettings(int id) {
         return Json.deserialize(
-                jdbc.queryForObject("SELECT json_settings FROM user WHERE pk_user=?",
+                jdbc.queryForObject("SELECT json_settings FROM users WHERE pk_user=?",
                         String.class, id), UserSettings.class);
     }
 
     @Override
     public boolean setPassword(User user, String password) {
         return jdbc.update(
-                "UPDATE user SET str_password=? WHERE pk_user=?",
+                "UPDATE users SET str_password=? WHERE pk_user=?",
                 SecurityUtils.createPasswordHash(password), user.getId()) == 1;
     }
 
@@ -155,14 +155,14 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     public String setEnablePasswordRecovery(User user) {
         String token = HttpUtils.randomString(64);
         jdbc.update(
-                "UPDATE user SET str_reset_pass_token=?, time_reset_pass=? WHERE pk_user=?",
+                "UPDATE users SET str_reset_pass_token=?, time_reset_pass=? WHERE pk_user=?",
                 token, System.currentTimeMillis(), user.getId());
         return token;
     }
 
     private static final String RESET_PASSWORD =
         "UPDATE " +
-            "user " +
+            "users " +
         "SET " +
             "str_password=?,"+
             "str_reset_pass_token=null " +
@@ -181,11 +181,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public boolean setEnabled(User user, boolean value) {
         return jdbc.update(
-                "UPDATE user SET bool_enabled=? WHERE pk_user=? AND bool_enabled=?",
+                "UPDATE users SET bool_enabled=? WHERE pk_user=? AND bool_enabled=?",
                 value, user.getId(), !value) == 1;
     }
 
-    private static final String UPDATE = JdbcUtils.update("user", "pk_user",
+    private static final String UPDATE = JdbcUtils.update("users", "pk_user",
             "str_email",
             "str_firstname",
             "str_lastname");
@@ -198,45 +198,32 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public boolean delete(User user) {
-        return jdbc.update("DELETE FROM user WHERE pk_user=?", user.getId()) == 1;
+        return jdbc.update("DELETE FROM users WHERE pk_user=?", user.getId()) == 1;
     }
 
     @Override
     public String getPassword(String username) {
-        return jdbc.queryForObject("SELECT str_password FROM user WHERE (str_username=? OR str_email=?) AND bool_enabled=? AND str_source='local'",
+        return jdbc.queryForObject("SELECT str_password FROM users WHERE (str_username=? OR str_email=?) AND bool_enabled=? AND str_source='local'",
             String.class, username, username, true);
     }
 
     @Override
     public String getHmacKey(String username) {
-        return jdbc.queryForObject("SELECT hmac_key FROM user WHERE str_username=? AND bool_enabled=?",
+        return jdbc.queryForObject("SELECT hmac_key FROM users WHERE str_username=? AND bool_enabled=?",
                 String.class, username, true);
     }
 
     @Override
     public boolean generateHmacKey(String username) {
         UUID key = UUID.randomUUID();
-        boolean result = jdbc.update("UPDATE user SET hmac_key=? WHERE str_username=? AND bool_enabled=?",
+        boolean result = jdbc.update("UPDATE users SET hmac_key=? WHERE str_username=? AND bool_enabled=?",
                 key, username, true) == 1;
         return result;
     }
 
-    private static final String GET_ALL_WITH_SESSION =
-            "SELECT " +
-                "DITINCT user.* " +
-            "FROM " +
-                "user,session " +
-            "WHERE " +
-                "session.pk_user = user.pk_user ";
-
-    @Override
-    public List<User> getAllWithSession() {
-        return jdbc.query(GET_ALL_WITH_SESSION, MAPPER);
-    }
-
     @Override
     public long getCount() {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM user", Integer.class);
+        return jdbc.queryForObject("SELECT COUNT(1) FROM users", Integer.class);
     }
 
 
@@ -270,7 +257,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         /*
          * Ensure the user's immutable permissions cannot be removed.
          */
-        jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=0", user.getId());
+        jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=?",
+                user.getId(), false);
     }
 
     @Override

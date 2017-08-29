@@ -16,7 +16,9 @@ public class MaintenanceDaoImpl extends AbstractDao implements MaintenanceDao {
 
     @Override
     public void backup(File file) {
-        jdbc.update("BACKUP TO ?", file.getAbsolutePath());
+        if (isDbVendor("h2")) {
+            jdbc.update("BACKUP TO ?", file.getAbsolutePath());
+        }
     }
 
     private final RowMapper<ExpiredJob> JOB_MAPPER = (rs, row) -> {

@@ -341,12 +341,14 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
 
     @Override
     public boolean setDyHierarchyRoot(Folder folder,  String field) {
-        return jdbc.update("UPDATE folder SET bool_recursive=0, bool_dyhi_root=1, str_dyhi_field=? WHERE pk_folder=? AND pk_folder!=0", field, folder.getId()) == 1;
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?, str_dyhi_field=? WHERE pk_folder=? AND pk_folder!=0",
+                false, true, field, folder.getId()) == 1;
     }
 
     @Override
     public boolean removeDyHierarchyRoot(Folder folder) {
-        return jdbc.update("UPDATE folder SET bool_recursive=1, bool_dyhi_root=0,str_dyhi_field=null WHERE pk_folder=? AND pk_folder!=0", folder.getId()) == 1;
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?,str_dyhi_field=null WHERE pk_folder=? AND pk_folder!=0",
+                true, false, folder.getId()) == 1;
     }
 
     @Override

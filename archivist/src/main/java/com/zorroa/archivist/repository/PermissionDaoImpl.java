@@ -201,6 +201,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
         /*
          * Ensure immutable permissions cannot be deleted.
          */
-        return jdbc.update("DELETE FROM permission WHERE pk_permission=? AND bool_immutable=0", perm.getId()) == 1;
+        return jdbc.update("DELETE FROM permission WHERE pk_permission=? AND bool_immutable=?",
+                perm.getId(), false) == 1;
     }
 }

@@ -182,7 +182,7 @@ public class UserDaoTests extends AbstractTest {
         String token = userDao.setEnablePasswordRecovery(user);
         assertEquals(64, token.length());
         assertEquals(token,
-                jdbc.queryForObject("SELECT str_reset_pass_token FROM user WHERE pk_user=?",
+                jdbc.queryForObject("SELECT str_reset_pass_token FROM users WHERE pk_user=?",
                         String.class, user.getId()));
     }
 

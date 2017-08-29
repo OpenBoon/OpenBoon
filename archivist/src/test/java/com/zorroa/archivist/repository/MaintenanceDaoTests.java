@@ -37,6 +37,9 @@ public class MaintenanceDaoTests extends AbstractTest {
 
     @Test
     public void testBackup() {
+        if (!((AbstractDao) maintenanceDao).isDbVendor("h2")) {
+            return;
+        }
         maintenanceDao.backup(file);
         assertTrue(file.exists());
     }

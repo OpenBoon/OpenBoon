@@ -70,14 +70,14 @@ public class JobDaoTests extends AbstractTest {
     }
 
     String cols =
-            "job_count.int_task_total_count=?,"+
-            "job_count.int_task_completed_count=?,"+
-            "job_count.int_task_state_queued_count=?,"+
-            "job_count.int_task_state_waiting_count=?,"+
-            "job_count.int_task_state_running_count=?,"+
-            "job_count.int_task_state_success_count=?,"+
-            "job_count.int_task_state_failure_count=?, " +
-            "job_count.int_task_state_skipped_count=? ";
+            "int_task_total_count=?,"+
+            "int_task_completed_count=?,"+
+            "int_task_state_queued_count=?,"+
+            "int_task_state_waiting_count=?,"+
+            "int_task_state_running_count=?,"+
+            "int_task_state_success_count=?,"+
+            "int_task_state_failure_count=?, " +
+            "int_task_state_skipped_count=? ";
 
     @Test
     public void testPsuedoStates() {

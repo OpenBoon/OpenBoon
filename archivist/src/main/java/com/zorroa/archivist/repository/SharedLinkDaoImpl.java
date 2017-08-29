@@ -4,9 +4,7 @@ import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.SharedLink;
 import com.zorroa.archivist.domain.SharedLinkSpec;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.util.Json;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,9 +17,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Repository
 public class SharedLinkDaoImpl extends AbstractDao implements SharedLinkDao {
-
-    @Autowired
-    ApplicationProperties properties;
 
     private final RowMapper<SharedLink> MAPPER = (rs, row) -> {
         SharedLink link = new SharedLink();
@@ -57,7 +52,7 @@ public class SharedLinkDaoImpl extends AbstractDao implements SharedLinkDao {
         KeyHolder key = new GeneratedKeyHolder();
         jdbc.update(connection -> {
             PreparedStatement ps =
-                    connection.prepareStatement(INSERT);
+                    connection.prepareStatement(INSERT, new String[]{"pk_shared_link"});
             ps.setInt(1, SecurityUtils.getUser().getId());
             ps.setLong(2, System.currentTimeMillis());
             ps.setLong(3, expireTime);

@@ -50,8 +50,6 @@ public interface UserDao {
 
     User create(UserSpec builder, String source);
 
-    List<User> getAllWithSession();
-
     long getCount();
 
     boolean hasPermission(User user, Permission permission);

@@ -122,20 +122,20 @@ public class TrashFolderDaoImpl extends AbstractDao implements TrashFolderDao {
     @Override
     public List<TrashedFolder> getAll(int user) {
         return jdbc.query(
-                GET.concat(" WHERE user_deleted=? AND bool_primary=1"), MAPPER, user);
+                GET.concat(" WHERE user_deleted=? AND bool_primary=?"), MAPPER, user, true);
     }
 
     @Override
     public int count(int user) {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash WHERE user_deleted=? AND bool_primary=1",
-                Integer.class, user);
+        return jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash WHERE user_deleted=? AND bool_primary=?",
+                Integer.class, user, true);
     }
 
     @Override
     public List<TrashedFolder> getAll(Folder parent, int user) {
         return jdbc.query(
-                GET.concat(" WHERE pk_parent=? AND user_deleted=? AND bool_primary=1"), MAPPER,
-                parent.getId(), user);
+                GET.concat(" WHERE pk_parent=? AND user_deleted=? AND bool_primary=?"), MAPPER,
+                parent.getId(), user, true);
     }
 
     @Override

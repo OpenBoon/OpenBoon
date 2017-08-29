@@ -54,7 +54,8 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
 
 
         if (spec.isStandard()) {
-            jdbc.update("UPDATE pipeline SET bool_standard=0 WHERE bool_standard=1");
+            jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=?",
+                    false, true);
         }
 
         /*
@@ -82,7 +83,8 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
     @Override
     public Pipeline getStandard() {
         try {
-            return jdbc.queryForObject("SELECT * FROM pipeline WHERE bool_standard=1 LIMIT 1", MAPPER);
+            return jdbc.queryForObject("SELECT * FROM pipeline WHERE bool_standard=? LIMIT 1",
+                    MAPPER, true);
         } catch(EmptyResultDataAccessException e) {
             throw new EmptyResultDataAccessException("Failed to find a standard pipeline", 1);
         }
@@ -142,7 +144,8 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
     public boolean update(int id, Pipeline spec) {
         // Unset standard if its set.
         if (spec.isStandard()) {
-            jdbc.update("UPDATE pipeline SET bool_standard=0 WHERE bool_standard=1");
+            jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=?",
+                    false, true);
         }
         int incrementVersion = 0;
         if (spec.getVersionUp() != null && spec.getVersionUp()) {
@@ -156,7 +159,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
 
     @Override
     public boolean delete(int id) {
-        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=? AND bool_standard=0", id) == 1;
+        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=? AND bool_standard=?", id, false) == 1;
     }
 
     @Override

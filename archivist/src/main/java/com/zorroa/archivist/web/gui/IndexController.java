@@ -10,7 +10,6 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
@@ -42,9 +41,6 @@ public class IndexController {
 
     @Autowired
     PipelineService pipelineService;
-
-    @Autowired
-    IngestService ingestService;
 
     @Autowired
     AnalystService analystService;
@@ -157,49 +153,6 @@ public class IndexController {
         model.addAttribute("page", paging);
         model.addAttribute("analysts", analystService.getAll(paging));
         return "analysts";
-    }
-
-    @RequestMapping("/gui/ingests")
-    public String getIngests(Model model) {
-        standardModel(model);
-        model.addAttribute("pipelines", pipelineService.getAll());
-        model.addAttribute("ingests", ingestService.getAll());
-        model.addAttribute("ingestForm", new NewIngestForm());
-        return "ingests";
-    }
-
-    @RequestMapping(value="/gui/ingests", method=RequestMethod.POST)
-    public String createIngest(Model model,
-                               @Valid @ModelAttribute("ingestForm") NewIngestForm ingestForm,
-                               BindingResult bindingResult) {
-        standardModel(model);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", true);
-            model.addAttribute("pipelines", pipelineService.getAll());
-            return "ingests";
-        }
-
-        model.addAttribute("ingests", ingestService.getAll());
-        model.addAttribute("ingestForm", new NewIngestForm());
-
-        IngestSpec spec = new IngestSpec();
-        spec.setName(ingestForm.getName());
-        spec.setSchedule(ingestForm.getSchedule());
-        spec.setRunNow(ingestForm.isRunNow());
-        spec.setAutomatic(ingestForm.isAutomatic());
-        spec.setFolderId(ingestForm.getFolderId());
-        spec.setPipelineId(ingestForm.getPipelineId());
-
-        for (String path: ingestForm.getPaths()) {
-            ProcessorRef ref = pluginService.getProcessorRef("com.zorroa.core.generator.FileSystemGenerator");
-            ref.setArg("path", path);
-            spec.addToGenerators(ref);
-        }
-
-        ingestService.create(spec);
-
-        return "redirect:/gui/ingests";
     }
 
     @RequestMapping("/gui/pipelines")

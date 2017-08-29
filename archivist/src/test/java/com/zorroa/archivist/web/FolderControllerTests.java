@@ -135,7 +135,7 @@ public class FolderControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec("TestFolder1"))))
+                .content(Json.serialize(new FolderSpec("TestFolder2"))))
                 .andExpect(status().isOk())
                 .andReturn();
 

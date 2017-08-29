@@ -3,10 +3,11 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.AbstractDao;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.repository.MaintenanceDao;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
-import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,9 @@ public class MaintenanceServiceTests extends AbstractTest {
 
     @Test
     public void testAutomaticBackup() throws IOException {
-
+        if (!((AbstractDao) maintenanceDao).isDbVendor("h2")) {
+            return;
+        }
         File file = maintenanceService.getNextAutomaticBackupFile();
         if (file.exists()) {
             Files.delete(file.toPath());
@@ -58,6 +61,9 @@ public class MaintenanceServiceTests extends AbstractTest {
 
     @Test
     public void testRemoveExpiredBackups() throws IOException {
+        if (!((AbstractDao) maintenanceDao).isDbVendor("h2")) {
+            return;
+        }
         maintenanceService.removeExpiredBackups(0);
         File file = maintenanceService.getNextAutomaticBackupFile();
         if (file.exists()) {

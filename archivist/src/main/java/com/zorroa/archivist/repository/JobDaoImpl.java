@@ -5,8 +5,6 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
-import com.zorroa.archivist.domain.JobId;
-import com.zorroa.archivist.domain.TaskId;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -71,7 +69,12 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
     @Override
     public JobSpec nextId(JobSpec spec) {
         if (spec.getJobId() == null) {
-            spec.setJobId(jdbc.queryForObject("SELECT JOB_SEQ.nextval FROM dual", Integer.class));
+            if (isDbVendor("postgresql")) {
+                spec.setJobId(jdbc.queryForObject("SELECT nextval('zorroa.job_pk_job_seq')", Integer.class));
+            }
+            else {
+                spec.setJobId(jdbc.queryForObject("SELECT JOB_SEQ.nextval FROM dual", Integer.class));
+            }
         }
         return spec;
     }

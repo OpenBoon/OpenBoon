@@ -47,6 +47,7 @@ public class ApiExceptionHandler {
             throw new DuplicateElementException(e.getMessage());
         }
         catch (UncategorizedSQLException e) {
+            logger.warn("failed: ", e);
             logStackTrace(e);
             throw new ArchivistException("Backend query failure, see archivist log for more details");
         }

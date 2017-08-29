@@ -290,16 +290,16 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
                     "job.json_env, " +
                     "job.str_root_path, " +
                     "task.str_name, "+
-                    "user.str_username,"+
-                    "user.hmac_key " +
+                    "u.str_username,"+
+                    "u.hmac_key " +
                 "FROM " +
                     "task,"+
                     "job,  " +
-                    "user " +
+                    "users u " +
                 "WHERE " +
                     "task.pk_job = job.pk_job " +
                 "AND " +
-                    "job.int_user_created = user.pk_user ";
+                    "job.int_user_created = u.pk_user ";
 
     private static final String GET_WAITING =
             GET_TASK_TO_EXECUTE +

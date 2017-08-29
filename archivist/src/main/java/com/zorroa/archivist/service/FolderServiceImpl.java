@@ -595,6 +595,9 @@ public class FolderServiceImpl implements FolderService {
                 emitFolderCreated(result);
             }
         } else {
+            //TODO: this won't work with postgres since the transaction
+            // will be dead once the DuplicateKeyException is thrown.
+            // Look into using ON CONFLICT / Merge
             try {
                 result = folderDao.create(spec);
                 setAcl(result, spec.getAcl(), true);

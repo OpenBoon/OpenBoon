@@ -11,7 +11,6 @@ import com.zorroa.sdk.filesystem.UUIDFileSystem;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.security.UserDetailsPlugin;
 import org.apache.commons.lang3.StringUtils;
-import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +47,6 @@ public class ArchivistConfiguration {
     @ConfigurationProperties(prefix="archivist.datasource.primary")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
-    }
-
-    @Bean(name="flyway", initMethod="migrate")
-    @Autowired
-    public Flyway flyway(DataSource datasource) {
-        Flyway flyway =  new Flyway();
-        flyway.setDataSource(datasource);
-        return flyway;
     }
 
     @Bean

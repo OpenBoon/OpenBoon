@@ -2,9 +2,12 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.zorroa.common.config.ApplicationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 
 /**
@@ -17,18 +20,17 @@ public class SettingsDaoImpl extends AbstractDao implements SettingsDao {
             ImmutableMap.of("key", rs.getString("str_name"),
                     "value", rs.getString("str_value"));
 
-    private static final String MERGE =
-            "MERGE INTO " +
-                "settings " +
-                    "(str_name, " +
-                    "str_value) " +
-            "KEY(str_name) " +
-            "VALUES (?,?)";
-
-
     @Override
     public boolean set(String key, Object value) {
-        return jdbc.update(MERGE, key, String.valueOf(value)) == 1;
+        if (isDbVendor("postgresql")) {
+            return jdbc.update(
+                    "INSERT INTO settings (str_name, str_value) VALUES (?,?) ON CONFLICT(str_name) DO UPDATE SET str_value = ?",
+                    key, String.valueOf(value),  String.valueOf(value)) == 1;
+        }
+        else {
+            return jdbc.update("MERGE INTO settings (str_name, str_value) KEY(str_name) VALUES (?,?)",
+                    key, String.valueOf(value)) == 1;
+        }
     }
 
     @Override
