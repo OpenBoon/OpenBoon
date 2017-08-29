@@ -6,9 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.config.ArchivistConfiguration;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.Taxonomy;
-import com.zorroa.archivist.domain.TaxonomySpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.TaxonomyDao;
 import com.zorroa.common.elastic.CountingBulkListener;
@@ -35,9 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
 
@@ -65,10 +60,8 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     @Autowired
     Client client;
 
-    /**
-     * Only a single thread can be generating hierarchies currently.
-     */
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    @Autowired
+    UniqueTaskExecutor folderTaskExecutor;
 
     Set<String> EXCLUDE_FOLDERS = ImmutableSet.of("Library", "Users");
 
@@ -147,7 +140,8 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             runAll();
         }
         else {
-            executor.schedule(() -> runAll(), 5, TimeUnit.SECONDS);
+            folderTaskExecutor.execute(
+                    new UniqueRunnable("tax_run_all", () -> runAll()));
         }
     }
 
@@ -164,7 +158,8 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             tagTaxonomy(tax, start, force);
         }
         else {
-            executor.schedule(() -> tagTaxonomy(tax, start, force), 5, TimeUnit.SECONDS);
+            folderTaskExecutor.execute(new UniqueRunnable("tax_run_" + start.getId(),
+                    () -> tagTaxonomy(tax, start, force)));
         }
     }
 
@@ -284,42 +279,22 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     @Override
     public void untagTaxonomyAsync(Taxonomy tax, long timestamp) {
-        if (ArchivistConfiguration.unittest) {
-            untagTaxonomy(tax, timestamp);
-        }
-        else {
-            executor.schedule(() ->  untagTaxonomy(tax, timestamp), 5, TimeUnit.SECONDS);
-        }
+        folderTaskExecutor.execute(() -> untagTaxonomy(tax, timestamp));
     }
 
     @Override
     public void untagTaxonomyAsync(Taxonomy tax) {
-        if (ArchivistConfiguration.unittest) {
-            untagTaxonomy(tax);
-        }
-        else {
-            executor.schedule(() ->  untagTaxonomy(tax), 5, TimeUnit.SECONDS);
-        }
+        folderTaskExecutor.execute(() -> untagTaxonomy(tax));
     }
 
     @Override
     public void untagTaxonomyFoldersAsync(Taxonomy tax, List<Folder> folders) {
-        if (ArchivistConfiguration.unittest) {
-            untagTaxonomyFolders(tax, folders);
-        }
-        else {
-            executor.schedule(() -> untagTaxonomyFolders(tax, folders), 5, TimeUnit.SECONDS);
-        }
+        folderTaskExecutor.execute(() -> untagTaxonomyFolders(tax, folders));
     }
 
     @Override
     public void untagTaxonomyFoldersAsync(Taxonomy tax, Folder folder, List<String> assets) {
-        if (ArchivistConfiguration.unittest) {
-            untagTaxonomyFolders(tax, folder, assets);
-        }
-        else {
-            executor.schedule(() -> untagTaxonomyFolders(tax, folder, assets), 5, TimeUnit.SECONDS);
-        }
+        folderTaskExecutor.execute(() -> untagTaxonomyFolders(tax, folder, assets));
     }
 
     @Override

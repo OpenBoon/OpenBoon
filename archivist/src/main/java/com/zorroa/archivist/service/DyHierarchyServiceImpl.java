@@ -34,10 +34,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * DyHierarchyServiceImpl is responsible for the generation of dynamic hierarchies.
@@ -62,19 +58,11 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     @Autowired
     TransactionEventManager transactionEventManager;
 
+    @Autowired
+    UniqueTaskExecutor folderTaskExecutor;
+
     @Value("${archivist.dyhi.maxFoldersPerLevel}")
     private Integer maxFoldersPerLevel;
-
-    /**
-     * Only a single thread can be generating hierarchies currently.
-     */
-    private final ThreadPoolExecutor dyhiExecute;
-
-    public DyHierarchyServiceImpl() {
-        dyhiExecute = new ThreadPoolExecutor(1, 1, 1, TimeUnit.HOURS,
-                new LinkedBlockingDeque<>(2));
-        dyhiExecute.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
-    }
 
     @Override
     @Transactional
@@ -189,33 +177,19 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
 
     @Override
     public void submitGenerateAll(final boolean refresh) {
-        /**
-         * If there was already a generateAll submitted, no need
-         * to submit again.
-         */
-        if (ArchivistConfiguration.unittest) {
+        folderTaskExecutor.execute(
+                new UniqueRunnable("dyhi_run_all", new SecureRunnable(() -> {
+            if (refresh) {
+                ElasticClientUtils.refreshIndex(client);
+            }
             generateAll();
-        }
-        else {
-            dyhiExecute.submit(new SecureRunnable(() -> {
-                if (refresh) {
-                    ElasticClientUtils.refreshIndex(client);
-                }
-                generateAll();
-            }, SecurityContextHolder.getContext()));
-        }
+        }, SecurityContextHolder.getContext())));
     }
 
     @Override
-    public Future submitGenerate(DyHierarchy dyhi) {
-        if (ArchivistConfiguration.unittest) {
-            generate(dyhi);
-            return null;
-        }
-        else {
-            return dyhiExecute.submit(new SecureRunnable(() -> generate(dyhi),
-                    SecurityContextHolder.getContext()));
-        }
+    public void submitGenerate(DyHierarchy dyhi) {
+        folderTaskExecutor.execute(new UniqueRunnable("dyhi_run_"+ dyhi.getId(),
+                    new SecureRunnable(() -> generate(dyhi), SecurityContextHolder.getContext())));
     }
 
     @Override

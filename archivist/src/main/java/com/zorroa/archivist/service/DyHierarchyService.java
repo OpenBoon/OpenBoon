@@ -4,8 +4,6 @@ import com.zorroa.archivist.domain.DyHierarchy;
 import com.zorroa.archivist.domain.DyHierarchySpec;
 import com.zorroa.archivist.domain.Folder;
 
-import java.util.concurrent.Future;
-
 /**
  * Created by chambers on 7/14/16.
  */
@@ -52,5 +50,5 @@ public interface DyHierarchyService {
      *
      * @param agg
      */
-    Future<Integer> submitGenerate(DyHierarchy agg);
+    void submitGenerate(DyHierarchy agg);
 }

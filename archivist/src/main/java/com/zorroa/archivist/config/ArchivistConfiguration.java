@@ -2,6 +2,7 @@ package com.zorroa.archivist.config;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.zorroa.archivist.domain.UniqueTaskExecutor;
 import com.zorroa.archivist.security.UserDetailsPluginWrapper;
 import com.zorroa.archivist.security.UserDetailsPopulator;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -119,6 +120,16 @@ public class ArchivistConfiguration {
         }
         return new UserDetailsPluginWrapper(plugin);
     }
+
+    @Bean
+    public UniqueTaskExecutor folderTaskExecutor() {
+        /**
+         * The unittest property makes tasks run inline.
+         */
+        UniqueTaskExecutor t = new UniqueTaskExecutor(unittest);
+        return t;
+    }
+
 
     public static <T> T instantiate(final String className, final Class<T> type){
         try{
