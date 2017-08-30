@@ -69,7 +69,7 @@ public class MigrationServiceImpl implements MigrationService {
     @Autowired
     Flyway flyway;
 
-    private static final int BULK_SIZE = 125;
+    private static final int BULK_SIZE = 200;
     private static final long BULK_TIMEOUT = 60000;
 
     @Override
