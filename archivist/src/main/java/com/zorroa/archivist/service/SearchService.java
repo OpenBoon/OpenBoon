@@ -28,7 +28,7 @@ public interface SearchService {
     long count(Folder folder);
 
     SuggestResponse suggest(String text);
-    Set<String> getSuggestTerms(String text);
+    List<String> getSuggestTerms(String text);
 
     Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults);
 

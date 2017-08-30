@@ -150,11 +150,11 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Set<String> getSuggestTerms(String text) {
+    public List<String> getSuggestTerms(String text) {
         SuggestRequestBuilder builder = client.prepareSuggest(alias);
         Set<String> fields = getFields().get("completion");
         if (!JdbcUtils.isValid(fields)) {
-            return ImmutableSet.of();
+            return Lists.newArrayList();
         }
 
         for (String field : fields) {
@@ -164,7 +164,7 @@ public class SearchServiceImpl implements SearchService {
             builder.addSuggestion(completion);
         }
 
-        Set<String> result = Sets.newTreeSet();
+        Set<String> unique = Sets.newTreeSet();
         Suggest suggest = builder.get().getSuggest();
         for (String field : fields) {
             CompletionSuggestion comp =  suggest.getSuggestion(field);
@@ -174,11 +174,13 @@ public class SearchServiceImpl implements SearchService {
             for (Suggest.Suggestion.Entry e : comp.getEntries()) {
                 for (Object o: e.getOptions()) {
                     Suggest.Suggestion.Entry.Option opt = (Suggest.Suggestion.Entry.Option) o;
-                    result.add(opt.getText().toString());
+                    unique.add(opt.getText().toString());
                 }
             }
         }
 
+        List<String> result = Lists.newArrayList(unique);
+        Collections.sort(result);
         return result;
     }
 
