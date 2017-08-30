@@ -182,39 +182,18 @@ public class MigrationServiceImpl implements MigrationService {
             return;
         }
 
-        /**
-         * For unit tests, suspend the unit test transaction and execute the update
-         * in a separate transaction, that we're not starting at V1 every time.
-         */
-        TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(Propagation.REQUIRES_NEW.ordinal());
-        boolean updated = tt.execute(transactionStatus -> {
-            boolean result = migrationDao.setVersion(m, props.getVersion(), props.getPatch());
-            return result;
-        });
-
-        if (!updated) {
-            logger.warn("Could not update migration record to version: " + props.getVersion() +
-                    ", already set to that version.");
-        }
-
         if (newIndexExists) {
             logger.warn("New index '{}' already exists, may not be latest version", newIndex);
             client.admin().indices().prepareOpen(newIndex).get();
-            return;
         }
-
-        /**
-         * Wait on the cluster status to at least be yellow.
-         */
-        waitOnClusterStatus(oldIndex);
-
-        logger.info("Processing migration: {}, path={}, force={}", m.getName(), m.getPath(), force);
-        client.admin()
-                .indices()
-                .prepareCreate(newIndex)
-                .setSource(props.getMapping())
-                .get();
+        else {
+            logger.info("Processing migration: {}, path={}, force={}", m.getName(), m.getPath(), force);
+            client.admin()
+                    .indices()
+                    .prepareCreate(newIndex)
+                    .setSource(props.getMapping())
+                    .get();
+        }
 
         /**
          * If there is an old index and the new index is a different name than
@@ -223,8 +202,14 @@ public class MigrationServiceImpl implements MigrationService {
          */
         if (oldIndexExists && !oldIndex.equals(newIndex) && props.isReindex()) {
             /**
+             * Wait on the cluster status to at least be yellow.
+             */
+            waitOnClusterStatus(oldIndex);
+
+            /**
              * Setup a bulk processor
              */
+
             BulkProcessor bulkProcessor = BulkProcessor.builder(
                     client,
                     new BulkProcessor.Listener() {
@@ -293,6 +278,22 @@ public class MigrationServiceImpl implements MigrationService {
             req.addAlias(newIndex, m.getName()).execute().actionGet();
         } catch (ElasticsearchException e) {
             logger.warn("Could not remove alias from {}, error was: '{}'. (this is ok)", oldIndex, e.getMessage());
+        }
+
+        /**
+         * For unit tests, suspend the unit test transaction and execute the update
+         * in a separate transaction, that we're not starting at V1 every time.
+         */
+        TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(Propagation.REQUIRES_NEW.ordinal());
+        boolean updated = tt.execute(transactionStatus -> {
+            boolean result = migrationDao.setVersion(m, props.getVersion(), props.getPatch());
+            return result;
+        });
+
+        if (!updated) {
+            logger.warn("Could not update migration record to version: " + props.getVersion() +
+                    ", already set to that version.");
         }
 
         /**
