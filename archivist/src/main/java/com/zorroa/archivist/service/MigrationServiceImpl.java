@@ -220,7 +220,7 @@ public class MigrationServiceImpl implements MigrationService {
                     .setSearchType(SearchType.SCAN)
                     .setScroll(new TimeValue(60000))
                     .setQuery(QueryBuilders.matchAllQuery())
-                    .setSize(100).execute().actionGet();
+                    .setSize(200).execute().actionGet();
 
             while (true) {
                 for (SearchHit hit : scrollResp.getHits().getHits()) {
