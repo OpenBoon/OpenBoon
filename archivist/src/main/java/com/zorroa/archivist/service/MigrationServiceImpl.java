@@ -20,6 +20,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.repositories.RepositoryMissingException;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortOrder;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,9 @@ public class MigrationServiceImpl implements MigrationService {
      */
     @Autowired
     Flyway flyway;
+
+    private static final int BULK_SIZE = 125;
+    private static final long BULK_TIMEOUT = 60000;
 
     @Override
     public void processAll() {
@@ -209,7 +213,7 @@ public class MigrationServiceImpl implements MigrationService {
                             logger.warn("Bulk index failure, ", failure);
                         }
                     })
-                    .setBulkActions(200)
+                    .setBulkActions(BULK_SIZE)
                     .setConcurrentRequests(1)
                     .build();
 
@@ -218,9 +222,10 @@ public class MigrationServiceImpl implements MigrationService {
              */
             SearchResponse scrollResp = client.prepareSearch(oldIndex)
                     .setSearchType(SearchType.SCAN)
-                    .setScroll(new TimeValue(60000))
+                    .setScroll(new TimeValue(BULK_TIMEOUT))
+                    .addSort("_doc", SortOrder.ASC)
                     .setQuery(QueryBuilders.matchAllQuery())
-                    .setSize(200).execute().actionGet();
+                    .setSize(BULK_SIZE).execute().actionGet();
 
             while (true) {
                 for (SearchHit hit : scrollResp.getHits().getHits()) {
@@ -229,7 +234,7 @@ public class MigrationServiceImpl implements MigrationService {
                 }
 
                 scrollResp = client.prepareSearchScroll(scrollResp.getScrollId()).setScroll(
-                        new TimeValue(60000)).execute().actionGet();
+                        new TimeValue(BULK_TIMEOUT)).execute().actionGet();
                 if (scrollResp.getHits().getHits().length == 0) {
                     break;
                 }
