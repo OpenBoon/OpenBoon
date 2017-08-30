@@ -16,8 +16,6 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.unit.ByteSizeUnit;
-import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.repositories.RepositoryMissingException;
@@ -211,9 +209,7 @@ public class MigrationServiceImpl implements MigrationService {
                             logger.warn("Bulk index failure, ", failure);
                         }
                     })
-                    .setBulkActions(100)
-                    .setBulkSize(new ByteSizeValue(50, ByteSizeUnit.MB))
-                    .setFlushInterval(TimeValue.timeValueSeconds(10))
+                    .setBulkActions(200)
                     .setConcurrentRequests(1)
                     .build();
 
