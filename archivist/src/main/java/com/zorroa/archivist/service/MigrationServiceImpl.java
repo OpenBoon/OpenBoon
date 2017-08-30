@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.Migration;
@@ -10,6 +11,7 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequestBuilder;
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequestBuilder;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -106,6 +108,33 @@ public class MigrationServiceImpl implements MigrationService {
         }
     }
 
+    public void setRefreshInterval(String index, String value) {
+        logger.info("setting refresh interval to: {}", value);
+        UpdateSettingsRequestBuilder usrb = client.admin().indices()
+                .prepareUpdateSettings();
+        usrb.setIndices(index);
+        usrb.setSettings(ImmutableMap.of("index.refresh_interval", value));
+        usrb.get();
+    }
+
+    /**
+     * Wait for a yellow cluster status before starting a reindex.
+     */
+    public void waitOnClusterStatus(String index) {
+        String status = properties.getString("archivist.index.migrateStatus");
+        logger.info("Waiting on {} cluster status for index: {}", status, index);
+        if ("green".equals(status)) {
+            client.admin().cluster().prepareHealth(index)
+                    .setWaitForGreenStatus()
+                    .get();
+        }
+        else {
+            client.admin().cluster().prepareHealth(index)
+                    .setWaitForYellowStatus()
+                    .get();
+        }
+    }
+
     /**
      * This method opens the elastic mapping supplied at the given
      * path and compares the embedded version number with the version number
@@ -175,6 +204,11 @@ public class MigrationServiceImpl implements MigrationService {
             return;
         }
 
+        /**
+         * Wait on the cluster status to at least be yellow.
+         */
+        waitOnClusterStatus(oldIndex);
+
         logger.info("Processing migration: {}, path={}, force={}", m.getName(), m.getPath(), force);
         client.admin()
                 .indices()
@@ -220,24 +254,29 @@ public class MigrationServiceImpl implements MigrationService {
             /**
              * Now scan/scroll over everything and copy from new to old.
              */
-            SearchResponse scrollResp = client.prepareSearch(oldIndex)
-                    .setSearchType(SearchType.SCAN)
-                    .setScroll(new TimeValue(BULK_TIMEOUT))
-                    .addSort("_doc", SortOrder.ASC)
-                    .setQuery(QueryBuilders.matchAllQuery())
-                    .setSize(BULK_SIZE).execute().actionGet();
+            setRefreshInterval(newIndex, "-1");
+            try {
+                SearchResponse scrollResp = client.prepareSearch(oldIndex)
+                        .setSearchType(SearchType.SCAN)
+                        .setScroll(new TimeValue(BULK_TIMEOUT))
+                        .addSort("_doc", SortOrder.ASC)
+                        .setQuery(QueryBuilders.matchAllQuery())
+                        .setSize(BULK_SIZE).execute().actionGet();
 
-            while (true) {
-                for (SearchHit hit : scrollResp.getHits().getHits()) {
-                    bulkProcessor.add(client.prepareIndex(
-                            newIndex, hit.getType(), hit.getId()).setSource(hit.source()).request());
-                }
+                while (true) {
+                    for (SearchHit hit : scrollResp.getHits().getHits()) {
+                        bulkProcessor.add(client.prepareIndex(
+                                newIndex, hit.getType(), hit.getId()).setSource(hit.source()).request());
+                    }
 
-                scrollResp = client.prepareSearchScroll(scrollResp.getScrollId()).setScroll(
-                        new TimeValue(BULK_TIMEOUT)).execute().actionGet();
-                if (scrollResp.getHits().getHits().length == 0) {
-                    break;
+                    scrollResp = client.prepareSearchScroll(scrollResp.getScrollId()).setScroll(
+                            new TimeValue(BULK_TIMEOUT)).execute().actionGet();
+                    if (scrollResp.getHits().getHits().length == 0) {
+                        break;
+                    }
                 }
+            } finally {
+                setRefreshInterval(newIndex, "1s");
             }
         }
         /**
