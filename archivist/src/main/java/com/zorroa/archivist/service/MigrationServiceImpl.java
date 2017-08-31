@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -261,6 +262,12 @@ public class MigrationServiceImpl implements MigrationService {
                     }
                 }
             } finally {
+                try {
+                    logger.info("Waiting on bulk processing to complete");
+                    bulkProcessor.awaitClose(60, TimeUnit.MINUTES);
+                } catch (InterruptedException e) {
+                    logger.warn("Bulk processor interrupted, it's possible some data was not moved");
+                }
                 setRefreshInterval(newIndex, "1s");
             }
         }
