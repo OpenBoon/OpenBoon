@@ -1,6 +1,6 @@
 package com.zorroa.analyst.config;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.zorroa.common.config.ApplicationProperties;
@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.InfoEndpoint;
+import org.springframework.boot.actuate.info.InfoContributor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -15,8 +16,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -63,19 +62,26 @@ public class ApplicationConfig {
 
     @Bean
     public InfoEndpoint infoEndpoint() throws IOException {
-        final Map<String, Object> map = new LinkedHashMap<>();
-        map.put("description", "Zorroa Analyst Server");
-        map.put("project", "zorroa-analyst");
 
-        Properties props = new Properties();
-        props.load(new ClassPathResource("version.properties").getInputStream());
-        map.put("version", props.getProperty("build.version"));
-        map.put("date", props.getProperty("build.date"));
-        map.put("user", props.getProperty("build.user"));
-        map.put("commit", props.getProperty("build.id"));
-        map.put("branch", props.getProperty("build.branch"));
-        map.put("dirty", props.getProperty("build.dirty"));
-        return new InfoEndpoint(ImmutableMap.of("build", map));
+        InfoContributor info = builder -> {
+            builder.withDetail("description", "Zorroa Analyst Server");
+            builder.withDetail("project", "zorroa-analyst");
+
+            try {
+                Properties props = new Properties();
+                props.load(new ClassPathResource("version.properties").getInputStream());
+                builder.withDetail("version", props.getProperty("build.version"));
+                builder.withDetail("date", props.getProperty("build.date"));
+                builder.withDetail("user", props.getProperty("build.user"));
+                builder.withDetail("commit", props.getProperty("build.id"));
+                builder.withDetail("branch", props.getProperty("build.branch"));
+                builder.withDetail("dirty", props.getProperty("build.dirty"));
+            } catch (IOException e) {
+                logger.warn("Can't find info version properties");
+            }
+        };
+
+        return new InfoEndpoint(ImmutableList.of(info));
     }
 
 }

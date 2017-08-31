@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -14,7 +15,6 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.ElasticClientUtils;
-import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.ProxySchema;
@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +35,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
@@ -51,8 +51,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 @TestPropertySource("/test.properties")
 @WebAppConfiguration
 @Transactional

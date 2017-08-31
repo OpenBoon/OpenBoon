@@ -1,6 +1,6 @@
 package com.zorroa.archivist.config;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.UniqueTaskExecutor;
 import com.zorroa.archivist.security.UserDetailsPluginWrapper;
@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.InfoEndpoint;
+import org.springframework.boot.actuate.info.InfoContributor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,8 +30,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -63,19 +62,25 @@ public class ArchivistConfiguration {
 
     @Bean
     public InfoEndpoint infoEndpoint() throws IOException {
-        final Map<String, Object> map = new LinkedHashMap<>();
-        map.put("description", "Zorroa Archivist Server");
-        map.put("project", "zorroa-archivist");
+        InfoContributor info = builder -> {
+            builder.withDetail("description", "Zorroa Archivist Server");
+            builder.withDetail("project", "zorroa-archivist");
 
-        Properties props = new Properties();
-        props.load(new ClassPathResource("version.properties").getInputStream());
-        map.put("version", props.getProperty("build.version"));
-        map.put("date", props.getProperty("build.date"));
-        map.put("user", props.getProperty("build.user"));
-        map.put("commit",props.getProperty("build.id"));
-        map.put("branch",props.getProperty("build.branch"));
-        map.put("dirty",props.getProperty("build.dirty"));
-        return new InfoEndpoint(ImmutableMap.of("build", map));
+            try {
+                Properties props = new Properties();
+                props.load(new ClassPathResource("version.properties").getInputStream());
+                builder.withDetail("version", props.getProperty("build.version"));
+                builder.withDetail("date", props.getProperty("build.date"));
+                builder.withDetail("user", props.getProperty("build.user"));
+                builder.withDetail("commit", props.getProperty("build.id"));
+                builder.withDetail("branch", props.getProperty("build.branch"));
+                builder.withDetail("dirty", props.getProperty("build.dirty"));
+            } catch (IOException e) {
+                logger.warn("Can't find info version properties");
+            }
+        };
+
+        return new InfoEndpoint(ImmutableList.of(info));
     }
 
     @Bean
