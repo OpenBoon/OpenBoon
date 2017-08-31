@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -208,6 +209,17 @@ public class MigrationServiceImpl implements MigrationService {
             waitOnClusterStatus(oldIndex);
 
             /**
+             * Get a document count.
+             */
+            final long count = client.prepareSearch(oldIndex)
+                    .setSize(0)
+                    .setQuery(QueryBuilders.matchAllQuery())
+                    .get().getHits().totalHits();
+            final long batchTotal = (count / BULK_SIZE) + 1;
+            final LongAdder batchFinished = new LongAdder();
+            logger.info("Processing {} docs in {} batches", count, batchTotal);
+
+            /**
              * Setup a bulk processor
              */
 
@@ -217,13 +229,15 @@ public class MigrationServiceImpl implements MigrationService {
                         @Override
                         public void beforeBulk(long executionId,
                                                BulkRequest request) {
-                            logger.info("Executing {} bulk index requests", request.numberOfActions());
                         }
 
                         @Override
                         public void afterBulk(long executionId,
                                               BulkRequest request,
                                               BulkResponse response) {
+                            batchFinished.increment();
+                            logger.info("{} progress: {}/{} ({}ms)",
+                                    newIndex, batchFinished.longValue(), batchTotal, response.getTookInMillis() / 1000.0);
                         }
 
                         @Override
