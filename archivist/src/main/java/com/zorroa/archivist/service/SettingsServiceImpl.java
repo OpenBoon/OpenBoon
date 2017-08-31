@@ -69,6 +69,7 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
         .put("archivist.search.keywords.static.fields", new TypeReference<Map<String,Float>>() {})
         .put("archivist.search.keywords.auto.fields", new TypeReference<String>() {})
         .put("archivist.search.keywords.auto.enabled", new TypeReference<Boolean>() {})
+        .put("archivist.search.dragTemplate", new TypeReference<String>(){})
         .build();
 
     @Override
