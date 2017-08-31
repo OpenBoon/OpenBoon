@@ -100,6 +100,12 @@ public class MigrationServiceImpl implements MigrationService {
         /**
          * TODO: Don't let ingests run during migrations.
          */
+
+        if (!properties.getBoolean("archivist.index.migrateEnabled")) {
+            logger.warn("Auto index migration is disabled!");
+            return;
+        }
+
         logger.info("Processing migrations");
         for (Migration m : migrations) {
             switch (m.getType()) {
