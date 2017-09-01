@@ -55,8 +55,6 @@ public class MultipleWebSecurityConfig {
     @EnableGlobalMethodSecurity(prePostEnabled=true)
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-
         @Autowired
         ApplicationProperties properties;
 
@@ -101,6 +99,7 @@ public class MultipleWebSecurityConfig {
                     .antMatchers("/signin/**").permitAll()
                     .antMatchers("/signout/**").permitAll()
                     .antMatchers("/health/**").permitAll()
+                    .antMatchers("/es/**").hasAuthority("group::administrator")
                     .antMatchers("/console/**").hasAuthority("group::administrator")
                 .and()
                     .exceptionHandling()

@@ -49,7 +49,6 @@ public class ElasticConfig {
                         .put("node.name", nodeName)
                         .put("client.transport.sniff", true)
                         .put("transport.tcp.port", properties.getInt("zorroa.cluster.index.port"))
-                        .put("network.host", "0.0.0.0")
                         .put("discovery.zen.ping.multicast.enabled", false)
                         .put("discovery.zen.fd.ping_timeout", "3s")
                         .put("discovery.zen.fd.ping_retries", 10)
@@ -57,7 +56,16 @@ public class ElasticConfig {
                         .put("node.data", properties.getBoolean("archivist.index.data"))
                         .put("node.master", properties.getBoolean("archivist.index.master"))
                         .put("path.plugins", "{path.home}/es-plugins")
-                        .put("action.auto_create_index",  "-arch*,+.scripts,-*");
+                        .put("action.auto_create_index",  "-arch*,+.scripts,-*")
+                        .put("network.host", "0.0.0.0")
+                        .put("http.host", "127.0.0.1");
+
+        if (properties.getBoolean("archivist.index.console.open")) {
+            builder
+                    .put("http.cors.enabled", true)
+                    .put("http.cors.allow-origin", "*")
+                    .put("http.host", "0.0.0.0");
+        }
 
         if (properties.getBoolean("archivist.maintenance.backups.enabled")) {
             Path path = FileUtils.normalize(properties.getPath("archivist.path.backups").resolve("index"));

@@ -35,6 +35,7 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
          */
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/public/assets/");
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/public/css/");
+        registry.addResourceHandler("/es/**").addResourceLocations("classpath:/public/es/");
     }
 
     @Bean
@@ -42,7 +43,7 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
         registrationBean.addUrlMappings("/console/*");
         registrationBean.addInitParameter("webAllowOthers",
-            properties.getString("archivist.datasource.primary.console.open", "false"));
+                properties.getString("archivist.datasource.primary.console.open", "false"));
         return registrationBean;
     }
 
