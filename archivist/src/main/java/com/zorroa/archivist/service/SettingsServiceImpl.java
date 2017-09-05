@@ -69,7 +69,7 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
         .put("archivist.search.keywords.static.fields", new TypeReference<Map<String,Float>>() {})
         .put("archivist.search.keywords.auto.fields", new TypeReference<String>() {})
         .put("archivist.search.keywords.auto.enabled", new TypeReference<Boolean>() {})
-        .put("archivist.search.dragTemplate", new TypeReference<String>(){})
+        .put("archivist.export.dragTemplate", new TypeReference<String>(){})
         .build();
 
     @Override
@@ -210,10 +210,18 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
                         }
                     }
 
+                    String currentValue;
+                    if ("<HIDDEN>".equals(value)) {
+                        currentValue = "<HIDDEN>";
+                    }
+                    else {
+                        currentValue = properties.getString(property);
+                    }
+
                     Setting s = new Setting();
                     s.setName(property);
                     s.setDefaultValue(value);
-                    s.setCurrentValue(properties.getString(property));
+                    s.setCurrentValue(currentValue);
                     s.setLive(isLive(property));
                     s.setCategory(category);
                     s.setDescription(description);
@@ -227,4 +235,7 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
         }
         return result;
     }
+
+
+
 }
