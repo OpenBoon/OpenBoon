@@ -393,9 +393,6 @@ public class FolderServiceImpl implements FolderService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds) {
-        if (assetIds.size() >= 1024) {
-            throw new ArchivistWriteException("Cannot have more than 1024 assets in a folder");
-        }
 
         if (!SecurityUtils.hasPermission(folder.getAcl(), Access.Write)) {
             throw new ArchivistWriteException("You cannot make changes to this folder");
@@ -407,7 +404,7 @@ public class FolderServiceImpl implements FolderService {
 
         Map<String, List<Object>> result = assetDao.appendLink("folder", folder.getId(), assetIds);
         invalidate(folder);
-        logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("assetIds", assetIds));
+        logService.logAsync(UserLogSpec.build("add_assets", folder).putToAttrs("count", assetIds.size()));
 
         Taxonomy tax = getParentTaxonomy(folder);
         if (tax != null) {
