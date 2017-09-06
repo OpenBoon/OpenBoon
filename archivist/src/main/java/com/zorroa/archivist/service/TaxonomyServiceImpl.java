@@ -27,6 +27,7 @@ import org.elasticsearch.search.sort.SortParseElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +63,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     @Autowired
     UniqueTaskExecutor folderTaskExecutor;
+
+    @Value("${zorroa.cluster.index.alias}")
+    private String alias;
 
     Set<String> EXCLUDE_FOLDERS = ImmutableSet.of("Library", "Users");
 
@@ -225,10 +229,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             }
 
             Stopwatch timer = Stopwatch.createStarted();
-            SearchResponse rsp = client.prepareSearch("archivist")
+            SearchResponse rsp = searchService.buildSearch(search)
                     .setScroll(new TimeValue(60000))
                     .setFetchSource(false)
-                    .setQuery(searchService.getQuery(search))
                     .setSize(PAGE_SIZE).execute().actionGet();
             logger.info("tagging taxonomy {} batch 1 : {}", tax, timer);
 
@@ -245,7 +248,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             try {
                 do {
                     for (SearchHit hit : rsp.getHits().getHits()) {
-                        bulkProcessor.add(client.prepareUpdate("archivist", "asset", hit.getId())
+                        bulkProcessor.add(client.prepareUpdate(alias, "asset", hit.getId())
                                 .setDoc(doc.getDocument()).request());
                     }
                     rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(

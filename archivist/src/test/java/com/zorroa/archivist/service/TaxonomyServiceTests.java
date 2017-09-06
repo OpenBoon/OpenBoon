@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Folder;
@@ -8,7 +9,9 @@ import com.zorroa.archivist.domain.Taxonomy;
 import com.zorroa.archivist.domain.TaxonomySpec;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetSearch;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,7 @@ public class TaxonomyServiceTests extends AbstractTest {
     FolderService folderService;
 
     @Test
-    public void testCreateAndRur() {
+    public void testCreateAndRun() throws InterruptedException {
 
         Folder folder1 = folderService.create(new FolderSpec("ships"));
         Folder folder2 = folderService.create(new FolderSpec("borg", folder1.getId()));
@@ -42,7 +45,14 @@ public class TaxonomyServiceTests extends AbstractTest {
         refreshIndex();
 
         folderService.addAssets(folder4, Lists.newArrayList(d.getId()));
-        taxonomyService.create(new TaxonomySpec(folder1));
+        Taxonomy t = taxonomyService.create(new TaxonomySpec(folder1));
+
+        Thread.sleep(2000);
+
+        Document doc = new Document(
+                searchService.search(new AssetSearch()).getHits().getHits()[0].getSource());
+        assertEquals(ImmutableList.of("federation", "ships"),
+                doc.getAttr(String.format("zorroa.taxonomy.tax%d.keywords", t.getTaxonomyId())));
     }
 
     @Test(expected=ArchivistWriteException.class)
