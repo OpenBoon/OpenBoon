@@ -73,10 +73,6 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
         snapshotRepositoryRoot =
                 properties.getPath("archivist.path.backups")
                         .resolve("index");
-
-        if (properties.getBoolean("archivist.maintenance.backups.enabled")) {
-            createElasticSnapshotRepository();
-        }
     }
 
     @Override
@@ -84,6 +80,10 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
         /**
          * Not automatically started for unit tests.
          */
+        if (properties.getBoolean("archivist.maintenance.backups.enabled")) {
+            createElasticSnapshotRepository();
+        }
+
         if (!ArchivistConfiguration.unittest) {
             startAsync();
         }

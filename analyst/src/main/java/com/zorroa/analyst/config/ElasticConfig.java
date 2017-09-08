@@ -3,6 +3,7 @@ package com.zorroa.analyst.config;
 import com.zorroa.analyst.Application;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
+import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.file.Path;
 import java.util.Random;
 
 /**
@@ -61,6 +63,11 @@ public class ElasticConfig {
                         .putArray("discovery.zen.ping.unicast.hosts", elasticMaster)
                         .put("action.auto_create_index", "-archivist*");
 
+        if (properties.getBoolean("analyst.maintenance.backups.enabled")) {
+            Path path = FileUtils.normalize(properties.getPath("analyst.path.backups").resolve("index"));
+            builder.putArray("path.repo", path.toString());
+        }
+
         if (Application.isUnitTest()) {
             logger.info("Elastic in unit test mode");
             builder.put("node.master", true);
@@ -71,6 +78,7 @@ public class ElasticConfig {
         else {
             logger.info("Connecting to elastic master: {}", elasticMaster);
         }
+
         return ElasticClientUtils.initializeClient(builder);
     }
 }
