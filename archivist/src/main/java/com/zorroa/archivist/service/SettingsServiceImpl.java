@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Setting;
 import com.zorroa.archivist.domain.SettingsFilter;
 import com.zorroa.archivist.repository.SettingsDao;
+import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
@@ -84,10 +85,17 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
     }
 
     @Override
-    public int setAll(Map<String, String> values) {
+    public int setAll(Map<String, Object> values) {
         int result = 0;
-        for (Map.Entry<String, String> entry: values.entrySet()) {
-            if (set(entry.getKey(), entry.getValue(), false)) {
+        for (Map.Entry<String, Object> entry: values.entrySet()) {
+            String val;
+            if (entry.getValue() instanceof Map) {
+                val = Json.serializeToString(entry.getValue());
+            }
+            else {
+                val = entry.getValue().toString();
+            }
+            if (set(entry.getKey(), val, false)) {
                 result++;
             }
         }
@@ -97,6 +105,10 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
 
     @Override
     public List<Setting> getAll(SettingsFilter filter) {
+        if (!SecurityUtils.hasPermission("group::administrator",
+                "group::developer")) {
+            filter.setLiveOnly(true);
+        }
         try {
             return settingsCache.get(0).stream()
                     .filter(s->filter.matches(s))
@@ -117,6 +129,9 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
         SettingsFilter filter = new SettingsFilter();
         filter.setCount(1);
         filter.setNames(ImmutableSet.of(key));
+        if (!SecurityUtils.hasPermission("group::administrator", "group::developer")) {
+            filter.setLiveOnly(true);
+        }
         try {
             return getAll(filter).get(0);
         } catch (IndexOutOfBoundsException e) {
@@ -148,6 +163,8 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
 
     public boolean set(String key, String value, boolean invalidate) {
         checkValid(key, value);
+
+        logger.info("{} changed to {} by {}", key, value, SecurityUtils.getUsername());
 
         boolean result;
         if (value == null) {
@@ -235,7 +252,6 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
         }
         return result;
     }
-
 
 
 }

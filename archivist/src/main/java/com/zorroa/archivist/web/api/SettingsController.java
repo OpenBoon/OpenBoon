@@ -36,7 +36,7 @@ public class SettingsController {
 
     @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
     @RequestMapping(value="/api/v1/settings", method= RequestMethod.PUT)
-    public Object set(@RequestBody Map<String, String> settings) {
+    public Object set(@RequestBody Map<String, Object> settings) {
         int count = settingsService.setAll(settings);
         return HttpUtils.status("settings", "update", count == settings.size());
     }

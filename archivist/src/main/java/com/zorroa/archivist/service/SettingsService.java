@@ -15,7 +15,7 @@ public interface SettingsService {
     TypeReference< List<Setting>>
             LIST_OF_SETTINGS = new TypeReference< List<Setting>>() {};
 
-    int setAll(Map<String, String> values);
+    int setAll(Map<String, Object> values);
 
     boolean set(String key, String value);
 
