@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
@@ -239,9 +240,12 @@ public class IndexController {
         Pager paging = new Pager(page);
         search.setFrom(paging.getFrom());
         search.setSize(paging.getSize());
+
+        PagedList<Map<String, Object>> logs =logService.getAll("user", search);
+
         model.addAttribute("search", search);
-        model.addAttribute("logs", logService.getAll("user", search));
-        model.addAttribute("page", paging);
+        model.addAttribute("logs",logs);
+        model.addAttribute("page", logs.getPage());
         model.addAttribute("query", query);
         return "logs";
     }

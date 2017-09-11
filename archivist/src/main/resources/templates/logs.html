@@ -14,7 +14,6 @@
             <li role="presentation"><a th:href="${'/gui/logs?query=term:action:'+action.key}"><th:block th:text="${action.key}"/>
                 <span class="badge" th:text="${action.doc_count}">0</span></a></li>
         </th:block>
-        <div th:include="fragments/table :: pager"/>
     </ul>
     <table id="table" class="table table-striped">
         <thead>
@@ -35,6 +34,9 @@
         </tr>
         </tbody>
     </table>
+        <div class="container-fluid">
+            <div th:include="fragments/table :: pager"/>
+        </div>
     </div>
 </section>
 
