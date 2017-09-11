@@ -31,7 +31,7 @@ public class AnalystDaoTests extends AbstractTest {
         builder = new AnalystSpec();
         builder.setId("bilbo");
         builder.setState(AnalystState.UP);
-        builder.setUrl("http://127.0.0.2:8099");
+        builder.setUrl("127.0.0.2:8098");
         builder.setQueueSize(1);
         builder.setMetrics(Maps.newHashMap());
         builder.setArch("osx");
@@ -43,6 +43,17 @@ public class AnalystDaoTests extends AbstractTest {
     @Test
     public void testGetAll() {
         assertEquals(1, analystDao.getAll(Pager.first()).size());
+    }
+
+    @Test
+    public void testGet() {
+        Analyst a = analystDao.get("127.0.0.2:8098");
+        assertEquals("bilbo", a.getId());
+        assertEquals("127.0.0.2:8098", a.getUrl());
+
+        a = analystDao.get(builder.getId());
+        assertEquals("bilbo", a.getId());
+        assertEquals("127.0.0.2:8098", a.getUrl());
     }
 
     @Test

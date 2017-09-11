@@ -85,7 +85,8 @@ struct AnalystT {
     12:i32 threadsUsed,
     13:i32 queueSize,
     14:double loadAvg,
-    15:binary metrics
+    15:binary metrics,
+    16:string version
 }
 
 service MasterServerService {

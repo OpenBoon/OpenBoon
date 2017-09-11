@@ -16,6 +16,7 @@ public class AnalystSpec {
     private String os;
     private List<Integer> taskIds;
     private String url;
+    private String version;
 
     private Map<String, Object> metrics;
     private int threadsUsed;
@@ -149,6 +150,15 @@ public class AnalystSpec {
 
     public AnalystSpec setLoadAvg(double loadAvg) {
         this.loadAvg = loadAvg;
+        return this;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public AnalystSpec setVersion(String version) {
+        this.version = version;
         return this;
     }
 }

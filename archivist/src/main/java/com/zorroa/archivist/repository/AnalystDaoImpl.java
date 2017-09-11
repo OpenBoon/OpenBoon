@@ -60,7 +60,7 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
 
     @Override
     public Analyst get(String id) {
-        if (id.startsWith("http")) {
+        if (id.contains(":")) {
             return elastic.queryForObject(client.prepareSearch(getIndex())
                     .setTypes(getType())
                     .setQuery(QueryBuilders.termQuery("url", id)), MAPPER);

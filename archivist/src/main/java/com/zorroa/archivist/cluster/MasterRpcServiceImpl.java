@@ -86,6 +86,8 @@ public class MasterRpcServiceImpl implements MasterRpcService, MasterServerServi
             spec.setQueueSize(node.getQueueSize());
             spec.setThreadsUsed(node.getThreadsUsed());
             spec.setMetrics(Json.deserialize(node.getMetrics(), Json.GENERIC_MAP));
+            spec.setVersion(node.getVersion());
+
             analystService.register(spec);
         } catch (Exception e) {
             /**

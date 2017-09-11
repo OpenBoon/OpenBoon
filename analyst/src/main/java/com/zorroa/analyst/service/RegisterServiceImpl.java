@@ -12,6 +12,7 @@ import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.InfoEndpoint;
 import org.springframework.boot.actuate.endpoint.MetricsEndpoint;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -46,6 +47,9 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
 
     @Autowired
     NetworkEnvironment networkEnvironment;
+
+    @Autowired
+    InfoEndpoint infoEndpoint;
 
     private String id;
     private ExecutorService registerPool;
@@ -133,6 +137,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setTaskIds(processManagerNgService.getTaskIds());
             builder.setLoadAvg(osBean.getSystemLoadAverage());
             builder.setMetrics(Json.serialize(fixedMdata));
+            builder.setVersion((String) infoEndpoint.invoke().get("version"));
 
             ConnectionState state = connected.get(url);
             MasterServerClient client = new MasterServerClient(url);
