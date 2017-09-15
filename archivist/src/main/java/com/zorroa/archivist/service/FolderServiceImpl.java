@@ -102,12 +102,17 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
+    public Acl getAcl(Folder folder) {
+        return folderDao.getAcl(folder.getId());
+    }
+
+    @Override
     public void setAcl(Folder folder, Acl acl, boolean created) {
         SecurityUtils.canSetAclOnFolder(acl, folder.getAcl(), created);
 
         Acl resolvedAcl = permissionDao.resolveAcl(acl);
-
         folderDao.setAcl(folder.getId(), resolvedAcl, true);
+        folder.setAcl(acl);
 
         transactionEventManager.afterCommit(() -> {
             invalidate(folder);
@@ -209,39 +214,55 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public boolean update(int id, Folder folder) {
+    public boolean update(int id, Folder updated) {
         if (!SecurityUtils.hasPermission(folderDao.getAcl(id), Access.Write)) {
             throw new ArchivistWriteException("You cannot make changes to this folder");
         }
 
-        if (id == 0 || folder.getId() == 0) {
+        if (id == 0 || updated.getId() == 0) {
             throw new ArchivistWriteException("You cannot make changes to the root folder");
         }
 
         Folder current = folderDao.get(id);
-        if (current.getParentId() != folder.getParentId()) {
-            if (isDescendantOf(folderDao.get(folder.getParentId()), current)) {
+        boolean parentSwap = current.getParentId() != updated.getParentId();
+
+        if (parentSwap) {
+
+            if (isDescendantOf(folderDao.get(updated.getParentId()), current)) {
                 throw new ArchivistWriteException("You cannot move a folder into one of its descendants.");
             }
 
-            if (folder.getDyhiId() != null) {
+            if (updated.getDyhiId() != null) {
                 throw new ArchivistWriteException("You cannot move a DyHi folder");
             }
         }
 
-        boolean result = folderDao.update(id, folder);
-        if (result) {
+        boolean result = folderDao.update(id, updated);
 
+        /**
+         * If there is a parent swap then the folder gets perms from the new parent.
+         * This has to be recursive.  Some people might lose access.
+         */
+        if (result && parentSwap) {
+            Folder targetFolder = folderDao.get(updated.getParentId());
+            setAcl(updated, targetFolder.getAcl(), true);
+
+            for (Folder child: getAllDescendants(updated, false)) {
+                setAcl(child, targetFolder.getAcl(), true);
+            }
+        }
+
+        if (result) {
             transactionEventManager.afterCommitSync(() -> {
                 invalidate(current, current.getParentId());
-                logService.logAsync(UserLogSpec.build(LogAction.Update, folder));
+                logService.logAsync(UserLogSpec.build(LogAction.Update, updated));
 
-                Taxonomy tax = getParentTaxonomy(folder);
+                Taxonomy tax = getParentTaxonomy(updated);
                 if (tax != null) {
                     /**
                      * In this case we force tag/untag the taxonomy.
                      */
-                    taxonomyService.tagTaxonomyAsync(tax, folder, true);
+                    taxonomyService.tagTaxonomyAsync(tax, updated, true);
                 }
             });
         }
@@ -292,7 +313,8 @@ public class FolderServiceImpl implements FolderService {
             Folder child = children.get(i);
 
             if (!SecurityUtils.hasPermission(child.getAcl(), Access.Write)) {
-                throw new ArchivistWriteException("You don't have the permissions to delete the subfolder " + child.getName());
+                throw new ArchivistWriteException(
+                        "You don't have the permissions to delete the subfolder " + child.getName());
             }
 
             if (folderDao.delete(child)) {
@@ -545,7 +567,6 @@ public class FolderServiceImpl implements FolderService {
                 continue;
             }
             try {
-
                 List<Folder> children = childCache.get(current.getId())
                         .stream()
                         .filter(f -> SecurityUtils.hasPermission(f.getAcl(), Access.Read))
@@ -581,6 +602,10 @@ public class FolderServiceImpl implements FolderService {
         if (!SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
             throw new ArchivistException("You cannot make changes to this folder");
         }
+        // If there is no acl, use the parent acl.
+        if (spec.getAcl() == null) {
+            spec.setAcl(parent.getAcl());
+        }
 
         Folder result;
         if (mightExist) {
@@ -603,9 +628,7 @@ public class FolderServiceImpl implements FolderService {
                 result = get(spec.getParentId(), spec.getName());
             }
         }
-
         return result;
-
     }
 
     private void emitFolderCreated(Folder folder) {

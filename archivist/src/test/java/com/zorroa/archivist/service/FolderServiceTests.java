@@ -353,9 +353,39 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(folders.isEmpty());
     }
 
+    @Test
+    public void testCreateFolderInheritedPermissions() {
+        Folder library = folderService.get("/Library");
+        Folder orig = folderService.create(new FolderSpec("orig", library));
+
+        assertTrue(orig.getAcl().hasAccess(userService.getPermission("group::manager"), Access.Write));
+        assertTrue(orig.getAcl().hasAccess(userService.getPermission("group::everyone"), Access.Read));
+        assertEquals(2, orig.getAcl().size());
+    }
+
+    @Test
+    public void testMoveFolderWithPermmissionChange() {
+
+        Folder library = folderService.get("/Library");
+
+        Folder admin = folderService.get("/Users/admin");
+        Folder moving = folderService.create(new FolderSpec("folder_to_move", admin));
+
+        assertTrue(moving.getAcl().hasAccess(userService.getPermission("user::admin"), Access.Read));
+        assertTrue(moving.getAcl().hasAccess(userService.getPermission("user::admin"), Access.Write));
+        assertEquals(1, moving.getAcl().size());
+
+        // Move the folder into the library
+        assertTrue(folderService.update(moving.getId(), moving.setParentId(library.getId())));
+        Acl acl = folderDao.getAcl(moving.getId());
+
+        assertTrue(moving.getAcl().hasAccess(userService.getPermission("group::manager"), Access.Write));
+        assertTrue(moving.getAcl().hasAccess(userService.getPermission("group::everyone"), Access.Read));
+        assertEquals(2, moving.getAcl().size());
+    }
+
     @Test(expected=ArchivistWriteException.class)
     public void testUpdateHierarchyFailure() {
-
         Folder folder1 = folderService.create(new FolderSpec("test3"));
         Folder folder1a = folderService.create(new FolderSpec("test3a", folder1));
         Folder folder1b = folderService.create(new FolderSpec("test3b", folder1a));
@@ -365,7 +395,6 @@ public class FolderServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testUpdateHierarchyFailureSelfAsParent() {
-
         Folder folder1 = folderService.create(new FolderSpec("test2"));
         Folder folder1a = folderService.create(new FolderSpec("test2a", folder1));
         Folder folder1b = folderService.create(new FolderSpec("test2b", folder1a));
