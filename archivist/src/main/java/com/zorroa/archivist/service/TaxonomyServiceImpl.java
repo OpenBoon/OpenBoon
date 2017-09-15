@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.FieldDao;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.TaxonomyDao;
 import com.zorroa.common.elastic.CountingBulkListener;
@@ -50,6 +51,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     TaxonomyDao taxonomyDao;
 
     @Autowired
+    FieldDao fieldDao;
+
+    @Autowired
     FolderDao folderDao;
 
     @Autowired
@@ -82,6 +86,11 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     @Override
     public boolean delete(Taxonomy tax, boolean untag) {
         if (taxonomyDao.delete(tax.getTaxonomyId())) {
+            // MHide the tax field, appending the . is needed for everything
+            // under the field
+            searchService.updateField(
+                    new HideField(tax.getRootField() + ".", true));
+
             Folder folder = folderDao.get(tax.getFolderId());
             folderDao.setTaxonomyRoot(folder, false);
             folderService.invalidate(folder);

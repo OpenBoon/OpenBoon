@@ -2,15 +2,17 @@ package com.zorroa.archivist.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Splitter;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.*;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.HideField;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.repository.FieldDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistException;
@@ -79,6 +81,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     ApplicationProperties properties;
+
+    @Autowired
+    FieldDao fieldDao;
 
     private Map<String, SortOrder> defaultSortFields = Maps.newLinkedHashMap();
 
@@ -627,17 +632,19 @@ public class SearchServiceImpl implements SearchService {
         }
     }
 
-    /**
-     * Cache this as much as possible.  We'll eventually want to manually expire this,
-     * but we'll need a new type of Supplier.
-     */
-    private final Supplier<Map<String, Set<String>>> fieldMapCache
-            = Suppliers.memoizeWithExpiration(fieldMapSupplier(), 1,
-            ArchivistConfiguration.unittest ? TimeUnit.NANOSECONDS : TimeUnit.MINUTES);
+    private final LoadingCache<String, Map<String, Set<String>>> fieldMapCache = CacheBuilder.newBuilder()
+            .maximumSize(2)
+            .initialCapacity(2)
+            .concurrencyLevel(1)
+            .expireAfterWrite(60, TimeUnit.SECONDS)
+            .build(new CacheLoader<String, Map<String, Set<String>>>() {
+                public Map<String, Set<String>>load(String key) throws Exception {
+                    return getFieldMap();
+                }
+            });
 
-    private final Supplier<Map<String, Set<String>>> fieldMapSupplier() {
-        return () -> {
-
+    private Map<String, Set<String>> getFieldMap() {
+            Set<String> hiddenFields = fieldDao.getHiddenFields();
             Map<String, Set<String>> result = Maps.newHashMap();
             result.put("string", Sets.newHashSet());
             result.put("date", Sets.newHashSet());
@@ -665,18 +672,44 @@ public class SearchServiceImpl implements SearchService {
                 IndexMetaData imd = cs.getMetaData().index(index);
                 MappingMetaData mdd = imd.mapping("asset");
                 try {
-                    getList(result, "", mdd.getSourceAsMap(), autoKeywordFieldNames);
+                    getList(result, "", mdd.getSourceAsMap(), autoKeywordFieldNames, hiddenFields);
                 } catch (IOException e) {
                     throw new ArchivistException(e);
                 }
             }
             return result;
-        };
+    }
+
+    /*
+     * TODO: Move all field stuff to asset service.
+     */
+
+    @Override
+    public void invalidateFields() {
+        fieldMapCache.invalidateAll();
+    }
+
+    @Override
+    public boolean updateField(HideField value) {
+        try {
+            if (value.isHide()) {
+                return fieldDao.hideField(value.getField(), value.isManual());
+            } else {
+                return fieldDao.unhideField(value.getField());
+            }
+        } finally {
+            invalidateFields();
+        }
     }
 
     @Override
     public Map<String, Set<String>> getFields() {
-        return fieldMapCache.get();
+        try {
+            return fieldMapCache.get("fields");
+        } catch (Exception e) {
+            logger.warn("Failed to get fields: ", e);
+            return ImmutableMap.of();
+        }
     }
 
     private static final Map<String,String> NAME_TYPE_OVERRRIDES = ImmutableMap.of(
@@ -684,10 +717,21 @@ public class SearchServiceImpl implements SearchService {
             "byte", "hash",
             "hash", "hash");
 
-    private void getList(Map<String, Set<String>> result, String fieldName, Map<String, Object> mapProperties, Set<String> autoKeywordFieldNames) {
+    private void getList(Map<String, Set<String>> result,
+                         String fieldName,
+                         Map<String, Object> mapProperties,
+                         Set<String> autoKeywordFieldNames,
+                         Set<String> hiddenFieldNames) {
+
         Map<String, Object> map = (Map<String, Object>) mapProperties.get("properties");
         for (String key : map.keySet()) {
             Map<String, Object> item = (Map<String, Object>) map.get(key);
+
+            if (!fieldName.isEmpty()) {
+                if (hiddenFieldNames.contains(fieldName)) {
+                    continue;
+                }
+            }
 
             if (item.containsKey("type")) {
                 String type = (String) item.get("type");
@@ -699,6 +743,11 @@ public class SearchServiceImpl implements SearchService {
                     result.put(type, fields);
                 }
                 String fqfn = String.join("", fieldName, key);
+
+                if (hiddenFieldNames.contains(fqfn)) {
+                    continue;
+                }
+
                 fields.add(fqfn);
 
                 /*
@@ -711,7 +760,8 @@ public class SearchServiceImpl implements SearchService {
 
 
             } else {
-                getList(result, String.join("", fieldName, key, "."), item, autoKeywordFieldNames);
+                getList(result, String.join("", fieldName, key, "."),
+                        item, autoKeywordFieldNames, hiddenFieldNames);
             }
         }
     }

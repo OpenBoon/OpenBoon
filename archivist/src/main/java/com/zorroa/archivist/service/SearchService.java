@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Folder;
+import com.zorroa.archivist.domain.HideField;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -56,9 +57,13 @@ public interface SearchService {
 
     QueryBuilder getQuery(AssetSearch search);
 
+    boolean updateField(HideField value);
+
     Map<String, Set<String>> getFields();
 
     Map<String, Float> getQueryFields();
+
+    void invalidateFields();
 
     List<String> analyzeQuery(AssetSearch search);
 }

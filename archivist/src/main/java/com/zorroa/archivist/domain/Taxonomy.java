@@ -30,6 +30,10 @@ public class Taxonomy {
         return this;
     }
 
+    public String getRootField() {
+        return String.format("zorroa.taxonomy.tax%d", getTaxonomyId());
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

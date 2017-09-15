@@ -231,6 +231,18 @@ public class AssetController {
         return searchService.getFields();
     }
 
+    @RequestMapping(value="/api/v1/assets/_fields/hide", method=RequestMethod.PUT)
+    public Object unhideField(@RequestBody HideField update) throws IOException {
+        return HttpUtils.status("field", "hide",
+                searchService.updateField(update.setHide(true).setManual(true)));
+    }
+
+    @RequestMapping(value="/api/v1/assets/_fields/hide", method=RequestMethod.DELETE)
+    public Object hideField(@RequestBody HideField update) throws IOException {
+        return HttpUtils.status("field", "unhide",
+                searchService.updateField(update.setHide(false)));
+    }
+
     @RequestMapping(value="/api/v1/assets/_mapping", method=RequestMethod.GET)
     public Map<String,Object> getMapping() throws IOException {
         return assetService.getMapping();

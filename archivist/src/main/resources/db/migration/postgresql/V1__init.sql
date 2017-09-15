@@ -12,6 +12,10 @@ RETURN (EXTRACT(EPOCH FROM clock_timestamp()) * 1000)::bigint;
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE TABLE ZORROA.HIDE_FIELD (
+  PK_FIELD TEXT PRIMARY KEY
+);
+
 ---
 ---
 

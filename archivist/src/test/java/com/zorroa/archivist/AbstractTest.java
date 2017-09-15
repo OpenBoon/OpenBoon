@@ -228,6 +228,7 @@ public abstract class AbstractTest {
     }
 
     public Path getTestImagePath(String subdir) {
+
         return resources.resolve("images/" + subdir);
     }
 

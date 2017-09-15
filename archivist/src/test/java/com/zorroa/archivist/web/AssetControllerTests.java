@@ -15,6 +15,7 @@ import com.zorroa.sdk.search.*;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,8 +25,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,6 +33,11 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Autowired
     AssetDao assetDao;
+
+    @Before
+    public void init() {
+        searchService.invalidateFields();
+    }
 
     @Test
     public void testGetFields() throws Exception {
@@ -51,6 +56,43 @@ public class AssetControllerTests extends MockMvcTest {
         assertTrue(fields.get("date").size() > 0);
         assertTrue(fields.get("string").size() > 0);
         assertTrue(fields.get("integer").size() > 0);
+    }
+
+    @Test
+    public void testHideAndUnhideField() throws Exception {
+
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+
+        MvcResult result = mvc.perform(put("/api/v1/assets/_fields/hide")
+                .session(session)
+                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Object> status = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertTrue((Boolean) status.get("success"));
+
+        Map<String,Set<String>> fields = searchService.getFields();
+        for (String field: fields.get("string")) {
+            assertFalse(field.startsWith("source"));
+        }
+
+        mvc.perform(delete("/api/v1/assets/_fields/hide")
+                .session(session)
+                .content(Json.serializeToString(ImmutableMap.of("field", "source.")))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        status = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        assertTrue((Boolean) status.get("success"));
+
+        Map<String,Set<String>> stringFields = searchService.getFields();
+        assertNotEquals(fields, stringFields);
     }
 
     @Test

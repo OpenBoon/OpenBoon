@@ -6,10 +6,8 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.Color;
-import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.PermissionSpec;
+import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.FieldDao;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.AssetIndexSpec;
 import com.zorroa.sdk.domain.PagedList;
@@ -20,7 +18,9 @@ import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.search.*;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchResponse;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,6 +38,13 @@ import static org.junit.Assert.*;
  */
 public class SearchServiceTests extends AbstractTest {
 
+    @Autowired
+    FieldDao fieldDao;
+
+    @Before
+    public void init() {
+        searchService.invalidateFields();
+    }
 
     @Test
     public void testSearchPermissionsMiss() throws IOException {
@@ -483,6 +490,40 @@ public class SearchServiceTests extends AbstractTest {
         assertTrue(fields.get("point").size() > 0);
         assertTrue(fields.get("hash").size() > 0);
         assertTrue(fields.get("keywords-auto").contains("foo.keywords"));
+    }
+
+    @Test
+    public void getFieldsWithHidden() {
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
+        source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
+        source.setAttr("foo.byte", "AAFFGG");
+
+        assetService.index(source);
+        refreshIndex();
+        searchService.updateField(new HideField("foo.keywords", true));
+
+        Map<String, Set<String>> fields = searchService.getFields();
+        assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
+        assertFalse(fields.get("string").contains("foo.keywords"));
+    }
+
+    @Test
+    public void getFieldsWithHiddenNamespcae() {
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
+        source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
+        source.setAttr("foo.byte", "AAFFGG");
+
+        assetService.index(source);
+        refreshIndex();
+        searchService.updateField(new HideField("foo.", true));
+
+        Map<String, Set<String>> fields = searchService.getFields();
+        assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
+        assertFalse(fields.get("string").contains("foo.keywords"));
     }
 
     @Test
