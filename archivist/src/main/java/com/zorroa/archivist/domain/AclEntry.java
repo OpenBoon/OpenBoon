@@ -70,6 +70,7 @@ public class AclEntry {
         return MoreObjects.toStringHelper(this)
                 .add("perm", permissionId)
                 .add("access", access)
+                .add("name", permission)
                 .toString();
     }
 }
