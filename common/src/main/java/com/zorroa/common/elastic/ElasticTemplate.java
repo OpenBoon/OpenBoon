@@ -46,7 +46,14 @@ public class ElasticTemplate {
     }
 
     public <T> T queryForObject(String id, JsonRowMapper<T> mapper) {
+        return queryForObject(id,  type,  null, mapper);
+    }
+
+    public <T> T queryForObject(String id, String type, String parent, JsonRowMapper<T> mapper) {
         final GetRequestBuilder builder = client.prepareGet(index, type, id).setFetchSource(true);
+        if (parent !=null) {
+            builder.setParent(parent);
+        }
         final GetResponse r = builder.get();
         if (!r.isExists()) {
             throw new EmptyResultDataAccessException(
