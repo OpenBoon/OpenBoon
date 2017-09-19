@@ -371,29 +371,41 @@ public class SearchServiceImpl implements SearchService {
         }
 
         BoolQueryBuilder query = QueryBuilders.boolQuery();
+        BoolQueryBuilder assetBool = QueryBuilders.boolQuery();
 
         if (perms && permsQuery != null) {
             query.must(permsQuery);
         }
 
         if (search.isQuerySet()) {
-            query.must(getQueryStringQuery(search));
+            assetBool.must(getQueryStringQuery(search));
         }
 
         AssetFilter filter = search.getFilter();
         if (filter != null) {
-            applyFilterToQuery(filter, query, linkedFolders);
+            applyFilterToQuery(filter, assetBool, linkedFolders);
         }
 
-        // Folders apply their post filter, but the main search
-        // applies the post filter in the SearchRequest.
+        AssetFilter elementFilter = search.getElementFilter();
+        if (elementFilter != null) {
+            BoolQueryBuilder elementBool = QueryBuilders.boolQuery();
+            applyFilterToQuery(elementFilter, elementBool, null);
+            logger.info("Adding element bool");
+            query.should(QueryBuilders.hasChildQuery("element", elementBool).scoreMode("max"));
+        }
+
+        // Folders apply their post filter, but the main search// applies the post filter in the SearchRequest.
         // Aggs will be limited to the folders (correct), but
         // not to the filters in the top-level search.
         if (postFilter) {
             filter = search.getPostFilter();
             if (filter != null) {
-                applyFilterToQuery(filter, query, linkedFolders);
+                applyFilterToQuery(filter, assetBool, linkedFolders);
             }
+        }
+
+        if (assetBool.hasClauses()) {
+            query.should(assetBool);
         }
 
         return query;
@@ -599,11 +611,7 @@ public class SearchServiceImpl implements SearchService {
             fsqb.setMinScore(filter.getHamming().getMinScore() / 100.0f);
             fsqb.boostMode("replace");
             fsqb.scoreMode("sum");
-
-            BoolQueryBuilder bq = QueryBuilders.boolQuery();
-            bq.should(QueryBuilders.hasChildQuery("element", fsqb).scoreMode("max"));
-            bq.should(fsqb);
-            query.must(bq);
+            query.must(fsqb);
         }
 
         // Recursively add bool sub-filters for must, must_not and should
