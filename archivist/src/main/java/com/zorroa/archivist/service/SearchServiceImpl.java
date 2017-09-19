@@ -389,7 +389,6 @@ public class SearchServiceImpl implements SearchService {
         if (elementFilter != null) {
             BoolQueryBuilder elementBool = QueryBuilders.boolQuery();
             applyFilterToQuery(elementFilter, elementBool, null);
-            logger.info("Adding element bool");
             query.should(QueryBuilders.hasChildQuery("element", elementBool).scoreMode("max"));
         }
 
