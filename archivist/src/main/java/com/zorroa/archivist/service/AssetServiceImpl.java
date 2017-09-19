@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -113,10 +114,19 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     }
 
     @Override
-    public Asset index(Document doc) {
+    public Document index(Document doc) {
         AssetIndexResult result = index(new AssetIndexSpec(doc));
         if (result.getAssetIds().size() == 1) {
-            return get(result.getAssetIds().get(0));
+            if (doc.getType().equals("asset")) {
+                return assetDao.get(result.getAssetIds().get(0));
+            }
+            else {
+                /**
+                 * Child types require the parent ID to get them.
+                 */
+                return assetDao.get(result.getAssetIds().get(0),
+                        doc.getType(), doc.getParentId());
+            }
         }
         else {
             throw new ArchivistWriteException("Failed to index asset." +
@@ -212,8 +222,11 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
                 /**
                  * If the source didn't come with any permissions and the current perms
                  * on the asset are empty, we apply the default permissions.
+                 *
+                 * If there is no permissions.
                  */
                 source.setAttr("permissions", defaultPerms);
+                source.setAttr("zorroa.createdDate", new Date());
             }
 
             if (source.getLinks() != null) {

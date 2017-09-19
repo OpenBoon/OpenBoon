@@ -77,6 +77,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         if (sources.isEmpty()) {
             return result;
         }
+
         List<Document> retries = Lists.newArrayList();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
 
@@ -132,6 +133,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                         else  {
                             result.replaced++;
                         }
+                        result.addToAssetIds(idxr.getId());
                         break;
                 }
             }
@@ -145,12 +147,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
             result.retries++;
             result.add(index(retries));
         }
-
-        /**
-        if (!created.isEmpty() && sourceLink != null) {
-            appendLink(sourceLink.getType(), sourceLink.getId(), created);
-        }
-        */
         return result;
     }
 
@@ -304,6 +300,11 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     @Override
     public Asset get(String id) {
         return elastic.queryForObject(id, MAPPER);
+    }
+
+    @Override
+    public Document get(String id, String type, String parent) {
+        return elastic.queryForObject(id, type, parent, MAPPER);
     }
 
     @Override

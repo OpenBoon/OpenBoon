@@ -24,7 +24,7 @@ public interface AssetService {
     PagedList<Asset> getAll(Pager page);
 
     AssetIndexResult index(AssetIndexSpec spec);
-    Asset index(Document doc);
+    Document index(Document doc);
 
     void removeFields(String id, Set<String> fields);
 

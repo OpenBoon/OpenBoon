@@ -8,10 +8,8 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.Color;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FieldDao;
-import com.zorroa.sdk.domain.Asset;
-import com.zorroa.sdk.domain.AssetIndexSpec;
-import com.zorroa.sdk.domain.PagedList;
-import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
@@ -26,10 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -85,7 +80,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", source.getAttr("source.filename", String.class));
-        Asset asset1 = assetService.index(source);
+        Document asset1 = assetService.index(source);
         refreshIndex(100);
 
         folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
@@ -104,7 +99,7 @@ public class SearchServiceTests extends AbstractTest {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", source.getAttr("source.filename", String.class));
-        Asset asset1 = assetService.index(source);
+        Document asset1 = assetService.index(source);
         refreshIndex(100);
 
         folderService.addAssets(folder1, Lists.newArrayList(asset1.getId()));
@@ -127,7 +122,7 @@ public class SearchServiceTests extends AbstractTest {
         Folder folder3 = folderService.create(builder);
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Asset asset1 = assetService.index(source);
+        Document asset1 = assetService.index(source);
         refreshIndex(100);
 
         folderService.addAssets(folder3, Lists.newArrayList(asset1.getId()));
@@ -156,8 +151,8 @@ public class SearchServiceTests extends AbstractTest {
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.addKeywords("source", source2.getAttr("source", SourceSchema.class).getFilename());
 
-        Asset asset1 = assetService.index(source1);
-        Asset asset2 = assetService.index(source2);
+        Document asset1 = assetService.index(source1);
+        Document asset2 = assetService.index(source2);
         refreshIndex();
 
         folderService.addAssets(folder2, Lists.newArrayList(asset2.getId()));
@@ -190,7 +185,7 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
 
-        Asset a = assetService.index(source);
+        Document a = assetService.index(source);
         refreshIndex();
 
         AssetFilter filter = new AssetFilter().addToLinks("folder", folder1.getId());
@@ -360,7 +355,7 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testQueryWilecard() throws IOException {
+    public void testQueryWildcard() throws IOException {
 
         Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         Source.addKeywords("source", "zoolander");
@@ -510,7 +505,7 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void getFieldsWithHiddenNamespcae() {
+    public void getFieldsWithHiddenNameSpae() {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
@@ -765,8 +760,46 @@ public class SearchServiceTests extends AbstractTest {
         Source.addSuggestKeywords("source", "zoolander");
         assetService.index(Source);
         refreshIndex();
+        assertEquals(ImmutableList.of("zoolander"), searchService.getSuggestTerms("zoo"));
+    }
 
-        logger.info("suggest: {}", searchService.getSuggestTerms("zoo"));
+    @Test
+    public void testElementTermFilter() throws IOException {
 
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.addSuggestKeywords("source", "zoolander");
+        assetService.index(source);
+
+        Element e = new Element(source);
+        e.setAttr("foo.bar", "bing");
+        e.setId(UUID.randomUUID().toString());
+        assetService.index(e);
+
+        refreshIndex();
+
+        AssetFilter filter = new AssetFilter().addToTerms("foo.bar", "bing");
+        AssetSearch search = new AssetSearch().setElementFilter(filter);
+
+        assertEquals(1, searchService.search(search).getHits().totalHits());
+    }
+
+    @Test
+    public void testElementTermAndKeyword() throws IOException {
+
+        Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source.setAttr("test.keywords", "zoo-lander");
+        assetService.index(source);
+
+        Element e = new Element(source);
+        e.setAttr("foo.bar", "bing");
+        e.setId(UUID.randomUUID().toString());
+        assetService.index(e);
+
+        refreshIndex();
+
+        AssetFilter filter = new AssetFilter().addToTerms("foo.bar", "bing");
+        AssetSearch search = new AssetSearch("zoo-lander").setElementFilter(filter);
+
+        assertEquals(1, searchService.search(search).getHits().totalHits());
     }
 }

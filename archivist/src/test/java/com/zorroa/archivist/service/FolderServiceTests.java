@@ -102,10 +102,11 @@ public class FolderServiceTests extends AbstractTest {
 
         Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
                 Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
-        refreshIndex();
+        refreshIndex(2000);
 
         assertEquals(2, searchService.search(new AssetSearch(
                 new AssetFilter().addToTerms("links.folder", folder.getId()))).getHits().getTotalHits());
+        searchService.invalidateFields();
         assertEquals(2, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
 
         assertTrue(results.get("failed").isEmpty());

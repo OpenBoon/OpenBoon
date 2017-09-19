@@ -47,6 +47,8 @@ public interface AssetDao {
      */
     PagedList<Asset> getAll(Pager page);
 
+    Document get(String id, String type, String parent);
+
     Map<String, Object> getProtectedFields(String id);
 
     boolean exists(Path path);

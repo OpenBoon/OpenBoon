@@ -5,7 +5,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.ExportSpec;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.common.cluster.thrift.TaskStartT;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
@@ -34,7 +34,7 @@ public class ExportServiceTests extends AbstractTest {
 
     Job job;
     ExportSpec spec;
-    Asset asset;
+    Document asset;
 
     @Before
     public void init() {
