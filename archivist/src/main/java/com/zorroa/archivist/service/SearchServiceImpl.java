@@ -365,8 +365,7 @@ public class SearchServiceImpl implements SearchService {
                 return QueryBuilders.matchAllQuery();
             }
             else {
-                return QueryBuilders.filteredQuery(
-                        QueryBuilders.matchAllQuery(), permsQuery);
+                return permsQuery;
             }
         }
 
