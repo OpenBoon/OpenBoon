@@ -8,10 +8,11 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.*;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Folder;
-import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.HideField;
+import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.repository.ElementDao;
 import com.zorroa.archivist.repository.FieldDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
@@ -94,7 +95,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponse search(AssetSearch search) {
-        SearchResponse rsp =  buildSearch(search)
+        SearchResponse rsp =  buildSearch(search, "asset")
                 .setFrom(search.getFrom() == null ? 0 : search.getFrom())
                 .setSize(search.getSize() == null ? 10 : search.getSize()).get();
         return rsp;
@@ -102,7 +103,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public long count(AssetSearch builder) {
-        return buildSearch(builder).setSize(0).get().getHits().getTotalHits();
+        return buildSearch(builder, "asset").setSize(0).get().getHits().getTotalHits();
     }
 
     @Override
@@ -249,7 +250,7 @@ public class SearchServiceImpl implements SearchService {
             }
         }
 
-        return assetDao.getAll(page, buildSearch(search));
+        return assetDao.getAll(page, buildSearch(search, "asset"));
     }
 
     @Override
@@ -267,9 +268,21 @@ public class SearchServiceImpl implements SearchService {
          */
         List<String> terms = analyzeQuery(search);
 
-        assetDao.getAll(page, buildSearch(search), stream, ImmutableMap.of("queryTerms", terms));
+        assetDao.getAll(page, buildSearch(search, "asset"), stream, ImmutableMap.of("queryTerms", terms));
     }
 
+    @Override
+    public void searchElements(Pager page, AssetSearch search, OutputStream stream) throws IOException {
+        /**
+         * If the search is not empty (its a valid search) and the page
+         * number is 1, then log the search.
+         */
+        if (isSearchLogged(page, search)) {
+            logService.logAsync(new UserLogSpec().build(LogAction.Search, search));
+        }
+
+        assetDao.getAll(page, buildSearch(search, "element"), stream, ImmutableMap.of());
+    }
 
     @Override
     public PagedList<Asset> scroll(String id, String timeout) {
@@ -285,10 +298,10 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public SearchRequestBuilder buildSearch(AssetSearch search) {
+    public SearchRequestBuilder buildSearch(AssetSearch search, String type) {
 
         SearchRequestBuilder request = client.prepareSearch(alias)
-                .setTypes("asset")
+                .setTypes(type)
                 .setPreference(SecurityUtils.getUsername())
                 .setQuery(getQuery(search));
 

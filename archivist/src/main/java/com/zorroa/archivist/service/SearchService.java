@@ -44,6 +44,8 @@ public interface SearchService {
 
     void search(Pager page, AssetSearch search, OutputStream stream) throws IOException;
 
+    void searchElements(Pager page, AssetSearch search, OutputStream stream) throws IOException;
+
     /**
      * Return the next page of an asset scroll.
      *
@@ -53,7 +55,7 @@ public interface SearchService {
      */
     PagedList<Asset> scroll(String id, String timeout);
 
-    SearchRequestBuilder buildSearch(AssetSearch search);
+    SearchRequestBuilder buildSearch(AssetSearch search, String type);
 
     QueryBuilder getQuery(AssetSearch search);
 
