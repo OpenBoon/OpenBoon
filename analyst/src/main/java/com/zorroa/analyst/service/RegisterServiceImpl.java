@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.util.List;
@@ -163,6 +164,12 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             logger.warn("Failed to register with {}", url, e);
         }
         return id;
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        logger.info("Shutting down registration");
+        stopAsync();
     }
 
     @Override

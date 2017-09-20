@@ -25,10 +25,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,6 +61,17 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     @Autowired
     NetworkEnvironment networkEnvironment;
+
+    @Autowired
+    ApplicationContext appContext;
+
+    @Value("${analyst.autoshutdown.idle-minutes}")
+    private int autoShutdownIdleMinutes;
+
+    /**
+     * The last time a group of tasks was successfully pulled.
+     */
+    long autoShutdownMarker = System.currentTimeMillis();
 
     /**
      * Executor for handling task manipulation commands that
@@ -366,6 +380,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
         int threads = properties.getInt("analyst.executor.threads");
         if (analyzeExecutor.getActiveCount() >= threads) {
+            autoShutdownMarker = System.currentTimeMillis();
             return;
         }
 
@@ -377,8 +392,10 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                 Connection conn = connectioncCache.get(addr);
 
                 if (conn.backoffTill > System.currentTimeMillis()) {
+                    autoShutdownMarker = System.currentTimeMillis();
                     continue;
                 }
+
                 int count = threads - analyzeExecutor.getActiveCount();
                 if (count <= 0) {
                     continue;
@@ -389,10 +406,15 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
                     if (!tasks.isEmpty()) {
                         logger.info("Obtained {} tasks from {}", tasks.size(), addr);
+                        autoShutdownMarker = System.currentTimeMillis();
+                        for (TaskStartT task : tasks) {
+                            queueClusterTask(task);
+                        }
                     }
-
-                    for (TaskStartT task: tasks) {
-                        queueClusterTask(task);
+                    else if (autoShutdownIdleMinutes > 0 && analyzeExecutor.getActiveCount() == 0 &&
+                                System.currentTimeMillis() - (autoShutdownIdleMinutes * 60000) > autoShutdownMarker) {
+                        logger.warn("No tasks to process for {} minutes, shutting down!!", autoShutdownIdleMinutes);
+                        initiateShutdown();
                     }
                 } catch (ClusterConnectionException e) {
                     conn.backoff();
@@ -423,4 +445,13 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
         }
     }
 
+    @PreDestroy
+    public void shutdown() {
+        logger.info("Shutting down process manager");
+        stopAsync();
+    }
+
+    public void initiateShutdown() {
+        System.exit(SpringApplication.exit(appContext, () -> 0));
+    }
 }
