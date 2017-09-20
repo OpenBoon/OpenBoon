@@ -10,6 +10,8 @@ import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FieldDao;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.archivist.repository.TaxonomyDao;
+import com.zorroa.archivist.security.InternalAuthentication;
+import com.zorroa.archivist.security.InternalRunnable;
 import com.zorroa.common.elastic.CountingBulkListener;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
@@ -29,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,11 +71,13 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     @Autowired
     UniqueTaskExecutor folderTaskExecutor;
 
+    @Autowired
+    UserService userService;
+
     @Value("${zorroa.cluster.index.alias}")
     private String alias;
 
     Set<String> EXCLUDE_FOLDERS = ImmutableSet.of("Library", "Users");
-
     /**
      * Number of entries to write at one time.
      */
@@ -149,13 +154,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     @Override
     public void runAllAsync() {
-        if (ArchivistConfiguration.unittest) {
-            runAll();
-        }
-        else {
-            folderTaskExecutor.execute(
-                    new UniqueRunnable("tax_run_all", () -> runAll()));
-        }
+        folderTaskExecutor.execute(
+                    new UniqueRunnable("tax_run_all",
+                            new InternalRunnable(getAuth(), ()->runAll())));
     }
 
     @Override
@@ -172,7 +173,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         }
         else {
             folderTaskExecutor.execute(new UniqueRunnable("tax_run_" + start.getId(),
-                    () -> tagTaxonomy(tax, start, force)));
+                    new InternalRunnable(getAuth(), () -> tagTaxonomy(tax, start, force))));
         }
     }
 
@@ -238,7 +239,7 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             }
 
             Stopwatch timer = Stopwatch.createStarted();
-            SearchResponse rsp = searchService.buildSearch(search)
+            SearchResponse rsp = searchService.buildSearch(search, "asset")
                     .setScroll(new TimeValue(60000))
                     .setFetchSource(false)
                     .setSize(PAGE_SIZE).execute().actionGet();
@@ -291,22 +292,22 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
     @Override
     public void untagTaxonomyAsync(Taxonomy tax, long timestamp) {
-        folderTaskExecutor.execute(() -> untagTaxonomy(tax, timestamp));
+        folderTaskExecutor.execute(new InternalRunnable(getAuth(), () -> untagTaxonomy(tax, timestamp)));
     }
 
     @Override
     public void untagTaxonomyAsync(Taxonomy tax) {
-        folderTaskExecutor.execute(() -> untagTaxonomy(tax));
+        folderTaskExecutor.execute(new InternalRunnable(getAuth(), () -> untagTaxonomy(tax)));
     }
 
     @Override
     public void untagTaxonomyFoldersAsync(Taxonomy tax, List<Folder> folders) {
-        folderTaskExecutor.execute(() -> untagTaxonomyFolders(tax, folders));
+        folderTaskExecutor.execute(new InternalRunnable(getAuth(), () -> untagTaxonomyFolders(tax, folders)));
     }
 
     @Override
     public void untagTaxonomyFoldersAsync(Taxonomy tax, Folder folder, List<String> assets) {
-        folderTaskExecutor.execute(() -> untagTaxonomyFolders(tax, folder, assets));
+        folderTaskExecutor.execute(new InternalRunnable(getAuth(), () -> untagTaxonomyFolders(tax, folder, assets)));
     }
 
     @Override
@@ -472,7 +473,6 @@ public class TaxonomyServiceImpl implements TaxonomyService {
                 "timestamp", timestamp);
     }
 
-
     private void processBulk(BulkProcessor bulkProcessor, SearchResponse rsp, Script script) {
         try {
             do {
@@ -493,5 +493,10 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         finally {
             bulkProcessor.close();
         }
+    }
+
+    private Authentication getAuth() {
+        User user = userService.get("admin");
+        return  new InternalAuthentication(user, userService.getPermissions(user));
     }
 }
