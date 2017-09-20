@@ -12,7 +12,6 @@ import com.zorroa.archivist.domain.HideField;
 import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.archivist.repository.ElementDao;
 import com.zorroa.archivist.repository.FieldDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
