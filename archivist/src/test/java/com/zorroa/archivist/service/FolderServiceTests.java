@@ -143,7 +143,7 @@ public class FolderServiceTests extends AbstractTest {
 
         folderService.setAcl(folder, new Acl().addEntry(
                 userService.getPermission("group::manager"),
-                Access.Read, Access.Write, Access.Export), false);
+                Access.Read, Access.Write, Access.Export), false, false);
         folderService.get(folder.getId());
     }
 
@@ -160,7 +160,7 @@ public class FolderServiceTests extends AbstractTest {
          */
         folderService.setAcl(folder, new Acl().addEntry(
                 userService.getPermission("group::manager"),
-                Access.Read), false);
+                Access.Read), false, false);
         folderService.get(folder.getId());
     }
 
@@ -177,7 +177,7 @@ public class FolderServiceTests extends AbstractTest {
          */
         folderService.setAcl(folder, new Acl().addEntry(
                 userService.getPermission("group::administrator"),
-                Access.Read), false);
+                Access.Read), false, false);
         folderService.get(folder.getId());
     }
 

@@ -107,10 +107,10 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public void setAcl(Folder folder, Acl acl, boolean created) {
+    public void setAcl(Folder folder, Acl acl, boolean created, boolean autoCreate) {
         SecurityUtils.canSetAclOnFolder(acl, folder.getAcl(), created);
 
-        Acl resolvedAcl = permissionDao.resolveAcl(acl);
+        Acl resolvedAcl = permissionDao.resolveAcl(acl, autoCreate);
         folderDao.setAcl(folder.getId(), resolvedAcl, true);
         folder.setAcl(acl);
 
@@ -125,7 +125,7 @@ public class FolderServiceImpl implements FolderService {
     public void updateAcl(Folder folder, Acl acl) {
         SecurityUtils.canSetAclOnFolder(acl, folder.getAcl(), false);
 
-        Acl resolvedAcl = permissionDao.resolveAcl(acl);
+        Acl resolvedAcl = permissionDao.resolveAcl(acl, false);
         folderDao.updateAcl(folder.getId(), resolvedAcl);
 
         transactionEventManager.afterCommit(() -> {
@@ -245,10 +245,10 @@ public class FolderServiceImpl implements FolderService {
          */
         if (result && parentSwap) {
             Folder targetFolder = folderDao.get(updated.getParentId());
-            setAcl(updated, targetFolder.getAcl(), true);
+            setAcl(updated, targetFolder.getAcl(), true, false);
 
             for (Folder child: getAllDescendants(updated, false)) {
-                setAcl(child, targetFolder.getAcl(), true);
+                setAcl(child, targetFolder.getAcl(), true, false);
             }
         }
 
@@ -602,6 +602,7 @@ public class FolderServiceImpl implements FolderService {
         if (!SecurityUtils.hasPermission(parent.getAcl(), Access.Write)) {
             throw new ArchivistException("You cannot make changes to this folder");
         }
+
         // If there is no acl, use the parent acl.
         if (spec.getAcl() == null) {
             spec.setAcl(parent.getAcl());
@@ -613,7 +614,8 @@ public class FolderServiceImpl implements FolderService {
                 result = get(spec.getParentId(), spec.getName());
             } catch (EmptyResultDataAccessException e) {
                 result = folderDao.create(spec);
-                setAcl(result, spec.getAcl(), true);
+                spec.created = true;
+                setAcl(result, spec.getAcl(), true, false);
                 emitFolderCreated(result);
             }
         } else {
@@ -622,7 +624,8 @@ public class FolderServiceImpl implements FolderService {
             // Look into using ON CONFLICT / Merge
             try {
                 result = folderDao.create(spec);
-                setAcl(result, spec.getAcl(), true);
+                spec.created = true;
+                setAcl(result, spec.getAcl(), true, false);
                 emitFolderCreated(result);
             } catch (DuplicateKeyException e) {
                 result = get(spec.getParentId(), spec.getName());

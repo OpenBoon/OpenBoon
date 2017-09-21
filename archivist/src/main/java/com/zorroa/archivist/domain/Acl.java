@@ -45,6 +45,11 @@ public class Acl extends ForwardingList<AclEntry> {
         return this;
     }
 
+    public Acl addEntry(String name, int access) {
+        this.delegate.add(new AclEntry().setPermission(name).setAccess(access));
+        return this;
+    }
+
     public boolean hasAccess(Permission perm, Access access) {
         return hasAccess(perm.getId(), access);
     }

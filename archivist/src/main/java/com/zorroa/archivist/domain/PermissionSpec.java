@@ -11,6 +11,16 @@ public class PermissionSpec {
 
     public PermissionSpec() {}
 
+    public PermissionSpec(String authority) {
+        String[] parts = authority.split(Permission.JOIN, 2);
+        if (parts.length == 1) {
+            throw new IllegalArgumentException("Invalid authority name: " + authority);
+        }
+        this.name = parts[1];
+        this.type = parts[0];
+    }
+
+
     public PermissionSpec(String type, String name) {
         this.name = name;
         this.type = type;

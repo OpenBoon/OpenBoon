@@ -96,7 +96,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
     }
 
     @Override
-    public Acl resolveAcl(Acl acl){
+    public Acl resolveAcl(Acl acl, boolean createMissing) {
         if (acl == null) {
             return new Acl();
         }
@@ -104,7 +104,17 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
         Acl result = new Acl();
         for (AclEntry entry: acl) {
             if (entry.getPermissionId() == null) {
-                result.addEntry(getId(entry.permission), entry.getAccess());
+                try {
+                    result.addEntry(getId(entry.permission), entry.getAccess());
+                } catch (EmptyResultDataAccessException e) {
+                    if (createMissing) {
+                        result.addEntry(create(new PermissionSpec(entry.permission)
+                                .setDescription("Auto-created permission"), false), entry.getAccess());
+                    }
+                    else {
+                        throw e;
+                    }
+                }
             }
             else {
                 result.add(entry);

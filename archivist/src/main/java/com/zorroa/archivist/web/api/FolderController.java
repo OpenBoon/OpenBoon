@@ -120,7 +120,7 @@ public class FolderController {
     public Object setPermissions(@PathVariable int id, @RequestBody SetPermissionsRequest req) throws Exception {
         Folder folder = folderService.get(id);
         if (req.replace) {
-            folderService.setAcl(folder, req.acl, false);
+            folderService.setAcl(folder, req.acl, false, false);
         }
         else {
             folderService.updateAcl(folder, req.acl);

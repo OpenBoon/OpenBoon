@@ -82,7 +82,7 @@ public interface FolderService {
 
     Acl getAcl(Folder folder);
 
-    void setAcl(Folder folder, Acl acl, boolean created);
+    void setAcl(Folder folder, Acl acl, boolean created, boolean autoCreate);
 
     Map<String, List<Object>> addAssets(Folder folder, List<String> assetIds);
 

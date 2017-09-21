@@ -26,7 +26,7 @@ public interface PermissionDao {
 
     Permission get(String authority);
 
-    Acl resolveAcl(Acl acl);
+    Acl resolveAcl(Acl acl, boolean createMissing);
 
     List<Permission> getAll();
 

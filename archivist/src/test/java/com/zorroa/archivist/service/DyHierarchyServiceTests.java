@@ -154,6 +154,39 @@ public class DyHierarchyServiceTests extends AbstractTest {
         dyhiService.generate(agg);
     }
 
+    @Test
+    public void testGenerateWithPermissions() {
+        Folder f = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchy agg = new DyHierarchy();
+        agg.setFolderId(f.getId());
+        agg.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.extension.raw")
+                                .setAcl(new Acl().addEntry("group::foo", 3))));
+
+        dyhiService.generate(agg);
+        assertEquals("group::foo",
+                folderService.get("/foo/jpg").getAcl().get(0).permission);
+        assertEquals(1,
+                folderService.get("/foo/jpg").getAcl().size());
+    }
+
+    @Test
+    public void testGenerateWithDynamicPermissions() {
+        Folder f = folderService.create(new FolderSpec("foo"), false);
+        DyHierarchy agg = new DyHierarchy();
+        agg.setFolderId(f.getId());
+        agg.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.extension.raw")
+                                .setAcl(new Acl().addEntry("group::%{name}", 3))));
+
+        dyhiService.generate(agg);
+        assertEquals("group::jpg",
+                folderService.get("/foo/jpg").getAcl().get(0).permission);
+        assertEquals(1,
+                folderService.get("/foo/jpg").getAcl().size());
+    }
 
     @Test
     public void testDeleteEmptyFolders() {
@@ -175,7 +208,6 @@ public class DyHierarchyServiceTests extends AbstractTest {
         refreshIndex();
         dyhiService.generate(agg);
     }
-
 
     @Test
     public void testGenerateDateHierarchy() {

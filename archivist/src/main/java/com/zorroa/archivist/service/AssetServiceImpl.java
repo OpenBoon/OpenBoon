@@ -339,7 +339,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
         /**
          * Convert the ACL to a PermissionSchema.
          */
-        for (AclEntry entry: permissionDao.resolveAcl(acl)) {
+        for (AclEntry entry: permissionDao.resolveAcl(acl, false)) {
 
             if ((entry.getAccess() & 1) != 0) {
                 add.addToRead(entry.getPermissionId());

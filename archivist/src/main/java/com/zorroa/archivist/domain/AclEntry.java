@@ -52,8 +52,9 @@ public class AclEntry {
         return access;
     }
 
-    public void setAccess(int access) {
+    public AclEntry setAccess(int access) {
         this.access = access;
+        return this;
     }
 
     public String getPermission() {

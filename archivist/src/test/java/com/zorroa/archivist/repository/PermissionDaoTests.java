@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 
@@ -219,5 +220,25 @@ public class PermissionDaoTests extends AbstractTest {
         p = permissionDao.update(p);
         assertEquals("user", p.getType());
         assertEquals("test", p.getName());
+    }
+
+    @Test
+    public void resolveAcl() {
+        Acl acl = new Acl().addEntry("group::everyone", 1);
+        acl = permissionDao.resolveAcl(acl, false);
+        assertNotNull(acl.get(0).permissionId);
+    }
+
+    @Test(expected=EmptyResultDataAccessException.class)
+    public void resolveAclFailure() {
+        Acl acl = new Acl().addEntry("group::shizzle", 1);
+        acl = permissionDao.resolveAcl(acl, false);
+    }
+
+    @Test
+    public void resolveAclAutoCreate() {
+        Acl acl = new Acl().addEntry("group::shizzle", 1);
+        acl = permissionDao.resolveAcl(acl, true);
+        assertNotNull(acl.get(0).permissionId);
     }
 }

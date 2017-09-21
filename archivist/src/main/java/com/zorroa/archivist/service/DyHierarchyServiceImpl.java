@@ -453,15 +453,30 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
                 search.getFilter().merge(parent.getSearch().getFilter());
             }
 
+            String name = getFolderName(value, level);
+
             /*
              * Create a non-recursive
              */
-            Folder folder = folderService.create(new FolderSpec()
-                    .setName(getFolderName(value, level))
+            FolderSpec spec = new FolderSpec()
+                    .setName(name)
                     .setParentId(parent.getId())
                     .setRecursive(false)
                     .setDyhiId(dyhi.getId())
-                    .setSearch(search), true);
+                    .setSearch(search);
+
+            Folder folder = folderService.create(spec, true);
+            if (level.getAcl() != null && spec.created) {
+                /**
+                 * If the ACL is set, build an ACL based on the name.
+                 */
+                Acl acl = new Acl();
+                for (AclEntry entry: level.getAcl()) {
+                    String perm = entry.getPermission().replaceAll("%\\{name\\}", name);
+                    acl.add(new AclEntry().setPermission(perm).setAccess(entry.getAccess()));
+                }
+                folderService.setAcl(folder, acl, true, true);
+            }
 
             count++;
             stack.push(folder);

@@ -25,6 +25,8 @@ public class FolderSpec {
 
     private Map<String, Object> attrs;
 
+    @JsonIgnore
+    public boolean created = false;
     /**
      * Only used locally, don't accept over the wire.
      */
