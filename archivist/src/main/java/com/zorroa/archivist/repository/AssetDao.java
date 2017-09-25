@@ -72,5 +72,7 @@ public interface AssetDao {
      */
     AssetIndexResult index(List<Document> sources);
 
+    PagedList<Document> getElements(String assetId, Pager page);
+
     Map<String, Object> getMapping();
 }

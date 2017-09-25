@@ -65,6 +65,16 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         return result;
     };
 
+    private static final JsonRowMapper<Document> MAPPER_ELEMENT = (id, version, score, source) -> {
+        Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
+        Asset result = new Asset();
+        result.setId(id);
+        result.setScore(score);
+        result.setDocument(data);
+        result.setType("element");
+        return result;
+    };
+
     @Override
     public Asset index(Document source) {
         AssetIndexResult result =  index(ImmutableList.of(source));
@@ -386,6 +396,15 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), page, MAPPER);
 
+    }
+
+    @Override
+    public PagedList<Document> getElements(String assetId, Pager page) {
+        return elastic.page(client.prepareSearch(getIndex())
+                .setTypes("element")
+                .setQuery(QueryBuilders.hasParentQuery("asset",
+                    QueryBuilders.termQuery("_id", assetId)))
+                .setVersion(true), page, MAPPER_ELEMENT);
     }
 
     @Override

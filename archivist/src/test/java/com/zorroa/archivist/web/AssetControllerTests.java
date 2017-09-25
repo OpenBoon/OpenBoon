@@ -8,10 +8,15 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
-import com.zorroa.sdk.search.*;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetScript;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.search.RangeQuery;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
 import org.joda.time.DateTime;
@@ -239,6 +244,33 @@ public class AssetControllerTests extends MockMvcTest {
                     new TypeReference<Map<String, Object>>() {});
             assertEquals(asset.getId(), json.get("_id"));
         }
+    }
+
+    @Test
+    public void testGetElements() throws Exception {
+
+        MockHttpSession session = admin();
+        Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        Asset asset1 = assetDao.index(builder);
+        refreshIndex();
+
+        Element e = new Element(asset1);
+        e.setAttr("foo.bar", "bing");
+        e.setId(UUID.randomUUID().toString());
+        assetService.index(e);
+        refreshIndex();
+
+        MvcResult result = mvc.perform(get("/api/v1/assets/" + asset1.getId() + "/_elements")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PagedList<Document> docs = Json.Mapper.readValue(
+                result.getResponse().getContentAsString(),
+                new TypeReference<PagedList<Document>>() {});
+
+        assertEquals(1, docs.size());
     }
 
 

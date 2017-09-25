@@ -114,6 +114,11 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     }
 
     @Override
+    public PagedList<Document> getElements(String assetId, Pager page) {
+        return assetDao.getElements(assetId, page);
+    }
+
+    @Override
     public Document index(Document doc) {
         AssetIndexResult result = index(new AssetIndexSpec(doc));
         if (result.getAssetIds().size() == 1) {

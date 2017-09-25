@@ -285,6 +285,12 @@ public class AssetController {
         return assetService.get(path.get("path"));
     }
 
+    @RequestMapping(value="/api/v1/assets/{id}/_elements", method=RequestMethod.GET)
+    public PagedList<Document> getElements(@PathVariable String id,
+                                           @RequestParam(value="from", required=false) Integer from,
+                                           @RequestParam(value="count", required=false) Integer count) {
+        return assetService.getElements(id, new Pager(from, count));
+    }
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.DELETE)
     public Object delete(@PathVariable String id) throws IOException {

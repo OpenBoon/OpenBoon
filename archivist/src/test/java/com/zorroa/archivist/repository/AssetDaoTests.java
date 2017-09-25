@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.*;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -40,6 +42,20 @@ public class AssetDaoTests extends AbstractTest {
     public void testGetById() {
         Asset asset2 = assetDao.get(asset1.getId());
         assertEquals(asset1.getId(), asset2.getId());
+    }
+
+    @Test
+    public void testGetElements() {
+        Asset asset2 = assetDao.get(asset1.getId());
+
+        Element e = new Element(asset2);
+        e.setAttr("foo.bar", "bing");
+        e.setId(UUID.randomUUID().toString());
+        assetService.index(e);
+        refreshIndex();
+
+        PagedList<Document> elements = assetDao.getElements(asset2.getId(), Pager.first());
+        assertEquals(1, elements.size());
     }
 
     @Test

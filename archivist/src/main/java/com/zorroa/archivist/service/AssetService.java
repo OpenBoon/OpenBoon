@@ -24,6 +24,9 @@ public interface AssetService {
     PagedList<Asset> getAll(Pager page);
 
     AssetIndexResult index(AssetIndexSpec spec);
+
+    PagedList<Document> getElements(String assetId, Pager page);
+
     Document index(Document doc);
 
     void removeFields(String id, Set<String> fields);
