@@ -227,8 +227,13 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v1/assets/_fields", method=RequestMethod.GET)
-    public Map<String, Set<String>> getFields() throws IOException {
-        return searchService.getFields();
+    public Map<String, Set<String>> getAssetFields() throws IOException {
+        return searchService.getFields("asset");
+    }
+
+    @RequestMapping(value="/api/v1/elements/_fields", method=RequestMethod.GET)
+    public Map<String, Set<String>> getElementFields() throws IOException {
+        return searchService.getFields("element");
     }
 
     @RequestMapping(value="/api/v1/assets/_fields/hide", method=RequestMethod.PUT)

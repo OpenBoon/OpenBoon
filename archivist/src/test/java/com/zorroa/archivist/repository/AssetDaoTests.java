@@ -48,7 +48,7 @@ public class AssetDaoTests extends AbstractTest {
     public void testGetElements() {
         Asset asset2 = assetDao.get(asset1.getId());
 
-        Element e = new Element(asset2);
+        Element e = new Element("test", asset2);
         e.setAttr("foo.bar", "bing");
         e.setId(UUID.randomUUID().toString());
         assetService.index(e);

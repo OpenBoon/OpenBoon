@@ -61,7 +61,7 @@ public interface SearchService {
 
     boolean updateField(HideField value);
 
-    Map<String, Set<String>> getFields();
+    Map<String, Set<String>> getFields(String type);
 
     Map<String, Float> getQueryFields();
 

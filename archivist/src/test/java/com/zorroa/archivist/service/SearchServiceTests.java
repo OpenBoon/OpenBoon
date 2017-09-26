@@ -478,7 +478,7 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(source);
         refreshIndex();
 
-        Map<String, Set<String>> fields = searchService.getFields();
+        Map<String, Set<String>> fields = searchService.getFields("asset");
         assertTrue(fields.get("date").size() > 0);
         assertTrue(fields.get("string").size() > 0);
         assertTrue(fields.get("integer").size() > 0);
@@ -499,7 +499,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
         searchService.updateField(new HideField("foo.keywords", true));
 
-        Map<String, Set<String>> fields = searchService.getFields();
+        Map<String, Set<String>> fields = searchService.getFields("asset");
         assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
         assertFalse(fields.get("string").contains("foo.keywords"));
     }
@@ -516,7 +516,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
         searchService.updateField(new HideField("foo.", true));
 
-        Map<String, Set<String>> fields = searchService.getFields();
+        Map<String, Set<String>> fields = searchService.getFields("asset");
         assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
         assertFalse(fields.get("string").contains("foo.keywords"));
     }
@@ -770,7 +770,7 @@ public class SearchServiceTests extends AbstractTest {
         source.addSuggestKeywords("source", "zoolander");
         assetService.index(source);
 
-        Element e = new Element(source);
+        Element e = new Element("proxy", source);
         e.setAttr("foo.bar", "bing");
         e.setId(UUID.randomUUID().toString());
         assetService.index(e);
@@ -790,7 +790,7 @@ public class SearchServiceTests extends AbstractTest {
         source.setAttr("test.keywords", "zoo-lander");
         assetService.index(source);
 
-        Element e = new Element(source);
+        Element e = new Element("proxy", source);
         e.setAttr("foo.bar", "bing");
         e.setId(UUID.randomUUID().toString());
         assetService.index(e);

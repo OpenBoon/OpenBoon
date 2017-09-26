@@ -64,6 +64,33 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testGetElementFields() throws Exception {
+
+        MockHttpSession session = admin();
+        Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        Asset asset1 = assetDao.index(builder);
+        refreshIndex();
+
+        Element e = new Element("test", asset1);
+        e.setAttr("foo.bar", "bing");
+        e.setId(UUID.randomUUID().toString());
+        assetService.index(e);
+        refreshIndex();
+
+        MvcResult result = mvc.perform(get("/api/v1/elements/_fields")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Map<String, Set<String>> fields = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Set<String>>>() {});
+        assertTrue(fields.get("date").size() ==  0);
+        assertTrue(fields.get("string").size() > 0);
+        assertTrue(fields.get("integer").size()  ==  0);
+    }
+
+    @Test
     public void testHideAndUnhideField() throws Exception {
 
         MockHttpSession session = admin();
@@ -80,7 +107,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        Map<String,Set<String>> fields = searchService.getFields();
+        Map<String,Set<String>> fields = searchService.getFields("assets");
         for (String field: fields.get("string")) {
             assertFalse(field.startsWith("source"));
         }
@@ -96,7 +123,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        Map<String,Set<String>> stringFields = searchService.getFields();
+        Map<String,Set<String>> stringFields = searchService.getFields("assets");
         assertNotEquals(fields, stringFields);
     }
 
@@ -254,7 +281,7 @@ public class AssetControllerTests extends MockMvcTest {
         Asset asset1 = assetDao.index(builder);
         refreshIndex();
 
-        Element e = new Element(asset1);
+        Element e = new Element("test", asset1);
         e.setAttr("foo.bar", "bing");
         e.setId(UUID.randomUUID().toString());
         assetService.index(e);

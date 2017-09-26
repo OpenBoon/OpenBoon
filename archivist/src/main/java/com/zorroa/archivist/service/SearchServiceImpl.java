@@ -157,7 +157,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<String> getSuggestTerms(String text) {
         SuggestRequestBuilder builder = client.prepareSuggest(alias);
-        Set<String> fields = getFields().get("completion");
+        Set<String> fields = getFields("asset").get("completion");
         if (!JdbcUtils.isValid(fields)) {
             return Lists.newArrayList();
         }
@@ -329,7 +329,7 @@ public class SearchServiceImpl implements SearchService {
         }
         else {
             if (search.getOrder() != null) {
-                final Map<String, Set<String>> fields = getFields();
+                final Map<String, Set<String>> fields = getFields("asset");
                 for (AssetSearchOrder searchOrder : search.getOrder()) {
                     SortOrder sortOrder = searchOrder.getAscending() ? SortOrder.ASC : SortOrder.DESC;
                     // Make sure to use .raw for strings
@@ -652,16 +652,16 @@ public class SearchServiceImpl implements SearchService {
 
     private final LoadingCache<String, Map<String, Set<String>>> fieldMapCache = CacheBuilder.newBuilder()
             .maximumSize(2)
-            .initialCapacity(2)
+            .initialCapacity(3)
             .concurrencyLevel(1)
             .expireAfterWrite(60, TimeUnit.SECONDS)
             .build(new CacheLoader<String, Map<String, Set<String>>>() {
                 public Map<String, Set<String>>load(String key) throws Exception {
-                    return getFieldMap();
+                    return getFieldMap(key);
                 }
             });
 
-    private Map<String, Set<String>> getFieldMap() {
+    private Map<String, Set<String>> getFieldMap(String type) {
             Set<String> hiddenFields = fieldDao.getHiddenFields();
             Map<String, Set<String>> result = Maps.newHashMap();
             result.put("string", Sets.newHashSet());
@@ -688,7 +688,7 @@ public class SearchServiceImpl implements SearchService {
             ClusterState cs = client.admin().cluster().prepareState().setIndices(alias).execute().actionGet().getState();
             for (String index: cs.getMetaData().concreteAllOpenIndices()) {
                 IndexMetaData imd = cs.getMetaData().index(index);
-                MappingMetaData mdd = imd.mapping("asset");
+                MappingMetaData mdd = imd.mapping(type);
                 try {
                     getList(result, "", mdd.getSourceAsMap(), autoKeywordFieldNames, hiddenFields);
                 } catch (IOException e) {
@@ -721,9 +721,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Map<String, Set<String>> getFields() {
+    public Map<String, Set<String>> getFields(String type) {
         try {
-            return fieldMapCache.get("fields");
+            return fieldMapCache.get(type);
         } catch (Exception e) {
             logger.warn("Failed to get fields: ", e);
             return ImmutableMap.of();
@@ -792,7 +792,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public Map<String, Float> getQueryFields() {
 
-        Set<String> autoFields = getFields().get("keywords-auto");
+        Set<String> autoFields = getFields("asset").get("keywords-auto");
         String staticFieldsJson = properties.getString(PROP_PREFIX_KEYWORD_FIELD);
 
         ImmutableMap.Builder < String, Float > builder = ImmutableMap.builder();

@@ -141,7 +141,7 @@ public class IndexController {
     @RequestMapping("/gui/fields")
     public String fields(Model model) {
         standardModel(model);
-        model.addAttribute("fields", searchService.getFields());
+        model.addAttribute("fields", searchService.getFields("asset"));
         return "fields";
     }
 

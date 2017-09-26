@@ -158,13 +158,13 @@ public class TaxonomyServiceTests extends AbstractTest {
 
         // stuff should get untagged
         folderService.addAssets(folder1, Lists.newArrayList(d.getId()));
-        assertTrue(searchService.getFields().get(
+        assertTrue(searchService.getFields("asset").get(
                 "string").contains(tax1.getRootField() + ".keywords"));
 
         folderService.trash(folder1);
         assertEquals(0, searchService.search(
                 new AssetSearch("ships")).getHits().getTotalHits());
-        assertFalse(searchService.getFields().get(
+        assertFalse(searchService.getFields("asset").get(
                 "string").contains(tax1.getRootField() + ".keywords"));
     }
 }
