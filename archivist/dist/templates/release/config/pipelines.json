@@ -44,7 +44,7 @@
       "language" : "python",
       "filters" : [ ]
     }, {
-      "className" : "zorroa_py_core.HaarDetector.HaarDetector",
+      "className" : "zorroa_py_core.haar.HaarDetector",
       "args" : { },
       "language" : "python",
       "filters" : [ ]
