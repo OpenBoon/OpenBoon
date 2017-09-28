@@ -107,7 +107,8 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        Map<String,Set<String>> fields = searchService.getFields("assets");
+        searchService.invalidateFields();
+        Map<String,Set<String>> fields = searchService.getFields("asset");
         for (String field: fields.get("string")) {
             assertFalse(field.startsWith("source"));
         }
@@ -123,7 +124,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        Map<String,Set<String>> stringFields = searchService.getFields("assets");
+        Map<String,Set<String>> stringFields = searchService.getFields("asset");
         assertNotEquals(fields, stringFields);
     }
 
