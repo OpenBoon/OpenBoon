@@ -606,35 +606,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         if (filter.getHamming() != null) {
-
-            /**
-             * Resolve any asset Ids in the hash list.
-             */
-            List<String> hashes = filter.getHamming().getHashes();
-            for (int i=0; i<hashes.size(); i++) {
-                String hash = hashes.get(i);
-                if (JdbcUtils.isUUID(hash)) {
-                    String newHash = assetDao.getFieldValue(hash, filter.getHamming().getField());
-                    hashes.set(i, newHash);
-                }
-            }
-
-            Map<String, Object> args = Maps.newHashMap();
-            args.put("field", filter.getHamming().getField());
-            args.put("hashes", hashes);
-            args.put("minScore", filter.getHamming().getMinScore());
-
-            if (filter.getHamming().getWeights() != null) args.put("weights", filter.getHamming().getWeights());
-
-            FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(
-                    ScoreFunctionBuilders.scriptFunction(new Script(
-                    "hammingDistance", ScriptService.ScriptType.INLINE, "native",
-                    args)));
-
-            fsqb.setMinScore(filter.getHamming().getMinScore() / 100.0f);
-            fsqb.boostMode("replace");
-            fsqb.scoreMode("sum");
-            query.must(fsqb);
+            handleHammingFilter(filter.getHamming(), query);
         }
 
         // Recursively add bool sub-filters for must, must_not and should
@@ -660,6 +632,42 @@ public class SearchServiceImpl implements SearchService {
                 this.applyFilterToQuery(f, should, linkedFolders);
                 query.should(should);
             }
+        }
+    }
+
+    private void handleHammingFilter(List<HammingDistanceFilter> filters, BoolQueryBuilder query) {
+
+        BoolQueryBuilder hammingBool = QueryBuilders.boolQuery();
+        query.must(hammingBool);
+        for (HammingDistanceFilter filter : filters) {
+            /**
+             * Resolve any asset Ids in the hash list.
+             */
+            List<String> hashes = filter.getHashes();
+            for (int i = 0; i < hashes.size(); i++) {
+                String hash = hashes.get(i);
+                if (JdbcUtils.isUUID(hash)) {
+                    String newHash = assetDao.getFieldValue(hash, filter.getField());
+                    hashes.set(i, newHash);
+                }
+            }
+
+            Map<String, Object> args = Maps.newHashMap();
+            args.put("field", filter.getField());
+            args.put("hashes", hashes);
+            args.put("minScore", filter.getMinScore());
+
+            if (filter.getWeights() != null) args.put("weights", filter.getWeights());
+
+            FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(
+                    ScoreFunctionBuilders.scriptFunction(new Script(
+                            "hammingDistance", ScriptService.ScriptType.INLINE, "native",
+                            args)));
+
+            fsqb.setMinScore(filter.getMinScore() / 100.0f);
+            fsqb.boostMode("replace");
+            fsqb.scoreMode("sum");
+            hammingBool.should(fsqb);
         }
     }
 
@@ -698,7 +706,10 @@ public class SearchServiceImpl implements SearchService {
                         k.replace(PROP_PREFIX_KEYWORD_FIELD, "")));
             }
 
-            ClusterState cs = client.admin().cluster().prepareState().setIndices(alias).execute().actionGet().getState();
+            ClusterState cs = client.admin().cluster()
+                    .prepareState()
+                    .setIndices(alias)
+                    .execute().actionGet().getState();
             for (String index: cs.getMetaData().concreteAllOpenIndices()) {
                 IndexMetaData imd = cs.getMetaData().index(index);
                 MappingMetaData mdd = imd.mapping(type);
