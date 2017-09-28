@@ -63,6 +63,8 @@ public interface AssetDao {
 
     long update(String assetId, Map<String, Object> attrs);
 
+    <T> T getFieldValue(String id, String field);
+
     Asset index(Document source);
 
     /**

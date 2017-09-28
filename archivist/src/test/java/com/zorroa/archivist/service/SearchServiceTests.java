@@ -725,6 +725,33 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testHammingDistanceFilterWithAssetId() throws IOException {
+        Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
+        source1.setAttr("superhero", "captain");
+        source1.setAttr("test.hash1.byte", "afafafaf");
+        source1.addKeywords("foo", "bar");
+
+        Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
+        source2.setAttr("superhero", "loki");
+        source2.setAttr("test.hash1.byte", "adadadad");
+        source1.addKeywords("foo", "bing");
+
+        assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
+        refreshIndex();
+
+        AssetSearch search = new AssetSearch("bar");
+        search.setFilter(new AssetFilter().setHamming(
+                new HammingDistanceFilter(source1.getId(), "test.hash1.byte", 8)));
+
+        /**
+         * The score from the hamming distance is combined with the query
+         * score, to result in a score higher than the hamming score.
+         */
+        float score = searchService.search(search).getHits().hits()[0].getScore();
+        assertTrue(score >= .5);
+    }
+
+    @Test
     public void testAnalyzeFilenameAsQueryString() throws IOException {
         assertEquals(ImmutableList.of("ironman17314.jpg", "iron", "man", "17314", "jpg"),
                 searchService.analyzeQuery(new AssetSearch("ironMan17314.jpg")));

@@ -21,8 +21,16 @@ package com.zorroa.archivist;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 public class JdbcUtils {
+
+    private static final Pattern UUID_REGEX = Pattern.compile("[0-9a-f\\-]{36}",
+            Pattern.CASE_INSENSITIVE);
+
+    public static boolean isUUID(String value) {
+        return UUID_REGEX.matcher(value).matches();
+    }
 
     public static boolean isValid(Collection<?> collection) {
         return collection == null ? false : !collection.isEmpty();

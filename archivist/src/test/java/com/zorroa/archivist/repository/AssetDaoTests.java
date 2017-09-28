@@ -34,8 +34,16 @@ public class AssetDaoTests extends AbstractTest {
     @Before
     public void init() {
         Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
+        builder.setAttr("foo.str", "ass");
+        builder.setAttr("foo.int", 155);
         asset1 = assetDao.index(builder);
         refreshIndex();
+    }
+
+    @Test
+    public void testGetFieldValue() throws IOException {
+        assertEquals("ass", assetDao.getFieldValue(asset1.getId(), "foo.str"));
+        assertEquals(155, (int) assetDao.getFieldValue(asset1.getId(), "foo.int"));
     }
 
     @Test

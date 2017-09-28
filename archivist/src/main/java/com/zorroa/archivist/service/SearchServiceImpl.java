@@ -607,10 +607,23 @@ public class SearchServiceImpl implements SearchService {
 
         if (filter.getHamming() != null) {
 
+            /**
+             * Resolve any asset Ids in the hash list.
+             */
+            List<String> hashes = filter.getHamming().getHashes();
+            for (int i=0; i<hashes.size(); i++) {
+                String hash = hashes.get(i);
+                if (JdbcUtils.isUUID(hash)) {
+                    String newHash = assetDao.getFieldValue(hash, filter.getHamming().getField());
+                    hashes.set(i, newHash);
+                }
+            }
+
             Map<String, Object> args = Maps.newHashMap();
             args.put("field", filter.getHamming().getField());
-            args.put("hashes", filter.getHamming().getHashes());
+            args.put("hashes", hashes);
             args.put("minScore", filter.getHamming().getMinScore());
+
             if (filter.getHamming().getWeights() != null) args.put("weights", filter.getHamming().getWeights());
 
             FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(

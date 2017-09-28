@@ -76,6 +76,14 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     };
 
     @Override
+    public <T> T getFieldValue(String id, String field) {
+        Document d = new Document(
+                client.prepareGet("archivist", "asset", id)
+                        .get().getSource());
+        return d.getAttr(field);
+    }
+
+    @Override
     public Asset index(Document source) {
         AssetIndexResult result =  index(ImmutableList.of(source));
         return get(source.getId());
