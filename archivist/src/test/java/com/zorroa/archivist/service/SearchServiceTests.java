@@ -638,8 +638,8 @@ public class SearchServiceTests extends AbstractTest {
         AssetSearch search;
 
         search = new AssetSearch(
-                new AssetFilter().addToHamming(
-                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.jimbo", 100)));
+                new AssetFilter().addToSimilarity("test.hash1.jimbo",
+                        new SimilarityFilter("AFAFAFAF", 100)));
         assertEquals(0, searchService.search(search).getHits().getTotalHits());
     }
 
@@ -659,8 +659,8 @@ public class SearchServiceTests extends AbstractTest {
         AssetSearch search;
 
         search = new AssetSearch(
-                new AssetFilter().addToHamming(
-                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.jimbo", 100)));
+                new AssetFilter().addToSimilarity("test.hash1.jimbo",
+                        new SimilarityFilter("AFAFAFAF", 100)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
@@ -680,18 +680,18 @@ public class SearchServiceTests extends AbstractTest {
         AssetSearch search;
 
         search = new AssetSearch(
-                new AssetFilter().addToHamming(
-                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.byte", 100)));
+                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                        new SimilarityFilter("AFAFAFAF", 100)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
-                new AssetFilter().addToHamming(
-                        new HammingDistanceFilter("AFAFAFAF", "test.hash1.byte", 50)));
+                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                        new SimilarityFilter("AFAFAFAF", 50)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
-                new AssetFilter().addToHamming(
-                        new HammingDistanceFilter("APAPAPAP", "test.hash1.byte", 20)));
+                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                        new SimilarityFilter("APAPAPAP", 20)));
 
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
@@ -713,8 +713,8 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         AssetSearch search = new AssetSearch("bar");
-        search.setFilter(new AssetFilter().addToHamming(
-                new HammingDistanceFilter("afafafaf", "test.hash1.byte", 8)));
+        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.byte",
+                new SimilarityFilter("afafafaf", 8)));
 
         /**
          * The score from the hamming distance is combined with the query
@@ -740,8 +740,8 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         AssetSearch search = new AssetSearch("bar");
-        search.setFilter(new AssetFilter().addToHamming(
-                new HammingDistanceFilter(source1.getId(), "test.hash1.byte", 8)));
+        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.byte",
+                new SimilarityFilter(source1.getId(), 8)));
 
         /**
          * The score from the hamming distance is combined with the query

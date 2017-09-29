@@ -605,8 +605,8 @@ public class SearchServiceImpl implements SearchService {
             }
         }
 
-        if (filter.getHamming() != null) {
-            handleHammingFilter(filter.getHamming(), query);
+        if (filter.getSimilarity() != null) {
+            handleHammingFilter(filter.getSimilarity(), query);
         }
 
         // Recursively add bool sub-filters for must, must_not and should
@@ -635,29 +635,42 @@ public class SearchServiceImpl implements SearchService {
         }
     }
 
-    private void handleHammingFilter(List<HammingDistanceFilter> filters, BoolQueryBuilder query) {
+    private void handleHammingFilter(Map<String, SimilarityFilter> filters, BoolQueryBuilder query) {
 
         BoolQueryBuilder hammingBool = QueryBuilders.boolQuery();
         query.must(hammingBool);
-        for (HammingDistanceFilter filter : filters) {
+
+        for (Map.Entry<String, SimilarityFilter> entry : filters.entrySet()) {
+            SimilarityFilter filter = entry.getValue();
+            String field = entry.getKey();
+
             /**
              * Resolve any asset Ids in the hash list.
              */
-            List<String> hashes = filter.getHashes();
-            for (int i = 0; i < hashes.size(); i++) {
-                String hash = hashes.get(i);
-                if (JdbcUtils.isUUID(hash)) {
-                    String newHash = assetDao.getFieldValue(hash, filter.getField());
-                    hashes.set(i, newHash);
+
+            List<String> hashes = Lists.newArrayList();
+            List<Float> weights = Lists.newArrayList();
+
+            for (SimilarityFilter.SimilarityHash hash: filter.getHashes()) {
+                String hashValue = hash.getHash();
+                if (JdbcUtils.isUUID(hashValue)) {
+                    hashValue = assetDao.getFieldValue(hashValue, field);
+                }
+
+                if (hashValue != null) {
+                    hashes.add(hashValue);
+                    weights.add(hash.getWeight() == null ? 1.0f : hash.getWeight());
                 }
             }
+            logger.info("hashes: {}", hashes);
+            logger.info("weights: {}", weights);
+            logger.info("minScore: {}", filter.getMinScore());
 
             Map<String, Object> args = Maps.newHashMap();
-            args.put("field", filter.getField());
+            args.put("field", field);
             args.put("hashes", hashes);
+            args.put("weights", weights);
             args.put("minScore", filter.getMinScore());
-
-            if (filter.getWeights() != null) args.put("weights", filter.getWeights());
 
             FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(
                     ScoreFunctionBuilders.scriptFunction(new Script(
