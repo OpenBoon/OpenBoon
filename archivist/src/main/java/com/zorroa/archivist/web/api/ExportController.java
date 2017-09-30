@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -56,7 +58,6 @@ public class ExportController {
      * @return
      */
     @RequestMapping(value = "/api/v1/exports/{id}/_stream", method = RequestMethod.GET)
-    @ResponseBody
     public ResponseEntity<FileSystemResource> getExport(@PathVariable int id) {
         Job job = jobService.get(id);
         /**
@@ -73,10 +74,13 @@ public class ExportController {
         logExportDownload(id);
 
         File file = new File((String)job.getArgs().get("outputFile"));
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("application/zip"))
-                .contentLength(file.length())
-                .body(new FileSystemResource(file));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-disposition", "attachment; filename=" + job.getName() + ".zip");
+        headers.setContentType(MediaType.valueOf("application/zip"));
+        headers.setContentLength(file.length());
+        ResponseEntity response = new ResponseEntity(new FileSystemResource(file), headers, HttpStatus.OK);
+        return response;
     }
 
     private void logExportDownload(int id) {
