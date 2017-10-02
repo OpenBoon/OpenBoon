@@ -71,6 +71,7 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
         .put("archivist.search.keywords.auto.fields", new TypeReference<String>() {})
         .put("archivist.search.keywords.auto.enabled", new TypeReference<Boolean>() {})
         .put("archivist.export.dragTemplate", new TypeReference<String>(){})
+        .put("archivist.export.videoStreamExtensionFallbackOrder", new TypeReference<String>(){})
         .put("archivist.search.sortFields", new TypeReference<String>(){})
         .build();
 
