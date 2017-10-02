@@ -326,6 +326,15 @@ public class PluginServiceImpl implements PluginService {
                     .setArgs(ref.getArgs())
                     .addToFilters(ref.getFilters())
                     .setExecute(ref.getExecute());
+            if (ref.getFileTypes() != null) {
+                if (ref2.getFileTypes() == null) {
+                    ref2.setFileTypes(ref.getFileTypes());
+                }
+                else {
+                    ref2.getFileTypes().addAll(ref.getFileTypes());
+                }
+            }
+
             result.add(ref2);
             ref2.setExecute(getProcessorRefs(ref2.getExecute()));
         }

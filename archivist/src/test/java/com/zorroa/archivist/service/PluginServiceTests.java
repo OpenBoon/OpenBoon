@@ -1,6 +1,8 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.Plugin;
@@ -17,6 +19,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -59,6 +62,7 @@ public class PluginServiceTests extends AbstractTest {
         pspec.setDescription("foo");
         pspec.setClassName("com.foo.Bar");
         pspec.setDisplay(Lists.newArrayList());
+        pspec.setFileTypes(Sets.newHashSet("foo"));
         pspec.setFilters(Lists.newArrayList("_doc.source.extension=='jpg'"));
         pspec.setType("unittest");
 
@@ -87,6 +91,16 @@ public class PluginServiceTests extends AbstractTest {
         ProcessorRef ref = pluginService.getProcessorRef("com.foo.Bar");
         assertEquals("java", ref.getLanguage());
         assertEquals("com.foo.Bar", ref.getClassName());
+        assertEquals(ImmutableSet.of("foo"), ref.getFileTypes());
+    }
+
+    @Test
+    public void getProcessorRefs() {
+        ProcessorRef ref = pluginService.getProcessorRef("com.foo.Bar");
+        ref.getFileTypes().add("spock");
+        List<ProcessorRef> refs = pluginService.getProcessorRefs(Lists.newArrayList(ref));
+        assertTrue(refs.get(0).getFileTypes().contains("spock"));
+        assertTrue(refs.get(0).getFileTypes().contains("foo"));
     }
 
     @Test
