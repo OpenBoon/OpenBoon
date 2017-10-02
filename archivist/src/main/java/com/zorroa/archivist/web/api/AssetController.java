@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -9,6 +10,7 @@ import com.zorroa.archivist.web.MultipartFileSender;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetSearch;
@@ -78,7 +80,7 @@ public class AssetController {
     /**
      * Describes a file to stream.
      */
-    private static class StreamFile {
+    public static class StreamFile {
         public String path;
         public String mimeType;
         public boolean proxy;
@@ -103,29 +105,51 @@ public class AssetController {
             return getProxyStream(asset);
         }
         else {
+
+            List<StreamFile> checkFiles = Lists.newArrayList();
+
             String path = asset.getAttr("source.path", String.class);
             String mediaType = asset.getAttr("source.mediaType", String.class);
 
             if (preferExt != null) {
-                path = path.substring(0, path.lastIndexOf('.')+1) + preferExt;
-                mediaType = tika.detect(path);
+                /**
+                 * If preferExt is set, then first we check the assets source directory for
+                 * a file with that ext.
+                 */
+                String preferPath = path.substring(0, path.lastIndexOf('.')+1) + preferExt;
+                String preferMediaType = tika.detect(path);
+                checkFiles.add(new StreamFile(preferPath, preferMediaType, false));
+
+                /**
+                 * Additionally, add the OFS location as another possible location.
+                 */
+                ObjectFile f = ofs.get("asset", asset.getId() + "." + preferExt);
+                checkFiles.add(new StreamFile(f.getFile().toString(), preferMediaType, false));
+            }
+            else {
+                checkFiles.add(new StreamFile(path, mediaType, false));
             }
 
-            if (new File(path).exists()) {
-                return new StreamFile(path, mediaType,false);
-            } else {
-                if (fallback) {
-                    return getProxyStream(asset);
+            for (StreamFile sf: checkFiles) {
+                if (new File(sf.path).exists()) {
+                    return sf;
                 }
-                else {
-                    return null;
-                }
+            }
+
+            if (fallback) {
+                return getProxyStream(asset);
+            }
+            else {
+                return null;
             }
         }
     }
 
     public StreamFile getProxyStream(Asset asset) {
         Proxy largestProxy = asset.getProxies().getLargest();
+        if (largestProxy == null) {
+            return null;
+        }
         return new StreamFile(
                 ofs.get(largestProxy.getId()).getFile().toString(),
                 PROXY_MIME_LOOKUP.getOrDefault(largestProxy.getFormat(),

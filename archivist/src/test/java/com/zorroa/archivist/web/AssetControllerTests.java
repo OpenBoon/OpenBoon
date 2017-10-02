@@ -7,10 +7,13 @@ import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.filesystem.ObjectFile;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetFilter;
@@ -27,6 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,6 +42,12 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Autowired
     AssetDao assetDao;
+
+    @Autowired
+    AssetController assetController;
+
+    @Autowired
+    ObjectFileSystem ofs;
 
     @Before
     public void init() {
@@ -642,5 +652,38 @@ public class AssetControllerTests extends MockMvcTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+    @Test
+    public void testGetPreferredFormat() throws Exception {
+        MockHttpSession session = admin();
+        addTestAssets("/video");
+        refreshIndex();
+
+        PagedList<Asset> assets = assetService.getAll(Pager.first());
+        AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "m4v",
+                false, false);
+        assertNotNull(file);
+        assertEquals("video/x-m4v", file.mimeType);
+
+        file = assetController.getPreferredFormat(assets.get(0), "ogv",
+                false, false);
+        assertNull(file);
+    }
+
+    @Test
+    public void testGetPreferredFormatOfsFallback() throws Exception {
+        MockHttpSession session = admin();
+        addTestAssets("/video");
+        refreshIndex();
+
+        PagedList<Asset> assets = assetService.getAll(Pager.first());
+        Asset asset = assets.get(0);
+        ObjectFile f = ofs.prepare("asset", assets.get(0).getAttr("source.path"), "webm");
+        f.store(new FileInputStream(asset.getAttr("source.path", String.class)));
+
+        AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "webm",
+                false, false);
+        assertTrue(file.path.contains("ofs/asset"));
     }
 }

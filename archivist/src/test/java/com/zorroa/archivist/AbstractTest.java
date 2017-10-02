@@ -228,8 +228,12 @@ public abstract class AbstractTest {
     }
 
     public Path getTestImagePath(String subdir) {
-
-        return resources.resolve("images/" + subdir);
+        if (subdir.startsWith("/")) {
+            return resources.resolve(subdir.substring(1));
+        }
+        else {
+            return resources.resolve("images/" + subdir);
+        }
     }
 
     public Path getTestImagePath() {
@@ -237,11 +241,13 @@ public abstract class AbstractTest {
     }
 
     private static final Set<String> SUPPORTED_FORMATS = ImmutableSet.of(
-        "jpg", "pdf", "mov", "gif", "tif");
+        "jpg", "pdf", "m4v", "gif", "tif");
 
     public List<Source> getTestAssets(String subdir) {
         List<Source> result = Lists.newArrayList();
-        for (File f: getTestImagePath(subdir).toFile().listFiles()) {
+        Path tip = getTestImagePath(subdir);
+        logger.info("{}", tip);
+        for (File f: tip.toFile().listFiles()) {
 
             if (f.isFile()) {
                 if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
