@@ -65,8 +65,6 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         doc.setId(hit.getId());
         doc.setScore(hit.getScore());
         doc.setType(hit.getType());
-
-        logger.info("{}", hit.field("_parent"));
         if (hit.field("_parent") != null) {
             doc.setParentId(hit.field("_parent").value());
         }

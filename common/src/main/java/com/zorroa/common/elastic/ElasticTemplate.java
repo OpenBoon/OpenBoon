@@ -17,7 +17,6 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.InternalAggregations;
 import org.slf4j.Logger;
@@ -77,24 +76,6 @@ public class ElasticTemplate {
         } catch (Exception e) {
             throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
         }
-    }
-
-    public <T> List<T> query(JsonRowMapper<T> mapper) {
-        final SearchResponse r = client.prepareSearch(index)
-            .setQuery(QueryBuilders.matchAllQuery())
-            .setTypes(type)
-            .setIndices(index)
-            .get();
-
-        List<T> result = Lists.newArrayListWithCapacity((int)r.getHits().getTotalHits());
-        for (SearchHit hit: r.getHits()) {
-            try {
-                result.add(mapper.mapRow(hit.getId(), hit.getVersion(),hit.score(), hit.source()));
-            } catch (Exception e) {
-                throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
-            }
-        }
-        return result;
     }
 
     public <T> PagedList<T> scroll(String id, String timeout, SearchHitRowMapper<T> mapper) {
