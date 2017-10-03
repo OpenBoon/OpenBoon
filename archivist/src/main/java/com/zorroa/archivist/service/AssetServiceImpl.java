@@ -94,7 +94,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     }
 
     @Override
-    public Asset get(String id) {
+    public Document get(String id) {
         if (id.startsWith("/")) {
             return get(Paths.get(id));
         }
@@ -104,12 +104,12 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     }
 
     @Override
-    public Asset get(Path path) {
+    public Document get(Path path) {
         return assetDao.get(path);
     }
 
     @Override
-    public PagedList<Asset> getAll(Pager page) {
+    public PagedList<Document> getAll(Pager page) {
         return assetDao.getAll(page);
     }
 
@@ -307,7 +307,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     @Override
     public long update(String assetId, Map<String, Object> attrs) {
 
-        Asset asset = assetDao.get(assetId);
+        Document asset = assetDao.get(assetId);
         Set<Integer> write = asset.getAttr("permissions.write", Set.class);
 
         if (!SecurityUtils.hasPermission(write)) {
@@ -416,7 +416,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
                 .setConcurrentRequests(0)
                 .build();
 
-        for (Asset asset: searchService.scanAndScroll(
+        for (Document asset: searchService.scanAndScroll(
                 search.setFields(new String[] {"permissions"}), 0)) {
 
             if (command.getState().equals(JobState.Cancelled)) {

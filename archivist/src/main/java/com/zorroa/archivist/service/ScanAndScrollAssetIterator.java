@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service;
 
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.search.SearchHit;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
 /**
  * Created by chambers on 11/4/15.
  */
-public class ScanAndScrollAssetIterator implements Iterable<Asset> {
+public class ScanAndScrollAssetIterator implements Iterable<Document> {
 
     private final SearchResponse rsp;
     private final Client client;
@@ -23,8 +24,8 @@ public class ScanAndScrollAssetIterator implements Iterable<Asset> {
     }
 
     @Override
-    public Iterator<Asset> iterator() {
-        Iterator<Asset> it = new Iterator<Asset>() {
+    public Iterator<Document> iterator() {
+        Iterator<Document> it = new Iterator<Document>() {
 
             SearchHit[] hits = rsp.getHits().getHits();
             private int index = 0;
@@ -61,7 +62,7 @@ public class ScanAndScrollAssetIterator implements Iterable<Asset> {
             }
 
             @Override
-            public void forEachRemaining(Consumer<? super Asset> action) {
+            public void forEachRemaining(Consumer<? super Document> action) {
                 throw new UnsupportedOperationException();
             }
         };
@@ -69,12 +70,12 @@ public class ScanAndScrollAssetIterator implements Iterable<Asset> {
     }
 
     @Override
-    public void forEach(Consumer<? super Asset> action) {
+    public void forEach(Consumer<? super Document> action) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Spliterator<Asset> spliterator() {
+    public Spliterator<Document> spliterator() {
         throw new UnsupportedOperationException();
     }
 }

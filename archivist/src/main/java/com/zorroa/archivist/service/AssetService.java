@@ -12,16 +12,16 @@ import java.util.Set;
 
 public interface AssetService {
 
-    Asset get(String id);
+    Document get(String id);
 
-    Asset get(Path path);
+    Document get(Path path);
 
     /**
      * Fetch the first page of assets.
      *
      * @return
      */
-    PagedList<Asset> getAll(Pager page);
+    PagedList<Document> getAll(Pager page);
 
     AssetIndexResult index(AssetIndexSpec spec);
 

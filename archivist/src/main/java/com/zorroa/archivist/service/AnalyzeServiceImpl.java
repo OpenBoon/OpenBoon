@@ -14,7 +14,7 @@ import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.common.domain.Analyst;
 import com.zorroa.sdk.client.exception.ArchivistException;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.processor.ProcessorRef;
@@ -104,7 +104,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             }
         }
         else if (spec.getAsset() != null) {
-            Asset asset = assetService.get(spec.getAsset());
+            Document asset = assetService.get(spec.getAsset());
             script.setOver(ImmutableList.of(asset));
         }
         else {

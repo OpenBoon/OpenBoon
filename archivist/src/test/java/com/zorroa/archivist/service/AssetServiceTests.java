@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -34,8 +33,8 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testGetAsset() {
-        PagedList<Asset> assets = assetService.getAll(Pager.first());
-        for (Asset a: assets) {
+        PagedList<Document> assets = assetService.getAll(Pager.first());
+        for (Document a: assets) {
             assertEquals(a.getId(),
                     assetService.get(Paths.get(a.getAttr("source.path", String.class))).getId());
         }
@@ -110,7 +109,7 @@ public class AssetServiceTests extends AbstractTest {
         assertNotEquals(ImmutableList.of(p.getId()),
                 asset2.getAttr("permissions.export"));
 
-        Asset asset3 = assetService.get(asset2.getId());
+        Document asset3 = assetService.get(asset2.getId());
 
         // Should only end up with read.
         assertEquals(ImmutableList.of(p.getId()),
@@ -150,7 +149,7 @@ public class AssetServiceTests extends AbstractTest {
         }
         refreshIndex();
 
-        PagedList<Asset> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = assetService.getAll(Pager.first());
         assertEquals(2, assets.size());
 
         PermissionSchema schema = assets.get(0).getAttr("permissions", PermissionSchema.class);

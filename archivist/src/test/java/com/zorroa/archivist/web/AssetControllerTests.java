@@ -8,7 +8,6 @@ import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.web.api.AssetController;
-import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -78,7 +77,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
         Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        Asset asset1 = assetDao.index(builder);
+        Document asset1 = assetDao.index(builder);
         refreshIndex();
 
         Element e = new Element("test", asset1);
@@ -271,8 +270,8 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
-        for (Asset asset: assets) {
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        for (Document asset: assets) {
             MvcResult result = mvc.perform(get("/api/v1/assets/" + asset.getId())
                     .session(session)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -289,7 +288,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         MockHttpSession session = admin();
         Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        Asset asset1 = assetDao.index(builder);
+        Document asset1 = assetDao.index(builder);
         refreshIndex();
 
         Element e = new Element("test", asset1);
@@ -319,8 +318,8 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
-        for (Asset asset: assets) {
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        for (Document asset: assets) {
             MvcResult result = mvc.perform(delete("/api/v1/assets/" + asset.getId())
                     .session(session)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -340,8 +339,8 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
-        for (Asset asset: assets) {
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        for (Document asset: assets) {
             MvcResult result = mvc.perform(get("/api/v2/assets/" + asset.getId())
                     .session(session)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -360,8 +359,8 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
-        for (Asset asset: assets) {
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        for (Document asset: assets) {
             String url = "/api/v1/assets/_path";
             MvcResult result = mvc.perform(get(url)
                     .session(session)
@@ -380,26 +379,26 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         addTestAssets("set04/canyon");
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
         Folder folder2 = folderService.create(new FolderSpec("bar"));
         mvc.perform(post("/api/v1/folders/" + folder1.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map(Document::getId).collect(Collectors.toList()))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         mvc.perform(post("/api/v1/folders/" + folder2.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map(Document::getId).collect(Collectors.toList()))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         assets = assetDao.getAll(Pager.first());
-        for (Asset asset: assets) {
+        for (Document asset: assets) {
             List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(2, links.size());
             assertTrue(
@@ -447,9 +446,9 @@ public class AssetControllerTests extends MockMvcTest {
         Folder folder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
 
-        Asset asset = assets.get(0);
+        Document asset = assets.get(0);
         mvc.perform(post("/api/v1/folders/" + folder.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -617,8 +616,8 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
 
         ArrayList<String> assetIds = new ArrayList<>();
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
-        Asset asset = assets.get(0);
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
+        Document asset = assets.get(0);
         assetIds.add(asset.getId());
         AssetSearch asb = new AssetSearch(new AssetFilter().addToTerms("_id", assetIds));
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
@@ -644,7 +643,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Asset> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = assetService.getAll(Pager.first());
 
         String url = String.format("/api/v1/assets/%s/_stream", assets.get(0).getId());
         MvcResult result = mvc.perform(get(url)
@@ -660,7 +659,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("set04/standard");
         refreshIndex();
 
-        PagedList<Asset> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = assetService.getAll(Pager.first());
 
         String url = String.format("/api/v1/assets/%s/_stream?ext=foo", assets.get(0).getId());
         MvcResult result = mvc.perform(get(url)
@@ -676,7 +675,7 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("/video");
         refreshIndex();
 
-        PagedList<Asset> assets = assetService.getAll(Pager.first());
+        PagedList<Document> assets = assetService.getAll(Pager.first());
         AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "m4v",
                 false, false);
         assertNotNull(file);
@@ -693,8 +692,8 @@ public class AssetControllerTests extends MockMvcTest {
         addTestAssets("/video");
         refreshIndex();
 
-        PagedList<Asset> assets = assetService.getAll(Pager.first());
-        Asset asset = assets.get(0);
+        PagedList<Document> assets = assetService.getAll(Pager.first());
+        Document asset = assets.get(0);
         ObjectFile f = ofs.prepare("asset", assets.get(0).getAttr("source.path"), "webm");
         f.store(new FileInputStream(asset.getAttr("source.path", String.class)));
 

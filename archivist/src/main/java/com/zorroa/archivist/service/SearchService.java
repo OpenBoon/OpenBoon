@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.HideField;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetSearch;
@@ -31,7 +31,7 @@ public interface SearchService {
     SuggestResponse suggest(String text);
     List<String> getSuggestTerms(String text);
 
-    Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults);
+    Iterable<Document> scanAndScroll(AssetSearch search, int maxResults);
 
     /**
      * Execute the AssetSearch with the given Paging object.
@@ -40,7 +40,7 @@ public interface SearchService {
      * @param search
      * @return
      */
-    PagedList<Asset> search(Pager page, AssetSearch search);
+    PagedList<Document> search(Pager page, AssetSearch search);
 
     void search(Pager page, AssetSearch search, OutputStream stream) throws IOException;
 
@@ -53,7 +53,7 @@ public interface SearchService {
      * @param timeout
      * @return
      */
-    PagedList<Asset> scroll(String id, String timeout);
+    PagedList<Document> scroll(String id, String timeout);
 
     SearchRequestBuilder buildSearch(AssetSearch search, String type);
 

@@ -7,7 +7,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FolderDao;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.AssetFilter;
@@ -68,8 +68,8 @@ public class FolderServiceTests extends AbstractTest {
 
         refreshIndex();
 
-        PagedList<Asset> assets = assetService.getAll(Pager.first());
-        for (Asset a: assets) {
+        PagedList<Document> assets = assetService.getAll(Pager.first());
+        for (Document a: assets) {
             assertEquals(1, ((List) a.getAttr("links.folder")).size());
         }
     }

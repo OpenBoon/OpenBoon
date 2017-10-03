@@ -8,7 +8,6 @@ import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.Taxonomy;
 import com.zorroa.archivist.domain.TaxonomySpec;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
-import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
@@ -121,7 +120,7 @@ public class TaxonomyServiceTests extends AbstractTest {
         assertEquals(0, result.get("errorCount").longValue());
         refreshIndex();
 
-        Asset a = assetService.get(d.getId());
+        Document a = assetService.get(d.getId());
         assertNull(null, a.getAttr(field));
     }
 

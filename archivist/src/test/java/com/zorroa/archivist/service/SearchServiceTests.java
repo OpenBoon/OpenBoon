@@ -203,7 +203,7 @@ public class SearchServiceTests extends AbstractTest {
         refreshIndex();
 
         int count = 0;
-        for (Asset a: searchService.search(Pager.first(), new AssetSearch().setFilter(
+        for (Document a: searchService.search(Pager.first(), new AssetSearch().setFilter(
                 new AssetFilter().addToTerms("keywords.source", "captain")))) {
             assertTrue(a.getScore() > 0);
             count++;
@@ -546,13 +546,13 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg")));
         refreshIndex();
 
-        PagedList<Asset> result1 =
+        PagedList<Document> result1 =
                 searchService.search(Pager.first(1),
                         new AssetSearch().setScroll(new Scroll().setTimeout("1m")));
         assertNotNull(result1.getScroll());
         assertEquals(1, result1.size());
 
-        PagedList<Asset> result2 =
+        PagedList<Document> result2 =
                 searchService.search(Pager.first(1), new AssetSearch().setScroll(result1.getScroll()
                         .setTimeout("1m")));
         assertNotNull(result2.getScroll());
@@ -565,7 +565,7 @@ public class SearchServiceTests extends AbstractTest {
         assetService.index(new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg")));
         refreshIndex();
 
-        PagedList<Asset> page = searchService.search(Pager.first(1),
+        PagedList<Document> page = searchService.search(Pager.first(1),
                 new AssetSearch().addToAggs("date",
                         ImmutableMap.of("max",
                                 ImmutableMap.of("field", "source.fileSize"))));
@@ -807,7 +807,7 @@ public class SearchServiceTests extends AbstractTest {
         AssetFilter filter = new AssetFilter().addToTerms("foo.bar", "bing");
         AssetSearch search = new AssetSearch().setElementFilter(filter);
 
-        assertEquals(1, searchService.search(search).getHits().totalHits());
+        assertEquals(1, searchService.search(Pager.first(), search).size());
     }
 
     @Test

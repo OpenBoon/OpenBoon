@@ -29,7 +29,7 @@ public class AssetDaoTests extends AbstractTest {
     @Autowired
     AssetDao assetDao;
 
-    Asset asset1;
+    Document asset1;
 
     @Before
     public void init() {
@@ -48,13 +48,13 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetById() {
-        Asset asset2 = assetDao.get(asset1.getId());
+        Document asset2 = assetDao.get(asset1.getId());
         assertEquals(asset1.getId(), asset2.getId());
     }
 
     @Test
     public void testGetElements() {
-        Asset asset2 = assetDao.get(asset1.getId());
+        Document asset2 = assetDao.get(asset1.getId());
 
         Element e = new Element("test", asset2);
         e.setAttr("foo.bar", "bing");
@@ -69,7 +69,7 @@ public class AssetDaoTests extends AbstractTest {
     @Test
     public void testGetByPath() {
         Path p = getTestImagePath("set04/standard/beer_kettle_01.jpg");
-        Asset asset2 = assetDao.get(p);
+        Document asset2 = assetDao.get(p);
         assertNotNull(asset2);
     }
 
@@ -87,7 +87,7 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetAll() {
-        PagedList<Asset> assets = assetDao.getAll(Pager.first(10));
+        PagedList<Document> assets = assetDao.getAll(Pager.first(10));
         assertEquals(1, assets.getList().size());
     }
 
@@ -95,7 +95,7 @@ public class AssetDaoTests extends AbstractTest {
     public void testGetAllBySearchRequest() {
         SearchRequestBuilder builder = client.prepareSearch("archivist");
         builder.setQuery(QueryBuilders.matchAllQuery());
-        PagedList<Asset> assets = assetDao.getAll(Pager.first(10), builder);
+        PagedList<Document> assets = assetDao.getAll(Pager.first(10), builder);
         assertEquals(1, assets.getList().size());
     }
 
@@ -127,11 +127,11 @@ public class AssetDaoTests extends AbstractTest {
             .setQuery(ImmutableMap.of("match_all", ImmutableMap.of()))
             .setScroll("1m");
 
-        PagedList<Asset> assets = assetDao.getAll(Pager.first(1), req);
+        PagedList<Document> assets = assetDao.getAll(Pager.first(1), req);
         assertEquals(1, assets.getList().size());
         assertEquals(6, (long) assets.getPage().getTotalCount());
         assertNotNull(assets.getScroll());
-        Asset asset = assets.get(0);
+        Document asset = assets.get(0);
 
         assets = assetDao.getAll(assets.getScroll().getId(), "1m");
         assertEquals(1, assets.getList().size());
@@ -160,7 +160,7 @@ public class AssetDaoTests extends AbstractTest {
         assertTrue(assetDao.appendLink("parent", "foo",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
-        Asset a = assetDao.get(asset1.getId());
+        Document a = assetDao.get(asset1.getId());
         Collection<Object> folder_links = a.getAttr("links.folder");
         Collection<Object> parent_links = a.getAttr("links.parent");
         assertEquals(1, folder_links.size());
@@ -174,7 +174,7 @@ public class AssetDaoTests extends AbstractTest {
         assertTrue(assetDao.appendLink("folder", "100",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
-        Asset a = assetDao.get(asset1.getId());
+        Document a = assetDao.get(asset1.getId());
         Collection<Object> links = a.getAttr("links.folder");
         assertEquals(1, links.size());
 
@@ -192,7 +192,7 @@ public class AssetDaoTests extends AbstractTest {
         attrs.put("foo.bar", 100);
 
         assetDao.update(asset1.getId(), attrs);
-        Asset asset2 = assetDao.get(asset1.getId());
+        Document asset2 = assetDao.get(asset1.getId());
         assertEquals(100, (int) asset2.getAttr("foo.bar"));
     }
 
@@ -207,7 +207,7 @@ public class AssetDaoTests extends AbstractTest {
         assetDao.index(Lists.newArrayList(source1));
         refreshIndex();
 
-        Asset a = assetDao.get(source1.getId());
+        Document a = assetDao.get(source1.getId());
         assertFalse(a.attrExists("keywords"));
     }
 
@@ -229,7 +229,7 @@ public class AssetDaoTests extends AbstractTest {
     @Test
     public void testRemoveFields() {
         assetDao.removeFields(asset1.getId(), Sets.newHashSet("source"), true);
-        Asset a = assetDao.get(asset1.getId());
+        Document a = assetDao.get(asset1.getId());
         assertFalse(a.attrExists("source"));
     }
 

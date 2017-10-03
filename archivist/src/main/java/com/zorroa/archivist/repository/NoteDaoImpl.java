@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.Note;
 import com.zorroa.archivist.domain.NoteSpec;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.elastic.AbstractElasticDao;
-import com.zorroa.common.elastic.JsonRowMapper;
+import com.zorroa.common.elastic.SearchHitRowMapper;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -40,9 +40,9 @@ public class NoteDaoImpl extends AbstractElasticDao implements NoteDao {
         return get(rsp.getId());
     }
 
-    private final JsonRowMapper<Note> MAPPER = (id, version, score, source) -> {
-        Note note = Json.Mapper.readValue(source, Note.class);
-        note.setId(id);
+    private final SearchHitRowMapper<Note> MAPPER = (hit) -> {
+        Note note = Json.Mapper.convertValue(hit.getSource(), Note.class);
+        note.setId(hit.getId());
         note.setUser(userDaoCache.getUser(note.getUserId()));
         return note;
     };

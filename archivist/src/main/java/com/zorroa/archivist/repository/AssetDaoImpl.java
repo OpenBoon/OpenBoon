@@ -5,9 +5,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.common.elastic.AbstractElasticDao;
-import com.zorroa.common.elastic.JsonRowMapper;
+import com.zorroa.common.elastic.SearchHitRowMapper;
 import com.zorroa.sdk.client.exception.ArchivistException;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.AssetIndexResult;
+import com.zorroa.sdk.domain.Document;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -55,25 +58,21 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
      */
     private final AtomicLong flushTime = new AtomicLong(0);
 
-    private static final JsonRowMapper<Asset> MAPPER = (id, version, score, source) -> {
-        Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
-        Asset result = new Asset();
-        result.setId(id);
-        result.setScore(score);
-        result.setDocument(data);
-        result.setType("asset");
-        return result;
+
+    private static final SearchHitRowMapper<Document> MAPPER = (hit) -> {
+        Document doc = new Document();
+        doc.setDocument(hit.getSource());
+        doc.setId(hit.getId());
+        doc.setScore(hit.getScore());
+        doc.setType(hit.getType());
+
+        logger.info("{}", hit.field("_parent"));
+        if (hit.field("_parent") != null) {
+            doc.setParentId(hit.field("_parent").value());
+        }
+        return doc;
     };
 
-    private static final JsonRowMapper<Document> MAPPER_ELEMENT = (id, version, score, source) -> {
-        Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
-        Asset result = new Asset();
-        result.setId(id);
-        result.setScore(score);
-        result.setDocument(data);
-        result.setType("element");
-        return result;
-    };
 
     @Override
     public <T> T getFieldValue(String id, String field) {
@@ -84,13 +83,18 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Asset index(Document source) {
-        AssetIndexResult result =  index(ImmutableList.of(source));
+    public Document index(Document source) {
+        index(ImmutableList.of(source), true);
         return get(source.getId());
     }
 
     @Override
     public AssetIndexResult index(List<Document> sources) {
+        return index(sources, false);
+    }
+
+    @Override
+    public AssetIndexResult index(List<Document> sources, boolean refresh) {
         AssetIndexResult result = new AssetIndexResult();
         if (sources.isEmpty()) {
             return result;
@@ -103,7 +107,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
          * Force a refresh if we haven't for a while.
          */
         final long time = System.currentTimeMillis();
-        if (time - flushTime.getAndSet(time) > 30000) {
+        if (refresh || time - flushTime.getAndSet(time) > 30000) {
             bulkRequest.setRefresh(true);
         }
 
@@ -281,7 +285,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public long update(String assetId, Map<String, Object> values) {
-        Asset asset = get(assetId);
+        Document asset = get(assetId);
         for (Map.Entry<String,Object> entry: values.entrySet()) {
             asset.setAttr(entry.getKey(), entry.getValue());
         }
@@ -296,7 +300,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
 
     @Override
     public void removeFields(String assetId, Set<String> fields, boolean refresh) {
-        Asset asset = get(assetId);
+        Document asset = get(assetId);
         for (String a: fields) {
             asset.removeAttr(a);
         }
@@ -316,7 +320,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Asset get(String id) {
+    public Document get(String id) {
         return elastic.queryForObject(id, MAPPER);
     }
 
@@ -369,8 +373,8 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public Asset get(Path path) {
-        List<Asset> assets = elastic.query(client.prepareSearch(getIndex())
+    public Document get(Path path) {
+        List<Document> assets = elastic.query(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setSize(1)
                 .setQuery(QueryBuilders.termQuery("source.path.raw", path.toString())), MAPPER);
@@ -382,12 +386,12 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public PagedList<Asset> getAll(String id, String timeout) {
+    public PagedList<Document> getAll(String id, String timeout) {
         return elastic.scroll(id ,timeout, MAPPER);
     }
 
     @Override
-    public PagedList<Asset> getAll(Pager page, SearchRequestBuilder search) {
+    public PagedList<Document> getAll(Pager page, SearchRequestBuilder search) {
         return elastic.page(search, page, MAPPER);
     }
 
@@ -397,7 +401,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
     }
 
     @Override
-    public PagedList<Asset> getAll(Pager page) {
+    public PagedList<Document> getAll(Pager page) {
         return elastic.page(client.prepareSearch(getIndex())
                 .setTypes(getType())
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
@@ -412,7 +416,7 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
                 .setTypes("element")
                 .setQuery(QueryBuilders.hasParentQuery("asset",
                     QueryBuilders.termQuery("_id", assetId)))
-                .setVersion(true), page, MAPPER_ELEMENT);
+                .setVersion(true), page, MAPPER);
     }
 
     @Override

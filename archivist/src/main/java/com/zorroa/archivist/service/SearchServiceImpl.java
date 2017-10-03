@@ -18,6 +18,7 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
 import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.search.*;
@@ -34,6 +35,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.index.query.support.QueryInnerHitBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.sort.SortOrder;
@@ -201,7 +203,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Iterable<Asset> scanAndScroll(AssetSearch search, int maxResults) {
+    public Iterable<Document> scanAndScroll(AssetSearch search, int maxResults) {
         SearchResponse rsp = client.prepareSearch(alias)
                 .setScroll(new TimeValue(60000))
                 .addSort("_doc", SortOrder.ASC)
@@ -229,7 +231,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PagedList<Asset> search(Pager page, AssetSearch search) {
+    public PagedList<Document> search(Pager page, AssetSearch search) {
         /**
          * If the search is not empty (its a valid search) and the page
          * number is 1, then log the search.
@@ -241,7 +243,7 @@ public class SearchServiceImpl implements SearchService {
         if (search.getScroll() != null) {
             Scroll scroll = search.getScroll();
             if (scroll.getId() != null) {
-                PagedList<Asset> result = assetDao.getAll(scroll.getId(), scroll.getTimeout());
+                PagedList<Document> result = assetDao.getAll(scroll.getId(), scroll.getTimeout());
                 if (result.size() == 0) {
                     client.prepareClearScroll().addScrollId(scroll.getId());
                 }
@@ -284,12 +286,12 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PagedList<Asset> scroll(String id, String timeout) {
+    public PagedList<Document> scroll(String id, String timeout) {
         /**
          * Only log valid searches (the ones that are not for the whole repo)
          * since otherwise it creates a lot of logs of empty searches.
          */
-        PagedList<Asset> result =  assetDao.getAll(id, timeout);
+        PagedList<Document> result =  assetDao.getAll(id, timeout);
         if (result.size() == 0) {
             client.prepareClearScroll().addScrollId(id);
         }
@@ -401,7 +403,10 @@ public class SearchServiceImpl implements SearchService {
         if (elementFilter != null) {
             BoolQueryBuilder elementBool = QueryBuilders.boolQuery();
             applyFilterToQuery(elementFilter, elementBool, null);
-            query.should(QueryBuilders.hasChildQuery("element", elementBool).scoreMode("max"));
+            query.should(QueryBuilders.hasChildQuery("element", elementBool)
+                    .scoreMode("max")
+                    .maxChildren(1)
+                    .innerHit(new QueryInnerHitBuilder().setSize(1)));
         }
 
         // Folders apply their post filter, but the main search// applies the post filter in the SearchRequest.

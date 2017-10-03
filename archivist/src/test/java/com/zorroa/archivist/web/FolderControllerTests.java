@@ -3,9 +3,9 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
-import com.zorroa.archivist.web.api.FolderController;
 import com.zorroa.archivist.repository.AssetDao;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.archivist.web.api.FolderController;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
@@ -257,7 +257,7 @@ public class FolderControllerTests extends MockMvcTest {
         authenticate();
 
         addTestAssets("set04/standard");
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
 
@@ -265,14 +265,14 @@ public class FolderControllerTests extends MockMvcTest {
         mvc.perform(post("/api/v1/folders/" + folder1.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map(Document::getId).collect(Collectors.toList()))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         refreshIndex();
 
         assets = assetDao.getAll(Pager.first());
-        for (Asset asset: assets) {
+        for (Document asset: assets) {
             List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(links.get(0), folder1.getId());
         }
@@ -283,23 +283,23 @@ public class FolderControllerTests extends MockMvcTest {
         authenticate();
 
         addTestAssets("set04/standard");
-        PagedList<Asset> assets = assetDao.getAll(Pager.first());
+        PagedList<Document> assets = assetDao.getAll(Pager.first());
 
         Folder folder1 = folderService.create(new FolderSpec("foo"));
-        folderService.addAssets(folder1, assets.stream().map(Asset::getId).collect(Collectors.toList()));
+        folderService.addAssets(folder1, assets.stream().map(Document::getId).collect(Collectors.toList()));
         refreshIndex();
 
         MockHttpSession session = admin();
         mvc.perform(delete("/api/v1/folders/" + folder1.getId() + "/assets")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(assets.stream().map(Asset::getId).collect(Collectors.toList()))))
+                .content(Json.serialize(assets.stream().map(Document::getId).collect(Collectors.toList()))))
                 .andExpect(status().isOk())
                 .andReturn();
 
         refreshIndex();
         assets = assetDao.getAll(Pager.first());
-        for (Asset asset: assets) {
+        for (Document asset: assets) {
             List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
             assertEquals(0, links.size());
         }

@@ -17,7 +17,7 @@ public interface AssetDao {
 
     boolean delete(String id);
 
-    Asset get(String id);
+    Document get(String id);
 
     /**
      * Return the next page of an asset scroll.
@@ -26,7 +26,7 @@ public interface AssetDao {
      * @param scrollTimeout
      * @return
      */
-    PagedList<Asset> getAll(String scrollId, String scrollTimeout);
+    PagedList<Document> getAll(String scrollId, String scrollTimeout);
 
     /**
      * Get all assets given the page and SearchRequestBuilder.
@@ -35,7 +35,7 @@ public interface AssetDao {
      * @param search
      * @return
      */
-    PagedList<Asset> getAll(Pager page, SearchRequestBuilder search);
+    PagedList<Document> getAll(Pager page, SearchRequestBuilder search);
 
     void getAll(Pager page, SearchRequestBuilder search, OutputStream stream, Map<String, Object> attrs) throws IOException;
 
@@ -45,7 +45,7 @@ public interface AssetDao {
      * @param page
      * @return
      */
-    PagedList<Asset> getAll(Pager page);
+    PagedList<Document> getAll(Pager page);
 
     Document get(String id, String type, String parent);
 
@@ -55,7 +55,7 @@ public interface AssetDao {
 
     boolean exists(String id);
 
-    Asset get(Path path);
+    Document get(Path path);
 
     Map<String, List<Object>> removeLink(String type, Object value, List<String> assets);
 
@@ -65,7 +65,7 @@ public interface AssetDao {
 
     <T> T getFieldValue(String id, String field);
 
-    Asset index(Document source);
+    Document index(Document source);
 
     /**
      * Index the given sources.  If any assets are created, attach a source link.
@@ -73,6 +73,8 @@ public interface AssetDao {
      * @return
      */
     AssetIndexResult index(List<Document> sources);
+
+    AssetIndexResult index(List<Document> sources, boolean refresh);
 
     PagedList<Document> getElements(String assetId, Pager page);
 

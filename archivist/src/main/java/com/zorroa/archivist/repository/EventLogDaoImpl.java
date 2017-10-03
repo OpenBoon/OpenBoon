@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.common.cluster.thrift.StackElementT;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
 import com.zorroa.common.elastic.AbstractElasticDao;
-import com.zorroa.common.elastic.JsonRowMapper;
+import com.zorroa.common.elastic.SearchHitRowMapper;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
@@ -27,10 +27,10 @@ import java.util.Map;
 @Repository
 public class EventLogDaoImpl extends AbstractElasticDao implements EventLogDao {
 
-    private static final JsonRowMapper<Map<String,Object>> MAPPER = (id, version, score, source) -> {
-        Map<String, Object> data = Json.deserialize(source, Json.GENERIC_MAP);
-        data.put("_id", id);
-        data.put("_score", score);
+    private static final SearchHitRowMapper<Map<String,Object>> MAPPER = (hit) -> {
+        Map<String, Object> data = hit.getSource();
+        data.put("_id", hit.getId());
+        data.put("_score", hit.getScore());
         return data;
     };
 

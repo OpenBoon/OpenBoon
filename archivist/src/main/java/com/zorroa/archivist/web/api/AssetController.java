@@ -100,7 +100,7 @@ public class AssetController {
             ImmutableMap.of("png", "image/png",
                             "jpg", "image/jpeg");
 
-    public StreamFile getPreferredFormat(Asset asset, String preferExt, boolean fallback, boolean streamProxy) {
+    public StreamFile getPreferredFormat(Document asset, String preferExt, boolean fallback, boolean streamProxy) {
         if (streamProxy) {
             return getProxyStream(asset);
         }
@@ -145,23 +145,26 @@ public class AssetController {
         }
     }
 
-    public StreamFile getProxyStream(Asset asset) {
-        try {
-            // If the file doesn't have a proxy this will throw.
-            Proxy largestProxy = asset.getProxies().getLargest();
-            return new StreamFile(
-                    ofs.get(largestProxy.getId()).getFile().toString(),
-                    PROXY_MIME_LOOKUP.getOrDefault(largestProxy.getFormat(),
-                            "application/octet-stream"), true);
-        } catch (Exception e) {
-            return null;
+    public StreamFile getProxyStream(Document asset) {
+        // If the file doesn't have a proxy this will throw.
+        ProxySchema proxies =  asset.getAttr("proxies", ProxySchema.class);
+        if (proxies != null) {
+            Proxy largest = proxies.getLargest();
+            if (largest != null) {
+                return new StreamFile(
+                        ofs.get(largest.getId()).getFile().toString(),
+                        PROXY_MIME_LOOKUP.getOrDefault(largest.getFormat(),
+                                "application/octet-stream"), true);
+            }
         }
+
+        return null;
     }
 
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)
     public void streamAsset(@RequestParam(defaultValue="true", required=false) Boolean fallback, @RequestParam(value="ext", required=false) String ext, @PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        Asset asset = assetService.get(id);
+        Document asset = assetService.get(id);
         boolean canExport = SecurityUtils.canExport(asset);
         StreamFile format = getPreferredFormat(asset, ext, fallback, !canExport);
 
@@ -196,7 +199,7 @@ public class AssetController {
     public ResponseEntity<InputStreamResource> getClosestProxy(@PathVariable String id, @PathVariable(required=false) String size) throws IOException {
         try {
             String[] wh = size.split("x");
-            ProxySchema proxies = assetService.get(id).getProxies();
+            ProxySchema proxies = assetService.get(id).getAttr("proxies", ProxySchema.class);
             Proxy proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1]));
             if (proxy == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -210,7 +213,7 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/proxies/largest", method=RequestMethod.GET)
     public ResponseEntity<InputStreamResource> getLargestProxy(@PathVariable String id) throws IOException {
         try {
-            ProxySchema proxies = assetService.get(id).getProxies();
+            ProxySchema proxies = assetService.get(id).getAttr("proxies", ProxySchema.class);
             Proxy proxy = proxies.getLargest();
             if (proxy == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -224,7 +227,7 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/proxies/smallest", method=RequestMethod.GET)
     public ResponseEntity<InputStreamResource> getSmallestProxy(@PathVariable String id) throws IOException {
         try {
-            ProxySchema proxies = assetService.get(id).getProxies();
+            ProxySchema proxies = assetService.get(id).getAttr("proxies", ProxySchema.class);
             Proxy proxy = proxies.getSmallest();
             if (proxy == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -243,7 +246,7 @@ public class AssetController {
     }
 
     @RequestMapping(value="/api/v3/assets/_search", method=RequestMethod.POST)
-    public PagedList<Asset> searchV3(@RequestBody AssetSearch search) throws IOException {
+    public PagedList<Document> searchV3(@RequestBody AssetSearch search) throws IOException {
         return searchService.search(new Pager(search.getFrom(), search.getSize(), 0), search);
     }
 
@@ -325,7 +328,7 @@ public class AssetController {
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.DELETE)
     public Object delete(@PathVariable String id) throws IOException {
-        Asset asset = assetService.get(id);
+        Document asset = assetService.get(id);
         if (!SecurityUtils.hasPermission("write", asset)) {
             throw new ArchivistWriteException("delete access denied");
         }
@@ -336,7 +339,7 @@ public class AssetController {
 
     @RequestMapping(value="/api/v1/assets/{id}", method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     public Object update(@RequestBody Map<String, Object> attrs, @PathVariable String id) throws IOException {
-        Asset asset = assetService.get(id);
+        Document asset = assetService.get(id);
         if (!SecurityUtils.hasPermission("write", asset)) {
             throw new ArchivistWriteException("update access denied");
         }

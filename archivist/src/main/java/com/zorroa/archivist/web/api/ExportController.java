@@ -8,15 +8,15 @@ import com.zorroa.archivist.service.ExportService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -90,7 +90,7 @@ public class ExportController {
                 .setFilter(new AssetFilter()
                 .addToTerms("link.export.id", String.valueOf(id)));
 
-        for (Asset asset : searchService.scanAndScroll(search, 10000)) {
+        for (Document asset : searchService.scanAndScroll(search, 10000)) {
             ids.add(asset.getId());
         }
         logService.logAsync(UserLogSpec.build(LogAction.Export, "asset", ids.toArray()));

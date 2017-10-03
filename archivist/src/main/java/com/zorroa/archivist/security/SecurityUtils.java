@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.util.Json;
@@ -84,7 +84,7 @@ public class SecurityUtils {
      * @param asset
      * @return
      */
-    public static boolean hasPermission(String field, Asset asset) {
+    public static boolean hasPermission(String field, Document asset) {
         Set<Integer> perms = asset.getAttr("permissions." + field, Json.SET_OF_INTS);
         return hasPermission(perms);
     }
@@ -95,7 +95,7 @@ public class SecurityUtils {
      * @param asset
      * @return
      */
-    public static boolean canExport(Asset asset) {
+    public static boolean canExport(Document asset) {
         if (hasPermission("group::export")) {
             return true;
         }

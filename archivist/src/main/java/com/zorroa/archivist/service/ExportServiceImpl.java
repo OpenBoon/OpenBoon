@@ -3,13 +3,13 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
-import com.zorroa.archivist.repository.AssetDao;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
@@ -88,7 +88,7 @@ public class ExportServiceImpl implements ExportService {
 
         ExportParams params = new ExportParams();
         List<String> ids = Lists.newArrayListWithCapacity(64);
-        for (Asset asset : searchService.scanAndScroll(search,
+        for (Document asset : searchService.scanAndScroll(search,
                 properties.getInt("archivist.export.maxAssetCount"))) {
             ids.add(asset.getId());
 

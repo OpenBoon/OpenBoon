@@ -45,11 +45,11 @@ public class ElasticTemplate {
         this.type = type;
     }
 
-    public <T> T queryForObject(String id, JsonRowMapper<T> mapper) {
+    public <T> T queryForObject(String id, SearchHitRowMapper<T> mapper) {
         return queryForObject(id,  type,  null, mapper);
     }
 
-    public <T> T queryForObject(String id, String type, String parent, JsonRowMapper<T> mapper) {
+    public <T> T queryForObject(String id, String type, String parent, SearchHitRowMapper<T> mapper) {
         final GetRequestBuilder builder = client.prepareGet(index, type, id).setFetchSource(true);
         if (parent !=null) {
             builder.setParent(parent);
@@ -60,20 +60,20 @@ public class ElasticTemplate {
                     "Expected 1 '" + type + "' of id '" + id + "'", 0);
         }
         try {
-            return mapper.mapRow(r.getId(), r.getVersion(), 0, r.getSourceAsBytes());
+            return mapper.mapRow(new SingleHit(r));
         } catch (Exception e) {
             throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
         }
     }
 
-    public <T> T queryForObject(SearchRequestBuilder builder, JsonRowMapper<T> mapper) {
+    public <T> T queryForObject(SearchRequestBuilder builder, SearchHitRowMapper<T> mapper) {
         final SearchResponse r = builder.get();
         if (r.getHits().getTotalHits() == 0) {
             throw new EmptyResultDataAccessException("Expected 1 result from " + builder.toString() + ", got: ", 0);
         }
         SearchHit hit = r.getHits().getAt(0);
         try {
-            return mapper.mapRow(hit.getId(), hit.getVersion(), hit.score(), hit.source());
+            return mapper.mapRow(hit);
         } catch (Exception e) {
             throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
         }
@@ -97,14 +97,14 @@ public class ElasticTemplate {
         return result;
     }
 
-    public <T> PagedList<T> scroll(String id, String timeout, JsonRowMapper<T> mapper) {
+    public <T> PagedList<T> scroll(String id, String timeout, SearchHitRowMapper<T> mapper) {
         SearchScrollRequestBuilder ssrb = client.prepareSearchScroll(id).setScroll(timeout);
         final SearchResponse r = ssrb.get();
 
         final List<T> list = Lists.newArrayListWithCapacity(r.getHits().getHits().length);
         for (SearchHit hit: r.getHits().getHits()) {
             try {
-                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
+                list.add(mapper.mapRow(hit));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }
@@ -117,13 +117,13 @@ public class ElasticTemplate {
         return result;
     }
 
-    public <T> List<T> query(SearchRequestBuilder builder, JsonRowMapper<T> mapper) {
+    public <T> List<T> query(SearchRequestBuilder builder, SearchHitRowMapper<T> mapper) {
         final SearchResponse r = builder.get();
         List<T> result = Lists.newArrayListWithCapacity((int) r.getHits().getTotalHits());
 
         for (SearchHit hit : r.getHits()) {
             try {
-                result.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
+                result.add(mapper.mapRow(hit));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }
@@ -132,14 +132,14 @@ public class ElasticTemplate {
         return result;
     }
 
-    public <T> PagedList<T> page(SearchRequestBuilder builder, Pager paging, JsonRowMapper<T> mapper) {
+    public <T> PagedList<T> page(SearchRequestBuilder builder, Pager paging, SearchHitRowMapper<T> mapper) {
         builder.setSize(paging.getSize()).setFrom(paging.getFrom());
 
         final SearchResponse r = builder.get();
         final List<T> list = Lists.newArrayListWithCapacity(r.getHits().getHits().length);
         for (SearchHit hit: r.getHits().getHits()) {
             try {
-                list.add(mapper.mapRow(hit.getId(), hit.getVersion(), hit.getScore(), hit.source()));
+                list.add(mapper.mapRow(hit));
             } catch (Exception e) {
                 throw new DataRetrievalFailureException("Failed to parse record, " + e, e);
             }

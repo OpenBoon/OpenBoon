@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.sdk.domain.Asset;
+import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
@@ -200,8 +200,8 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
         dyhiService.generate(agg);
 
-        PagedList<Asset> assets = assetService.getAll(Pager.first(100));
-        for (Asset asset: assets) {
+        PagedList<Document> assets = assetService.getAll(Pager.first(100));
+        for (Document asset: assets) {
             assetService.update(asset.getId(), ImmutableMap.of("source",
                     ImmutableMap.of("extension", "abc")));
         }

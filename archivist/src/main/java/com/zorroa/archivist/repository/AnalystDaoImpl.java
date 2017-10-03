@@ -6,7 +6,7 @@ import com.zorroa.common.domain.Analyst;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.AbstractElasticDao;
-import com.zorroa.common.elastic.JsonRowMapper;
+import com.zorroa.common.elastic.SearchHitRowMapper;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.util.Json;
@@ -55,8 +55,8 @@ public class AnalystDaoImpl  extends AbstractElasticDao implements AnalystDao {
                 .get();
     }
 
-    private static final JsonRowMapper<Analyst> MAPPER =
-            (id, version, score, source) -> Json.deserialize(source, Analyst.class).setId(id);
+    private static final SearchHitRowMapper<Analyst> MAPPER =
+            (hit) -> Json.Mapper.convertValue(hit.getSource(), Analyst.class).setId(hit.getId());
 
     @Override
     public Analyst get(String id) {
