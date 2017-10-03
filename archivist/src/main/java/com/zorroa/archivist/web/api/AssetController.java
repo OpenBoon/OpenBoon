@@ -146,14 +146,16 @@ public class AssetController {
     }
 
     public StreamFile getProxyStream(Asset asset) {
-        Proxy largestProxy = asset.getProxies().getLargest();
-        if (largestProxy == null) {
+        try {
+            // If the file doesn't have a proxy this will throw.
+            Proxy largestProxy = asset.getProxies().getLargest();
+            return new StreamFile(
+                    ofs.get(largestProxy.getId()).getFile().toString(),
+                    PROXY_MIME_LOOKUP.getOrDefault(largestProxy.getFormat(),
+                            "application/octet-stream"), true);
+        } catch (Exception e) {
             return null;
         }
-        return new StreamFile(
-                ofs.get(largestProxy.getId()).getFile().toString(),
-                PROXY_MIME_LOOKUP.getOrDefault(largestProxy.getFormat(),
-                        "application/octet-stream"), true);
     }
 
     @RequestMapping(value = "/api/v1/assets/{id}/_stream", method = RequestMethod.GET)

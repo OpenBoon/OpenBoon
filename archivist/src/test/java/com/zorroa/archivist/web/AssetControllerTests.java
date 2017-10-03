@@ -655,6 +655,22 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
+    public void testStream404() throws Exception {
+        MockHttpSession session = admin();
+        addTestAssets("set04/standard");
+        refreshIndex();
+
+        PagedList<Asset> assets = assetService.getAll(Pager.first());
+
+        String url = String.format("/api/v1/assets/%s/_stream?ext=foo", assets.get(0).getId());
+        MvcResult result = mvc.perform(get(url)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().is4xxClientError())
+                .andReturn();
+    }
+
+    @Test
     public void testGetPreferredFormat() throws Exception {
         MockHttpSession session = admin();
         addTestAssets("/video");
