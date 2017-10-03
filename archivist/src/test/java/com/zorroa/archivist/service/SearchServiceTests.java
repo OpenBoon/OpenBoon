@@ -807,7 +807,10 @@ public class SearchServiceTests extends AbstractTest {
         AssetFilter filter = new AssetFilter().addToTerms("foo.bar", "bing");
         AssetSearch search = new AssetSearch().setElementFilter(filter);
 
-        assertEquals(1, searchService.search(Pager.first(), search).size());
+        PagedList<Document> result = searchService.search(Pager.first(), search);
+        assertEquals(1, result.size());
+        assertEquals(1, result.get(0).getElements().size());
+
     }
 
     @Test

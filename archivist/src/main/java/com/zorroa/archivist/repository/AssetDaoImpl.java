@@ -28,6 +28,7 @@ import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -67,6 +68,24 @@ public class AssetDaoImpl extends AbstractElasticDao implements AssetDao {
         doc.setType(hit.getType());
         if (hit.field("_parent") != null) {
             doc.setParentId(hit.field("_parent").value());
+        }
+        if (hit.getInnerHits() != null) {
+            List<Document> elements = Lists.newArrayList();
+            doc.setElements(elements);
+            for (SearchHit ehit: hit.getInnerHits().get("element")) {
+                elements.add(((SearchHitRowMapper<Document>) hit1 -> {
+                    Document edoc = new Document();
+                    edoc.setDocument(hit.getSource());
+                    edoc.setId(hit.getId());
+                    edoc.setScore(hit.getScore());
+                    edoc.setType(hit.getType());
+                    if (ehit.field("_parent") != null) {
+                        edoc.setParentId(ehit.field("_parent").value());
+                    }
+                    return edoc;
+                }
+                ).mapRow(ehit));
+            }
         }
         return doc;
     };
