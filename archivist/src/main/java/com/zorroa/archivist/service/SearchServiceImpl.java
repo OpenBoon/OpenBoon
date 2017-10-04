@@ -17,7 +17,6 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistException;
 import com.zorroa.sdk.client.exception.ArchivistReadException;
-import com.zorroa.sdk.domain.Asset;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -667,9 +666,6 @@ public class SearchServiceImpl implements SearchService {
                     weights.add(hash.getWeight() == null ? 1.0f : hash.getWeight());
                 }
             }
-            logger.info("hashes: {}", hashes);
-            logger.info("weights: {}", weights);
-            logger.info("minScore: {}", filter.getMinScore());
 
             Map<String, Object> args = Maps.newHashMap();
             args.put("field", field);
@@ -685,6 +681,7 @@ public class SearchServiceImpl implements SearchService {
             fsqb.setMinScore(filter.getMinScore() / 100.0f);
             fsqb.boostMode("replace");
             fsqb.scoreMode("sum");
+
             hammingBool.should(fsqb);
         }
     }
