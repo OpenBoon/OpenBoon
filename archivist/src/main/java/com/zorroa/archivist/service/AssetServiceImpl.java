@@ -28,7 +28,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -167,25 +166,6 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
              * Remove parts protected by API.
              */
             NS_PROTECTED_API.forEach(n->source.removeAttr(n));
-
-            /**
-             * For elements we remove all the stuff we don't need, including
-             * the file.
-             */
-            if (source.getType().equals("element")) {
-                final String path = source.getAttr("source.path", String.class);
-                executor.execute(() -> {
-                    try {
-                        Files.deleteIfExists(Paths.get(path));
-                    } catch (Exception e) {
-                        logger.warn("Failed to remove element: {}", path);
-                    }
-                });
-
-                NS_ELEMENT_REMOVE.forEach(n -> source.removeAttr(n));
-                source.setReplace(true);
-                continue;
-            }
 
             Map<String, Object> protectedValues =
                     assetDao.getProtectedFields(source.getId());
