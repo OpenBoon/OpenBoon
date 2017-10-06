@@ -145,7 +145,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
      * wrong via the asset API then it would corrupt the asset.
      */
     private static final Set<String> NS_PROTECTED_API = ImmutableSet.of(
-            "permissions", "zorroa", "links");
+            "permissions", "zorroa", "links", "tmp");
 
     private static final Set<String> NS_ELEMENT_REMOVE = ImmutableSet.of(
             "source", "origin");
