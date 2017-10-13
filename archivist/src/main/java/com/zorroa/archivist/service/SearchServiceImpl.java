@@ -687,7 +687,7 @@ public class SearchServiceImpl implements SearchService {
                             args)));
 
             fsqb.setMinScore(filter.getMinScore() / 100.0f);
-            fsqb.boostMode("multiply");
+            fsqb.boostMode("sum");
             fsqb.scoreMode("multiply");
             hammingBool.should(fsqb);
         }

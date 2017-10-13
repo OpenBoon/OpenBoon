@@ -41,7 +41,11 @@ public class ElasticConfig {
     public Client elastic() throws IOException {
 
         org.elasticsearch.common.settings.Settings.Builder builder =
-                Settings.settingsBuilder()
+                Settings.settingsBuilder().loadFromPath(
+                        properties.getPath("archivist.path.home").resolve("config/elasticsearch.yml"));
+        logger.info("CORS {}", builder.get("http.cors.enabled"));
+
+                    builder
                         .put("path.data", properties.getString("archivist.path.index"))
                         .put("path.home", properties.getString("archivist.path.home"))
                         .put("index.number_of_replicas", properties.getInt("archivist.index.replicas"))

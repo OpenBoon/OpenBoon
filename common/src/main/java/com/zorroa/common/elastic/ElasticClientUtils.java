@@ -49,7 +49,6 @@ public class ElasticClientUtils {
         builder.put("script.indexed", true);
         builder.put("script.engine.expression.indexed.update", true);
         builder.put("script.engine.groovy.indexed.update", true);
-
         Node node = new ZorroaNode(builder.build(),
                 ImmutableSet.of(HammingDistancePlugin.class,
                         ArchivistDateScriptPlugin.class,
