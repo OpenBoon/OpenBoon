@@ -41,9 +41,7 @@ public class ElasticConfig {
     public Client elastic() throws IOException {
 
         org.elasticsearch.common.settings.Settings.Builder builder =
-                Settings.settingsBuilder().loadFromPath(
-                        properties.getPath("archivist.path.home").resolve("config/elasticsearch.yml"));
-        logger.info("CORS {}", builder.get("http.cors.enabled"));
+                Settings.settingsBuilder();
 
                     builder
                         .put("path.data", properties.getString("archivist.path.index"))
@@ -51,7 +49,6 @@ public class ElasticConfig {
                         .put("index.number_of_replicas", properties.getInt("archivist.index.replicas"))
                         .put("cluster.name", "zorroa")
                         .put("node.name", nodeName)
-                        .put("client.transport.sniff", true)
                         .put("transport.tcp.port", properties.getInt("zorroa.cluster.index.port"))
                         .put("discovery.zen.ping.multicast.enabled", false)
                         .put("discovery.zen.fd.ping_timeout", "3s")
@@ -62,13 +59,14 @@ public class ElasticConfig {
                         .put("path.plugins", "{path.home}/es-plugins")
                         .put("action.auto_create_index",  "-arch*,+.scripts,-*")
                         .put("network.host", "0.0.0.0")
-                        .put("http.host", "127.0.0.1");
+                        .put("http.host", "0.0.0.0")
+                        .put("http.enabled", false);
 
         if (properties.getBoolean("archivist.index.console.open")) {
             builder
                     .put("http.cors.enabled", true)
                     .put("http.cors.allow-origin", "*")
-                    .put("http.host", "0.0.0.0");
+                    .put("http.enabled", false);
         }
 
         if (properties.getBoolean("archivist.maintenance.backups.enabled")) {
@@ -81,6 +79,9 @@ public class ElasticConfig {
             builder.put("index.translog.disable_flush", true);
             builder.put("node.local", true);
         }
+
+        builder.loadFromPath(
+                properties.getPath("archivist.path.home").resolve("config/elasticsearch.yml"));
 
         return ElasticClientUtils.initializeClient(builder);
     }

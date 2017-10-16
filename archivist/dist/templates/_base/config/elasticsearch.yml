@@ -1,3 +1,8 @@
 # Override elasticsearch defaults.
-http.cors.enabled: true
-http.cors.allow-origin: "*"
+
+# To enable HTTP for tools like Kibana or Grafana, you must enable HTTP
+# with cors support. Warning, the elastic port that is opened is unsecured.
+
+#http.cors.enabled: true
+#http.cors.allow-origin: "*"
+#http.enabled: true
