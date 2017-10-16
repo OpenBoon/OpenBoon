@@ -50,6 +50,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -255,13 +256,16 @@ public abstract class AbstractTest {
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
                     AssetUtils.addKeywords(b, "source", b.getAttr("source.filename", String.class));
 
+                    String id = UUID.randomUUID().toString();
+
                     List<Proxy> proxies = Lists.newArrayList();
-                    proxies.add(new Proxy().setHeight(100).setWidth(100));
-                    proxies.add(new Proxy().setHeight(200).setWidth(200));
-                    proxies.add(new Proxy().setHeight(300).setWidth(300));
+                    proxies.add(new Proxy().setHeight(100).setWidth(100).setId("proxy/" + id + "_foo.jpg"));
+                    proxies.add(new Proxy().setHeight(200).setWidth(200).setId("proxy/" + id + "_bar.jpg"));
+                    proxies.add(new Proxy().setHeight(300).setWidth(300).setId("proxy/" + id + "_bing.jpg"));
 
                     ProxySchema p = new ProxySchema();
                     p.setProxies(proxies);
+                    b.setAttr("proxies", p);
                     result.add(b);
                 }
             }

@@ -11,8 +11,10 @@ import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.schema.LinkSchema;
 import com.zorroa.sdk.schema.PermissionSchema;
+import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -28,14 +30,13 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.LongAdder;
@@ -83,9 +84,10 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     @Autowired
     Client client;
 
-    PermissionSchema defaultPerms = new PermissionSchema();
+    @Autowired
+    ObjectFileSystem ofs;
 
-    Executor executor = Executors.newFixedThreadPool(4);
+    PermissionSchema defaultPerms = new PermissionSchema();
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -307,6 +309,22 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
 
     @Override
     public boolean delete(String assetId) {
+        Document doc = assetDao.get(assetId);
+        if (doc != null) {
+            ProxySchema proxySchema = doc.getAttr("proxies", ProxySchema.class);
+            if (proxySchema != null) {
+                for (Proxy proxy : proxySchema.getProxies()) {
+                    try {
+                        if (!Files.deleteIfExists(ofs.get(proxy.getId()).getFile().toPath())) {
+                            logger.warn("Did not delete {}, ofs file did not exist", proxy.getId());
+                        }
+                    } catch (Exception e) {
+                        logger.warn("Failed to delete OFS file: {}", e);
+                    }
+                }
+            }
+        }
+
         return assetDao.delete(assetId);
     }
 

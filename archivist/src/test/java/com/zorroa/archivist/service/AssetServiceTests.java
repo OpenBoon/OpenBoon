@@ -41,6 +41,14 @@ public class AssetServiceTests extends AbstractTest {
     }
 
     @Test
+    public void tetDelete() {
+        PagedList<Document> assets = assetService.getAll(Pager.first());
+        for (Document a: assets) {
+            assertTrue(assetService.delete(a.getId()));
+        }
+    }
+
+    @Test
     public void testIndexWithLink() throws InterruptedException {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         builder.addToLinks("foo", 1);
