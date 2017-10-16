@@ -80,9 +80,10 @@ public class ElasticConfig {
             builder.put("node.local", true);
         }
 
-        builder.loadFromPath(
-                properties.getPath("archivist.path.home").resolve("config/elasticsearch.yml"));
-
+        Path extConfig = properties.getPath("archivist.path.home").resolve("config/elasticsearch.yml");
+        if (extConfig.toFile().exists()) {
+            builder.loadFromPath(extConfig);
+        }
         return ElasticClientUtils.initializeClient(builder);
     }
 
