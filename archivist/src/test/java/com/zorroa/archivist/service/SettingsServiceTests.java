@@ -25,7 +25,8 @@ public class SettingsServiceTests extends AbstractTest {
     @Test
     public void testSetAll() {
         settingsService.setAll(ImmutableMap.of(
-                "archivist.search.keywords.static.fields", "{'foo.bar': 1.5}"));
+                "archivist.search.keywords.static.fields",
+                ImmutableMap.of("foo.bar", 1.5)));
         Map<String, Float> fields = searchService.getQueryFields();
         assertTrue(fields.containsKey("foo.bar"));
         assertEquals(1.5, fields.get("foo.bar"), 0.1);
@@ -33,7 +34,9 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test
     public void testSet() {
-        settingsService.set("archivist.search.keywords.static.fields", "{'foo.bar': 1.5}");
+        settingsService.set("archivist.search.keywords.static.fields",
+                ImmutableMap.of("foo.bar", 1.5));
+
         Map<String, Float> fields = searchService.getQueryFields();
         assertTrue(fields.containsKey("foo.bar"));
         assertEquals(1.5, fields.get("foo.bar"), 0.1);

@@ -17,13 +17,11 @@ public interface SettingsService {
 
     int setAll(Map<String, Object> values);
 
-    boolean set(String key, String value);
+    boolean set(String key, Object value);
 
     List<Setting> getAll(SettingsFilter filter);
 
     List<Setting> getAll();
 
     Setting get(String name);
-
-    void checkValid(String key, String value);
 }

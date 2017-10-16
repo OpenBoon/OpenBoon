@@ -62,18 +62,38 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
                 }
             });
 
+
+    public static class SettingValidator {
+        public TypeReference<?> type;
+        public boolean json;
+
+        public SettingValidator(TypeReference<?> type, boolean json) {
+            this.type = type;
+            this.json = json;
+        }
+    }
+
     /**
      * A whitelist of property names that can be set via the API.
      */
-    private static final Map<String, TypeReference> WHITELIST =
-            ImmutableMap.<String, TypeReference>builder()
-        .put("archivist.search.keywords.static.fields", new TypeReference<Map<String,Float>>() {})
-        .put("archivist.search.keywords.auto.fields", new TypeReference<String>() {})
-        .put("archivist.search.keywords.auto.enabled", new TypeReference<Boolean>() {})
-        .put("archivist.export.dragTemplate", new TypeReference<String>(){})
-        .put("archivist.export.videoStreamExtensionFallbackOrder", new TypeReference<String>(){})
-        .put("archivist.search.sortFields", new TypeReference<String>(){})
+    private static final Map<String, SettingValidator> WHITELIST =
+            ImmutableMap.<String, SettingValidator>builder()
+        .put("archivist.search.keywords.static.fields",
+                new SettingValidator(new TypeReference<Map<String, Double>>() {}, true))
+        .put("archivist.search.keywords.auto.fields",
+                new SettingValidator(new TypeReference<String>() {}, false))
+        .put("archivist.search.keywords.auto.enabled",
+                new SettingValidator(new TypeReference<Boolean>() {}, false))
+        .put("archivist.export.dragTemplate",
+                new SettingValidator(new TypeReference<String>(){}, false))
+        .put("archivist.export.videoStreamExtensionFallbackOrder",
+                new SettingValidator(new TypeReference<String>(){}, false))
+        .put("archivist.search.sortFields",
+                new SettingValidator(new TypeReference<String>(){}, false))
         .build();
+
+
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -90,14 +110,8 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
     public int setAll(Map<String, Object> values) {
         int result = 0;
         for (Map.Entry<String, Object> entry: values.entrySet()) {
-            String val;
-            if (entry.getValue() instanceof Map) {
-                val = Json.serializeToString(entry.getValue());
-            }
-            else {
-                val = entry.getValue().toString();
-            }
-            if (set(entry.getKey(), val, false)) {
+
+            if (set(entry.getKey(), entry.getValue(), false)) {
                 result++;
             }
         }
@@ -141,13 +155,14 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
         }
     }
 
-    @Override
-    public void checkValid(String key, String value) {
-        for (Map.Entry<String, TypeReference> pattern: WHITELIST.entrySet()) {
-            if (pattern.getKey().equals(key)) {
+
+    public SettingValidator checkValid(String key, Object value) {
+        for (Map.Entry<String, SettingValidator> validator: WHITELIST.entrySet()) {
+
+            if (validator.getKey().equals(key)) {
                 try {
-                    Json.deserialize(value, pattern.getValue());
-                    return;
+                    Json.Mapper.convertValue(value, validator.getValue().type);
+                    return validator.getValue();
                 } catch (Exception e ){
                     throw new ArchivistWriteException(
                             "Invalid value for " + key + ", invalid type.");
@@ -159,12 +174,12 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
     }
 
     @Override
-    public boolean set(String key, String value) {
+    public boolean set(String key, Object value) {
         return set(key, value, true);
     }
 
-    public boolean set(String key, String value, boolean invalidate) {
-        checkValid(key, value);
+    public boolean set(String key, Object value, boolean invalidate) {
+        SettingValidator valid =  checkValid(key, value);
 
         logger.info("{} changed to {} by {}", key, value, SecurityUtils.getUsername());
 
@@ -174,8 +189,15 @@ public class SettingsServiceImpl implements SettingsService, ApplicationListener
             System.clearProperty(key);
         }
         else {
-            result = settingsDao.set(key, value);
-            System.setProperty(key, value);
+            String strVal;
+            if (valid.json) {
+                strVal = Json.serializeToString(value);
+            }
+            else {
+                strVal = toString();
+            }
+            result = settingsDao.set(key, strVal);
+            System.setProperty(key, strVal);
         }
         if (invalidate) {
             settingsCache.invalidateAll();
