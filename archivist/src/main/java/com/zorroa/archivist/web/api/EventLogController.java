@@ -20,7 +20,7 @@ public class EventLogController {
     @Autowired
     EventLogService eventLogService;
 
-    @RequestMapping(value="/api/v1/eventlogs/{type}/_search", method= RequestMethod.GET)
+    @RequestMapping(value="/api/v1/eventlogs/{type}/_search", method= RequestMethod.POST)
     public PagedList<Map<String,Object>> search(
             @PathVariable String type,
             @RequestBody EventLogSearch search) throws IOException {
