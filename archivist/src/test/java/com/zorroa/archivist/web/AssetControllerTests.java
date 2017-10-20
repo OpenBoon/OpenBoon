@@ -94,9 +94,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         Map<String, Set<String>> fields = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Set<String>>>() {});
-        assertTrue(fields.get("date").size() ==  0);
         assertTrue(fields.get("string").size() > 0);
-        assertTrue(fields.get("integer").size()  ==  0);
     }
 
     @Test

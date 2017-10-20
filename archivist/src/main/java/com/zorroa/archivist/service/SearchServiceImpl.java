@@ -683,8 +683,7 @@ public class SearchServiceImpl implements SearchService {
 
             FunctionScoreQueryBuilder fsqb = QueryBuilders.functionScoreQuery(
                     ScoreFunctionBuilders.scriptFunction(new Script(
-                            "hammingDistance", ScriptService.ScriptType.INLINE, "native",
-                            args)));
+                            "hammingDistance", ScriptService.ScriptType.INLINE, "native", args)));
 
             fsqb.setMinScore(filter.getMinScore() / 100.0f);
             fsqb.boostMode("replace");

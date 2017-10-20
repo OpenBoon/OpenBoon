@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -38,7 +38,7 @@ public class EventLogControllerTests extends MockMvcTest {
 
         EventLogSearch search = new EventLogSearch();
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(get("/api/v1/eventlogs/user/_search")
+        MvcResult result = mvc.perform(post("/api/v1/eventlogs/user/_search")
                 .session(session)
                 .content(Json.serializeToString(search))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -85,7 +85,7 @@ public class EventLogControllerTests extends MockMvcTest {
 
         EventLogSearch search = new EventLogSearch();
         MockHttpSession session = admin();
-        MvcResult result = mvc.perform(get("/api/v1/eventlogs/job/_search")
+        MvcResult result = mvc.perform(post("/api/v1/eventlogs/job/_search")
                 .session(session)
                 .content(Json.serializeToString(search))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
