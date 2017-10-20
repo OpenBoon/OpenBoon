@@ -37,7 +37,10 @@ public class TaxonomyDaoImpl extends AbstractDao implements TaxonomyDao {
     private static final String GET =
             "SELECT " +
                 "pk_taxonomy," +
-                "pk_folder " +
+                "pk_folder, " +
+                "bool_active,"+
+                "time_started,"+
+                "time_stopped "+
             "FROM " +
                 "taxonomy ";
 
@@ -45,6 +48,10 @@ public class TaxonomyDaoImpl extends AbstractDao implements TaxonomyDao {
         Taxonomy tax = new Taxonomy();
         tax.setFolderId(rs.getInt("pk_folder"));
         tax.setTaxonomyId(rs.getInt("pk_taxonomy"));
+        tax.setActive(rs.getBoolean("bool_active"));
+        tax.setTimeStarted(rs.getLong("time_started"));
+        tax.setTimeStopped(rs.getLong("time_stopped"));
+
         return tax;
     };
 
@@ -76,6 +83,18 @@ public class TaxonomyDaoImpl extends AbstractDao implements TaxonomyDao {
     @Override
     public boolean update(int id, Taxonomy spec) {
         return false;
+    }
+
+    @Override
+    public boolean setActive(Taxonomy id, boolean value) {
+        if (value) {
+            return jdbc.update("UPDATE taxonomy SET time_started=?, time_stopped=0, bool_active=? WHERE pk_taxonomy=? AND bool_active=?",
+                    System.currentTimeMillis(), true, id.getTaxonomyId(), false) == 1;
+        }
+        else {
+            return jdbc.update("UPDATE taxonomy SET time_stopped=?, bool_active=? WHERE pk_taxonomy=? AND bool_active=?",
+                    System.currentTimeMillis(), false, id.getTaxonomyId(), true) == 1;
+        }
     }
 
     @Override

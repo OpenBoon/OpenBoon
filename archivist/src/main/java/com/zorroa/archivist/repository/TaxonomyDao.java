@@ -10,4 +10,6 @@ import com.zorroa.archivist.domain.TaxonomySpec;
 public interface TaxonomyDao extends GenericDao<Taxonomy, TaxonomySpec> {
 
     Taxonomy get(Folder folder);
+
+    boolean setActive(Taxonomy id, boolean value);
 }

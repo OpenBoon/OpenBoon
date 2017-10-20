@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TaxonomyDaoTests extends AbstractTest {
 
@@ -41,5 +43,15 @@ public class TaxonomyDaoTests extends AbstractTest {
         Taxonomy tax1 = taxonomyDao.create(new TaxonomySpec().setFolderId(folder.getId()));
         Taxonomy tax2 = taxonomyDao.get(folder);
         assertEquals(tax1, tax2);
+    }
+
+    @Test
+    public void testSetActive() {
+        Folder folder = folderService.create(new FolderSpec("foo"));
+        Taxonomy tax1 = taxonomyDao.create(new TaxonomySpec().setFolderId(folder.getId()));
+        assertTrue(taxonomyDao.setActive(tax1, true));
+        assertFalse(taxonomyDao.setActive(tax1, true));
+        assertTrue(taxonomyDao.setActive(tax1, false));
+        assertFalse(taxonomyDao.setActive(tax1, false));
     }
 }

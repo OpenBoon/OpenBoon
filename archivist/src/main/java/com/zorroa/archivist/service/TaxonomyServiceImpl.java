@@ -185,7 +185,6 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         if (start == null) {
             start = folderService.get(tax.getFolderId());
         }
-
         long updateTime = System.currentTimeMillis();
 
         LongAdder folderTotal = new LongAdder();
@@ -196,89 +195,94 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         /**
          * TODO: Going to change this to be more efficient by keeping track of the stack.
          */
-        for (Folder folder : folderService.getAllDescendants(Lists.newArrayList(start), true, false)) {
-            folderTotal.increment();
+        taxonomyDao.setActive(tax ,true);
+        try {
+            for (Folder folder : folderService.getAllDescendants(Lists.newArrayList(start), true, false)) {
+                folderTotal.increment();
 
-            List<Folder> ancestors = folderService.getAllAncestors(folder, true, true);
-            List<String> keywords = Lists.newArrayList();
+                List<Folder> ancestors = folderService.getAllAncestors(folder, true, true);
+                List<String> keywords = Lists.newArrayList();
 
-            boolean foundRoot = false;
-            for (Folder f: ancestors) {
-                keywords.add(f.getName());
-                if (f.isTaxonomyRoot()) {
-                    foundRoot = true;
+                boolean foundRoot = false;
+                for (Folder f : ancestors) {
+                    keywords.add(f.getName());
+                    if (f.isTaxonomyRoot()) {
+                        foundRoot = true;
+                        break;
+                    }
+                }
+
+                if (!foundRoot) {
+                    logger.warn("Unable to find taxonomy root for folder: {}", folder);
                     break;
                 }
+
+                CountingBulkListener cbl = new CountingBulkListener();
+                BulkProcessor bulkProcessor = BulkProcessor.builder(
+                        client, cbl)
+                        .setBulkActions(BULK_SIZE)
+                        .setFlushInterval(TimeValue.timeValueSeconds(10))
+                        .setConcurrentRequests(0)
+                        .build();
+
+
+                AssetSearch search = folder.getSearch();
+                if (search == null) {
+                    search = new AssetSearch(new AssetFilter()
+                            .addToTerms("links.folder", folder.getId())
+                            .setRecursive(false));
+                }
+
+                // If it is not a force, then skip over fields already written.
+                if (!force) {
+                    search.getFilter().setMustNot(ImmutableList.of(
+                            new AssetFilter().addToExists(rootField)));
+                }
+
+                Stopwatch timer = Stopwatch.createStarted();
+                SearchResponse rsp = searchService.buildSearch(search, "asset")
+                        .setScroll(new TimeValue(60000))
+                        .setFetchSource(false)
+                        .setSize(PAGE_SIZE).execute().actionGet();
+                logger.info("tagging taxonomy {} batch 1 : {}", tax, timer);
+
+                Document doc = new Document();
+                doc.setAttr(rootField,
+                        ImmutableMap.of(
+                                "keywords", keywords,
+                                "suggest", keywords,
+                                "timestamp", updateTime,
+                                "folderId", folder.getId(),
+                                "taxId", tax.getTaxonomyId()));
+
+                int batchCounter = 1;
+                try {
+                    do {
+                        for (SearchHit hit : rsp.getHits().getHits()) {
+                            bulkProcessor.add(client.prepareUpdate(alias, "asset", hit.getId())
+                                    .setDoc(doc.getDocument()).request());
+                        }
+                        rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
+                                new TimeValue(60000)).execute().actionGet();
+                        batchCounter++;
+                        logger.info("tagging {} batch {} : {}", tax, batchCounter, timer);
+
+
+                    } while (rsp.getHits().getHits().length != 0);
+                } catch (Exception e) {
+                    logger.warn("Failed to tag taxonomy assets: {}", tax);
+                } finally {
+                    bulkProcessor.close();
+                }
+                assetTotal.add(cbl.getSuccessCount());
             }
 
-            if (!foundRoot) {
-                logger.warn("Unable to find taxonomy root for folder: {}", folder);
-                break;
+            if (force) {
+                untagTaxonomyAsync(tax, updateTime);
             }
-
-            CountingBulkListener cbl = new CountingBulkListener();
-            BulkProcessor bulkProcessor = BulkProcessor.builder(
-                    client, cbl)
-                    .setBulkActions(BULK_SIZE)
-                    .setFlushInterval(TimeValue.timeValueSeconds(10))
-                    .setConcurrentRequests(0)
-                    .build();
-
-
-            AssetSearch search = folder.getSearch();
-            if (search == null) {
-                search = new AssetSearch(new AssetFilter()
-                        .addToTerms("links.folder", folder.getId())
-                        .setRecursive(false));
-            }
-
-            // If it is not a force, then skip over fields already written.
-            if (!force) {
-                search.getFilter().setMustNot(ImmutableList.of(
-                        new AssetFilter().addToExists(rootField)));
-            }
-
-            Stopwatch timer = Stopwatch.createStarted();
-            SearchResponse rsp = searchService.buildSearch(search, "asset")
-                    .setScroll(new TimeValue(60000))
-                    .setFetchSource(false)
-                    .setSize(PAGE_SIZE).execute().actionGet();
-            logger.info("tagging taxonomy {} batch 1 : {}", tax, timer);
-
-            Document doc = new Document();
-            doc.setAttr(rootField,
-                    ImmutableMap.of(
-                            "keywords", keywords,
-                            "suggest", keywords,
-                            "timestamp", updateTime,
-                            "folderId",folder.getId(),
-                            "taxId", tax.getTaxonomyId()));
-
-            int batchCounter = 1;
-            try {
-                do {
-                    for (SearchHit hit : rsp.getHits().getHits()) {
-                        bulkProcessor.add(client.prepareUpdate(alias, "asset", hit.getId())
-                                .setDoc(doc.getDocument()).request());
-                    }
-                    rsp = client.prepareSearchScroll(rsp.getScrollId()).setScroll(
-                            new TimeValue(60000)).execute().actionGet();
-                    batchCounter++;
-                    logger.info("tagging {} batch {} : {}", tax, batchCounter, timer);
-
-
-                } while (rsp.getHits().getHits().length != 0);
-            } catch (Exception e) {
-                logger.warn("Failed to tag taxonomy assets: {}", tax);
-            }
-            finally {
-                bulkProcessor.close();
-            }
-            assetTotal.add(cbl.getSuccessCount());
         }
-
-        if (force) {
-            untagTaxonomyAsync(tax, updateTime);
+        finally {
+            taxonomyDao.setActive(tax, false);
         }
 
         logger.info("Taxonomy {} executed, {} assets updated in {} folders",

@@ -11,6 +11,9 @@ public class Taxonomy {
 
     private int taxonomyId;
     private int folderId;
+    private boolean active;
+    private long timeStarted;
+    private long timeStopped;
 
     public int getTaxonomyId() {
         return taxonomyId;
@@ -32,6 +35,33 @@ public class Taxonomy {
 
     public String getRootField() {
         return String.format("zorroa.taxonomy.tax%d", getTaxonomyId());
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Taxonomy setActive(boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public long getTimeStarted() {
+        return timeStarted;
+    }
+
+    public Taxonomy setTimeStarted(long timeStarted) {
+        this.timeStarted = timeStarted;
+        return this;
+    }
+
+    public long getTimeStopped() {
+        return timeStopped;
+    }
+
+    public Taxonomy setTimeStopped(long timeStopped) {
+        this.timeStopped = timeStopped;
+        return this;
     }
 
     @Override
