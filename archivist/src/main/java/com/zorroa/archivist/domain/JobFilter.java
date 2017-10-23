@@ -59,7 +59,7 @@ public class JobFilter {
         }
 
         if (userId != null) {
-            where.add("int_created_user=?");
+            where.add("int_user_created=?");
             values.add(userId);
         }
 
