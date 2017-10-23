@@ -399,15 +399,26 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
     }
 
     @Override
+    public PagedList<Task> getAll(int job, Pager pager, TaskFilter filter) {
+        filter.setJobId(job);
+        String  q = filter.getCountQuery("SELECT COUNT(1) FROM task ");
+        long count = jdbc.queryForObject(q, Long.class, filter.getValues());
+
+        return new PagedList(pager.setTotalCount(count),
+                jdbc.query(filter.getQuery(GET_TASKS, pager),
+                MAPPER, filter.getValues(pager)));
+    }
+
+    @Override
     public List<Task> getAll(int job, TaskState state) {
         return jdbc.query(GET_TASKS.concat("WHERE task.pk_job=? AND task.int_state=?"),
                         MAPPER, job, state.ordinal());
     }
 
     @Override
-    public List<Task> getAll(int job, DaoFilter filter) {
-        filter.addToWhere("task.pk_job=?");
-        filter.addToValues(job);
+    public List<Task> getAll(int job, TaskFilter filter) {
+        filter.setJobId(job);
+
         return jdbc.query(filter.getQuery(GET_TASKS, null),
                 MAPPER, filter.getValues());
     }

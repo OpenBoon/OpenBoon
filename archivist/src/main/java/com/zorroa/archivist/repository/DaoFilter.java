@@ -1,20 +1,37 @@
 package com.zorroa.archivist.repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.sdk.domain.Pager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public abstract class DaoFilter {
 
+    protected static final Logger logger = LoggerFactory.getLogger(DaoFilter.class);
+
+    @JsonIgnore
     private boolean built = false;
-    private String orderBy;
+
+    @JsonIgnore
     private String whereClause;
 
+    @JsonIgnore
+    protected Map<String,String> sortMap = null;
+
+    @JsonIgnore
     protected List<String> where = Lists.newArrayList();
+
+    @JsonIgnore
     protected List<Object> values = Lists.newArrayList();
+
+    protected Map<String, String> sort = Maps.newHashMap();
 
     public DaoFilter() { }
 
@@ -42,9 +59,17 @@ public abstract class DaoFilter {
             sb.append(whereClause);
         }
 
-        if (orderBy!=null) {
+        if (sortMap != null && !sort.isEmpty()) {
             sb.append(" ORDER BY ");
-            sb.append(orderBy);
+
+            for (Map.Entry<String, String> sort: sort.entrySet()) {
+                String col = sortMap.get(sort.getKey());
+                if (col != null) {
+                    sb.append(col + " " + (sort.getValue().startsWith("a") ? "asc " : "desc "));
+                    sb.append(",");
+                }
+            }
+            sb.deleteCharAt(sb.length()-1);
         }
 
         if (page != null) {
@@ -82,10 +107,10 @@ public abstract class DaoFilter {
         return result;
     }
 
-    public void __build() {
+    private void __build() {
         if (!built) {
-            build();
             built = true;
+            build();
 
             if (JdbcUtils.isValid(where)) {
                 whereClause = String.join(" AND ", where);
@@ -94,12 +119,33 @@ public abstract class DaoFilter {
         }
     }
 
-    public String getOrderBy() {
-        return orderBy;
+    @JsonIgnore
+    public Map<String, String> getSortMap() {
+        return sortMap;
     }
 
-    public DaoFilter setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
+    @JsonIgnore
+    public DaoFilter setSortMap(Map<String, String> sortMap) {
+        this.sortMap = sortMap;
+        return this;
+    }
+
+    public Map<String, String> getSort() {
+        return sort;
+    }
+
+    public DaoFilter setSort(Map<String, String> sort) {
+        this.sort = sort;
+        return this;
+    }
+
+    @JsonIgnore
+    public DaoFilter forceSort(Map<String, String> sort) {
+        this.sortMap = Maps.newHashMap();
+        for (Map.Entry<String,String> order: sort.entrySet()) {
+            sortMap.put(order.getKey(), order.getKey());
+        }
+        this.sort = sort;
         return this;
     }
 }

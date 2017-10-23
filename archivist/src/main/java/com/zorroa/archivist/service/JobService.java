@@ -127,6 +127,8 @@ public interface JobService {
 
     PagedList<Task> getAllTasks(int job, Pager page);
 
+    PagedList<Task> getAllTasks(int job, Pager page, TaskFilter filter);
+
     int updatePingTime(List<Integer> taskIds);
 
     Path resolveJobRoot(JobSpec spec);

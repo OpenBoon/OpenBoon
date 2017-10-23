@@ -2,10 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.Task;
-import com.zorroa.archivist.domain.TaskId;
-import com.zorroa.archivist.domain.TaskSpec;
-import com.zorroa.archivist.domain.TaskStatsAdder;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
@@ -57,9 +54,11 @@ public interface TaskDao {
 
     PagedList<Task> getAll(int job, Pager page);
 
+    PagedList<Task> getAll(int job, Pager pager, TaskFilter filter);
+
     List<Task> getAll(int job, TaskState state);
 
-    List<Task> getAll(int job, DaoFilter filter);
+    List<Task> getAll(int job, TaskFilter filter);
 
     Task get(int id);
 

@@ -3,8 +3,10 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
@@ -106,6 +108,25 @@ public class JobControllerTests extends MockMvcTest {
 
         MvcResult result = mvc.perform(get("/api/v1/jobs/" + job.getId() + "/tasks")
                 .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PagedList<Task> tasks = deserialize(result, new TypeReference<PagedList<Task>>() {});
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
+    public void getTasks() throws Exception {
+        MockHttpSession session = admin();
+
+        TaskFilter f = new TaskFilter();
+        f.setStates(ImmutableSet.of(TaskState.Waiting));
+        f.setSort(ImmutableMap.of("tasks", "desc"));
+
+        MvcResult result = mvc.perform(post("/api/v2/jobs/" + job.getId() + "/tasks")
+                .session(session)
+                .content(Json.serialize(f))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();

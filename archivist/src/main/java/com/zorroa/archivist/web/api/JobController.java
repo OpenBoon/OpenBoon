@@ -66,6 +66,15 @@ public class JobController {
         return jobService.getAllTasks(id, new Pager(from, count));
     }
 
+
+    @RequestMapping(value="/api/v2/jobs/{id}/tasks", method = RequestMethod.POST)
+    public Object getTasksV2(@PathVariable int id,
+                             @RequestBody TaskFilter filter,
+                           @RequestParam(value="from", required=false) Integer from,
+                           @RequestParam(value="count", required=false) Integer count) throws IOException {
+        return jobService.getAllTasks(id, new Pager(from, count), filter);
+    }
+
     @RequestMapping(value="/api/v1/jobs/_search", method = RequestMethod.POST)
     public PagedList<Job> getAll(@RequestBody(required = false) JobFilter filter,
                                  @RequestParam(value="from", required=false) Integer from,

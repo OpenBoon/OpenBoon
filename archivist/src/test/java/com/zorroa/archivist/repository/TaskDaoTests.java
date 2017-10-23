@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
@@ -157,6 +158,40 @@ public class TaskDaoTests extends AbstractTest {
                 new TaskFilter().setStates(ImmutableSet.of(TaskState.Waiting))).size());
         assertEquals(1, taskDao.getAll(job.getJobId(),
                 new TaskFilter().setStates(ImmutableSet.of(TaskState.Queued))).size());
+    }
+
+    @Test
+    public void getPagedByFilter() {
+        for (int i=0; i<10; i++) {
+            TaskSpec spec = new TaskSpec();
+            spec.setName("a task");
+            spec.setScript(new ZpsScript());
+            spec.setJobId(job.getJobId());
+            task = jobService.createTask(spec);
+        }
+
+        assertEquals(5, taskDao.getAll(job.getJobId(), Pager.first(5), new TaskFilter()).size());
+        assertEquals(1, taskDao.getAll(job.getJobId(),
+                Pager.first(), new TaskFilter().setTasks(ImmutableSet.of(task.getTaskId()))).size());
+
+
+        assertEquals(5, taskDao.getAll(job.getJobId(),
+                Pager.first(5), new TaskFilter().setStates(ImmutableSet.of(TaskState.Waiting))).size());
+        assertEquals(0, taskDao.getAll(job.getJobId(),
+                Pager.first(), new TaskFilter().setStates(ImmutableSet.of(TaskState.Running))).size());
+
+        assertTrue(jobService.setTaskState(task, TaskState.Queued, TaskState.Waiting));
+        assertEquals(10, taskDao.getAll(job.getJobId(),  Pager.first(),
+                new TaskFilter().setStates(ImmutableSet.of(TaskState.Waiting))).size());
+        assertEquals(1, taskDao.getAll(job.getJobId(),  Pager.first(),
+                new TaskFilter().setStates(ImmutableSet.of(TaskState.Queued))).size());
+
+        TaskFilter filter = new TaskFilter();
+        filter.setSort(ImmutableMap.of("tasks", "desc"));
+
+        PagedList<Task> tasks = taskDao.getAll(job.getJobId(), Pager.first(2), filter);
+        assertEquals(2, tasks.size());
+        assertTrue(tasks.get(0).getId() > tasks.get(1).getId());
     }
 
 

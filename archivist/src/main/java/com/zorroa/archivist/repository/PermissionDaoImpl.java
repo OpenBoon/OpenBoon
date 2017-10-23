@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
@@ -138,7 +139,7 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public PagedList<Permission> getPaged(Pager page, DaoFilter filter) {
-        filter.setOrderBy("str_type,str_name");
+        filter.forceSort(ImmutableMap.of("str_type", "asc", "str_name", "asc"));
         return new PagedList(page.setTotalCount(count(filter)),
                 jdbc.query(filter.getQuery(
                         GET_ALL, page),

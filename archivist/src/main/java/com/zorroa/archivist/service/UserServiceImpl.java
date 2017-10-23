@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.io.CharStreams;
@@ -280,7 +281,7 @@ public class UserServiceImpl implements UserService {
         return permissionDao.getPaged(page,
                 new PermissionFilter()
                         .setAssignableToUser(true)
-                        .setOrderBy("str_group, str_type"));
+                        .forceSort(ImmutableMap.of("str_group", "asc", "str_type", "asc")));
     }
 
     @Override
@@ -288,7 +289,7 @@ public class UserServiceImpl implements UserService {
         return permissionDao.getPaged(page,
                 new PermissionFilter()
                         .setAssignableToObj(true)
-                        .setOrderBy("str_group, str_type"));
+                        .forceSort(ImmutableMap.of("str_group", "asc", "str_type", "asc")));
     }
 
     @Override

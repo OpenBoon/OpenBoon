@@ -410,6 +410,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public PagedList<Task> getAllTasks(int job, Pager page, TaskFilter filter) {
+        return taskDao.getAll(job, page, filter);
+    }
+
+    @Override
     public int updatePingTime(List<Integer> taskIds) {
         return taskDao.updatePingTime(taskIds);
     }
