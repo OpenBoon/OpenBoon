@@ -1,14 +1,27 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.repository.DaoFilter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chambers on 8/17/16.
  */
 public class ProcessorFilter extends DaoFilter {
+    private static final Map<String,String> sortMap = ImmutableMap.<String, String>builder()
+            .put("id", "processor.pk_processor")
+            .put("name", "processor.str_name")
+            .put("type", "processor.str_type")
+            .put("shortName", "processor.str_short_name")
+            .put("module", "processor.str_module")
+            .put("description", "processor.str_description")
+            .put("pluginId", "plugin.pk_plugin")
+            .put("pluginName", "plugin.str_name")
+            .put("pluginLanguage", "plugin.str_lang")
+            .build();
 
     private List<String> modules;
     private List<String> names;
@@ -88,5 +101,10 @@ public class ProcessorFilter extends DaoFilter {
             where.add(JdbcUtils.in("plugin.pk_plugin", plugins.size()));
             values.addAll(plugins);
         }
+    }
+
+    @Override
+    public Map<String, String> getSortMap() {
+        return sortMap;
     }
 }

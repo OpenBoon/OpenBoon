@@ -2,6 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.Plugin;
@@ -140,7 +141,10 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public List<Processor> getAll(ProcessorFilter filter) {
-        String q = filter.getQuery(GET, null) + " ORDER BY processor.str_short_name";
+        if (filter.getSort() == null) {
+            filter.setSort(ImmutableMap.of("processor.str_short_name", "asc"));
+        }
+        String q = filter.getQuery(GET, null);
         return jdbc.query(q, MAPPER, filter.getValues());
     }
 

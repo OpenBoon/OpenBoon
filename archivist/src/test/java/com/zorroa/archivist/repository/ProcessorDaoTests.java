@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Plugin;
@@ -61,7 +62,7 @@ public class ProcessorDaoTests extends AbstractTest {
     public void validate(ProcessorSpec spec, Processor pr) {
 
         assertEquals(spec.getClassName(), pr.getName());
-        assertEquals(spec.getDescription(),pr.getDescription());
+        assertEquals(spec.getDescription(), pr.getDescription());
         assertEquals(spec.getType(), pr.getType());
         assertEquals(spec.getFilters().size(), pr.getFilters().size());
         assertEquals(spec.getDisplay(), pr.getDisplay());
@@ -101,11 +102,12 @@ public class ProcessorDaoTests extends AbstractTest {
         assertTrue(processorDao.getAll().size() > 0);
     }
 
-    @Test(expected=EmptyResultDataAccessException.class)
+    @Test(expected = EmptyResultDataAccessException.class)
     public void testDelete() {
         assertTrue(processorDao.delete(proc.getId()));
         processorDao.get(proc.getId());
     }
+
     @Test
     public void testCount() {
         assertTrue(processorDao.count() > 0);
@@ -151,5 +153,35 @@ public class ProcessorDaoTests extends AbstractTest {
         assertEquals(0, processorDao.getAll(filter).size());
     }
 
+    @Test
+    public void getAllWithSortingFilter() {
 
+        ProcessorFilter filter = new ProcessorFilter();
+        filter.setSort(ImmutableMap.of("pluginName", "asc"));
+        assertTrue(processorDao.getAll(filter).size() > 0);
+
+        filter = new ProcessorFilter();
+        filter.setSort(ImmutableMap.of("id", "asc", "name", "asc"));
+        assertTrue(processorDao.getAll(filter).size() > 0);
+
+        filter = new ProcessorFilter();
+        filter.setSort(ImmutableMap.of("shortName", "asc"));
+        assertTrue(processorDao.getAll(filter).size() > 0);
+
+        filter = new ProcessorFilter();
+        filter.setSort(ImmutableMap.of("module", "asc"));
+        assertTrue(processorDao.getAll(filter).size() > 0);
+
+        filter = new ProcessorFilter();
+        filter.setSort(ImmutableMap.of("description", "asc"));
+        assertTrue(processorDao.getAll(filter).size() > 0);
+
+        filter = new ProcessorFilter();
+        filter.setSort(ImmutableMap.of("pluginId", "asc"));
+        assertTrue(processorDao.getAll(filter).size() > 0);
+
+        filter = new ProcessorFilter();
+        filter.setSort(ImmutableMap.of("pluginLanguage", "asc"));
+        assertTrue(processorDao.getAll(filter).size() > 0);
+    }
 }

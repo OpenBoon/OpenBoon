@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
@@ -161,6 +162,25 @@ public class PermissionDaoTests extends AbstractTest {
                 new PermissionFilter().setNames(Sets.newHashSet("test2"))
                         .setTypes(Sets.newHashSet("test1")));
         assertEquals(1, perms.size());
+    }
+
+    @Test
+    public void testGetPagedSorted() {
+        PermissionSpec b = new PermissionSpec("test1", "test2");
+        b.setDescription("test");
+        permissionDao.create(b, false);
+
+        assertTrue(permissionDao.getPaged(Pager.first(),
+                new PermissionFilter().setSort(ImmutableMap.of("id","asc"))).size() > 0);
+
+        assertTrue(permissionDao.getPaged(Pager.first(),
+                new PermissionFilter().setSort(ImmutableMap.of("name","asc"))).size() > 0);
+
+        assertTrue(permissionDao.getPaged(Pager.first(),
+                new PermissionFilter().setSort(ImmutableMap.of("type","asc"))).size() > 0);
+
+        assertTrue(permissionDao.getPaged(Pager.first(),
+                new PermissionFilter().setSort(ImmutableMap.of("description","asc"))).size() > 0);
     }
 
     @Test

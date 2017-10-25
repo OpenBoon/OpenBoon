@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.repository.DaoFilter;
 import com.zorroa.common.domain.TaskState;
-import com.zorroa.sdk.util.Json;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,16 +14,22 @@ import java.util.Set;
  */
 public class TaskFilter extends DaoFilter {
 
+    private static final Map<String,String> sortMap = ImmutableMap.<String, String>builder()
+                .put("taskId", "pk_task")
+                .put("parentId", "pk_parent")
+                .put("state", "int_state")
+                .put("name", "str_name")
+                .put("host", "str_host")
+                .put("timeStarted", "time_started")
+                .put("timeStopped", "time_stopped")
+                .build();
+
     public Boolean all;
     public Set<Integer> tasks;
     public Set<TaskState> states;
     public Integer jobId;
 
-    public TaskFilter() {
-        sortMap = ImmutableMap.of(
-                "tasks", "pk_task",
-                "states", "int_state");
-    }
+    public TaskFilter() { }
 
     @JsonIgnore
     public void build() {
@@ -34,18 +40,14 @@ public class TaskFilter extends DaoFilter {
             }
         }
 
-        logger.info("values222: {}", Json.serializeToString(values));
-
         if (JdbcUtils.isValid(jobId)) {
             where.add("task.pk_job=?");
             values.add(jobId);
-            logger.info("values1: {}", Json.serializeToString(values));
         }
 
         if (JdbcUtils.isValid(tasks)) {
             where.add(JdbcUtils.in("task.pk_task", tasks.size()));
             values.addAll(tasks);
-            logger.info("values2: {}", Json.serializeToString(values));
         }
 
         if (JdbcUtils.isValid(states)) {
@@ -53,8 +55,12 @@ public class TaskFilter extends DaoFilter {
             for (TaskState s: states) {
                 values.add(s.ordinal());
             }
-            logger.info("values3: {}", Json.serializeToString(values));
         }
+    }
+
+    @Override
+    public Map<String, String> getSortMap() {
+        return sortMap;
     }
 
     public Set<Integer> getTasks() {

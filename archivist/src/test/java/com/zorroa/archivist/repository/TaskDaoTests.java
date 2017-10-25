@@ -187,7 +187,7 @@ public class TaskDaoTests extends AbstractTest {
                 new TaskFilter().setStates(ImmutableSet.of(TaskState.Queued))).size());
 
         TaskFilter filter = new TaskFilter();
-        filter.setSort(ImmutableMap.of("tasks", "desc"));
+        filter.setSort(ImmutableMap.of("taskId", "desc"));
 
         PagedList<Task> tasks = taskDao.getAll(job.getJobId(), Pager.first(2), filter);
         assertEquals(2, tasks.size());

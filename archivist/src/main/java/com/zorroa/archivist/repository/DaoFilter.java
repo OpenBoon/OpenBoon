@@ -23,9 +23,6 @@ public abstract class DaoFilter {
     private String whereClause;
 
     @JsonIgnore
-    protected Map<String,String> sortMap = null;
-
-    @JsonIgnore
     protected List<String> where = Lists.newArrayList();
 
     @JsonIgnore
@@ -36,6 +33,9 @@ public abstract class DaoFilter {
     public DaoFilter() { }
 
     public abstract void build();
+
+    @JsonIgnore
+    public abstract Map<String,String> getSortMap();
 
     public void addToWhere(String col) {
         this.where.add(col);
@@ -59,17 +59,20 @@ public abstract class DaoFilter {
             sb.append(whereClause);
         }
 
-        if (sortMap != null && !sort.isEmpty()) {
-            sb.append(" ORDER BY ");
-
+        if (getSortMap() != null && !sort.isEmpty()) {
+            StringBuilder order = new StringBuilder(64);
             for (Map.Entry<String, String> sort: sort.entrySet()) {
-                String col = sortMap.get(sort.getKey());
+                String col = getSortMap().get(sort.getKey());
                 if (col != null) {
-                    sb.append(col + " " + (sort.getValue().startsWith("a") ? "asc " : "desc "));
-                    sb.append(",");
+                    order.append(col + " " + (sort.getValue().startsWith("a") ? "asc " : "desc "));
+                    order.append(",");
                 }
             }
-            sb.deleteCharAt(sb.length()-1);
+            if (order.length() > 0) {
+                order.deleteCharAt(order.length()-1);
+                sb.append(" ORDER BY ");
+                sb.append(order);
+            }
         }
 
         if (page != null) {
@@ -119,17 +122,6 @@ public abstract class DaoFilter {
         }
     }
 
-    @JsonIgnore
-    public Map<String, String> getSortMap() {
-        return sortMap;
-    }
-
-    @JsonIgnore
-    public DaoFilter setSortMap(Map<String, String> sortMap) {
-        this.sortMap = sortMap;
-        return this;
-    }
-
     public Map<String, String> getSort() {
         return sort;
     }
@@ -141,10 +133,6 @@ public abstract class DaoFilter {
 
     @JsonIgnore
     public DaoFilter forceSort(Map<String, String> sort) {
-        this.sortMap = Maps.newHashMap();
-        for (Map.Entry<String,String> order: sort.entrySet()) {
-            sortMap.put(order.getKey(), order.getKey());
-        }
         this.sort = sort;
         return this;
     }

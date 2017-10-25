@@ -139,7 +139,9 @@ public class PermissionDaoImpl extends AbstractDao implements PermissionDao {
 
     @Override
     public PagedList<Permission> getPaged(Pager page, DaoFilter filter) {
-        filter.forceSort(ImmutableMap.of("str_type", "asc", "str_name", "asc"));
+        if (filter.getSort() == null) {
+            filter.setSort(ImmutableMap.of("type", "asc", "name", "asc"));
+        }
         return new PagedList(page.setTotalCount(count(filter)),
                 jdbc.query(filter.getQuery(
                         GET_ALL, page),

@@ -1,8 +1,10 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.repository.DaoFilter;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -10,13 +12,19 @@ import java.util.Set;
  */
 public class PermissionFilter extends DaoFilter {
 
+    private static final Map<String,String> sortMap = ImmutableMap.<String, String>builder()
+            .put("id", "pk_permission")
+            .put("name", "str_name")
+            .put("type", "str_type")
+            .put("description", "str_description")
+            .build();
+
     public Boolean assignableToUser;
     public Boolean assignableToObj;
     public Set<String> types;
     public Set<String> names;
 
-    public PermissionFilter() {
-    }
+    public PermissionFilter() {  }
 
     public void build() {
         if (assignableToUser != null) {
@@ -38,6 +46,11 @@ public class PermissionFilter extends DaoFilter {
             where.add(JdbcUtils.in("str_name", names.size()));
             values.addAll(names);
         }
+    }
+
+    @Override
+    public Map<String, String> getSortMap() {
+        return sortMap;
     }
 
     public Boolean getAssignableToUser() {

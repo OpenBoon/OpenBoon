@@ -122,7 +122,7 @@ public class JobControllerTests extends MockMvcTest {
 
         TaskFilter f = new TaskFilter();
         f.setStates(ImmutableSet.of(TaskState.Waiting));
-        f.setSort(ImmutableMap.of("tasks", "desc"));
+        f.setSort(ImmutableMap.of("taskId", "desc"));
 
         MvcResult result = mvc.perform(post("/api/v2/jobs/" + job.getId() + "/tasks")
                 .session(session)
