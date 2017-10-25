@@ -33,10 +33,6 @@ public class Taxonomy {
         return this;
     }
 
-    public String getRootField() {
-        return String.format("zorroa.taxonomy.tax%d", getTaxonomyId());
-    }
-
     public boolean isActive() {
         return active;
     }
