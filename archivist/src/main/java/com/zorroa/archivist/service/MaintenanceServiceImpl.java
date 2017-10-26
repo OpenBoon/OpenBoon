@@ -299,18 +299,11 @@ public class MaintenanceServiceImpl extends AbstractScheduledService
          */
         for (ExpiredJob job: jobs) {
             try {
-                FileUtils.deleteDirectory(new File(job.getLogPath()));
-            } catch (IOException e) {
-                logger.warn("Failed to delete directory, '" + job.getLogPath() + "', ", e);
-            }
-
-            try {
-                FileUtils.deleteDirectory(new File(job.getExportedPath()));
+                FileUtils.deleteDirectory(new File(job.getRootPath()));
             } catch (IOException e) {
                 logger.warn("Failed to delete directory, '" + job.getExportedPath() + "', ", e);
             }
         }
-
         return jobs.size();
     }
 

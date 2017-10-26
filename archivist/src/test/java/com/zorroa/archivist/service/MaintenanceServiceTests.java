@@ -99,6 +99,7 @@ public class MaintenanceServiceTests extends AbstractTest {
                 Integer.class, job.getId()));
 
         assertEquals(1, maintenanceService.removeExpiredJobData(time));
+        assertFalse("Root directory should not exist", new File(ejob.getRootPath()).exists());
         assertFalse("Log directory should not exist", new File(ejob.getLogPath()).exists());
         assertEquals(0, (int) jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?",
                 Integer.class, job.getId()));
