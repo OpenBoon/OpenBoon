@@ -10,6 +10,7 @@ import com.zorroa.archivist.service.LocalFileSystem;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,19 +92,6 @@ public class FileSystemController {
                 .body(new InputStreamResource(new FileInputStream(file.getFile())));
     }
 
-    @RequestMapping(value = "/api/v1/ofs/proxy/**", method = RequestMethod.GET, produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE })
-    @ResponseBody
-    public ResponseEntity<InputStreamResource> getProxy(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setHeader("Cache-Control", "public");
-
-        String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-
-        AntPathMatcher apm = new AntPathMatcher();
-        String id = "proxy/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path));
-        return imageService.serveImage(objectFileSystem.get(id).getFile());
-    }
-
     public static class ProxyUpload {
         public List<MultipartFile> files;
 
@@ -117,23 +105,32 @@ public class FileSystemController {
         }
     }
 
-    @RequestMapping(value="/api/v1/ofs/proxy", method = RequestMethod.POST)
-    public Object proxyUpload(ProxyUpload upload) throws IOException {
-        logger.info("Acccepting proxy upload");
+    /**
+     * This method is used by cloud proxy
+     *
+     * @param upload
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="/api/v1/ofs/{type}", method = RequestMethod.POST)
+    public Object proxyUpload(@PathVariable String type, ProxyUpload upload) throws IOException {
+
         if (upload.getFiles() == null || upload.getFiles().isEmpty()) {
-            logger.warn("no files/proxies uploaded");
-            return HttpUtils.status("proxy", "upload", false);
+            return HttpUtils.status("ofs", "upload", false);
+        }
+
+        if (!StringUtils.isAlphanumeric(type)) {
+            return HttpUtils.status("ofs", "upload", false);
         }
 
         try {
             for (MultipartFile file : upload.getFiles()) {
-                String id = "proxy/" + file.getOriginalFilename();
+                String id = type + "/" + file.getOriginalFilename();
                 ObjectFile of = objectFileSystem.get(id);
                 of.mkdirs();
 
                 File dstFile = of.getFile();
                 if (!dstFile.exists()) {
-                    logger.info("copying proxy {}", dstFile.toPath());
                     Files.copy(file.getInputStream(), dstFile.toPath());
                 }
             }
