@@ -10,10 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import sun.plugin.dom.exception.InvalidStateException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chambers on 8/17/16.
@@ -36,6 +35,43 @@ public class PipelineServiceTests extends AbstractTest {
         spec.setType(PipelineType.Import);
         pipeline = pipelineService.create(spec);
     }
+
+    @Test
+    public void testCreateNestedGenerate() {
+
+        ProcessorRef ref = new ProcessorRef("com.zorroa.core.generator.FileListGenerator");
+        ref.setExecute(Lists.newArrayList(new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+
+        spec = new PipelineSpecV();
+        spec.setProcessors(Lists.newArrayList(ref));
+        spec.setDescription("A NoOp");
+        spec.setName("foo");
+        spec.setType(PipelineType.Generate);
+        Pipeline pl = pipelineService.create(spec);
+
+        assertEquals(PipelineType.Generate, pl.getType());
+
+        ProcessorRef gen = pl.getProcessors().get(0);
+        assertEquals("generator", gen.getType());
+
+        ProcessorRef exec = gen.getExecute().get(0);
+        assertEquals("document", exec.getType());
+    }
+
+    @Test(expected = InvalidStateException.class)
+    public void testCreateNestedGenerateFailure() {
+
+        ProcessorRef ref = new ProcessorRef("com.zorroa.core.generator.FileListGenerator");
+        ref.setExecute(Lists.newArrayList(new ProcessorRef("com.zorroa.core.generator.FileListGenerator")));
+
+        spec = new PipelineSpecV();
+        spec.setProcessors(Lists.newArrayList(ref));
+        spec.setDescription("A NoOp");
+        spec.setName("foo");
+        spec.setType(PipelineType.Generate);
+        pipelineService.create(spec);
+    }
+
 
     @Test
     public void testGet() {
@@ -82,7 +118,6 @@ public class PipelineServiceTests extends AbstractTest {
         Pipeline p = pipelineService.get(pipeline.getId());
         assertEquals(pipeline.getName(), p.getName());
         assertEquals(pipeline.getDescription(), p.getDescription());
-        assertEquals(pipeline.getType(), p.getType());
         assertEquals(pipeline.getProcessors(), p.getProcessors());
     }
 }

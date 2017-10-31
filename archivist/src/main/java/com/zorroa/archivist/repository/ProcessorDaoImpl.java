@@ -184,6 +184,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     private static final RowMapper<ProcessorRef> REF_MAPPER = (rs, row) -> {
         ProcessorRef ref = new ProcessorRef();
+        ref.setType(rs.getString("str_type"));
         ref.setClassName(rs.getString("str_name"));
         ref.setLanguage(rs.getString("plugin_lang"));
         ref.setFileTypes(Json.deserialize(rs.getString("json_file_types"), Json.SET_OF_STRINGS));
@@ -198,6 +199,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
     private static final String GET_REF =
         "SELECT " +
             "processor.str_name,"+
+            "processor.str_type,"+
             "processor.json_filters, "+
             "processor.json_file_types,"+
             "plugin.str_lang AS plugin_lang " +

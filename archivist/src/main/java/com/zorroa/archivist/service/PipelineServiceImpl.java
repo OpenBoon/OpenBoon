@@ -1,11 +1,10 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.LogAction;
-import com.zorroa.archivist.domain.UserLogSpec;
-import com.zorroa.archivist.domain.Pipeline;
-import com.zorroa.archivist.domain.PipelineSpecV;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -20,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -52,11 +53,7 @@ public class PipelineServiceImpl implements PipelineService {
         /**
          * Each processor needs to be validated.
          */
-        List<ProcessorRef> validated = Lists.newArrayList();
-        for (ProcessorRef ref: spec.getProcessors()) {
-            validated.add(pluginService.getProcessorRef(ref));
-        }
-        spec.setProcessors(validated);
+        spec.setProcessors(validateProcessors(spec.getType(), spec.getProcessors()));
 
         Pipeline p = pipelineDao.create(spec);
         event.afterCommit(()-> {
@@ -99,10 +96,12 @@ public class PipelineServiceImpl implements PipelineService {
 
     @Override
     public boolean update(int id, Pipeline spec) {
-        List<ProcessorRef> validated = Lists.newArrayList();
-        for (ProcessorRef ref: spec.getProcessors()) {
-            validated.add(pluginService.getProcessorRef(ref));
-        }
+        Pipeline pl = pipelineDao.get(id);
+
+        /**
+         * TODO: recursively validate all processors.
+         */
+        List<ProcessorRef> validated = validateProcessors(pl.getType(), spec.getProcessors());
         spec.setProcessors(validated);
 
         boolean result = pipelineDao.update(id, spec);
@@ -123,6 +122,35 @@ public class PipelineServiceImpl implements PipelineService {
             });
         }
         return result;
+    }
+
+    /**
+     * The types of processors that can be found in each pipeline type.
+     */
+    private static final Map<PipelineType, Set<String>> ALLOWED_TYPES = ImmutableMap.of(
+            PipelineType.Generate, ImmutableSet.of("generator"),
+            PipelineType.Import, ImmutableSet.of("document"),
+            PipelineType.Export, ImmutableSet.of("document"),
+            PipelineType.Batch, ImmutableSet.of("document"),
+            PipelineType.Training, ImmutableSet.of("training", "document"));
+
+    @Override
+    public List<ProcessorRef> validateProcessors(PipelineType pipelineType, List<ProcessorRef> refs) {
+
+        List<ProcessorRef> validated = Lists.newArrayList();
+
+        for (ProcessorRef ref: refs) {
+            ProcessorRef vref = pluginService.getProcessorRef(ref);
+            if (!ALLOWED_TYPES.getOrDefault(pipelineType, ImmutableSet.of()).contains(vref.getType())) {
+                throw new IllegalStateException("Cannot have processor type " +
+                        vref.getType() + " in a " + pipelineType + " pipeline");
+            }
+            validated.add(vref);
+            if (ref.getExecute() != null) {
+                vref.setExecute(validateProcessors(PipelineType.Import, ref.getExecute()));
+            }
+        }
+        return validated;
     }
 
     @Override

@@ -7,5 +7,6 @@ public enum PipelineType {
     Import,
     Export,
     Batch,
-    Training
+    Training,
+    Generate
 }

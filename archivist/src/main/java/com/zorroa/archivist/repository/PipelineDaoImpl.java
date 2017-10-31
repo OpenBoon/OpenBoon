@@ -134,7 +134,6 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
     private static final String UPDATE =
             JdbcUtils.update("pipeline", "pk_pipeline",
                     "str_name",
-                    "int_type",
                     "json_processors",
                     "str_description",
                     "bool_standard",
@@ -152,7 +151,7 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
             incrementVersion=1;
         }
 
-        return jdbc.update(UPDATE, spec.getName(), spec.getType().ordinal(),
+        return jdbc.update(UPDATE, spec.getName(),
                 Json.serializeToString(spec.getProcessors()), spec.getDescription(),
                 spec.isStandard(), incrementVersion, id) == 1;
     }
