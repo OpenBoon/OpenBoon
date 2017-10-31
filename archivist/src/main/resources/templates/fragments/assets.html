@@ -69,8 +69,7 @@
         <tbody>
         <tr class="clickable-row" th:each="asset: ${assets}">
             <td class="vert-align">
-                <a th:if="${asset.proxies != null and asset.proxies.smallest != null}" th:attr="data-id=${asset.id},data-type=${asset.getAttr('source.mediaType')}" data-toggle="modal" data-target="#imagemodal">
-                    <img class="center-cropped" th:src="@{/api/v1/ofs/__${asset.proxies.smallest.id}__}"/></a>
+
             </td>
             <td class="vert-align" th:attr="data-id=${asset.id}" data-toggle="modal" data-target="#viewModal" th:text="${asset.getAttr('source.filename')}"></td>
             <td class="vert-align" th:text="${asset.getAttr('source.date')}"></td>
