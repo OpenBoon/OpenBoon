@@ -11,6 +11,7 @@ import com.zorroa.archivist.web.api.AssetController;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.processor.Element;
@@ -692,11 +693,19 @@ public class AssetControllerTests extends MockMvcTest {
 
         PagedList<Document> assets = assetService.getAll(Pager.first());
         Document asset = assets.get(0);
+
         ObjectFile f = ofs.prepare("asset", assets.get(0).getAttr("source.path"), "webm");
         f.store(new FileInputStream(asset.getAttr("source.path", String.class)));
 
-        AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "webm",
-                false, false);
-        assertTrue(file.path.contains("ofs/asset"));
+        assetService.update(asset.getId(), ImmutableMap.of("proxies",
+            ImmutableMap.of("video", ImmutableList.of(new Proxy()
+                    .setId(f.getId()).setFormat("webm")))));
+        refreshIndex();
+
+        asset = assetService.get(asset.getId());
+        AssetController.StreamFile file = assetController.getPreferredFormat(asset,
+                "webm", false, false);
+        assertNotNull(file);
+        logger.info("{}", Json.prettyString(asset.getDocument()));
     }
 }

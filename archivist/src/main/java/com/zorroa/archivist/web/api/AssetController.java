@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.api;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.HttpUtils;
@@ -110,6 +111,7 @@ public class AssetController {
 
             String path = asset.getAttr("source.path", String.class);
             String mediaType = asset.getAttr("source.mediaType", String.class);
+            String type = asset.getAttr("source.type", String.class);
 
             if (preferExt != null) {
                 /**
@@ -120,11 +122,19 @@ public class AssetController {
                 String preferMediaType = tika.detect(path);
                 checkFiles.add(new StreamFile(preferPath, preferMediaType, false));
 
-                /**
-                 * Additionally, add the OFS location as another possible location.
-                 */
-                ObjectFile f = ofs.get("asset", asset.getId() + "." + preferExt);
-                checkFiles.add(new StreamFile(f.getFile().toString(), preferMediaType, false));
+                List<Proxy> proxies = asset.getAttr("proxies." + type, new TypeReference<List<Proxy>>(){});
+                if (proxies != null) {
+                    for (Proxy proxy: proxies) {
+                        if (preferExt.equals(proxy.getFormat())) {
+                            ObjectFile f = ofs.get(proxy.getId());
+                            if (f.exists()) {
+                                checkFiles.add(new StreamFile(f.getFile().toString(),
+                                        tika.detect(f.getFile().toString()), false));
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             else {
                 checkFiles.add(new StreamFile(path, mediaType, false));
