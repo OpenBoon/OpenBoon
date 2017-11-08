@@ -61,15 +61,14 @@ public class PipelineDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
+        // Note, you cant change a pipeline type.
         Pipeline update = new Pipeline();
         update.setName("foo");
         update.setDescription("foo bar");
-        update.setType(PipelineType.Batch);
         update.setProcessors(Lists.newArrayList(new ProcessorRef().setClassName("bar.Bing")));
         assertTrue(pipelineDao.update(pipeline.getId(), update));
 
         pipeline = pipelineDao.refresh(pipeline);
-        assertEquals(update.getType(), pipeline.getType());
         assertEquals(update.getProcessors(), pipeline.getProcessors());
         assertEquals(update.getName(), pipeline.getName());
     }

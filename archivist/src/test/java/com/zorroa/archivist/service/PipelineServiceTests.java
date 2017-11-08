@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import static org.junit.Assert.*;
 
@@ -58,7 +57,7 @@ public class PipelineServiceTests extends AbstractTest {
         assertEquals("document", exec.getType());
     }
 
-    @Test(expected = InvalidStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testCreateNestedGenerateFailure() {
 
         ProcessorRef ref = new ProcessorRef("com.zorroa.core.generator.FileListGenerator");
