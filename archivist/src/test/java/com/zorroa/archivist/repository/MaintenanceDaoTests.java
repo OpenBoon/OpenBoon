@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobSpec;
+import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.service.JobService;
 import org.junit.After;
 import org.junit.Test;
@@ -50,6 +51,7 @@ public class MaintenanceDaoTests extends AbstractTest {
         jspec.setType(Import);
         jspec.setName("test");
         Job job = jobService.launch(jspec);
+        jobService.setJobState(job, JobState.Finished, JobState.Active);
 
         assertEquals(0, maintenanceDao.getExpiredJobs(System.currentTimeMillis()-1000).size());
         assertEquals(1, maintenanceDao.getExpiredJobs(System.currentTimeMillis()+1000).size());

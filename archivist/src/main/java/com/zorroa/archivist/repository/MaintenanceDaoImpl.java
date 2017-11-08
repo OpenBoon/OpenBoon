@@ -45,7 +45,7 @@ public class MaintenanceDaoImpl extends AbstractDao implements MaintenanceDao {
     @Override
     public List<ExpiredJob> getExpiredJobs(long expireTime) {
         return jdbc.query(GET_EXPIRED, JOB_MAPPER,
-                JobState.Active.ordinal(), JobState.Cancelled.ordinal(),
+                JobState.Finished.ordinal(), JobState.Cancelled.ordinal(),
                 expireTime);
     }
 

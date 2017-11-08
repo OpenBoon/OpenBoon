@@ -516,12 +516,28 @@ FOR EACH ROW EXECUTE PROCEDURE TRIGGER_INCREMENT_FOLDER_CHILD_COUNT();
 
 CREATE OR REPLACE FUNCTION ZORROA.TRIGGER_DECREMENT_FOLDER_CHILD_COUNT() RETURNS TRIGGER AS $$
 BEGIN
-UPDATE zorroa.folder SET int_child_count=int_child_count -1 WHERE pk_folder=OLD.pk_parent;
-RETURN OLD;
+  UPDATE zorroa.folder SET int_child_count=int_child_count -1 WHERE pk_folder=OLD.pk_parent;
+  RETURN OLD;
 END
 $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER trig_after_folder_delete AFTER DELETE ON ZORROA.FOLDER
 FOR EACH ROW EXECUTE PROCEDURE TRIGGER_DECREMENT_FOLDER_CHILD_COUNT();
+
+CREATE OR REPLACE FUNCTION ZORROA.TRIGGER_UPDATE_JOB_STATE() RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.int_task_state_success_count + NEW.int_task_state_failure_count + NEW.int_task_state_skipped_count = NEW.int_task_total_count THEN
+    UPDATE job SET int_state=2 WHERE pk_job=NEW.pk_job AND int_state=0;
+  ELSE
+    UPDATE job SET int_state=0 WHERE pk_job=NEW.pk_job AND int_state=2;
+  END IF;
+
+  RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER trig_update_job_state AFTER UPDATE ON ZORROA.JOB_COUNT
+FOR EACH ROW EXECUTE PROCEDURE TRIGGER_UPDATE_JOB_STATE();
 

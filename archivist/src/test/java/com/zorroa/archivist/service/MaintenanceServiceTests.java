@@ -88,6 +88,7 @@ public class MaintenanceServiceTests extends AbstractTest {
                 .setScript(new ZpsScript())
                 .setName("test"));
 
+        jobService.setJobState(job, JobState.Finished, JobState.Active);
         long time = System.currentTimeMillis()+1000;
         ExpiredJob ejob = maintenanceDao.getExpiredJobs(time).get(0);
 
