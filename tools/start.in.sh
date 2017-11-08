@@ -8,8 +8,19 @@ export JAVA_TOOL_OPTIONS="-Djava.security.egd=file:/dev/./urandom"
 # stop-the-world GC pauses during resize, and so that we can lock the
 # heap in memory on startup to prevent any of it from being swapped
 # out.
-JAVA_OPTS="$JAVA_OPTS -Xms1g"
-JAVA_OPTS="$JAVA_OPTS -Xmx1g"
+
+#
+# For linux we detect the mem and default to 1/2 the memory
+#
+
+if [[ "$OSTYPE" == "linux-gnu" ] && [ "$APP_NAME" == "archivist" ]]; then
+    MEM=`cat /proc/meminfo | grep MemTotal | awk '{printf ("%0.fm", $2/2/1024)}'`
+    JAVA_OPTS="$JAVA_OPTS -Xms$MEM"
+    JAVA_OPTS="$JAVA_OPTS -Xmx$MEM"
+else
+    JAVA_OPTS="$JAVA_OPTS -Xms1g"
+    JAVA_OPTS="$JAVA_OPTS -Xmx1g"
+fi
 
 # set to headless, just in case
 JAVA_OPTS="$JAVA_OPTS -Djava.awt.headless=true"
