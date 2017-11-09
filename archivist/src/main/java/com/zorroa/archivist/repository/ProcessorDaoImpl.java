@@ -141,8 +141,9 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public List<Processor> getAll(ProcessorFilter filter) {
-        if (filter.getSort() == null) {
-            filter.setSort(ImmutableMap.of("processor.str_short_name", "asc"));
+
+        if (!JdbcUtils.isValid(filter.getSort())) {
+            filter.setSort(ImmutableMap.of("shortName", "asc"));
         }
         String q = filter.getQuery(GET, null);
         return jdbc.query(q, MAPPER, filter.getValues());
@@ -157,7 +158,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
     public PagedList<Processor> getAll(Pager page) {
         return new PagedList<>(
                 page.setTotalCount(count()),
-                jdbc.query(GET.concat("ORDER BY processor.str_name LIMIT ? OFFSET ?"), MAPPER,
+                jdbc.query(GET.concat("ORDER BY processor.str_short_name LIMIT ? OFFSET ?"), MAPPER,
                         page.getSize(), page.getFrom()));
     }
 

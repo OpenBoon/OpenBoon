@@ -21,6 +21,7 @@ package com.zorroa.archivist;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class JdbcUtils {
@@ -38,6 +39,10 @@ public class JdbcUtils {
 
     public static boolean isValid(String str) {
         return str == null ? false : !str.isEmpty();
+    }
+
+    public static boolean isValid(Map map) {
+        return map == null ? false : !map.isEmpty();
     }
 
     public static boolean isValid(Object obj) {
