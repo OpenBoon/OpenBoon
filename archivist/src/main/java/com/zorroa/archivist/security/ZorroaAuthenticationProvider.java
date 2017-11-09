@@ -13,7 +13,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.Set;
 
@@ -29,18 +28,14 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
             throws AuthenticationException {
 
         String username = authentication.getName();
-        String storedPassword;
         User user;
         try {
-            storedPassword = userService.getPassword(username);
             user = userService.get(username);
         } catch (Exception e) {
             throw new BadCredentialsException("Invalid username or password");
         }
 
-        if (!BCrypt.checkpw(authentication.getCredentials().toString(), storedPassword)) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
+        userService.checkPassword(username, authentication.getCredentials().toString());
 
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,6 +70,12 @@ public class UserController  {
         req.logout();
     }
 
+    /**
+     * This handles a password reset using the reset token and the
+     * ResetPasswordSecurityFilter.
+     * @return
+     * @throws ServletException
+     */
     @RequestMapping(value="/api/v1/reset-password", method=RequestMethod.POST)
     public User resetPasswordAndLogin() throws ServletException {
         return userService.get(SecurityUtils.getUser().getId());
@@ -129,6 +136,26 @@ public class UserController  {
         validatePermissions(id);
         User user = userService.get(id);
         return HttpUtils.updated("users", id, userService.update(user, form), userService.get(id));
+    }
+
+    @RequestMapping(value="/api/v1/users/{id}/_password", method=RequestMethod.PUT)
+    public Object updatePassword(@RequestBody UserPasswordUpdate form, @PathVariable int id) {
+        validatePermissions(id);
+
+        /**
+         * If the Ids match, then the user is the current user, so validate the existing password.
+         */
+        if (id == SecurityUtils.getUser().getId()) {
+            String storedPassword = userService.getPassword(SecurityUtils.getUsername());
+            if (!BCrypt.checkpw(form.getOldPassword(), storedPassword)) {
+                throw new IllegalArgumentException("Existing password invalid");
+            }
+        }
+
+        User user = userService.get(id);
+        userService.resetPassword(user, form.getNewPassword());
+
+        return HttpUtils.updated("users", id, true, user);
     }
 
     @RequestMapping(value="/api/v1/users/{id}/_settings", method=RequestMethod.PUT)

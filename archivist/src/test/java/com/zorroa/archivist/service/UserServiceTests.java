@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.client.exception.DuplicateElementException;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -15,6 +16,19 @@ import static org.junit.Assert.*;
  * Created by chambers on 12/23/15.
  */
 public class UserServiceTests extends AbstractTest {
+
+    User testUser;
+
+    @Before
+    public void init() {
+        UserSpec builder = new UserSpec();
+        builder.setUsername("billybob");
+        builder.setPassword("123password!");
+        builder.setEmail("testing@testing123.com");
+        builder.setFirstName("BillyBob");
+        builder.setLastName("Rodriquez");
+        testUser = userService.create(builder);
+    }
 
     @Test
     public void createUser() {
@@ -121,6 +135,42 @@ public class UserServiceTests extends AbstractTest {
 
         assertFalse(userService.hasPermission(user, userService.getPermission("group::manager")));
         assertTrue(userService.hasPermission(user, dev));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updatePasswordFailureTooShort() {
+        try {
+            userService.resetPassword(testUser, "nogood");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("or more characters"));
+            throw e;
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updatePasswordFailureNoCaps() {
+        try {
+            userService.resetPassword(testUser, "nogood");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("upper case"));
+            throw e;
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updatePasswordFailureNoNumbers() {
+        try {
+            userService.resetPassword(testUser, "nogood");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("least 1 number."));
+            throw e;
+        }
+    }
+
+    @Test
+    public void updatePassword() {
+        userService.resetPassword(testUser, "DogCatched1");
+        userService.checkPassword(testUser.getUsername(), "DogCatched1");
     }
 
     @Test

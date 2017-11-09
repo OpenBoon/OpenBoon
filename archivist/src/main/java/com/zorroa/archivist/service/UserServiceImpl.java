@@ -4,9 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.google.common.io.CharStreams;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
@@ -14,6 +12,7 @@ import com.zorroa.archivist.repository.PermissionDao;
 import com.zorroa.archivist.repository.UserDao;
 import com.zorroa.archivist.repository.UserPresetDao;
 import com.zorroa.archivist.tx.TransactionEventManager;
+import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.config.NetworkEnvironment;
 import com.zorroa.sdk.client.exception.DuplicateElementException;
 import com.zorroa.sdk.domain.PagedList;
@@ -27,6 +26,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -74,6 +75,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     EventLogService logService;
+
+    @Autowired
+    ApplicationProperties properties;
 
     private static final String SOURCE_LOCAL = "local";
 
@@ -570,11 +574,63 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void checkPassword(String username, String supplied) {
+        String storedPassword = getPassword(username);
+        if (!BCrypt.checkpw(supplied, storedPassword)) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+    }
+
+    @Override
+    public void resetPassword(User user, String password) {
+        List<String> issues = validatePassword(password);
+        if (!issues.isEmpty()) {
+            throw new IllegalArgumentException(String.join(",", issues));
+        }
+        userDao.setPassword(user, password);
+    }
+
+    @Override
     public User resetPassword(String token, String password) {
+        List<String> issues = validatePassword(password);
+        if (!issues.isEmpty()) {
+            throw new IllegalArgumentException(String.join(",", issues));
+        }
+
         User user = userDao.getByToken(token);
         if (userDao.resetPassword(user, token, password)) {
             return user;
         }
         return null;
+    }
+
+    private static final Pattern PASS_HAS_NUMBER = Pattern.compile("\\d");
+    private static final Pattern PASS_HAS_UPPER = Pattern.compile("[A-Z]");
+    private final int PASS_MIN_LENGTH = 8;
+
+    public List<String> validatePassword(String password) {
+        List<String> issues = Lists.newArrayList();
+        if (password == null) {
+            return ImmutableList.of("Password cannot be null");
+        }
+
+        int minLength = properties.getInt("archivist.security.password.minLength");
+
+        if (password.length() < minLength) {
+            issues.add("The password must be " + PASS_MIN_LENGTH + " or more characters.");
+        }
+
+        if (properties.getBoolean("archivist.security.password.requireStrong")) {
+
+            if (!PASS_HAS_NUMBER.matcher(password).find()) {
+                issues.add("The password must contain at least 1 number.");
+            }
+
+            if (!PASS_HAS_UPPER.matcher(password).find()) {
+                issues.add("The password must contain at least 1 upper case character.");
+            }
+        }
+
+        return issues;
     }
 }

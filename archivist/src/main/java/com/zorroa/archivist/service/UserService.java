@@ -93,6 +93,10 @@ public interface UserService {
 
     PasswordResetToken sendOnboardEmail(User user);
 
+    void checkPassword(String user, String supplied);
+
+    void resetPassword(User user, String password);
+
     User resetPassword(String token, String password);
 
 }

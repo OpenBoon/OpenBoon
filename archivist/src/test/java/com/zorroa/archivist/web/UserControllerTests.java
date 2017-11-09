@@ -64,7 +64,7 @@ public class UserControllerTests extends MockMvcTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("X-Archivist-Recovery-Token", token.getToken())
                 .content(Json.serialize(ImmutableMap.of(
-                        "username", "user", "password", "bob"))))
+                        "username", "user", "password", "Bilb0Baggins"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
