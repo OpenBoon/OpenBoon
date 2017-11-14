@@ -190,14 +190,15 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         LongAdder folderTotal = new LongAdder();
         LongAdder assetTotal = new LongAdder();
 
-        /**
-         * TODO: Going to change this to be more efficient by keeping track of the stack.
-         */
         taxonomyDao.setActive(tax ,true);
         try {
             for (Folder folder : folderService.getAllDescendants(Lists.newArrayList(start), true, false)) {
                 folderTotal.increment();
 
+                /**
+                 * Walking back is currently the only way to determine the keyword list,
+                 * but most calls to are cached.
+                 */
                 List<Folder> ancestors = folderService.getAllAncestors(folder, true, true);
                 List<String> keywords = Lists.newArrayList();
 
