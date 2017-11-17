@@ -53,6 +53,9 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
     EventLogService logService;
 
     @Autowired
+    SearchService searchService;
+
+    @Autowired
     Client client;
 
     @Autowired
@@ -204,13 +207,17 @@ public class DyHierarchyServiceImpl implements DyHierarchyService {
             return 0;
         }
 
+        Folder rf = folderService.get(dyhi.getFolderId());
+
+
         /**
          * TODO: allow some custom search options here, for example, maybe you
          * want to agg for the last 24 hours.
          */
         try {
             SearchRequestBuilder srb = client.prepareSearch()
-                    .setQuery(QueryBuilders.matchAllQuery())
+                    .setQuery(rf.getSearch() == null ?
+                            QueryBuilders.matchAllQuery() : searchService.getQuery(rf.getSearch()))
                     .setSize(0);
 
             /**

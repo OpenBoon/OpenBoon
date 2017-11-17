@@ -2,12 +2,14 @@ package com.zorroa.archivist.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
+import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
@@ -19,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -233,6 +236,34 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
         year = folderService.get(f.getId(), "2013");
         assertEquals(2, searchService.search(year.getSearch()).getHits().getTotalHits());
+    }
+
+    @Test
+    public void testGenerateDateHierarchyWithSmartFolder() {
+        Folder f = folderService.create(new FolderSpec("foo").setSearch(
+                new AssetSearch().setFilter(new AssetFilter().addToTerms("tree.path",
+                        Lists.newArrayList("/foo/bar")))), false);
+
+        DyHierarchy agg = new DyHierarchy();
+        agg.setFolderId(f.getId());
+        agg.setLevels(
+                ImmutableList.of(
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Year),
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Month),
+                        new DyHierarchyLevel("source.date", DyHierarchyLevelType.Day)));
+
+        dyhiService.generate(agg);
+
+        Folder year = folderService.get(f.getId(), "2014");
+        assertEquals(5, searchService.search(year.getSearch()).getHits().getTotalHits());
+
+        Folder month = folderService.get(year.getId(), "July");
+        assertEquals(5, searchService.search(month.getSearch()).getHits().getTotalHits());
+
+        Folder day = folderService.get(month.getId(), "4");
+        assertEquals(5, searchService.search(day.getSearch()).getHits().getTotalHits());
+
+        assertFalse(folderService.exists("/foo/2013"));
     }
 
     @Test
