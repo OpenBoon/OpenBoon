@@ -93,6 +93,21 @@ public class FolderServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testAddAssetToTaxonomyFolder() {
+
+        FolderSpec builder = new FolderSpec("bilbo");
+        Folder folder = folderService.create(builder);
+        taxonomyService.create(new TaxonomySpec(folder));
+        folder = folderService.get(folder.getId());
+
+        Map<String, List<Object>> results = folderService.addAssets(folder, assetService.getAll(
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+        refreshIndex(2000);
+
+        assertEquals(2, searchService.count(new AssetSearch().setQuery("bilbo")));
+    }
+
+    @Test
     public void testRemoveAssetFromTaxonomyFolder() {
 
         FolderSpec builder = new FolderSpec("Folder");
@@ -352,6 +367,33 @@ public class FolderServiceTests extends AbstractTest {
 
         folders = folderService.getAllDescendants(Lists.newArrayList(folder2), false, false);
         assertTrue(folders.isEmpty());
+    }
+
+    @Test
+    public void testUpdateWithNewTaxonomyParent() {
+
+        assertEquals(0, searchService.count(new AssetSearch().setQuery("bilbo")));
+
+        FolderSpec builder1 = new FolderSpec("bilbo");
+        Folder folder1 = folderService.create(builder1);
+        taxonomyService.create(new TaxonomySpec(folder1));
+        folder1 = folderService.get(folder1.getId());
+
+        FolderSpec builder2 = new FolderSpec("baggins");
+        Folder folder2 = folderService.create(builder2);
+
+        Map<String, List<Object>> results = folderService.addAssets(folder2, assetService.getAll(
+                Pager.first()).stream().map(a->a.getId()).collect(Collectors.toList()));
+        refreshIndex(1000);
+
+        assertEquals(0, searchService.count(new AssetSearch().setQuery("bilbo")));
+
+        folder2.setParentId(folder1.getId());
+        folderService.update(folder2.getId(), folder2);
+        refreshIndex(1000);
+
+        assertEquals(2, searchService.count(new AssetSearch().setQuery("bilbo")));
+        assertEquals(2, searchService.count(new AssetSearch().setQuery("baggins")));
     }
 
     @Test

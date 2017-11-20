@@ -298,8 +298,13 @@ public class TaxonomyServiceImpl implements TaxonomyService {
             taxonomyDao.setActive(tax, false);
         }
 
+
         logger.info("Taxonomy {} executed, {} assets updated in {} folders",
                 tax.getFolderId(), assetTotal.longValue(), folderTotal.intValue());
+
+        if (assetTotal.longValue() > 0) {
+            searchService.invalidateFields();
+        }
 
         return ImmutableMap.of(
                 "assetCount", assetTotal.longValue(),

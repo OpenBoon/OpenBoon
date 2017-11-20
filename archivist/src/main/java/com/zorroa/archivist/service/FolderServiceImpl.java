@@ -257,12 +257,13 @@ public class FolderServiceImpl implements FolderService {
                 invalidate(current, current.getParentId());
                 logService.logAsync(UserLogSpec.build(LogAction.Update, updated));
 
-                Taxonomy tax = getParentTaxonomy(updated);
+                Folder folder = get(updated.getId());
+                Taxonomy tax = getParentTaxonomy(folder);
                 if (tax != null) {
                     /**
                      * In this case we force tag/untag the taxonomy.
                      */
-                    taxonomyService.tagTaxonomyAsync(tax, updated, true);
+                    taxonomyService.tagTaxonomyAsync(tax, folder, true);
                 }
             });
         }
