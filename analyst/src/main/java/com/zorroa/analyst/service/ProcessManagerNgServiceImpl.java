@@ -65,7 +65,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
     @Autowired
     ApplicationContext appContext;
 
-    @Value("${analyst.autoshutdown.idle-minutes}")
+    @Value("${analyst.executor.idleMinutesShutdown}")
     private int autoShutdownIdleMinutes;
 
     /**

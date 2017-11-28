@@ -123,12 +123,12 @@ public class NetworkEnvironmentUtils {
     public static final URI getPrivateUrl(ApplicationProperties properties) {
         return getUrl(getPrivateHostname(properties),
                 properties.getInt("server.port"),
-                properties.getBoolean("server.ssl.enabled"));
+                properties.getBoolean("server.ssl.enabled", false));
     }
 
     public static final URI getPublicUrl(ApplicationProperties properties) {
         return getUrl(getPublicHostname(properties),
                 properties.getInt("server.port"),
-                properties.getBoolean("server.ssl.enabled"));
+                properties.getBoolean("server.ssl.enabled", false));
     }
 }

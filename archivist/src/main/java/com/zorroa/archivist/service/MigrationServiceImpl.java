@@ -488,14 +488,6 @@ public class MigrationServiceImpl implements MigrationService {
         }
     }
 
-    private boolean snapshotExists(String name) {
-        File file =  properties.getPath("archivist.path.backups")
-                .resolve("index").resolve(name).toFile();
-        boolean exists = file.exists();
-        logger.info("Elastic snapshot exists: {}, '{}'", exists, file);
-        return exists;
-    }
-
     private static class ElasticMigrationProperties {
         private int version = 1;
         private boolean reindex = false;
