@@ -213,7 +213,7 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
                  * If there is no permissions.
                  */
                 source.setAttr("permissions", defaultPerms);
-                source.setAttr("zorroa.createdDate", new Date());
+                source.setAttr("origin.createdDate", new Date());
             }
 
             if (source.getLinks() != null) {
