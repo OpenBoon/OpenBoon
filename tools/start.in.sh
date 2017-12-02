@@ -13,12 +13,13 @@ export JAVA_TOOL_OPTIONS="-Djava.security.egd=file:/dev/./urandom"
 # For linux we detect the mem and default to 1/2 the memory
 #
 
-if [[ "$OSTYPE" == "linux-gnu" ] && [ "$APP_NAME" == "archivist" ]]; then
+if [ "$OSTYPE" == "linux-gnu" ] && [ "$APP_NAME" == "archivist" ]
+then
     MEM=`cat /proc/meminfo | grep MemTotal | awk '{printf ("%0.fm", $2/2/1024)}'`
     JAVA_OPTS="$JAVA_OPTS -Xms$MEM"
     JAVA_OPTS="$JAVA_OPTS -Xmx$MEM"
 else
-    JAVA_OPTS="$JAVA_OPTS -Xms1g"
+    JAVA_OPTS="$JAVA_OPTS -Xms256m"
     JAVA_OPTS="$JAVA_OPTS -Xmx1g"
 fi
 
