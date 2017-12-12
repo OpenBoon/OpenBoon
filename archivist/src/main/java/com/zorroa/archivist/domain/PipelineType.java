@@ -8,5 +8,6 @@ public enum PipelineType {
     Export,
     Batch,
     Training,
-    Generate
+    Generate,
+    Collect
 }
