@@ -166,10 +166,10 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             zpsTask.setArgs(Json.deserialize(task.getArgMap(), Json.GENERIC_MAP));
             zpsTask.setEnv(task.getEnv());
             zpsTask.setLogPath(task.getLogPath());
+            zpsTask.setWorkPath(task.getWorkDir());
             zpsTask.setScriptPath(task.getScriptPath());
 
-            MetaZpsExecutor zps = new MetaZpsExecutor(zpsTask,
-                    new SharedData(task.getSharedDir()));
+            MetaZpsExecutor zps = new MetaZpsExecutor(zpsTask, new SharedData(task.getSharedDir()));
             zps.addReactionHandler((zpsTask1, sharedData, reaction) -> {
 
                 /**
