@@ -128,10 +128,10 @@ public class PipelineServiceImpl implements PipelineService {
      * The types of processors that can be found in each pipeline type.
      */
     private static final Map<PipelineType, Set<String>> ALLOWED_TYPES = ImmutableMap.of(
-            PipelineType.Generate, ImmutableSet.of("generator"),
-            PipelineType.Import, ImmutableSet.of("document"),
-            PipelineType.Export, ImmutableSet.of("document"),
-            PipelineType.Batch, ImmutableSet.of("document"),
+            PipelineType.Generate, ImmutableSet.of("Generate"),
+            PipelineType.Import, ImmutableSet.of("Import"),
+            PipelineType.Export, ImmutableSet.of("Export"),
+            PipelineType.Batch, ImmutableSet.of("Batch"),
             PipelineType.Training, ImmutableSet.of("training", "document"));
 
     @Override

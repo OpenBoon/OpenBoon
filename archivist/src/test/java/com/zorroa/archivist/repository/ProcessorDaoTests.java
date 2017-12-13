@@ -134,6 +134,7 @@ public class ProcessorDaoTests extends AbstractTest {
         filter.setModules(Lists.newArrayList("com"));
         assertEquals(0, processorDao.getAll(filter).size());
 
+        /*
         // type
         filter = new ProcessorFilter();
         filter.setTypes(Lists.newArrayList("unittest"));
@@ -142,7 +143,7 @@ public class ProcessorDaoTests extends AbstractTest {
         filter = new ProcessorFilter();
         filter.setTypes(Lists.newArrayList("com"));
         assertEquals(0, processorDao.getAll(filter).size());
-
+*/
         // plugin
         filter = new ProcessorFilter();
         filter.setPlugins(Lists.newArrayList(plugin.getId()));

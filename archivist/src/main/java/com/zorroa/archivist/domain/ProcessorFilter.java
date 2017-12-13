@@ -14,7 +14,7 @@ public class ProcessorFilter extends DaoFilter {
     private static final Map<String,String> sortMap = ImmutableMap.<String, String>builder()
             .put("id", "processor.pk_processor")
             .put("name", "processor.str_name")
-            .put("type", "processor.str_type")
+            .put("type", "processor.int_type")
             .put("shortName", "processor.str_short_name")
             .put("module", "processor.str_module")
             .put("description", "processor.str_description")
@@ -26,7 +26,7 @@ public class ProcessorFilter extends DaoFilter {
     private List<String> modules;
     private List<String> names;
     private List<String> shortNames;
-    private List<String> types;
+    private List<PipelineType> types;
     private List<Integer> plugins;
 
     public List<String> getModules() {
@@ -56,11 +56,11 @@ public class ProcessorFilter extends DaoFilter {
         return this;
     }
 
-    public List<String> getTypes() {
+    public List<PipelineType> getTypes() {
         return types;
     }
 
-    public ProcessorFilter setTypes(List<String> types) {
+    public ProcessorFilter setTypes(List<PipelineType> types) {
         this.types = types;
         return this;
     }
@@ -83,8 +83,10 @@ public class ProcessorFilter extends DaoFilter {
         }
 
         if (JdbcUtils.isValid(types)) {
-            where.add(JdbcUtils.in("processor.str_type", types.size()));
-            values.addAll(types);
+            where.add(JdbcUtils.in("processor.int_type", types.size()));
+            for (PipelineType type: types) {
+                values.add(type.ordinal());
+            }
         }
 
         if (JdbcUtils.isValid(shortNames)) {

@@ -21,7 +21,7 @@ public class Processor {
     private String name;
     private String shortName;
     private String module;
-    private String type;
+    private PipelineType type;
     private List<Map<String,Object>> display;
 
     // Properties from parent Plugin
@@ -85,11 +85,11 @@ public class Processor {
         return this;
     }
 
-    public String getType() {
+    public PipelineType getType() {
         return type;
     }
 
-    public Processor setType(String type) {
+    public Processor setType(PipelineType type) {
         this.type = type;
         return this;
     }

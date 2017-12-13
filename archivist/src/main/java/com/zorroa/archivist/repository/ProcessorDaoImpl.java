@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
+import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
@@ -40,7 +41,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
                     "str_name",
                     "str_short_name",
                     "str_module",
-                    "str_type",
+                    "int_type",
                     "str_description",
                     "json_display",
                     "json_filters",
@@ -70,7 +71,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             ps.setString(2, spec.getClassName());
             ps.setString(3, shortName);
             ps.setString(4, module);
-            ps.setString(5, spec.getType());
+            ps.setInt(5, PipelineType.valueOf(spec.getType()).ordinal());
             ps.setString(6, spec.getDescription() == null ? shortName : spec.getDescription());
             ps.setString(7, Json.serializeToString(spec.getDisplay(), "[]"));
             ps.setString(8, Json.serializeToString(spec.getFilters(), "[]"));
@@ -89,7 +90,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         p.setName(rs.getString("str_name"));
         p.setShortName(rs.getString("str_short_name"));
         p.setModule(rs.getString("str_module"));
-        p.setType(rs.getString("str_type"));
+        p.setType(PipelineType.values()[rs.getInt("int_type")]);
         p.setDescription(rs.getString("str_description"));
         p.setDisplay(Json.deserialize(rs.getString("json_display"), new TypeReference<List<Map<String, Object>>>() {}));
         p.setFilters(Json.deserialize(rs.getString("json_filters"), Json.LIST_OF_STRINGS));
@@ -107,7 +108,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             "processor.str_name,"+
             "processor.str_short_name,"+
             "processor.str_module,"+
-            "processor.str_type,"+
+            "processor.int_type,"+
             "processor.str_description,"+
             "processor.json_display,"+
             "processor.json_filters, " +
@@ -185,7 +186,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     private static final RowMapper<ProcessorRef> REF_MAPPER = (rs, row) -> {
         ProcessorRef ref = new ProcessorRef();
-        ref.setType(rs.getString("str_type"));
+        ref.setType(PipelineType.values()[rs.getInt("int_type")].name());
         ref.setClassName(rs.getString("str_name"));
         ref.setLanguage(rs.getString("plugin_lang"));
         ref.setFileTypes(Json.deserialize(rs.getString("json_file_types"), Json.SET_OF_STRINGS));
@@ -200,7 +201,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
     private static final String GET_REF =
         "SELECT " +
             "processor.str_name,"+
-            "processor.str_type,"+
+            "processor.int_type,"+
             "processor.json_filters, "+
             "processor.json_file_types,"+
             "plugin.str_lang AS plugin_lang " +

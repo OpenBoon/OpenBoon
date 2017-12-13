@@ -168,9 +168,12 @@ public class IndexController {
     @RequestMapping("/gui/pipelines/{id}")
     public String getPipeline(Model model, @PathVariable int id) {
         standardModel(model);
+
+        Pipeline pipeline = pipelineService.get(id);
+
         model.addAttribute("pipeline", pipelineService.get(id));
         model.addAttribute("processors", pluginService.getAllProcessors(
-                new ProcessorFilter().setTypes(ImmutableList.of("document"))));
+                new ProcessorFilter().setTypes(ImmutableList.of(pipeline.getType()))));
         model.addAttribute("pipelineSpec", new PipelineSpecV());
         return "pipeline";
     }

@@ -342,7 +342,8 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public List<Processor> getAllProcessors(ProcessorFilter filter) {
+    public List<Processor> getAllProcessors(
+            ProcessorFilter filter) {
         return processorDao.getAll(filter);
     }
 
