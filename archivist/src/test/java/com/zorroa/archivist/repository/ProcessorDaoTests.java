@@ -53,7 +53,7 @@ public class ProcessorDaoTests extends AbstractTest {
         pspec.setClassName("com.foo.Bar");
         pspec.setDisplay(Lists.newArrayList());
         pspec.setFilters(ImmutableList.of("_doc.source.extension=='jpg'"));
-        pspec.setType("unittest");
+        pspec.setType("Import");
 
         proc = processorDao.create(plugin, pspec);
     }
@@ -63,7 +63,7 @@ public class ProcessorDaoTests extends AbstractTest {
 
         assertEquals(spec.getClassName(), pr.getName());
         assertEquals(spec.getDescription(), pr.getDescription());
-        assertEquals(spec.getType(), pr.getType());
+        assertEquals(spec.getType(), pr.getType().toString());
         assertEquals(spec.getFilters().size(), pr.getFilters().size());
         assertEquals(spec.getDisplay(), pr.getDisplay());
 
