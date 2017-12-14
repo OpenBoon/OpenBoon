@@ -64,7 +64,7 @@ public class PluginServiceTests extends AbstractTest {
         pspec.setDisplay(Lists.newArrayList());
         pspec.setFileTypes(Sets.newHashSet("foo"));
         pspec.setFilters(Lists.newArrayList("_doc.source.extension=='jpg'"));
-        pspec.setType("unittest");
+        pspec.setType("Import");
 
         proc = processorDao.create(plugin, pspec);
     }

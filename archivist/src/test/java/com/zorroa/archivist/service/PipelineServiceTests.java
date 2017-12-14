@@ -51,10 +51,10 @@ public class PipelineServiceTests extends AbstractTest {
         assertEquals(PipelineType.Generate, pl.getType());
 
         ProcessorRef gen = pl.getProcessors().get(0);
-        assertEquals("generator", gen.getType());
+        assertEquals("Generate", gen.getType());
 
         ProcessorRef exec = gen.getExecute().get(0);
-        assertEquals("document", exec.getType());
+        assertEquals("Import", exec.getType());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -70,7 +70,6 @@ public class PipelineServiceTests extends AbstractTest {
         spec.setType(PipelineType.Generate);
         pipelineService.create(spec);
     }
-
 
     @Test
     public void testGet() {
