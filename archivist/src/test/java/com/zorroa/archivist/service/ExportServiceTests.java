@@ -1,22 +1,14 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.ExportSpec;
-import com.zorroa.archivist.domain.Job;
-import com.zorroa.common.cluster.thrift.TaskStartT;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.Document;
-import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
-import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -44,10 +36,9 @@ public class ExportServiceTests extends AbstractTest {
         refreshIndex();
     }
 
-
     @Test
-    public void testCreate() {
-        spec = new ExportSpec();
+    public void testCreateV2() {
+        ExportSpecV2 spec = new ExportSpecV2();
         spec.setName("test");
         spec.setSearch(new AssetSearch().setQuery("cats"));
         job = exportService.create(spec);
@@ -57,21 +48,42 @@ public class ExportServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testCreateWithFields() throws IOException {
-        spec = new ExportSpec();
+    public void testCreateAndGetExportFile() {
+        ExportSpecV2 spec = new ExportSpecV2();
         spec.setName("test");
-        spec.setFields(ImmutableList.of("source.mediaType", "source.filename"));
         spec.setSearch(new AssetSearch().setQuery("cats"));
         job = exportService.create(spec);
 
-        List<TaskStartT> tasks =
-                jobExecutorService.getWaitingTasks("localhost:8065", 5);
-        ZpsScript script = Json.Mapper.readValue(
-                new File(tasks.get(0).getScriptPath()), ZpsScript.class);
-        for (ProcessorRef ref: script.getExecute()) {
-            if (ref.getClassName().endsWith("MetadataExporter")) {
-                assertEquals((List)spec.getFields(),ref.getArgs().get("fields"));
-            }
-        }
+        ExportFile file1 = exportService.createExportFile(job, new ExportFileSpec()
+                .setMimeType("application/octet-stream")
+                .setName("foo.zip")
+                .setSize(100));
+        ExportFile file2 = exportService.getExportFile(file1.getId());
+        assertEquals(file1, file2);
+        assertEquals(file1.getJobId(), file2.getJobId());
+        assertEquals(file1.getMimeType(), file2.getMimeType());
+        assertEquals(file1.getName(), file2.getName());
+        assertEquals(file1.getSize(), file2.getSize());
     }
+
+    @Test
+    public void testGetAllExportFiles() {
+
+        ExportSpecV2 spec = new ExportSpecV2();
+        spec.setName("test");
+        spec.setSearch(new AssetSearch().setQuery("cats"));
+        job = exportService.create(spec);
+
+        for (int i=0; i<10; i++) {
+            exportService.createExportFile(job, new ExportFileSpec()
+                    .setMimeType("application/octet-stream")
+                    .setName("foo"+ i +".zip")
+                    .setSize(1024));
+        }
+
+        List<ExportFile> files = exportService.getAllExportFiles(job);
+        assertEquals(10, files.size());
+
+    }
+
 }

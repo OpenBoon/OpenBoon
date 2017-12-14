@@ -19,7 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -40,9 +41,15 @@ public class ExportController {
     @Autowired
     EventLogService logService;
 
-    @RequestMapping(value="/api/v1/exports", method= RequestMethod.POST)
-    public Object create(@RequestBody ExportSpec spec) {
+    @RequestMapping(value="/api/v2/exports", method= RequestMethod.POST)
+    public Object create(@RequestBody ExportSpecV2 spec) {
         return exportService.create(spec);
+    }
+
+    @RequestMapping(value="/api/v1/exports/{id}/_file", method= RequestMethod.POST)
+    public Object createExportFile(@PathVariable int id, @RequestBody ExportFileSpec spec) {
+        Job job = jobService.get(id);
+        return exportService.createExportFile(job, spec);
     }
 
     @RequestMapping(value="/api/v1/exports/{id}", method= RequestMethod.GET)
@@ -57,13 +64,18 @@ public class ExportController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/api/v1/exports/{id}/_stream", method = RequestMethod.GET)
-    public ResponseEntity<FileSystemResource> getExport(@PathVariable int id) {
+    @RequestMapping(value = "/api/v2/exports/{id}/_stream/{fileId}", method = RequestMethod.GET)
+    public ResponseEntity<FileSystemResource> getExport(@PathVariable int id, @PathVariable long fileId) {
+        ExportFile file = exportService.getExportFile(fileId);
         Job job = jobService.get(id);
+
         /**
          * Don't let people download other people's exports, as its not possible
          * to know if they have access to each individual file.
          */
+        if (job.getJobId() != file.getJobId()) {
+            throw new ArchivistReadException("Invalid export file");
+        }
         if (job.getUser().getId() != SecurityUtils.getUser().getId()) {
             throw new ArchivistReadException("Invalid export for " +  SecurityUtils.getUsername());
         }
@@ -71,15 +83,16 @@ public class ExportController {
             throw new ArchivistReadException("Export is not complete.");
         }
 
+
         logExportDownload(id);
 
-        File file = new File((String)job.getArgs().get("outputFile"));
+        Path path = Paths.get(job.getRootPath()).resolve("exported").resolve(file.getName());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("content-disposition", "attachment; filename=" + job.getName() + ".zip");
-        headers.setContentType(MediaType.valueOf("application/zip"));
-        headers.setContentLength(file.length());
-        ResponseEntity response = new ResponseEntity(new FileSystemResource(file), headers, HttpStatus.OK);
+        headers.add("content-disposition", "attachment; filename=" + file.getName());
+        headers.setContentType(MediaType.valueOf(file.getMimeType()));
+        headers.setContentLength(file.getSize());
+        ResponseEntity response = new ResponseEntity(new FileSystemResource(path.toFile()), headers, HttpStatus.OK);
         return response;
     }
 

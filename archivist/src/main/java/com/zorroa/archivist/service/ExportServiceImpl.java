@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.AssetDao;
+import com.zorroa.archivist.repository.ExportDao;
 import com.zorroa.archivist.repository.JobDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
@@ -12,6 +13,7 @@ import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.ExportArgs;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
@@ -40,6 +42,9 @@ public class ExportServiceImpl implements ExportService {
 
     @Autowired
     JobDao jobDao;
+
+    @Autowired
+    ExportDao exportDao;
 
     @Autowired
     PipelineService pipelineService;
@@ -112,10 +117,26 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public Job create(ExportSpec spec) {
+    public ExportFile createExportFile(Job job, ExportFileSpec spec) {
+        return exportDao.createExportFile(job, spec);
+    }
+
+    @Override
+    public ExportFile getExportFile(long id) {
+        return exportDao.getExportFile(id);
+    }
+
+    @Override
+    public List<ExportFile> getAllExportFiles(Job job) {
+        return exportDao.getAllExportFiles(job);
+    }
+
+    @Override
+    public Job create(ExportSpecV2 spec) {
 
         JobSpec jspec = new JobSpec();
         jspec.setType(PipelineType.Export);
+
         if (spec.getName() == null) {
             jspec.setName(String.format("export by %s", SecurityUtils.getUsername()));
         }
@@ -125,18 +146,17 @@ public class ExportServiceImpl implements ExportService {
 
         jobDao.nextId(jspec);
         Path jobRoot = jobService.resolveJobRoot(jspec);
-        Path exportRoot = jobRoot.resolve("exported");
-        Path zipFile = exportRoot.resolve(jspec.getName() + ".zip");
 
-        jspec.putToArgs("exportId", jspec.getJobId());
-        jspec.putToArgs("outputRoot", exportRoot.toString());
-        jspec.putToArgs("outputFile", zipFile.toString());
         Job job = jobService.launch(jspec);
 
         /**
          * Now start to build the script for the task.
          */
         ZpsScript script = new ZpsScript();
+        script.putToGlobals("exportArgs", new ExportArgs()
+                        .setExportId(jspec.getJobId())
+                        .setExportName(jspec.getName())
+                        .setExportRoot(jobRoot.resolve("exported").toString()));
 
         /**
          * This entire job runs in a single frame.  If this is eventually set False
@@ -144,12 +164,13 @@ public class ExportServiceImpl implements ExportService {
          */
         script.setInline(true);
 
-
         /**
          * Arrays for the primary and per-asset pipeline.
          */
         List<ProcessorRef> generate = Lists.newArrayList();
-        List<ProcessorRef> execute = Lists.newArrayList();
+        List<ProcessorRef> execute = pipelineService.mungePipelines(
+                spec.getPipelineIds(), spec.getProcessors());
+
         script.setGenerate(generate);
         script.setExecute(execute);
 
@@ -164,49 +185,9 @@ public class ExportServiceImpl implements ExportService {
                 ImmutableMap.of("search", params.search)));
 
         /**
-         * Now setup the per file export pipeline.  A CopySource processors is
-         * prepended in case we need to modify the original source.  Then any
-         * modifications by the user.  Finally a CompressSource is appended.  All
-         * of this is run inline to the generator.
+         * Add the collector which registers ouputs with the server.
          */
-        String dstDirectory = exportRoot.resolve("tmp_" + System.currentTimeMillis()).toString();
-
-        if (spec.isIncludeSource()) {
-            execute.add(new ProcessorRef()
-                    .setClassName("com.zorroa.core.processor.CopySource")
-                    .setLanguage("java")
-                    .setArgs(ImmutableMap.of("dstDirectory", dstDirectory)));
-        }
-
-        if (params.pages) {
-            execute.add(new ProcessorRef()
-                    .setClassName("com.zorroa.core.processor.PdfPageExporter")
-                    .setLanguage("java")
-                    .setArgs(ImmutableMap.of("dstFile",
-                            dstDirectory  + "/" + jspec.getName() + ".pdf")));
-        }
-
-        if (spec.getPipelineId() != null) {
-            for (ProcessorRef ref: pipelineService.get(spec.getPipelineId()).getProcessors()) {
-                execute.add(pluginService.getProcessorRef(ref));
-            }
-        }
-
-        if (spec.getFields() != null) {
-            execute.add(new ProcessorRef()
-                    .setClassName("com.zorroa.core.processor.MetadataExporter")
-                    .setLanguage("java")
-                    .setArgs(ImmutableMap.of("fields", spec.getFields(),
-                            "dstFile", dstDirectory + "/" + jspec.getName() + ".csv")));
-        }
-
-        execute.add(new ProcessorRef()
-                .setClassName("com.zorroa.core.processor.CompressDirectory")
-                .setLanguage("java")
-                .setArgs(ImmutableMap.of("dstFile", zipFile.toString(),
-                        "srcDirectory", dstDirectory,
-                        "removeSrcDirectory", true,
-                        "zipEntryRoot", jspec.getName())));
+        execute.add(pluginService.getProcessorRef("com.zorroa.core.collector.ExportCollector"));
 
         jobService.createTask(new TaskSpec()
                 .setJobId(job.getJobId())
