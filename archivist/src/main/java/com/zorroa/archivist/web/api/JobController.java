@@ -45,13 +45,20 @@ public class JobController {
         return HttpUtils.status("job", id, "retry-all-failures", true);
     }
 
-    @RequestMapping(value="/api/v1/jobs/{id}/_append", method = RequestMethod.POST)
-    public Object append(@RequestBody TaskSpecV spec) throws IOException {
+    /**
+     * Currently only called by cloud proxy to continue processing of an asset.
+     *
+     * @param spec
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="/api/v1/jobs/{id}/_continue_import", method = RequestMethod.POST)
+    public Object continueImport(@RequestBody TaskSpecV spec) throws IOException {
         Job job = jobService.get(spec.getJobId());
         if (job.getUser().getId() != SecurityUtils.getUser().getId()) {
             throw new IllegalArgumentException("Invalid user for appending to job");
         }
-        return jobService.createTask(spec);
+        return jobService.continueImportTask(spec);
     }
 
     @RequestMapping(value="/api/v1/jobs/{id}", method = RequestMethod.GET)

@@ -33,12 +33,13 @@ public interface JobService {
 
     /**
      * Create a new task with a validated TaskSpecV.  The validated spec
-     * can only reference a pipeline.
+     * can only reference a pipeline.  Currently this is only called
+     * by CloudProxy
      *
      * @param spec
      * @return
      */
-    Task createTask(TaskSpecV spec);
+    Task continueImportTask(TaskSpecV spec);
 
     /**
      * Create a new task.

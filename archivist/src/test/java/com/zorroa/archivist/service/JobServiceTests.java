@@ -81,7 +81,7 @@ public class JobServiceTests extends AbstractTest {
     }
 
     @Test
-    public void createTask() {
+    public void testContinueImportTask() {
 
         Pipeline p = pipelineService.create(new PipelineSpecV()
                 .setDescription("A pipeline")
@@ -95,7 +95,7 @@ public class JobServiceTests extends AbstractTest {
         tsv.setDocs(Lists.newArrayList(new Document()));
         tsv.setPipelineId(p.getId());
 
-        Task task = jobService.createTask(tsv);
+        Task task = jobService.continueImportTask(tsv);
         assertEquals(job.getId(), job.getId());
         assertEquals(2, jobService.getAllTasks(job.getJobId(), Pager.first()).size());
     }

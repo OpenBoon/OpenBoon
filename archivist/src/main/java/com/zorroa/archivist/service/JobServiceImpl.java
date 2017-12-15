@@ -235,12 +235,13 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Task createTask(TaskSpecV spec) {
+    public Task continueImportTask(TaskSpecV spec) {
         /**
          * Use the standard pipeline if one is not set.
          */
+
         if (spec.getPipelineId() == null || spec.getPipelineId() <= 0) {
-            Pipeline pl = pipelineDao.getStandard();
+            Pipeline pl = pipelineDao.getStandard(PipelineType.Import);
             spec.setPipelineId(pl.getId());
         }
 
