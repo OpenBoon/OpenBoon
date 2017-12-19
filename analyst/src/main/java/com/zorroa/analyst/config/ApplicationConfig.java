@@ -45,8 +45,7 @@ public class ApplicationConfig {
         }
 
         System.setProperty("analyst.executor.threads", String.valueOf(threads));
-        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>(
-                threads * 10);
+        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>();
 
         ThreadPoolExecutor tp = new ThreadPoolExecutor(threads, threads, 30,
                 TimeUnit.MINUTES, linkedBlockingDeque,

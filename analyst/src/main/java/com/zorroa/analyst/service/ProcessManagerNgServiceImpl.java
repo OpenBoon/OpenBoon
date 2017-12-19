@@ -5,7 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.AbstractScheduledService;
+import com.google.common.util.concurrent.*;
 import com.zorroa.analyst.Application;
 import com.zorroa.analyst.cluster.ClusterProcess;
 import com.zorroa.common.cluster.client.ClusterConnectionException;
@@ -31,6 +31,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nullable;
 import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +42,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -57,7 +62,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
     ApplicationProperties properties;
 
     @Autowired
-    ThreadPoolExecutor analyzeExecutor;
+    ListeningExecutorService analyzeExecutor;
 
     @Autowired
     NetworkEnvironment networkEnvironment;
@@ -89,6 +94,8 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
 
     private long hostListLoadedTime = 0;
 
+    private final AtomicInteger taskCount = new AtomicInteger(0);
+
     @Override
     public List<Integer> getTaskIds() {
         return ImmutableList.copyOf(processMap.keySet());
@@ -102,7 +109,29 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             throw new ClusterException("The task is already queued or executing.");
         }
         logger.info("Submitting task to execute: {}, total tasks {}", task.getId(), processMap.size());
-        analyzeExecutor.submit(()->runClusterProcess(process));
+        ListenableFuture future = analyzeExecutor.submit(() -> {
+            try {
+                runClusterProcess(process);
+            } catch (IOException e) {
+                logger.warn("Failed to run cluster process: ", e);
+            }
+        });
+
+        taskCount.incrementAndGet();
+
+        Futures.addCallback(future, new FutureCallback() {
+
+            @Override
+            public void onSuccess(@Nullable Object o) {
+                taskCount.decrementAndGet();
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                taskCount.decrementAndGet();
+            }
+        } ,analyzeExecutor);
+
         return process;
     }
 
@@ -378,8 +407,9 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
             return;
         }
 
+        int iTaskCount = taskCount.get();
         int threads = properties.getInt("analyst.executor.threads");
-        if (analyzeExecutor.getActiveCount() >= threads) {
+        if (iTaskCount >= threads) {
             autoShutdownMarker = System.currentTimeMillis();
             return;
         }
@@ -396,7 +426,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                     continue;
                 }
 
-                int count = threads - analyzeExecutor.getActiveCount();
+                int count = threads - iTaskCount;
                 if (count <= 0) {
                     continue;
                 }
@@ -411,7 +441,7 @@ public class ProcessManagerNgServiceImpl  extends AbstractScheduledService
                             queueClusterTask(task);
                         }
                     }
-                    else if (autoShutdownIdleMinutes > 0 && analyzeExecutor.getActiveCount() == 0 &&
+                    else if (autoShutdownIdleMinutes > 0 && iTaskCount == 0 &&
                                 System.currentTimeMillis() - (autoShutdownIdleMinutes * 60000) > autoShutdownMarker) {
                         logger.warn("No tasks to process for {} minutes, shutting down!!", autoShutdownIdleMinutes);
                         initiateShutdown();
