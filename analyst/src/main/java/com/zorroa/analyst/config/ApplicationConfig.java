@@ -1,8 +1,6 @@
 package com.zorroa.analyst.config;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +15,8 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by chambers on 2/12/16.
@@ -35,7 +31,7 @@ public class ApplicationConfig {
     ApplicationProperties properties;
 
     @Bean
-    public ThreadPoolExecutor analyzeThreadPool() {
+    public ExecutorService analyzeThreadPool() {
         int threads = properties.getInt("analyst.executor.threads");
         if (threads == 0) {
             threads = Runtime.getRuntime().availableProcessors();
@@ -43,21 +39,8 @@ public class ApplicationConfig {
         else if (threads < 0) {
             threads = Runtime.getRuntime().availableProcessors() / 2;
         }
-
         System.setProperty("analyst.executor.threads", String.valueOf(threads));
-        BlockingQueue<Runnable> linkedBlockingDeque = new LinkedBlockingDeque<>();
-
-        ThreadPoolExecutor tp = new ThreadPoolExecutor(threads, threads, 30,
-                TimeUnit.MINUTES, linkedBlockingDeque,
-                new ThreadPoolExecutor.AbortPolicy());
-
-        return tp;
-    }
-
-    @Bean
-    @Autowired
-    public ListeningExecutorService analyzeExecutor(ThreadPoolExecutor analyzeThreadPool) {
-        return MoreExecutors.listeningDecorator(analyzeThreadPool);
+        return Executors.newFixedThreadPool(threads);
     }
 
     @Bean
