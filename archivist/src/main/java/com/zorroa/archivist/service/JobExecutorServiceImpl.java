@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * JobExecutorService is responsible for pulling tasks out of elastic and
@@ -106,7 +107,11 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             }
         }
         if (!result.isEmpty()) {
-            logger.info("{} asking for {} tasks, returned {}", url, count, result.size());
+            String taskIds = result
+                    .stream()
+                    .map(s -> String.valueOf(s.getId()))
+                    .collect(Collectors.joining());
+            logger.info("{} asking for {} tasks, returned {}", url, taskIds, result.size());
         }
         return result;
     }
