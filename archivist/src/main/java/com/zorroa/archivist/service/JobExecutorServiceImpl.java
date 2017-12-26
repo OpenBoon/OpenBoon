@@ -102,7 +102,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
 
         List<TaskStartT> result = Lists.newArrayListWithCapacity(count);
         for (TaskStartT task : taskDao.getWaiting(count)) {
-            if (jobService.setTaskQueued(taskDao.get(task.id), url)) {
+            if (jobService.setTaskQueued(new TaskIdImpl(task), url)) {
                 result.add(task);
             }
         }
@@ -110,7 +110,7 @@ public class JobExecutorServiceImpl extends AbstractScheduledService
             String taskIds = result
                     .stream()
                     .map(s -> String.valueOf(s.getId()))
-                    .collect(Collectors.joining());
+                    .collect(Collectors.joining(","));
             logger.info("{} asking for {} tasks, returned {}", url, taskIds, result.size());
         }
         return result;
