@@ -54,8 +54,8 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
 
 
         if (spec.isStandard()) {
-            jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=?",
-                    false, true);
+            jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=? AND int_type=?",
+                    false, true, spec.getType().ordinal());
         }
 
         /*
@@ -81,10 +81,10 @@ public class PipelineDaoImpl extends AbstractDao implements PipelineDao {
     }
 
     @Override
-    public Pipeline getStandard() {
+    public Pipeline getStandard(PipelineType type) {
         try {
-            return jdbc.queryForObject("SELECT * FROM pipeline WHERE bool_standard=? LIMIT 1",
-                    MAPPER, true);
+            return jdbc.queryForObject("SELECT * FROM pipeline WHERE bool_standard=? AND int_type=? LIMIT 1",
+                    MAPPER, true, type.ordinal());
         } catch(EmptyResultDataAccessException e) {
             throw new EmptyResultDataAccessException("Failed to find a standard pipeline", 1);
         }

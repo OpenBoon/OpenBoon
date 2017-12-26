@@ -322,21 +322,32 @@ public class PluginServiceImpl implements PluginService {
         }
         List<ProcessorRef> result = Lists.newArrayListWithCapacity(refs.size());
         for (ProcessorRef ref: refs) {
-            ProcessorRef ref2 = processorDao.getRef(ref.getClassName())
-                    .setArgs(ref.getArgs())
-                    .addToFilters(ref.getFilters())
-                    .setExecute(ref.getExecute());
-            if (ref.getFileTypes() != null) {
-                if (ref2.getFileTypes() == null) {
-                    ref2.setFileTypes(ref.getFileTypes());
+
+            Object pipeline = ref.getPipeline();
+            if (pipeline != null) {
+                if (pipeline instanceof Integer) {
+                    result.addAll(pipelineDao.get((int) pipeline).getProcessors());
                 }
                 else {
-                    ref2.getFileTypes().addAll(ref.getFileTypes());
+                    result.addAll(pipelineDao.get((String) pipeline).getProcessors());
                 }
             }
+            else {
+                ProcessorRef ref2 = processorDao.getRef(ref.getClassName())
+                        .setArgs(ref.getArgs())
+                        .addToFilters(ref.getFilters())
+                        .setExecute(ref.getExecute());
+                if (ref.getFileTypes() != null) {
+                    if (ref2.getFileTypes() == null) {
+                        ref2.setFileTypes(ref.getFileTypes());
+                    } else {
+                        ref2.getFileTypes().addAll(ref.getFileTypes());
+                    }
+                }
 
-            result.add(ref2);
-            ref2.setExecute(getProcessorRefs(ref2.getExecute()));
+                result.add(ref2);
+                ref2.setExecute(getProcessorRefs(ref2.getExecute()));
+            }
         }
         return result;
     }

@@ -21,12 +21,6 @@ public class AnalyzeSpec {
     @Nullable
     private List<ProcessorRef> processors;
 
-    /**
-     * Utilize a list of pre-existing pipelines. This could be the name or a numeric id.
-     */
-    @Nullable
-    private List<Object> pipelineIds;
-
     @Nullable
     private Map<String, Object> args;
 
@@ -45,15 +39,6 @@ public class AnalyzeSpec {
 
     public AnalyzeSpec setProcessors(List<ProcessorRef> processors) {
         this.processors = processors;
-        return this;
-    }
-
-    public List<Object> getPipelineIds() {
-        return pipelineIds;
-    }
-
-    public AnalyzeSpec setPipelineIds(List<Object> pipelineIds) {
-        this.pipelineIds = pipelineIds;
         return this;
     }
 

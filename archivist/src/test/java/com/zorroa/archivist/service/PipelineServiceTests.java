@@ -28,7 +28,7 @@ public class PipelineServiceTests extends AbstractTest {
     public void init() {
         spec = new PipelineSpecV();
         spec.setProcessors(Lists.newArrayList(
-                new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+                new ProcessorRef("com.zorroa.core.common.GroupProcessor")));
         spec.setDescription("A NoOp");
         spec.setName("test");
         spec.setType(PipelineType.Import);
@@ -39,7 +39,7 @@ public class PipelineServiceTests extends AbstractTest {
     public void testCreateNestedGenerate() {
 
         ProcessorRef ref = new ProcessorRef("com.zorroa.core.generator.FileListGenerator");
-        ref.setExecute(Lists.newArrayList(new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+        ref.setExecute(Lists.newArrayList(new ProcessorRef("com.zorroa.core.common.GroupProcessor")));
 
         spec = new PipelineSpecV();
         spec.setProcessors(Lists.newArrayList(ref));
@@ -54,7 +54,7 @@ public class PipelineServiceTests extends AbstractTest {
         assertEquals("Generate", gen.getType());
 
         ProcessorRef exec = gen.getExecute().get(0);
-        assertEquals("Import", exec.getType());
+        assertEquals("Common", exec.getType());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -90,7 +90,7 @@ public class PipelineServiceTests extends AbstractTest {
         int current = pipelineService.getAll().size();
         spec = new PipelineSpecV();
         spec.setProcessors(Lists.newArrayList(
-                new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+                new ProcessorRef("com.zorroa.core.common.GroupProcessor")));
         spec.setDescription("Test");
         spec.setName("test2");
         spec.setType(PipelineType.Import);

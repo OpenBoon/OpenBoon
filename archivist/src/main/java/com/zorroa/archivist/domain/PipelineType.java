@@ -9,5 +9,6 @@ public enum PipelineType {
     Batch,
     Training,
     Generate,
-    Collect
+    Collect,
+    Common
 }

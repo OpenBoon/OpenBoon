@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,9 +45,6 @@ public class ImportGuiController {
 
     @Autowired
     PluginService pluginService;
-
-    @Autowired
-    Validator validator;
 
     @RequestMapping("/gui/imports/{id}")
     public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
@@ -94,7 +90,7 @@ public class ImportGuiController {
 
         ImportSpec spec = new ImportSpec();
         spec.setName(serverImportForm.getName());
-        spec.setPipelineIds(Lists.newArrayList(serverImportForm.getPipelineId()));
+        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(serverImportForm.getPipelineId())));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         /**
@@ -141,7 +137,7 @@ public class ImportGuiController {
 
         ImportSpec spec = new ImportSpec();
         spec.setName("search import by " + SecurityUtils.getUsername());
-        spec.setPipelineIds(ImmutableList.of(searchImportForm.getPipelineId()));
+        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(searchImportForm.getPipelineId())));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         String searchJson = searchImportForm.getSearch();

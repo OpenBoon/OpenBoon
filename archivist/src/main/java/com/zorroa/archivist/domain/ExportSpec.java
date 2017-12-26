@@ -1,13 +1,19 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by chambers on 7/11/16.
+ * The ExportSpec describes and export.
+ *
+ * All export features are driven by pipelines.  If no processors or pipelines are
+ * specified, the export system will use the standard export pipeline as defined
+ * by the admin.
  */
 public class ExportSpec {
 
@@ -23,24 +29,14 @@ public class ExportSpec {
     private AssetSearch search;
 
     /**
-     * Export source files.
-     */
-    private boolean includeSource = true;
-
-    /**
-     * An optional list of fields to export with the data into a CSV file.
-     */
-    private List<String> fields;
-
-    /**
      * A custom pipeline to run the assets through. Can be null.
      */
-    protected List<ProcessorRef> pipeline;
+    public List<ProcessorRef> processors;
 
     /**
-     * Utilize a pre-existing import pipeline.
+     * Any global args to the script
      */
-    protected Integer pipelineId;
+    public Map<String, Object> args = ImmutableMap.of();
 
     public AssetSearch getSearch() {
         return search;
@@ -51,21 +47,12 @@ public class ExportSpec {
         return this;
     }
 
-    public List<ProcessorRef> getPipeline() {
-        return pipeline;
+    public List<ProcessorRef> getProcessors() {
+        return processors;
     }
 
-    public ExportSpec setPipeline(List<ProcessorRef> pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    public Integer getPipelineId() {
-        return pipelineId;
-    }
-
-    public ExportSpec setPipelineId(Integer pipelineId) {
-        this.pipelineId = pipelineId;
+    public ExportSpec setProcessors(List<ProcessorRef> processors) {
+        this.processors = processors;
         return this;
     }
 
@@ -78,21 +65,12 @@ public class ExportSpec {
         return this;
     }
 
-    public List<String> getFields() {
-        return fields;
+    public Map<String, Object> getArgs() {
+        return args;
     }
 
-    public ExportSpec setFields(List<String> fields) {
-        this.fields = fields;
-        return this;
-    }
-
-    public boolean isIncludeSource() {
-        return includeSource;
-    }
-
-    public ExportSpec setIncludeSource(boolean includeSource) {
-        this.includeSource = includeSource;
+    public ExportSpec setArgs(Map<String, Object> args) {
+        this.args = args;
         return this;
     }
 }

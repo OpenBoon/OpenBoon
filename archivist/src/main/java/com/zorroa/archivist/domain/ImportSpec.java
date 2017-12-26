@@ -27,26 +27,12 @@ public class ImportSpec {
      */
     public List<ProcessorRef> processors;
 
-    /**
-     * Load given pipeline ids in the give order
-     */
-    public List<Object> pipelineIds;
-
     public List<ProcessorRef> getProcessors() {
         return processors;
     }
 
     public ImportSpec setProcessors(List<ProcessorRef> processors) {
         this.processors = processors;
-        return this;
-    }
-
-    public List<Object> getPipelineIds() {
-        return pipelineIds;
-    }
-
-    public ImportSpec setPipelineIds(List<Object> pipelineIds) {
-        this.pipelineIds = pipelineIds;
         return this;
     }
 

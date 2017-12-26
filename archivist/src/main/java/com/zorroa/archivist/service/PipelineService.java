@@ -19,7 +19,7 @@ public interface PipelineService {
 
     Pipeline get(String name);
 
-    Pipeline getStandard();
+    Pipeline getStandard(PipelineType type);
 
     boolean exists(String s);
 
@@ -33,9 +33,7 @@ public interface PipelineService {
 
     List<ProcessorRef> validateProcessors(PipelineType pipelineType, List<ProcessorRef> refs);
 
-    List<ProcessorRef> getProcessors(Object pipelineId, List<ProcessorRef> custom);
-
-    List<ProcessorRef> mungePipelines(List<Object> pipelineIds, List<ProcessorRef> custom);
+    List<ProcessorRef> mungePipelines(PipelineType type, List<ProcessorRef> custom);
 
     boolean isValidPipelineId(Object value);
 }

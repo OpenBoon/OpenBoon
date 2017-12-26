@@ -3,7 +3,6 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.security.SecurityUtils;
@@ -75,8 +74,8 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public Pipeline getStandard() {
-        return pipelineDao.getStandard();
+    public Pipeline getStandard(PipelineType type) {
+        return pipelineDao.getStandard(type);
     }
 
     @Override
@@ -128,11 +127,11 @@ public class PipelineServiceImpl implements PipelineService {
      * The types of processors that can be found in each pipeline type.
      */
     private static final Map<PipelineType, Set<String>> ALLOWED_TYPES = ImmutableMap.of(
-            PipelineType.Generate, ImmutableSet.of("Generate"),
-            PipelineType.Import, ImmutableSet.of("Import"),
-            PipelineType.Export, ImmutableSet.of("Export"),
-            PipelineType.Batch, ImmutableSet.of("Batch"),
-            PipelineType.Training, ImmutableSet.of("training", "document"));
+            PipelineType.Generate, ImmutableSet.of("Generate", "Common"),
+            PipelineType.Import, ImmutableSet.of("Import", "Common"),
+            PipelineType.Export, ImmutableSet.of("Export", "Common"),
+            PipelineType.Batch, ImmutableSet.of("Batch", "Common"),
+            PipelineType.Training, ImmutableSet.of("Training", "Common"));
 
     @Override
     public List<ProcessorRef> validateProcessors(PipelineType pipelineType, List<ProcessorRef> refs) {
@@ -154,83 +153,21 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public  List<ProcessorRef> getProcessors(Object pipelineId, List<ProcessorRef> custom) {
-        List<ProcessorRef> result = Lists.newArrayListWithCapacity(12);
+    public List<ProcessorRef> mungePipelines(PipelineType type, List<ProcessorRef> procs) {
+        List<ProcessorRef> result = Lists.newArrayListWithCapacity(8);
 
-        if (JdbcUtils.isValid(custom)) {
-            for (ProcessorRef ref: custom) {
-                result.add(pluginService.getProcessorRef(ref));
-            }
+        if (procs != null) {
+            result.addAll(pluginService.getProcessorRefs(procs));
         }
-        else if (pipelineId != null) {
-            if (pipelineId instanceof Number) {
-                Number pid = (Number) pipelineId;
-                result.addAll(pluginService.getProcessorRefs(pid.intValue()));
-            }
-            else {
-                Pipeline p = get((String) pipelineId);
-                result.addAll(pluginService.getProcessorRefs(p.getId()));
-            }
-        }
-        else {
+
+        if (result.isEmpty()) {
             try {
-                Pipeline p = getStandard();
+                Pipeline p = getStandard(type);
                 result.addAll(pluginService.getProcessorRefs(p.getId()));
-            } catch (EmptyResultDataAccessException ignore) {
-                // If there1 is no standard, its just an empty pipeline.
+            } catch (EmptyResultDataAccessException e) {
+                // ignore the fact there is no standard.
             }
         }
-        return result;
-    }
-
-    @Override
-    public List<ProcessorRef> mungePipelines(List<Object> pipelineIds, List<ProcessorRef> processors) {
-        List<ProcessorRef> result = Lists.newArrayListWithCapacity(16);
-        int count = 0;
-
-        boolean processorsAdded = false;
-        if (pipelineIds != null) {
-            for (Object id : pipelineIds) {
-                Pipeline pipeline;
-                ProcessorRef ref = pluginService.getProcessorRef(
-                        "com.zorroa.core.processor.GroupProcessor");
-                result.add(ref);
-
-                if (id instanceof Number) {
-                    pipeline = get((int) id);
-                    ref.setExecute(pipeline.getProcessors());
-                    count+=ref.getExecute().size();
-                } else if (!processorsAdded && id.equals("#") && processors != null) {
-                    ref.setExecute(pluginService.getProcessorRefs(processors));
-                    count+=ref.getExecute().size();
-                    processorsAdded = true;
-                } else {
-                    pipeline = get((String) id);
-                    ref.setExecute(pipeline.getProcessors());
-                    count+=ref.getExecute().size();
-                }
-            }
-        }
-
-        if (!processorsAdded && processors != null) {
-            ProcessorRef ref = pluginService.getProcessorRef(
-                    "com.zorroa.core.processor.GroupProcessor");
-            ref.setExecute(pluginService.getProcessorRefs(processors));
-            result.add(ref);
-            count+=ref.getExecute().size();
-        }
-
-        if (count == 0) {
-            logger.warn("No processors specified, defaulting to standard");
-            try {
-                Pipeline p = getStandard();
-                result.addAll(pluginService.getProcessorRefs(p.getId()));
-            } catch (EmptyResultDataAccessException ignore) {
-                // If there1 is no standard, its just an empty pipeline.
-            }
-        }
-
-        logger.info("munged {} processors", count);
         return result;
     }
 

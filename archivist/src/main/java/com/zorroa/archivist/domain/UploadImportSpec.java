@@ -1,5 +1,7 @@
 package com.zorroa.archivist.domain;
 
+import com.zorroa.sdk.processor.ProcessorRef;
+
 import java.util.List;
 
 /**
@@ -14,16 +16,16 @@ public class UploadImportSpec {
     private String name;
 
     /**
-     * Utilize a pre-existing pipeline.
+     * A custom pipeline to run the assets through. Can be null.
      */
-    public List<Object> pipelineIds;
+    public List<ProcessorRef> processors;
 
-    public List<Object> getPipelineIds() {
-        return pipelineIds;
+    public List<ProcessorRef> getProcessors() {
+        return processors;
     }
 
-    public UploadImportSpec setPipelineIds(List<Object> pipelineIds) {
-        this.pipelineIds = pipelineIds;
+    public UploadImportSpec setProcessors(List<ProcessorRef> processors) {
+        this.processors = processors;
         return this;
     }
 

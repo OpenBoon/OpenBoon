@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.AnalyzeSpec;
+import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.common.cluster.client.ClusterConnectionException;
 import com.zorroa.common.cluster.client.WorkerNodeClient;
 import com.zorroa.common.cluster.thrift.StackElementT;
@@ -71,7 +72,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         script.setStrict(true);
 
         List<ProcessorRef> pipeline = Lists.newArrayList();
-        pipeline.addAll(pipelineService.mungePipelines(spec.getPipelineIds(), spec.getProcessors()));
+        pipeline.addAll(pipelineService.mungePipelines(PipelineType.Import, spec.getProcessors()));
         script.setExecute(pipeline);
 
         String lang;

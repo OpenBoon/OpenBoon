@@ -64,7 +64,7 @@ public class JobControllerTests extends MockMvcTest {
                         .setArg("search", new AssetSearch("test"))));
 
         script.setExecute(ImmutableList.of(
-                new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+                new ProcessorRef("com.zorroa.core.common.GroupProcessor")));
 
         JobSpecV spec = new JobSpecV();
         spec.setScript(script);

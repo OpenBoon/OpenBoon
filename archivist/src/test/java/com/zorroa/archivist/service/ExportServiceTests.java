@@ -37,10 +37,11 @@ public class ExportServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testCreateV2() {
-        ExportSpecV2 spec = new ExportSpecV2();
+    public void testCreate() {
+        ExportSpec spec = new ExportSpec();
         spec.setName("test");
         spec.setSearch(new AssetSearch().setQuery("cats"));
+
         job = exportService.create(spec);
         int count = jdbc.queryForObject(
                 "SELECT COUNT(1) FROM task WHERE pk_job=?", Integer.class, job.getJobId());
@@ -49,7 +50,7 @@ public class ExportServiceTests extends AbstractTest {
 
     @Test
     public void testCreateAndGetExportFile() {
-        ExportSpecV2 spec = new ExportSpecV2();
+        ExportSpec spec = new ExportSpec();
         spec.setName("test");
         spec.setSearch(new AssetSearch().setQuery("cats"));
         job = exportService.create(spec);
@@ -69,7 +70,7 @@ public class ExportServiceTests extends AbstractTest {
     @Test
     public void testGetAllExportFiles() {
 
-        ExportSpecV2 spec = new ExportSpecV2();
+        ExportSpec spec = new ExportSpec();
         spec.setName("test");
         spec.setSearch(new AssetSearch().setQuery("cats"));
         job = exportService.create(spec);
@@ -83,7 +84,5 @@ public class ExportServiceTests extends AbstractTest {
 
         List<ExportFile> files = exportService.getAllExportFiles(job);
         assertEquals(10, files.size());
-
     }
-
 }

@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Pipeline;
+import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.repository.PipelineDao;
@@ -108,7 +109,7 @@ public class PluginServiceTests extends AbstractTest {
         assertFalse(pipelineDao.exists("Import Pipeline"));
         pluginService.installBundledPipelines();
         assertTrue(pipelineDao.exists("Import Pipeline"));
-        Pipeline pl = pipelineDao.getStandard();
+        Pipeline pl = pipelineDao.getStandard(PipelineType.Import);
         assertEquals("Import Pipeline", pl.getName());
     }
 }

@@ -132,7 +132,7 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
-    public Job create(ExportSpecV2 spec) {
+    public Job create(ExportSpec spec) {
 
         JobSpec jspec = new JobSpec();
         jspec.setType(PipelineType.Export);
@@ -168,8 +168,7 @@ public class ExportServiceImpl implements ExportService {
          * Arrays for the primary and per-asset pipeline.
          */
         List<ProcessorRef> generate = Lists.newArrayList();
-        List<ProcessorRef> execute = pipelineService.mungePipelines(
-                spec.getPipelineIds(), spec.getProcessors());
+        List<ProcessorRef> execute = pipelineService.mungePipelines(PipelineType.Export, spec.getProcessors());
 
         script.setGenerate(generate);
         script.setExecute(execute);

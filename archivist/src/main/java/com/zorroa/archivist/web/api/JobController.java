@@ -52,7 +52,7 @@ public class JobController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value="/api/v1/jobs/{id}/_continue_import", method = RequestMethod.POST)
+    @RequestMapping(value="/api/v1/jobs/{id}/_append", method = RequestMethod.POST)
     public Object continueImport(@RequestBody TaskSpecV spec) throws IOException {
         Job job = jobService.get(spec.getJobId());
         if (job.getUser().getId() != SecurityUtils.getUser().getId()) {

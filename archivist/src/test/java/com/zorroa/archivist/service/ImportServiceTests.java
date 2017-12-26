@@ -37,7 +37,7 @@ public class ImportServiceTests extends AbstractTest {
         pluginService.installAndRegisterAllPlugins();
         ImportSpec spec = new ImportSpec();
         spec.setGenerators(ImmutableList.of(
-                new ProcessorRef("com.zorroa.core.processor.GroupProcessor")));
+                new ProcessorRef("com.zorroa.core.common.GroupProcessor")));
         job = importService.create(spec);
     }
 
@@ -47,19 +47,22 @@ public class ImportServiceTests extends AbstractTest {
         Pipeline p1 = pipelineService.create(new PipelineSpecV()
                 .setName("p1")
                 .setProcessors(ImmutableList.of(
-                        new ProcessorRef("com.zorroa.core.processor.GroupProcessor")))
+                        new ProcessorRef("com.zorroa.core.common.GroupProcessor")))
                 .setDescription("p1")
                 .setType(PipelineType.Import));
 
         Pipeline p2 = pipelineService.create(new PipelineSpecV()
                 .setName("p2")
                 .setProcessors(ImmutableList.of(
-                        new ProcessorRef("com.zorroa.core.processor.GroupProcessor")))
+                        new ProcessorRef("com.zorroa.core.common.GroupProcessor")))
                 .setDescription("p2")
                 .setType(PipelineType.Import));
 
         ImportSpec spec = new ImportSpec();
-        spec.setPipelineIds(ImmutableList.of(p1.getId(), p2.getName()));
+        spec.setProcessors(ImmutableList.of(
+                new ProcessorRef().setPipeline(p1.getId()),
+                new ProcessorRef().setPipeline(p2.getName())
+        ));
         spec.setName("go go go");
         job = importService.create(spec);
     }

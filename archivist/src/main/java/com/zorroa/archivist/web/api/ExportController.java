@@ -41,31 +41,30 @@ public class ExportController {
     @Autowired
     EventLogService logService;
 
-    @RequestMapping(value="/api/v2/exports", method= RequestMethod.POST)
-    public Object create(@RequestBody ExportSpecV2 spec) {
+    @RequestMapping(value="/api/v1/exports", method= RequestMethod.POST)
+    public Object create(@RequestBody ExportSpec spec) {
         return exportService.create(spec);
     }
 
-    @RequestMapping(value="/api/v1/exports/{id}/_file", method= RequestMethod.POST)
+    @RequestMapping(value="/api/v1/exports/{id}", method= RequestMethod.GET)
+    public Object get(@PathVariable int id) {
+        return jobService.get(id);
+    }
+
+    @RequestMapping(value="/api/v1/exports/{id}/_files", method= RequestMethod.POST)
     public Object createExportFile(@PathVariable int id, @RequestBody ExportFileSpec spec) {
         Job job = jobService.get(id);
         return exportService.createExportFile(job, spec);
     }
 
-    @RequestMapping(value="/api/v1/exports/{id}", method= RequestMethod.GET)
-    public Object get(@PathVariable int id) {
-        // TODO check username or admin
-        return jobService.get(id);
+    @RequestMapping(value="/api/v1/exports/{id}/_files", method= RequestMethod.GET)
+    public Object getExportFiles(@PathVariable int id) {
+        Job job = jobService.get(id);
+        return exportService.getAllExportFiles(job);
     }
 
-    /**
-     * Stream an export.
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = "/api/v2/exports/{id}/_stream/{fileId}", method = RequestMethod.GET)
-    public ResponseEntity<FileSystemResource> getExport(@PathVariable int id, @PathVariable long fileId) {
+    @RequestMapping(value = "/api/v1/exports/{id}/_files/{fileId}/_stream", method = RequestMethod.GET)
+    public ResponseEntity<FileSystemResource> streamExportfile(@PathVariable int id, @PathVariable long fileId) {
         ExportFile file = exportService.getExportFile(fileId);
         Job job = jobService.get(id);
 
@@ -82,7 +81,6 @@ public class ExportController {
         if (!job.getState().equals(JobState.Finished)) {
             throw new ArchivistReadException("Export is not complete.");
         }
-
 
         logExportDownload(id);
 

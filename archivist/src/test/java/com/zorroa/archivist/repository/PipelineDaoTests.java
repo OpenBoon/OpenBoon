@@ -129,7 +129,7 @@ public class PipelineDaoTests extends AbstractTest {
 
     @Test
     public void testGetStandard() {
-        Pipeline p = pipelineDao.getStandard();
+        Pipeline p = pipelineDao.getStandard(PipelineType.Import);
         assertEquals("Zorroa Test", p.getName());
     }
 }

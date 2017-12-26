@@ -99,7 +99,7 @@ public class ImportServiceImpl implements ImportService {
 
 
         List<ProcessorRef> pipeline = Lists.newArrayList();
-        pipeline.addAll(pipelineService.mungePipelines(spec.getPipelineIds(), null));
+        pipeline.addAll(pipelineService.mungePipelines(PipelineType.Import, spec.getProcessors()));
 
         /*
          * Append the index document collector to add stuff to the DB.
@@ -148,7 +148,8 @@ public class ImportServiceImpl implements ImportService {
 
         ProcessorRef expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector");
         List<ProcessorRef> execute = Lists.newArrayList(expand);
-        expand.setExecute(pipelineService.mungePipelines(spec.getPipelineIds(), spec.getProcessors()));
+        expand.setExecute(pipelineService.mungePipelines(
+                PipelineType.Import, spec.getProcessors()));
 
         /**
          * At the end we add an IndexDocumentCollector to index the results of our job.

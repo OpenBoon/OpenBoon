@@ -2,7 +2,7 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.ExportFile;
 import com.zorroa.archivist.domain.ExportFileSpec;
-import com.zorroa.archivist.domain.ExportSpecV2;
+import com.zorroa.archivist.domain.ExportSpec;
 import com.zorroa.archivist.domain.Job;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -20,7 +20,7 @@ public interface ExportService {
 
     List<ExportFile> getAllExportFiles(Job job);
 
-    Job create(ExportSpecV2 spec);
+    Job create(ExportSpec spec);
 
     PagedList<Job> getAll(Pager page);
 }
