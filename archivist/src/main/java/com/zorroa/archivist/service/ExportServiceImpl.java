@@ -14,6 +14,7 @@ import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ExportArgs;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;

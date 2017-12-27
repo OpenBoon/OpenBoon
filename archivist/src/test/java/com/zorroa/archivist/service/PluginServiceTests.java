@@ -5,15 +5,16 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Pipeline;
-import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.repository.PluginDao;
 import com.zorroa.archivist.repository.ProcessorDao;
 import com.zorroa.sdk.plugins.PluginSpec;
-import com.zorroa.sdk.plugins.ProcessorSpec;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.processor.ProcessorType;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +66,7 @@ public class PluginServiceTests extends AbstractTest {
         pspec.setDisplay(Lists.newArrayList());
         pspec.setFileTypes(Sets.newHashSet("foo"));
         pspec.setFilters(Lists.newArrayList("_doc.source.extension=='jpg'"));
-        pspec.setType("Import");
+        pspec.setType(ProcessorType.Import);
 
         proc = processorDao.create(plugin, pspec);
     }

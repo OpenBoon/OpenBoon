@@ -10,6 +10,7 @@ import com.zorroa.common.cluster.thrift.TaskStartT;
 import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;

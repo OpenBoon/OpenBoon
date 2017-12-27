@@ -5,14 +5,14 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.JdbcUtils;
-import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.processor.ProcessorType;
 import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -71,7 +71,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
             ps.setString(2, spec.getClassName());
             ps.setString(3, shortName);
             ps.setString(4, module);
-            ps.setInt(5, PipelineType.valueOf(spec.getType()).ordinal());
+            ps.setInt(5, spec.getType().ordinal());
             ps.setString(6, spec.getDescription() == null ? shortName : spec.getDescription());
             ps.setString(7, Json.serializeToString(spec.getDisplay(), "[]"));
             ps.setString(8, Json.serializeToString(spec.getFilters(), "[]"));
@@ -90,7 +90,7 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         p.setName(rs.getString("str_name"));
         p.setShortName(rs.getString("str_short_name"));
         p.setModule(rs.getString("str_module"));
-        p.setType(PipelineType.values()[rs.getInt("int_type")]);
+        p.setType(ProcessorType.values()[rs.getInt("int_type")]);
         p.setDescription(rs.getString("str_description"));
         p.setDisplay(Json.deserialize(rs.getString("json_display"), new TypeReference<List<Map<String, Object>>>() {}));
         p.setFilters(Json.deserialize(rs.getString("json_filters"), Json.LIST_OF_STRINGS));
@@ -184,9 +184,9 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
         return jdbc.queryForObject("SELECT COUNT(1) FROM processor", Long.class);
     }
 
-    private static final RowMapper<ProcessorRef> REF_MAPPER = (rs, row) -> {
+    private final RowMapper<ProcessorRef> REF_MAPPER = (rs, row) -> {
         ProcessorRef ref = new ProcessorRef();
-        ref.setType(PipelineType.values()[rs.getInt("int_type")].name());
+        ref.setType(ProcessorType.values()[rs.getInt("int_type")]);
         ref.setClassName(rs.getString("str_name"));
         ref.setLanguage(rs.getString("plugin_lang"));
         ref.setFileTypes(Json.deserialize(rs.getString("json_file_types"), Json.SET_OF_STRINGS));

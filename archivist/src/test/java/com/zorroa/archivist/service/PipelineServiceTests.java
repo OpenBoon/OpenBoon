@@ -4,8 +4,9 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
-import com.zorroa.archivist.domain.PipelineType;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.processor.ProcessorType;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,10 @@ public class PipelineServiceTests extends AbstractTest {
         assertEquals(PipelineType.Generate, pl.getType());
 
         ProcessorRef gen = pl.getProcessors().get(0);
-        assertEquals("Generate", gen.getType());
+        assertEquals(ProcessorType.Generate, gen.getType());
 
         ProcessorRef exec = gen.getExecute().get(0);
-        assertEquals("Common", exec.getType());
+        assertEquals(ProcessorType.Common, exec.getType());
     }
 
     @Test(expected = IllegalStateException.class)

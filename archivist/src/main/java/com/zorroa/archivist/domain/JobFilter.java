@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain;
 import com.google.common.collect.Lists;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Tuple;
+import com.zorroa.sdk.processor.PipelineType;
 
 import java.util.List;
 

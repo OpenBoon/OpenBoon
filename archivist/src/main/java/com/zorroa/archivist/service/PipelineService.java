@@ -2,9 +2,9 @@ package com.zorroa.archivist.service;
 
 import com.zorroa.archivist.domain.Pipeline;
 import com.zorroa.archivist.domain.PipelineSpecV;
-import com.zorroa.archivist.domain.PipelineType;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
 
 import java.util.List;

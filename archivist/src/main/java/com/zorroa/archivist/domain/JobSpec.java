@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.Maps;
+import com.zorroa.sdk.processor.PipelineType;
 
 import java.util.List;
 import java.util.Map;

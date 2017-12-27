@@ -1,8 +1,12 @@
 package com.zorroa.archivist.web;
 
 import com.google.common.collect.ImmutableList;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.JobSpec;
+import com.zorroa.archivist.domain.Pipeline;
+import com.zorroa.archivist.domain.PipelineSpecV;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.processor.PipelineType;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

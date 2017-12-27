@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
+import com.zorroa.sdk.processor.PipelineType;
 
 import java.util.Map;
 import java.util.Objects;

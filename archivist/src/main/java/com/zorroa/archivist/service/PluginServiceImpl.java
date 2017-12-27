@@ -10,12 +10,15 @@ import com.zorroa.archivist.repository.ProcessorDao;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
-import com.zorroa.sdk.plugins.*;
+import com.zorroa.sdk.plugins.PluginException;
+import com.zorroa.sdk.plugins.PluginRegistry;
+import com.zorroa.sdk.plugins.PluginSpec;
+import com.zorroa.sdk.processor.PipelineSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.processor.ProcessorSpec;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.util.StringUtils;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -177,7 +180,7 @@ public class PluginServiceImpl implements PluginService {
                         .setDescription(pl.getDescription())
                         .setProcessors(pl.getProcessors().stream().map(
                                 ref -> getProcessorRef(ref)).collect(Collectors.toList()))
-                        .setType(PipelineType.valueOf(StringUtils.capitalize(pl.getType()))));
+                        .setType(pl.getType()));
             } catch (EmptyResultDataAccessException e) {
                 logger.warn("Failed to register pipeline: {}", pl);
             }

@@ -9,6 +9,7 @@ import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.slf4j.Logger;
@@ -24,8 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
-import static com.zorroa.archivist.domain.PipelineType.Import;
 
 /**
  * ImportService provides a simple interface for making Import jobs.
@@ -67,7 +66,7 @@ public class ImportServiceImpl implements ImportService {
     public Job create(UploadImportSpec spec, MultipartFile[] files) {
 
         JobSpec jspec = new JobSpec();
-        jspec.setType(Import);
+        jspec.setType(PipelineType.Import);
         jspec.setName(determineJobName(spec.getName()));
 
         Job job = jobService.launch(jspec);
@@ -137,7 +136,7 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public Job create(ImportSpec spec) {
         JobSpec jspec = new JobSpec();
-        jspec.setType(Import);
+        jspec.setType(PipelineType.Import);
         jspec.setName(determineJobName(spec.getName()));
 
         /**

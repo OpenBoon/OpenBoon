@@ -1,8 +1,12 @@
 package com.zorroa.archivist.web;
 
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.Job;
+import com.zorroa.archivist.domain.JobSpec;
+import com.zorroa.archivist.domain.Task;
+import com.zorroa.archivist.domain.TaskSpec;
 import com.zorroa.archivist.repository.TaskDao;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.junit.Before;
 import org.junit.Test;

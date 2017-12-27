@@ -8,8 +8,9 @@ import com.zorroa.archivist.domain.Plugin;
 import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.sdk.plugins.PluginSpec;
-import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.processor.ProcessorType;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class ProcessorDaoTests extends AbstractTest {
         pspec.setClassName("com.foo.Bar");
         pspec.setDisplay(Lists.newArrayList());
         pspec.setFilters(ImmutableList.of("_doc.source.extension=='jpg'"));
-        pspec.setType("Import");
+        pspec.setType(ProcessorType.Import);
 
         proc = processorDao.create(plugin, pspec);
     }
@@ -63,7 +64,7 @@ public class ProcessorDaoTests extends AbstractTest {
 
         assertEquals(spec.getClassName(), pr.getName());
         assertEquals(spec.getDescription(), pr.getDescription());
-        assertEquals(spec.getType(), pr.getType().toString());
+        assertEquals(spec.getType(), pr.getType());
         assertEquals(spec.getFilters().size(), pr.getFilters().size());
         assertEquals(spec.getDisplay(), pr.getDisplay());
 

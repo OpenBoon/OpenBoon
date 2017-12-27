@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
+import com.zorroa.sdk.processor.ProcessorType;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class Processor {
     private String name;
     private String shortName;
     private String module;
-    private PipelineType type;
+    private ProcessorType type;
     private List<Map<String,Object>> display;
 
     // Properties from parent Plugin
@@ -85,11 +86,11 @@ public class Processor {
         return this;
     }
 
-    public PipelineType getType() {
+    public ProcessorType getType() {
         return type;
     }
 
-    public Processor setType(PipelineType type) {
+    public Processor setType(ProcessorType type) {
         this.type = type;
         return this;
     }

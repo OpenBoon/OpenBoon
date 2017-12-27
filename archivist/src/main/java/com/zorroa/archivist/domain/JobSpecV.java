@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import com.google.common.collect.Maps;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.zps.ZpsScript;
 import org.hibernate.validator.constraints.NotEmpty;
 

@@ -9,6 +9,7 @@ import com.zorroa.common.domain.TaskState;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Tuple;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -85,7 +86,7 @@ public class JobDaoImpl extends AbstractDao implements JobDao {
         job.setName(rs.getString("str_name"));
         job.setTimeStarted(rs.getLong("time_started"));
         job.setTimeUpdated(rs.getLong("time_updated"));
-        job.setType(PipelineType.values()[rs.getInt("int_type")]);
+        job.setType(PipelineType.fromObject(rs.getInt("int_type")));
         job.setUser(userDaoCache.getUser(rs.getInt("int_user_created")));
         job.setArgs(Json.deserialize(rs.getString("json_args"), Json.GENERIC_MAP));
         job.setRootPath(rs.getString("str_root_path"));

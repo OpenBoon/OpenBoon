@@ -23,6 +23,7 @@ import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Expand;
 import com.zorroa.sdk.processor.ExpandFrame;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.util.Json;
 import com.zorroa.sdk.zps.ZpsScript;

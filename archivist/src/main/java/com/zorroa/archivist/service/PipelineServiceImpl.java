@@ -1,15 +1,19 @@
 package com.zorroa.archivist.service;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.LogAction;
+import com.zorroa.archivist.domain.Pipeline;
+import com.zorroa.archivist.domain.PipelineSpecV;
+import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.repository.PipelineDao;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
+import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -123,16 +125,6 @@ public class PipelineServiceImpl implements PipelineService {
         return result;
     }
 
-    /**
-     * The types of processors that can be found in each pipeline type.
-     */
-    private static final Map<PipelineType, Set<String>> ALLOWED_TYPES = ImmutableMap.of(
-            PipelineType.Generate, ImmutableSet.of("Generate", "Common"),
-            PipelineType.Import, ImmutableSet.of("Import", "Common"),
-            PipelineType.Export, ImmutableSet.of("Export", "Common"),
-            PipelineType.Batch, ImmutableSet.of("Batch", "Common"),
-            PipelineType.Training, ImmutableSet.of("Training", "Common"));
-
     @Override
     public List<ProcessorRef> validateProcessors(PipelineType pipelineType, List<ProcessorRef> refs) {
 
@@ -140,7 +132,8 @@ public class PipelineServiceImpl implements PipelineService {
 
         for (ProcessorRef ref: refs) {
             ProcessorRef vref = pluginService.getProcessorRef(ref);
-            if (!ALLOWED_TYPES.getOrDefault(pipelineType, ImmutableSet.of()).contains(vref.getType())) {
+
+            if (!PipelineType.ALLOWED_TYPES.getOrDefault(pipelineType, ImmutableSet.of()).contains(vref.getType().toString())) {
                 throw new IllegalStateException("Cannot have processor type " +
                         vref.getType() + " in a " + pipelineType + " pipeline");
             }
@@ -149,6 +142,7 @@ public class PipelineServiceImpl implements PipelineService {
                 vref.setExecute(validateProcessors(PipelineType.Import, ref.getExecute()));
             }
         }
+        logger.info("{}", Json.prettyString(validated));
         return validated;
     }
 

@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.Job;
 import com.zorroa.archivist.domain.JobSpec;
 import com.zorroa.archivist.domain.JobState;
 import com.zorroa.archivist.service.JobService;
+import com.zorroa.sdk.processor.PipelineType;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static com.zorroa.archivist.domain.PipelineType.Import;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -48,7 +48,7 @@ public class MaintenanceDaoTests extends AbstractTest {
     @Test
     public void getExpiredJobs() {
         JobSpec jspec = new JobSpec();
-        jspec.setType(Import);
+        jspec.setType(PipelineType.Import);
         jspec.setName("test");
         Job job = jobService.launch(jspec);
         jobService.setJobState(job, JobState.Finished, JobState.Active);
