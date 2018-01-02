@@ -9,7 +9,7 @@ import com.zorroa.archivist.domain.Processor;
 import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.sdk.plugins.PluginSpec;
 import com.zorroa.sdk.processor.ProcessorRef;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorType;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Before;

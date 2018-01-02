@@ -11,7 +11,7 @@ import com.zorroa.archivist.domain.ProcessorFilter;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.ProcessorRef;
-import com.zorroa.sdk.processor.ProcessorSpec;
+import com.zorroa.sdk.plugins.ProcessorSpec;
 import com.zorroa.sdk.processor.ProcessorType;
 import com.zorroa.sdk.util.Json;
 import org.springframework.dao.EmptyResultDataAccessException;
