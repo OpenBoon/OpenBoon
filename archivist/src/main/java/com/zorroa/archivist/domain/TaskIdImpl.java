@@ -16,16 +16,16 @@ public class TaskIdImpl implements TaskId {
 
     @Override
     public Integer getTaskId() {
-        return null;
+        return taskId;
     }
 
     @Override
     public Integer getParentTaskId() {
-        return null;
+        return parentId;
     }
 
     @Override
     public Integer getJobId() {
-        return null;
+        return jobId;
     }
 }
