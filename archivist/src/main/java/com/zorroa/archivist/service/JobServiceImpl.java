@@ -73,6 +73,9 @@ public class JobServiceImpl implements JobService {
     PluginService pluginService;
 
     @Autowired
+    PipelineService pipelineService;
+
+    @Autowired
     NetworkEnvironment networkEnv;
 
     /**
@@ -166,6 +169,8 @@ public class JobServiceImpl implements JobService {
             logger.debug("Expanding: {}", Json.prettyString(expand));
         }
 
+        Job job = jobDao.get(parent.getJobId());
+
         Expand expandScript = Json.deserialize(expand.getScript(), Expand.class);
         Map<String, ZpsScript> expandScripts = Maps.newHashMap();
 
@@ -179,43 +184,63 @@ public class JobServiceImpl implements JobService {
         }
 
         if (expandScript.getFrames() != null) {
+
             for (ExpandFrame exframe : expandScript.getFrames()) {
                 String key;
 
-                if (exframe.getPipelines() != null) {
-                    key = "pipelines:" + String.join(":", exframe.getPipelines());
-                } else if (parentScript != null) {
-                    key = "parentScript";
-                } else {
-                    key = "suppliedRefs";
+                /**
+                 * There are 3 places to look for the pipeline:
+                 * 1. as part of the frame (the processor specified a specific pipeline)
+                 * 2. the parent script itself.
+                 * 3. supplied by the task itself. (usual case)
+                 */
+
+                if (exframe.getProcessors() != null) {
+                    key = "frame expand: " + Json.hash(exframe.getProcessors());
+                }
+                else if (parentScript !=null) {
+                    key = "parent expand:";
+                }
+                else {
+                    key = "script expand:";
                 }
 
+                /**
+                 * Get the script for the particular pipeline and add the data
+                 * to it.  If a script doesn't exist yet, make it.
+                 */
                 ZpsScript script = expandScripts.get(key);
                 if (script == null) {
                     script = new ZpsScript();
                     expandScripts.put(key, script);
 
-                    if (key == "parentScript") {
+                    if (key.startsWith("parent")) {
                         script.setExecute(parentScript.getExecute());
-                    } else if (key == "suppliedRefs") {
-                        script.setExecute(expandScript.getExecute());
-                    } else if (key.startsWith("pipelines:")) {
-                        List<ProcessorRef> refs = Lists.newArrayList();
-                        for (String pipelineName : exframe.getPipelines()) {
-                            Pipeline p = pipelineDao.get(pipelineName);
-                            refs.addAll(p.getProcessors());
+                    } else if (key.startsWith("frame")) {
+                        List<ProcessorRef> refs = pipelineService.validateProcessors(job.getType(),
+                                exframe.getProcessors());
+
+                        switch(job.getType()) {
+                            case Import:
+                                refs.add(pluginService.getProcessorRef(
+                                        "com.zorroa.core.collector.IndexDocumentCollector"));
                         }
-                        refs.add(new ProcessorRef()
-                                .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
-                                .setLanguage("java")
-                                .setArgs(ImmutableMap.of("importId", parent.getJobId())));
+
                         script.setExecute(refs);
+                    }
+                    else if (key.startsWith("script")) {
+                        script.setExecute(expandScript.getExecute());
                     }
                     script.setName(key);
                 }
-                script.addToOver(exframe.getDocument()); }
+
+                script.addToOver(exframe.getDocument());
+            }
         }
 
+        /**
+         * Now group each frame into a common task.
+         */
         int assetTotal = 0;
         List<Task> tasks = Lists.newArrayListWithCapacity(expandScripts.size());
         for (ZpsScript scr: expandScripts.values()) {
