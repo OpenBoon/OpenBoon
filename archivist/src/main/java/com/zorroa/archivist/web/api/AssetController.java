@@ -209,7 +209,7 @@ public class AssetController {
     public ResponseEntity<InputStreamResource> getClosestProxy(@PathVariable String id, @PathVariable(required=false) String size) throws IOException {
         try {
             String[] wh = size.split("x");
-            ProxySchema proxies = assetService.get(id).getAttr("proxies", ProxySchema.class);
+            ProxySchema proxies = assetService.getProxies(id);
             Proxy proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1]));
             if (proxy == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -223,7 +223,7 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/proxies/largest", method=RequestMethod.GET)
     public ResponseEntity<InputStreamResource> getLargestProxy(@PathVariable String id) throws IOException {
         try {
-            ProxySchema proxies = assetService.get(id).getAttr("proxies", ProxySchema.class);
+            ProxySchema proxies = assetService.getProxies(id);
             Proxy proxy = proxies.getLargest();
             if (proxy == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -237,7 +237,7 @@ public class AssetController {
     @RequestMapping(value="/api/v1/assets/{id}/proxies/smallest", method=RequestMethod.GET)
     public ResponseEntity<InputStreamResource> getSmallestProxy(@PathVariable String id) throws IOException {
         try {
-            ProxySchema proxies = assetService.get(id).getAttr("proxies", ProxySchema.class);
+            ProxySchema proxies = assetService.getProxies(id);
             Proxy proxy = proxies.getSmallest();
             if (proxy == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

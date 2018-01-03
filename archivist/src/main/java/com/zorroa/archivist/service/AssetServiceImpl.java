@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -15,7 +16,9 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.schema.LinkSchema;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.schema.ProxySchema;
+import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.search.AssetSearchOrder;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkProcessor;
@@ -107,6 +110,27 @@ public class AssetServiceImpl implements AssetService, ApplicationListener<Conte
     @Override
     public Document get(Path path) {
         return assetDao.get(path);
+    }
+
+    @Override
+    public ProxySchema getProxies(String id) {
+        Document asset = get(id);
+        ProxySchema proxies = asset.getAttr("proxies", ProxySchema.class);
+
+        if (proxies !=  null) {
+            return proxies;
+        }
+        else {
+
+            for (Document hit : searchService.search(Pager.first(1), new AssetSearch(new AssetFilter()
+                    .addToTerms("source.clip.parent", id))
+                    .setFields(new String[] { "proxies"})
+                    .setOrder(ImmutableList.of(new AssetSearchOrder("origin.createdDate"))))) {
+                return hit.getAttr("proxies", ProxySchema.class);
+            }
+
+            return new ProxySchema();
+        }
     }
 
     @Override

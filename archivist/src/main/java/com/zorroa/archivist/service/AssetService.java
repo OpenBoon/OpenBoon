@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Command;
 import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.nio.file.Path;
@@ -15,6 +16,17 @@ public interface AssetService {
     Document get(String id);
 
     Document get(Path path);
+
+    /**
+     * Return the proxy schema for the given asset.  If the asset does not have a proxy
+     * schema, check to see if it has children and choose the first child.
+     *
+     * If there is no proxy schema anywhere, return an empty one.
+     *
+     * @param id
+     * @return
+     */
+    ProxySchema getProxies(String id);
 
     /**
      * Fetch the first page of assets.
