@@ -3,8 +3,9 @@ package com.zorroa.archivist.domain;
 import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.JdbcUtils;
 import com.zorroa.archivist.repository.DaoFilter;
-import com.zorroa.sdk.processor.PipelineType;
+import com.zorroa.sdk.processor.ProcessorType;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class ProcessorFilter extends DaoFilter {
     private List<String> modules;
     private List<String> names;
     private List<String> shortNames;
-    private List<PipelineType> types;
+    private Collection<ProcessorType> types;
     private List<Integer> plugins;
 
     public List<String> getModules() {
@@ -57,11 +58,11 @@ public class ProcessorFilter extends DaoFilter {
         return this;
     }
 
-    public List<PipelineType> getTypes() {
+    public Collection<ProcessorType> getTypes() {
         return types;
     }
 
-    public ProcessorFilter setTypes(List<PipelineType> types) {
+    public ProcessorFilter setTypes(Collection<ProcessorType> types) {
         this.types = types;
         return this;
     }
@@ -85,7 +86,7 @@ public class ProcessorFilter extends DaoFilter {
 
         if (JdbcUtils.isValid(types)) {
             where.add(JdbcUtils.in("processor.int_type", types.size()));
-            for (PipelineType type: types) {
+            for (ProcessorType type: types) {
                 values.add(type.ordinal());
             }
         }

@@ -133,7 +133,7 @@ public class PipelineServiceImpl implements PipelineService {
         for (ProcessorRef ref: refs) {
             ProcessorRef vref = pluginService.getProcessorRef(ref);
 
-            if (!PipelineType.ALLOWED_TYPES.getOrDefault(pipelineType, ImmutableSet.of()).contains(vref.getType().toString())) {
+            if (!PipelineType.ALLOWED_PROCESSOR_TYPES.getOrDefault(pipelineType, ImmutableSet.of()).contains(vref.getType())) {
                 throw new IllegalStateException("Cannot have processor type " +
                         vref.getType() + " in a " + pipelineType + " pipeline");
             }

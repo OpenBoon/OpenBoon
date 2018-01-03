@@ -11,6 +11,7 @@ import com.zorroa.archivist.service.*;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.Json;
 import org.slf4j.Logger;
@@ -173,7 +174,9 @@ public class IndexController {
 
         model.addAttribute("pipeline", pipelineService.get(id));
         model.addAttribute("processors", pluginService.getAllProcessors(
-                new ProcessorFilter().setTypes(ImmutableList.of(pipeline.getType()))));
+                new ProcessorFilter().setTypes(PipelineType.ALLOWED_PROCESSOR_TYPES.get(pipeline.getType()))));
+
+
         model.addAttribute("pipelineSpec", new PipelineSpecV());
         return "pipeline";
     }
