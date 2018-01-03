@@ -51,9 +51,9 @@ public class ProcessorDaoImpl extends AbstractDao implements ProcessorDao {
 
     @Override
     public Processor create(Plugin plugin, ProcessorSpec spec) {
-        Preconditions.checkNotNull(spec.getType());
-        Preconditions.checkNotNull(spec.getClassName());
-        Preconditions.checkNotNull(spec.getDisplay());
+        Preconditions.checkNotNull(spec.getType(), "The processor spec type cannot be null");
+        Preconditions.checkNotNull(spec.getClassName(), "The processor class name cannot be null");
+        Preconditions.checkNotNull(spec.getDisplay(),"The processor cannot have a null display property");
 
         if (!spec.getClassName().contains(".")) {
             throw new IllegalArgumentException("Processor class name has no module, must be named 'something.Name'");
