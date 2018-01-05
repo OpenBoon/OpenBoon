@@ -17,33 +17,33 @@ public class BlobController {
     @Autowired
     BlobService blobService;
 
-    @RequestMapping(value="/api/v1/blob/{app}/{feature}/{name}", method=RequestMethod.POST)
+    @RequestMapping(value="/api/v1/blobs/{app}/{feature}/{name}", method=RequestMethod.POST)
     public Blob set(@RequestBody Object data, @PathVariable String app, @PathVariable String feature, @PathVariable String name) {
         return blobService.set(app, feature, name, data);
     }
 
-    @RequestMapping(value="/api/v1/blob/{app}/{feature}/{name}", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/blobs/{app}/{feature}/{name}", method=RequestMethod.GET)
     public Blob get(@PathVariable String app, @PathVariable String feature, @PathVariable String name) {
         return blobService.get(app, feature, name);
     }
 
-    @RequestMapping(value="/api/v1/blob/{app}/{feature}/{name}/_raw", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/blobs/{app}/{feature}/{name}/_raw", method=RequestMethod.GET)
     public Object getRaw(@PathVariable String app, @PathVariable String feature, @PathVariable String name) {
         return blobService.get(app, feature, name).getData();
     }
 
-    @RequestMapping(value="/api/v1/blob/{app}/{feature}", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/blobs/{app}/{feature}", method=RequestMethod.GET)
     public List<Blob> getAll(@PathVariable String app, @PathVariable String feature) {
         return blobService.getAll(app, feature);
     }
 
-    @RequestMapping(value="/api/v1/blob/{app}/{feature}/{name}/_permissions", method=RequestMethod.PUT)
+    @RequestMapping(value="/api/v1/blobs/{app}/{feature}/{name}/_permissions", method=RequestMethod.PUT)
     public Acl setPermissions(@RequestBody SetPermissions req, @PathVariable String app, @PathVariable String feature, @PathVariable String name) {
         BlobId blob = blobService.getId(app, feature, name, Access.Write);
         return blobService.setPermissions(blob, req);
     }
 
-    @RequestMapping(value="/api/v1/blob/{app}/{feature}/{name}/_permissions", method=RequestMethod.GET)
+    @RequestMapping(value="/api/v1/blobs/{app}/{feature}/{name}/_permissions", method=RequestMethod.GET)
     public Acl getPermisions(@PathVariable String app, @PathVariable String feature, @PathVariable String name) {
         BlobId blob = blobService.getId(app, feature, name, Access.Read);
         return blobService.getPermissions(blob);
