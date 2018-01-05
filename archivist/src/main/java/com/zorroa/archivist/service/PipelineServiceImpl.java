@@ -142,7 +142,7 @@ public class PipelineServiceImpl implements PipelineService {
                 vref.setExecute(validateProcessors(PipelineType.Import, ref.getExecute()));
             }
         }
-        logger.info("{}", Json.prettyString(validated));
+
         return validated;
     }
 
