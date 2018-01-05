@@ -71,7 +71,7 @@ public class BlobDaoImpl extends AbstractDao implements BlobDao {
                     "user_modified=?, "+
                     "time_modified=? " +
             "WHERE " +
-                    "str_app=? AND str_feature=? AND str_name=? ";
+                    "pk_jblob=?";
 
     @Override
     public boolean update(BlobId bid, Object data) {
