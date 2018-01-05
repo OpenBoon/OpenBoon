@@ -389,7 +389,7 @@ public class FolderDaoImpl extends AbstractDao implements FolderDao {
                     throw new ArchivistWriteException("Invalid Access level "
                             + entry.getAccess() + " for permission ID " + entry.getPermissionId());
                 }
-                if (entry.getAccess() == 0) {
+                if (entry.getAccess() <= 0) {
                     jdbc.update("DELETE FROM folder_acl WHERE pk_folder=? AND pk_permission=?",
                             folder, entry.getPermissionId());
                 }
