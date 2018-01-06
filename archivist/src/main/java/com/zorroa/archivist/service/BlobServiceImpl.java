@@ -41,6 +41,12 @@ public class BlobServiceImpl implements BlobService {
         return blobDao.getId(app, feature, name, forAccess);
     }
 
+
+    @Override
+    public boolean delete(BlobId blob) {
+        return blobDao.delete(blob);
+    }
+
     @Override
     public Acl getPermissions(BlobId blob) {
         return blobDao.getPermissions(blob);

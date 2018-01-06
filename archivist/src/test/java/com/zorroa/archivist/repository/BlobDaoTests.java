@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BlobDaoTests extends AbstractTest {
@@ -42,6 +43,12 @@ public class BlobDaoTests extends AbstractTest {
     @Test
     public void testUpdate() {
         assertTrue(blobDao.update(blob, ImmutableMap.of("shizzle", "mcnizzle")));
+    }
+
+    @Test
+    public void testDelete() {
+        assertTrue(blobDao.delete(blob));
+        assertFalse(blobDao.delete(blob));
     }
 
     @Test(expected=DuplicateKeyException.class)

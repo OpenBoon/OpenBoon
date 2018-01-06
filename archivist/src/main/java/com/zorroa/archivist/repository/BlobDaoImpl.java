@@ -54,7 +54,6 @@ public class BlobDaoImpl extends AbstractDao implements BlobDao {
         Blob blob = new Blob();
         blob.setBlobId(rs.getInt("pk_jblob"));
         blob.setVersion(rs.getLong("int_version"));
-        blob.setAcl(null);
         blob.setApp(rs.getString("str_app"));
         blob.setFeature(rs.getString("str_feature"));
         blob.setName(rs.getString("str_name"));

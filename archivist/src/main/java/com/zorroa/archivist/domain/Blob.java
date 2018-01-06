@@ -12,7 +12,6 @@ public class Blob implements BlobId {
     private String name;
 
     private Object data;
-    private Acl acl;
 
     public String getApp() {
         return app;
@@ -47,15 +46,6 @@ public class Blob implements BlobId {
 
     public Blob setData(Object data) {
         this.data = data;
-        return this;
-    }
-
-    public Acl getAcl() {
-        return acl;
-    }
-
-    public Blob setAcl(Acl acl) {
-        this.acl = acl;
         return this;
     }
 

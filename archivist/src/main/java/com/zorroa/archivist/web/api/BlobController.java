@@ -1,5 +1,6 @@
 package com.zorroa.archivist.web.api;
 
+import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.service.BlobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,20 @@ public class BlobController {
         return blobService.get(app, feature, name);
     }
 
+    @RequestMapping(value="/api/v1/blobs/{app}/{feature}/{name}", method=RequestMethod.DELETE)
+    public Object delete(@PathVariable String app, @PathVariable String feature, @PathVariable String name) {
+        BlobId blob = blobService.getId(app, feature, name, Access.Write);
+        return HttpUtils.deleted("blob", blob.getBlobId(), blobService.delete(blob));
+    }
+
+    /**
+     * Gets just the data structure without any of the other properties.
+     *
+     * @param app
+     * @param feature
+     * @param name
+     * @return
+     */
     @RequestMapping(value="/api/v1/blobs/{app}/{feature}/{name}/_raw", method=RequestMethod.GET)
     public Object getRaw(@PathVariable String app, @PathVariable String feature, @PathVariable String name) {
         return blobService.get(app, feature, name).getData();

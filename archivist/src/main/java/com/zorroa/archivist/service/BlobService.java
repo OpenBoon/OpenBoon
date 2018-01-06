@@ -10,6 +10,8 @@ public interface BlobService {
 
     Blob get(String app, String feature, String name);
 
+    boolean delete(BlobId blob);
+
     BlobId getId(String app, String feature, String name, Access forAccess);
 
     Acl getPermissions(BlobId blob);
