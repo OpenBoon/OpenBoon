@@ -5,8 +5,8 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Maps
 import com.google.common.util.concurrent.AbstractScheduledService
-import com.zorroa.analyst.Application
 import com.zorroa.analyst.cluster.ClusterProcess
+import com.zorroa.analyst.isUnitTest
 import com.zorroa.common.cluster.client.ClusterConnectionException
 import com.zorroa.common.cluster.client.ClusterException
 import com.zorroa.common.cluster.client.MasterServerClient
@@ -117,7 +117,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
             logger.warn("The task {} is already queued or executing.", task)
             throw ClusterException("The task is already queued or executing.")
         }
-        analyzeExecutor!!.execute {
+        analyzeExecutor.execute {
             try {
                 runClusterProcess(process)
             } catch (e: IOException) {
@@ -145,17 +145,19 @@ class ProcessManagerServiceImpl @Autowired constructor(
                  */
             }
             else {
-                val mze = p!!.zpsExecutor
-                if (mze.cancel()) {
-                    logger.info("The task {} was killed by:{}, reason: {}",
-                            kill.getId(), kill.getUser(), kill.getReason())
+                val mze = p.zpsExecutor
+                mze?.let {
+                    if (mze.cancel()) {
+                        logger.info("The task {} was killed by:{}, reason: {}",
+                                kill.getId(), kill.getUser(), kill.getReason())
 
-                    try {
-                        Files.write(Paths.get(p.task.getLogPath()), ImmutableList.of("Process killed, reason: " + kill.getReason()),
-                                StandardOpenOption.APPEND)
-                    } catch (e: IOException) {
-                        logger.warn("Failed to kill process: {}", p.id, e)
-                        e.printStackTrace()
+                        try {
+                            Files.write(Paths.get(p.task.getLogPath()), ImmutableList.of("Process killed, reason: " + kill.getReason()),
+                                    StandardOpenOption.APPEND)
+                        } catch (e: IOException) {
+                            logger.warn("Failed to kill process: {}", p.id, e)
+                            e.printStackTrace()
+                        }
                     }
                 }
             }
@@ -253,45 +255,46 @@ class ProcessManagerServiceImpl @Autowired constructor(
 
     private fun handleZpsReaction(zpsTask: ZpsTask, sharedData: SharedData, reaction: Reaction) {
         val process = processMap[zpsTask.id]
-        val client = process!!.client
+        process?.let {
+            val client = process.client
 
-        if (process!!.isKilled) {
-            return
-        }
+            if (process.killed) {
+                return
+            }
 
-        /**
-         * TODO: queue up a bunch here.
-         */
-        if (reaction.error != null) {
-            client.reportTaskErrors(zpsTask.id!!, ImmutableList.of(
-                    newTaskError(reaction.error)))
-        }
+            /**
+             * TODO: queue up a bunch here.
+             */
+            if (reaction.error != null) {
+                client.reportTaskErrors(zpsTask.id, ImmutableList.of(
+                        newTaskError(reaction.error)))
+            }
 
-        if (reaction.expand != null) {
-            val script = reaction.expand
+            if (reaction.expand != null) {
+                val script = reaction.expand
 
-            val expand = ExpandT()
-            expand.setScript(Json.serialize(script))
-            expand.setName(script.name)
-            if (!Application.isUnitTest()) {
-                client.expand(process.getId(), expand)
-            } else {
-                logger.info("Reacted with expand: {}", reaction.expand)
+                val expand = ExpandT()
+                expand.setScript(Json.serialize(script))
+                expand.setName(script.name)
+                if (!isUnitTest) {
+                    client.expand(process.id, expand)
+                } else {
+                    logger.info("Reacted with expand: {}", reaction.expand)
+                }
+            }
+
+            if (reaction.stats != null) {
+                val stats = reaction.stats
+                if (!isUnitTest) {
+                    client.reportTaskStats(process.id, TaskStatsT()
+                            .setErrorCount(stats.errorCount)
+                            .setSuccessCount(stats.successCount)
+                            .setWarningCount(stats.warningCount))
+                } else {
+                    logger.info("Reacted with stats: {}", reaction.stats)
+                }
             }
         }
-
-        if (reaction.stats != null) {
-            val stats = reaction.stats
-            if (!Application.isUnitTest()) {
-                client.reportTaskStats(process.getId(), TaskStatsT()
-                        .setErrorCount(stats.errorCount)
-                        .setSuccessCount(stats.successCount)
-                        .setWarningCount(stats.warningCount))
-            } else {
-                logger.info("Reacted with stats: {}", reaction.stats)
-            }
-        }
-
     }
 
     @Throws(IOException::class)
@@ -310,7 +313,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
     }
 
     private fun passesPreflightChecks(proc: ClusterProcess): Boolean {
-        if (proc.isKilled) {
+        if (proc.killed) {
             logger.warn("Task {} did not pass pre-flight check, was killed", proc.id)
             return false
         }
@@ -325,7 +328,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
     @Synchronized
     fun syncHostList() {
         if (System.currentTimeMillis() - hostListLoadedTime > 5000) {
-            val hosts = properties!!.getList("analyst.master.host")
+            val hosts = properties.getList("analyst.master.host")
             Collections.shuffle(hosts)
             hostList = ImmutableList.copyOf(hosts)
             hostListLoadedTime = System.currentTimeMillis()
@@ -350,7 +353,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
         error.setStack(ImmutableList.of(StackElementT()
                 .setClassName(zpsError.className)
                 .setFile(zpsError.file)
-                .setLineNumber(zpsError.lineNumber!!)
+                .setLineNumber(zpsError.lineNumber)
                 .setMethod(zpsError.method)))
 
         if (zpsError.origin != null) {
@@ -372,16 +375,12 @@ class ProcessManagerServiceImpl @Autowired constructor(
 
     @Throws(Exception::class)
     override fun runOneIteration() {
-        if (Application.isUnitTest()) {
-            return
-        }
-
-        if (analyzeExecutor!!.isShutdown) {
+        if (isUnitTest || analyzeExecutor.isShutdown) {
             return
         }
 
         val taskCount = processMap.size
-        val totalThreads = properties!!.getInt("analyst.executor.threads")
+        val totalThreads = properties.getInt("analyst.executor.threads")
         val idleThreads = totalThreads - taskCount
 
         if (idleThreads < 1) {
@@ -403,7 +402,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
 
                 try {
                     val tasks = conn.client.queuePendingTasks(
-                            networkEnvironment!!.clusterAddr, idleThreads)
+                            networkEnvironment.clusterAddr, idleThreads)
 
                     if (!tasks.isEmpty()) {
                         logger.info("Obtained {} tasks from {}", tasks.size, addr)
@@ -414,7 +413,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
                         }
                     } else if (autoShutdownIdleMinutes > 0 && taskCount == 0 &&
                             System.currentTimeMillis() - autoShutdownIdleMinutes * 60000 > autoShutdownMarker) {
-                        logger.warn("No tasks to process for {} minutes, shutting down!!", autoShutdownIdleMinutes)
+                        logger.warn("No tasks to process for {} minutes, shutting down", autoShutdownIdleMinutes)
                         initiateShutdown()
                     }
                 } catch (e: ClusterConnectionException) {
@@ -433,7 +432,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
     }
 
     override fun scheduler(): AbstractScheduledService.Scheduler {
-        val pollTime = properties!!.getInt("analyst.executor.pollTimeMs").toLong()
+        val pollTime = properties.getInt("analyst.executor.pollTimeMs").toLong()
         return AbstractScheduledService.Scheduler.newFixedDelaySchedule(
                 5000, pollTime, TimeUnit.MILLISECONDS)
     }
