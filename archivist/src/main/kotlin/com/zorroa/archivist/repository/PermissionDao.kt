@@ -125,7 +125,7 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 } catch (e: EmptyResultDataAccessException) {
                     if (createMissing) {
                         result.addEntry(create(PermissionSpec(entry.permission)
-                                .setDescription("Auto-created permission"), false), entry.getAccess())
+                                .apply { description="Auto created permission" }, false), entry.getAccess())
                     } else {
                         throw e
                     }

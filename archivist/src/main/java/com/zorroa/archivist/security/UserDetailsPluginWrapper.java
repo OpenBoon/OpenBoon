@@ -81,10 +81,9 @@ public class UserDetailsPluginWrapper implements LdapAuthoritiesPopulator {
                 try {
                     perm = permissionService.getPermission(plugin.getGroupType() + Permission.JOIN + group);
                 } catch (EmptyResultDataAccessException e) {
-                    perm = permissionService.createPermission(new PermissionSpec()
-                            .setType(plugin.getGroupType())
-                            .setName(group)
-                            .setDescription("Imported from plugin"));
+                    PermissionSpec spec = new PermissionSpec(plugin.getGroupType(), group);
+                    spec.setDescription("Imported from plugin");
+                    perm = permissionService.createPermission(spec);
                 }
                 result.add(perm);
             }

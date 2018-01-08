@@ -102,7 +102,7 @@ public class PermissionDaoTests extends AbstractTest {
     @Test
     public void testCount() {
         long count = permissionDao.count();
-        PermissionSpec b = new PermissionSpec("foo", "bar").setDescription("bing");
+        PermissionSpec b = new PermissionSpec("foo", "bar");
         permissionDao.create(b, true);
         assertEquals(count+1, permissionDao.count());
     }
@@ -112,7 +112,7 @@ public class PermissionDaoTests extends AbstractTest {
         long count = permissionDao.count(new PermissionFilter().setTypes(Sets.newHashSet("user")));
         assertTrue(count > 0);
 
-        PermissionSpec b = new PermissionSpec("foo", "bar").setDescription("bing");
+        PermissionSpec b = new PermissionSpec("foo", "bar");
         permissionDao.create(b, true);
 
         long newCount = permissionDao.count(new PermissionFilter().setTypes(Sets.newHashSet("user")));
@@ -214,7 +214,8 @@ public class PermissionDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        PermissionSpec b = new PermissionSpec("group", "test").setDescription("foo");
+        PermissionSpec b = new PermissionSpec("group", "test");
+        b.setDescription("foo");
         Permission p = permissionDao.create(b, false);
         assertEquals("group", p.getType());
         assertEquals("test", p.getName());

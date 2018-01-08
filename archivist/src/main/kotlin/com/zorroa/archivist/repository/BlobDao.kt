@@ -104,24 +104,25 @@ open class BlobDaoImpl : AbstractDao(), BlobDao {
     }
 
     override fun setPermissions(blob: BlobId, req: SetPermissions): Acl {
-
-        if (req.replace) {
-            jdbc.update("DELETE FROM jblob_acl WHERE pk_jblob=?", blob.getBlobId())
-            for (entry in req.acl) {
-                addPermission(blob, entry)
-            }
-        } else {
-            for (entry in req.acl) {
-                if (entry.getAccess() > 7) {
-                    throw ArchivistWriteException("Invalid Access level "
-                            + entry.getAccess() + " for permission ID " + entry.getPermissionId())
+        if (req.acl != null) {
+            if (req.replace) {
+                jdbc.update("DELETE FROM jblob_acl WHERE pk_jblob=?", blob.getBlobId())
+                for (entry in req.acl!!) {
+                    addPermission(blob, entry)
                 }
-                if (entry.access <= 0) {
-                    jdbc.update("DELETE FROM jblob_acl WHERE pk_permission=?", entry.permissionId)
-                } else {
-                    if (jdbc.update("UPDATE jblob_acl SET int_access=? WHERE pk_jblob=? AND pk_permission=?",
-                            entry.access, blob.getBlobId(), entry.getPermissionId()) != 1) {
-                        addPermission(blob, entry)
+            } else {
+                for (entry in req.acl!!) {
+                    if (entry.getAccess() > 7) {
+                        throw ArchivistWriteException("Invalid Access level "
+                                + entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                    }
+                    if (entry.access <= 0) {
+                        jdbc.update("DELETE FROM jblob_acl WHERE pk_permission=?", entry.permissionId)
+                    } else {
+                        if (jdbc.update("UPDATE jblob_acl SET int_access=? WHERE pk_jblob=? AND pk_permission=?",
+                                entry.access, blob.getBlobId(), entry.getPermissionId()) != 1) {
+                            addPermission(blob, entry)
+                        }
                     }
                 }
             }

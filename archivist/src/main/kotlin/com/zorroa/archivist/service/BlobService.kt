@@ -61,7 +61,7 @@ open class BlobServiceImpl
     }
 
     override fun setPermissions(blob: BlobId, perms: SetPermissions): Acl {
-        permissionDao.resolveAcl(perms.getAcl(), false)
+        permissionDao.resolveAcl(perms.acl, false)
         return blobDao.setPermissions(blob, perms)
     }
 
