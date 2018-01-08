@@ -270,10 +270,10 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <version>${kotlin.version}</version>
                 <configuration>
-                <compilerPlugins>
-                    <plugin>spring</plugin>
-                </compilerPlugins>
-                </configuration>
+                    <compilerPlugins>
+                        <plugin>spring</plugin>
+                    </compilerPlugins>
+                    </configuration>
                 <executions>
                     <execution>
                         <id>compile</id>
