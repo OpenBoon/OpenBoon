@@ -52,7 +52,7 @@ public class PermissionContollerTests extends MockMvcTest {
         List<Permission> perms1 = Json.Mapper.readValue(result.getResponse().getContentAsByteArray(),
                 new TypeReference<List<Permission>>() {
                 });
-        List<Permission> perms2 = userService.getPermissions();
+        List<Permission> perms2 = permissionService.getPermissions();
         assertEquals(perms1, perms2);
     }
 
@@ -62,7 +62,7 @@ public class PermissionContollerTests extends MockMvcTest {
         PermissionSpec b = new PermissionSpec("project", "sw");
         b.setName("project::sw");
         b.setDescription("Star Wars crew members");
-        Permission perm = userService.createPermission(b);
+        Permission perm = permissionService.createPermission(b);
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/permissions/" + perm.getId())
@@ -80,7 +80,7 @@ public class PermissionContollerTests extends MockMvcTest {
 
         PermissionSpec b = new PermissionSpec("project", "sw");
         b.setDescription("Star Wars crew members");
-        Permission perm = userService.createPermission(b);
+        Permission perm = permissionService.createPermission(b);
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/permissions/" + perm.getId())

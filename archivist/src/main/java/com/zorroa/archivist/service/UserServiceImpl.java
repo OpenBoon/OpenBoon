@@ -4,7 +4,10 @@ import com.google.common.base.Charsets;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.io.CharStreams;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.*;
@@ -22,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -266,49 +268,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Permission> getPermissions() {
-        return permissionDao.getAll();
-    }
-
-    @Override
-    public PagedList<Permission> getPermissions(Pager page) {
-        return permissionDao.getPaged(page);
-    }
-
-    @Override
-    public PagedList<Permission> getPermissions(Pager page, PermissionFilter filter) {
-        return permissionDao.getPaged(page, filter);
-    }
-
-    @Override
-    public PagedList<Permission> getUserAssignablePermissions(Pager page) {
-        return permissionDao.getPaged(page,
-                new PermissionFilter()
-                        .setAssignableToUser(true)
-                        .forceSort(ImmutableMap.of("str_group", "asc", "str_type", "asc")));
-    }
-
-    @Override
-    public PagedList<Permission> getObjAssignablePermissions(Pager page) {
-        return permissionDao.getPaged(page,
-                new PermissionFilter()
-                        .setAssignableToObj(true)
-                        .forceSort(ImmutableMap.of("str_group", "asc", "str_type", "asc")));
-    }
-
-    @Override
     public List<Permission> getPermissions(User user) {
         return permissionDao.getAll(user);
-    }
-
-    @Override
-    public List<String> getPermissionNames() {
-        return permissionDao.getAll().stream().map(p->p.getFullName()).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean permissionExists(String authority) {
-        return permissionDao.exists(authority);
     }
 
     private final LoadingCache<String, Permission> permissionCache = CacheBuilder.newBuilder()
@@ -326,15 +287,6 @@ public class UserServiceImpl implements UserService {
                     }
                 }
             });
-
-    @Override
-    public Permission getPermission(String id) {
-        try {
-            return permissionCache.get(id);
-        } catch (Exception e) {
-            throw new EmptyResultDataAccessException("The permission " + id + " does not exist", 1);
-        }
-    }
 
     @Override
     public void setPermissions(User user, Collection<Permission> perms) {
@@ -385,21 +337,6 @@ public class UserServiceImpl implements UserService {
         });
     }
 
-    // CACHE
-    @Override
-    public Permission getPermission(int id) {
-        return permissionDao.get(id);
-    }
-
-    @Override
-    public Permission createPermission(PermissionSpec builder) {
-        Permission perm = permissionDao.create(builder, false);
-        txem.afterCommitSync(() -> {
-            logService.logAsync(UserLogSpec.build(LogAction.Create, perm));
-        });
-        return perm;
-    }
-
     @Override
     public boolean hasPermission(User user, String type, String name) {
         return userDao.hasPermission(user, type, name);
@@ -408,17 +345,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean hasPermission(User user, Permission permission) {
         return userDao.hasPermission(user, permission);
-    }
-
-    @Override
-    public boolean deletePermission(Permission permission) {
-        boolean result = permissionDao.delete(permission);
-        if (result) {
-            txem.afterCommitSync(() -> {
-                logService.logAsync(UserLogSpec.build(LogAction.Delete, permission));
-            });
-        }
-        return result;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class SearchServiceTests extends AbstractTest {
     public void testSearchPermissionsMiss() throws IOException {
 
         authenticate("user");
-        Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
+        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addToPermissions("group:test", 1);
         assetService.index(source);
@@ -60,7 +60,7 @@ public class SearchServiceTests extends AbstractTest {
     public void testSearchPermissionsHit() throws IOException {
         authenticate("user");
 
-        Permission perm = userService.createPermission(new PermissionSpec("group", "test"));
+        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
         source.addToPermissions("group::everyone", 1);

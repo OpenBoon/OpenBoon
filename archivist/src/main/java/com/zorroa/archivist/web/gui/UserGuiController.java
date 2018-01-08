@@ -3,6 +3,7 @@ package com.zorroa.archivist.web.gui;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserProfileUpdate;
 import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.service.PermissionService;
 import com.zorroa.archivist.service.SearchService;
 import com.zorroa.archivist.service.UserService;
 import com.zorroa.archivist.web.gui.forms.UserPasswordForm;
@@ -29,6 +30,9 @@ public class UserGuiController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PermissionService permissionService;
 
     @Autowired
     SearchService searchService;
@@ -63,7 +67,7 @@ public class UserGuiController {
         model.addAttribute("user", user);
         model.addAttribute("permissions", userService.getPermissions(user));
         model.addAttribute("assetCount", searchService.count(new AssetSearch()));
-        model.addAttribute("allPermissions", userService.getPermissions());
+        model.addAttribute("allPermissions", permissionService.getPermissions());
         return "user_permissions";
     }
 

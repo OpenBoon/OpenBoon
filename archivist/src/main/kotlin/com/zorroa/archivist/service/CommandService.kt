@@ -44,7 +44,8 @@ interface CommandService {
 open class CommandServiceImpl @Autowired constructor (
         private val commandDao: CommandDao,
         private val assetService: AssetService,
-        private val userService: UserService
+        private val userService: UserService,
+        private val permissionService: PermissionService
 ): AbstractScheduledService(), CommandService {
 
     internal var runningCommand = AtomicReference<Command>()

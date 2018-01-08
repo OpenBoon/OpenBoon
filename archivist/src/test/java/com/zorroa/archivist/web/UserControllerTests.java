@@ -150,7 +150,7 @@ public class UserControllerTests extends MockMvcTest {
     public void testSetPermissions() throws Exception {
 
         User user = userService.get("user");
-        List<Integer> perms = userService.getPermissions().stream().mapToInt(
+        List<Integer> perms = permissionService.getPermissions().stream().mapToInt(
                 p->p.getId()).boxed().collect(Collectors.toList());
 
         MockHttpSession session = admin();
@@ -173,8 +173,8 @@ public class UserControllerTests extends MockMvcTest {
         List<Permission> perms = userService.getPermissions(user);
         assertTrue(perms.size() > 0);
 
-        userService.setPermissions(user, Lists.newArrayList(userService.getPermission("group::administrator")));
-        perms.add(userService.getPermission("group::administrator"));
+        userService.setPermissions(user, Lists.newArrayList(permissionService.getPermission("group::administrator")));
+        perms.add(permissionService.getPermission("group::administrator"));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/users/" + user.getId() + "/permissions")

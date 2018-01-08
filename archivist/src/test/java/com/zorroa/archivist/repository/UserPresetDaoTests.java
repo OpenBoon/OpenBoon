@@ -30,7 +30,7 @@ public class UserPresetDaoTests extends AbstractTest {
         spec = new UserPresetSpec();
         spec.setName("defaults");
         spec.setSettings(new UserSettings().setSearch(ImmutableMap.of("foo", 1.0f)));
-        spec.setPermissionIds(ImmutableList.of(userService.getPermission("group::administrator").getId()));
+        spec.setPermissionIds(ImmutableList.of(permissionService.getPermission("group::administrator").getId()));
         preset = userPresetDao.create(spec);
     }
 
@@ -49,7 +49,7 @@ public class UserPresetDaoTests extends AbstractTest {
 
     @Test
     public void testUpdate() {
-        preset.setPermissionIds(ImmutableList.of(userService.getPermission("group::manager").getId()));
+        preset.setPermissionIds(ImmutableList.of(permissionService.getPermission("group::manager").getId()));
         spec.setSettings(new UserSettings().setSearch(ImmutableMap.of("foo", 1.0f)));
         preset.setName("bilbo");
         assertTrue(userPresetDao.update(preset.getPresetId(), preset));

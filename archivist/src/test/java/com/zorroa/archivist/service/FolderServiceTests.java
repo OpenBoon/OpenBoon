@@ -157,7 +157,7 @@ public class FolderServiceTests extends AbstractTest {
         folderService.get(folder.getId());
 
         folderService.setAcl(folder, new Acl().addEntry(
-                userService.getPermission("group::manager"),
+                permissionService.getPermission("group::manager"),
                 Access.Read, Access.Write, Access.Export), false, false);
         folderService.get(folder.getId());
     }
@@ -174,7 +174,7 @@ public class FolderServiceTests extends AbstractTest {
          * are taking away write/export permissions from ourself.
          */
         folderService.setAcl(folder, new Acl().addEntry(
-                userService.getPermission("group::manager"),
+                permissionService.getPermission("group::manager"),
                 Access.Read), false, false);
         folderService.get(folder.getId());
     }
@@ -191,7 +191,7 @@ public class FolderServiceTests extends AbstractTest {
          * are taking away write/export permissions from ourself.
          */
         folderService.setAcl(folder, new Acl().addEntry(
-                userService.getPermission("group::administrator"),
+                permissionService.getPermission("group::administrator"),
                 Access.Read), false, false);
         folderService.get(folder.getId());
     }
@@ -205,7 +205,7 @@ public class FolderServiceTests extends AbstractTest {
 
         // use the DAO so don't fail the remove access from self check.
         folderDao.setAcl(folder.getId(), new Acl().addEntry(
-                userService.getPermission("group::administrator"), Access.Read));
+                permissionService.getPermission("group::administrator"), Access.Read));
         folderService.invalidate(folder);
         folderService.get(folder.getId());
     }
@@ -216,7 +216,7 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),
-                new Acl().addEntry(userService.getPermission("group::administrator"), Access.Read));
+                new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Read));
         folderService.get(folder.getId());
     }
 
@@ -225,7 +225,7 @@ public class FolderServiceTests extends AbstractTest {
         authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
-        Acl acl = new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write);
+        Acl acl = new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Write);
         folderDao.setAcl(folder.getId(), acl);
         folder.setAcl(acl);
 
@@ -238,7 +238,7 @@ public class FolderServiceTests extends AbstractTest {
         authenticate("manager");
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
-        Acl acl = new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write);
+        Acl acl = new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Write);
         folder.setAcl(acl);
         folderDao.setAcl(folder.getId(), acl);
         folderService.delete(folder);
@@ -250,7 +250,7 @@ public class FolderServiceTests extends AbstractTest {
         FolderSpec builder = new FolderSpec("Folder");
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),
-                new Acl().addEntry(userService.getPermission("group::administrator"), Access.Write));
+                new Acl().addEntry(permissionService.getPermission("group::administrator"), Access.Write));
         folderService.update(folder.getId(), folder.setName("biblo"));
     }
 
@@ -401,8 +401,8 @@ public class FolderServiceTests extends AbstractTest {
         Folder library = folderService.get("/Library");
         Folder orig = folderService.create(new FolderSpec("orig", library));
 
-        assertTrue(orig.getAcl().hasAccess(userService.getPermission("group::manager"), Access.Write));
-        assertTrue(orig.getAcl().hasAccess(userService.getPermission("group::everyone"), Access.Read));
+        assertTrue(orig.getAcl().hasAccess(permissionService.getPermission("group::manager"), Access.Write));
+        assertTrue(orig.getAcl().hasAccess(permissionService.getPermission("group::everyone"), Access.Read));
         assertEquals(2, orig.getAcl().size());
     }
 
@@ -414,16 +414,16 @@ public class FolderServiceTests extends AbstractTest {
         Folder admin = folderService.get("/Users/admin");
         Folder moving = folderService.create(new FolderSpec("folder_to_move", admin));
 
-        assertTrue(moving.getAcl().hasAccess(userService.getPermission("user::admin"), Access.Read));
-        assertTrue(moving.getAcl().hasAccess(userService.getPermission("user::admin"), Access.Write));
+        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("user::admin"), Access.Read));
+        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("user::admin"), Access.Write));
         assertEquals(1, moving.getAcl().size());
 
         // Move the folder into the library
         assertTrue(folderService.update(moving.getId(), moving.setParentId(library.getId())));
         Acl acl = folderDao.getAcl(moving.getId());
 
-        assertTrue(moving.getAcl().hasAccess(userService.getPermission("group::manager"), Access.Write));
-        assertTrue(moving.getAcl().hasAccess(userService.getPermission("group::everyone"), Access.Read));
+        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("group::manager"), Access.Write));
+        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("group::everyone"), Access.Read));
         assertEquals(2, moving.getAcl().size());
     }
 

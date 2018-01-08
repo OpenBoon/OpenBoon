@@ -197,7 +197,7 @@ open class AssetServiceImpl  @Autowired  constructor (
             if (source.permissions != null) {
                 for ((key, value) in source.permissions) {
                     try {
-                        val perm = userService.getPermission(key)
+                        val perm = permissionDao.get(key)
                         if (value and 1 == 1) {
                             perms.addToRead(perm.id)
                         } else {

@@ -8,7 +8,7 @@ import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.PermissionSpec;
 import com.zorroa.archivist.service.AssetService;
-import com.zorroa.archivist.service.UserService;
+import com.zorroa.archivist.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ import java.util.List;
 public class PermissionController {
 
     @Autowired
-    UserService userService;
+    PermissionService permissionService;
 
     @Autowired
     AssetService assetService;
@@ -30,7 +30,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.GET)
     public Permission get(@PathVariable String id) {
-        return userService.getPermission(id);
+        return permissionService.getPermission(id);
     }
 
     /**
@@ -38,7 +38,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions", method = RequestMethod.GET)
     public List<Permission> getAll() {
-        return userService.getPermissions();
+        return permissionService.getPermissions();
     }
 
     /**
@@ -46,7 +46,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions/_names", method = RequestMethod.GET)
     public List<String> getAllNames() {
-        return userService.getPermissionNames();
+        return permissionService.getPermissionNames();
     }
 
     /**
@@ -54,7 +54,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions/_exists/{name}", method = RequestMethod.GET)
     public Boolean exists(@PathVariable String name) {
-        return userService.permissionExists(name);
+        return permissionService.permissionExists(name);
     }
 
     /**
@@ -62,7 +62,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions", method = RequestMethod.POST)
     public Permission create(@RequestBody PermissionSpec builder) {
-        return userService.createPermission(builder);
+        return permissionService.createPermission(builder);
     }
 
     /**
@@ -70,7 +70,7 @@ public class PermissionController {
      */
     @RequestMapping(value="/api/v1/permissions/{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable String id) {
-        Permission p = userService.getPermission(id);
-        return HttpUtils.status("permissions", id, "delete", userService.deletePermission(p));
+        Permission p = permissionService.getPermission(id);
+        return HttpUtils.status("permissions", id, "delete", permissionService.deletePermission(p));
     }
 }

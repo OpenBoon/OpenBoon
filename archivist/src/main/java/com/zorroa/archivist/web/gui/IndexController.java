@@ -1,7 +1,6 @@
 package com.zorroa.archivist.web.gui;
 
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -63,6 +62,9 @@ public class IndexController {
     UserService userService;
 
     @Autowired
+    PermissionService permissionService;
+
+    @Autowired
     HealthEndpoint healthEndpoint;
 
     @Autowired
@@ -99,7 +101,7 @@ public class IndexController {
         Pager paging = new Pager(page, count);
         standardModel(model);
         model.addAttribute("page", paging);
-        model.addAttribute("perms", userService.getPermissions(paging));
+        model.addAttribute("perms", permissionService.getPermissions(paging));
         model.addAttribute("permSpec", new PermissionSpec());
         return "permissions";
     }
@@ -113,7 +115,7 @@ public class IndexController {
             return "permissions";
         }
         else {
-            userService.createPermission(permSpec);
+            permissionService.createPermission(permSpec);
             return "redirect:/gui/permissions";
         }
     }
@@ -121,7 +123,7 @@ public class IndexController {
     @RequestMapping("/gui/permissions/{id}")
     public String getPermission(Model model, @PathVariable int id) {
         standardModel(model);
-        model.addAttribute("perm", userService.getPermission(id));
+        model.addAttribute("perm", permissionService.getPermission(id));
         model.addAttribute("permSpec", new PermissionSpec());
         return "permission";
     }

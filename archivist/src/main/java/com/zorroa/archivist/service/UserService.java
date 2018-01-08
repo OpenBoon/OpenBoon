@@ -46,16 +46,6 @@ public interface UserService {
 
     boolean setEnabled(User user, boolean value);
 
-    List<Permission> getPermissions();
-
-    PagedList<Permission> getPermissions(Pager page, PermissionFilter filter);
-
-    PagedList<Permission> getPermissions(Pager page);
-
-    PagedList<Permission> getUserAssignablePermissions(Pager page);
-
-    PagedList<Permission> getObjAssignablePermissions(Pager page);
-
     List<Permission> getPermissions(User user);
 
     void setPermissions(User user, Collection<Permission> perms);
@@ -64,21 +54,9 @@ public interface UserService {
 
     void removePermissions(User user, Collection<Permission> perms);
 
-    Permission getPermission(int id);
-
-    Permission createPermission(PermissionSpec builder);
-
-    List<String> getPermissionNames();
-
-    boolean permissionExists(String authority);
-
-    Permission getPermission(String name);
-
     boolean hasPermission(User user, String type, String name);
 
     boolean hasPermission(User user, Permission permission);
-
-    boolean deletePermission(Permission permission);
 
     // Presets
     List<UserPreset> getUserPresets();

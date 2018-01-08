@@ -68,6 +68,9 @@ public abstract class AbstractTest {
     protected UserService userService;
 
     @Autowired
+    protected PermissionService permissionService;
+
+    @Autowired
     protected MigrationService migrationService;
 
     @Autowired
@@ -189,7 +192,7 @@ public abstract class AbstractTest {
         managerBuilder.setPassword("manager");
         User manager = userService.create(managerBuilder);
         userService.addPermissions(manager, Lists.newArrayList(
-                userService.getPermission("group::manager")));
+                permissionService.getPermission("group::manager")));
 
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
@@ -212,7 +215,7 @@ public abstract class AbstractTest {
         User user = userService.get(username);
         List<Permission> perms = userService.getPermissions(user);
         if (superUser) {
-            perms.add(userService.getPermission("group::administrator"));
+            perms.add(permissionService.getPermission("group::administrator"));
         }
 
         SecurityContextHolder.getContext().setAuthentication(

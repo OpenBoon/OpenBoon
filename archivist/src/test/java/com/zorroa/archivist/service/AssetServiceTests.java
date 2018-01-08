@@ -60,7 +60,7 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testIndexWithPermission() throws InterruptedException {
-        Permission p = userService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission("group::everyone");
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         builder.addToPermissions("group::everyone", 7);
@@ -78,7 +78,7 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testIndexWithReadOnlyPermission() throws InterruptedException {
-        Permission p = userService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission("group::everyone");
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         builder.addToPermissions("group::everyone", 1);
@@ -96,7 +96,7 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testIndexRemovePermissions() throws InterruptedException {
-        Permission p = userService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission("group::everyone");
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         builder.addToPermissions("group::everyone", 7);
@@ -133,7 +133,7 @@ public class AssetServiceTests extends AbstractTest {
     @Test
     public void testSetPermissions() throws InterruptedException {
 
-        Permission p = userService.getPermission("user::user");
+        Permission p = permissionService.getPermission("user::user");
         Acl acl = new Acl();
         acl.add(new AclEntry(p.getId(), Access.Read));
 

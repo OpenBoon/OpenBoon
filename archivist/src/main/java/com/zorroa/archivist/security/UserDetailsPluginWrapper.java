@@ -2,6 +2,7 @@ package com.zorroa.archivist.security;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.service.PermissionService;
 import com.zorroa.archivist.service.UserService;
 import com.zorroa.security.UserDetailsPlugin;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class UserDetailsPluginWrapper implements LdapAuthoritiesPopulator {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PermissionService permissionService;
 
     UserDetailsPlugin plugin;
 
@@ -75,9 +79,9 @@ public class UserDetailsPluginWrapper implements LdapAuthoritiesPopulator {
             for (String group : groups) {
                 Permission perm;
                 try {
-                    perm = userService.getPermission(plugin.getGroupType() + Permission.JOIN + group);
+                    perm = permissionService.getPermission(plugin.getGroupType() + Permission.JOIN + group);
                 } catch (EmptyResultDataAccessException e) {
-                    perm = userService.createPermission(new PermissionSpec()
+                    perm = permissionService.createPermission(new PermissionSpec()
                             .setType(plugin.getGroupType())
                             .setName(group)
                             .setDescription("Imported from plugin"));

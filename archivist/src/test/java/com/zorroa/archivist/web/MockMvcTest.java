@@ -79,7 +79,7 @@ public abstract class MockMvcTest extends AbstractTest {
 
     protected MockHttpSession admin(Integer id) {
         User user = userService.get(id);
-        return buildSession(new UnitTestAuthentication(user, userService.getPermissions()));
+        return buildSession(new UnitTestAuthentication(user, permissionService.getPermissions()));
     }
 
     public static class StatusResult<T> {

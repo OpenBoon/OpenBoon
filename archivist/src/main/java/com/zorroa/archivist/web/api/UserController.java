@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.zorroa.archivist.HttpUtils;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.service.PermissionService;
 import com.zorroa.archivist.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,9 @@ public class UserController  {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PermissionService permissionService;
 
     @Deprecated
     @RequestMapping(value="/api/v1/generate_api_key", method=RequestMethod.POST)
@@ -202,7 +206,7 @@ public class UserController  {
     public List<Permission> setPermissions(@RequestBody List<Integer> pids, @PathVariable int id) {
         User user = userService.get(id);
         List<Permission> perms = pids.stream().map(
-                i->userService.getPermission(i)).collect(Collectors.toList());
+                i->permissionService.getPermission(i)).collect(Collectors.toList());
         userService.setPermissions(user, perms);
         return userService.getPermissions(user);
     }
@@ -213,7 +217,7 @@ public class UserController  {
         User user = userService.get(id);
         Set<Permission> resolved = Sets.newHashSetWithExpectedSize(pids.size());
         for (String pid: pids) {
-            resolved.add(userService.getPermission(pid));
+            resolved.add(permissionService.getPermission(pid));
         }
         userService.addPermissions(user, resolved);
         return userService.getPermissions(user);
@@ -225,7 +229,7 @@ public class UserController  {
         User user = userService.get(id);
         Set<Permission> resolved = Sets.newHashSetWithExpectedSize(pids.size());
         for (String pid: pids) {
-            resolved.add(userService.getPermission(pid));
+            resolved.add(permissionService.getPermission(pid));
         }
         userService.removePermissions(user, resolved);
         return userService.getPermissions(user);

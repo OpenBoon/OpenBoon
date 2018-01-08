@@ -67,7 +67,7 @@ public class Permission implements Loggable<Integer>, Serializable, GrantedAutho
 
     @JsonIgnore
     public String getAuthority() {
-        return new StringBuilder(64).append(type).append(JOIN).append(name).toString();
+        return type.concat(JOIN).concat(name);
     }
 
     @Override
