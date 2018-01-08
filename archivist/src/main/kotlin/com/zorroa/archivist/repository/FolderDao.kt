@@ -1,0 +1,515 @@
+package com.zorroa.archivist.repository
+
+import com.google.common.base.Preconditions
+import com.google.common.collect.Lists
+import com.zorroa.archivist.JdbcUtils
+import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.sdk.client.exception.ArchivistWriteException
+import com.zorroa.sdk.search.AssetSearch
+import com.zorroa.sdk.util.Json
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.jdbc.core.RowCallbackHandler
+import org.springframework.jdbc.core.RowMapper
+import org.springframework.jdbc.support.GeneratedKeyHolder
+import org.springframework.stereotype.Repository
+import java.util.*
+
+interface FolderDao {
+
+    fun get(id: Int): Folder
+
+    fun get(parent: Int, name: String, ignorePerms: Boolean): Folder
+
+    fun get(parent: Folder, name: String): Folder
+
+    fun getAll(ids: Collection<Int>): List<Folder>
+
+    fun getChildren(parentId: Int): List<Folder>
+
+    fun getChildrenInsecure(parentId: Int): List<Folder>
+
+    fun getChildren(folder: Folder): List<Folder>
+
+    fun getAllIds(dyhi: DyHierarchy): List<Int>
+
+    fun exists(parentId: Int, name: String): Boolean
+
+    fun count(): Int
+
+    fun count(d: DyHierarchy): Int
+
+    fun exists(parent: Folder, name: String): Boolean
+
+    fun create(builder: FolderSpec): Folder
+
+    fun create(spec: TrashedFolder): Folder
+
+    fun update(id: Int, folder: Folder): Boolean
+
+    fun deleteAll(dyhi: DyHierarchy): Int
+
+    fun delete(folder: Folder): Boolean
+
+    fun deleteAll(ids: Collection<Int>): Int
+
+    fun hasAccess(folder: Folder, access: Access): Boolean
+
+    fun setTaxonomyRoot(folder: Folder, value: Boolean): Boolean
+
+    fun setDyHierarchyRoot(folder: Folder, field: String): Boolean
+
+    fun removeDyHierarchyRoot(folder: Folder): Boolean
+
+    fun updateAcl(folder: Int, acl: Acl)
+
+    fun setAcl(folder: Int, acl: Acl?, replace: Boolean)
+
+    fun setAcl(folder: Int, acl: Acl)
+
+    fun getAcl(folder: Int): Acl
+}
+
+@Repository
+open class FolderDaoImpl : AbstractDao(), FolderDao {
+
+    @Autowired
+    internal var userDaoCache: UserDaoCache? = null
+
+
+    private val MAPPER = RowMapper<Folder> { rs, _ ->
+        val folder = Folder()
+        folder.id = rs.getInt("pk_folder")
+        folder.name = rs.getString("str_name")
+        folder.user = userDaoCache!!.getUser(rs.getInt("user_created"))
+        folder.isRecursive = rs.getBoolean("bool_recursive")
+        folder.timeCreated = rs.getLong("time_created")
+        folder.timeModified = rs.getLong("time_modified")
+        folder.isDyhiRoot = rs.getBoolean("bool_dyhi_root")
+        folder.childCount = rs.getInt("int_child_count")
+        folder.isTaxonomyRoot = rs.getBoolean("bool_tax_root")
+
+        val parent = rs.getObject("pk_parent")
+        if (parent != null) {
+            folder.parentId = parent as Int
+        }
+
+        val dyhi = rs.getObject("pk_dyhi")
+        if (dyhi != null) {
+            folder.dyhiId = dyhi as Int
+        }
+
+        val dyhiField = rs.getString("str_dyhi_field")
+
+        val attrs = rs.getString("json_attrs")
+        if (attrs != null) {
+            folder.attrs = Json.deserialize(attrs, Json.GENERIC_MAP)
+        }
+
+        var search = rs.getString("json_search")
+        if (search == null && dyhiField != null) {
+            search = "{}"
+        }
+
+        if (search != null) {
+            folder.search = Json.deserialize<AssetSearch>(search, AssetSearch::class.java)
+            /**
+             * The dyhi field is added to the search on the fly, not baked in.
+             */
+            if (dyhiField != null) {
+                folder.search.addToFilter().addToExists(dyhiField)
+            }
+        }
+
+        /*
+         * Might turn into an issue but we have lots of caching around folders
+         */
+        folder.acl = getAcl(folder.id)
+        folder
+    }
+
+    override operator fun get(id: Int): Folder {
+        return jdbc.queryForObject<Folder>(appendReadAccess(GET + " WHERE pk_folder=?"), MAPPER, *appendAclArgs(id))
+    }
+
+    override operator fun get(parent: Int, name: String, ignorePerms: Boolean): Folder {
+        try {
+            return if (ignorePerms) {
+                jdbc.queryForObject<Folder>(GET + " WHERE pk_parent=? and str_name=?", MAPPER, parent, name)
+            } else {
+                jdbc.queryForObject<Folder>(
+                        appendReadAccess(GET + " WHERE pk_parent=? and str_name=?"), MAPPER,
+                        *appendAclArgs(parent, name))
+            }
+        } catch (e: EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException(String.format("Failed to find folder, parent: %s name: %s",
+                    parent, name), 1)
+        }
+
+    }
+
+    override operator fun get(parent: Folder, name: String): Folder {
+        return get(parent.id, name, false)
+    }
+
+    override fun getAll(ids: Collection<Int>): List<Folder> {
+        val sb = StringBuilder(512)
+        sb.append(GET)
+        sb.append(" WHERE ")
+        sb.append(JdbcUtils.`in`("pk_folder", ids.size))
+        return jdbc.query(sb.toString(), MAPPER, *ids.toTypedArray())
+    }
+
+    override fun getChildren(parentId: Int): List<Folder> {
+        val sb = StringBuilder(512)
+        sb.append(GET)
+        sb.append(" WHERE pk_parent=?")
+        return jdbc.query(appendReadAccess(sb.toString()), MAPPER, *appendAclArgs(parentId))
+    }
+
+    override fun getChildrenInsecure(parentId: Int): List<Folder> {
+        val sb = StringBuilder(512)
+        sb.append(GET)
+        sb.append(" WHERE pk_parent=?")
+        return jdbc.query(sb.toString(), MAPPER, parentId)
+    }
+
+    override fun getChildren(folder: Folder): List<Folder> {
+        return getChildren(folder.id)
+    }
+
+
+    override fun getAllIds(dyhi: DyHierarchy): List<Int> {
+        return jdbc.queryForList("SELECT pk_folder FROM folder WHERE pk_dyhi=?", Int::class.java, dyhi.id)
+    }
+
+    override fun exists(parentId: Int, name: String): Boolean {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE pk_parent=? AND str_name=?",
+                Int::class.java, parentId, name) == 1
+    }
+
+    override fun count(): Int {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM folder", Int::class.java)
+    }
+
+    override fun count(d: DyHierarchy): Int {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM folder WHERE pk_dyhi=?", Int::class.java, d.id)
+    }
+
+    override fun exists(parent: Folder, name: String): Boolean {
+        return exists(parent.id, name)
+    }
+
+    override fun create(spec: FolderSpec): Folder {
+        val time = System.currentTimeMillis()
+
+        if (spec.userId == null) {
+            val user = SecurityUtils.getUser().id
+            spec.userId = user
+        }
+
+        val keyHolder = GeneratedKeyHolder()
+        jdbc.update({ connection ->
+            val ps = connection.prepareStatement(INSERT, arrayOf("pk_folder"))
+            ps.setInt(1, if (spec.parentId == null) Folder.ROOT_ID else spec.parentId)
+            ps.setString(2, spec.name)
+            ps.setInt(3, spec.userId!!)
+            ps.setLong(4, time)
+            ps.setBoolean(5, spec.isRecursive)
+            ps.setInt(6, spec.userId!!)
+            ps.setLong(7, time)
+            ps.setString(8, Json.serializeToString(spec.search, null))
+            ps.setObject(9, spec.dyhiId)
+            ps.setString(10, Json.serializeToString(spec.attrs, "{}"))
+            ps
+        }, keyHolder)
+
+        val id = keyHolder.key.toInt()
+        return getAfterCreate(id)
+    }
+
+    override fun create(spec: TrashedFolder): Folder {
+        val time = System.currentTimeMillis()
+
+        jdbc.update { connection ->
+            val ps = connection.prepareStatement(RESTORE)
+            ps.setInt(1, spec.folderId)
+            ps.setInt(2, if (spec.parentId == null) Folder.ROOT_ID else spec.parentId)
+            ps.setString(3, spec.name)
+            ps.setInt(4, spec.user.id)
+            ps.setLong(5, time)
+            ps.setBoolean(6, spec.isRecursive)
+            ps.setInt(7, spec.userDeleted.id)
+            ps.setLong(8, time)
+            ps.setString(9, Json.serializeToString(spec.search, null))
+            ps.setString(10, Json.serializeToString(spec.attrs, "{}"))
+            ps
+        }
+
+        return getAfterCreate(spec.folderId)
+    }
+
+    override fun update(id: Int, folder: Folder): Boolean {
+        Preconditions.checkNotNull(folder.parentId, "Parent folder cannot be null")
+        Preconditions.checkArgument(folder.id > 0, "Cannot modify root folder")
+
+        /**
+         * Skip updating the search if its a dyhi so the exists statement
+         * doesn't get automatically updated.  Its also
+         */
+        return if (isDyHi(id)) {
+            jdbc.update(UPDATE[1],
+                    System.currentTimeMillis(),
+                    SecurityUtils.getUser().id,
+                    folder.parentId,
+                    folder.name,
+                    folder.isRecursive,
+                    Json.serializeToString(folder.attrs, "{}"),
+                    folder.id) == 1
+        } else {
+            jdbc.update(UPDATE[0],
+                    System.currentTimeMillis(),
+                    SecurityUtils.getUser().id,
+                    folder.parentId,
+                    folder.name,
+                    folder.isRecursive,
+                    Json.serializeToString(folder.search, null),
+                    Json.serializeToString(folder.attrs, "{}"),
+                    folder.id) == 1
+        }
+    }
+
+    override fun deleteAll(dyhi: DyHierarchy): Int {
+        return jdbc.update("DELETE FROM folder WHERE pk_dyhi=?", dyhi.id)
+    }
+
+    override fun delete(folder: Folder): Boolean {
+        return jdbc.update("DELETE FROM folder WHERE pk_folder=?", folder.id) == 1
+    }
+
+    override fun deleteAll(ids: Collection<Int>): Int {
+        if (ids.isEmpty()) {
+            return 0
+        }
+        /**
+         * The list has to be sorted from lowest to highest.  A parent folder will
+         * always have a lower ID than child folders.  Hopefully this is enough
+         * for a clean delete.
+         */
+        val sorted = Lists.newArrayList(ids)
+        Collections.sort(sorted)
+        return jdbc.update("DELETE FROM folder WHERE " + JdbcUtils.`in`("pk_folder", ids.size),
+                *sorted.toTypedArray())
+    }
+
+    override fun hasAccess(folder: Folder, access: Access): Boolean {
+        return jdbc.queryForObject(appendAccess("SELECT COUNT(1) FROM folder WHERE pk_folder=?", access),
+                Int::class.java, *appendAclArgs(folder.id)) > 0
+    }
+
+    override fun setTaxonomyRoot(folder: Folder, value: Boolean): Boolean {
+        return jdbc.update("UPDATE folder SET bool_tax_root=? WHERE pk_folder=? AND bool_tax_root=? AND pk_folder!=0",
+                value, folder.id, !value) == 1
+    }
+
+    override fun setDyHierarchyRoot(folder: Folder, field: String): Boolean {
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?, str_dyhi_field=? WHERE pk_folder=? AND pk_folder!=0",
+                false, true, field, folder.id) == 1
+    }
+
+    override fun removeDyHierarchyRoot(folder: Folder): Boolean {
+        return jdbc.update("UPDATE folder SET bool_recursive=?, bool_dyhi_root=?,str_dyhi_field=null WHERE pk_folder=? AND pk_folder!=0",
+                true, false, folder.id) == 1
+    }
+
+    override fun setAcl(folder: Int, acl: Acl) {
+        setAcl(folder, acl, true)
+    }
+
+    override fun updateAcl(folder: Int, acl: Acl) {
+        setAcl(folder, acl, false)
+    }
+
+    override fun setAcl(folder: Int, acl: Acl?, replace: Boolean) {
+
+        if (acl == null || acl.isEmpty()) {
+            return
+        }
+
+        if (replace) {
+            jdbc.update("DELETE FROM folder_acl WHERE pk_folder=?", folder)
+            for (entry in acl) {
+                if (entry.getAccess() == 0) {
+                    continue
+                }
+                if (entry.getAccess() > 7) {
+                    throw ArchivistWriteException("Invalid Access level "
+                            + entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                }
+                jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
+                        entry.getPermissionId(), folder, entry.getAccess())
+            }
+        } else {
+
+            for (entry in acl) {
+                if (entry.getAccess() > 7) {
+                    throw ArchivistWriteException("Invalid Access level "
+                            + entry.getAccess() + " for permission ID " + entry.getPermissionId())
+                }
+                if (entry.getAccess() <= 0) {
+                    jdbc.update("DELETE FROM folder_acl WHERE pk_folder=? AND pk_permission=?",
+                            folder, entry.getPermissionId())
+                } else if (jdbc.update("UPDATE folder_acl SET int_access=? WHERE pk_folder=? AND pk_permission=?",
+                        entry.getAccess(), folder, entry.getPermissionId()) != 1) {
+                    jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
+                            entry.getPermissionId(), folder, entry.getAccess())
+                }
+            }
+        }
+    }
+
+    override fun getAcl(folder: Int): Acl {
+        val result = Acl()
+        jdbc.query("SELECT p.str_authority, p.pk_permission, f.int_access FROM folder_acl f,permission p WHERE f.pk_permission = p.pk_permission and f.pk_folder=?",
+                RowCallbackHandler { rs ->
+                    result.add(AclEntry(rs.getString("str_authority"),
+                            rs.getInt("pk_permission"),
+                            rs.getInt("int_access"))) }, folder)
+        return result
+    }
+
+    /**
+     * Append the permissions check to the given query.
+     *
+     * @param query
+     * @return
+     */
+    private fun appendAccess(query: String, access: Access): String {
+        if (SecurityUtils.hasPermission("group::administrator")) {
+            return query
+        }
+
+        val sb = StringBuilder(query.length + 256)
+        sb.append(query)
+        if (query.contains("WHERE")) {
+            sb.append(" AND ")
+        } else {
+            sb.append(" WHERE ")
+        }
+        sb.append("((")
+        sb.append("SELECT COUNT(1) FROM folder_acl WHERE folder_acl.pk_folder=folder.pk_folder AND ")
+        sb.append(JdbcUtils.`in`("folder_acl.pk_permission", SecurityUtils.getPermissionIds().size))
+        sb.append(" AND BITAND(")
+        sb.append(access.value)
+        sb.append(",int_access) = " + access.value + ") > 0 OR (")
+        sb.append("SELECT COUNT(1) FROM folder_acl WHERE folder_acl.pk_folder=folder.pk_folder) = 0)")
+        return sb.toString()
+    }
+
+    /**
+     * Append the permissions check to the given query.
+     *
+     * @param query
+     * @return
+     */
+    private fun appendWriteAccess(query: String): String {
+        return appendAccess(query, Access.Write)
+    }
+
+    private fun appendReadAccess(query: String): String {
+        return appendAccess(query, Access.Read)
+    }
+
+    fun appendAclArgs(vararg args: Any): Array<out Any> {
+        if (SecurityUtils.hasPermission("group::administrator")) {
+            return args
+        }
+
+        val result = Lists.newArrayListWithCapacity<Any>(args.size + SecurityUtils.getPermissionIds().size)
+        for (a in args) {
+            result.add(a)
+        }
+        result.addAll(SecurityUtils.getPermissionIds())
+        return result.toTypedArray()
+    }
+
+    /**
+     * Called by create so we can return a folder object even if we are stupid and create
+     * a folder we don't have access to.
+     *
+     * @param id
+     * @return
+     */
+    private fun getAfterCreate(id: Int): Folder {
+        return jdbc.queryForObject(GET + " WHERE pk_folder=?", MAPPER, id)
+    }
+
+    private fun isDyHi(id: Int): Boolean {
+        val row = jdbc.queryForRowSet("SELECT pk_dyhi, bool_dyhi_root FROM folder WHERE pk_folder=?", id)
+        try {
+            row.next()
+
+            if (row.getBoolean("bool_dyhi_root")) {
+                return true
+            }
+            if (row.getString("pk_dyhi") != null) {
+                return true
+            }
+        } catch (e: Exception) {
+            //ignore
+        }
+
+        return false
+
+    }
+
+    companion object {
+
+        private val GET = "SELECT " +
+                "* " +
+                "FROM " +
+                "folder "
+
+        private val INSERT = JdbcUtils.insert("folder",
+                "pk_parent",
+                "str_name",
+                "user_created",
+                "time_created",
+                "bool_recursive",
+                "user_modified",
+                "time_modified",
+                "json_search",
+                "pk_dyhi",
+                "json_attrs")
+
+        private val RESTORE = JdbcUtils.insert("folder",
+                "pk_folder",
+                "pk_parent",
+                "str_name",
+                "user_created",
+                "time_created",
+                "bool_recursive",
+                "user_modified",
+                "time_modified",
+                "json_search",
+                "json_attrs")
+
+        private val UPDATE = arrayOf(JdbcUtils.update("folder", "pk_folder",
+                "time_modified",
+                "user_modified",
+                "pk_parent",
+                "str_name",
+                "bool_recursive",
+                "json_search",
+                "json_attrs"),
+
+            JdbcUtils.update("folder", "pk_folder",
+                    "time_modified",
+                    "user_modified",
+                    "pk_parent",
+                    "str_name",
+                    "bool_recursive",
+                    "json_attrs"))
+    }
+}

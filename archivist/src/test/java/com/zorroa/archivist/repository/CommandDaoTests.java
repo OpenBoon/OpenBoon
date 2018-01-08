@@ -68,7 +68,7 @@ public class CommandDaoTests extends AbstractTest {
     }
 
     @Test
-    public void teststop() {
+    public void testStop() {
         assertTrue(commandDao.start(command));
         assertTrue(commandDao.stop(command, null));
         assertFalse(commandDao.stop(command, null));

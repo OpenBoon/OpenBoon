@@ -74,7 +74,7 @@ public class JobServiceTests extends AbstractTest {
         assertEquals(0, job.getCounts().getTasksRunning());
         assertEquals(1, job.getCounts().getTasksWaiting());
 
-        assertTrue(jobService.setTaskState(task, TaskState.Running, null));
+        assertTrue(jobService.setTaskState(task, TaskState.Running));
         job = jobService.get(job.getId());
 
         assertEquals("running count not incremented", 1, job.getCounts().getTasksRunning());

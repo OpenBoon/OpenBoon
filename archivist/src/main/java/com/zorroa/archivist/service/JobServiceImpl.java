@@ -349,6 +349,10 @@ public class JobServiceImpl implements JobService {
             return false;
         }
 
+        if (expect == null) {
+            expect = new TaskState[] {};
+        }
+
         if (taskDao.setState(task, newState, expect)) {
             jobDao.updateTaskStateCounts(task, newState, oldState);
             return true;
