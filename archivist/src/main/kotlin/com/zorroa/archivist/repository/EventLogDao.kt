@@ -81,7 +81,7 @@ open class EventLogDaoImpl : AbstractElasticDao(), EventLogDao {
 
         val bulk = bulkRequest.get()
         if (bulk.hasFailures()) {
-            AbstractElasticDao.logger.warn("Bulk job log failure, {}", bulk.buildFailureMessage())
+            logger.warn("Bulk job log failure, {}", bulk.buildFailureMessage())
         }
     }
 

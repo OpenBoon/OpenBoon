@@ -44,7 +44,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
     Executor analyzeThreadPool;
 
     @Autowired
-    ProcessManagerNgService processManagerNgService;
+    ProcessManagerService processManagerService;
 
     @Autowired
     NetworkEnvironment networkEnvironment;
@@ -135,7 +135,7 @@ public class RegisterServiceImpl extends AbstractScheduledService implements Reg
             builder.setThreadsUsed(e.getActiveCount());
             builder.setTaskIds(ImmutableList.of());
             builder.setId(id);
-            builder.setTaskIds(processManagerNgService.getTaskIds());
+            builder.setTaskIds(processManagerService.getTaskIds());
             builder.setLoadAvg(osBean.getSystemLoadAverage());
             builder.setMetrics(Json.serialize(fixedMdata));
             builder.setVersion((String) infoEndpoint.invoke().get("version"));

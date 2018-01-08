@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractElasticDao {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractElasticDao.class);
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected Client client;
     protected ElasticTemplate elastic;

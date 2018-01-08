@@ -32,4 +32,8 @@ public class AbstractDao {
     public void setDatasource(DataSource dataSource) {
         this.jdbc = new JdbcTemplate(dataSource);
     }
+
+    public Logger getLogger() {
+        return logger;
+    }
 }

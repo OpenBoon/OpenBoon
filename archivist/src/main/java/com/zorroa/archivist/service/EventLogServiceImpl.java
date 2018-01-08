@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
 @Service
 public class EventLogServiceImpl implements EventLogService {
 
-    private static final Logger logger = LoggerFactory.getLogger(EventLogServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(EventLogServiceImpl.class);
 
     @Autowired
     JobService jobService;

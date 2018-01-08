@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 public class ProcessManagerNgTests extends AbstractTest {
 
     @Autowired
-    ProcessManagerNgService processManagerNg;
+    ProcessManagerService processManagerNg;
 
     int task = 0;
 

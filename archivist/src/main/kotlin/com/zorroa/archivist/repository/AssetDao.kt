@@ -117,7 +117,6 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return "archivist"
     }
 
-
     override fun <T> getFieldValue(id: String, field: String): T {
         val d = Document(
                 client.prepareGet("archivist", "asset", id)
@@ -169,7 +168,7 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
                     result.warnings++
                     retries.add(sources[index])
                 } else {
-                    AbstractElasticDao.logger.warn("Failed to index {}, {}", response.id, message)
+                    logger.warn("Failed to index {}, {}", response.id, message)
                     result.logs.add(StringBuilder(1024).append(
                             message).append(",").toString())
                     result.errors++
@@ -235,7 +234,7 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         for (pattern in RECOVERABLE_BULK_ERRORS) {
             val matcher = pattern.matcher(error)
             if (matcher.find()) {
-                AbstractElasticDao.logger.warn("Removing broken field from {}: {}, {}", asset.id, matcher.group(1), error)
+                logger.warn("Removing broken field from {}: {}, {}", asset.id, matcher.group(1), error)
                 return asset.removeAttr(matcher.group(1))
             }
         }
@@ -265,8 +264,7 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
-                AbstractElasticDao.logger.warn("Failed to unlink asset: {}",
-                        rsp.failureMessage, rsp.failure.cause)
+                logger.warn("Failed to unlink asset: {}", rsp.failureMessage, rsp.failure.cause)
             } else {
                 result["success"]!!.add(rsp.id)
             }
@@ -299,8 +297,7 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         for (rsp in bulk.items) {
             if (rsp.isFailed) {
                 result["failed"]!!.add(ImmutableMap.of("id", rsp.id, "error", rsp.failureMessage))
-                AbstractElasticDao.logger.warn("Failed to link asset: {}",
-                        rsp.failureMessage, rsp.failure.cause)
+                logger.warn("Failed to link asset: {}", rsp.failureMessage, rsp.failure.cause)
             } else {
                 result["success"]!!.add(rsp.id)
             }
@@ -446,6 +443,7 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
     }
 
     companion object {
+
 
         private val MAPPER = SearchHitRowMapper<Document> { hit ->
             val doc = Document()

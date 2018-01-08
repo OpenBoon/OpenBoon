@@ -33,7 +33,6 @@ public class ElasticTemplate {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticTemplate.class);
 
-
     private Client client;
     private String index;
     private String type;

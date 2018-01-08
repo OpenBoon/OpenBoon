@@ -1,6 +1,6 @@
 package com.zorroa.analyst.cluster;
 
-import com.zorroa.analyst.service.ProcessManagerNgService;
+import com.zorroa.analyst.service.ProcessManagerService;
 import com.zorroa.common.cluster.thrift.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TCompactProtocol;
@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class WorkerRpcServiceImpl implements WorkerRpcService {
 
     @Autowired
-    ProcessManagerNgService processManagerNgService;
+    ProcessManagerService processManagerService;
 
     private TNonblockingServerSocket transport;
     private TServer server;
@@ -57,7 +57,7 @@ public class WorkerRpcServiceImpl implements WorkerRpcService {
     @Override
     public TaskResultT executeTask(TaskStartT task) throws CusterExceptionT, TException {
         try {
-            return processManagerNgService.executeClusterTask(task);
+            return processManagerService.executeClusterTask(task);
         } catch (Exception e) {
             throw new CusterExceptionT(1, "execute task failed: " + e.getMessage());
         }
@@ -66,7 +66,7 @@ public class WorkerRpcServiceImpl implements WorkerRpcService {
     @Override
     public void killTask(TaskKillT kill) throws CusterExceptionT, TException {
         try {
-            processManagerNgService.kill(kill);
+            processManagerService.kill(kill);
         } catch (Exception e) {
             throw new CusterExceptionT(1, "kill task failed: " + e.getMessage());
         }
