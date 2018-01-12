@@ -767,11 +767,11 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getFields(type: String): Map<String, Set<String>> {
-        try {
-            return fieldMapCache.get(type)
+        return try {
+            fieldMapCache.get(type)
         } catch (e: Exception) {
             logger.warn("Failed to get fields: ", e)
-            return ImmutableMap.of()
+            ImmutableMap.of()
         }
 
     }
