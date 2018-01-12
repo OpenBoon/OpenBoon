@@ -44,9 +44,11 @@ interface PermissionService {
 @Transactional
 class PermissionServiceImpl @Autowired constructor(
         private val permissionDao : PermissionDao,
-        private val txem: TransactionEventManager,
-        private val logService: EventLogService
+        private val txem: TransactionEventManager
 ) : PermissionService {
+
+    @Autowired
+    private lateinit var logService : EventLogService
 
     private val permissionCache = CacheBuilder.newBuilder()
             .maximumSize(200)

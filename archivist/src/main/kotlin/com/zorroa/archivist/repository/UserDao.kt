@@ -72,11 +72,11 @@ interface UserDao {
 @Repository
 open class UserDaoImpl : AbstractDao(), UserDao {
 
-    override operator fun get(id: Int): User {
+    override fun get(id: Int): User {
         return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?", MAPPER, id)
     }
 
-    override operator fun get(username: String): User {
+    override fun get(username: String): User {
         return jdbc.queryForObject<User>("SELECT * FROM users WHERE str_username=? OR str_email=?",
                 MAPPER, username, username)
     }
