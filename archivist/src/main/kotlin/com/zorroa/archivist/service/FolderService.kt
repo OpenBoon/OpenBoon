@@ -165,13 +165,14 @@ class FolderServiceImpl @Autowired constructor(
         val assetDao: AssetDao,
         val userDao: UserDao,
         val permissionDao: PermissionDao,
-        val transactionEventManager: TransactionEventManager,
-        var logService: EventLogService
+        val transactionEventManager: TransactionEventManager
 ) : FolderService {
 
     /**
      * Circular dependencies must be lateinit
      */
+    @Autowired
+    private lateinit var logService: EventLogService
 
     @Autowired
     private lateinit var dyHierarchyService: DyHierarchyService

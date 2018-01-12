@@ -52,7 +52,7 @@ interface AnalystDao {
 }
 
 @Repository
-open class AnalystDaoImpl : AbstractElasticDao(), AnalystDao {
+class AnalystDaoImpl : AbstractElasticDao(), AnalystDao {
 
     override fun getType(): String {
         return "analyst"

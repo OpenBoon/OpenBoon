@@ -77,13 +77,19 @@ interface DyHierarchyService {
 @Service
 class DyHierarchyServiceImpl @Autowired constructor (
     val dyHierarchyDao: DyHierarchyDao,
-    val folderService: FolderService,
-    val logService: EventLogService,
-    val searchService: SearchService,
     val client: Client,
     val transactionEventManager: TransactionEventManager,
     val folderTaskExecutor: UniqueTaskExecutor
 ) : DyHierarchyService {
+
+    @Autowired
+    private lateinit var folderService: FolderService;
+
+    @Autowired
+    private lateinit var logService: EventLogService
+
+    @Autowired
+    private lateinit var searchService: SearchService
 
     @Value("\${archivist.dyhi.maxFoldersPerLevel}")
     private val maxFoldersPerLevel: Int? = null

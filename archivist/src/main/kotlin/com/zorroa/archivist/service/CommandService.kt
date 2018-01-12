@@ -42,12 +42,15 @@ interface CommandService {
  */
 @Service
 open class CommandServiceImpl @Autowired constructor (
-        private val commandDao: CommandDao,
-        private val assetService: AssetService,
-        private val userService: UserService,
-        private val permissionService: PermissionService
+        private val commandDao: CommandDao
 ): AbstractScheduledService(), CommandService {
 
+    @Autowired
+    private lateinit var assetService: AssetService
+
+    @Autowired
+    private lateinit var userService: UserService
+    
     internal var runningCommand = AtomicReference<Command>()
 
     @PostConstruct
@@ -184,7 +187,7 @@ open class CommandServiceImpl @Autowired constructor (
     }
 
     override fun scheduler(): AbstractScheduledService.Scheduler {
-        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(20, 1, TimeUnit.SECONDS)
+        return AbstractScheduledService.Scheduler.newFixedDelaySchedule(60, 1, TimeUnit.SECONDS)
     }
 
     companion object {
