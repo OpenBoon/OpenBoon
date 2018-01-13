@@ -35,7 +35,7 @@ public class SettingsControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Setting> t = deserialize(result, SettingsService.LIST_OF_SETTINGS);
+        List<Setting> t = deserialize(result, SettingsService.Companion.getListOfSettingsType());
         assertFalse(t.isEmpty());
     }
 
@@ -50,7 +50,7 @@ public class SettingsControllerTests extends MockMvcTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Setting> t = deserialize(result, SettingsService.LIST_OF_SETTINGS);
+        List<Setting> t = deserialize(result, SettingsService.Companion.getListOfSettingsType());
         assertEquals(5, t.size());
     }
 

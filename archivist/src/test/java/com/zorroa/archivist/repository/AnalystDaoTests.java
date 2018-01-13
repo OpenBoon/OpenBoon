@@ -28,8 +28,6 @@ public class AnalystDaoTests extends AbstractTest {
 
     @Before
     public void init() {
-        cleanElastic();
-
         builder = new AnalystSpec();
         builder.setId("bilbo");
         builder.setState(AnalystState.UP);

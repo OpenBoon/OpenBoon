@@ -157,6 +157,11 @@ public abstract class AbstractTest {
         transactionEventManager.setImmediateMode(true);
 
         /**
+         * Elastic must be created and cleaned before authentication.
+         */
+        cleanElastic();
+
+        /**
          * Before we can do anything reliably we need a logged in user.
          */
         authenticate();

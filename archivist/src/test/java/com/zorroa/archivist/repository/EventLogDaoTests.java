@@ -23,11 +23,6 @@ public class EventLogDaoTests extends AbstractTest {
     @Autowired
     EventLogService logService;
 
-    @Before
-    public void init() {
-        cleanElastic();
-    }
-
     @Test
     public void testUserLogEntry() {
         refreshIndex();

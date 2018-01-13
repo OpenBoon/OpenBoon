@@ -94,7 +94,7 @@ interface AssetService {
 }
 
 @Component
-open class AssetServiceImpl  @Autowired  constructor (
+class AssetServiceImpl  @Autowired  constructor (
     private val assetDao: AssetDao,
     private val commandDao: CommandDao,
     private val permissionDao: PermissionDao,
@@ -103,7 +103,6 @@ open class AssetServiceImpl  @Autowired  constructor (
     private val logService: EventLogService,
     private val searchService: SearchService,
     private val properties: ApplicationProperties,
-    private val userService: UserService,
     private val jobService: JobService,
     private val client: Client,
     private val ofs: ObjectFileSystem

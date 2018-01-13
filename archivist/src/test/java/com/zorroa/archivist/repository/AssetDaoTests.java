@@ -33,8 +33,6 @@ public class AssetDaoTests extends AbstractTest {
 
     @Before
     public void init() {
-        cleanElastic();
-
         Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
         builder.setAttr("foo.str", "ass");
         builder.setAttr("foo.int", 155);

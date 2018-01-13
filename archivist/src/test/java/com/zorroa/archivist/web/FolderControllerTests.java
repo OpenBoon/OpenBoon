@@ -38,7 +38,6 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Before
     public void init() throws Exception {
-        cleanElastic();
         session = admin();
 
         MvcResult result = mvc.perform(post("/api/v1/folders")

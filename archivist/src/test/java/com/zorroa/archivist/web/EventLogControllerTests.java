@@ -32,11 +32,6 @@ public class EventLogControllerTests extends MockMvcTest {
     @Autowired
     EventLogService logService;
 
-    @Before
-    public void init() {
-        cleanElastic();
-    }
-
     @Test
     public void testEmptyUserLogSearch() throws Exception {
         logService.log(new UserLogSpec().setAction("test").setMessage("A log test"));

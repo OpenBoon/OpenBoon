@@ -50,7 +50,7 @@ open class CommandServiceImpl @Autowired constructor (
 
     @Autowired
     private lateinit var userService: UserService
-    
+
     internal var runningCommand = AtomicReference<Command>()
 
     @PostConstruct
