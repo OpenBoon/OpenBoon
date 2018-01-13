@@ -9,6 +9,7 @@ import com.zorroa.common.cluster.thrift.StackElementT;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
 import com.zorroa.sdk.util.Json;
 import org.assertj.core.util.Lists;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,6 +31,11 @@ public class EventLogControllerTests extends MockMvcTest {
 
     @Autowired
     EventLogService logService;
+
+    @Before
+    public void init() {
+        cleanElastic();
+    }
 
     @Test
     public void testEmptyUserLogSearch() throws Exception {

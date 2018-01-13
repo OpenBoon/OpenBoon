@@ -9,6 +9,7 @@ import com.zorroa.archivist.service.EventLogService;
 import com.zorroa.common.cluster.thrift.StackElementT;
 import com.zorroa.common.cluster.thrift.TaskErrorT;
 import org.assertj.core.util.Lists;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,9 +20,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class EventLogDaoTests extends AbstractTest {
 
-
     @Autowired
     EventLogService logService;
+
+    @Before
+    public void init() {
+        cleanElastic();
+    }
 
     @Test
     public void testUserLogEntry() {

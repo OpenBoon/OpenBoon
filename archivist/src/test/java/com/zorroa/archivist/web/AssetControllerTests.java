@@ -51,6 +51,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Before
     public void init() {
+        cleanElastic();
         searchService.invalidateFields();
     }
 

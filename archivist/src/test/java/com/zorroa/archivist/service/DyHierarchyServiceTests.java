@@ -38,6 +38,8 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
     @Before
     public void init() throws ParseException {
+        cleanElastic();
+
         for (File f: getTestImagePath("set01").toFile().listFiles()) {
             if (!f.isFile() || f.isHidden()) {
                 continue;

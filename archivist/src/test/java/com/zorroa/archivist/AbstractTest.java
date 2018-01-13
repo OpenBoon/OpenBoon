@@ -114,8 +114,6 @@ public abstract class AbstractTest {
 
     protected JdbcTemplate jdbc;
 
-    protected Set<String> testImages;
-
     protected Path resources;
 
     public AbstractTest() {
@@ -158,16 +156,6 @@ public abstract class AbstractTest {
          */
         transactionEventManager.setImmediateMode(true);
 
-        /*
-         * The Elastic index(s) has been created, but we have to delete it and recreate it
-         * so each test has a clean index.  Once this is done we can call setupDataSources()
-         * which adds some standard data to both databases.
-         */
-        client.admin().indices().prepareDelete("_all").get();
-        migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true);
-        archivistRepositorySetup.setupDataSources();
-        refreshIndex();
-
         /**
          * Before we can do anything reliably we need a logged in user.
          */
@@ -196,6 +184,22 @@ public abstract class AbstractTest {
 
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
+    }
+
+    public void cleanElastic() {
+        /*
+         * The Elastic index(s) has been created, but we have to delete it and recreate it
+         * so each test has a clean index.  Once this is done we can call setupDataSources()
+         * which adds some standard data to both databases.
+         */
+        client.admin().indices().prepareDelete("_all").get();
+        migrationService.processMigrations(migrationService.getAll(MigrationType.ElasticSearchIndex), true);
+        try {
+            archivistRepositorySetup.setupDataSources();
+            refreshIndex();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

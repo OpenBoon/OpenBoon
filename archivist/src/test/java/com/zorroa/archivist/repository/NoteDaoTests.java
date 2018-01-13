@@ -24,6 +24,7 @@ public class NoteDaoTests extends AbstractTest {
 
     @Before
     public void init() {
+        cleanElastic();
         Source ab = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
         assetId = assetService.index(ab).getId();
     }

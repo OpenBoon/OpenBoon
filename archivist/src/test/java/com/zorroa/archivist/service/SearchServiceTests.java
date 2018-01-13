@@ -38,6 +38,7 @@ public class SearchServiceTests extends AbstractTest {
 
     @Before
     public void init() {
+        cleanElastic();
         searchService.invalidateFields();
     }
 

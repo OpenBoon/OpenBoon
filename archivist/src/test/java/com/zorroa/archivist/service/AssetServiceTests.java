@@ -27,6 +27,7 @@ public class AssetServiceTests extends AbstractTest {
 
     @Before
     public void init() {
+        cleanElastic();
         addTestAssets("set04/standard");
         refreshIndex();
     }
