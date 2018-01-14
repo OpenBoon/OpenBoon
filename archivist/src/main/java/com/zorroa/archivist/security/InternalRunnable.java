@@ -23,7 +23,7 @@ public class InternalRunnable implements Runnable {
 
     @Override
     public void run() {
-        if (ArchivistConfiguration.unittest) {
+        if (ArchivistConfiguration.Companion.getUnittest()) {
             delegate.run();
         }
         else {

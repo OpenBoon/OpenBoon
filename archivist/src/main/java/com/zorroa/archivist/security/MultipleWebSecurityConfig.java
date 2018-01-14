@@ -135,7 +135,7 @@ public class MultipleWebSecurityConfig {
         /**
          * If its a unit test we add our rubber stamp authenticator.
          */
-        if (ArchivistConfiguration.unittest) {
+        if (ArchivistConfiguration.Companion.getUnittest()) {
             auth.authenticationProvider(new UnitTestAuthenticationProvider());
         }
     }

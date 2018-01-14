@@ -44,7 +44,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
          * During unit tests, setupDataSources() is called after the indexes are prepared
          * for a unit test.
          */
-        if (!ArchivistConfiguration.unittest) {
+        if (!ArchivistConfiguration.Companion.getUnittest()) {
             /**
              * Have async threads inherit the current authorization.
              */
@@ -66,7 +66,7 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
         pluginService.installAndRegisterAllPlugins();
 
         // We register these manually in unittests
-        if (!ArchivistConfiguration.unittest) {
+        if (!ArchivistConfiguration.Companion.getUnittest()) {
             pluginService.installBundledPipelines();
         }
     }

@@ -117,7 +117,7 @@ public abstract class AbstractTest {
     protected Path resources;
 
     public AbstractTest() {
-        ArchivistConfiguration.unittest = true;
+        ArchivistConfiguration.Companion.setUnittest(true);
     }
 
     @Autowired
