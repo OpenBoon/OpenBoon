@@ -10,7 +10,6 @@ import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.repository.AnalystDao;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
-import com.zorroa.archivist.tx.TransactionEventManager;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;

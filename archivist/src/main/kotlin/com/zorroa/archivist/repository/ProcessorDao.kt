@@ -49,7 +49,7 @@ interface ProcessorDao {
 }
 
 @Repository
-open class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
+class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
 
     private val REF_MAPPER = RowMapper<ProcessorRef> { rs, _ ->
         val ref = ProcessorRef()
@@ -120,8 +120,8 @@ open class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
 
     override fun getAll(filter: ProcessorFilter): List<Processor> {
 
-        if (!JdbcUtils.isValid(filter.getSort())) {
-            filter.setSort(ImmutableMap.of("shortName", "asc"))
+        if (!JdbcUtils.isValid(filter.sort)) {
+            filter.sort = (ImmutableMap.of("shortName", "asc"))
         }
         val q = filter.getQuery(GET, null)
         return jdbc.query<Processor>(q, MAPPER, *filter.getValues())

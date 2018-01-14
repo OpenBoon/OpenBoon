@@ -80,30 +80,30 @@ public class ProcessorFilter extends DaoFilter {
     public void build() {
 
         if (JdbcUtils.isValid(modules)) {
-            where.add(JdbcUtils.in("processor.str_module", modules.size()));
-            values.addAll(modules);
+            addToWhere(JdbcUtils.in("processor.str_module", modules.size()));
+            addToValues(modules);
         }
 
         if (JdbcUtils.isValid(types)) {
-            where.add(JdbcUtils.in("processor.int_type", types.size()));
+            addToWhere(JdbcUtils.in("processor.int_type", types.size()));
             for (ProcessorType type: types) {
-                values.add(type.ordinal());
+                addToValues(type.ordinal());
             }
         }
 
         if (JdbcUtils.isValid(shortNames)) {
-            where.add(JdbcUtils.in("processor.str_short_name", shortNames.size()));
-            values.addAll(shortNames);
+            addToWhere(JdbcUtils.in("processor.str_short_name", shortNames.size()));
+            addToValues(shortNames);
         }
 
         if (JdbcUtils.isValid(names)) {
-            where.add(JdbcUtils.in("processor.str_name", names.size()));
-            values.addAll(names);
+            addToWhere(JdbcUtils.in("processor.str_name", names.size()));
+            addToValues(names);
         }
 
         if (JdbcUtils.isValid(plugins)) {
-            where.add(JdbcUtils.in("plugin.pk_plugin", plugins.size()));
-            values.addAll(plugins);
+            addToWhere(JdbcUtils.in("plugin.pk_plugin", plugins.size()));
+            addToValues(plugins);
         }
     }
 

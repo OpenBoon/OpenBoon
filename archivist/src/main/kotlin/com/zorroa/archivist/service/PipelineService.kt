@@ -8,7 +8,6 @@ import com.zorroa.archivist.domain.PipelineSpecV
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.archivist.tx.TransactionEventManager
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.PipelineType
@@ -92,7 +91,7 @@ class PipelineServiceImpl @Autowired constructor(
     }
 
     override fun getAll(): List<Pipeline> {
-        return pipelineDao.all
+        return pipelineDao.getAll()
     }
 
     override fun getAll(page: Pager): PagedList<Pipeline> {

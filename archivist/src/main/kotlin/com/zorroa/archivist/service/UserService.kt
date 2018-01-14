@@ -11,7 +11,6 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserPresetDao
-import com.zorroa.archivist.tx.TransactionEventManager
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.sdk.client.exception.DuplicateElementException
@@ -172,7 +171,7 @@ class UserServiceImpl @Autowired constructor(
         userDao.addPermission(user, userPerm, true)
         userDao.addPermission(user, permissionDao.get("group", "everyone"), true)
 
-        txem.afterCommit({ logService.logAsync(UserLogSpec.build(LogAction.Create, user)) }, true)
+        txem.afterCommit(false, { logService.logAsync(UserLogSpec.build(LogAction.Create, user)) })
 
         return userDao.get(user.id)
     }
@@ -238,7 +237,8 @@ class UserServiceImpl @Autowired constructor(
     override fun update(user: User, form: UserProfileUpdate): Boolean {
         val result = userDao.update(user, form)
         if (result) {
-            txem.afterCommitSync { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) }
+            txem.afterCommit(true,
+                    { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
         }
         return result
     }
@@ -258,7 +258,7 @@ class UserServiceImpl @Autowired constructor(
                 logger.warn("Failed to delete home folder for {}", user)
             }
 
-            txem.afterCommitSync { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) }
+            txem.afterCommit(true,  { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
         }
         return result
     }
@@ -266,7 +266,7 @@ class UserServiceImpl @Autowired constructor(
     override fun updateSettings(user: User, settings: UserSettings): Boolean {
         val result = userDao.setSettings(user, settings)
         if (result) {
-            txem.afterCommitSync { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) }
+            txem.afterCommit(true, { logService.logAsync(UserLogSpec.build(LogAction.Update, user)) })
         }
         return result
     }
@@ -276,7 +276,8 @@ class UserServiceImpl @Autowired constructor(
 
         if (result) {
             if (result) {
-                txem.afterCommitSync { logService.logAsync(UserLogSpec.build(if (value) "enable" else "disable", user)) }
+                txem.afterCommit(true, {
+                    logService.logAsync(UserLogSpec.build(if (value) "enable" else "disable", user)) })
             }
         }
 
@@ -294,10 +295,11 @@ class UserServiceImpl @Autowired constructor(
          */
         val filtered = perms.stream().filter { p -> !PERMANENT_TYPES.contains(p.type) }.collect(Collectors.toList())
         userDao.setPermissions(user, filtered)
-        txem.afterCommitSync {
+
+        txem.afterCommit(true, {
             logService.logAsync(UserLogSpec.build("set_permission", user)
                     .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        }
+        })
     }
 
     override fun addPermissions(user: User, perms: Collection<Permission>) {
@@ -309,10 +311,10 @@ class UserServiceImpl @Autowired constructor(
                 userDao.addPermission(user, p, false)
             }
         }
-        txem.afterCommitSync {
+        txem.afterCommit(false, {
             logService.logAsync(UserLogSpec.build("add_permission", user)
                     .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        }
+        })
     }
 
     override fun removePermissions(user: User, perms: Collection<Permission>) {
@@ -326,10 +328,10 @@ class UserServiceImpl @Autowired constructor(
             }
             userDao.removePermission(user, p)
         }
-        txem.afterCommitSync {
+        txem.afterCommit(true, {
             logService.logAsync(UserLogSpec.build("remove_permission", user)
                     .putToAttrs("perms", perms.stream().map { ps -> ps.name }.collect(Collectors.toList())))
-        }
+        })
     }
 
     override fun hasPermission(user: User, type: String, name: String): Boolean {
@@ -341,7 +343,7 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun getUserPresets(): List<UserPreset> {
-        return userPresetDao.all
+        return userPresetDao.getAll()
     }
 
     override fun getUserPreset(id: Int): UserPreset {

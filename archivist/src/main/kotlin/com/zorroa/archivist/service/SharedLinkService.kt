@@ -4,7 +4,6 @@ import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.SharedLinkSpec
 import com.zorroa.archivist.repository.SharedLinkDao
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.archivist.tx.TransactionEventManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -29,7 +28,7 @@ class SharedLinkServiceImpl @Autowired constructor(
         val fromUser = SecurityUtils.getUser()
 
         if (spec.isSendEmail) {
-            transactionEventManager.afterCommit({
+            transactionEventManager.afterCommit(false, {
                 for (userId in spec.userIds) {
                     try {
                         val toUser = userService.get(userId)
@@ -39,7 +38,7 @@ class SharedLinkServiceImpl @Autowired constructor(
                     }
 
                 }
-            }, true)
+            })
         }
         return link
     }

@@ -41,19 +41,19 @@ public class TaskFilter extends DaoFilter {
         }
 
         if (JdbcUtils.isValid(jobId)) {
-            where.add("task.pk_job=?");
-            values.add(jobId);
+            addToWhere("task.pk_job=?");
+            addToValues(jobId);
         }
 
         if (JdbcUtils.isValid(tasks)) {
-            where.add(JdbcUtils.in("task.pk_task", tasks.size()));
-            values.addAll(tasks);
+            addToWhere(JdbcUtils.in("task.pk_task", tasks.size()));
+            addToValues(tasks);
         }
 
         if (JdbcUtils.isValid(states)) {
-            where.add(JdbcUtils.in("task.int_state", states.size()));
+            addToWhere(JdbcUtils.in("task.int_state", states.size()));
             for (TaskState s: states) {
-                values.add(s.ordinal());
+                addToValues(s.ordinal());
             }
         }
     }

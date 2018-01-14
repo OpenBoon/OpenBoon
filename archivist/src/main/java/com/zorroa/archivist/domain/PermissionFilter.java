@@ -26,25 +26,29 @@ public class PermissionFilter extends DaoFilter {
 
     public PermissionFilter() {  }
 
+    public PermissionFilter(Map<String,String> sort) {
+        this.setSort(sort);
+    }
+
     public void build() {
         if (assignableToUser != null) {
-            where.add("bool_assignable_to_user=?");
-            values.add(assignableToUser);
+            addToWhere("bool_assignable_to_user=?");
+            addToValues(assignableToUser);
         }
 
         if (assignableToObj != null) {
-            where.add("bool_assignable_to_obj=?");
-            values.add(assignableToObj);
+            addToWhere("bool_assignable_to_obj=?");
+            addToValues(assignableToObj);
         }
 
         if (JdbcUtils.isValid(types)) {
-            where.add(JdbcUtils.in("str_type", types.size()));
-            values.addAll(types);
+            addToWhere(JdbcUtils.in("str_type", types.size()));
+            addToValues(types);
         }
 
         if (JdbcUtils.isValid(names)) {
-            where.add(JdbcUtils.in("str_name", names.size()));
-            values.addAll(names);
+            addToWhere(JdbcUtils.in("str_name", names.size()));
+            addToValues(names);
         }
     }
 

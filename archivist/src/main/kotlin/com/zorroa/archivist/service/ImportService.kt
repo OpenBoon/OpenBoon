@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.archivist.tx.TransactionEventManager
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.PagedList
@@ -130,7 +129,8 @@ class ImportServiceImpl @Autowired constructor(
                 .setOrder(taskPriority)
                 .setName("Generation via " + generators[0].className))
 
-        transactionEventManager.afterCommitSync { logService.logAsync(UserLogSpec.build(LogAction.Create, "import", job.jobId)) }
+        transactionEventManager.afterCommit(true,
+                { logService.logAsync(UserLogSpec.build(LogAction.Create, "import", job.jobId)) })
 
         return job
     }
@@ -184,7 +184,8 @@ class ImportServiceImpl @Autowired constructor(
                 .setOrder(taskPriority)
                 .setName("Frame Generator"))
 
-        transactionEventManager.afterCommitSync { logService.logAsync(UserLogSpec.build(LogAction.Create, "import", job.jobId)) }
+        transactionEventManager.afterCommit(true,
+                { logService.logAsync(UserLogSpec.build(LogAction.Create, "import", job.jobId)) })
 
         return job
     }

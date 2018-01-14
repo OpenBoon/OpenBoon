@@ -7,7 +7,6 @@ import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.ExportDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.archivist.tx.TransactionEventManager
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.PagedList
@@ -181,10 +180,10 @@ class ExportServiceImpl @Autowired constructor(
          * Log the create export with the search for the given assets.  When someone
          * downloads the export, that actually logs it as an exported asset.
          */
-        transactionEventManager.afterCommitSync {
+        transactionEventManager.afterCommit(true, {
             logService.logAsync(UserLogSpec.build(LogAction.Create,
                     "export", job.jobId))
-        }
+        })
 
         return job
     }

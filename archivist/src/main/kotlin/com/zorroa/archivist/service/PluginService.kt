@@ -260,7 +260,7 @@ class PluginServiceImpl @Autowired constructor(
     }
 
     override fun getAllPlugins(): List<Plugin> {
-        return pluginDao.all
+        return pluginDao.getAll()
     }
 
     override fun getPlugin(name: String): Plugin {

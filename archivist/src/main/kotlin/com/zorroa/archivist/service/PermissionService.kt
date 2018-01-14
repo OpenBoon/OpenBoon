@@ -5,7 +5,6 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.tx.TransactionEventManager
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import org.springframework.beans.factory.annotation.Autowired
@@ -117,14 +116,14 @@ class PermissionServiceImpl @Autowired constructor(
 
     override fun createPermission(builder: PermissionSpec): Permission {
         val perm = permissionDao.create(builder, false)
-        txem.afterCommitSync({ logService.logAsync(UserLogSpec.build(LogAction.Create, perm)) })
+        txem.afterCommit(true, { logService.logAsync(UserLogSpec.build(LogAction.Create, perm)) })
         return perm
     }
 
     override fun deletePermission(permission: Permission): Boolean {
         val result = permissionDao.delete(permission)
         if (result) {
-            txem.afterCommitSync({ logService.logAsync(UserLogSpec.build(LogAction.Delete, permission)) })
+            txem.afterCommit(true, { logService.logAsync(UserLogSpec.build(LogAction.Delete, permission)) })
         }
         return result
     }

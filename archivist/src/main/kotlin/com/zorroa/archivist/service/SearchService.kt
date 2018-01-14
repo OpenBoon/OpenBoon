@@ -117,7 +117,7 @@ class SearchServiceImpl @Autowired constructor(
     internal lateinit var logService: EventLogService
 
     @Value("\${zorroa.cluster.index.alias}")
-    private val alias: String? = null
+    private lateinit var alias: String
 
     private var defaultSortFields: MutableMap<String, SortOrder> = Maps.newLinkedHashMap()
 

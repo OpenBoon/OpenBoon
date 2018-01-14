@@ -163,7 +163,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     }
 
     override fun runAll() {
-        for (tax in taxonomyDao.all) {
+        for (tax in taxonomyDao.getAll()) {
             tagTaxonomy(tax, null, false)
         }
     }

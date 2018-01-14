@@ -32,7 +32,7 @@ interface CommandDao : GenericDao<Command, CommandSpec> {
 }
 
 @Repository
-open class CommandDaoImpl : AbstractDao(), CommandDao {
+class CommandDaoImpl : AbstractDao(), CommandDao {
 
     @Autowired private var userDaoCache: UserDaoCache? = null
 
@@ -91,12 +91,12 @@ open class CommandDaoImpl : AbstractDao(), CommandDao {
         return get(obj.id)
     }
 
-    override fun getAll(): List<Command>? {
-        return null
+    override fun getAll(): List<Command> {
+        return mutableListOf()
     }
 
-    override fun getAll(paging: Pager): PagedList<Command>? {
-        return null
+    override fun getAll(paging: Pager): PagedList<Command> {
+        return PagedList()
     }
 
     override fun update(id: Int, spec: Command): Boolean {

@@ -16,7 +16,7 @@ interface MaintenanceDao {
 }
 
 @Repository
-open class MaintenanceDaoImpl : AbstractDao(), MaintenanceDao {
+class MaintenanceDaoImpl : AbstractDao(), MaintenanceDao {
 
     private val JOB_MAPPER = RowMapper<ExpiredJob> { rs, _ ->
         val job = ExpiredJob()

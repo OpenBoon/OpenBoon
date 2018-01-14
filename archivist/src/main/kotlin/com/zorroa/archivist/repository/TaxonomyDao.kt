@@ -46,8 +46,8 @@ open class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
         return jdbc.query(GET, MAPPER)
     }
 
-    override fun getAll(paging: Pager): PagedList<Taxonomy>? {
-        return null
+    override fun getAll(paging: Pager): PagedList<Taxonomy> {
+        return PagedList()
     }
 
     override fun update(id: Int, spec: Taxonomy): Boolean {

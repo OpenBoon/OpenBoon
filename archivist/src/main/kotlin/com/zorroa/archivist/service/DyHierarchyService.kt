@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.archivist.tx.TransactionEventManager
 import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.domain.Tuple
 import com.zorroa.sdk.search.AssetScript
@@ -134,11 +133,11 @@ class DyHierarchyServiceImpl @Autowired constructor (
         /*
          * Queue up an event where after this transaction commits.
          */
-        transactionEventManager.afterCommitSync {
+        transactionEventManager.afterCommit(false, {
             logService.logAsync(UserLogSpec.build(LogAction.Update, updated))
             folderService.deleteAll(current)
             submitGenerate(dyHierarchyDao.get(current.id))
-        }
+        })
 
         return true
     }
@@ -155,7 +154,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
             } else {
                 folderService.deleteAll(dyhi)
             }
-            transactionEventManager.afterCommitSync { logService.logAsync(UserLogSpec.build(LogAction.Delete, dyhi)) }
+            transactionEventManager.afterCommit(true,
+                    { logService.logAsync(UserLogSpec.build(LogAction.Delete, dyhi)) })
             return true
         }
         return false
@@ -175,10 +175,10 @@ class DyHierarchyServiceImpl @Autowired constructor (
              * Generate the hierarchy in another thread
              * after this method returns.
              */
-            transactionEventManager.afterCommitSync {
+            transactionEventManager.afterCommit(true, {
                 logService.logAsync(UserLogSpec.build(LogAction.Create, dyhi))
                 submitGenerate(dyhi)
-            }
+            })
         }
 
         return dyhi
@@ -193,7 +193,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     override fun generateAll() {
-        for (dyhi in dyHierarchyDao.all) {
+        for (dyhi in dyHierarchyDao.getAll()) {
             generate(dyhi)
         }
     }

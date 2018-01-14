@@ -9,7 +9,6 @@ import com.google.common.collect.Queues
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.archivist.tx.TransactionEventManager
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.slf4j.LoggerFactory
@@ -357,7 +356,7 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         if (result) {
-            transactionEventManager.afterCommitSync {
+            transactionEventManager.afterCommit(true, {
                 invalidate(current, current.parentId)
                 logService.logAsync(UserLogSpec.build(LogAction.Update, updated))
 
@@ -369,7 +368,7 @@ class FolderServiceImpl @Autowired constructor(
                      */
                     taxonomyService.tagTaxonomyAsync(tax, folder, true)
                 }
-            }
+            })
         }
         return result
     }
@@ -423,10 +422,10 @@ class FolderServiceImpl @Autowired constructor(
             if (folderDao.delete(child)) {
                 order++
                 trashFolderDao.create(child, op, false, order)
-                transactionEventManager.afterCommit({
+                transactionEventManager.afterCommit(false, {
                     invalidate(child)
                     logService.logAsync(UserLogSpec.build(LogAction.Delete, child))
-                }, false)
+                })
             }
         }
 
@@ -438,20 +437,20 @@ class FolderServiceImpl @Autowired constructor(
         val result = folderDao.delete(folder)
 
         if (result) {
-            transactionEventManager.afterCommit({
+            transactionEventManager.afterCommit(true, {
                 invalidate(folder)
                 logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
-            }, false)
+            })
 
             if (tax != null) {
-                transactionEventManager.afterCommit({
+                transactionEventManager.afterCommit(false, {
                     if (folder.isTaxonomyRoot) {
                         taxonomyService.untagTaxonomyAsync(tax, 0)
                     } else {
                         taxonomyService.untagTaxonomyFoldersAsync(tax, children)
                         taxonomyService.untagTaxonomyFoldersAsync(tax, Lists.newArrayList(folder))
                     }
-                }, true)
+                })
             }
 
             order++
@@ -497,19 +496,19 @@ class FolderServiceImpl @Autowired constructor(
         var i = children.size
         while (--i >= 0) {
             if (folderDao.delete(children[i])) {
-                transactionEventManager.afterCommitSync {
+                transactionEventManager.afterCommit(true, {
                     invalidate(folder)
                     logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
-                }
+                })
             }
         }
 
         val result = folderDao.delete(folder)
         if (result) {
-            transactionEventManager.afterCommitSync {
+            transactionEventManager.afterCommit(true, {
                 invalidate(folder)
                 logService.logAsync(UserLogSpec.build(LogAction.Delete, folder))
-            }
+            })
         }
         return result
     }
@@ -727,7 +726,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     private fun emitFolderCreated(folder: Folder) {
-        transactionEventManager.afterCommitSync {
+        transactionEventManager.afterCommit(true, {
             invalidate(null, folder.parentId)
             logService.logAsync(UserLogSpec.build(LogAction.Create, folder))
 
@@ -737,7 +736,7 @@ class FolderServiceImpl @Autowired constructor(
                     taxonomyService.tagTaxonomy(tax, folder, true)
                 }
             }
-        }
+        })
     }
 
     override fun create(spec: FolderSpec, mightExist: Boolean): Folder {

@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.SharedLink;
 import com.zorroa.archivist.domain.SharedLinkSpec;
-import com.zorroa.archivist.tx.TransactionEventManager;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

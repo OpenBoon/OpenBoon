@@ -171,16 +171,16 @@ public class PermissionDaoTests extends AbstractTest {
         permissionDao.create(b, false);
 
         assertTrue(permissionDao.getPaged(Pager.first(),
-                new PermissionFilter().setSort(ImmutableMap.of("id","asc"))).size() > 0);
+                new PermissionFilter(ImmutableMap.of("id","asc"))).size() > 0);
 
         assertTrue(permissionDao.getPaged(Pager.first(),
-                new PermissionFilter().setSort(ImmutableMap.of("name","asc"))).size() > 0);
+                new PermissionFilter(ImmutableMap.of("name","asc"))).size() > 0);
 
         assertTrue(permissionDao.getPaged(Pager.first(),
-                new PermissionFilter().setSort(ImmutableMap.of("type","asc"))).size() > 0);
+                new PermissionFilter(ImmutableMap.of("type","asc"))).size() > 0);
 
         assertTrue(permissionDao.getPaged(Pager.first(),
-                new PermissionFilter().setSort(ImmutableMap.of("description","asc"))).size() > 0);
+                new PermissionFilter(ImmutableMap.of("description","asc"))).size() > 0);
     }
 
     @Test
