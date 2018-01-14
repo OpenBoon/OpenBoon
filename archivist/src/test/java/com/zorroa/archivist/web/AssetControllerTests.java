@@ -645,11 +645,12 @@ public class AssetControllerTests extends MockMvcTest {
         PagedList<Document> assets = assetService.getAll(Pager.first());
 
         String url = String.format("/api/v1/assets/%s/_stream", assets.get(0).getId());
-        MvcResult result = mvc.perform(get(url)
+        mvc.perform(get(url)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
+
     }
 
     @Test
@@ -678,7 +679,7 @@ public class AssetControllerTests extends MockMvcTest {
         AssetController.StreamFile file = assetController.getPreferredFormat(assets.get(0), "m4v",
                 false, false);
         assertNotNull(file);
-        assertEquals("video/x-m4v", file.mimeType);
+        assertEquals("video/x-m4v", file.getMimeType());
 
         file = assetController.getPreferredFormat(assets.get(0), "ogv",
                 false, false);

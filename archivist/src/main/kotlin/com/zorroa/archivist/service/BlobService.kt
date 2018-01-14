@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional
 
 interface BlobService {
 
-    operator fun set(app: String, feature: String, name: String, blob: Any): Blob
+    fun set(app: String, feature: String, name: String, blob: Any): Blob
 
-    operator fun get(app: String, feature: String, name: String): Blob
+    fun get(app: String, feature: String, name: String): Blob
 
     fun delete(blob: BlobId): Boolean
 

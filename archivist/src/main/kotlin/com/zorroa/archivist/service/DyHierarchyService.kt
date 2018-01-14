@@ -48,9 +48,9 @@ interface DyHierarchyService {
      */
     fun generate(agg: DyHierarchy): Int
 
-    operator fun get(id: Int): DyHierarchy
+    fun get(id: Int): DyHierarchy
 
-    operator fun get(folder: Folder): DyHierarchy
+    fun get(folder: Folder): DyHierarchy
 
     /**
      * Generate all hierarchies.

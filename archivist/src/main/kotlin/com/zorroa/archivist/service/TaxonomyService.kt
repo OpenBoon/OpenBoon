@@ -47,7 +47,7 @@ interface TaxonomyService {
 
     fun runAll()
 
-    fun tagTaxonomyAsync(tax: Taxonomy, start: Folder, force: Boolean)
+    fun tagTaxonomyAsync(tax: Taxonomy, start: Folder?, force: Boolean)
 
     fun tagTaxonomy(tax: Taxonomy, start: Folder?, force: Boolean): Map<String, Long>
 
@@ -65,7 +65,7 @@ interface TaxonomyService {
 
     fun untagTaxonomy(tax: Taxonomy): Map<String, Long>
 
-    fun untagTaxonomy(tax: Taxonomy, updatedTime: Long): Map<String, Long>
+    fun untagTaxonomy(tax: Taxonomy, timestamp: Long): Map<String, Long>
 }
 
 @Service
@@ -168,11 +168,11 @@ class TaxonomyServiceImpl @Autowired constructor(
         }
     }
 
-    override fun tagTaxonomyAsync(tax: Taxonomy, start: Folder, force: Boolean) {
+    override fun tagTaxonomyAsync(tax: Taxonomy, start: Folder?, force: Boolean) {
         if (ArchivistConfiguration.unittest) {
             tagTaxonomy(tax, start, force)
         } else {
-            folderTaskExecutor.execute(UniqueRunnable("tax_run_" + start.id,
+            folderTaskExecutor.execute(UniqueRunnable("tax_run_" + tax.taxonomyId,
                     InternalRunnable(auth) { tagTaxonomy(tax, start, force) }))
         }
     }

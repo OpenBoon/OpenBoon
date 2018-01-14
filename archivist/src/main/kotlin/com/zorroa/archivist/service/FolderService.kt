@@ -487,7 +487,7 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         if (folder.isDyhiRoot) {
-            dyHierarchyService.delete(dyHierarchyService[folder])
+            dyHierarchyService.delete(dyHierarchyService.get(folder))
         }
 
         /**

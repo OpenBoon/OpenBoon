@@ -1,4 +1,4 @@
-package com.zorroa.archivist.web.api;
+package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.client.exception.ArchivistException;

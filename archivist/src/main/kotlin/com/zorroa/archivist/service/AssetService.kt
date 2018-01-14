@@ -115,7 +115,7 @@ class AssetServiceImpl  @Autowired  constructor (
         setDefaultPermissions()
     }
 
-    override operator fun get(id: String): Document {
+    override fun get(id: String): Document {
         return if (id.startsWith("/")) {
             get(Paths.get(id))
         } else {
@@ -123,7 +123,7 @@ class AssetServiceImpl  @Autowired  constructor (
         }
     }
 
-    override operator fun get(path: Path): Document {
+    override fun get(path: Path): Document {
         return assetDao[path]
     }
 

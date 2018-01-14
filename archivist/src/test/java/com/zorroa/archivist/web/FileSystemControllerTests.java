@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import com.zorroa.archivist.service.LocalFileSystem;
+import com.zorroa.archivist.web.api.FileSystemController;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
 import com.zorroa.sdk.util.FileUtils;
