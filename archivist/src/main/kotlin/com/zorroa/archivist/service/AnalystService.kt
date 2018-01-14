@@ -24,7 +24,7 @@ interface AnalystService {
 }
 
 @Service
-open class AnalystServiceImpl
+class AnalystServiceImpl
     @Autowired constructor (
         private val analystDao: AnalystDao,
         private val taskDao: TaskDao)  : AnalystService {
