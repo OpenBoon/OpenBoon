@@ -36,9 +36,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.io.File
 import java.io.IOException
 import java.net.InetAddress
-import java.net.UnknownHostException
 import java.util.*
-import javax.annotation.PostConstruct
 import javax.sql.DataSource
 
 @Configuration
