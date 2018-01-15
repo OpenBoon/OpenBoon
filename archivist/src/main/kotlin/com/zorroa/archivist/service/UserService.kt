@@ -23,6 +23,9 @@ import org.springframework.dao.DataAccessException
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -558,3 +561,20 @@ class UserServiceImpl @Autowired constructor(
     }
 }
 
+open class LocalUserDetailService : UserDetailsService {
+
+    private lateinit var userDao: UserDao
+
+    @Transactional
+    @Throws(UsernameNotFoundException::class)
+    override fun loadUserByUsername(userId: String): UserDetails {
+        logger.info("loading {}", userId)
+        return UserAuthed(userDao.get(userId))
+    }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
+
+    }
+}

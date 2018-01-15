@@ -86,9 +86,9 @@ interface AssetService {
      * @param attrs
      * @return
      */
-    fun update(id: String, attrs: Map<String, Any>): Long
+    fun update(assetId: String, attrs: Map<String, Any>): Long
 
-    fun delete(id: String): Boolean
+    fun delete(assetId: String): Boolean
 
     fun setPermissions(command: Command, search: AssetSearch, acl: Acl)
 }
@@ -191,7 +191,7 @@ class AssetServiceImpl  @Autowired  constructor (
             val protectedValues = assetDao.getProtectedFields(source.id)
 
             val perms = Json.Mapper.convertValue(
-                    (protectedValues as java.util.Map<String, Any>).getOrDefault("permissions", ImmutableMap.of<Any, Any>()), PermissionSchema::class.java)
+                    (protectedValues as MutableMap<String, Any>).getOrDefault("permissions", ImmutableMap.of<Any, Any>()), PermissionSchema::class.java)
 
             if (source.permissions != null) {
                 for ((key, value) in source.permissions) {
@@ -315,21 +315,18 @@ class AssetServiceImpl  @Autowired  constructor (
 
     override fun delete(assetId: String): Boolean {
         val doc = assetDao[assetId]
-        if (doc != null) {
-            val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
-            if (proxySchema != null) {
-                for (proxy in proxySchema.proxies) {
-                    try {
-                        if (!Files.deleteIfExists(ofs.get(proxy.id).file.toPath())) {
-                            logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
-                        }
-                    } catch (e: Exception) {
-                        logger.warn("Failed to delete OFS file: {}", e)
+        val proxySchema = doc.getAttr("proxies", ProxySchema::class.java)
+        if (proxySchema != null) {
+            for (proxy in proxySchema.proxies) {
+                try {
+                    if (!Files.deleteIfExists(ofs.get(proxy.id).file.toPath())) {
+                        logger.warn("Did not delete {}, ofs file did not exist", proxy.id)
                     }
+                } catch (e: Exception) {
+                    logger.warn("Failed to delete OFS file: {}", e)
                 }
             }
         }
-
         return assetDao.delete(assetId)
     }
 

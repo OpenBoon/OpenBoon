@@ -88,10 +88,10 @@ open class UserPresetDaoImpl : AbstractDao(), UserPresetDao {
         return jdbc.query("SELECT * FROM preset", MAPPER)
     }
 
-    override fun getAll(page: Pager): PagedList<UserPreset> {
-        return PagedList(page.setTotalCount(count()),
+    override fun getAll(paging: Pager): PagedList<UserPreset> {
+        return PagedList(paging.setTotalCount(count()),
                 jdbc.query(GET + "ORDER BY preset.str_name LIMIT ? OFFSET ?", MAPPER,
-                        page.size, page.from))
+                        paging.size, paging.from))
     }
 
     override fun update(id: Int, spec: UserPreset): Boolean {

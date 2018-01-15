@@ -65,8 +65,8 @@ open class PluginDaoImpl : AbstractDao(), PluginDao {
         return jdbc.queryForObject<Plugin>(GET + " WHERE str_name=?", MAPPER, name)
     }
 
-    override fun refresh(`object`: Plugin): Plugin {
-        return get(`object`.id)
+    override fun refresh(obj: Plugin): Plugin {
+        return get(obj.id)
     }
 
     override fun getAll(): List<Plugin> {
@@ -82,11 +82,11 @@ open class PluginDaoImpl : AbstractDao(), PluginDao {
         return result
     }
 
-    override fun getAll(page: Pager): PagedList<Plugin> {
+    override fun getAll(paging: Pager): PagedList<Plugin> {
         return PagedList(
-                page.setTotalCount(count()),
+                paging.setTotalCount(count()),
                 jdbc.query<Plugin>(GET + "ORDER BY str_name LIMIT ? OFFSET ?", MAPPER,
-                        page.size, page.from))
+                        paging.size, paging.from))
     }
 
     override fun update(id: Int, spec: Plugin): Boolean {

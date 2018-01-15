@@ -107,8 +107,8 @@ class ExportServiceImpl @Autowired constructor(
         return exportDao.createExportFile(job, spec)
     }
 
-    override fun getExportFile(id: Long): ExportFile {
-        return exportDao.getExportFile(id)
+    override fun getExportFile(fileId: Long): ExportFile {
+        return exportDao.getExportFile(fileId)
     }
 
     override fun getAllExportFiles(job: Job): List<ExportFile> {

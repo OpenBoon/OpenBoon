@@ -39,7 +39,7 @@ interface TaskDao {
 
     fun getExecutableTask(id: Int): TaskStartT
 
-    fun setState(script: TaskId, value: TaskState, vararg expect: TaskState): Boolean
+    fun setState(task: TaskId, value: TaskState, vararg expect: TaskState): Boolean
 
     fun decrementDependCount(task: TaskId): Int
 
@@ -134,22 +134,22 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
         sharedPath = shared!!.root.toString()
     }
 
-    override fun create(task: TaskSpec): Task {
+    override fun create(spec: TaskSpec): Task {
         val time = System.currentTimeMillis()
         /**
          * TODO: because we insert to get the ID, the ID stored on the script
          * is inaccurate.  Currently we just handle this in the mapper
          * but we could manually query the sequence
          */
-        Preconditions.checkNotNull(task.jobId)
+        Preconditions.checkNotNull(spec.jobId)
         val keyHolder = GeneratedKeyHolder()
         jdbc.update({ connection ->
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_task"))
-            ps.setInt(1, task.jobId!!)
-            ps.setObject(2, task.parentTaskId)
-            ps.setString(3, if (task.name == null) "subtask" else task.name)
+            ps.setInt(1, spec.jobId!!)
+            ps.setObject(2, spec.parentTaskId)
+            ps.setString(3, if (spec.name == null) "subtask" else spec.name)
             ps.setInt(4, TaskState.Waiting.ordinal)
-            ps.setInt(5, task.order)
+            ps.setInt(5, spec.order)
             ps.setLong(6, time)
             ps.setLong(7, time)
             ps.setLong(8, time)
@@ -158,7 +158,7 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
         val id = keyHolder.key.toInt()
 
         jdbc.update("INSERT INTO task_stat (pk_task, pk_job, int_asset_total_count) VALUES (?, ?, ?)",
-                id, task.jobId, task.assetCount)
+                id, spec.jobId, spec.assetCount)
         return get(id)
     }
 
@@ -238,11 +238,11 @@ open class TaskDaoImpl : AbstractDao(), TaskDao {
         return jdbc.update(sb.toString(), *values.toTypedArray()) == 1
     }
 
-    override fun decrementDependCount(finishedTask: TaskId): Int {
+    override fun decrementDependCount(task: TaskId): Int {
         // Decrement tasks depending on both ourself and our parent.
-        var count = jdbc.update(DECREMENT_DEPEND, finishedTask.taskId)
-        if (finishedTask.parentTaskId != null) {
-            count += jdbc.update(DECREMENT_DEPEND, finishedTask.parentTaskId)
+        var count = jdbc.update(DECREMENT_DEPEND, task.taskId)
+        if (task.parentTaskId != null) {
+            count += jdbc.update(DECREMENT_DEPEND, task.parentTaskId)
         }
         return count
     }

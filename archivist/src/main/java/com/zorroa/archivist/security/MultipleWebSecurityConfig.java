@@ -9,8 +9,10 @@ import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
@@ -37,6 +39,7 @@ import org.springframework.web.cors.CorsUtils;
  * Created by chambers on 6/9/16.
  */
 @EnableWebSecurity
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class MultipleWebSecurityConfig {
 
     @Autowired
@@ -95,10 +98,10 @@ public class MultipleWebSecurityConfig {
             http
                 .authorizeRequests()
                     .antMatchers("/").authenticated()
-                    .antMatchers("/gui/**").hasAuthority("group::administrator")
                     .antMatchers("/signin/**").permitAll()
                     .antMatchers("/signout/**").permitAll()
                     .antMatchers("/health/**").permitAll()
+                    .antMatchers("/gui/**").hasAuthority("group::administrator")
                     .antMatchers("/es/**").hasAuthority("group::administrator")
                     .antMatchers("/console/**").hasAuthority("group::administrator")
                 .and()
@@ -184,6 +187,18 @@ public class MultipleWebSecurityConfig {
     @Bean
     public AuthenticationProvider hmacAuthenticationProvider() {
         return new HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"));
+    }
+
+    @Bean
+    @Primary
+    public AuthoritiesExtractor authoritiesExtractor() {
+        return new ZorroaAuthoritiesExtractor();
+    }
+
+    @Bean
+    @Primary
+    public PrincipalExtractor principalExtractor() {
+        return new ZorroaPrincipalExtractor();
     }
 
     @Bean

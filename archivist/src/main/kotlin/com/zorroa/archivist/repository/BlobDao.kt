@@ -33,7 +33,7 @@ interface BlobDao {
 }
 
 @Repository
-open class BlobDaoImpl : AbstractDao(), BlobDao {
+class BlobDaoImpl : AbstractDao(), BlobDao {
 
     override fun create(app: String, feature: String, name: String, data: Any): Blob {
         val time = System.currentTimeMillis()
@@ -70,10 +70,10 @@ open class BlobDaoImpl : AbstractDao(), BlobDao {
                 *appendAccessArgs(id))
     }
 
-    override fun get(app: String, feature: String, id: String): Blob {
+    override fun get(app: String, feature: String, name: String): Blob {
         return jdbc.queryForObject<Blob>(appendAccess(
                 GET + "WHERE str_app=? AND str_feature=? AND str_name=?", Access.Read), MAPPER,
-                *appendAccessArgs(app, feature, id))
+                *appendAccessArgs(app, feature, name))
     }
 
     override fun getId(app: String, feature: String, name: String, forAccess: Access): BlobId {

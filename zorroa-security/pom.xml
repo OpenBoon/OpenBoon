@@ -7,4 +7,16 @@
     <groupId>com.zorroa</groupId>
     <artifactId>zorroa-security</artifactId>
     <version>1.0.0</version>
+
+    <dependencyManagement>
+        <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>1.5.9.RELEASE</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+    </dependencyManagement>
 </project>

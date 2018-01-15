@@ -34,6 +34,11 @@ class UserController @Autowired constructor(
             }
         }
 
+    @GetMapping("/user")
+    fun getMe() : Any {
+        return SecurityUtils.getAuthentication()
+    }
+
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
     @RequestMapping(value = "/api/v1/users")
     fun getAll() : List<User> = userService.getAll()
@@ -161,7 +166,7 @@ class UserController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @RequestMapping(value = "/api/v1/users/{id}", method = arrayOf(RequestMethod.DELETE))
+    @DeleteMapping(value = "/api/v1/users/{id}")
     fun disable(@PathVariable id: Int): Any {
         val user = userService.get(id)
         if (id == SecurityUtils.getUser().id) {

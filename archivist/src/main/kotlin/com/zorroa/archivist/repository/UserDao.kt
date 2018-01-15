@@ -101,10 +101,10 @@ open class UserDaoImpl : AbstractDao(), UserDao {
         return jdbc.query(GET_ALL, MAPPER)
     }
 
-    override fun getAll(page: Pager): PagedList<User> {
-        return PagedList(page.setTotalCount(getCount()),
+    override fun getAll(paging: Pager): PagedList<User> {
+        return PagedList(paging.setTotalCount(getCount()),
                 jdbc.query<User>(GET_ALL + " LIMIT ? OFFSET ?",
-                        MAPPER, page.size, page.from))
+                        MAPPER, paging.size, paging.from))
     }
 
     override fun create(builder: UserSpec, source: String): User {
@@ -137,7 +137,8 @@ open class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun exists(name: String): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM users WHERE str_username=?", Boolean::class.java, name)
+        return jdbc.queryForObject("SELECT COUNT(1) FROM users WHERE str_username=? OR str_email=?",
+                Boolean::class.java, name, name)
     }
 
     override fun setSettings(user: User, settings: UserSettings): Boolean {
@@ -177,9 +178,9 @@ open class UserDaoImpl : AbstractDao(), UserDao {
                 value, user.id, !value) == 1
     }
 
-    override fun update(user: User, builder: UserProfileUpdate): Boolean {
-        return jdbc.update(UPDATE, builder.email, builder.firstName,
-                builder.lastName, user.id) == 1
+    override fun update(user: User, update: UserProfileUpdate): Boolean {
+        return jdbc.update(UPDATE, update.email, update.firstName,
+                update.lastName, user.id) == 1
     }
 
     override fun delete(user: User): Boolean {

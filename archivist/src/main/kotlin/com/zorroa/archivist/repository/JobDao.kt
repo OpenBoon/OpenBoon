@@ -22,7 +22,7 @@ interface JobDao {
 
     fun get(id: Int): Job
 
-    fun get(script: JobId): Job
+    fun get(job: JobId): Job
 
     fun getAll(page: Pager, filter: JobFilter?): PagedList<Job>
 
@@ -42,7 +42,7 @@ interface JobDao {
 
     fun getRootPath(id: Int): String
 
-    fun updateTaskStateCounts(task: TaskId, value: TaskState, expect: TaskState)
+    fun updateTaskStateCounts(task: TaskId, newState: TaskState, expect: TaskState)
 }
 
 @Repository
@@ -157,13 +157,13 @@ open class JobDaoImpl : AbstractDao(), JobDao {
                 adder.warning, adder.error, adder.replace, adder.total, id) == 1
     }
 
-    override fun decrementStats(id: Int, adder: AssetStats): Boolean {
+    override fun decrementStats(id: Int, stats: AssetStats): Boolean {
         return jdbc.update(DEC_STATS,
-                adder.assetCreatedCount,
-                adder.assetUpdatedCount,
-                adder.assetWarningCount,
-                adder.assetErrorCount,
-                adder.assetReplacedCount, id) == 1
+                stats.assetCreatedCount,
+                stats.assetUpdatedCount,
+                stats.assetWarningCount,
+                stats.assetErrorCount,
+                stats.assetReplacedCount, id) == 1
     }
 
     override fun incrementWaitingTaskCount(job: JobId) {

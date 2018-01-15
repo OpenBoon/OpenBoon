@@ -38,8 +38,8 @@ open class TaxonomyDaoImpl : AbstractDao(), TaxonomyDao {
         return jdbc.queryForObject<Taxonomy>(GET + "WHERE pk_folder=?", MAPPER, folder.id)
     }
 
-    override fun refresh(`object`: Taxonomy): Taxonomy {
-        return get(`object`.taxonomyId)
+    override fun refresh(obj: Taxonomy): Taxonomy {
+        return get(obj.taxonomyId)
     }
 
     override fun getAll(): List<Taxonomy> {

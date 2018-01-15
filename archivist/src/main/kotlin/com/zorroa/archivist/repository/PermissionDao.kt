@@ -147,7 +147,7 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override fun getPaged(page: Pager, filter: DaoFilter): PagedList<Permission> {
-        if (filter.sort == null) {
+        if (filter.sort.isEmpty()) {
             filter.sort = ImmutableMap.of("type", "asc", "name", "asc")
         }
         return PagedList(page.setTotalCount(count(filter)),

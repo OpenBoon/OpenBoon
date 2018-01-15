@@ -26,7 +26,7 @@ interface DyHierarchyDao : GenericDao<DyHierarchy, DyHierarchySpec> {
 }
 
 @Repository
-open class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
+class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
 
     @Autowired
     private var userDaoCache: UserDaoCache? = null
@@ -72,18 +72,18 @@ open class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
         return jdbc.queryForObject<DyHierarchy>(GET + " WHERE pk_folder=?", MAPPER, folder.id)
     }
 
-    override fun refresh(`object`: DyHierarchy): DyHierarchy {
-        return get(`object`.id)
+    override fun refresh(obj: DyHierarchy): DyHierarchy {
+        return get(obj.id)
     }
 
     override fun getAll(): List<DyHierarchy> {
         return jdbc.query(GET, MAPPER)
     }
 
-    override fun getAll(page: Pager): PagedList<DyHierarchy> {
-        return PagedList(page.setTotalCount(count()),
+    override fun getAll(paging: Pager): PagedList<DyHierarchy> {
+        return PagedList(paging.setTotalCount(count()),
                 jdbc.query<DyHierarchy>(GET + "ORDER BY pk_dyhi LIMIT ? OFFSET ?",
-                        MAPPER, page.size, page.from))
+                        MAPPER, paging.size, paging.from))
     }
 
     override fun update(id: Int, spec: DyHierarchy): Boolean {

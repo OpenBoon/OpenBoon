@@ -45,7 +45,7 @@ interface DyHierarchyService {
      *
      * @param agg
      */
-    fun generate(agg: DyHierarchy): Int
+    fun generate(dyhi: DyHierarchy): Int
 
     fun get(id: Int): DyHierarchy
 
@@ -70,7 +70,7 @@ interface DyHierarchyService {
      *
      * @param agg
      */
-    fun submitGenerate(agg: DyHierarchy)
+    fun submitGenerate(dyhi: DyHierarchy)
 }
 
 @Service
@@ -297,9 +297,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
     }
 
     private fun elasticAggregationBuilder(level: DyHierarchyLevel, idx: Int): AggregationBuilder<*>? {
-
         when (level.type) {
-            DyHierarchyLevelType.Attr -> {
+            DyHierarchyLevelType.Attr, null -> {
                 val terms = AggregationBuilders.terms(idx.toString())
                 terms.field(level.field)
                 terms.size(maxFoldersPerLevel!!)
@@ -336,8 +335,6 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 return pathTerms
             }
         }
-
-        return null
     }
 
     /**
@@ -383,7 +380,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 }
                 DyHierarchyLevelType.Path -> {
                     value = bucket.keyAsString
-                    val delimiter = (level.options as java.util.Map<String, Any>).getOrDefault("delimiter", "/").toString()
+                    val delimiter = (level.options as MutableMap<String, Any>).getOrDefault("delimiter", "/").toString()
 
                     val peek = folders.peek()
                     folders.stash()
@@ -527,10 +524,9 @@ class DyHierarchyServiceImpl @Autowired constructor (
          * @return
          */
         fun getSearch(value: String, level: DyHierarchyLevel): AssetSearch {
-            var value = value
             val search = AssetSearch()
             when (level.type) {
-                DyHierarchyLevelType.Attr -> search.addToFilter().addToTerms(level.field, Lists.newArrayList<Any>(value))
+                DyHierarchyLevelType.Attr, null -> search.addToFilter().addToTerms(level.field, Lists.newArrayList<Any>(value))
                 DyHierarchyLevelType.Year -> search.addToFilter().addToScripts(AssetScript(
                         String.format("doc['%s'].getYear() == value", level.field),
                         ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
@@ -542,8 +538,8 @@ class DyHierarchyServiceImpl @Autowired constructor (
                         ImmutableMap.of<String, Any>("value", Integer.valueOf(value))))
                 DyHierarchyLevelType.Path -> {
                     // chop off trailing /
-                    value = value.substring(0, value.length - 1)
-                    search.addToFilter().addToTerms(level.field, ImmutableList.of<Any>(value))
+                    val modifiedValue = value.substring(0, value.length - 1)
+                    search.addToFilter().addToTerms(level.field, ImmutableList.of<Any>(modifiedValue))
                 }
             }
             return search

@@ -1,13 +1,13 @@
 package com.zorroa.archivist.service
 
 import com.google.common.base.Preconditions
+import com.zorroa.archivist.service.TransactionEventManager.Companion.executor
 import org.slf4j.LoggerFactory
 import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-
-private val executor = Executors.newFixedThreadPool(4)
 
 class TransactionEventManager {
 
@@ -40,6 +40,8 @@ class TransactionEventManager {
     }
     companion object {
         private val logger = LoggerFactory.getLogger(TransactionEventManager::class.java)
+
+        val executor :ExecutorService = Executors.newFixedThreadPool(4)
     }
 }
 

@@ -42,7 +42,7 @@ interface FolderDao {
 
     fun exists(parent: Folder, name: String): Boolean
 
-    fun create(builder: FolderSpec): Folder
+    fun create(spec: FolderSpec): Folder
 
     fun create(spec: TrashedFolder): Folder
 

@@ -89,8 +89,8 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     }
 
-    override fun refresh(p: Pipeline): Pipeline {
-        return get(p.id!!)
+    override fun refresh(obj: Pipeline): Pipeline {
+        return get(obj.id!!)
     }
 
     override fun exists(name: String): Boolean {
@@ -101,11 +101,11 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
         return jdbc.query("SELECT * FROM pipeline", MAPPER)
     }
 
-    override fun getAll(page: Pager): PagedList<Pipeline> {
+    override fun getAll(paging: Pager): PagedList<Pipeline> {
         return PagedList(
-                page.setTotalCount(count()),
+                paging.setTotalCount(count()),
                 jdbc.query<Pipeline>("SELECT * FROM pipeline ORDER BY pk_pipeline LIMIT ? OFFSET ?", MAPPER,
-                        page.size, page.from))
+                        paging.size, paging.from))
     }
 
     override fun update(id: Int, spec: Pipeline): Boolean {

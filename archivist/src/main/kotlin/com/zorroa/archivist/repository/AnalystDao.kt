@@ -113,12 +113,12 @@ class AnalystDaoImpl : AbstractElasticDao(), AnalystDao {
         return result
     }
 
-    override fun getAll(page: Pager): PagedList<Analyst> {
+    override fun getAll(paging: Pager): PagedList<Analyst> {
         return elastic.page(client.prepareSearch(index)
                 .setTypes(type)
-                .setSize(page.size)
-                .setFrom(page.from)
-                .setQuery(QueryBuilders.matchAllQuery()), page, MAPPER)
+                .setSize(paging.size)
+                .setFrom(paging.from)
+                .setQuery(QueryBuilders.matchAllQuery()), paging, MAPPER)
     }
 
     override fun getExpired(limit: Int, duration: Long): List<Analyst> {

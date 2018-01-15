@@ -28,7 +28,7 @@ interface CommandDao : GenericDao<Command, CommandSpec> {
 
     fun cancel(cmd: Command, msg: String): Boolean
 
-    fun updateProgress(cmd: Command, total: Long, incrementSuccess: Long, incrementError: Long): Boolean
+    fun updateProgress(cmd: Command, total: Long, success: Long, error: Long): Boolean
 }
 
 @Repository

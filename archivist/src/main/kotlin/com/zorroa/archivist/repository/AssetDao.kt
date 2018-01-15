@@ -44,10 +44,10 @@ interface AssetDao {
      * Return the next page of an asset scroll.
      *
      * @param scrollId
-     * @param scrollTimeout
+     * @param timeout
      * @return
      */
-    fun getAll(scrollId: String, scrollTimeout: String): PagedList<Document>
+    fun getAll(scrollId: String, timeout: String): PagedList<Document>
 
     /**
      * Get all assets given the page and SearchRequestBuilder.
@@ -102,7 +102,7 @@ interface AssetDao {
 }
 
 @Repository
-open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
+class AssetDaoImpl : AbstractElasticDao(), AssetDao {
 
     /**
      * Allows us to flush the first batch.
@@ -306,9 +306,9 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return result
     }
 
-    override fun update(assetId: String, values: Map<String, Any>): Long {
+    override fun update(assetId: String, attrs: Map<String, Any>): Long {
         val asset = get(assetId)
-        for ((key, value) in values) {
+        for ((key, value) in attrs) {
             asset.setAttr(key, value)
         }
 
@@ -395,8 +395,8 @@ open class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return assets[0]
     }
 
-    override fun getAll(id: String, timeout: String): PagedList<Document> {
-        return elastic.scroll(id, timeout, MAPPER)
+    override fun getAll(scrollId: String, timeout: String): PagedList<Document> {
+        return elastic.scroll(scrollId, timeout, MAPPER)
     }
 
     override fun getAll(page: Pager, search: SearchRequestBuilder): PagedList<Document> {

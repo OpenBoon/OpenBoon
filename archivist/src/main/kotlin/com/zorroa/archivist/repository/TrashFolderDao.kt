@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository
 
 interface TrashFolderDao {
 
-    fun create(folder: Folder, opid: String, primary: Boolean, order: Int): Int
+    fun create(folder: Folder, opId: String, primary: Boolean, order: Int): Int
 
     operator fun get(id: Int, userId: Int): TrashedFolder
 
@@ -135,20 +135,20 @@ open class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
                 GET + " WHERE pk_folder_trash=? AND user_deleted=?", MAPPER, id, user)
     }
 
-    override fun getAll(user: Int): List<TrashedFolder> {
+    override fun getAll(userId: Int): List<TrashedFolder> {
         return jdbc.query<TrashedFolder>(
-                GET + " WHERE user_deleted=? AND bool_primary=?", MAPPER, user, true)
+                GET + " WHERE user_deleted=? AND bool_primary=?", MAPPER, userId, true)
     }
 
-    override fun count(user: Int): Int {
+    override fun count(userId: Int): Int {
         return jdbc.queryForObject("SELECT COUNT(1) FROM folder_trash WHERE user_deleted=? AND bool_primary=?",
-                Int::class.java, user, true)
+                Int::class.java, userId, true)
     }
 
-    override fun getAll(parent: Folder, user: Int): List<TrashedFolder> {
+    override fun getAll(parent: Folder, userId: Int): List<TrashedFolder> {
         return jdbc.query<TrashedFolder>(
                 GET + " WHERE pk_parent=? AND user_deleted=? AND bool_primary=?", MAPPER,
-                parent.id, user, true)
+                parent.id, userId, true)
     }
 
     override fun getAll(opId: String): List<TrashedFolder> {
@@ -193,12 +193,12 @@ open class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
         return ids
     }
 
-    override fun removeAll(user: Int): List<Int> {
-        val ids = getAllIds(user)
-        if (jdbc.update("DELETE FROM folder_trash WHERE user_deleted=?", user) == ids.size) {
+    override fun removeAll(userId: Int): List<Int> {
+        val ids = getAllIds(userId)
+        if (jdbc.update("DELETE FROM folder_trash WHERE user_deleted=?", userId) == ids.size) {
             return ids
         } else {
-            val leftOver = getAllIds(user)
+            val leftOver = getAllIds(userId)
             leftOver.removeAll(ids)
             return leftOver
         }

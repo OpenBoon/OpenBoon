@@ -43,14 +43,14 @@ open class AnalyzeServiceImpl
     ): AnalyzeService {
 
     @Throws(IOException::class)
-    override fun analyze(spec: AnalyzeSpec, files: Array<MultipartFile>?): Any {
+    override fun analyze(spec: AnalyzeSpec, file: Array<MultipartFile>?): Any {
 
         val script = ZpsScript()
         script.isInline = true
         script.isStrict = true
 
         val pipeline = Lists.newArrayList<ProcessorRef>()
-        pipeline.addAll(pipelineService!!.mungePipelines(PipelineType.Import, spec.processors))
+        pipeline.addAll(pipelineService.mungePipelines(PipelineType.Import, spec.processors))
         script.execute = pipeline
 
         var lang: String
