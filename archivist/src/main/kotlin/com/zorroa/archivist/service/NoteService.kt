@@ -30,15 +30,15 @@ class NoteServiceImpl @Autowired constructor(
     override fun create(builder: NoteSpec): Note {
         Preconditions.checkNotNull(builder.text, "Text of a note cannot be null")
         Preconditions.checkNotNull(builder.asset, "Asset cannot be null")
-        return noteDao!!.create(builder)
+        return noteDao.create(builder)
     }
 
     override fun get(id: String): Note {
-        return noteDao!!.get(id)
+        return noteDao.get(id)
     }
 
     override fun getAll(assetId: String): List<Note> {
-        return noteDao!!.getAll(assetId)
+        return noteDao.getAll(assetId)
     }
 
     companion object {

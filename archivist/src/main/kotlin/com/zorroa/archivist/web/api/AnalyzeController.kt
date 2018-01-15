@@ -16,7 +16,7 @@ class AnalyzeController @Autowired constructor(
         private val analyzeService: AnalyzeService
 ) {
 
-    @PostMapping(value = "/api/v1/analyze/_files", consumes = ["multipart/form-data"])
+    @PostMapping(value = ["/api/v1/analyze/_files"], consumes = ["multipart/form-data"])
     @ResponseBody
     @Throws(IOException::class)
     fun analyzeUpload(@RequestParam("files") files: Array<MultipartFile>,
@@ -25,7 +25,7 @@ class AnalyzeController @Autowired constructor(
         return analyzeService.analyze(spec, files)
     }
 
-    @PostMapping(value = "/api/v1/analyze/_assets")
+    @PostMapping(value = ["/api/v1/analyze/_assets"])
     @ResponseBody
     @Throws(IOException::class)
     fun analyzeAssets(@RequestBody spec: AnalyzeSpec): Any {

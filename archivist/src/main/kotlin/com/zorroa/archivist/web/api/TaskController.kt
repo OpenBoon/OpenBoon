@@ -21,7 +21,7 @@ class TaskController @Autowired constructor(
         private val taskDao: TaskDao
 ) {
 
-    @GetMapping(value = "/api/v1/tasks/{id}/_log")
+    @GetMapping(value = ["/api/v1/tasks/{id}/_log"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun streamLog(@PathVariable id: Int): ResponseEntity<InputStreamResource> {
@@ -33,21 +33,21 @@ class TaskController @Autowired constructor(
                 .body(InputStreamResource(FileInputStream(logFile)))
     }
 
-    @PutMapping(value = "/api/v1/tasks/{id}/_retry")
+    @PutMapping(value = ["/api/v1/tasks/{id}/_retry"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@PathVariable id: Int) {
         jobExecutorService.retryTask(taskDao.get(id))
     }
 
-    @PutMapping(value = "/api/v1/tasks/{id}/_skip")
+    @PutMapping(value = ["/api/v1/tasks/{id}/_skip"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun skip(@PathVariable id: Int) {
         jobExecutorService.skipTask(taskDao.get(id))
     }
 
-    @GetMapping(value = "/api/v1/tasks/{id}/_script")
+    @GetMapping(value = ["/api/v1/tasks/{id}/_script"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun getScript(@PathVariable id: Int): String {

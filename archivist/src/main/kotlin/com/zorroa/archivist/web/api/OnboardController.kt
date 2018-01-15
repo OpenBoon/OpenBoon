@@ -20,7 +20,7 @@ class OnboardController @Autowired constructor(
         private val mailSender: JavaMailSender
 ){
 
-    @RequestMapping(value = "/api/v1/onboard/_secure", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/api/v1/onboard/_secure"], method = [RequestMethod.POST])
     fun secure() {
         if (networkEnvironment!!.location == "on-prem") {
             val pass = HttpUtils.randomString(12)

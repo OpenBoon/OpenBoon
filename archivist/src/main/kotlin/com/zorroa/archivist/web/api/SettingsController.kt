@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-class SettingsController {
-
-    @Autowired
-    internal var settingsService: SettingsService? = null
+class SettingsController @Autowired constructor(
+        private val  settingsService: SettingsService
+){
 
     @GetMapping(value = "/api/v1/settings")
     fun getAll(@RequestBody(required = false) filter: SettingsFilter?): List<Setting> {
@@ -21,18 +20,18 @@ class SettingsController {
         if (filter == null) {
             filter = SettingsFilter()
         }
-        return settingsService!!.getAll(filter)
+        return settingsService.getAll(filter)
     }
 
     @GetMapping(value = "/api/v1/settings/{name:.+}")
     operator fun get(@PathVariable name: String): Setting {
-        return settingsService!!.get(name)
+        return settingsService.get(name)
     }
 
     @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
     @PutMapping(value = "/api/v1/settings")
     fun set(@RequestBody settings: Map<String, Any>): Any {
-        val count = settingsService!!.setAll(settings)
+        val count = settingsService.setAll(settings)
         return HttpUtils.status("settings", "update", count == settings.size)
     }
 }

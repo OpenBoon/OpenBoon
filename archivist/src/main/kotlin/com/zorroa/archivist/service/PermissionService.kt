@@ -93,18 +93,18 @@ class PermissionServiceImpl @Autowired constructor(
     }
 
     override fun getPermissionNames(): List<String> {
-        return permissionDao.getAll().stream().map({ p -> p.getFullName() }).collect(Collectors.toList<String>())
+        return permissionDao.getAll().stream().map({ p -> p.fullName }).collect(Collectors.toList<String>())
     }
 
     override fun permissionExists(authority: String): Boolean {
         return permissionDao.exists(authority)
     }
 
-    override fun getPermission(id: String): Permission {
+    override fun getPermission(name: String): Permission {
         try {
-            return permissionCache.get(id)
+            return permissionCache.get(name)
         } catch (e: Exception) {
-            throw EmptyResultDataAccessException("The permission $id does not exist", 1)
+            throw EmptyResultDataAccessException("The permission $name does not exist", 1)
         }
 
     }

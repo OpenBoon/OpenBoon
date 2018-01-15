@@ -19,20 +19,20 @@ class FolderController @Autowired constructor(
 ) {
 
     val all: List<Folder>
-        @GetMapping(value = "/api/v1/folders")
+        @GetMapping(value = ["/api/v1/folders"])
         get() = folderService.getAll()
 
-    @PostMapping(value = "/api/v1/folders")
+    @PostMapping(value = ["/api/v1/folders"])
     fun create(@RequestBody spec: FolderSpec): Folder {
         return folderService.create(spec, false)
     }
 
-    @GetMapping(value = "/api/v1/folders/{id:\\d+}")
+    @GetMapping(value = ["/api/v1/folders/{id:\\d+}"])
     operator fun get(@PathVariable id: Int): Folder {
         return folderService.get(id)
     }
 
-    @GetMapping(value = "/api/v1/folders/{id}/_assetCount")
+    @GetMapping(value = ["/api/v1/folders/{id}/_assetCount"])
     fun countAssets(@PathVariable id: Int): Any {
         return HttpUtils.count(searchService.count(folderService.get(id)))
     }
@@ -42,12 +42,12 @@ class FolderController @Autowired constructor(
         var search: AssetSearch? = null
     }
 
-    @PostMapping(value = "/api/v1/folders/_assetCounts")
+    @PostMapping(value = ["/api/v1/folders/_assetCounts"])
     fun countAssets(@RequestBody req: FolderAssetCountsRequest): Any {
         return HttpUtils.counts(searchService.count(req.ids!!, req.search))
     }
 
-    @GetMapping(value = "/api/v1/folders/_path/**")
+    @GetMapping(value = ["/api/v1/folders/_path/**"])
     fun get(request: HttpServletRequest): Folder? {
         var path = request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE) as String
@@ -56,7 +56,7 @@ class FolderController @Autowired constructor(
     }
 
     @Deprecated("")
-    @GetMapping(value = "/api/v1/folders/_exists/**")
+    @GetMapping(value = ["/api/v1/folders/_exists/**"])
     fun exists(request: HttpServletRequest): Any {
         var path = request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE) as String
@@ -64,37 +64,37 @@ class FolderController @Autowired constructor(
         return HttpUtils.status("folders", path, "exists", folderService.exists(path))
     }
 
-    @PutMapping(value = "/api/v1/folders/{id}")
+    @PutMapping(value = ["/api/v1/folders/{id}"])
     fun update(@RequestBody folder: Folder, @PathVariable id: Int): Folder {
         folderService.update(id, folder)
         return folderService.get(folder.id)
     }
 
-    @DeleteMapping(value = "/api/v1/folders/{id}")
+    @DeleteMapping(value = ["/api/v1/folders/{id}"])
     fun delete(@PathVariable id: Int): Any {
         val folder = folderService.get(id)
         return HttpUtils.deleted("folders", id, folderService.trash(folder).count > 0)
     }
 
-    @GetMapping(value = "/api/v1/folders/{id}/folders")
+    @GetMapping(value = ["/api/v1/folders/{id}/folders"])
     fun getChildFolders(@PathVariable id: Int): List<Folder> {
         val folder = folderService.get(id)
         return folderService.getChildren(folder)
     }
 
     @Deprecated("")
-    @GetMapping(value = "/api/v1/folders/{id}/_children")
+    @GetMapping(value = ["/api/v1/folders/{id}/_children"])
     fun getChildren(@PathVariable id: Int): List<Folder> {
         val folder = folderService.get(id)
         return folderService.getChildren(folder)
     }
 
-    @GetMapping(value = "/api/v1/folders/{id}/folders/{name}")
+    @GetMapping(value = ["/api/v1/folders/{id}/folders/{name}"])
     fun getChild(@PathVariable id: Int, @PathVariable name: String): Folder {
         return folderService.get(id, name)
     }
 
-    @PutMapping(value = "/api/v1/folders/{id}/_permissions")
+    @PutMapping(value = ["/api/v1/folders/{id}/_permissions"])
     @Throws(Exception::class)
     fun setPermissions(@PathVariable id: Int, @RequestBody req: SetPermissions): Any {
         val folder = folderService.get(id)
@@ -113,7 +113,7 @@ class FolderController @Autowired constructor(
      * @param id
      * @throws Exception
      */
-    @DeleteMapping(value = "/api/v1/folders/{id}/assets")
+    @DeleteMapping(value = ["/api/v1/folders/{id}/assets"])
     @Throws(Exception::class)
     fun removeAssets(
             @RequestBody assetIds: List<String>,
@@ -129,7 +129,7 @@ class FolderController @Autowired constructor(
      * @param id
      * @throws Exception
      */
-    @PostMapping(value = "/api/v1/folders/{id}/assets")
+    @PostMapping(value = ["/api/v1/folders/{id}/assets"])
     @Throws(Exception::class)
     fun addAssets(
             @RequestBody assetIds: List<String>,

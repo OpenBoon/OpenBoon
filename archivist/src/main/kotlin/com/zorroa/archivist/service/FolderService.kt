@@ -44,7 +44,7 @@ interface FolderService {
 
     fun count(): Int
 
-    fun count(dy: DyHierarchy): Int
+    fun count(dyhi: DyHierarchy): Int
 
     /**
      * Return all folders with the given unique IDs.
@@ -85,7 +85,7 @@ interface FolderService {
      */
     fun getAllDescendants(folder: Folder, forSearch: Boolean): List<Folder>
 
-    fun update(id: Int, folder: Folder): Boolean
+    fun update(folderId: Int, updated: Folder): Boolean
 
     fun deleteAll(ids: Collection<Int>): Int
 
@@ -153,7 +153,7 @@ interface FolderService {
 
     fun trashCount(): Int
 
-    fun isDescendantOf(b: Folder, a: Folder): Boolean
+    fun isDescendantOf(target: Folder, moving: Folder): Boolean
 }
 
 @Service
@@ -297,8 +297,8 @@ class FolderServiceImpl @Autowired constructor(
         return folderDao.count()
     }
 
-    override fun count(dh: DyHierarchy): Int {
-        return folderDao.count(dh)
+    override fun count(dyhi: DyHierarchy): Int {
+        return folderDao.count(dyhi)
     }
 
     override fun getAll(): List<Folder> {
@@ -317,16 +317,16 @@ class FolderServiceImpl @Autowired constructor(
         return folderDao.getChildren(folder)
     }
 
-    override fun update(id: Int, updated: Folder): Boolean {
-        if (!SecurityUtils.hasPermission(folderDao.getAcl(id), Access.Write)) {
+    override fun update(folderId : Int, updated: Folder): Boolean {
+        if (!SecurityUtils.hasPermission(folderDao.getAcl(folderId), Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (id == 0 || updated.id == 0) {
+        if (folderId == 0 || updated.id == 0) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
 
-        val current = folderDao.get(id)
+        val current = folderDao.get(folderId)
         val parentSwap = current.parentId !== updated.parentId
 
         if (parentSwap) {
@@ -340,7 +340,7 @@ class FolderServiceImpl @Autowired constructor(
             }
         }
 
-        val result = folderDao.update(id, updated)
+        val result = folderDao.update(folderId, updated)
 
         /**
          * If there is a parent swap then the folder gets perms from the new parent.
@@ -566,22 +566,20 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         for (id in additional) {
-            if (id == null) {
-                continue
-            }
             childCache.invalidate(id)
             folderCache.invalidate(id)
         }
     }
 
     override fun isInTaxonomy(folder: Folder): Boolean {
-        var folder = folder
+        var current = folder
+
         if (folder.isTaxonomyRoot) {
             return true
         }
-        while (folder.parentId != 0) {
-            folder = get(folder.parentId)
-            if (folder.isTaxonomyRoot) {
+        while (current.parentId != 0) {
+            current = get(folder.parentId)
+            if (current.isTaxonomyRoot) {
                 return true
             }
         }
@@ -589,14 +587,14 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun getParentTaxonomy(folder: Folder): Taxonomy? {
-        var folder = folder
-        if (folder.isTaxonomyRoot) {
+        var current = folder
+        if (current.isTaxonomyRoot) {
             return taxonomyService.get(folder)
         }
-        while (folder.parentId != 0) {
-            folder = get(folder.parentId)
-            if (folder.isTaxonomyRoot) {
-                return taxonomyService.get(folder)
+        while (current.parentId != 0) {
+            current = get(current.parentId)
+            if (current.isTaxonomyRoot) {
+                return taxonomyService.get(current)
             }
         }
         return null

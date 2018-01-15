@@ -15,26 +15,26 @@ class TaxonomyController @Autowired constructor(
 ){
 
     @ResponseBody
-    @PostMapping(value = "/api/v1/taxonomy")
+    @PostMapping(value = ["/api/v1/taxonomy"])
     fun create(@RequestBody tspec: TaxonomySpec): Any {
         return taxonomyService.create(tspec)
     }
 
     @ResponseBody
-    @GetMapping(value = "/api/v1/taxonomy/{id}")
+    @GetMapping(value = ["/api/v1/taxonomy/{id}"])
     operator fun get(@PathVariable id: Int): Taxonomy {
         return taxonomyService.get(id)
     }
 
     @ResponseBody
-    @GetMapping(value = "/api/v1/taxonomy/_folder/{id}")
+    @GetMapping(value = ["/api/v1/taxonomy/_folder/{id}"])
     fun getByFolder(@PathVariable id: Int): Taxonomy {
         val folder = folderService.get(id)
         return taxonomyService.get(folder)
     }
 
     @ResponseBody
-    @GetMapping(value = "/api/v1/taxonomy/{id}/_retag")
+    @GetMapping(value = ["/api/v1/taxonomy/{id}/_retag"])
     fun execute(@PathVariable id: Int): Any {
         val tax = taxonomyService.get(id)
         taxonomyService.tagTaxonomyAsync(tax, null, true)
@@ -42,7 +42,7 @@ class TaxonomyController @Autowired constructor(
     }
 
     @ResponseBody
-    @DeleteMapping(value = "/api/v1/taxonomy/{id}")
+    @DeleteMapping(value = ["/api/v1/taxonomy/{id}"])
     fun delete(@PathVariable id: Int): Any {
         val tax = taxonomyService.get(id)
         return HttpUtils.deleted("taxonomy", id, taxonomyService.delete(tax, true))

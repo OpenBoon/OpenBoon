@@ -31,7 +31,7 @@ class FileSystemController @Autowired constructor(
         private val jobService: JobService
 ) {
 
-    @RequestMapping(value = "/api/v1/ofs/_exists", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/api/v1/ofs/_exists"], method = [RequestMethod.POST])
     @Throws(IOException::class)
     fun fileExists(@RequestBody path: Map<String, String>): Any {
         val file = path["path"]
@@ -43,7 +43,7 @@ class FileSystemController @Autowired constructor(
         }
     }
 
-    @RequestMapping(value = "/api/v1/ofs/{type}/**", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = ["/api/v1/ofs/{type}/**"], method =  [RequestMethod.GET])
     @ResponseBody
     @Throws(IOException::class)
     fun getFile(@PathVariable type: String, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<InputStreamResource> {
@@ -54,7 +54,7 @@ class FileSystemController @Autowired constructor(
 
         val apm = AntPathMatcher()
         val id = type + "/" + FileUtils.filename(apm.extractPathWithinPattern(bestMatchPattern, path))
-        val file = objectFileSystem!!.get(id)
+        val file = objectFileSystem.get(id)
 
         return if (!file.exists()) {
             ResponseEntity.notFound().build()
@@ -75,7 +75,7 @@ class FileSystemController @Autowired constructor(
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/api/v1/ofs/{type}", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/api/v1/ofs/{type}"], method = [RequestMethod.POST])
     @Throws(IOException::class)
     fun proxyUpload(@PathVariable type: String, upload: ProxyUpload): Any {
 
@@ -106,19 +106,19 @@ class FileSystemController @Autowired constructor(
         return HttpUtils.status("proxy", "upload", false)
     }
 
-    @RequestMapping(value = "/api/v1/lfs", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/api/v1/lfs"], method = [RequestMethod.POST])
     @Throws(IOException::class)
     fun localFiles(@RequestBody req: LfsRequest): Any {
         return localFileSystem!!.listFiles(req)
     }
 
-    @RequestMapping(value = "/api/v1/lfs/_suggest", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/api/v1/lfs/_suggest"], method = [RequestMethod.POST])
     @Throws(IOException::class)
     fun localFilesSuggest(@RequestBody req: LfsRequest): List<String> {
         return localFileSystem!!.suggest(req)
     }
 
-    @RequestMapping(value = "/api/v1/lfs/_exist", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/api/v1/lfs/_exist"], method = [RequestMethod.POST])
     @Throws(IOException::class)
     fun localFileExists(@RequestBody req: LfsRequest): Any {
         return HttpUtils.exists(req.path, localFileSystem!!.exists(req)!!)

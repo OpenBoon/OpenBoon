@@ -27,11 +27,11 @@ import java.nio.file.Files
 interface AnalyzeService {
 
     @Throws(IOException::class)
-    fun analyze(spec: AnalyzeSpec, file: Array<MultipartFile>?): Any
+    fun analyze(spec: AnalyzeSpec, files: Array<MultipartFile>?): Any
 }
 
 @Component
-open class AnalyzeServiceImpl
+class AnalyzeServiceImpl
     @Autowired constructor (
         private val analystService: AnalystService,
         private val sharedData: SharedData,
@@ -43,7 +43,7 @@ open class AnalyzeServiceImpl
     ): AnalyzeService {
 
     @Throws(IOException::class)
-    override fun analyze(spec: AnalyzeSpec, file: Array<MultipartFile>?): Any {
+    override fun analyze(spec: AnalyzeSpec, files: Array<MultipartFile>?): Any {
 
         val script = ZpsScript()
         script.isInline = true

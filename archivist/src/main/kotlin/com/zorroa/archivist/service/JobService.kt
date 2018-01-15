@@ -56,7 +56,7 @@ interface JobService {
 
     fun createParentDepend(task: TaskId): Boolean
 
-    fun expand(task: Task, expand: ExpandT): List<Task>
+    fun expand(parent: Task, expand: ExpandT): List<Task>
 
     /**
      * Create a new task with a validated TaskSpecV.  The validated spec
@@ -74,7 +74,7 @@ interface JobService {
      * @param script
      * @return
      */
-    fun createTask(script: TaskSpec): Task
+    fun createTask(spec: TaskSpec): Task
 
     /**
      * Get a job by id.
@@ -186,38 +186,38 @@ class JobServiceImpl @Autowired constructor(
 
     /**
      * Launch a validated JobSpec provided by REST endpoint.
-     * @param specv
+     * @param spec
      * @return
      */
-    override fun launch(specv: JobSpecV): Job {
+    override fun launch(spec: JobSpecV): Job {
 
-        if (!JdbcUtils.isValid(specv.script.generate) && !JdbcUtils.isValid(specv.script.over)) {
+        if (!JdbcUtils.isValid(spec.script.generate) && !JdbcUtils.isValid(spec.script.over)) {
             // Add 1 empty frame.
-            specv.script.over = Lists.newArrayList(Document())
+            spec.script.over = Lists.newArrayList(Document())
             //throw new IllegalArgumentException("Script has neither data to iterate over or a generator");
         }
 
-        if (!JdbcUtils.isValid(specv.script.execute)) {
+        if (!JdbcUtils.isValid(spec.script.execute)) {
             //throw new IllegalArgumentException("Script has no execute clause.");
-            specv.script.execute = Lists.newArrayList()
+            spec.script.execute = Lists.newArrayList()
         }
 
-        specv.script.execute = pluginService.getProcessorRefs(specv.script.execute)
-        specv.script.generate = pluginService.getProcessorRefs(specv.script.generate)
+        spec.script.execute = pluginService.getProcessorRefs(spec.script.execute)
+        spec.script.generate = pluginService.getProcessorRefs(spec.script.generate)
 
         val tspec = TaskSpec()
-        tspec.name = specv.name
-        tspec.script = Json.serializeToString(specv.script)
+        tspec.name = spec.name
+        tspec.script = Json.serializeToString(spec.script)
 
-        val spec = JobSpec()
-        spec.name = specv.name
-        spec.type = specv.type
-        spec.args = specv.args
-        spec.env = specv.env
-        spec.args = specv.args
-        spec.tasks = ImmutableList.of(tspec)
+        val jspec = JobSpec()
+        jspec.name = spec.name
+        jspec.type = spec.type
+        jspec.args = spec.args
+        jspec.env = spec.env
+        jspec.args = spec.args
+        jspec.tasks = ImmutableList.of(tspec)
 
-        return launch(spec)
+        return launch(jspec)
     }
 
     /**
@@ -231,6 +231,7 @@ class JobServiceImpl @Autowired constructor(
      */
     override fun launch(spec: JobSpec): Job {
         jobDao.nextId(spec)
+        logger.info("SPECT :{}", spec.type)
         val rootPath = createSharedPaths(spec)
 
         /**
@@ -317,8 +318,8 @@ class JobServiceImpl @Autowired constructor(
                             val refs = pipelineService.validateProcessors(job.type,
                                     exframe.processors)
 
-                            when (job.type) {
-                                PipelineType.Import -> refs.add(pluginService.getProcessorRef(
+                            if (job.type == PipelineType.Import) {
+                                refs.add(pluginService.getProcessorRef(
                                         "com.zorroa.core.collector.IndexDocumentCollector"))
                             }
 
@@ -421,7 +422,6 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun setTaskState(task: TaskId, newState: TaskState, vararg expect: TaskState): Boolean {
-        var expect = expect
         Preconditions.checkNotNull(task.taskId)
         Preconditions.checkNotNull(task.jobId)
         Preconditions.checkNotNull(newState)
@@ -435,10 +435,6 @@ class JobServiceImpl @Autowired constructor(
             return false
         }
 
-        if (expect == null) {
-            expect = arrayOf()
-        }
-
         if (taskDao.setState(task, newState, *expect)) {
             jobDao.updateTaskStateCounts(task, newState, oldState)
             return true
@@ -446,12 +442,12 @@ class JobServiceImpl @Autowired constructor(
         return false
     }
 
-    override fun setHost(script: TaskId, host: String) {
-        taskDao.setHost(script, host)
+    override fun setHost(task: TaskId, host: String) {
+        taskDao.setHost(task, host)
     }
 
-    override fun setTaskQueued(script: TaskId): Boolean {
-        return setTaskState(script, TaskState.Queued, TaskState.Waiting)
+    override fun setTaskQueued(id: TaskId): Boolean {
+        return setTaskState(id, TaskState.Queued, TaskState.Waiting)
     }
 
     override fun setTaskQueued(script: TaskId, host: String): Boolean {

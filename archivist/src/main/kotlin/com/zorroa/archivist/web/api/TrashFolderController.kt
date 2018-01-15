@@ -20,7 +20,7 @@ class TrashFolderController @Autowired constructor(
      *
      * @return
      */
-    @GetMapping(value = "/api/v1/trash")
+    @GetMapping(value = ["/api/v1/trash"])
     fun getAll(): List<TrashedFolder> = folderService.getTrashedFolders()
 
     /**
@@ -28,7 +28,7 @@ class TrashFolderController @Autowired constructor(
      *
      * @return
      */
-    @PostMapping(value = "/api/v1/trash/_restore")
+    @PostMapping(value = ["/api/v1/trash/_restore"])
     fun restore(@RequestBody ids: List<Int>): Any {
         val restoreOps = Lists.newArrayList<TrashedFolderOp>()
         for (id in ids) {
@@ -44,7 +44,7 @@ class TrashFolderController @Autowired constructor(
         return HttpUtils.updated("TrashedFolder", ids, restoreOps.size > 0, restoreOps)
     }
 
-    @DeleteMapping(value = "/api/v1/trash")
+    @DeleteMapping(value = ["/api/v1/trash"])
     fun empty(@RequestBody(required = false) ids: List<Int>?): Any {
         return if (ids == null) {
             val result = folderService.emptyTrash()
@@ -55,7 +55,7 @@ class TrashFolderController @Autowired constructor(
         }
     }
 
-    @GetMapping(value = "/api/v1/trash/_count")
+    @GetMapping(value = ["/api/v1/trash/_count"])
     fun count(): Any {
         return HttpUtils.count(folderService.trashCount())
     }

@@ -28,16 +28,15 @@ interface LocalFileSystem {
 }
 
 @Service
-class LocalFileSystemImpl : LocalFileSystem {
-
-    @Autowired
-    internal lateinit var properties: ApplicationProperties
+class LocalFileSystemImpl @Autowired constructor(
+        private val properties: ApplicationProperties
+): LocalFileSystem {
 
     internal var pathSuggestFilter: MutableList<String> = Lists.newArrayList()
 
     @PostConstruct
     fun init() {
-        val paths = properties!!.getList("archivist.lfs.paths")
+        val paths = properties.getList("archivist.lfs.paths")
         if (paths != null) {
             for (entry in paths) {
                 val path = FileUtils.normalize(entry)
@@ -48,7 +47,7 @@ class LocalFileSystemImpl : LocalFileSystem {
     }
 
     override fun listFiles(req: LfsRequest): Map<String, List<String>> {
-        if (!SecurityUtils.hasPermission(properties!!.getList("archivist.lfs.permissions"))) {
+        if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
             throw MissingElementException("The path does not exist")
         }
         return _listFiles(req)
@@ -89,7 +88,7 @@ class LocalFileSystemImpl : LocalFileSystem {
         }
 
         try {
-            for (f in File(path).listFiles()!!) {
+            for (f in File(path).listFiles()) {
                 if (f.isHidden) {
                     continue
                 }
@@ -134,7 +133,7 @@ class LocalFileSystemImpl : LocalFileSystem {
     }
 
     fun permissionCheck() {
-        if (!SecurityUtils.hasPermission(properties!!.getList("archivist.lfs.permissions"))) {
+        if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
             throw MissingElementException("The path does not exist")
         }
 

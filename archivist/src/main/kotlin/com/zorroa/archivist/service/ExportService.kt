@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
@@ -61,9 +60,7 @@ class ExportServiceImpl @Autowired constructor(
      * A temporary place to stuff parameters detected when the search
      * is generated.
      */
-    private inner class ExportParams {
-
-        internal var search: AssetSearch? = null
+    private inner class ExportParams(var search: AssetSearch) {
 
         internal var pages = false
 
@@ -78,7 +75,7 @@ class ExportServiceImpl @Autowired constructor(
     private fun performExportSearch(search: AssetSearch, exportId: Int): ExportParams {
         search.fields = arrayOf("source")
 
-        val params = ExportParams()
+        val params = ExportParams(AssetSearch())
         val ids = Lists.newArrayListWithCapacity<String>(64)
         for (asset in searchService.scanAndScroll(search,
                 properties.getInt("archivist.export.maxAssetCount"))) {
@@ -163,7 +160,7 @@ class ExportServiceImpl @Autowired constructor(
         val params = performExportSearch(spec.search, job.jobId)
         generate.add(pluginService.getProcessorRef(
                 "com.zorroa.core.generator.AssetSearchGenerator",
-                ImmutableMap.of<String, Any>("search", params.search)))
+                mapOf<String, Any>("search" to params.search)))
 
         /**
          * Add the collector which registers ouputs with the server.

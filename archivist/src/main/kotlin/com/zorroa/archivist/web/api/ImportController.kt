@@ -16,7 +16,7 @@ class ImportController @Autowired constructor(
         private val jobService: JobService
 ){
 
-    @PostMapping(value = "/api/v1/imports/_upload", consumes = ["multipart/form-data"])
+    @PostMapping(value = ["/api/v1/imports/_upload"], consumes = ["multipart/form-data"])
     @ResponseBody
     fun upload(@RequestParam("files") files: Array<MultipartFile>,
                @RequestParam("body") body: String): Any {
@@ -24,13 +24,13 @@ class ImportController @Autowired constructor(
         return importService.create(spec, files)
     }
 
-    @PostMapping(value = "/api/v1/imports")
+    @PostMapping(value = ["/api/v1/imports"])
     @Throws(IOException::class)
     fun create(@RequestBody spec: ImportSpec): Any {
         return importService.create(spec)
     }
 
-    @GetMapping(value = "/api/v1/imports/{id}")
+    @GetMapping(value = ["/api/v1/imports/{id}"])
     @Throws(IOException::class)
     operator fun get(@PathVariable id: Int?): Any {
         return jobService[id!!]

@@ -89,8 +89,9 @@ open class JobDaoImpl : AbstractDao(), JobDao {
 
     override fun create(spec: JobSpec): Job {
         Preconditions.checkNotNull(spec)
-        Preconditions.checkNotNull(spec.name)
-        Preconditions.checkNotNull(spec.type)
+        Preconditions.checkNotNull(spec.name, "The job name cannot be null")
+        Preconditions.checkNotNull(spec.type, "The job type cannot be null")
+
         val time = System.currentTimeMillis()
 
         nextId(spec)

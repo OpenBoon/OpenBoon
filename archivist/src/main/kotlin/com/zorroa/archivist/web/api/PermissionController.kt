@@ -22,19 +22,19 @@ class PermissionController @Autowired constructor(
     /**
      * Return all available permissions.
      */
-    @GetMapping(value = "/api/v1/permissions")
+    @GetMapping(value = ["/api/v1/permissions"])
     fun getAll() : List<Permission> = permissionService.getPermissions()
 
     /**
      * Return all available permissions.
      */
-    @GetMapping(value = "/api/v1/permissions/_names")
+    @GetMapping(value = ["/api/v1/permissions/_names"])
     fun getAllNames() : List<String> = permissionService.getPermissionNames()
 
     /**
      * Get a particular permission record.
      */
-    @RequestMapping(value = "/api/v1/permissions/{id}")
+    @RequestMapping(value = ["/api/v1/permissions/{id}"])
     fun get(@PathVariable id: String): Permission {
         return permissionService.getPermission(id)
     }
@@ -42,7 +42,7 @@ class PermissionController @Autowired constructor(
     /**
      * Return true if permission exits.
      */
-    @RequestMapping(value = "/api/v1/permissions/_exists/{name}")
+    @RequestMapping(value = ["/api/v1/permissions/_exists/{name}"])
     fun exists(@PathVariable name: String): Boolean? {
         return permissionService.permissionExists(name)
     }
@@ -50,7 +50,7 @@ class PermissionController @Autowired constructor(
     /**
      * Create a new permission.
      */
-    @PostMapping(value = "/api/v1/permissions")
+    @PostMapping(value = ["/api/v1/permissions"])
     fun create(@RequestBody builder: PermissionSpec): Permission {
         return permissionService.createPermission(builder)
     }
@@ -58,7 +58,7 @@ class PermissionController @Autowired constructor(
     /**
      * Delete a permission.
      */
-    @DeleteMapping(value = "/api/v1/permissions/{id}")
+    @DeleteMapping(value = ["/api/v1/permissions/{id}"])
     fun delete(@PathVariable id: String): Any {
         val p = permissionService.getPermission(id)
         return HttpUtils.status("permissions", id, "delete", permissionService.deletePermission(p))

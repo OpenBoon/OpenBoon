@@ -22,7 +22,7 @@ interface TrashFolderDao {
 
     fun getAll(userId: Int): List<TrashedFolder>
 
-    fun count(user: Int): Int
+    fun count(userId: Int): Int
 
     /**
      * Return all primary deleted folders for the given parent folder.
@@ -52,7 +52,7 @@ interface TrashFolderDao {
      * @param opid
      * @return
      */
-    fun removeAll(opid: String): List<Int>
+    fun removeAll(opId: String): List<Int>
 
     fun removeAll(ids: List<Int>, user: Int): List<Int>
 
@@ -102,7 +102,7 @@ open class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
         folder
     }
 
-    override fun create(folder: Folder, opid: String, primary: Boolean, order: Int): Int {
+    override fun create(folder: Folder, opId: String, primary: Boolean, order: Int): Int {
         val time = System.currentTimeMillis()
         val user = SecurityUtils.getUser().id
 
@@ -111,7 +111,7 @@ open class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_folder_trash"))
             ps.setInt(1, folder.id)
             ps.setInt(2, folder.parentId!!)
-            ps.setString(3, opid)
+            ps.setString(3, opId)
             ps.setString(4, folder.name)
             ps.setString(5, Json.serializeToString(folder.search, null))
             ps.setString(6, Json.serializeToString(folder.acl, null))
@@ -130,9 +130,9 @@ open class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
         return keyHolder.key.toInt()
     }
 
-    override fun get(id: Int, user: Int): TrashedFolder {
+    override fun get(id: Int, userId: Int): TrashedFolder {
         return jdbc.queryForObject<TrashedFolder>(
-                GET + " WHERE pk_folder_trash=? AND user_deleted=?", MAPPER, id, user)
+                GET + " WHERE pk_folder_trash=? AND user_deleted=?", MAPPER, id, userId)
     }
 
     override fun getAll(userId: Int): List<TrashedFolder> {

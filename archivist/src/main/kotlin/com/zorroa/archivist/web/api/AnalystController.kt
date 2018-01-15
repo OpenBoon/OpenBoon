@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 class AnalystController @Autowired constructor(
         private val analystService: AnalystService
 ) {
-    @GetMapping(value = "/api/v1/analysts")
+    @GetMapping(value = ["/api/v1/analysts"])
     fun getAll(
             @RequestParam(value = "page", required = false) page: Int?,
             @RequestParam(value = "count", required = false) count: Int?): PagedList<Analyst> {

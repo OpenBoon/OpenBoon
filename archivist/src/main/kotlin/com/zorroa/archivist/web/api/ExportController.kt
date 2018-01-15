@@ -27,29 +27,29 @@ class ExportController @Autowired constructor(
         private val logService: EventLogService
 ) {
 
-    @PostMapping(value = "/api/v1/exports")
+    @PostMapping(value = ["/api/v1/exports"])
     fun create(@RequestBody spec: ExportSpec): Any {
         return exportService.create(spec)
     }
 
-    @GetMapping(value = "/api/v1/exports/{id}")
+    @GetMapping(value = ["/api/v1/exports/{id}"])
     operator fun get(@PathVariable id: Int): Any {
         return jobService[id]
     }
 
-    @PostMapping(value = "/api/v1/exports/{id}/_files")
+    @PostMapping(value = ["/api/v1/exports/{id}/_files"])
     fun createExportFile(@PathVariable id: Int, @RequestBody spec: ExportFileSpec): Any {
         val job = jobService[id]
         return exportService.createExportFile(job, spec)
     }
 
-    @GetMapping(value = "/api/v1/exports/{id}/_files")
+    @GetMapping(value = ["/api/v1/exports/{id}/_files"])
     fun getExportFiles(@PathVariable id: Int): Any {
         val job = jobService[id]
         return exportService.getAllExportFiles(job)
     }
 
-    @GetMapping(value = "/api/v1/exports/{id}/_files/{fileId}/_stream")
+    @GetMapping(value = ["/api/v1/exports/{id}/_files/{fileId}/_stream"])
     fun streamExportfile(@PathVariable id: Int, @PathVariable fileId: Long): ResponseEntity<FileSystemResource> {
         val file = exportService.getExportFile(fileId)
         val job = jobService[id]

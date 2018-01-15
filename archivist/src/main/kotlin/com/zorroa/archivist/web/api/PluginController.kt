@@ -21,7 +21,7 @@ class PluginController @Autowired constructor(
 ){
 
     @ResponseBody
-    @RequestMapping(value = "/api/v1/plugins", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = ["/api/v1/plugins"], method = [RequestMethod.POST])
     fun handlePluginUpload(@RequestParam("file") file: MultipartFile): Any {
         if (!file.isEmpty) {
             if (!file.originalFilename.endsWith("-plugin.zip")) {
@@ -39,7 +39,7 @@ class PluginController @Autowired constructor(
         }
     }
 
-    @RequestMapping(value = "/api/v1/processors", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = ["/api/v1/processors"], method = [RequestMethod.GET])
     fun processors(@RequestBody(required = false) filter: ProcessorFilter?): List<Processor> {
         return if (filter == null) {
             pluginService.getAllProcessors()

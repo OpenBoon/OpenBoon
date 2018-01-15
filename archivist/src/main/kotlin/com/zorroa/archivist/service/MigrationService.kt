@@ -295,7 +295,7 @@ class MigrationServiceImpl @Autowired constructor(
             setRefreshInterval(newIndex, "-1")
             try {
                 var scrollResp = client.prepareSearch(oldIndex)
-                        .setSearchType(SearchType.SCAN)
+                        .setSearchType(SearchType.DEFAULT)
                         .setScroll(TimeValue(BULK_TIMEOUT))
                         .addSort("_doc", SortOrder.ASC)
                         .setQuery(QueryBuilders.matchAllQuery())
@@ -346,7 +346,7 @@ class MigrationServiceImpl @Autowired constructor(
          */
         val tt = TransactionTemplate(transactionManager)
         tt.propagationBehavior = Propagation.REQUIRES_NEW.ordinal
-        val updated = tt.execute { transactionStatus ->
+        val updated = tt.execute { _ ->
             val result = migrationDao.setVersion(m, props.getVersion(), props.getPatch())
             result
         }
@@ -449,9 +449,7 @@ class MigrationServiceImpl @Autowired constructor(
                         })
 
                 val reindex = props["reindex"] as Boolean
-                if (reindex != null) {
-                    emp.setReindex(reindex)
-                }
+                emp.setReindex(reindex)
 
                 val patch = props["patch"]
                 if (patch != null) {

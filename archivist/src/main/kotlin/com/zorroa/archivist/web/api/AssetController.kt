@@ -56,17 +56,17 @@ class AssetController @Autowired constructor(
     private lateinit var alias: String
 
     val assetFields: Map<String, Set<String>>
-        @GetMapping(value = "/api/v1/assets/_fields")
+        @GetMapping(value = ["/api/v1/assets/_fields"])
         @Throws(IOException::class)
         get() = searchService.getFields("asset")
 
     val elementFields: Map<String, Set<String>>
-        @GetMapping(value = "/api/v1/elements/_fields")
+        @GetMapping(value = ["/api/v1/elements/_fields"])
         @Throws(IOException::class)
         get() = searchService.getFields("element")
 
     val mapping: Map<String, Any>
-        @GetMapping(value = "/api/v1/assets/_mapping")
+        @GetMapping(value = ["/api/v1/assets/_mapping"])
         @Throws(IOException::class)
         get() = assetService.getMapping()
 
@@ -139,7 +139,7 @@ class AssetController @Autowired constructor(
         return null
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}/_stream")
+    @GetMapping(value = ["/api/v1/assets/{id}/_stream"])
     @Throws(Exception::class)
     fun streamAsset(@RequestParam(defaultValue = "true", required = false) fallback: Boolean,
                     @RequestParam(value = "ext", required = false) ext: String?,
@@ -171,13 +171,13 @@ class AssetController @Autowired constructor(
         }
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}/notes")
+    @GetMapping(value = ["/api/v1/assets/{id}/notes"])
     @Throws(IOException::class)
     fun getNotes(@PathVariable id: String): List<Note> {
         return noteService.getAll(id)
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}")
+    @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}"])
     @Throws(IOException::class)
     fun getClosestProxy(@PathVariable id: String, @PathVariable(required = false) size: String): ResponseEntity<InputStreamResource> {
         try {
@@ -191,7 +191,7 @@ class AssetController @Autowired constructor(
 
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}/proxies/largest")
+    @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
     @Throws(IOException::class)
     fun getLargestProxy(@PathVariable id: String): ResponseEntity<InputStreamResource> {
         try {
@@ -204,7 +204,7 @@ class AssetController @Autowired constructor(
 
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}/proxies/smallest")
+    @GetMapping(value = ["/api/v1/assets/{id}/proxies/smallest"])
     @Throws(IOException::class)
     fun getSmallestProxy(@PathVariable id: String): ResponseEntity<InputStreamResource> {
         try {
@@ -217,7 +217,7 @@ class AssetController @Autowired constructor(
 
     }
 
-    @PostMapping(value = "/api/v2/assets/_search")
+    @PostMapping(value = ["/api/v2/assets/_search"])
     @Throws(IOException::class)
     fun searchV2(@RequestBody search: AssetSearch, httpResponse: HttpServletResponse) {
         httpResponse.contentType = MediaType.APPLICATION_JSON_VALUE
@@ -225,82 +225,82 @@ class AssetController @Autowired constructor(
         HttpUtils.writeElasticResponse(response, httpResponse)
     }
 
-    @PostMapping(value = "/api/v3/assets/_search")
+    @PostMapping(value = ["/api/v3/assets/_search"])
     @Throws(IOException::class)
     fun searchV3(@RequestBody search: AssetSearch): PagedList<Document> {
         return searchService.search(Pager(search.from, search.size, 0), search)
     }
 
-    @PostMapping(value = "/api/v4/assets/_search")
+    @PostMapping(value = ["/api/v4/assets/_search"])
     @Throws(IOException::class)
     fun searchV4(@RequestBody search: AssetSearch, out: ServletOutputStream) {
         searchService.search(Pager(search.from, search.size, 0), search, out)
     }
 
-    @PutMapping(value = "/api/v1/assets/_fields/hide")
+    @PutMapping(value = ["/api/v1/assets/_fields/hide"])
     @Throws(IOException::class)
     fun unhideField(@RequestBody update: HideField): Any {
         return HttpUtils.status("field", "hide",
                 searchService.updateField(update.setHide(true).setManual(true)))
     }
 
-    @DeleteMapping(value = "/api/v1/assets/_fields/hide")
+    @DeleteMapping(value = ["/api/v1/assets/_fields/hide"])
     @Throws(IOException::class)
     fun hideField(@RequestBody update: HideField): Any {
         return HttpUtils.status("field", "unhide",
                 searchService.updateField(update.setHide(false)))
     }
 
-    @PostMapping(value = "/api/v2/assets/_count", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/api/v2/assets/_count"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(IOException::class)
     fun count(@RequestBody search: AssetSearch): Any {
         return HttpUtils.count(searchService.count(search))
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}/_exists")
+    @GetMapping(value = ["/api/v1/assets/{id}/_exists"])
     @Throws(IOException::class)
     fun exists(@PathVariable id: String): Any {
         return HttpUtils.exists(id, assetService.exists(id))
     }
 
-    @PostMapping(value = "/api/v2/assets/_suggest", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/api/v2/assets/_suggest"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(IOException::class)
     fun suggestV2(@RequestBody builder: AssetSuggestBuilder): String {
         val response = searchService.suggest(builder.text)
         return response.toString()
     }
 
-    @PostMapping(value = "/api/v3/assets/_suggest")
+    @PostMapping(value = ["/api/v3/assets/_suggest"])
     @Throws(IOException::class)
     fun suggestV3(@RequestBody suggest: AssetSuggestBuilder): Any {
         return searchService.getSuggestTerms(suggest.text)
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}")
+    @GetMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     operator fun get(@PathVariable id: String, httpResponse: HttpServletResponse) {
         val response = client.prepareGet(alias, "asset", id).get()
         HttpUtils.writeElasticResponse(response, httpResponse)
     }
 
-    @GetMapping(value = "/api/v2/assets/{id}")
+    @GetMapping(value = ["/api/v2/assets/{id}"])
     fun getV2(@PathVariable id: String): Any {
         return assetService.get(id)
     }
 
-    @GetMapping(value = "/api/v1/assets/_path")
+    @GetMapping(value = ["/api/v1/assets/_path"])
     fun getByPath(@RequestBody path: Map<String, String>): Document? {
         return path["path"]?.let { assetService.get(Paths.get(it)) }
     }
 
-    @GetMapping(value = "/api/v1/assets/{id}/_elements")
+    @GetMapping(value = ["/api/v1/assets/{id}/_elements"])
     fun getElements(@PathVariable id: String,
                     @RequestParam(value = "from", required = false) from: Int?,
                     @RequestParam(value = "count", required = false) count: Int?): PagedList<Document> {
         return assetService.getElements(id, Pager(from, count))
     }
 
-    @DeleteMapping(value = "/api/v1/assets/{id}")
+    @DeleteMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun delete(@PathVariable id: String): Any {
         val asset = assetService.get(id)
@@ -312,7 +312,7 @@ class AssetController @Autowired constructor(
         return HttpUtils.deleted("asset", id, result)
     }
 
-    @PutMapping(value = "/api/v1/assets/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping(value = ["/api/v1/assets/{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
         val asset = assetService.get(id)
@@ -324,14 +324,14 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.get(id))
     }
 
-    @DeleteMapping(value = "/api/v1/assets/{id}/_fields")
+    @DeleteMapping(value = ["/api/v1/assets/{id}/_fields"])
     @Throws(IOException::class)
     fun removeFields(@RequestBody fields: MutableSet<String>, @PathVariable id: String): Any {
         assetService.removeFields(id, fields)
         return HttpUtils.updated("asset", id, true, assetService.get(id))
     }
 
-    @RequestMapping(value = "/api/v1/assets/_index", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    @RequestMapping(value = ["/api/v1/assets/_index"], method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     @Throws(IOException::class)
     fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
         return assetService.index(spec)
@@ -344,7 +344,7 @@ class AssetController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::share') || hasAuthority('group::administrator')")
-    @PutMapping(value = "/api/v1/assets/_permissions")
+    @PutMapping(value = ["/api/v1/assets/_permissions"])
     @Throws(Exception::class)
     fun setPermissions(
             @Valid @RequestBody req: SetPermissionsRequest): Command {
@@ -354,7 +354,7 @@ class AssetController @Autowired constructor(
         return commandService.submit(spec)
     }
 
-    @PutMapping(value = "/api/v1/refresh")
+    @PutMapping(value = ["/api/v1/refresh"])
     fun refresh() {
         ElasticClientUtils.refreshIndex(client, 0)
     }

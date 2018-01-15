@@ -24,15 +24,14 @@ class UserController @Autowired constructor(
         private val permissionService: PermissionService
 ) {
 
-    val _api_key: String
-        @RequestMapping(value = "/api/v1/api-key")
-        get() {
-            return try {
-                userService.getHmacKey(SecurityUtils.getUsername())
-            } catch (e: Exception) {
-                ""
-            }
+    @RequestMapping(value = ["/api/v1/api-key"])
+    fun getApiKey(): String {
+        return try {
+            userService.getHmacKey(SecurityUtils.getUsername())
+        } catch (e: Exception) {
+            ""
         }
+    }
 
     @GetMapping("/user")
     fun getMe() : Any {
@@ -40,19 +39,19 @@ class UserController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @RequestMapping(value = "/api/v1/users")
+    @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
 
-    @RequestMapping(value = "/api/v1/who")
+    @RequestMapping(value = ["/api/v1/who"])
     fun getCurrent(): User = userService.get(SecurityUtils.getUser().id)
 
     @Deprecated("")
-    @PostMapping(value = "/api/v1/generate_api_key")
+    @PostMapping(value = ["/api/v1/generate_api_key"])
     fun generate_api_key_V1(): String {
         return userService.generateHmacKey(SecurityUtils.getUsername())
     }
 
-    @PostMapping(value = "/api/v1/api-key")
+    @PostMapping(value = ["/api/v1/api-key"])
     fun generate_api_key(): String {
         return userService.generateHmacKey(SecurityUtils.getUsername())
     }
@@ -62,7 +61,7 @@ class UserController @Autowired constructor(
      *
      * @return
      */
-    @PostMapping(value = "/api/v1/login")
+    @PostMapping(value = ["/api/v1/login"])
     fun login(): User {
         return userService.get(SecurityUtils.getUser().id)
     }
@@ -72,7 +71,7 @@ class UserController @Autowired constructor(
      *
      * @return
      */
-    @PostMapping(value = "/api/v1/logout")
+    @PostMapping(value = ["/api/v1/logout"])
     @Throws(ServletException::class)
     fun logout(req: HttpServletRequest) {
         req.logout()
@@ -84,7 +83,7 @@ class UserController @Autowired constructor(
      * @return
      * @throws ServletException
      */
-    @PostMapping(value = "/api/v1/reset-password")
+    @PostMapping(value = ["/api/v1/reset-password"])
     @Throws(ServletException::class)
     fun resetPasswordAndLogin(): User {
         return userService.get(SecurityUtils.getUser().id)
@@ -94,7 +93,7 @@ class UserController @Autowired constructor(
         var email: String? = null
     }
 
-    @PostMapping(value = "/api/v1/send-password-reset-email")
+    @PostMapping(value = ["/api/v1/send-password-reset-email"])
     @Throws(ServletException::class)
     fun sendPasswordRecoveryEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
         val user = userService.getByEmail(req.email!!)
@@ -102,7 +101,7 @@ class UserController @Autowired constructor(
         return HttpUtils.status("send-password-reset-email", "update", true)
     }
 
-    @PostMapping(value = "/api/v1/send-onboard-email")
+    @PostMapping(value = ["/api/v1/send-onboard-email"])
     @Throws(ServletException::class)
     fun sendOnboardEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
         val user = userService.getByEmail(req.email!!)
@@ -111,7 +110,7 @@ class UserController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @RequestMapping(value = "/api/v1/users", method = arrayOf(RequestMethod.POST))
+    @PostMapping(value = ["/api/v1/users"])
     fun create(@Valid @RequestBody builder: UserSpec, bindingResult: BindingResult): User {
         if (bindingResult.hasErrors()) {
             throw RuntimeException("Failed to add user")
@@ -119,26 +118,26 @@ class UserController @Autowired constructor(
         return userService.create(builder)
     }
 
-    @RequestMapping(value = "/api/v1/users/{id}")
+    @RequestMapping(value = ["/api/v1/users/{id}"])
     operator fun get(@PathVariable id: Int): User {
         validatePermissions(id)
         return userService.get(id)
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @RequestMapping(value = "/api/v1/users/{username}/_exists")
+    @RequestMapping(value = ["/api/v1/users/{username}/_exists"])
     operator fun get(@PathVariable username: String): Map<*, *> {
         return ImmutableMap.of("result", userService.exists(username))
     }
 
-    @PutMapping(value = "/api/v1/users/{id}/_profile")
+    @PutMapping(value = ["/api/v1/users/{id}/_profile"])
     fun updateProfile(@RequestBody form: UserProfileUpdate, @PathVariable id: Int): Any {
         validatePermissions(id)
         val user = userService.get(id)
         return HttpUtils.updated("users", id, userService.update(user, form), userService.get(id))
     }
 
-    @PutMapping(value = "/api/v1/users/{id}/_password")
+    @PutMapping(value = ["/api/v1/users/{id}/_password"])
     fun updatePassword(@RequestBody form: UserPasswordUpdate, @PathVariable id: Int): Any {
         validatePermissions(id)
 
@@ -158,7 +157,7 @@ class UserController @Autowired constructor(
         return HttpUtils.updated("users", id, true, user)
     }
 
-    @PutMapping(value = "/api/v1/users/{id}/_settings")
+    @PutMapping(value = ["/api/v1/users/{id}/_settings"])
     fun updateSettings(@RequestBody settings: UserSettings, @PathVariable id: Int): Any {
         validatePermissions(id)
         val user = userService.get(id)
@@ -166,7 +165,7 @@ class UserController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @DeleteMapping(value = "/api/v1/users/{id}")
+    @DeleteMapping(value = ["/api/v1/users/{id}"])
     fun disable(@PathVariable id: Int): Any {
         val user = userService.get(id)
         if (id == SecurityUtils.getUser().id) {
@@ -181,7 +180,7 @@ class UserController @Autowired constructor(
      * @param id
      * @return
      */
-    @GetMapping(value = "/api/v1/users/{id}/permissions")
+    @GetMapping(value = ["/api/v1/users/{id}/permissions"])
     fun getPermissions(@PathVariable id: Int): List<Permission> {
         validatePermissions(id)
         val user = userService.get(id)
@@ -198,7 +197,7 @@ class UserController @Autowired constructor(
      * @return
      */
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @PutMapping(value = "/api/v1/users/{id}/permissions")
+    @PutMapping(value = ["/api/v1/users/{id}/permissions"])
     fun setPermissions(@RequestBody pids: List<Int>, @PathVariable id: Int): List<Permission> {
         val user = userService.get(id)
         val perms = pids.stream().map { i -> permissionService.getPermission(i) }.collect(Collectors.toList())
@@ -207,7 +206,7 @@ class UserController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @PutMapping(value = "/api/v1/users/{id}/permissions/_add")
+    @PutMapping(value = ["/api/v1/users/{id}/permissions/_add"])
     fun addPermissions(@RequestBody pids: List<String>, @PathVariable id: Int): List<Permission> {
         val user = userService.get(id)
         val resolved = Sets.newHashSetWithExpectedSize<Permission>(pids.size)
@@ -217,7 +216,7 @@ class UserController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @PutMapping(value = "/api/v1/users/{id}/permissions/_remove")
+    @PutMapping(value = ["/api/v1/users/{id}/permissions/_remove"])
     fun removePermissions(@RequestBody pids: List<String>, @PathVariable id: Int): List<Permission> {
         val user = userService.get(id)
         val resolved = Sets.newHashSetWithExpectedSize<Permission>(pids.size)

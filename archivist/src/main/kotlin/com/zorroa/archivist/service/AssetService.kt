@@ -233,7 +233,7 @@ class AssetServiceImpl  @Autowired  constructor (
 
             if (source.links != null) {
                 val links = Json.Mapper.convertValue(
-                        (protectedValues as java.util.Map<String, Any>).getOrDefault("links", ImmutableMap.of<Any, Any>()), LinkSchema::class.java)
+                        protectedValues.getOrDefault("links", mapOf<Any, Any>()), LinkSchema::class.java)
                 for (link in source.links) {
                     links.addLink(link.left, link.right)
                 }

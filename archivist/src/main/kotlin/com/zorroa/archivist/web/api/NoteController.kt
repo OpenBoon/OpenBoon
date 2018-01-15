@@ -14,7 +14,7 @@ class NoteController @Autowired constructor(
     /**
      * Get a particular note.
      */
-    @GetMapping(value = "/api/v1/notes/{id}")
+    @GetMapping(value = ["/api/v1/notes/{id}"])
     fun get(@PathVariable id: String): Note {
         return noteService[id]
     }
@@ -22,7 +22,7 @@ class NoteController @Autowired constructor(
     /**
      * Create a new note.
      */
-    @PostMapping(value = "/api/v1/notes")
+    @PostMapping(value = ["/api/v1/notes"])
     fun create(@RequestBody builder: NoteSpec): Note {
         return noteService.create(builder)
     }

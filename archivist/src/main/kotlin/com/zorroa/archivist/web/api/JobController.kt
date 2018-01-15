@@ -25,21 +25,21 @@ class JobController @Autowired constructor(
         private val jobExecutorService: JobExecutorService
 ) {
 
-    @PutMapping(value = "/api/v1/jobs/{id}/_cancel")
+    @PutMapping(value = ["/api/v1/jobs/{id}/_cancel"])
     @Throws(IOException::class)
     fun cancel(@PathVariable id: Int): Any {
         return HttpUtils.status("job", id, "cancel",
                 jobExecutorService.cancelJob(jobService[id]))
     }
 
-    @PutMapping(value = "/api/v1/jobs/{id}/_restart")
+    @PutMapping(value = ["/api/v1/jobs/{id}/_restart"])
     @Throws(IOException::class)
     fun restart(@PathVariable id: Int): Any {
         return HttpUtils.status("job", id, "restart",
                 jobExecutorService.restartJob(jobService[id]))
     }
 
-    @PutMapping(value = "/api/v1/jobs/{id}/_retryAllFailures")
+    @PutMapping(value = ["/api/v1/jobs/{id}/_retryAllFailures"])
     @Throws(IOException::class)
     fun retryAllFailures(@PathVariable id: Int): Any {
         jobExecutorService.retryAllFailures(jobService[id])
@@ -53,7 +53,7 @@ class JobController @Autowired constructor(
      * @return
      * @throws IOException
      */
-    @PostMapping(value = "/api/v1/jobs/{id}/_append")
+    @PostMapping(value = ["/api/v1/jobs/{id}/_append"])
     @Throws(IOException::class)
     fun continueImport(@RequestBody spec: TaskSpecV): Any {
         val job = jobService[spec.jobId]
@@ -63,13 +63,13 @@ class JobController @Autowired constructor(
         return jobService.continueImportTask(spec)
     }
 
-    @GetMapping(value = "/api/v1/jobs/{id}")
+    @GetMapping(value = ["/api/v1/jobs/{id}"])
     @Throws(IOException::class)
     operator fun get(@PathVariable id: Int): Any {
         return jobService[id]
     }
 
-    @GetMapping(value = "/api/v1/jobs/{id}/tasks")
+    @GetMapping(value = ["/api/v1/jobs/{id}/tasks"])
     @Throws(IOException::class)
     fun getTasks(@PathVariable id: Int,
                  @RequestParam(value = "from", required = false) from: Int?,
@@ -78,7 +78,7 @@ class JobController @Autowired constructor(
     }
 
 
-    @PostMapping(value = "/api/v2/jobs/{id}/tasks")
+    @PostMapping(value = ["/api/v2/jobs/{id}/tasks"])
     @Throws(IOException::class)
     fun getTasksV2(@PathVariable id: Int,
                    @RequestBody filter: TaskFilter,
@@ -87,7 +87,7 @@ class JobController @Autowired constructor(
         return jobService.getAllTasks(id, Pager(from, count), filter)
     }
 
-    @PostMapping(value = "/api/v1/jobs/_search")
+    @PostMapping(value = ["/api/v1/jobs/_search"])
     @Throws(IOException::class)
     fun getAll(@RequestBody(required = false) filter: JobFilter,
                @RequestParam(value = "from", required = false) from: Int?,
@@ -95,7 +95,7 @@ class JobController @Autowired constructor(
         return jobService.getAll(Pager(from, count), filter)
     }
 
-    @PostMapping(value = "/api/v1/jobs")
+    @PostMapping(value = ["/api/v1/jobs"])
     @Throws(IOException::class)
     fun launch(@Valid @RequestBody spec: JobSpecV, valid: BindingResult): Any {
         if (valid.hasErrors()) {

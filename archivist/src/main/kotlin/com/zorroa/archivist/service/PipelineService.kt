@@ -31,7 +31,7 @@ interface PipelineService {
 
     fun getStandard(type: PipelineType): Pipeline
 
-    fun exists(s: String): Boolean
+    fun exists(name: String): Boolean
 
     fun getAll(page: Pager): PagedList<Pipeline>
 
@@ -41,7 +41,7 @@ interface PipelineService {
 
     fun validateProcessors(pipelineType: PipelineType, refs: List<ProcessorRef>): MutableList<ProcessorRef>
 
-    fun mungePipelines(type: PipelineType, custom: List<ProcessorRef>?): MutableList<ProcessorRef>
+    fun mungePipelines(type: PipelineType, procs: List<ProcessorRef>?): MutableList<ProcessorRef>
 
     fun isValidPipelineId(value: Any?): Boolean
 }
@@ -129,7 +129,7 @@ class PipelineServiceImpl @Autowired constructor(
         for (ref in refs) {
             val vref = pluginService.getProcessorRef(ref)
 
-            if (!(PipelineType.ALLOWED_PROCESSOR_TYPES as java.util.Map<PipelineType, Set<ProcessorType>>).getOrDefault(pipelineType, ImmutableSet.of<ProcessorType>()).contains(vref.type)) {
+            if (!(PipelineType.ALLOWED_PROCESSOR_TYPES as MutableMap<PipelineType, Set<ProcessorType>>).getOrDefault(pipelineType, ImmutableSet.of<ProcessorType>()).contains(vref.type)) {
                 throw IllegalStateException("Cannot have processor type " +
                         vref.type + " in a " + pipelineType + " pipeline")
             }

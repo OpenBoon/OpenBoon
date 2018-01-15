@@ -17,25 +17,25 @@ class DyHierarchyController @Autowired constructor(
         val dyHierarchyService: DyHierarchyService
 ){
 
-    @GetMapping(value = "/api/v1/dyhi/_folder/{id}")
+    @GetMapping(value = ["/api/v1/dyhi/_folder/{id}"])
     fun getByFolder(@PathVariable id: Int): DyHierarchy {
         val f = folderService.get(id)
         return dyHierarchyService.get(f)
     }
 
-    @PostMapping(value = "/api/v1/dyhi")
+    @PostMapping(value = ["/api/v1/dyhi"])
     fun create(@RequestBody spec: DyHierarchySpec): DyHierarchy {
         return dyHierarchyService.create(spec)
     }
 
-    @PostMapping(value = "/api/v1/dyhi/{id}")
+    @PostMapping(value = ["/api/v1/dyhi/{id}"])
     fun delete(@PathVariable id: Int): Map<String, Any> {
         val dh = dyHierarchyService.get(id)
         val result = dyHierarchyService.delete(dh)
         return HttpUtils.status("DyHierarchy", id, "delete", result)
     }
 
-    @GetMapping(value = "/api/v1/dyhi/{id}")
+    @GetMapping(value = ["/api/v1/dyhi/{id}"])
     operator fun get(@PathVariable id: Int): DyHierarchy {
         return dyHierarchyService.get(id)
     }

@@ -22,51 +22,51 @@ class PipelineController @Autowired constructor(
         private val pipelineService: PipelineService
 ){
 
-    @PostMapping(value = "/api/v1/pipelines")
+    @PostMapping(value = ["/api/v1/pipelines"])
     fun create(@Valid @RequestBody spec: PipelineSpecV, valid: BindingResult): Pipeline {
         if (valid.hasErrors()) {
             throw InvalidObjectException("Failed to create pipeline", valid)
         }
-        return pipelineService!!.create(spec)
+        return pipelineService.create(spec)
     }
 
-    @GetMapping(value = "/api/v1/pipelines/{id}")
+    @GetMapping(value = ["/api/v1/pipelines/{id}"])
     operator fun get(@PathVariable id: String): Pipeline {
         return if (StringUtils.isNumeric(id)) {
-            pipelineService!!.get(Integer.parseInt(id))
+            pipelineService.get(Integer.parseInt(id))
         } else {
-            pipelineService!!.get(id)
+            pipelineService.get(id)
         }
     }
 
-    @GetMapping(value = "/api/v1/pipelines/{id}/_export", produces = arrayOf("application/octet-stream"))
+    @GetMapping(value = ["/api/v1/pipelines/{id}/_export"], produces = ["application/octet-stream"])
     fun export(@PathVariable id: String, rsp: HttpServletResponse): ByteArray {
 
         val export: Pipeline = if (StringUtils.isNumeric(id)) {
-            pipelineService!!.get(Integer.parseInt(id))
+            pipelineService.get(Integer.parseInt(id))
         } else {
-            pipelineService!!.get(id)
+            pipelineService.get(id)
         }
         export.id = null
         rsp.setHeader("Content-disposition", "attachment; filename=\"" + export.name + ".json\"")
         return Json.prettyString(export).toByteArray()
     }
 
-    @GetMapping(value = "/api/v1/pipelines")
+    @GetMapping(value = ["/api/v1/pipelines"])
     fun getPaged(@RequestParam(value = "page", required = false) page: Int?,
                  @RequestParam(value = "count", required = false) count: Int?): PagedList<Pipeline> {
-        return pipelineService!!.getAll(Pager(page, count))
+        return pipelineService.getAll(Pager(page, count))
     }
 
-    @PutMapping(value = "/api/v1/pipelines/{id}")
-    fun update(@PathVariable id: Int?, @Valid @RequestBody spec: Pipeline, valid: BindingResult): Any {
+    @PutMapping(value = ["/api/v1/pipelines/{id}"])
+    fun update(@PathVariable id: Int, @Valid @RequestBody spec: Pipeline, valid: BindingResult): Any {
         checkValid(valid)
-        return HttpUtils.updated("pipelines", id, pipelineService!!.update(id!!, spec), pipelineService!!.get(id))
+        return HttpUtils.updated("pipelines", id, pipelineService.update(id, spec), pipelineService.get(id))
     }
 
-    @DeleteMapping(value = "/api/v1/pipelines/{id}")
-    fun delete(@PathVariable id: Int?): Any {
-        return HttpUtils.deleted("pipelines", id, pipelineService!!.delete(id!!))
+    @DeleteMapping(value = ["/api/v1/pipelines/{id}"])
+    fun delete(@PathVariable id: Int): Any {
+        return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
     }
 
     companion object {

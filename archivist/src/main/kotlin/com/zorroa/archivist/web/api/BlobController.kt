@@ -14,17 +14,17 @@ class BlobController @Autowired constructor(
         private val blobService: BlobService
 ) {
 
-    @PostMapping(value = "/api/v1/blobs/{app}/{feature}/{name}")
+    @PostMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}"])
     operator fun set(@RequestBody data: Any, @PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Blob {
         return blobService.set(app, feature, name, data)
     }
 
-    @GetMapping(value = "/api/v1/blobs/{app}/{feature}/{name}")
+    @GetMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}"])
     operator fun get(@PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Blob {
         return blobService.get(app, feature, name)
     }
 
-    @DeleteMapping(value = "/api/v1/blobs/{app}/{feature}/{name}")
+    @DeleteMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}"])
     fun delete(@PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Any {
         val blob = blobService.getId(app, feature, name, Access.Write)
         return HttpUtils.deleted("blob", blob.getBlobId(), blobService.delete(blob))
@@ -38,23 +38,23 @@ class BlobController @Autowired constructor(
      * @param name
      * @return
      */
-    @GetMapping(value = "/api/v1/blobs/{app}/{feature}/{name}/_raw")
+    @GetMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}/_raw"])
     fun getRaw(@PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Any? {
         return blobService.get(app, feature, name).getData()
     }
 
-    @GetMapping(value = "/api/v1/blobs/{app}/{feature}")
+    @GetMapping(value = ["/api/v1/blobs/{app}/{feature}"])
     fun getAll(@PathVariable app: String, @PathVariable feature: String): List<Blob> {
         return blobService.getAll(app, feature)
     }
 
-    @PutMapping(value = "/api/v1/blobs/{app}/{feature}/{name}/_permissions")
+    @PutMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}/_permissions"])
     fun setPermissions(@RequestBody req: SetPermissions, @PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Acl {
         val blob = blobService.getId(app, feature, name, Access.Write)
         return blobService.setPermissions(blob, req)
     }
 
-    @GetMapping(value = "/api/v1/blobs/{app}/{feature}/{name}/_permissions")
+    @GetMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}/_permissions"])
     fun getPermisions(@PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Acl {
         val blob = blobService.getId(app, feature, name, Access.Read)
         return blobService.getPermissions(blob)
