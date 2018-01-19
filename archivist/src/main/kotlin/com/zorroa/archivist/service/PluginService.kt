@@ -78,7 +78,7 @@ class PluginServiceImpl @Autowired constructor(
 ) : PluginService {
 
     private val pluginRegistry: PluginRegistry = PluginRegistry(sharedData)
-    private val pluginPath: Path = properties.getPath("archivist.path.plugins")
+    private val pluginPath: Path = sharedData.pluginPath
 
     init {
         logger.info("Loading plugins from: {}", pluginPath)

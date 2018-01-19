@@ -58,15 +58,8 @@ public class ArchivistRepositorySetup implements ApplicationListener<ContextRefr
                 logger.error("Failed to setup datasources, ", e);
                 throw new RuntimeException(e);
             }
-        }
 
-        /**
-         * Register plugins.
-         */
-        pluginService.installAndRegisterAllPlugins();
-
-        // We register these manually in unittests
-        if (!ArchivistConfiguration.Companion.getUnittest()) {
+            pluginService.installAndRegisterAllPlugins();
             pluginService.installBundledPipelines();
         }
     }
