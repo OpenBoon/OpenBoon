@@ -9,7 +9,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="navbar navbar-header">
-                    <a class="navbar-brand" href="/gui/permissions"><i class="fa fa-lock fa-fw fa-lg"/>Permissions</a>
+                    <a class="navbar-brand" href="/admin/gui/permissions"><i class="fa fa-lock fa-fw fa-lg"/>Permissions</a>
                     <p th:if="${permission != null}" class="navbar-text navbar-section" th:text="${permission.name}">...</p>
                 </div>
 
@@ -32,8 +32,8 @@
     <div class="navbar navbar-default navbar-fixed-left">
         <nav class="nav-sidebar">
             <div class="list-group">
-                <a th:href="${'/gui/permissions/' + perm.id}" class="list-group-item">Properties</a>
-                <a th:href="${'/gui/permissions/' + perm.id + '/auto'}" class="list-group-item">Auto Assignment</a>
+                <a th:href="${'/admin/gui/permissions/' + perm.id}" class="list-group-item">Properties</a>
+                <a th:href="${'/admin/gui/permissions/' + perm.id + '/auto'}" class="list-group-item">Auto Assignment</a>
             </div>
         </nav>
     </div>
@@ -51,7 +51,7 @@
                     <h4 class="modal-title">Create Permission</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="createForm" autocomplete="off" action="#" role="form" th:action="@{/gui/permissions}" th:object="${permSpec}" method="post">
+                    <form id="createForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/permissions}" th:object="${permSpec}" method="post">
                         <div class="form-group">
                             <label for="name">Name:</label>
                             <input type="text" th:field="*{name}" class="form-control" id="name" required="true"/>

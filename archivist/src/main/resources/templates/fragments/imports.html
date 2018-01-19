@@ -9,10 +9,10 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="navbar navbar-header">
-                    <a class="navbar-brand" href="/gui/imports"><i class="fa fa-upload fa-fw fa-lg"/>Imports</a>
+                    <a class="navbar-brand" href="/admin/gui/imports"><i class="fa fa-upload fa-fw fa-lg"/>Imports</a>
                     <th:block th:if="${imp != null}">
                         <p class="navbar-section navbar-text">
-                            <a class="navbar-link" th:href="${'/gui/imports/' + imp.id}"
+                            <a class="navbar-link" th:href="${'/admin/gui/imports/' + imp.id}"
                                th:text="${imp.name}"></a>&nbsp;/
                         </p>
                     </th:block>
@@ -49,7 +49,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="server-tab">
-                            <form id="searchImportForm" autocomplete="off" action="#" role="form" th:action="@{/gui/imports/search}" th:object="${searchImportForm}" method="post">
+                            <form id="searchImportForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/imports/search}" th:object="${searchImportForm}" method="post">
                                 <div class="form-group">
                                     <label>Search:</label>
                                     <textarea class="form-control" rows="8" id="search" name="search">
@@ -129,7 +129,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="server-tab">
                         <div class="alert alert-warning" role="alert">The Zorroa servers must have access to all files and directories.</div>
-                        <form id="serverImportForm" autocomplete="off" action="#" role="form" th:action="@{/gui/imports/server}" th:object="${serverImportForm}" method="post">
+                        <form id="serverImportForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/imports/server}" th:object="${serverImportForm}" method="post">
                             <div class="form-group">
                                 <label>Name:</label>
                                 <input name="name" id="name" type="text" class="form-control" value="File system import"/>

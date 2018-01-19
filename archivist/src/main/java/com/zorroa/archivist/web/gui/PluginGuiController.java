@@ -23,14 +23,14 @@ public class PluginGuiController {
     @Autowired
     PluginService pluginService;
 
-    @RequestMapping("/gui/plugins")
+    @RequestMapping("/admin/gui/plugins")
     public String plugins(Model model, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         model.addAttribute("plugins", pluginService.getAllPlugins(new Pager(page)));
         return "plugins";
     }
 
-    @RequestMapping("/gui/plugins/{id}")
+    @RequestMapping("/admin/gui/plugins/{id}")
     public String plugins(Model model, @PathVariable int id) {
         Plugin plugin = pluginService.getPlugin(id);
         standardModel(model);
@@ -39,7 +39,7 @@ public class PluginGuiController {
         return "plugin";
     }
 
-    @RequestMapping("/gui/plugins/{pid}/processors/{id}")
+    @RequestMapping("/admin/gui/plugins/{pid}/processors/{id}")
     public String plugins(Model model, @PathVariable int pid, @PathVariable int id) {
         standardModel(model);
         Plugin plugin = pluginService.getPlugin(pid);
@@ -49,7 +49,7 @@ public class PluginGuiController {
         return "processor";
     }
 
-    @RequestMapping("/gui/docs/processor/{name:.+}")
+    @RequestMapping("/admin/gui/docs/processor/{name:.+}")
     public String processor_docs(Model model, @PathVariable String name) {
         model.addAttribute("processor", pluginService.getProcessor(name));
         return "processor_docs";

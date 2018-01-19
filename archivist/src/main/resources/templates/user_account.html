@@ -17,7 +17,7 @@
                     <h3 class="panel-title">Change Password</h3>
                 </div>
                 <div class="panel-body">
-                <form id="userPasswordForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__/account}" th:object="${userPasswordForm}" method="post">
+                <form id="userPasswordForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/users/__${user.id}__/account}" th:object="${userPasswordForm}" method="post">
 
                     <div class="form-group">
                         <label for="password">Password:</label>
@@ -46,7 +46,7 @@
                         <h3 class="panel-title">Disable User</h3>
                     </div>
                     <div class="panel-body">
-                        <form id="userStateForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__/state}" th:object="${userStateForm}" method="post">
+                        <form id="userStateForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/users/__${user.id}__/state}" th:object="${userStateForm}" method="post">
                             <input type="hidden" name="enabled" value="false"/>
                             <div class="form-group">
                             <span id="helpBlock" class="help-block">
@@ -68,7 +68,7 @@
                         <h3 class="panel-title">Enable User</h3>
                     </div>
                 <div class="panel-body">
-                    <form id="userStateForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users/__${user.id}__/state}" th:object="${userStateForm}" method="post">
+                    <form id="userStateForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/users/__${user.id}__/state}" th:object="${userStateForm}" method="post">
                         <input type="hidden" name="enabled" value="true"/>
                         <div class="form-group">
                              <span id="helpBlock" class="help-block">

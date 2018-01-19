@@ -9,7 +9,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="navbar navbar-header">
-                    <a class="navbar-brand" href="/gui/users"><i class="fa fa-user fa-fw fa-lg"/>Users</a>
+                    <a class="navbar-brand" href="/admin/gui/users"><i class="fa fa-user fa-fw fa-lg"/>Users</a>
                     <p th:if="${user != null}" class="navbar-text navbar-section" th:text="${user.username}">...</p>
                 </div>
 
@@ -38,9 +38,9 @@
     <div class="navbar navbar-default navbar-fixed-left">
         <nav class="nav-sidebar">
             <div class="list-group">
-                <a th:href="${'/gui/users/' + user.id}" class="list-group-item">Profile</a>
-                <a th:href="${'/gui/users/' + user.id + '/account'}" class="list-group-item">Account</a>
-                <a th:href="${'/gui/users/' + user.id + '/permissions'}" class="list-group-item">Permissions</a>
+                <a th:href="${'/admin/gui/users/' + user.id}" class="list-group-item">Profile</a>
+                <a th:href="${'/admin/gui/users/' + user.id + '/account'}" class="list-group-item">Account</a>
+                <a th:href="${'/admin/gui/users/' + user.id + '/permissions'}" class="list-group-item">Permissions</a>
             </div>
         </nav>
     </div>
@@ -56,7 +56,7 @@
                 <h4 class="modal-title">Create User</h4>
             </div>
             <div class="modal-body">
-                <form id="newUserForm" autocomplete="off" action="#" role="form" th:action="@{/gui/users}" th:object="${newUserForm}" method="post">
+                <form id="newUserForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/users}" th:object="${newUserForm}" method="post">
                     <div class="form-group">
                         <label for="username">Username:</label>
                         <input type="text" th:field="*{username}" class="form-control" id="username" required="true" describedby="username-success"/>

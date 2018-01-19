@@ -19,7 +19,7 @@
         </thead>
         <tbody>
         <tr th:each="ingest: ${ingests}" >
-            <td><a th:text="${ingest.name}" th:href="@{/gui/ingests/__${ingest.id}__}"></a></td>
+            <td><a th:text="${ingest.name}" th:href="@{/admin/gui/ingests/__${ingest.id}__}"></a></td>
             <td th:text="${ingest.userCreated}"></td>
             <td th:text="${ingest.schedule.description}"></td>
         </tr>

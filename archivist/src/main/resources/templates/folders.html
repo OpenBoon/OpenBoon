@@ -23,7 +23,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:id="${'row-' + child.id}" class="clickable-row" th:attr="data-href=${'/gui/folders/' + child.id}" th:each="child: ${children}">
+                    <tr th:id="${'row-' + child.id}" class="clickable-row" th:attr="data-href=${'/admin/gui/folders/' + child.id}" th:each="child: ${children}">
                         <td width="1">
                             <i th:if="${child.dyhiRoot == false &amp;&amp; child.dyhiId == null}" class="fa fa-folder fa-fw fa-lg" style="color: #666"/>
                             <i th:if="${child.dyhiRoot == false &amp;&amp; child.dyhiId != null}" class="fa fa-folder fa-fw fa-lg text-danger"/>

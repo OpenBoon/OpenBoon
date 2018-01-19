@@ -11,7 +11,7 @@
     <div th:include="fragments/logs :: menu"/>
     <ul class="nav nav-pills" role="tablist">
         <th:block th:each="action: ${logs.aggregations['all']['actions']['buckets']}">
-            <li role="presentation"><a th:href="${'/gui/logs?query=term:action:'+action.key}"><th:block th:text="${action.key}"/>
+            <li role="presentation"><a th:href="${'/admin/gui/logs?query=term:action:'+action.key}"><th:block th:text="${action.key}"/>
                 <span class="badge" th:text="${action.doc_count}">0</span></a></li>
         </th:block>
     </ul>

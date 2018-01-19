@@ -37,7 +37,7 @@ public class UserGuiController {
     @Autowired
     SearchService searchService;
 
-    @RequestMapping("/gui/users")
+    @RequestMapping("/admin/gui/users")
     public String users(Model model, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         Pager paging = new Pager(page);
@@ -46,21 +46,21 @@ public class UserGuiController {
         return "users";
     }
 
-    @RequestMapping("/gui/users/{id}")
+    @RequestMapping("/admin/gui/users/{id}")
     public String userProfile(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("user", userService.get(id));
         return "user";
     }
 
-    @RequestMapping("/gui/users/{id}/account")
+    @RequestMapping("/admin/gui/users/{id}/account")
     public String userAccount(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("user", userService.get(id));
         return "user_account";
     }
 
-    @RequestMapping("/gui/users/{id}/permissions")
+    @RequestMapping("/admin/gui/users/{id}/permissions")
     public String userPermissions(Model model, @PathVariable int id) {
         User user = userService.get(id);
         standardModel(model);
@@ -71,7 +71,7 @@ public class UserGuiController {
         return "user_permissions";
     }
 
-    @RequestMapping(value="/gui/users/{id}/account", method=RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/users/{id}/account", method=RequestMethod.POST)
     public String updateUserPassword(Model model, @PathVariable int id,
                                      @Valid @ModelAttribute("userPasswordForm") UserPasswordForm form,
                                      BindingResult bindingResult) {
@@ -85,20 +85,20 @@ public class UserGuiController {
         userService.setPassword(user, form.getPassword());
         standardModel(model);
         model.addAttribute("user", user);
-        return "redirect:/gui/users/" + user.getId() + "/account";
+        return "redirect:/admin/gui/users/" + user.getId() + "/account";
     }
 
-    @RequestMapping(value="/gui/users/{id}/state", method=RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/users/{id}/state", method=RequestMethod.POST)
     public String updateUserState(Model model, @PathVariable int id, @ModelAttribute("userStateForm") UserStateForm userStateForm) {
         standardModel(model);
 
         User user = userService.get(id);
         userService.setEnabled(user, userStateForm.isEnabled());
         model.addAttribute("user", user);
-        return "redirect:/gui/users/" + user.getId() + "/account";
+        return "redirect:/admin/gui/users/" + user.getId() + "/account";
     }
 
-    @RequestMapping(value="/gui/users/{id}", method= RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/users/{id}", method= RequestMethod.POST)
     public String updateUserProfile(Model model, @PathVariable int id,
                                     @Valid @ModelAttribute("userProfileForm") UserProfileUpdate form,
                                     BindingResult bindingResult) {
@@ -112,10 +112,10 @@ public class UserGuiController {
         userService.update(userService.get(id), form);
         model.addAttribute("success", true);
         model.addAttribute("user", userService.get(id));
-        return "redirect:/gui/user/" + id;
+        return "redirect:/admin/gui/user/" + id;
     }
 
-    @RequestMapping(value="/gui/users", method=RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/users", method=RequestMethod.POST)
     public String createUser(Model model,
                              @Valid @ModelAttribute("newUserForm") UserSpec newUserForm,
                              BindingResult bindingResult) {
@@ -130,7 +130,7 @@ public class UserGuiController {
         standardModel(model);
         model.addAttribute("allUsers", userService.getAll());
         User user = userService.create(newUserForm);
-        return "redirect:/gui/users/"+ user.getId();
+        return "redirect:/admin/gui/users/"+ user.getId();
     }
 
     /**

@@ -22,7 +22,7 @@ public class ExportGuiController {
     @Autowired
     JobService jobService;
 
-    @RequestMapping("/gui/exports")
+    @RequestMapping("/admin/gui/exports")
     public String getAllImports(Model model, @RequestParam(value="page", required=false) Integer page) {
         Pager paging = new Pager(page);
         model.addAttribute("page", paging);
@@ -31,7 +31,7 @@ public class ExportGuiController {
     }
 
 
-    @RequestMapping("/gui/exports/{id}")
+    @RequestMapping("/admin/gui/exports/{id}")
     public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
         Pager paging = new Pager(page);
         model.addAttribute("page", paging);

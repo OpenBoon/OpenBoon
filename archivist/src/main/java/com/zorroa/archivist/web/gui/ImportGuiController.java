@@ -46,7 +46,7 @@ public class ImportGuiController {
     @Autowired
     PluginService pluginService;
 
-    @RequestMapping("/gui/imports/{id}")
+    @RequestMapping("/admin/gui/imports/{id}")
     public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         Pager paging = new Pager(page);
@@ -59,7 +59,7 @@ public class ImportGuiController {
         return "import";
     }
 
-    @RequestMapping("/gui/imports")
+    @RequestMapping("/admin/gui/imports")
     public String getAllImports(Model model, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         Pager paging = new Pager(page);
@@ -71,7 +71,7 @@ public class ImportGuiController {
         return "imports";
     }
 
-    @RequestMapping(value="/gui/imports/server",  method= RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/imports/server",  method= RequestMethod.POST)
     public String createImport(Model model,
                                @Valid @ModelAttribute("serverImportForm") ServerImportForm serverImportForm, BindingResult bindingResult) {
 
@@ -117,10 +117,10 @@ public class ImportGuiController {
         }
         spec.setGenerators(generators);
         importService.create(spec);
-        return "redirect:/gui/imports";
+        return "redirect:/admin/gui/imports";
     }
 
-    @RequestMapping(value="/gui/imports/search",  method= RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/imports/search",  method= RequestMethod.POST)
     public String createImport(Model model,
                                @Valid @ModelAttribute("searchImportForm") SearchImportForm searchImportForm, BindingResult bindingResult) {
 
@@ -149,7 +149,7 @@ public class ImportGuiController {
         spec.setGenerators(generators);
 
         importService.create(spec);
-        return "redirect:/gui/imports";
+        return "redirect:/admin/gui/imports";
     }
 
     private void standardModel(Model model) {

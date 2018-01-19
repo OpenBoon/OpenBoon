@@ -22,29 +22,29 @@ class OnboardController @Autowired constructor(
 
     @RequestMapping(value = ["/api/v1/onboard/_secure"], method = [RequestMethod.POST])
     fun secure() {
-        if (networkEnvironment!!.location == "on-prem") {
+        if (networkEnvironment.location == "on-prem") {
             val pass = HttpUtils.randomString(12)
-            userDao!!.generateHmacKey("admin")
-            userDao!!.setPassword(userDao!!.get("admin"), pass)
+            userDao.generateHmacKey("admin")
+            userDao.setPassword(userDao.get("admin"), pass)
             sendServerAdminPassChangeEmail(pass)
         }
     }
 
     fun sendServerAdminPassChangeEmail(pass: String) {
         val text = StringBuilder(1024)
-        text.append("Host: " + networkEnvironment!!.publicUri + "\n")
-        text.append("Region: " + networkEnvironment!!.location + "\n")
+        text.append("Host: " + networkEnvironment.publicUri + "\n")
+        text.append("Region: " + networkEnvironment.location + "\n")
         text.append("Admin: " + pass + "\n")
 
         val message = SimpleMailMessage()
         message.from = "Zorroa Server Bot <noreply@zorroa.com>"
         message.replyTo = "Zorroa Server Bot <noreply@zorroa.com>"
         message.setTo("support@zorroa.com")
-        message.subject = "Archivist '" + networkEnvironment!!.publicUri + "' password reset"
+        message.subject = "Archivist '" + networkEnvironment.publicUri + "' password reset"
         message.text = text.toString()
 
         try {
-            mailSender!!.send(message)
+            mailSender.send(message)
         } catch (e: Exception) {
             logger.warn("Failed to send initial startup email, pass is '{}' {}", pass, e)
         }

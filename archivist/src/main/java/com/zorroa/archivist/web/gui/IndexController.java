@@ -82,8 +82,9 @@ public class IndexController {
         return "docs";
     }
 
-    @RequestMapping("/gui")
+    @RequestMapping("/admin/gui")
     public String index(Model model) {
+        logger.info("yay!");
         standardModel(model);
         model.addAttribute("assetCount", searchService.count(new AssetSearch()));
         model.addAttribute("userCount", userService.getCount());
@@ -93,7 +94,7 @@ public class IndexController {
         return "overview";
     }
 
-    @RequestMapping("/gui/permissions")
+    @RequestMapping("/admin/gui/permissions")
     public String permissions(Model model,
                               @RequestParam(value="page", required=false) Integer page,
                               @RequestParam(value="count", required=false) Integer count) {
@@ -106,7 +107,7 @@ public class IndexController {
         return "permissions";
     }
 
-    @RequestMapping(value="/gui/permissions", method=RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/permissions", method=RequestMethod.POST)
     public String permissions(Model model, @ModelAttribute("permSpec") PermissionSpec permSpec,
                               BindingResult bindingResult) {
         standardModel(model);
@@ -116,11 +117,11 @@ public class IndexController {
         }
         else {
             permissionService.createPermission(permSpec);
-            return "redirect:/gui/permissions";
+            return "redirect:/admin/gui/permissions";
         }
     }
 
-    @RequestMapping("/gui/permissions/{id}")
+    @RequestMapping("/admin/gui/permissions/{id}")
     public String getPermission(Model model, @PathVariable int id) {
         standardModel(model);
         model.addAttribute("perm", permissionService.getPermission(id));
@@ -128,7 +129,7 @@ public class IndexController {
         return "permission";
     }
 
-    @RequestMapping("/gui/assets")
+    @RequestMapping("/admin/gui/assets")
     public String assets(Model model,
                          @RequestParam(value="page", required=false) Integer page,
                          @RequestParam(value="count", required=false) Integer count, @RequestParam(value="query", required=false) String query) {
@@ -141,14 +142,14 @@ public class IndexController {
         return "assets";
     }
 
-    @RequestMapping("/gui/fields")
+    @RequestMapping("/admin/gui/fields")
     public String fields(Model model) {
         standardModel(model);
         model.addAttribute("fields", searchService.getFields("asset"));
         return "fields";
     }
 
-    @RequestMapping("/gui/analysts")
+    @RequestMapping("/admin/gui/analysts")
     public String analysts(Model model,
                            @RequestParam(value="page", required=false) Integer page,
                            @RequestParam(value="count", required=false) Integer count) {
@@ -159,7 +160,7 @@ public class IndexController {
         return "analysts";
     }
 
-    @RequestMapping("/gui/pipelines")
+    @RequestMapping("/admin/gui/pipelines")
     public String pipelines(Model model) {
         standardModel(model);
         model.addAttribute("pipelines", pipelineService.getAll());
@@ -168,7 +169,7 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/gui/pipelines/{id}")
+    @RequestMapping("/admin/gui/pipelines/{id}")
     public String getPipeline(Model model, @PathVariable int id) {
         standardModel(model);
 
@@ -183,7 +184,7 @@ public class IndexController {
         return "pipeline";
     }
 
-    @RequestMapping(value="/gui/pipelines", method=RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/pipelines", method=RequestMethod.POST)
     public String createPipeline(Model model,
                                  @Valid @ModelAttribute("pipelineSpec") PipelineSpecV pipelineSpec,
                                  BindingResult bindingResult) {
@@ -193,11 +194,11 @@ public class IndexController {
         }
         else {
             Pipeline p = pipelineService.create(pipelineSpec);
-            return "redirect:/gui/pipelines/" + p.getId();
+            return "redirect:/admin/gui/pipelines/" + p.getId();
         }
     }
 
-    @RequestMapping(value="/gui/pipelines/_import", method=RequestMethod.POST, consumes = "multipart/form-data")
+    @RequestMapping(value="/admin/gui/pipelines/_import", method=RequestMethod.POST, consumes = "multipart/form-data")
     public String uploadPipeline(@RequestParam("jfile") MultipartFile jfile, RedirectAttributes redirectAttributes) throws IOException {
 
         PipelineSpecV spec = Json.Mapper.readValue(jfile.getInputStream(), PipelineSpecV.class);
@@ -216,11 +217,11 @@ public class IndexController {
         Pipeline p = pipelineService.create(spec);
         redirectAttributes.addFlashAttribute("message",
                 "Pipeline imported");
-        return "redirect:/gui/pipelines/" + p.getId();
+        return "redirect:/admin/gui/pipelines/" + p.getId();
     }
 
 
-    @RequestMapping("/gui/status")
+    @RequestMapping("/admin/gui/status")
     public String status(Model model) {
         standardModel(model);
         Health health = healthEndpoint.invoke();
@@ -229,7 +230,7 @@ public class IndexController {
         return "status";
     }
 
-    @RequestMapping("/gui/logs")
+    @RequestMapping("/admin/gui/logs")
     public String events(Model model,
                          @RequestParam(value="query", required=false) String query,
                          @RequestParam(value="page", required=false) Integer page) {

@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr class="clickable-row" th:attr="data-href=${'/gui/plugins/' + plugin.id + '/processors/' + processor.id}" th:each="processor: ${processors}">
+            <tr class="clickable-row" th:attr="data-href=${'/admin/gui/plugins/' + plugin.id + '/processors/' + processor.id}" th:each="processor: ${processors}">
                 <td th:text="${processor.type}"></td>
                 <td th:text="${processor.name}"></td>
                 <td th:text="${processor.filters}"></td>

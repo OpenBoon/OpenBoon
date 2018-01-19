@@ -43,7 +43,9 @@ class UserController @Autowired constructor(
     fun getAll() : List<User> = userService.getAll()
 
     @RequestMapping(value = ["/api/v1/who"])
-    fun getCurrent(): User = userService.get(SecurityUtils.getUser().id)
+    fun getCurrent(): User {
+        return userService.get(SecurityUtils.getUser().id)
+    }
 
     @Deprecated("")
     @PostMapping(value = ["/api/v1/generate_api_key"])
@@ -71,7 +73,7 @@ class UserController @Autowired constructor(
      *
      * @return
      */
-    @PostMapping(value = ["/api/v1/logout"])
+    @RequestMapping(value = ["/api/v1/logout"], method=[RequestMethod.POST, RequestMethod.GET])
     @Throws(ServletException::class)
     fun logout(req: HttpServletRequest) {
         req.logout()

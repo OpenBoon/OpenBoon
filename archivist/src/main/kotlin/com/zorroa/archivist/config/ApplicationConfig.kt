@@ -193,11 +193,12 @@ class ElasticConfig {
                 .put("http.host", "0.0.0.0")
                 .put("http.enabled", false)
 
-        if (properties.getBoolean("archivist.index.console.open")) {
+        if (properties.getBoolean("archivist.debug.mode")) {
+            logger.info("----- ARCHIVIST DEBUG MODE ACTIVATED ----- ")
             builder
                     .put("http.cors.enabled", true)
                     .put("http.cors.allow-origin", "*")
-                    .put("http.enabled", false)
+                    .put("http.enabled", true)
         }
 
         if (properties.getBoolean("archivist.maintenance.backups.enabled")) {
@@ -217,5 +218,11 @@ class ElasticConfig {
         }
         return ElasticClientUtils.initializeClient(builder)
     }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(StaticResourceConfiguration::class.java)
+    }
+
 }
 

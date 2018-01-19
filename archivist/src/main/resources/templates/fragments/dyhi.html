@@ -5,7 +5,7 @@
 <body>
 
 <div th:fragment="create">
-    <form id="dyHiCreateForm" autocomplete="off" action="#" role="form" th:action="@{/gui/dyhi}" th:object="${newDyHiForm}" method="post">
+    <form id="dyHiCreateForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/dyhi}" th:object="${newDyHiForm}" method="post">
         <input type="hidden" name="folderId" id="folderId" th:value="${folder.id}"/>
         <div class="panel-heading-sm">
             <h4> Fields

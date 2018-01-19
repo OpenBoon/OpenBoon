@@ -51,12 +51,12 @@ class SinglePageAppConfig : WebMvcConfigurerAdapter() {
         /**
          * All the file types served by react...not sure we need this.
          */
-        private val handledExtensions = ImmutableSet.of("html", "js", "json", "csv", "css", "png", "svg", "eot", "ttf", "woff", "woff2", "appcache", "jpg", "jpeg", "gif", "ico", "map")
+        private val handledExtensions = setOf("html", "js", "json", "csv", "css", "png", "svg", "eot", "ttf", "woff", "woff2", "appcache", "jpg", "jpeg", "gif", "ico", "map")
 
         /**
          * These are basically endpoints on the server we can't use in react.
          */
-        private val ignoredPaths = ImmutableSet.of("api", "gui", "health", "login", "logout", "docs")
+        private val ignoredPaths = setOf("api", "admin", "health", "login", "logout", "docs")
 
         init {
             index = FileSystemResource(properties.getString("archivist.path.home") + "/web/curator/index.html")
@@ -68,12 +68,11 @@ class SinglePageAppConfig : WebMvcConfigurerAdapter() {
 
         override fun resolveUrlPath(resourcePath: String, locations: List<Resource>, chain: ResourceResolverChain): String? {
             val resolvedResource = resolve(resourcePath, locations) ?: return null
-            try {
-                return resolvedResource.url.toString()
+            return try {
+                resolvedResource.url.toString()
             } catch (e: IOException) {
-                return resolvedResource.filename
+                resolvedResource.filename
             }
-
         }
 
         private fun resolve(requestPath: String, locations: List<Resource>): Resource? {
@@ -90,10 +89,10 @@ class SinglePageAppConfig : WebMvcConfigurerAdapter() {
         }
 
         private fun createRelative(resource: Resource, relativePath: String): Resource? {
-            try {
-                return resource.createRelative(relativePath)
+            return try {
+                resource.createRelative(relativePath)
             } catch (e: IOException) {
-                return null
+                null
             }
 
         }
@@ -107,6 +106,13 @@ class SinglePageAppConfig : WebMvcConfigurerAdapter() {
             return handledExtensions.contains(extension)
         }
     }
+
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(StaticResourceConfiguration::class.java)
+    }
+
 }
 
 @Configuration
@@ -126,21 +132,6 @@ class StaticResourceConfiguration : WebMvcConfigurerAdapter() {
          */
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/public/assets/")
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/public/css/")
-        registry.addResourceHandler("/es/**").addResourceLocations("classpath:/public/es/")
+        registry.addResourceHandler("/admin/es/**").addResourceLocations("classpath:/public/es/")
     }
-
-    @Bean
-    fun h2servletRegistration(): ServletRegistrationBean {
-        val registrationBean = ServletRegistrationBean(WebServlet())
-        registrationBean.addUrlMappings("/console/*")
-        registrationBean.addInitParameter("webAllowOthers",
-                properties.getString("archivist.datasource.primary.console.open", "false"))
-        return registrationBean
-    }
-
-    companion object {
-
-        private val logger = LoggerFactory.getLogger(StaticResourceConfiguration::class.java)
-    }
-
 }

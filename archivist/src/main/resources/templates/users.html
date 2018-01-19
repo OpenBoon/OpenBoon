@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="clickable-row" th:attr="data-href=${'/gui/users/' + user.id}"  th:each="user: ${allUsers}">
+        <tr class="clickable-row" th:attr="data-href=${'/admin/gui/users/' + user.id}"  th:each="user: ${allUsers}">
             <td th:text="${user.username}"/>
             <td>
                 <i th:if="${!user.enabled}" class="fa fa-toggle-off text-danger" aria-hidden="true"> Disabled</i>

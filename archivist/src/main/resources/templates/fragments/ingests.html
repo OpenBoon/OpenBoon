@@ -9,7 +9,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="navbar navbar-header">
-                    <a class="navbar-brand" href="/gui/ingests"><i class="fa fa-archive fa-fw fa-lg"/>Ingest</a>
+                    <a class="navbar-brand" href="/admin/gui/ingests"><i class="fa fa-archive fa-fw fa-lg"/>Ingest</a>
                 </div>
 
                 <div class="navbar-collapse collapse">
@@ -38,7 +38,7 @@
                     <h4 class="modal-title">Create Ingest</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="createIngest" autocomplete="off" action="#" role="form" th:action="@{/gui/ingests}" th:object="${ingestForm}" method="post">
+                    <form id="createIngest" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/ingests}" th:object="${ingestForm}" method="post">
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" th:field="*{name}" class="form-control" id="name" required="true" describedby="name-success"/>

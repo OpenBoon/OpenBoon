@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="clickable-row" th:attr="data-href=${'/gui/filters/' + filter.id}" th:each="filter: ${filters}">
+        <tr class="clickable-row" th:attr="data-href=${'/admin/gui/filters/' + filter.id}" th:each="filter: ${filters}">
             <td th:text="${filter.description}"/>
             <td>
                 <i th:if="${!filter.enabled}" class="fa fa-toggle-off text-danger" aria-hidden="true"> Disabled</i>

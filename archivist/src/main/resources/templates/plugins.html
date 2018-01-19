@@ -21,7 +21,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="clickable-row" th:attr="data-href=${'/gui/plugins/' + plugin.id}"  th:each="plugin: ${plugins.list}">
+        <tr class="clickable-row" th:attr="data-href=${'/admin/gui/plugins/' + plugin.id}"  th:each="plugin: ${plugins.list}">
             <td th:text="${plugin.name}"></td>
             <td th:text="${plugin.version}"></td>
             <td th:text="${plugin.publisher}"></td>

@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="job: ${exports}" th:attr="data-href=${'/gui/exports/' + job.id}">
+            <tr th:each="job: ${exports}" th:attr="data-href=${'/admin/gui/exports/' + job.id}">
                 <td class="vert-align">
                     <div th:include="fragments/job :: state_label"/>
                 </td>

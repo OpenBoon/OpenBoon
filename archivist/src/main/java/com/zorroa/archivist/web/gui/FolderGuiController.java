@@ -31,12 +31,12 @@ public class FolderGuiController {
     @Autowired
     FolderService folderService;
 
-    @RequestMapping("/gui/folders")
+    @RequestMapping("/admin/gui/folders")
     public String folders(Model model) {
-        return "redirect:/gui/folders/"+ Folder.ROOT_ID;
+        return "redirect:/admin/gui/folders/"+ Folder.ROOT_ID;
     }
 
-    @RequestMapping("/gui/folders/{id}")
+    @RequestMapping("/admin/gui/folders/{id}")
     public String folders(Model model, @PathVariable int id) {
         standardModel(model);
         folderModel(model, folderService.get(id));
@@ -48,7 +48,7 @@ public class FolderGuiController {
         return "folders";
     }
 
-    @RequestMapping(value="/gui/folders/{id}", method= RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/folders/{id}", method= RequestMethod.POST)
     public String createFolder(Model model, @PathVariable int id,
                                @Valid @ModelAttribute("folderSpec") FolderSpec folderSpec,
                                BindingResult bindingResult) {
@@ -61,7 +61,7 @@ public class FolderGuiController {
         }
         else {
             folderService.create(folderSpec);
-            return "redirect:/gui/folders/" + id;
+            return "redirect:/admin/gui/folders/" + id;
         }
     }
 

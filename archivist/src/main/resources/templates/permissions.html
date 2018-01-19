@@ -20,7 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="clickable-row" th:attr="data-href=${'/gui/permissions/' + perm.id}" th:each="perm: ${perms}">
+        <tr class="clickable-row" th:attr="data-href=${'/admin/gui/permissions/' + perm.id}" th:each="perm: ${perms}">
             <td th:text="${perm.fullName}"></td>
             <td th:text="${perm.type}"></td>
             <td th:text="${perm.name}"></td>

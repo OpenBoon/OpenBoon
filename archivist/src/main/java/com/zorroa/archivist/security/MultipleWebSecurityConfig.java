@@ -9,10 +9,8 @@ import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
@@ -69,56 +67,77 @@ public class MultipleWebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .addFilterBefore(new HmacSecurityFilter(
-                        properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter.class)
-                .addFilterBefore(new CorsCredentialsFilter(), ChannelProcessingFilter.class)
-                .antMatcher("/api/**")
+                    .antMatcher("/api/**")
+                    .addFilterBefore(new HmacSecurityFilter(
+                            properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter.class)
                     .authorizeRequests()
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
                     .antMatchers("/api/v1/send-onboard-email").permitAll()
                     .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                     .anyRequest().authenticated()
-                .and().headers().frameOptions().disable()
-                .and()
-                .httpBasic()
-                .and()
-                .sessionManagement()
-                .and()
-                .csrf().disable();
+                    .and().headers().frameOptions().disable()
+                    .and()
+                    .httpBasic()
+                    .and()
+                    .sessionManagement()
+                    .and()
+                    .csrf().disable();
+
+            if (properties.getBoolean("archivist.debug.mode")) {
+                http.authorizeRequests()
+                        .requestMatchers(CorsUtils::isCorsRequest).permitAll()
+                .and().addFilterBefore(new CorsCredentialsFilter(), ChannelProcessingFilter.class);
             }
+        }
     }
 
     @Configuration
-    public static class FormSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Order(Ordered.HIGHEST_PRECEDENCE+1)
+    public static class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
+            http.antMatcher("/admin/**")
+                .exceptionHandling()
+                .accessDeniedPage("/signin")
+                .authenticationEntryPoint(
+                        new LoginUrlAuthenticationEntryPoint("/signin"))
+                .and()
                 .authorizeRequests()
-                    .antMatchers("/").authenticated()
-                    .antMatchers("/signin/**").permitAll()
-                    .antMatchers("/signout/**").permitAll()
-                    .antMatchers("/health/**").permitAll()
-                    .antMatchers("/gui/**").hasAuthority("group::administrator")
-                    .antMatchers("/es/**").hasAuthority("group::administrator")
-                    .antMatchers("/console/**").hasAuthority("group::administrator")
-                .and()
-                    .exceptionHandling()
-                    .accessDeniedPage("/signin")
-                    .authenticationEntryPoint(
-                            new LoginUrlAuthenticationEntryPoint("/signin"))
-                .and().headers().frameOptions().disable()
-                .and()
+                    .antMatchers("/admin/**").hasAuthority("group::administrator")
+                    .and()
                     .sessionManagement()
                     .maximumSessions(5)
                     .expiredUrl("/signin")
                     .and()
-                .and()
-                .csrf().disable()
-                .logout().logoutRequestMatcher(
-                new AntPathRequestMatcher("/signout")).logoutSuccessUrl("/signin").permitAll();
+                    // Everything below here necessary for console
+                    .and().headers().frameOptions().disable()
+                    .and()
+                    .csrf().disable();
+        }
+    }
+
+    @Configuration
+    @Order(Ordered.HIGHEST_PRECEDENCE+2)
+    public static class FormSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/")
+                    .exceptionHandling()
+                    .accessDeniedPage("/signin")
+                    .authenticationEntryPoint(
+                            new LoginUrlAuthenticationEntryPoint("/signin"))
+                    .and()
+                    .sessionManagement()
+                    .maximumSessions(5)
+                    .expiredUrl("/signin")
+                    .and()
+                    .and()
+                    .logout().logoutRequestMatcher(
+                        new AntPathRequestMatcher("/signout")).logoutSuccessUrl("/signin");
         }
     }
 
@@ -184,6 +203,11 @@ public class MultipleWebSecurityConfig {
         return new ZorroaAuthenticationProvider();
     }
 
+    /**
+     * Handles python/java client authentication.
+     *
+     * @return
+     */
     @Bean
     public AuthenticationProvider hmacAuthenticationProvider() {
         return new HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"));

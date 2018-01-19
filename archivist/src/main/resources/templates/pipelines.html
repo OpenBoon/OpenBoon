@@ -22,7 +22,7 @@
             </thead>
             <tbody>
             <tr th:each="pipeline: ${pipelines}" >
-                <td><a th:text="${pipeline.name}" th:href="@{/gui/pipelines/__${pipeline.id}__}"></a></td>
+                <td><a th:text="${pipeline.name}" th:href="@{/admin/gui/pipelines/__${pipeline.id}__}"></a></td>
                 <td th:text="${pipeline.description}"></td>
             </tr>
             </tbody>

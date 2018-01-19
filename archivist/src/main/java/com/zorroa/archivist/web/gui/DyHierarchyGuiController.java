@@ -35,7 +35,7 @@ public class DyHierarchyGuiController {
     @Autowired
     DyHierarchyService dyHierarchyService;
 
-    @RequestMapping(value="/gui/dyhi", method=RequestMethod.POST)
+    @RequestMapping(value="/admin/gui/dyhi", method=RequestMethod.POST)
     public String createDyhi(Model model,
                              @Valid @ModelAttribute("newDyHiForm") NewDyHiForm newDyHiForm,
                              BindingResult binding,
@@ -60,7 +60,7 @@ public class DyHierarchyGuiController {
             attr.addFlashAttribute("newDyHiForm", newDyHiForm);
             attr.addFlashAttribute("dyhiError", true);
             logger.warn("Failed to add DyHi: {}" + binding.getAllErrors());
-            return "redirect:/gui/folders/" + folder.getId();
+            return "redirect:/admin/gui/folders/" + folder.getId();
         }
         else {
             /**
@@ -70,7 +70,7 @@ public class DyHierarchyGuiController {
                 DyHierarchy dyhi = dyHierarchyService.get(folder);
                 if (spec.getLevels().isEmpty()) {
                     dyHierarchyService.delete(dyhi);
-                    return "redirect:/gui/folders/" + folder.getParentId();
+                    return "redirect:/admin/gui/folders/" + folder.getParentId();
                 }
                 else {
                     dyHierarchyService.update(dyhi.getId(), dyhi.setLevels(spec.getLevels()));
@@ -84,7 +84,7 @@ public class DyHierarchyGuiController {
                 dyHierarchyService.create(spec);
             }
 
-            return "redirect:/gui/folders/" + folder.getId();
+            return "redirect:/admin/gui/folders/" + folder.getId();
         }
     }
 

@@ -9,7 +9,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="navbar navbar-header">
-                    <a class="navbar-brand" href="/gui/pipelines"><i class="fa fa-cogs fa-fw fa-lg"/>Pipelines</a>
+                    <a class="navbar-brand" href="/admin/gui/pipelines"><i class="fa fa-cogs fa-fw fa-lg"/>Pipelines</a>
                     <p th:if="${pipeline != null}" class="navbar-text navbar-section" th:text="${pipeline.name}">...</p>
                 </div>
 
@@ -47,7 +47,7 @@
                     <h4 class="modal-title">Import Pipeline</h4>
                 </div>
                 <div class="modal-body">
-                    <form enctype="multipart/form-data" id="pipelineImport" autocomplete="off" role="form" action="/gui/pipelines/_import" method="post">
+                    <form enctype="multipart/form-data" id="pipelineImport" autocomplete="off" role="form" action="/admin/gui/pipelines/_import" method="post">
                         <div class="form-group">
                             <label for="jfile">File:</label>
                             <input type="file" class="form-control" name="jfile" id="jfile" required="true"/>
@@ -75,7 +75,7 @@
                     <h4 class="modal-title">Create Pipeline</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="createForm" autocomplete="off" action="#" role="form" th:action="@{/gui/pipelines}" th:object="${pipelineSpec}" method="post">
+                    <form id="createForm" autocomplete="off" action="#" role="form" th:action="@{/admin/gui/pipelines}" th:object="${pipelineSpec}" method="post">
                         <div class="form-group">
                             <label for="name">Name:</label>
                             <input type="text" th:field="*{name}" class="form-control" id="name" required="true"/>
