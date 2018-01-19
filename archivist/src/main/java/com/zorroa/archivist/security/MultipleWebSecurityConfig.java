@@ -190,18 +190,6 @@ public class MultipleWebSecurityConfig {
     }
 
     @Bean
-    @Primary
-    public AuthoritiesExtractor authoritiesExtractor() {
-        return new ZorroaAuthoritiesExtractor();
-    }
-
-    @Bean
-    @Primary
-    public PrincipalExtractor principalExtractor() {
-        return new ZorroaPrincipalExtractor();
-    }
-
-    @Bean
     @Autowired
     public AuthenticationProvider ldapAuthenticationProvider(UserDetailsPopulator populator, UserDetailsPluginWrapper userDetailsPluginWrapper) throws Exception {
         String url = properties.getString("archivist.security.ldap.url");
