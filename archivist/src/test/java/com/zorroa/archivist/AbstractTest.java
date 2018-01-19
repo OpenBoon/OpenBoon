@@ -258,7 +258,6 @@ public abstract class AbstractTest {
     public List<Source> getTestAssets(String subdir) {
         List<Source> result = Lists.newArrayList();
         Path tip = getTestImagePath(subdir);
-        logger.info("{}", tip);
         for (File f: tip.toFile().listFiles()) {
 
             if (f.isFile()) {
