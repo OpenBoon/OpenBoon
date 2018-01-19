@@ -231,7 +231,6 @@ class JobServiceImpl @Autowired constructor(
      */
     override fun launch(spec: JobSpec): Job {
         jobDao.nextId(spec)
-        logger.info("SPECT :{}", spec.type)
         val rootPath = createSharedPaths(spec)
 
         /**
