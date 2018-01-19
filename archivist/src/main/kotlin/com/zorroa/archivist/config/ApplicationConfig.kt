@@ -193,7 +193,7 @@ class ElasticConfig {
                 .put("http.host", "0.0.0.0")
                 .put("http.enabled", false)
 
-        if (properties.getBoolean("archivist.debug.mode")) {
+        if (properties.getBoolean("archivist.debug-mode.enabled")) {
             logger.info("----- ARCHIVIST DEBUG MODE ACTIVATED ----- ")
             builder
                     .put("http.cors.enabled", true)

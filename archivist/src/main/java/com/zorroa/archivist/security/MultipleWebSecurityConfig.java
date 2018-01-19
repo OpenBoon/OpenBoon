@@ -85,7 +85,7 @@ public class MultipleWebSecurityConfig {
                     .and()
                     .csrf().disable();
 
-            if (properties.getBoolean("archivist.debug.mode")) {
+            if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
                         .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                 .and().addFilterBefore(new CorsCredentialsFilter(), ChannelProcessingFilter.class);
