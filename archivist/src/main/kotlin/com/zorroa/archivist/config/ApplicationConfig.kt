@@ -77,13 +77,9 @@ class ArchivistConfiguration {
             try {
                 val props = Properties()
                 props.load(ClassPathResource("version.properties").inputStream)
-                builder.withDetail("version", props.getProperty("build.version"))
-                builder.withDetail("date", props.getProperty("build.date"))
-                builder.withDetail("user", props.getProperty("build.user"))
-                builder.withDetail("commit", props.getProperty("build.id"))
-                builder.withDetail("branch", props.getProperty("build.branch"))
-                builder.withDetail("dirty", props.getProperty("build.dirty"))
-                builder.withDetail("rest-api.version", props.getProperty("rest-api.version"))
+                props.stringPropertyNames().forEach {
+                    builder.withDetail(it, props.getProperty(it))
+                }
             } catch (e: IOException) {
                 logger.warn("Can't find info version properties")
             }
