@@ -83,6 +83,7 @@ class ArchivistConfiguration {
                 builder.withDetail("commit", props.getProperty("build.id"))
                 builder.withDetail("branch", props.getProperty("build.branch"))
                 builder.withDetail("dirty", props.getProperty("build.dirty"))
+                builder.withDetail("rest-api.version", props.getProperty("rest-api.version"))
             } catch (e: IOException) {
                 logger.warn("Can't find info version properties")
             }
