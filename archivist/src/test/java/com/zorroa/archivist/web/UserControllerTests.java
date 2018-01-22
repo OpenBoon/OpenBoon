@@ -124,23 +124,36 @@ public class UserControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testDisable() throws Exception {
+    public void testEnableDisable() throws Exception {
         User user = userService.get("user");
         MockHttpSession session = admin();
-        mvc.perform(delete("/api/v1/users/" + user.getId())
+        mvc.perform(put("/api/v1/users/" + user.getId() + "/_enabled")
                 .session(session)
+                .content(Json.serialize(ImmutableMap.of("state", false)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
         user = userService.get("user");
         assertFalse(user.getEnabled());
+
+        mvc.perform(put("/api/v1/users/" + user.getId() + "/_enabled")
+                .session(session)
+                .content(Json.serialize(ImmutableMap.of("state", true)))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        user = userService.get("user");
+        assertTrue(user.getEnabled());
     }
+
 
     @Test(expected = NestedServletException.class)
     public void testDisableSelf() throws Exception {
         MockHttpSession session = admin();
-        mvc.perform(delete("/api/v1/users/1")
+        mvc.perform(put("/api/v1/users/1/_enabled")
+                .content(Json.serialize(ImmutableMap.of("state", false)))
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();

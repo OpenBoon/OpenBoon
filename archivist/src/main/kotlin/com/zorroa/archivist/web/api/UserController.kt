@@ -167,13 +167,19 @@ class UserController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
-    @DeleteMapping(value = ["/api/v1/users/{id}"])
-    fun disable(@PathVariable id: Int): Any {
+    @PutMapping(value = ["/api/v1/users/{id}/_enabled"])
+    fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: Int): Any {
         val user = userService.get(id)
         if (id == SecurityUtils.getUser().id) {
             throw IllegalArgumentException("You cannot disable yourself")
         }
-        return HttpUtils.status("users", id, "disable", userService.setEnabled(user, false))
+
+        if (settings["state"] == null) {
+            throw IllegalArgumentException("missing 'state' value, must be true or false")
+        }
+
+        return HttpUtils.status("users", id, "enable",
+                userService.setEnabled(user, settings.getValue("state")))
     }
 
     /**
