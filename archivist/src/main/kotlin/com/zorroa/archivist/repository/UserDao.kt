@@ -67,10 +67,12 @@ interface UserDao {
     fun addPermission(user: User, perm: Permission, immutable: Boolean): Boolean
 
     fun removePermission(user: User, perm: Permission): Boolean
+
+    fun incrementLoginCounter(user: User)
 }
 
 @Repository
-open class UserDaoImpl : AbstractDao(), UserDao {
+class UserDaoImpl : AbstractDao(), UserDao {
 
     override fun get(id: Int): User {
         return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?", MAPPER, id)
@@ -183,6 +185,11 @@ open class UserDaoImpl : AbstractDao(), UserDao {
                 update.lastName, user.id) == 1
     }
 
+    override fun incrementLoginCounter(user: User) {
+        jdbc.update("UPDATE users SET int_login_count=int_login_count+1, time_last_login=? WHERE pk_user=?",
+                System.currentTimeMillis(), user.id)
+    }
+
     override fun delete(user: User): Boolean {
         return jdbc.update("DELETE FROM users WHERE pk_user=?", user.id) == 1
     }
@@ -268,10 +275,12 @@ open class UserDaoImpl : AbstractDao(), UserDao {
             user.settings = Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java)
             user.permissionId = rs.getInt("pk_permission")
             user.homeFolderId = rs.getInt("pk_folder")
+            user.timeLastLogin = rs.getLong("time_last_login");
+            user.loginCount = rs.getInt("int_login_count");
             user
         }
 
-        private val GET_ALL = "SELECT * FROM users ORDER BY str_username"
+        private const val GET_ALL = "SELECT * FROM users ORDER BY str_username"
 
         private val INSERT = JdbcUtils.insert("users",
                 "str_username",

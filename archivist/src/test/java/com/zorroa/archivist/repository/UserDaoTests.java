@@ -194,4 +194,13 @@ public class UserDaoTests extends AbstractTest {
         assertFalse(userDao.resetPassword(user,"BAD_TOKEN", "FOO"));
         assertTrue(userDao.resetPassword(user, token, "FOO"));
     }
+
+    @Test
+    public void testIncrementLoginCount() {
+        userDao.incrementLoginCounter(user);
+        User user2 = userDao.get(user.getId());
+        assertTrue(user2.getTimeLastLogin() > 0);
+        assertEquals(1, user2.getLoginCount());
+
+    }
 }

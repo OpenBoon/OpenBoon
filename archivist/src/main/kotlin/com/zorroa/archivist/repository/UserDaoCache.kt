@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
 @Component
-open class UserDaoCache {
+class UserDaoCache {
 
     @Autowired
     internal var userDao: UserDao? = null

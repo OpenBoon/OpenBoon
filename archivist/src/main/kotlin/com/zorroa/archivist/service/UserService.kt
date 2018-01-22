@@ -105,6 +105,7 @@ interface UserService {
 
     fun resetPassword(token: String, password: String): User?
 
+    fun incrementLoginCounter(user: User)
 }
 
 @Service
@@ -285,6 +286,10 @@ class UserServiceImpl @Autowired constructor(
         }
 
         return result
+    }
+
+    override fun incrementLoginCounter(user: User) {
+        return userDao.incrementLoginCounter(user)
     }
 
     override fun getPermissions(user: User): List<Permission> {

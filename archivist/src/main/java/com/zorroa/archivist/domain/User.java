@@ -6,6 +6,8 @@ public class User extends UserBase implements Loggable<Integer>, Serializable {
 
     private Boolean enabled;
     private UserSettings settings;
+    private int loginCount;
+    private long timeLastLogin;
 
     public User() { }
 
@@ -37,6 +39,24 @@ public class User extends UserBase implements Loggable<Integer>, Serializable {
 
     public User setSettings(UserSettings settings) {
         this.settings = settings;
+        return this;
+    }
+
+    public int getLoginCount() {
+        return loginCount;
+    }
+
+    public User setLoginCount(int loginCount) {
+        this.loginCount = loginCount;
+        return this;
+    }
+
+    public long getTimeLastLogin() {
+        return timeLastLogin;
+    }
+
+    public User setTimeLastLogin(long timeLastLogin) {
+        this.timeLastLogin = timeLastLogin;
         return this;
     }
 

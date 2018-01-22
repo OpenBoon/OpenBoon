@@ -25,7 +25,7 @@ class SharedLinkServiceImpl @Autowired constructor(
 
     override fun create(spec: SharedLinkSpec): SharedLink {
         val link = sharedLinkDao.create(spec)
-        val fromUser = SecurityUtils.getUser()
+        val fromUser = userService.get(SecurityUtils.getUser().id);
 
         if (spec.isSendEmail) {
             transactionEventManager.afterCommit(false, {

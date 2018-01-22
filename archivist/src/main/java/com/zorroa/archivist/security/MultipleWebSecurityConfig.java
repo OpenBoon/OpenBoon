@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.LogAction;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.service.EventLogService;
+import com.zorroa.archivist.service.UserService;
 import com.zorroa.common.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,7 +143,7 @@ public class MultipleWebSecurityConfig {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, EventLogService logService) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService, EventLogService logService) throws Exception {
 
         if (properties.getBoolean("archivist.security.ldap.enabled")) {
             auth.authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator, userDetailsPluginWrapper));
@@ -152,7 +153,7 @@ public class MultipleWebSecurityConfig {
         }
         auth
             .authenticationProvider(authenticationProvider())
-            .authenticationEventPublisher(authenticationEventPublisher(logService));
+            .authenticationEventPublisher(authenticationEventPublisher(userService, logService));
 
         /**
          * If its a unit test we add our rubber stamp authenticator.
@@ -164,7 +165,7 @@ public class MultipleWebSecurityConfig {
 
     @Bean
     @Autowired
-    public AuthenticationEventPublisher authenticationEventPublisher(EventLogService logService) {
+    public AuthenticationEventPublisher authenticationEventPublisher(UserService userService, EventLogService logService) {
 
         return new AuthenticationEventPublisher() {
 
@@ -174,9 +175,11 @@ public class MultipleWebSecurityConfig {
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
                 try {
+                    User user = (User)authentication.getPrincipal();
+                    userService.incrementLoginCounter(user);
                     logService.logAsync(new UserLogSpec()
                             .setAction(LogAction.Login)
-                            .setUser((User)authentication.getPrincipal()));
+                            .setUser(user));
                 } catch (Exception e) {
                     // If we throw here, the authentication fails, so if we can't log
                     // it then nobody can login.  Sorry L337 hackers
