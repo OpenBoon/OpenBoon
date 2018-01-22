@@ -3,7 +3,7 @@ package com.zorroa.analyst.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.zorroa.analyst.AbstractTest;
-import com.zorroa.common.cluster.thrift.TaskStartT;
+import com.zorroa.cluster.thrift.TaskStartT;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by chambers on 5/8/17.
  */
-public class ProcessManagerNgTests extends AbstractTest {
+public class ProcessManagerTests extends AbstractTest {
 
     @Autowired
     ProcessManagerService processManager;
