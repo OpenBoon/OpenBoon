@@ -174,12 +174,12 @@ class UserController @Autowired constructor(
             throw IllegalArgumentException("You cannot disable yourself")
         }
 
-        if (settings["state"] == null) {
-            throw IllegalArgumentException("missing 'state' value, must be true or false")
+        if (settings["enabled"] == null) {
+            throw IllegalArgumentException("missing 'enabled' value, must be true or false")
         }
 
         return HttpUtils.status("users", id, "enable",
-                userService.setEnabled(user, settings.getValue("state")))
+                userService.setEnabled(user, settings.getValue("enabled")))
     }
 
     /**

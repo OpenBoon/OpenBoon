@@ -129,7 +129,7 @@ public class UserControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         mvc.perform(put("/api/v1/users/" + user.getId() + "/_enabled")
                 .session(session)
-                .content(Json.serialize(ImmutableMap.of("state", false)))
+                .content(Json.serialize(ImmutableMap.of("enabled", false)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -139,7 +139,7 @@ public class UserControllerTests extends MockMvcTest {
 
         mvc.perform(put("/api/v1/users/" + user.getId() + "/_enabled")
                 .session(session)
-                .content(Json.serialize(ImmutableMap.of("state", true)))
+                .content(Json.serialize(ImmutableMap.of("enabled", true)))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -153,7 +153,7 @@ public class UserControllerTests extends MockMvcTest {
     public void testDisableSelf() throws Exception {
         MockHttpSession session = admin();
         mvc.perform(put("/api/v1/users/1/_enabled")
-                .content(Json.serialize(ImmutableMap.of("state", false)))
+                .content(Json.serialize(ImmutableMap.of("enabled", false)))
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
