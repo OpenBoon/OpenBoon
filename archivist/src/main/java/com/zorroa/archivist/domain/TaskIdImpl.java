@@ -1,6 +1,6 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.common.cluster.thrift.TaskStartT;
+import com.zorroa.cluster.thrift.TaskStartT;
 
 public class TaskIdImpl implements TaskId {
 

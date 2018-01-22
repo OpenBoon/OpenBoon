@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.EventLogDao
 import com.zorroa.archivist.security.SecureSingleThreadExecutor
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.common.cluster.thrift.TaskErrorT
+import com.zorroa.cluster.thrift.TaskErrorT
 import com.zorroa.sdk.domain.PagedList
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

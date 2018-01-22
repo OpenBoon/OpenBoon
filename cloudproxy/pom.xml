@@ -38,12 +38,12 @@
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>sdk</artifactId>
+            <artifactId>cluster</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.zorroa</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>sdk</artifactId>
         </dependency>
 
         <dependency>

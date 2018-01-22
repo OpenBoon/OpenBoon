@@ -5,7 +5,7 @@ import com.google.common.collect.Maps
 import com.zorroa.archivist.domain.EventLogSearch
 import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.UserLogSpec
-import com.zorroa.common.cluster.thrift.TaskErrorT
+import com.zorroa.cluster.thrift.TaskErrorT
 import com.zorroa.common.elastic.AbstractElasticDao
 import com.zorroa.common.elastic.SearchHitRowMapper
 import com.zorroa.sdk.domain.PagedList

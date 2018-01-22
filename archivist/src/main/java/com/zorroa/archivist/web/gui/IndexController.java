@@ -84,7 +84,6 @@ public class IndexController {
 
     @RequestMapping("/admin/gui")
     public String index(Model model) {
-        logger.info("yay!");
         standardModel(model);
         model.addAttribute("assetCount", searchService.count(new AssetSearch()));
         model.addAttribute("userCount", userService.getCount());

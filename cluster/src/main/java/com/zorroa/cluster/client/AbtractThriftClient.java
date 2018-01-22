@@ -1,4 +1,4 @@
-package com.zorroa.common.cluster.client;
+package com.zorroa.cluster.client;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TCompactProtocol;

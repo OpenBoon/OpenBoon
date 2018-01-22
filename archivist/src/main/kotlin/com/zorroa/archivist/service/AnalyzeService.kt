@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.zorroa.archivist.domain.AnalyzeSpec
-import com.zorroa.common.cluster.client.ClusterConnectionException
-import com.zorroa.common.cluster.client.WorkerNodeClient
-import com.zorroa.common.cluster.thrift.TaskErrorT
-import com.zorroa.common.cluster.thrift.TaskStartT
+import com.zorroa.cluster.client.ClusterConnectionException
+import com.zorroa.cluster.client.WorkerNodeClient
+import com.zorroa.cluster.thrift.TaskErrorT
+import com.zorroa.cluster.thrift.TaskStartT
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.filesystem.ObjectFileSystem

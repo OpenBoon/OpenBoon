@@ -1,6 +1,6 @@
-package com.zorroa.common.cluster.client;
+package com.zorroa.cluster.client;
 
-import com.zorroa.common.cluster.thrift.*;
+import com.zorroa.cluster.thrift.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
 

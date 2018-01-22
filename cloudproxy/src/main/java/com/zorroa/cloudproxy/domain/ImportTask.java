@@ -3,15 +3,15 @@ package com.zorroa.cloudproxy.domain;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.zorroa.cluster.zps.MetaZpsExecutor;
+import com.zorroa.cluster.zps.ZpsReactionHandler;
+import com.zorroa.cluster.zps.ZpsTask;
 import com.zorroa.sdk.processor.Expand;
 import com.zorroa.sdk.processor.Reaction;
 import com.zorroa.sdk.processor.SharedData;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.sdk.zps.MetaZpsExecutor;
-import com.zorroa.sdk.zps.ZpsReactionHandler;
 import com.zorroa.sdk.zps.ZpsScript;
-import com.zorroa.sdk.zps.ZpsTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

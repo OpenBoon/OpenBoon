@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Maps
 import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.analyst.isUnitTest
-import com.zorroa.common.cluster.client.MasterServerClient
-import com.zorroa.common.cluster.thrift.AnalystT
+import com.zorroa.cluster.client.MasterServerClient
+import com.zorroa.cluster.thrift.AnalystT
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.sdk.util.Json

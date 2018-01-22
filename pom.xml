@@ -20,6 +20,7 @@
     <modules>
         <module>zorroa-security</module>
         <module>common</module>
+        <module>cluster</module>
         <module>archivist</module>
         <module>analyst</module>
         <module>cloudproxy</module>
@@ -71,6 +72,12 @@
 
             <dependency>
                 <groupId>com.zorroa</groupId>
+                <artifactId>cluster</artifactId>
+                <version>${zorroa-server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zorroa</groupId>
                 <artifactId>sdk</artifactId>
                 <version>${zorroa-server.version}</version>
             </dependency>
@@ -85,6 +92,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.6</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.1.11</version>
             </dependency>
 
             <!-- ALSO CHANGE IN zorroa-plugin-sdk root POM-->

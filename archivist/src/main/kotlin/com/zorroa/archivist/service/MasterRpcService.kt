@@ -3,7 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.TaskStatsAdder
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.common.cluster.thrift.*
+import com.zorroa.cluster.thrift.*
 import com.zorroa.common.domain.AnalystSpec
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.TaskState

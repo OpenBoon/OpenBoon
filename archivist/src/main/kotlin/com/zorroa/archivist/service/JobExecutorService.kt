@@ -10,10 +10,10 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.common.cluster.client.WorkerNodeClient
-import com.zorroa.common.cluster.thrift.TaskKillT
-import com.zorroa.common.cluster.thrift.TaskResultT
-import com.zorroa.common.cluster.thrift.TaskStartT
+import com.zorroa.cluster.client.WorkerNodeClient
+import com.zorroa.cluster.thrift.TaskKillT
+import com.zorroa.cluster.thrift.TaskResultT
+import com.zorroa.cluster.thrift.TaskStartT
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.TaskState

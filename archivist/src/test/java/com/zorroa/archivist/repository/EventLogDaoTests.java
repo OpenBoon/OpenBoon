@@ -6,10 +6,9 @@ import com.zorroa.archivist.domain.EventLogSearch;
 import com.zorroa.archivist.domain.Task;
 import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.service.EventLogService;
-import com.zorroa.common.cluster.thrift.StackElementT;
-import com.zorroa.common.cluster.thrift.TaskErrorT;
+import com.zorroa.cluster.thrift.StackElementT;
+import com.zorroa.cluster.thrift.TaskErrorT;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

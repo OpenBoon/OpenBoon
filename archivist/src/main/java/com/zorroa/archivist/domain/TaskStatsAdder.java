@@ -1,6 +1,6 @@
 package com.zorroa.archivist.domain;
 
-import com.zorroa.common.cluster.thrift.TaskStatsT;
+import com.zorroa.cluster.thrift.TaskStatsT;
 import com.zorroa.sdk.domain.AssetIndexResult;
 
 public class TaskStatsAdder {

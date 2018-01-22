@@ -5,20 +5,24 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Maps
 import com.google.common.util.concurrent.AbstractScheduledService
+import com.spotify.docker.client.DefaultDockerClient
+import com.spotify.docker.client.DockerClient
+import com.spotify.docker.client.messages.ContainerConfig
+import com.spotify.docker.client.messages.HostConfig
 import com.zorroa.analyst.cluster.ClusterProcess
 import com.zorroa.analyst.isUnitTest
-import com.zorroa.common.cluster.client.ClusterConnectionException
-import com.zorroa.common.cluster.client.ClusterException
-import com.zorroa.common.cluster.client.MasterServerClient
-import com.zorroa.common.cluster.thrift.*
+import com.zorroa.cluster.client.ClusterConnectionException
+import com.zorroa.cluster.client.ClusterException
+import com.zorroa.cluster.client.MasterServerClient
+import com.zorroa.cluster.thrift.*
+import com.zorroa.cluster.zps.MetaZpsExecutor
+import com.zorroa.cluster.zps.ZpsTask
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.sdk.processor.Reaction
 import com.zorroa.sdk.processor.SharedData
 import com.zorroa.sdk.util.Json
-import com.zorroa.sdk.zps.MetaZpsExecutor
 import com.zorroa.sdk.zps.ZpsError
-import com.zorroa.sdk.zps.ZpsTask
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -119,7 +123,12 @@ class ProcessManagerServiceImpl @Autowired constructor(
         }
         analyzeExecutor.execute {
             try {
-                runClusterProcess(process)
+                if (properties.getBoolean("analyst.executor.docker.enabled")) {
+                    runDockerClusterProcess(process)
+                }
+                else {
+                    runClusterProcess(process)
+                }
             } catch (e: IOException) {
                 logger.warn("Failed to run cluster process: ", e)
             }
@@ -167,6 +176,119 @@ class ProcessManagerServiceImpl @Autowired constructor(
     override fun killAllTasks() {
 
     }
+
+    @Throws(IOException::class)
+    private fun runDockerClusterProcess(proc: ClusterProcess): TaskResultT? {
+        logger.info("Starting task {}", proc.id)
+
+        val task = proc.task
+        val result = AtomicReference(TaskResultT())
+        var tmpScript: File? = null
+        var exitStatus = -1
+
+        try {
+
+            if (!passesPreflightChecks(proc)) {
+                return null
+            }
+
+            tmpScript = saveTempZpsScript(task)
+            createLogDirectory(task)
+
+            val zpsTask = ZpsTask()
+            zpsTask.id = task.getId()
+            zpsTask.args = Json.deserialize(task.getArgMap(), Json.GENERIC_MAP)
+            zpsTask.env = task.getEnv()
+            zpsTask.logPath = task.getLogPath()
+            zpsTask.workPath = task.getWorkDir()
+            zpsTask.scriptPath = task.getScriptPath()
+
+            if (task.getId() > 0) {
+                proc.client.reportTaskStarted(task.getId())
+            }
+
+            runDocker(zpsTask, task.sharedDir, task.masterHost)
+
+        } finally {
+            if (tmpScript != null) {
+                tmpScript.delete()
+            }
+            // interactive tasks are not in the process map.
+            if (processMap.remove(task.getId()) != null && task.getId() > 0) {
+                val stop = TaskStopT()
+                stop.setExitStatus(exitStatus)
+                proc.client.reportTaskStopped(task.getId(), stop)
+                proc.client.close()
+            }
+        }
+
+        return result.get()
+    }
+
+    private fun runDocker(zpsTask: ZpsTask, sharedDir: String, masterHost : String) {
+        val image = properties.getString("analyst.executor.docker.default-image")
+        val zpsFile = File(zpsTask.scriptPath + "/zpsT" + zpsTask.id + ".json")
+        Json.Mapper.writeValue(zpsFile, zpsTask)
+
+        // Create a client based on DOCKER_HOST and DOCKER_CERT_PATH env vars
+        val docker = DefaultDockerClient("unix:///var/run/docker.sock")
+
+        val env = mutableListOf<String>()
+        for ((k,v) in zpsTask.env) {
+            env.add("$k=$v")
+        }
+
+        val hostConfig =
+                HostConfig.builder()
+                        .appendBinds("$sharedDir:$sharedDir")
+                        .appendBinds(HostConfig.Bind.from("/Volumes")
+                                .to("/Volumes")
+                                .readOnly(true)
+                                .build())
+                        .build()
+
+        val containerConfig = ContainerConfig.builder()
+                .image(image)
+                .hostConfig(hostConfig)
+                .addVolume(sharedDir)
+                .addVolume("/Volumes")
+                .env(env)
+                .cmd("sh", "-c", "while :; do sleep 1; done")
+                .attachStdout(true)
+                .build()
+
+        val creation = docker.createContainer(containerConfig)
+        val id = creation.id()
+        docker.inspectContainer(id)
+
+        // Start container
+        docker.startContainer(id)
+
+        // Exec command inside running container with attached STDOUT and STDERR
+        val command = arrayOf(
+                "java",
+                "-cp", "/opt/zorroa/cluster-0.39.0.jar",
+                "com.zorroa.cluster.tools.ZpsRunKt",
+                "-t", zpsFile.absolutePath,
+                "-s", sharedDir,
+                "-a", masterHost)
+
+        val execCreation = docker.execCreate(
+                id, command, DockerClient.ExecCreateParam.attachStdout(),
+                DockerClient.ExecCreateParam.attachStderr())
+        val output = docker.execStart(execCreation.id())
+        val execOutput = output.readFully()
+        logger.info("OUTPUT: container $id output: $execOutput")
+
+        docker.killContainer(id)
+
+        // Remove container
+        docker.removeContainer(id)
+
+        // Close the docker client
+        docker.close()
+    }
+
 
     @Throws(IOException::class)
     private fun runClusterProcess(proc: ClusterProcess): TaskResultT? {
@@ -329,7 +451,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
     fun syncHostList() {
         if (System.currentTimeMillis() - hostListLoadedTime > 5000) {
             val hosts = properties.getList("analyst.master.host")
-            Collections.shuffle(hosts)
+            hosts.shuffle()
             hostList = ImmutableList.copyOf(hosts)
             hostListLoadedTime = System.currentTimeMillis()
         }

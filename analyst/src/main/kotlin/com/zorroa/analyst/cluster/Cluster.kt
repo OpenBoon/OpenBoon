@@ -1,9 +1,9 @@
 package com.zorroa.analyst.cluster
 
 import com.zorroa.analyst.service.ProcessManagerService
-import com.zorroa.common.cluster.client.MasterServerClient
-import com.zorroa.common.cluster.thrift.*
-import com.zorroa.sdk.zps.MetaZpsExecutor
+import com.zorroa.cluster.client.MasterServerClient
+import com.zorroa.cluster.thrift.*
+import com.zorroa.cluster.zps.MetaZpsExecutor
 import org.apache.thrift.TException
 import org.apache.thrift.protocol.TCompactProtocol
 import org.apache.thrift.server.TServer

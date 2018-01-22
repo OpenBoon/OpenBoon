@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Sets
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.common.cluster.thrift.TaskStartT
+import com.zorroa.cluster.thrift.TaskStartT
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.domain.PagedList

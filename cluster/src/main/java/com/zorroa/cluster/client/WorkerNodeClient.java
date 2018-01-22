@@ -1,9 +1,9 @@
-package com.zorroa.common.cluster.client;
+package com.zorroa.cluster.client;
 
-import com.zorroa.common.cluster.thrift.TaskKillT;
-import com.zorroa.common.cluster.thrift.TaskResultT;
-import com.zorroa.common.cluster.thrift.TaskStartT;
-import com.zorroa.common.cluster.thrift.WorkerNodeService;
+import com.zorroa.cluster.thrift.TaskKillT;
+import com.zorroa.cluster.thrift.TaskResultT;
+import com.zorroa.cluster.thrift.TaskStartT;
+import com.zorroa.cluster.thrift.WorkerNodeService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
 
