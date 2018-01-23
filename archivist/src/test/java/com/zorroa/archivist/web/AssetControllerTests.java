@@ -228,6 +228,7 @@ public class AssetControllerTests extends MockMvcTest {
             AssetUtils.addSuggestKeywords(source, "source", "reflection");
         }
         addTestAssets(sources);
+        refreshIndex();
 
         MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
@@ -235,9 +236,12 @@ public class AssetControllerTests extends MockMvcTest {
                 .content("{ \"text\": \"re\" }".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
-        List<String> keywords = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<String>>() {});
-        assertTrue(keywords.contains("reflection"));
+
+        String json = result.getResponse().getContentAsString();
+        List<String> keywords = Json.Mapper.readValue(json, Json.LIST_OF_STRINGS);
+
+        assertTrue("The list of keywords, '" + json + "' does not contain 'reflection'",
+                keywords.contains("reflection"));
     }
 
     @Test
@@ -249,6 +253,7 @@ public class AssetControllerTests extends MockMvcTest {
             source.setAttr("thing.suggest", "resume");
         }
         addTestAssets(sources);
+        refreshIndex();
 
         MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
@@ -256,10 +261,14 @@ public class AssetControllerTests extends MockMvcTest {
                 .content("{ \"text\": \"re\" }".getBytes()))
                 .andExpect(status().isOk())
                 .andReturn();
-        List<String> keywords = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<String>>() {});
-        assertTrue(keywords.contains("reflection"));
-        assertTrue(keywords.contains("resume"));
+
+        String json = result.getResponse().getContentAsString();
+        List<String> keywords = Json.Mapper.readValue(json,  Json.LIST_OF_STRINGS);
+
+        assertTrue("The list of keywords, '" + json + "' does not contain 'reflection'",
+                keywords.contains("reflection"));
+        assertTrue("The list of keywords, '" + json + "' does not contain 'resume'",
+                keywords.contains("reflection"));
     }
 
     @Test
