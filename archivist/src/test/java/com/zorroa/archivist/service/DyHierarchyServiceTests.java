@@ -11,6 +11,7 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +36,13 @@ public class DyHierarchyServiceTests extends AbstractTest {
     @Autowired
     DyHierarchyService dyhiService;
 
+    String testDataPath;
 
     @Before
     public void init() throws ParseException {
+
+        testDataPath = FileUtils.normalize(resources).toString();
+
         for (File f: getTestImagePath("set01").toFile().listFiles()) {
             if (!f.isFile() || f.isHidden()) {
                 continue;
@@ -95,6 +100,12 @@ public class DyHierarchyServiceTests extends AbstractTest {
 
     @Test
     public void testGenerateAttrWithSlash() {
+        /**
+         * The point of this test is to test generation of a folder
+         * hierarchy where the attributes used to generate the hierarchy
+         * have /'s in the name, which are not allowed in folder names.
+         * For now, we just replace them with underscores.
+         */
         Folder f = folderService.create(new FolderSpec("foo"), false);
         DyHierarchy agg = new DyHierarchy();
         agg.setFolderId(f.getId());
@@ -102,16 +113,16 @@ public class DyHierarchyServiceTests extends AbstractTest {
                 ImmutableList.of(
                         new DyHierarchyLevel("source.directory.raw")));
         int result = dyhiService.generate(agg);
+        assertTrue(result > 0);
 
         for (Folder child: folderService.getChildren(f)) {
-            logger.info("{}", child.getName());
+            logger.info("Generated Folder: {}", child.getName());
         }
 
-        // Video aggs
-        Folder folder1 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_video");
-        Folder folder2 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_office");
-        Folder folder3 = folderService.get("/foo/_Users_chambers_src_zorroa-test-data_images_set01");
-        logger.info("{}", Json.prettyString(folder1.getSearch()));
+        String base = testDataPath.replace('/', '_');
+        Folder folder1 = folderService.get("/foo/" + base + "_video");
+        Folder folder2 = folderService.get("/foo/" + base + "_office");
+        Folder folder3 = folderService.get("/foo/" + base + "_images_set01");
         assertEquals(2, searchService.count(folder1.getSearch()));
     }
 
@@ -128,14 +139,14 @@ public class DyHierarchyServiceTests extends AbstractTest {
         int result = dyhiService.generate(agg);
 
         // Video aggs
-        Folder folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data/video/m4v");
+        Folder folder = folderService.get("/foo/video/" + testDataPath + "/video/m4v");
         assertEquals(1, searchService.count(folder.getSearch()));
         assertEquals(1, folder.getSearch().getFilter().getTerms().get("source.directory").size());
 
-        folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data/video");
+        folder = folderService.get("/foo/video" + testDataPath + "/video");
         assertEquals(1, searchService.count(folder.getSearch()));
 
-        folder = folderService.get("/foo/video/Users/chambers/src/zorroa-test-data");
+        folder = folderService.get("/foo/video" + testDataPath);
         logger.info("{}", Json.serializeToString(folder.getSearch()));
         assertEquals(1, searchService.count(folder.getSearch()));
 
