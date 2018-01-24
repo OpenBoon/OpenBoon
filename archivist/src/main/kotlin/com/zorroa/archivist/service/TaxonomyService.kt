@@ -508,7 +508,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 rsp = client.prepareSearchScroll(rsp.scrollId).setScroll(
                         TimeValue(60000)).execute().actionGet()
 
-            } while (rsp.hits.hits.size != 0)
+            } while (rsp.hits.hits.isNotEmpty())
 
         } catch (e: Exception) {
             logger.warn("Failed to untag taxonomy assets, ", e)
@@ -524,14 +524,13 @@ class TaxonomyServiceImpl @Autowired constructor(
         /**
          * Number of entries to write at one time.
          */
-        private val BULK_SIZE = 100
+        private const val BULK_SIZE = 100
 
         /**
          * Number of assets to pull on each page.
          */
-        private val PAGE_SIZE = 100
+        private const val PAGE_SIZE = 100
 
-
-        private val ROOT_FIELD = "zorroa.taxonomy"
+        private const val ROOT_FIELD = "zorroa.taxonomy"
     }
 }
