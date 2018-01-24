@@ -97,6 +97,9 @@ public abstract class AbstractTest {
     protected ApplicationProperties properties;
 
     @Autowired
+    protected SettingsService settingsService;
+
+    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired

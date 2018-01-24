@@ -469,6 +469,16 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testStaticFields() {
+        settingsService.set("archivist.search.keywords.static.fields", "foo:1,bar:2");
+        searchService.invalidateFields();
+
+        Map<String, Set<String>> fields = searchService.getFieldMap("asset");
+        assertTrue(fields.get("keywords").contains("foo"));
+        assertTrue(fields.get("keywords").contains("bar"));
+    }
+
+    @Test
     public void getFields() {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
@@ -506,7 +516,7 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void getFieldsWithHiddenNameSpae() {
+    public void getFieldsWithHiddenNameSpace() {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));

@@ -7,10 +7,8 @@ import com.zorroa.archivist.domain.Setting;
 import com.zorroa.archivist.domain.SettingsFilter;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -19,27 +17,22 @@ import static org.junit.Assert.*;
  */
 public class SettingsServiceTests extends AbstractTest {
 
-    @Autowired
-    SettingsService settingsService;
-
     @Test
     public void testSetAll() {
         settingsService.setAll(ImmutableMap.of(
-                "archivist.search.keywords.static.fields",
-                ImmutableMap.of("foo.bar", 1.5)));
-        Map<String, Float> fields = searchService.getQueryFields();
-        assertTrue(fields.containsKey("foo.bar"));
-        assertEquals(1.5, fields.get("foo.bar"), 0.1);
+                "archivist.export.dragTemplate",
+                "bar"));
+        assertEquals("bar", settingsService.get("archivist.export.dragTemplate")
+                .getCurrentValue());
+        settingsService.set("archivist.export.dragTemplate", null);
     }
 
     @Test
     public void testSet() {
-        settingsService.set("archivist.search.keywords.static.fields",
-                ImmutableMap.of("foo.bar", 1.5));
-
-        Map<String, Float> fields = searchService.getQueryFields();
-        assertTrue(fields.containsKey("foo.bar"));
-        assertEquals(1.5, fields.get("foo.bar"), 0.1);
+        settingsService.set("archivist.export.dragTemplate", "foo.bar:1.5");
+        assertEquals("foo.bar:1.5",
+                settingsService.get("archivist.export.dragTemplate").getCurrentValue());
+        settingsService.set("archivist.export.dragTemplate", null);
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -48,16 +41,11 @@ public class SettingsServiceTests extends AbstractTest {
     }
 
     @Test(expected=ArchivistWriteException.class)
-    public void testSetIllegalType() {
+    public void testSetRegexFailure() {
+        assertEquals("true",
+                settingsService.get("archivist.search.keywords.auto.enabled").getCurrentValue());
         settingsService.setAll(ImmutableMap.of(
                 "archivist.search.keywords.auto.enabled", "Boing!"));
-    }
-
-    @Test(expected=ArchivistWriteException.class)
-    public void testSetIllegalMapType() {
-        settingsService.setAll(ImmutableMap.of(
-                "archivist.search.keywords.static.fields",
-                "{'foo.bar': 'rabbit'}"));
     }
 
     @Test

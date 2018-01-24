@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.base.Splitter
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
@@ -20,7 +19,6 @@ import com.zorroa.sdk.search.AssetFilter
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.search.RangeQuery
 import com.zorroa.sdk.search.SimilarityFilter
-import com.zorroa.sdk.util.Json
 import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.suggest.SuggestResponse
@@ -96,6 +94,8 @@ interface SearchService {
     fun updateField(value: HideField): Boolean
 
     fun getFields(type: String): Map<String, Set<String>>
+
+    fun getFieldMap(type: String): Map<String, Set<String>>
 
     fun invalidateFields()
 
@@ -688,10 +688,10 @@ class SearchServiceImpl @Autowired constructor(
             }
 
             val args = Maps.newHashMap<String, Any>()
-            args.put("field", field)
-            args.put("hashes", hashes)
-            args.put("weights", weights)
-            args.put("minScore", filter.minScore)
+            args["field"] = field
+            args["hashes"] = hashes
+            args["weights"] = weights
+            args["minScore"] = filter.minScore
 
             val fsqb = QueryBuilders.functionScoreQuery(
                     ScoreFunctionBuilders.scriptFunction(Script(
@@ -704,45 +704,48 @@ class SearchServiceImpl @Autowired constructor(
         }
     }
 
-    private fun getFieldMap(type: String): Map<String, Set<String>> {
+    override fun getFieldMap(type: String): Map<String, Set<String>> {
         val hiddenFields = fieldDao.getHiddenFields()
         val result = mutableMapOf<String, MutableSet<String>>()
-        result.put("string", Sets.newHashSet())
-        result.put("date", Sets.newHashSet())
-        result.put("integer", Sets.newHashSet())
-        result.put("long", Sets.newHashSet())
-        result.put("point", Sets.newHashSet())
-        result.put("keywords-auto", Sets.newHashSet())
-        result.put("keywords", Sets.newHashSet())
+        result["string"] = mutableSetOf()
+        result["date"] = mutableSetOf()
+        result["integer"] = mutableSetOf()
+        result["long"] = mutableSetOf()
+        result["point"] = mutableSetOf()
+        result["keywords-auto"] = mutableSetOf()
+        result["keywords"] = mutableSetOf()
 
         val autoKeywords = properties.getBoolean("archivist.search.keywords.auto.enabled")
-        val autoKeywordFieldNames: MutableSet<String> = mutableSetOf()
-        if (autoKeywords) {
-            autoKeywordFieldNames.addAll(
-                    properties.getList("archivist.search.keywords.auto.fields"))
+        val autoKeywordFields = if (autoKeywords) {
+            properties.getList("archivist.search.keywords.auto.fields").toSet()
+        }
+        else {
+            setOf()
         }
 
-        val fields = properties.getMap(PROP_PREFIX_KEYWORD_FIELD)
-        fields?.forEach { k, v ->
-            result["keywords"]!!.add(
-                    k.replace(PROP_PREFIX_KEYWORD_FIELD, ""))
-        }
+        result.getValue("keywords")
+                .addAll(properties.getString(PROP_STATIC_KEYWORD_FIELD)
+                    .splitToSequence(",")
+                    .filter { it.isNotEmpty() }
+                    .map { it.split(":", limit = 2) }
+                    .map { it[0] }
+                )
 
         val cs = client.admin().cluster()
                 .prepareState()
                 .setIndices(alias)
                 .execute().actionGet().state
 
-        for (index in cs.metaData.concreteAllOpenIndices()) {
-            val imd = cs.metaData.index(index)
-            val mdd = imd.mapping(type)
-            try {
-                getList(result, "", mdd.sourceAsMap, autoKeywordFieldNames, hiddenFields)
-            } catch (e: IOException) {
-                throw ArchivistException(e)
+        cs.metaData.concreteAllOpenIndices()
+            .map { cs.metaData.index(it) }
+            .map { it.mapping(type) }
+            .forEach {
+                try {
+                    getList(result, "", it.sourceAsMap, autoKeywordFields, hiddenFields)
+                } catch (e: IOException) {
+                    throw ArchivistException(e)
+                }
             }
-
-        }
         return result
     }
 
@@ -776,6 +779,9 @@ class SearchServiceImpl @Autowired constructor(
 
     }
 
+    /**
+     * Builds a list of field names, recursively walking each object.
+     */
     private fun getList(result: MutableMap<String, MutableSet<String>>,
                         fieldName: String,
                         mapProperties: Map<String, Any>,
@@ -799,10 +805,9 @@ class SearchServiceImpl @Autowired constructor(
                 var fields: MutableSet<String>? = result[type]
                 if (fields == null) {
                     fields = TreeSet()
-                    result.put(type, fields)
+                    result[type] = fields
                 }
                 val fqfn = arrayOf(fieldName, key).joinToString("")
-
                 if (hiddenFieldNames.contains(fqfn)) {
                     continue
                 }
@@ -814,7 +819,7 @@ class SearchServiceImpl @Autowired constructor(
                  * then it gets added to the keywords-auto list.
                  */
                 if (autoKeywordFieldNames.contains(key.toLowerCase()) || autoKeywordFieldNames.contains(fqfn)) {
-                    result["keywords-auto"]!!.add(fqfn)
+                    result.getValue("keywords-auto").add(fqfn)
                 }
 
 
@@ -826,24 +831,22 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun getQueryFields(): Map<String, Float> {
+        val staticFields = properties.getString(PROP_STATIC_KEYWORD_FIELD)
+        val result = mutableMapOf<String, Float>()
 
-        val autoFields = getFields("asset")["keywords-auto"]
-        val staticFieldsJson = properties.getString(PROP_PREFIX_KEYWORD_FIELD)
+        try {
+            staticFields.splitToSequence(",")
+                    .filter { it.isNotEmpty() }
+                    .map { it.split(":", limit = 2) }
+                    .forEach { result[it[0].trim()] = it[1].toFloat() }
 
-        val builder = ImmutableMap.builder<String, Float>()
-        if (JdbcUtils.isValid(staticFieldsJson)) {
-            try {
-                builder.putAll(Json.deserialize(staticFieldsJson,
-                        object : TypeReference<Map<String, Float>>() {
-
-                        }))
-            } catch (e: Exception) {
-                logger.warn("Failed to parse static field setting: {}", staticFieldsJson)
-            }
-
+        } catch (e: NumberFormatException) {
+            logger.warn("Static keyword map in wrong format, $staticFields")
         }
-        autoFields!!.forEach { v -> builder.put(v, 1.0f) }
-        return builder.build()
+
+        val autoFields = getFields("asset").getValue("keywords-auto")
+        autoFields.forEach { v -> result[v] = 1.0f }
+        return result
     }
 
     private fun initializeDefaultQuerySettings() {
@@ -858,7 +861,7 @@ class SearchServiceImpl @Autowired constructor(
             if (e.size != 2) {
                 logger.warn("Failed to add default sort option: {}, to many values.(should be field:direction)", field)
             }
-            defaultSortFields.put(e[0], SortOrder.valueOf(e[1]))
+            defaultSortFields[e[0]] = SortOrder.valueOf(e[1])
         }
         logger.info("Default sort fields: {}", defaultSortFields)
     }
@@ -885,7 +888,7 @@ class SearchServiceImpl @Autowired constructor(
         /**
          * The properties prefix used to define keywords fields.
          */
-        private val PROP_PREFIX_KEYWORD_FIELD = "archivist.search.keywords.static.fields"
+        private const val PROP_STATIC_KEYWORD_FIELD = "archivist.search.keywords.static.fields"
 
         /**
          * If a field doesn't end with .raw, concat .raw

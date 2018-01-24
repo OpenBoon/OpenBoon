@@ -15,7 +15,6 @@ import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistReadException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.client.exception.MissingElementException
-import com.zorroa.sdk.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -34,9 +33,9 @@ interface SettingsService {
 
     fun getAll(): List<Setting>
 
-    fun setAll(values: Map<String, Any>): Int
+    fun setAll(values: Map<String, String?>): Int
 
-    fun set(key: String, value: Any): Boolean
+    fun set(key: String, value: String?): Boolean
 
     fun getAll(filter: SettingsFilter): List<Setting>
 
@@ -47,6 +46,10 @@ interface SettingsService {
     }
 
 }
+
+class SettingValidator(
+        var regex:Regex?,
+        var allowNull : Boolean = true)
 
 
 @Service
@@ -68,10 +71,6 @@ class SettingsServiceImpl @Autowired constructor(
                 }
             })
 
-
-    class SettingValidator(var type: TypeReference<*>, var json: Boolean)
-
-
     override fun onApplicationEvent(contextRefreshedEvent: ContextRefreshedEvent) {
         /**
          * Restore the runtime settings.
@@ -82,7 +81,7 @@ class SettingsServiceImpl @Autowired constructor(
         }
     }
 
-    override fun setAll(values: Map<String, Any>): Int {
+    override fun setAll(values: Map<String, String?>): Int {
         var result = 0
         for ((key, value) in values) {
 
@@ -129,31 +128,32 @@ class SettingsServiceImpl @Autowired constructor(
 
     }
 
+    fun checkValid(key: String, value: String?) {
+        val validator = WHITELIST[key] ?: throw ArchivistWriteException(
+                "Cannot set key $key remotely")
 
-    fun checkValid(key: String, value: Any?): SettingValidator {
-        for ((key1, value1) in WHITELIST) {
-
-            if (key1 == key) {
-                try {
-                    Json.Mapper.convertValue<Any>(value, value1.type)
-                    return value1
-                } catch (e: Exception) {
-                    throw ArchivistWriteException(
-                            "Invalid value for $key, invalid type.")
-                }
-
+        if (value == null) {
+            if (!validator.allowNull) {
+                throw ArchivistWriteException(
+                        "Invalid value for $key, cannot be null")
             }
         }
-        throw ArchivistWriteException(
-                "Failed to set value for key $key, invalid key.")
+        else {
+            validator.regex?.let {
+                if (!it.matches(value)) {
+                    throw ArchivistWriteException(
+                            "Invalid value for $key, '$value' must match " + it.pattern)
+                }
+            }
+        }
     }
 
-    override fun set(key: String, value: Any): Boolean {
+    override fun set(key: String, value: String?): Boolean {
         return set(key, value, true)
     }
 
-    operator fun set(key: String, value: Any?, invalidate: Boolean): Boolean {
-        val valid = checkValid(key, value)
+    fun set(key: String, value: String?, invalidate: Boolean): Boolean {
+        checkValid(key, value)
 
         logger.info("{} changed to {} by {}", key, value, SecurityUtils.getUsername())
 
@@ -162,14 +162,8 @@ class SettingsServiceImpl @Autowired constructor(
             result = settingsDao.unset(key)
             System.clearProperty(key)
         } else {
-            val strVal: String
-            if (valid.json) {
-                strVal = Json.serializeToString(value)
-            } else {
-                strVal = toString()
-            }
-            result = settingsDao.set(key, strVal)
-            System.setProperty(key, strVal)
+            result = settingsDao.set(key, value)
+            System.setProperty(key, value)
         }
         if (invalidate) {
             settingsCache.invalidateAll()
@@ -219,8 +213,7 @@ class SettingsServiceImpl @Autowired constructor(
 
                             }
 
-                            val currentValue: String
-                            currentValue = if ("<HIDDEN>" == value) {
+                            val currentValue: String = if ("<HIDDEN>" == value) {
                                 "<HIDDEN>"
                             } else {
                                 properties.getString(property)
@@ -256,29 +249,17 @@ class SettingsServiceImpl @Autowired constructor(
          */
         private val WHITELIST = ImmutableMap.builder<String, SettingValidator>()
                 .put("archivist.search.keywords.static.fields",
-                        SettingValidator(object : TypeReference<Map<String, Double>>() {
-
-                        }, true))
+                        SettingValidator(Regex("([\\w\\.]+:[\\d\\.]+)(,[\\w\\.]+:[\\d\\.]+)*")))
                 .put("archivist.search.keywords.auto.fields",
-                        SettingValidator(object : TypeReference<String>() {
-
-                        }, false))
+                        SettingValidator(Regex("([\\w\\.]+)(,[\\w\\.]+)*")))
                 .put("archivist.search.keywords.auto.enabled",
-                        SettingValidator(object : TypeReference<Boolean>() {
-
-                        }, false))
+                        SettingValidator(Regex("true|false")))
                 .put("archivist.export.dragTemplate",
-                        SettingValidator(object : TypeReference<String>() {
-
-                        }, false))
+                        SettingValidator(null))
                 .put("archivist.export.videoStreamExtensionFallbackOrder",
-                        SettingValidator(object : TypeReference<String>() {
-
-                        }, false))
+                        SettingValidator(null))
                 .put("archivist.search.sortFields",
-                        SettingValidator(object : TypeReference<String>() {
-
-                        }, false))
+                        SettingValidator(Regex("([_\\w\\.]+:(ASC|DESC))(,[\\w\\.]+:(ASC|DESC))*")))
                 .build()
     }
 

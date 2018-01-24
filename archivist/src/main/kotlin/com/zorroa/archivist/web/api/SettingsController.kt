@@ -30,7 +30,7 @@ class SettingsController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
     @PutMapping(value = "/api/v1/settings")
-    fun set(@RequestBody settings: Map<String, Any>): Any {
+    fun set(@RequestBody settings: Map<String, String>): Any {
         val count = settingsService.setAll(settings)
         return HttpUtils.status("settings", "update", count == settings.size)
     }

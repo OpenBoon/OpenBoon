@@ -59,7 +59,7 @@ public class SettingsControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
 
         Map<String,String> settings = ImmutableMap.of(
-                "archivist.search.keywords.auto.enabled", "false");
+                "archivist.export.dragTemplate", "bob");
 
         MvcResult result = mvc.perform(put("/api/v1/settings/")
                 .session(session)
