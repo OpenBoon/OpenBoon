@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.google.common.base.Splitter
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.collect.*
@@ -21,6 +20,7 @@ import com.zorroa.sdk.search.RangeQuery
 import com.zorroa.sdk.search.SimilarityFilter
 import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.suggest.SuggestResponse
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.unit.TimeValue
@@ -46,7 +46,6 @@ import java.io.OutputStream
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
-import javax.annotation.PostConstruct
 
 interface SearchService {
 
@@ -89,8 +88,6 @@ interface SearchService {
 
     fun buildSearch(search: AssetSearch, type: String): SearchRequestBuilder
 
-    fun getQuery(search: AssetSearch): QueryBuilder
-
     fun updateField(value: HideField): Boolean
 
     fun getFields(type: String): Map<String, Set<String>>
@@ -99,8 +96,15 @@ interface SearchService {
 
     fun invalidateFields()
 
+    fun getQuery(search: AssetSearch): QueryBuilder
+
     fun analyzeQuery(search: AssetSearch): List<String>
 }
+
+class SearchContext(val linkedFolders: MutableSet<Int>,
+                    val perms: Boolean,
+                    val postFilter: Boolean,
+                    var score: Boolean=false)
 
 @Service
 class SearchServiceImpl @Autowired constructor(
@@ -119,8 +123,6 @@ class SearchServiceImpl @Autowired constructor(
     @Value("\${zorroa.cluster.index.alias}")
     private lateinit var alias: String
 
-    private var defaultSortFields: MutableMap<String, SortOrder> = Maps.newLinkedHashMap()
-
     private val fieldMapCache = CacheBuilder.newBuilder()
             .maximumSize(2)
             .initialCapacity(3)
@@ -132,11 +134,6 @@ class SearchServiceImpl @Autowired constructor(
                     return getFieldMap(key)
                 }
             })
-
-    @PostConstruct
-    fun init() {
-        initializeDefaultQuerySettings()
-    }
 
     override fun search(search: AssetSearch): SearchResponse {
         return buildSearch(search, "asset")
@@ -330,9 +327,11 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     override fun buildSearch(search: AssetSearch, type: String): SearchRequestBuilder {
-
         val request = client.prepareSearch(alias)
                 .setTypes(type)
+                // This search type provides stable sorting but seems to ignore
+                // the result si
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setPreference(SecurityUtils.getUsername())
                 .setQuery(getQuery(search))
 
@@ -342,11 +341,12 @@ class SearchServiceImpl @Autowired constructor(
 
         if (search.postFilter != null) {
             val query = QueryBuilders.boolQuery()
-            applyFilterToQuery(search.postFilter, query, Sets.newHashSet())
+            applyFilterToQuery(search.postFilter, query, mutableSetOf())
             request.setPostFilter(query)
         }
 
         if (search.scroll != null) {
+            request.setSearchType(SearchType.QUERY_THEN_FETCH)
             if (search.scroll.timeout != null) {
                 request.setScroll(search.scroll.timeout)
             }
@@ -364,17 +364,16 @@ class SearchServiceImpl @Autowired constructor(
                 for (searchOrder in search.order) {
                     val sortOrder = if (searchOrder.ascending) SortOrder.ASC else SortOrder.DESC
                     // Make sure to use .raw for strings
-                    if (!searchOrder.field.endsWith(".raw") && fields["string"]!!.contains(searchOrder.field)) {
+                    if (!searchOrder.field.endsWith(".raw") &&
+                            fields.getValue("string").contains(searchOrder.field)) {
                         searchOrder.field = searchOrder.field + ".raw"
                     }
                     request.addSort(searchOrder.field, sortOrder)
                 }
             } else {
-                // The default sort is always by score, so people can't
-                // screw it up too badly.
                 request.addSort(SortParseElement.SCORE_FIELD_NAME, SortOrder.DESC)
-                for ((key, value) in defaultSortFields) {
-                    request.addSort(key, value)
+                getDefaultSort().forEach { t, u ->
+                    request.addSort(t, u)
                 }
             }
         }
@@ -385,9 +384,9 @@ class SearchServiceImpl @Autowired constructor(
         if (search.aggs == null) {
             return null
         }
-        val result = Maps.newHashMap<String, Any>()
+        val result = mutableMapOf<String, Any>()
         for ((key, value) in search.aggs) {
-            result.put(key, value)
+            result[key] = value
         }
 
         return result
@@ -423,7 +422,7 @@ class SearchServiceImpl @Autowired constructor(
         val elementFilter = search.elementFilter
         if (elementFilter != null) {
             val elementBool = QueryBuilders.boolQuery()
-            applyFilterToQuery(elementFilter, elementBool, null)
+            applyFilterToQuery(elementFilter, elementBool, mutableSetOf())
             query.should(QueryBuilders.hasChildQuery("element", elementBool)
                     .scoreMode("max")
                     .maxChildren(1)
@@ -447,7 +446,7 @@ class SearchServiceImpl @Autowired constructor(
         return query
     }
 
-    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<Int>?) {
+    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<Int>) {
 
         val staticBool = QueryBuilders.boolQuery()
 
@@ -467,7 +466,7 @@ class SearchServiceImpl @Autowired constructor(
             val folders = links["folder"]!!
                     .stream()
                     .map { f -> Integer.valueOf(f.toString()) }
-                    .filter { f -> !linkedFolders!!.contains(f) }
+                    .filter { f -> !linkedFolders.contains(f) }
                     .collect(Collectors.toSet())
 
             val recursive = if (filter.recursive == null) true else filter.recursive
@@ -478,10 +477,10 @@ class SearchServiceImpl @Autowired constructor(
                 for (folder in folderService.getAllDescendants(
                         folderService.getAll(folders), true, true)) {
 
-                    if (linkedFolders!!.contains(folder.id)) {
+                    if (linkedFolders.contains(folder.id)) {
                         continue
                     }
-                    linkedFolders!!.add(folder.id)
+                    linkedFolders.add(folder.id)
 
                     /**
                      * Not going to allow people to add assets manually
@@ -515,11 +514,10 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     private fun getQueryStringQuery(search: AssetSearch): QueryBuilder {
-        val queryFields: Map<String, Float>
-        if (JdbcUtils.isValid(search.queryFields)) {
-            queryFields = search.queryFields
+        val queryFields = if (JdbcUtils.isValid(search.queryFields)) {
+            search.queryFields
         } else {
-            queryFields = getQueryFields()
+            getQueryFields()
         }
 
         val qstring = QueryBuilders.queryStringQuery(search.query)
@@ -539,7 +537,7 @@ class SearchServiceImpl @Autowired constructor(
      * @param query;
      * @return
      */
-    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<Int>?) {
+    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<Int>) {
 
         if (filter.links != null) {
             linkQuery(query, filter, linkedFolders)
@@ -849,21 +847,22 @@ class SearchServiceImpl @Autowired constructor(
         return result
     }
 
-    private fun initializeDefaultQuerySettings() {
-        /**
-         * Setup default sort.
-         */
-        defaultSortFields = Maps.newLinkedHashMap()
+    fun getDefaultSort() : Map<String, SortOrder> {
+        val result = linkedMapOf<String, SortOrder>()
         val sortFields = properties.getList("archivist.search.sortFields")
 
-        for (field in sortFields) {
-            val e = Splitter.on(":").omitEmptyStrings().trimResults().splitToList(field)
-            if (e.size != 2) {
-                logger.warn("Failed to add default sort option: {}, to many values.(should be field:direction)", field)
-            }
-            defaultSortFields[e[0]] = SortOrder.valueOf(e[1])
-        }
-        logger.info("Default sort fields: {}", defaultSortFields)
+        sortFields.asSequence()
+                .map { it.split(":", limit = 2) }
+                .forEach {
+                    val order = try {
+                        SortOrder.valueOf(it[1])
+                    } catch(e:IllegalArgumentException) {
+                        SortOrder.ASC
+                    }
+                    result[it[0]] = order
+                }
+
+        return result
     }
 
     override fun analyzeQuery(search: AssetSearch): List<String> {
