@@ -3,12 +3,10 @@
     "origin": {
       "properties": {
         "timeCreated": {
-          "type": "date",
-          "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
+          "type": "date"
         },
         "timeModified": {
-          "type": "date",
-          "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
+          "type": "date"
         }
       }
     }

@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
-import com.google.common.collect.Maps
 import com.zorroa.common.elastic.AbstractElasticDao
 import com.zorroa.common.elastic.SearchHitRowMapper
 import com.zorroa.sdk.client.exception.ArchivistException
@@ -71,7 +70,7 @@ interface AssetDao {
 
     operator fun get(id: String, type: String, parent: String): Document
 
-    fun getProtectedFields(id: String): Map<String, Any>
+    fun getManagedFields(id: String): Map<String, Any>
 
     fun exists(path: Path): Boolean
 
@@ -289,9 +288,8 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             bulkRequest.add(updateBuilder)
         }
 
-        val result = mutableMapOf<String, MutableList<Any>>()
-        result.put("success", mutableListOf())
-        result.put("failed", mutableListOf())
+        val result = mutableMapOf<String, MutableList<Any>>(
+                "success" to mutableListOf(), "failed" to mutableListOf())
 
         val bulk = bulkRequest.setRefresh(true).get()
         for (rsp in bulk.items) {
@@ -347,26 +345,19 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         return elastic.queryForObject(id, type, parent, MAPPER)
     }
 
-    override fun getProtectedFields(id: String): Map<String, Any> {
-        try {
+    override fun getManagedFields(id: String): Map<String, Any> {
+        return try {
             /*
              * Have to use a search here because using the get API
              * with fields will fail if the asset doesn't have the
              * fields.
              */
             val result = client.prepareGet(index, type, id)
-                    .setFetchSource(arrayOf("permissions", "links"), arrayOf())
+                    .setFetchSource(arrayOf("permissions", "links", "origin"), arrayOf())
                     .get().source
-            return result ?: Maps.newHashMapWithExpectedSize(2)
-            /*
-            return client.prepareSearch(getIndex()).setQuery(
-                    QueryBuilders.idsQuery("asset").addIds(id))
-                    .setSize(1)
-                    .setFetchSource(new String[] {"permissions", "links"}, new String[] {})
-                    .get().getHits().getAt(0).getSource();
-                    */
+            result ?: mutableMapOf() // result has to be mutable.
         } catch (e: ArrayIndexOutOfBoundsException) {
-            return Maps.newHashMapWithExpectedSize(2)
+            mutableMapOf()
         }
 
     }

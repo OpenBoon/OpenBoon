@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.LongAdder
@@ -138,7 +137,7 @@ class AssetServiceImpl  @Autowired  constructor (
             for (hit in searchService.search(Pager.first(1), AssetSearch(AssetFilter()
                     .addToTerms("source.clip.parent", id))
                     .setFields(arrayOf("proxies"))
-                    .setOrder(ImmutableList.of(AssetSearchOrder("origin.createdDate"))))) {
+                    .setOrder(ImmutableList.of(AssetSearchOrder("origin.timeCreated"))))) {
                 return hit.getAttr("proxies", ProxySchema::class.java)
             }
 
@@ -188,10 +187,10 @@ class AssetServiceImpl  @Autowired  constructor (
              */
             NS_PROTECTED_API.forEach { n -> source.removeAttr(n) }
 
-            val protectedValues = assetDao.getProtectedFields(source.id)
+            val managedValues = assetDao.getManagedFields(source.id)
 
             val perms = Json.Mapper.convertValue(
-                    (protectedValues as MutableMap<String, Any>).getOrDefault("permissions", ImmutableMap.of<Any, Any>()), PermissionSchema::class.java)
+                    (managedValues as MutableMap<String, Any>).getOrDefault("permissions", ImmutableMap.of<Any, Any>()), PermissionSchema::class.java)
 
             if (source.permissions != null) {
                 for ((key, value) in source.permissions) {
@@ -228,16 +227,28 @@ class AssetServiceImpl  @Autowired  constructor (
                  * If there is no permissions.
                  */
                 source.setAttr("permissions", defaultPerms)
-                source.setAttr("origin.createdDate", Date())
             }
 
             if (source.links != null) {
                 val links = Json.Mapper.convertValue(
-                        protectedValues.getOrDefault("links", mapOf<Any, Any>()), LinkSchema::class.java)
+                        managedValues.getOrDefault("links", mapOf<Any, Any>()), LinkSchema::class.java)
                 for (link in source.links) {
                     links.addLink(link.left, link.right)
                 }
                 source.setAttr("links", links)
+            }
+
+            /**
+             * Only allow the origin to be written once
+             */
+            val time = System.currentTimeMillis()
+            if (managedValues.containsKey("origin") && !source.isReplace) {
+                source.removeAttr("origin")
+                source.setAttr("origin.timeModified", time)
+            }
+            else {
+                source.setAttr("origin.timeModified", time)
+                source.setAttr("origin.timeCreated", time)
             }
         }
 
@@ -496,9 +507,6 @@ class AssetServiceImpl  @Autowired  constructor (
          */
         private val NS_PROTECTED_API = ImmutableSet.of(
                 "permissions", "zorroa", "links", "tmp")
-
-        private val NS_ELEMENT_REMOVE = ImmutableSet.of(
-                "source", "origin")
     }
 
 }

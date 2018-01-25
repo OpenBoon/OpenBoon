@@ -220,9 +220,9 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testGetProtectedFields() {
-        Map<String, Object> v = assetDao.getProtectedFields("a");
+        Map<String, Object> v = assetDao.getManagedFields("a");
         assertNotNull(v);
-        v = assetDao.getProtectedFields(asset1.getId());
+        v = assetDao.getManagedFields(asset1.getId());
         assertNotNull(v);
     }
 
