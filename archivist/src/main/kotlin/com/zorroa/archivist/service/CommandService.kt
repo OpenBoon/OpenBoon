@@ -41,7 +41,7 @@ interface CommandService {
  * A dedicated system for running internal tasks which should be run in serial.
  */
 @Service
-open class CommandServiceImpl @Autowired constructor (
+class CommandServiceImpl @Autowired constructor (
         private val commandDao: CommandDao
 ): AbstractScheduledService(), CommandService {
 
@@ -56,7 +56,7 @@ open class CommandServiceImpl @Autowired constructor (
     @PostConstruct
     fun init() {
         // Not started for unit tests
-        if (!ArchivistConfiguration.unittest) {
+        if (!ArchivistConfiguration.Companion.unittest) {
             this.startAsync()
         }
     }
@@ -96,9 +96,11 @@ open class CommandServiceImpl @Autowired constructor (
 
     override fun setRunningCommand(cmd: Command): Boolean {
         if (runningCommand.get() == null) {
+            logger.info("Setting running command: {}", cmd);
             runningCommand.set(cmd)
             return true
         }
+        logger.warn("Command was already running: {}", runningCommand.get())
         return false
     }
 
