@@ -194,7 +194,19 @@ class AssetController @Autowired constructor(
         } catch (e: Exception) {
             throw ResourceNotFoundException(e.message)
         }
+    }
 
+    @GetMapping(value = ["/api/v1/assets/{id}/proxies/at-least/{size:\\d+}"])
+    @Throws(IOException::class)
+    fun getAtLeast(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
+        try {
+            val proxies = assetService.getProxies(id)
+            val proxy = proxies.atLeastThisSize(size) ?: proxies.largest
+            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
+            return imageService.serveImage(proxy)
+        } catch (e: Exception) {
+            throw ResourceNotFoundException(e.message)
+        }
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
