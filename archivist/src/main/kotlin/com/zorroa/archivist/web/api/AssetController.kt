@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
+import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.archivist.service.*
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
+import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.*
 import java.io.File
 import java.io.IOException
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -55,10 +58,12 @@ class AssetController @Autowired constructor(
     @Value("\${zorroa.cluster.index.alias}")
     private lateinit var alias: String
 
-    val assetFields: Map<String, Set<String>>
-        @GetMapping(value = ["/api/v1/assets/_fields"])
-        @Throws(IOException::class)
-        get() = searchService.getFields("asset")
+    @GetMapping(value = ["/api/v1/assets/_fields"])
+    fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
+        response.setHeader("Cache-Control", CacheControl.maxAge(
+                30, TimeUnit.SECONDS).cachePrivate().headerValue)
+        return searchService.getFields("asset")
+    }
 
     val elementFields: Map<String, Set<String>>
         @GetMapping(value = ["/api/v1/elements/_fields"])
@@ -179,11 +184,12 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}"])
     @Throws(IOException::class)
-    fun getClosestProxy(@PathVariable id: String, @PathVariable(required = false) size: String): ResponseEntity<InputStreamResource> {
+    fun getClosestProxy(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = false) size: String): ResponseEntity<InputStreamResource> {
         try {
             val wh = size.split("x".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val proxies = assetService.getProxies(id)
             val proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1])) ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
             return imageService.serveImage(proxy)
         } catch (e: Exception) {
             throw ResourceNotFoundException(e.message)
@@ -193,10 +199,11 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
     @Throws(IOException::class)
-    fun getLargestProxy(@PathVariable id: String): ResponseEntity<InputStreamResource> {
+    fun getLargestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
         try {
             val proxies = assetService.getProxies(id)
             val proxy = proxies.largest ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
             return imageService.serveImage(proxy)
         } catch (e: Exception) {
             throw ResourceNotFoundException(e.message)
@@ -206,10 +213,11 @@ class AssetController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/smallest"])
     @Throws(IOException::class)
-    fun getSmallestProxy(@PathVariable id: String): ResponseEntity<InputStreamResource> {
+    fun getSmallestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
         try {
             val proxies = assetService.getProxies(id)
             val proxy = proxies.smallest ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+            response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
             return imageService.serveImage(proxy)
         } catch (e: Exception) {
             throw ResourceNotFoundException(e.message)

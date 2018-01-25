@@ -7,6 +7,7 @@ import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -17,6 +18,7 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static com.zorroa.common.config.NetworkEnvironment.ON_PREM;
 
@@ -24,6 +26,12 @@ import static com.zorroa.common.config.NetworkEnvironment.ON_PREM;
  * Utility functions for any shared HTTP based code.
  */
 public class HttpUtils {
+
+    /**
+     * A standard cache-control header.
+     */
+    public static final CacheControl CACHE_CONTROL =
+            CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate();
 
     /**
      * Write an elastic XContent to the the given HttpServletResponse.

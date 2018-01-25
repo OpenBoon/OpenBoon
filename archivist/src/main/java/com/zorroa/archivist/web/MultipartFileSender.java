@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.zorroa.archivist.HttpUtils.CACHE_CONTROL;
+
 /**
  * Created by kevin on 10/02/15.
  * See full code here : https://github.com/davinkevin/Podcast-Server/blob/d927d9b8cb9ea1268af74316cd20b7192ca92da7/src/main/java/lan/dk/podcastserver/utils/multipart/MultipartFileSender.java
@@ -215,7 +217,7 @@ public class MultipartFileSender {
         response.setHeader("ETag", fileName);
         response.setDateHeader("Last-Modified", lastModified);
         response.setDateHeader("Expires", System.currentTimeMillis() + DEFAULT_EXPIRE_TIME);
-        response.setHeader("Cache-Control", "Public");
+        response.setHeader("Cache-Control", CACHE_CONTROL.getHeaderValue());
 
         // Send requested file (part(s)) to client ------------------------------------------------
 

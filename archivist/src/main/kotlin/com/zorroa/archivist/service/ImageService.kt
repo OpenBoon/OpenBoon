@@ -80,7 +80,6 @@ class ImageServiceImpl @Autowired constructor(
                     .contentType(PROXY_MEDIA_TYPES[ext])
                     .contentLength(output.size().toLong())
                     .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-                    .header("Cache-Control", "private")
                     .body(InputStreamResource(ByteArrayInputStream(output.toByteArray(), 0, output.size())))
         } else {
             ResponseEntity.ok()
