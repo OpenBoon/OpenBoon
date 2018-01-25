@@ -7,6 +7,7 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
+import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -19,6 +20,7 @@ import java.io.*
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import javax.annotation.PostConstruct
 import javax.imageio.ImageIO
@@ -43,16 +45,19 @@ interface ImageService {
  * Created by chambers on 7/8/16.
  */
 @Service
-class ImageServiceImpl : ImageService {
+class ImageServiceImpl @Autowired constructor(
+        private val objectFileSystem: ObjectFileSystem
+
+) : ImageService {
 
     @Value("\${archivist.watermark.enabled:false}")
-    private val watermarkEnabled: Boolean? = null
+    private val watermarkEnabled: Boolean = false
 
     @Value("\${archivist.watermark.min-proxy-width:384}")
     private val watermarkMinProxyWidth: Int = 0
 
     @Value("\${archivist.watermark.template}")
-    private val watermarkTemplate: String? = null
+    private val watermarkTemplate: String = ""
 
     @Value("\${archivist.watermark.font-size:6}")
     private val watermarkFontSize: Int = 0
@@ -60,9 +65,6 @@ class ImageServiceImpl : ImageService {
     @Value("\${archivist.watermark.font-name:Arial Black}")
     private val watermarkFontName: String? = null
     private var watermarkFont: Font? = null
-
-    @Autowired
-    internal var objectFileSystem: ObjectFileSystem? = null
 
     @PostConstruct
     fun init() {
@@ -72,25 +74,26 @@ class ImageServiceImpl : ImageService {
     @Throws(IOException::class)
     override fun serveImage(file: File): ResponseEntity<InputStreamResource> {
         val ext = com.zorroa.sdk.util.FileUtils.extension(file)
-        if (watermarkEnabled!!) {
+        return if (watermarkEnabled) {
             val output = watermark(file, ext)
-            return ResponseEntity.ok()
+            ResponseEntity.ok()
                     .contentType(PROXY_MEDIA_TYPES[ext])
                     .contentLength(output.size().toLong())
-                    .header("Cache-Control", "public")
+                    .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
+                    .header("Cache-Control", "private")
                     .body(InputStreamResource(ByteArrayInputStream(output.toByteArray(), 0, output.size())))
         } else {
-            return ResponseEntity.ok()
+            ResponseEntity.ok()
                     .contentType(PROXY_MEDIA_TYPES[ext])
                     .contentLength(Files.size(file.toPath()))
-                    .header("Cache-Control", "public")
+                    .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                     .body(InputStreamResource(FileInputStream(file)))
         }
     }
 
     @Throws(IOException::class)
     override fun serveImage(proxy: Proxy): ResponseEntity<InputStreamResource> {
-        return serveImage(objectFileSystem!!.get(proxy.id).file)
+        return serveImage(objectFileSystem.get(proxy.id).file)
     }
 
     @Throws(IOException::class)
@@ -115,8 +118,8 @@ class ImageServiceImpl : ImageService {
                 "USER", SecurityUtils.getUsername(),
                 "DATE", SimpleDateFormat("MM/dd/yyyy").format(Date()))
 
-        val sb = StringBuffer(watermarkTemplate!!.length * 2)
-        val m = PATTERN.matcher(watermarkTemplate!!)
+        val sb = StringBuffer(watermarkTemplate.length * 2)
+        val m = PATTERN.matcher(watermarkTemplate)
         while (m.find()) {
             m.appendReplacement(sb, replacements[m.group(1)])
         }
