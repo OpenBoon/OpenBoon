@@ -59,6 +59,23 @@ public class AssetServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testIndexCheckOrigin() throws InterruptedException {
+        Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
+        Document asset1 = assetService.index(builder);
+
+        assertNotNull(asset1.getAttr("origin.timeCreated"));
+        assertNotNull(asset1.getAttr("origin.timeModified"));
+        assertEquals(asset1.getAttr("origin.timeCreated", String.class),
+                asset1.getAttr("origin.timeModified", String.class));
+
+        refreshIndex();
+        Source builder2 = new Source(getTestImagePath("set01/toucan.jpg"));
+        Document asset2 = assetService.index(builder2);
+        assertNotEquals(asset2.getAttr("origin.timeCreated", String.class),
+                asset2.getAttr("origin.timeModified", String.class));
+    }
+
+    @Test
     public void testIndexWithPermission() throws InterruptedException {
         Permission p = permissionService.getPermission("group::everyone");
 

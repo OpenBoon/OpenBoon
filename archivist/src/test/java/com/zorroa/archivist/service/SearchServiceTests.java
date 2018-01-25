@@ -70,7 +70,6 @@ public class SearchServiceTests extends AbstractTest {
 
         AssetSearch search = new AssetSearch();
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
-        assertEquals(1.0, searchService.search(search).getHits().getAt(0).getScore(), 0.0);
     }
 
     @Test
@@ -206,7 +205,6 @@ public class SearchServiceTests extends AbstractTest {
         int count = 0;
         for (Document a: searchService.search(Pager.first(), new AssetSearch().setFilter(
                 new AssetFilter().addToTerms("keywords.source", "captain")))) {
-            assertTrue(a.getScore() > 0);
             count++;
         }
         assertTrue(count > 0);
