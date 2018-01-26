@@ -21,6 +21,9 @@ class SharedLinkServiceImpl @Autowired constructor(
 ) : SharedLinkService {
 
     @Autowired
+    internal lateinit var emailService: EmailService
+
+    @Autowired
     internal lateinit var userService: UserService
 
     override fun create(spec: SharedLinkSpec): SharedLink {
@@ -32,7 +35,7 @@ class SharedLinkServiceImpl @Autowired constructor(
                 for (userId in spec.userIds) {
                     try {
                         val toUser = userService.get(userId)
-                        userService.sendSharedLinkEmail(fromUser, toUser, link)
+                        emailService.sendSharedLinkEmail(fromUser, toUser, link)
                     } catch (e: Exception) {
                         logger.warn("Failed to send shared link email, id {} ", link.id, e)
                     }

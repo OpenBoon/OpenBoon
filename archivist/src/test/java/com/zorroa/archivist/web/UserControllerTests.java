@@ -30,7 +30,7 @@ public class UserControllerTests extends MockMvcTest {
     @Test
     public void testSendPasswordRecoveryEmail() throws Exception {
         User user = userService.get("user");
-        userService.sendPasswordResetEmail(user);
+        emailService.sendPasswordResetEmail(user);
 
         SecurityContextHolder.getContext().setAuthentication(null);
         MvcResult result = mvc.perform(post("/api/v1/send-password-reset-email")
@@ -55,7 +55,7 @@ public class UserControllerTests extends MockMvcTest {
     @Test
     public void testResetPassword() throws Exception {
         User user = userService.get("user");
-        PasswordResetToken token = userService.sendPasswordResetEmail(user);
+        PasswordResetToken token = emailService.sendPasswordResetEmail(user);
         assertTrue(token.isEmailSent());
 
         SecurityContextHolder.getContext().setAuthentication(null);

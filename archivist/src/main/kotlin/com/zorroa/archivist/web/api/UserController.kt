@@ -5,6 +5,7 @@ import com.google.common.collect.Sets
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
 import org.slf4j.LoggerFactory
@@ -21,7 +22,8 @@ import javax.validation.Valid
 @RestController
 class UserController @Autowired constructor(
         private val userService: UserService,
-        private val permissionService: PermissionService
+        private val permissionService: PermissionService,
+        private val emailService: EmailService
 ) {
 
     @RequestMapping(value = ["/api/v1/api-key"])
@@ -99,7 +101,7 @@ class UserController @Autowired constructor(
     @Throws(ServletException::class)
     fun sendPasswordRecoveryEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
         val user = userService.getByEmail(req.email!!)
-        userService.sendPasswordResetEmail(user)
+        emailService.sendPasswordResetEmail(user)
         return HttpUtils.status("send-password-reset-email", "update", true)
     }
 
@@ -107,7 +109,7 @@ class UserController @Autowired constructor(
     @Throws(ServletException::class)
     fun sendOnboardEmail(@RequestBody req: SendForgotPasswordEmailRequest): Any {
         val user = userService.getByEmail(req.email!!)
-        userService.sendOnboardEmail(user)
+        emailService.sendOnboardEmail(user)
         return HttpUtils.status("send-onboard-email", "update", true)
     }
 
