@@ -106,14 +106,20 @@ class CommandServiceImpl @Autowired constructor (
 
     override fun cancelRunningCommand(cmd: Command): Boolean {
         val currentCommand = runningCommand.get()
+
         if (currentCommand != null && currentCommand.id == cmd.id) {
             if (currentCommand.state != JobState.Cancelled) {
                 currentCommand.state = JobState.Cancelled
                 logger.info("{} canceled running {}", SecurityUtils.getUsername(), currentCommand)
+                if (ArchivistConfiguration.Companion.unittest) {
+                    runningCommand.set(null)
+                }
                 return true
             }
+            logger.warn("The command $cmd was not the running command")
             return false
         }
+        logger.warn("The command $cmd was not the running command")
         return false
     }
 

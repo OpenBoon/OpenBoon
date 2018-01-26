@@ -7,7 +7,6 @@ import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.ExportService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.service.SearchService
-import com.zorroa.sdk.client.exception.ArchivistReadException
 import com.zorroa.sdk.search.AssetFilter
 import com.zorroa.sdk.search.AssetSearch
 import org.springframework.beans.factory.annotation.Autowired
@@ -59,13 +58,13 @@ class ExportController @Autowired constructor(
          * to know if they have access to each individual file.
          */
         if (job.jobId as Long != file.jobId) {
-            throw ArchivistReadException("Invalid export file")
+            throw IllegalArgumentException("Invalid export file")
         }
         if (job.user.id != SecurityUtils.getUser().id) {
-            throw ArchivistReadException("Invalid export for " + SecurityUtils.getUsername())
+            throw IllegalArgumentException("Invalid export for " + SecurityUtils.getUsername())
         }
         if (job.state != JobState.Finished) {
-            throw ArchivistReadException("Export is not complete.")
+            throw IllegalArgumentException("Export is not complete.")
         }
 
         logExportDownload(id)

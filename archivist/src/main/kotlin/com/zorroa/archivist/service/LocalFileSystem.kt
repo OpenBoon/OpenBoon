@@ -4,7 +4,7 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.LfsRequest
 import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.common.config.ApplicationProperties
-import com.zorroa.sdk.client.exception.MissingElementException
+import com.zorroa.sdk.client.exception.EntityNotFoundException
 import com.zorroa.sdk.util.FileUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -48,7 +48,7 @@ class LocalFileSystemImpl @Autowired constructor(
 
     override fun listFiles(req: LfsRequest): Map<String, List<String>> {
         if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
-            throw MissingElementException("The path does not exist")
+            throw EntityNotFoundException("The path does not exist")
         }
         return _listFiles(req)
     }
@@ -112,8 +112,8 @@ class LocalFileSystemImpl @Autowired constructor(
             return result
         }
 
-        Collections.sort(result["dirs"])
-        Collections.sort(result["files"])
+        result["dirs"]!!.sort()
+        result["files"]!!.sort()
         return result
     }
 
@@ -134,7 +134,7 @@ class LocalFileSystemImpl @Autowired constructor(
 
     fun permissionCheck() {
         if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
-            throw MissingElementException("The path does not exist")
+            throw EntityNotFoundException("The path does not exist")
         }
 
     }

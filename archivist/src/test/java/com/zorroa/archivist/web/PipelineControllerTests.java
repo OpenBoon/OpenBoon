@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.util.NestedServletException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -55,7 +54,7 @@ public class PipelineControllerTests extends MockMvcTest {
         assertEquals(spec.getName(), p.getName());
     }
 
-    @Test(expected=NestedServletException.class)
+    @Test
     public void testCreateWithValidationFailureNumericName() throws Exception {
         spec.setName("12345");
         MockHttpSession session = admin();
@@ -63,7 +62,7 @@ public class PipelineControllerTests extends MockMvcTest {
                 .session(session)
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
+                .andExpect(status().is4xxClientError())
                 .andReturn();
     }
 

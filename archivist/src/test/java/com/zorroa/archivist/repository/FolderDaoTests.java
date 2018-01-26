@@ -6,7 +6,6 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.PermissionService;
-import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -218,7 +217,7 @@ public class FolderDaoTests extends AbstractTest {
         assertFalse(acl.hasAccess(p1.getId(), Access.Export));
     }
 
-    @Test(expected=ArchivistWriteException.class)
+    @Test(expected=IllegalArgumentException.class)
     public void testGetAndSetBadAcl() throws IOException {
         FolderSpec builder = new FolderSpec("test");
         Folder folder1 = folderDao.create(builder);

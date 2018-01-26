@@ -13,7 +13,7 @@ import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
-import com.zorroa.sdk.client.exception.DuplicateElementException
+import com.zorroa.sdk.client.exception.DuplicateEntityException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import org.slf4j.LoggerFactory
@@ -135,7 +135,7 @@ class UserServiceImpl @Autowired constructor(
     override fun create(builder: UserSpec, source: String): User {
 
         if (userDao.exists(builder.username)) {
-            throw DuplicateElementException("The user '" +
+            throw DuplicateEntityException("The user '" +
                     builder.username + "' already exists.")
         }
 

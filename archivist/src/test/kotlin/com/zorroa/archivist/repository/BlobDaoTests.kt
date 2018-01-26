@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-open class BlobDaoTests : AbstractTest() {
+class BlobDaoTests : AbstractTest() {
 
     @Autowired
     private lateinit var blobDao : BlobDao

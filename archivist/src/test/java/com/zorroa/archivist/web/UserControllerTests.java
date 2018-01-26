@@ -11,7 +11,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.util.NestedServletException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -149,13 +148,14 @@ public class UserControllerTests extends MockMvcTest {
     }
 
 
-    @Test(expected = NestedServletException.class)
+    @Test
     public void testDisableSelf() throws Exception {
         MockHttpSession session = admin();
         mvc.perform(put("/api/v1/users/1/_enabled")
                 .content(Json.serialize(ImmutableMap.of("enabled", false)))
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().is4xxClientError())
                 .andReturn();
     }
 

@@ -17,7 +17,6 @@ import com.zorroa.cluster.thrift.TaskStartT
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.TaskState
-import com.zorroa.sdk.client.exception.ArchivistReadException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -146,7 +145,7 @@ class JobExecutorServiceImpl @Autowired constructor(
         try {
             return returnQueue.asMap()[job.id]!!.poll(30, TimeUnit.SECONDS)
         } catch (e: InterruptedException) {
-            throw ArchivistReadException("Failed waiting on response, ", e)
+            throw IllegalStateException("Failed waiting on response, ", e)
         }
     }
 

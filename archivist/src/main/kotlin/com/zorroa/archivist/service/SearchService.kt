@@ -10,7 +10,6 @@ import com.zorroa.archivist.repository.FieldDao
 import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistException
-import com.zorroa.sdk.client.exception.ArchivistReadException
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -241,7 +240,7 @@ class SearchServiceImpl @Autowired constructor(
                 .setSize(100).execute().actionGet()
 
         if (maxResults > 0 && rsp.hits.totalHits > maxResults) {
-            throw ArchivistReadException("Asset search has returned more than $maxResults results.")
+            throw IllegalArgumentException("Asset search has returned more than $maxResults results.")
         }
         return ScanAndScrollAssetIterator(client, rsp)
     }

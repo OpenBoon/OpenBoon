@@ -12,9 +12,8 @@ import com.zorroa.archivist.domain.SettingsFilter
 import com.zorroa.archivist.repository.SettingsDao
 import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.common.config.ApplicationProperties
-import com.zorroa.sdk.client.exception.ArchivistReadException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
-import com.zorroa.sdk.client.exception.MissingElementException
+import com.zorroa.sdk.client.exception.EntityNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
@@ -104,7 +103,7 @@ class SettingsServiceImpl @Autowired constructor(
                     .limit(filter.count.toLong())
                     .collect(Collectors.toList())
         } catch (e: ExecutionException) {
-            throw ArchivistReadException(e)
+            throw IllegalStateException(e)
         }
 
     }
@@ -123,7 +122,7 @@ class SettingsServiceImpl @Autowired constructor(
         try {
             return getAll(filter)[0]
         } catch (e: IndexOutOfBoundsException) {
-            throw MissingElementException("Setting not found: " + key, e)
+            throw EntityNotFoundException("Setting not found: " + key, e)
         }
 
     }

@@ -5,7 +5,6 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -344,7 +343,7 @@ open class FolderDaoImpl : AbstractDao(), FolderDao {
                     continue
                 }
                 if (entry.getAccess() > 7) {
-                    throw ArchivistWriteException("Invalid Access level "
+                    throw IllegalArgumentException("Invalid Access level "
                             + entry.getAccess() + " for permission ID " + entry.getPermissionId())
                 }
                 jdbc.update("INSERT INTO folder_acl (pk_permission, pk_folder, int_access) VALUES (?,?,?)",
@@ -354,7 +353,7 @@ open class FolderDaoImpl : AbstractDao(), FolderDao {
 
             for (entry in acl) {
                 if (entry.getAccess() > 7) {
-                    throw ArchivistWriteException("Invalid Access level "
+                    throw IllegalArgumentException("Invalid Access level "
                             + entry.getAccess() + " for permission ID " + entry.getPermissionId())
                 }
                 if (entry.getAccess() <= 0) {

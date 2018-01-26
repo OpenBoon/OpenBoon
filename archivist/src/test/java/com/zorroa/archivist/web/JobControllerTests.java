@@ -90,7 +90,7 @@ public class JobControllerTests extends MockMvcTest {
         assertEquals(1, tasks.size());
     }
 
-    @Test(expected=org.springframework.web.util.NestedServletException.class)
+    @Test(expected=java.lang.AssertionError.class)
     public void testLaunchValidationFailure() throws Exception {
         MockHttpSession session = admin();
 
