@@ -19,11 +19,11 @@ class SharedLinkController @Autowired constructor(
         if (valid.hasErrors()) {
             throw InvalidObjectException("Failed to create shared link", valid)
         }
-        return sharedLinkService!!.create(spec)
+        return sharedLinkService.create(spec)
     }
 
     @GetMapping(value = ["/api/v1/shared_link/{id}"])
-    fun create(@PathVariable id: Int): SharedLink {
-        return sharedLinkService!![id]
+    fun get(@PathVariable id: Int): SharedLink {
+        return sharedLinkService[id]
     }
 }

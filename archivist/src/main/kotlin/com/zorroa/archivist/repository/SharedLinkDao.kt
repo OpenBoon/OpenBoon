@@ -20,7 +20,7 @@ interface SharedLinkDao {
 }
 
 @Repository
-open class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
+class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
 
     private val MAPPER = RowMapper<SharedLink> { rs, _ ->
         val link = SharedLink()
@@ -36,11 +36,10 @@ open class SharedLinkDaoImpl : AbstractDao(), SharedLinkDao {
         val defaultExpireTimeMs = TimeUnit.HOURS.toMillis(
                 properties.getInt("archivist.maintenance.sharedLinks.expireDays").toLong())
 
-        val expireTime: Long
-        if (spec.expireTimeMs != null) {
-            expireTime = System.currentTimeMillis() + spec.expireTimeMs!!
+        val expireTime: Long = if (spec.expireTimeMs != null) {
+            System.currentTimeMillis() + spec.expireTimeMs!!
         } else {
-            expireTime = System.currentTimeMillis() + defaultExpireTimeMs
+            System.currentTimeMillis() + defaultExpireTimeMs
         }
 
         val key = GeneratedKeyHolder()

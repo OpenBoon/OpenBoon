@@ -103,6 +103,9 @@ public abstract class AbstractTest {
     protected EmailService emailService;
 
     @Autowired
+    protected RequestService requestService;
+
+    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired

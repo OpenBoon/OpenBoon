@@ -4,9 +4,9 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
+import com.zorroa.archivist.domain.RequestState
 import com.zorroa.archivist.domain.RequestType
 import com.zorroa.archivist.security.SecurityUtils
-import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
@@ -14,40 +14,51 @@ import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 
 interface RequestDao {
-
+    fun create(spec: RequestSpec) : Request
+    fun get(id: Int) : Request
 }
 
 @Repository
 class RequestDaoImpl : AbstractDao(), RequestDao {
 
     @Autowired
-    internal var userDaoCache: UserDaoCache? = null
+    internal lateinit var userDaoCache: UserDaoCache;
 
     private val MAPPER = RowMapper<Request> { rs, _ ->
-        val req = Request().apply {
-            id = rs.getInt("pk_request")
-            search = Json.deserialize(rs.getString("str_search"), AssetSearch::class.java)
-            userCreated = userDaoCache?.getUser(rs.getInt("user_created"))
-            timeCreated = rs.getLong("time_created")
-            types = rs.getObject("int_types") as Array<RequestType>
-        }
-        req
+         Request(
+                 rs.getInt("pk_request"),
+                 rs.getInt("pk_folder"),
+                 RequestType.values()[rs.getInt("int_type")],
+                 userDaoCache.getUser(rs.getInt("user_created")),
+                 rs.getLong("time_created"),
+                 userDaoCache.getUser(rs.getInt("user_modified")),
+                 rs.getLong("time_modified"),
+                 RequestState.values()[rs.getInt("int_state")],
+                 rs.getString("str_comment"),
+                 Json.deserialize(rs.getString("json_cc"), Json.LIST_OF_STRINGS)
+         )
     }
 
-
-    fun create(spec: RequestSpec) : Request {
-        Preconditions.checkNotNull(spec.search, "The search for a request cannot be null")
+    override fun create(spec: RequestSpec) : Request {
+        Preconditions.checkNotNull(spec.folderId, "The search for a request cannot be null")
         Preconditions.checkNotNull(spec.type, "The types for a request cannot be null")
         Preconditions.checkNotNull(spec.comment, "The comment for a request cannot be null")
 
         val keyHolder = GeneratedKeyHolder()
 
         jdbc.update({ connection ->
+            val userId = SecurityUtils.getUser().id
+            val time = System.currentTimeMillis()
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_request"))
-            ps.setInt(1, SecurityUtils.getUser().id)
-            ps.setLong(2, System.currentTimeMillis())
-            ps.setString(3, Json.serializeToString(spec.search))
-            ps.setInt(4, spec.count)
+            ps.setInt(1, userId)
+            ps.setInt(2, userId)
+            ps.setLong(3, time)
+            ps.setLong(4, time)
+            ps.setInt(5, spec.folderId!!)
+            ps.setInt(6, spec.count)
+            ps.setInt(7, spec.type!!.ordinal)
+            ps.setString(8, spec.comment)
+            ps.setString(9, Json.serializeToString(spec.emailCC, "[]"))
             ps
         }, keyHolder)
 
@@ -55,7 +66,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
         return get(id)
     }
 
-    fun get(id: Int) : Request {
+    override fun get(id: Int) : Request {
         return jdbc.queryForObject("$GET WHERE pk_request=?", MAPPER, id)
     }
 
@@ -63,23 +74,28 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
 
         private val GET = "SELECT " +
                 "pk_request,"+
+                "pk_folder,"+
                 "user_created,"+
+                "user_modified,"+
                 "time_created,"+
-                "json_search,"+
+                "time_modified,"+
                 "int_count,"+
-                "int_types,"+
-                "str_comment "+
+                "int_type,"+
+                "int_state,"+
+                "str_comment, "+
+                "json_cc "+
         "FROM "+
-            "request";
+            "request"
 
         private val INSERT = JdbcUtils.insert("request",
                 "user_created",
+                "user_modified",
                 "time_created",
-                "json_search",
+                "time_modified",
+                "pk_folder",
                 "int_count",
-                "int_types",
-                "str_comment")
-
+                "int_type",
+                "str_comment",
+                "json_cc")
     }
-
 }

@@ -71,17 +71,17 @@ interface FolderDao {
 }
 
 @Repository
-open class FolderDaoImpl : AbstractDao(), FolderDao {
+class FolderDaoImpl : AbstractDao(), FolderDao {
 
     @Autowired
-    internal var userDaoCache: UserDaoCache? = null
+    internal lateinit var userDaoCache: UserDaoCache
 
 
     private val MAPPER = RowMapper<Folder> { rs, _ ->
         val folder = Folder()
         folder.id = rs.getInt("pk_folder")
         folder.name = rs.getString("str_name")
-        folder.user = userDaoCache!!.getUser(rs.getInt("user_created"))
+        folder.user = userDaoCache.getUser(rs.getInt("user_created"))
         folder.isRecursive = rs.getBoolean("bool_recursive")
         folder.timeCreated = rs.getLong("time_created")
         folder.timeModified = rs.getLong("time_modified")
@@ -142,10 +142,8 @@ open class FolderDaoImpl : AbstractDao(), FolderDao {
                         *appendAclArgs(parent, name))
             }
         } catch (e: EmptyResultDataAccessException) {
-            throw EmptyResultDataAccessException(String.format("Failed to find folder, parent: %s name: %s",
-                    parent, name), 1)
+            throw EmptyResultDataAccessException("Failed to find folder, parent: $parent name: $name", 1)
         }
-
     }
 
     override operator fun get(parent: Folder, name: String): Folder {

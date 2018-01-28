@@ -4,9 +4,11 @@ import com.google.common.base.Charsets
 import com.google.common.io.CharStreams
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.PasswordResetToken
+import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.repository.UserDao
+import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,6 +24,7 @@ interface EmailService {
     fun sendOnboardEmail(user: User): PasswordResetToken
     fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink)
     fun sendPasswordResetEmail(user: User): PasswordResetToken
+    fun sendExportRequestEmail(user: User, req: Request)
 
 }
 
@@ -29,8 +32,13 @@ interface EmailService {
 class EmailServiceImpl @Autowired constructor(
         private val userDao: UserDao,
         private val mailSender: JavaMailSender,
-        private val networkEnv: NetworkEnvironment
+        private val networkEnv: NetworkEnvironment,
+        private val properties: ApplicationProperties
 ) : EmailService {
+
+    @Autowired
+    private lateinit var folderService: FolderService
+
 
     override fun sendSharedLinkEmail(fromUser: User, toUser: User, link: SharedLink) {
 
@@ -57,7 +65,8 @@ class EmailServiceImpl @Autowired constructor(
         }
 
         try {
-            sendHTMLEmail(toUser, fromName + " has shared a link with you.", text.toString(), htmlMsg)
+            sendHTMLEmail(toUser.email, fromName + " has shared a link with you.",
+                    text.toString(), listOf(), htmlMsg)
         } catch (e: MessagingException) {
             logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e)
         }
@@ -88,12 +97,11 @@ class EmailServiceImpl @Autowired constructor(
             }
 
             try {
-                sendHTMLEmail(user, "Zorroa Account Verification", text.toString(), htmlMsg)
+                sendHTMLEmail(user.email, "Zorroa Account Verification", text.toString(), listOf(), htmlMsg)
                 token.isEmailSent = true
             } catch (e: MessagingException) {
                 logger.warn("Email for sendPasswordResetEmail not sent, unexpected ", e)
             }
-
         }
         return token
     }
@@ -124,7 +132,7 @@ class EmailServiceImpl @Autowired constructor(
             }
 
             try {
-                sendHTMLEmail(user, "Welcome to Zorroa", text.toString(), htmlMsg)
+                sendHTMLEmail(user.email, "Welcome to Zorroa", text.toString(), listOf(), htmlMsg)
                 token.isEmailSent = true
             } catch (e: MessagingException) {
                 logger.warn("Email for sendOnboardEmail not sent, unexpected ", e)
@@ -134,6 +142,42 @@ class EmailServiceImpl @Autowired constructor(
         return token
     }
 
+    override fun sendExportRequestEmail(user: User, req: Request)  {
+
+        val name = if (user.firstName == null) user.username else user.firstName
+        val url = networkEnv.publicUri.toString() + "/folder?id=" + req.folderId
+        val folderPath = folderService.getPath(folderService.get(req.folderId))
+        val toEmail = properties.getString("archivist.requests.managerEmail")
+
+        val allCC = req.emailCC.toMutableList()
+        allCC.add(user.email)
+
+        val text = StringBuilder(1024)
+        text.append("Hello !\n\n")
+        text.append(name)
+        text.append(" has requested assets to be exported from $folderPath.\n")
+        text.append("Click here to visit the folder $url\n\n")
+        text.append("Additional Notes:\n")
+        text.append(req.comment)
+
+        var htmlMsg: String? = null
+        try {
+            htmlMsg = getTextResourceFile("emails/ExportRequest.html")
+            htmlMsg = htmlMsg.replace("*|FROM_USER|*", name)
+            htmlMsg = htmlMsg.replace("*|FOLDER_URL|*", url)
+            htmlMsg = htmlMsg.replace("*|FOLDER_PATH|*", folderPath)
+            htmlMsg = htmlMsg.replace("*|COMMENTS|*", req.comment)
+        } catch (e: IOException) {
+            logger.warn("Failed to open HTML template for export request, Sending text only.", e)
+        }
+
+        try {
+            sendHTMLEmail(toEmail, "Export Request", text.toString(), allCC, htmlMsg)
+        } catch (e: MessagingException) {
+            logger.warn("Export Request not sent, unexpected ", e)
+        }
+    }
+
     @Throws(IOException::class)
     private fun getTextResourceFile(fileName: String): String {
         return CharStreams.toString(InputStreamReader(
@@ -141,18 +185,21 @@ class EmailServiceImpl @Autowired constructor(
     }
 
     @Throws(MessagingException::class)
-    private fun sendHTMLEmail(user: User, subject: String, text: String, htmlMsg: String?) {
-        var email = user.email
-        if (ArchivistConfiguration.unittest) {
-            email = System.getProperty("user.name") + "@zorroa.com"
-        }
-
+    private fun sendHTMLEmail(email:String, subject: String, text: String, cc: List<String>, htmlMsg: String?) {
         val mimeMessage = mailSender.createMimeMessage()
         val helper = MimeMessageHelper(mimeMessage, true, "utf-8")
         helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>")
         helper.setReplyTo("Zorroa Account Bot <noreply@zorroa.com>")
-        helper.setTo(email)
         helper.setSubject(subject)
+        helper.setCc(cc.toTypedArray())
+
+        if (ArchivistConfiguration.unittest) {
+            helper.setTo(System.getProperty("user.name") + "@zorroa.com")
+        }
+        else {
+            helper.setTo(email)
+        }
+
         if (htmlMsg != null) {
             helper.setText(text, htmlMsg)
         } else {

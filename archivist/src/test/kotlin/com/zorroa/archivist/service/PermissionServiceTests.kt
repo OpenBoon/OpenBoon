@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-open class PermissionServiceTests : AbstractTest() {
+class PermissionServiceTests : AbstractTest() {
 
     @Test
     fun testCreate() {

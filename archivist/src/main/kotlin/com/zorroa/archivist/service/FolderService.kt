@@ -99,6 +99,8 @@ interface FolderService {
 
     fun get(path: String): Folder?
 
+    fun getPath(folder: Folder): String
+
     fun removeDyHierarchyRoot(folder: Folder): Boolean
 
     fun setDyHierarchyRoot(folder: Folder, attribute: String): Boolean
@@ -614,6 +616,16 @@ class FolderServiceImpl @Autowired constructor(
             }
         }
         return result
+    }
+
+    override fun getPath(folder: Folder) : String {
+        val ancestors = getAllAncestors(folder, true, false)
+
+        val sb = StringBuilder(256)
+        for (f in ancestors.reversed()) {
+            sb.append("/").append(f.name)
+        }
+        return sb.toString()
     }
 
     override fun getAllDescendants(folder: Folder, forSearch: Boolean): List<Folder> {
