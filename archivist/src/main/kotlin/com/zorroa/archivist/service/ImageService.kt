@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.sdk.domain.Proxy
 import com.zorroa.sdk.filesystem.ObjectFileSystem
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
@@ -53,7 +54,7 @@ class ImageServiceImpl @Autowired constructor(
     @Value("\${archivist.watermark.enabled:false}")
     private val watermarkEnabled: Boolean = false
 
-    @Value("\${archivist.watermark.min-proxy-width:384}")
+    @Value("\${archivist.watermark.min-proxy-size:384}")
     private val watermarkMinProxyWidth: Int = 0
 
     @Value("\${archivist.watermark.template}")
@@ -108,8 +109,7 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     override fun watermark(src: BufferedImage): BufferedImage {
-
-        if (src.width <= watermarkMinProxyWidth) {
+        if (src.width <= watermarkMinProxyWidth && src.height <= watermarkMinProxyWidth) {
             return src
         }
 
@@ -127,20 +127,24 @@ class ImageServiceImpl @Autowired constructor(
 
         // FIXME: Wrap strings that are too long
         val g2d = src.createGraphics()
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-        val c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f)
-        g2d.composite = c
-        g2d.paint = Color.white
-        g2d.font = watermarkFont
-        val x = ((src.width - g2d.getFontMetrics(watermarkFont).stringWidth(text)) / 2).toFloat()
-        val y = 1.1f * g2d.getFontMetrics(watermarkFont).height
-        g2d.drawString(text, x, y)
-
+        try {
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
+            val c = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)
+            g2d.composite = c
+            g2d.paint = Color.white
+            g2d.font = watermarkFont
+            val x = ((src.width - g2d.getFontMetrics(watermarkFont).stringWidth(text)) / 2).toFloat()
+            val y = 1.1f * g2d.getFontMetrics(watermarkFont).height
+            g2d.drawString(text, x, src.height - y)
+        } finally {
+            g2d.dispose()
+        }
         return src
     }
 
     companion object {
 
+        private val logger = LoggerFactory.getLogger(ImageServiceImpl::class.java)
         /**
          * A table for converting the proxy type to a media type, which is required
          * to serve the proxy images properly.
