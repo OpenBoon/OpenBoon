@@ -196,7 +196,7 @@ class AssetController @Autowired constructor(
         }
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/proxies/at-least/{size:\\d+}"])
+    @GetMapping(value = ["/api/v1/assets/{id}/proxies/atLeast/{size:\\d+}"])
     @Throws(IOException::class)
     fun getAtLeast(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
         try {
