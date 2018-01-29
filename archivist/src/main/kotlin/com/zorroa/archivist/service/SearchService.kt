@@ -376,11 +376,7 @@ class SearchServiceImpl @Autowired constructor(
                 }
             }
         }
-
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
-
-        }
-
+        
         return request
     }
 
