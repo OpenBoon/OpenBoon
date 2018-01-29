@@ -376,7 +376,7 @@ class SearchServiceImpl @Autowired constructor(
                 }
             }
         }
-        
+
         return request
     }
 
@@ -545,29 +545,6 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.links != null) {
             linkQuery(query, filter, linkedFolders)
-        }
-
-        if (filter.colors != null) {
-            for ((field, value) in filter.colors) {
-                for (color in value) {
-                    val colorFilter = QueryBuilders.boolQuery()
-                    colorFilter.must(QueryBuilders.rangeQuery(field + ".ratio")
-                            .gte(color.minRatio).lte(color.maxRatio))
-                    colorFilter.must(QueryBuilders.rangeQuery(field + ".hue")
-                            .gte(color.hue - color.hueRange)
-                            .lte(color.hue + color.hueRange))
-                    colorFilter.must(QueryBuilders.rangeQuery(field + ".saturation")
-                            .gte(color.saturation - color.saturationRange)
-                            .lte(color.saturation + color.saturationRange))
-                    colorFilter.must(QueryBuilders.rangeQuery(field + ".brightness")
-                            .gte(color.brightness - color.brightnessRange)
-                            .lte(color.brightness + color.brightnessRange))
-
-                    val colorFilterBuilder = QueryBuilders.nestedQuery(field,
-                            colorFilter)
-                    query.must(colorFilterBuilder)
-                }
-            }
         }
 
         if (filter.prefix != null) {

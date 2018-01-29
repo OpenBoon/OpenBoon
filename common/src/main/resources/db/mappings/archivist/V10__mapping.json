@@ -144,32 +144,6 @@
               "index": "not_analyzed"
             }
           }
-        },
-        "colors": {
-          "type": "nested",
-          "properties": {
-            "red": {
-              "type": "integer"
-            },
-            "green": {
-              "type": "integer"
-            },
-            "blue": {
-              "type": "integer"
-            },
-            "hue": {
-              "type": "float"
-            },
-            "saturation": {
-              "type": "float"
-            },
-            "brightness": {
-              "type": "float"
-            },
-            "ratio": {
-              "type": "float"
-            }
-          }
         }
       },
       "dynamic_templates": [
