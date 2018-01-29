@@ -1,7 +1,9 @@
 package com.zorroa.archivist.web.api
 
+import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.archivist.web.InvalidObjectException
 import com.zorroa.sdk.client.exception.*
+import org.slf4j.LoggerFactory
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.EmptyResultDataAccessException
@@ -16,8 +18,18 @@ import javax.servlet.http.HttpServletRequest
 class Error(r: HttpServletRequest, e:Exception, clazz: Class<*>) {
     val exception: String = clazz.canonicalName
     val cause: String = e.javaClass.canonicalName
-    val message : String? = e.message
+    val message : String?
     val path : String = pathHelper.getRequestUri(r)
+
+    init {
+        val sb = StringBuilder()
+        sb.append(e.message)
+        if (e.cause!= null) {
+            sb.append(", cause: ")
+            sb.append(e.cause?.message)
+        }
+        message = sb.toString()
+    }
 
     companion object {
         val pathHelper = UrlPathHelper()
@@ -27,17 +39,54 @@ class Error(r: HttpServletRequest, e:Exception, clazz: Class<*>) {
 @RestControllerAdvice
 class ApiExceptionHandler {
 
+    val maxStackTraceLength = 20
+
+    fun logError(e: Exception) {
+
+        val sb = StringBuilder(2048)
+        sb.append("API Error: ")
+        sb.append(e.message)
+        sb.append("\n")
+
+        if (e.cause != null) {
+            sb.append("Cause: ")
+            sb.append(e.cause?.message)
+            sb.append("\n")
+        }
+
+        sb.append("User: ")
+        try {
+            sb.append(SecurityUtils.getUsername())
+        }
+        catch (e: Exception) {
+            sb.append("Unknown/Unauthorized")
+        }
+        sb.append("\n")
+
+        for ((index, value) in e.stackTrace.withIndex()) {
+            if (index > maxStackTraceLength) {
+                break
+            }
+            sb.append(value.toString())
+            sb.append("\n")
+        }
+
+        logger.warn(sb.toString())
+    }
+
     @ExceptionHandler(Exception::class)
     fun  defaultErrorHandler (r: HttpServletRequest, e: Exception) : ResponseEntity<Error> {
+
+        logError(e)
 
         if (e is EmptyResultDataAccessException || e is EntityNotFoundException) {
             return ResponseEntity(Error(r, e, EntityNotFoundException::class.java), HttpStatus.NOT_FOUND)
         }
         else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
-            return ResponseEntity(Error(r, e, DuplicateEntityException::class.java),HttpStatus.CONFLICT)
+            return ResponseEntity(Error(r, e, DuplicateEntityException::class.java), HttpStatus.CONFLICT)
         }
         else if (e is ArchivistWriteException) {
-            return ResponseEntity(Error(r, e, ArchivistWriteException::class.java),HttpStatus.EXPECTATION_FAILED)
+            return ResponseEntity(Error(r, e, ArchivistWriteException::class.java), HttpStatus.EXPECTATION_FAILED)
         }
         else if (e is InvalidObjectException ||
                 e is InvalidRequestException ||
@@ -48,10 +97,14 @@ class ApiExceptionHandler {
                 e is NumberFormatException ||
                 e is ArrayIndexOutOfBoundsException ||
                 e is MethodArgumentTypeMismatchException) {
-            return ResponseEntity(Error(r, e, InvalidRequestException::class.java),HttpStatus.BAD_REQUEST)
+            return ResponseEntity(Error(r, e, InvalidRequestException::class.java), HttpStatus.BAD_REQUEST)
         }
         else {
             return  ResponseEntity(Error(r, e, ArchivistException::class.java), HttpStatus.INTERNAL_SERVER_ERROR)
         }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(ApiExceptionHandler::class.java)
     }
 }
