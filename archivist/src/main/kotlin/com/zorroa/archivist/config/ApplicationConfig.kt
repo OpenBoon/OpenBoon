@@ -2,6 +2,7 @@ package com.zorroa.archivist.config
 
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
 import com.zorroa.archivist.security.UserDetailsPluginWrapper
 import com.zorroa.archivist.security.UserDetailsPopulator
@@ -133,6 +134,11 @@ class ArchivistConfiguration {
     @Bean
     fun folderTaskExecutor(): UniqueTaskExecutor {
         return UniqueTaskExecutor(unittest)
+    }
+
+    @Bean
+    fun eventBus() : EventBus {
+        return EventBus()
     }
 
     companion object {

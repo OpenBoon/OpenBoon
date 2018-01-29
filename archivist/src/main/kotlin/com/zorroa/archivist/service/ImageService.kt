@@ -1,12 +1,15 @@
 package com.zorroa.archivist.service
 
 import com.google.common.collect.ImmutableMap
+import com.google.common.eventbus.EventBus
+import com.google.common.eventbus.Subscribe
+import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.domain.Proxy
 import com.zorroa.sdk.filesystem.ObjectFileSystem
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
@@ -47,29 +50,21 @@ interface ImageService {
  */
 @Service
 class ImageServiceImpl @Autowired constructor(
-        private val objectFileSystem: ObjectFileSystem
+        private val objectFileSystem: ObjectFileSystem,
+        private val properties: ApplicationProperties,
+        private val eventBus: EventBus
 
 ) : ImageService {
 
-    @Value("\${archivist.watermark.enabled:false}")
-    private val watermarkEnabled: Boolean = false
-
-    @Value("\${archivist.watermark.min-proxy-size:384}")
-    private val watermarkMinProxyWidth: Int = 0
-
-    @Value("\${archivist.watermark.template}")
-    private val watermarkTemplate: String = ""
-
-    @Value("\${archivist.watermark.font-size:6}")
-    private val watermarkFontSize: Int = 0
-
-    @Value("\${archivist.watermark.font-name:Arial Black}")
-    private val watermarkFontName: String? = null
+    private var watermarkEnabled: Boolean = false
+    private var watermarkMinProxySize: Int = 0
+    private var watermarkTemplate: String = ""
     private var watermarkFont: Font? = null
 
     @PostConstruct
     fun init() {
-        watermarkFont = Font(watermarkFontName, Font.PLAIN, watermarkFontSize)
+        setupWaterMarkFont(null)
+        eventBus.register(this)
     }
 
     @Throws(IOException::class)
@@ -109,7 +104,7 @@ class ImageServiceImpl @Autowired constructor(
     }
 
     override fun watermark(src: BufferedImage): BufferedImage {
-        if (src.width <= watermarkMinProxyWidth && src.height <= watermarkMinProxyWidth) {
+        if (src.width <= watermarkMinProxySize && src.height <= watermarkMinProxySize) {
             return src
         }
 
@@ -140,6 +135,18 @@ class ImageServiceImpl @Autowired constructor(
             g2d.dispose()
         }
         return src
+    }
+
+    @Synchronized
+    @Subscribe
+    fun setupWaterMarkFont(e: WatermarkSettingsChanged?) {
+        watermarkEnabled = properties.getBoolean("archivist.watermark.enabled")
+        watermarkTemplate = properties.getString("archivist.watermark.template")
+        watermarkMinProxySize = properties.getInt("archivist.watermark.min-proxy-size")
+
+        val fontName = properties.getString("archivist.watermark.font-name")
+        val fontSize = properties.getInt("archivist.watermark.font-size")
+        watermarkFont = Font(fontName, Font.PLAIN, fontSize)
     }
 
     companion object {

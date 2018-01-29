@@ -7,8 +7,10 @@ import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
+import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.Setting
 import com.zorroa.archivist.domain.SettingsFilter
+import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.repository.SettingsDao
 import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.common.config.ApplicationProperties
@@ -47,14 +49,16 @@ interface SettingsService {
 }
 
 class SettingValidator(
-        var regex:Regex?,
-        var allowNull : Boolean = true)
+        var regex:Regex? = null,
+        var allowNull : Boolean = true,
+        var emit: Any? = null)
 
 
 @Service
 class SettingsServiceImpl @Autowired constructor(
         private val properties: ApplicationProperties,
-        private val settingsDao: SettingsDao
+        private val settingsDao: SettingsDao,
+        private val eventBus: EventBus
 ): SettingsService, ApplicationListener<ContextRefreshedEvent> {
 
     // a memoizer would be nicer but no good ones that allow manual invalidation
@@ -127,7 +131,7 @@ class SettingsServiceImpl @Autowired constructor(
 
     }
 
-    fun checkValid(key: String, value: String?) {
+    fun checkValid(key: String, value: String?) : SettingValidator {
         val validator = WHITELIST[key] ?: throw ArchivistWriteException(
                 "Cannot set key $key remotely")
 
@@ -145,6 +149,8 @@ class SettingsServiceImpl @Autowired constructor(
                 }
             }
         }
+
+        return validator
     }
 
     override fun set(key: String, value: String?): Boolean {
@@ -152,7 +158,7 @@ class SettingsServiceImpl @Autowired constructor(
     }
 
     fun set(key: String, value: String?, invalidate: Boolean): Boolean {
-        checkValid(key, value)
+        val validator = checkValid(key, value)
 
         logger.info("{} changed to {} by {}", key, value, SecurityUtils.getUsername())
 
@@ -166,6 +172,9 @@ class SettingsServiceImpl @Autowired constructor(
         }
         if (invalidate) {
             settingsCache.invalidateAll()
+        }
+        if (validator.emit != null) {
+            eventBus.post(validator.emit)
         }
         return result
     }
@@ -243,6 +252,11 @@ class SettingsServiceImpl @Autowired constructor(
 
         private val logger = LoggerFactory.getLogger(SettingsServiceImpl::class.java)
 
+        private val numericValue = Regex("\\d+")
+        private val booleanValue = Regex("true|false")
+
+        private val watermarkSettingsChanged = WatermarkSettingsChanged()
+
         /**
          * A whitelist of property names that can be set via the API.
          */
@@ -252,13 +266,20 @@ class SettingsServiceImpl @Autowired constructor(
                 .put("archivist.search.keywords.auto.fields",
                         SettingValidator(Regex("([\\w\\.]+)(,[\\w\\.]+)*")))
                 .put("archivist.search.keywords.auto.enabled",
-                        SettingValidator(Regex("true|false")))
+                        SettingValidator(booleanValue))
                 .put("archivist.export.dragTemplate",
                         SettingValidator(null))
                 .put("archivist.export.videoStreamExtensionFallbackOrder",
                         SettingValidator(null))
                 .put("archivist.search.sortFields",
                         SettingValidator(Regex("([_\\w\\.]+:(ASC|DESC))(,[\\w\\.]+:(ASC|DESC))*")))
+                .put("archivist.watermark.enabled",
+                        SettingValidator(booleanValue, emit=watermarkSettingsChanged))
+                .put("archivist.watermark.template", SettingValidator(emit=watermarkSettingsChanged))
+                .put("archivist.watermark.min-proxy-size",
+                        SettingValidator(numericValue, emit=watermarkSettingsChanged))
+                .put("archivist.watermark.font-size",
+                        SettingValidator(numericValue, emit=watermarkSettingsChanged))
                 .build()
     }
 
