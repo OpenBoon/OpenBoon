@@ -1,5 +1,6 @@
 package com.zorroa.archivist.service
 
+import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.repository.RequestDao
@@ -22,7 +23,16 @@ class RequestServiceImpl @Autowired constructor(
 
 ) : RequestService  {
 
+    @Autowired
+    internal lateinit var folderService: FolderService
+
     override fun create(spec: RequestSpec) : Request {
+        Preconditions.checkNotNull(spec.folderId, "The folderId for a request cannot be null")
+        Preconditions.checkNotNull(spec.type, "The type for a request cannot be null")
+
+        // Validate folder exists.
+        folderService.get(spec.folderId!!)
+
         val req = requestDao.create(spec)
         tx.afterCommit(false, {
             emailService.sendExportRequestEmail(SecurityUtils.getUser(), req)

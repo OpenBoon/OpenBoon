@@ -1,7 +1,5 @@
 package com.zorroa.archivist.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-
 /**
  * The type of request.  Only export is supported currently.
  */
@@ -27,9 +25,6 @@ class RequestSpec {
     var type : RequestType? = null
     var comment : String = ""
     var emailCC : List<String> = listOf()
-
-    @JsonIgnore
-    var count: Int = 0
 }
 
 data class Request (

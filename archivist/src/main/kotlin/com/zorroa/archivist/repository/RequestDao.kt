@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.base.Preconditions
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
@@ -40,10 +39,6 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
     }
 
     override fun create(spec: RequestSpec) : Request {
-        Preconditions.checkNotNull(spec.folderId, "The search for a request cannot be null")
-        Preconditions.checkNotNull(spec.type, "The types for a request cannot be null")
-        Preconditions.checkNotNull(spec.comment, "The comment for a request cannot be null")
-
         val keyHolder = GeneratedKeyHolder()
 
         jdbc.update({ connection ->
@@ -55,10 +50,9 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
             ps.setLong(3, time)
             ps.setLong(4, time)
             ps.setInt(5, spec.folderId!!)
-            ps.setInt(6, spec.count)
-            ps.setInt(7, spec.type!!.ordinal)
-            ps.setString(8, spec.comment)
-            ps.setString(9, Json.serializeToString(spec.emailCC, "[]"))
+            ps.setInt(6, spec.type!!.ordinal)
+            ps.setString(7, spec.comment)
+            ps.setString(8, Json.serializeToString(spec.emailCC, "[]"))
             ps
         }, keyHolder)
 
@@ -93,7 +87,6 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
                 "time_created",
                 "time_modified",
                 "pk_folder",
-                "int_count",
                 "int_type",
                 "str_comment",
                 "json_cc")
