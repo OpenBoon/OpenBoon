@@ -5,7 +5,6 @@ import com.zorroa.archivist.service.TransactionEventManager.Companion.executor
 import org.slf4j.LoggerFactory
 import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
-import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -26,7 +25,7 @@ class TransactionEventManager {
     }
 
     fun register(txs: BaseTransactionSynchronization) {
-        Preconditions.checkNotNull(runnable, "The AsyncTransactionSynchronization cannot be null")
+        Preconditions.checkNotNull(txs, "The BaseTransactionSynchronization cannot be null")
         if (isImmediateMode) {
             try {
                 txs.body()
