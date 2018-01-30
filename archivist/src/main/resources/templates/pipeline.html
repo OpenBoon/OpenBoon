@@ -282,7 +282,7 @@
                 selected.siblings().removeClass("list-group-item-success").end();
                 selected.addClass("list-group-item-success");
                 $("#args").val(selected.attr("data-args"));
-                $("#docs").load("/gui/docs/processor/" + selected.attr("data-classname"));
+                $("#docs").load("/admin/gui/docs/processor/" + selected.attr("data-classname"));
 
                 e.preventDefault();
             });
