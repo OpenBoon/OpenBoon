@@ -1,28 +1,11 @@
 #!/bin/bash
+
+# Simply clones the plugin-sdk into the parent folder.
+# There is no point in building it here and now, since
+# we need it to install its binaries inside the Docker image.
+
 set -ex
 
 pushd ..
-
-git clone https://github.com/sqlboy/TwelveMonkeys
-cd TwelveMonkeys
-mvn clean install
-
-cd ..
-
-git clone git@github.com:Zorroa/ShotgunJava.git
-cd ShotgunJava
-mvn clean ; mvn install
-
-cd ..
-
-git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
-cd zorroa-plugin-sdk
-mvn clean ; mvn install
-
-cd ..
-
-git clone git@github.com:Zorroa/FileseqJava.git
-cd FileseqJava
-mvn clean ; mvn install
-
+git clone git@github.com:Zorroa/zorroa-plugin-sdk.git --quiet
 popd
