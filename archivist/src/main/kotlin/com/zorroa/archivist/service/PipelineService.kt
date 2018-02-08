@@ -101,9 +101,6 @@ class PipelineServiceImpl @Autowired constructor(
     override fun update(id: Int, spec: Pipeline): Boolean {
         val pl = pipelineDao.get(id)
 
-        /**
-         * TODO: recursively validate all processors.
-         */
         val validated = validateProcessors(pl.type, spec.processors)
         spec.processors = validated
 
@@ -127,15 +124,30 @@ class PipelineServiceImpl @Autowired constructor(
         val validated = Lists.newArrayList<ProcessorRef>()
 
         for (ref in refs) {
-            val vref = pluginService.getProcessorRef(ref)
 
-            if (!(PipelineType.ALLOWED_PROCESSOR_TYPES as MutableMap<PipelineType, Set<ProcessorType>>).getOrDefault(pipelineType, ImmutableSet.of<ProcessorType>()).contains(vref.type)) {
-                throw IllegalStateException("Cannot have processor type " +
-                        vref.type + " in a " + pipelineType + " pipeline")
+            if (ref.pipeline != null) {
+                val pl = if (ref.pipeline is String) {
+                    pipelineDao.get(ref.pipeline as String)
+                } else {
+                    pipelineDao.get(ref.pipeline as Int)
+                }
+                if (pl.type != pipelineType) {
+                    throw  throw IllegalArgumentException("Cannot have pipeline type " +
+                            pl.type + " embedded in a " + pipelineType + " pipeline")
+                }
+                validated.add(ProcessorRef().setPipeline(pl.id))
             }
-            validated.add(vref)
-            if (ref.execute != null) {
-                vref.execute = validateProcessors(PipelineType.Import, ref.execute)
+            else {
+                val vref = pluginService.getProcessorRef(ref)
+
+                if (!(PipelineType.ALLOWED_PROCESSOR_TYPES as MutableMap<PipelineType, Set<ProcessorType>>).getOrDefault(pipelineType, ImmutableSet.of<ProcessorType>()).contains(vref.type)) {
+                    throw IllegalStateException("Cannot have processor type " +
+                            vref.type + " in a " + pipelineType + " pipeline")
+                }
+                validated.add(vref)
+                if (ref.execute != null) {
+                    vref.execute = validateProcessors(PipelineType.Import, ref.execute)
+                }
             }
         }
 

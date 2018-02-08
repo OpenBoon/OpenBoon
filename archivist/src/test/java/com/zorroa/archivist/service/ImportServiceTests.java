@@ -37,16 +37,13 @@ public class ImportServiceTests extends AbstractTest {
     Job job;
 
     @Before
-    public void init() {
+    public void testCreateMultiplePipelines() throws IOException {
+
         pluginService.installAndRegisterAllPlugins();
         ImportSpec spec = new ImportSpec();
         spec.setGenerators(ImmutableList.of(
                 new ProcessorRef("com.zorroa.core.common.GroupProcessor")));
         job = importService.create(spec);
-    }
-
-    @Before
-    public void testCreateMultiplePipelines() throws IOException {
 
         Pipeline p1 = pipelineService.create(new PipelineSpecV()
                 .setName("p1")
@@ -62,19 +59,20 @@ public class ImportServiceTests extends AbstractTest {
                 .setDescription("p2")
                 .setType(PipelineType.Import));
 
-        ImportSpec spec = new ImportSpec();
-        spec.setProcessors(ImmutableList.of(
+        ImportSpec spec2 = new ImportSpec();
+        spec2.setProcessors(ImmutableList.of(
                 new ProcessorRef().setPipeline(p1.getId()),
                 new ProcessorRef().setPipeline(p2.getName())
         ));
-        spec.setName("go go go");
-        job = importService.create(spec);
+        spec2.setName("go go go");
+        job = importService.create(spec2);
     }
 
     @Test(expected=EmptyResultDataAccessException.class)
     public void testCreateFailure() {
         ImportSpec spec = new ImportSpec();
-        spec.setGenerators(ImmutableList.of(new ProcessorRef("foo-bar", "java",
+        spec.setGenerators(
+                ImmutableList.of(new ProcessorRef("foo-bar", "java",
                 ImmutableMap.of("paths", ImmutableList.of("/tmp/foo.jpg")))));
         job = importService.create(spec);
     }

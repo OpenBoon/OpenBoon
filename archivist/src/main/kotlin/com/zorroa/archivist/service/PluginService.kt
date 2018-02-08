@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PipelineDao
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Path
+import java.util.*
 import java.util.stream.Collectors
 
 
@@ -41,7 +41,9 @@ interface PluginService {
     fun installBundledPipelines()
 
     fun getAllPlugins(page: Pager): PagedList<Plugin>
+
     fun getPlugin(name: String): Plugin
+
     fun getPlugin(id: Int): Plugin
 
     fun deletePlugin(plugin: Plugin): Boolean
@@ -301,20 +303,32 @@ class PluginServiceImpl @Autowired constructor(
         return getProcessorRefs(pipelineDao.get(pipelineId).processors)
     }
 
-    override fun getProcessorRefs(refs: List<ProcessorRef>?): List<ProcessorRef>? {
+    fun getProcessorRefs(refs: List<ProcessorRef>?, pr: Deque<Int>): List<ProcessorRef>? {
         if (refs == null) {
             return null
         }
-        val result = Lists.newArrayListWithCapacity<ProcessorRef>(refs.size)
+        val result = mutableListOf<ProcessorRef>()
         for (ref in refs) {
 
-            val pipeline = ref.pipeline
-            if (pipeline != null) {
-                if (pipeline is Int) {
-                    result.addAll(pipelineDao.get(pipeline).processors)
-                } else {
-                    result.addAll(pipelineDao.get(pipeline as String).processors)
+            val pipelineId = ref.pipeline
+            if (pipelineId != null) {
+
+                var pipeline : Pipeline =  if (pipelineId is Int) {
+                    pipelineDao.get(pipelineId)
                 }
+                else {
+                    pipelineDao.get(pipelineId as String)
+                }
+
+                if (pr.contains(pipeline.id)) {
+                    throw IllegalStateException("Self referencing pipeline: " + pipeline.id)
+                }
+                pr.add(pipeline.id)
+
+                val procs : List<ProcessorRef>? = getProcessorRefs(pipeline.processors, pr)
+                procs?.let { result.addAll(procs) }
+                pr.pop()
+
             } else {
                 val ref2 = processorDao.getRef(ref.className)
                         .setArgs(ref.args)
@@ -333,6 +347,10 @@ class PluginServiceImpl @Autowired constructor(
             }
         }
         return result
+    }
+
+    override fun getProcessorRefs(refs: List<ProcessorRef>?): List<ProcessorRef>? {
+        return getProcessorRefs(refs, ArrayDeque<Int>())
     }
 
     override fun getAllProcessors(
