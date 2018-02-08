@@ -73,7 +73,6 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
                 "user_modified,"+
                 "time_created,"+
                 "time_modified,"+
-                "int_count,"+
                 "int_type,"+
                 "int_state,"+
                 "str_comment, "+
