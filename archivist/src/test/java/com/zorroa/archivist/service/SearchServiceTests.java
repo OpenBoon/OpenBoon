@@ -5,15 +5,20 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.Color;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FieldDao;
-import com.zorroa.sdk.domain.*;
+import com.zorroa.sdk.domain.AssetIndexSpec;
+import com.zorroa.sdk.domain.Document;
+import com.zorroa.sdk.domain.PagedList;
+import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.LocationSchema;
 import com.zorroa.sdk.schema.SourceSchema;
-import com.zorroa.sdk.search.*;
+import com.zorroa.sdk.search.AssetFilter;
+import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.search.Scroll;
+import com.zorroa.sdk.search.SimilarityFilter;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchResponse;
 import org.junit.Before;
@@ -528,25 +533,6 @@ public class SearchServiceTests extends AbstractTest {
         Map<String, Set<String>> fields = searchService.getFields("asset");
         assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
         assertFalse(fields.get("string").contains("foo.keywords"));
-    }
-
-    @Test
-    public void testColorSearch() {
-        Color color = new Color(255, 10, 10).setRatio(50f);
-
-        Source Source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        Source.setAttr("colors", ImmutableList.of(color));
-        assetService.index(Source);
-        refreshIndex();
-
-        assertEquals(1, searchService.search(
-                new AssetSearch().setFilter(new AssetFilter().putToColors("colors",
-                        new ColorFilter()
-                        .setMinRatio(45)
-                        .setMaxRatio(55)
-                        .setHueAndRange(0, 5)
-                        .setSaturationAndRange(100, 5)
-                        .setBrightnessAndRange(50, 5)))).getHits().getTotalHits());
     }
 
     @Test
