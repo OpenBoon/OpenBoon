@@ -17,6 +17,7 @@ import com.zorroa.sdk.search.AssetFilter
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.search.RangeQuery
 import com.zorroa.sdk.search.SimilarityFilter
+import com.zorroa.sdk.util.Json
 import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
@@ -610,7 +611,27 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
-        if (filter.similarity != null) {
+        // backwards compatible hamming.
+        if (filter.hamming != null) {
+            val hdf = Json.Mapper.convertValue<HammingDistanceFilter>(filter.hamming,
+                    HammingDistanceFilter::class.java)
+
+            val simFilter = SimilarityFilter()
+            simFilter.hashes = mutableListOf()
+
+            for ((index, value) in hdf.hashes.withIndex()) {
+                val shash = SimilarityFilter.SimilarityHash()
+                value?.let {
+                    shash.hash = it.toString()
+                    shash.order = index
+                    shash.weight = hdf.weights.elementAtOrElse(index, { 1.0f })
+                    simFilter.hashes.add(shash)
+                }
+            }
+
+            handleHammingFilter(mapOf(hdf.field to simFilter), query)
+        }
+        else if (filter.similarity != null) {
             handleHammingFilter(filter.similarity, query)
         }
 
