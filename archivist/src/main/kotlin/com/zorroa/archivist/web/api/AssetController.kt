@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
+import com.zorroa.archivist.web.sender.FlipbookSender
 import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.*
@@ -76,14 +77,20 @@ class AssetController @Autowired constructor(
         get() = assetService.getMapping()
 
     fun getPreferredFormat(asset: Document, preferExt: String?, fallback: Boolean, streamProxy: Boolean): StreamFile? {
-        if (streamProxy) {
+
+        val mediaType = asset.getAttr("source.mediaType", String::class.java)
+
+        /**
+         * Zorroa types get handled special.
+         */
+        if (mediaType.startsWith("zorroa/")) {
+            return StreamFile("", mediaType, false)
+        }
+        else if (streamProxy) {
             return getProxyStream(asset)
         } else {
-
             val checkFiles = Lists.newArrayList<StreamFile>()
-
             val path = asset.getAttr("source.path", String::class.java)
-            val mediaType = asset.getAttr("source.mediaType", String::class.java)
             val type = asset.getAttr("source.type", String::class.java)
 
             if (preferExt != null) {
@@ -154,11 +161,10 @@ class AssetController @Autowired constructor(
         val canExport = SecurityUtils.canExport(asset)
         val format = getPreferredFormat(asset, ext, fallback, !canExport)
 
-        /*
-         * Nothing to return...
-         */
         if (format == null) {
             response.status = 404
+        } else if (format.mimeType.endsWith("x-flipbook")) {
+            FlipbookSender(id, searchService).serveResource(response)
         } else {
             try {
                 MultipartFileSender.fromPath(Paths.get(format.path))
