@@ -1,5 +1,7 @@
 package com.zorroa.archivist.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.sdk.domain.Document;
@@ -38,9 +40,10 @@ public class ExportServiceTests extends AbstractTest {
 
     @Test
     public void testCreate() {
-        ExportSpec spec = new ExportSpec();
-        spec.setName("test");
-        spec.setSearch(new AssetSearch().setQuery("cats"));
+        ExportSpec spec = new ExportSpec("test",
+                new AssetSearch().setQuery("cats"),
+                Lists.newArrayList(),
+                Maps.newHashMap());
 
         job = exportService.create(spec);
         int count = jdbc.queryForObject(
@@ -50,15 +53,14 @@ public class ExportServiceTests extends AbstractTest {
 
     @Test
     public void testCreateAndGetExportFile() {
-        ExportSpec spec = new ExportSpec();
-        spec.setName("test");
-        spec.setSearch(new AssetSearch().setQuery("cats"));
+        ExportSpec spec = new ExportSpec("test",
+                new AssetSearch().setQuery("cats"),
+                Lists.newArrayList(),
+                Maps.newHashMap());
         job = exportService.create(spec);
 
-        ExportFile file1 = exportService.createExportFile(job, new ExportFileSpec()
-                .setMimeType("application/octet-stream")
-                .setName("foo.zip")
-                .setSize(100));
+        ExportFile file1 = exportService.createExportFile(job, new ExportFileSpec(
+                "foo.zip", "application/octet-stream", 100));
         ExportFile file2 = exportService.getExportFile(file1.getId());
         assertEquals(file1, file2);
         assertEquals(file1.getJobId(), file2.getJobId());
@@ -70,16 +72,16 @@ public class ExportServiceTests extends AbstractTest {
     @Test
     public void testGetAllExportFiles() {
 
-        ExportSpec spec = new ExportSpec();
-        spec.setName("test");
-        spec.setSearch(new AssetSearch().setQuery("cats"));
+        ExportSpec spec = new ExportSpec("test",
+                new AssetSearch().setQuery("cats"),
+                Lists.newArrayList(),
+                Maps.newHashMap());
+
         job = exportService.create(spec);
 
         for (int i=0; i<10; i++) {
-            exportService.createExportFile(job, new ExportFileSpec()
-                    .setMimeType("application/octet-stream")
-                    .setName("foo"+ i +".zip")
-                    .setSize(1024));
+            exportService.createExportFile(job, new ExportFileSpec(
+                    "foo"+ i +".zip", "application/octet-stream", 1024));
         }
 
         List<ExportFile> files = exportService.getAllExportFiles(job);

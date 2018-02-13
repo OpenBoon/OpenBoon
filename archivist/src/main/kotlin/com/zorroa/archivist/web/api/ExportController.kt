@@ -57,9 +57,11 @@ class ExportController @Autowired constructor(
          * Don't let people download other people's exports, as its not possible
          * to know if they have access to each individual file.
          */
+        /*
         if (job.jobId as Long != file.jobId) {
             throw IllegalArgumentException("Invalid export file")
         }
+        */
         if (job.user.id != SecurityUtils.getUser().id) {
             throw IllegalArgumentException("Invalid export for " + SecurityUtils.getUsername())
         }

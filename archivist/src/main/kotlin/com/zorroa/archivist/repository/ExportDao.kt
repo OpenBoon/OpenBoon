@@ -62,14 +62,12 @@ open class ExportDaoImpl : AbstractDao(), ExportDao {
                 "time_created")
 
         private val MAPPER_EXPORT_FILE = RowMapper<ExportFile> { rs, _ ->
-            val file = ExportFile()
-            file.id = rs.getLong("pk_export_file")
-            file.jobId = rs.getLong("pk_job")
-            file.mimeType = rs.getString("str_mime_type")
-            file.name = rs.getString("str_name")
-            file.size = rs.getLong("int_size")
-            file.timeCreated = rs.getLong("time_created")
-            file
+            ExportFile(rs.getLong("pk_export_file"),
+                    rs.getLong("pk_job"),
+                    rs.getString("str_name"),
+                    rs.getString("str_mime_type"),
+                    rs.getLong("int_size"),
+                    rs.getLong("time_created"))
         }
 
         private val GET = "SELECT " +

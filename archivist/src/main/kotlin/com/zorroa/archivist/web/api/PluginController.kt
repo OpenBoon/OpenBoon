@@ -39,7 +39,7 @@ class PluginController @Autowired constructor(
         }
     }
 
-    @RequestMapping(value = ["/api/v1/processors"], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/api/v1/processors"], method = [RequestMethod.GET, RequestMethod.POST])
     fun processors(@RequestBody(required = false) filter: ProcessorFilter?): List<Processor> {
         return if (filter == null) {
             pluginService.getAllProcessors()

@@ -31,11 +31,8 @@ public class ExportDaoTests extends AbstractTest {
 
     @Test
     public void testCreateExportFile() {
-        ExportFileSpec spec = new ExportFileSpec();
-        spec.setMimeType("application/octet-stream");
-        spec.setName("bob.zip");
-        spec.setSize(1022123);
-
+        ExportFileSpec spec = new ExportFileSpec(
+                "bob.zip", "application/octet-stream",1022123);
         exportDao.createExportFile(job, spec);
     }
 }

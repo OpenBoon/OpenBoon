@@ -147,7 +147,7 @@ class ExportServiceImpl @Autowired constructor(
          * Arrays for the primary and per-asset pipeline.
          */
         val generate = Lists.newArrayList<ProcessorRef>()
-        val execute = pipelineService.mungePipelines(PipelineType.Export, spec.getProcessors())
+        val execute = pipelineService.mungePipelines(PipelineType.Export, spec.processors)
 
         script.generate = generate
         script.execute = execute
