@@ -1,10 +1,10 @@
 package com.zorroa.archivist;
 
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.config.ArchivistConfiguration;
 import com.zorroa.archivist.domain.MigrationType;
-import com.zorroa.archivist.domain.Permission;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.repository.AnalystDao;
@@ -19,6 +19,9 @@ import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.FileUtils;
+import com.zorroa.sdk.util.Json;
+import com.zorroa.security.UserAuthed;
+import com.zorroa.security.UserRegistryService;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -32,6 +35,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -47,6 +51,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -104,6 +109,9 @@ public abstract class AbstractTest {
 
     @Autowired
     protected RequestService requestService;
+
+    @Autowired
+    protected UserRegistryService userRegistryService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -205,6 +213,8 @@ public abstract class AbstractTest {
 
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
+
+        Json.Mapper.registerModule(new KotlinModule());
     }
 
     public void cleanElastic() {
@@ -237,15 +247,17 @@ public abstract class AbstractTest {
     }
 
     public void authenticate(String username, boolean superUser) {
-        User user = userService.get(username);
-        List<Permission> perms = userService.getPermissions(user);
+        UserAuthed authed = userRegistryService.getUser(username);
+        Collection<GrantedAuthority> authorities = Lists.newArrayList(
+                authed.getAuthorities());
+
         if (superUser) {
-            perms.add(permissionService.getPermission("group::administrator"));
+            authorities.add(
+                    permissionService.getPermission("group::administrator"));
         }
 
         SecurityContextHolder.getContext().setAuthentication(
-                authenticationManager.authenticate(new UnitTestAuthentication(user,
-                        perms)));
+                authenticationManager.authenticate(new UnitTestAuthentication(authed, authorities)));
     }
 
     public void logout() {

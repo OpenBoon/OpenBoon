@@ -1,10 +1,9 @@
 package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
-import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserAuthed;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.security.UserAuthed;
+import com.zorroa.security.UserRegistryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +22,22 @@ public class ZorroaAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRegistryService userRegistryService;
+
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
 
         String username = authentication.getName();
-        User user;
-        try {
-            user = userService.get(username);
-        } catch (Exception e) {
+        if (!userService.exists(username)) {
             throw new BadCredentialsException("Invalid username or password");
         }
-
         userService.checkPassword(username, authentication.getCredentials().toString());
+        UserAuthed authed = userRegistryService.getUser(username);
 
         UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",
-                InternalPermission.upcast(userService.getPermissions(user)));
+                new UsernamePasswordAuthenticationToken(authed, "", authed.getAuthorities());
         return auth;
     }
 

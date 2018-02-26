@@ -7,18 +7,18 @@ import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
+import com.zorroa.archivist.repository.UserDaoCache
 import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.DuplicateEntityException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
+import com.zorroa.security.UserId
+import com.zorroa.security.UserRegistryService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataAccessException
 import org.springframework.security.authentication.BadCredentialsException
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -67,15 +67,15 @@ interface UserService {
 
     fun setEnabled(user: User, value: Boolean): Boolean
 
-    fun getPermissions(user: User): List<Permission>
+    fun getPermissions(user: UserId): List<Permission>
 
-    fun setPermissions(user: User, perms: Collection<Permission>)
+    fun setPermissions(user: UserId, perms: Collection<Permission>)
 
-    fun addPermissions(user: User, perms: Collection<Permission>)
+    fun addPermissions(user: UserId, perms: Collection<Permission>)
 
-    fun removePermissions(user: User, perms: Collection<Permission>)
+    fun removePermissions(user: UserId, perms: Collection<Permission>)
 
-    fun hasPermission(user: User, type: String, name: String): Boolean
+    fun hasPermission(user: UserId, type: String, name: String): Boolean
 
     fun hasPermission(user: User, permission: Permission): Boolean
     fun getUserPreset(id: Int): UserPreset
@@ -89,7 +89,43 @@ interface UserService {
 
     fun resetPassword(token: String, password: String): User?
 
-    fun incrementLoginCounter(user: User)
+    fun incrementLoginCounter(user: UserId)
+}
+
+
+@Service
+@Transactional
+class UserRegistryServiceImpl @Autowired constructor(
+        private val userCacheDao: UserDaoCache,
+        private val permissionDao: PermissionDao
+): UserRegistryService {
+
+    @Autowired
+    internal lateinit var userService: UserService
+
+    /**
+     * Register and external user from OAuth/SAML.
+     */
+    override fun registerUser(username: String, source: String): com.zorroa.security.UserAuthed {
+
+        val user = if (!userService.exists(username)) {
+            val spec = UserSpec()
+            spec.username = username
+            spec.email = username
+            userService.create(spec, source)
+        } else {
+            userService.get(username)
+        }
+
+        val perms = userService.getPermissions(user)
+        return com.zorroa.security.UserAuthed(user.id, user.username, perms.toSet())
+    }
+
+    override fun getUser(username: String): com.zorroa.security.UserAuthed {
+        val user = userCacheDao.getUser(username)
+        val perms = permissionDao.getAll(user)
+        return com.zorroa.security.UserAuthed(user.id, user.username, perms.toSet())
+    }
 }
 
 @Service
@@ -270,15 +306,15 @@ class UserServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun incrementLoginCounter(user: User) {
+    override fun incrementLoginCounter(user: UserId) {
         return userDao.incrementLoginCounter(user)
     }
 
-    override fun getPermissions(user: User): List<Permission> {
+    override fun getPermissions(user: UserId): List<Permission> {
         return permissionDao.getAll(user)
     }
 
-    override fun setPermissions(user: User, perms: Collection<Permission>) {
+    override fun setPermissions(user: UserId, perms: Collection<Permission>) {
         /*
          * Don't let setPermissions set immutable permission types which can never
          * be added or removed via the external API.
@@ -292,7 +328,7 @@ class UserServiceImpl @Autowired constructor(
         })
     }
 
-    override fun addPermissions(user: User, perms: Collection<Permission>) {
+    override fun addPermissions(user: UserId, perms: Collection<Permission>) {
         for (p in perms) {
             if (PERMANENT_TYPES.contains(p.type)) {
                 continue
@@ -307,7 +343,7 @@ class UserServiceImpl @Autowired constructor(
         })
     }
 
-    override fun removePermissions(user: User, perms: Collection<Permission>) {
+    override fun removePermissions(user: UserId, perms: Collection<Permission>) {
         /**
          * Check to see if the permissions we are
          */
@@ -324,7 +360,7 @@ class UserServiceImpl @Autowired constructor(
         })
     }
 
-    override fun hasPermission(user: User, type: String, name: String): Boolean {
+    override fun hasPermission(user: UserId, type: String, name: String): Boolean {
         return userDao.hasPermission(user, type, name)
     }
 
@@ -418,20 +454,3 @@ class UserServiceImpl @Autowired constructor(
     }
 }
 
-open class LocalUserDetailService : UserDetailsService {
-
-    private lateinit var userDao: UserDao
-
-    @Transactional
-    @Throws(UsernameNotFoundException::class)
-    override fun loadUserByUsername(userId: String): UserDetails {
-        logger.info("loading {}", userId)
-        return UserAuthed(userDao.get(userId))
-    }
-
-    companion object {
-
-        private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
-
-    }
-}

@@ -1,12 +1,10 @@
 package com.zorroa.archivist.security;
 
-import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserAuthed;
+import com.zorroa.security.UserAuthed;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by chambers on 10/29/15.
@@ -17,9 +15,10 @@ public class UnitTestAuthentication extends AbstractAuthenticationToken {
     private final Object principal;
     private final String username;
 
-    public UnitTestAuthentication(User principal, List<Permission> authorities) {
-        super(InternalPermission.upcast(authorities));
-        this.principal = new UserAuthed(principal);
+    public UnitTestAuthentication(UserAuthed principal,
+                                  Collection<? extends GrantedAuthority> authorities) {
+        super(authorities);
+        this.principal = principal;
         this.username = principal.getUsername();
     }
 

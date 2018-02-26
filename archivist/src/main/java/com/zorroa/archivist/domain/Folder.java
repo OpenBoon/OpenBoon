@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain;
 
+import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.Map;
@@ -175,8 +176,11 @@ public class Folder implements Loggable<Integer> {
 
     @Override
     public String toString() {
-        return String.format("<Folder id=%s parent=%s name=%s acl=%s>",
-                id, parentId, name, acl);
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("parentId", parentId)
+                .add("name", name)
+                .toString();
     }
 
     @Override

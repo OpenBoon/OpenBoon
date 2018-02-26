@@ -1,9 +1,8 @@
 package com.zorroa.archivist.security;
 
-import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.security.UserAuthed;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
@@ -14,8 +13,14 @@ public class InternalAuthentication extends AbstractAuthenticationToken {
 
     private final Object principal;
 
-    public InternalAuthentication(User user, Collection<Permission> authorities) {
-        super(InternalPermission.upcast(authorities));
+    public InternalAuthentication(UserAuthed user) {
+        super(user.getAuthorities());
+        this.principal = user;
+        this.setAuthenticated(true);
+    }
+
+    public InternalAuthentication(UserAuthed user, Collection<? extends GrantedAuthority> authorities) {
+        super(authorities);
         this.principal = user;
         this.setAuthenticated(true);
     }

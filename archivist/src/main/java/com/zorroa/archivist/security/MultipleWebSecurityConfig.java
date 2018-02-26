@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.UserLogSpec;
 import com.zorroa.archivist.service.EventLogService;
 import com.zorroa.archivist.service.UserService;
 import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.security.UserAuthed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
-import org.springframework.security.ldap.authentication.BindAuthenticator;
-import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
-import org.springframework.security.ldap.search.FilterBasedLdapUserSearch;
-import org.springframework.security.ldap.search.LdapUserSearch;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -43,12 +39,6 @@ public class MultipleWebSecurityConfig {
 
     @Autowired
     ApplicationProperties properties;
-
-    @Autowired
-    UserDetailsPopulator userDetailsPopulator;
-
-    @Autowired
-    UserDetailsPluginWrapper userDetailsPluginWrapper;
 
     private static final Logger logger = LoggerFactory.getLogger(MultipleWebSecurityConfig.class);
 
@@ -145,9 +135,6 @@ public class MultipleWebSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService, EventLogService logService) throws Exception {
 
-        if (properties.getBoolean("archivist.security.ldap.enabled")) {
-            auth.authenticationProvider(ldapAuthenticationProvider(userDetailsPopulator, userDetailsPluginWrapper));
-        }
         if (properties.getBoolean("archivist.security.hmac.enabled")) {
             auth.authenticationProvider(hmacAuthenticationProvider());
         }
@@ -175,7 +162,7 @@ public class MultipleWebSecurityConfig {
             public void publishAuthenticationSuccess(
                     Authentication authentication) {
                 try {
-                    User user = (User)authentication.getPrincipal();
+                    UserAuthed user = (UserAuthed) authentication.getPrincipal();
                     userService.incrementLoginCounter(user);
                     logService.logAsync(new UserLogSpec()
                             .setAction(LogAction.Login)
@@ -214,24 +201,5 @@ public class MultipleWebSecurityConfig {
     @Bean
     public AuthenticationProvider hmacAuthenticationProvider() {
         return new HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"));
-    }
-
-    @Bean
-    @Autowired
-    public AuthenticationProvider ldapAuthenticationProvider(UserDetailsPopulator populator, UserDetailsPluginWrapper userDetailsPluginWrapper) throws Exception {
-        String url = properties.getString("archivist.security.ldap.url");
-        String base = properties.getString("archivist.security.ldap.base");
-        String filter = properties.getString("archivist.security.ldap.filter");
-
-        DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(url);
-        contextSource.setBase(base);
-        contextSource.afterPropertiesSet();
-        LdapUserSearch ldapUserSearch = new FilterBasedLdapUserSearch("", filter, contextSource);
-        BindAuthenticator bindAuthenticator = new BindAuthenticator(contextSource);
-        bindAuthenticator.setUserSearch(ldapUserSearch);
-        LdapAuthenticationProvider ldapAuthenticationProvider =
-                new LdapAuthenticationProvider(bindAuthenticator, userDetailsPluginWrapper);
-        ldapAuthenticationProvider.setUserDetailsContextMapper(populator);
-        return ldapAuthenticationProvider;
     }
 }

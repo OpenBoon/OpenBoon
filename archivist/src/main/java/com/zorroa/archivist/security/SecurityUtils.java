@@ -2,12 +2,15 @@ package com.zorroa.archivist.security;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.Access;
+import com.zorroa.archivist.domain.Acl;
+import com.zorroa.archivist.domain.Permission;
 import com.zorroa.sdk.client.exception.ArchivistWriteException;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.util.Json;
+import com.zorroa.security.UserAuthed;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
@@ -37,44 +40,33 @@ public class SecurityUtils {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public static String getUsername() {
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            throw new AuthenticationCredentialsNotFoundException("No login credentials specified");
-        } else {
-            try {
-                User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                return user.getUsername();
-            } catch (ClassCastException e) {
-                throw new AuthenticationCredentialsNotFoundException("Invalid login creds for: " +
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-            }
-        }
-    }
-
     public static UserAuthed getUser() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             throw new AuthenticationCredentialsNotFoundException("No login credentials specified");
         } else {
             try {
                 return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-            } catch (ClassCastException e) {
-                throw new AuthenticationCredentialsNotFoundException("Invalid login creds for: " +
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            } catch (ClassCastException e1) {
+                try {
+                    return (UserAuthed) SecurityContextHolder.getContext().getAuthentication().getDetails();
+                } catch (ClassCastException e2) {
+                    throw new AuthenticationCredentialsNotFoundException("Invalid login creds, UserAuthed not found");
+                }
             }
         }
     }
 
     public static UserAuthed getUserOrNull() {
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            return null;
-        } else {
-            try {
-                return ((UserAuthed) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-            } catch (ClassCastException e) {
-                throw new AuthenticationCredentialsNotFoundException("Invalid login creds for: " +
-                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-            }
+        try {
+            return getUser();
         }
+        catch (AuthenticationCredentialsNotFoundException ex) {
+            return null;
+        }
+    }
+
+    public static String getUsername() {
+        return getUser().getUsername();
     }
 
     /**

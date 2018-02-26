@@ -26,6 +26,10 @@ class RequestServiceImpl @Autowired constructor(
     @Autowired
     internal lateinit var folderService: FolderService
 
+    @Autowired
+    internal lateinit var userService: UserService
+
+
     override fun create(spec: RequestSpec) : Request {
         Preconditions.checkNotNull(spec.folderId, "The folderId for a request cannot be null")
         Preconditions.checkNotNull(spec.type, "The type for a request cannot be null")
@@ -35,7 +39,8 @@ class RequestServiceImpl @Autowired constructor(
 
         val req = requestDao.create(spec)
         tx.afterCommit(false, {
-            emailService.sendExportRequestEmail(SecurityUtils.getUser(), req)
+            val user = userService.get(SecurityUtils.getUser().id)
+            emailService.sendExportRequestEmail(user, req)
         })
         return req
     }

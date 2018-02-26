@@ -19,9 +19,8 @@ import getpass
 import os
 import paramiko
 import sys
-from scp import SCPClient
 import textwrap
-
+from scp import SCPClient
 
 # -------------------------------------------------------------------------
 # Global Variables
@@ -371,7 +370,7 @@ def start_server(cwd, server_cmd, aws_host, aws_user, password):
     if DEBUG:
         print "[DEBUG] start_server"
 
-    cmd = "cd " + cwd + "; " + server_cmd 
+    cmd = "cd " + cwd + "; " + server_cmd
     result = run_remote_command(cmd, aws_host, aws_user, password)
     return(result)
 
@@ -671,7 +670,7 @@ def main():
     else:
         if VERBOSE:
             print "New Zorroa Server Software install"
-        
+
 
     # ---------------------------------------
     # copy the file
@@ -713,7 +712,7 @@ def main():
         if args.shared_path is not '':
             cmd = "echo -e 'archivist.path.shared = " + args.shared_path + "' >> " + str(args.aws_path) + "/" + str(filename_version) + "/config/application.properties"
             result = run_remote_command(cmd, args.aws_host, args.aws_user, password)
-    
+
     if args.archivist_server != '':
         cmd = "echo 'analyst.master.host = " + args.archivist_server + "\nanalyst.executor.threads = 2\nanalyst.index.data=false' >> " + str(args.aws_path) + "/" + str(filename_version) + "/config/application.properties"
         result = run_remote_command(cmd, args.aws_host, args.aws_user, password)
@@ -758,7 +757,7 @@ def main():
         if (result is False):
             print "returned error from copy_shared_plugins.  exiting"
             sys.exit(1)
-        
+
         result = copy_shared_plugins(PYTHON_PLUGINS, args.python_plugins_path,
                                      aws_shared_plugins_path,
                                      args.aws_user, args.aws_host,
@@ -769,7 +768,7 @@ def main():
         if (result is False):
             print "returned error from copy_shared_plugins trying to copy python plugns.  exiting"
             sys.exit(1)
-        
+
     if args.start_server:
         server_dir = args.aws_path + "/" + filename
         server_cmd = "bin/" + filename + " -d "

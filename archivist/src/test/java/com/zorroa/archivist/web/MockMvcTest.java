@@ -5,6 +5,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.sdk.util.Json;
+import com.zorroa.security.UserAuthed;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
@@ -61,25 +62,15 @@ public abstract class MockMvcTest extends AbstractTest {
     }
 
     protected MockHttpSession user(String name) {
-        User user = userService.get(name);
-        return buildSession(new UnitTestAuthentication(user, userService.getPermissions(user)));
-    }
-
-    protected MockHttpSession user(Integer id) {
-        User user = userService.get(id);
-        return buildSession(new UnitTestAuthentication(user, userService.getPermissions(user)));
+        UserAuthed user = userRegistryService.getUser(name);
+        return buildSession(new UnitTestAuthentication(user, user.getAuthorities()));
     }
 
     /**
      * @return a session for an admin with the id 1.
      */
     protected MockHttpSession admin() {
-        return admin(1);
-    }
-
-    protected MockHttpSession admin(Integer id) {
-        User user = userService.get(id);
-        return buildSession(new UnitTestAuthentication(user, permissionService.getPermissions()));
+        return user("admin");
     }
 
     public static class StatusResult<T> {

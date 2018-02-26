@@ -69,7 +69,7 @@ public class UserControllerTests extends MockMvcTest {
 
         User user2 = Json.deserialize(
                 result.getResponse().getContentAsByteArray(), User.class);
-        assertEquals(user, user2);
+        assertEquals(user.getId(), user2.getId());
     }
 
     @Test

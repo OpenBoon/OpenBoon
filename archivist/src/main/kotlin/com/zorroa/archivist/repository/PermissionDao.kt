@@ -6,6 +6,7 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
+import com.zorroa.security.UserId
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -40,7 +41,7 @@ interface PermissionDao {
 
     fun exists(name: String): Boolean
 
-    fun getAll(user: User): List<Permission>
+    fun getAll(user: UserId): List<Permission>
 
     fun getAll(type: String): List<Permission>
 
@@ -170,7 +171,7 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 Int::class.java, name) == 1
     }
 
-    override fun getAll(user: User): List<Permission> {
+    override fun getAll(user: UserId): List<Permission> {
         return jdbc.query(GET_BY_USER, MAPPER, user.id)
     }
 

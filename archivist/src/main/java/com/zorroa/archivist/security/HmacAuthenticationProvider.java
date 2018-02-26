@@ -1,9 +1,8 @@
 package com.zorroa.archivist.security;
 
-import com.zorroa.archivist.domain.InternalPermission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserAuthed;
 import com.zorroa.archivist.service.UserService;
+import com.zorroa.security.UserAuthed;
+import com.zorroa.security.UserRegistryService;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +27,9 @@ public class HmacAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRegistryService userRegistryService;
+
     private final boolean trustMode;
 
     public HmacAuthenticationProvider(boolean trustMode) {
@@ -42,9 +44,9 @@ public class HmacAuthenticationProvider implements AuthenticationProvider {
 
         if (trustMode) {
             try {
-                User user = userService.get(username);
-                return new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",
-                        InternalPermission.upcast(userService.getPermissions(user)));
+                UserAuthed authed = userRegistryService.getUser(username);
+                return new UsernamePasswordAuthenticationToken(authed, "",
+                        authed.getAuthorities());
 
             } catch (Exception e) {
                 logger.warn("password authentication failed for user: {}", username, e);
@@ -58,9 +60,9 @@ public class HmacAuthenticationProvider implements AuthenticationProvider {
                 String crypted = Hex.encodeHexString(mac.doFinal(msgClear.getBytes()));
 
                 if (crypted.equals(msgCrypt)) {
-                    User user = userService.get(username);
-                    return new UsernamePasswordAuthenticationToken(new UserAuthed(user), "",
-                            InternalPermission.upcast(userService.getPermissions(user)));
+                    UserAuthed authed = userRegistryService.getUser(username);
+                    return new UsernamePasswordAuthenticationToken(authed, "",
+                            authed.getAuthorities());
                 } else {
                     logger.warn("password authentication failed for user: {}", username);
                     throw new BadCredentialsException("Invalid username or password");

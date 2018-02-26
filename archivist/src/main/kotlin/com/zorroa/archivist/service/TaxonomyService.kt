@@ -16,6 +16,7 @@ import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.search.AssetFilter
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
+import com.zorroa.security.UserRegistryService
 import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchResponse
@@ -84,7 +85,7 @@ class TaxonomyServiceImpl @Autowired constructor(
     internal lateinit var searchService: SearchService
 
     @Autowired
-    internal lateinit var userService: UserService
+    internal lateinit var userRegistryService: UserRegistryService
 
     @Value("\${zorroa.cluster.index.alias}")
     private val alias: String? = null
@@ -93,8 +94,8 @@ class TaxonomyServiceImpl @Autowired constructor(
 
     private val auth: Authentication
         get() {
-            val user = userService.get("admin")
-            return InternalAuthentication(user, userService.getPermissions(user))
+            val user = userRegistryService.getUser("admin")
+            return InternalAuthentication(user)
         }
 
     override fun delete(tax: Taxonomy?, untag: Boolean): Boolean {

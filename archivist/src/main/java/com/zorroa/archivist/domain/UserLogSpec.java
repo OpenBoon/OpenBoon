@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.security.UserId;
 
 import java.util.List;
 import java.util.Map;
@@ -73,12 +74,27 @@ public class UserLogSpec {
                 .setTarget(target);
     }
 
+    public static final UserLogSpec build(String action, UserId target) {
+        return new UserLogSpec()
+                .setUser(SecurityUtils.getUserOrNull())
+                .setAction(action.toString().toLowerCase())
+                .setTarget(target);
+    }
+
+    public static final UserLogSpec build(LogAction action, UserId target) {
+        return new UserLogSpec()
+                .setUser(SecurityUtils.getUserOrNull())
+                .setAction(action.toString().toLowerCase())
+                .setTarget(target);
+    }
+
     public static final UserLogSpec build(LogAction action, Loggable target) {
         return new UserLogSpec()
                 .setUser(SecurityUtils.getUserOrNull())
                 .setAction(action.toString().toLowerCase())
                 .setTarget(target);
     }
+
     public static final UserLogSpec build(LogAction action, String type, Object ... id) {
         return new UserLogSpec()
                 .setUser(SecurityUtils.getUserOrNull())
@@ -86,10 +102,10 @@ public class UserLogSpec {
                 .setTarget(ImmutableMap.of(type, new Object[] {id}));
     }
 
-    public UserLogSpec setUser(UserBase user) {
+    public UserLogSpec setUser(UserId user) {
         if (user != null) {
             this.user = ImmutableMap.of(
-                    "username", user.getUsername(),
+                    "username", user.getName(),
                     "id", user.getId());
         }
         return this;
@@ -100,6 +116,12 @@ public class UserLogSpec {
                 target.getTargetType(), new Object[] {target.getTargetId() });
         return this;
     }
+
+    public UserLogSpec setTarget(UserId target) {
+        this.target = ImmutableMap.of("user", new Object[] { target.getId() });
+        return this;
+    }
+
 
     public String getAction() {
         return action;

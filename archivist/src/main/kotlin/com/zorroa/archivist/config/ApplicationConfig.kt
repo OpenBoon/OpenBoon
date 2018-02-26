@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
-import com.zorroa.archivist.security.UserDetailsPluginWrapper
-import com.zorroa.archivist.security.UserDetailsPopulator
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
@@ -16,8 +14,6 @@ import com.zorroa.sdk.filesystem.ObjectFileSystem
 import com.zorroa.sdk.filesystem.UUIDFileSystem
 import com.zorroa.sdk.processor.SharedData
 import com.zorroa.sdk.util.FileUtils
-import com.zorroa.security.UserDetailsPlugin
-import org.apache.commons.lang3.StringUtils
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.settings.Settings
 import org.slf4j.LoggerFactory
@@ -108,27 +104,6 @@ class ArchivistConfiguration {
     @Bean
     fun sharedData(): SharedData {
         return SharedData(properties().getString("archivist.path.shared"))
-    }
-
-    /**
-     * Handles conversion of LDAP properties to a UserAuthed object
-     * as well as permission loading.
-     * @return
-     */
-    @Bean
-    fun userDetailsPopulator(): UserDetailsPopulator {
-        return UserDetailsPopulator()
-    }
-
-    @Bean
-    fun userDetailsPluginWrapper(): UserDetailsPluginWrapper {
-        val pluginClassName = properties().getString("archivist.security.ldap.userDetailsPlugin").trim { it <= ' ' }
-
-        var plugin: UserDetailsPlugin? = null
-        if (!StringUtils.isBlank(pluginClassName)) {
-            plugin = instantiate(pluginClassName, UserDetailsPlugin::class.java)
-        }
-        return UserDetailsPluginWrapper(plugin)
     }
 
     @Bean

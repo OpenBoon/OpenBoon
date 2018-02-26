@@ -174,7 +174,7 @@ public class UserDaoTests extends AbstractTest {
     public void testGetUserByPasswordToken() {
         String token = userDao.setEnablePasswordRecovery(user);
         User user2 = userDao.getByToken(token);
-        assertEquals(user, user2);
+        assertEquals(user.getId(), user2.getId());
     }
 
     @Test

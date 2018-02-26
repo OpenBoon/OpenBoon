@@ -8,6 +8,7 @@ import com.zorroa.archivist.security.SecurityUtils
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
+import com.zorroa.security.UserId
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
@@ -58,17 +59,17 @@ interface UserDao {
 
     fun create(builder: UserSpec, source: String): User
 
-    fun hasPermission(user: User, permission: Permission): Boolean
+    fun hasPermission(user: UserId, permission: Permission): Boolean
 
-    fun hasPermission(user: User, type: String, name: String): Boolean
+    fun hasPermission(user: UserId, type: String, name: String): Boolean
 
-    fun setPermissions(user: User, perms: Collection<Permission>): Int
+    fun setPermissions(user: UserId, perms: Collection<Permission>): Int
 
-    fun addPermission(user: User, perm: Permission, immutable: Boolean): Boolean
+    fun addPermission(user: UserId, perm: Permission, immutable: Boolean): Boolean
 
-    fun removePermission(user: User, perm: Permission): Boolean
+    fun removePermission(user: UserId, perm: Permission): Boolean
 
-    fun incrementLoginCounter(user: User)
+    fun incrementLoginCounter(user: UserId)
 }
 
 @Repository
@@ -185,7 +186,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 update.lastName, user.id) == 1
     }
 
-    override fun incrementLoginCounter(user: User) {
+    override fun incrementLoginCounter(user: UserId) {
         jdbc.update("UPDATE users SET int_login_count=int_login_count+1, time_last_login=? WHERE pk_user=?",
                 System.currentTimeMillis(), user.id)
     }
@@ -215,16 +216,16 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
 
-    override fun hasPermission(user: User, permission: Permission): Boolean {
+    override fun hasPermission(user: UserId, permission: Permission): Boolean {
         return jdbc.queryForObject("SELECT COUNT(1) FROM user_permission m WHERE m.pk_user=? AND m.pk_permission=?",
                 Int::class.java, user.id, permission.id) == 1
     }
 
-    override fun hasPermission(user: User, type: String, name: String): Boolean {
+    override fun hasPermission(user: UserId, type: String, name: String): Boolean {
         return jdbc.queryForObject(HAS_PERM, Int::class.java, user.id, name, type) == 1
     }
 
-    private fun clearPermissions(user: User) {
+    private fun clearPermissions(user: UserId) {
         /*
          * Ensure the user's immutable permissions cannot be removed.
          */
@@ -232,7 +233,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 user.id, false)
     }
 
-    override fun setPermissions(user: User, perms: Collection<Permission>): Int {
+    override fun setPermissions(user: UserId, perms: Collection<Permission>): Int {
         /*
          * Does not remove immutable permissions.
          */
@@ -250,14 +251,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
         return result
     }
 
-    override fun addPermission(user: User, perm: Permission, immutable: Boolean): Boolean {
+    override fun addPermission(user: UserId, perm: Permission, immutable: Boolean): Boolean {
         return if (hasPermission(user, perm)) {
             false
         } else jdbc.update("INSERT INTO user_permission (pk_permission, pk_user, bool_immutable) VALUES (?,?,?)",
                 perm.id, user.id, immutable) == 1
     }
 
-    override fun removePermission(user: User, perm: Permission): Boolean {
+    override fun removePermission(user: UserId, perm: Permission): Boolean {
         return jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND pk_permission=? AND bool_immutable=0",
                 user.id, perm.id) == 1
     }
@@ -265,19 +266,17 @@ class UserDaoImpl : AbstractDao(), UserDao {
     companion object {
 
         private val MAPPER = RowMapper<User> { rs, _ ->
-            val user = User()
-            user.id = rs.getInt("pk_user")
-            user.username = rs.getString("str_username")
-            user.email = rs.getString("str_email")
-            user.firstName = rs.getString("str_firstname")
-            user.lastName = rs.getString("str_lastname")
-            user.enabled = rs.getBoolean("bool_enabled")
-            user.settings = Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java)
-            user.permissionId = rs.getInt("pk_permission")
-            user.homeFolderId = rs.getInt("pk_folder")
-            user.timeLastLogin = rs.getLong("time_last_login");
-            user.loginCount = rs.getInt("int_login_count");
-            user
+            User(rs.getInt("pk_user"),
+                    rs.getString("str_username"),
+                    rs.getString("str_email"),
+                    rs.getInt("pk_permission"),
+                    rs.getInt("pk_folder"),
+                    rs.getString("str_firstname"),
+                    rs.getString("str_lastname"),
+                    rs.getBoolean("bool_enabled"),
+                    Json.deserialize<UserSettings>(rs.getString("json_settings"), UserSettings::class.java),
+                    rs.getInt("int_login_count"),
+                    rs.getLong("time_last_login"))
         }
 
         private const val GET_ALL = "SELECT * FROM users ORDER BY str_username"

@@ -10,6 +10,7 @@ import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
+import com.zorroa.security.UserRegistryService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -49,7 +50,7 @@ class CommandServiceImpl @Autowired constructor (
     private lateinit var assetService: AssetService
 
     @Autowired
-    private lateinit var userService: UserService
+    private lateinit var userRegistryService: UserRegistryService
 
     internal var runningCommand = AtomicReference<Command>()
 
@@ -140,9 +141,8 @@ class CommandServiceImpl @Autowired constructor (
             /**
              * Switch thread to user who made the request.
              */
-            val user = userService.get(cmd.user.id)
-            SecurityContextHolder.getContext().authentication = InternalAuthentication(user,
-                    userService.getPermissions(user))
+            val user = userRegistryService.getUser(cmd.user.username)
+            SecurityContextHolder.getContext().authentication = InternalAuthentication(user)
 
             started = commandDao.start(cmd)
             if (started) {
