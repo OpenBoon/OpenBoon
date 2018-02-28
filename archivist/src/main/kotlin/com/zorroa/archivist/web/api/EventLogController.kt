@@ -22,6 +22,6 @@ class EventLogController @Autowired constructor(
     fun search(
             @PathVariable type: String,
             @RequestBody search: EventLogSearch): PagedList<Map<String, Any>> {
-        return eventLogService!!.getAll(type, search)
+        return eventLogService.getAll(type, search)
     }
 }
