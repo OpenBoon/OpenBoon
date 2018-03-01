@@ -22,6 +22,7 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 
@@ -111,6 +112,7 @@ class UserRegistryServiceImpl @Autowired constructor(
         val user = if (!userService.exists(username)) {
             val spec = UserSpec()
             spec.username = username
+            spec.password = UUID.randomUUID().toString() + UUID.randomUUID().toString()
             spec.email = username
             userService.create(spec, source)
         } else {
