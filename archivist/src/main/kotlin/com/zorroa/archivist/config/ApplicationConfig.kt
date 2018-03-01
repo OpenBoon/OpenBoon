@@ -199,7 +199,7 @@ class ElasticConfig {
 
     companion object {
 
-        private val logger = LoggerFactory.getLogger(StaticResourceConfiguration::class.java)
+        private val logger = LoggerFactory.getLogger(ArchivistConfiguration::class.java)
     }
 
 }
