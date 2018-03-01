@@ -279,6 +279,7 @@ public abstract class AbstractTest {
 
             if (f.isFile()) {
                 if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
+                    logger.info("adding test file: {}", f);
                     Source b = new Source(f);
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
                     AssetUtils.addKeywords(b, "source", b.getAttr("source.filename", String.class));
