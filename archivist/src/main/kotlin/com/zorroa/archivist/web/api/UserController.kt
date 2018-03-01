@@ -10,13 +10,18 @@ import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.stream.Collectors
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
 
 @RestController
@@ -35,18 +40,18 @@ class UserController @Autowired constructor(
         }
     }
 
-    @GetMapping("/user")
-    fun getMe() : Any {
-        return SecurityUtils.getAuthentication()
-    }
-
     @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
 
     @RequestMapping(value = ["/api/v1/who"])
-    fun getCurrent(): User {
-        return userService.get(SecurityUtils.getUser().id)
+    fun getCurrent(): ResponseEntity<Any> {
+        return if (SecurityUtils.getUserOrNull() != null) {
+            ResponseEntity(userService.get(SecurityUtils.getUser().id), HttpStatus.OK)
+        }
+        else {
+            ResponseEntity(HttpStatus.UNAUTHORIZED)
+        }
     }
 
     @Deprecated("")
@@ -76,9 +81,19 @@ class UserController @Autowired constructor(
      * @return
      */
     @RequestMapping(value = ["/api/v1/logout"], method=[RequestMethod.POST, RequestMethod.GET])
-    @Throws(ServletException::class)
-    fun logout(req: HttpServletRequest) {
-        req.logout()
+    fun logout(req: HttpServletRequest, rsp: HttpServletResponse) : Any {
+        val auth = SecurityUtils.getAuthentication()
+        if (auth == null) {
+            return mapOf("success" to false)
+        }
+
+        return if (auth is AnonymousAuthenticationToken) {
+            mapOf("success" to false)
+        }
+        else {
+            SecurityContextLogoutHandler().logout(req, rsp, auth)
+            mapOf("success" to true)
+        }
     }
 
     /**

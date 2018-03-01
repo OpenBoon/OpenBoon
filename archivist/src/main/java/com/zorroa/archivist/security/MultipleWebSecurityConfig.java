@@ -63,6 +63,8 @@ public class MultipleWebSecurityConfig {
                             properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter.class)
                     .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter.class)
                     .authorizeRequests()
+                    .antMatchers("/api/v1/logout").permitAll()
+                    .antMatchers("/api/v1/who").permitAll()
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
                     .antMatchers("/api/v1/send-onboard-email").permitAll()
@@ -92,16 +94,16 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/admin/**")
                 .exceptionHandling()
-                .accessDeniedPage("/signin")
+                .accessDeniedPage("/")
                 .authenticationEntryPoint(
-                        new LoginUrlAuthenticationEntryPoint("/signin"))
+                        new LoginUrlAuthenticationEntryPoint("/"))
                 .and()
                 .authorizeRequests()
                     .antMatchers("/admin/**").hasAuthority("group::administrator")
                     .and()
                     .sessionManagement()
                     .maximumSessions(5)
-                    .expiredUrl("/signin")
+                    .expiredUrl("/")
                     .and()
                     // Everything below here necessary for console
                     .and().headers().frameOptions().disable()
@@ -118,17 +120,14 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/")
                     .exceptionHandling()
-                    .accessDeniedPage("/signin")
+                    .accessDeniedPage("/")
                     .authenticationEntryPoint(
-                            new LoginUrlAuthenticationEntryPoint("/signin"))
+                            new LoginUrlAuthenticationEntryPoint("/"))
                     .and()
                     .sessionManagement()
                     .maximumSessions(5)
-                    .expiredUrl("/signin")
-                    .and()
-                    .and()
-                    .logout().logoutRequestMatcher(
-                        new AntPathRequestMatcher("/signout")).logoutSuccessUrl("/signin");
+                    .expiredUrl("/")
+                    .and();
         }
     }
 
