@@ -24,9 +24,9 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit.DAYS
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
-import java.time.temporal.ChronoUnit.DAYS
 
 /**
  * Created by chambers on 4/21/16.
@@ -264,7 +264,11 @@ class MaintenanceServiceImpl @Autowired constructor(
 
         var result = 0
         val path = properties.getPath("archivist.path.backups").resolve("h2")
-        for (file in path.toFile().listFiles()) {
+
+        logger.info("Checking backup path: {}", path);
+        val file = path.toFile() ?: return result
+
+        for (file in file.listFiles()) {
             try {
                 val strDate = file.name.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val date = LocalDate.of(
