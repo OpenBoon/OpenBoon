@@ -63,6 +63,9 @@ public class MaintenanceServiceTests extends AbstractTest {
         String vendor = properties.getString("archivist.datasource.primary.vendor");
         if (!vendor.equals("h2")) { return; }
 
+        logger.info("vendor {}", vendor);
+        logger.info("maintenanceService {}", maintenanceService);
+
         maintenanceService.removeExpiredBackups(0);
         File file = maintenanceService.getNextAutomaticBackupFile();
         if (file.exists()) {
