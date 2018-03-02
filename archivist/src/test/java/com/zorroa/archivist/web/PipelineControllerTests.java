@@ -68,7 +68,14 @@ public class PipelineControllerTests extends MockMvcTest {
 
     @Test
     public void testDelete() throws Exception {
+        /**
+         * If this ends up being the standard pipeline it won't
+         * delete.  So make another one to delete.
+         */
         pl = pipelineService.create(spec);
+        if (pl.isStandard()) {
+            pl = pipelineService.create(spec.setName("foo"));
+        }
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(delete("/api/v1/pipelines/" + pl.getId())
