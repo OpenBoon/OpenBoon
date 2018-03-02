@@ -68,7 +68,6 @@ class PipelineController @Autowired constructor(
     @DeleteMapping(value = ["/api/v1/pipelines/{id}"])
     fun delete(@PathVariable id: Int): Any {
         val result = pipelineService.delete(id)
-        logger.info("pipeline deleted {}", result)
         return HttpUtils.deleted("pipelines", id, result)
     }
 
