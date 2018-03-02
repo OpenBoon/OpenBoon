@@ -4,7 +4,7 @@
 
 FROM ubuntu:xenial
 
-RUN apt-get -qq update && apt-get -qq upgrade && apt-get \
+RUN apt-get -qq update && apt-get -qq upgrade > /dev/null && apt-get \
     -qq install \
     libboost-all-dev \
     libilmbase12 \
