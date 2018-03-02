@@ -63,20 +63,23 @@ public class MaintenanceServiceTests extends AbstractTest {
         String vendor = properties.getString("archivist.datasource.primary.vendor");
         if (!vendor.equals("h2")) { return; }
 
-        maintenanceService.removeExpiredBackups(0);
-        /*
-        File file = maintenanceService.getNextAutomaticBackupFile();
-        if (file != null) {
-            if (file.exists()) {
-                Files.delete(file.toPath());
+        try {
+            maintenanceService.removeExpiredBackups(0);
+            File file = maintenanceService.getNextAutomaticBackupFile();
+            if (file != null) {
+                if (file.exists()) {
+                    Files.delete(file.toPath());
+                }
             }
-        }
 
-        File backup = maintenanceService.automaticBackup();
-        assertTrue(backup.exists());
-        assertEquals(1, maintenanceService.removeExpiredBackups(0));
-        assertFalse(backup.exists());
-        */
+            File backup = maintenanceService.automaticBackup();
+            assertTrue(backup.exists());
+            assertEquals(1, maintenanceService.removeExpiredBackups(0));
+            assertFalse(backup.exists());
+        } catch (Exception e) {
+            logger.warn("Failed to remove expired backups", e);
+            assertTrue(false);
+        }
     }
 
     @Test

@@ -78,8 +78,11 @@ public class PipelineControllerTests extends MockMvcTest {
                 .andReturn();
         Pipeline p = deserialize(result1, Pipeline.class);
 
+        logger.info("created pipeline: {} {}", p.getId(), p.getName());
+
         MvcResult result2 = mvc.perform(delete("/api/v1/pipelines/" + p.getId())
-                .session(session))
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
