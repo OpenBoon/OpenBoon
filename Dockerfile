@@ -4,7 +4,8 @@
 
 FROM ubuntu:xenial
 
-RUN apt-get -qq update && apt-get -qq upgrade && apt-get -qq install \
+RUN apt-get -qq update && apt-get -qq upgrade && apt-get \
+    -qq install \
     libboost-all-dev \
     libilmbase12 \
     libopenexr22 \
@@ -14,7 +15,7 @@ RUN apt-get -qq update && apt-get -qq upgrade && apt-get -qq install \
     libdcmtk5 \
     ffmpeg \
     maven \
-    wget \
+    wget > /dev/null \
     && rm -rf /var/lib/apt/lists/*
 
 # There are currently no working apt packages for Oracle's Java SDK 8.
