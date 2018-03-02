@@ -62,14 +62,13 @@ public class MaintenanceServiceTests extends AbstractTest {
     public void testRemoveExpiredBackups() throws IOException {
         String vendor = properties.getString("archivist.datasource.primary.vendor");
         if (!vendor.equals("h2")) { return; }
-
-        logger.info("vendor {}", vendor);
-        logger.info("maintenanceService {}", maintenanceService);
-
+        
         maintenanceService.removeExpiredBackups(0);
         File file = maintenanceService.getNextAutomaticBackupFile();
-        if (file.exists()) {
-            Files.delete(file.toPath());
+        if (file != null) {
+            if (file.exists()) {
+                Files.delete(file.toPath());
+            }
         }
 
         File backup = maintenanceService.automaticBackup();
