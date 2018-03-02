@@ -14,6 +14,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -87,7 +88,7 @@ public class PipelineControllerTests extends MockMvcTest {
                 .andReturn();
 
         StatusResult rs = deserialize(result2, StatusResult.class);
-        assertTrue(rs.success);
+        assertFalse(pipelineService.exists(p.getName()));
     }
 
     @Test
