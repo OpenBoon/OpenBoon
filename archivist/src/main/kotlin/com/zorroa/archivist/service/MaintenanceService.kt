@@ -266,9 +266,9 @@ class MaintenanceServiceImpl @Autowired constructor(
         val path = properties.getPath("archivist.path.backups").resolve("h2")
 
         logger.info("Checking backup path: {}", path)
-        val dir = path.toFile() ?: return result
+        val files = path.toFile().listFiles() ?: return result
 
-        for (file in dir.listFiles()) {
+        for (file in files) {
             try {
                 val strDate = file.name.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val date = LocalDate.of(
