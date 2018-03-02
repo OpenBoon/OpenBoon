@@ -112,6 +112,10 @@ class PipelineServiceImpl @Autowired constructor(
     }
 
     override fun delete(id: Int): Boolean {
+        val p = pipelineDao.get(id)
+        if (p.isStandard) {
+            throw IllegalArgumentException("You cannot delete the standard " + p.type + " pipeline");
+        }
         val result = pipelineDao.delete(id)
         if (result) {
             event.afterCommit { logService.logAsync(UserLogSpec.build(LogAction.Delete, "pipeline", id)) }

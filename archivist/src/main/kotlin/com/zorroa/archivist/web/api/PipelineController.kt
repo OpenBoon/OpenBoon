@@ -9,6 +9,7 @@ import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
 import com.zorroa.sdk.util.StringUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.BindingResult
@@ -66,10 +67,14 @@ class PipelineController @Autowired constructor(
 
     @DeleteMapping(value = ["/api/v1/pipelines/{id}"])
     fun delete(@PathVariable id: Int): Any {
-        return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
+        val result = pipelineService.delete(id)
+        logger.info("pipeline deleted {}", result)
+        return HttpUtils.deleted("pipelines", id, result)
     }
 
     companion object {
+
+        private val logger = LoggerFactory.getLogger(PipelineController::class.java)
 
         fun checkValid(valid: BindingResult) {
             if (valid.hasErrors()) {

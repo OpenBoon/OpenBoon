@@ -125,7 +125,9 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
     }
 
     override fun delete(id: Int): Boolean {
-        return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=? AND bool_standard=?", id, false) == 1
+        val result = jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=? AND bool_standard=?", id, false) == 1
+        logger.info("pipeline deleted: {}", result);
+        return result;
     }
 
     override fun count(): Long {
