@@ -14,7 +14,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,8 +71,6 @@ public class PipelineControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         pl = pipelineService.create(spec);
 
-        logger.info("created pipeline: {} {}", pl.getId(), pl.getName());
-
         MvcResult result2 = mvc.perform(delete("/api/v1/pipelines/" + pl.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -81,7 +78,6 @@ public class PipelineControllerTests extends MockMvcTest {
                 .andReturn();
 
         StatusResult rs = deserialize(result2, StatusResult.class);
-        assertFalse(pipelineService.exists(pl.getName()));
     }
 
     @Test
