@@ -70,25 +70,18 @@ public class PipelineControllerTests extends MockMvcTest {
     @Test
     public void testDelete() throws Exception {
         MockHttpSession session = admin();
+        pl = pipelineService.create(spec);
 
-        MvcResult result1 = mvc.perform(post("/api/v1/pipelines")
-                .session(session)
-                .content(Json.serialize(spec))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-        Pipeline p = deserialize(result1, Pipeline.class);
+        logger.info("created pipeline: {} {}", pl.getId(), pl.getName());
 
-        logger.info("created pipeline: {} {}", p.getId(), p.getName());
-
-        MvcResult result2 = mvc.perform(delete("/api/v1/pipelines/" + p.getId())
+        MvcResult result2 = mvc.perform(delete("/api/v1/pipelines/" + pl.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
 
         StatusResult rs = deserialize(result2, StatusResult.class);
-        assertFalse(pipelineService.exists(p.getName()));
+        assertFalse(pipelineService.exists(pl.getName()));
     }
 
     @Test
