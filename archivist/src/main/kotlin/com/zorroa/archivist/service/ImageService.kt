@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.domain.Proxy
 import com.zorroa.sdk.filesystem.ObjectFileSystem
@@ -109,7 +109,7 @@ class ImageServiceImpl @Autowired constructor(
         }
 
         val replacements = ImmutableMap.of(
-                "USER", SecurityUtils.getUsername(),
+                "USER", getUsername(),
                 "DATE", SimpleDateFormat("MM/dd/yyyy").format(Date()))
 
         val sb = StringBuffer(watermarkTemplate.length * 2)

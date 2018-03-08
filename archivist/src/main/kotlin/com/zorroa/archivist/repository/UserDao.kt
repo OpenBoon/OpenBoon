@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
@@ -113,7 +113,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun create(builder: UserSpec, source: String): User {
         Preconditions.checkNotNull(builder.username, "The Username cannot be null")
         Preconditions.checkNotNull(builder.password, "The Password cannot be null")
-        builder.password = SecurityUtils.createPasswordHash(builder.password)
+        builder.password = createPasswordHash(builder.password)
 
         val keyHolder = GeneratedKeyHolder()
         jdbc.update({ connection ->
@@ -159,7 +159,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     override fun setPassword(user: User, password: String): Boolean {
         return jdbc.update(
                 "UPDATE users SET str_password=? WHERE pk_user=?",
-                SecurityUtils.createPasswordHash(password), user.id) == 1
+                createPasswordHash(password), user.id) == 1
     }
 
     override fun setEnablePasswordRecovery(user: User): String {
@@ -171,7 +171,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun resetPassword(user: User, token: String, password: String): Boolean {
-        return jdbc.update(RESET_PASSWORD, SecurityUtils.createPasswordHash(password),
+        return jdbc.update(RESET_PASSWORD, createPasswordHash(password),
                 user.id, token) == 1
     }
 

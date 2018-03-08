@@ -6,7 +6,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.DyHierarchyDao
 import com.zorroa.archivist.security.SecureRunnable
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.domain.Tuple
 import com.zorroa.sdk.search.AssetScript
@@ -200,17 +200,17 @@ class DyHierarchyServiceImpl @Autowired constructor (
 
     override fun submitGenerateAll(refresh: Boolean) {
         folderTaskExecutor.execute(
-                UniqueRunnable("dyhi_run_all", SecureRunnable({
+                UniqueRunnable("dyhi_run_all", SecureRunnable(SecurityContextHolder.getContext(), {
                     if (refresh) {
                         ElasticClientUtils.refreshIndex(client)
                     }
                     generateAll()
-                }, SecurityContextHolder.getContext())))
+                })))
     }
 
     override fun submitGenerate(dyhi: DyHierarchy) {
         folderTaskExecutor.execute(UniqueRunnable("dyhi_run_" + dyhi.id,
-                SecureRunnable({ generate(dyhi) }, SecurityContextHolder.getContext())))
+                SecureRunnable(SecurityContextHolder.getContext(), { generate(dyhi) })))
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -275,7 +275,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
                 logger.warn("Failed to delete unused folders: {}, {}", unusedFolders, e)
             }
 
-            logger.info("{} created by {}, {} folders", dyhi, SecurityUtils.getUsername(), folders.count)
+            logger.info("{} created by {}, {} folders", dyhi, getUsername(), folders.count)
             return folders.count
         } catch (e: Exception) {
             logger.warn("Failed to generate dynamic hierarchy,", e)

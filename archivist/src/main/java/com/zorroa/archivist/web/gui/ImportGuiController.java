@@ -3,7 +3,6 @@ package com.zorroa.archivist.web.gui;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.ImportSpec;
-import com.zorroa.archivist.security.SecurityUtils;
 import com.zorroa.archivist.service.ImportService;
 import com.zorroa.archivist.service.JobService;
 import com.zorroa.archivist.service.PipelineService;
@@ -25,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.File;
 import java.util.List;
+
+import static com.zorroa.archivist.security.UtilsKt.getUsername;
 
 /**
  * Created by chambers on 7/28/16.
@@ -136,7 +137,7 @@ public class ImportGuiController {
         }
 
         ImportSpec spec = new ImportSpec();
-        spec.setName("search import by " + SecurityUtils.getUsername());
+        spec.setName("search import by " + getUsername());
         spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(searchImportForm.getPipelineId())));
         List<ProcessorRef> generators = Lists.newArrayList();
 

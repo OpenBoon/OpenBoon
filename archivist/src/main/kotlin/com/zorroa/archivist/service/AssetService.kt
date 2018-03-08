@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.CommandDao
 import com.zorroa.archivist.repository.PermissionDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.*
@@ -309,7 +309,7 @@ class AssetServiceImpl  @Autowired  constructor (
         val asset = assetDao[assetId]
         val write = asset.getAttr("permissions.write", Json.SET_OF_INTS)
 
-        if (!SecurityUtils.hasPermission(write)) {
+        if (!hasPermission(write)) {
             throw ArchivistWriteException("You cannot make changes to this asset.")
         }
 

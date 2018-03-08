@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.domain.TrashedFolder;
-import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.FolderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,13 +66,13 @@ public class TrashFolderDaoTests extends AbstractTest {
         trashFolderDao.create(folder2, "a", false, 2);
 
         List<TrashedFolder> folders = trashFolderDao.getAll(folderService.get(0),
-                SecurityUtils.getUser().getId());
+                UtilsKt.getUserId());
         assertEquals(1, folders.size());
 
-        folders = trashFolderDao.getAll(folder1,SecurityUtils.getUser().getId());
+        folders = trashFolderDao.getAll(folder1, UtilsKt.getUserId());
         assertEquals(0, folders.size());
 
-        folders = trashFolderDao.getAll(folder2,SecurityUtils.getUser().getId());
+        folders = trashFolderDao.getAll(folder2, UtilsKt.getUserId());
         assertEquals(0, folders.size());
     }
 
@@ -83,7 +83,7 @@ public class TrashFolderDaoTests extends AbstractTest {
         trashFolderDao.create(folder1, "a", true, 1);
         trashFolderDao.create(folder2, "a", false, 2);
 
-        List<TrashedFolder> folders = trashFolderDao.getAll(SecurityUtils.getUser().getId());
+        List<TrashedFolder> folders = trashFolderDao.getAll(UtilsKt.getUserId());
         assertEquals(1, folders.size());
     }
 
@@ -95,7 +95,7 @@ public class TrashFolderDaoTests extends AbstractTest {
         trashFolderDao.create(folder1, "a", true, 1);
         trashFolderDao.create(folder2, "a", false, 2);
 
-        int count = trashFolderDao.count(SecurityUtils.getUser().getId());
+        int count = trashFolderDao.count(UtilsKt.getUserId());
         assertEquals(1, count);
     }
 }

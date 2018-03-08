@@ -5,7 +5,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.CommandDao
 import com.zorroa.archivist.security.InternalAuthentication
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.search.AssetSearch
@@ -111,7 +111,7 @@ class CommandServiceImpl @Autowired constructor (
         if (currentCommand != null && currentCommand.id == cmd.id) {
             if (currentCommand.state != JobState.Cancelled) {
                 currentCommand.state = JobState.Cancelled
-                logger.info("{} canceled running {}", SecurityUtils.getUsername(), currentCommand)
+                logger.info("{} canceled running {}", getUsername(), currentCommand)
                 if (ArchivistConfiguration.Companion.unittest) {
                     runningCommand.set(null)
                 }
@@ -125,7 +125,7 @@ class CommandServiceImpl @Autowired constructor (
     }
 
     override fun cancel(cmd: Command): Boolean {
-        if (commandDao.cancel(cmd, "Command canceled by " + SecurityUtils.getUsername())) {
+        if (commandDao.cancel(cmd, "Command canceled by " + getUsername())) {
             cancelRunningCommand(cmd)
             return true
         }

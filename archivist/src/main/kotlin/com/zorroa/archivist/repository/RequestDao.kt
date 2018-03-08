@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.domain.RequestState
 import com.zorroa.archivist.domain.RequestType
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
@@ -42,7 +42,7 @@ class RequestDaoImpl : AbstractDao(), RequestDao {
         val keyHolder = GeneratedKeyHolder()
 
         jdbc.update({ connection ->
-            val userId = SecurityUtils.getUser().id
+            val userId = getUserId()
             val time = System.currentTimeMillis()
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_request"))
             ps.setInt(1, userId)

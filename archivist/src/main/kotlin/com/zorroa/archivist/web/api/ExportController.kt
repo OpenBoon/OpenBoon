@@ -2,7 +2,8 @@ package com.zorroa.archivist.web.api
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.service.EventLogService
 import com.zorroa.archivist.service.ExportService
 import com.zorroa.archivist.service.JobService
@@ -62,8 +63,8 @@ class ExportController @Autowired constructor(
             throw IllegalArgumentException("Invalid export file")
         }
         */
-        if (job.user.id != SecurityUtils.getUser().id) {
-            throw IllegalArgumentException("Invalid export for " + SecurityUtils.getUsername())
+        if (job.user.id != getUserId()) {
+            throw IllegalArgumentException("Invalid export for " + getUsername())
         }
         if (job.state != JobState.Finished) {
             throw IllegalArgumentException("Export is not complete.")

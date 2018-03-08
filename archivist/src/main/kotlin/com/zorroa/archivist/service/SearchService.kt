@@ -7,7 +7,8 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.FieldDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getPermissionsFilter
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.domain.Document
@@ -332,7 +333,7 @@ class SearchServiceImpl @Autowired constructor(
                 // This search type provides stable sorting but seems to ignore
                 // the result si
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setPreference(SecurityUtils.getUsername())
+                .setPreference(getUsername())
                 .setQuery(getQuery(search))
 
         if (search.aggs != null) {
@@ -399,7 +400,7 @@ class SearchServiceImpl @Autowired constructor(
 
     private fun getQuery(search: AssetSearch?, linkedFolders: MutableSet<Int>, perms: Boolean, postFilter: Boolean): QueryBuilder {
 
-        val permsQuery = SecurityUtils.getPermissionsFilter()
+        val permsQuery = getPermissionsFilter()
         if (search == null) {
             return permsQuery ?: QueryBuilders.matchAllQuery()
         }

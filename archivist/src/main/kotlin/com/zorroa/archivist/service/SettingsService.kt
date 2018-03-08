@@ -12,7 +12,8 @@ import com.zorroa.archivist.domain.Setting
 import com.zorroa.archivist.domain.SettingsFilter
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.repository.SettingsDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.client.exception.EntityNotFoundException
@@ -97,7 +98,7 @@ class SettingsServiceImpl @Autowired constructor(
     }
 
     override fun getAll(filter: SettingsFilter): List<Setting> {
-        if (!SecurityUtils.hasPermission("group::administrator",
+        if (!hasPermission("group::administrator",
                 "group::developer")) {
             filter.isLiveOnly = true
         }
@@ -120,7 +121,7 @@ class SettingsServiceImpl @Autowired constructor(
         val filter = SettingsFilter()
         filter.count = 1
         filter.names = ImmutableSet.of(key)
-        if (!SecurityUtils.hasPermission("group::administrator", "group::developer")) {
+        if (!hasPermission("group::administrator", "group::developer")) {
             filter.isLiveOnly = true
         }
         try {
@@ -160,7 +161,7 @@ class SettingsServiceImpl @Autowired constructor(
     fun set(key: String, value: String?, invalidate: Boolean): Boolean {
         val validator = checkValid(key, value)
 
-        logger.info("{} changed to {} by {}", key, value, SecurityUtils.getUsername())
+        logger.info("{} changed to {} by {}", key, value, getUsername())
 
         val result: Boolean
         if (value == null) {

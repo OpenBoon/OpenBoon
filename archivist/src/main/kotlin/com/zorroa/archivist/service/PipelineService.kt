@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineSpecV
 import com.zorroa.archivist.domain.UserLogSpec
 import com.zorroa.archivist.repository.PipelineDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.PipelineType
@@ -67,7 +67,7 @@ class PipelineServiceImpl @Autowired constructor(
 
         val p = pipelineDao.create(spec)
         event.afterCommit {
-            if (SecurityUtils.getAuthentication() != null) {
+            if (getAuthentication() != null) {
                 logService.logAsync(UserLogSpec.build(LogAction.Create, p))
             }
         }

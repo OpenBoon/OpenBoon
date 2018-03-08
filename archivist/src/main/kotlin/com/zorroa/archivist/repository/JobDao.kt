@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -101,7 +101,7 @@ open class JobDaoImpl : AbstractDao(), JobDao {
             ps.setInt(1, spec.jobId!!)
             ps.setString(2, spec.name)
             ps.setInt(3, spec.type.ordinal)
-            ps.setInt(4, SecurityUtils.getUser().id)
+            ps.setInt(4, getUserId())
             ps.setLong(5, time)
             ps.setString(6, Json.serializeToString(spec.args, "{}"))
             ps.setString(7, Json.serializeToString(spec.env, "{}"))

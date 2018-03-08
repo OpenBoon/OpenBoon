@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.Command
 import com.zorroa.archivist.domain.CommandSpec
 import com.zorroa.archivist.domain.CommandType
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
@@ -66,7 +66,7 @@ class CommandDaoImpl : AbstractDao(), CommandDao {
         val keyHolder = GeneratedKeyHolder()
         jdbc.update({ connection ->
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_command"))
-            ps.setInt(1, SecurityUtils.getUser().id)
+            ps.setInt(1, getUserId())
             ps.setLong(2, System.currentTimeMillis())
             ps.setInt(3, spec.type.ordinal)
             ps.setInt(4, JobState.Waiting.ordinal)
@@ -84,7 +84,7 @@ class CommandDaoImpl : AbstractDao(), CommandDao {
 
     override fun getPendingByUser(): List<Command> {
         return jdbc.query<Command>(GET + "WHERE pk_user=? AND int_state IN (?,?) ORDER BY int_state, pk_command", MAPPER,
-                SecurityUtils.getUser().id, JobState.Active.ordinal, JobState.Waiting.ordinal)
+                getUserId(), JobState.Active.ordinal, JobState.Waiting.ordinal)
     }
 
     override fun refresh(obj: Command): Command {

@@ -2,7 +2,7 @@ package com.zorroa.archivist.web.api
 
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.service.JobExecutorService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.sdk.client.exception.ArchivistWriteException
@@ -57,7 +57,7 @@ class JobController @Autowired constructor(
     @Throws(IOException::class)
     fun continueImport(@RequestBody spec: TaskSpecV): Any {
         val job = jobService[spec.jobId]
-        if (job.user.id != SecurityUtils.getUser().id) {
+        if (job.user.id != getUserId()) {
             throw IllegalArgumentException("Invalid user for appending to job")
         }
         return jobService.continueImportTask(spec)

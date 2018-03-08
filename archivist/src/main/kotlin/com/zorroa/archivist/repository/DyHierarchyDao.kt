@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.DyHierarchy
 import com.zorroa.archivist.domain.DyHierarchyLevel
 import com.zorroa.archivist.domain.DyHierarchySpec
 import com.zorroa.archivist.domain.Folder
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
@@ -55,7 +55,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
         jdbc.update({ connection ->
             val ps = connection.prepareStatement(INSERT, arrayOf("pk_dyhi"))
             ps.setInt(1, spec.folderId!!)
-            ps.setInt(2, SecurityUtils.getUser().id)
+            ps.setInt(2, getUserId())
             ps.setLong(3, System.currentTimeMillis())
             ps.setInt(4, spec.levels.size)
             ps.setString(5, Json.serializeToString(spec.levels, "[]"))

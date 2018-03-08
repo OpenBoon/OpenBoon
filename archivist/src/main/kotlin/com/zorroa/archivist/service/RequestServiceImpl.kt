@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.RequestSpec
 import com.zorroa.archivist.repository.RequestDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -39,7 +39,7 @@ class RequestServiceImpl @Autowired constructor(
 
         val req = requestDao.create(spec)
         tx.afterCommit(false, {
-            val user = userService.get(SecurityUtils.getUser().id)
+            val user = userService.get(getUserId())
             emailService.sendExportRequestEmail(user, req)
         })
         return req

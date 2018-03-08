@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
 import com.zorroa.archivist.service.UserService
@@ -34,7 +34,7 @@ class UserController @Autowired constructor(
     @RequestMapping(value = ["/api/v1/api-key"])
     fun getApiKey(): String {
         return try {
-            userService.getHmacKey(SecurityUtils.getUsername())
+            userService.getHmacKey(getUsername())
         } catch (e: Exception) {
             ""
         }
@@ -46,8 +46,8 @@ class UserController @Autowired constructor(
 
     @RequestMapping(value = ["/api/v1/who"])
     fun getCurrent(): ResponseEntity<Any> {
-        return if (SecurityUtils.getUserOrNull() != null) {
-            ResponseEntity(userService.get(SecurityUtils.getUser().id), HttpStatus.OK)
+        return if (getUserOrNull() != null) {
+            ResponseEntity(userService.get(getUserId()), HttpStatus.OK)
         }
         else {
             ResponseEntity(HttpStatus.UNAUTHORIZED)
@@ -57,12 +57,12 @@ class UserController @Autowired constructor(
     @Deprecated("")
     @PostMapping(value = ["/api/v1/generate_api_key"])
     fun generate_api_key_V1(): String {
-        return userService.generateHmacKey(SecurityUtils.getUsername())
+        return userService.generateHmacKey(getUsername())
     }
 
     @PostMapping(value = ["/api/v1/api-key"])
     fun generate_api_key(): String {
-        return userService.generateHmacKey(SecurityUtils.getUsername())
+        return userService.generateHmacKey(getUsername())
     }
 
     /**
@@ -72,7 +72,7 @@ class UserController @Autowired constructor(
      */
     @PostMapping(value = ["/api/v1/login"])
     fun login(): User {
-        return userService.get(SecurityUtils.getUser().id)
+        return userService.get(getUserId())
     }
 
     /**
@@ -82,7 +82,7 @@ class UserController @Autowired constructor(
      */
     @RequestMapping(value = ["/api/v1/logout"], method=[RequestMethod.POST, RequestMethod.GET])
     fun logout(req: HttpServletRequest, rsp: HttpServletResponse) : Any {
-        val auth = SecurityUtils.getAuthentication()
+        val auth = getAuthentication()
         if (auth == null) {
             return mapOf("success" to false)
         }
@@ -105,7 +105,7 @@ class UserController @Autowired constructor(
     @PostMapping(value = ["/api/v1/reset-password"])
     @Throws(ServletException::class)
     fun resetPasswordAndLogin(): User {
-        return userService.get(SecurityUtils.getUser().id)
+        return userService.get(getUserId())
     }
 
     class SendForgotPasswordEmailRequest {
@@ -163,8 +163,8 @@ class UserController @Autowired constructor(
         /**
          * If the Ids match, then the user is the current user, so validate the existing password.
          */
-        if (id == SecurityUtils.getUser().id) {
-            val storedPassword = userService.getPassword(SecurityUtils.getUsername())
+        if (id == getUserId()) {
+            val storedPassword = userService.getPassword(getUsername())
             if (!BCrypt.checkpw(form.oldPassword, storedPassword)) {
                 throw IllegalArgumentException("Existing password invalid")
             }
@@ -187,7 +187,7 @@ class UserController @Autowired constructor(
     @PutMapping(value = ["/api/v1/users/{id}/_enabled"])
     fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: Int): Any {
         val user = userService.get(id)
-        if (id == SecurityUtils.getUser().id) {
+        if (id == getUserId()) {
             throw IllegalArgumentException("You cannot disable yourself")
         }
 
@@ -251,7 +251,7 @@ class UserController @Autowired constructor(
     }
 
     private fun validatePermissions(id: Int) {
-        if (SecurityUtils.getUser().id != id && !SecurityUtils.hasPermission("group::manager")) {
+        if (getUserId() != id && !hasPermission("group::manager")) {
             throw SecurityException("Access denied.")
         }
     }

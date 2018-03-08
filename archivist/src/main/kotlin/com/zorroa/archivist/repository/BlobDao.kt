@@ -3,7 +3,9 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getPermissionIds
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.util.Json
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
@@ -43,8 +45,8 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
             ps.setString(2, feature)
             ps.setString(3, name)
             ps.setString(4, Json.serializeToString(data, "{}"))
-            ps.setInt(5, SecurityUtils.getUser().id)
-            ps.setInt(6, SecurityUtils.getUser().id)
+            ps.setInt(5, getUserId())
+            ps.setInt(6, getUserId())
             ps.setLong(7, time)
             ps.setLong(8, time)
             ps
@@ -56,7 +58,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
 
     override fun update(bid: BlobId, data: Any): Boolean {
         return jdbc.update(UPDATE,
-                Json.serializeToString(data, "{}"), SecurityUtils.getUser().id, System.currentTimeMillis(),
+                Json.serializeToString(data, "{}"), getUserId(), System.currentTimeMillis(),
                 bid.getBlobId()) == 1
     }
 
@@ -136,21 +138,21 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
     }
 
     fun appendAccessArgs(vararg args: Any): Array<out Any> {
-        if (SecurityUtils.hasPermission("group::administrator")) {
+        if (hasPermission("group::administrator")) {
             return args
         }
 
-        val result = Lists.newArrayListWithCapacity<Any>(args.size + SecurityUtils.getPermissionIds().size)
+        val result = Lists.newArrayListWithCapacity<Any>(args.size + getPermissionIds().size)
         for (a in args) {
             result.add(a)
         }
-        result.add(SecurityUtils.getUser().id)
-        result.addAll(SecurityUtils.getPermissionIds())
+        result.add(getUserId())
+        result.addAll(getPermissionIds())
         return result.toTypedArray()
     }
 
     private fun appendAccess(query: String, access: Access): String {
-        if (SecurityUtils.hasPermission("group::administrator")) {
+        if (hasPermission("group::administrator")) {
             return query
         }
 
@@ -163,7 +165,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
         }
         sb.append("(jblob.user_created = ? OR (")
         sb.append("SELECT COUNT(1) FROM jblob_acl WHERE jblob_acl.pk_jblob=jblob.pk_jblob AND ")
-        sb.append(JdbcUtils.`in`("jblob_acl.pk_permission", SecurityUtils.getPermissionIds().size))
+        sb.append(JdbcUtils.`in`("jblob_acl.pk_permission", getPermissionIds().size))
         sb.append(" AND BITAND(")
         sb.append(access.value)
         sb.append(",int_access) = " + access.value + ") > 0 OR (")

@@ -3,7 +3,7 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.Note
 import com.zorroa.archivist.domain.NoteSpec
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.common.elastic.AbstractElasticDao
 import com.zorroa.common.elastic.SearchHitRowMapper
 import com.zorroa.sdk.util.Json
@@ -42,7 +42,7 @@ open class NoteDaoImpl : AbstractElasticDao(), NoteDao {
                 .put("text", spec.text)
                 .put("asset", spec.asset)
                 .put("timeCreated", System.currentTimeMillis())
-                .put("userId", SecurityUtils.getUser().id)
+                .put("userId", getUserId())
 
         val rsp = client.prepareIndex(index, type)
                 .setSource(Json.serializeToString(map.build()))

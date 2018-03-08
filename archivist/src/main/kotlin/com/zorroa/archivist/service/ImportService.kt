@@ -3,7 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.PagedList
@@ -89,7 +89,7 @@ class ImportServiceImpl @Autowired constructor(
         }
 
         // Setup execute
-        val execute = Lists.newArrayList<ProcessorRef>()
+        val execute = mutableListOf<ProcessorRef>()
 
         /*
          * The first node is an expand collector which allows us to execute in parallel.
@@ -203,7 +203,7 @@ class ImportServiceImpl @Autowired constructor(
     }
 
     private fun determineJobName(name: String?): String {
-        return name ?: String.format("import by %s", SecurityUtils.getUsername())
+        return name ?: String.format("import by %s", getUsername())
     }
 
     companion object {

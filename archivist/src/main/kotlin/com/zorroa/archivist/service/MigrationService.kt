@@ -147,7 +147,7 @@ class MigrationServiceImpl @Autowired constructor(
             return
         }
 
-        logger.info("Processing migrations")
+        logger.debug("Processing migrations")
         for (m in migrations) {
             when (m.type) {
                 MigrationType.ElasticSearchIndex -> processElasticMigration(m, force)
@@ -210,7 +210,7 @@ class MigrationServiceImpl @Autowired constructor(
          * If we already have the current version then check for patch versions.
          */
         if (props.getVersion() == m.version && newIndexExists) {
-            logger.info("'{}' mapping V{} is the current version", m.name, m.version)
+            logger.debug("'{}' mapping V{} is the current version", m.name, m.version)
             applyMappingPatches(m)
             return
         }
@@ -219,7 +219,7 @@ class MigrationServiceImpl @Autowired constructor(
          * If neither index exists then its the first time the index has been created.
          */
         if (!oldIndexExists && !newIndexExists) {
-            logger.info("No indexes exist, {} will be created", newIndex)
+            logger.debug("No indexes exist, {} will be created", newIndex)
         } else if (m.version > props.getVersion()) {
             logger.warn("Version {} is higher than version {}, not downgrading.",
                     m.version, props.getVersion())
@@ -433,7 +433,7 @@ class MigrationServiceImpl @Autowired constructor(
 
             val emp = ElasticMigrationProperties()
             val version = Integer.valueOf(matcher.group(1))
-            logger.info("Found embedded mapping in {} version {}", m.path, version)
+            logger.debug("Found embedded mapping in {} version {}", m.path, version)
 
             val mapping = Json.Mapper.readValue<Map<String, Any>>(resource.inputStream, Json.GENERIC_MAP)
             emp.setMapping(mapping)
@@ -523,9 +523,8 @@ class MigrationServiceImpl @Autowired constructor(
 
         private val logger = LoggerFactory.getLogger(MigrationServiceImpl::class.java)
 
-        private val BULK_SIZE = 200
-        private val BULK_TIMEOUT: Long = 60000
-
+        private const val BULK_SIZE = 200
+        private const val BULK_TIMEOUT: Long = 60000
 
         private val MAPPING_NAMING_CONV = Pattern.compile("^V(\\d+)__(.*?).json$")
 

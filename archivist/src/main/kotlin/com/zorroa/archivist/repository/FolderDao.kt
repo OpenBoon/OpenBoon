@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getPermissionIds
+import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -202,7 +204,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         val time = System.currentTimeMillis()
 
         if (spec.userId == null) {
-            val user = SecurityUtils.getUser().id
+            val user = getUserId()
             spec.userId = user
         }
 
@@ -258,7 +260,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         return if (isDyHi(id)) {
             jdbc.update(UPDATE[1],
                     System.currentTimeMillis(),
-                    SecurityUtils.getUser().id,
+                    getUserId(),
                     folder.parentId,
                     folder.name,
                     folder.isRecursive,
@@ -267,7 +269,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         } else {
             jdbc.update(UPDATE[0],
                     System.currentTimeMillis(),
-                    SecurityUtils.getUser().id,
+                    getUserId(),
                     folder.parentId,
                     folder.name,
                     folder.isRecursive,
@@ -383,7 +385,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
      * @return
      */
     private fun appendAccess(query: String, access: Access): String {
-        if (SecurityUtils.hasPermission("group::administrator")) {
+        if (hasPermission("group::administrator")) {
             return query
         }
 
@@ -396,7 +398,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         }
         sb.append("((")
         sb.append("SELECT COUNT(1) FROM folder_acl WHERE folder_acl.pk_folder=folder.pk_folder AND ")
-        sb.append(JdbcUtils.`in`("folder_acl.pk_permission", SecurityUtils.getPermissionIds().size))
+        sb.append(JdbcUtils.`in`("folder_acl.pk_permission", getPermissionIds().size))
         sb.append(" AND BITAND(")
         sb.append(access.value)
         sb.append(",int_access) = " + access.value + ") > 0 OR (")
@@ -419,15 +421,15 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     }
 
     fun appendAclArgs(vararg args: Any): Array<out Any> {
-        if (SecurityUtils.hasPermission("group::administrator")) {
+        if (hasPermission("group::administrator")) {
             return args
         }
 
-        val result = Lists.newArrayListWithCapacity<Any>(args.size + SecurityUtils.getPermissionIds().size)
+        val result = Lists.newArrayListWithCapacity<Any>(args.size + getPermissionIds().size)
         for (a in args) {
             result.add(a)
         }
-        result.addAll(SecurityUtils.getPermissionIds())
+        result.addAll(getPermissionIds())
         return result.toTypedArray()
     }
 

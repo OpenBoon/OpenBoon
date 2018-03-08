@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.*;
 import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.sdk.domain.PagedList;
@@ -89,7 +89,7 @@ public class IndexController {
         model.addAttribute("userCount", userService.getCount());
         model.addAttribute("folderCount", folderService.count());
         model.addAttribute("analystCount", analystService.getCount());
-        model.addAttribute("user", SecurityUtils.getUser());
+        model.addAttribute("user", UtilsKt.getUser());
         return "overview";
     }
 

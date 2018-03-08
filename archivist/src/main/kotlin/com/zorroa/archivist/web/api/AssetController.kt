@@ -6,7 +6,8 @@ import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.HttpUtils.CACHE_CONTROL
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.canExport
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.service.*
 import com.zorroa.archivist.web.MultipartFileSender
 import com.zorroa.archivist.web.sender.FlipbookSender
@@ -158,7 +159,7 @@ class AssetController @Autowired constructor(
                     @PathVariable id: String, request: HttpServletRequest, response: HttpServletResponse) {
 
         val asset = assetService.get(id)
-        val canExport = SecurityUtils.canExport(asset)
+        val canExport = canExport(asset)
         val format = getPreferredFormat(asset, ext, fallback, !canExport)
 
         if (format == null) {
@@ -330,7 +331,7 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun delete(@PathVariable id: String): Any {
         val asset = assetService.get(id)
-        if (!SecurityUtils.hasPermission("write", asset)) {
+        if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("delete access denied")
         }
 
@@ -342,7 +343,7 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun update(@RequestBody attrs: Map<String, Any>, @PathVariable id: String): Any {
         val asset = assetService.get(id)
-        if (!SecurityUtils.hasPermission("write", asset)) {
+        if (!hasPermission("write", asset)) {
             throw ArchivistWriteException("update access denied")
         }
 

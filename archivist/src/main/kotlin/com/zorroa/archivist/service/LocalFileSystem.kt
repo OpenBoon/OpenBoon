@@ -2,7 +2,8 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.LfsRequest
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.EntityNotFoundException
 import com.zorroa.sdk.util.FileUtils
@@ -47,7 +48,7 @@ class LocalFileSystemImpl @Autowired constructor(
     }
 
     override fun listFiles(req: LfsRequest): Map<String, List<String>> {
-        if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
+        if (!hasPermission(properties.getList("archivist.lfs.permissions"))) {
             throw EntityNotFoundException("The path does not exist")
         }
         return _listFiles(req)
@@ -83,7 +84,7 @@ class LocalFileSystemImpl @Autowired constructor(
         val path = FileUtils.normalize(req.path)
         if (!isLocalPathAllowed(path)) {
             logger.warn("User {} attempted to list files in: {}",
-                    SecurityUtils.getUsername(), path)
+                    getUsername(), path)
             return result
         }
 
@@ -133,7 +134,7 @@ class LocalFileSystemImpl @Autowired constructor(
     }
 
     fun permissionCheck() {
-        if (!SecurityUtils.hasPermission(properties.getList("archivist.lfs.permissions"))) {
+        if (!hasPermission(properties.getList("archivist.lfs.permissions"))) {
             throw EntityNotFoundException("The path does not exist")
         }
 

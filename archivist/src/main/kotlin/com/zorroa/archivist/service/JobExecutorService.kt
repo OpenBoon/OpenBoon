@@ -9,7 +9,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.cluster.client.WorkerNodeClient
 import com.zorroa.cluster.thrift.TaskKillT
 import com.zorroa.cluster.thrift.TaskResultT
@@ -229,8 +229,8 @@ class JobExecutorServiceImpl @Autowired constructor(
         try {
             logger.info("Killing runinng task: {}", task)
             client.killTask(TaskKillT().setId(task.taskId)
-                    .setReason("Manually killed  by " + SecurityUtils.getUsername())
-                    .setUser(SecurityUtils.getUsername()))
+                    .setReason("Manually killed  by " + getUsername())
+                    .setUser(getUsername()))
         } catch (e: Exception) {
             logger.warn("Failed to kill running task an analyst {}", task.host, e)
         }

@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineSpecV
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.PipelineType
@@ -31,7 +31,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
         if (spec.description == null) {
             spec.description = spec.name + " " +
-                    spec.type + " pipeline created by " + SecurityUtils.getUsername()
+                    spec.type + " pipeline created by " + getUsername()
         }
 
 

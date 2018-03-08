@@ -5,7 +5,7 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Folder
 import com.zorroa.archivist.domain.TrashedFolder
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUserId
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -104,7 +104,7 @@ open class TrashFolderDaoImpl : AbstractDao(), TrashFolderDao {
 
     override fun create(folder: Folder, opId: String, primary: Boolean, order: Int): Int {
         val time = System.currentTimeMillis()
-        val user = SecurityUtils.getUser().id
+        val user = getUserId()
 
         val keyHolder = GeneratedKeyHolder()
         jdbc.update({ connection ->

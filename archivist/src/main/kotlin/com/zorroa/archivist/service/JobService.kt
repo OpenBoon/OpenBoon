@@ -10,7 +10,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.SecurityUtils
+import com.zorroa.archivist.security.getUsername
 import com.zorroa.cluster.thrift.ExpandT
 import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
@@ -534,7 +534,7 @@ class JobServiceImpl @Autowired constructor(
         return basePath
                 .resolve(spec.type.toString().toLowerCase())
                 .resolve(formatter.print(time))
-                .resolve(SecurityUtils.getUsername())
+                .resolve(getUsername())
                 .resolve(spec.jobId.toString())
                 .toAbsolutePath()
     }

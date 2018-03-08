@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
-import com.zorroa.archivist.security.SecurityUtils;
+import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.PermissionService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +142,7 @@ public class FolderDaoTests extends AbstractTest {
     @Test
     public void testGetChildrenInsecure() {
         authenticate("user");
-        assertFalse(SecurityUtils.hasPermission("group::administrator"));
+        assertFalse(UtilsKt.hasPermission("group::administrator"));
 
         Folder pub = folderDao.get(Folder.ROOT_ID, "Users", false);
         Folder f1 = folderDao.create(new FolderSpec("level1", pub));
