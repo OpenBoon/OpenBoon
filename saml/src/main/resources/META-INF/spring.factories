@@ -1,0 +1,4 @@
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  com.zorroa.security.saml.WebSecurityConfig,\
+    com.zorroa.security.saml.MvcConfig

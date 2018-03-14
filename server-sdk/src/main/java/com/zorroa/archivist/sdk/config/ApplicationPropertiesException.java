@@ -1,4 +1,4 @@
-package com.zorroa.config;
+package com.zorroa.archivist.sdk.config;
 
 /**
  * Created by chambers on 2/12/16.

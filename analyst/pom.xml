@@ -97,6 +97,11 @@
 
         <dependency>
             <groupId>com.zorroa</groupId>
+            <artifactId>server-sdk</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zorroa</groupId>
             <artifactId>common</artifactId>
         </dependency>
 

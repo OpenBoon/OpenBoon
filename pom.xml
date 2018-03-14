@@ -19,12 +19,12 @@
     </properties>
 
     <modules>
-        <module>zorroa-security</module>
+        <module>server-sdk</module>
         <module>common</module>
+        <module>saml</module>
         <module>cluster</module>
         <module>archivist</module>
         <module>analyst</module>
-        <module>cloudproxy</module>
     </modules>
 
     <dependencyManagement>
@@ -94,6 +94,12 @@
             <dependency>
                 <groupId>com.zorroa</groupId>
                 <artifactId>cluster</artifactId>
+                <version>${zorroa-server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zorroa</groupId>
+                <artifactId>server-sdk</artifactId>
                 <version>${zorroa-server.version}</version>
             </dependency>
 
