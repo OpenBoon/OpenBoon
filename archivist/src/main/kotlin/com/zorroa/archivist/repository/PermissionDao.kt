@@ -65,12 +65,13 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 val ps = connection.prepareStatement(INSERT, arrayOf("pk_permission"))
                 ps.setString(1, builder.name)
                 ps.setString(2, builder.type)
-                ps.setString(3, if (builder.description == null)
+                ps.setString(3, builder.type + "::" + builder.name)
+                ps.setString(4, if (builder.description == null)
                     String.format("%s permission", builder.name)
                 else
                     builder.description)
-                ps.setBoolean(4, immutable)
-                ps.setString(5, builder.type + "::" + builder.name)
+                ps.setString(5, builder.source)
+                ps.setBoolean(6, immutable)
                 ps
             }, keyHolder)
         } catch (e: DuplicateKeyException) {
@@ -207,7 +208,12 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("permission",
-                "str_name", "str_type", "str_description", "bool_immutable", "str_authority")
+                "str_name",
+                "str_type",
+                "str_authority",
+                "str_description",
+                "str_source",
+                "bool_immutable")
 
         private val MAPPER = RowMapper<Permission> { rs, _ ->
             val p = InternalPermission()

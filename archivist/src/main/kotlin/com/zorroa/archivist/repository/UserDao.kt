@@ -63,7 +63,7 @@ interface UserDao {
 
     fun hasPermission(user: UserId, type: String, name: String): Boolean
 
-    fun setPermissions(user: UserId, perms: Collection<Permission>): Int
+    fun setPermissions(user: UserId, perms: Collection<Permission>,source:String="local") : Int
 
     fun addPermission(user: UserId, perm: Permission, immutable: Boolean): Boolean
 
@@ -225,27 +225,25 @@ class UserDaoImpl : AbstractDao(), UserDao {
         return jdbc.queryForObject(HAS_PERM, Int::class.java, user.id, name, type) == 1
     }
 
-    private fun clearPermissions(user: UserId) {
+    private fun clearPermissions(user: UserId, source:String="local") : Int {
         /*
          * Ensure the user's immutable permissions cannot be removed.
          */
-        jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=?",
-                user.id, false)
+        return jdbc.update("DELETE FROM user_permission WHERE pk_user=? AND bool_immutable=? AND str_source=?",
+                user.id, false, source)
     }
 
-    override fun setPermissions(user: UserId, perms: Collection<Permission>): Int {
-        /*
-         * Does not remove immutable permissions.
-         */
-        clearPermissions(user)
+    override fun setPermissions(user: UserId, perms: Collection<Permission>, source:String): Int {
+
+        clearPermissions(user, source)
 
         var result = 0
         for (p in perms) {
             if (hasPermission(user, p)) {
                 continue
             }
-            jdbc.update("INSERT INTO user_permission (pk_permission, pk_user) VALUES (?,?)",
-                    p.id, user.id)
+            jdbc.update("INSERT INTO user_permission (pk_permission, pk_user, str_source) VALUES (?,?,?)",
+                    p.id, user.id, source)
             result++
         }
         return result
@@ -309,7 +307,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "str_firstname",
                 "str_lastname")
 
-        private val HAS_PERM = "SELECT " +
+        private const val HAS_PERM = "SELECT " +
                 "COUNT(1) " +
                 "FROM " +
                 "permission p," +

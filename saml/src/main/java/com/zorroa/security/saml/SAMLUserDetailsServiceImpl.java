@@ -16,13 +16,16 @@
 
 package com.zorroa.security.saml;
 
+import com.zorroa.archivist.sdk.security.AuthSource;
 import com.zorroa.archivist.sdk.security.UserAuthed;
 import com.zorroa.archivist.sdk.security.UserRegistryService;
+import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
+import org.springframework.security.saml.metadata.MetadataManager;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,9 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 	@Autowired
 	UserRegistryService userRegistryService;
 
+	@Autowired
+	private MetadataManager metadata;
+
 	// Logger
 	private static final Logger LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
@@ -44,27 +50,43 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 		/**
 		 * Grab the username.
 		 */
+
 		String userID = credential.getNameID().getValue();
 		String issuer = credential.getAuthenticationAssertion().getIssuer().getValue();
-		LOG.info("Loading SAML user: {} from {}", userID, issuer);
-
-		/**
-		 * Convert the groups attribute to a list of group names.
-		 */
-		String[] groupAttr = credential.getAttributeAsStringArray("groups");
-
-		List<String> groups = null;
-		if (groupAttr != null) {
-			groups = Arrays.asList(groupAttr);
-		}
 
 		try {
-            UserAuthed authed = userRegistryService.registerUser(userID, issuer, groups);
-            return authed;
+			ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(issuer);
+			AuthSource source = new AuthSource(
+					zd.getProp("label"),
+					zd.getProp("authSourceId"),
+					zd.getProp("permissionType"));
 
-        } catch (Exception e) {
-		    LOG.warn("Failed to register user: ", e);
-		    throw new UsernameNotFoundException("foo", e);
+			LOG.info("Loading SAML user: {} from {}", userID, issuer);
+
+			/**
+			 * Convert the groups attribute to a list of group names.
+			 */
+			List<String> groups = null;
+			String groupAttrName = zd.getProp("groupAttr");
+			if (groupAttrName != null) {
+				String[] groupAttr = credential.getAttributeAsStringArray(groupAttrName);
+				if (groupAttr != null) {
+					groups = Arrays.asList(groupAttr);
+				}
+			}
+
+			try {
+				UserAuthed authed = userRegistryService.registerUser(userID, source, groups);
+				return authed;
+
+			} catch (Exception e) {
+				LOG.warn("Failed to register user: ", e);
+				throw new UsernameNotFoundException("foo", e);
+			}
+
+		} catch (MetadataProviderException e) {
+			LOG.warn("Failed to register user, IDP not founds", e);
+			throw new UsernameNotFoundException("Unable to find IDP associated with user");
 		}
 	}
 }

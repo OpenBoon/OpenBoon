@@ -190,7 +190,7 @@ CREATE TABLE ZORROA.USERS(
   STR_LASTNAME VARCHAR(255),
   BOOL_ENABLED BOOLEAN NOT NULL,
   HMAC_KEY UUID,
-  STR_SOURCE VARCHAR(16) DEFAULT 'local' NOT NULL,
+  STR_SOURCE VARCHAR(128) DEFAULT 'local' NOT NULL,
   PK_PERMISSION INTEGER NOT NULL,
   PK_FOLDER INTEGER NOT NULL,
   BOOL_RESET_PASS BOOLEAN DEFAULT 'f' NOT NULL,
@@ -210,6 +210,7 @@ CREATE UNIQUE INDEX USER_STR_EMAIL_IDX ON ZORROA.USERS(STR_EMAIL);
 CREATE TABLE ZORROA.USER_PERMISSION(
   PK_PERMISSION INTEGER NOT NULL,
   PK_USER INTEGER NOT NULL,
+  STR_SOURCE TEXT NOT NULL DEFAULT 'local',
   BOOL_IMMUTABLE BOOLEAN DEFAULT 'f' NOT NULL
 );
 
@@ -377,13 +378,14 @@ CREATE INDEX SHARED_LINK_PK_USER_IDX ON ZORROA.SHARED_LINK(PK_USER);
 
 CREATE TABLE ZORROA.PERMISSION(
   PK_PERMISSION SERIAL PRIMARY KEY,
-  STR_NAME VARCHAR(128) NOT NULL,
-  STR_DESCRIPTION VARCHAR(255) NOT NULL,
-  STR_TYPE VARCHAR(32) NOT NULL,
+  STR_NAME TEXT NOT NULL,
+  STR_DESCRIPTION TEXT NOT NULL,
+  STR_TYPE TEXT NOT NULL,
   BOOL_IMMUTABLE BOOLEAN DEFAULT 'f' NOT NULL,
   BOOL_USER_ASSIGNABLE BOOLEAN DEFAULT 't' NOT NULL,
   BOOL_OBJ_ASSIGNABLE BOOLEAN DEFAULT 't' NOT NULL,
-  STR_AUTHORITY VARCHAR(128) NOT NULL
+  STR_AUTHORITY TEXT NOT NULL,
+  STR_SOURCE TEXT NOT NULL DEFAULT 'local'
 );
 
 CREATE UNIQUE INDEX PERMISSION_NAME_AND_TYPE_UNIQ_IDX ON ZORROA.PERMISSION(STR_NAME, STR_TYPE);
@@ -476,14 +478,14 @@ CREATE INDEX request_int_state_idx ON request(int_state);
 
 INSERT INTO ZORROA.PERMISSION(PK_PERMISSION, STR_NAME, STR_DESCRIPTION, STR_TYPE, BOOL_IMMUTABLE, BOOL_USER_ASSIGNABLE, BOOL_OBJ_ASSIGNABLE, STR_AUTHORITY) VALUES
   (10, 'admin', 'The Admin user', 'user', TRUE, FALSE, TRUE, 'user::admin'),
-  (6, 'administrator', 'Superuser, can do and access everything', 'group', TRUE, TRUE, TRUE, 'zorroa::administrator'),
-  (7, 'manager', 'Can manage users and permissions', 'group', TRUE, TRUE, TRUE, 'zorroa::manager'),
-  (12, 'developer', 'Can manage and create pipelines', 'group', TRUE, TRUE, TRUE, 'zorroa::developer'),
-  (13, 'share', 'Can share restricted assets with any groups or user.', 'group', TRUE, TRUE, FALSE, 'zorroa::share'),
-  (14, 'everyone', 'A standard user of the system.  All users get this permission.', 'group', TRUE, TRUE, TRUE, 'zorroa::everyone'),
-  (15, 'export', 'User can export all data', 'group', TRUE, TRUE, FALSE, 'zorroa::export'),
-  (16, 'read', 'User can read all data', 'group', TRUE, TRUE, FALSE, 'zorroa::read'),
-  (17, 'write', 'User can write all data', 'group', TRUE, TRUE, FALSE, 'zorroa::write');
+  (6, 'administrator', 'Superuser, can do and access everything', 'zorroa', TRUE, TRUE, TRUE, 'zorroa::administrator'),
+  (7, 'manager', 'Can manage users and permissions', 'zorroa', TRUE, TRUE, TRUE, 'zorroa::manager'),
+  (12, 'developer', 'Can manage and create pipelines', 'zorroa', TRUE, TRUE, TRUE, 'zorroa::developer'),
+  (13, 'share', 'Can share restricted assets with any groups or user.', 'zorroa', TRUE, TRUE, FALSE, 'zorroa::share'),
+  (14, 'everyone', 'A standard user of the system.  All users get this permission.', 'zorroa', TRUE, TRUE, TRUE, 'zorroa::everyone'),
+  (15, 'export', 'User can export all data', 'zorroa', TRUE, TRUE, FALSE, 'zorroa::export'),
+  (16, 'read', 'User can read all data', 'zorroa', TRUE, TRUE, FALSE, 'zorroa::read'),
+  (17, 'write', 'User can write all data', 'zorroa', TRUE, TRUE, FALSE, 'zorroa::write');
 
 ALTER SEQUENCE zorroa.permission_pk_permission_seq RESTART WITH 18;
 

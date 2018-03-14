@@ -166,7 +166,7 @@ public class UserDaoTests extends AbstractTest {
     @Test
     public void testSetPermissions() {
         Permission p = permissionDao.get(Groups.MANAGER);
-        assertEquals(1, userDao.setPermissions(user, Lists.newArrayList(p)));
+        assertEquals(1, userDao.setPermissions(user, Lists.newArrayList(p), "local"));
         List<Permission> perms = permissionDao.getAll(user);
         assertTrue(perms.contains(p));
     }

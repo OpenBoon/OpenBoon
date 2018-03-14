@@ -10,10 +10,7 @@ import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserDaoCache
 import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
-import com.zorroa.archivist.sdk.security.Groups
-import com.zorroa.archivist.sdk.security.UserAuthed
-import com.zorroa.archivist.sdk.security.UserId
-import com.zorroa.archivist.sdk.security.UserRegistryService
+import com.zorroa.archivist.sdk.security.*
 import com.zorroa.sdk.client.exception.DuplicateEntityException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -72,6 +69,8 @@ interface UserService {
 
     fun getPermissions(user: UserId): List<Permission>
 
+    fun setPermissions(user: UserId, perms: Collection<Permission>, source:String)
+
     fun setPermissions(user: UserId, perms: Collection<Permission>)
 
     fun addPermissions(user: UserId, perms: Collection<Permission>)
@@ -81,9 +80,13 @@ interface UserService {
     fun hasPermission(user: UserId, type: String, name: String): Boolean
 
     fun hasPermission(user: User, permission: Permission): Boolean
+
     fun getUserPreset(id: Int): UserPreset
+
     fun updateUserPreset(id: Int, preset: UserPreset): Boolean
+
     fun createUserPreset(preset: UserPresetSpec): UserPreset
+
     fun deleteUserPreset(preset: UserPreset): Boolean
 
     fun checkPassword(user: String, supplied: String)
@@ -97,39 +100,70 @@ interface UserService {
 
 
 @Service
-@Transactional
 class UserRegistryServiceImpl @Autowired constructor(
         private val userCacheDao: UserDaoCache,
-        private val permissionDao: PermissionDao
+        private val properties: ApplicationProperties
 ): UserRegistryService {
 
     @Autowired
     internal lateinit var userService: UserService
 
+    @Autowired
+    internal lateinit var permissionService: PermissionService
+
     /**
      * Register and external user from OAuth/SAML.
      */
-    override fun registerUser(username: String, source: String, groups: List<String>?): UserAuthed {
-
+    override fun registerUser(username: String, source: AuthSource, groups: List<String>?): UserAuthed {
         val user = if (!userService.exists(username)) {
             val spec = UserSpec()
             spec.username = username
             spec.password = UUID.randomUUID().toString() + UUID.randomUUID().toString()
             spec.email = username
-            userService.create(spec, source)
+            userService.create(spec, source.authSourceId)
         } else {
             userService.get(username)
         }
 
-        val perms = userService.getPermissions(user)
+        if (properties.getBoolean("archivist.security.saml.permissions.import") &&
+                groups != null) {
+            importAndAssignPermissions(user, source, groups)
+        }
 
+        val perms = userService.getPermissions(user)
         return UserAuthed(user.id, user.username, perms.toSet())
     }
 
+    @Transactional(readOnly = true)
     override fun getUser(username: String): UserAuthed {
         val user = userCacheDao.getUser(username)
-        val perms = permissionDao.getAll(user)
+        val perms = userService.getPermissions(user)
         return UserAuthed(user.id, user.username, perms.toSet())
+    }
+
+    fun importAndAssignPermissions(user: UserId, source: AuthSource, groups: List<String>) {
+
+        val perms = mutableListOf<Permission>()
+        for (group in groups) {
+            val parts = group.split(Permission.JOIN, limit = 2)
+
+            val spec = if (parts.size == 1) {
+                PermissionSpec(source.permissionType, parts[0])
+            } else {
+                PermissionSpec(parts[0], parts[1])
+            }
+            spec.source = source.authSourceId
+
+            val authority = spec.type + Permission.JOIN + spec.name
+            perms.add(if (permissionService.permissionExists(authority)) {
+                permissionService.getPermission(authority)
+            }
+            else {
+                permissionService.createPermission(spec)
+            })
+        }
+
+        userService.setPermissions(user, perms, source.authSourceId)
     }
 }
 
@@ -320,12 +354,16 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun setPermissions(user: UserId, perms: Collection<Permission>) {
+        setPermissions(user, perms, "local")
+    }
+
+    override fun setPermissions(user: UserId, perms: Collection<Permission>, source:String) {
         /*
          * Don't let setPermissions set immutable permission types which can never
          * be added or removed via the external API.
          */
         val filtered = perms.stream().filter { p -> !PERMANENT_TYPES.contains(p.type) }.collect(Collectors.toList())
-        userDao.setPermissions(user, filtered)
+        userDao.setPermissions(user, filtered, source)
 
         tx.afterCommit(true, {
             logService.logAsync(UserLogSpec.build("set_permission", user)
