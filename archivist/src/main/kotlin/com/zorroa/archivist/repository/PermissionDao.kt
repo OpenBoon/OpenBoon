@@ -184,7 +184,7 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override fun getAll(ids: Array<Int>?): List<Permission> {
-        return if (ids == null || ids.size == 0) {
+        return if (ids == null || ids.isEmpty()) {
             Lists.newArrayListWithCapacity(1)
         } else jdbc.query("SELECT * FROM permission WHERE " + JdbcUtils.`in`("pk_permission", ids.size), MAPPER, *ids)
     }
