@@ -11,13 +11,13 @@ import com.spotify.docker.client.messages.ContainerConfig
 import com.spotify.docker.client.messages.HostConfig
 import com.zorroa.analyst.cluster.ClusterProcess
 import com.zorroa.analyst.isUnitTest
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.cluster.client.ClusterConnectionException
 import com.zorroa.cluster.client.ClusterException
 import com.zorroa.cluster.client.MasterServerClient
 import com.zorroa.cluster.thrift.*
 import com.zorroa.cluster.zps.MetaZpsExecutor
 import com.zorroa.cluster.zps.ZpsTask
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.sdk.processor.Reaction
 import com.zorroa.sdk.processor.SharedData
@@ -64,10 +64,10 @@ interface ProcessManagerService {
  */
 @Component
 class ProcessManagerServiceImpl @Autowired constructor(
-    private val properties: ApplicationProperties,
-    private val analyzeExecutor: ExecutorService,
-    private val networkEnvironment: NetworkEnvironment,
-    private val appContext: ApplicationContext
+        private val properties: ApplicationProperties,
+        private val analyzeExecutor: ExecutorService,
+        private val networkEnvironment: NetworkEnvironment,
+        private val appContext: ApplicationContext
 ): AbstractScheduledService(), ApplicationListener<ContextRefreshedEvent>, ProcessManagerService {
 
     @Value("\${analyst.executor.idleMinutesShutdown}")

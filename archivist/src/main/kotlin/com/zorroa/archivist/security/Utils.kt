@@ -6,20 +6,19 @@ import com.google.common.collect.Sets.intersection
 import com.zorroa.archivist.domain.Access
 import com.zorroa.archivist.domain.Acl
 import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.sdk.security.Groups
+import com.zorroa.archivist.sdk.security.UserAuthed
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.processor.Source
 import com.zorroa.sdk.schema.PermissionSchema
 import com.zorroa.sdk.util.Json
-import com.zorroa.security.UserAuthed
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
-
-val GROUP_ADMIN = "group::administrator"
 
 fun getAuthentication(): Authentication {
     return SecurityContextHolder.getContext().authentication
@@ -87,7 +86,7 @@ fun hasPermission(permIds: Set<Int>?): Boolean {
     if (permIds == null || permIds.isEmpty()) {
         return true
     }
-    return if (hasPermission(GROUP_ADMIN)) {
+    return if (hasPermission(Groups.ADMIN)) {
         true
     } else !intersection<Int>(permIds, getPermissionIds()).isEmpty()
 }
@@ -121,7 +120,7 @@ fun hasPermission(acl: Acl?, access: Access): Boolean {
     if (acl == null) {
         return true
     }
-    return if (hasPermission(GROUP_ADMIN)) {
+    return if (hasPermission(Groups.ADMIN)) {
         true
     } else acl.hasAccess(getPermissionIds(), access)
 }
@@ -136,7 +135,7 @@ fun getPermissionIds(): Set<Int> {
 }
 
 fun getPermissionsFilter(): QueryBuilder? {
-    return if (hasPermission(GROUP_ADMIN)) {
+    return if (hasPermission(Groups.ADMIN)) {
         null
     } else QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("permissions.read",
             getPermissionIds()))
@@ -175,7 +174,7 @@ fun setExportPermissions(source: Source, perms: Collection<Permission>) {
  * @param oldAcl
  */
 fun canSetAclOnFolder(newAcl: Acl, oldAcl: Acl, created: Boolean) {
-    if (hasPermission(GROUP_ADMIN)) {
+    if (hasPermission(Groups.ADMIN)) {
         return
     }
 
@@ -213,7 +212,7 @@ fun canSetAclOnFolder(newAcl: Acl, oldAcl: Acl, created: Boolean) {
  * @return
  */
 fun canExport(asset: Document): Boolean {
-    if (hasPermission("group::export")) {
+    if (hasPermission(Groups.EXPORT)) {
         return true
     }
 

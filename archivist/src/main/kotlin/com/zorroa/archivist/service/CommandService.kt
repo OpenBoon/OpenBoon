@@ -4,13 +4,13 @@ import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.CommandDao
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
-import com.zorroa.security.UserRegistryService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder

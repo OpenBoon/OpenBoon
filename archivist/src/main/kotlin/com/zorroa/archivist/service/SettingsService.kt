@@ -12,9 +12,10 @@ import com.zorroa.archivist.domain.Setting
 import com.zorroa.archivist.domain.SettingsFilter
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
 import com.zorroa.archivist.repository.SettingsDao
+import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.client.exception.EntityNotFoundException
 import org.slf4j.LoggerFactory
@@ -98,8 +99,7 @@ class SettingsServiceImpl @Autowired constructor(
     }
 
     override fun getAll(filter: SettingsFilter): List<Setting> {
-        if (!hasPermission("group::administrator",
-                "group::developer")) {
+        if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
             filter.isLiveOnly = true
         }
         try {
@@ -121,7 +121,7 @@ class SettingsServiceImpl @Autowired constructor(
         val filter = SettingsFilter()
         filter.count = 1
         filter.names = ImmutableSet.of(key)
-        if (!hasPermission("group::administrator", "group::developer")) {
+        if (!hasPermission(Groups.ADMIN, Groups.DEV)) {
             filter.isLiveOnly = true
         }
         try {

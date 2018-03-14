@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.client.exception.DuplicateEntityException;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
         builder.setPermissions(
-                permissionService.getPermission("group::manager"));
+                permissionService.getPermission(Groups.MANAGER));
         User user = userService.create(builder);
 
         /*
@@ -60,9 +61,9 @@ public class UserServiceTests extends AbstractTest {
          */
         List<Permission> perms = userService.getPermissions(user);
         assertEquals(3, perms.size());
-        assertTrue(userService.hasPermission(user, permissionService.getPermission("group::manager")));
+        assertTrue(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)));
         assertTrue(userService.hasPermission(user, permissionService.getPermission("user::test")));
-        assertFalse(userService.hasPermission(user, permissionService.getPermission("group::developer")));
+        assertFalse(userService.hasPermission(user, permissionService.getPermission(Groups.DEV)));
     }
 
     @Test(expected=DuplicateEntityException.class)
@@ -74,7 +75,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
         builder.setPermissions(
-                permissionService.getPermission("group::manager"));
+                permissionService.getPermission(Groups.MANAGER));
         userService.create(builder);
         userService.create(builder);
     }
@@ -83,7 +84,7 @@ public class UserServiceTests extends AbstractTest {
     public void createUserWithPresets() {
         UserPreset presets = userService.createUserPreset(new UserPresetSpec()
                 .setName("defaults")
-                .setPermissionIds(Lists.newArrayList(permissionService.getPermission("group::manager").getId()))
+                .setPermissionIds(Lists.newArrayList(permissionService.getPermission(Groups.MANAGER).getId()))
                 .setSettings(new UserSettings().setSearch(ImmutableMap.of("foo", "bar"))));
 
         UserSpec builder = new UserSpec();
@@ -95,7 +96,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setUserPresetId(presets.getPresetId());
 
         User user = userService.create(builder);
-        assertTrue(userService.hasPermission(user, permissionService.getPermission("group::manager")));
+        assertTrue(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)));
 
         UserSettings settings = user.getSettings();
         assertEquals("bar", settings.getSearch().get("foo"));
@@ -110,7 +111,7 @@ public class UserServiceTests extends AbstractTest {
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
         builder.setPermissions(
-                permissionService.getPermission("group::manager"));
+                permissionService.getPermission(Groups.MANAGER));
         User user = userService.create(builder);
 
         assertTrue(userService.setEnabled(user, false));
@@ -124,16 +125,16 @@ public class UserServiceTests extends AbstractTest {
         builder.setEmail("test@test.com");
         builder.setFirstName("Bilbo");
         builder.setLastName("Baggings");
-        builder.setPermissions(permissionService.getPermission("group::manager"));
+        builder.setPermissions(permissionService.getPermission(Groups.MANAGER));
         User user = userService.create(builder);
 
-        Permission dev = permissionService.getPermission("group::developer");
-        assertTrue(userService.hasPermission(user, permissionService.getPermission("group::manager")));
+        Permission dev = permissionService.getPermission(Groups.DEV);
+        assertTrue(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)));
         assertFalse(userService.hasPermission(user, dev));
 
         userService.setPermissions(user, Lists.newArrayList(dev));
 
-        assertFalse(userService.hasPermission(user, permissionService.getPermission("group::manager")));
+        assertFalse(userService.hasPermission(user, permissionService.getPermission(Groups.MANAGER)));
         assertTrue(userService.hasPermission(user, dev));
     }
 
@@ -199,9 +200,9 @@ public class UserServiceTests extends AbstractTest {
     public void testImmutablePermissions() {
         UserSpec builder = new UserSpec();
         builder.setPermissionIds(new Integer[]{
-                permissionService.getPermission("group::administrator").getId()});
+                permissionService.getPermission(Groups.ADMIN).getId()});
 
-        Permission sup = permissionService.getPermission("group::administrator");
+        Permission sup = permissionService.getPermission(Groups.ADMIN);
 
         User admin = userService.get("admin");
         userService.setPermissions(admin, Lists.newArrayList(sup));

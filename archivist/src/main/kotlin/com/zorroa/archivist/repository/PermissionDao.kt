@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
-import com.zorroa.security.UserId
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper

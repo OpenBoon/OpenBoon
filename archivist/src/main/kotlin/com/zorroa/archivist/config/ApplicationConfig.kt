@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.domain.UniqueTaskExecutor
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.service.TransactionEventManager
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.common.config.NetworkEnvironmentUtils
 import com.zorroa.common.config.SpringApplicationProperties

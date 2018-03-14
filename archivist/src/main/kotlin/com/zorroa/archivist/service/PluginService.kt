@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.repository.PluginDao
 import com.zorroa.archivist.repository.ProcessorDao
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.plugins.PluginException

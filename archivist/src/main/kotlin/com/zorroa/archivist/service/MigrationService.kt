@@ -7,7 +7,7 @@ import com.google.common.collect.Maps
 import com.zorroa.archivist.domain.Migration
 import com.zorroa.archivist.domain.MigrationType
 import com.zorroa.archivist.repository.MigrationDao
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.sdk.util.Json
 import org.elasticsearch.ElasticsearchException
 import org.elasticsearch.action.bulk.BulkProcessor

@@ -3,7 +3,7 @@ package com.zorroa.archivist.repository
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import org.slf4j.Logger

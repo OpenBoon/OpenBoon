@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.ExportDao
 import com.zorroa.archivist.repository.JobDao
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager

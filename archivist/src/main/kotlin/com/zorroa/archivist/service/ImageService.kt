@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.domain.WatermarkSettingsChanged
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.domain.Proxy
 import com.zorroa.sdk.filesystem.ObjectFileSystem
 import org.slf4j.LoggerFactory

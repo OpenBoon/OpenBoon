@@ -10,9 +10,9 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.cluster.thrift.ExpandT
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.client.exception.ArchivistException

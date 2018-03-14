@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Sets
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.*
 import com.zorroa.archivist.service.EmailService
 import com.zorroa.archivist.service.PermissionService
@@ -40,7 +41,7 @@ class UserController @Autowired constructor(
         }
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users"])
     fun getAll() : List<User> = userService.getAll()
 
@@ -128,7 +129,7 @@ class UserController @Autowired constructor(
         return HttpUtils.status("send-onboard-email", "update", true)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PostMapping(value = ["/api/v1/users"])
     fun create(@Valid @RequestBody builder: UserSpec, bindingResult: BindingResult): User {
         if (bindingResult.hasErrors()) {
@@ -143,7 +144,7 @@ class UserController @Autowired constructor(
         return userService.get(id)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users/{username}/_exists"])
     operator fun get(@PathVariable username: String): Map<*, *> {
         return ImmutableMap.of("result", userService.exists(username))
@@ -183,7 +184,7 @@ class UserController @Autowired constructor(
         return HttpUtils.updated("users", id, userService.updateSettings(user, settings), userService.get(id))
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/_enabled"])
     fun disable(@RequestBody settings: Map<String, Boolean>, @PathVariable id: Int): Any {
         val user = userService.get(id)
@@ -221,7 +222,7 @@ class UserController @Autowired constructor(
      * @param id
      * @return
      */
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions"])
     fun setPermissions(@RequestBody pids: List<Int>, @PathVariable id: Int): List<Permission> {
         val user = userService.get(id)
@@ -230,7 +231,7 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_add"])
     fun addPermissions(@RequestBody pids: List<String>, @PathVariable id: Int): List<Permission> {
         val user = userService.get(id)
@@ -240,7 +241,7 @@ class UserController @Autowired constructor(
         return userService.getPermissions(user)
     }
 
-    @PreAuthorize("hasAuthority('group::manager') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/users/{id}/permissions/_remove"])
     fun removePermissions(@RequestBody pids: List<String>, @PathVariable id: Int): List<Permission> {
         val user = userService.get(id)
@@ -251,7 +252,7 @@ class UserController @Autowired constructor(
     }
 
     private fun validatePermissions(id: Int) {
-        if (getUserId() != id && !hasPermission("group::manager")) {
+        if (getUserId() != id && !hasPermission(Groups.MANAGER)) {
             throw SecurityException("Access denied.")
         }
     }

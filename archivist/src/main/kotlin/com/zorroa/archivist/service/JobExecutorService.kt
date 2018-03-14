@@ -9,12 +9,12 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.cluster.client.WorkerNodeClient
 import com.zorroa.cluster.thrift.TaskKillT
 import com.zorroa.cluster.thrift.TaskResultT
 import com.zorroa.cluster.thrift.TaskStartT
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.domain.AnalystState
 import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.client.exception.ArchivistWriteException

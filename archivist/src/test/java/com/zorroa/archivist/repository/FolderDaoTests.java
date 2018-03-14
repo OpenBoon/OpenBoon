@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.PermissionService;
 import org.junit.Test;
@@ -142,14 +143,14 @@ public class FolderDaoTests extends AbstractTest {
     @Test
     public void testGetChildrenInsecure() {
         authenticate("user");
-        assertFalse(UtilsKt.hasPermission("group::administrator"));
+        assertFalse(UtilsKt.hasPermission(Groups.ADMIN));
 
         Folder pub = folderDao.get(Folder.ROOT_ID, "Users", false);
         Folder f1 = folderDao.create(new FolderSpec("level1", pub));
         Folder f2 = folderDao.create(new FolderSpec("level2", pub));
         Folder f3 = folderDao.create(new FolderSpec("level3", pub));
         folderDao.setAcl(f3.getId(), new Acl().addEntry(
-                permissionService.getPermission("group::administrator")));
+                permissionService.getPermission(Groups.ADMIN)));
 
         assertFalse(folderDao.hasAccess(f3, Access.Read));
         assertEquals(6, folderDao.getChildrenInsecure(pub.getId()).size());

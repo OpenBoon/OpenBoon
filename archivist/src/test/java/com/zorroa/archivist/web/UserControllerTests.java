@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.util.Json;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -186,8 +187,8 @@ public class UserControllerTests extends MockMvcTest {
         List<Permission> perms = userService.getPermissions(user);
         assertTrue(perms.size() > 0);
 
-        userService.setPermissions(user, Lists.newArrayList(permissionService.getPermission("group::administrator")));
-        perms.add(permissionService.getPermission("group::administrator"));
+        userService.setPermissions(user, Lists.newArrayList(permissionService.getPermission(Groups.ADMIN)));
+        perms.add(permissionService.getPermission(Groups.ADMIN));
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(get("/api/v1/users/" + user.getId() + "/permissions")

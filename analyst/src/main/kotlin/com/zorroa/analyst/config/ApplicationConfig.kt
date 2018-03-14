@@ -1,7 +1,7 @@
 package com.zorroa.analyst.config
 
 import com.google.common.collect.ImmutableList
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import com.zorroa.common.config.NetworkEnvironmentUtils
 import com.zorroa.common.config.SpringApplicationProperties

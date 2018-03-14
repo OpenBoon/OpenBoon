@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
-import com.zorroa.security.UserId
+import com.zorroa.archivist.sdk.security.UserId
 
 /**
  * The base user attributes returned with objects that reference a user.

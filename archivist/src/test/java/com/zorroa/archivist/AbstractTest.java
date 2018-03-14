@@ -8,9 +8,11 @@ import com.zorroa.archivist.domain.MigrationType;
 import com.zorroa.archivist.domain.User;
 import com.zorroa.archivist.domain.UserSpec;
 import com.zorroa.archivist.repository.AnalystDao;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
+import com.zorroa.archivist.sdk.security.UserAuthed;
+import com.zorroa.archivist.sdk.security.UserRegistryService;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.archivist.service.*;
-import com.zorroa.common.config.ApplicationProperties;
 import com.zorroa.common.domain.AnalystSpec;
 import com.zorroa.common.domain.AnalystState;
 import com.zorroa.common.elastic.ElasticClientUtils;
@@ -20,8 +22,6 @@ import com.zorroa.sdk.schema.ProxySchema;
 import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.security.UserAuthed;
-import com.zorroa.security.UserRegistryService;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -209,7 +209,7 @@ public abstract class AbstractTest {
         managerBuilder.setPassword("manager");
         User manager = userService.create(managerBuilder);
         userService.addPermissions(manager, Lists.newArrayList(
-                permissionService.getPermission("group::manager")));
+                permissionService.getPermission("zorroa::manager")));
 
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));
@@ -253,7 +253,7 @@ public abstract class AbstractTest {
 
         if (superUser) {
             authorities.add(
-                    permissionService.getPermission("group::administrator"));
+                    permissionService.getPermission("zorroa::administrator"));
         }
 
         SecurityContextHolder.getContext().setAuthentication(

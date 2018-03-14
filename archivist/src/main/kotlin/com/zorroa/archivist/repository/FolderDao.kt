@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.getPermissionIds
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
@@ -385,7 +386,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
      * @return
      */
     private fun appendAccess(query: String, access: Access): String {
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(Groups.ADMIN)) {
             return query
         }
 
@@ -421,7 +422,7 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
     }
 
     fun appendAclArgs(vararg args: Any): Array<out Any> {
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(Groups.ADMIN)) {
             return args
         }
 

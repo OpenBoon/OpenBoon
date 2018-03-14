@@ -4,11 +4,11 @@ import com.google.common.base.Preconditions
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
-import com.zorroa.security.UserId
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder

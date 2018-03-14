@@ -3,6 +3,7 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.ImmutableList;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
 import com.zorroa.sdk.domain.Pager;
@@ -77,10 +78,10 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testIndexWithPermission() throws InterruptedException {
-        Permission p = permissionService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission(Groups.EVERYONE);
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 7);
+        builder.addToPermissions(Groups.EVERYONE, 7);
 
         Document asset1 = assetService.index(builder);
         assertEquals(ImmutableList.of(p.getId()),
@@ -95,10 +96,10 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testIndexWithReadOnlyPermission() throws InterruptedException {
-        Permission p = permissionService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission(Groups.EVERYONE);
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 1);
+        builder.addToPermissions(Groups.EVERYONE, 1);
 
         Document asset1 = assetService.index(builder);
         assertEquals(ImmutableList.of(p.getId()),
@@ -113,15 +114,15 @@ public class AssetServiceTests extends AbstractTest {
 
     @Test
     public void testIndexRemovePermissions() throws InterruptedException {
-        Permission p = permissionService.getPermission("group::everyone");
+        Permission p = permissionService.getPermission(Groups.EVERYONE);
 
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 7);
+        builder.addToPermissions(Groups.EVERYONE, 7);
         Document asset1 = assetService.index(builder);
         refreshIndex();
 
         Source builder2 = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToPermissions("group::everyone", 1);
+        builder.addToPermissions(Groups.EVERYONE, 1);
         Document asset2 = assetService.index(builder);
 
         // Should only end up with read.

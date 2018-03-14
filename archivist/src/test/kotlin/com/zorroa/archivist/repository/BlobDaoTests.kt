@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.security.Groups
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -112,7 +113,7 @@ class BlobDaoTests : AbstractTest() {
         assertEquals(1, blobDao.getPermissions(id).size)
 
         // add a new permission
-        val p = permissionDao.get("group::administrator")
+        val p = permissionDao.get(Groups.ADMIN)
         _acl = Acl()
         _acl.addEntry(p, 7)
         blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=false })

@@ -14,7 +14,7 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.util.concurrent.ExecutionException
 
-@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
+@PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
 @RestController
 class TaskController @Autowired constructor(
         private val jobExecutorService: JobExecutorService,

@@ -476,14 +476,14 @@ CREATE INDEX request_int_state_idx ON request(int_state);
 
 INSERT INTO ZORROA.PERMISSION(PK_PERMISSION, STR_NAME, STR_DESCRIPTION, STR_TYPE, BOOL_IMMUTABLE, BOOL_USER_ASSIGNABLE, BOOL_OBJ_ASSIGNABLE, STR_AUTHORITY) VALUES
   (10, 'admin', 'The Admin user', 'user', TRUE, FALSE, TRUE, 'user::admin'),
-  (6, 'administrator', 'Superuser, can do and access everything', 'group', TRUE, TRUE, TRUE, 'group::administrator'),
-  (7, 'manager', 'Can manage users and permissions', 'group', TRUE, TRUE, TRUE, 'group::manager'),
-  (12, 'developer', 'Can manage and create pipelines', 'group', TRUE, TRUE, TRUE, 'group::developer'),
-  (13, 'share', 'Can share restricted assets with any groups or user.', 'group', TRUE, TRUE, FALSE, 'group::share'),
-  (14, 'everyone', 'A standard user of the system.  All users get this permission.', 'group', TRUE, TRUE, TRUE, 'group::everyone'),
-  (15, 'export', 'User can export all data', 'group', TRUE, TRUE, FALSE, 'group::export'),
-  (16, 'readAll', 'User can read all data', 'group', TRUE, TRUE, FALSE, 'group::readAll'),
-  (17, 'writeAll', 'User can write all data', 'group', TRUE, TRUE, FALSE, 'group::writeAll');
+  (6, 'administrator', 'Superuser, can do and access everything', 'group', TRUE, TRUE, TRUE, 'zorroa::administrator'),
+  (7, 'manager', 'Can manage users and permissions', 'group', TRUE, TRUE, TRUE, 'zorroa::manager'),
+  (12, 'developer', 'Can manage and create pipelines', 'group', TRUE, TRUE, TRUE, 'zorroa::developer'),
+  (13, 'share', 'Can share restricted assets with any groups or user.', 'group', TRUE, TRUE, FALSE, 'zorroa::share'),
+  (14, 'everyone', 'A standard user of the system.  All users get this permission.', 'group', TRUE, TRUE, TRUE, 'zorroa::everyone'),
+  (15, 'export', 'User can export all data', 'group', TRUE, TRUE, FALSE, 'zorroa::export'),
+  (16, 'read', 'User can read all data', 'group', TRUE, TRUE, FALSE, 'zorroa::read'),
+  (17, 'write', 'User can write all data', 'group', TRUE, TRUE, FALSE, 'zorroa::write');
 
 ALTER SEQUENCE zorroa.permission_pk_permission_seq RESTART WITH 18;
 

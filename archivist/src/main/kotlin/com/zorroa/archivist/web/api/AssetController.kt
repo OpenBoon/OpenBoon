@@ -370,7 +370,7 @@ class AssetController @Autowired constructor(
 
     }
 
-    @PreAuthorize("hasAuthority('group::share') || hasAuthority('group::administrator')")
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).SHARE) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @PutMapping(value = ["/api/v1/assets/_permissions"])
     @Throws(Exception::class)
     fun setPermissions(

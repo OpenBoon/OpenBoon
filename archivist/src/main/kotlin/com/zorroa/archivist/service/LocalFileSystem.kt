@@ -2,9 +2,9 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.LfsRequest
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.EntityNotFoundException
 import com.zorroa.sdk.util.FileUtils
 import org.slf4j.LoggerFactory
@@ -119,8 +119,8 @@ class LocalFileSystemImpl @Autowired constructor(
     }
 
     override fun isLocalPathAllowed(path: String?): Boolean {
-        if (pathSuggestFilter.isEmpty()) {
-            return false
+        return if (pathSuggestFilter.isEmpty()) {
+            false
         } else {
             var matched = false
             for (filter in pathSuggestFilter) {
@@ -129,7 +129,7 @@ class LocalFileSystemImpl @Autowired constructor(
                     break
                 }
             }
-            return matched
+            matched
         }
     }
 

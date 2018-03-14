@@ -7,6 +7,7 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.FolderDao
 import com.zorroa.archivist.repository.TaxonomyDao
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.security.InternalAuthentication
 import com.zorroa.archivist.security.InternalRunnable
 import com.zorroa.common.elastic.CountingBulkListener
@@ -16,7 +17,6 @@ import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.search.AssetFilter
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.util.Json
-import com.zorroa.security.UserRegistryService
 import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchResponse

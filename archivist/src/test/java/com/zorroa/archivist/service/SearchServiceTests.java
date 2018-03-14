@@ -7,6 +7,7 @@ import com.google.common.io.Files;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.repository.FieldDao;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.domain.AssetIndexSpec;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.domain.PagedList;
@@ -69,7 +70,7 @@ public class SearchServiceTests extends AbstractTest {
         Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
-        source.addToPermissions("group::everyone", 1);
+        source.addToPermissions(Groups.EVERYONE, 1);
         assetService.index(source);
         refreshIndex();
 

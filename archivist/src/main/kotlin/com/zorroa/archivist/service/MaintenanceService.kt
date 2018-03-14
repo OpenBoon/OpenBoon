@@ -9,7 +9,7 @@ import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.MaintenanceDao
 import com.zorroa.archivist.repository.SharedLinkDao
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import org.apache.commons.io.FileUtils
 import org.elasticsearch.client.Client
 import org.elasticsearch.repositories.RepositoryMissingException
@@ -24,9 +24,9 @@ import java.io.File
 import java.io.IOException
 import java.nio.file.Path
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit.DAYS
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
-import java.time.temporal.ChronoUnit.DAYS
 
 /**
  * Created by chambers on 4/21/16.

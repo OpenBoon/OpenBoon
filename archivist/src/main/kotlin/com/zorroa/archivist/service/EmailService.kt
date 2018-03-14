@@ -8,7 +8,7 @@ import com.zorroa.archivist.domain.Request
 import com.zorroa.archivist.domain.SharedLink
 import com.zorroa.archivist.domain.User
 import com.zorroa.archivist.repository.UserDao
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.common.config.NetworkEnvironment
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

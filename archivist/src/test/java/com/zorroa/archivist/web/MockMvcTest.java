@@ -2,10 +2,9 @@ package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.User;
+import com.zorroa.archivist.sdk.security.UserAuthed;
 import com.zorroa.archivist.security.UnitTestAuthentication;
 import com.zorroa.sdk.util.Json;
-import com.zorroa.security.UserAuthed;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;

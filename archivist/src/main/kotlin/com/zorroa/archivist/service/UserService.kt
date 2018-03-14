@@ -9,12 +9,14 @@ import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
 import com.zorroa.archivist.repository.UserDaoCache
 import com.zorroa.archivist.repository.UserPresetDao
-import com.zorroa.common.config.ApplicationProperties
+import com.zorroa.archivist.sdk.config.ApplicationProperties
+import com.zorroa.archivist.sdk.security.Groups
+import com.zorroa.archivist.sdk.security.UserAuthed
+import com.zorroa.archivist.sdk.security.UserId
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.sdk.client.exception.DuplicateEntityException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
-import com.zorroa.security.UserId
-import com.zorroa.security.UserRegistryService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataAccessException
@@ -107,7 +109,7 @@ class UserRegistryServiceImpl @Autowired constructor(
     /**
      * Register and external user from OAuth/SAML.
      */
-    override fun registerUser(username: String, source: String): com.zorroa.security.UserAuthed {
+    override fun registerUser(username: String, source: String, groups: List<String>?): UserAuthed {
 
         val user = if (!userService.exists(username)) {
             val spec = UserSpec()
@@ -120,13 +122,14 @@ class UserRegistryServiceImpl @Autowired constructor(
         }
 
         val perms = userService.getPermissions(user)
-        return com.zorroa.security.UserAuthed(user.id, user.username, perms.toSet())
+
+        return UserAuthed(user.id, user.username, perms.toSet())
     }
 
-    override fun getUser(username: String): com.zorroa.security.UserAuthed {
+    override fun getUser(username: String): UserAuthed {
         val user = userCacheDao.getUser(username)
         val perms = permissionDao.getAll(user)
-        return com.zorroa.security.UserAuthed(user.id, user.username, perms.toSet())
+        return UserAuthed(user.id, user.username, perms.toSet())
     }
 }
 
@@ -193,7 +196,7 @@ class UserServiceImpl @Autowired constructor(
         }
 
         userDao.addPermission(user, userPerm, true)
-        userDao.addPermission(user, permissionDao.get("group", "everyone"), true)
+        userDao.addPermission(user, permissionDao.get(Groups.EVERYONE), true)
 
         tx.afterCommit(false, { logService.logAsync(UserLogSpec.build(LogAction.Create, user)) })
 

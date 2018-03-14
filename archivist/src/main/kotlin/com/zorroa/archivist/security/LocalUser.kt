@@ -1,9 +1,9 @@
 package com.zorroa.archivist.security
 
 import com.google.common.collect.ImmutableSet
+import com.zorroa.archivist.sdk.security.UserRegistryService
 import com.zorroa.archivist.service.UserService
 import com.zorroa.sdk.util.Json
-import com.zorroa.security.UserRegistryService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationProvider

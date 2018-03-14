@@ -7,9 +7,9 @@ import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.FieldDao
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getPermissionsFilter
 import com.zorroa.archivist.security.getUsername
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.domain.Document
 import com.zorroa.sdk.domain.PagedList

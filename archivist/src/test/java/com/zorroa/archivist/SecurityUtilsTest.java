@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.zorroa.archivist.domain.Access;
 import com.zorroa.archivist.domain.Acl;
 import com.zorroa.archivist.domain.Permission;
+import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.archivist.security.UtilsKt;
 import com.zorroa.archivist.service.UserService;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class SecurityUtilsTest extends AbstractTest {
 
     @Test
     public void testHasPermissionIsAdministrator() {
-        Permission p = permissionService.getPermission("group::administrator");
+        Permission p = permissionService.getPermission(Groups.ADMIN);
         userService.setPermissions(UtilsKt.getUser(), Lists.newArrayList(p));
 
         // Reauthenticate the user, this sets up the admin's normal

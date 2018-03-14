@@ -1,6 +1,6 @@
 package com.zorroa.analyst;
 
-import com.zorroa.common.config.ApplicationProperties;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.client.Client;

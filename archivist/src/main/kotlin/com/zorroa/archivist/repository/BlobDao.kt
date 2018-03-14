@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.getPermissionIds
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
@@ -138,7 +139,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
     }
 
     fun appendAccessArgs(vararg args: Any): Array<out Any> {
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(Groups.ADMIN)) {
             return args
         }
 
@@ -152,7 +153,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
     }
 
     private fun appendAccess(query: String, access: Access): String {
-        if (hasPermission("group::administrator")) {
+        if (hasPermission(Groups.ADMIN)) {
             return query
         }
 

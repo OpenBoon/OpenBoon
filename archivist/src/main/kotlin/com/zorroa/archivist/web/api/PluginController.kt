@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile
  * Created by chambers on 6/29/16.
  */
 
-@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
+@PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
 @RestController
 class PluginController @Autowired constructor(
         private val pluginService: PluginService

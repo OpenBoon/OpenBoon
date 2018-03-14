@@ -176,10 +176,10 @@ public class DyHierarchyServiceTests extends AbstractTest {
         agg.setLevels(
                 ImmutableList.of(
                         new DyHierarchyLevel("source.extension.raw")
-                                .setAcl(new Acl().addEntry("group::foo", 3))));
+                                .setAcl(new Acl().addEntry("zorroa::foo", 3))));
 
         dyhiService.generate(agg);
-        assertEquals("group::foo",
+        assertEquals("zorroa::foo",
                 folderService.get("/foo/jpg").getAcl().get(0).permission);
         assertEquals(1,
                 folderService.get("/foo/jpg").getAcl().size());
@@ -193,10 +193,10 @@ public class DyHierarchyServiceTests extends AbstractTest {
         agg.setLevels(
                 ImmutableList.of(
                         new DyHierarchyLevel("source.extension.raw")
-                                .setAcl(new Acl().addEntry("group::%{name}", 3))));
+                                .setAcl(new Acl().addEntry("zorroa::%{name}", 3))));
 
         dyhiService.generate(agg);
-        assertEquals("group::jpg",
+        assertEquals("zorroa::jpg",
                 folderService.get("/foo/jpg").getAcl().get(0).permission);
         assertEquals(1,
                 folderService.get("/foo/jpg").getAcl().size());

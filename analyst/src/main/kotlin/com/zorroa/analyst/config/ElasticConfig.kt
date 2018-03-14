@@ -1,11 +1,10 @@
 package com.zorroa.analyst.config
 
-import com.zorroa.analyst.Application
 import com.zorroa.analyst.isUnitTest
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.common.elastic.ElasticClientUtils
 import com.zorroa.sdk.util.FileUtils
 import org.elasticsearch.client.Client
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import org.elasticsearch.common.settings.Settings
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

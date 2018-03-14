@@ -18,7 +18,7 @@ import javax.validation.Valid
 /**
  * Unified controller for manipulating jobs of any type (import, export, etc)
  */
-@PreAuthorize("hasAuthority('group::developer') || hasAuthority('group::administrator')")
+@PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
 @RestController
 class JobController @Autowired constructor(
         private val jobService: JobService,

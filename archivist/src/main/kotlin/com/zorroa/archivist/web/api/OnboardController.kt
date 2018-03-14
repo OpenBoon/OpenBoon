@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 
-@PreAuthorize("hasAuthority('group::administrator')")
+@PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
 @Controller
 class OnboardController @Autowired constructor(
         private val networkEnvironment: NetworkEnvironment,

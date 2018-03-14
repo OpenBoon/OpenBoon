@@ -2,6 +2,7 @@ package com.zorroa.common.config;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.zorroa.archivist.sdk.config.ApplicationProperties;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;

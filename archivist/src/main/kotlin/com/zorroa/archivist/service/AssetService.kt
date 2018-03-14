@@ -8,8 +8,8 @@ import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.AssetDao
 import com.zorroa.archivist.repository.CommandDao
 import com.zorroa.archivist.repository.PermissionDao
+import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.common.config.ApplicationProperties
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.*
 import com.zorroa.sdk.filesystem.ObjectFileSystem
@@ -94,17 +94,17 @@ interface AssetService {
 
 @Component
 class AssetServiceImpl  @Autowired  constructor (
-    private val assetDao: AssetDao,
-    private val commandDao: CommandDao,
-    private val permissionDao: PermissionDao,
-    private val dyHierarchyService: DyHierarchyService,
-    private val taxonomyService: TaxonomyService,
-    private val logService: EventLogService,
-    private val searchService: SearchService,
-    private val properties: ApplicationProperties,
-    private val jobService: JobService,
-    private val client: Client,
-    private val ofs: ObjectFileSystem
+        private val assetDao: AssetDao,
+        private val commandDao: CommandDao,
+        private val permissionDao: PermissionDao,
+        private val dyHierarchyService: DyHierarchyService,
+        private val taxonomyService: TaxonomyService,
+        private val logService: EventLogService,
+        private val searchService: SearchService,
+        private val properties: ApplicationProperties,
+        private val jobService: JobService,
+        private val client: Client,
+        private val ofs: ObjectFileSystem
 
 ) : AssetService, ApplicationListener<ContextRefreshedEvent> {
 
