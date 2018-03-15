@@ -40,6 +40,7 @@
             z-index: 2;
             color: #4D4948;
             border-radius: 3px;
+            box-shadow: 0 24px 20px -20px #bbb;
         }
 
         .logo {
@@ -186,12 +187,5 @@
         </a>
     </ul>
 </div>
-<script th:inline="javascript" type="text/javascript">
-    //<![CDATA[
-    document.body.querySelectorAll('.account-list__input').forEach(function registerInputHandler(input) {
-        input.onclick = function() { document.querySelector('.account-form').submit() }
-    })
-    //]]>
-</script>
 </body>
 </html>
