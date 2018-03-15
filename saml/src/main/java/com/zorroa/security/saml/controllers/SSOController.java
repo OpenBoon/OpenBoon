@@ -18,8 +18,6 @@ package com.zorroa.security.saml.controllers;
 
 import com.zorroa.security.saml.ZorroaExtendedMetadata;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,60 +27,42 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/saml")
 public class SSOController {
 
-	// Logger
-	private static final Logger LOG = LoggerFactory
-			.getLogger(SSOController.class);
-
 	@Autowired
 	private MetadataManager metadata;
 
-
-	@RequestMapping(value = "/idps")
-	public Object idpList() throws MetadataProviderException {
-		List<Map<String, Object>> result = new ArrayList();
-
-		List<String> idps = new ArrayList();
-		for (String name: metadata.getIDPEntityNames()) {
-
-			ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(name);
-
-			Map<String,Object> entry = new HashMap();
-			for (String key: zd.getProps().stringPropertyNames()) {
-				entry.put(key, zd.getProps().getProperty(key));
-			}
-			entry.put("url", "/saml/login?idp=" + name);
-			result.add(entry);
-
-		}
-
-		return result;
-	}
-
 	@RequestMapping(value = "/idpSelection")
-	public String idpSelection(HttpServletRequest request, Model model) {
+	public String idpSelection(HttpServletRequest request, Model model) throws MetadataProviderException {
 		if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
-			LOG.warn("The current user is already logged.");
 			return "redirect:/";
 		} else {
+			if (isForwarded(request)) {
+				Set<String> idps = metadata.getIDPEntityNames();
+				List<Properties> props = new ArrayList();
 
-			if (isForwarded(request)) { Set<String> idps = metadata.getIDPEntityNames();
-				for (String idp : idps)
-					LOG.info("Configured Identity Provider for SSO: " + idp);
+				for (String idp : idps) {
+					ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(idp);
+					zd.getProps().setProperty("idpUrl", "/saml/login?disco=true&idp=" + idp);
+					props.add(zd.getProps());
+				}
 				model.addAttribute("idps", idps);
+				model.addAttribute("props", props);
+
 				return "saml/idpselection";
 			} else {
-				LOG.warn("Direct accesses to '/idpSelection' route are not allowed");
+				//"Direct accesses to '/idpSelection' route are not allowed"
 				return "redirect:/";
 			}
 		}
 	}
-
 
 	/*
 	 * Checks if an HTTP request has been forwarded by a servlet.

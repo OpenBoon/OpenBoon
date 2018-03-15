@@ -274,7 +274,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     Properties props = new Properties();
                     try {
                         props.load(new FileInputStream(p.toFile()));
-                        String uri = props.getProperty("metadata-url");
+                        String uri = props.getProperty("metadataUrl");
 
                         ZorroaExtendedMetadata extendedMetadata = new ZorroaExtendedMetadata();
                         extendedMetadata.setIdpDiscoveryEnabled(discovery);
@@ -288,7 +288,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             httpMetadataProvider.setParserPool(parserPool());
                             ExtendedMetadataDelegate emd =
                                     new ExtendedMetadataDelegate(httpMetadataProvider, extendedMetadata);
-                            emd.setMetadataTrustCheck(true);
+                            emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
                             backgroundTaskTimer.purge();
                             providers.add(emd);
@@ -299,7 +299,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             provider.setParserPool(parserPool());
                             ExtendedMetadataDelegate emd =
                                     new ExtendedMetadataDelegate(provider, extendedMetadata);
-                            emd.setMetadataTrustCheck(true);
+                            emd.setMetadataTrustCheck(false);
                             emd.setMetadataRequireSignature(false);
                             providers.add(emd);
                         }

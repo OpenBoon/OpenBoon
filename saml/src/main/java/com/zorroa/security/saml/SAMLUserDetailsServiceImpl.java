@@ -19,7 +19,6 @@ package com.zorroa.security.saml;
 import com.zorroa.archivist.sdk.security.AuthSource;
 import com.zorroa.archivist.sdk.security.UserAuthed;
 import com.zorroa.archivist.sdk.security.UserRegistryService;
-import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,46 +46,36 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 	public Object loadUserBySAML(SAMLCredential credential)
 			throws UsernameNotFoundException {
 
-		/**
-		 * Grab the username.
-		 */
-
 		String userID = credential.getNameID().getValue();
 		String issuer = credential.getAuthenticationAssertion().getIssuer().getValue();
 
 		try {
+			LOG.info("Loading SAML user: {} from {}", userID, issuer);
 			ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(issuer);
 			AuthSource source = new AuthSource(
 					zd.getProp("label"),
 					zd.getProp("authSourceId"),
 					zd.getProp("permissionType"));
 
-			LOG.info("Loading SAML user: {} from {}", userID, issuer);
+			UserAuthed authed = userRegistryService.registerUser(userID, source,
+					parseGroups(zd.getProp("groupAttr"), credential));
+			return authed;
 
-			/**
-			 * Convert the groups attribute to a list of group names.
-			 */
-			List<String> groups = null;
-			String groupAttrName = zd.getProp("groupAttr");
-			if (groupAttrName != null) {
-				String[] groupAttr = credential.getAttributeAsStringArray(groupAttrName);
-				if (groupAttr != null) {
-					groups = Arrays.asList(groupAttr);
-				}
-			}
-
-			try {
-				UserAuthed authed = userRegistryService.registerUser(userID, source, groups);
-				return authed;
-
-			} catch (Exception e) {
-				LOG.warn("Failed to register user: ", e);
-				throw new UsernameNotFoundException("foo", e);
-			}
-
-		} catch (MetadataProviderException e) {
-			LOG.warn("Failed to register user, IDP not founds", e);
-			throw new UsernameNotFoundException("Unable to find IDP associated with user");
 		}
+		catch (Exception e) {
+			LOG.warn("Failed to register user, IDP not founds", e);
+			throw new UsernameNotFoundException("Unable to authenticate user: " + userID, e);
+		}
+	}
+
+	public List<String> parseGroups(String groupAttrName, SAMLCredential credential) {
+		List<String> groups = null;
+		if (groupAttrName != null) {
+			String[] groupAttr = credential.getAttributeAsStringArray(groupAttrName);
+			if (groupAttr != null) {
+				groups = Arrays.asList(groupAttr);
+			}
+		}
+		return groups;
 	}
 }
