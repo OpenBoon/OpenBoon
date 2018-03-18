@@ -462,7 +462,7 @@ class SearchServiceImpl @Autowired constructor(
             if (key == "folder") {
                 continue
             }
-            staticBool.should(QueryBuilders.termsQuery("links.$key", value))
+            staticBool.should(QueryBuilders.termsQuery("zorroa.links.$key", value))
         }
 
         /*
@@ -479,7 +479,7 @@ class SearchServiceImpl @Autowired constructor(
             val recursive = if (filter.recursive == null) true else filter.recursive
 
             if (recursive) {
-                val childFolders = Sets.newHashSetWithExpectedSize<UUID>(64)
+                val childFolders = Sets.newHashSetWithExpectedSize<UUID>(32)
 
                 for (folder in folderService.getAllDescendants(
                         folderService.getAll(folders), true, true)) {
@@ -510,10 +510,10 @@ class SearchServiceImpl @Autowired constructor(
                 }
 
                 if (!childFolders.isEmpty()) {
-                    staticBool.should(QueryBuilders.termsQuery("links.folder", childFolders))
+                    staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", childFolders))
                 }
             } else {
-                staticBool.should(QueryBuilders.termsQuery("links.folder", folders))
+                staticBool.should(QueryBuilders.termsQuery("zorroa.links.folder", folders))
             }
         }
 

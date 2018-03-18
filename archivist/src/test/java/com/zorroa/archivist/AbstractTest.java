@@ -293,7 +293,7 @@ public abstract class AbstractTest {
                 if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
                     Source b = new Source(f);
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
-                    AssetUtils.addKeywords(b, "source", b.getAttr("source.filename", String.class));
+                    b.addKeywords(b.getAttr("source.filename", String.class));
 
                     String id = UUID.randomUUID().toString();
 
@@ -327,7 +327,7 @@ public abstract class AbstractTest {
     public void addTestAssets(List<Source> builders) {
         for (Source builder: builders) {
             logger.info("Adding test asset: {}", builder.getPath());
-            AssetUtils.addKeywords(builder, "source", builder.getAttr("source.filename", String.class));
+            builder.addKeywords(builder.getAttr("source.filename", String.class));
             assetService.index(builder);
         }
         refreshIndex();

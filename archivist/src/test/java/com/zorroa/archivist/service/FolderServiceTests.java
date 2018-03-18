@@ -73,8 +73,8 @@ public class FolderServiceTests extends AbstractTest {
 
         PagedList<Document> assets = assetService.getAll(Pager.first());
         for (Document a: assets) {
-            logger.info("{}", a.getAttr("links.folder", List.class));
-            assertEquals(1, ((List) a.getAttr("links.folder")).size());
+            logger.info("{}", a.getAttr("zorroa.links.folder", List.class));
+            assertEquals(1, ((List) a.getAttr("zorroa.links.folder")).size());
         }
     }
 
@@ -124,7 +124,7 @@ public class FolderServiceTests extends AbstractTest {
         refreshIndex(2000);
 
         assertEquals(2, searchService.search(new AssetSearch(
-                new AssetFilter().addToTerms("links.folder", folder.getId()))).getHits().getTotalHits());
+                new AssetFilter().addToTerms("zorroa.links.folder", folder.getId()))).getHits().getTotalHits());
         searchService.invalidateFields();
         assertEquals(2, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
 
@@ -138,7 +138,7 @@ public class FolderServiceTests extends AbstractTest {
         refreshIndex();
 
         assertEquals(0, searchService.search(new AssetSearch(
-                new AssetFilter().addToTerms("links.folder", folder.getId()))).getHits().getTotalHits());
+                new AssetFilter().addToTerms("zorroa.links.folder", folder.getId()))).getHits().getTotalHits());
         assertEquals(0, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
 
     }

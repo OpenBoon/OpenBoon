@@ -10,6 +10,7 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.PermissionSchema;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class AssetServiceTests extends AbstractTest {
 
         Document asset1 = assetService.index(builder);
         assertEquals(ImmutableList.of(1),
-                asset1.getAttr("links.foo"));
+                asset1.getAttr("zorroa.links.foo"));
     }
 
     @Test
@@ -64,16 +65,18 @@ public class AssetServiceTests extends AbstractTest {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset1 = assetService.index(builder);
 
-        assertNotNull(asset1.getAttr("origin.timeCreated"));
-        assertNotNull(asset1.getAttr("origin.timeModified"));
-        assertEquals(asset1.getAttr("origin.timeCreated", String.class),
-                asset1.getAttr("origin.timeModified", String.class));
+        logger.info("{}", Json.prettyString(asset1.getDocument()));
 
-        refreshIndex();
+        assertNotNull(asset1.getAttr("zorroa.timeCreated"));
+        assertNotNull(asset1.getAttr("zorroa.timeModified"));
+        assertEquals(asset1.getAttr("zorroa.timeCreated", String.class),
+                asset1.getAttr("zorroa.timeModified", String.class));
+
+        refreshIndex(1000);
         Source builder2 = new Source(getTestImagePath("set01/toucan.jpg"));
         Document asset2 = assetService.index(builder2);
-        assertNotEquals(asset2.getAttr("origin.timeCreated", String.class),
-                asset2.getAttr("origin.timeModified", String.class));
+        assertNotEquals(asset2.getAttr("zorroa.timeCreated", String.class),
+                asset2.getAttr("zorroa.timeModified", String.class));
     }
 
     @Test
@@ -85,13 +88,13 @@ public class AssetServiceTests extends AbstractTest {
 
         Document asset1 = assetService.index(builder);
         assertEquals(ImmutableList.of(p.getId().toString()),
-                asset1.getAttr("permissions.read"));
+                asset1.getAttr("zorroa.permissions.read"));
 
         assertEquals(ImmutableList.of(p.getId().toString()),
-                asset1.getAttr("permissions.write"));
+                asset1.getAttr("zorroa.permissions.write"));
 
         assertEquals(ImmutableList.of(p.getId().toString()),
-                asset1.getAttr("permissions.export"));
+                asset1.getAttr("zorroa.permissions.export"));
     }
 
     @Test
@@ -103,13 +106,13 @@ public class AssetServiceTests extends AbstractTest {
 
         Document asset1 = assetService.index(builder);
         assertEquals(ImmutableList.of(p.getId().toString()),
-                asset1.getAttr("permissions.read"));
+                asset1.getAttr("zorroa.permissions.read"));
 
         assertNotEquals(ImmutableList.of(p.getId().toString()),
-                asset1.getAttr("permissions.write"));
+                asset1.getAttr("zorroa.permissions.write"));
 
         assertNotEquals(ImmutableList.of(p.getId().toString()),
-                asset1.getAttr("permissions.export"));
+                asset1.getAttr("zorroa..export"));
     }
 
     @Test
@@ -127,25 +130,25 @@ public class AssetServiceTests extends AbstractTest {
 
         // Should only end up with read.
         assertEquals(ImmutableList.of(p.getId().toString()),
-                asset2.getAttr("permissions.read"));
+                asset2.getAttr("zorroa.permissions.read"));
 
         assertNotEquals(ImmutableList.of(p.getId().toString()),
-                asset2.getAttr("permissions.write"));
+                asset2.getAttr("zorroa.permissions.write"));
 
         assertNotEquals(ImmutableList.of(p.getId().toString()),
-                asset2.getAttr("permissions.export"));
+                asset2.getAttr("zorroa.permissions.export"));
 
         Document asset3 = assetService.get(asset2.getId());
 
         // Should only end up with read.
         assertEquals(ImmutableList.of(p.getId().toString()),
-                asset3.getAttr("permissions.read"));
+                asset3.getAttr("zorroa.permissions.read"));
 
         assertNotEquals(ImmutableList.of(p.getId().toString()),
-                asset3.getAttr("permissions.write"));
+                asset3.getAttr("zorroa.permissions.write"));
 
         assertNotEquals(ImmutableList.of(p.getId().toString()),
-                asset3.getAttr("permissions.export"));
+                asset3.getAttr("zorroa.permissions.export"));
     }
 
     @Test
@@ -178,12 +181,12 @@ public class AssetServiceTests extends AbstractTest {
         PagedList<Document> assets = assetService.getAll(Pager.first());
         assertEquals(2, assets.size());
 
-        PermissionSchema schema = assets.get(0).getAttr("permissions", PermissionSchema.class);
+        PermissionSchema schema = assets.get(0).getAttr("zorroa.permissions", PermissionSchema.class);
         assertTrue(schema.getRead().contains(p.getId()));
         assertFalse(schema.getWrite().contains(p.getId()));
         assertFalse(schema.getExport().contains(p.getId()));
 
-        schema = assets.get(1).getAttr("permissions", PermissionSchema.class);
+        schema = assets.get(1).getAttr("zorroa.permissions", PermissionSchema.class);
         assertTrue(schema.getRead().contains(p.getId()));
         assertFalse(schema.getWrite().contains(p.getId()));
         assertFalse(schema.getExport().contains(p.getId()));

@@ -20,9 +20,7 @@ import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetScript;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.search.RangeQuery;
-import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.Json;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,38 +192,11 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testSuggestV2() throws Exception {
-
-        MockHttpSession session = admin();
-        List<Source> sources = getTestAssets("set04/canyon");
-        for (Source source: sources) {
-            AssetUtils.addSuggestKeywords(source, "source", "reflection");
-        }
-        addTestAssets(sources);
-
-        MvcResult result = mvc.perform(post("/api/v2/assets/_suggest")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{ \"text\": \"re\" }".getBytes()))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Object>>() {});
-
-        Map<String, Object> suggestions = (Map<String, Object>) ((ArrayList<Object>)json.get("completions")).get(0);
-        ArrayList<Object> options = (ArrayList<Object>) suggestions.get("options");
-        Map<String, Object> suggestion = (Map<String, Object>) options.get(0);
-        String text = (String)suggestion.get("text");
-        assertTrue(text.equals("reflection"));
-    }
-
-    @Test
     public void testSuggestV3() throws Exception {
         MockHttpSession session = admin();
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
-            AssetUtils.addSuggestKeywords(source, "source", "reflection");
+            source.addKeywords("reflection");
         }
         addTestAssets(sources);
         refreshIndex();
@@ -249,7 +220,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
-            AssetUtils.addSuggestKeywords(source, "source", "reflection");
+            source.addKeywords("reflection");
             source.setAttr("thing.suggest", "resume");
         }
         addTestAssets(sources);
@@ -407,7 +378,7 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Pager.first());
         for (Document asset: assets) {
-            List<String> links = asset.getAttr("links.folder", new TypeReference<List<String>>() {});
+            List<String> links = asset.getAttr("zorroa.links.folder", new TypeReference<List<String>>() {});
             assertEquals(2, links.size());
             assertTrue(
                     links.get(0).equals(folder1.getId().toString()) ||
@@ -569,26 +540,34 @@ public class AssetControllerTests extends MockMvcTest {
 
         addTestAssets("set04/standard");
 
-        DateTime dateTime = new DateTime();
-        int year = dateTime.getYear();
-
         RangeQuery range = new RangeQuery();
-        range.setFrom(String.format("%d-01-01", year-1));
-        range.setTo(String.format("%d-01-01", year+1));
+        range.setFrom(100);
+        range.setTo(2400000);
 
-        AssetSearch search = new AssetSearch(new AssetFilter().addRange("source.date", range));
+        AssetSearch search = new AssetSearch();
         MvcResult result = mvc.perform(post("/api/v2/assets/_search")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serializeToString(search)))
                 .andExpect(status().isOk())
                 .andReturn();
-
         Map<String, Object> json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<Map<String, Object>>() {});
+        logger.info(Json.serializeToString(json));
+
+        search = new AssetSearch(new AssetFilter().addRange("source.fileSize", range));
+        result = mvc.perform(post("/api/v2/assets/_search")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(search)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        json = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Map<String, Object>>() {});
         Map<String, Object> hits = (Map<String, Object>) json.get("hits");
         int count = (int)hits.get("total");
-        assertEquals(2, count);
+        assertEquals(1, count);
     }
 
     @Test

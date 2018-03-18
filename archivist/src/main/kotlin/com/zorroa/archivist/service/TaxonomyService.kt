@@ -235,7 +235,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 var search: AssetSearch? = folder.search
                 if (search == null) {
                     search = AssetSearch(AssetFilter()
-                            .addToTerms("links.folder", folder.id)
+                            .addToTerms("zorroa.links.folder", folder.id)
                             .setRecursive(false))
                 }
 

@@ -275,7 +275,7 @@ public class FolderControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Pager.first());
         for (Document asset: assets) {
-            List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
+            List<Object> links = asset.getAttr("zorroa.links.folder", new TypeReference<List<Object>>() {});
             assertEquals(links.get(0), folder1.getId().toString());
         }
     }
@@ -302,7 +302,7 @@ public class FolderControllerTests extends MockMvcTest {
         refreshIndex();
         assets = assetDao.getAll(Pager.first());
         for (Document asset: assets) {
-            List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
+            List<Object> links = asset.getAttr("zorroa.links.folder", new TypeReference<List<Object>>() {});
             assertEquals(0, links.size());
         }
     }

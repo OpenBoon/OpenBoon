@@ -95,12 +95,9 @@ private fun newTaskError(zpsError: ZpsError): TaskErrorT {
             .setLineNumber(zpsError.lineNumber)
             .setMethod(zpsError.method)))
 
-    if (zpsError.origin != null) {
-        error.setId(zpsError.id)
-        error.setOriginService(zpsError.origin.service)
-        error.setOriginPath(zpsError.origin.path)
-        error.setPath(zpsError.path)
-    }
+    error.setId(zpsError.id)
+    error.setPath(zpsError.path)
+
     return error
 }
 

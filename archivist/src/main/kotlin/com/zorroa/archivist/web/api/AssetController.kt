@@ -283,13 +283,6 @@ class AssetController @Autowired constructor(
         return HttpUtils.exists(id, assetService.exists(id))
     }
 
-    @PostMapping(value = ["/api/v2/assets/_suggest"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    @Throws(IOException::class)
-    fun suggestV2(@RequestBody builder: AssetSuggestBuilder): String {
-        val response = searchService.suggest(builder.text)
-        return response.toString()
-    }
-
     @PostMapping(value = ["/api/v3/assets/_suggest"])
     @Throws(IOException::class)
     fun suggestV3(@RequestBody suggest: AssetSuggestBuilder): Any {

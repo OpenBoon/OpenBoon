@@ -3,10 +3,14 @@ package com.zorroa.archivist.service;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.*;
+import com.zorroa.archivist.domain.ExportFile;
+import com.zorroa.archivist.domain.ExportFileSpec;
+import com.zorroa.archivist.domain.ExportSpec;
+import com.zorroa.archivist.domain.Job;
 import com.zorroa.sdk.domain.Document;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetSearch;
+import com.zorroa.sdk.util.Json;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +37,11 @@ public class ExportServiceTests extends AbstractTest {
     @Before
     public void init() {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addKeywords("source", "cats");
+        source.addKeywords("cats");
         asset = assetService.index(source);
         refreshIndex();
+
+        logger.info("{}", Json.prettyString(asset.getDocument()));
     }
 
     @Test

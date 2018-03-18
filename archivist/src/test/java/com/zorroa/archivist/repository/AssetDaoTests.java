@@ -145,8 +145,8 @@ public class AssetDaoTests extends AbstractTest {
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         Document a = assetDao.get(asset1.getId());
-        Collection<Object> folder_links = a.getAttr("links.folder");
-        Collection<Object> parent_links = a.getAttr("links.parent");
+        Collection<Object> folder_links = a.getAttr("zorroa.links.folder");
+        Collection<Object> parent_links = a.getAttr("zorroa.links.parent");
         assertEquals(1, folder_links.size());
         assertEquals(1, parent_links.size());
         assertTrue(folder_links.contains("100"));
@@ -159,14 +159,14 @@ public class AssetDaoTests extends AbstractTest {
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         Document a = assetDao.get(asset1.getId());
-        Collection<Object> links = a.getAttr("links.folder");
+        Collection<Object> links = a.getAttr("zorroa.links.folder");
         assertEquals(1, links.size());
 
         assertTrue(assetDao.removeLink("folder", "100",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
 
         a = assetDao.get(asset1.getId());
-        links = a.getAttr("links.folder");
+        links = a.getAttr("zorroa.links.folder");
         assertEquals(0, links.size());
     }
 

@@ -7,7 +7,7 @@
   "settings": {
     "index": {
       "query": {
-        "default_field": "keywords.all"
+        "default_field": "keywords"
       }
     },
     "analysis": {
@@ -92,27 +92,52 @@
         "MM-dd-yyyy"
       ],
       "_timestamp": {
-        "enabled": true
+        "enabled": false
       },
       "properties": {
-        "links": {
-          "properties": {
-
+        "suggest": {
+          "type": "completion"
+        },
+        "keywords": {
+          "type": "string",
+          "copy_to": "suggest",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
           }
         },
-        "permissions": {
+        "zorroa": {
           "properties": {
-            "read": {
-              "type": "string",
-              "index": "not_analyzed"
+            "timeCreated": {
+              "type": "date",
+              "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
             },
-            "export": {
-              "type": "string",
-              "index": "not_analyzed"
+            "timeModified": {
+              "type": "date",
+              "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
             },
-            "write": {
-              "type": "string",
-              "index": "not_analyzed"
+            "links": {
+              "properties": {
+
+              }
+            },
+            "permissions": {
+              "properties": {
+                "read": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "export": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "write": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
             }
           }
         }
@@ -195,7 +220,7 @@
         },
         {
           "link_template": {
-            "match": "links.*",
+            "match": "zorroa.links.*",
             "match_mapping_type": "string",
             "mapping": {
               "type": "string",
@@ -239,48 +264,8 @@
         "enabled": false
       },
       "dynamic": true,
-      "dynamic_date_formats": [
-        "yyyy/MM/dd HH:mm:ss Z",
-        "yyyy/MM/dd Z",
-        "yyyy/MM/dd HH:mm:ss",
-        "yyyy/MM/dd",
-        "yyyy-MM-dd HH:mm:ss Z",
-        "yyyy-MM-dd Z",
-        "yyyy-MM-dd HH:mm:ss",
-        "yyyy-MM-dd",
-        "MM/dd/yyyy",
-        "MM-dd-yyyy"
-      ],
       "_timestamp": {
-        "enabled": true
-      },
-      "properties": {
-        "colors": {
-          "type": "nested",
-          "properties": {
-            "red": {
-              "type": "integer"
-            },
-            "green": {
-              "type": "integer"
-            },
-            "blue": {
-              "type": "integer"
-            },
-            "hue": {
-              "type": "float"
-            },
-            "saturation": {
-              "type": "float"
-            },
-            "brightness": {
-              "type": "float"
-            },
-            "ratio": {
-              "type": "float"
-            }
-          }
-        }
+        "enabled": false
       },
       "dynamic_templates": [
         {
@@ -298,32 +283,6 @@
             "match": "^.+Point|^point$",
             "mapping": {
               "type": "geo_point"
-            }
-          }
-        },
-        {
-          "path_template": {
-            "match_pattern": "regex",
-            "match_mapping_type": "string",
-            "match": "^*.+Path|^path$|^directory$",
-            "mapping": {
-              "type": "string",
-              "analyzer": "path_analyzer",
-              "fields": {
-                "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
-            }
-          }
-        },
-        {
-          "suggest_template": {
-            "match_mapping_type": "string",
-            "match": "suggest",
-            "mapping": {
-              "type": "completion"
             }
           }
         },
@@ -355,35 +314,6 @@
             "mapping": {
               "index": "not_analyzed",
               "type": "string"
-            }
-          }
-        },
-        {
-          "color_template": {
-            "path_match": "*.colors",
-            "mapping": {
-              "type": "nested"
-            }
-          }
-        },
-        {
-          "link_template": {
-            "match": "links.*",
-            "match_mapping_type": "string",
-            "mapping": {
-              "type": "string",
-              "index": "not_analyzed"
-            }
-          }
-        },
-        {
-          "date_template": {
-            "match": "*",
-            "match_mapping_type": "date",
-            "mapping": {
-              "type": "date",
-              "index": "not_analyzed",
-              "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
             }
           }
         },

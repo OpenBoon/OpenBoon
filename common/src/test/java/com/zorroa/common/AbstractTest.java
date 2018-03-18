@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.processor.Source;
-import com.zorroa.sdk.util.AssetUtils;
 import com.zorroa.sdk.util.FileUtils;
 import org.elasticsearch.client.Client;
 import org.junit.Before;
@@ -66,7 +65,7 @@ public abstract class AbstractTest {
                     Source b = new Source(f);
                     b.setAttr("user.rating", 4);
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
-                    AssetUtils.addKeywords(b, "source", b.getAttr("source.filename", String.class));
+                    b.addKeywords(b.getAttr("source.filename", String.class));
                     result.add(b);
                 }
             }

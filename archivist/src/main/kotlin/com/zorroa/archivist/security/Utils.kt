@@ -100,7 +100,7 @@ fun hasPermission(perms: Collection<String>): Boolean {
  * @return
  */
 fun hasPermission(field: String, asset: Document): Boolean {
-    val perms = asset.getAttr("permissions.$field", Json.SET_OF_UUIDS)
+    val perms = asset.getAttr("zorroa.permissions.$field", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 
@@ -134,12 +134,12 @@ fun getPermissionIds(): Set<UUID> {
 fun getPermissionsFilter(): QueryBuilder? {
     return if (hasPermission(Groups.ADMIN)) {
         null
-    } else QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("permissions.read",
+    } else QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("zorroa.permissions.read",
             getPermissionIds()))
 }
 
 fun setWritePermissions(source: Source, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("permissions", PermissionSchema::class.java)
+    var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
     }
@@ -147,11 +147,11 @@ fun setWritePermissions(source: Source, perms: Collection<Permission>) {
     for (p in perms) {
         ps.write.add(p.id)
     }
-    source.setAttr("permissions", ps)
+    source.setAttr("zorroa.permissions", ps)
 }
 
 fun setExportPermissions(source: Source, perms: Collection<Permission>) {
-    var ps: PermissionSchema? = source.getAttr("permissions", PermissionSchema::class.java)
+    var ps: PermissionSchema? = source.getAttr("zorroa.permissions", PermissionSchema::class.java)
     if (ps == null) {
         ps = PermissionSchema()
     }
@@ -159,7 +159,7 @@ fun setExportPermissions(source: Source, perms: Collection<Permission>) {
     for (p in perms) {
         ps.export.add(p.id)
     }
-    source.setAttr("permissions", ps)
+    source.setAttr("zorroa.permissions", ps)
 }
 
 /**
@@ -213,7 +213,7 @@ fun canExport(asset: Document): Boolean {
         return true
     }
 
-    val perms = asset.getAttr("permissions.export", Json.SET_OF_UUIDS)
+    val perms = asset.getAttr("zorroa.permissions.export", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 

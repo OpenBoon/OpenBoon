@@ -353,7 +353,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
              * fields.
              */
             val result = client.prepareGet(index, type, id)
-                    .setFetchSource(arrayOf("permissions", "links", "origin"), arrayOf())
+                    .setFetchSource(arrayOf("zorroa"), arrayOf())
                     .get().source
             result ?: mutableMapOf() // result has to be mutable.
         } catch (e: ArrayIndexOutOfBoundsException) {
