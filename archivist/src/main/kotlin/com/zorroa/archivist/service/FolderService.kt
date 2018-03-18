@@ -14,7 +14,6 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
@@ -709,7 +708,7 @@ class FolderServiceImpl @Autowired constructor(
         }
 
         var result: Folder
-        if (mightExist) {
+
             try {
                 result = get(spec.parentId, spec.name)
             } catch (e: EmptyResultDataAccessException) {
@@ -718,7 +717,7 @@ class FolderServiceImpl @Autowired constructor(
                 setAcl(result, spec.acl, true, false)
                 emitFolderCreated(result)
             }
-
+        /*
         } else {
             //TODO: this won't work with postgres since the transaction
             // will be dead once the DuplicateKeyException is thrown.
@@ -731,8 +730,8 @@ class FolderServiceImpl @Autowired constructor(
             } catch (e: DuplicateKeyException) {
                 result = get(spec.parentId, spec.name)
             }
+        */
 
-        }
         return result
     }
 

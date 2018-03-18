@@ -28,7 +28,7 @@ class FolderController @Autowired constructor(
         return folderService.create(spec, false)
     }
 
-    @GetMapping(value = ["/api/v1/folders/{id}"])
+    @GetMapping(value = ["/api/v1/folders/{id:[a-fA-F0-9\\-]{36}}"])
     operator fun get(@PathVariable id: UUID): Folder {
         return folderService.get(id)
     }
