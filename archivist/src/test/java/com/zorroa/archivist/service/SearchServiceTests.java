@@ -54,8 +54,8 @@ public class SearchServiceTests extends AbstractTest {
         authenticate("user");
         Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-        source.addToPermissions("group:test", 1);
-        assetService.index(source);
+        source.addToPermissions(perm.getAuthority(), 1);
+        Document doc = assetService.index(source);
 
         refreshIndex();
 
@@ -66,15 +66,13 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testSearchPermissionsHit() throws IOException {
         authenticate("user");
-
-        Permission perm = permissionService.createPermission(new PermissionSpec("group", "test"));
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addKeywords("source", "captain");
         source.addToPermissions(Groups.EVERYONE, 1);
         assetService.index(source);
         refreshIndex();
 
-        AssetSearch search = new AssetSearch();
+        AssetSearch search = new AssetSearch().setQuery("beer");
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
@@ -496,7 +494,6 @@ public class SearchServiceTests extends AbstractTest {
         Map<String, Set<String>> fields = searchService.getFields("asset");
         assertTrue(fields.get("date").size() > 0);
         assertTrue(fields.get("string").size() > 0);
-        assertTrue(fields.get("integer").size() > 0);
         assertTrue(fields.get("point").size() > 0);
         assertTrue(fields.get("hash").size() > 0);
         assertTrue(fields.get("keywords-auto").contains("foo.keywords"));

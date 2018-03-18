@@ -2,12 +2,14 @@ package com.zorroa.archivist.domain;
 
 import com.google.common.base.MoreObjects;
 
+import java.util.UUID;
+
 /**
  * An AclEntry define a permission and the access type for the permission.
  */
 public class AclEntry {
 
-    public Integer permissionId;
+    public UUID permissionId;
     public int access;
     public String permission;
     public AclEntry() { }
@@ -17,18 +19,18 @@ public class AclEntry {
         this.setPermission(perm.getName());
     }
 
-    public AclEntry(int permId, int access) {
+    public AclEntry(UUID permId, int access) {
         this.permissionId = permId;
         this.access = access;
     }
 
-    public AclEntry(String name, int permId, int access) {
+    public AclEntry(String name, UUID permId, int access) {
         this.permission = name;
         this.permissionId = permId;
         this.access = access;
     }
 
-    public AclEntry(int permId, Access ... access) {
+    public AclEntry(UUID permId, Access ... access) {
         this.permissionId = permId;
         this.access = 0;
 
@@ -40,11 +42,11 @@ public class AclEntry {
             this.access = this.access + a.getValue();
         }
     }
-    public Integer getPermissionId() {
+    public UUID getPermissionId() {
         return permissionId;
     }
 
-    public void setPermissionId(Integer permissionId) {
+    public void setPermissionId(UUID permissionId) {
         this.permissionId = permissionId;
     }
 

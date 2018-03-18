@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class RequestController @Autowired constructor(
@@ -19,7 +20,7 @@ class RequestController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/requests/{id}"])
-    fun get(@PathVariable id: Int): Request {
+    fun get(@PathVariable id: UUID): Request {
         return requestService.get(id)
     }
 }

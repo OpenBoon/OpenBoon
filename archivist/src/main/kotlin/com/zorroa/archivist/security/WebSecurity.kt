@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
@@ -58,7 +59,6 @@ class MultipleWebSecurityConfig {
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
                     .antMatchers("/api/v1/who").permitAll()
-                    .antMatchers("/api/v1/sso").permitAll()
                     .antMatchers("/api/v1/reset-password").permitAll()
                     .antMatchers("/api/v1/send-password-reset-email").permitAll()
                     .antMatchers("/api/v1/send-onboard-email").permitAll()
@@ -96,6 +96,10 @@ class MultipleWebSecurityConfig {
                     .maximumSessions(5)
                     .expiredUrl("/")
                     .and()
+                    .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(
+                            LoginUrlAuthenticationEntryPoint("/"))
                     // Everything below here necessary for console
                     .and().headers().frameOptions().disable()
                     .and()

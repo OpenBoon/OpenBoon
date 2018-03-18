@@ -5,17 +5,18 @@ import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
-public class Folder implements Loggable<Integer> {
+public class Folder implements Loggable<UUID> {
 
-    public static final Integer ROOT_ID = 0;
+    public static final UUID ROOT_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     /**
      * Return true if the given folder ID is the root folder's ID.
      * @param id
      * @return
      */
-    public static boolean isRoot(int id) {
+    public static boolean isRoot(UUID id) {
         return ROOT_ID == id;
     }
 
@@ -28,9 +29,9 @@ public class Folder implements Loggable<Integer> {
         return ROOT_ID == folder.getId();
     }
 
-    private int id;
-    private Integer parentId;
-    private Integer dyhiId;
+    private UUID id;
+    private UUID parentId;
+    private UUID dyhiId;
     private String name;
     private UserBase user;
     private long timeCreated;
@@ -48,20 +49,20 @@ public class Folder implements Loggable<Integer> {
 
     public Folder() { }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Folder setId(int id) {
+    public Folder setId(UUID id) {
         this.id = id;
         return this;
     }
 
-    public Integer getParentId() {
+    public UUID getParentId() {
         return parentId;
     }
 
-    public Folder setParentId(Integer parentId) {
+    public Folder setParentId(UUID parentId) {
         this.parentId = parentId;
         return this;
     }
@@ -120,11 +121,11 @@ public class Folder implements Loggable<Integer> {
         return this;
     }
 
-    public Integer getDyhiId() {
+    public UUID getDyhiId() {
         return dyhiId;
     }
 
-    public Folder setDyhiId(Integer dyhiId) {
+    public Folder setDyhiId(UUID dyhiId) {
         this.dyhiId = dyhiId;
         return this;
     }
@@ -187,9 +188,8 @@ public class Folder implements Loggable<Integer> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Folder other = (Folder) o;
-        return id == other.getId();
+        Folder that = (Folder) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     public int getChildCount() {
@@ -208,7 +208,7 @@ public class Folder implements Loggable<Integer> {
 
 
     @Override
-    public Integer getTargetId() {
+    public UUID getTargetId() {
         return getId();
     }
 }

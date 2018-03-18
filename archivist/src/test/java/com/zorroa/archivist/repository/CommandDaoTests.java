@@ -49,6 +49,7 @@ public class CommandDaoTests extends AbstractTest {
 
         assertEquals("foo", search.getQuery());
         assertEquals(1, acl.size());
+
         assertTrue(acl.hasAccess(permissionService.getPermission(Groups.MANAGER).getId(),
                 Access.Read));
     }

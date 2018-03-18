@@ -9,15 +9,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 
-public class Pipeline implements Loggable<Integer> {
+public class Pipeline implements Loggable<UUID> {
 
     /**
      * The id of the pipeline.  This is an Integer so we can set it to
      * null if a pipeline is exported.
      */
-    private Integer id;
+    private UUID id;
 
     private Boolean versionUp;
 
@@ -39,11 +40,11 @@ public class Pipeline implements Loggable<Integer> {
     @NotNull
     private List<ProcessorRef> processors;
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Pipeline setId(Integer id) {
+    public Pipeline setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -103,7 +104,7 @@ public class Pipeline implements Loggable<Integer> {
     }
 
     @Override
-    public Integer getTargetId() {
+    public UUID getTargetId() {
         return id;
     }
 

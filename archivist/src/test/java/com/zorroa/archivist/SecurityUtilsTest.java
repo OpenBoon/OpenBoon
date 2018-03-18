@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,8 +24,8 @@ public class SecurityUtilsTest extends AbstractTest {
     @Test
     public void testHasPermissionWithAcl() {
         // Get the perms we have
-        authenticate("user");
-        List<Integer> perms = ImmutableList.copyOf(UtilsKt.getPermissionIds());
+        authenticate("user@zorroa.com");
+        List<UUID> perms = ImmutableList.copyOf(UtilsKt.getPermissionIds());
 
         // Create an ACL and add a Read permission
         Acl acl = new Acl();
@@ -42,10 +43,10 @@ public class SecurityUtilsTest extends AbstractTest {
 
         // Reauthenticate the user, this sets up the admin's normal
         // permissions.
-        authenticate("admin");
+        authenticate("admin@zorroa.com");
 
         // Create an ACL and add a Read permission
-        List<Integer> perms = ImmutableList.copyOf(UtilsKt.getPermissionIds());
+        List<UUID> perms = ImmutableList.copyOf(UtilsKt.getPermissionIds());
         Acl acl = new Acl();
         acl.addEntry(perms.get(0), Access.Read);
 

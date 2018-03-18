@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -63,8 +64,8 @@ public class EventLogControllerTests extends MockMvcTest {
     public void testEmptyJobLogSearch() throws Exception {
 
         Task task = new Task();
-        task.setJobId(5);
-        task.setTaskId(200);
+        task.setJobId(UUID.randomUUID());
+        task.setTaskId(UUID.randomUUID());
 
         TaskErrorT error = new TaskErrorT();
         error.setPath("/bar/bing");

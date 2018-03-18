@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.*;
 import com.zorroa.archivist.AbstractTest;
 import com.zorroa.sdk.domain.*;
-import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -20,7 +19,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -50,20 +48,6 @@ public class AssetDaoTests extends AbstractTest {
     public void testGetById() {
         Document asset2 = assetDao.get(asset1.getId());
         assertEquals(asset1.getId(), asset2.getId());
-    }
-
-    @Test
-    public void testGetElements() {
-        Document asset2 = assetDao.get(asset1.getId());
-
-        Element e = new Element("test", asset2);
-        e.setAttr("foo.bar", "bing");
-        e.setId(UUID.randomUUID().toString());
-        assetService.index(e);
-        refreshIndex();
-
-        PagedList<Document> elements = assetDao.getElements(asset2.getId(), Pager.first());
-        assertEquals(1, elements.size());
     }
 
     @Test
@@ -155,7 +139,7 @@ public class AssetDaoTests extends AbstractTest {
 
     @Test
     public void testAppendLink() {
-        assertTrue(assetDao.appendLink("folder", 100,
+        assertTrue(assetDao.appendLink("folder", "100",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
         assertTrue(assetDao.appendLink("parent", "foo",
                 ImmutableList.of(asset1.getId())).get("success").contains(asset1.getId()));
@@ -165,7 +149,7 @@ public class AssetDaoTests extends AbstractTest {
         Collection<Object> parent_links = a.getAttr("links.parent");
         assertEquals(1, folder_links.size());
         assertEquals(1, parent_links.size());
-        assertTrue(folder_links.contains(100));
+        assertTrue(folder_links.contains("100"));
         assertTrue(parent_links.contains("foo"));
     }
 

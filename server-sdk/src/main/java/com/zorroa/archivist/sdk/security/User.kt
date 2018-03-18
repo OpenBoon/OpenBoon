@@ -3,15 +3,16 @@ package com.zorroa.archivist.sdk.security
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
+import java.util.*
 
 interface UserId {
-    val id : Int
+    val id : UUID
 
     fun getName() : String
 }
 
 class UserAuthed(
-        override val id: Int,
+        override val id: UUID,
         username: String,
         permissions: Set<out GrantedAuthority>) : UserId, UserDetails, Serializable {
 

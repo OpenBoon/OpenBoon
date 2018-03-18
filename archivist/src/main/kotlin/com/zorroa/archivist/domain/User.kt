@@ -3,16 +3,17 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.google.common.base.MoreObjects
 import com.zorroa.archivist.sdk.security.UserId
+import java.util.*
 
 /**
  * The base user attributes returned with objects that reference a user.
  */
 data class UserBase (
-        override val id: Int,
+        override val id: UUID,
         val username: String,
         val email: String,
-        val permissionId: Int,
-        val homeFolderId: Int) : UserId {
+        val permissionId: UUID,
+        val homeFolderId: UUID) : UserId {
 
     @JsonIgnore
     override fun getName(): String = username
@@ -29,11 +30,11 @@ data class UserBase (
  * The UserCore is all the user properties.
  */
 data class User (
-        override val id: Int,
+        override val id: UUID,
         val username: String,
         val email: String,
-        val permissionId: Int,
-        val homeFolderId: Int,
+        val permissionId: UUID,
+        val homeFolderId: UUID,
         val firstName: String?,
         val lastName: String?,
         val enabled: Boolean,

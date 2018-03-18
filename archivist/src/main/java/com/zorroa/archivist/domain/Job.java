@@ -7,13 +7,14 @@ import com.zorroa.sdk.processor.PipelineType;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/12/16.
  */
 public class Job implements JobId {
 
-    private int id;
+    private UUID id;
     private String name;
     private PipelineType type;
     private UserBase user;
@@ -33,11 +34,11 @@ public class Job implements JobId {
     @JsonIgnore
     private String rootPath;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Job setId(int id) {
+    public Job setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -162,8 +163,8 @@ public class Job implements JobId {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Job job = (Job) o;
-        return getId() == job.getId();
+        Job that = (Job) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
@@ -181,7 +182,7 @@ public class Job implements JobId {
     }
 
     @Override
-    public Integer getJobId() {
+    public UUID getJobId() {
         return id;
     }
 

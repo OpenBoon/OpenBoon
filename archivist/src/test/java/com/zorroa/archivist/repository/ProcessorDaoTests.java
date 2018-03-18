@@ -151,7 +151,7 @@ public class ProcessorDaoTests extends AbstractTest {
         assertEquals(1, processorDao.getAll(filter).size());
 
         filter = new ProcessorFilter();
-        filter.setPlugins(Lists.newArrayList(-1));
+        filter.setPlugins(Lists.newArrayList(UUID.randomUUID()));
         assertEquals(0, processorDao.getAll(filter).size());
     }
 

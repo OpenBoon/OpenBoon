@@ -13,7 +13,7 @@ interface FieldDao {
 }
 
 @Repository
-open class FieldDaoImpl : AbstractDao(), FieldDao {
+class FieldDaoImpl : AbstractDao(), FieldDao {
 
     override fun hideField(name: String, manual: Boolean): Boolean {
         return if (isDbVendor("postgresql")) {

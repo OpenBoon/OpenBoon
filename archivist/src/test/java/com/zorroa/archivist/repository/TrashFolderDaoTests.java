@@ -65,7 +65,7 @@ public class TrashFolderDaoTests extends AbstractTest {
         trashFolderDao.create(folder1, "a", true, 1);
         trashFolderDao.create(folder2, "a", false, 2);
 
-        List<TrashedFolder> folders = trashFolderDao.getAll(folderService.get(0),
+        List<TrashedFolder> folders = trashFolderDao.getAll(folderService.get(Folder.ROOT_ID),
                 UtilsKt.getUserId());
         assertEquals(1, folders.size());
 

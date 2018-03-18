@@ -7,6 +7,7 @@ import com.zorroa.archivist.service.DyHierarchyService
 import com.zorroa.archivist.service.FolderService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 /**
  * Created by chambers on 8/10/16.
@@ -18,7 +19,7 @@ class DyHierarchyController @Autowired constructor(
 ){
 
     @GetMapping(value = ["/api/v1/dyhi/_folder/{id}"])
-    fun getByFolder(@PathVariable id: Int): DyHierarchy {
+    fun getByFolder(@PathVariable id: UUID): DyHierarchy {
         val f = folderService.get(id)
         return dyHierarchyService.get(f)
     }
@@ -29,14 +30,14 @@ class DyHierarchyController @Autowired constructor(
     }
 
     @PostMapping(value = ["/api/v1/dyhi/{id}"])
-    fun delete(@PathVariable id: Int): Map<String, Any> {
+    fun delete(@PathVariable id: UUID): Map<String, Any> {
         val dh = dyHierarchyService.get(id)
         val result = dyHierarchyService.delete(dh)
         return HttpUtils.status("DyHierarchy", id, "delete", result)
     }
 
     @GetMapping(value = ["/api/v1/dyhi/{id}"])
-    operator fun get(@PathVariable id: Int): DyHierarchy {
+    operator fun get(@PathVariable id: UUID): DyHierarchy {
         return dyHierarchyService.get(id)
     }
 }

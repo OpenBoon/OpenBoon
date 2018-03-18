@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 /**
  * Created by chambers on 6/17/17.
@@ -8,7 +9,7 @@ import javax.validation.constraints.NotNull;
 public class TaxonomySpec {
 
     @NotNull
-    private Integer folderId;
+    private UUID folderId;
 
     public TaxonomySpec() {}
 
@@ -16,11 +17,11 @@ public class TaxonomySpec {
         this.folderId = folder.getId();
     }
 
-    public Integer getFolderId() {
+    public UUID getFolderId() {
         return folderId;
     }
 
-    public TaxonomySpec setFolderId(Integer folderId) {
+    public TaxonomySpec setFolderId(UUID folderId) {
         this.folderId = folderId;
         return this;
     }

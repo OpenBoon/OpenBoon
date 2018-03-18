@@ -10,6 +10,7 @@ import com.zorroa.sdk.search.AssetSearch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.HandlerMapping
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
@@ -27,18 +28,18 @@ class FolderController @Autowired constructor(
         return folderService.create(spec, false)
     }
 
-    @GetMapping(value = ["/api/v1/folders/{id:\\d+}"])
-    operator fun get(@PathVariable id: Int): Folder {
+    @GetMapping(value = ["/api/v1/folders/{id}"])
+    operator fun get(@PathVariable id: UUID): Folder {
         return folderService.get(id)
     }
 
     @GetMapping(value = ["/api/v1/folders/{id}/_assetCount"])
-    fun countAssets(@PathVariable id: Int): Any {
+    fun countAssets(@PathVariable id: UUID): Any {
         return HttpUtils.count(searchService.count(folderService.get(id)))
     }
 
     class FolderAssetCountsRequest {
-        var ids: List<Int>? = null
+        var ids: List<UUID>? = null
         var search: AssetSearch? = null
     }
 
@@ -65,38 +66,38 @@ class FolderController @Autowired constructor(
     }
 
     @PutMapping(value = ["/api/v1/folders/{id}"])
-    fun update(@RequestBody folder: Folder, @PathVariable id: Int): Folder {
+    fun update(@RequestBody folder: Folder, @PathVariable id: UUID): Folder {
         folderService.update(id, folder)
         return folderService.get(folder.id)
     }
 
     @DeleteMapping(value = ["/api/v1/folders/{id}"])
-    fun delete(@PathVariable id: Int): Any {
+    fun delete(@PathVariable id: UUID): Any {
         val folder = folderService.get(id)
         return HttpUtils.deleted("folders", id, folderService.trash(folder).count > 0)
     }
 
     @GetMapping(value = ["/api/v1/folders/{id}/folders"])
-    fun getChildFolders(@PathVariable id: Int): List<Folder> {
+    fun getChildFolders(@PathVariable id: UUID): List<Folder> {
         val folder = folderService.get(id)
         return folderService.getChildren(folder)
     }
 
     @Deprecated("")
     @GetMapping(value = ["/api/v1/folders/{id}/_children"])
-    fun getChildren(@PathVariable id: Int): List<Folder> {
+    fun getChildren(@PathVariable id: UUID): List<Folder> {
         val folder = folderService.get(id)
         return folderService.getChildren(folder)
     }
 
     @GetMapping(value = ["/api/v1/folders/{id}/folders/{name}"])
-    fun getChild(@PathVariable id: Int, @PathVariable name: String): Folder {
+    fun getChild(@PathVariable id: UUID, @PathVariable name: String): Folder {
         return folderService.get(id, name)
     }
 
     @PutMapping(value = ["/api/v1/folders/{id}/_permissions"])
     @Throws(Exception::class)
-    fun setPermissions(@PathVariable id: Int, @RequestBody req: SetPermissions): Any {
+    fun setPermissions(@PathVariable id: UUID, @RequestBody req: SetPermissions): Any {
         val folder = folderService.get(id)
         if (req.replace) {
             folderService.setAcl(folder, req.acl!!, false, false)
@@ -117,8 +118,8 @@ class FolderController @Autowired constructor(
     @Throws(Exception::class)
     fun removeAssets(
             @RequestBody assetIds: List<String>,
-            @PathVariable id: Int?): Any {
-        val folder = folderService.get(id!!)
+            @PathVariable id: UUID): Any {
+        val folder = folderService.get(id)
         return folderService.removeAssets(folder, assetIds)
     }
 
@@ -133,8 +134,8 @@ class FolderController @Autowired constructor(
     @Throws(Exception::class)
     fun addAssets(
             @RequestBody assetIds: List<String>,
-            @PathVariable id: Int?): Any {
-        val folder = folderService.get(id!!)
+            @PathVariable id: UUID): Any {
+        val folder = folderService.get(id)
         return folderService.addAssets(folder, assetIds)
     }
 }

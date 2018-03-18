@@ -24,21 +24,22 @@ import javax.servlet.http.HttpServletResponse
 class ZorroaAuthenticationProvider : AuthenticationProvider {
 
     @Autowired
-    internal var userService: UserService? = null
+    private lateinit var userService: UserService
 
     @Autowired
-    internal var userRegistryService: UserRegistryService? = null
+    private lateinit var  userRegistryService: UserRegistryService
 
     @Throws(AuthenticationException::class)
     override fun authenticate(authentication: Authentication): Authentication {
 
-        val username = authentication.name
-        if (!userService!!.exists(username)) {
-            throw BadCredentialsException("Invalid username or password")
+        var username = authentication.name
+        if (!userService.exists(username)) {
+            throw BadCredentialsException("Invalid username or password: $username")
         }
-        userService!!.checkPassword(username, authentication.credentials.toString())
-        val authed = userRegistryService!!.getUser(username)
+        userService.checkPassword(username, authentication.credentials.toString())
+        val authed = userRegistryService.getUser(username)
 
+        logger.info("authd: {}", authed)
         return UsernamePasswordAuthenticationToken(authed, "", authed.authorities)
     }
 

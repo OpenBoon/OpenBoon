@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.ExecutionException
 
 @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).DEV) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
@@ -24,7 +25,7 @@ class TaskController @Autowired constructor(
     @GetMapping(value = ["/api/v1/tasks/{id}/_log"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
-    fun streamLog(@PathVariable id: Int): ResponseEntity<InputStreamResource> {
+    fun streamLog(@PathVariable id: UUID): ResponseEntity<InputStreamResource> {
         val logFile = File(taskDao.getExecutableTask(id).getLogPath())
 
         return ResponseEntity.ok()
@@ -33,24 +34,24 @@ class TaskController @Autowired constructor(
                 .body(InputStreamResource(FileInputStream(logFile)))
     }
 
-    @PutMapping(value = ["/api/v1/tasks/{id}/_retry"])
+    @PutMapping(value = ["/api/d1/tasks/{id}/_retry"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
-    fun retry(@PathVariable id: Int) {
+    fun retry(@PathVariable id: UUID) {
         jobExecutorService.retryTask(taskDao.get(id))
     }
 
     @PutMapping(value = ["/api/v1/tasks/{id}/_skip"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
-    fun skip(@PathVariable id: Int) {
+    fun skip(@PathVariable id: UUID) {
         jobExecutorService.skipTask(taskDao.get(id))
     }
 
     @GetMapping(value = ["/api/v1/tasks/{id}/_script"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
-    fun getScript(@PathVariable id: Int): String {
+    fun getScript(@PathVariable id: UUID): String {
         return Json.prettyString(Json.Mapper.readValue(
                 File(taskDao.getExecutableTask(id).getScriptPath()), Any::class.java))
     }

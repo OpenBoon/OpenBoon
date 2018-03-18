@@ -6,6 +6,8 @@ import com.google.common.collect.ForwardingList;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * An Access Control List is a list of AclEntry objects.
@@ -35,17 +37,17 @@ public class Acl extends ForwardingList<AclEntry> {
         return this;
     }
 
-    public Acl addEntry(int perm, int access) {
+    public Acl addEntry(UUID perm, int access) {
         this.delegate.add(new AclEntry(perm, access));
         return this;
     }
 
-    public Acl addEntry(int perm, String name, int access) {
+    public Acl addEntry(UUID perm, String name, int access) {
         this.delegate.add(new AclEntry(perm, access).setPermission(name));
         return this;
     }
 
-    public Acl addEntry(int perm, Access access) {
+    public Acl addEntry(UUID perm, Access access) {
         this.delegate.add(new AclEntry(perm, access));
         return this;
     }
@@ -59,12 +61,12 @@ public class Acl extends ForwardingList<AclEntry> {
         return hasAccess(perm.getId(), access);
     }
 
-    public boolean hasAccess(int perm, Access access) {
+    public boolean hasAccess(UUID perm, Access access) {
         if (delegate.isEmpty()) {
             return true;
         }
         for (AclEntry entry: delegate) {
-            if (entry.getPermissionId() == perm &&
+            if (Objects.equals(entry.getPermissionId(), perm) &&
                     (access.getValue() & entry.getAccess()) == access.getValue()) {
                 return true;
             }
@@ -72,11 +74,11 @@ public class Acl extends ForwardingList<AclEntry> {
         return false;
     }
 
-    public boolean hasAccess(Iterable<Integer> permissions, Access access) {
+    public boolean hasAccess(Iterable<UUID> permissions, Access access) {
         if (delegate.isEmpty()) {
             return true;
         }
-        for (int perm: permissions) {
+        for (UUID perm: permissions) {
             if (hasAccess(perm, access)) {
                 return true;
             }

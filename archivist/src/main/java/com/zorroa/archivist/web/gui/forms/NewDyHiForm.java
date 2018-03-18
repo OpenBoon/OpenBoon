@@ -2,6 +2,7 @@ package com.zorroa.archivist.web.gui.forms;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by chambers on 8/10/16.
@@ -9,17 +10,17 @@ import java.util.List;
 public class NewDyHiForm {
 
     @NotNull
-    private Integer folderId;
+    private UUID folderId;
 
     private List<String> type;
 
     private List<String> field;
 
-    public Integer getFolderId() {
+    public UUID getFolderId() {
         return folderId;
     }
 
-    public NewDyHiForm setFolderId(Integer folderId) {
+    public NewDyHiForm setFolderId(UUID folderId) {
         this.folderId = folderId;
         return this;
     }

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.security
 
-import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Sets
 import com.google.common.collect.Sets.intersection
 import com.zorroa.archivist.domain.Access
@@ -19,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
+import java.util.*
 
 fun getAuthentication(): Authentication {
     return SecurityContextHolder.getContext().authentication
@@ -59,27 +59,11 @@ fun getUsername(): String {
     return getUser().username
 }
 
-fun getUserId(): Int {
+fun getUserId(): UUID {
     return getUser().id
 }
 
-fun hasPermission(vararg perms: String): Boolean {
-    val copy = ImmutableSet.copyOf(perms)
-    val auth = SecurityContextHolder.getContext().authentication
-    if (auth != null) {
-        val authorities = auth.authorities
-        if (authorities != null) {
-            for (g in authorities) {
-                if (copy.contains(g.authority)) {
-                    return true
-                }
-            }
-        }
-    }
-    return false
-}
-
-fun hasPermission(permIds: Set<Int>?): Boolean {
+fun hasPermission(permIds: Set<UUID>?): Boolean {
     if (permIds == null) {
         return true
     }
@@ -88,11 +72,24 @@ fun hasPermission(permIds: Set<Int>?): Boolean {
     }
     return if (hasPermission(Groups.ADMIN)) {
         true
-    } else !intersection<Int>(permIds, getPermissionIds()).isEmpty()
+    } else !intersection<UUID>(permIds, getPermissionIds()).isEmpty()
+}
+
+fun hasPermission(vararg perms: String): Boolean {
+    return hasPermission(perms.toSet())
 }
 
 fun hasPermission(perms: Collection<String>): Boolean {
-    return hasPermission(*perms.toTypedArray())
+    val auth = SecurityContextHolder.getContext().authentication
+
+    auth?.authorities?.let{
+        for (g in it) {
+            if (Objects.equals(g.authority, Groups.ADMIN) || perms.contains(g.authority)) {
+                return true
+            }
+        }
+    }
+    return false
 }
 
 /**
@@ -103,7 +100,7 @@ fun hasPermission(perms: Collection<String>): Boolean {
  * @return
  */
 fun hasPermission(field: String, asset: Document): Boolean {
-    val perms = asset.getAttr("permissions.$field", Json.SET_OF_INTS)
+    val perms = asset.getAttr("permissions.$field", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 
@@ -125,8 +122,8 @@ fun hasPermission(acl: Acl?, access: Access): Boolean {
     } else acl.hasAccess(getPermissionIds(), access)
 }
 
-fun getPermissionIds(): Set<Int> {
-    val result = Sets.newHashSet<Int>()
+fun getPermissionIds(): Set<UUID> {
+    val result = Sets.newHashSet<UUID>()
     for (g in SecurityContextHolder.getContext().authentication.authorities) {
         val p = g as Permission
         result.add(p.id)
@@ -216,7 +213,7 @@ fun canExport(asset: Document): Boolean {
         return true
     }
 
-    val perms = asset.getAttr("permissions.export", Json.SET_OF_INTS)
+    val perms = asset.getAttr("permissions.export", Json.SET_OF_UUIDS)
     return hasPermission(perms)
 }
 

@@ -3,32 +3,33 @@ package com.zorroa.archivist.domain;
 import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by chambers on 6/17/17.
  */
 public class Taxonomy {
 
-    private int taxonomyId;
-    private int folderId;
+    private UUID taxonomyId;
+    private UUID folderId;
     private boolean active;
     private long timeStarted;
     private long timeStopped;
 
-    public int getTaxonomyId() {
+    public UUID getTaxonomyId() {
         return taxonomyId;
     }
 
-    public Taxonomy setTaxonomyId(int taxonomyId) {
+    public Taxonomy setTaxonomyId(UUID taxonomyId) {
         this.taxonomyId = taxonomyId;
         return this;
     }
 
-    public int getFolderId() {
+    public UUID getFolderId() {
         return folderId;
     }
 
-    public Taxonomy setFolderId(int folderId) {
+    public Taxonomy setFolderId(UUID folderId) {
         this.folderId = folderId;
         return this;
     }
@@ -73,7 +74,7 @@ public class Taxonomy {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Taxonomy taxonomy = (Taxonomy) o;
-        return getTaxonomyId() == taxonomy.getTaxonomyId();
+        return Objects.equals(getTaxonomyId(), taxonomy.getTaxonomyId());
     }
 
     @Override

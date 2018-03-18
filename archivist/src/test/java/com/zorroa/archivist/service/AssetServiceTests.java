@@ -84,13 +84,13 @@ public class AssetServiceTests extends AbstractTest {
         builder.addToPermissions(Groups.EVERYONE, 7);
 
         Document asset1 = assetService.index(builder);
-        assertEquals(ImmutableList.of(p.getId()),
+        assertEquals(ImmutableList.of(p.getId().toString()),
                 asset1.getAttr("permissions.read"));
 
-        assertEquals(ImmutableList.of(p.getId()),
+        assertEquals(ImmutableList.of(p.getId().toString()),
                 asset1.getAttr("permissions.write"));
 
-        assertEquals(ImmutableList.of(p.getId()),
+        assertEquals(ImmutableList.of(p.getId().toString()),
                 asset1.getAttr("permissions.export"));
     }
 
@@ -102,13 +102,13 @@ public class AssetServiceTests extends AbstractTest {
         builder.addToPermissions(Groups.EVERYONE, 1);
 
         Document asset1 = assetService.index(builder);
-        assertEquals(ImmutableList.of(p.getId()),
+        assertEquals(ImmutableList.of(p.getId().toString()),
                 asset1.getAttr("permissions.read"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
                 asset1.getAttr("permissions.write"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
                 asset1.getAttr("permissions.export"));
     }
 
@@ -126,25 +126,25 @@ public class AssetServiceTests extends AbstractTest {
         Document asset2 = assetService.index(builder);
 
         // Should only end up with read.
-        assertEquals(ImmutableList.of(p.getId()),
+        assertEquals(ImmutableList.of(p.getId().toString()),
                 asset2.getAttr("permissions.read"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
                 asset2.getAttr("permissions.write"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
                 asset2.getAttr("permissions.export"));
 
         Document asset3 = assetService.get(asset2.getId());
 
         // Should only end up with read.
-        assertEquals(ImmutableList.of(p.getId()),
+        assertEquals(ImmutableList.of(p.getId().toString()),
                 asset3.getAttr("permissions.read"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
                 asset3.getAttr("permissions.write"));
 
-        assertNotEquals(ImmutableList.of(p.getId()),
+        assertNotEquals(ImmutableList.of(p.getId().toString()),
                 asset3.getAttr("permissions.export"));
     }
 

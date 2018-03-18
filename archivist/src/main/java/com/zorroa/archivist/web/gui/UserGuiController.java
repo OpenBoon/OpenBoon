@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/31/16.
@@ -47,21 +48,21 @@ public class UserGuiController {
     }
 
     @RequestMapping("/admin/gui/users/{id}")
-    public String userProfile(Model model, @PathVariable int id) {
+    public String userProfile(Model model, @PathVariable UUID id) {
         standardModel(model);
         model.addAttribute("user", userService.get(id));
         return "user";
     }
 
     @RequestMapping("/admin/gui/users/{id}/account")
-    public String userAccount(Model model, @PathVariable int id) {
+    public String userAccount(Model model, @PathVariable UUID id) {
         standardModel(model);
         model.addAttribute("user", userService.get(id));
         return "user_account";
     }
 
     @RequestMapping("/admin/gui/users/{id}/permissions")
-    public String userPermissions(Model model, @PathVariable int id) {
+    public String userPermissions(Model model, @PathVariable UUID id) {
         User user = userService.get(id);
         standardModel(model);
         model.addAttribute("user", user);
@@ -72,7 +73,7 @@ public class UserGuiController {
     }
 
     @RequestMapping(value="/admin/gui/users/{id}/account", method=RequestMethod.POST)
-    public String updateUserPassword(Model model, @PathVariable int id,
+    public String updateUserPassword(Model model, @PathVariable UUID id,
                                      @Valid @ModelAttribute("userPasswordForm") UserPasswordForm form,
                                      BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -89,7 +90,7 @@ public class UserGuiController {
     }
 
     @RequestMapping(value="/admin/gui/users/{id}/state", method=RequestMethod.POST)
-    public String updateUserState(Model model, @PathVariable int id, @ModelAttribute("userStateForm") UserStateForm userStateForm) {
+    public String updateUserState(Model model, @PathVariable UUID id, @ModelAttribute("userStateForm") UserStateForm userStateForm) {
         standardModel(model);
 
         User user = userService.get(id);
@@ -99,7 +100,7 @@ public class UserGuiController {
     }
 
     @RequestMapping(value="/admin/gui/users/{id}", method= RequestMethod.POST)
-    public String updateUserProfile(Model model, @PathVariable int id,
+    public String updateUserProfile(Model model, @PathVariable UUID id,
                                     @Valid @ModelAttribute("userProfileForm") UserProfileUpdate form,
                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

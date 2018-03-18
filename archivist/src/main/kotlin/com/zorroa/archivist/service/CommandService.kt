@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 import javax.annotation.PostConstruct
@@ -25,7 +26,7 @@ interface CommandService {
 
     fun submit(spec: CommandSpec): Command
 
-    fun get(id: Int): Command
+    fun get(id: UUID): Command
 
     fun refresh(cmd: Command): Command
 
@@ -87,7 +88,7 @@ class CommandServiceImpl @Autowired constructor (
         return commandDao.create(spec)
     }
 
-    override operator fun get(id: Int): Command {
+    override operator fun get(id: UUID): Command {
         return commandDao.get(id)
     }
 

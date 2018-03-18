@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -304,7 +305,7 @@ public class FolderDaoTests extends AbstractTest {
 
         FolderSpec spec2 = new FolderSpec("bar").setDyhiId(dyhi.getId());
         Folder folder2 = folderDao.create(spec2);
-        List<Integer> ids = folderDao.getAllIds(dyhi);
+        List<UUID> ids = folderDao.getAllIds(dyhi);
         assertTrue(ids.contains(folder2.getId()));
     }
 

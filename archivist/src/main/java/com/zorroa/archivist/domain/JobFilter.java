@@ -6,6 +6,7 @@ import com.zorroa.sdk.domain.Tuple;
 import com.zorroa.sdk.processor.PipelineType;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/12/16.
@@ -16,7 +17,7 @@ public class JobFilter {
 
     private PipelineType type;
 
-    private Integer userId;
+    private UUID userId;
 
     public JobState getState() {
         return state;
@@ -36,11 +37,11 @@ public class JobFilter {
         return this;
     }
 
-    public Integer getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public JobFilter setUserId(Integer userId) {
+    public JobFilter setUserId(UUID userId) {
         this.userId = userId;
         return this;
     }

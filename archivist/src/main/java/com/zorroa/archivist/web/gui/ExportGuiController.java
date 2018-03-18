@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.UUID;
+
 /**
  * Created by chambers on 8/18/16.
  */
@@ -32,7 +34,7 @@ public class ExportGuiController {
 
 
     @RequestMapping("/admin/gui/exports/{id}")
-    public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
+    public String getImport(Model model, @PathVariable UUID id, @RequestParam(value="page", required=false) Integer page) {
         Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("job", jobService.get(id));

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -22,12 +23,14 @@ public class ProcessManagerTests extends AbstractTest {
 
     int task = 0;
 
+    UUID id = UUID.fromString("1FA96F09-E782-4041-9117-DEBA4BEFA924");
+
     @Test
     public void testExecute() throws IOException, ExecutionException, InterruptedException {
 
         TaskStartT ts = new TaskStartT()
-                .setId(1)
-                .setJobId(1)
+                .setId(id.toString())
+                .setJobId(id.toString())
                 .setArgMap(Json.serialize(ImmutableMap.of("path", "../unittest/resources/images/set01")))
                 .setName("task")
                 .setEnv(Maps.newHashMap())

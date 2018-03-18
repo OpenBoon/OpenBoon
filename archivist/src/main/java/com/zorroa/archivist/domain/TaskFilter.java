@@ -8,6 +8,7 @@ import com.zorroa.common.domain.TaskState;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by chambers on 8/8/16.
@@ -25,9 +26,9 @@ public class TaskFilter extends DaoFilter {
                 .build();
 
     public Boolean all;
-    public Set<Integer> tasks;
+    public Set<UUID> tasks;
     public Set<TaskState> states;
-    public Integer jobId;
+    public UUID jobId;
 
     public TaskFilter() { }
 
@@ -63,11 +64,11 @@ public class TaskFilter extends DaoFilter {
         return sortMap;
     }
 
-    public Set<Integer> getTasks() {
+    public Set<UUID> getTasks() {
         return tasks;
     }
 
-    public TaskFilter setTasks(Set<Integer> tasks) {
+    public TaskFilter setTasks(Set<UUID> tasks) {
         this.tasks = tasks;
         return this;
     }
@@ -90,11 +91,11 @@ public class TaskFilter extends DaoFilter {
         return this;
     }
 
-    public Integer getJobId() {
+    public UUID getJobId() {
         return jobId;
     }
 
-    public TaskFilter setJobId(Integer jobId) {
+    public TaskFilter setJobId(UUID jobId) {
         this.jobId = jobId;
         return this;
     }

@@ -39,7 +39,7 @@ class Error(r: HttpServletRequest, e:Exception, clazz: Class<*>) {
 @RestControllerAdvice
 class ApiExceptionHandler {
 
-    val maxStackTraceLength = 20
+    val maxStackTraceLength = 40
 
     fun logError(e: Exception) {
 

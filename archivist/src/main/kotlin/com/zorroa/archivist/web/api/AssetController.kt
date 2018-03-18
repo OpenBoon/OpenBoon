@@ -44,7 +44,6 @@ import javax.validation.Valid
 class AssetController @Autowired constructor(
         private val client: Client,
         private val assetService: AssetService,
-        private val noteService: NoteService,
         private val searchService: SearchService,
         private val logService: EventLogService,
         private val imageService: ImageService,
@@ -181,12 +180,6 @@ class AssetController @Autowired constructor(
             }
 
         }
-    }
-
-    @GetMapping(value = ["/api/v1/assets/{id}/notes"])
-    @Throws(IOException::class)
-    fun getNotes(@PathVariable id: String): List<Note> {
-        return noteService.getAll(id)
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}"])

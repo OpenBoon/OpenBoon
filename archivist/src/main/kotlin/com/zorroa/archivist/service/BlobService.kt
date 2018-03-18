@@ -28,7 +28,7 @@ interface BlobService {
 
 @Service
 @Transactional
-open class BlobServiceImpl
+class BlobServiceImpl
     @Autowired constructor (
             private val blobDao: BlobDao,
             private val permissionDao: PermissionDao) : BlobService {

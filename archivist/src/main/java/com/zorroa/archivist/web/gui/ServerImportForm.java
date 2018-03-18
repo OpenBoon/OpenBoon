@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/27/16.
@@ -17,7 +18,7 @@ public class ServerImportForm {
     private List<String> paths;
 
     @NotNull
-    private Integer pipelineId;
+    private UUID pipelineId;
 
     public List<String> getPaths() {
         return paths;
@@ -28,11 +29,11 @@ public class ServerImportForm {
         return this;
     }
 
-    public Integer getPipelineId() {
+    public UUID getPipelineId() {
         return pipelineId;
     }
 
-    public ServerImportForm setPipelineId(Integer pipelineId) {
+    public ServerImportForm setPipelineId(UUID pipelineId) {
         this.pipelineId = pipelineId;
         return this;
     }

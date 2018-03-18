@@ -13,8 +13,8 @@ import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface DyHierarchyDao : GenericDao<DyHierarchy, DyHierarchySpec> {
 
@@ -38,10 +38,10 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
 
     private val MAPPER = RowMapper<DyHierarchy> { rs, _ ->
         val h = DyHierarchy()
-        h.folderId = rs.getInt("pk_folder")
-        h.id = rs.getInt("pk_dyhi")
+        h.folderId = rs.getObject("pk_folder") as UUID
+        h.id = rs.getObject("pk_dyhi") as UUID
         h.timeCreated = rs.getLong("time_created")
-        h.user = userDaoCache!!.getUser(rs.getInt("int_user_created"))
+        h.user = userDaoCache!!.getUser(rs.getObject("pk_user_created") as UUID)
         h.levels = Json.deserialize<List<DyHierarchyLevel>>(rs.getString("json_levels"),
                 object : TypeReference<List<DyHierarchyLevel>>() {
 
@@ -51,20 +51,21 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
     }
 
     override fun create(spec: DyHierarchySpec): DyHierarchy {
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_dyhi"))
-            ps.setInt(1, spec.folderId!!)
-            ps.setInt(2, getUserId())
-            ps.setLong(3, System.currentTimeMillis())
-            ps.setInt(4, spec.levels.size)
-            ps.setString(5, Json.serializeToString(spec.levels, "[]"))
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setObject(2, spec.folderId!!)
+            ps.setObject(3, getUserId())
+            ps.setLong(4, System.currentTimeMillis())
+            ps.setInt(5, spec.levels.size)
+            ps.setString(6, Json.serializeToString(spec.levels, "[]"))
             ps
-        }, keyHolder)
-        return get(keyHolder.key.toInt())
+        })
+        return get(id)
     }
 
-    override fun get(id: Int): DyHierarchy {
+    override fun get(id: UUID): DyHierarchy {
         return jdbc.queryForObject<DyHierarchy>(GET + " WHERE pk_dyhi=?", MAPPER, id)
     }
 
@@ -86,12 +87,12 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
                         MAPPER, paging.size, paging.from))
     }
 
-    override fun update(id: Int, spec: DyHierarchy): Boolean {
+    override fun update(id: UUID, spec: DyHierarchy): Boolean {
         return jdbc.update(UPDATE, spec.folderId, spec.levels.size,
                 Json.serializeToString(spec.levels, "[]"), id) == 1
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         return jdbc.update("DELETE FROM dyhi WHERE pk_dyhi=?", id) == 1
     }
 
@@ -114,8 +115,9 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("dyhi",
+                "pk_dyhi",
                 "pk_folder",
-                "int_user_created",
+                "pk_user_created",
                 "time_created",
                 "int_levels",
                 "json_levels")
@@ -123,7 +125,7 @@ class DyHeirarchyDaoImpl : AbstractDao(), DyHierarchyDao {
         private val GET = "SELECT " +
                 "pk_dyhi," +
                 "pk_folder, " +
-                "int_user_created, " +
+                "pk_user_created, " +
                 "time_created," +
                 "int_levels," +
                 "json_levels " +

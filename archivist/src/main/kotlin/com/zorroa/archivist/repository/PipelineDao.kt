@@ -14,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 
 interface PipelineDao : GenericNamedDao<Pipeline, PipelineSpecV> {
@@ -47,17 +48,18 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
             spec.isStandard = true
         }
 
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
+
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_pipeline"))
-            ps.setString(1, spec.name)
-            ps.setInt(2, spec.type.ordinal)
-            ps.setString(3, Json.serializeToString(spec.processors, "[]"))
-            ps.setString(4, spec.description)
-            ps.setBoolean(5, spec.isStandard)
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setString(2, spec.name)
+            ps.setInt(3, spec.type.ordinal)
+            ps.setString(4, Json.serializeToString(spec.processors, "[]"))
+            ps.setString(5, spec.description)
+            ps.setBoolean(6, spec.isStandard)
             ps
-        }, keyHolder)
-        val id = keyHolder.key.toInt()
+        })
         return get(id)
     }
 
@@ -71,7 +73,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     }
 
-    override fun get(id: Int): Pipeline {
+    override fun get(id: UUID): Pipeline {
         try {
             return jdbc.queryForObject<Pipeline>("SELECT * FROM pipeline WHERE pk_pipeline=?", MAPPER, id)
         } catch (e: EmptyResultDataAccessException) {
@@ -108,7 +110,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
                         paging.size, paging.from))
     }
 
-    override fun update(id: Int, spec: Pipeline): Boolean {
+    override fun update(id: UUID, spec: Pipeline): Boolean {
         // Unset standard if its set.
         if (spec.isStandard) {
             jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=?",
@@ -124,7 +126,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
                 spec.isStandard, incrementVersion, id) == 1
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         return jdbc.update("DELETE FROM pipeline WHERE pk_pipeline=? AND bool_standard=?", id, false) == 1
     }
 
@@ -136,7 +138,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
         private val MAPPER = RowMapper<Pipeline> { rs, _ ->
             val result = Pipeline()
-            result.id = rs.getInt("pk_pipeline")
+            result.id = rs.getObject("pk_pipeline") as UUID
             result.name = rs.getString("str_name")
             result.processors = Json.deserialize<List<ProcessorRef>>(rs.getString("json_processors"), ProcessorRef.LIST_OF)
             result.type = PipelineType.fromObject(rs.getInt("int_type"))
@@ -146,6 +148,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
         }
 
         private val INSERT = JdbcUtils.insert("pipeline",
+                "pk_pipeline",
                 "str_name",
                 "int_type",
                 "json_processors",

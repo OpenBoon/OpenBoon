@@ -245,7 +245,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
 
-        val link = ImmutableMap.of("type", type, "id", value)
+        val link = ImmutableMap.of("type", type, "id", value.toString())
         val bulkRequest = client.prepareBulk()
         for (id in assets) {
             val updateBuilder = client.prepareUpdate(index, getType(), id)
@@ -275,7 +275,7 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         if (type.contains(".")) {
             throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
         }
-        val link = ImmutableMap.of("type", type, "id", value)
+        val link = ImmutableMap.of("type", type, "id", value.toString())
 
         val bulkRequest = client.prepareBulk()
         for (id in assets) {

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import static com.zorroa.archivist.security.UtilsKt.getUsername;
 
@@ -48,7 +49,7 @@ public class ImportGuiController {
     PluginService pluginService;
 
     @RequestMapping("/admin/gui/imports/{id}")
-    public String getImport(Model model, @PathVariable int id, @RequestParam(value="page", required=false) Integer page) {
+    public String getImport(Model model, @PathVariable UUID id, @RequestParam(value="page", required=false) Integer page) {
         standardModel(model);
         Pager paging = new Pager(page);
         model.addAttribute("page", paging);
@@ -91,7 +92,7 @@ public class ImportGuiController {
 
         ImportSpec spec = new ImportSpec();
         spec.setName(serverImportForm.getName());
-        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(serverImportForm.getPipelineId())));
+        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(serverImportForm.getPipelineId().toString())));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         /**
@@ -138,7 +139,7 @@ public class ImportGuiController {
 
         ImportSpec spec = new ImportSpec();
         spec.setName("search import by " + getUsername());
-        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(searchImportForm.getPipelineId())));
+        spec.setProcessors(ImmutableList.of(new ProcessorRef().setPipeline(searchImportForm.getPipelineId().toString())));
         List<ProcessorRef> generators = Lists.newArrayList();
 
         String searchJson = searchImportForm.getSearch();

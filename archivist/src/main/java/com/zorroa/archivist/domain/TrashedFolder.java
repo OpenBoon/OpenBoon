@@ -3,16 +3,17 @@ package com.zorroa.archivist.domain;
 import com.zorroa.sdk.search.AssetSearch;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by chambers on 12/2/16.
  */
 public class TrashedFolder {
 
-    private int id;
+    private UUID id;
     private String opId;
-    private int folderId;
-    private Integer parentId;
+    private UUID folderId;
+    private UUID parentId;
     private String name;
     private UserBase user;
     private UserBase userDeleted;
@@ -33,20 +34,20 @@ public class TrashedFolder {
         return this;
     }
 
-    public int getFolderId() {
+    public UUID getFolderId() {
         return folderId;
     }
 
-    public TrashedFolder setFolderId(int folderId) {
+    public TrashedFolder setFolderId(UUID folderId) {
         this.folderId = folderId;
         return this;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public TrashedFolder setId(int id) {
+    public TrashedFolder setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -60,11 +61,11 @@ public class TrashedFolder {
         return this;
     }
 
-    public Integer getParentId() {
+    public UUID getParentId() {
         return parentId;
     }
 
-    public TrashedFolder setParentId(Integer parentId) {
+    public TrashedFolder setParentId(UUID parentId) {
         this.parentId = parentId;
         return this;
     }

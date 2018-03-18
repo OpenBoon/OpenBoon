@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.LongAdder
@@ -241,7 +242,7 @@ class AssetServiceImpl  @Autowired  constructor (
             /**
              * Only allow the origin to be written once
              */
-            val time = System.currentTimeMillis()
+            val time = Date()
             if (managedValues.containsKey("origin") && !source.isReplace) {
                 source.removeAttr("origin")
                 source.setAttr("origin.timeModified", time)
@@ -257,15 +258,15 @@ class AssetServiceImpl  @Autowired  constructor (
 
         if (spec.taskId != null && spec.jobId != null) {
             jobService.incrementStats(object : TaskId {
-                override fun getJobId(): Int? {
+                override fun getJobId(): UUID? {
                     return spec.jobId
                 }
 
-                override fun getTaskId(): Int? {
+                override fun getTaskId(): UUID? {
                     return spec.taskId
                 }
 
-                override fun getParentTaskId(): Int? {
+                override fun getParentTaskId(): UUID? {
                     return null
                 }
             }, addr)
@@ -307,7 +308,7 @@ class AssetServiceImpl  @Autowired  constructor (
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
 
         val asset = assetDao[assetId]
-        val write = asset.getAttr("permissions.write", Json.SET_OF_INTS)
+        val write = asset.getAttr("permissions.write", Json.SET_OF_UUIDS)
 
         if (!hasPermission(write)) {
             throw ArchivistWriteException("You cannot make changes to this asset.")

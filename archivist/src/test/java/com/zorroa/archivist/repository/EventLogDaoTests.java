@@ -12,6 +12,8 @@ import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -35,8 +37,8 @@ public class EventLogDaoTests extends AbstractTest {
     @Test
     public void testJobLogEntry() {
         Task task = new Task();
-        task.setJobId(1);
-        task.setTaskId(100);
+        task.setJobId(UUID.randomUUID());
+        task.setTaskId(UUID.randomUUID());
 
         TaskErrorT error = new TaskErrorT();
         error.setPath("/foo/bar");

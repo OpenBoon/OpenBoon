@@ -32,7 +32,7 @@ public class TaxonomyControllerTests extends MockMvcTest {
     public void testCreate() throws Exception {
         MockHttpSession session = admin();
 
-        Folder f = folderService.create(new FolderSpec().setName("bob").setParentId(0));
+        Folder f = folderService.create(new FolderSpec().setName("bob").setParentId(Folder.ROOT_ID));
         TaxonomySpec spec = new TaxonomySpec(f);
 
         MvcResult result = mvc.perform(post("/api/v1/taxonomy")
@@ -50,7 +50,7 @@ public class TaxonomyControllerTests extends MockMvcTest {
     public void testDelete() throws Exception {
         MockHttpSession session = admin();
 
-        Folder f = folderService.create(new FolderSpec().setName("bob").setParentId(0));
+        Folder f = folderService.create(new FolderSpec().setName("bob").setParentId(Folder.ROOT_ID));
         TaxonomySpec spec = new TaxonomySpec(f);
         Taxonomy tax = taxonomyService.create(spec);
 

@@ -44,19 +44,19 @@ interface PluginService {
 
     fun getPlugin(name: String): Plugin
 
-    fun getPlugin(id: Int): Plugin
+    fun getPlugin(id: UUID): Plugin
 
     fun deletePlugin(plugin: Plugin): Boolean
 
     fun getAllProcessors(plugin: Plugin): List<Processor>
 
-    fun getProcessor(id: Int): Processor
+    fun getProcessor(id: UUID): Processor
 
     fun getProcessorRef(name: String, args: Map<String, Any>): ProcessorRef
 
     fun getProcessorRef(ref: ProcessorRef): ProcessorRef
 
-    fun getProcessorRefs(pipelineId: Int): List<ProcessorRef>?
+    fun getProcessorRefs(pipelineId: UUID): List<ProcessorRef>?
 
     fun getProcessorRefs(refs: List<ProcessorRef>?): List<ProcessorRef>?
 
@@ -269,19 +269,23 @@ class PluginServiceImpl @Autowired constructor(
         return pluginDao.get(name)
     }
 
-    override fun getPlugin(id: Int): Plugin {
+    override fun getPlugin(id: UUID): Plugin {
         return pluginDao.get(id)
     }
 
     override fun deletePlugin(plugin: Plugin): Boolean {
-        return pluginDao.delete(plugin.id)
+        val deleted =  pluginDao.delete(plugin.id)
+        if (deleted) {
+            processorDao.deleteAll(plugin)
+        }
+        return deleted
     }
 
     override fun getAllProcessors(plugin: Plugin): List<Processor> {
         return processorDao.getAll(plugin)
     }
 
-    override fun getProcessor(id: Int): Processor {
+    override fun getProcessor(id: UUID): Processor {
         return processorDao.get(id)
     }
 
@@ -299,11 +303,11 @@ class PluginServiceImpl @Autowired constructor(
                 .addToFilters(ref.filters)
     }
 
-    override fun getProcessorRefs(pipelineId: Int): List<ProcessorRef>? {
+    override fun getProcessorRefs(pipelineId: UUID): List<ProcessorRef>? {
         return getProcessorRefs(pipelineDao.get(pipelineId).processors)
     }
 
-    fun getProcessorRefs(refs: List<ProcessorRef>?, pr: Deque<Int>): List<ProcessorRef>? {
+    fun getProcessorRefs(refs: List<ProcessorRef>?, pr: Deque<UUID>): List<ProcessorRef>? {
         if (refs == null) {
             return null
         }
@@ -313,11 +317,10 @@ class PluginServiceImpl @Autowired constructor(
             val pipelineId = ref.pipeline
             if (pipelineId != null) {
 
-                var pipeline : Pipeline =  if (pipelineId is Int) {
+                val pipeline = try {
+                    pipelineDao.get(UUID.fromString(pipelineId))
+                } catch (e:IllegalArgumentException) {
                     pipelineDao.get(pipelineId)
-                }
-                else {
-                    pipelineDao.get(pipelineId as String)
                 }
 
                 if (pr.contains(pipeline.id)) {
@@ -350,7 +353,7 @@ class PluginServiceImpl @Autowired constructor(
     }
 
     override fun getProcessorRefs(refs: List<ProcessorRef>?): List<ProcessorRef>? {
-        return getProcessorRefs(refs, ArrayDeque<Int>())
+        return getProcessorRefs(refs, ArrayDeque<UUID>())
     }
 
     override fun getAllProcessors(

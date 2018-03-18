@@ -2,10 +2,7 @@ package com.zorroa.archivist.repository;
 
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.AbstractTest;
-import com.zorroa.archivist.domain.Permission;
-import com.zorroa.archivist.domain.User;
-import com.zorroa.archivist.domain.UserProfileUpdate;
-import com.zorroa.archivist.domain.UserSpec;
+import com.zorroa.archivist.domain.*;
 import com.zorroa.archivist.sdk.security.Groups;
 import com.zorroa.sdk.domain.Pager;
 import org.junit.Before;
@@ -34,7 +31,7 @@ public class UserDaoTests extends AbstractTest {
         builder.setUsername("test");
         builder.setPassword("test");
         builder.setEmail("test@test.com");
-        builder.setHomeFolderId(0);
+        builder.setHomeFolderId(Folder.ROOT_ID);
         builder.setUserPermissionId(permissionDao.get("zorroa", "manager").getId());
         user = userDao.create(builder);
     }
@@ -61,7 +58,7 @@ public class UserDaoTests extends AbstractTest {
         builder.setUsername("test2");
         builder.setPassword("test2");
         builder.setEmail("shizzle@test.com");
-        builder.setHomeFolderId(0);
+        builder.setHomeFolderId(Folder.ROOT_ID);
         builder.setUserPermissionId(permissionDao.get("zorroa", "manager").getId());
         user = userDao.create(builder);
         assertEquals(++count, userDao.getCount());
@@ -75,7 +72,7 @@ public class UserDaoTests extends AbstractTest {
         builder.setUsername("foo");
         builder.setPassword("test");
         builder.setEmail("mcbizzile@test.com");
-        builder.setHomeFolderId(0);
+        builder.setHomeFolderId(Folder.ROOT_ID);
         builder.setUserPermissionId(permissionDao.get("zorroa", "manager").getId());
         userDao.create(builder);
 

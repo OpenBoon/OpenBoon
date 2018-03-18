@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import java.util.concurrent.atomic.LongAdder
 import java.util.function.Predicate
 import java.util.stream.Collectors
@@ -40,7 +41,7 @@ interface TaxonomyService {
 
     fun create(spec: TaxonomySpec): Taxonomy
 
-    fun get(id: Int): Taxonomy
+    fun get(id: UUID): Taxonomy
 
     fun get(folder: Folder): Taxonomy
 
@@ -131,7 +132,7 @@ class TaxonomyServiceImpl @Autowired constructor(
             throw ArchivistWriteException("The root folder cannot be a taxonomy.")
         }
 
-        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == 0) {
+        if (EXCLUDE_FOLDERS.contains(folder.name) && folder.parentId == Folder.ROOT_ID) {
             throw ArchivistWriteException("This folder cannot hold a taxonomy.")
         }
 
@@ -149,7 +150,7 @@ class TaxonomyServiceImpl @Autowired constructor(
         }
     }
 
-    override fun get(id: Int): Taxonomy {
+    override fun get(id: UUID): Taxonomy {
         return taxonomyDao.get(id)
     }
 

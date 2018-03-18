@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.sdk.client.exception.DuplicateEntityException
 import org.junit.Before
@@ -22,7 +21,7 @@ class UserServiceTests : AbstractTest() {
         val builder = UserSpec()
         builder.username = "billybob"
         builder.password = "123password!"
-        builder.email = "testing@testing123.com"
+        builder.email = "testing@zorroa.com"
         builder.firstName = "BillyBob"
         builder.lastName = "Rodriquez"
         testUser = userService.create(builder)

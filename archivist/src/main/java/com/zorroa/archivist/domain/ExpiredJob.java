@@ -1,18 +1,20 @@
 package com.zorroa.archivist.domain;
 
+import java.util.UUID;
+
 /**
  * Created by chambers on 9/28/16.
  */
 public class ExpiredJob implements JobId {
 
-    private int id;
+    private UUID id;
     private String rootPath;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public ExpiredJob setId(int id) {
+    public ExpiredJob setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -34,7 +36,7 @@ public class ExpiredJob implements JobId {
     }
 
     @Override
-    public Integer getJobId() {
+    public UUID getJobId() {
         return id;
     }
 }

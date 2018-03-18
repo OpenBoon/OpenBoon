@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 interface PipelineService {
 
@@ -25,7 +26,7 @@ interface PipelineService {
 
     fun create(spec: PipelineSpecV): Pipeline
 
-    fun get(id: Int): Pipeline
+    fun get(id: UUID): Pipeline
 
     fun get(name: String): Pipeline
 
@@ -35,9 +36,9 @@ interface PipelineService {
 
     fun getAll(page: Pager): PagedList<Pipeline>
 
-    fun update(id: Int, spec: Pipeline): Boolean
+    fun update(id: UUID, spec: Pipeline): Boolean
 
-    fun delete(id: Int): Boolean
+    fun delete(id: UUID): Boolean
 
     fun validateProcessors(pipelineType: PipelineType, refs: List<ProcessorRef>): MutableList<ProcessorRef>
 
@@ -74,7 +75,7 @@ class PipelineServiceImpl @Autowired constructor(
         return p
     }
 
-    override fun get(id: Int): Pipeline {
+    override fun get(id: UUID): Pipeline {
         return pipelineDao.get(id)
     }
 
@@ -98,7 +99,7 @@ class PipelineServiceImpl @Autowired constructor(
         return pipelineDao.getAll(page)
     }
 
-    override fun update(id: Int, spec: Pipeline): Boolean {
+    override fun update(id: UUID, spec: Pipeline): Boolean {
         val pl = pipelineDao.get(id)
 
         val validated = validateProcessors(pl.type, spec.processors)
@@ -111,7 +112,7 @@ class PipelineServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun delete(id: Int): Boolean {
+    override fun delete(id: UUID): Boolean {
         val result = pipelineDao.delete(id)
         if (result) {
             event.afterCommit { logService.logAsync(UserLogSpec.build(LogAction.Delete, "pipeline", id)) }
@@ -126,16 +127,18 @@ class PipelineServiceImpl @Autowired constructor(
         for (ref in refs) {
 
             if (ref.pipeline != null) {
-                val pl = if (ref.pipeline is String) {
-                    pipelineDao.get(ref.pipeline as String)
-                } else {
-                    pipelineDao.get(ref.pipeline as Int)
+
+                val pl = try {
+                    pipelineDao.get(UUID.fromString(ref.pipeline))
+                } catch (e:IllegalArgumentException) {
+                    pipelineDao.get(ref.pipeline)
                 }
+
                 if (pl.type != pipelineType) {
                     throw  throw IllegalArgumentException("Cannot have pipeline type " +
                             pl.type + " embedded in a " + pipelineType + " pipeline")
                 }
-                validated.add(ProcessorRef().setPipeline(pl.id))
+                validated.add(ProcessorRef().setPipeline(pl.id.toString()))
             }
             else {
                 val vref = pluginService.getProcessorRef(ref)

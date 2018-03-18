@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by chambers on 2/10/16.
@@ -23,7 +24,7 @@ public class Analyst {
     private int threadsUsed;
     private int queueSize;
     private long updatedTime;
-    private List<Integer> taskIds;
+    private List<UUID> taskIds;
 
     public String getId() {
         return id;
@@ -142,11 +143,11 @@ public class Analyst {
         return this;
     }
 
-    public List<Integer> getTaskIds() {
+    public List<UUID> getTaskIds() {
         return taskIds;
     }
 
-    public Analyst setTaskIds(List<Integer> taskIds) {
+    public Analyst setTaskIds(List<UUID> taskIds) {
         this.taskIds = taskIds;
         return this;
     }

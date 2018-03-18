@@ -28,9 +28,9 @@ class HmacAuthentication : AbstractAuthenticationToken {
 
     private val username: String
     private val data: String
-    private val hmac: String
+    private val hmac: String?
 
-    constructor(username: String, data: String, hmac: String) : super(ImmutableList.of<GrantedAuthority>()) {
+    constructor(username: String, data: String, hmac: String?) : super(ImmutableList.of<GrantedAuthority>()) {
         this.username = username
         this.data = data
         this.hmac = hmac
@@ -40,7 +40,7 @@ class HmacAuthentication : AbstractAuthenticationToken {
         return data
     }
 
-    override fun getCredentials(): Any {
+    override fun getCredentials(): Any? {
         return hmac
     }
 
@@ -56,20 +56,20 @@ class HmacAuthentication : AbstractAuthenticationToken {
 class HmacAuthenticationProvider(private val trustMode: Boolean) : AuthenticationProvider {
 
     @Autowired
-    internal var userService: UserService? = null
+    private lateinit var userService: UserService
 
     @Autowired
-    internal var userRegistryService: UserRegistryService? = null
+    private lateinit var userRegistryService: UserRegistryService
 
     @Throws(AuthenticationException::class)
     override fun authenticate(authentication: Authentication): Authentication {
         val username = authentication.principal as String
         val msgClear = authentication.details as String
-        val msgCrypt = authentication.credentials as String
+        val msgCrypt = authentication.credentials as String?
 
         return if (trustMode) {
             try {
-                val authed = userRegistryService!!.getUser(username)
+                val authed = userRegistryService.getUser(username)
                 UsernamePasswordAuthenticationToken(authed, "",
                         authed.authorities)
 
@@ -85,7 +85,7 @@ class HmacAuthenticationProvider(private val trustMode: Boolean) : Authenticatio
                 val crypted = Hex.encodeHexString(mac.doFinal(msgClear.toByteArray()))
 
                 if (crypted == msgCrypt) {
-                    val authed = userRegistryService!!.getUser(username)
+                    val authed = userRegistryService.getUser(username)
                     UsernamePasswordAuthenticationToken(authed, "",
                             authed.authorities)
                 } else {
@@ -104,7 +104,7 @@ class HmacAuthenticationProvider(private val trustMode: Boolean) : Authenticatio
 
     @Throws(IOException::class)
     fun getKey(user: String): String {
-        return userService!!.getHmacKey(user)
+        return userService.getHmacKey(user)
     }
 
     override fun supports(aClass: Class<*>): Boolean {

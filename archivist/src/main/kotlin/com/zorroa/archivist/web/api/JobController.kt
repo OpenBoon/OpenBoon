@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.io.IOException
+import java.util.*
 import javax.validation.Valid
 
 /**
@@ -27,21 +28,21 @@ class JobController @Autowired constructor(
 
     @PutMapping(value = ["/api/v1/jobs/{id}/_cancel"])
     @Throws(IOException::class)
-    fun cancel(@PathVariable id: Int): Any {
+    fun cancel(@PathVariable id: UUID): Any {
         return HttpUtils.status("job", id, "cancel",
                 jobExecutorService.cancelJob(jobService[id]))
     }
 
     @PutMapping(value = ["/api/v1/jobs/{id}/_restart"])
     @Throws(IOException::class)
-    fun restart(@PathVariable id: Int): Any {
+    fun restart(@PathVariable id: UUID): Any {
         return HttpUtils.status("job", id, "restart",
                 jobExecutorService.restartJob(jobService[id]))
     }
 
     @PutMapping(value = ["/api/v1/jobs/{id}/_retryAllFailures"])
     @Throws(IOException::class)
-    fun retryAllFailures(@PathVariable id: Int): Any {
+    fun retryAllFailures(@PathVariable id: UUID): Any {
         jobExecutorService.retryAllFailures(jobService[id])
         return HttpUtils.status("job", id, "retry-all-failures", true)
     }
@@ -65,13 +66,13 @@ class JobController @Autowired constructor(
 
     @GetMapping(value = ["/api/v1/jobs/{id}"])
     @Throws(IOException::class)
-    operator fun get(@PathVariable id: Int): Any {
+    operator fun get(@PathVariable id: UUID): Any {
         return jobService[id]
     }
 
     @GetMapping(value = ["/api/v1/jobs/{id}/tasks"])
     @Throws(IOException::class)
-    fun getTasks(@PathVariable id: Int,
+    fun getTasks(@PathVariable id: UUID,
                  @RequestParam(value = "from", required = false) from: Int?,
                  @RequestParam(value = "count", required = false) count: Int?): Any {
         return jobService.getAllTasks(id, Pager(from, count))
@@ -80,7 +81,7 @@ class JobController @Autowired constructor(
 
     @PostMapping(value = ["/api/v2/jobs/{id}/tasks"])
     @Throws(IOException::class)
-    fun getTasksV2(@PathVariable id: Int,
+    fun getTasksV2(@PathVariable id: UUID,
                    @RequestBody filter: TaskFilter,
                    @RequestParam(value = "from", required = false) from: Int?,
                    @RequestParam(value = "count", required = false) count: Int?): Any {

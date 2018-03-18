@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by chambers on 6/3/16.
@@ -121,7 +122,7 @@ public class IndexController {
     }
 
     @RequestMapping("/admin/gui/permissions/{id}")
-    public String getPermission(Model model, @PathVariable int id) {
+    public String getPermission(Model model, @PathVariable UUID id) {
         standardModel(model);
         model.addAttribute("perm", permissionService.getPermission(id));
         model.addAttribute("permSpec", new PermissionSpec());
@@ -169,7 +170,7 @@ public class IndexController {
 
 
     @RequestMapping("/admin/gui/pipelines/{id}")
-    public String getPipeline(Model model, @PathVariable int id) {
+    public String getPipeline(Model model, @PathVariable UUID id) {
         standardModel(model);
 
         Pipeline pipeline = pipelineService.get(id);

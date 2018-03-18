@@ -1,6 +1,7 @@
 namespace java com.zorroa.cluster.thrift
 
 typedef map<string,string> Attrs;
+typedef string uuid;
 
 exception CusterExceptionT {
     1: i32 what,
@@ -15,9 +16,9 @@ struct StackElementT {
 }
 
 struct TaskStartT {
-    1:i32 id,
-    2:i32 jobId,
-    3:i32 parent,
+    1:uuid id,
+    2:uuid jobId,
+    3:uuid parent,
     4:string name,
     5:Attrs env,
     6:binary argMap,
@@ -58,8 +59,8 @@ struct TaskResultT {
 }
 
 struct TaskKillT {
-    1:i32 id,
-    2:i32 jobId,
+    1:uuid id,
+    2:uuid jobId,
     3:string user,
     4:string reason
 }
@@ -80,7 +81,7 @@ struct AnalystT {
     7:bool data,
     8:bool master,
     9:i32 state,
-    10:list<i32> taskIds,
+    10:list<uuid> taskIds,
     11:i64 updatedTime,
     12:i32 threadsUsed,
     13:i32 queueSize,
@@ -91,14 +92,14 @@ struct AnalystT {
 
 service MasterServerService {
     oneway void ping(1:AnalystT node),
-    void reportTaskStarted(1:i32 id) throws (1:CusterExceptionT e),
-    void reportTaskStopped(1:i32 id, 2:TaskStopT result) throws (1:CusterExceptionT e),
-    void reportTaskRejected(1:i32 id, 2:string reason) throws (1:CusterExceptionT e),
-    void reportTaskStats(1:i32 id, 2:TaskStatsT stats) throws (1:CusterExceptionT e),
-    void reportTaskErrors(1:i32 id, 2:list<TaskErrorT> errors) throws (1:CusterExceptionT e),
+    void reportTaskStarted(1:uuid id) throws (1:CusterExceptionT e),
+    void reportTaskStopped(1:uuid id, 2:TaskStopT result) throws (1:CusterExceptionT e),
+    void reportTaskRejected(1:uuid id, 2:string reason) throws (1:CusterExceptionT e),
+    void reportTaskStats(1:uuid id, 2:TaskStatsT stats) throws (1:CusterExceptionT e),
+    void reportTaskErrors(1:uuid id, 2:list<TaskErrorT> errors) throws (1:CusterExceptionT e),
 
     list<TaskStartT> queuePendingTasks(1:string url, 2:i32 count) throws (1:CusterExceptionT e),
-    void expand(1:i32 parent, 2:ExpandT expand) throws (1:CusterExceptionT e)
+    void expand(1:uuid parent, 2:ExpandT expand) throws (1:CusterExceptionT e)
 }
 
 service WorkerNodeService {

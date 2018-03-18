@@ -52,7 +52,6 @@ public abstract class AbtractThriftClient implements Closeable {
     public TProtocol connect() throws TException {
         if (!connected.get()) {
             socket = new TSocket(host, port);
-
             if (connectTimeout > 0) {
                 socket.setConnectTimeout(connectTimeout);
             }

@@ -191,7 +191,6 @@ public class TaskDaoTests extends AbstractTest {
 
         PagedList<Task> tasks = taskDao.getAll(job.getJobId(), Pager.first(2), filter);
         assertEquals(2, tasks.size());
-        assertTrue(tasks.get(0).getId() > tasks.get(1).getId());
     }
 
 
@@ -257,7 +256,7 @@ public class TaskDaoTests extends AbstractTest {
             ps.setLong(1, time);
             ps.setLong(2, time);
             ps.setInt(3, state.ordinal());
-            ps.setInt(4, task.getTaskId());
+            ps.setObject(4, task.getTaskId());
             return ps;
         });
     }

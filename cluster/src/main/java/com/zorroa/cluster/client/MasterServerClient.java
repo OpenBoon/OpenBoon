@@ -47,7 +47,7 @@ public class MasterServerClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void reportTaskStarted(int id) {
+    public void reportTaskStarted(String id) {
         new Reconnect<Void>(true) {
             @Override
             protected Void wrap() throws TException {
@@ -57,7 +57,7 @@ public class MasterServerClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void reportTaskStopped(int id, TaskStopT result) {
+    public void reportTaskStopped(String id, TaskStopT result) {
         new Reconnect<Void>(true) {
             @Override
             protected Void wrap() throws TException {
@@ -67,7 +67,7 @@ public class MasterServerClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void reportTaskRejected(int id, String reason) {
+    public void reportTaskRejected(String id, String reason) {
         new Reconnect<Void>(true) {
             @Override
             protected Void wrap() throws TException {
@@ -77,7 +77,7 @@ public class MasterServerClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void reportTaskStats(int id, TaskStatsT stats) {
+    public void reportTaskStats(String id, TaskStatsT stats) {
         new Reconnect<Void>(false) {
             @Override
             protected Void wrap() throws TException {
@@ -87,7 +87,7 @@ public class MasterServerClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void reportTaskErrors(int id, List<TaskErrorT> errors) {
+    public void reportTaskErrors(String id, List<TaskErrorT> errors) {
         new Reconnect<Void>(false) {
             @Override
             protected Void wrap() throws TException {
@@ -106,7 +106,7 @@ public class MasterServerClient extends AbtractThriftClient {
         }.execute();
     }
 
-    public void expand(int parent, ExpandT expand) {
+    public void expand(String parent, ExpandT expand) {
         new Reconnect<Void>(true) {
             @Override
             protected Void wrap() throws TException {

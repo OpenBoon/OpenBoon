@@ -2,6 +2,7 @@ package com.zorroa.archivist.domain
 
 import com.zorroa.sdk.processor.ProcessorRef
 import com.zorroa.sdk.search.AssetSearch
+import java.util.UUID
 
 class Export
 
@@ -17,8 +18,8 @@ data class ExportFileSpec (
  * An ExportFile record.
  */
 data class ExportFile (
-        val id: Long,
-        val jobId: Long,
+        val id: UUID,
+        val jobId: UUID,
         val name: String,
         val mimeType : String,
         val size : Long,

@@ -1,17 +1,19 @@
 package com.zorroa.archivist.domain;
 
+import java.util.UUID;
+
 /**
  * Created by chambers on 12/5/16.
  */
 public class TrashedFolderOp {
 
-    int trashFolderId;
+    UUID trashFolderId;
     String opId;
     int count;
 
     public TrashedFolderOp() { }
 
-    public TrashedFolderOp(int trashFolderId, String opId, int count) {
+    public TrashedFolderOp(UUID trashFolderId, String opId, int count) {
         this.trashFolderId = trashFolderId;
         this.opId = opId;
         this.count = count;
@@ -26,11 +28,11 @@ public class TrashedFolderOp {
         return this;
     }
 
-    public int getTrashFolderId() {
+    public UUID getTrashFolderId() {
         return trashFolderId;
     }
 
-    public TrashedFolderOp setTrashFolderId(int trashFolderId) {
+    public TrashedFolderOp setTrashFolderId(UUID trashFolderId) {
         this.trashFolderId = trashFolderId;
         return this;
     }

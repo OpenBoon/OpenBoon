@@ -43,9 +43,7 @@ interface UserService {
 
     fun get(username: String): User
 
-    fun get(id: Int): User
-
-    fun getByEmail(email: String): User
+    fun get(id: UUID): User
 
     fun exists(username: String): Boolean
 
@@ -81,9 +79,9 @@ interface UserService {
 
     fun hasPermission(user: User, permission: Permission): Boolean
 
-    fun getUserPreset(id: Int): UserPreset
+    fun getUserPreset(id: UUID): UserPreset
 
-    fun updateUserPreset(id: Int, preset: UserPreset): Boolean
+    fun updateUserPreset(id: UUID, preset: UserPreset): Boolean
 
     fun createUserPreset(preset: UserPresetSpec): UserPreset
 
@@ -157,13 +155,18 @@ class UserRegistryServiceImpl @Autowired constructor(
             val authority = spec.type + Permission.JOIN + spec.name
             perms.add(if (permissionService.permissionExists(authority)) {
                 permissionService.getPermission(authority)
-            }
-            else {
+            } else {
                 permissionService.createPermission(spec)
             })
         }
 
         userService.setPermissions(user, perms, source.authSourceId)
+    }
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(UserRegistryServiceImpl::class.java)
+
     }
 }
 
@@ -190,7 +193,6 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun create(builder: UserSpec, source: String): User {
-
         if (userDao.exists(builder.username)) {
             throw DuplicateEntityException("The user '" +
                     builder.username + "' already exists.")
@@ -241,12 +243,8 @@ class UserServiceImpl @Autowired constructor(
         return userDao.get(username)
     }
 
-    override fun get(id: Int): User {
+    override fun get(id: UUID): User {
         return userDao.get(id)
-    }
-
-    override fun getByEmail(email: String): User {
-        return userDao.getByEmail(email)
     }
 
     override fun exists(username: String): Boolean {
@@ -415,11 +413,11 @@ class UserServiceImpl @Autowired constructor(
         return userPresetDao.getAll()
     }
 
-    override fun getUserPreset(id: Int): UserPreset {
+    override fun getUserPreset(id: UUID): UserPreset {
         return userPresetDao.get(id)
     }
 
-    override fun updateUserPreset(id: Int, preset: UserPreset): Boolean {
+    override fun updateUserPreset(id: UUID, preset: UserPreset): Boolean {
         return userPresetDao.update(id, preset)
     }
 
@@ -434,7 +432,7 @@ class UserServiceImpl @Autowired constructor(
     override fun checkPassword(username: String, supplied: String) {
         val storedPassword = getPassword(username)
         if (!BCrypt.checkpw(supplied, storedPassword)) {
-            throw BadCredentialsException("Invalid username or password")
+            throw BadCredentialsException("Invalid username or password: $username")
         }
     }
 
@@ -490,7 +488,7 @@ class UserServiceImpl @Autowired constructor(
 
         internal val PERMANENT_TYPES: Set<String> = ImmutableSet.of("user", "internal")
 
-        private val SOURCE_LOCAL = "local"
+        private const val SOURCE_LOCAL = "local"
 
         private val PASS_HAS_NUMBER = Pattern.compile("\\d")
         private val PASS_HAS_UPPER = Pattern.compile("[A-Z]")

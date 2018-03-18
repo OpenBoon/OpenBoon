@@ -16,6 +16,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -198,7 +199,7 @@ public class PermissionDaoTests extends AbstractTest {
     @Test
     public void testGetAllByIds() {
         List<Permission> perms1 = permissionDao.getAll();
-        List<Permission> perms2 = permissionDao.getAll(new Integer[] {
+        List<Permission> perms2 = permissionDao.getAll(new UUID[] {
             perms1.get(0).getId(), perms1.get(1).getId()
         });
         assertEquals(2, perms2.size());

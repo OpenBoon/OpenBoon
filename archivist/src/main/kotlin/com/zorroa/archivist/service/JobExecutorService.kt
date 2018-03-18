@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.SynchronousQueue
@@ -73,7 +74,7 @@ class JobExecutorServiceImpl @Autowired constructor(
     private val returnQueue = CacheBuilder.newBuilder()
             .maximumSize(100)
             .expireAfterWrite(60, TimeUnit.SECONDS)
-            .build<Int, SynchronousQueue<Any>>()
+            .build<UUID, SynchronousQueue<Any>>()
 
     override fun onApplicationEvent(contextRefreshedEvent: ContextRefreshedEvent) {
         if (!ArchivistConfiguration.unittest) {
@@ -114,6 +115,7 @@ class JobExecutorServiceImpl @Autowired constructor(
                 result.add(task)
             }
         }
+
         if (!result.isEmpty()) {
             val taskIds = result
                     .stream()
@@ -228,7 +230,7 @@ class JobExecutorServiceImpl @Autowired constructor(
         val client = WorkerNodeClient(task.host)
         try {
             logger.info("Killing runinng task: {}", task)
-            client.killTask(TaskKillT().setId(task.taskId)
+            client.killTask(TaskKillT().setId(task.taskId.toString())
                     .setReason("Manually killed  by " + getUsername())
                     .setUser(getUsername()))
         } catch (e: Exception) {

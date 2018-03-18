@@ -83,7 +83,7 @@ public class MaintenanceServiceTests extends AbstractTest {
         Job job = jobService.launch(jspec);
 
         jobService.createTask(new TaskSpec()
-                .setJobId(jspec.getJobId())
+                .setJobId(jspec.getId())
                 .setScript(new ZpsScript())
                 .setName("test"));
 

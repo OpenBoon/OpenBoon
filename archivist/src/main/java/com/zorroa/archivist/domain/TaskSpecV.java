@@ -4,6 +4,7 @@ import com.zorroa.sdk.domain.Document;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by chambers on 8/22/16.
@@ -14,25 +15,25 @@ public class TaskSpecV implements JobId {
     private String name;
 
     @NotEmpty
-    private Integer jobId;
+    private UUID jobId;
 
     @NotEmpty
     private List<Document> docs;
 
-    private Integer pipelineId;
+    private UUID pipelineId;
 
     public TaskSpecV() { }
 
-    public TaskSpecV(int jobId, String name) {
+    public TaskSpecV(UUID jobId, String name) {
         this.jobId = jobId;
         this.name = name;
     }
 
-    public Integer getJobId() {
+    public UUID getJobId() {
         return jobId;
     }
 
-    public TaskSpecV setJobId(Integer jobId) {
+    public TaskSpecV setJobId(UUID jobId) {
         this.jobId = jobId;
         return this;
     }
@@ -45,11 +46,11 @@ public class TaskSpecV implements JobId {
         this.name = name;
         return this;
     }
-    public Integer getPipelineId() {
+    public UUID getPipelineId() {
         return pipelineId;
     }
 
-    public TaskSpecV setPipelineId(Integer pipelineId) {
+    public TaskSpecV setPipelineId(UUID pipelineId) {
         this.pipelineId = pipelineId;
         return this;
     }

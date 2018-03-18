@@ -11,7 +11,6 @@ import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
-import com.zorroa.sdk.client.exception.ArchivistException
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,9 +37,9 @@ interface FolderService {
 
     fun updateAcl(folder: Folder, acl: Acl)
 
-    fun get(id: Int): Folder
+    fun get(id: UUID): Folder
 
-    fun get(parent: Int, name: String): Folder
+    fun get(parent: UUID, name: String): Folder
 
     fun exists(path: String): Boolean
 
@@ -54,9 +53,9 @@ interface FolderService {
      * @param ids
      * @return
      */
-    fun getAll(ids: Collection<Int>): List<Folder>
+    fun getAll(ids: Collection<UUID>): List<Folder>
 
-    fun getAllIds(dyhi: DyHierarchy): List<Int>
+    fun getAllIds(dyhi: DyHierarchy): List<UUID>
 
     fun getChildren(folder: Folder): List<Folder>
 
@@ -70,7 +69,7 @@ interface FolderService {
      */
     fun getAllDescendants(startFolders: Collection<Folder>, includeStartFolders: Boolean, forSearch: Boolean): List<Folder>
 
-    fun invalidate(folder: Folder?, vararg additional: Int)
+    fun invalidate(folder: Folder?, vararg additional: UUID)
 
     fun isInTaxonomy(folder: Folder): Boolean
 
@@ -87,9 +86,9 @@ interface FolderService {
      */
     fun getAllDescendants(folder: Folder, forSearch: Boolean): List<Folder>
 
-    fun update(folderId: Int, updated: Folder): Boolean
+    fun update(folderId: UUID, updated: Folder): Boolean
 
-    fun deleteAll(ids: Collection<Int>): Int
+    fun deleteAll(ids: Collection<UUID>): Int
 
     fun trash(folder: Folder): TrashedFolderOp
 
@@ -149,11 +148,11 @@ interface FolderService {
      * @param id
      * @return
      */
-    fun getTrashedFolder(id: Int): TrashedFolder
+    fun getTrashedFolder(id: UUID): TrashedFolder
 
-    fun emptyTrash(): List<Int>
+    fun emptyTrash(): List<UUID>
 
-    fun emptyTrash(ids: List<Int>): List<Int>
+    fun emptyTrash(ids: List<UUID>): List<UUID>
 
     fun trashCount(): Int
 
@@ -186,9 +185,9 @@ class FolderServiceImpl @Autowired constructor(
     private val childCache = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(1, TimeUnit.DAYS)
-            .build(object : CacheLoader<Int, List<Folder>>() {
+            .build(object : CacheLoader<UUID, List<Folder>>() {
                 @Throws(Exception::class)
-                override fun load(key: Int): List<Folder> {
+                override fun load(key: UUID): List<Folder> {
                     return folderDao.getChildrenInsecure(key)
                 }
             })
@@ -196,9 +195,9 @@ class FolderServiceImpl @Autowired constructor(
     private val folderCache = CacheBuilder.newBuilder()
             .maximumSize(1000)
             .expireAfterWrite(1, TimeUnit.DAYS)
-            .build(object : CacheLoader<Int, Folder>() {
+            .build(object : CacheLoader<UUID, Folder>() {
                 @Throws(Exception::class)
-                override fun load(key: Int): Folder {
+                override fun load(key: UUID): Folder {
                     return folderDao.get(key)
                 }
             })
@@ -212,7 +211,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun setDyHierarchyRoot(folder: Folder, attribute: String): Boolean {
-        if (folder.id == 0) {
+        if (folder.id == Folder.ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
         val result = folderDao.setDyHierarchyRoot(folder, attribute)
@@ -251,22 +250,22 @@ class FolderServiceImpl @Autowired constructor(
         }
     }
 
-    override fun get(id: Int): Folder {
+    override fun get(id: UUID): Folder {
         val f: Folder
         try {
             f = folderCache.get(id)
             if (!hasPermission(f.acl, Access.Read)) {
-                throw EmptyResultDataAccessException("Failed to find folder: " + id, 1)
+                throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
             }
             return f
 
         } catch (e: Exception) {
-            throw EmptyResultDataAccessException("Failed to find folder: " + id, 1)
+            throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
         }
 
     }
 
-    override fun get(parent: Int, name: String): Folder {
+    override fun get(parent: UUID, name: String): Folder {
         return folderDao.get(parent, name, false)
     }
 
@@ -275,7 +274,7 @@ class FolderServiceImpl @Autowired constructor(
         var current: Folder? = null
 
         if ("/" == path) {
-            return folderDao.get(0)
+            return folderDao.get(Folder.ROOT_ID)
         }
 
         // Just throw the exception to the caller,don't return null
@@ -309,11 +308,11 @@ class FolderServiceImpl @Autowired constructor(
         return folderDao.getChildren(Folder.ROOT_ID)
     }
 
-    override fun getAll(ids: Collection<Int>): List<Folder> {
+    override fun getAll(ids: Collection<UUID>): List<Folder> {
         return folderDao.getAll(ids)
     }
 
-    override fun getAllIds(dyhi: DyHierarchy): List<Int> {
+    override fun getAllIds(dyhi: DyHierarchy): List<UUID> {
         return folderDao.getAllIds(dyhi)
     }
 
@@ -321,17 +320,17 @@ class FolderServiceImpl @Autowired constructor(
         return folderDao.getChildren(folder)
     }
 
-    override fun update(folderId : Int, updated: Folder): Boolean {
+    override fun update(folderId : UUID, updated: Folder): Boolean {
         if (!hasPermission(folderDao.getAcl(folderId), Access.Write)) {
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (folderId == 0 || updated.id == 0) {
+        if (folderId == Folder.ROOT_ID || updated.id == Folder.ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
 
         val current = folderDao.get(folderId)
-        val parentSwap = current.parentId !== updated.parentId
+        val parentSwap = !Objects.equals(current.parentId, updated.parentId);
 
         if (parentSwap) {
 
@@ -381,7 +380,7 @@ class FolderServiceImpl @Autowired constructor(
         return folderDao.deleteAll(dyhi)
     }
 
-    override fun deleteAll(ids: Collection<Int>): Int {
+    override fun deleteAll(ids: Collection<UUID>): Int {
         return folderDao.deleteAll(ids)
     }
 
@@ -391,7 +390,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You don't have the permissions to delete this folder")
         }
 
-        if (folder.id == 0) {
+        if (folder.id == Folder.ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
         /**
@@ -485,7 +484,7 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
-        if (folder.id == 0) {
+        if (folder.id == Folder.ROOT_ID) {
             throw ArchivistWriteException("You cannot make changes to the root folder")
         }
 
@@ -559,7 +558,7 @@ class FolderServiceImpl @Autowired constructor(
         return result
     }
 
-    override fun invalidate(folder: Folder?, vararg additional: Int) {
+    override fun invalidate(folder: Folder?, vararg additional: UUID) {
         if (folder != null) {
             if (folder.parentId != null) {
                 childCache.invalidate(folder.parentId)
@@ -581,7 +580,7 @@ class FolderServiceImpl @Autowired constructor(
         if (folder.isTaxonomyRoot) {
             return true
         }
-        while (current.parentId != 0) {
+        while (current.parentId != Folder.ROOT_ID) {
             current = get(folder.parentId)
             if (current.isTaxonomyRoot) {
                 return true
@@ -595,7 +594,7 @@ class FolderServiceImpl @Autowired constructor(
         if (current.isTaxonomyRoot) {
             return taxonomyService.get(folder)
         }
-        while (current.parentId != 0) {
+        while (current.parentId != Folder.ROOT_ID) {
             current = get(current.parentId)
             if (current.isTaxonomyRoot) {
                 return taxonomyService.get(current)
@@ -610,7 +609,7 @@ class FolderServiceImpl @Autowired constructor(
             result.add(folder)
         }
         var start = folder
-        while (start.parentId != 0) {
+        while (start.parentId != Folder.ROOT_ID) {
             start = get(start.parentId)
             result.add(start)
             if (start.isTaxonomyRoot && taxOnly) {
@@ -701,7 +700,7 @@ class FolderServiceImpl @Autowired constructor(
 
     override fun create(parent: Folder, spec: FolderSpec, mightExist: Boolean): Folder {
         if (!hasPermission(parent.acl, Access.Write)) {
-            throw ArchivistException("You cannot make changes to this folder")
+            throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
         // If there is no acl, use the parent acl.
@@ -761,7 +760,7 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun createUserFolder(username: String, perm: Permission): Folder {
-        val adminUser = userDao.get("admin")
+        val adminUser = userDao.get("admin@zorroa.com")
 
         val rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true)
         val folder = folderDao.create(FolderSpec()
@@ -780,15 +779,15 @@ class FolderServiceImpl @Autowired constructor(
         return trashFolderDao.getAll(folder, getUserId())
     }
 
-    override fun getTrashedFolder(id: Int): TrashedFolder {
+    override fun getTrashedFolder(id: UUID): TrashedFolder {
         return trashFolderDao[id, getUserId()]
     }
 
-    override fun emptyTrash(): List<Int> {
+    override fun emptyTrash(): List<UUID> {
         return trashFolderDao.removeAll(getUserId())
     }
 
-    override fun emptyTrash(ids: List<Int>): List<Int> {
+    override fun emptyTrash(ids: List<UUID>): List<UUID> {
         return trashFolderDao.removeAll(ids, getUserId())
     }
 

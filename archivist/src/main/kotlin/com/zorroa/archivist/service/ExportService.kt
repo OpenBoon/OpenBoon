@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 /**
  * Created by chambers on 11/1/15.
@@ -29,7 +30,7 @@ interface ExportService {
 
     fun createExportFile(job: Job, spec: ExportFileSpec): ExportFile
 
-    fun getExportFile(fileId: Long): ExportFile
+    fun getExportFile(fileId: UUID): ExportFile
 
     fun getAllExportFiles(job: Job): List<ExportFile>
 
@@ -72,7 +73,7 @@ class ExportServiceImpl @Autowired constructor(
      * replace the the search being executed with a search for the assets
      * we specifically tagged.
      */
-    private fun performExportSearch(search: AssetSearch, exportId: Int): ExportParams {
+    private fun performExportSearch(search: AssetSearch, exportId: UUID): ExportParams {
         search.fields = arrayOf("source")
 
         val params = ExportParams(AssetSearch())
@@ -104,7 +105,7 @@ class ExportServiceImpl @Autowired constructor(
         return exportDao.createExportFile(job, spec)
     }
 
-    override fun getExportFile(fileId: Long): ExportFile {
+    override fun getExportFile(fileId: UUID): ExportFile {
         return exportDao.getExportFile(fileId)
     }
 
@@ -133,7 +134,7 @@ class ExportServiceImpl @Autowired constructor(
          */
         val script = ZpsScript()
         script.putToGlobals("exportArgs", ExportArgs()
-                .setExportId(jspec.jobId)
+                .setExportId(jspec.id)
                 .setExportName(jspec.name)
                 .setExportRoot(jobRoot.resolve("exported").toString()))
 

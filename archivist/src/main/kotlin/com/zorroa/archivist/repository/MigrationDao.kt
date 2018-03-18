@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Migration
 import com.zorroa.archivist.domain.MigrationType
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.util.*
 
 
 /**
@@ -60,7 +61,7 @@ open class MigrationDaoImpl : AbstractDao(), MigrationDao {
 
         private val MAPPER = RowMapper<Migration> { rs, _ ->
             val m = Migration()
-            m.id = rs.getInt("pk_migration")
+            m.id = rs.getObject("pk_migration") as UUID
             m.name = rs.getString("str_name")
             m.type = MigrationType.values()[rs.getInt("int_type")]
             m.path = rs.getString("str_path")

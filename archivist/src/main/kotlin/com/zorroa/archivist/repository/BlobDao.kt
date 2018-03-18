@@ -10,8 +10,8 @@ import com.zorroa.archivist.security.hasPermission
 import com.zorroa.sdk.util.Json
 import org.springframework.jdbc.core.RowCallbackHandler
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface BlobDao {
 
@@ -21,7 +21,7 @@ interface BlobDao {
 
     fun delete(blob: BlobId): Boolean
 
-    operator fun get(id: Int): Blob
+    operator fun get(id: UUID): Blob
 
     operator fun get(app: String, feature: String, name: String): Blob
 
@@ -39,21 +39,21 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
 
     override fun create(app: String, feature: String, name: String, data: Any): Blob {
         val time = System.currentTimeMillis()
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_jblob"))
-            ps.setString(1, app)
-            ps.setString(2, feature)
-            ps.setString(3, name)
-            ps.setString(4, Json.serializeToString(data, "{}"))
-            ps.setInt(5, getUserId())
-            ps.setInt(6, getUserId())
-            ps.setLong(7, time)
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setString(2, app)
+            ps.setString(3, feature)
+            ps.setString(4, name)
+            ps.setString(5, Json.serializeToString(data, "{}"))
+            ps.setObject(6, getUserId())
+            ps.setObject(7, getUserId())
             ps.setLong(8, time)
+            ps.setLong(9, time)
             ps
-        }, keyHolder)
+        })
 
-        val id = keyHolder.key.toInt()
         return get(id)
     }
 
@@ -67,7 +67,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
         return jdbc.update("DELETE FROM jblob WHERE pk_jblob=?", blob.getBlobId()) == 1
     }
 
-    override fun get(id: Int): Blob {
+    override fun get(id: UUID): Blob {
         return jdbc.queryForObject<Blob>(appendAccess(GET + "WHERE pk_jblob=?", Access.Read), MAPPER,
                 *appendAccessArgs(id))
     }
@@ -82,9 +82,9 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
         return jdbc.queryForObject<BlobId>(
                 appendAccess("SELECT pk_jblob FROM jblob WHERE str_app=? AND str_feature=? AND str_name=?", forAccess),
                 RowMapper<BlobId> { rs, _ ->
-                    val blobId = rs.getInt(1)
+                    val blobId = rs.getObject(1) as UUID
                     object : BlobId {
-                        override fun getBlobId(): Int {
+                        override fun getBlobId(): UUID {
                             return blobId
                         }
                     }
@@ -100,7 +100,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
         val acl = Acl()
         jdbc.query(GET_PERMS,
                 RowCallbackHandler {
-                    rs -> acl.addEntry(rs.getInt("pk_permission"), rs.getInt("int_access"))
+                    rs -> acl.addEntry(rs.getObject("pk_permission") as UUID, rs.getInt("int_access"))
                 }, blob.getBlobId())
         return acl
     }
@@ -164,7 +164,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
         } else {
             sb.append(" WHERE ")
         }
-        sb.append("(jblob.user_created = ? OR (")
+        sb.append("(jblob.pk_user_created = ? OR (")
         sb.append("SELECT COUNT(1) FROM jblob_acl WHERE jblob_acl.pk_jblob=jblob.pk_jblob AND ")
         sb.append(JdbcUtils.`in`("jblob_acl.pk_permission", getPermissionIds().size))
         sb.append(" AND BITAND(")
@@ -177,23 +177,24 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
     companion object {
 
         private val MAPPER = RowMapper<Blob> { rs, _ ->
-            val blob = Blob()
-            blob.setBlobId(rs.getInt("pk_jblob"))
-            blob.setVersion(rs.getLong("int_version"))
-            blob.setApp(rs.getString("str_app"))
-            blob.setFeature(rs.getString("str_feature"))
-            blob.setName(rs.getString("str_name"))
-            blob.setData(Json.deserialize<Map<String, Any>>(rs.getString("json_data"), Json.GENERIC_MAP))
+            val blob = Blob(
+                    rs.getObject("pk_jblob") as UUID,
+                    rs.getLong("int_version"),
+                    rs.getString("str_app"),
+                    rs.getString("str_feature"),
+                    rs.getString("str_name"),
+                    Json.deserialize<Map<String, Any>>(rs.getString("json_data"), Json.GENERIC_MAP))
             blob
         }
 
         private val INSERT = JdbcUtils.insert("jblob",
+                "pk_jblob",
                 "str_app",
                 "str_feature",
                 "str_name",
                 "json_data",
-                "user_created",
-                "user_modified",
+                "pk_user_created",
+                "pk_user_modified",
                 "time_created",
                 "time_modified")
 
@@ -202,7 +203,7 @@ class BlobDaoImpl : AbstractDao(), BlobDao {
                 "SET " +
                 "json_data=?," +
                 "int_version=int_version+1," +
-                "user_modified=?, " +
+                "pk_user_modified=?, " +
                 "time_modified=? " +
                 "WHERE " +
                 "pk_jblob=?"

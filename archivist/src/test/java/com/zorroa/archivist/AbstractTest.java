@@ -202,14 +202,14 @@ public abstract class AbstractTest {
         userService.create(userBuilder);
 
         UserSpec managerBuilder = new UserSpec();
-        managerBuilder.setEmail("manager@zorroa.com");
+        managerBuilder.setEmail("librarian@zorroa.com");
         managerBuilder.setFirstName("Bob");
-        managerBuilder.setLastName("Manager");
-        managerBuilder.setUsername("manager");
+        managerBuilder.setLastName("Librarian");
+        managerBuilder.setUsername("librarian");
         managerBuilder.setPassword("manager");
         User manager = userService.create(managerBuilder);
         userService.addPermissions(manager, Lists.newArrayList(
-                permissionService.getPermission("zorroa::manager")));
+                permissionService.getPermission("zorroa::librarian")));
 
 
         resources = FileUtils.normalize(Paths.get("../../zorroa-test-data"));

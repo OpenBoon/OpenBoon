@@ -54,7 +54,7 @@ interface SearchService {
     fun search(builder: AssetSearch): SearchResponse
     fun count(builder: AssetSearch): Long
 
-    fun count(ids: List<Int>, search: AssetSearch?): List<Long>
+    fun count(ids: List<UUID>, search: AssetSearch?): List<Long>
 
     fun count(folder: Folder): Long
 
@@ -102,7 +102,7 @@ interface SearchService {
     fun analyzeQuery(search: AssetSearch): List<String>
 }
 
-class SearchContext(val linkedFolders: MutableSet<Int>,
+class SearchContext(val linkedFolders: MutableSet<UUID>,
                     val perms: Boolean,
                     val postFilter: Boolean,
                     var score: Boolean=false)
@@ -146,7 +146,7 @@ class SearchServiceImpl @Autowired constructor(
         return buildSearch(builder, "asset").setSize(0).get().hits.totalHits
     }
 
-    override fun count(ids: List<Int>, search: AssetSearch?): List<Long> {
+    override fun count(ids: List<UUID>, search: AssetSearch?): List<Long> {
         val counts = Lists.newArrayListWithCapacity<Long>(ids.size)
         if (search != null) {
             // Replace any existing folders with each folder to get count.
@@ -398,9 +398,10 @@ class SearchServiceImpl @Autowired constructor(
         return getQuery(search, Sets.newHashSet(), true, false)
     }
 
-    private fun getQuery(search: AssetSearch?, linkedFolders: MutableSet<Int>, perms: Boolean, postFilter: Boolean): QueryBuilder {
+    private fun getQuery(search: AssetSearch?, linkedFolders: MutableSet<UUID>, perms: Boolean, postFilter: Boolean): QueryBuilder {
 
         val permsQuery = getPermissionsFilter()
+
         if (search == null) {
             return permsQuery ?: QueryBuilders.matchAllQuery()
         }
@@ -452,7 +453,7 @@ class SearchServiceImpl @Autowired constructor(
         return query
     }
 
-    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<Int>) {
+    private fun linkQuery(query: BoolQueryBuilder, filter: AssetFilter, linkedFolders: MutableSet<UUID>) {
 
         val staticBool = QueryBuilders.boolQuery()
 
@@ -461,7 +462,7 @@ class SearchServiceImpl @Autowired constructor(
             if (key == "folder") {
                 continue
             }
-            staticBool.should(QueryBuilders.termsQuery("links." + key, value))
+            staticBool.should(QueryBuilders.termsQuery("links.$key", value))
         }
 
         /*
@@ -471,14 +472,14 @@ class SearchServiceImpl @Autowired constructor(
 
             val folders = links["folder"]!!
                     .stream()
-                    .map { f -> Integer.valueOf(f.toString()) }
+                    .map { f -> UUID.fromString(f.toString()) }
                     .filter { f -> !linkedFolders.contains(f) }
                     .collect(Collectors.toSet())
 
             val recursive = if (filter.recursive == null) true else filter.recursive
 
             if (recursive) {
-                val childFolders = Sets.newHashSetWithExpectedSize<Int>(64)
+                val childFolders = Sets.newHashSetWithExpectedSize<UUID>(64)
 
                 for (folder in folderService.getAllDescendants(
                         folderService.getAll(folders), true, true)) {
@@ -543,7 +544,7 @@ class SearchServiceImpl @Autowired constructor(
      * @param query;
      * @return
      */
-    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<Int>) {
+    private fun applyFilterToQuery(filter: AssetFilter, query: BoolQueryBuilder, linkedFolders: MutableSet<UUID>) {
 
         if (filter.links != null) {
             linkQuery(query, filter, linkedFolders)

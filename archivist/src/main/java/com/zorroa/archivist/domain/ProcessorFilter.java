@@ -8,6 +8,7 @@ import com.zorroa.sdk.processor.ProcessorType;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by chambers on 8/17/16.
@@ -29,7 +30,7 @@ public class ProcessorFilter extends DaoFilter {
     private List<String> names;
     private List<String> shortNames;
     private Collection<ProcessorType> types;
-    private List<Integer> plugins;
+    private List<UUID> plugins;
 
     public List<String> getModules() {
         return modules;
@@ -67,11 +68,11 @@ public class ProcessorFilter extends DaoFilter {
         return this;
     }
 
-    public List<Integer> getPlugins() {
+    public List<UUID> getPlugins() {
         return plugins;
     }
 
-    public ProcessorFilter setPlugins(List<Integer> plugins) {
+    public ProcessorFilter setPlugins(List<UUID> plugins) {
         this.plugins = plugins;
         return this;
     }

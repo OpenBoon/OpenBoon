@@ -40,7 +40,7 @@ class BlobController @Autowired constructor(
      */
     @GetMapping(value = ["/api/v1/blobs/{app}/{feature}/{name}/_raw"])
     fun getRaw(@PathVariable app: String, @PathVariable feature: String, @PathVariable name: String): Any? {
-        return blobService.get(app, feature, name).getData()
+        return blobService.get(app, feature, name).data
     }
 
     @GetMapping(value = ["/api/v1/blobs/{app}/{feature}"])

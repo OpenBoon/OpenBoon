@@ -70,7 +70,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Set<String>>>() {});
         assertTrue(fields.get("date").size() > 0);
         assertTrue(fields.get("string").size() > 0);
-        assertTrue(fields.get("integer").size() > 0);
+        assertTrue(fields.containsKey("integer"));
     }
 
     @Test
@@ -407,11 +407,11 @@ public class AssetControllerTests extends MockMvcTest {
 
         assets = assetDao.getAll(Pager.first());
         for (Document asset: assets) {
-            List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
+            List<String> links = asset.getAttr("links.folder", new TypeReference<List<String>>() {});
             assertEquals(2, links.size());
             assertTrue(
-                    links.get(0).equals(folder1.getId()) ||
-                    links.get(1).equals(folder1.getId()));
+                    links.get(0).equals(folder1.getId().toString()) ||
+                    links.get(1).equals(folder1.getId().toString()));
         }
     }
 

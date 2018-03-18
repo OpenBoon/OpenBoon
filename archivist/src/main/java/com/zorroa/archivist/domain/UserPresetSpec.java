@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Specification for a Preset object, which contains a predefined set of user
@@ -19,18 +20,18 @@ public class UserPresetSpec {
     /**
      * The permissions this preset will assign.
      */
-    private List<Integer> permissionIds;
+    private List<UUID> permissionIds;
 
     /**
      * The user settings this preset will assign.
      */
     private UserSettings settings;
 
-    public List<Integer> getPermissionIds() {
+    public List<UUID> getPermissionIds() {
         return permissionIds;
     }
 
-    public UserPresetSpec setPermissionIds(List<Integer> permissionIds) {
+    public UserPresetSpec setPermissionIds(List<UUID> permissionIds) {
         this.permissionIds = permissionIds;
         return this;
     }

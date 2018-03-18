@@ -29,7 +29,7 @@ import java.util.*
 
 interface DyHierarchyService {
 
-    fun update(id: Int, spec: DyHierarchy): Boolean
+    fun update(id: UUID, spec: DyHierarchy): Boolean
 
     fun delete(dyhi: DyHierarchy): Boolean
 
@@ -47,7 +47,7 @@ interface DyHierarchyService {
      */
     fun generate(dyhi: DyHierarchy): Int
 
-    fun get(id: Int): DyHierarchy
+    fun get(id: UUID): DyHierarchy
 
     fun get(folder: Folder): DyHierarchy
 
@@ -96,7 +96,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
     internal var FORCE_RAW_TYPES: Set<DyHierarchyLevelType> = EnumSet.of(DyHierarchyLevelType.Attr)
 
     @Transactional
-    override fun update(id: Int, spec: DyHierarchy): Boolean {
+    override fun update(id: UUID, spec: DyHierarchy): Boolean {
         val current = dyHierarchyDao.get(id)
 
         if (!dyHierarchyDao.update(id, spec)) {
@@ -184,7 +184,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         return dyhi
     }
 
-    override fun get(id: Int): DyHierarchy {
+    override fun get(id: UUID): DyHierarchy {
         return dyHierarchyDao.get(id)
     }
 
@@ -413,7 +413,7 @@ class DyHierarchyServiceImpl @Autowired constructor (
         private val stack = Stack<Folder>()
         private val stash = Stack<Folder>()
         var count = 0
-        val folderIds: MutableSet<Int> = Sets.newHashSetWithExpectedSize(50)
+        val folderIds: MutableSet<UUID> = Sets.newHashSetWithExpectedSize(50)
 
         init {
             this.stack.push(root)

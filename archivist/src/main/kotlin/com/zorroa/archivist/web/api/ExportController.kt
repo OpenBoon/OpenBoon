@@ -18,6 +18,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.nio.file.Paths
+import java.util.*
 
 @RestController
 class ExportController @Autowired constructor(
@@ -33,24 +34,24 @@ class ExportController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}"])
-    operator fun get(@PathVariable id: Int): Any {
+    operator fun get(@PathVariable id: UUID): Any {
         return jobService[id]
     }
 
     @PostMapping(value = ["/api/v1/exports/{id}/_files"])
-    fun createExportFile(@PathVariable id: Int, @RequestBody spec: ExportFileSpec): Any {
+    fun createExportFile(@PathVariable id: UUID, @RequestBody spec: ExportFileSpec): Any {
         val job = jobService[id]
         return exportService.createExportFile(job, spec)
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}/_files"])
-    fun getExportFiles(@PathVariable id: Int): Any {
+    fun getExportFiles(@PathVariable id: UUID): Any {
         val job = jobService[id]
         return exportService.getAllExportFiles(job)
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}/_files/{fileId}/_stream"])
-    fun streamExportfile(@PathVariable id: Int, @PathVariable fileId: Long): ResponseEntity<FileSystemResource> {
+    fun streamExportfile(@PathVariable id: UUID, @PathVariable fileId: UUID): ResponseEntity<FileSystemResource> {
         val file = exportService.getExportFile(fileId)
         val job = jobService[id]
 
@@ -81,7 +82,7 @@ class ExportController @Autowired constructor(
         return ResponseEntity(FileSystemResource(path.toFile()), headers, HttpStatus.OK)
     }
 
-    private fun logExportDownload(id: Int) {
+    private fun logExportDownload(id: UUID) {
         val ids = Lists.newArrayList<String>()
         val search = AssetSearch()
                 .setFields(arrayOf())

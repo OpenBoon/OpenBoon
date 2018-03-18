@@ -10,8 +10,8 @@ import com.zorroa.sdk.domain.Pager
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
+import java.util.*
 
 interface PermissionDao {
 
@@ -23,9 +23,9 @@ interface PermissionDao {
 
     fun updateUserPermission(oldName: String, newName: String): Boolean
 
-    fun get(id: Int): Permission
+    fun get(id: UUID): Permission
 
-    fun getId(name: String): Int
+    fun getId(name: String): UUID
 
     fun get(authority: String): Permission
 
@@ -47,7 +47,7 @@ interface PermissionDao {
 
     fun get(type: String, name: String): Permission
 
-    fun getAll(ids: Array<Int>?): List<Permission>
+    fun getAll(ids: Array<UUID>?): List<Permission>
 
     fun getAll(names: List<String>?): List<Permission>
 
@@ -55,30 +55,30 @@ interface PermissionDao {
 }
 
 @Repository
-open class PermissionDaoImpl : AbstractDao(), PermissionDao {
+class PermissionDaoImpl : AbstractDao(), PermissionDao {
 
     override fun create(builder: PermissionSpec, immutable: Boolean): Permission {
 
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
         try {
             jdbc.update({ connection ->
-                val ps = connection.prepareStatement(INSERT, arrayOf("pk_permission"))
-                ps.setString(1, builder.name)
-                ps.setString(2, builder.type)
-                ps.setString(3, builder.type + "::" + builder.name)
-                ps.setString(4, if (builder.description == null)
+                val ps = connection.prepareStatement(INSERT)
+                ps.setObject(1, id)
+                ps.setString(2, builder.name)
+                ps.setString(3, builder.type)
+                ps.setString(4, builder.type + "::" + builder.name)
+                ps.setString(5, if (builder.description == null)
                     String.format("%s permission", builder.name)
                 else
                     builder.description)
-                ps.setString(5, builder.source)
-                ps.setBoolean(6, immutable)
+                ps.setString(6, builder.source)
+                ps.setBoolean(7, immutable)
                 ps
-            }, keyHolder)
+            })
         } catch (e: DuplicateKeyException) {
             throw DuplicateKeyException("The permission " + builder.name + " already exists")
         }
 
-        val id = keyHolder.key.toInt()
         return get(id)
     }
 
@@ -94,14 +94,14 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 newName, oldName, true) == 1
     }
 
-    override operator fun get(id: Int): Permission {
+    override operator fun get(id: UUID): Permission {
         return jdbc.queryForObject("SELECT * FROM permission WHERE pk_permission=?", MAPPER, id)
     }
 
-    override fun getId(name: String): Int {
+    override fun getId(name: String): UUID {
         try {
             return jdbc.queryForObject("SELECT pk_permission FROM permission WHERE str_authority=?",
-                    Int::class.java, name)
+                    UUID::class.java, name)
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to find permission " + name, 1)
         }
@@ -184,7 +184,7 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
         return jdbc.queryForObject("SELECT * FROM permission WHERE str_name=? AND str_type=?", MAPPER, name, type)
     }
 
-    override fun getAll(ids: Array<Int>?): List<Permission> {
+    override fun getAll(ids: Array<UUID>?): List<Permission> {
         return if (ids == null || ids.isEmpty()) {
             Lists.newArrayListWithCapacity(1)
         } else jdbc.query("SELECT * FROM permission WHERE " + JdbcUtils.`in`("pk_permission", ids.size), MAPPER, *ids)
@@ -208,6 +208,7 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
     companion object {
 
         private val INSERT = JdbcUtils.insert("permission",
+                "pk_permission",
                 "str_name",
                 "str_type",
                 "str_authority",
@@ -216,8 +217,8 @@ open class PermissionDaoImpl : AbstractDao(), PermissionDao {
                 "bool_immutable")
 
         private val MAPPER = RowMapper<Permission> { rs, _ ->
-            val p = InternalPermission()
-            p.id = rs.getInt("pk_permission")
+            val p = Permission()
+            p.id = rs.getObject("pk_permission") as UUID
             p.name = rs.getString("str_name")
             p.type = rs.getString("str_type")
             p.description = rs.getString("str_description")

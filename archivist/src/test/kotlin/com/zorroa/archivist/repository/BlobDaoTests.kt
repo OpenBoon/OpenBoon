@@ -31,10 +31,10 @@ class BlobDaoTests : AbstractTest() {
 
     @Test
     fun testCreate() {
-        assertEquals("app", blob.getApp())
-        assertEquals("feature", blob.getFeature())
-        assertEquals("name", blob.getName())
-        assertEquals("bar", (blob.getData() as Map<*, *>)["foo"])
+        assertEquals("app", blob.app)
+        assertEquals("feature", blob.feature)
+        assertEquals("name", blob.name)
+        assertEquals("bar", (blob.data as Map<*, *>)["foo"])
     }
 
     @Test
@@ -68,14 +68,16 @@ class BlobDaoTests : AbstractTest() {
     @Test
     fun testGetId() {
         val id = blobDao.getId("app", "feature", "name", Access.Read)
-        assertEquals(id.getBlobId().toLong(), blob.getBlobId().toLong())
+        assertEquals(id.getBlobId(), blob.getBlobId())
     }
 
     @Test
     fun testReplacePermissions() {
         val id = blobDao.getId("app", "feature", "name", Access.Read)
+        val perm = permissionService.getPermission("zorroa::administrator")
+
         val _acl = Acl()
-        _acl.addEntry(7, 7)
+        _acl.addEntry(perm, 7)
         blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=true })
         assertEquals(1, blobDao.getPermissions(id).size.toLong())
     }
@@ -99,8 +101,9 @@ class BlobDaoTests : AbstractTest() {
     fun testReplacePermissionsWithDuplicate() {
         val id = blobDao.getId("app", "feature", "name", Access.Read)
         val _acl = Acl()
-        _acl.addEntry(7, 7)
-        _acl.addEntry(7, 7)
+        val perm = permissionService.getPermission("zorroa::administrator")
+        _acl.addEntry(perm, 7)
+        _acl.addEntry(perm, 7)
         blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=true })
     }
 
@@ -108,12 +111,13 @@ class BlobDaoTests : AbstractTest() {
     fun testUpdatePermissions() {
         val id = blobDao.getId("app", "feature", "name", Access.Read)
         var _acl = Acl()
-        _acl.addEntry(7, 7)
+        val perm = permissionService.getPermission(Groups.ADMIN)
+        _acl.addEntry(perm, 7)
         blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=false })
         assertEquals(1, blobDao.getPermissions(id).size)
 
         // add a new permission
-        val p = permissionDao.get(Groups.ADMIN)
+        val p = permissionDao.get(Groups.MANAGER)
         _acl = Acl()
         _acl.addEntry(p, 7)
         blobDao.setPermissions(id, SetPermissions().apply { acl=_acl; replace=false })

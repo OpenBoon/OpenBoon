@@ -14,6 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -164,8 +165,8 @@ public class UserControllerTests extends MockMvcTest {
     public void testSetPermissions() throws Exception {
 
         User user = userService.get("user");
-        List<Integer> perms = permissionService.getPermissions().stream().mapToInt(
-                p->p.getId()).boxed().collect(Collectors.toList());
+        List<UUID> perms = permissionService.getPermissions().stream().map(
+                p->p.getId()).collect(Collectors.toList());
 
         MockHttpSession session = admin();
         MvcResult result = mvc.perform(put("/api/v1/users/" + user.getId() + "/permissions")

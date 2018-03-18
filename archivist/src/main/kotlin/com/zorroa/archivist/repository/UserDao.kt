@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
+import com.google.common.hash.Hashing
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
@@ -9,9 +10,9 @@ import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.util.Json
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -21,11 +22,9 @@ interface UserDao {
 
     fun getCount(): Long
 
-    fun get(id: Int): User
+    fun get(id: UUID): User
 
     fun get(username: String): User
-
-    fun getByEmail(email: String): User
 
     fun getByToken(token: String): User
 
@@ -39,7 +38,7 @@ interface UserDao {
 
     fun setSettings(user: User, settings: UserSettings): Boolean
 
-    fun getSettings(id: Int): UserSettings
+    fun getSettings(id: UUID): UserSettings
 
     fun setPassword(user: User, password: String): Boolean
 
@@ -75,17 +74,25 @@ interface UserDao {
 @Repository
 class UserDaoImpl : AbstractDao(), UserDao {
 
-    override fun get(id: Int): User {
+    @Value("\${archivist.organization.domain}")
+    private lateinit var domain: String
+
+    private val hashFunc = Hashing.sha256()
+
+    private fun generateKey() : String {
+        return hashFunc.newHasher()
+                .putString(UUID.randomUUID().toString(), Charsets.UTF_8)
+                .putLong(System.nanoTime())
+                .hash().toString()
+    }
+
+    override fun get(id: UUID): User {
         return jdbc.queryForObject<User>("SELECT * FROM users WHERE pk_user=?", MAPPER, id)
     }
 
     override fun get(username: String): User {
-        return jdbc.queryForObject<User>("SELECT * FROM users WHERE str_username=? OR str_email=?",
+        return jdbc.queryForObject<User>("SELECT * FROM users WHERE (str_username=? OR str_email=?)",
                 MAPPER, username, username)
-    }
-
-    override fun getByEmail(email: String): User {
-        return jdbc.queryForObject<User>("SELECT * FROM users WHERE str_email=?", MAPPER, email)
     }
 
     override fun getByToken(token: String): User {
@@ -106,7 +113,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
 
     override fun getAll(paging: Pager): PagedList<User> {
         return PagedList(paging.setTotalCount(getCount()),
-                jdbc.query<User>(GET_ALL + " LIMIT ? OFFSET ?",
+                jdbc.query<User>("$GET_ALL LIMIT ? OFFSET ?",
                         MAPPER, paging.size, paging.from))
     }
 
@@ -115,23 +122,25 @@ class UserDaoImpl : AbstractDao(), UserDao {
         Preconditions.checkNotNull(builder.password, "The Password cannot be null")
         builder.password = createPasswordHash(builder.password)
 
-        val keyHolder = GeneratedKeyHolder()
+        val id = uuid1.generate()
+
         jdbc.update({ connection ->
-            val ps = connection.prepareStatement(INSERT, arrayOf("pk_user"))
-            ps.setString(1, builder.username)
-            ps.setString(2, builder.password)
-            ps.setString(3, builder.email)
-            ps.setString(4, builder.firstName)
-            ps.setString(5, builder.lastName)
-            ps.setBoolean(6, true)
-            ps.setObject(7, UUID.randomUUID())
-            ps.setString(8, "{}")
-            ps.setString(9, source)
-            ps.setInt(10, builder.userPermissionId)
-            ps.setInt(11, builder.homeFolderId)
+            val ps = connection.prepareStatement(INSERT)
+            ps.setObject(1, id)
+            ps.setString(2, builder.username)
+            ps.setString(3, builder.password)
+            ps.setString(4, builder.email)
+            ps.setString(5, builder.firstName)
+            ps.setString(6, builder.lastName)
+            ps.setBoolean(7, true)
+            ps.setObject(8, UUID.randomUUID())
+            ps.setString(9, "{}")
+            ps.setString(10, source)
+            ps.setObject(11, builder.userPermissionId)
+            ps.setObject(12, builder.homeFolderId)
+            ps.setString(13, generateKey())
             ps
-        }, keyHolder)
-        val id = keyHolder.key.toInt()
+        })
         return get(id)
     }
 
@@ -150,7 +159,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 Json.serializeToString(settings, "{}"), user.id) == 1
     }
 
-    override fun getSettings(id: Int): UserSettings {
+    override fun getSettings(id: UUID): UserSettings {
         return Json.deserialize(
                 jdbc.queryForObject("SELECT json_settings FROM users WHERE pk_user=?",
                         String::class.java, id), UserSettings::class.java)
@@ -201,14 +210,13 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getHmacKey(username: String): String {
-        return jdbc.queryForObject("SELECT hmac_key FROM users WHERE str_username=? AND bool_enabled=?",
-                String::class.java, username, true)
+        return jdbc.queryForObject("SELECT hmac_key FROM users WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
+                String::class.java, username, username, true)
     }
 
     override fun generateHmacKey(username: String): Boolean {
-        val key = UUID.randomUUID()
-        return jdbc.update("UPDATE users SET hmac_key=? WHERE str_username=? AND bool_enabled=?",
-                key, username, true) == 1
+        return jdbc.update("UPDATE users SET hmac_key=? WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
+                generateKey(), username, username, true) == 1
     }
 
     override fun getCount(): Long {
@@ -264,11 +272,11 @@ class UserDaoImpl : AbstractDao(), UserDao {
     companion object {
 
         private val MAPPER = RowMapper<User> { rs, _ ->
-            User(rs.getInt("pk_user"),
+            User(rs.getObject("pk_user") as UUID,
                     rs.getString("str_username"),
                     rs.getString("str_email"),
-                    rs.getInt("pk_permission"),
-                    rs.getInt("pk_folder"),
+                    rs.getObject("pk_permission") as UUID,
+                    rs.getObject("pk_folder") as UUID,
                     rs.getString("str_firstname"),
                     rs.getString("str_lastname"),
                     rs.getBoolean("bool_enabled"),
@@ -280,6 +288,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
         private const val GET_ALL = "SELECT * FROM users ORDER BY str_username"
 
         private val INSERT = JdbcUtils.insert("users",
+                "pk_user",
                 "str_username",
                 "str_password",
                 "str_email",
@@ -290,7 +299,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "json_settings",
                 "str_source",
                 "pk_permission",
-                "pk_folder")
+                "pk_folder",
+                "hmac_key")
 
         private val RESET_PASSWORD = "UPDATE " +
                 "users " +

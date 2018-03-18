@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by chambers on 7/10/17.
@@ -13,7 +14,7 @@ public class SharedLinkSpec {
     @NotEmpty
     private Map<String, Object> state;
 
-    private Set<Integer> userIds;
+    private Set<UUID> userIds;
     private boolean sendEmail = false;
     private Long expireTimeMs;
 
@@ -26,11 +27,11 @@ public class SharedLinkSpec {
         return this;
     }
 
-    public Set<Integer> getUserIds() {
+    public Set<UUID> getUserIds() {
         return userIds;
     }
 
-    public SharedLinkSpec setUserIds(Set<Integer> userIds) {
+    public SharedLinkSpec setUserIds(Set<UUID> userIds) {
         this.userIds = userIds;
         return this;
     }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.UUID;
+
 public class UserSpec {
 
     @NotEmpty
@@ -18,13 +20,13 @@ public class UserSpec {
     @Email
     private String email;
 
-    private Integer[] permissionIds;
-    private Integer userPresetId;
+    private UUID[] permissionIds;
+    private UUID userPresetId;
 
     @JsonIgnore
-    private int homeFolderId;
+    private UUID homeFolderId;
     @JsonIgnore
-    private int userPermissionId;
+    private UUID userPermissionId;
 
     public UserSpec() {
     }
@@ -74,46 +76,46 @@ public class UserSpec {
         return this;
     }
 
-    public Integer[] getPermissionIds() {
+    public UUID[] getPermissionIds() {
         return permissionIds;
     }
 
-    public UserSpec setPermissionIds(Integer[] permissions) {
+    public UserSpec setPermissionIds(UUID[] permissions) {
         this.permissionIds = permissions;
         return this;
     }
 
     public UserSpec setPermissions(Permission... permissions) {
-        this.permissionIds = new Integer[permissions.length];
+        this.permissionIds = new UUID[permissions.length];
         for (int i = 0; i < permissions.length; i++) {
             this.permissionIds[i] = permissions[i].getId();
         }
         return this;
     }
 
-    public Integer getUserPresetId() {
+    public UUID getUserPresetId() {
         return userPresetId;
     }
 
-    public UserSpec setUserPresetId(Integer userPresetId) {
+    public UserSpec setUserPresetId(UUID userPresetId) {
         this.userPresetId = userPresetId;
         return this;
     }
 
-    public int getHomeFolderId() {
+    public UUID getHomeFolderId() {
         return homeFolderId;
     }
 
-    public UserSpec setHomeFolderId(int homeFolderId) {
+    public UserSpec setHomeFolderId(UUID homeFolderId) {
         this.homeFolderId = homeFolderId;
         return this;
     }
 
-    public int getUserPermissionId() {
+    public UUID getUserPermissionId() {
         return userPermissionId;
     }
 
-    public UserSpec setUserPermissionId(int userPermissionId) {
+    public UserSpec setUserPermissionId(UUID userPermissionId) {
         this.userPermissionId = userPermissionId;
         return this;
     }

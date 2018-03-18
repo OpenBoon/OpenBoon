@@ -8,10 +8,11 @@ import com.zorroa.archivist.security.getUserId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 interface RequestService {
     fun create(spec: RequestSpec) : Request
-    fun get(id:Int) : Request
+    fun get(id: UUID) : Request
 }
 
 @Service
@@ -45,7 +46,7 @@ class RequestServiceImpl @Autowired constructor(
         return req
     }
 
-    override fun get(id:Int) : Request {
+    override fun get(id:UUID) : Request {
         return requestDao.get(id)
     }
 }

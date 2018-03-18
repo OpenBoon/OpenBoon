@@ -61,7 +61,7 @@ public class ImportServiceTests extends AbstractTest {
 
         ImportSpec spec2 = new ImportSpec();
         spec2.setProcessors(ImmutableList.of(
-                new ProcessorRef().setPipeline(p1.getId()),
+                new ProcessorRef().setPipeline(p1.getId().toString()),
                 new ProcessorRef().setPipeline(p2.getName())
         ));
         spec2.setName("go go go");

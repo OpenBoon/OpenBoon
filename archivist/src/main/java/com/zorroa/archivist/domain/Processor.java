@@ -3,10 +3,7 @@ package com.zorroa.archivist.domain;
 import com.google.common.base.MoreObjects;
 import com.zorroa.sdk.processor.ProcessorType;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by chambers on 8/16/16.
@@ -15,7 +12,7 @@ import java.util.Set;
 
 public class Processor {
 
-    private int id;
+    private UUID id;
     private List<String> filters;
     private Set<String> fileTypes;
     private String description;
@@ -27,16 +24,16 @@ public class Processor {
 
     // Properties from parent Plugin
 
-    private int pluginId;
+    private UUID pluginId;
     private String pluginName;
     private String pluginVersion;
     private String pluginLanguage;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public Processor setId(int id) {
+    public Processor setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -131,11 +128,11 @@ public class Processor {
         return this;
     }
 
-    public int getPluginId() {
+    public UUID getPluginId() {
         return pluginId;
     }
 
-    public Processor setPluginId(int pluginId) {
+    public Processor setPluginId(UUID pluginId) {
         this.pluginId = pluginId;
         return this;
     }

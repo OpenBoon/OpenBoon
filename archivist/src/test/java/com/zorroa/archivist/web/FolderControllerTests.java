@@ -1,6 +1,7 @@
 package com.zorroa.archivist.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableMap;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
 import com.zorroa.archivist.repository.AssetDao;
@@ -135,23 +136,24 @@ public class FolderControllerTests extends MockMvcTest {
         MvcResult result = mvc.perform(post("/api/v1/folders")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(new FolderSpec("TestFolder2"))))
+                .content(Json.serialize(new FolderSpec("TestFolder3"))))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Folder updatedFolder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
+        Folder createdFolder = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
+        createdFolder.setAttrs(ImmutableMap.of("a", "b"));
 
-        result = mvc.perform(put("/api/v1/folders/" + folder.getId())
+        result = mvc.perform(put("/api/v1/folders/" + createdFolder.getId())
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serializeToString(updatedFolder)))
+                .content(Json.serializeToString(createdFolder)))
                 .andExpect(status().isOk())
                 .andReturn();
 
         Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
-        assertEquals(updatedFolder.getName(), folder2.getName());
+        assertEquals(createdFolder.getName(), folder2.getName());
         assertEquals(folder.getParentId(), folder2.getParentId());
     }
 
@@ -248,7 +250,7 @@ public class FolderControllerTests extends MockMvcTest {
         Folder dad2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        assertEquals(grandpa.getId(), dad2.getParentId().intValue());
+        assertEquals(grandpa.getId(), dad2.getParentId());
         assertEquals(dad.getId(), dad2.getId());
     }
 
@@ -274,7 +276,7 @@ public class FolderControllerTests extends MockMvcTest {
         assets = assetDao.getAll(Pager.first());
         for (Document asset: assets) {
             List<Object> links = asset.getAttr("links.folder", new TypeReference<List<Object>>() {});
-            assertEquals(links.get(0), folder1.getId());
+            assertEquals(links.get(0), folder1.getId().toString());
         }
     }
 

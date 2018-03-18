@@ -37,6 +37,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 
 /**
  * Created by chambers on 6/24/16.
@@ -82,7 +83,7 @@ interface JobService {
      * @param id
      * @return
      */
-    operator fun get(id: Int): Job
+    operator fun get(id: UUID): Job
 
     /**
      * Set the state of a given job.
@@ -123,7 +124,7 @@ interface JobService {
 
     fun setTaskCompleted(task: Task, exitStatus: Int): Boolean
 
-    fun getTasks(jobId: Int, state: TaskState): List<Task>
+    fun getTasks(jobId: UUID, state: TaskState): List<Task>
 
     fun setTaskRunning(task: Task): Boolean
 
@@ -151,11 +152,11 @@ interface JobService {
      */
     fun getAll(page: Pager, filter: JobFilter): PagedList<Job>
 
-    fun getAllTasks(job: Int, page: Pager): PagedList<Task>
+    fun getAllTasks(job: UUID, page: Pager): PagedList<Task>
 
-    fun getAllTasks(job: Int, page: Pager, filter: TaskFilter): PagedList<Task>
+    fun getAllTasks(job: UUID, page: Pager, filter: TaskFilter): PagedList<Task>
 
-    fun updatePingTime(taskIds: List<Int>): Int
+    fun updatePingTime(taskIds: List<UUID>): Int
 
     fun resolveJobRoot(spec: JobSpec): Path
 }
@@ -236,7 +237,7 @@ class JobServiceImpl @Autowired constructor(
         /**
          * Some basic env vars.
          */
-        spec.putToEnv("ZORROA_JOB_ID", spec.jobId.toString())
+        spec.putToEnv("ZORROA_JOB_ID", spec.id.toString())
         spec.putToEnv("ZORROA_JOB_TYPE", spec.type.toString())
         spec.putToEnv("ZORROA_JOB_PATH_ROOT", rootPath.toString())
 
@@ -360,7 +361,7 @@ class JobServiceImpl @Autowired constructor(
          * Use the standard pipeline if one is not set.
          */
 
-        if (spec.pipelineId == null || spec.pipelineId <= 0) {
+        if (spec.pipelineId == null) {
             val pl = pipelineDao.getStandard(PipelineType.Import)
             spec.pipelineId = pl.id
         }
@@ -412,7 +413,7 @@ class JobServiceImpl @Autowired constructor(
         return task
     }
 
-    override fun get(id: Int): Job {
+    override fun get(id: UUID): Job {
         return jobDao.get(id)
     }
 
@@ -470,14 +471,12 @@ class JobServiceImpl @Autowired constructor(
         return false
     }
 
-    override fun getTasks(jobId: Int, state: TaskState): List<Task> {
+    override fun getTasks(jobId: UUID, state: TaskState): List<Task> {
         return taskDao.getAll(jobId, state)
     }
 
     override fun setTaskRunning(task: Task): Boolean {
-        return if (setTaskState(task, TaskState.Running, TaskState.Queued)) {
-            true
-        } else false
+        return setTaskState(task, TaskState.Running, TaskState.Queued)
     }
 
     override fun incrementStats(task: TaskId, adder: TaskStatsAdder) {
@@ -506,15 +505,15 @@ class JobServiceImpl @Autowired constructor(
         return jobDao.getAll(page, filter)
     }
 
-    override fun getAllTasks(job: Int, page: Pager): PagedList<Task> {
+    override fun getAllTasks(job: UUID, page: Pager): PagedList<Task> {
         return taskDao.getAll(job, page)
     }
 
-    override fun getAllTasks(job: Int, page: Pager, filter: TaskFilter): PagedList<Task> {
+    override fun getAllTasks(job: UUID, page: Pager, filter: TaskFilter): PagedList<Task> {
         return taskDao.getAll(job, page, filter)
     }
 
-    override fun updatePingTime(taskIds: List<Int>): Int {
+    override fun updatePingTime(taskIds: List<UUID>): Int {
         return taskDao.updatePingTime(taskIds)
     }
 
@@ -535,7 +534,7 @@ class JobServiceImpl @Autowired constructor(
                 .resolve(spec.type.toString().toLowerCase())
                 .resolve(formatter.print(time))
                 .resolve(getUsername())
-                .resolve(spec.jobId.toString())
+                .resolve(spec.id.toString())
                 .toAbsolutePath()
     }
 
