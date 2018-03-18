@@ -133,12 +133,11 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setString(5, builder.firstName)
             ps.setString(6, builder.lastName)
             ps.setBoolean(7, true)
-            ps.setObject(8, UUID.randomUUID())
+            ps.setObject(8, generateKey())
             ps.setString(9, "{}")
             ps.setString(10, source)
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
-            ps.setString(13, generateKey())
             ps
         })
         return get(id)
@@ -299,8 +298,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "json_settings",
                 "str_source",
                 "pk_permission",
-                "pk_folder",
-                "hmac_key")
+                "pk_folder")
 
         private val RESET_PASSWORD = "UPDATE " +
                 "users " +
