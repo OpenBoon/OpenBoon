@@ -196,7 +196,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
             createLogDirectory(task)
 
             val zpsTask = ZpsTask()
-            zpsTask.id = StringUtils.uuid(task.getId())
+            zpsTask.id = StringUtils.uuid(proc.id)
             zpsTask.args = Json.deserialize(task.getArgMap(), Json.GENERIC_MAP)
             zpsTask.env = task.getEnv()
             zpsTask.logPath = task.getLogPath()
@@ -213,12 +213,15 @@ class ProcessManagerServiceImpl @Autowired constructor(
             if (tmpScript != null) {
                 tmpScript.delete()
             }
-            // interactive tasks are not in the process map.
-            if (processMap.remove(task.getId()) != null && task.getId() != null) {
-                val stop = TaskStopT()
-                stop.setExitStatus(exitStatus)
-                proc.client.reportTaskStopped(task.getId(), stop)
-                proc.client.close()
+
+            if (proc.id != null) {
+                // interactive tasks are not in the process map.
+                if (processMap.remove(task.getId()) != null && task.getId() != null) {
+                    val stop = TaskStopT()
+                    stop.setExitStatus(exitStatus)
+                    proc.client.reportTaskStopped(task.getId(), stop)
+                    proc.client.close()
+                }
             }
         }
 
@@ -309,7 +312,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
             createLogDirectory(task)
 
             val zpsTask = ZpsTask()
-            zpsTask.id =  StringUtils.uuid(task.getId())
+            zpsTask.id = StringUtils.uuid(task.getId())
             zpsTask.args = Json.deserialize(task.getArgMap(), Json.GENERIC_MAP)
             zpsTask.env = task.getEnv()
             zpsTask.logPath = task.getLogPath()
@@ -345,16 +348,22 @@ class ProcessManagerServiceImpl @Autowired constructor(
             exitStatus = zps.execute()
             proc.exitStatus = exitStatus
 
+        } catch (e:Exception) {
+            logger.warn("Failed to start task: {}", proc.id, e)
+            throw IOException("Failed to start task " + proc.id, e)
+
         } finally {
             if (tmpScript != null) {
                 tmpScript.delete()
             }
-            // interactive tasks are not in the process map.
-            if (processMap.remove(task.getId()) != null && task.getId() != null) {
-                val stop = TaskStopT()
-                stop.setExitStatus(exitStatus)
-                proc.client.reportTaskStopped(task.getId(), stop)
-                proc.client.close()
+            if (proc.id != null) {
+                // interactive tasks are not in the process map.
+                if (processMap.remove(task.getId()) != null && task.getId() != null) {
+                    val stop = TaskStopT()
+                    stop.setExitStatus(exitStatus)
+                    proc.client.reportTaskStopped(task.getId(), stop)
+                    proc.client.close()
+                }
             }
         }
 

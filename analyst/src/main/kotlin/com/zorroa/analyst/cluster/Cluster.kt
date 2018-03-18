@@ -25,7 +25,7 @@ data class ClusterProcess constructor (val task: TaskStartT) {
     var killed = false
     val client: MasterServerClient = MasterServerClient(task.getMasterHost())
 
-    val id: String
+    val id: String?
         get() = task.getId()
 
     init {
