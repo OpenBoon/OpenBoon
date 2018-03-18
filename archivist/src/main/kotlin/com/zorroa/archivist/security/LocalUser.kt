@@ -39,7 +39,6 @@ class ZorroaAuthenticationProvider : AuthenticationProvider {
         userService.checkPassword(username, authentication.credentials.toString())
         val authed = userRegistryService.getUser(username)
 
-        logger.info("authd: {}", authed)
         return UsernamePasswordAuthenticationToken(authed, "", authed.authorities)
     }
 

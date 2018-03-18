@@ -94,10 +94,6 @@ class JobDaoImpl : AbstractDao(), JobDao {
         Preconditions.checkNotNull(spec.type, "The job type cannot be null")
 
         val time = System.currentTimeMillis()
-        if (spec.id == null) {
-            spec.id = uuid1.generate()
-        }
-
         nextId(spec)
 
         jdbc.update { connection ->
@@ -120,7 +116,9 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun nextId(spec: JobSpec): JobSpec {
-        spec.id = uuid1.generate()
+        if (spec.id == null) {
+            spec.id = uuid1.generate()
+        }
         return spec
     }
 

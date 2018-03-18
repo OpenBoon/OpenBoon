@@ -61,7 +61,7 @@ public class JobFilter {
         }
 
         if (userId != null) {
-            where.add("int_user_created=?");
+            where.add("pk_user_created=?");
             values.add(userId);
         }
 
@@ -83,7 +83,7 @@ public class JobFilter {
         }
 
         if (page != null) {
-            sb.append("ORDER BY pk_job DESC ");
+            sb.append("ORDER BY time_started DESC ");
             sb.append("LIMIT ? OFFSET ?");
         }
 
