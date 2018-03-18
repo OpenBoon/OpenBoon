@@ -27,16 +27,16 @@ import javax.servlet.http.HttpServletRequest
 class HmacAuthentication : AbstractAuthenticationToken {
 
     private val username: String
-    private val data: String
+    private val data: String?
     private val hmac: String?
 
-    constructor(username: String, data: String, hmac: String?) : super(ImmutableList.of<GrantedAuthority>()) {
+    constructor(username: String, data: String?, hmac: String?) : super(ImmutableList.of<GrantedAuthority>()) {
         this.username = username
         this.data = data
         this.hmac = hmac
     }
 
-    override fun getDetails(): Any {
+    override fun getDetails(): Any? {
         return data
     }
 
@@ -64,7 +64,7 @@ class HmacAuthenticationProvider(private val trustMode: Boolean) : Authenticatio
     @Throws(AuthenticationException::class)
     override fun authenticate(authentication: Authentication): Authentication {
         val username = authentication.principal as String
-        val msgClear = authentication.details as String
+        val msgClear = authentication.details as String?
         val msgCrypt = authentication.credentials as String?
 
         return if (trustMode) {
@@ -78,7 +78,7 @@ class HmacAuthenticationProvider(private val trustMode: Boolean) : Authenticatio
                 throw BadCredentialsException("Invalid username or password")
             }
 
-        } else {
+        } else if (msgClear != null && msgCrypt != null) {
             try {
                 val mac = Mac.getInstance("HmacSHA1")
                 mac.init(SecretKeySpec(getKey(username).toByteArray(), "HmacSHA1"))
@@ -98,7 +98,9 @@ class HmacAuthenticationProvider(private val trustMode: Boolean) : Authenticatio
                 logger.warn("password authentication failed for user: {}", username, e)
                 throw BadCredentialsException("Invalid username or password")
             }
-
+        }
+        else {
+            throw BadCredentialsException("Invalid username or password")
         }
     }
 
