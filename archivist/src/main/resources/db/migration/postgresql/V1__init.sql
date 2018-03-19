@@ -216,7 +216,7 @@ CREATE INDEX user_permission_pk_permission_idx ON zorroa.user_permission(pk_perm
 ---
 ---
 CREATE TABLE zorroa.preset(
-  pk_preset UUID,
+  pk_preset UUID PRIMARY KEY,
   str_name TEXT NOT NULL,
   json_settings TEXT NOT NULL
 );
@@ -521,6 +521,22 @@ INSERT INTO zorroa.user_permission(pk_permission, pk_user, bool_immutable) VALUE
 ---
 ---
 ---
+
+
+ALTER TABLE zorroa.user_permission ADD CONSTRAINT constraint_fe86 foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ON DELETE CASCADE ;
+ALTER TABLE zorroa.preset_permission ADD CONSTRAINT constraint_f76 foreign key(pk_preset) REFERENCES zorroa.preset(pk_preset) ON DELETE CASCADE ;
+ALTER TABLE zorroa.preset_permission ADD CONSTRAINT constraint_f7 foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ON DELETE CASCADE ;
+ALTER TABLE zorroa.users ADD CONSTRAINT constraint_27e foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ;
+ALTER TABLE zorroa.users ADD CONSTRAINT constraint_27e3 foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ;
+ALTER TABLE zorroa.folder_acl ADD CONSTRAINT constraint_eb foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ON DELETE CASCADE ;
+ALTER TABLE zorroa.folder_acl ADD CONSTRAINT constraint_e foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ON DELETE CASCADE ;
+ALTER TABLE zorroa.folder ADD CONSTRAINT constraint_7bf foreign key(pk_parent) REFERENCES zorroa.folder(pk_folder) ;
+ALTER TABLE zorroa.processor ADD CONSTRAINT constraint_64d foreign key(pk_plugin) REFERENCES zorroa.plugin(pk_plugin) ON DELETE CASCADE ;
+ALTER TABLE zorroa.task ADD CONSTRAINT constraint_272d foreign key(pk_job) REFERENCES zorroa.job(pk_job) ON DELETE CASCADE ;
+ALTER TABLE zorroa.dyhi ADD CONSTRAINT constraint_204 foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ON DELETE CASCADE ;
+ALTER TABLE zorroa.taxonomy ADD CONSTRAINT constraint_1f0 foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ;
+ALTER TABLE zorroa.task ADD CONSTRAINT constraint_272 foreign key(pk_parent) REFERENCES zorroa.task(pk_task) ON delete set NULL ;
+
 
 CREATE OR REPLACE FUNCTION zorroa.trigger_update_folder_child_count() RETURNS TRIGGER AS $$
 BEGIN
