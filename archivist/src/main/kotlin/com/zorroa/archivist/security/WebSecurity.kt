@@ -55,7 +55,7 @@ class MultipleWebSecurityConfig {
             http
                     .antMatcher("/api/**")
                     .addFilterBefore(HmacSecurityFilter(
-                            properties.getBoolean("archivist.security.hmac.trust")), UsernamePasswordAuthenticationFilter::class.java)
+                            properties.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
@@ -73,7 +73,7 @@ class MultipleWebSecurityConfig {
                     .and()
                     .csrf().disable()
 
-            if (properties!!.getBoolean("archivist.debug-mode.enabled")) {
+            if (properties.getBoolean("archivist.debug-mode.enabled")) {
                 http.authorizeRequests()
                         .requestMatchers(RequestMatcher { CorsUtils.isCorsRequest(it) }).permitAll()
                         .and().addFilterBefore(CorsCredentialsFilter(), ChannelProcessingFilter::class.java)
@@ -123,7 +123,7 @@ class MultipleWebSecurityConfig {
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder, userService: UserService, logService: EventLogService) {
 
-        if (properties!!.getBoolean("archivist.security.hmac.enabled")) {
+        if (properties.getBoolean("archivist.security.hmac.enabled")) {
             auth.authenticationProvider(hmacAuthenticationProvider())
         }
         auth
@@ -187,7 +187,7 @@ class MultipleWebSecurityConfig {
      */
     @Bean
     fun hmacAuthenticationProvider(): AuthenticationProvider {
-        return HmacAuthenticationProvider(properties!!.getBoolean("archivist.security.hmac.trust"))
+        return HmacAuthenticationProvider(properties.getBoolean("archivist.security.hmac.trust"))
     }
 
     companion object {
