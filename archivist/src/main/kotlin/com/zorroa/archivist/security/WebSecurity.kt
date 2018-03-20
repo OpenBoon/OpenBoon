@@ -54,7 +54,7 @@ class MultipleWebSecurityConfig {
             http
                     .antMatcher("/api/**")
                     .addFilterBefore(HmacSecurityFilter(
-                            properties!!.getBoolean("archivist.security.hmac.enabled")), UsernamePasswordAuthenticationFilter::class.java)
+                            properties!!.getBoolean("archivist.security.hmac.trust")), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
