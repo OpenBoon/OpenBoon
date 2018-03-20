@@ -7,7 +7,10 @@ import com.zorroa.sdk.search.AssetSearchOrder
 import com.zorroa.sdk.util.Json
 import javax.servlet.http.HttpServletResponse
 
-data class Frame(val id: String, val frame: Int)
+data class Frame(
+        val id: String,
+        val frame: Int,
+        val filename: String)
 
 class FlipBook {
     val frames : MutableList<Frame> = mutableListOf()
@@ -29,13 +32,15 @@ class FlipbookSender constructor(
         search.size = 100
         search.addToFilter().addToTerms("source.clip.parent.raw", assetId)
         search.order = listOf(AssetSearchOrder("source.clip.frame.start").setAscending(true))
-        search.fields = arrayOf("_id",  "source.clip.frame")
+        search.fields = arrayOf("_id",  "source")
 
         val result = FlipBook()
         val rsp = searchService.search(search)
         for (hit in rsp.hits.hits) {
             val doc = Document(hit.source)
-            result.frames.add(Frame(hit.id, doc.getAttr("source.clip.frame.start")))
+            result.frames.add(Frame(hit.id,
+                    doc.getAttr("source.clip.frame.start"),
+                    doc.getAttr("source.filename")))
         }
 
         Json.Mapper.writeValue(response.outputStream, result)

@@ -49,7 +49,7 @@ public class ExportServiceTests extends AbstractTest {
         ExportSpec spec = new ExportSpec("test",
                 new AssetSearch().setQuery("cats"),
                 Lists.newArrayList(),
-                Maps.newHashMap());
+                Maps.newHashMap(), false);
 
         job = exportService.create(spec);
         int count = jdbc.queryForObject(
@@ -62,7 +62,7 @@ public class ExportServiceTests extends AbstractTest {
         ExportSpec spec = new ExportSpec("test",
                 new AssetSearch().setQuery("cats"),
                 Lists.newArrayList(),
-                Maps.newHashMap());
+                Maps.newHashMap(), false);
         job = exportService.create(spec);
 
         ExportFile file1 = exportService.createExportFile(job, new ExportFileSpec(
@@ -81,7 +81,7 @@ public class ExportServiceTests extends AbstractTest {
         ExportSpec spec = new ExportSpec("test",
                 new AssetSearch().setQuery("cats"),
                 Lists.newArrayList(),
-                Maps.newHashMap());
+                Maps.newHashMap(), false);
 
         job = exportService.create(spec);
 
