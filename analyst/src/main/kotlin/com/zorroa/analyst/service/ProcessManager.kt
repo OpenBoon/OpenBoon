@@ -103,7 +103,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 @Throws(Exception::class)
                 override fun load(addr: String): Connection {
                     val client = MasterServerClient(addr)
-                    client.maxRetries = 1
+                    client.maxRetries = 0
                     client.socketTimeout = 2000
                     client.connectTimeout = 2000
                     return Connection(client)
