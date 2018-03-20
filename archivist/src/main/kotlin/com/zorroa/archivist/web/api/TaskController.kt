@@ -3,6 +3,7 @@ package com.zorroa.archivist.web.api
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.service.JobExecutorService
 import com.zorroa.sdk.util.Json
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
@@ -34,7 +35,7 @@ class TaskController @Autowired constructor(
                 .body(InputStreamResource(FileInputStream(logFile)))
     }
 
-    @PutMapping(value = ["/api/d1/tasks/{id}/_retry"])
+    @PutMapping(value = ["/api/v1/tasks/{id}/_retry"])
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@PathVariable id: UUID) {
@@ -54,5 +55,9 @@ class TaskController @Autowired constructor(
     fun getScript(@PathVariable id: UUID): String {
         return Json.prettyString(Json.Mapper.readValue(
                 File(taskDao.getExecutableTask(id).getScriptPath()), Any::class.java))
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(AssetController::class.java)
     }
 }
