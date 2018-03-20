@@ -105,7 +105,7 @@ class HmacAuthenticationProvider(private val trustMode: Boolean) : Authenticatio
     }
 
     @Throws(IOException::class)
-    fun getKey(user: String): String {
+    private fun getKey(user: String): String {
         return userService.getHmacKey(user)
     }
 
@@ -122,22 +122,17 @@ class HmacAuthenticationProvider(private val trustMode: Boolean) : Authenticatio
 class HmacSecurityFilter(private val enabled: Boolean) : GenericFilterBean() {
 
 
-    private//logger.info("Existing auth is null or not authed");
-    val isAuthenticationRequired: Boolean
-        get() {
-            val existingAuth = SecurityContextHolder.getContext().authentication
-            return if (existingAuth == null || !existingAuth.isAuthenticated) {
-                true
-            } else false
-
-        }
+    private fun isAuthenticationRequired() : Boolean {
+        val existingAuth = SecurityContextHolder.getContext().authentication
+        return (existingAuth == null || !existingAuth.isAuthenticated)
+    }
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilter(servletRequest: ServletRequest, servletResponse: ServletResponse, filterChain: FilterChain) {
         /**
          * At this point we have to extract the crypted data.
          */
-        if (enabled && isAuthenticationRequired) {
+        if (enabled && isAuthenticationRequired()) {
             val req = servletRequest as HttpServletRequest
             if (req.getHeader("X-Archivist-User") != null) {
                 val token = HmacAuthentication(
@@ -149,5 +144,10 @@ class HmacSecurityFilter(private val enabled: Boolean) : GenericFilterBean() {
         }
 
         filterChain.doFilter(servletRequest, servletResponse)
+    }
+
+    companion object {
+
+        private val LOG = LoggerFactory.getLogger(HmacSecurityFilter::class.java)
     }
 }
