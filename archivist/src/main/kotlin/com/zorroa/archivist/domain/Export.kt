@@ -2,7 +2,7 @@ package com.zorroa.archivist.domain
 
 import com.zorroa.sdk.processor.ProcessorRef
 import com.zorroa.sdk.search.AssetSearch
-import java.util.UUID
+import java.util.*
 
 class Export
 
@@ -33,6 +33,7 @@ data class ExportSpec (
         val name: String?,
         val search: AssetSearch,
         val processors: List<ProcessorRef> = mutableListOf(),
-        val args: Map<String,Any> = mutableMapOf())
+        val args: Map<String,Any> = mutableMapOf(),
+        val compress: Boolean = true)
 
 

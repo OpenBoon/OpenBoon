@@ -119,7 +119,7 @@ class ExportServiceImpl @Autowired constructor(
         jspec.type = PipelineType.Export
 
         if (spec.name == null) {
-            jspec.name = String.format("export by %s", getUsername())
+            jspec.name = String.format("export_by_%s", getUsername())
         } else {
             jspec.name = spec.name
         }
@@ -149,6 +149,11 @@ class ExportServiceImpl @Autowired constructor(
          */
         val generate = Lists.newArrayList<ProcessorRef>()
         val execute = pipelineService.mungePipelines(PipelineType.Export, spec.processors)
+
+        if (spec.compress) {
+            execute.add(pluginService.getProcessorRef("com.zorroa.core.exporter.ZipExportPackager",
+                    mapOf<String,Any>("fileName" to jspec.name)))
+        }
 
         script.generate = generate
         script.execute = execute
