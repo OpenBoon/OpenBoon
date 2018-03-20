@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.AnonymousAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -25,6 +27,10 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
+
+
+
+
 
 @RestController
 class UserController @Autowired constructor(
@@ -85,15 +91,16 @@ class UserController @Autowired constructor(
     @RequestMapping(value = ["/api/v1/logout"], method=[RequestMethod.POST, RequestMethod.GET])
     fun logout(req: HttpServletRequest, rsp: HttpServletResponse) : Any {
         val auth = getAuthentication()
-        if (auth == null) {
-            return mapOf("success" to false)
-        }
+        val cookieClearingLogoutHandler = CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY)
+        val securityContextLogoutHandler = SecurityContextLogoutHandler()
+        cookieClearingLogoutHandler.logout(req, rsp, auth)
+        securityContextLogoutHandler.logout(req, rsp, auth)
+        SecurityContextHolder.clearContext()
 
-        return if (auth is AnonymousAuthenticationToken) {
+        return if (auth == null) {
             mapOf("success" to false)
         }
         else {
-            SecurityContextLogoutHandler().logout(req, rsp, auth)
             mapOf("success" to true)
         }
     }

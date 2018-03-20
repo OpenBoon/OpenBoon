@@ -134,7 +134,7 @@ class UserRegistryServiceImpl @Autowired constructor(
 
     @Transactional(readOnly = true)
     override fun getUser(username: String): UserAuthed {
-        val user = userCacheDao.getUser(username)
+        val user = userService.get(username)
         val perms = userService.getPermissions(user)
         return UserAuthed(user.id, user.username, perms.toSet())
     }
@@ -273,7 +273,6 @@ class UserServiceImpl @Autowired constructor(
         } catch (e: DataAccessException) {
             throw BadCredentialsException("Invalid username or password")
         }
-
     }
 
     override fun getHmacKey(username: String): String {
@@ -282,7 +281,6 @@ class UserServiceImpl @Autowired constructor(
         } catch (e: DataAccessException) {
             throw BadCredentialsException("Invalid username or password")
         }
-
     }
 
     override fun generateHmacKey(username: String): String {

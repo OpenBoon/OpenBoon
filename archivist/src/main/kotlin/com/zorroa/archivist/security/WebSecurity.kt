@@ -26,6 +26,7 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.session.SessionInformationExpiredStrategy
 import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.cors.CorsUtils
 
@@ -34,7 +35,7 @@ import org.springframework.web.cors.CorsUtils
 class MultipleWebSecurityConfig {
 
     @Autowired
-    internal var properties: ApplicationProperties? = null
+    internal lateinit var properties: ApplicationProperties
 
     @Configuration
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -42,7 +43,7 @@ class MultipleWebSecurityConfig {
     class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         @Autowired
-        internal var properties: ApplicationProperties? = null
+        internal lateinit var properties: ApplicationProperties
 
         @Bean
         fun resetPasswordSecurityFilter(): ResetPasswordSecurityFilter {
@@ -54,7 +55,7 @@ class MultipleWebSecurityConfig {
             http
                     .antMatcher("/api/**")
                     .addFilterBefore(HmacSecurityFilter(
-                            properties!!.getBoolean("archivist.security.hmac.trust")), UsernamePasswordAuthenticationFilter::class.java)
+                            properties.getBoolean("archivist.security.hmac.trust")), UsernamePasswordAuthenticationFilter::class.java)
                     .addFilterAfter(resetPasswordSecurityFilter(), HmacSecurityFilter::class.java)
                     .authorizeRequests()
                     .antMatchers("/api/v1/logout").permitAll()
@@ -93,9 +94,6 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/admin/**").hasAuthority(Groups.ADMIN)
                     .and()
                     .sessionManagement()
-                    .maximumSessions(5)
-                    .expiredUrl("/")
-                    .and()
                     .and()
                     .exceptionHandling()
                     .authenticationEntryPoint(
@@ -117,8 +115,7 @@ class MultipleWebSecurityConfig {
                     .antMatcher("/")
                     .csrf().disable()
                     .sessionManagement()
-                    .maximumSessions(5)
-                    .expiredUrl("/")
+                    .invalidSessionUrl("/")
         }
     }
 
