@@ -58,7 +58,7 @@ class UserController @Autowired constructor(
             ResponseEntity(userService.get(getUserId()), HttpStatus.OK)
         }
         else {
-            ResponseEntity(HttpStatus.UNAUTHORIZED)
+            ResponseEntity(mapOf("message" to "No authenticated user"), HttpStatus.UNAUTHORIZED)
         }
     }
 

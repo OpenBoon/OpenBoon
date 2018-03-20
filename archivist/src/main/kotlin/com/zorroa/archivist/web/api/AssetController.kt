@@ -344,7 +344,7 @@ class AssetController @Autowired constructor(
         return HttpUtils.updated("asset", id, true, assetService.get(id))
     }
 
-    @RequestMapping(value = ["/api/v1/assets/_index"], method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    @PostMapping(value = ["/api/v1/assets/_index"], produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     @Throws(IOException::class)
     fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
         return assetService.index(spec)
