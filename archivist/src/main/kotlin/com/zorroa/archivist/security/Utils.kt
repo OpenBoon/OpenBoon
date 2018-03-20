@@ -209,7 +209,7 @@ fun canSetAclOnFolder(newAcl: Acl, oldAcl: Acl, created: Boolean) {
  * @return
  */
 fun canExport(asset: Document): Boolean {
-    if (hasPermission(Groups.EXPORT)) {
+    if (hasPermission(Groups.EXPORT, Groups.ADMIN)) {
         return true
     }
 
