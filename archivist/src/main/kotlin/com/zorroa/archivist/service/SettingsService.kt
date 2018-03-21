@@ -127,7 +127,7 @@ class SettingsServiceImpl @Autowired constructor(
         try {
             return getAll(filter)[0]
         } catch (e: IndexOutOfBoundsException) {
-            throw EntityNotFoundException("Setting not found: " + key, e)
+            throw EntityNotFoundException("Setting not found: $key", e)
         }
 
     }
@@ -268,8 +268,6 @@ class SettingsServiceImpl @Autowired constructor(
                         SettingValidator(Regex("([\\w\\.]+)(,[\\w\\.]+)*")))
                 .put("archivist.search.keywords.auto.enabled",
                         SettingValidator(booleanValue))
-                .put("archivist.export.dragTemplate",
-                        SettingValidator(null))
                 .put("archivist.export.videoStreamExtensionFallbackOrder",
                         SettingValidator(null))
                 .put("archivist.search.sortFields",
@@ -281,8 +279,12 @@ class SettingsServiceImpl @Autowired constructor(
                         SettingValidator(numericValue, emit=watermarkSettingsChanged))
                 .put("archivist.watermark.font-size",
                         SettingValidator(numericValue, emit=watermarkSettingsChanged))
+                .put("curator.thumbnails.drag-template",
+                        SettingValidator(null))
+                .put("curator.lightbox.zoom-min",
+                        SettingValidator(Regex("[\\d]+"), allowNull = true))
+                .put("curator.lightbox.zoom-max",
+                        SettingValidator(Regex("[\\d]+"), allowNull = true))
                 .build()
     }
-
-
 }

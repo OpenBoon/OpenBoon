@@ -20,19 +20,19 @@ public class SettingsServiceTests extends AbstractTest {
     @Test
     public void testSetAll() {
         settingsService.setAll(ImmutableMap.of(
-                "archivist.export.dragTemplate",
+                "curator.thumbnails.drag-template",
                 "bar"));
-        assertEquals("bar", settingsService.get("archivist.export.dragTemplate")
+        assertEquals("bar", settingsService.get("curator.thumbnails.drag-template")
                 .getCurrentValue());
-        settingsService.set("archivist.export.dragTemplate", null);
+        settingsService.set("curator.thumbnails.drag-template", null);
     }
 
     @Test
     public void testSet() {
-        settingsService.set("archivist.export.dragTemplate", "foo.bar:1.5");
+        settingsService.set("curator.thumbnails.drag-template", "foo.bar:1.5");
         assertEquals("foo.bar:1.5",
-                settingsService.get("archivist.export.dragTemplate").getCurrentValue());
-        settingsService.set("archivist.export.dragTemplate", null);
+                settingsService.get("curator.thumbnails.drag-template").getCurrentValue());
+        settingsService.set("curator.thumbnails.drag-template", null);
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -46,6 +46,21 @@ public class SettingsServiceTests extends AbstractTest {
                 settingsService.get("archivist.search.keywords.auto.enabled").getCurrentValue());
         settingsService.setAll(ImmutableMap.of(
                 "archivist.search.keywords.auto.enabled", "Boing!"));
+    }
+
+    @Test(expected=ArchivistWriteException.class)
+    public void testIntRegexValidationError() {
+        settingsService.setAll(ImmutableMap.of(
+                "curator.lightbox.zoom-min", "bong!"));
+    }
+
+    @Test
+    public void testIntRegexValidation() {
+        settingsService.setAll(ImmutableMap.of(
+                "curator.lightbox.zoom-min", "100"));
+        Setting value = settingsService.get("curator.lightbox.zoom-min");
+        assertEquals("100", value.getCurrentValue());
+
     }
 
     @Test
