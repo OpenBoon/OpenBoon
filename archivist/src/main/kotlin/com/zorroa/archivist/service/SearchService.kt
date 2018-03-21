@@ -892,17 +892,5 @@ class SearchServiceImpl @Autowired constructor(
          * The properties prefix used to define keywords fields.
          */
         private const val PROP_STATIC_KEYWORD_FIELD = "archivist.search.keywords.static.fields"
-
-        /**
-         * If a field doesn't end with .raw, concat .raw
-         *
-         * @param field
-         * @return
-         */
-        private fun dotRawMe(field: String): String {
-            return if (field.endsWith(".raw")) {
-                field
-            } else field + ".raw"
-        }
     }
 }
