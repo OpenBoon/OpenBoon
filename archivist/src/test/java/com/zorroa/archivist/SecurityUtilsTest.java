@@ -43,7 +43,7 @@ public class SecurityUtilsTest extends AbstractTest {
 
         // Reauthenticate the user, this sets up the admin's normal
         // permissions.
-        authenticate("admin@zorroa.com");
+        authenticate("admin");
 
         // Create an ACL and add a Read permission
         List<UUID> perms = ImmutableList.copyOf(UtilsKt.getPermissionIds());

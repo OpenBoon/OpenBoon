@@ -759,7 +759,9 @@ class FolderServiceImpl @Autowired constructor(
     }
 
     override fun createUserFolder(username: String, perm: Permission): Folder {
-        val adminUser = userDao.get("admin@zorroa.com")
+        // This folder can be created before the user is actually fully
+        // authenticated in the case of external auth systems.
+        val adminUser = userDao.get("admin")
 
         val rootFolder = folderDao.get(Folder.ROOT_ID, "Users", true)
         val folder = folderDao.create(FolderSpec()
