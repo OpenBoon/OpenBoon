@@ -1,8 +1,14 @@
 package com.zorroa.archivist.domain
 
-class SetPermissions {
+class SetPermissions constructor() {
+
     var acl: Acl? = null
     var replace = false
+
+    constructor(acl:Acl?, replace:Boolean) : this() {
+        this.acl = acl
+        this.replace = replace
+    }
 }
 
 class PermissionSpec {

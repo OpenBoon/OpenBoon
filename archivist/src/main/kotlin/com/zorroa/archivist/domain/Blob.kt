@@ -6,6 +6,11 @@ interface BlobId {
     fun getBlobId(): UUID
 }
 
+data class BlobSpec (
+        val data: Any,
+        val acl: Acl?
+)
+
 class Blob (
     private val blobId: UUID,
     val version: Long,
