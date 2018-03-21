@@ -108,6 +108,18 @@
             }
           }
         },
+        "media": {
+          "properties": {
+            "clip": {
+              "properties": {
+                "parent": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
         "zorroa": {
           "properties": {
             "timeCreated": {

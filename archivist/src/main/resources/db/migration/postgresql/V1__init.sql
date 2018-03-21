@@ -1,12 +1,12 @@
 
 
-CREATE OR REPLACE FUNCTION zorroa.bitand(INTEGER, INTEGER) RETURNS INTEGER AS $$
+CREATE OR REPLACE FUNCTION bitand(INTEGER, INTEGER) RETURNS INTEGER AS $$
 BEGIN
   RETURN $1 & $2;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION zorroa.current_timestamp() returns BIGINT as $$
+CREATE OR REPLACE FUNCTION current_time_millis() returns BIGINT as $$
 BEGIN
 RETURN (extract(epoch from clock_timestamp()) * 1000)::BIGINT;
 end;
@@ -15,7 +15,7 @@ $$ LANGUAGE plpgsql;
 ---
 ---
 
-CREATE TABLE zorroa.pipeline (
+CREATE TABLE pipeline (
   pk_pipeline UUID PRIMARY KEY,
   int_type SMALLINT NOT NULL,
   str_name TEXT NOT NULL,
@@ -25,12 +25,12 @@ CREATE TABLE zorroa.pipeline (
   int_version INTEGER DEFAULT 1 NOT NULL
 );
 
-CREATE UNIQUE INDEX pipeline_name_uidx ON zorroa.pipeline(str_name);
+CREATE UNIQUE INDEX pipeline_name_uidx ON pipeline(str_name);
 
 ---
 ---
 
-CREATE TABLE zorroa.plugin(
+CREATE TABLE plugin(
   pk_plugin UUID PRIMARY KEY,
   str_name TEXT NOT NULL,
   str_lang TEXT NOT NULL,
@@ -42,12 +42,12 @@ CREATE TABLE zorroa.plugin(
   str_md5 TEXT
 );
 
-CREATE UNIQUE INDEX plugin_str_name_idx ON zorroa.plugin(str_name);
+CREATE UNIQUE INDEX plugin_str_name_idx ON plugin(str_name);
 
 ---
 ---
 
-CREATE TABLE zorroa.folder(
+CREATE TABLE folder(
   pk_folder UUID PRIMARY KEY,
   pk_parent UUID,
   pk_dyhi UUID,
@@ -65,13 +65,13 @@ CREATE TABLE zorroa.folder(
   json_search TEXT
 );
 
-CREATE UNIQUE INDEX folder_unique_siblings_idx ON zorroa.folder(pk_parent, str_name);
-CREATE INDEX folder_pk_dyhi_idx ON zorroa.folder(pk_dyhi);
+CREATE UNIQUE INDEX folder_unique_siblings_idx ON folder(pk_parent, str_name);
+CREATE INDEX folder_pk_dyhi_idx ON folder(pk_dyhi);
 
 ---
 ---
 
-CREATE TABLE zorroa.command(
+CREATE TABLE command(
   pk_command UUID PRIMARY KEY,
   pk_user_created UUID NOT NULL,
   time_created BIGINT NOT NULL,
@@ -86,25 +86,25 @@ CREATE TABLE zorroa.command(
   json_args TEXT DEFAULT '[]' NOT NULL
 );
 
-CREATE INDEX command_pk_user_idx ON zorroa.command(pk_user_created);
-CREATE INDEX command_int_state_idx ON zorroa.command(int_state);
+CREATE INDEX command_pk_user_idx ON command(pk_user_created);
+CREATE INDEX command_int_state_idx ON command(int_state);
 
 ---
 ---
 
-CREATE TABLE zorroa.pipeline_acl(
+CREATE TABLE pipeline_acl(
   pk_permission UUID NOT NULL,
   pk_pipeline UUID NOT NULL,
   int_access INTEGER DEFAULT 0 NOT NULL
 );
 
-ALTER TABLE zorroa.pipeline_acl ADD CONSTRAINT pipeline_acl_pkey PRIMARY KEY(pk_pipeline, pk_permission);
-CREATE INDEX pipeline_acl_permission_idx ON zorroa.pipeline_acl(pk_permission);
+ALTER TABLE pipeline_acl ADD CONSTRAINT pipeline_acl_pkey PRIMARY KEY(pk_pipeline, pk_permission);
+CREATE INDEX pipeline_acl_permission_idx ON pipeline_acl(pk_permission);
 
 ---
 ---
 
-CREATE TABLE zorroa.taxonomy(
+CREATE TABLE taxonomy(
   pk_taxonomy UUID,
   pk_folder UUID NOT NULL,
   bool_active BOOLEAN DEFAULT 'f' NOT NULL,
@@ -112,12 +112,12 @@ CREATE TABLE zorroa.taxonomy(
   time_stopped BIGINT DEFAULT 0 NOT NULL
 );
 
-CREATE UNIQUE INDEX taxonomy_dyhi_pk_folder ON zorroa.taxonomy(pk_folder);
+CREATE UNIQUE INDEX taxonomy_dyhi_pk_folder ON taxonomy(pk_folder);
 
 ---
 ---
 
-CREATE TABLE zorroa.settings(
+CREATE TABLE settings(
   str_name TEXT PRIMARY KEY,
   str_value TEXT
 );
@@ -125,7 +125,7 @@ CREATE TABLE zorroa.settings(
 ---
 ---
 
-CREATE TABLE zorroa.dyhi(
+CREATE TABLE dyhi(
   pk_dyhi UUID PRIMARY KEY,
   pk_folder UUID NOT NULL,
   pk_user_created UUID NOT NULL,
@@ -137,12 +137,12 @@ CREATE TABLE zorroa.dyhi(
   json_levels TEXT DEFAULT '{}' NOT NULL
 );
 
-CREATE UNIQUE INDEX dyhi_pk_folder ON zorroa.dyhi(pk_folder);
+CREATE UNIQUE INDEX dyhi_pk_folder ON dyhi(pk_folder);
 
 ---
 ---
 
-CREATE TABLE zorroa.job(
+CREATE TABLE job(
   pk_job UUID PRIMARY KEY,
   pk_user_created UUID NOT NULL,
   str_name TEXT NOT NULL,
@@ -155,14 +155,14 @@ CREATE TABLE zorroa.job(
 );
 
 
-CREATE INDEX job_name_idx ON zorroa.job(str_name);
-CREATE INDEX job_type_idx ON zorroa.job(int_type);
-CREATE INDEX job_state_idx ON zorroa.job(int_state);
+CREATE INDEX job_name_idx ON job(str_name);
+CREATE INDEX job_type_idx ON job(int_type);
+CREATE INDEX job_state_idx ON job(int_state);
 
 ---
 ---
 
-CREATE TABLE zorroa.export_file (
+CREATE TABLE export_file (
   pk_export_file UUID PRIMARY KEY,
   pk_job UUID NOT NULL,
   str_name TEXT NOT NULL,
@@ -172,12 +172,12 @@ CREATE TABLE zorroa.export_file (
   time_created BIGINT NOT NULL
 );
 
-CREATE UNIQUE INDEX export_file_pk_job_str_name_uidx ON zorroa.export_file(pk_job, str_name);
+CREATE UNIQUE INDEX export_file_pk_job_str_name_uidx ON export_file(pk_job, str_name);
 
 ---
 ---
 
-CREATE TABLE zorroa.users(
+CREATE TABLE users(
   pk_user UUID PRIMARY KEY,
   pk_permission UUID NOT NULL,
   pk_folder UUID NOT NULL,
@@ -197,25 +197,25 @@ CREATE TABLE zorroa.users(
   json_settings TEXT DEFAULT '{}' NOT NULL
 );
 
-CREATE UNIQUE INDEX user_str_username_idx ON zorroa.users(str_username);
-CREATE UNIQUE INDEX user_str_email_idx ON zorroa.users(str_email);
+CREATE UNIQUE INDEX user_str_username_idx ON users(str_username);
+CREATE UNIQUE INDEX user_str_email_idx ON users(str_email);
 
 ---
 ---
 
-CREATE TABLE zorroa.user_permission(
+CREATE TABLE user_permission(
   pk_permission UUID NOT NULL,
   pk_user UUID NOT NULL,
   str_source TEXT NOT NULL DEFAULT 'local',
   bool_immutable BOOLEAN DEFAULT 'f' NOT NULL
 );
 
-ALTER TABLE zorroa.user_permission ADD CONSTRAINT user_permission_pkey PRIMARY KEY(pk_user, pk_permission);
-CREATE INDEX user_permission_pk_permission_idx ON zorroa.user_permission(pk_permission);
+ALTER TABLE user_permission ADD CONSTRAINT user_permission_pkey PRIMARY KEY(pk_user, pk_permission);
+CREATE INDEX user_permission_pk_permission_idx ON user_permission(pk_permission);
 
 ---
 ---
-CREATE TABLE zorroa.preset(
+CREATE TABLE preset(
   pk_preset UUID PRIMARY KEY,
   str_name TEXT NOT NULL,
   json_settings TEXT NOT NULL
@@ -224,7 +224,7 @@ CREATE TABLE zorroa.preset(
 ---
 ---
 
-CREATE TABLE zorroa.job_count(
+CREATE TABLE job_count(
   pk_job UUID PRIMARY KEY,
   int_task_total_count INTEGER DEFAULT 0 NOT NULL,
   int_task_completed_count INTEGER DEFAULT 0 NOT NULL,
@@ -234,13 +234,13 @@ CREATE TABLE zorroa.job_count(
   int_task_state_success_count INTEGER DEFAULT 0 NOT NULL,
   int_task_state_failure_count INTEGER DEFAULT 0 NOT NULL,
   int_task_state_skipped_count INTEGER DEFAULT 0 NOT NULL,
-  time_updated BIGINT DEFAULT zorroa.current_timestamp() NOT NULL
+  time_updated BIGINT DEFAULT current_time_millis() NOT NULL
 );
 
 ---
 ---
 
-CREATE TABLE zorroa.migration(
+CREATE TABLE migration(
   pk_migration UUID PRIMARY KEY,
   int_type INTEGER NOT NULL,
   str_name TEXT NOT NULL,
@@ -251,7 +251,7 @@ CREATE TABLE zorroa.migration(
   int_patch INTEGER DEFAULT 0 NOT NULL
 );
 
-INSERT INTO zorroa.migration(pk_migration, int_type, str_name, str_path, int_version, time_applied, bool_enabled, int_patch) values
+INSERT INTO migration(pk_migration, int_type, str_name, str_path, int_version, time_applied, bool_enabled, int_patch) values
   ('54745A12-38C2-466C-990A-10C3FA936640', 0, 'archivist', 'classpath:/db/mappings/archivist/*.json', 10, 1454449960000, TRUE, 0),
   ('54745A12-38C2-466C-990A-10C3FA936641', 0, 'analyst', 'classpath:/db/mappings/analyst/*.json', 1, 1454449960000, TRUE, 0),
   ('54745A12-38C2-466C-990A-10C3FA936643',0, 'job_logs', 'classpath:/db/mappings/job_logs/*.json', 1, 1454449960000, TRUE, 0),
@@ -260,29 +260,29 @@ INSERT INTO zorroa.migration(pk_migration, int_type, str_name, str_path, int_ver
 ---
 ---
 
-CREATE TABLE zorroa.folder_acl(
+CREATE TABLE folder_acl(
   pk_permission UUID NOT NULL,
   pk_folder UUID NOT NULL,
   int_access INTEGER DEFAULT 0 NOT NULL
 );
 
-ALTER TABLE zorroa.folder_acl ADD CONSTRAINT folder_acl_pkey PRIMARY KEY(pk_folder, pk_permission);
-CREATE INDEX folder_acl_pk_permission_idx ON zorroa.folder_acl(pk_permission);
+ALTER TABLE folder_acl ADD CONSTRAINT folder_acl_pkey PRIMARY KEY(pk_folder, pk_permission);
+CREATE INDEX folder_acl_pk_permission_idx ON folder_acl(pk_permission);
 
 ---
 ---
 
-CREATE TABLE zorroa.preset_permission(
+CREATE TABLE preset_permission(
   pk_permission UUID NOT NULL,
   pk_preset UUID NOT NULL
 );
-ALTER TABLE zorroa.preset_permission ADD CONSTRAINT preset_permission_pkey PRIMARY KEY(pk_permission, pk_preset);
-CREATE INDEX preset_permission_pk_preset ON zorroa.preset_permission(pk_preset);
+ALTER TABLE preset_permission ADD CONSTRAINT preset_permission_pkey PRIMARY KEY(pk_permission, pk_preset);
+CREATE INDEX preset_permission_pk_preset ON preset_permission(pk_preset);
 
 ---
 ---
 
-CREATE TABLE zorroa.job_stat(
+CREATE TABLE job_stat(
   pk_job UUID PRIMARY KEY,
   int_asset_total_count INTEGER DEFAULT 0 NOT NULL,
   int_asset_create_count INTEGER DEFAULT 0 NOT NULL,
@@ -294,7 +294,7 @@ CREATE TABLE zorroa.job_stat(
 ---
 ---
 
-CREATE TABLE zorroa.task_stat(
+CREATE TABLE task_stat(
   pk_task UUID PRIMARY KEY,
   pk_job UUID NOT NULL,
   int_asset_total_count INTEGER DEFAULT 0 NOT NULL,
@@ -305,12 +305,12 @@ CREATE TABLE zorroa.task_stat(
   int_asset_replace_count INTEGER DEFAULT 0 NOT NULL
 );
 
-CREATE INDEX task_stat_pk_job_idx ON zorroa.task_stat(pk_job);
+CREATE INDEX task_stat_pk_job_idx ON task_stat(pk_job);
 
 ---
 ---
 
-CREATE TABLE zorroa.processor(
+CREATE TABLE processor(
   pk_processor UUID PRIMARY KEY,
   pk_plugin UUID NOT NULL,
   str_name TEXT NOT NULL,
@@ -325,13 +325,13 @@ CREATE TABLE zorroa.processor(
   int_type INTEGER DEFAULT 0 NOT NULL
 );
 
-CREATE INDEX processor_pk_plugin_idx ON zorroa.processor(pk_plugin);
-CREATE UNIQUE INDEX processor_str_name_idx ON zorroa.processor(str_name);
+CREATE INDEX processor_pk_plugin_idx ON processor(pk_plugin);
+CREATE UNIQUE INDEX processor_str_name_idx ON processor(str_name);
 
 ---
 ---
 
-CREATE TABLE zorroa.folder_trash(
+CREATE TABLE folder_trash(
   pk_folder_trash UUID,
   pk_folder UUID NOT NULL,
   pk_parent UUID NOT NULL,
@@ -350,14 +350,14 @@ CREATE TABLE zorroa.folder_trash(
   json_search TEXT
 );
 
-CREATE INDEX folder_trash_pk_folder ON zorroa.folder_trash(pk_folder);
-CREATE INDEX folder_trash_pk_parent ON zorroa.folder_trash(pk_parent);
-CREATE INDEX folder_trash_str_opid ON zorroa.folder_trash(str_opid);
+CREATE INDEX folder_trash_pk_folder ON folder_trash(pk_folder);
+CREATE INDEX folder_trash_pk_parent ON folder_trash(pk_parent);
+CREATE INDEX folder_trash_str_opid ON folder_trash(str_opid);
 
 ---
 ---
 
-CREATE TABLE zorroa.shared_link(
+CREATE TABLE shared_link(
   pk_shared_link UUID,
   pk_user_created UUID NOT NULL,
   time_created BIGINT NOT NULL,
@@ -366,12 +366,12 @@ CREATE TABLE zorroa.shared_link(
   json_users TEXT
 );
 
-CREATE INDEX shared_link_pk_user_idx ON zorroa.shared_link(pk_user_created);
+CREATE INDEX shared_link_pk_user_idx ON shared_link(pk_user_created);
 
 ---
 ---
 
-CREATE TABLE zorroa.permission(
+CREATE TABLE permission(
   pk_permission UUID PRIMARY KEY,
   str_name TEXT NOT NULL,
   str_description TEXT NOT NULL,
@@ -383,12 +383,12 @@ CREATE TABLE zorroa.permission(
   str_source TEXT NOT NULL DEFAULT 'local'
 );
 
-CREATE UNIQUE INDEX permission_name_and_type_uniq_idx ON zorroa.permission(str_name, str_type);
+CREATE UNIQUE INDEX permission_name_and_type_uniq_idx ON permission(str_name, str_type);
 
 ---
 ---
 
-CREATE TABLE zorroa.task(
+CREATE TABLE task(
   pk_task UUID PRIMARY KEY,
   pk_parent UUID,
   pk_job UUID NOT NULL,
@@ -406,15 +406,15 @@ CREATE TABLE zorroa.task(
   int_depend_count INTEGER DEFAULT 0 NOT NULL
 );
 
-CREATE INDEX task_parent_idx ON zorroa.task(pk_parent);
-CREATE INDEX task_pk_job_idx ON zorroa.task(pk_job);
-CREATE INDEX task_state_idx ON zorroa.task(int_state);
-CREATE INDEX task_order_idx ON zorroa.task(int_order);
+CREATE INDEX task_parent_idx ON task(pk_parent);
+CREATE INDEX task_pk_job_idx ON task(pk_job);
+CREATE INDEX task_state_idx ON task(int_state);
+CREATE INDEX task_order_idx ON task(int_order);
 
 ---
 ---
 
-CREATE TABLE zorroa.field_hide (
+CREATE TABLE field_hide (
   pk_field TEXT PRIMARY KEY,
   bool_manual BOOLEAN DEFAULT 'f' NOT NULL
 );
@@ -422,7 +422,7 @@ CREATE TABLE zorroa.field_hide (
 ---
 ---
 
-CREATE TABLE zorroa.jblob (
+CREATE TABLE jblob (
   pk_jblob UUID PRIMARY KEY,
   pk_user_created UUID NOT NULL,
   pk_user_modified UUID NOT NULL,
@@ -441,20 +441,20 @@ CREATE UNIQUE INDEX jblob_uidx ON jblob (str_app, str_feature, str_name);
 ----
 ----
 
-CREATE TABLE zorroa.jblob_acl (
+CREATE TABLE jblob_acl (
   pk_permission UUID NOT NULL,
   pk_jblob UUID NOT NULL,
   int_access INTEGER,
   PRIMARY KEY (pk_jblob, pk_permission)
 );
 
-CREATE INDEX jblob_acl_pk_permission_idx ON zorroa.jblob_acl (pk_permission);
+CREATE INDEX jblob_acl_pk_permission_idx ON jblob_acl (pk_permission);
 
 ----
 ----
 ----
 
-CREATE TABLE zorroa.request (
+CREATE TABLE request (
   pk_request UUID PRIMARY KEY,
   pk_folder UUID,
   pk_user_created UUID NOT NULL,
@@ -473,7 +473,7 @@ CREATE INDEX request_int_state_idx ON request(int_state);
 ----
 ----
 
-INSERT INTO zorroa.permission(pk_permission, str_name, str_description, str_type, bool_immutable, bool_user_assignable, bool_obj_assignable, str_authority) values
+INSERT INTO permission(pk_permission, str_name, str_description, str_type, bool_immutable, bool_user_assignable, bool_obj_assignable, str_authority) values
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA0', 'admin', 'The admin user', 'user', TRUE, FALSE, TRUE, 'user::admin'),
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA1', 'administrator', 'Superuser, can do and access everything.', 'zorroa', TRUE, TRUE, TRUE, 'zorroa::administrator'),
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA2', 'manager', 'Manage users and permissions.', 'zorroa', TRUE, TRUE, TRUE, 'zorroa::manager'),
@@ -486,13 +486,13 @@ INSERT INTO zorroa.permission(pk_permission, str_name, str_description, str_type
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA9', 'librarian', 'Can manage the /library folder', 'zorroa', TRUE, TRUE, FALSE, 'zorroa::librarian');
 
 
-INSERT INTO zorroa.folder(pk_folder, pk_parent, str_name, pk_user_created, time_created, pk_user_modified, time_modified, bool_recursive, pk_dyhi, bool_dyhi_root, str_dyhi_field, int_child_count, bool_tax_root, json_attrs, json_search) values
+INSERT INTO folder(pk_folder, pk_parent, str_name, pk_user_created, time_created, pk_user_modified, time_modified, bool_recursive, pk_dyhi, bool_dyhi_root, str_dyhi_field, int_child_count, bool_tax_root, json_attrs, json_search) values
   ('00000000-0000-0000-0000-000000000000', NULL, '/', '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, FALSE, NULL, FALSE, NULL, 2, FALSE, '{}', '{}'),
   ('00000000-2395-4E71-9E4C-DACCEEF6AD51', '00000000-0000-0000-0000-000000000000', 'Users', '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, FALSE, NULL, FALSE, NULL, 1, FALSE, '{}', NULL),
   ('00000000-2395-4E71-9E4C-DACCEEF6AD52', '00000000-0000-0000-0000-000000000000', 'Library', '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, FALSE, NULL, FALSE, NULL, 0, FALSE, '{}', '{}'),
   ('00000000-2395-4E71-9E4C-DACCEEF6AD53', '00000000-2395-4E71-9E4C-DACCEEF6AD51', 'admin', '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, '00000000-7B0B-480E-8C36-F06F04AED2F1', 1450709321000, TRUE, NULL, FALSE, NULL, 0, FALSE, '{}', NULL);
 
-INSERT INTO zorroa.folder_acl(pk_permission, pk_folder, int_access) VALUES
+INSERT INTO folder_acl(pk_permission, pk_folder, int_access) VALUES
   --- admin::user, write on /users/admin
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA0', '00000000-2395-4E71-9E4C-DACCEEF6AD53', 3),
   --- zorroa::everyone, read /
@@ -508,11 +508,11 @@ INSERT INTO zorroa.folder_acl(pk_permission, pk_folder, int_access) VALUES
 ---
 ---
 
-INSERT INTO zorroa.users(pk_user, str_username, str_password, str_email, str_firstname, str_lastname, bool_enabled, str_source, pk_permission, pk_folder, bool_reset_pass, str_reset_pass_token, time_reset_pass, json_settings) values
-  ('00000000-7B0B-480E-8C36-F06F04AED2F1', 'admin', '$2a$10$26Ekb4MDeUdz75G4V2u6geSuI1Hn4jrHUvZafK5M2iHdz5s9oLGyK', 'admin@zorroa.com', 'Joe', 'Admin', TRUE, 'local', '00000000-FC08-4E4A-AA7A-A183F42C9FA0', '00000000-2395-4E71-9E4C-DACCEEF6AD53', TRUE, NULL, 0, '{}');
+INSERT INTO users(pk_user, str_username, str_password, str_email, str_firstname, str_lastname, bool_enabled, str_source, pk_permission, pk_folder, bool_reset_pass, str_reset_pass_token, time_reset_pass, json_settings) values
+  ('00000000-7B0B-480E-8C36-F06F04AED2F1', 'admin', '$2a$10$26Ekb4MDeUdz75G4V2u6geSuI1Hn4jrHUvZafK5M2iHdz5s9oLGyK', 'admin@com', 'Joe', 'Admin', TRUE, 'local', '00000000-FC08-4E4A-AA7A-A183F42C9FA0', '00000000-2395-4E71-9E4C-DACCEEF6AD53', TRUE, NULL, 0, '{}');
 
 
-INSERT INTO zorroa.user_permission(pk_permission, pk_user, bool_immutable) VALUES
+INSERT INTO user_permission(pk_permission, pk_user, bool_immutable) VALUES
   --- admin's specific user permission - immutable
   ('00000000-FC08-4E4A-AA7A-A183F42C9FA0', '00000000-7B0B-480E-8C36-F06F04AED2F1', TRUE),
   --- admin's administrator group
@@ -523,64 +523,64 @@ INSERT INTO zorroa.user_permission(pk_permission, pk_user, bool_immutable) VALUE
 ---
 
 
-ALTER TABLE zorroa.user_permission ADD CONSTRAINT constraint_fe86 foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ON DELETE CASCADE ;
-ALTER TABLE zorroa.preset_permission ADD CONSTRAINT constraint_f76 foreign key(pk_preset) REFERENCES zorroa.preset(pk_preset) ON DELETE CASCADE ;
-ALTER TABLE zorroa.preset_permission ADD CONSTRAINT constraint_f7 foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ON DELETE CASCADE ;
-ALTER TABLE zorroa.users ADD CONSTRAINT constraint_27e foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ;
-ALTER TABLE zorroa.users ADD CONSTRAINT constraint_27e3 foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ;
-ALTER TABLE zorroa.folder_acl ADD CONSTRAINT constraint_eb foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ON DELETE CASCADE ;
-ALTER TABLE zorroa.folder_acl ADD CONSTRAINT constraint_e foreign key(pk_permission) REFERENCES zorroa.permission(pk_permission) ON DELETE CASCADE ;
-ALTER TABLE zorroa.folder ADD CONSTRAINT constraint_7bf foreign key(pk_parent) REFERENCES zorroa.folder(pk_folder) ;
-ALTER TABLE zorroa.processor ADD CONSTRAINT constraint_64d foreign key(pk_plugin) REFERENCES zorroa.plugin(pk_plugin) ON DELETE CASCADE ;
-ALTER TABLE zorroa.task ADD CONSTRAINT constraint_272d foreign key(pk_job) REFERENCES zorroa.job(pk_job) ON DELETE CASCADE ;
-ALTER TABLE zorroa.dyhi ADD CONSTRAINT constraint_204 foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ON DELETE CASCADE ;
-ALTER TABLE zorroa.taxonomy ADD CONSTRAINT constraint_1f0 foreign key(pk_folder) REFERENCES zorroa.folder(pk_folder) ;
-ALTER TABLE zorroa.task ADD CONSTRAINT constraint_272 foreign key(pk_parent) REFERENCES zorroa.task(pk_task) ON delete set NULL ;
+ALTER TABLE user_permission ADD CONSTRAINT constraint_fe86 foreign key(pk_permission) REFERENCES permission(pk_permission) ON DELETE CASCADE ;
+ALTER TABLE preset_permission ADD CONSTRAINT constraint_f76 foreign key(pk_preset) REFERENCES preset(pk_preset) ON DELETE CASCADE ;
+ALTER TABLE preset_permission ADD CONSTRAINT constraint_f7 foreign key(pk_permission) REFERENCES permission(pk_permission) ON DELETE CASCADE ;
+ALTER TABLE users ADD CONSTRAINT constraint_27e foreign key(pk_permission) REFERENCES permission(pk_permission) ;
+ALTER TABLE users ADD CONSTRAINT constraint_27e3 foreign key(pk_folder) REFERENCES folder(pk_folder) ;
+ALTER TABLE folder_acl ADD CONSTRAINT constraint_eb foreign key(pk_folder) REFERENCES folder(pk_folder) ON DELETE CASCADE ;
+ALTER TABLE folder_acl ADD CONSTRAINT constraint_e foreign key(pk_permission) REFERENCES permission(pk_permission) ON DELETE CASCADE ;
+ALTER TABLE folder ADD CONSTRAINT constraint_7bf foreign key(pk_parent) REFERENCES folder(pk_folder) ;
+ALTER TABLE processor ADD CONSTRAINT constraint_64d foreign key(pk_plugin) REFERENCES plugin(pk_plugin) ON DELETE CASCADE ;
+ALTER TABLE task ADD CONSTRAINT constraint_272d foreign key(pk_job) REFERENCES job(pk_job) ON DELETE CASCADE ;
+ALTER TABLE dyhi ADD CONSTRAINT constraint_204 foreign key(pk_folder) REFERENCES folder(pk_folder) ON DELETE CASCADE ;
+ALTER TABLE taxonomy ADD CONSTRAINT constraint_1f0 foreign key(pk_folder) REFERENCES folder(pk_folder) ;
+ALTER TABLE task ADD CONSTRAINT constraint_272 foreign key(pk_parent) REFERENCES task(pk_task) ON delete set NULL ;
 
 
-CREATE OR REPLACE FUNCTION zorroa.trigger_update_folder_child_count() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION trigger_update_folder_child_count() RETURNS TRIGGER AS $$
 BEGIN
   if old.pk_parent > new.pk_parent then
-    update zorroa.folder set int_child_count=int_child_count -1 where pk_folder=old.pk_parent;
-    update zorroa.folder set int_child_count=int_child_count +1 where pk_folder=new.pk_parent;
+    update folder set int_child_count=int_child_count -1 where pk_folder=old.pk_parent;
+    update folder set int_child_count=int_child_count +1 where pk_folder=new.pk_parent;
   else
-    update zorroa.folder set int_child_count=int_child_count +1 where pk_folder=new.pk_parent;
-    update zorroa.folder set int_child_count=int_child_count -1 where pk_folder=old.pk_parent;
+    update folder set int_child_count=int_child_count +1 where pk_folder=new.pk_parent;
+    update folder set int_child_count=int_child_count -1 where pk_folder=old.pk_parent;
   end if;
   return NEW;
 end
 $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER trig_after_folder_update AFTER UPDATE ON zorroa.folder
+CREATE TRIGGER trig_after_folder_update AFTER UPDATE ON folder
   FOR EACH ROW WHEN (old.pk_parent != new.pk_parent)
   EXECUTE PROCEDURE trigger_update_folder_child_count();
 
 
-CREATE OR REPLACE FUNCTION zorroa.trigger_increment_folder_child_count() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION trigger_increment_folder_child_count() RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE zorroa.folder SET int_child_count=int_child_count +1 WHERE pk_folder=NEW.pk_parent;
+  UPDATE folder SET int_child_count=int_child_count +1 WHERE pk_folder=NEW.pk_parent;
 return NEW;
 end
 $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER trig_after_folder_insert after insert ON zorroa.folder
+CREATE TRIGGER trig_after_folder_insert after insert ON folder
 FOR EACH ROW EXECUTE PROCEDURE trigger_increment_folder_child_count();
 
 
-CREATE OR REPLACE FUNCTION zorroa.trigger_decrement_folder_child_count() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION trigger_decrement_folder_child_count() RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE zorroa.folder SET int_child_count=int_child_count -1 WHERE pk_folder=OLD.pk_parent;
+  UPDATE folder SET int_child_count=int_child_count -1 WHERE pk_folder=OLD.pk_parent;
   RETURN OLD;
 END
 $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER trig_after_folder_delete AFTER DELETE ON zorroa.folder
+CREATE TRIGGER trig_after_folder_delete AFTER DELETE ON folder
 FOR EACH ROW EXECUTE PROCEDURE trigger_decrement_folder_child_count();
 
-CREATE OR REPLACE FUNCTION zorroa.trigger_update_job_state() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION trigger_update_job_state() RETURNS TRIGGER AS $$
 BEGIN
   IF NEW.int_task_state_success_count + NEW.int_task_state_failure_count + NEW.int_task_state_skipped_count = NEW.int_task_total_count THEN
     UPDATE job set int_state=2 where pk_job=NEW.pk_job AND int_state=0;
@@ -593,6 +593,6 @@ END
 $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER trig_update_job_state AFTER UPDATE ON zorroa.job_count
+CREATE TRIGGER trig_update_job_state AFTER UPDATE ON job_count
 FOR EACH ROW EXECUTE PROCEDURE trigger_update_job_state();
 
