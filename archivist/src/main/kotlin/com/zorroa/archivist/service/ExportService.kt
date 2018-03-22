@@ -73,7 +73,7 @@ class ExportServiceImpl @Autowired constructor(
      * replace the the search being executed with a search for the assets
      * we specifically tagged.
      */
-    private fun performExportSearch(search: AssetSearch, exportId: UUID): ExportParams {
+    private fun resolveExportSearch(search: AssetSearch, exportId: UUID): ExportParams {
         search.fields = arrayOf("source")
 
         val params = ExportParams(AssetSearch())
@@ -163,7 +163,7 @@ class ExportServiceImpl @Autowired constructor(
          * we get the exact assets during the export and new data
          * added that might match their search change the export.
          */
-        val params = performExportSearch(spec.search, job.jobId)
+        val params = resolveExportSearch(spec.search, job.jobId)
         generate.add(pluginService.getProcessorRef(
                 "com.zorroa.core.generator.AssetSearchGenerator",
                 mapOf<String, Any>("search" to params.search)))
