@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
 import java.util.stream.Collectors
 import javax.annotation.PostConstruct
 
@@ -67,9 +66,9 @@ class LocalFileSystemImpl @Autowired constructor(
         val files = _listFiles(req)
         val result = mutableListOf<String>()
 
-        result.addAll(files["dirs"]!!.stream().map { f -> f + "/" }.collect(Collectors.toList()))
+        result.addAll(files["dirs"]!!.stream().map { f -> "$f/" }.collect(Collectors.toList()))
         result.addAll(files["files"]!!)
-        Collections.sort(result)
+        result.sort()
         return result
     }
 
@@ -81,7 +80,7 @@ class LocalFileSystemImpl @Autowired constructor(
         /*
          * Gotta normalize it since we allow relative paths for testing purposes.
          */
-        val path = FileUtils.normalize(req.path)
+        val path = FileUtils.normalize(req.prefix)
         if (!isLocalPathAllowed(path)) {
             logger.warn("User {} attempted to list files in: {}",
                     getUsername(), path)

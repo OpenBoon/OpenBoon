@@ -3,7 +3,6 @@ package com.zorroa.archivist.web.api
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.LfsRequest
-import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.service.LocalFileSystem
 import com.zorroa.sdk.filesystem.ObjectFileSystem
 import com.zorroa.sdk.util.FileUtils
@@ -27,8 +26,7 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 class FileSystemController @Autowired constructor(
         private val objectFileSystem: ObjectFileSystem,
-        private val localFileSystem: LocalFileSystem,
-        private val jobService: JobService
+        private val localFileSystem: LocalFileSystem
 ) {
 
     @RequestMapping(value = ["/api/v1/ofs/_exists"], method = [RequestMethod.POST])
@@ -115,13 +113,13 @@ class FileSystemController @Autowired constructor(
     @RequestMapping(value = ["/api/v1/lfs/_suggest"], method = [RequestMethod.POST])
     @Throws(IOException::class)
     fun localFilesSuggest(@RequestBody req: LfsRequest): List<String> {
-        return localFileSystem!!.suggest(req)
+        return localFileSystem.suggest(req)
     }
 
     @RequestMapping(value = ["/api/v1/lfs/_exist"], method = [RequestMethod.POST])
     @Throws(IOException::class)
     fun localFileExists(@RequestBody req: LfsRequest): Any {
-        return HttpUtils.exists(req.path, localFileSystem!!.exists(req)!!)
+        return HttpUtils.exists(req.path, localFileSystem.exists(req)!!)
     }
 
     companion object {
