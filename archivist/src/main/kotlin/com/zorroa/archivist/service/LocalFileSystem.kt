@@ -2,8 +2,8 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.LfsRequest
-import com.zorroa.archivist.domain.OnlineFileCheckReq
-import com.zorroa.archivist.domain.OnlineFileCheckRsp
+import com.zorroa.archivist.domain.OnlineFileCheckRequest
+import com.zorroa.archivist.domain.OnlineFileCheckResponse
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.archivist.security.hasPermission
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
 import javax.annotation.PostConstruct
 
@@ -28,7 +30,7 @@ interface LocalFileSystem {
 
     fun isLocalPathAllowed(path: String?): Boolean
 
-    fun onlineFileCheck(req: OnlineFileCheckReq): OnlineFileCheckRsp
+    fun onlineFileCheck(req: OnlineFileCheckRequest): OnlineFileCheckResponse
 }
 
 @Service
@@ -68,21 +70,30 @@ class LocalFileSystemImpl @Autowired constructor(
         } else Files.exists(Paths.get(path))
     }
 
-    override fun onlineFileCheck(req: OnlineFileCheckReq): OnlineFileCheckRsp  {
+    override fun onlineFileCheck(req: OnlineFileCheckRequest): OnlineFileCheckResponse  {
         val max = properties.getInt("archivist.export.maxAssetCount")
         val search = req.search
         search.fields = arrayOf("source")
 
-        val result = OnlineFileCheckRsp()
+        val threads =  Executors.newFixedThreadPool(4)
+        val result = OnlineFileCheckResponse()
         for (doc in searchService.scanAndScroll(search, max)) {
-            val path = Paths.get(doc.getAttr("source.path", String::class.java))
-            when {
-                path == null -> result.totalOffline++
-                Files.exists(path) -> result.totalOnline++
-                else -> result.totalOffline++
-            }
-            result.total++
+            threads.execute({
+                val path = Paths.get(doc.getAttr("source.path", String::class.java))
+                if (path != null) {
+                    when {
+                        Files.exists(path) -> result.totalOnline.increment()
+                        else -> {
+                            result.totalOffline.increment()
+                            result.offlineAssetIds.offer(doc.id)
+                        }
+                    }
+                    result.total.increment()
+                }
+            })
         }
+        threads.shutdown()
+        threads.awaitTermination(1, TimeUnit.MINUTES)
         return result
     }
 
@@ -94,7 +105,7 @@ class LocalFileSystemImpl @Autowired constructor(
         result.addAll(files.getValue("dirs").stream().map { f -> "$f/" }.collect(Collectors.toList()))
         result.addAll(files.getValue("files"))
         result.sort()
-        
+
         return result
     }
 

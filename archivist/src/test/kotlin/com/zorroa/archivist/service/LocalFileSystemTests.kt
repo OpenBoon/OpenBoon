@@ -1,10 +1,10 @@
 package com.zorroa.archivist.service
 
+import com.google.common.io.Files
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.LfsRequest
-import com.zorroa.archivist.domain.OnlineFileCheckReq
+import com.zorroa.archivist.domain.OnlineFileCheckRequest
 import com.zorroa.sdk.search.AssetSearch
-import com.zorroa.sdk.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -62,12 +62,24 @@ class LocalFileSystemTests : AbstractTest() {
 
     @Test
     fun testFilesOnline() {
-        addTestAssets("set04/standard")
+        addTestAssets("set04")
         refreshIndex()
 
-        val req = OnlineFileCheckReq(AssetSearch("beer"))
-        val rsp = lfs.onlineFileCheck(req)
-        logger.info(Json.prettyString(rsp))
+        try {
+            Files.move(resources.resolve("images/set04/standard/beer_kettle_01.jpg").toFile(),
+                    resources.resolve("images/set04/standard/beer_kettle_01.jpg.lfs_test").toFile())
 
+            val req = OnlineFileCheckRequest(AssetSearch())
+            val rsp = lfs.onlineFileCheck(req)
+            assertEquals(6, rsp.total.toInt())
+            assertEquals(5,rsp.totalOnline.toInt())
+            assertEquals(1, rsp.totalOffline.toInt())
+            assertEquals(1, rsp.offlineAssetIds.size)
+        }
+        finally {
+            Files.move(resources.resolve("images/set04/standard/beer_kettle_01.jpg.lfs_test").toFile(),
+                    resources.resolve("images/set04/standard/beer_kettle_01.jpg").toFile())
+
+        }
     }
 }

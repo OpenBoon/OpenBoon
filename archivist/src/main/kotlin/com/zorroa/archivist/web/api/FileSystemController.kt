@@ -3,8 +3,8 @@ package com.zorroa.archivist.web.api
 import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.domain.LfsRequest
-import com.zorroa.archivist.domain.OnlineFileCheckReq
-import com.zorroa.archivist.domain.OnlineFileCheckRsp
+import com.zorroa.archivist.domain.OnlineFileCheckRequest
+import com.zorroa.archivist.domain.OnlineFileCheckResponse
 import com.zorroa.archivist.service.LocalFileSystem
 import com.zorroa.sdk.filesystem.ObjectFileSystem
 import com.zorroa.sdk.util.FileUtils
@@ -126,7 +126,7 @@ class FileSystemController @Autowired constructor(
 
     @RequestMapping(value = ["/api/v1/lfs/_online"], method = [RequestMethod.POST])
     @Throws(IOException::class)
-    fun onlineFileCheck(@RequestBody req: OnlineFileCheckReq): OnlineFileCheckRsp {
+    fun onlineFileCheck(@RequestBody req: OnlineFileCheckRequest): OnlineFileCheckResponse {
         return localFileSystem.onlineFileCheck(req)
     }
 
