@@ -136,9 +136,9 @@ class AssetServiceImpl  @Autowired  constructor (
         } else {
 
             for (hit in searchService.search(Pager.first(1), AssetSearch(AssetFilter()
-                    .addToTerms("source.clip.parent", id))
+                    .addToTerms("media.clip.parent", id))
                     .setFields(arrayOf("proxies"))
-                    .setOrder(ImmutableList.of(AssetSearchOrder("origin.timeCreated"))))) {
+                    .setOrder(ImmutableList.of(AssetSearchOrder("_id"))))) {
                 return hit.getAttr("proxies", ProxySchema::class.java)
             }
 
