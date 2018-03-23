@@ -268,6 +268,8 @@ class SettingsServiceImpl @Autowired constructor(
                         SettingValidator(Regex("([\\w\\.]+)(,[\\w\\.]+)*")))
                 .put("archivist.search.keywords.auto.enabled",
                         SettingValidator(booleanValue))
+                .put("archivist.export.maxAssetCount",
+                        SettingValidator(Regex("[\\d]+"), allowNull = true))
                 .put("archivist.export.videoStreamExtensionFallbackOrder",
                         SettingValidator(null))
                 .put("archivist.search.sortFields",
