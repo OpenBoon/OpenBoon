@@ -9,8 +9,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.FileInputStream;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -35,6 +37,20 @@ public class PluginControllerTests  extends MockMvcTest {
 
         Plugin p = Json.deserialize(result.getResponse().getContentAsByteArray(), Plugin.class);
         assertEquals("zorroa-test", p.getName());
+    }
+
+
+    @Test
+    public void testGetProcessor() throws Exception {
+        MockHttpSession session = admin();
+
+        MvcResult result = mvc.perform(get("/api/v1/processors/com.zorroa.core.processor.ImageIngestor")
+                .session(session))
+                .andExpect(status().is(200))
+                .andReturn();
+
+        Map<String, Object> proc = Json.deserialize(result.getResponse().getContentAsByteArray(), Map.class);
+        assertEquals("com.zorroa.core.processor.ImageIngestor", proc.get("name"));
     }
 
 

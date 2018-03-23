@@ -103,7 +103,11 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
     }
 
     override operator fun get(name: String): Processor {
-        return jdbc.queryForObject<Processor>("$GET WHERE processor.str_name=?", MAPPER, name)
+        try {
+            return jdbc.queryForObject<Processor>("$GET WHERE processor.str_name=?", MAPPER, name)
+        } catch (e:EmptyResultDataAccessException) {
+            throw EmptyResultDataAccessException("Unable to find processor $name", 1);
+        }
     }
 
     override operator fun get(id: UUID): Processor {

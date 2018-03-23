@@ -22,6 +22,9 @@ object KJson {
         mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false)
         mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
     }
+
+    val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+
 }
 
 
