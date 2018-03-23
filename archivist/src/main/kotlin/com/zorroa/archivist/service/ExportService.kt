@@ -78,8 +78,8 @@ class ExportServiceImpl @Autowired constructor(
 
         val params = ExportParams(AssetSearch())
         val ids = Lists.newArrayListWithCapacity<String>(64)
-        for (asset in searchService.scanAndScroll(search,
-                properties.getInt("archivist.export.maxAssetCount"))) {
+        val maxAssets = properties.getInt("archivist.export.maxAssetCount").toLong()
+        for (asset in searchService.scanAndScroll(search, maxAssets, clamp=true)) {
             ids.add(asset.id)
 
             // Temp stuff
@@ -149,6 +149,18 @@ class ExportServiceImpl @Autowired constructor(
          */
         val generate = Lists.newArrayList<ProcessorRef>()
         val execute = pipelineService.mungePipelines(PipelineType.Export, spec.processors)
+
+        val appendPipelines = properties.getList("archivist.export.appendPipelines")
+        for (pipelineName in appendPipelines) {
+            val pipeline = pipelineService.get(pipelineName)
+            if (pipeline.type != PipelineType.Export) {
+                throw IllegalArgumentException("The appended pipeline ${pipelineName} is not an export pipeline")
+            }
+            val processors = pluginService.getProcessorRefs(pipeline.processors)
+            if (processors!=null) {
+                execute.addAll(processors)
+            }
+        }
 
         if (spec.compress) {
             execute.add(pluginService.getProcessorRef("com.zorroa.core.exporter.ZipExportPackager",

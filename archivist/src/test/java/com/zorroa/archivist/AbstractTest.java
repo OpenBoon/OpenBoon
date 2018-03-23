@@ -81,6 +81,9 @@ public abstract class AbstractTest {
     protected FolderService folderService;
 
     @Autowired
+    protected JobService jobService;
+
+    @Autowired
     protected ExportService exportService;
 
     @Autowired
