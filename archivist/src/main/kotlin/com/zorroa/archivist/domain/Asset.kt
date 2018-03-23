@@ -7,22 +7,31 @@ import org.elasticsearch.client.Client
 import java.util.*
 import java.util.function.Consumer
 
-class ScanAndScrollAssetIterator(private val client: Client, private val rsp: SearchResponse) : Iterable<Document> {
+class ScanAndScrollAssetIterator(private val client: Client,
+                                 private val rsp: SearchResponse,
+                                 private var maxResults: Long) : Iterable<Document> {
 
     override fun iterator(): Iterator<Document> {
         return object : Iterator<Document> {
 
             internal var hits = rsp.hits.hits
             private var index = 0
+            private var count = 0
+
+            init {
+                if (maxResults == 0L) {
+                    maxResults = rsp.hits.totalHits
+                }
+            }
 
             override fun hasNext(): Boolean {
                 if (index >= hits.size) {
-                    hits = client.prepareSearchScroll(rsp.scrollId).setScroll("5m")
+                    hits = client.prepareSearchScroll(rsp.scrollId).setScroll("1m")
                             .get().hits.hits
                     index = 0
                 }
 
-                val hasMore = index < hits.size
+                val hasMore = index < hits.size && count < maxResults
                 if (!hasMore) {
                     client.prepareClearScroll().addScrollId(rsp.scrollId).execute()
                 }
@@ -36,6 +45,7 @@ class ScanAndScrollAssetIterator(private val client: Client, private val rsp: Se
                 asset.document = hit.source
                 asset.id = hit.id
 
+                count++
                 return asset
             }
 

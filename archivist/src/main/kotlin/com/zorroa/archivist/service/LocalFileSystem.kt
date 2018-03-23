@@ -77,7 +77,7 @@ class LocalFileSystemImpl @Autowired constructor(
 
         val threads =  Executors.newFixedThreadPool(4)
         val result = OnlineFileCheckResponse()
-        for (doc in searchService.scanAndScroll(search, max)) {
+        for (doc in searchService.scanAndScroll(search, max.toLong(), clamp=true)) {
             threads.execute({
                 val path = Paths.get(doc.getAttr("source.path", String::class.java))
                 if (path != null) {

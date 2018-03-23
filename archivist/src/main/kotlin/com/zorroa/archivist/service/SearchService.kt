@@ -61,7 +61,7 @@ interface SearchService {
     fun suggest(text: String): SuggestResponse
     fun getSuggestTerms(text: String): List<String>
 
-    fun scanAndScroll(search: AssetSearch, maxResults: Int): Iterable<Document>
+    fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean=false): Iterable<Document>
 
     /**
      * Execute the AssetSearch with the given Paging object.
@@ -234,17 +234,18 @@ class SearchServiceImpl @Autowired constructor(
         return builder.get()
     }
 
-    override fun scanAndScroll(search: AssetSearch, maxResults: Int): Iterable<Document> {
+    override fun scanAndScroll(search: AssetSearch, maxResults: Long, clamp:Boolean): Iterable<Document> {
         val rsp = client.prepareSearch(alias)
                 .setScroll(TimeValue(60000))
                 .addSort("_doc", SortOrder.ASC)
                 .setQuery(getQuery(search))
                 .setSize(100).execute().actionGet()
 
-        if (maxResults > 0 && rsp.hits.totalHits > maxResults) {
+        if (!clamp && maxResults > 0 && rsp.hits.totalHits > maxResults) {
             throw IllegalArgumentException("Asset search has returned more than $maxResults results.")
         }
-        return ScanAndScrollAssetIterator(client, rsp)
+
+        return ScanAndScrollAssetIterator(client, rsp, maxResults)
     }
 
     private fun isSearchLogged(page: Pager, search: AssetSearch): Boolean {

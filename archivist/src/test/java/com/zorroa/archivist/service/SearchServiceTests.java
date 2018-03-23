@@ -49,6 +49,32 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testScanAndScrollClamp() throws IOException {
+
+        addTestAssets("set04");
+        refreshIndex();
+
+        int count = 0;
+        AssetSearch search = new AssetSearch();
+        for (Document doc: searchService.scanAndScroll(search, 2, true)) {
+            count++;
+        }
+        assertEquals(2, count);
+    }
+
+    @Test(expected = java.lang.IllegalArgumentException.class)
+    public void testScanAndScrollError() throws IOException {
+
+        addTestAssets("set04");
+        refreshIndex();
+
+        int count = 0;
+        AssetSearch search = new AssetSearch();
+        searchService.scanAndScroll(search, 2, false);
+    }
+
+
+    @Test
     public void testSearchPermissionsMiss() throws IOException {
 
         authenticate("user");
