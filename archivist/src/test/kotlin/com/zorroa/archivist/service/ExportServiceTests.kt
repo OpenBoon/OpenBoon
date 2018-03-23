@@ -49,11 +49,11 @@ class ExportServiceTests : AbstractTest() {
                 AssetSearch().setQuery("cats"),
                 Lists.newArrayList<ProcessorRef>(),
                 Maps.newHashMap(), false)
-        val job = exportService!!.create(spec)
+        val job = exportService.create(spec)
 
-        val file1 = exportService!!.createExportFile(job, ExportFileSpec(
+        val file1 = exportService.createExportFile(job, ExportFileSpec(
                 "foo.zip", "application/octet-stream", 100))
-        val file2 = exportService!!.getExportFile(file1.id)
+        val file2 = exportService.getExportFile(file1.id)
         assertEquals(file1, file2)
         assertEquals(file1.jobId, file2.jobId)
         assertEquals(file1.mimeType, file2.mimeType)
@@ -69,13 +69,13 @@ class ExportServiceTests : AbstractTest() {
                 Lists.newArrayList<ProcessorRef>(),
                 Maps.newHashMap(), false)
 
-        val job = exportService!!.create(spec)
+        val job = exportService.create(spec)
         for (i in 0..9) {
-            exportService!!.createExportFile(job, ExportFileSpec(
+            exportService.createExportFile(job, ExportFileSpec(
                     "foo$i.zip", "application/octet-stream", 1024))
         }
 
-        val files = exportService!!.getAllExportFiles(job)
+        val files = exportService.getAllExportFiles(job)
         assertEquals(10, files.size.toLong())
     }
 }
