@@ -20,6 +20,11 @@ def create_build_dir(args):
     if args.clean and os.path.exists(build_dir):
         logger.warn("Removing build dir: %s" % build_dir)
         shutil.rmtree(build_dir)
+        psql = "/Applications/Postgres.app/Contents/Versions/9.6/bin/psql"
+        if os.path.exists(psql):
+            logger.warn("Cleaning database local")
+            cmd = [psql, "-d", os.environ["USER"], "-p", "5432", "-c", "DROP SCHEMA local CASCADE"]
+            subprocess.call(cmd, shell=False)
     args.build_dir = build_dir
     args.template_dir = os.path.join(args.dist, "templates")
     args.rebuild_dir_struct = not os.path.exists(build_dir)
