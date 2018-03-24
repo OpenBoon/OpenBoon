@@ -24,6 +24,8 @@ interface PipelineService {
 
     fun getAll(): List<Pipeline>
 
+    fun getAll(type: PipelineType): List<Pipeline>
+
     fun create(spec: PipelineSpecV): Pipeline
 
     fun get(id: UUID): Pipeline
@@ -93,6 +95,10 @@ class PipelineServiceImpl @Autowired constructor(
 
     override fun getAll(): List<Pipeline> {
         return pipelineDao.getAll()
+    }
+
+    override fun getAll(type: PipelineType): List<Pipeline> {
+        return pipelineDao.getAll(type)
     }
 
     override fun getAll(page: Pager): PagedList<Pipeline> {

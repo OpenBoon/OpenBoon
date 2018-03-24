@@ -9,6 +9,7 @@ import com.zorroa.archivist.service.PipelineService;
 import com.zorroa.archivist.service.PluginService;
 import com.zorroa.archivist.web.gui.forms.SearchImportForm;
 import com.zorroa.sdk.domain.Pager;
+import com.zorroa.sdk.processor.PipelineType;
 import com.zorroa.sdk.processor.ProcessorRef;
 import com.zorroa.sdk.search.AssetSearch;
 import com.zorroa.sdk.util.FileUtils;
@@ -57,7 +58,7 @@ public class ImportGuiController {
         model.addAttribute("tasks", jobService.getAllTasks(id, paging));
         model.addAttribute("serverImportForm", new ServerImportForm());
         model.addAttribute("searchImportForm", new SearchImportForm());
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
         return "import";
     }
 
@@ -67,7 +68,7 @@ public class ImportGuiController {
         Pager paging = new Pager(page);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
         model.addAttribute("serverImportForm", new ServerImportForm());
         model.addAttribute("searchImportForm", new SearchImportForm());
         return "imports";
@@ -81,7 +82,7 @@ public class ImportGuiController {
         Pager paging = new Pager(1);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
         model.addAttribute("searchImportForm", new SearchImportForm());
         model.addAttribute("serverImportForm", new ServerImportForm());
 
@@ -130,7 +131,7 @@ public class ImportGuiController {
         Pager paging = new Pager(1);
         model.addAttribute("page", paging);
         model.addAttribute("imports", importService.getAll(paging));
-        model.addAttribute("pipelines", pipelineService.getAll());
+        model.addAttribute("pipelines", pipelineService.getAll(PipelineType.Import));
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("search_errors", true);

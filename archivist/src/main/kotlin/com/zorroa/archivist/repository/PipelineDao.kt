@@ -20,10 +20,12 @@ import java.util.*
 interface PipelineDao : GenericNamedDao<Pipeline, PipelineSpecV> {
 
     fun getStandard(type: PipelineType): Pipeline
+
+    fun getAll(type: PipelineType): List<Pipeline>
 }
 
 @Repository
-open class PipelineDaoImpl : AbstractDao(), PipelineDao {
+class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun create(spec: PipelineSpecV): Pipeline {
         Preconditions.checkNotNull(spec.name)
@@ -77,7 +79,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
         try {
             return jdbc.queryForObject<Pipeline>("SELECT * FROM pipeline WHERE pk_pipeline=?", MAPPER, id)
         } catch (e: EmptyResultDataAccessException) {
-            throw EmptyResultDataAccessException("Failed to get pipeline: id=" + id, 1)
+            throw EmptyResultDataAccessException("Failed to get pipeline: id=$id", 1)
         }
 
     }
@@ -86,7 +88,7 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
         try {
             return jdbc.queryForObject<Pipeline>("SELECT * FROM pipeline WHERE str_name=?", MAPPER, name)
         } catch (e: EmptyResultDataAccessException) {
-            throw EmptyResultDataAccessException("Failed to get pipeline: id=" + name, 1)
+            throw EmptyResultDataAccessException("Failed to get pipeline: id=$name", 1)
         }
 
     }
@@ -101,6 +103,10 @@ open class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun getAll(): List<Pipeline> {
         return jdbc.query("SELECT * FROM pipeline", MAPPER)
+    }
+
+    override fun getAll(type: PipelineType): List<Pipeline> {
+        return jdbc.query("SELECT * FROM pipeline WHERE int_type=?", MAPPER, type.ordinal)
     }
 
     override fun getAll(paging: Pager): PagedList<Pipeline> {
