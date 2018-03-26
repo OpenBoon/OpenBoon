@@ -40,6 +40,7 @@ def copy_sub_template(args):
     :param args:
     :return:
     """
+    logger.info("Overlaying sub-template: %s", args.template)
     src = os.path.join(args.template_dir, args.template)
     if not os.path.exists(src):
         return
@@ -49,9 +50,15 @@ def copy_sub_template(args):
                 dst_dir = os.path.join(args.build_dir, root.split("/" + args.template + "/")[1] + "/" + d)
             except IndexError:
                 dst_dir = os.path.join(args.build_dir, d)
-            print "dir: %s" % dst_dir
-            if not os.path.exists(dst_dir):
-                os.makedirs(dst_dir)
+            full_path = "%s/%s" % (root, d)
+            if os.path.islink(full_path):
+                logger.info("linking dir: %s" % full_path)
+                linkto = os.readlink(full_path)
+                os.symlink(linkto, dst_dir)
+            else:
+                if not os.path.exists(dst_dir):
+                    logger.info("mkdir dir: %s" % dst_dir)
+                    os.makedirs(dst_dir)
         for fname in files:
             if fname.startswith("."):
                 continue

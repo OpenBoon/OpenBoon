@@ -2,7 +2,6 @@
   "application": "archivist",
   "jar": "archivist.jar",
   "commands": [
-    ["cp", "-r", "%{src_home}/zorroa-js-curator/bin", "%{build_dir}/web/curator"]
   ],
   "dirs": [
     "bin",
