@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.sdk.config.ApplicationProperties
@@ -94,10 +93,7 @@ class ImportServiceImpl @Autowired constructor(
         /*
          * The first node is an expand collector which allows us to execute in parallel.
          */
-        execute.add(
-                ProcessorRef()
-                        .setClassName("com.zorroa.core.collector.ExpandCollector")
-                        .setLanguage("java"))
+        execute.add(pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector"))
 
 
         val pipeline = Lists.newArrayList<ProcessorRef>()
@@ -106,11 +102,8 @@ class ImportServiceImpl @Autowired constructor(
         /*
          * Append the index document collector to add stuff to the DB.
          */
-        pipeline.add(
-                ProcessorRef()
-                        .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
-                        .setLanguage("java")
-                        .setArgs(ImmutableMap.of<String, Any>("importId", job.jobId)))
+        pipeline.add(pluginService.getProcessorRef("com.zorroa.core.collector.IndexCollector",
+                mapOf("importId" to job.jobId)))
 
         /*
          * Set the pipeline as the sub execute to the expand node.
@@ -146,19 +139,18 @@ class ImportServiceImpl @Autowired constructor(
         val job = jobService.launch(jspec)
 
 
-        val expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector")
+        val expand = pluginService.getProcessorRef("com.zorroa.core.collector.ExpandCollector",
+                mapOf("batchSize" to spec.batchSize))
+
         val execute = Lists.newArrayList(expand)
         expand.execute = pipelineService.mungePipelines(
-                PipelineType.Import, spec.getProcessors())
+                PipelineType.Import, spec.processors)
 
         /**
          * At the end we add an IndexDocumentCollector to index the results of our job.
          */
-        expand.addToExecute(
-                ProcessorRef()
-                        .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
-                        .setLanguage("java")
-                        .setArgs(ImmutableMap.of<String, Any>("importId", job.jobId)))
+        expand.addToExecute(pluginService.getProcessorRef("com.zorroa.core.collector.IndexCollector",
+                mapOf("importId" to job.jobId)))
 
         /**
          * Now attach the pipeline to each generator, be sure to validate each processor

@@ -25,7 +25,9 @@ public class ImportSpec {
     /**
      * A custom pipeline to run the assets through. Can be null.
      */
-    public List<ProcessorRef> processors;
+    private List<ProcessorRef> processors;
+
+    private int batchSize = 25;
 
     public List<ProcessorRef> getProcessors() {
         return processors;
@@ -60,6 +62,15 @@ public class ImportSpec {
 
     public ImportSpec setGenerators(List<ProcessorRef> generators) {
         this.generators = generators;
+        return this;
+    }
+
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    public ImportSpec setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
         return this;
     }
 }
