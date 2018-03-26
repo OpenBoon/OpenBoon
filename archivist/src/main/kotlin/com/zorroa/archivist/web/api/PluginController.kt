@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.domain.Processor
 import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.service.PluginService
-import com.zorroa.archivist.util.KJson.UUID_REGEXP
+import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
