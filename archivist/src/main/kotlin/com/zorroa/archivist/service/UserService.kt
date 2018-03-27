@@ -7,7 +7,6 @@ import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
-import com.zorroa.archivist.repository.UserDaoCache
 import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.*
@@ -24,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import java.util.regex.Pattern
 import java.util.stream.Collectors
+import javax.annotation.PostConstruct
 
 /**
  * Created by chambers on 7/13/15.
@@ -99,7 +99,6 @@ interface UserService {
 
 @Service
 class UserRegistryServiceImpl @Autowired constructor(
-        private val userCacheDao: UserDaoCache,
         private val properties: ApplicationProperties
 ): UserRegistryService {
 
@@ -187,6 +186,20 @@ class UserServiceImpl @Autowired constructor(
     internal lateinit var logService: EventLogService
 
     private val PASS_MIN_LENGTH = 8
+
+    @PostConstruct
+    fun initialize() {
+        try {
+            val key = userDao.getHmacKey("admin")
+            if (key.isEmpty()) {
+                logger.info("Regenerating admin key")
+                userDao.generateHmacKey("admin")
+            }
+        }
+        catch (e:Exception) {
+            logger.warn("Failed to generate admin HMAC key: {}", e.message)
+        }
+    }
 
     override fun create(builder: UserSpec): User {
         return create(builder, SOURCE_LOCAL)

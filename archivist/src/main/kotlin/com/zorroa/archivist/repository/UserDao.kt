@@ -209,8 +209,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun getHmacKey(username: String): String {
-        return jdbc.queryForObject("SELECT hmac_key FROM users WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
+        val result =  jdbc.queryForObject("SELECT hmac_key FROM users WHERE (str_username=? OR str_email=?) AND bool_enabled=?",
                 String::class.java, username, username, true)
+        if (result == null) {
+            return ""
+        }
+        else {
+            return result
+        }
     }
 
     override fun generateHmacKey(username: String): Boolean {
