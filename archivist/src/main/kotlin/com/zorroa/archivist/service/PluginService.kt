@@ -203,6 +203,8 @@ class PluginServiceImpl @Autowired constructor(
             return
         }
 
+        logger.info("Installing bundled pipeline: {}", path)
+
         try {
             val pipelines = Json.Mapper.readValue<List<Pipeline>>(path.toFile(),
                     object : TypeReference<List<Pipeline>>() {
@@ -213,7 +215,7 @@ class PluginServiceImpl @Autowired constructor(
                     continue
                 }
                 try {
-                    logger.info("Installing bundled pipeline: {}, standard={}", pl.name, pl.isStandard)
+                    logger.info("Installing bundled pipeline: {} {}, standard={}", pl.name, pl.isStandard)
                     pipelineDao.create(PipelineSpecV()
                             .setStandard(pl.isStandard)
                             .setName(pl.name)
