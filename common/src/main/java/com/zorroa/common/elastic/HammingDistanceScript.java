@@ -21,7 +21,6 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     private static final double NORM = 100.0;
 
     private String field;
-    private String fieldDotRaw;
     private final List<String> charHashes;
     private final List<Float> weights;
     private int length = 0;
@@ -37,10 +36,6 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public HammingDistanceScript(Map<String, Object> params) {
         super();
         field = (String) params.get("field");
-        if (field.endsWith(".raw")) {
-            field = field.replaceAll("\\.raw$", "");
-        }
-        fieldDotRaw = field + ".raw";
         minScore = (int) params.getOrDefault("minScore", 1) / NORM;
         resolution = 15;
 
@@ -134,10 +129,7 @@ public final class HammingDistanceScript extends AbstractDoubleSearchScript {
     public double runAsDouble() {
         ScriptDocValues.Strings strings;
 
-        if (doc().containsKey(fieldDotRaw)) {
-            strings = docFieldStrings(fieldDotRaw);
-        }
-        else if (doc().containsKey(field)) {
+        if (doc().containsKey(field)) {
             strings = docFieldStrings(field);
         }
         else {
