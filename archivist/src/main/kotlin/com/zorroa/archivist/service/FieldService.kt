@@ -61,12 +61,11 @@ class FieldServiceImpl @Autowired constructor(
         result["long"] = mutableSetOf()
         result["point"] = mutableSetOf()
         result["keywords"] = mutableSetOf()
-        result["keywords-auto"] = mutableSetOf()
         result["keywords-boost"] = mutableSetOf()
         result["similarity"] = mutableSetOf()
 
         result.getValue("keywords-boost")
-                .addAll(properties.getString(PROP_STATIC_KEYWORD_FIELD)
+                .addAll(properties.getString(PROP_BOOST_KEYWORD_FIELD)
                         .splitToSequence(",")
                         .map { it.trim() }
                         .filter { it.isNotEmpty() }
@@ -188,7 +187,7 @@ class FieldServiceImpl @Autowired constructor(
         /**
          * The properties prefix used to define keywords fields.
          */
-        private const val PROP_STATIC_KEYWORD_FIELD = "archivist.search.keywords.boost"
+        private const val PROP_BOOST_KEYWORD_FIELD = "archivist.search.keywords.boost"
     }
 }
 

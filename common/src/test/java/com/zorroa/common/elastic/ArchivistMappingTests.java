@@ -128,8 +128,7 @@ public class ArchivistMappingTests extends AbstractTest {
     public void testHashMapping() throws ExecutionException, InterruptedException, IOException {
 
         Source source = new Source(getTestImagePath("set01/standard/faces.jpg"));
-        source.setAttr("test.hash", "AB123 AB123");
-        source.setAttr("test.byte", "AB123 AB123");
+        source.setAttr("test.shash", "AB123 AB123");
 
         client.prepareIndex("archivist", "asset", source.getId())
                 .setSource(Json.serialize(source.getDocument()))
@@ -140,20 +139,7 @@ public class ArchivistMappingTests extends AbstractTest {
                 .setIndex("archivist")
                 .setType("asset")
                 .setId(source.getId())
-                .setSelectedFields("test.hash")
-                .setOffsets(true)
-                .setPositions(true)
-                .setTermStatistics(true)
-                .setFieldStatistics(true)
-                .execute().get();
-        assertEquals(Lists.newArrayList("AB123 AB123"), getTerms(tv));
-
-
-        tv = client.prepareTermVectors()
-                .setIndex("archivist")
-                .setType("asset")
-                .setId(source.getId())
-                .setSelectedFields("test.byte")
+                .setSelectedFields("test.shash")
                 .setOffsets(true)
                 .setPositions(true)
                 .setTermStatistics(true)

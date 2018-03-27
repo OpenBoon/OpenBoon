@@ -50,16 +50,6 @@ public class HammingDistanceScriptTests extends AbstractTest {
     }
 
     @Test
-    public void testIgnoreDotRaw() {
-        Map<String, Object> map = Maps.newHashMap();
-        map.put("field", "charHash.raw");
-        map.put("hashes", ImmutableList.of("AAAA"));
-
-        HammingDistanceScript script = new HammingDistanceScript(map);
-        assertEquals("charHash", script.getField());
-    }
-
-    @Test
     public void testCharHammingHalfMatch() {
         Map<String, Object> map = Maps.newHashMap();
         map.put("field", "charHash");
