@@ -14,7 +14,6 @@ import com.zorroa.sdk.domain.Pager;
 import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.filesystem.ObjectFile;
 import com.zorroa.sdk.filesystem.ObjectFileSystem;
-import com.zorroa.sdk.processor.Element;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.search.AssetFilter;
 import com.zorroa.sdk.search.AssetScript;
@@ -29,7 +28,10 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.FileInputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -49,7 +51,7 @@ public class AssetControllerTests extends MockMvcTest {
 
     @Before
     public void init() {
-        searchService.invalidateFields();
+        fieldService.invalidateFields();
     }
 
     @Test
@@ -72,31 +74,6 @@ public class AssetControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testGetElementFields() throws Exception {
-
-        MockHttpSession session = admin();
-        Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        Document asset1 = assetDao.index(builder);
-        refreshIndex();
-
-        Element e = new Element("test", asset1);
-        e.setAttr("foo.bar", "bing");
-        e.setId(UUID.randomUUID().toString());
-        assetService.index(e);
-        refreshIndex();
-
-        MvcResult result = mvc.perform(get("/api/v1/elements/_fields")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Map<String, Set<String>> fields = Json.Mapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<Map<String, Set<String>>>() {});
-        assertTrue(fields.get("string").size() > 0);
-    }
-
-    @Test
     public void testHideAndUnhideField() throws Exception {
 
         MockHttpSession session = admin();
@@ -113,8 +90,8 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        searchService.invalidateFields();
-        Map<String,Set<String>> fields = searchService.getFields("asset");
+        fieldService.invalidateFields();
+        Map<String,Set<String>> fields = fieldService.getFields("asset");
         for (String field: fields.get("string")) {
             assertFalse(field.startsWith("source"));
         }
@@ -130,7 +107,7 @@ public class AssetControllerTests extends MockMvcTest {
                 new TypeReference<Map<String, Object>>() {});
         assertTrue((Boolean) status.get("success"));
 
-        Map<String,Set<String>> stringFields = searchService.getFields("asset");
+        Map<String,Set<String>> stringFields = fieldService.getFields("asset");
         assertNotEquals(fields, stringFields);
     }
 
@@ -196,10 +173,14 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
-            source.addKeywords("reflection");
+            source.addToKeywords("media", "reflection");
+            logger.info(Json.prettyString(source));
         }
         addTestAssets(sources);
+
         refreshIndex();
+        logger.info(Json.prettyString(fieldService.getFields("asset")));
+
 
         MvcResult result = mvc.perform(post("/api/v3/assets/_suggest")
                 .session(session)
@@ -220,7 +201,7 @@ public class AssetControllerTests extends MockMvcTest {
         MockHttpSession session = admin();
         List<Source> sources = getTestAssets("set04/canyon");
         for (Source source: sources) {
-            source.addKeywords("reflection");
+            source.addToKeywords("media","reflection");
             source.setAttr("thing.suggest", "resume");
         }
         addTestAssets(sources);
@@ -261,34 +242,6 @@ public class AssetControllerTests extends MockMvcTest {
             assertEquals(asset.getId(), json.get("_id"));
         }
     }
-
-    @Test
-    public void testGetElements() throws Exception {
-
-        MockHttpSession session = admin();
-        Source builder = new Source(getTestImagePath("set04/standard/beer_kettle_01.jpg"));
-        Document asset1 = assetDao.index(builder);
-        refreshIndex();
-
-        Element e = new Element("test", asset1);
-        e.setAttr("foo.bar", "bing");
-        e.setId(UUID.randomUUID().toString());
-        assetService.index(e);
-        refreshIndex();
-
-        MvcResult result = mvc.perform(get("/api/v1/assets/" + asset1.getId() + "/_elements")
-                .session(session)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        PagedList<Document> docs = Json.Mapper.readValue(
-                result.getResponse().getContentAsString(),
-                new TypeReference<PagedList<Document>>() {});
-
-        assertEquals(1, docs.size());
-    }
-
 
     @Test
     public void testDelete() throws Exception {

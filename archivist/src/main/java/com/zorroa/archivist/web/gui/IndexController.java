@@ -60,6 +60,9 @@ public class IndexController {
     SearchService searchService;
 
     @Autowired
+    FieldService fieldService;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -145,7 +148,7 @@ public class IndexController {
     @RequestMapping("/admin/gui/fields")
     public String fields(Model model) {
         standardModel(model);
-        model.addAttribute("fields", searchService.getFields("asset"));
+        model.addAttribute("fields", fieldService.getFields("asset"));
         return "fields";
     }
 

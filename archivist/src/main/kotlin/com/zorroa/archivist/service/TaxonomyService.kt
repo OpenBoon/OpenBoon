@@ -86,6 +86,9 @@ class TaxonomyServiceImpl @Autowired constructor(
     internal lateinit var searchService: SearchService
 
     @Autowired
+    internal lateinit var fieldService: FieldService
+
+    @Autowired
     internal lateinit var userRegistryService: UserRegistryService
 
     @Value("\${zorroa.cluster.index.alias}")
@@ -257,7 +260,6 @@ class TaxonomyServiceImpl @Autowired constructor(
                         .setTaxId(tax.taxonomyId)
                         .setUpdatedTime(updateTime)
                         .setKeywords(keywords)
-                        .setSuggest(keywords)
 
                 var batchCounter = 1
                 try {
@@ -302,7 +304,7 @@ class TaxonomyServiceImpl @Autowired constructor(
                 tax.folderId, assetTotal.toLong(), folderTotal.toInt())
 
         if (assetTotal.toLong() > 0) {
-            searchService.invalidateFields()
+            fieldService.invalidateFields()
         }
 
         return ImmutableMap.of(

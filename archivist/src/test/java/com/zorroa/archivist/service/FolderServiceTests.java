@@ -125,7 +125,7 @@ public class FolderServiceTests extends AbstractTest {
 
         assertEquals(2, searchService.search(new AssetSearch(
                 new AssetFilter().addToTerms("zorroa.links.folder", folder.getId()))).getHits().getTotalHits());
-        searchService.invalidateFields();
+        fieldService.invalidateFields();
         assertEquals(2, searchService.search(new AssetSearch("Folder")).getHits().getTotalHits());
 
         assertTrue(results.get("failed").isEmpty());

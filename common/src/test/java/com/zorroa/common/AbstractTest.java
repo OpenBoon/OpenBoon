@@ -65,7 +65,7 @@ public abstract class AbstractTest {
                     Source b = new Source(f);
                     b.setAttr("user.rating", 4);
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
-                    b.addKeywords(b.getAttr("source.filename", String.class));
+                    b.addToKeywords("source", b.getAttr("source.filename", String.class));
                     result.add(b);
                 }
             }

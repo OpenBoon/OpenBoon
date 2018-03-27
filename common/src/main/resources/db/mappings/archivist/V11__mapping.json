@@ -7,7 +7,7 @@
   "settings": {
     "index": {
       "query": {
-        "default_field": "keywords"
+        "default_field": "keywords.all"
       }
     },
     "analysis": {
@@ -95,31 +95,6 @@
         "enabled": false
       },
       "properties": {
-        "suggest": {
-          "type": "completion"
-        },
-        "keywords": {
-          "type": "string",
-          "copy_to": "suggest",
-          "fields": {
-            "raw": {
-              "type": "string",
-              "index": "not_analyzed"
-            }
-          }
-        },
-        "media": {
-          "properties": {
-            "clip": {
-              "properties": {
-                "parent": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
-            }
-          }
-        },
         "zorroa": {
           "properties": {
             "timeCreated": {
@@ -156,6 +131,33 @@
       },
       "dynamic_templates": [
         {
+          "keywords_template": {
+            "match_mapping_type": "string",
+            "match": "keywords",
+            "mapping": {
+              "type": "string",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "suggest": {
+                  "type": "completion"
+                }
+              }
+            }
+          }
+        },
+        {
+          "suggest_template": {
+            "match_mapping_type": "string",
+            "match": "suggest",
+            "mapping": {
+              "type": "completion"
+            }
+          }
+        },
+        {
           "shape_template": {
             "match_pattern": "regex",
             "match": "^.+Shape$|^shape$",
@@ -191,15 +193,6 @@
           }
         },
         {
-          "suggest_template": {
-            "match_mapping_type": "string",
-            "match": "suggest",
-            "mapping": {
-              "type": "completion"
-            }
-          }
-        },
-        {
           "content_template": {
             "match_mapping_type": "string",
             "match": "content",
@@ -212,18 +205,7 @@
         {
           "hash_template": {
             "match_mapping_type": "string",
-            "match_pattern": "regex",
-            "match": "^hash$|^byte$",
-            "mapping": {
-              "index": "not_analyzed",
-              "type": "string"
-            }
-          }
-        },
-        {
-          "similarity": {
-            "match_mapping_type": "string",
-            "path_match": "similarity.*",
+            "match": "shash",
             "mapping": {
               "index": "not_analyzed",
               "type": "string"
@@ -248,84 +230,6 @@
               "type": "date",
               "index": "not_analyzed",
               "format": "yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z||yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||yyyy-MM-dd HH:mm:ss Z||yyyy-MM-dd Z||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||MM/dd/yyyy||MM-dd-yyyy"
-            }
-          }
-        },
-        {
-          "string_template": {
-            "match": "*",
-            "match_mapping_type": "string",
-            "mapping": {
-              "type": "string",
-              "fields": {
-                "raw": {
-                  "type": "string",
-                  "index": "not_analyzed"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "element": {
-      "_parent": {
-        "type": "asset"
-      },
-      "_all": {
-        "enabled": false
-      },
-      "dynamic": true,
-      "_timestamp": {
-        "enabled": false
-      },
-      "dynamic_templates": [
-        {
-          "shape_template": {
-            "match_pattern": "regex",
-            "match": "^.+Shape$|^shape$",
-            "mapping": {
-              "type": "geo_shape"
-            }
-          }
-        },
-        {
-          "point_template": {
-            "match_pattern": "regex",
-            "match": "^.+Point|^point$",
-            "mapping": {
-              "type": "geo_point"
-            }
-          }
-        },
-        {
-          "content_template": {
-            "match_mapping_type": "string",
-            "match": "content",
-            "mapping": {
-              "analyzer": "content",
-              "type": "string"
-            }
-          }
-        },
-        {
-          "hash_template": {
-            "match_mapping_type": "string",
-            "match_pattern": "regex",
-            "match": "^hash$|^byte$",
-            "mapping": {
-              "index": "not_analyzed",
-              "type": "string"
-            }
-          }
-        },
-        {
-          "similarity": {
-            "match_mapping_type": "string",
-            "path_match": "similarity.*",
-            "mapping": {
-              "index": "not_analyzed",
-              "type": "string"
             }
           }
         },

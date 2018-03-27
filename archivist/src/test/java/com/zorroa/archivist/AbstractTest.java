@@ -1,6 +1,7 @@
 package com.zorroa.archivist;
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.zorroa.archivist.config.ArchivistConfiguration;
@@ -19,7 +20,7 @@ import com.zorroa.common.elastic.ElasticClientUtils;
 import com.zorroa.sdk.domain.Proxy;
 import com.zorroa.sdk.processor.Source;
 import com.zorroa.sdk.schema.ProxySchema;
-import com.zorroa.sdk.util.AssetUtils;
+import com.zorroa.sdk.schema.SourceSchema;
 import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
 import org.elasticsearch.client.Client;
@@ -91,6 +92,9 @@ public abstract class AbstractTest {
 
     @Autowired
     protected SearchService searchService;
+
+    @Autowired
+    protected FieldService fieldService;
 
     @Autowired
     protected PluginService pluginService;
@@ -296,7 +300,6 @@ public abstract class AbstractTest {
                 if (SUPPORTED_FORMATS.contains(FileUtils.extension(f.getPath()).toLowerCase())) {
                     Source b = new Source(f);
                     b.setAttr("test.path", getTestImagePath(subdir).toAbsolutePath().toString());
-                    b.addKeywords(b.getAttr("source.filename", String.class));
 
                     String id = UUID.randomUUID().toString();
 
@@ -328,10 +331,14 @@ public abstract class AbstractTest {
     }
 
     public void addTestAssets(List<Source> builders) {
-        for (Source builder: builders) {
-            logger.info("Adding test asset: {}", builder.getPath().toString());
-            builder.addKeywords(builder.getAttr("source.filename", String.class));
-            assetService.index(builder);
+        for (Source source: builders) {
+            SourceSchema schema = source.getSourceSchema();
+
+            logger.info("Adding test asset: {}", source.getPath().toString());
+            source.addToKeywords("source", ImmutableList.of(
+                    source.getSourceSchema().getFilename(),
+                    source.getSourceSchema().getExtension()));
+            assetService.index(source);
         }
         refreshIndex();
     }

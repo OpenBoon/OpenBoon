@@ -48,7 +48,8 @@ class AssetController @Autowired constructor(
         private val logService: EventLogService,
         private val imageService: ImageService,
         private val ofs: ObjectFileSystem,
-        private val commandService: CommandService
+        private val commandService: CommandService,
+        private val fieldService: FieldService
 ){
 
     /**
@@ -63,13 +64,8 @@ class AssetController @Autowired constructor(
     fun getFields(response: HttpServletResponse) : Map<String, Set<String>> {
         response.setHeader("Cache-Control", CacheControl.maxAge(
                 30, TimeUnit.SECONDS).cachePrivate().headerValue)
-        return searchService.getFields("asset")
+        return fieldService.getFields("asset")
     }
-
-    val elementFields: Map<String, Set<String>>
-        @GetMapping(value = ["/api/v1/elements/_fields"])
-        @Throws(IOException::class)
-        get() = searchService.getFields("element")
 
     val mapping: Map<String, Any>
         @GetMapping(value = ["/api/v1/assets/_mapping"])
@@ -261,14 +257,14 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun unhideField(@RequestBody update: HideField): Any {
         return HttpUtils.status("field", "hide",
-                searchService.updateField(update.setHide(true).setManual(true)))
+                fieldService.updateField(update.setHide(true).setManual(true)))
     }
 
     @DeleteMapping(value = ["/api/v1/assets/_fields/hide"])
     @Throws(IOException::class)
     fun hideField(@RequestBody update: HideField): Any {
         return HttpUtils.status("field", "unhide",
-                searchService.updateField(update.setHide(false)))
+                fieldService.updateField(update.setHide(false)))
     }
 
     @PostMapping(value = ["/api/v2/assets/_count"], produces = [MediaType.APPLICATION_JSON_VALUE])

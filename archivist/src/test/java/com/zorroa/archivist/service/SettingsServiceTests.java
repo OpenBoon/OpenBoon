@@ -42,10 +42,8 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test(expected=ArchivistWriteException.class)
     public void testSetRegexFailure() {
-        assertEquals("true",
-                settingsService.get("archivist.search.keywords.auto.enabled").getCurrentValue());
         settingsService.setAll(ImmutableMap.of(
-                "archivist.search.keywords.auto.enabled", "Boing!"));
+                "archivist.search.keywords.boost", "Boing!"));
     }
 
     @Test(expected=ArchivistWriteException.class)
@@ -79,15 +77,15 @@ public class SettingsServiceTests extends AbstractTest {
 
     @Test
     public void testGet() {
-        String name = "archivist.search.keywords.auto.enabled";
+        String name = "archivist.search.sortFields";
         Setting setting = settingsService.get(name);
         assertEquals(name, setting.getName());
         assertEquals("Search Settings", setting.getCategory());
-        assertEquals("Automatically detect and utilize fields in keyword searches.",
+        assertEquals("The default sort fields in the format of field:direction,field:direction. Score is always first.",
                 setting.getDescription());
         assertTrue(setting.isLive());
-        assertEquals("true", setting.getCurrentValue());
-        assertEquals("true", setting.getDefaultValue());
+        assertEquals("zorroa.timeCreated:DESC", setting.getCurrentValue());
+        assertEquals("zorroa.timeCreated:DESC", setting.getDefaultValue());
         assertTrue(setting.isDefault());
     }
 

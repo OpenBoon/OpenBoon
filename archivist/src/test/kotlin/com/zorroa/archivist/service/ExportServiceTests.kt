@@ -16,14 +16,10 @@ import com.zorroa.sdk.util.Json
 import com.zorroa.sdk.zps.ZpsScript
 import org.junit.Before
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
 import kotlin.test.assertEquals
 
 class ExportServiceTests : AbstractTest() {
-
-    @Autowired
-    internal lateinit var jobExecutorService: JobExecutorService
 
     internal var spec: ExportSpec? = null
     internal var asset: Document? = null
@@ -31,7 +27,7 @@ class ExportServiceTests : AbstractTest() {
     @Before
     fun init() {
         val source = Source(testImagePath.resolve("beer_kettle_01.jpg"))
-        source.addKeywords("cats")
+        source.addToKeywords("media", "cats")
         asset = assetService.index(source)
         refreshIndex()
     }
