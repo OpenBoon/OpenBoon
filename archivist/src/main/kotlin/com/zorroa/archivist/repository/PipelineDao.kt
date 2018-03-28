@@ -22,6 +22,8 @@ interface PipelineDao : GenericNamedDao<Pipeline, PipelineSpecV> {
     fun getStandard(type: PipelineType): Pipeline
 
     fun getAll(type: PipelineType): List<Pipeline>
+
+    fun count(type: PipelineType): Long
 }
 
 @Repository
@@ -36,18 +38,14 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             spec.description = spec.name + " " +
                     spec.type + " pipeline created by " + getUsername()
         }
-
-
-        if (spec.isStandard) {
-            jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=? AND int_type=?",
-                    false, true, spec.type.ordinal)
-        }
-
         /*
          * If there are no pipelines, then this one is the standard.
          */
-        if (count() == 0L) {
+        if (count(spec.type) == 0L) {
             spec.isStandard = true
+        }
+        if (spec.isStandard) {
+            clearStandard(spec.type)
         }
 
         val id = uuid1.generate()
@@ -72,7 +70,11 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         } catch (e: EmptyResultDataAccessException) {
             throw EmptyResultDataAccessException("Failed to find a standard pipeline", 1)
         }
+    }
 
+    private fun clearStandard(type: PipelineType) : Boolean {
+        return jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=? AND int_type=?",
+                    false, true, type.ordinal) > 0
     }
 
     override fun get(id: UUID): Pipeline {
@@ -119,17 +121,13 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     override fun update(id: UUID, spec: Pipeline): Boolean {
         // Unset standard if its set.
         if (spec.isStandard) {
-            jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=?",
-                    false, true)
-        }
-        var incrementVersion = 0
-        if (spec.versionUp != null && spec.versionUp!!) {
-            incrementVersion = 1
+            jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=? AND int_type=?",
+                    false, true, spec.type.ordinal)
         }
 
         return jdbc.update(UPDATE, spec.name,
                 Json.serializeToString(spec.processors), spec.description,
-                spec.isStandard, incrementVersion, id) == 1
+                spec.isStandard, id) == 1
     }
 
     override fun delete(id: UUID): Boolean {
@@ -138,6 +136,10 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun count(): Long {
         return jdbc.queryForObject("SELECT COUNT(1) FROM pipeline", Long::class.java)
+    }
+
+    override fun count(type: PipelineType): Long {
+        return jdbc.queryForObject("SELECT COUNT(1) FROM pipeline WHERE int_type=?", Long::class.java, type.ordinal)
     }
 
     companion object {
@@ -149,7 +151,6 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             result.processors = Json.deserialize<List<ProcessorRef>>(rs.getString("json_processors"), ProcessorRef.LIST_OF)
             result.type = PipelineType.fromObject(rs.getInt("int_type"))
             result.description = rs.getString("str_description")
-            result.version = rs.getInt("int_version")
             result
         }
 
@@ -165,7 +166,6 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
                 "str_name",
                 "json_processors",
                 "str_description",
-                "bool_standard",
-                "int_version=int_version+?")
+                "bool_standard")
     }
 }

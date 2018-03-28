@@ -20,10 +20,6 @@ public class Pipeline implements Loggable<UUID> {
      */
     private UUID id;
 
-    private Boolean versionUp;
-
-    private int version;
-
     @NotNull
     private PipelineType type;
 
@@ -73,24 +69,6 @@ public class Pipeline implements Loggable<UUID> {
 
     public Pipeline setProcessors(List<ProcessorRef> processors) {
         this.processors = processors;
-        return this;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public Pipeline setVersion(int version) {
-        this.version = version;
-        return this;
-    }
-
-    public Boolean getVersionUp() {
-        return versionUp;
-    }
-
-    public Pipeline setVersionUp(Boolean versionUp) {
-        this.versionUp = versionUp;
         return this;
     }
 
