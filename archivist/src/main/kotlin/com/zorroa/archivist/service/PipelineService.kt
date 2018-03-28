@@ -68,6 +68,19 @@ class PipelineServiceImpl @Autowired constructor(
          */
         spec.processors = validateProcessors(spec.type, spec.processors)
 
+        /*
+         * If there are no pipelines, then this one is the standard.
+         */
+        if (pipelineDao.count(spec.type) == 0L) {
+            spec.isStandard = true
+        }
+
+        if (spec.isStandard) {
+            logger.info("'{}' will be new standard for '{}' pipelines",
+                    spec.name, spec.type)
+            pipelineDao.clearStandard(spec.type)
+        }
+
         val p = pipelineDao.create(spec)
         event.afterCommit {
             if (getAuthentication() != null) {
@@ -110,6 +123,10 @@ class PipelineServiceImpl @Autowired constructor(
 
         val validated = validateProcessors(pl.type, spec.processors)
         spec.processors = validated
+
+        if (spec.isStandard && !pl.isStandard) {
+            pipelineDao.clearStandard(pl.type)
+        }
 
         val result = pipelineDao.update(id, spec)
         if (result) {

@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.common.collect.Maps
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.repository.PipelineDao
 import com.zorroa.archivist.repository.PluginDao
 import com.zorroa.archivist.repository.ProcessorDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
@@ -75,9 +74,11 @@ class PluginServiceImpl @Autowired constructor(
         private val properties: ApplicationProperties,
         private val pluginDao: PluginDao,
         private val processorDao: ProcessorDao,
-        private val pipelineDao: PipelineDao,
         sharedData: SharedData
 ) : PluginService {
+
+    @Autowired
+    private lateinit var pipelineService: PipelineService
 
     private val pluginRegistry: PluginRegistry = PluginRegistry(sharedData)
     private val pluginPath: Path = sharedData.pluginPath
@@ -156,8 +157,8 @@ class PluginServiceImpl @Autowired constructor(
             val pipeline: Pipeline
             try {
                 // remove the old one
-                pipeline = pipelineDao.get(pl.name)
-                val result = pipelineDao.delete(pipeline.id)
+                pipeline = pipelineService.get(pl.name)
+                val result = pipelineService.delete(pipeline.id)
                 if (!result) {
                     // its the standard pipeline, just ignore for now
                     continue
@@ -170,7 +171,7 @@ class PluginServiceImpl @Autowired constructor(
              * Update the pipeline and validate the processors.
              */
             try {
-                pipelineDao.create(PipelineSpecV()
+                pipelineService.create(PipelineSpecV()
                         .setName(pl.name)
                         .setDescription(pl.description)
                         .setProcessors(pl.processors.stream().map { ref -> getProcessorRef(ref) }.collect(Collectors.toList()))
@@ -211,12 +212,12 @@ class PluginServiceImpl @Autowired constructor(
 
                     })
             for (pl in pipelines) {
-                if (pipelineDao.exists(pl.name)) {
+                if (pipelineService.exists(pl.name)) {
                     continue
                 }
                 try {
                     logger.info("Installing bundled pipeline: {} {}, standard={}", pl.name, pl.isStandard)
-                    pipelineDao.create(PipelineSpecV()
+                    pipelineService.create(PipelineSpecV()
                             .setStandard(pl.isStandard)
                             .setName(pl.name)
                             .setDescription(pl.description)
@@ -306,7 +307,7 @@ class PluginServiceImpl @Autowired constructor(
     }
 
     override fun getProcessorRefs(pipelineId: UUID): List<ProcessorRef>? {
-        return getProcessorRefs(pipelineDao.get(pipelineId).processors)
+        return getProcessorRefs(pipelineService.get(pipelineId).processors)
     }
 
     fun getProcessorRefs(refs: List<ProcessorRef>?, pr: Deque<UUID>): List<ProcessorRef>? {
@@ -320,9 +321,9 @@ class PluginServiceImpl @Autowired constructor(
             if (pipelineId != null) {
 
                 val pipeline = try {
-                    pipelineDao.get(UUID.fromString(pipelineId))
+                    pipelineService.get(UUID.fromString(pipelineId))
                 } catch (e:IllegalArgumentException) {
-                    pipelineDao.get(pipelineId)
+                    pipelineService.get(pipelineId)
                 }
 
                 if (pr.contains(pipeline.id)) {

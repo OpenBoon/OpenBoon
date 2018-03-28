@@ -63,7 +63,7 @@ class PipelineServiceTests : AbstractTest() {
         spec.description = "A NoOp"
         spec.name = "foo"
         spec.type = PipelineType.Generate
-        pipelineService!!.create(spec)
+        pipelineService.create(spec)
     }
 
     @Test
@@ -112,5 +112,61 @@ class PipelineServiceTests : AbstractTest() {
         assertEquals(pipeline.name, p.getName())
         assertEquals(pipeline.description, p.getDescription())
         assertEquals(pipeline.processors, p.getProcessors())
+    }
+
+    @Test
+    fun testCreateStandard() {
+        pipelineService.getStandard(PipelineType.Import)
+
+        val spec = PipelineSpecV()
+        spec.processors = Lists.newArrayList(
+                ProcessorRef("com.zorroa.core.common.GroupProcessor"))
+        spec.description = "desc"
+        spec.name = "standard"
+        spec.type = PipelineType.Import
+        spec.isStandard = true
+        val pipe = pipelineService.create(spec)
+        assertTrue(pipe.isStandard)
+    }
+
+    @Test
+    fun testUpdateStandardFlag() {
+        val spec = PipelineSpecV()
+        spec.processors = Lists.newArrayList(
+                ProcessorRef("com.zorroa.core.common.GroupProcessor"))
+        spec.description = "desc"
+        spec.name = "standard"
+        spec.type = PipelineType.Import
+        spec.isStandard = false
+        val pipe = pipelineService.create(spec)
+        assertFalse(pipe.isStandard)
+
+        pipe.isStandard = true
+        assertTrue(pipelineService.update(pipe.id, pipe))
+
+        val pipe2 = pipelineService.get(pipe.id)
+        assertTrue(pipe2.isStandard, "Pipeline2 should be standard")
+    }
+
+    @Test
+    fun testUpdateStandardFailure() {
+        val spec = PipelineSpecV()
+        spec.processors = Lists.newArrayList(
+                ProcessorRef("com.zorroa.core.common.GroupProcessor"))
+        spec.description = "desc"
+        spec.name = "standard"
+        spec.type = PipelineType.Import
+        spec.isStandard = true
+        val pipe = pipelineService.create(spec)
+        assertTrue(pipe.isStandard)
+
+        // Setting the standard to false should not update the standard.
+        // because to choose a new standard you always set the new one
+        // to true
+        pipe.isStandard = false
+        assertTrue(pipelineService.update(pipe.id, pipe))
+
+        val pipe2 = pipelineService.get(pipe.id)
+        assertTrue(pipe2.isStandard, "Pipeline2 is not standard")
     }
 }

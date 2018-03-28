@@ -27,7 +27,7 @@ public class PipelineSpecV {
     @NotEmpty
     private String description;
 
-    private boolean standard = false;
+    private boolean standard;
 
     public boolean isStandard() {
         return standard;
