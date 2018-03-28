@@ -20,7 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCrypt
 import java.util.*
 
-fun getAuthentication(): Authentication {
+fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication
 }
 
