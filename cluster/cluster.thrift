@@ -37,7 +37,8 @@ struct ExpandT {
 }
 
 struct TaskStopT {
-    1:i32 exitStatus
+    1:i32 exitStatus,
+    2:bool killed
 }
 
 struct TaskErrorT {

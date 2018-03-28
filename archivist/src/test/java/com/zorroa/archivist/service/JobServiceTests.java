@@ -64,9 +64,20 @@ public class JobServiceTests extends AbstractTest {
     public void setTaskCompleted() {
         assertTrue(jobService.setTaskQueued(task));
         assertTrue(jobService.setTaskState(task, TaskState.Running, TaskState.Queued));
-        assertTrue(jobService.setTaskCompleted(task, 0));
+        assertTrue(jobService.setTaskCompleted(task, 0, false));
         assertEquals(JobState.Finished, jobService.get(task.getJobId()).getState());
     }
+
+    @Test
+    public void setTaskCompletedKilled() {
+        assertTrue(jobService.setTaskQueued(task));
+        assertTrue(jobService.setTaskState(task, TaskState.Running, TaskState.Queued));
+        assertTrue(jobService.setTaskCompleted(task, 1, true));
+        Task task2 = jobService.getTask(task.getId());
+        assertEquals(TaskState.Waiting, task2.getState());
+        assertEquals(JobState.Active, jobService.get(task.getJobId()).getState());
+    }
+
 
     @Test
     public void setTaskState() {

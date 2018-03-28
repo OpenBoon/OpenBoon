@@ -122,7 +122,7 @@ interface JobService {
 
     fun setTaskQueued(script: TaskId, host: String): Boolean
 
-    fun setTaskCompleted(task: Task, exitStatus: Int): Boolean
+    fun setTaskCompleted(task: Task, exitStatus: Int, killed: Boolean): Boolean
 
     fun getTasks(jobId: UUID, state: TaskState): List<Task>
 
@@ -159,6 +159,8 @@ interface JobService {
     fun updatePingTime(taskIds: List<UUID>): Int
 
     fun resolveJobRoot(spec: JobSpec): Path
+
+    fun getTask(id:UUID): Task
 }
 
 @Service
@@ -458,10 +460,16 @@ class JobServiceImpl @Autowired constructor(
         return false
     }
 
-    override fun setTaskCompleted(task: Task, exitStatus: Int): Boolean {
-        logger.info("Task {} [{}] completed on host '{}' exit status: {}", task.name,
-                task.id, task.host, exitStatus)
-        val newState = if (exitStatus != 0) TaskState.Failure else TaskState.Success
+    override fun setTaskCompleted(task: Task, exitStatus: Int, killed: Boolean): Boolean {
+        logger.info("Task {} [{}] completed on host '{}' exit status: {}/killed{}",
+                task.name, task.id, task.host, exitStatus, killed)
+        val newState = if (killed) {
+            TaskState.Waiting
+        }
+        else {
+            if (exitStatus != 0) TaskState.Failure else TaskState.Success
+        }
+
         if (setTaskState(task, newState, TaskState.Running, TaskState.Queued)) {
             if (newState == TaskState.Success) {
                 taskDao.decrementDependCount(task)
@@ -553,6 +561,10 @@ class JobServiceImpl @Autowired constructor(
         }
         spec.rootPath = rootPath.toString()
         return rootPath
+    }
+
+    override fun getTask(id: UUID): Task {
+        return taskDao.get(id)
     }
 
     companion object {

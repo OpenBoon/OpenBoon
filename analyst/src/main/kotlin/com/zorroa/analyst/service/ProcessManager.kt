@@ -165,7 +165,6 @@ class ProcessManagerServiceImpl @Autowired constructor(
                                     StandardOpenOption.APPEND)
                         } catch (e: IOException) {
                             logger.warn("Failed to kill process: {}", p.id, e)
-                            e.printStackTrace()
                         }
                     }
                 }
@@ -360,7 +359,8 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 // interactive tasks are not in the process map.
                 if (processMap.remove(task.getId()) != null && task.getId() != null) {
                     val stop = TaskStopT()
-                    stop.setExitStatus(exitStatus)
+                    stop.exitStatus = exitStatus
+                    stop.isKilled = proc.killed
                     proc.client.reportTaskStopped(task.getId(), stop)
                     proc.client.close()
                 }

@@ -269,8 +269,12 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun getOrphanTasks(limit: Int, duration: Long, unit: TimeUnit): List<Task> {
-        return jdbc.query<Task>(GET_QUEUED, MAPPER,
-                System.currentTimeMillis() - unit.toMillis(duration), limit)
+        return jdbc.query<Task>(GET_ORPHAN, MAPPER,
+                TaskState.Running.ordinal,
+                System.currentTimeMillis() - unit.toMillis(duration),
+                TaskState.Queued.ordinal,
+                System.currentTimeMillis() - (1000 * 120),
+                limit)
     }
 
     override fun getAll(job: UUID, page: Pager): PagedList<Task> {
@@ -450,11 +454,12 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 "JOIN job ON task.pk_job = job.pk_job "
 
 
-        private val GET_QUEUED = GET_TASKS +
+        private val GET_ORPHAN = GET_TASKS +
                 "WHERE " +
-                "task.int_state IN (" + TaskState.Running.ordinal + "," + TaskState.Queued.ordinal + ") " +
+                "(task.int_state = ? "+
                 "AND " +
-                "task.time_ping < ? " +
+                "task.time_ping < ?)" +
+                "OR (task.int_state=? AND task.time_ping < ?)" +
                 "LIMIT ? "
 
         private val MAPPER = RowMapper<Task> { rs, _ ->

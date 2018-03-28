@@ -102,7 +102,7 @@ class MasterRpcServiceImpl @Autowired constructor(
         }
         try {
             val t = getTask(id)
-            jobService.setTaskCompleted(t, result.getExitStatus())
+            jobService.setTaskCompleted(t, result.exitStatus, result.isKilled)
         } catch (e: Exception) {
             /**
              * Don't let this bubble out back to analyst.
