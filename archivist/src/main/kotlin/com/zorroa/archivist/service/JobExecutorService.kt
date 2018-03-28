@@ -101,6 +101,7 @@ class JobExecutorServiceImpl @Autowired constructor(
         return commandQueue.submit<List<TaskStartT>> { getWaitingTasks(url, count) }
     }
 
+    @Synchronized
     override fun getWaitingTasks(url: String?, count: Int): List<TaskStartT> {
         if (url == null) {
             throw ArchivistWriteException("Failed to query for tasks, return URL is null. " + "Analyst may be badly configured")
