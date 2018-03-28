@@ -538,14 +538,14 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
-        source.setAttr("foo.byte", "AAFFGG");
+        source.setAttr("foo.shash", "AAFFGG");
 
         assetService.index(source);
         refreshIndex();
         fieldService.updateField(new HideField("foo.keywords", true));
 
         Map<String, Set<String>> fields = fieldService.getFields("asset");
-        assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
+        assertFalse(fields.get("keywords-boost").contains("foo.keywords"));
         assertFalse(fields.get("string").contains("foo.keywords"));
     }
 
@@ -555,14 +555,14 @@ public class SearchServiceTests extends AbstractTest {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
-        source.setAttr("foo.byte", "AAFFGG");
+        source.setAttr("foo.shash", "AAFFGG");
 
         assetService.index(source);
         refreshIndex();
         fieldService.updateField(new HideField("foo.", true));
 
         Map<String, Set<String>> fields = fieldService.getFields("asset");
-        assertFalse(fields.get("keywords-auto").contains("foo.keywords"));
+        assertFalse(fields.get("keywords-boost").contains("foo.keywords"));
         assertFalse(fields.get("string").contains("foo.keywords"));
     }
 
@@ -670,7 +670,7 @@ public class SearchServiceTests extends AbstractTest {
     }
 
     @Test
-    public void testHammingDistanceFilterWithWrongMapping() throws IOException, InterruptedException {
+    public void testHammingDistanceFilterWithRaw() throws IOException, InterruptedException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
         source1.setAttr("test.hash1.jimbo", "AFAFAFAF");
@@ -685,7 +685,7 @@ public class SearchServiceTests extends AbstractTest {
         AssetSearch search;
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity("test.hash1.jimbo",
+                new AssetFilter().addToSimilarity("test.hash1.jimbo.raw",
                         new SimilarityFilter("AFAFAFAF", 100)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
@@ -694,11 +694,11 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilter() throws IOException, InterruptedException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1.byte", "AFAFAFAF");
+        source1.setAttr("test.hash1.shash", "AFAFAFAF");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1.byte", "ADADADAD");
+        source2.setAttr("test.hash1.shash", "ADADADAD");
 
         assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
@@ -706,17 +706,17 @@ public class SearchServiceTests extends AbstractTest {
         AssetSearch search;
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                new AssetFilter().addToSimilarity( "test.hash1.shash",
                         new SimilarityFilter("AFAFAFAF", 100)));
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                new AssetFilter().addToSimilarity( "test.hash1.shash",
                         new SimilarityFilter("AFAFAFAF", 50)));
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
 
         search = new AssetSearch(
-                new AssetFilter().addToSimilarity( "test.hash1.byte",
+                new AssetFilter().addToSimilarity( "test.hash1.shash",
                         new SimilarityFilter("APAPAPAP", 20)));
 
         assertEquals(2, searchService.search(search).getHits().getTotalHits());
@@ -727,19 +727,19 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilterWithQuery() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1.byte", "afafafaf");
+        source1.setAttr("test.hash1.shash", "afafafaf");
         source1.addToKeywords("foo", "bar");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1.byte", "adadadad");
+        source2.setAttr("test.hash1.shash", "adadadad");
         source1.addToKeywords("foo", "bing");
 
         assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search = new AssetSearch("bar");
-        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.byte",
+        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.shash",
                 new SimilarityFilter("afafafaf", 8)));
 
         /**
@@ -754,19 +754,19 @@ public class SearchServiceTests extends AbstractTest {
     public void testHammingDistanceFilterWithAssetId() throws IOException {
         Source source1 = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source1.setAttr("superhero", "captain");
-        source1.setAttr("test.hash1.byte", "afafafaf");
+        source1.setAttr("test.hash1.shash", "afafafaf");
         source1.addToKeywords("foo", "bar");
 
         Source source2 = new Source(getTestImagePath().resolve("new_zealand_wellington_harbour.jpg"));
         source2.setAttr("superhero", "loki");
-        source2.setAttr("test.hash1.byte", "adadadad");
+        source2.setAttr("test.hash1.shash", "adadadad");
         source1.addToKeywords("foo", "bing");
 
         assetService.index(new AssetIndexSpec(ImmutableList.of(source2, source1)));
         refreshIndex();
 
         AssetSearch search = new AssetSearch("bar");
-        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.byte",
+        search.setFilter(new AssetFilter().addToSimilarity("test.hash1.shash",
                 new SimilarityFilter(source1.getId(), 8)));
 
         /**
