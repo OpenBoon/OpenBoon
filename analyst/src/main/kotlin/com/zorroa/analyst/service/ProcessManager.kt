@@ -157,6 +157,7 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 val mze = p.zpsExecutor
                 mze?.let {
                     if (mze.cancel()) {
+                        p.setKilled(true)
                         logger.info("The task {} was killed by:{}, reason: {}",
                                 kill.getId(), kill.getUser(), kill.getReason())
 
@@ -359,8 +360,8 @@ class ProcessManagerServiceImpl @Autowired constructor(
                 // interactive tasks are not in the process map.
                 if (processMap.remove(task.getId()) != null && task.getId() != null) {
                     val stop = TaskStopT()
-                    stop.exitStatus = exitStatus
-                    stop.isKilled = proc.killed
+                    stop.setExitStatus(exitStatus)
+                    stop.setKilled(proc.killed)
                     proc.client.reportTaskStopped(task.getId(), stop)
                     proc.client.close()
                 }
