@@ -2,14 +2,16 @@ package com.zorroa.archivist.service
 
 import com.google.common.collect.Lists
 import com.zorroa.archivist.domain.*
-import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.security.getUsername
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.PipelineType
 import com.zorroa.sdk.processor.ProcessorRef
+import com.zorroa.sdk.processor.SharedData
 import com.zorroa.sdk.zps.ZpsScript
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -19,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 /**
  * Created by chambers on 7/11/16.
@@ -37,14 +38,16 @@ interface ImportService {
      * @return
      */
     fun create(spec: ImportSpec): Job
+
+    fun createFileUploadPath(job: Job): Path
 }
 
 @Service
 @Transactional
 class ImportServiceImpl @Autowired constructor(
-        val transactionEventManager: TransactionEventManager,
-        val properties: ApplicationProperties
-) : ImportService {
+        private val transactionEventManager: TransactionEventManager,
+        private val sharedData: SharedData
+        ) : ImportService {
 
     @Autowired
     private lateinit var jobService: JobService
@@ -76,7 +79,8 @@ class ImportServiceImpl @Autowired constructor(
         // Setup generator
         val generators = Lists.newArrayList<ProcessorRef>()
         try {
-            val importPath = copyUploadedFiles(job, files)
+            val importPath = createFileUploadPath(job)
+            copyUploadedFiles(importPath, files)
             generators.add(ProcessorRef()
                     .setClassName("com.zorroa.core.generator.FileSystemGenerator")
                     .setLanguage("java")
@@ -182,16 +186,24 @@ class ImportServiceImpl @Autowired constructor(
         return job
     }
 
-    @Throws(IOException::class)
-    private fun copyUploadedFiles(job: Job, files: Array<MultipartFile>): Path {
-        val importPath = Paths.get(job.rootPath).resolve("assets")
-
-        for (file in files) {
-            if (!importPath.resolve(file.originalFilename).toFile().exists()) {
-                Files.copy(file.inputStream, importPath.resolve(file.originalFilename))
-            }
-        }
+    override fun createFileUploadPath(job: Job): Path {
+        val basePath = sharedData.resolve("uploads")
+        val time = DateTime()
+        val formatter = DateTimeFormat.forPattern("YYYY/MM")
+        val importPath = basePath
+                .resolve(formatter.print(time))
+                .resolve(getUsername())
+                .resolve(job.id.toString())
+                .toAbsolutePath()
+        importPath.toFile().mkdirs()
         return importPath
+    }
+
+    @Throws(IOException::class)
+    private fun copyUploadedFiles(path: Path, files: Array<MultipartFile>) {
+        for (file in files) {
+            Files.copy(file.inputStream, path.resolve(file.originalFilename))
+        }
     }
 
     private fun determineJobName(name: String?): String {

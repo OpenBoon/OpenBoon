@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -95,5 +96,11 @@ public class ImportServiceTests extends AbstractTest {
         assertEquals(0, job.getStats().getAssetCreatedCount());
         assertEquals(0, job.getStats().getAssetErrorCount());
         assertEquals(0, job.getStats().getAssetWarningCount());
+    }
+
+    @Test
+    public void testGetFileUploadPath() {
+        Path path = importService.createFileUploadPath(job);
+        assertTrue(path.toFile().exists());
     }
 }
