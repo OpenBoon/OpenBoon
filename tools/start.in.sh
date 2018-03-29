@@ -3,6 +3,9 @@
 # Using /dev/urandom is a lot faster
 export JAVA_TOOL_OPTIONS="-Djava.security.egd=file:/dev/./urandom"
 
+# No child processes should write bytecode.
+export PYTHONDONTWRITEBYTECODE="true"
+
 # FOR ELASTIC NODES:
 # min and max heap sizes should be set to the same value to avoid
 # stop-the-world GC pauses during resize, and so that we can lock the
