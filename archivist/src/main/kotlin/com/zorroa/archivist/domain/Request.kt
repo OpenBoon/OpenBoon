@@ -22,12 +22,12 @@ enum class RequestState {
     Denied
 }
 
-class RequestSpec {
-    var folderId: UUID? = null
-    var type : RequestType? = null
-    var comment : String = ""
-    var emailCC : List<String> = listOf()
-}
+data class RequestSpec (
+        val folderId: UUID,
+        val type : RequestType,
+        val comment : String = "",
+        val emailCC : List<String> = listOf()
+)
 
 data class Request (
         val id : UUID,
