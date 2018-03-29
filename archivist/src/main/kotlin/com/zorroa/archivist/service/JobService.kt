@@ -2,7 +2,6 @@ package com.zorroa.archivist.service
 
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.zorroa.archivist.JdbcUtils
@@ -22,7 +21,6 @@ import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import com.zorroa.sdk.processor.Expand
 import com.zorroa.sdk.processor.PipelineType
-import com.zorroa.sdk.processor.ProcessorRef
 import com.zorroa.sdk.util.Json
 import com.zorroa.sdk.zps.ZpsScript
 import org.apache.commons.lang3.StringUtils
@@ -179,6 +177,10 @@ class JobServiceImpl @Autowired constructor(
     @Autowired
     private lateinit var pluginService : PluginService
 
+    @Autowired
+    private lateinit var assetService : AssetService
+
+
     /**
      * The subdirectories made in a job directory.
      *
@@ -284,55 +286,84 @@ class JobServiceImpl @Autowired constructor(
             }
 
         }
+        if (expandScript.frames == null) {
+            return listOf()
+        }
 
-        if (expandScript.frames != null) {
+        // IDs we've already handled in case of duplicates
+        val handledIds = mutableSetOf<String>()
 
-            for (exframe in expandScript.frames) {
-                val key: String
+        for (exframe in expandScript.frames) {
+            val id = exframe?.document?.id
+            if (id != null && handledIds.contains(id)) {
+                logger.warn("expand encountered duplicate doc id $id")
+                continue
+            }
 
+            /**
+             * There are 3 places to look for the pipeline:
+             * 1. as part of the frame (the processor specified a specific pipeline)
+             * 2. the parent script itself.
+             * 3. supplied by the task itself. (usual case)
+             */
+
+            val key = if (exframe.processors != null) {
                 /**
-                 * There are 3 places to look for the pipeline:
-                 * 1. as part of the frame (the processor specified a specific pipeline)
-                 * 2. the parent script itself.
-                 * 3. supplied by the task itself. (usual case)
+                 * If processors are set but empty then we can index
+                 * the document in place.
                  */
-
-                if (exframe.processors != null) {
-                    key = "frame expand: " + Json.hash(exframe.processors)
-                } else if (parentScript != null) {
-                    key = "parent expand:"
-                } else {
-                    key = "script expand:"
-                }
-
-                /**
-                 * Get the script for the particular pipeline and add the data
-                 * to it.  If a script doesn't exist yet, make it.
-                 */
-                var script: ZpsScript? = expandScripts[key]
-                if (script == null) {
-                    script = ZpsScript()
-                    expandScripts.put(key, script)
-
-                    when {
-                        key.startsWith("parent") -> script.execute = parentScript!!.execute
-                        key.startsWith("frame") -> {
-                            val refs = pipelineService.validateProcessors(job.type,
-                                    exframe.processors)
-
-                            if (job.type == PipelineType.Import) {
-                                refs.add(pluginService.getProcessorRef(
-                                        "com.zorroa.core.collector.IndexDocumentCollector"))
-                            }
-
-                            script.execute = refs
-                        }
-                        key.startsWith("script") -> script.execute = expandScript.execute
+                if (exframe.processors.isEmpty()) {
+                    logger.info("The expand frame has empty proc list, indexing directly.")
+                    try {
+                        assetService.index(exframe.document)
+                    } catch (e:Exception) {
+                        logger.warn("Failed to direct index {}", e);
                     }
-                    script.name = key
+                    continue
                 }
 
+                "frame expand: " + Json.hash(exframe.processors)
+            } else if (parentScript != null) {
+                "parent expand:"
+            } else {
+                "script expand:"
+            }
+
+            /**
+             * Get the script for the particular pipeline and add the data
+             * to it.  If a script doesn't exist yet, make it.
+             */
+            var script: ZpsScript? = expandScripts[key]
+            var addToScript = true
+
+            if (script == null) {
+                script = ZpsScript()
+                expandScripts[key] = script
+
+                when {
+                    key.startsWith("parent") -> script.execute = parentScript!!.execute
+                    key.startsWith("frame") -> {
+
+                        val refs = pipelineService.validateProcessors(job.type,
+                                exframe.processors)
+
+                        if (job.type == PipelineType.Import) {
+                            refs.add(pluginService.getProcessorRef(
+                                    "com.zorroa.core.collector.IndexCollector"))
+                        }
+                        script.execute = refs
+
+                    }
+                    key.startsWith("script") -> script.execute = expandScript.execute
+                }
+                script.name = key
+            }
+
+            if (addToScript) {
                 script.addToOver(exframe.document)
+            }
+            if (id != null) {
+                handledIds.add(id)
             }
         }
 
@@ -378,10 +409,9 @@ class JobServiceImpl @Autowired constructor(
         val script = ZpsScript()
         script.over = spec.docs
         script.execute = pluginService.getProcessorRefs(spec.pipelineId)
-        script.execute.add(ProcessorRef()
-                .setClassName("com.zorroa.core.collector.IndexDocumentCollector")
-                .setLanguage("java")
-                .setArgs(ImmutableMap.of<String, Any>("importId", ts.jobId)))
+        script.execute.add(pluginService.getProcessorRef(
+                "com.zorroa.core.collector.IndexCollector",
+                mutableMapOf("importId" to ts.jobId)))
 
         val task = taskDao.create(ts)
 

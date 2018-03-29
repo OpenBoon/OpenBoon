@@ -151,7 +151,7 @@ class ImportServiceImpl @Autowired constructor(
                 PipelineType.Import, spec.processors)
 
         /**
-         * At the end we add an IndexDocumentCollector to index the results of our job.
+         * At the end we add an IndexCollector to index the results of our job.
          */
         expand.addToExecute(pluginService.getProcessorRef("com.zorroa.core.collector.IndexCollector",
                 mapOf("importId" to job.jobId)))

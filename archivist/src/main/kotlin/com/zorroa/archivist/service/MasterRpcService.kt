@@ -200,7 +200,7 @@ class MasterRpcServiceImpl @Autowired constructor(
             thread.execute { server!!.serve() }
 
         } catch (e: TTransportException) {
-            throw RuntimeException("Unable to start thrift server " + e, e)
+            throw RuntimeException("Unable to start thrift server $e", e)
         }
 
     }
