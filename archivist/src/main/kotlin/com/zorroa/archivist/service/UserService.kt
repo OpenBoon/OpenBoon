@@ -15,6 +15,8 @@ import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationListener
+import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.dao.DataAccessException
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.crypto.bcrypt.BCrypt
@@ -23,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import java.util.regex.Pattern
 import java.util.stream.Collectors
-import javax.annotation.PostConstruct
 
 /**
  * Created by chambers on 7/13/15.
@@ -177,7 +178,7 @@ class UserServiceImpl @Autowired constructor(
         private val userPresetDao: UserPresetDao,
         private val tx: TransactionEventManager,
         private val properties: ApplicationProperties
-): UserService {
+): UserService, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     internal lateinit var folderService: FolderService
@@ -187,8 +188,7 @@ class UserServiceImpl @Autowired constructor(
 
     private val PASS_MIN_LENGTH = 8
 
-    @PostConstruct
-    fun initialize() {
+    override fun onApplicationEvent(p0: ContextRefreshedEvent?) {
         try {
             val key = userDao.getHmacKey("admin")
             if (key.isEmpty()) {
