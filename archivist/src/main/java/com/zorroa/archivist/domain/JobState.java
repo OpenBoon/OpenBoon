@@ -30,5 +30,10 @@ public enum JobState {
     /**
      * Job is waiting to run.
      */
-    Waiting
+    Waiting,
+
+    /**
+     * All tasks failed.
+     */
+    Failed
 }

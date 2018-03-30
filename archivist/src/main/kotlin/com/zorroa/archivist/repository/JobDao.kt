@@ -83,8 +83,14 @@ class JobDaoImpl : AbstractDao(), JobDao {
         t.tasksSkipped = rs.getInt("int_task_state_skipped_count")
         job.counts = t
 
-        val state = JobState.values()[rs.getInt("int_state")]
-        job.state = state
+        if (t.tasksTotal == t.tasksFailure) {
+            job.state = JobState.Failed
+        }
+        else {
+            val state = JobState.values()[rs.getInt("int_state")]
+            job.state = state
+        }
+
         job
     }
 

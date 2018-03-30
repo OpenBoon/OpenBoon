@@ -5,10 +5,7 @@ import com.zorroa.archivist.service.EventLogService
 import com.zorroa.sdk.domain.PagedList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.io.IOException
 
 @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
@@ -17,7 +14,8 @@ class EventLogController @Autowired constructor(
         private val eventLogService: EventLogService
 ){
 
-    @PostMapping(value = ["/api/v1/eventlogs/{type}/_search"])
+    @RequestMapping(value = ["/api/v1/eventlogs/{type}/_search"],
+            method = [RequestMethod.GET, RequestMethod.POST])
     @Throws(IOException::class)
     fun search(
             @PathVariable type: String,
