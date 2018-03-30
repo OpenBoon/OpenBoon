@@ -1,6 +1,8 @@
 package com.zorroa.archivist.web.api
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.HttpUtils
@@ -177,16 +179,32 @@ class AssetController @Autowired constructor(
 
         }
     }
+    private val proxyLookupCache = CacheBuilder.newBuilder()
+            .maximumSize(10000)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build(object : CacheLoader<String, Proxy>() {
+                @Throws(Exception::class)
+                override fun load(slug: String): Proxy {
+                    val e = slug.split(":")
+                    val proxies = assetService.getProxies(e[1])
 
-    @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{size:\\d+x\\d+}"])
+                    return when {
+                        e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
+                        e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt())
+                        else -> proxies.largest
+                    }
+                }
+            })
+
+    @GetMapping(value = ["/api/v1/assets/{id}/proxies/closest/{width:\\d+}x{height:\\d+}"])
     @Throws(IOException::class)
-    fun getClosestProxy(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = false) size: String): ResponseEntity<InputStreamResource> {
+    fun getClosestProxy(response: HttpServletResponse,
+                        @PathVariable id: String,
+                        @PathVariable width: Int,
+                        @PathVariable height: Int): ResponseEntity<InputStreamResource> {
         try {
-            val wh = size.split("x".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.getClosest(Integer.valueOf(wh[0]), Integer.valueOf(wh[1])) ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
             response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+            return imageService.serveImage(proxyLookupCache.get("closest:$id:$width:$height"))
         } catch (e: Exception) {
             throw ResourceNotFoundException(e.message)
         }
@@ -196,10 +214,8 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun getAtLeast(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
         try {
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.atLeastThisSize(size) ?: proxies.largest
             response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+            return imageService.serveImage(proxyLookupCache.get("atLeast:$id:$size"))
         } catch (e: Exception) {
             throw ResourceNotFoundException(e.message)
         }

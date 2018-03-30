@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -69,6 +70,10 @@ class ImageServiceImpl @Autowired constructor(
 
     @Throws(IOException::class)
     override fun serveImage(file: File): ResponseEntity<InputStreamResource> {
+        if (file == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+
         val ext = com.zorroa.sdk.util.FileUtils.extension(file)
         return if (watermarkEnabled) {
             val output = watermark(file, ext)
