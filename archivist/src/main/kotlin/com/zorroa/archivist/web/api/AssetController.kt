@@ -81,10 +81,7 @@ class AssetController @Autowired constructor(
         /**
          * Zorroa types get handled special.
          */
-        if (mediaType.startsWith("zorroa/")) {
-            return StreamFile("", mediaType, false)
-        }
-        else if (streamProxy) {
+        if (streamProxy) {
             return getProxyStream(asset)
         } else {
             val checkFiles = Lists.newArrayList<StreamFile>()
@@ -161,8 +158,6 @@ class AssetController @Autowired constructor(
 
         if (format == null) {
             response.status = 404
-        } else if (format.mimeType.endsWith("x-flipbook")) {
-            FlipbookSender(id, searchService).serveResource(response)
         } else {
             try {
                 MultipartFileSender.fromPath(Paths.get(format.path))
@@ -347,6 +342,12 @@ class AssetController @Autowired constructor(
     fun removeFields(@RequestBody fields: MutableSet<String>, @PathVariable id: String): Any {
         assetService.removeFields(id, fields)
         return HttpUtils.updated("asset", id, true, assetService.get(id))
+    }
+
+    @GetMapping(value = ["/api/v1/assets/{id}/_clipChildren"])
+    @Throws(IOException::class)
+    fun clipChildren(@PathVariable id: String, rsp: HttpServletResponse) {
+        FlipbookSender(id, searchService).serveResource(rsp)
     }
 
     @PostMapping(value = ["/api/v1/assets/_index"], produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
