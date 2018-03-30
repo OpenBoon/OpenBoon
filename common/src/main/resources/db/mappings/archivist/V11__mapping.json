@@ -17,14 +17,8 @@
           "filter": [
             "trim",
             "delimiter_filter",
-            "lowercase"
-          ]
-        },
-        "case_sensitive": {
-          "tokenizer": "keyword",
-          "filter": [
-            "trim",
-            "delimiter_filter"
+            "lowercase",
+            "porter_stem"
           ]
         },
         "content": {
