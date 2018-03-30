@@ -450,7 +450,7 @@ class UserServiceImpl @Autowired constructor(
     override fun resetPassword(user: User, password: String) {
         val issues = validatePassword(password)
         if (!issues.isEmpty()) {
-            throw IllegalArgumentException(issues.joinToString(","))
+            throw IllegalArgumentException(issues.joinToString(" "))
         }
         userDao.setPassword(user, password)
     }
@@ -458,7 +458,7 @@ class UserServiceImpl @Autowired constructor(
     override fun resetPassword(token: String, password: String): User? {
         val issues = validatePassword(password)
         if (!issues.isEmpty()) {
-            throw IllegalArgumentException(issues.joinToString(","))
+            throw IllegalArgumentException(issues.joinToString(" "))
         }
 
         val user = userDao.getByToken(token)
