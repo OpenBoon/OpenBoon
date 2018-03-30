@@ -318,13 +318,6 @@ class AssetController @Autowired constructor(
         return path["path"]?.let { assetService.get(Paths.get(it)) }
     }
 
-    @GetMapping(value = ["/api/v1/assets/{id}/_elements"])
-    fun getElements(@PathVariable id: String,
-                    @RequestParam(value = "from", required = false) from: Int?,
-                    @RequestParam(value = "count", required = false) count: Int?): PagedList<Document> {
-        return assetService.getElements(id, Pager(from, count))
-    }
-
     @DeleteMapping(value = ["/api/v1/assets/{id}"])
     @Throws(IOException::class)
     fun delete(@PathVariable id: String): Any {

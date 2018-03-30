@@ -96,8 +96,6 @@ interface AssetDao {
     fun index(sources: List<Document>): AssetIndexResult
 
     fun index(sources: List<Document>, refresh: Boolean): AssetIndexResult
-
-    fun getElements(assetId: String, page: Pager): PagedList<Document>
 }
 
 @Repository
@@ -406,14 +404,6 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
                 .setQuery(QueryBuilders.matchAllQuery())
                 .setVersion(true), page, MAPPER)
 
-    }
-
-    override fun getElements(assetId: String, page: Pager): PagedList<Document> {
-        return elastic.page(client.prepareSearch(index)
-                .setTypes("element")
-                .setQuery(QueryBuilders.hasParentQuery("asset",
-                        QueryBuilders.termQuery("_id", assetId)))
-                .setVersion(true), page, MAPPER)
     }
 
     override fun getMapping(): Map<String, Any> {

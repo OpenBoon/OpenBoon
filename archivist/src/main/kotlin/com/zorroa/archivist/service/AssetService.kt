@@ -65,8 +65,6 @@ interface AssetService {
 
     fun index(spec: AssetIndexSpec): AssetIndexResult
 
-    fun getElements(assetId: String, page: Pager): PagedList<Document>
-
     fun index(doc: Document): Document
 
     fun removeFields(id: String, fields: MutableSet<String>)
@@ -148,10 +146,6 @@ class AssetServiceImpl  @Autowired  constructor (
 
     override fun getAll(page: Pager): PagedList<Document> {
         return assetDao.getAll(page)
-    }
-
-    override fun getElements(assetId: String, page: Pager): PagedList<Document> {
-        return assetDao.getElements(assetId, page)
     }
 
     override fun index(doc: Document): Document {
