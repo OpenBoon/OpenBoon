@@ -494,12 +494,12 @@ public class SearchServiceTests extends AbstractTest {
     @Test
     public void testQueryFuzzyTerm() throws IOException {
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-       source.addToKeywords("media", "zoolander");
+       source.addToKeywords("media", "zooland");
         assetService.index(source);
         refreshIndex();
 
         assertEquals(1, searchService.search(
-                new AssetSearch("zoolandar~")).getHits().getTotalHits());
+                new AssetSearch("zoolind~")).getHits().getTotalHits());
     }
 
     @Test
