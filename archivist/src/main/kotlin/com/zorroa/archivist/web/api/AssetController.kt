@@ -21,7 +21,6 @@ import com.zorroa.sdk.schema.ProxySchema
 import com.zorroa.sdk.search.AssetSearch
 import com.zorroa.sdk.search.AssetSuggestBuilder
 import org.apache.tika.Tika
-import org.elasticsearch.ResourceNotFoundException
 import org.elasticsearch.client.Client
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -186,6 +185,8 @@ class AssetController @Autowired constructor(
                     return when {
                         e[0] == "closest" -> proxies.getClosest(e[2].toInt(), e[3].toInt())
                         e[0] == "atLeast" -> proxies.atLeastThisSize(e[2].toInt())
+                        e[0] == "smallest" -> proxies.smallest
+                        e[0] == "largest" -> proxies.largest
                         else -> proxies.largest
                     }
                 }
@@ -197,35 +198,33 @@ class AssetController @Autowired constructor(
                         @PathVariable id: String,
                         @PathVariable width: Int,
                         @PathVariable height: Int): ResponseEntity<InputStreamResource> {
-        try {
+        return try {
             response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxyLookupCache.get("closest:$id:$width:$height"))
+            imageService.serveImage(proxyLookupCache.get("closest:$id:$width:$height"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/atLeast/{size:\\d+}"])
     @Throws(IOException::class)
     fun getAtLeast(response: HttpServletResponse, @PathVariable id: String, @PathVariable(required = true) size: Int): ResponseEntity<InputStreamResource> {
-        try {
+        return try {
             response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxyLookupCache.get("atLeast:$id:$size"))
+            imageService.serveImage(proxyLookupCache.get("atLeast:$id:$size"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
     }
 
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/largest"])
     @Throws(IOException::class)
     fun getLargestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
-        try {
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.largest ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+        return try {
             response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+            imageService.serveImage(proxyLookupCache.get("largest:$id"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
 
     }
@@ -233,15 +232,12 @@ class AssetController @Autowired constructor(
     @GetMapping(value = ["/api/v1/assets/{id}/proxies/smallest"])
     @Throws(IOException::class)
     fun getSmallestProxy(response: HttpServletResponse, @PathVariable id: String): ResponseEntity<InputStreamResource> {
-        try {
-            val proxies = assetService.getProxies(id)
-            val proxy = proxies.smallest ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+        return try {
             response.setHeader("Cache-Control", CACHE_CONTROL.headerValue)
-            return imageService.serveImage(proxy)
+            imageService.serveImage(proxyLookupCache.get("smallest:$id"))
         } catch (e: Exception) {
-            throw ResourceNotFoundException(e.message)
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
-
     }
 
     @PostMapping(value = ["/api/v2/assets/_search"])
