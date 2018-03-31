@@ -134,8 +134,7 @@ fun getPermissionIds(): Set<UUID> {
 fun getPermissionsFilter(): QueryBuilder? {
     return if (hasPermission(Groups.ADMIN)) {
         null
-    } else QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("zorroa.permissions.read",
-            getPermissionIds()))
+    } else QueryBuilders.termsQuery("zorroa.permissions.read", getPermissionIds())
 }
 
 fun setWritePermissions(source: Source, perms: Collection<Permission>) {

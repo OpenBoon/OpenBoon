@@ -397,10 +397,12 @@ class SearchServiceImpl @Autowired constructor(
         }
 
         val query = QueryBuilders.boolQuery()
+        query.minimumNumberShouldMatch(1)
+
         val assetBool = QueryBuilders.boolQuery()
 
         if (perms && permsQuery != null) {
-            query.must(permsQuery)
+            query.filter(permsQuery)
         }
 
         if (search.isQuerySet) {
@@ -571,7 +573,7 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
-                val termsQuery = QueryBuilders.termsQuery(key, value)
+                val termsQuery = QueryBuilders.termsQuery(dotRawField(key), value)
                 query.must(termsQuery)
             }
         }
@@ -725,6 +727,15 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     companion object {
+
+        val forceDotRaw = setOf("media.type.parent")
+        fun dotRawField(field: String): String {
+            if (forceDotRaw.contains(field) && !field.endsWith(".raw")) {
+                return "$field.raw"
+            }
+            return field
+        }
+
         private val logger = LoggerFactory.getLogger(SearchServiceImpl::class.java)
     }
 }
