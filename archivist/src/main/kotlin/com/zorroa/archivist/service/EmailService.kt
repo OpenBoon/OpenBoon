@@ -144,13 +144,15 @@ class EmailServiceImpl @Autowired constructor(
 
     override fun sendExportRequestEmail(user: User, req: Request)  {
 
-        val name = if (user.firstName == null) user.username else user.firstName
+        val name = user.firstName ?: user.username
         val url = networkEnv.publicUri.toString() + "/folder?id=" + req.folderId
         val folderPath = folderService.getPath(folderService.get(req.folderId))
         val toEmail = properties.getString("archivist.requests.managerEmail")
 
         val allCC = req.emailCC.toMutableList()
         allCC.add(user.email)
+
+        logger.info("Sending request email cc: $allCC to: $toEmail")
 
         val text = StringBuilder(1024)
         text.append("Hello !\n\n")
