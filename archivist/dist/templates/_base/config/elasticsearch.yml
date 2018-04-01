@@ -6,3 +6,5 @@
 #http.cors.enabled: true
 #http.cors.allow-origin: "*"
 #http.enabled: true
+
+boostrap.mlockall: true
