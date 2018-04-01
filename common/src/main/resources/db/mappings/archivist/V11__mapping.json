@@ -104,6 +104,18 @@
 
               }
             },
+            "taxonomy": {
+              "properties": {
+                "folderId": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "taxId": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
             "permissions": {
               "properties": {
                 "read": {
