@@ -5,11 +5,6 @@
     "patch": 0
   },
   "settings": {
-    "index": {
-      "query": {
-        "default_field": "keywords.all"
-      }
-    },
     "analysis": {
       "analyzer": {
         "default": {
@@ -107,7 +102,18 @@
             },
             "links": {
               "properties": {
-
+                "import": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "export": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "folder": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
               }
             },
             "taxonomy": {
@@ -143,6 +149,7 @@
       },
       "dynamic_templates": [
         {
+
           "keywords_template": {
             "match_mapping_type": "string",
             "match": "keywords",
@@ -166,6 +173,16 @@
             "match": "suggest",
             "mapping": {
               "type": "completion"
+            }
+          }
+        },
+        {
+          "links_template": {
+            "path_match": "zorroa.links.*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "index": "not_analyzed"
             }
           }
         },
@@ -199,6 +216,10 @@
                 "raw": {
                   "type": "string",
                   "index": "not_analyzed"
+                },
+                "analyzed": {
+                  "type": "string",
+                  "analyzer": "keyword"
                 }
               }
             }
@@ -225,12 +246,12 @@
           }
         },
         {
-          "link_template": {
-            "match": "zorroa.links.*",
+          "id_template": {
             "match_mapping_type": "string",
+            "match": "id",
             "mapping": {
-              "type": "string",
-              "index": "not_analyzed"
+              "index": "not_analyzed",
+              "type": "string"
             }
           }
         },

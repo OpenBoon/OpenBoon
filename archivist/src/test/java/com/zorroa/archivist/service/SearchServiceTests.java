@@ -356,8 +356,8 @@ public class SearchServiceTests extends AbstractTest {
 
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
         source.addToKeywords("media", "zoolander");
-        source.addToLinks("folder", 123);
-        source.addToLinks("folder", 456);
+        source.addToLinks("folder", "abc123");
+        source.addToLinks("folder", "abc456");
         assetService.index(source);
         refreshIndex();
 
@@ -520,6 +520,7 @@ public class SearchServiceTests extends AbstractTest {
         source.setAttr("location", new LocationSchema(new double[] {1.0, 2.0}).setCountry("USA"));
         source.setAttr("foo.keywords", ImmutableList.of("joe", "dog"));
         source.setAttr("foo.shash", "AAFFGG");
+        source.setAttr("media.clip.parent", "abc123");
 
         assetService.index(source);
         refreshIndex();
@@ -529,6 +530,7 @@ public class SearchServiceTests extends AbstractTest {
         assertTrue(fields.get("string").size() > 0);
         assertTrue(fields.get("point").size() > 0);
         assertTrue(fields.get("similarity").size() > 0);
+        assertTrue(fields.get("id").size() > 0);
         assertTrue(fields.get("keywords").contains("foo.keywords"));
     }
 

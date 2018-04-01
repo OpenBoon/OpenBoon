@@ -53,7 +53,7 @@ public class AssetServiceTests extends AbstractTest {
     @Test
     public void testIndexWithLink() throws InterruptedException {
         Source builder = new Source(getTestImagePath("set01/toucan.jpg"));
-        builder.addToLinks("foo", 1);
+        builder.addToLinks("foo", "abc123");
 
         Document asset1 = assetService.index(builder);
         assertEquals(ImmutableList.of(1),

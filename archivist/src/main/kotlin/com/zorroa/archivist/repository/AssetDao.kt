@@ -232,7 +232,8 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         for (pattern in RECOVERABLE_BULK_ERRORS) {
             val matcher = pattern.matcher(error)
             if (matcher.find()) {
-                logger.warn("Removing broken field from {}: {}, {}", asset.id, matcher.group(1), error)
+                logger.warn("Removing broken field from {}: {}={}, {}", asset.id, matcher.group(1),
+                        asset.getAttr(matcher.group(1)), error)
                 return asset.removeAttr(matcher.group(1))
             }
         }

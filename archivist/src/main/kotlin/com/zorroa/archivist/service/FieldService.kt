@@ -126,6 +126,12 @@ class FieldServiceImpl @Autowired constructor(
         if (field.endsWith(".raw") && idFields!!.contains(field)) {
             return field.removeSuffix(".raw")
         }
+
+        val strFields = getFieldMap("asset")["string"]
+        if (!field.endsWith(".raw") && strFields!!.contains(field)) {
+            return "$field.raw"
+        }
+
         return field
     }
 
@@ -152,10 +158,9 @@ class FieldServiceImpl @Autowired constructor(
                 var type = item["type"] as String
                 val index = item["index"] as String?
 
-                type = if (type == "string" && key != "raw" && index == "not_analyzed") {
-                    "id"
-                } else {
-                    (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
+                type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
+                if (type == "string" && key != "raw" && index == "not_analyzed") {
+                    type = "id"
                 }
 
                 var fields: MutableSet<String>? = result[type]
