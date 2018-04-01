@@ -118,7 +118,8 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
         val d = Document(
                 client.prepareGet("archivist", "asset", id)
                         .get().source)
-        return d.getAttr(field)
+        // field values never have .raw since they come from source
+        return d.getAttr(field.removeSuffix(".raw"))
     }
 
     override fun index(source: Document): Document {

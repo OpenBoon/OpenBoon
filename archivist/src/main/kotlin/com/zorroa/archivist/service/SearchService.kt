@@ -573,7 +573,7 @@ class SearchServiceImpl @Autowired constructor(
 
         if (filter.terms != null) {
             for ((key, value) in filter.terms) {
-                val termsQuery = QueryBuilders.termsQuery(dotRawField(key), value)
+                val termsQuery = QueryBuilders.termsQuery(fieldService.dotRaw(key), value)
                 query.must(termsQuery)
             }
         }
@@ -671,6 +671,7 @@ class SearchServiceImpl @Autowired constructor(
 
             for (hash in filter.hashes) {
                 var hashValue: String = hash.hash
+                logger.warn("hash value: {}", hashValue)
                 if (JdbcUtils.isUUID(hashValue)) {
                     hashValue = assetDao.getFieldValue(hashValue, field)
                 }
@@ -678,6 +679,9 @@ class SearchServiceImpl @Autowired constructor(
                 if (hashValue != null) {
                     hashes.add(hashValue)
                     weights.add(if (hash.weight == null) 1.0f else hash.weight)
+                }
+                else {
+                    logger.warn("could not find value at: {} {}", hashValue, field)
                 }
             }
 
@@ -727,15 +731,6 @@ class SearchServiceImpl @Autowired constructor(
     }
 
     companion object {
-
-        val forceDotRaw = setOf("media.type.parent")
-        fun dotRawField(field: String): String {
-            if (forceDotRaw.contains(field) && !field.endsWith(".raw")) {
-                return "$field.raw"
-            }
-            return field
-        }
-
         private val logger = LoggerFactory.getLogger(SearchServiceImpl::class.java)
     }
 }

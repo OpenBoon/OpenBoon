@@ -27,6 +27,8 @@ interface FieldService {
     fun invalidateFields()
 
     fun updateField(value: HideField): Boolean
+
+    fun dotRaw(field: String): String
 }
 
 @Service
@@ -63,6 +65,7 @@ class FieldServiceImpl @Autowired constructor(
         result["keywords"] = mutableSetOf()
         result["keywords-boost"] = mutableSetOf()
         result["similarity"] = mutableSetOf()
+        result["id"] = mutableSetOf()
 
         result.getValue("keywords-boost")
                 .addAll(properties.getString(PROP_BOOST_KEYWORD_FIELD)
@@ -116,8 +119,16 @@ class FieldServiceImpl @Autowired constructor(
             logger.warn("Failed to get fields: ", e)
             ImmutableMap.of()
         }
-
     }
+
+    override fun dotRaw(field: String): String {
+        val idFields = getFieldMap("asset")["id"]
+        if (field.endsWith(".raw") && idFields!!.contains(field)) {
+            return field.removeSuffix(".raw")
+        }
+        return field
+    }
+
 
     /**
      * Builds a list of field names, recursively walking each object.
@@ -139,7 +150,13 @@ class FieldServiceImpl @Autowired constructor(
 
             if (item.containsKey("type")) {
                 var type = item["type"] as String
-                type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
+                val index = item["index"] as String?
+
+                type = if (type == "string" && key != "raw" && index == "not_analyzed") {
+                    "id"
+                } else {
+                    (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
+                }
 
                 var fields: MutableSet<String>? = result[type]
                 if (fields == null) {
