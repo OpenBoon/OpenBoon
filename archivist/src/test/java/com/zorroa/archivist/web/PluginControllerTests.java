@@ -1,7 +1,9 @@
 package com.zorroa.archivist.web;
 
 import com.zorroa.archivist.domain.Plugin;
+import com.zorroa.sdk.util.FileUtils;
 import com.zorroa.sdk.util.Json;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
@@ -9,6 +11,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.FileInputStream;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -21,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PluginControllerTests  extends MockMvcTest {
 
     @Test
+    @Ignore
     public void testPluginUpload() throws Exception {
 
         MockMultipartFile plugin =
@@ -37,6 +41,7 @@ public class PluginControllerTests  extends MockMvcTest {
 
         Plugin p = Json.deserialize(result.getResponse().getContentAsByteArray(), Plugin.class);
         assertEquals("zorroa-test", p.getName());
+        FileUtils.deleteRecursive(Paths.get("../unittest/shared/plugins/zorroa-test"), logger);
     }
 
 
