@@ -94,12 +94,12 @@ public class SearchServiceTests extends AbstractTest {
     public void testSearchPermissionsHit() throws IOException {
         authenticate("user");
         Source source = new Source(getTestImagePath().resolve("beer_kettle_01.jpg"));
-       source.addToKeywords("media", "captain");
+        source.addToKeywords("media", "captain");
         source.addToPermissions(Groups.EVERYONE, 1);
         assetService.index(source);
         refreshIndex();
 
-        AssetSearch search = new AssetSearch().setQuery("beer");
+        AssetSearch search = new AssetSearch().setQuery("captain");
         assertEquals(1, searchService.search(search).getHits().getTotalHits());
     }
 
