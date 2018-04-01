@@ -123,7 +123,8 @@ class FieldServiceImpl @Autowired constructor(
 
     override fun dotRaw(field: String): String {
         val idFields = getFieldMap("asset")["id"]
-        if (field.endsWith(".raw") && idFields!!.contains(field)) {
+
+        if (field.endsWith(".raw") && idFields!!.contains(field.removeSuffix(".raw"))) {
             return field.removeSuffix(".raw")
         }
 
