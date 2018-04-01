@@ -18,7 +18,7 @@ export PYTHONDONTWRITEBYTECODE="true"
 
 if [ "$OSTYPE" == "linux-gnu" ] && [ "$APP_NAME" == "archivist" ]
 then
-    MEM=`cat /proc/meminfo | grep MemTotal | awk '{printf ("%0.fm", $2/2/1024)}'`
+    MEM=`cat /proc/meminfo | grep MemTotal | awk '{printf ("%0.fm", $2/2/1280)}'`
     JAVA_OPTS="$JAVA_OPTS -Xms$MEM"
     JAVA_OPTS="$JAVA_OPTS -Xmx$MEM"
 else
@@ -30,11 +30,14 @@ fi
 JAVA_OPTS="$JAVA_OPTS -Djava.awt.headless=true"
 JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 
-JAVA_OPTS="$JAVA_OPTS -XX:+UseParNewGC"
-JAVA_OPTS="$JAVA_OPTS -XX:+UseConcMarkSweepGC"
-
-JAVA_OPTS="$JAVA_OPTS -XX:CMSInitiatingOccupancyFraction=75"
-JAVA_OPTS="$JAVA_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
+JAVA_OPTS="$JAVA_OPTS -XX:-UseParNewGC"
+JAVA_OPTS="$JAVA_OPTS -XX:-UseConcMarkSweepGC"
+JAVA_OPTS="$JAVA_OPTS -XX:+UseCondCardMark"
+JAVA_OPTS="$JAVA_OPTS -XX:MaxGCPauseMillis=200"
+JAVA_OPTS="$JAVA_OPTS -XX:+UseG1GC"
+JAVA_OPTS="$JAVA_OPTS -XX:GCPauseIntervalMillis=1000"
+JAVA_OPTS="$JAVA_OPTS -XX:InitiatingHeapOccupancyPercent=35"
+JAVA_OPTS="$JAVA_OPTS -XX:+DisableExplicitGC"
 
 # GC logging options
 if [ "x$ARCHIVIST_USE_GC_LOGGING" != "x" ]; then
@@ -44,11 +47,9 @@ if [ "x$ARCHIVIST_USE_GC_LOGGING" != "x" ]; then
   JAVA_OPTS="$JAVA_OPTS -XX:+PrintClassHistogram"
   JAVA_OPTS="$JAVA_OPTS -XX:+PrintTenuringDistribution"
   JAVA_OPTS="$JAVA_OPTS -XX:+PrintGCApplicationStoppedTime"
-  JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/elasticsearch/gc.log"
+  JAVA_OPTS="$JAVA_OPTS -Xloggc:/var/log/zorroa/gc.log"
 fi
 
-# Disables explicit GC
-JAVA_OPTS="$JAVA_OPTS -XX:+DisableExplicitGC"
 
 # Ensure UTF-8 encoding by default (e.g. filenames)
 JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8"
