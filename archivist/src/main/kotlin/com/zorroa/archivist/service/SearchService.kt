@@ -369,6 +369,9 @@ class SearchServiceImpl @Autowired constructor(
             }
         }
 
+        if (properties.getBoolean("archivist.debug-mode.enabled")) {
+            logger.info("SEARCH: {}", request)
+        }
         return request
     }
 
@@ -436,10 +439,6 @@ class SearchServiceImpl @Autowired constructor(
 
         if (assetBool.hasClauses()) {
             query.should(assetBool)
-        }
-
-        if (properties.getBoolean("archivist.debug-mode.enabled")) {
-            logger.info("SEARCH: {}", query)
         }
 
         return query

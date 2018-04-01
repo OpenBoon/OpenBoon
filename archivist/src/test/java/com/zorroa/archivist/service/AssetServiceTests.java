@@ -56,7 +56,7 @@ public class AssetServiceTests extends AbstractTest {
         builder.addToLinks("foo", "abc123");
 
         Document asset1 = assetService.index(builder);
-        assertEquals(ImmutableList.of(1),
+        assertEquals(ImmutableList.of("abc123"),
                 asset1.getAttr("zorroa.links.foo"));
     }
 

@@ -66,6 +66,7 @@ class FieldServiceImpl @Autowired constructor(
         result["keywords-boost"] = mutableSetOf()
         result["similarity"] = mutableSetOf()
         result["id"] = mutableSetOf()
+        result["path"] = mutableSetOf()
 
         result.getValue("keywords-boost")
                 .addAll(properties.getString(PROP_BOOST_KEYWORD_FIELD)
@@ -158,10 +159,15 @@ class FieldServiceImpl @Autowired constructor(
             if (item.containsKey("type")) {
                 var type = item["type"] as String
                 val index = item["index"] as String?
+                val analyzer = item["analyzer"] as String?
 
                 type = (NAME_TYPE_OVERRRIDES as java.util.Map<String, String>).getOrDefault(key, type)
                 if (type == "string" && key != "raw" && index == "not_analyzed") {
                     type = "id"
+                }
+
+                if (type == "string" && key != "raw" && analyzer == "path_analyzer") {
+                    type = "path"
                 }
 
                 var fields: MutableSet<String>? = result[type]

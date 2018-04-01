@@ -219,7 +219,7 @@
                 },
                 "analyzed": {
                   "type": "string",
-                  "analyzer": "keyword"
+                  "analyzer": "default"
                 }
               }
             }
