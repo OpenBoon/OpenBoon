@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.sdk.security.Groups
 import com.zorroa.archivist.security.getUserId
+import com.zorroa.archivist.security.hasPermission
 import com.zorroa.common.domain.TaskState
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
@@ -141,6 +143,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
         if (filter == null) {
             filter = JobFilter()
         }
+
+        if (!hasPermission(Groups.ADMIN)) {
+            filter.userId = getUserId()
+        }
+
         val query = filter.getQuery(GET, page)
         return PagedList(page.setTotalCount(count(filter)),
                 jdbc.query<Job>(query.left, MAPPER, *query.right.toTypedArray()))

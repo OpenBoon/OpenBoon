@@ -83,7 +83,7 @@ public class JobFilter {
         }
 
         if (page != null) {
-            sb.append("ORDER BY time_started DESC ");
+            sb.append("ORDER BY time_started ASC ");
             sb.append("LIMIT ? OFFSET ?");
         }
 
