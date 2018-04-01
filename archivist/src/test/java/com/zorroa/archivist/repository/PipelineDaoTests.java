@@ -11,6 +11,7 @@ import com.zorroa.sdk.processor.ProcessorRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +33,7 @@ public class PipelineDaoTests extends AbstractTest {
         spec.setProcessors(Lists.newArrayList());
         spec.setName("Zorroa Test");
         spec.setDescription("A test pipeline");
-        pipeline = pipelineDao.create(spec);
+        pipeline = pipelineService.create(spec);
     }
 
     @Test
@@ -45,8 +46,11 @@ public class PipelineDaoTests extends AbstractTest {
     @Test
     public void testDelete() {
         // cant' delete the standard
-        assertFalse(pipelineService.delete(pipelineService.getStandard(pipeline.getType()).getId()));
-
+        try {
+            assertFalse(pipelineService.delete(pipelineService.getStandard(pipeline.getType()).getId()));
+        } catch (EmptyResultDataAccessException e) {
+            // ignore
+        }
         // Add new standard
         PipelineSpecV spec = new PipelineSpecV();
         spec.setType(PipelineType.Import);

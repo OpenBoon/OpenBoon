@@ -67,9 +67,6 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     override fun clearStandard(type: PipelineType) : Boolean {
         val res = jdbc.update("UPDATE pipeline SET bool_standard=? WHERE bool_standard=? AND int_type=?",
                     false, true, type.ordinal) > 0
-        if (!res) {
-            logger.warn("Was not able to clear $type pipeline standard.")
-        }
         return res
     }
 

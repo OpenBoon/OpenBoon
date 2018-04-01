@@ -172,10 +172,6 @@ public abstract class AbstractTest {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
                 jdbc.update("DELETE FROM folder WHERE time_created !=1450709321000");
-
-                /**
-                 * Register plugins within this transaction so each test doesn't reinstall them.
-                 */
                 pluginService.installAndRegisterAllPlugins();
             }
         });

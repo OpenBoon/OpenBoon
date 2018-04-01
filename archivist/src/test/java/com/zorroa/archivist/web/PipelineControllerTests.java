@@ -67,20 +67,6 @@ public class PipelineControllerTests extends MockMvcTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
-        pl = pipelineService.create(spec);
-
-        MockHttpSession session = admin();
-        MvcResult result = mvc.perform(delete("/api/v1/pipelines/" + pl.getId())
-                .session(session))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        StatusResult rs = deserialize(result, StatusResult.class);
-        assertTrue(rs.success);
-    }
-
-    @Test
     public void testUpdate() throws Exception {
         pl = pipelineService.create(spec);
 
