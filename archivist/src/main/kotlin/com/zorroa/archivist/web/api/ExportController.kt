@@ -11,12 +11,14 @@ import com.zorroa.archivist.service.SearchService
 import com.zorroa.sdk.search.AssetFilter
 import com.zorroa.sdk.search.AssetSearch
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.FileSystemResource
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.io.BufferedInputStream
+import java.io.FileInputStream
 import java.nio.file.Paths
 import java.util.*
 
@@ -51,7 +53,7 @@ class ExportController @Autowired constructor(
     }
 
     @GetMapping(value = ["/api/v1/exports/{id}/_files/{fileId}/_stream"])
-    fun streamExportfile(@PathVariable id: UUID, @PathVariable fileId: UUID): ResponseEntity<FileSystemResource> {
+    fun streamExportfile(@PathVariable id: UUID, @PathVariable fileId: UUID): ResponseEntity<InputStreamResource> {
         val file = exportService.getExportFile(fileId)
         val job = jobService[id]
 
@@ -79,7 +81,9 @@ class ExportController @Autowired constructor(
         headers.add("content-disposition", "attachment; filename=" + file.name)
         headers.contentType = MediaType.valueOf(file.mimeType)
         headers.contentLength = file.size
-        return ResponseEntity(FileSystemResource(path.toFile()), headers, HttpStatus.OK)
+
+        val isr = InputStreamResource(BufferedInputStream(FileInputStream(path.toFile())))
+        return ResponseEntity(isr, headers, HttpStatus.OK)
     }
 
     private fun logExportDownload(id: UUID) {
