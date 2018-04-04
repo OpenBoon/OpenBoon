@@ -36,7 +36,7 @@ mvn clean install
 ```
 git clone git@github.com:Zorroa/zorroa-server.git
 cd zorroa-server
-mvn clean install -Dmaven.test.skip=true
+mvn clean install
 ```
 
 Next, start the archivist and analyst with their respective run scripts.:
