@@ -76,6 +76,14 @@ class PipelineServiceTests : AbstractTest() {
 
     @Test(expected = EmptyResultDataAccessException::class)
     fun testDelete() {
+        val spec = PipelineSpecV()
+        spec.processors = Lists.newArrayList(
+                ProcessorRef("com.zorroa.core.common.GroupProcessor"))
+        spec.description = "boo"
+        spec.name = "boo"
+        spec.type = PipelineType.Import
+        val pipeline = pipelineService.create(spec)
+
         assertTrue(pipelineService.delete(pipeline.id))
         pipelineService.get(pipeline.id)
     }

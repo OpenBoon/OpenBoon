@@ -191,7 +191,7 @@ class EmailServiceImpl @Autowired constructor(
         val mimeMessage = mailSender.createMimeMessage()
         val helper = MimeMessageHelper(mimeMessage, true, "utf-8")
         helper.setFrom("Zorroa Account Bot <noreply@zorroa.com>")
-        helper.setReplyTo("Zorroa Account Bot <noreply@zorroa.com>")
+        helper.setReplyTo("Zorroa Account Bot <support@zorroa.com>")
         helper.setSubject(subject)
         helper.setCc(cc.toTypedArray())
 
