@@ -5,11 +5,20 @@
 These instructions will walk you though setting up Archivist and Analyst for testing and development.
 
 ### Prequisites:
+1. Java SDK: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 1. ffmpeg & ffprobe (must be in your PATH, /usr/local/bin/ is suggested): https://evermeet.cx/ffmpeg/
-2. Postgres.app: https://postgresapp.com/
-3. git: Can be installed through Homebrew (https://brew.sh/)
-4. SSH keys configured on github: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-5. Java SDK: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+1. Postgres.app: https://postgresapp.com/
+1. Homebrew: https://brew.sh/
+1. git: Can be installed through Homebrew ```brew install git```
+1. oiiotool (must be in your PATH, /usr/local/bin/ is suggested): https://dl.zorroa.com/public/osx/oiiotool or build your own at https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md
+1. SSH keys configured on github: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+
+
+### Test Data
+
+Clone the test data repo. This is required for tests that run during the build process.
+
+```git clone git@github.com:Zorroa/zorroa-test-data.git```
 
 ### Plugin SDK Build
 
