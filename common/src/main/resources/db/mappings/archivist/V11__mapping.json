@@ -85,6 +85,15 @@
                 "parent": {
                   "type": "string",
                   "index": "not_analyzed"
+                },
+                "start": {
+                  "type": "double"
+                },
+                "stop": {
+                  "type": "double"
+                },
+                "length": {
+                  "type": "double"
                 }
               }
             }
