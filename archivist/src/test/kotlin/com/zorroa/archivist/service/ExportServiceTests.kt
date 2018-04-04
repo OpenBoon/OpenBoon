@@ -35,7 +35,7 @@ class ExportServiceTests : AbstractTest() {
     @Test
     fun testCreate() {
         val spec = ExportSpec("test",
-                AssetSearch().setQuery("cats"),
+                AssetSearch(),
                 Lists.newArrayList<ProcessorRef>(),
                 Maps.newHashMap(), false)
 
@@ -62,7 +62,7 @@ class ExportServiceTests : AbstractTest() {
             pipelineService.create(pspec)
 
             val spec = ExportSpec("test",
-                    AssetSearch().setQuery("cats"),
+                    AssetSearch(),
                     Lists.newArrayList<ProcessorRef>(
                             ProcessorRef("com.zorroa.core.common.GroupProcessor")
                                     .setArg("foo", "bar")),
@@ -97,7 +97,7 @@ class ExportServiceTests : AbstractTest() {
             pipelineService.create(pspec)
 
             val spec = ExportSpec("test",
-                    AssetSearch().setQuery("cats"),
+                    AssetSearch(),
                     Lists.newArrayList<ProcessorRef>(
                             ProcessorRef("com.zorroa.core.common.GroupProcessor")
                                     .setArg("foo", "bar")),
@@ -114,7 +114,7 @@ class ExportServiceTests : AbstractTest() {
     @Test
     fun testCreateAndGetExportFile() {
         val spec = ExportSpec("test",
-                AssetSearch().setQuery("cats"),
+                AssetSearch(),
                 Lists.newArrayList<ProcessorRef>(),
                 Maps.newHashMap(), false)
         val job = exportService.create(spec)
@@ -133,7 +133,7 @@ class ExportServiceTests : AbstractTest() {
     fun testGetAllExportFiles() {
 
         val spec = ExportSpec("test",
-                AssetSearch().setQuery("cats"),
+                AssetSearch(),
                 Lists.newArrayList<ProcessorRef>(),
                 Maps.newHashMap(), false)
 
