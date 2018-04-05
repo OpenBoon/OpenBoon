@@ -9,44 +9,71 @@ These instructions will walk you though setting up Archivist and Analyst for tes
 1. ffmpeg & ffprobe (must be in your PATH, /usr/local/bin/ is suggested): https://evermeet.cx/ffmpeg/
 1. Postgres.app: https://postgresapp.com/
 1. Homebrew: https://brew.sh/
-1. git: Can be installed through Homebrew ```brew install git```
+1. git: Installed via Homebrew ```brew install git```
 1. oiiotool (must be in your PATH, /usr/local/bin/ is suggested): https://dl.zorroa.com/public/osx/oiiotool or build your own at https://github.com/OpenImageIO/oiio/blob/master/INSTALL.md
 1. SSH keys configured on github: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
 
+### Start Postgres
 
-### Test Data
+Postgres must be running and have a database named after your username. This can be achieved by running Postgres.app 
+clicking "initialize" the first time the app is started.
 
-Clone the test data repo. This is required for tests that run during the build process.
+### Clone the Repos
 
-```git clone git@github.com:Zorroa/zorroa-test-data.git```
-
-### Plugin SDK Build
-
-First checkout and compile the plugin sdk.
-git@github.com:Zorroa/zorroa-plugin-sdk.git
+Clone the necessary repos into a zorroa projects directory. 
 
 ```
+mkdir ~/zorroa
+cd ~/zorroa
+git clone git@github.com:Zorroa/zorroa-test-data.git
 git clone git@github.com:Zorroa/zorroa-plugin-sdk.git
-cd zorroa-plugin-sdk
-mvn clean install
-```
-
-### Server Build
-
-```
 git clone git@github.com:Zorroa/zorroa-server.git
-cd zorroa-server
+``` 
+
+### Build Plugin SDK
+
+Build the Zorroa plugin SDK.
+
+```
+cd ~/zorroa/zorroa-plugin-sdk
 mvn clean install
 ```
 
-Next, start the archivist and analyst with their respective run scripts.:
+### Build Plugin SDK
+
+Build the Zorroa server.
 
 ```
+cd ~/zorroa/zorroa-server
+mvn clean install
+```
+
+### Run Servers
+
+Run the Archivist and Analyst servers. More information about these servers can be found below:
+
+https://dl.zorroa.com/public/docs/0.39/server/archivist.html
+
+https://dl.zorroa.com/public/docs/0.39/server/analyst.html
+
+*Archivist*
+
+```
+cd ~/zorroa/zorroa-server/archivist
 ./run.sh
 ```
 
-Now you can hit localhost to login:
+*Analyst*
 
 ```
-http://localhost:8066
+cd ~/zorroa/zorroa-server/analyst
+./run.sh
+```
+
+### Visit the Server
+
+You will need a username and password to access the api endpoints. A default superuser will be pre-populated in database, please ask your neighbor for the credentials. 
+
+```
+http://localhost:8066/api/v1/settings
 ```
