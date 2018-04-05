@@ -78,3 +78,12 @@ You can access the server at the link below. You will need a username and passwo
 
 [http://localhost:8066/api/v1/settings]()
 
+## Intellij IDEA Debug Server Setup (Optional)
+
+If you are using IDEA for development there are built-in tools for running the servers that all for adding breakpoints throughout the code as well as a myriad other useful tools. This section will walk you through setting up the debugging server and setting your first breakpoint.
+
+### Create A New Configuration.
+
+
+
+
