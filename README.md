@@ -58,6 +58,7 @@ https://dl.zorroa.com/public/docs/0.39/server/analyst.html
 
 *Archivist*
 
+In a fresh shell:
 ```
 cd ~/zorroa/zorroa-server/archivist
 ./run.sh
@@ -65,6 +66,7 @@ cd ~/zorroa/zorroa-server/archivist
 
 *Analyst*
 
+In a fresh shell:
 ```
 cd ~/zorroa/zorroa-server/analyst
 ./run.sh
@@ -72,8 +74,7 @@ cd ~/zorroa/zorroa-server/analyst
 
 ### Visit the Server
 
-You will need a username and password to access the api endpoints. A default superuser will be pre-populated in database, please ask your neighbor for the credentials. 
+You can access the server at the link below. You will need a username and password to access the API endpoints. A default superuser will have been pre-populated in database, please ask your neighbor for the credentials. 
 
-```
-http://localhost:8066/api/v1/settings
-```
+[http://localhost:8066/api/v1/settings]()
+
