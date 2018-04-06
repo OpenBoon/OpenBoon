@@ -6,6 +6,7 @@
   "dirs": [
     "bin",
     "lib",
+    "lib/ext",
     "config",
     "db",
     "tomcat",
