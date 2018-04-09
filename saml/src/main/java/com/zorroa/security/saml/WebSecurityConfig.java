@@ -50,6 +50,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -244,17 +245,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         extendedMetadata.setIdpDiscoveryEnabled(discovery);
         extendedMetadata.setSignMetadata(false);
         extendedMetadata.setEcpEnabled(true);
+
+        String url = properties.getString("archivist.security.saml.idpDiscoveryURL");
+        String responseUrl = properties.getString("archivist.security.saml.idpDiscoveryResponseURL");
+
+        if (!StringUtils.isEmpty(url) && StringUtils.isEmpty(responseUrl)) {
+            extendedMetadata.setIdpDiscoveryURL(url);
+            extendedMetadata.setIdpDiscoveryResponseURL(responseUrl);
+        }
         return extendedMetadata;
     }
 
     // IDP Discovery Service
 
-
     @Bean
     public SAMLDiscovery samlIDPDiscovery() {
-        SAMLDiscovery idpDiscovery = new SAMLDiscovery();
-        idpDiscovery.setIdpSelectionPath("/saml/idpSelection");
-        return idpDiscovery;
+
+        String url = properties.getString("archivist.security.saml.idpDiscoveryURL");
+        if (url == null) {
+            SAMLDiscovery idpDiscovery = new SAMLDiscovery();
+            idpDiscovery.setIdpSelectionPath("/saml/idpSelection");
+            return idpDiscovery;
+        }
+        return null;
     }
 
     // IDP Metadata configuration - paths to metadata of IDPs in circle of trust
@@ -486,8 +499,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 samlWebSSOHoKProcessingFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"),
                 samlLogoutProcessingFilter()));
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/discovery/**"),
-                samlIDPDiscovery()));
+
+        String url = properties.getString("archivist.security.saml.idpDiscoveryURL");
+        if (!StringUtils.isEmpty(url)) {
+            chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/discovery/**"),
+                    samlIDPDiscovery()));
+        }
 
         return new FilterChainProxy(chains);
     }
