@@ -97,22 +97,24 @@ public class FolderControllerTests extends MockMvcTest {
 
     @Test
     public void testGetByPathV2() throws Exception {
-        MvcResult result = mvc.perform(get("/api/v1/folders/_getByPath")
+        authenticate("admin");
+        folderService.create(new FolderSpec("  foo  "));
+        MvcResult result = mvc.perform(get("/api/v2/folders/_getByPath")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(ImmutableMap.of("path", "/Users"))))
+                .content(Json.serialize(ImmutableMap.of("path", "/  foo  "))))
                 .andExpect(status().isOk())
                 .andReturn();
         Folder folder2 = Json.Mapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<Folder>() {});
 
-        assertEquals("Users", folder2.getName());
+        assertEquals("  foo  ", folder2.getName());
         assertEquals(Folder.ROOT_ID, folder2.getParentId());
     }
 
     @Test
     public void testExistsByPathV2() throws Exception {
-        MvcResult result = mvc.perform(get("/api/v1/folders/_existsByPath")
+        MvcResult result = mvc.perform(get("/api/v2/folders/_existsByPath")
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(ImmutableMap.of("path", "/Users"))))

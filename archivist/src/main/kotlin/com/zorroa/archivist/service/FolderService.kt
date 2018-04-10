@@ -278,7 +278,7 @@ class FolderServiceImpl @Autowired constructor(
 
         // Just throw the exception to the caller,don't return null
         // as none of the other 'get' functions do.
-        for (name in Splitter.on("/").omitEmptyStrings().trimResults().split(path)) {
+        for (name in Splitter.on("/").omitEmptyStrings().split(path)) {
             current = folderDao.get(parentId, name, false)
             parentId = current.id
         }

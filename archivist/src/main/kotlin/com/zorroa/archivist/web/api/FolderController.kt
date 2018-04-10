@@ -57,14 +57,15 @@ class FolderController @Autowired constructor(
         return folderService.get(path)
     }
 
-    @GetMapping(value = ["/api/v1/folders/_getByPath"])
+    @GetMapping(value = ["/api/v2/folders/_getByPath"])
     fun getByPathV2(@RequestBody req: Map<String,String>): Folder? {
         return folderService.get(req.getValue("path"))
     }
 
-    @GetMapping(value = ["/api/v1/folders/_existsByPath"])
+    @GetMapping(value = ["/api/v2/folders/_existsByPath"])
     fun existsV2(@RequestBody req: Map<String, String>): Any {
-        return HttpUtils.status("folders", path, "exists", folderService.exists(req.getValue("path")))
+        return HttpUtils.status("folders", path, "exists",
+                folderService.exists(req.getValue("path")))
     }
 
     @Deprecated("")

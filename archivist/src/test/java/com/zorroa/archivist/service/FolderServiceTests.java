@@ -584,6 +584,14 @@ public class FolderServiceTests extends AbstractTest {
 
         List<Folder> folders = folderService.getAllAncestors(folder3, true, false);
         logger.info("{}", folders);
+        // TODO an assertiion
 
+    }
+
+    @Test
+    public void getFolderByPathWithSpaces() {
+        Folder folder1 = folderService.create(new FolderSpec("  f1  "));
+        Folder folder2 = folderService.get("/  f1  ");
+        assertEquals(folder1, folder2);
     }
 }
