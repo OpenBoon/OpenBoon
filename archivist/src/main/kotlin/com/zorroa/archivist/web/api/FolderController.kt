@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.SetPermissions
 import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.SearchService
 import com.zorroa.sdk.search.AssetSearch
+import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.HandlerMapping
@@ -54,6 +55,16 @@ class FolderController @Autowired constructor(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE) as String
         path = path.substring(path.indexOf("/_path/") + 6).replace("//", "/")
         return folderService.get(path)
+    }
+
+    @GetMapping(value = ["/api/v1/folders/_getByPath"])
+    fun getByPathV2(@RequestBody req: Map<String,String>): Folder? {
+        return folderService.get(req.getValue("path"))
+    }
+
+    @GetMapping(value = ["/api/v1/folders/_existsByPath"])
+    fun existsV2(@RequestBody req: Map<String, String>): Any {
+        return HttpUtils.status("folders", path, "exists", folderService.exists(req.getValue("path")))
     }
 
     @Deprecated("")
