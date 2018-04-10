@@ -346,7 +346,7 @@ class AssetController @Autowired constructor(
         FlipbookSender(id, searchService).serveResource(rsp)
     }
 
-    @PostMapping(value = ["/api/v1/assets/_index"], produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    @PostMapping(value = ["/api/v1/assets/_index"], produces = [(MediaType.APPLICATION_JSON_VALUE)])
     @Throws(IOException::class)
     fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
         return assetService.index(spec)
