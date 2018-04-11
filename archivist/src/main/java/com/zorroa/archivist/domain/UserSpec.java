@@ -16,6 +16,8 @@ public class UserSpec {
     private String firstName;
     private String lastName;
 
+    private String source;
+
     @NotEmpty
     @Email
     private String email;
@@ -117,6 +119,15 @@ public class UserSpec {
 
     public UserSpec setUserPermissionId(UUID userPermissionId) {
         this.userPermissionId = userPermissionId;
+        return this;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public UserSpec setSource(String source) {
+        this.source = source;
         return this;
     }
 }

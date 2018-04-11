@@ -56,8 +56,6 @@ interface UserDao {
 
     fun create(builder: UserSpec): User
 
-    fun create(builder: UserSpec, source: String): User
-
     fun hasPermission(user: UserId, permission: Permission): Boolean
 
     fun hasPermission(user: UserId, type: String, name: String): Boolean
@@ -117,10 +115,14 @@ class UserDaoImpl : AbstractDao(), UserDao {
                         MAPPER, paging.size, paging.from))
     }
 
-    override fun create(builder: UserSpec, source: String): User {
+    override fun create(builder: UserSpec): User {
         Preconditions.checkNotNull(builder.username, "The Username cannot be null")
         Preconditions.checkNotNull(builder.password, "The Password cannot be null")
         builder.password = createPasswordHash(builder.password)
+
+        if (builder.source == null) {
+            builder.source = SOURCE_LOCAL
+        }
 
         val id = uuid1.generate()
 
@@ -135,16 +137,12 @@ class UserDaoImpl : AbstractDao(), UserDao {
             ps.setBoolean(7, true)
             ps.setObject(8, generateKey())
             ps.setString(9, "{}")
-            ps.setString(10, source)
+            ps.setString(10, builder.source)
             ps.setObject(11, builder.userPermissionId)
             ps.setObject(12, builder.homeFolderId)
             ps
         })
         return get(id)
-    }
-
-    override fun create(builder: UserSpec): User {
-        return create(builder, "local")
     }
 
     override fun exists(name: String): Boolean {
@@ -275,6 +273,8 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     companion object {
+
+        const val SOURCE_LOCAL = "local"
 
         private val MAPPER = RowMapper<User> { rs, _ ->
             User(rs.getObject("pk_user") as UUID,

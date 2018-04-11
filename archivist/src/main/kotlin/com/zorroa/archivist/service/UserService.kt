@@ -7,6 +7,7 @@ import com.google.common.collect.Sets
 import com.zorroa.archivist.domain.*
 import com.zorroa.archivist.repository.PermissionDao
 import com.zorroa.archivist.repository.UserDao
+import com.zorroa.archivist.repository.UserDaoImpl.Companion.SOURCE_LOCAL
 import com.zorroa.archivist.repository.UserPresetDao
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import com.zorroa.archivist.sdk.security.*
@@ -39,8 +40,6 @@ interface UserService {
     fun getUserPresets(): List<UserPreset>
 
     fun create(builder: UserSpec): User
-
-    fun create(builder: UserSpec, source: String): User
 
     fun get(username: String): User
 
@@ -118,7 +117,8 @@ class UserRegistryServiceImpl @Autowired constructor(
             spec.username = username
             spec.password = UUID.randomUUID().toString() + UUID.randomUUID().toString()
             spec.email = username
-            userService.create(spec, source.authSourceId)
+            spec.source = source.authSourceId
+            userService.create(spec)
         } else {
             userService.get(username)
         }
@@ -202,10 +202,6 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun create(builder: UserSpec): User {
-        return create(builder, SOURCE_LOCAL)
-    }
-
-    override fun create(builder: UserSpec, source: String): User {
         if (userDao.exists(builder.username)) {
             throw DuplicateEntityException("The user '" +
                     builder.username + "' already exists.")
@@ -220,7 +216,11 @@ class UserServiceImpl @Autowired constructor(
         builder.homeFolderId = userFolder.id
         builder.userPermissionId = userPerm.id
 
-        val user = userDao.create(builder, source)
+        if (builder.source == null) {
+            builder.source = SOURCE_LOCAL
+        }
+
+        val user = userDao.create(builder)
 
         /*
          * Grab the preset, if any.
@@ -498,9 +498,6 @@ class UserServiceImpl @Autowired constructor(
         private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
         internal val PERMANENT_TYPES: Set<String> = ImmutableSet.of("user", "internal")
-
-        private const val SOURCE_LOCAL = "local"
-
         private val PASS_HAS_NUMBER = Pattern.compile("\\d")
         private val PASS_HAS_UPPER = Pattern.compile("[A-Z]")
     }
