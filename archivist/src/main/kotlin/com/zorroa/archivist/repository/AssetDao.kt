@@ -82,6 +82,8 @@ interface AssetDao {
 
     fun appendLink(type: String, value: Any, assets: List<String>): Map<String, List<Any>>
 
+    fun setLinks(assetId: String, type:String, ids: Collection<Any>)
+
     fun update(assetId: String, attrs: Map<String, Any>): Long
 
     fun <T> getFieldValue(id: String, field: String): T
@@ -303,6 +305,17 @@ class AssetDaoImpl : AbstractElasticDao(), AssetDao {
 
         return result
     }
+
+    override fun setLinks(assetId: String, type:String, ids: Collection<Any>) {
+        if (type.contains(".")) {
+            throw IllegalArgumentException("Attribute cannot contain a sub attribute. (no dots in name)")
+        }
+        val doc = mapOf("zorroa" to mapOf("links" to mapOf(type to ids)))
+        client.prepareUpdate(index, getType(), assetId)
+                .setDoc(doc)
+                .get()
+    }
+
 
     override fun update(assetId: String, attrs: Map<String, Any>): Long {
         val asset = get(assetId)

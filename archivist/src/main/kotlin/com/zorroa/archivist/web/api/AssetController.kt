@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.*
 import java.io.File
 import java.io.IOException
 import java.nio.file.Paths
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.HttpServletRequest
@@ -46,6 +47,7 @@ class AssetController @Autowired constructor(
         private val client: Client,
         private val assetService: AssetService,
         private val searchService: SearchService,
+        private val folderService: FolderService,
         private val logService: EventLogService,
         private val imageService: ImageService,
         private val ofs: ObjectFileSystem,
@@ -173,6 +175,7 @@ class AssetController @Autowired constructor(
 
         }
     }
+
     private val proxyLookupCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
             .expireAfterWrite(1, TimeUnit.HOURS)
@@ -350,6 +353,24 @@ class AssetController @Autowired constructor(
     @Throws(IOException::class)
     fun index(@RequestBody spec: AssetIndexSpec): AssetIndexResult {
         return assetService.index(spec)
+    }
+
+    class SetFoldersRequest {
+        var folders: List<UUID>? = null
+    }
+
+    /**
+     * Reset all folders for a given asset.  Currently only used for syncing.
+     */
+    @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
+    @PutMapping(value = ["/api/v1/assets/{id}/_setFolders"])
+    @Throws(Exception::class)
+    fun setFolders(@PathVariable id: String, @RequestBody req: SetFoldersRequest): Any {
+        req?.folders?.let {
+            folderService.setFoldersForAsset(id, it)
+            return HttpUtils.updated("asset", id, true)
+        }
+        return HttpUtils.updated("asset", id, false)
     }
 
     class SetPermissionsRequest {

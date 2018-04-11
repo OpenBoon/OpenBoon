@@ -21,6 +21,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -40,6 +41,27 @@ public class FolderServiceTests extends AbstractTest {
     public void init() {
         addTestAssets("set04/standard");
         refreshIndex();
+    }
+
+    @Test
+    public void testSetAssets() {
+
+        List<UUID> folders = Lists.newArrayList();
+        for (int i=0; i<10; i++) {
+            FolderSpec builder = new FolderSpec("Folder" + i);
+            Folder folder = folderService.create(builder);
+            folders.add(folder.getId());
+        }
+
+        List<Document> assets = assetService.getAll(Pager.first(1)).getList();
+        assertEquals(1, assets.size());
+        Document doc = assets.get(0);
+
+        folderService.setFoldersForAsset(doc.getId(), folders);
+        refreshIndex();
+
+        doc = assetService.get(doc.getId());
+        assertEquals(10, doc.getAttr("zorroa.links.folder", List.class).size());
     }
 
     @Test

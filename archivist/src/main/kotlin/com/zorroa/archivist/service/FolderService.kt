@@ -113,6 +113,8 @@ interface FolderService {
 
     fun removeAssets(folder: Folder, assetIds: List<String>): Map<String, List<Any>>
 
+    fun setFoldersForAsset(assetId: String, folders: List<UUID>);
+
     /**
      * Asynchronously creata a new folder.  Return a future in case
      * you eventually need the result.
@@ -513,6 +515,11 @@ class FolderServiceImpl @Autowired constructor(
             })
         }
         return result
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    override fun setFoldersForAsset(assetId: String, folders: List<UUID>) {
+        assetDao.setLinks(assetId, "folder", folders)
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

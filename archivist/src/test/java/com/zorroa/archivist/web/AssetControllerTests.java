@@ -3,6 +3,7 @@ package com.zorroa.archivist.web;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.zorroa.archivist.TestSearchResult;
 import com.zorroa.archivist.domain.Folder;
 import com.zorroa.archivist.domain.FolderSpec;
@@ -28,10 +29,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -304,6 +302,36 @@ public class AssetControllerTests extends MockMvcTest {
                     new TypeReference<Map<String, Object>>() {});
             assertEquals(asset.getId(), json.get("id"));
         }
+    }
+
+    @Test
+    public void tesSetFolders() throws Exception {
+        authenticate("admin");
+        addTestAssets("set04/canyon");
+
+        List<UUID> folders = Lists.newArrayList();
+        for (int i=0; i<10; i++) {
+            FolderSpec builder = new FolderSpec("Folder" + i);
+            Folder folder = folderService.create(builder);
+            folders.add(folder.getId());
+        }
+
+        List<Document> assets = assetService.getAll(Pager.first(1)).getList();
+        assertEquals(1, assets.size());
+        Document doc = assets.get(0);
+
+        MockHttpSession session = admin();
+        mvc.perform(put("/api/v1/assets/" + doc.getId() + "/_setFolders")
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(ImmutableMap.of("folders", folders))))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        refreshIndex();
+        doc = assetService.get(doc.getId());
+        assertEquals(10, doc.getAttr("zorroa.links.folder", List.class).size());
+
     }
 
     @Test
