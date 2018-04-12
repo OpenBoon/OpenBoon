@@ -709,6 +709,10 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot make changes to this folder")
         }
 
+        if (spec.name.contains("/", true)) {
+            throw ArchivistWriteException("You cannot have slashes in folder names")
+        }
+
         // If there is no acl, use the parent acl.
         if (spec.acl == null) {
             spec.acl = parent.acl
