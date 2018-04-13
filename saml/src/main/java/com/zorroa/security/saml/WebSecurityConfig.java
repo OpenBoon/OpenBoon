@@ -245,14 +245,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         extendedMetadata.setIdpDiscoveryEnabled(discovery);
         extendedMetadata.setSignMetadata(false);
         extendedMetadata.setEcpEnabled(true);
-
-        String url = properties.getString("archivist.security.saml.idpDiscoveryURL");
-        String responseUrl = properties.getString("archivist.security.saml.idpDiscoveryResponseURL");
-
-        if (!StringUtils.isEmpty(url) && StringUtils.isEmpty(responseUrl)) {
-            extendedMetadata.setIdpDiscoveryURL(url);
-            extendedMetadata.setIdpDiscoveryResponseURL(responseUrl);
-        }
         return extendedMetadata;
     }
 
@@ -260,14 +252,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SAMLDiscovery samlIDPDiscovery() {
-
-        String url = properties.getString("archivist.security.saml.idpDiscoveryURL");
-        if (url == null) {
-            SAMLDiscovery idpDiscovery = new SAMLDiscovery();
-            idpDiscovery.setIdpSelectionPath("/saml/idpSelection");
-            return idpDiscovery;
-        }
-        return null;
+        SAMLDiscovery idpDiscovery = new SAMLDiscovery();
+        idpDiscovery.setIdpSelectionPath("/saml/idpSelection");
+        return idpDiscovery;
     }
 
     // IDP Metadata configuration - paths to metadata of IDPs in circle of trust
@@ -499,12 +486,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 samlWebSSOHoKProcessingFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"),
                 samlLogoutProcessingFilter()));
-
-        String url = properties.getString("archivist.security.saml.idpDiscoveryURL");
-        if (!StringUtils.isEmpty(url)) {
-            chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/discovery/**"),
-                    samlIDPDiscovery()));
-        }
+        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/discovery/**"),
+                samlIDPDiscovery()));
 
         return new FilterChainProxy(chains);
     }
