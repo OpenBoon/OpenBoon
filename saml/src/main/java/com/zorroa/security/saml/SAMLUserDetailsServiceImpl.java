@@ -17,7 +17,6 @@
 package com.zorroa.security.saml;
 
 import com.zorroa.archivist.sdk.security.AuthSource;
-import com.zorroa.archivist.sdk.security.UserAuthed;
 import com.zorroa.archivist.sdk.security.UserRegistryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,25 +45,38 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 	public Object loadUserBySAML(SAMLCredential credential)
 			throws UsernameNotFoundException {
 
-		String userID = credential.getNameID().getValue();
-		String issuer = credential.getAuthenticationAssertion().getIssuer().getValue();
+		String userId = null;
+		final String issuer = credential.getAuthenticationAssertion().getIssuer().getValue();
 
 		try {
-			LOG.info("Loading SAML user: {} from {}", userID, issuer);
+
 			ZorroaExtendedMetadata zd = (ZorroaExtendedMetadata) metadata.getExtendedMetadata(issuer);
 			AuthSource source = new AuthSource(
 					zd.getProp("label"),
 					zd.getProp("authSourceId"),
 					zd.getProp("permissionType"));
 
-			UserAuthed authed = userRegistryService.registerUser(userID, source,
-					parseGroups(zd.getProp("groupAttr"), credential));
-			return authed;
+            /**
+             * if the username attr is set, then try to use that, otherwise
+             * default to the username that logged in.
+             */
+			String usernameAttr = trim(zd.getProp("usernameAttr"));
+			if (usernameAttr != null) {
+                userId = credential.getAttributeAsString(usernameAttr);
+			}
+
+			if (userId == null) {
+                userId = credential.getNameID().getValue();
+            }
+
+			LOG.info("Loading SAML user: {} from {}", userId, issuer);
+            return userRegistryService.registerUser(userId, source,
+                    parseGroups(zd.getProp("groupAttr"), credential));
 
 		}
 		catch (Exception e) {
 			LOG.warn("Failed to register user, IDP not founds", e);
-			throw new UsernameNotFoundException("Unable to authenticate user: " + userID, e);
+			throw new UsernameNotFoundException("Unable to authenticate user: " + userId, e);
 		}
 	}
 
@@ -78,4 +90,16 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 		}
 		return groups;
 	}
+
+	private static String trim(String value) {
+	    if (value == null) {
+	        return null;
+        }
+        else if (value.trim().isEmpty()) {
+	        return null;
+        }
+        else {
+	        return value.trim();
+        }
+    }
 }
