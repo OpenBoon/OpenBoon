@@ -115,6 +115,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         t.getEnv()["ZORROA_TASK_ID"] = t.getId().toString()
         t.getEnv()["ZORROA_USER"] = rs.getString("str_username")
         t.getEnv()["ZORROA_WORK_DIR"] = workDir
+        t.getEnv()["ZORROA_ARCHIVIST_URL"] = networkEnv.privateUri.toString()
 
         val hmacKey : String? = rs.getString("hmac_key")
         if (hmacKey != null) {
