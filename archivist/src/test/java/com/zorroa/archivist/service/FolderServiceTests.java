@@ -243,6 +243,7 @@ public class FolderServiceTests extends AbstractTest {
         Folder folder = folderService.create(builder);
         folderDao.setAcl(folder.getId(),
                 new Acl().addEntry(permissionService.getPermission(Groups.ADMIN), Access.Read));
+        folderService.invalidate(folder);
         folderService.get(folder.getId());
     }
 
@@ -439,8 +440,6 @@ public class FolderServiceTests extends AbstractTest {
         Folder admin = folderService.get("/Users/admin");
         Folder moving = folderService.create(new FolderSpec("folder_to_move", admin));
 
-        logger.info("{}", moving.getAcl());
-
         assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("user::admin"), Access.Read));
         assertTrue(moving.getAcl().hasAccess(permissionService.getPermission("user::admin"), Access.Write));
         assertEquals(1, moving.getAcl().size());
@@ -449,9 +448,9 @@ public class FolderServiceTests extends AbstractTest {
         assertTrue(folderService.update(moving.getId(), moving.setParentId(library.getId())));
         Acl acl = folderDao.getAcl(moving.getId());
 
-        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission(Groups.LIBRARIAN), Access.Write));
-        assertTrue(moving.getAcl().hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read));
-        assertEquals(2, moving.getAcl().size());
+        assertTrue(acl.hasAccess(permissionService.getPermission(Groups.LIBRARIAN), Access.Write));
+        assertTrue(acl.hasAccess(permissionService.getPermission(Groups.EVERYONE), Access.Read));
+        assertEquals(2, acl.size());
     }
 
     @Test(expected=ArchivistWriteException.class)

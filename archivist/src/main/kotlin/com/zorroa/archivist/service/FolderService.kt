@@ -227,6 +227,7 @@ class FolderServiceImpl @Autowired constructor(
 
     override fun setAcl(folder: Folder, acl: Acl?, created: Boolean, autoCreate: Boolean) {
         if (acl == null) {
+            logger.warn("Ignoring null ACL on folder: {}", folder)
             return
         }
 
@@ -244,6 +245,7 @@ class FolderServiceImpl @Autowired constructor(
 
     override fun updateAcl(folder: Folder, acl: Acl?) {
         if (acl == null) {
+            logger.warn("Ignoring null ACL on folder: {}", folder)
             return
         }
         canSetAclOnFolder(acl, folder.acl, false)
@@ -731,6 +733,7 @@ class FolderServiceImpl @Autowired constructor(
             spec.created = true
             setAcl(result, spec.acl, true, false)
             emitFolderCreated(result)
+            result = get(result.id)
         }
 
         return result
