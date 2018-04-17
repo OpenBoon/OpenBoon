@@ -3,8 +3,12 @@ package com.zorroa.archivist.repository
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Lists
 import com.zorroa.archivist.JdbcUtils
-import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.domain.Acl
+import com.zorroa.archivist.domain.Permission
+import com.zorroa.archivist.domain.PermissionFilter
+import com.zorroa.archivist.domain.PermissionSpec
 import com.zorroa.archivist.sdk.security.UserId
+import com.zorroa.archivist.util.StaticUtils.UUID_REGEXP
 import com.zorroa.sdk.domain.PagedList
 import com.zorroa.sdk.domain.Pager
 import org.springframework.dao.DuplicateKeyException
@@ -99,13 +103,15 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
     }
 
     override fun getId(name: String): UUID {
+        if (UUID_REGEXP.matches(name)) {
+            return UUID.fromString(name)
+        }
         try {
             return jdbc.queryForObject("SELECT pk_permission FROM permission WHERE str_authority=?",
                     UUID::class.java, name)
         } catch (e: EmptyResultDataAccessException) {
-            throw EmptyResultDataAccessException("Failed to find permission " + name, 1)
+            throw EmptyResultDataAccessException("Failed to find permission $name", 1)
         }
-
     }
 
     override operator fun get(authority: String): Permission {
@@ -119,22 +125,33 @@ class PermissionDaoImpl : AbstractDao(), PermissionDao {
             return Acl()
         }
 
+        val resolved = mutableSetOf<UUID>()
+
         val result = Acl()
         for (entry in acl) {
+
             if (entry.getPermissionId() == null) {
-                try {
-                    result.addEntry(getId(entry.permission), entry.getAccess())
+                // Get the permission ID
+                val id = try {
+                    getId(entry.permission)
+
                 } catch (e: EmptyResultDataAccessException) {
                     if (createMissing) {
-                        result.addEntry(create(PermissionSpec(entry.permission)
-                                .apply { description="Auto created permission" }, false), entry.getAccess())
+                        create(PermissionSpec(entry.permission)
+                                .apply { description = "Auto created permission" }, false).id
                     } else {
                         throw e
                     }
                 }
-
+                if (!resolved.contains(id)) {
+                    result.addEntry(id, entry.getAccess())
+                    resolved.add(id)
+                }
             } else {
-                result.add(entry)
+                if(!resolved.contains(entry.permissionId)) {
+                    result.add(entry)
+                    resolved.add(entry.permissionId)
+                }
             }
         }
         return result

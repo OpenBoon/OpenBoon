@@ -26,4 +26,9 @@ object StaticUtils {
     val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 }
 
+inline fun  <E: Any, T: Collection<E>> T?.whenNullOrEmpty(func: () -> Unit): Unit {
+    if (this == null || this.isEmpty()) {
+        func()
+    }
+}
 

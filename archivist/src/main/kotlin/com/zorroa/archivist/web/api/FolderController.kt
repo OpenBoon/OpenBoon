@@ -8,6 +8,7 @@ import com.zorroa.archivist.service.FolderService
 import com.zorroa.archivist.service.SearchService
 import com.zorroa.sdk.search.AssetSearch
 import org.aspectj.weaver.tools.cache.SimpleCacheFactory.path
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.HandlerMapping
@@ -107,6 +108,7 @@ class FolderController @Autowired constructor(
         return folderService.get(id, name)
     }
 
+    @Deprecated("use _acl")
     @PutMapping(value = ["/api/v1/folders/{id}/_permissions"])
     @Throws(Exception::class)
     fun setPermissions(@PathVariable id: UUID, @RequestBody req: SetPermissions): Any {
@@ -115,6 +117,18 @@ class FolderController @Autowired constructor(
             folderService.setAcl(folder, req.acl!!, false, false)
         } else {
             folderService.updateAcl(folder, req.acl!!)
+        }
+        return folderService.get(folder.id)
+    }
+
+    @PutMapping(value = ["/api/v1/folders/{id}/_acl"])
+    @Throws(Exception::class)
+    fun setAcl(@PathVariable id: UUID, @RequestBody req: SetPermissions): Any {
+        val folder = folderService.get(id)
+        if (req.replace) {
+            folderService.setAcl(folder, req.acl, false, false)
+        } else {
+            folderService.updateAcl(folder, req.acl)
         }
         return folderService.get(folder.id)
     }
@@ -149,5 +163,11 @@ class FolderController @Autowired constructor(
             @PathVariable id: UUID): Any {
         val folder = folderService.get(id)
         return folderService.addAssets(folder, assetIds)
+    }
+
+
+    companion object {
+
+        private val logger = LoggerFactory.getLogger(FolderController::class.java)
     }
 }

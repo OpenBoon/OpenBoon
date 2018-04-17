@@ -11,6 +11,7 @@ import com.zorroa.archivist.repository.*
 import com.zorroa.archivist.security.canSetAclOnFolder
 import com.zorroa.archivist.security.getUserId
 import com.zorroa.archivist.security.hasPermission
+import com.zorroa.archivist.util.whenNullOrEmpty
 import com.zorroa.sdk.client.exception.ArchivistWriteException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,8 +34,6 @@ interface FolderService {
      * @return
      */
     fun getTrashedFolders(): List<TrashedFolder>
-
-    fun updateAcl(folder: Folder, acl: Acl)
 
     fun get(id: UUID): Folder
 
@@ -107,7 +106,9 @@ interface FolderService {
 
     fun getAcl(folder: Folder): Acl
 
-    fun setAcl(folder: Folder, acl: Acl, created: Boolean, autoCreate: Boolean)
+    fun setAcl(folder: Folder, acl: Acl?, created: Boolean, autoCreate: Boolean)
+
+    fun updateAcl(folder: Folder, acl: Acl?)
 
     fun addAssets(folder: Folder, assetIds: List<String>): Map<String, List<Any>>
 
@@ -224,27 +225,33 @@ class FolderServiceImpl @Autowired constructor(
         return folderDao.getAcl(folder.id)
     }
 
-    override fun setAcl(folder: Folder, acl: Acl, created: Boolean, autoCreate: Boolean) {
+    override fun setAcl(folder: Folder, acl: Acl?, created: Boolean, autoCreate: Boolean) {
+        if (acl == null) {
+            return
+        }
+
         canSetAclOnFolder(acl, folder.acl, created)
 
         val resolvedAcl = permissionDao.resolveAcl(acl, autoCreate)
         folderDao.setAcl(folder.id, resolvedAcl, true)
-        folder.acl = acl
 
-        transactionEventManager.afterCommit {
+        transactionEventManager.afterCommit(true) {
             invalidate(folder)
             logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
                     .setMessage("permissions set"))
         }
     }
 
-    override fun updateAcl(folder: Folder, acl: Acl) {
+    override fun updateAcl(folder: Folder, acl: Acl?) {
+        if (acl == null) {
+            return
+        }
         canSetAclOnFolder(acl, folder.acl, false)
 
         val resolvedAcl = permissionDao.resolveAcl(acl, false)
         folderDao.updateAcl(folder.id, resolvedAcl)
 
-        transactionEventManager.afterCommit {
+        transactionEventManager.afterCommit(true) {
             invalidate(folder)
             logService.logAsync(UserLogSpec.build(LogAction.Update, folder)
                     .setMessage("permissions updated"))
@@ -263,7 +270,6 @@ class FolderServiceImpl @Autowired constructor(
         } catch (e: Exception) {
             throw EmptyResultDataAccessException("Failed to find folder: $id", 1)
         }
-
     }
 
     override fun get(parent: UUID, name: String): Folder {
@@ -713,35 +719,19 @@ class FolderServiceImpl @Autowired constructor(
             throw ArchivistWriteException("You cannot have slashes in folder names")
         }
 
-        // If there is no acl, use the parent acl.
-        if (spec.acl == null) {
-            spec.acl = parent.acl
-        }
-
         var result: Folder
 
-            try {
-                result = get(spec.parentId, spec.name)
-            } catch (e: EmptyResultDataAccessException) {
-                result = folderDao.create(spec)
-                spec.created = true
-                setAcl(result, spec.acl, true, false)
-                emitFolderCreated(result)
+        try {
+            result = get(spec.parentId, spec.name)
+        } catch (e: EmptyResultDataAccessException) {
+            spec.acl.whenNullOrEmpty {
+                spec.acl = parent.acl
             }
-        /*
-        } else {
-            //TODO: this won't work with postgres since the transaction
-            // will be dead once the DuplicateKeyException is thrown.
-            // Look into using ON CONFLICT / Merge
-            try {
-                result = folderDao.create(spec)
-                spec.created = true
-                setAcl(result, spec.acl, true, false)
-                emitFolderCreated(result)
-            } catch (e: DuplicateKeyException) {
-                result = get(spec.parentId, spec.name)
-            }
-        */
+            result = folderDao.create(spec)
+            spec.created = true
+            setAcl(result, spec.acl, true, false)
+            emitFolderCreated(result)
+        }
 
         return result
     }

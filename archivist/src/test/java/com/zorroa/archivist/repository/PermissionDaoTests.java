@@ -254,6 +254,14 @@ public class PermissionDaoTests extends AbstractTest {
         assertNotNull(acl.get(0).permissionId);
     }
 
+    @Test
+    public void resolveAclDuplicates() {
+        Acl acl = new Acl().addEntry(Groups.EVERYONE, 1);
+        acl.addEntry(Groups.EVERYONE, 3);
+        acl = permissionDao.resolveAcl(acl, false);
+        assertEquals(1, acl.size());
+    }
+
     @Test(expected=EmptyResultDataAccessException.class)
     public void resolveAclFailure() {
         Acl acl = new Acl().addEntry("zorroa::shizzle", 1);
