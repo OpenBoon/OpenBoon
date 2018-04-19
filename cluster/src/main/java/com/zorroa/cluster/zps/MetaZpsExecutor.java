@@ -215,15 +215,16 @@ public class MetaZpsExecutor {
             process = buildProcess(command).start();
 
             LineReader reader = new LineReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder sb = new StringBuilder(1024 * 1024);
+            StringBuilder sb = null;
             boolean buffer = false;
             String line;
 
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(ZpsScript.SUFFIX)) {
                     try {
-                        processBuffer(sb);
+                        processBuffer(sb.toString());
                         buffer = false;
+                        sb = null;
                     } catch (Exception e) {
                         /**
                          * The buffer cannot be parsed for some reason, we'll just fail the task.
@@ -236,7 +237,7 @@ public class MetaZpsExecutor {
                     sb.append(line);
                 } else if (line.startsWith(ZpsScript.PREFIX)) {
                     buffer = true;
-                    sb.setLength(0);
+                    sb = new StringBuilder(256);
                 } else if (!line.isEmpty()) {
                     logStream.println(line);
                 }
@@ -328,13 +329,12 @@ public class MetaZpsExecutor {
         logStream.println(SEPERATOR);
     }
 
-    public void processBuffer(StringBuilder sb) throws IOException {
-        String scriptText = sb.toString();
-
+    public void processBuffer(String scriptText) throws IOException {
         /**
          * Parse the string into a Reaction.  If it doesn't parse, an exception is thrown
          * out to the I/O loop, which is handled there.
          */
+        logger.info("processing {} byte reaction", scriptText.length());
         Reaction reaction = Json.deserialize(scriptText, Reaction.class);
 
         if (reaction.getNextProcess() != null) {
