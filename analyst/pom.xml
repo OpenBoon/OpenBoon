@@ -45,47 +45,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.elasticsearch.module</groupId>
-            <artifactId>lang-groovy</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.elasticsearch.module</groupId>
-            <artifactId>lang-expression</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-        </dependency>
-
-        <!--
-            The JTS Topology Suite is an API for modelling and manipulating 2-dimensional
-            linear geometry. It provides numerous geometric predicates and functions.
-            JTS conforms to the Simple Features Specification for SQL published by the
-            Open GIS Consortium.
-        -->
-        <dependency>
-            <groupId>com.vividsolutions</groupId>
-            <artifactId>jts</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>cluster</artifactId>
         </dependency>
@@ -103,11 +62,6 @@
         <dependency>
             <groupId>com.zorroa</groupId>
             <artifactId>common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <dependency>
