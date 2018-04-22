@@ -102,6 +102,7 @@ public class MetaZpsExecutor {
             logger.warn("Failed to execute process: ", e);
             exit = 1;
         } finally {
+            processQueue.clear();
             logger.info("Task stopped, exit status: {} in {}ms", exit,
                     timer.stop().elapsed(TimeUnit.MILLISECONDS));
         }
@@ -237,7 +238,7 @@ public class MetaZpsExecutor {
                     sb.append(line);
                 } else if (line.startsWith(ZpsScript.PREFIX)) {
                     buffer = true;
-                    sb = new StringBuilder(256);
+                    sb = new StringBuilder(1024);
                 } else if (!line.isEmpty()) {
                     logStream.println(line);
                 }
@@ -334,11 +335,11 @@ public class MetaZpsExecutor {
          * Parse the string into a Reaction.  If it doesn't parse, an exception is thrown
          * out to the I/O loop, which is handled there.
          */
-        logger.info("processing {} byte reaction", scriptText.length());
         Reaction reaction = Json.deserialize(scriptText, Reaction.class);
 
         if (reaction.getNextProcess() != null) {
             processQueue.add(reaction.getNextProcess());
+            logger.info("{} waiting in process queue", processQueue.size());
             return;
         }
 
