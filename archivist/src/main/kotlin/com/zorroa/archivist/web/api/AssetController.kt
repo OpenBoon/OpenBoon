@@ -98,9 +98,7 @@ class AssetController @Autowired constructor(
                 val preferMediaType = tika.detect(path)
                 checkFiles.add(StreamFile(preferPath, preferMediaType, false))
 
-                val proxies = asset.getAttr("proxies." + type, object : TypeReference<List<Proxy>>() {
-
-                })
+                val proxies = asset.getAttr("proxies.$type", object : TypeReference<List<Proxy>>() {})
                 if (proxies != null) {
                     for (proxy in proxies) {
                         if (preferExt == proxy.format) {
