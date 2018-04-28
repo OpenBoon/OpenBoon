@@ -123,7 +123,7 @@ public class DyHierarchyServiceTests extends AbstractTest {
         Folder folder1 = folderService.get("/foo/" + base + "_video");
         Folder folder2 = folderService.get("/foo/" + base + "_office");
         Folder folder3 = folderService.get("/foo/" + base + "_images_set01");
-        assertEquals(1, searchService.count(folder1.getSearch()));
+        assertEquals(3, searchService.count(folder1.getSearch()));
     }
 
     @Test
@@ -144,14 +144,14 @@ public class DyHierarchyServiceTests extends AbstractTest {
         assertEquals(1, folder.getSearch().getFilter().getTerms().get("source.directory").size());
 
         folder = folderService.get("/foo/video" + testDataPath + "/video");
-        assertEquals(1, searchService.count(folder.getSearch()));
+        assertEquals(3, searchService.count(folder.getSearch()));
 
         folder = folderService.get("/foo/video" + testDataPath);
         logger.info("{}", Json.serializeToString(folder.getSearch()));
-        assertEquals(1, searchService.count(folder.getSearch()));
+        assertEquals(3, searchService.count(folder.getSearch()));
 
         folder = folderService.get("/foo/video");
-        assertEquals(1, searchService.count(folder.getSearch()));
+        assertEquals(3, searchService.count(folder.getSearch()));
     }
 
     @Test

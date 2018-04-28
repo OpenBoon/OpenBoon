@@ -45,7 +45,7 @@ interface UserService {
 
     fun get(id: UUID): User
 
-    fun exists(username: String): Boolean
+    fun exists(username: String, source:String?): Boolean
 
     fun getAll(page: Pager): PagedList<User>
 
@@ -112,7 +112,7 @@ class UserRegistryServiceImpl @Autowired constructor(
      * Register and external user from OAuth/SAML.
      */
     override fun registerUser(username: String, source: AuthSource, groups: List<String>?): UserAuthed {
-        val user = if (!userService.exists(username)) {
+        val user = if (!userService.exists(username, null)) {
             val spec = UserSpec()
             spec.username = username
             spec.password = UUID.randomUUID().toString() + UUID.randomUUID().toString()
@@ -202,7 +202,12 @@ class UserServiceImpl @Autowired constructor(
     }
 
     override fun create(builder: UserSpec): User {
-        if (userDao.exists(builder.username)) {
+
+        if (builder.source == null) {
+            builder.source = SOURCE_LOCAL
+        }
+
+        if (userDao.exists(builder.username, null)) {
             throw DuplicateEntityException("The user '" +
                     builder.username + "' already exists.")
         }
@@ -215,10 +220,6 @@ class UserServiceImpl @Autowired constructor(
 
         builder.homeFolderId = userFolder.id
         builder.userPermissionId = userPerm.id
-
-        if (builder.source == null) {
-            builder.source = SOURCE_LOCAL
-        }
 
         val user = userDao.create(builder)
 
@@ -260,8 +261,8 @@ class UserServiceImpl @Autowired constructor(
         return userDao.get(id)
     }
 
-    override fun exists(username: String): Boolean {
-        return userDao.exists(username)
+    override fun exists(username: String, source: String?): Boolean {
+        return userDao.exists(username, source)
     }
 
     override fun getAll(): List<User> {

@@ -466,7 +466,7 @@ class MigrationServiceImpl @Autowired constructor(
             throw IOException("Failed to find latest mapping for migration " + m.path)
         }
 
-        Collections.sort(allVersions) { o1, o2 -> Integer.compare(o2.getVersion(), o1.getVersion()) }
+        allVersions.sortWith(Comparator { o1, o2 -> Integer.compare(o2.getVersion(), o1.getVersion()) })
         val result = allVersions[0]
         logger.info("latest '{}' mapping ver: {} (source='{}')", m.name, result.getVersion(), m.path)
         return result

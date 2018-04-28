@@ -5,6 +5,7 @@ import com.google.common.hash.Hashing
 import com.zorroa.archivist.HttpUtils
 import com.zorroa.archivist.JdbcUtils
 import com.zorroa.archivist.domain.*
+import com.zorroa.archivist.repository.PermissionDaoImpl.Companion.GET_ALL
 import com.zorroa.archivist.sdk.security.UserId
 import com.zorroa.archivist.security.createPasswordHash
 import com.zorroa.sdk.domain.PagedList
@@ -42,7 +43,7 @@ interface UserDao {
 
     fun setPassword(user: User, password: String): Boolean
 
-    fun exists(name: String): Boolean
+    fun exists(name: String, source:String?): Boolean
 
     fun setEnablePasswordRecovery(user: User): String
 
@@ -145,9 +146,17 @@ class UserDaoImpl : AbstractDao(), UserDao {
         return get(id)
     }
 
-    override fun exists(name: String): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM users WHERE str_username=? OR str_email=?",
-                Boolean::class.java, name, name)
+    override fun exists(name: String, source:String?): Boolean {
+        var append = ""
+        var args = mutableListOf<Any>(name, name)
+
+        if (source != null) {
+            append = " AND str_source=?"
+            args.add(source)
+        }
+        return jdbc.queryForObject("SELECT COUNT(1) FROM users " +
+                "WHERE (str_username=? OR str_email=?)$append",
+                Boolean::class.java, *args.toTypedArray())
     }
 
     override fun setSettings(user: User, settings: UserSettings): Boolean {

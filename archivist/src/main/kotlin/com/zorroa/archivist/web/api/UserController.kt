@@ -155,7 +155,7 @@ class UserController @Autowired constructor(
     @PreAuthorize("hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).MANAGER) || hasAuthority(T(com.zorroa.archivist.sdk.security.Groups).ADMIN)")
     @RequestMapping(value = ["/api/v1/users/{username}/_exists"])
     operator fun get(@PathVariable username: String): Map<*, *> {
-        return ImmutableMap.of("result", userService.exists(username))
+        return ImmutableMap.of("result", userService.exists(username, null))
     }
 
     @PutMapping(value = ["/api/v1/users/{id}/_profile"])

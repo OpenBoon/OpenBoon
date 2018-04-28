@@ -7,7 +7,6 @@ import com.zorroa.sdk.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationProvider
-import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
@@ -30,15 +29,15 @@ class ZorroaAuthenticationProvider : AuthenticationProvider {
     private lateinit var  userRegistryService: UserRegistryService
 
     @Throws(AuthenticationException::class)
-    override fun authenticate(authentication: Authentication): Authentication {
+    override fun authenticate(authentication: Authentication): Authentication? {
 
         var username = authentication.name
-        if (!userService.exists(username)) {
-            throw BadCredentialsException("Invalid username or password: $username")
+        if (!userService.exists(username, "local")) {
+            // By returning null here, other providers like (LDAP) are checked.
+            return null
         }
         userService.checkPassword(username, authentication.credentials.toString())
         val authed = userRegistryService.getUser(username)
-
         return UsernamePasswordAuthenticationToken(authed, "", authed.authorities)
     }
 

@@ -133,8 +133,10 @@ public class UserDaoTests extends AbstractTest {
 
     @Test
     public void testExists() {
-        assertTrue(userDao.exists(user.getUsername()));
-        assertFalse(userDao.exists("sibawitzawis"));
+        assertTrue(userDao.exists(user.getUsername(), null));
+        assertTrue(userDao.exists(user.getUsername(), "local"));
+        assertFalse(userDao.exists(user.getUsername(), "ldap"));
+        assertFalse(userDao.exists("sibawitzawis", null));
     }
 
     @Test
