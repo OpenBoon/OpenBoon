@@ -21,10 +21,11 @@
     <modules>
         <module>server-sdk</module>
         <module>common</module>
-        <module>saml</module>
         <module>cluster</module>
         <module>archivist</module>
         <module>analyst</module>
+        <module>ldap</module>
+        <module>saml</module>
     </modules>
 
     <dependencyManagement>
