@@ -1,4 +1,4 @@
-package com.zorroa.ldap2
+package com.zorroa.ldap
 
 import com.zorroa.archivist.sdk.config.ApplicationProperties
 import org.slf4j.LoggerFactory
@@ -20,7 +20,6 @@ import org.springframework.security.ldap.authentication.BindAuthenticator
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch
 import org.springframework.security.ldap.search.LdapUserSearch
-import java.util.*
 
 
 @Configuration

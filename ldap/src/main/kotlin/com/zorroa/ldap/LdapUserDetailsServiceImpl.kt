@@ -1,4 +1,4 @@
-package com.zorroa.ldap2
+package com.zorroa.ldap
 
 import com.zorroa.archivist.sdk.security.AuthSource
 import com.zorroa.archivist.sdk.security.UserAuthed
