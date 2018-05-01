@@ -230,7 +230,21 @@ class MigrationServiceImpl @Autowired constructor(
             logger.warn("New index '{}' already exists, may not be latest version", newIndex)
             client.admin().indices().prepareOpen(newIndex).get()
         } else {
+            val shards = properties.getInt("archivist.index.shards");
+            val replicas = properties.getInt("archivist.index.replicas")
             logger.info("Processing migration: {}, path={}, force={}", m.name, m.path, force)
+            logger.info("Creating index with {} shards and {} replicas", shards, replicas);
+
+            val settings = props.getMapping()!!["settings"] as MutableMap<String, Any>?
+            if (settings != null) {
+                if (!settings.containsKey("number_of_replicas")) {
+                    settings["number_of_replicas"] = replicas
+                }
+                if (!settings.containsKey("number_of_shards")) {
+                    settings["number_of_shards"] = shards
+                }
+            }
+
             client.admin()
                     .indices()
                     .prepareCreate(newIndex)
@@ -309,7 +323,7 @@ class MigrationServiceImpl @Autowired constructor(
 
                     scrollResp = client.prepareSearchScroll(scrollResp.scrollId).setScroll(
                             TimeValue(BULK_TIMEOUT)).execute().actionGet()
-                    if (scrollResp.hits.hits.size == 0) {
+                    if (scrollResp.hits.hits.isEmpty()) {
                         break
                     }
                 }

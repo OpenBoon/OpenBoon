@@ -157,7 +157,6 @@ class ElasticConfig {
         builder
                 .put("path.data", properties.getString("archivist.path.index"))
                 .put("path.home", properties.getString("archivist.path.home"))
-                .put("index.number_of_replicas", properties.getInt("archivist.index.replicas"))
                 .put("cluster.name", "zorroa")
                 .put("node.name", nodeName)
                 .put("transport.tcp.port", properties.getInt("zorroa.cluster.index.port"))
