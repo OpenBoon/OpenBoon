@@ -6,7 +6,7 @@ These instructions will walk you though setting up Archivist and Analyst for tes
 
 ### Pre-requistes
 
-Install a PostgreSQL server. If you're on a [Mac Postgres.app](https://postgresapp.com/) makes this really easy.
+Install a PostgreSQL server. If you're on a Mac [Postgres.app](https://postgresapp.com/) makes this really easy.
 
 ### Plugin SDK Build
 
