@@ -34,7 +34,7 @@ class SinglePageAppConfig : WebMvcConfigurerAdapter() {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController("/").setViewName("forward:/index.html")
         // put in front of the thymeleaf resolver
-        registry.setOrder(-1)
+        registry.setOrder(-100)
     }
 
     private inner class PushStateResourceResolver : ResourceResolver {
