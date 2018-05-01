@@ -4,6 +4,10 @@
 
 These instructions will walk you though setting up Archivist and Analyst for testing and development.
 
+### Pre-requistes
+
+Install a PostgreSQL server. If you're on a [Mac Postgres.app](https://postgresapp.com/) makes this really easy.
+
 ### Plugin SDK Build
 
 First checkout and compile the plugin sdk.
@@ -28,7 +32,7 @@ server automatically to avoid inadvertanly making the Archvist depend on plugins
 
 ```
 cd archivist
-./install-plugins.sh
+./install.sh
 ```
 
 Next, start the archivist and analyst with their respective run scripts.:
@@ -46,5 +50,5 @@ cp bvlc_reference_caffenet.caffemodel shared/models/zorroa-core/caffe/imagenet
 Now you can hit localhost to login:
 
 ```
-http://localhost:8099
+http://localhost:8066
 ```
