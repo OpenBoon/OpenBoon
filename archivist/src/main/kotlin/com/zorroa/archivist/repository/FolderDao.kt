@@ -71,6 +71,8 @@ interface FolderDao {
     fun setAcl(folder: UUID, acl: Acl)
 
     fun getAcl(folder: UUID): Acl
+
+    fun renameUserFolder(user: User, newName:String): Boolean
 }
 
 @Repository
@@ -248,6 +250,10 @@ class FolderDaoImpl : AbstractDao(), FolderDao {
         }
 
         return getAfterCreate(spec.folderId)
+    }
+
+    override fun renameUserFolder(user: User, newName:String): Boolean {
+        return jdbc.update("UPDATE folder SET str_name=? WHERE pk_folder=?", newName, user.homeFolderId) == 1;
     }
 
     override fun update(id: UUID, folder: Folder): Boolean {

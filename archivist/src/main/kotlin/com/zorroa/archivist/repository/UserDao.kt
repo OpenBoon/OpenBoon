@@ -197,7 +197,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
     }
 
     override fun update(user: User, update: UserProfileUpdate): Boolean {
-        return jdbc.update(UPDATE, update.email, update.firstName,
+        return jdbc.update(UPDATE, update.username, update.email, update.firstName,
                 update.lastName, user.id) == 1
     }
 
@@ -326,6 +326,7 @@ class UserDaoImpl : AbstractDao(), UserDao {
                 "str_reset_pass_token=?"
 
         private val UPDATE = JdbcUtils.update("users", "pk_user",
+                "str_username",
                 "str_email",
                 "str_firstname",
                 "str_lastname")

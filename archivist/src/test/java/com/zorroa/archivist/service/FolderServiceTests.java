@@ -282,6 +282,15 @@ public class FolderServiceTests extends AbstractTest {
     }
 
     @Test
+    public void testRenameUserFolder() {
+        authenticate("librarian");
+        User user = userService.get("librarian");
+        assertFalse(folderService.exists("/Users/foo"));
+        assertTrue(folderService.renameUserFolder(user, "foo"));
+        assertTrue(folderService.exists("/Users/foo"));
+    }
+
+    @Test
     public void testCreateAndGet() {
         FolderSpec builder = new FolderSpec("Da Kind Assets");
         Folder folder1 = folderService.create(builder);
