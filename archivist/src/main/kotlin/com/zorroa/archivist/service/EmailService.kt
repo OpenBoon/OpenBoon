@@ -144,9 +144,15 @@ class EmailServiceImpl @Autowired constructor(
 
     override fun sendExportRequestEmail(user: User, req: Request)  {
 
-        val name = user.firstName ?: user.username
+        var name: String
+        if (user.firstName != null && user.lastName != null) {
+            name = "${user.firstName} ${user.lastName}"
+        } else {
+            name = user.username
+        }
         val url = networkEnv.publicUri.toString() + "?folderId=" + req.folderId
         val folderPath = folderService.getPath(folderService.get(req.folderId))
+        val folderName = folderPath.split("/").last()
         val toEmail = properties.getString("archivist.requests.managerEmail")
 
         val allCC = req.emailCC.toMutableList()
@@ -156,8 +162,7 @@ class EmailServiceImpl @Autowired constructor(
 
         val text = StringBuilder(1024)
         text.append("Hello !\n\n")
-        text.append(name)
-        text.append(" has requested assets to be exported from $folderPath.\n")
+        text.append("$name (${user.email}) has requested assets to be exported from $folderPath.\n")
         text.append("Click here to visit the folder $url\n\n")
         text.append("Additional Notes:\n")
         text.append(req.comment)
@@ -165,7 +170,7 @@ class EmailServiceImpl @Autowired constructor(
         var htmlMsg: String? = null
         try {
             htmlMsg = getTextResourceFile("emails/ExportRequest.html")
-            htmlMsg = htmlMsg.replace("*|FROM_USER|*", name)
+            htmlMsg = htmlMsg.replace("*|FROM_USER|*", "$name (${user.email})")
             htmlMsg = htmlMsg.replace("*|FOLDER_URL|*", url)
             htmlMsg = htmlMsg.replace("*|FOLDER_PATH|*", folderPath)
             htmlMsg = htmlMsg.replace("*|COMMENTS|*", req.comment)
@@ -174,7 +179,7 @@ class EmailServiceImpl @Autowired constructor(
         }
 
         try {
-            sendHTMLEmail(toEmail, "Export Request", text.toString(), allCC, htmlMsg)
+            sendHTMLEmail(toEmail, "Export Request from $name for \"$folderName\"", text.toString(), allCC, htmlMsg)
         } catch (e: MessagingException) {
             logger.warn("Export Request not sent, unexpected ", e)
         }
